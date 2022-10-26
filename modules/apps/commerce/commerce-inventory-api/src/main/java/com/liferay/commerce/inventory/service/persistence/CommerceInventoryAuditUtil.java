@@ -125,6 +125,37 @@ public class CommerceInventoryAuditUtil {
 		return getPersistence().update(commerceInventoryAudit, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtCreateDate() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLtCreateDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtCreateDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtCreateDate();
+	}
+
 	/**
 	 * Returns all the commerce inventory audits where createDate &lt; &#63;.
 	 *
@@ -301,6 +332,24 @@ public class CommerceInventoryAuditUtil {
 	 */
 	public static int countByLtCreateDate(Date createDate) {
 		return getPersistence().countByLtCreateDate(createDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_S() {
+
+		return getPersistence().getFinderPathCountByC_S();
 	}
 
 	/**
@@ -650,6 +699,12 @@ public class CommerceInventoryAuditUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceInventoryAuditPersistence getPersistence() {

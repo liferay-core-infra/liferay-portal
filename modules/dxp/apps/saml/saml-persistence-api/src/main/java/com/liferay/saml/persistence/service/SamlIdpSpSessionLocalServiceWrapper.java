@@ -14,6 +14,7 @@
 
 package com.liferay.saml.persistence.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -354,6 +355,11 @@ public class SamlIdpSpSessionLocalServiceWrapper
 	@Override
 	public int getSamlIdpSpSessionsCount() {
 		return _samlIdpSpSessionLocalService.getSamlIdpSpSessionsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_samlIdpSpSessionLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

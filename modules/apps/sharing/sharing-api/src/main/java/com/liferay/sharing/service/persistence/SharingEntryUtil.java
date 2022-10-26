@@ -120,6 +120,42 @@ public class SharingEntryUtil {
 		return getPersistence().update(sharingEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the sharing entries where uuid = &#63;.
 	 *
@@ -284,6 +320,18 @@ public class SharingEntryUtil {
 		return getPersistence().countByUuid(uuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByUUID_G() {
+
+		return getPersistence().getFinderPathFetchByUUID_G();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUUID_G() {
+
+		return getPersistence().getFinderPathCountByUUID_G();
+	}
+
 	/**
 	 * Returns the sharing entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -345,6 +393,24 @@ public class SharingEntryUtil {
 	 */
 	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -531,6 +597,24 @@ public class SharingEntryUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByGroupId() {
+
+		return getPersistence().getFinderPathCountByGroupId();
+	}
+
 	/**
 	 * Returns all the sharing entries where groupId = &#63;.
 	 *
@@ -697,6 +781,24 @@ public class SharingEntryUtil {
 		return getPersistence().countByGroupId(groupId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the sharing entries where userId = &#63;.
 	 *
@@ -860,6 +962,24 @@ public class SharingEntryUtil {
 	 */
 	public static int countByUserId(long userId) {
 		return getPersistence().countByUserId(userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByToUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByToUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByToUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByToUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByToUserId() {
+
+		return getPersistence().getFinderPathCountByToUserId();
 	}
 
 	/**
@@ -1029,6 +1149,20 @@ public class SharingEntryUtil {
 	 */
 	public static int countByToUserId(long toUserId) {
 		return getPersistence().countByToUserId(toUserId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtExpirationDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByLtExpirationDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtExpirationDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtExpirationDate();
 	}
 
 	/**
@@ -1205,6 +1339,24 @@ public class SharingEntryUtil {
 	 */
 	public static int countByLtExpirationDate(Date expirationDate) {
 		return getPersistence().countByLtExpirationDate(expirationDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_C() {
+
+		return getPersistence().getFinderPathCountByU_C();
 	}
 
 	/**
@@ -1389,6 +1541,24 @@ public class SharingEntryUtil {
 	 */
 	public static int countByU_C(long userId, long classNameId) {
 		return getPersistence().countByU_C(userId, classNameId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByTU_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByTU_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByTU_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByTU_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByTU_C() {
+
+		return getPersistence().getFinderPathCountByTU_C();
 	}
 
 	/**
@@ -1578,6 +1748,24 @@ public class SharingEntryUtil {
 		return getPersistence().countByTU_C(toUserId, classNameId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
+	}
+
 	/**
 	 * Returns all the sharing entries where classNameId = &#63; and classPK = &#63;.
 	 *
@@ -1761,6 +1949,18 @@ public class SharingEntryUtil {
 	 */
 	public static int countByC_C(long classNameId, long classPK) {
 		return getPersistence().countByC_C(classNameId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByTU_C_C() {
+
+		return getPersistence().getFinderPathFetchByTU_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByTU_C_C() {
+
+		return getPersistence().getFinderPathCountByTU_C_C();
 	}
 
 	/**
@@ -1983,6 +2183,12 @@ public class SharingEntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SharingEntryPersistence getPersistence() {

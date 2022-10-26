@@ -17,6 +17,7 @@ package com.liferay.expando.kernel.service;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -397,6 +398,10 @@ public class ExpandoTableLocalServiceUtil {
 		long companyId, String className) {
 
 		return getService().getTables(companyId, className);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	/**

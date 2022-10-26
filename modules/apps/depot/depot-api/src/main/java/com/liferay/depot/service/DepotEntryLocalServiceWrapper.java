@@ -14,6 +14,7 @@
 
 package com.liferay.depot.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -460,6 +461,11 @@ public class DepotEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _depotEntryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_depotEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

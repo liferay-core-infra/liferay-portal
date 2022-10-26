@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.persistence.PortletPreferenceValuePersi
 import com.liferay.portal.kernel.service.persistence.PortletPreferenceValueUtil;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -91,9 +92,44 @@ public class PortletPreferenceValuePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByPortletPreferencesId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByPortletPreferencesId() {
+		return _finderPathWithPaginationFindByPortletPreferencesId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByPortletPreferencesId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByPortletPreferencesId() {
+
+		return _finderPathWithoutPaginationFindByPortletPreferencesId;
+	}
+
 	private FinderPath _finderPathCountByPortletPreferencesId;
+
+	@Override
+	public FinderPath getFinderPathCountByPortletPreferencesId() {
+		return _finderPathCountByPortletPreferencesId;
+	}
 
 	/**
 	 * Returns all the portlet preference values where portletPreferencesId = &#63;.
@@ -627,8 +663,25 @@ public class PortletPreferenceValuePersistenceImpl
 			"portletPreferenceValue.portletPreferencesId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByP_N;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByP_N() {
+		return _finderPathWithPaginationFindByP_N;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByP_N;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByP_N() {
+		return _finderPathWithoutPaginationFindByP_N;
+	}
+
 	private FinderPath _finderPathCountByP_N;
+
+	@Override
+	public FinderPath getFinderPathCountByP_N() {
+		return _finderPathCountByP_N;
+	}
 
 	/**
 	 * Returns all the portlet preference values where portletPreferencesId = &#63; and name = &#63;.
@@ -1232,7 +1285,18 @@ public class PortletPreferenceValuePersistenceImpl
 		"(portletPreferenceValue.name IS NULL OR portletPreferenceValue.name = '')";
 
 	private FinderPath _finderPathFetchByP_I_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByP_I_N() {
+		return _finderPathFetchByP_I_N;
+	}
+
 	private FinderPath _finderPathCountByP_I_N;
+
+	@Override
+	public FinderPath getFinderPathCountByP_I_N() {
+		return _finderPathCountByP_I_N;
+	}
 
 	/**
 	 * Returns the portlet preference value where portletPreferencesId = &#63; and index = &#63; and name = &#63; or throws a <code>NoSuchPortletPreferenceValueException</code> if it could not be found.
@@ -1525,8 +1589,25 @@ public class PortletPreferenceValuePersistenceImpl
 		"(portletPreferenceValue.name IS NULL OR portletPreferenceValue.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByP_N_SV;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByP_N_SV() {
+		return _finderPathWithPaginationFindByP_N_SV;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByP_N_SV;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByP_N_SV() {
+		return _finderPathWithoutPaginationFindByP_N_SV;
+	}
+
 	private FinderPath _finderPathCountByP_N_SV;
+
+	@Override
+	public FinderPath getFinderPathCountByP_N_SV() {
+		return _finderPathCountByP_N_SV;
+	}
 
 	/**
 	 * Returns all the portlet preference values where portletPreferencesId = &#63; and name = &#63; and smallValue = &#63;.
@@ -3112,6 +3193,67 @@ public class PortletPreferenceValuePersistenceImpl
 		_setPortletPreferenceValueUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(PortletPreferenceValueImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PortletPreferenceValue> portletPreferenceValues = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortletPreferenceValue>> resultMap =
+				new HashMap<>();
+
+			for (PortletPreferenceValue portletPreferenceValue :
+					portletPreferenceValues) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortletPreferenceValueModelImpl
+						portletPreferenceValueModelImpl =
+							(PortletPreferenceValueModelImpl)
+								portletPreferenceValue;
+
+					arguments.add(
+						portletPreferenceValueModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(),
+						portletPreferenceValue);
+				}
+				else {
+					List<PortletPreferenceValue> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(portletPreferenceValue);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortletPreferenceValue>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortletPreferenceValue> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPortletPreferenceValueUtilPersistence(

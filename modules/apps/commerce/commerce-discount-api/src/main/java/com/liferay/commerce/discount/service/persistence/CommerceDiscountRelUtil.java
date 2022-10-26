@@ -122,6 +122,44 @@ public class CommerceDiscountRelUtil {
 		return getPersistence().update(commerceDiscountRel, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceDiscountId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceDiscountId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceDiscountId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceDiscountId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceDiscountId() {
+
+		return getPersistence().getFinderPathCountByCommerceDiscountId();
+	}
+
 	/**
 	 * Returns all the commerce discount rels where commerceDiscountId = &#63;.
 	 *
@@ -299,6 +337,24 @@ public class CommerceDiscountRelUtil {
 	 */
 	public static int countByCommerceDiscountId(long commerceDiscountId) {
 		return getPersistence().countByCommerceDiscountId(commerceDiscountId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCD_CN() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCD_CN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCD_CN() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCD_CN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCD_CN() {
+
+		return getPersistence().getFinderPathCountByCD_CN();
 	}
 
 	/**
@@ -494,6 +550,24 @@ public class CommerceDiscountRelUtil {
 	 */
 	public static int countByCD_CN(long commerceDiscountId, long classNameId) {
 		return getPersistence().countByCD_CN(commerceDiscountId, classNameId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCN_CPK() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCN_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCN_CPK() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCN_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCN_CPK() {
+
+		return getPersistence().getFinderPathCountByCN_CPK();
 	}
 
 	/**
@@ -842,6 +916,12 @@ public class CommerceDiscountRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceDiscountRelPersistence getPersistence() {

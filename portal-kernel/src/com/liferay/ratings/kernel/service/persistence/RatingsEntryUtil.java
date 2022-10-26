@@ -119,6 +119,42 @@ public class RatingsEntryUtil {
 		return getPersistence().update(ratingsEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the ratings entries where uuid = &#63;.
 	 *
@@ -281,6 +317,24 @@ public class RatingsEntryUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -465,6 +519,24 @@ public class RatingsEntryUtil {
 	 */
 	public static int countByUuid_C(String uuid, long companyId) {
 		return getPersistence().countByUuid_C(uuid, companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -652,6 +724,36 @@ public class RatingsEntryUtil {
 		return getPersistence().countByC_C(classNameId, classPK);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_C_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_C_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByU_C_C() {
+
+		return getPersistence().getFinderPathFetchByU_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_C_C() {
+
+		return getPersistence().getFinderPathCountByU_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByU_C_C() {
+
+		return getPersistence().getFinderPathWithPaginationCountByU_C_C();
+	}
+
 	/**
 	 * Returns all the ratings entries where userId = &#63; and classNameId = &#63; and classPK = any &#63;.
 	 *
@@ -827,6 +929,24 @@ public class RatingsEntryUtil {
 		long userId, long classNameId, long[] classPKs) {
 
 		return getPersistence().countByU_C_C(userId, classNameId, classPKs);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_S() {
+
+		return getPersistence().getFinderPathCountByC_C_S();
 	}
 
 	/**
@@ -1177,6 +1297,12 @@ public class RatingsEntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static RatingsEntryPersistence getPersistence() {

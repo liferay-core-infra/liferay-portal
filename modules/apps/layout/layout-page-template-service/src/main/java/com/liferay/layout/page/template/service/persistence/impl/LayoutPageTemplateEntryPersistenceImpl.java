@@ -112,9 +112,42 @@ public class LayoutPageTemplateEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the layout page template entries where uuid = &#63;.
@@ -673,7 +706,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"(layoutPageTemplateEntry.uuid IS NULL OR layoutPageTemplateEntry.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the layout page template entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchPageTemplateEntryException</code> if it could not be found.
@@ -940,8 +984,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the layout page template entries where uuid = &#63; and companyId = &#63;.
@@ -1542,8 +1603,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63;.
@@ -2449,8 +2527,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLayoutPrototypeId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLayoutPrototypeId() {
+		return _finderPathWithPaginationFindByLayoutPrototypeId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLayoutPrototypeId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByLayoutPrototypeId() {
+		return _finderPathWithoutPaginationFindByLayoutPrototypeId;
+	}
+
 	private FinderPath _finderPathCountByLayoutPrototypeId;
+
+	@Override
+	public FinderPath getFinderPathCountByLayoutPrototypeId() {
+		return _finderPathCountByLayoutPrototypeId;
+	}
 
 	/**
 	 * Returns all the layout page template entries where layoutPrototypeId = &#63;.
@@ -2980,7 +3075,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			"layoutPageTemplateEntry.layoutPrototypeId = ?";
 
 	private FinderPath _finderPathFetchByPlid;
+
+	@Override
+	public FinderPath getFinderPathFetchByPlid() {
+		return _finderPathFetchByPlid;
+	}
+
 	private FinderPath _finderPathCountByPlid;
+
+	@Override
+	public FinderPath getFinderPathCountByPlid() {
+		return _finderPathCountByPlid;
+	}
 
 	/**
 	 * Returns the layout page template entry where plid = &#63; or throws a <code>NoSuchPageTemplateEntryException</code> if it could not be found.
@@ -3195,8 +3301,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.plid = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_L;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_L() {
+		return _finderPathWithPaginationFindByG_L;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_L;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_L() {
+		return _finderPathWithoutPaginationFindByG_L;
+	}
+
 	private FinderPath _finderPathCountByG_L;
+
+	@Override
+	public FinderPath getFinderPathCountByG_L() {
+		return _finderPathCountByG_L;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and layoutPageTemplateCollectionId = &#63;.
@@ -4180,7 +4303,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			"layoutPageTemplateEntry.layoutPageTemplateCollectionId = ?";
 
 	private FinderPath _finderPathFetchByG_LPTEK;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_LPTEK() {
+		return _finderPathFetchByG_LPTEK;
+	}
+
 	private FinderPath _finderPathCountByG_LPTEK;
+
+	@Override
+	public FinderPath getFinderPathCountByG_LPTEK() {
+		return _finderPathCountByG_LPTEK;
+	}
 
 	/**
 	 * Returns the layout page template entry where groupId = &#63; and layoutPageTemplateEntryKey = &#63; or throws a <code>NoSuchPageTemplateEntryException</code> if it could not be found.
@@ -4458,8 +4592,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			"(layoutPageTemplateEntry.layoutPageTemplateEntryKey IS NULL OR layoutPageTemplateEntry.layoutPageTemplateEntryKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_N;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_N() {
+		return _finderPathWithPaginationFindByG_N;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_N;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_N() {
+		return _finderPathWithoutPaginationFindByG_N;
+	}
+
 	private FinderPath _finderPathCountByG_N;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N() {
+		return _finderPathCountByG_N;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and name = &#63;.
@@ -5502,9 +5653,32 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"(layoutPageTemplateEntry.name IS NULL OR layoutPageTemplateEntry.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T() {
+		return _finderPathWithPaginationFindByG_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T() {
+		return _finderPathWithoutPaginationFindByG_T;
+	}
+
 	private FinderPath _finderPathCountByG_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T() {
+		return _finderPathCountByG_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_T() {
+		return _finderPathWithPaginationCountByG_T;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and type = &#63;.
@@ -6973,7 +7147,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.type_ IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_L_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_L_LikeN() {
+		return _finderPathWithPaginationFindByG_L_LikeN;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_L_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_L_LikeN() {
+		return _finderPathWithPaginationCountByG_L_LikeN;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and layoutPageTemplateCollectionId = &#63; and name LIKE &#63;.
@@ -8096,8 +8281,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"(layoutPageTemplateEntry.name IS NULL OR layoutPageTemplateEntry.name LIKE '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_L_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_L_T() {
+		return _finderPathWithPaginationFindByG_L_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_L_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_L_T() {
+		return _finderPathWithoutPaginationFindByG_L_T;
+	}
+
 	private FinderPath _finderPathCountByG_L_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_L_T() {
+		return _finderPathCountByG_L_T;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and layoutPageTemplateCollectionId = &#63; and type = &#63;.
@@ -9143,8 +9345,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_L_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_L_S() {
+		return _finderPathWithPaginationFindByG_L_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_L_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_L_S() {
+		return _finderPathWithoutPaginationFindByG_L_S;
+	}
+
 	private FinderPath _finderPathCountByG_L_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_L_S() {
+		return _finderPathCountByG_L_S;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and layoutPageTemplateCollectionId = &#63; and status = &#63;.
@@ -10196,7 +10415,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.status = ?";
 
 	private FinderPath _finderPathFetchByG_N_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_N_T() {
+		return _finderPathFetchByG_N_T;
+	}
+
 	private FinderPath _finderPathCountByG_N_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N_T() {
+		return _finderPathCountByG_N_T;
+	}
 
 	/**
 	 * Returns the layout page template entry where groupId = &#63; and name = &#63; and type = &#63; or throws a <code>NoSuchPageTemplateEntryException</code> if it could not be found.
@@ -10487,7 +10717,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.type = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_T_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T_LikeN() {
+		return _finderPathWithPaginationFindByG_T_LikeN;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_T_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_T_LikeN() {
+		return _finderPathWithPaginationCountByG_T_LikeN;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and name LIKE &#63; and type = &#63;.
@@ -12174,9 +12415,32 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.type_ IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T_S() {
+		return _finderPathWithPaginationFindByG_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T_S() {
+		return _finderPathWithoutPaginationFindByG_T_S;
+	}
+
 	private FinderPath _finderPathCountByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T_S() {
+		return _finderPathCountByG_T_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_T_S() {
+		return _finderPathWithPaginationCountByG_T_S;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and type = &#63; and status = &#63;.
@@ -13745,7 +14009,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_L_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_L_LikeN_S() {
+		return _finderPathWithPaginationFindByG_L_LikeN_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_L_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_L_LikeN_S() {
+		return _finderPathWithPaginationCountByG_L_LikeN_S;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and layoutPageTemplateCollectionId = &#63; and name LIKE &#63; and status = &#63;.
@@ -14938,8 +15213,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_T() {
+		return _finderPathWithPaginationFindByG_C_C_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_T() {
+		return _finderPathWithoutPaginationFindByG_C_C_T;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_T() {
+		return _finderPathCountByG_C_C_T;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and classNameId = &#63; and classTypeId = &#63; and type = &#63;.
@@ -16031,8 +16323,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_D;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_D() {
+		return _finderPathWithPaginationFindByG_C_C_D;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_D;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_D() {
+		return _finderPathWithoutPaginationFindByG_C_C_D;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_D;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_D() {
+		return _finderPathCountByG_C_C_D;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and classNameId = &#63; and classTypeId = &#63; and defaultTemplate = &#63;.
@@ -17145,8 +17454,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.defaultTemplate = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_T_D;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_T_D() {
+		return _finderPathWithPaginationFindByG_C_T_D;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_T_D;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_T_D() {
+		return _finderPathWithoutPaginationFindByG_C_T_D;
+	}
+
 	private FinderPath _finderPathCountByG_C_T_D;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_T_D() {
+		return _finderPathCountByG_C_T_D;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and classNameId = &#63; and type = &#63; and defaultTemplate = &#63;.
@@ -18244,7 +18570,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.defaultTemplate = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_T_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T_LikeN_S() {
+		return _finderPathWithPaginationFindByG_T_LikeN_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_T_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_T_LikeN_S() {
+		return _finderPathWithPaginationCountByG_T_LikeN_S;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and name LIKE &#63; and type = &#63; and status = &#63;.
@@ -20040,8 +20377,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_T_D_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T_D_S() {
+		return _finderPathWithPaginationFindByG_T_D_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T_D_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T_D_S() {
+		return _finderPathWithoutPaginationFindByG_T_D_S;
+	}
+
 	private FinderPath _finderPathCountByG_T_D_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T_D_S() {
+		return _finderPathCountByG_T_D_S;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and type = &#63; and defaultTemplate = &#63; and status = &#63;.
@@ -21132,7 +21486,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_LikeN_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_LikeN_T() {
+		return _finderPathWithPaginationFindByG_C_C_LikeN_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_C_LikeN_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_C_LikeN_T() {
+		return _finderPathWithPaginationCountByG_C_C_LikeN_T;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and classNameId = &#63; and classTypeId = &#63; and name LIKE &#63; and type = &#63;.
@@ -22364,8 +22729,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_T_S() {
+		return _finderPathWithPaginationFindByG_C_C_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_T_S() {
+		return _finderPathWithoutPaginationFindByG_C_C_T_S;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_T_S() {
+		return _finderPathCountByG_C_C_T_S;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and classNameId = &#63; and classTypeId = &#63; and type = &#63; and status = &#63;.
@@ -23524,8 +23906,25 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_D_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_D_S() {
+		return _finderPathWithPaginationFindByG_C_C_D_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_D_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_D_S() {
+		return _finderPathWithoutPaginationFindByG_C_C_D_S;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_D_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_D_S() {
+		return _finderPathCountByG_C_C_D_S;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and classNameId = &#63; and classTypeId = &#63; and defaultTemplate = &#63; and status = &#63;.
@@ -24689,7 +25088,18 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		"layoutPageTemplateEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_LikeN_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_LikeN_T_S() {
+		return _finderPathWithPaginationFindByG_C_C_LikeN_T_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_C_LikeN_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_C_LikeN_T_S() {
+		return _finderPathWithPaginationCountByG_C_C_LikeN_T_S;
+	}
 
 	/**
 	 * Returns all the layout page template entries where groupId = &#63; and classNameId = &#63; and classTypeId = &#63; and name LIKE &#63; and type = &#63; and status = &#63;.
@@ -27509,6 +27919,67 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		_setLayoutPageTemplateEntryUtilPersistence(null);
 
 		entityCache.removeCache(LayoutPageTemplateEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LayoutPageTemplateEntry> layoutPageTemplateEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutPageTemplateEntry>> resultMap =
+				new HashMap<>();
+
+			for (LayoutPageTemplateEntry layoutPageTemplateEntry :
+					layoutPageTemplateEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutPageTemplateEntryModelImpl
+						layoutPageTemplateEntryModelImpl =
+							(LayoutPageTemplateEntryModelImpl)
+								layoutPageTemplateEntry;
+
+					arguments.add(
+						layoutPageTemplateEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						layoutPageTemplateEntry);
+				}
+				else {
+					List<LayoutPageTemplateEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutPageTemplateEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutPageTemplateEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutPageTemplateEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutPageTemplateEntryUtilPersistence(

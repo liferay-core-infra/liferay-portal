@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -105,9 +106,42 @@ public class DDLRecordPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the ddl records where uuid = &#63;.
@@ -650,7 +684,18 @@ public class DDLRecordPersistenceImpl
 		"(ddlRecord.uuid IS NULL OR ddlRecord.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the ddl record where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchRecordException</code> if it could not be found.
@@ -913,8 +958,25 @@ public class DDLRecordPersistenceImpl
 		"ddlRecord.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the ddl records where uuid = &#63; and companyId = &#63;.
@@ -1506,8 +1568,25 @@ public class DDLRecordPersistenceImpl
 		"ddlRecord.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the ddl records where companyId = &#63;.
@@ -2015,8 +2094,25 @@ public class DDLRecordPersistenceImpl
 		"ddlRecord.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByRecordSetId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByRecordSetId() {
+		return _finderPathWithPaginationFindByRecordSetId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByRecordSetId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByRecordSetId() {
+		return _finderPathWithoutPaginationFindByRecordSetId;
+	}
+
 	private FinderPath _finderPathCountByRecordSetId;
+
+	@Override
+	public FinderPath getFinderPathCountByRecordSetId() {
+		return _finderPathCountByRecordSetId;
+	}
 
 	/**
 	 * Returns all the ddl records where recordSetId = &#63;.
@@ -2527,8 +2623,25 @@ public class DDLRecordPersistenceImpl
 		"ddlRecord.recordSetId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByR_U;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByR_U() {
+		return _finderPathWithPaginationFindByR_U;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByR_U;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByR_U() {
+		return _finderPathWithoutPaginationFindByR_U;
+	}
+
 	private FinderPath _finderPathCountByR_U;
+
+	@Override
+	public FinderPath getFinderPathCountByR_U() {
+		return _finderPathCountByR_U;
+	}
 
 	/**
 	 * Returns all the ddl records where recordSetId = &#63; and userId = &#63;.
@@ -3080,8 +3193,25 @@ public class DDLRecordPersistenceImpl
 		"ddlRecord.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByR_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByR_R() {
+		return _finderPathWithPaginationFindByR_R;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByR_R;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByR_R() {
+		return _finderPathWithoutPaginationFindByR_R;
+	}
+
 	private FinderPath _finderPathCountByR_R;
+
+	@Override
+	public FinderPath getFinderPathCountByR_R() {
+		return _finderPathCountByR_R;
+	}
 
 	/**
 	 * Returns all the ddl records where recordSetId = &#63; and recordSetVersion = &#63;.
@@ -3680,8 +3810,25 @@ public class DDLRecordPersistenceImpl
 		"(ddlRecord.recordSetVersion IS NULL OR ddlRecord.recordSetVersion = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the ddl records where className = &#63; and classPK = &#63;.
@@ -5226,6 +5373,59 @@ public class DDLRecordPersistenceImpl
 		_setDDLRecordUtilPersistence(null);
 
 		entityCache.removeCache(DDLRecordImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DDLRecord> ddlRecords = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDLRecord>> resultMap = new HashMap<>();
+
+			for (DDLRecord ddlRecord : ddlRecords) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDLRecordModelImpl ddlRecordModelImpl =
+						(DDLRecordModelImpl)ddlRecord;
+
+					arguments.add(
+						ddlRecordModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddlRecord);
+				}
+				else {
+					List<DDLRecord> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ddlRecord);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDLRecord>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDLRecord> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDDLRecordUtilPersistence(

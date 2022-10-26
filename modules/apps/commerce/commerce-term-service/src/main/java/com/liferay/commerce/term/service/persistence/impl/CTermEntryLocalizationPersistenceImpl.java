@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -54,6 +55,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -100,9 +103,44 @@ public class CTermEntryLocalizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCommerceTermEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommerceTermEntryId() {
+		return _finderPathWithPaginationFindByCommerceTermEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommerceTermEntryId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceTermEntryId() {
+
+		return _finderPathWithoutPaginationFindByCommerceTermEntryId;
+	}
+
 	private FinderPath _finderPathCountByCommerceTermEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceTermEntryId() {
+		return _finderPathCountByCommerceTermEntryId;
+	}
 
 	/**
 	 * Returns all the c term entry localizations where commerceTermEntryId = &#63;.
@@ -617,7 +655,18 @@ public class CTermEntryLocalizationPersistenceImpl
 			"cTermEntryLocalization.commerceTermEntryId = ?";
 
 	private FinderPath _finderPathFetchByCommerceTermEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathFetchByCommerceTermEntryId_LanguageId() {
+		return _finderPathFetchByCommerceTermEntryId_LanguageId;
+	}
+
 	private FinderPath _finderPathCountByCommerceTermEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceTermEntryId_LanguageId() {
+		return _finderPathCountByCommerceTermEntryId_LanguageId;
+	}
 
 	/**
 	 * Returns the c term entry localization where commerceTermEntryId = &#63; and languageId = &#63; or throws a <code>NoSuchCTermEntryLocalizationException</code> if it could not be found.
@@ -1527,6 +1576,67 @@ public class CTermEntryLocalizationPersistenceImpl
 		_setCTermEntryLocalizationUtilPersistence(null);
 
 		entityCache.removeCache(CTermEntryLocalizationImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CTermEntryLocalization> cTermEntryLocalizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTermEntryLocalization>> resultMap =
+				new HashMap<>();
+
+			for (CTermEntryLocalization cTermEntryLocalization :
+					cTermEntryLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTermEntryLocalizationModelImpl
+						cTermEntryLocalizationModelImpl =
+							(CTermEntryLocalizationModelImpl)
+								cTermEntryLocalization;
+
+					arguments.add(
+						cTermEntryLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cTermEntryLocalization);
+				}
+				else {
+					List<CTermEntryLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cTermEntryLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTermEntryLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTermEntryLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCTermEntryLocalizationUtilPersistence(

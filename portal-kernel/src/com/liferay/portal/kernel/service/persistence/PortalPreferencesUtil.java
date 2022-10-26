@@ -121,6 +121,36 @@ public class PortalPreferencesUtil {
 		return getPersistence().update(portalPreferences, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByO_O() {
+
+		return getPersistence().getFinderPathFetchByO_O();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByO_O() {
+
+		return getPersistence().getFinderPathCountByO_O();
+	}
+
 	/**
 	 * Returns the portal preferences where ownerId = &#63; and ownerType = &#63; or throws a <code>NoSuchPreferencesException</code> if it could not be found.
 	 *
@@ -337,6 +367,12 @@ public class PortalPreferencesUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static PortalPreferencesPersistence getPersistence() {

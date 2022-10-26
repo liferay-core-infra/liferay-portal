@@ -55,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,9 +101,42 @@ public class KBCommentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the kb comments where uuid = &#63;.
@@ -630,7 +664,18 @@ public class KBCommentPersistenceImpl
 		"(kbComment.uuid IS NULL OR kbComment.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the kb comment where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCommentException</code> if it could not be found.
@@ -878,8 +923,25 @@ public class KBCommentPersistenceImpl
 		"kbComment.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the kb comments where uuid = &#63; and companyId = &#63;.
@@ -1456,8 +1518,25 @@ public class KBCommentPersistenceImpl
 		"kbComment.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the kb comments where groupId = &#63;.
@@ -1945,8 +2024,25 @@ public class KBCommentPersistenceImpl
 		"kbComment.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C() {
+		return _finderPathWithPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C() {
+		return _finderPathWithoutPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C() {
+		return _finderPathCountByG_C;
+	}
 
 	/**
 	 * Returns all the kb comments where groupId = &#63; and classNameId = &#63;.
@@ -2483,8 +2579,25 @@ public class KBCommentPersistenceImpl
 		"kbComment.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_S() {
+		return _finderPathWithPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_S() {
+		return _finderPathWithoutPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns all the kb comments where groupId = &#63; and status = &#63;.
@@ -3018,8 +3131,25 @@ public class KBCommentPersistenceImpl
 		"kbComment.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the kb comments where classNameId = &#63; and classPK = &#63;.
@@ -3556,8 +3686,25 @@ public class KBCommentPersistenceImpl
 		"kbComment.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_C_C() {
+		return _finderPathWithPaginationFindByU_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_C_C() {
+		return _finderPathWithoutPaginationFindByU_C_C;
+	}
+
 	private FinderPath _finderPathCountByU_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByU_C_C() {
+		return _finderPathCountByU_C_C;
+	}
 
 	/**
 	 * Returns all the kb comments where userId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -4131,9 +4278,32 @@ public class KBCommentPersistenceImpl
 		"kbComment.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_S() {
+		return _finderPathWithPaginationFindByC_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_S() {
+		return _finderPathWithoutPaginationFindByC_C_S;
+	}
+
 	private FinderPath _finderPathCountByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_S() {
+		return _finderPathCountByC_C_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_C_S() {
+		return _finderPathWithPaginationCountByC_C_S;
+	}
 
 	/**
 	 * Returns all the kb comments where classNameId = &#63; and classPK = &#63; and status = &#63;.
@@ -5755,6 +5925,59 @@ public class KBCommentPersistenceImpl
 		_setKBCommentUtilPersistence(null);
 
 		entityCache.removeCache(KBCommentImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KBComment> kbComments = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KBComment>> resultMap = new HashMap<>();
+
+			for (KBComment kbComment : kbComments) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KBCommentModelImpl kbCommentModelImpl =
+						(KBCommentModelImpl)kbComment;
+
+					arguments.add(
+						kbCommentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kbComment);
+				}
+				else {
+					List<KBComment> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(kbComment);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KBComment>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KBComment> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKBCommentUtilPersistence(

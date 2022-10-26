@@ -56,6 +56,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -105,9 +106,42 @@ public class OAuth2AuthorizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the o auth2 authorizations where userId = &#63;.
@@ -604,8 +638,27 @@ public class OAuth2AuthorizationPersistenceImpl
 		"oAuth2Authorization.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByOAuth2ApplicationId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByOAuth2ApplicationId() {
+		return _finderPathWithPaginationFindByOAuth2ApplicationId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByOAuth2ApplicationId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByOAuth2ApplicationId() {
+
+		return _finderPathWithoutPaginationFindByOAuth2ApplicationId;
+	}
+
 	private FinderPath _finderPathCountByOAuth2ApplicationId;
+
+	@Override
+	public FinderPath getFinderPathCountByOAuth2ApplicationId() {
+		return _finderPathCountByOAuth2ApplicationId;
+	}
 
 	/**
 	 * Returns all the o auth2 authorizations where oAuth2ApplicationId = &#63;.
@@ -1120,8 +1173,25 @@ public class OAuth2AuthorizationPersistenceImpl
 			"oAuth2Authorization.oAuth2ApplicationId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_ATCH;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_ATCH() {
+		return _finderPathWithPaginationFindByC_ATCH;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_ATCH;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_ATCH() {
+		return _finderPathWithoutPaginationFindByC_ATCH;
+	}
+
 	private FinderPath _finderPathCountByC_ATCH;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ATCH() {
+		return _finderPathCountByC_ATCH;
+	}
 
 	/**
 	 * Returns all the o auth2 authorizations where companyId = &#63; and accessTokenContentHash = &#63;.
@@ -1670,8 +1740,25 @@ public class OAuth2AuthorizationPersistenceImpl
 		"oAuth2Authorization.accessTokenContentHash = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_RTCH;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_RTCH() {
+		return _finderPathWithPaginationFindByC_RTCH;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_RTCH;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_RTCH() {
+		return _finderPathWithoutPaginationFindByC_RTCH;
+	}
+
 	private FinderPath _finderPathCountByC_RTCH;
+
+	@Override
+	public FinderPath getFinderPathCountByC_RTCH() {
+		return _finderPathCountByC_RTCH;
+	}
 
 	/**
 	 * Returns all the o auth2 authorizations where companyId = &#63; and refreshTokenContentHash = &#63;.
@@ -2222,8 +2309,25 @@ public class OAuth2AuthorizationPersistenceImpl
 			"oAuth2Authorization.refreshTokenContentHash = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_O_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_O_R() {
+		return _finderPathWithPaginationFindByU_O_R;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_O_R;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_O_R() {
+		return _finderPathWithoutPaginationFindByU_O_R;
+	}
+
 	private FinderPath _finderPathCountByU_O_R;
+
+	@Override
+	public FinderPath getFinderPathCountByU_O_R() {
+		return _finderPathCountByU_O_R;
+	}
 
 	/**
 	 * Returns all the o auth2 authorizations where userId = &#63; and oAuth2ApplicationId = &#63; and rememberDeviceContent = &#63;.
@@ -3878,6 +3982,64 @@ public class OAuth2AuthorizationPersistenceImpl
 
 		TableMapperFactory.removeTableMapper(
 			"OA2Auths_OA2ScopeGrants#oAuth2AuthorizationId");
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<OAuth2Authorization> oAuth2Authorizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OAuth2Authorization>> resultMap =
+				new HashMap<>();
+
+			for (OAuth2Authorization oAuth2Authorization :
+					oAuth2Authorizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OAuth2AuthorizationModelImpl oAuth2AuthorizationModelImpl =
+						(OAuth2AuthorizationModelImpl)oAuth2Authorization;
+
+					arguments.add(
+						oAuth2AuthorizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), oAuth2Authorization);
+				}
+				else {
+					List<OAuth2Authorization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(oAuth2Authorization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OAuth2Authorization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OAuth2Authorization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOAuth2AuthorizationUtilPersistence(

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchLVEntryLocalizationException;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryLocalization;
@@ -40,6 +41,17 @@ public interface LVEntryLocalizationPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LVEntryLocalizationUtil} to access the lv entry localization persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByLvEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLvEntryId();
+
+	public FinderPath getFinderPathCountByLvEntryId();
 
 	/**
 	 * Returns all the lv entry localizations where lvEntryId = &#63;.
@@ -184,6 +196,10 @@ public interface LVEntryLocalizationPersistence
 	 */
 	public int countByLvEntryId(long lvEntryId);
 
+	public FinderPath getFinderPathFetchByLvEntryId_LanguageId();
+
+	public FinderPath getFinderPathCountByLvEntryId_LanguageId();
+
 	/**
 	 * Returns the lv entry localization where lvEntryId = &#63; and languageId = &#63; or throws a <code>NoSuchLVEntryLocalizationException</code> if it could not be found.
 	 *
@@ -236,6 +252,10 @@ public interface LVEntryLocalizationPersistence
 	 * @return the number of matching lv entry localizations
 	 */
 	public int countByLvEntryId_LanguageId(long lvEntryId, String languageId);
+
+	public FinderPath getFinderPathFetchByHeadId();
+
+	public FinderPath getFinderPathCountByHeadId();
 
 	/**
 	 * Returns the lv entry localization where headId = &#63; or throws a <code>NoSuchLVEntryLocalizationException</code> if it could not be found.
@@ -403,5 +423,7 @@ public interface LVEntryLocalizationPersistence
 	 * @return the number of lv entry localizations
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

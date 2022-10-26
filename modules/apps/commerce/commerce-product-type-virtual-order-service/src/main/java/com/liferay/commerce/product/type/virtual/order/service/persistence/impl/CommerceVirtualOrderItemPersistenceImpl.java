@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,9 +103,42 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce virtual order items where uuid = &#63;.
@@ -647,7 +682,18 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		"(commerceVirtualOrderItem.uuid IS NULL OR commerceVirtualOrderItem.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the commerce virtual order item where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchVirtualOrderItemException</code> if it could not be found.
@@ -899,8 +945,25 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		"commerceVirtualOrderItem.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce virtual order items where uuid = &#63; and companyId = &#63;.
@@ -1487,7 +1550,18 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		"commerceVirtualOrderItem.companyId = ?";
 
 	private FinderPath _finderPathFetchByCommerceOrderItemId;
+
+	@Override
+	public FinderPath getFinderPathFetchByCommerceOrderItemId() {
+		return _finderPathFetchByCommerceOrderItemId;
+	}
+
 	private FinderPath _finderPathCountByCommerceOrderItemId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceOrderItemId() {
+		return _finderPathCountByCommerceOrderItemId;
+	}
 
 	/**
 	 * Returns the commerce virtual order item where commerceOrderItemId = &#63; or throws a <code>NoSuchVirtualOrderItemException</code> if it could not be found.
@@ -2396,6 +2470,67 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		_setCommerceVirtualOrderItemUtilPersistence(null);
 
 		entityCache.removeCache(CommerceVirtualOrderItemImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceVirtualOrderItem> commerceVirtualOrderItems = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceVirtualOrderItem>> resultMap =
+				new HashMap<>();
+
+			for (CommerceVirtualOrderItem commerceVirtualOrderItem :
+					commerceVirtualOrderItems) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceVirtualOrderItemModelImpl
+						commerceVirtualOrderItemModelImpl =
+							(CommerceVirtualOrderItemModelImpl)
+								commerceVirtualOrderItem;
+
+					arguments.add(
+						commerceVirtualOrderItemModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceVirtualOrderItem);
+				}
+				else {
+					List<CommerceVirtualOrderItem> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceVirtualOrderItem);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceVirtualOrderItem>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceVirtualOrderItem> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceVirtualOrderItemUtilPersistence(

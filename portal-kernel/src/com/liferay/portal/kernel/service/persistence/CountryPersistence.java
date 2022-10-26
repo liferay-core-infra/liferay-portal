@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchCountryException;
 import com.liferay.portal.kernel.model.Country;
 
@@ -38,6 +39,17 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CountryUtil} to access the country persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the countries where uuid = &#63;.
@@ -180,6 +192,12 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 * @return the number of matching countries
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the countries where uuid = &#63; and companyId = &#63;.
@@ -335,6 +353,12 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the countries where companyId = &#63;.
 	 *
@@ -477,6 +501,12 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 * @return the number of matching countries
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByActive();
+
+	public FinderPath getFinderPathWithoutPaginationFindByActive();
+
+	public FinderPath getFinderPathCountByActive();
 
 	/**
 	 * Returns all the countries where active = &#63;.
@@ -621,6 +651,10 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 */
 	public int countByActive(boolean active);
 
+	public FinderPath getFinderPathFetchByC_A2();
+
+	public FinderPath getFinderPathCountByC_A2();
+
 	/**
 	 * Returns the country where companyId = &#63; and a2 = &#63; or throws a <code>NoSuchCountryException</code> if it could not be found.
 	 *
@@ -671,6 +705,10 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 */
 	public int countByC_A2(long companyId, String a2);
 
+	public FinderPath getFinderPathFetchByC_A3();
+
+	public FinderPath getFinderPathCountByC_A3();
+
 	/**
 	 * Returns the country where companyId = &#63; and a3 = &#63; or throws a <code>NoSuchCountryException</code> if it could not be found.
 	 *
@@ -720,6 +758,12 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 * @return the number of matching countries
 	 */
 	public int countByC_A3(long companyId, String a3);
+
+	public FinderPath getFinderPathWithPaginationFindByC_Active();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_Active();
+
+	public FinderPath getFinderPathCountByC_Active();
 
 	/**
 	 * Returns all the countries where companyId = &#63; and active = &#63;.
@@ -876,6 +920,10 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 */
 	public int countByC_Active(long companyId, boolean active);
 
+	public FinderPath getFinderPathFetchByC_Name();
+
+	public FinderPath getFinderPathCountByC_Name();
+
 	/**
 	 * Returns the country where companyId = &#63; and name = &#63; or throws a <code>NoSuchCountryException</code> if it could not be found.
 	 *
@@ -926,6 +974,10 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 */
 	public int countByC_Name(long companyId, String name);
 
+	public FinderPath getFinderPathFetchByC_Number();
+
+	public FinderPath getFinderPathCountByC_Number();
+
 	/**
 	 * Returns the country where companyId = &#63; and number = &#63; or throws a <code>NoSuchCountryException</code> if it could not be found.
 	 *
@@ -975,6 +1027,12 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 * @return the number of matching countries
 	 */
 	public int countByC_Number(long companyId, String number);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_B();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_B();
+
+	public FinderPath getFinderPathCountByC_A_B();
 
 	/**
 	 * Returns all the countries where companyId = &#63; and active = &#63; and billingAllowed = &#63;.
@@ -1147,6 +1205,12 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 */
 	public int countByC_A_B(
 		long companyId, boolean active, boolean billingAllowed);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_S();
+
+	public FinderPath getFinderPathCountByC_A_S();
 
 	/**
 	 * Returns all the countries where companyId = &#63; and active = &#63; and shippingAllowed = &#63;.
@@ -1438,5 +1502,7 @@ public interface CountryPersistence extends BasePersistence<Country> {
 	 * @return the number of countries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

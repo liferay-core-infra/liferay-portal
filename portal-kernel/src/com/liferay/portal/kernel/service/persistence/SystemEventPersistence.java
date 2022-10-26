@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchSystemEventException;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -40,6 +41,17 @@ public interface SystemEventPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SystemEventUtil} to access the system event persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the system events where groupId = &#63;.
@@ -183,6 +195,12 @@ public interface SystemEventPersistence
 	 * @return the number of matching system events
 	 */
 	public int countByGroupId(long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_S();
+
+	public FinderPath getFinderPathCountByG_S();
 
 	/**
 	 * Returns all the system events where groupId = &#63; and systemEventSetKey = &#63;.
@@ -338,6 +356,12 @@ public interface SystemEventPersistence
 	 * @return the number of matching system events
 	 */
 	public int countByG_S(long groupId, long systemEventSetKey);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C();
+
+	public FinderPath getFinderPathCountByG_C_C();
 
 	/**
 	 * Returns all the system events where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -504,6 +528,12 @@ public interface SystemEventPersistence
 	 * @return the number of matching system events
 	 */
 	public int countByG_C_C(long groupId, long classNameId, long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_T();
+
+	public FinderPath getFinderPathCountByG_C_C_T();
 
 	/**
 	 * Returns all the system events where groupId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63;.
@@ -807,5 +837,7 @@ public interface SystemEventPersistence
 	 * @return the number of system events
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

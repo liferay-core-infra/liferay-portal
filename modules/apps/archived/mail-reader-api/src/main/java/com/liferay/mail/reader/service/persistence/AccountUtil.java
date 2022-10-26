@@ -119,6 +119,42 @@ public class AccountUtil {
 		return getPersistence().update(account, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the accounts where userId = &#63;.
 	 *
@@ -279,6 +315,18 @@ public class AccountUtil {
 	 */
 	public static int countByUserId(long userId) {
 		return getPersistence().countByUserId(userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByU_A() {
+
+		return getPersistence().getFinderPathFetchByU_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_A() {
+
+		return getPersistence().getFinderPathCountByU_A();
 	}
 
 	/**
@@ -489,6 +537,12 @@ public class AccountUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static AccountPersistence getPersistence() {

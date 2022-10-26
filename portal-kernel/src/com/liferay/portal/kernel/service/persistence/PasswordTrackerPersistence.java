@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchPasswordTrackerException;
 import com.liferay.portal.kernel.model.PasswordTracker;
 
@@ -39,6 +40,17 @@ public interface PasswordTrackerPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link PasswordTrackerUtil} to access the password tracker persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
 
 	/**
 	 * Returns all the password trackers where userId = &#63;.
@@ -302,5 +314,7 @@ public interface PasswordTrackerPersistence
 	 * @return the number of password trackers
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

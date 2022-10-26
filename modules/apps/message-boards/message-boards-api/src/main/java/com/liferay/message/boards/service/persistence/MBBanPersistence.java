@@ -16,6 +16,7 @@ package com.liferay.message.boards.service.persistence;
 
 import com.liferay.message.boards.exception.NoSuchBanException;
 import com.liferay.message.boards.model.MBBan;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface MBBanPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link MBBanUtil} to access the message boards ban persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the message boards bans where uuid = &#63;.
@@ -184,6 +196,10 @@ public interface MBBanPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the message boards ban where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchBanException</code> if it could not be found.
 	 *
@@ -233,6 +249,12 @@ public interface MBBanPersistence
 	 * @return the number of matching message boards bans
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the message boards bans where uuid = &#63; and companyId = &#63;.
@@ -388,6 +410,12 @@ public interface MBBanPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
 	/**
 	 * Returns all the message boards bans where groupId = &#63;.
 	 *
@@ -531,6 +559,12 @@ public interface MBBanPersistence
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the message boards bans where userId = &#63;.
 	 *
@@ -672,6 +706,12 @@ public interface MBBanPersistence
 	 * @return the number of matching message boards bans
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByBanUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByBanUserId();
+
+	public FinderPath getFinderPathCountByBanUserId();
 
 	/**
 	 * Returns all the message boards bans where banUserId = &#63;.
@@ -815,6 +855,10 @@ public interface MBBanPersistence
 	 * @return the number of matching message boards bans
 	 */
 	public int countByBanUserId(long banUserId);
+
+	public FinderPath getFinderPathFetchByG_B();
+
+	public FinderPath getFinderPathCountByG_B();
 
 	/**
 	 * Returns the message boards ban where groupId = &#63; and banUserId = &#63; or throws a <code>NoSuchBanException</code> if it could not be found.
@@ -983,5 +1027,7 @@ public interface MBBanPersistence
 	 * @return the number of message boards bans
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

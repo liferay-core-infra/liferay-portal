@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -342,6 +343,11 @@ public class RenameFinderColumnEntryLocalServiceWrapper
 
 		return _renameFinderColumnEntryLocalService.getRenameFinderColumnEntry(
 			renameFinderColumnEntryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_renameFinderColumnEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

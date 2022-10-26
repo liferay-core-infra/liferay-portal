@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -51,10 +52,13 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -96,9 +100,42 @@ public class AccountGroupRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByAccountGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByAccountGroupId() {
+		return _finderPathWithPaginationFindByAccountGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByAccountGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByAccountGroupId() {
+		return _finderPathWithoutPaginationFindByAccountGroupId;
+	}
+
 	private FinderPath _finderPathCountByAccountGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByAccountGroupId() {
+		return _finderPathCountByAccountGroupId;
+	}
 
 	/**
 	 * Returns all the account group rels where accountGroupId = &#63;.
@@ -603,8 +640,25 @@ public class AccountGroupRelPersistenceImpl
 		"accountGroupRel.accountGroupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByA_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByA_C() {
+		return _finderPathWithPaginationFindByA_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByA_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByA_C() {
+		return _finderPathWithoutPaginationFindByA_C;
+	}
+
 	private FinderPath _finderPathCountByA_C;
+
+	@Override
+	public FinderPath getFinderPathCountByA_C() {
+		return _finderPathCountByA_C;
+	}
 
 	/**
 	 * Returns all the account group rels where accountGroupId = &#63; and classNameId = &#63;.
@@ -1147,8 +1201,25 @@ public class AccountGroupRelPersistenceImpl
 		"accountGroupRel.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the account group rels where classNameId = &#63; and classPK = &#63;.
@@ -1687,7 +1758,18 @@ public class AccountGroupRelPersistenceImpl
 		"accountGroupRel.classPK = ?";
 
 	private FinderPath _finderPathFetchByA_C_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByA_C_C() {
+		return _finderPathFetchByA_C_C;
+	}
+
 	private FinderPath _finderPathCountByA_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByA_C_C() {
+		return _finderPathCountByA_C_C;
+	}
 
 	/**
 	 * Returns the account group rel where accountGroupId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchGroupRelException</code> if it could not be found.
@@ -2602,6 +2684,61 @@ public class AccountGroupRelPersistenceImpl
 		_setAccountGroupRelUtilPersistence(null);
 
 		entityCache.removeCache(AccountGroupRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AccountGroupRel> accountGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AccountGroupRel>> resultMap =
+				new HashMap<>();
+
+			for (AccountGroupRel accountGroupRel : accountGroupRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AccountGroupRelModelImpl accountGroupRelModelImpl =
+						(AccountGroupRelModelImpl)accountGroupRel;
+
+					arguments.add(
+						accountGroupRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), accountGroupRel);
+				}
+				else {
+					List<AccountGroupRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(accountGroupRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AccountGroupRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AccountGroupRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAccountGroupRelUtilPersistence(

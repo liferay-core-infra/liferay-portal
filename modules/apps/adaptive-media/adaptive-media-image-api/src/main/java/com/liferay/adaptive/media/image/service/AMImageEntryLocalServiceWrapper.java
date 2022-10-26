@@ -14,6 +14,7 @@
 
 package com.liferay.adaptive.media.image.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -575,6 +576,11 @@ public class AMImageEntryLocalServiceWrapper
 
 		return _amImageEntryLocalService.hasAMImageEntryContent(
 			configurationUuid, fileVersion);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_amImageEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

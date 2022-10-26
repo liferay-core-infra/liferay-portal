@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -51,10 +52,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -102,11 +105,48 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath
 		_finderPathWithPaginationFindByCommerceNotificationTemplateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceNotificationTemplateId() {
+
+		return _finderPathWithPaginationFindByCommerceNotificationTemplateId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByCommerceNotificationTemplateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceNotificationTemplateId() {
+
+		return _finderPathWithoutPaginationFindByCommerceNotificationTemplateId;
+	}
+
 	private FinderPath _finderPathCountByCommerceNotificationTemplateId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceNotificationTemplateId() {
+		return _finderPathCountByCommerceNotificationTemplateId;
+	}
 
 	/**
 	 * Returns all the commerce notification template commerce account group rels where commerceNotificationTemplateId = &#63;.
@@ -687,8 +727,29 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 			"commerceNotificationTemplateCommerceAccountGroupRel.commerceNotificationTemplateId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommerceAccountGroupId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceAccountGroupId() {
+
+		return _finderPathWithPaginationFindByCommerceAccountGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommerceAccountGroupId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceAccountGroupId() {
+
+		return _finderPathWithoutPaginationFindByCommerceAccountGroupId;
+	}
+
 	private FinderPath _finderPathCountByCommerceAccountGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceAccountGroupId() {
+		return _finderPathCountByCommerceAccountGroupId;
+	}
 
 	/**
 	 * Returns all the commerce notification template commerce account group rels where commerceAccountGroupId = &#63;.
@@ -1258,7 +1319,18 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 			"commerceNotificationTemplateCommerceAccountGroupRel.commerceAccountGroupId = ?";
 
 	private FinderPath _finderPathFetchByC_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C() {
+		return _finderPathFetchByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns the commerce notification template commerce account group rel where commerceNotificationTemplateId = &#63; and commerceAccountGroupId = &#63; or throws a <code>NoSuchNotificationTemplateCommerceAccountGroupRelException</code> if it could not be found.
@@ -2280,6 +2352,75 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 		entityCache.removeCache(
 			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class.
 				getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceNotificationTemplateCommerceAccountGroupRel>
+			commerceNotificationTemplateCommerceAccountGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map
+				<List<Object>,
+				 List<CommerceNotificationTemplateCommerceAccountGroupRel>>
+					resultMap = new HashMap<>();
+
+			for (CommerceNotificationTemplateCommerceAccountGroupRel
+					commerceNotificationTemplateCommerceAccountGroupRel :
+						commerceNotificationTemplateCommerceAccountGroupRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceNotificationTemplateCommerceAccountGroupRelModelImpl
+						commerceNotificationTemplateCommerceAccountGroupRelModelImpl =
+							(CommerceNotificationTemplateCommerceAccountGroupRelModelImpl)
+								commerceNotificationTemplateCommerceAccountGroupRel;
+
+					arguments.add(
+						commerceNotificationTemplateCommerceAccountGroupRelModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceNotificationTemplateCommerceAccountGroupRel);
+				}
+				else {
+					List<CommerceNotificationTemplateCommerceAccountGroupRel>
+						resultList = resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(
+						commerceNotificationTemplateCommerceAccountGroupRel);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>,
+					 List<CommerceNotificationTemplateCommerceAccountGroupRel>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceNotificationTemplateCommerceAccountGroupRel>
+					value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void

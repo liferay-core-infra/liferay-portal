@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link RecentLayoutBranchLocalService}.
  *
@@ -296,7 +298,7 @@ public class RecentLayoutBranchLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _recentLayoutBranchLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -354,6 +356,11 @@ public class RecentLayoutBranchLocalServiceWrapper
 	@Override
 	public int getRecentLayoutBranchsCount() {
 		return _recentLayoutBranchLocalService.getRecentLayoutBranchsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_recentLayoutBranchLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

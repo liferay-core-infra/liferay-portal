@@ -15,6 +15,7 @@
 package com.liferay.social.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.social.kernel.model.SocialActivitySet;
@@ -476,6 +477,11 @@ public class SocialActivitySetLocalServiceWrapper
 
 		_socialActivitySetLocalService.incrementActivityCount(
 			activitySetId, activityId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_socialActivitySetLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,9 +104,42 @@ public class DispatchTriggerPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the dispatch triggers where uuid = &#63;.
@@ -1062,8 +1096,25 @@ public class DispatchTriggerPersistenceImpl
 		"(dispatchTrigger.uuid_ IS NULL OR dispatchTrigger.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the dispatch triggers where uuid = &#63; and companyId = &#63;.
@@ -2090,8 +2141,25 @@ public class DispatchTriggerPersistenceImpl
 		"dispatchTrigger.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the dispatch triggers where companyId = &#63;.
@@ -2970,8 +3038,25 @@ public class DispatchTriggerPersistenceImpl
 		"dispatchTrigger.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U() {
+		return _finderPathWithPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_U() {
+		return _finderPathWithoutPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathCountByC_U;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U() {
+		return _finderPathCountByC_U;
+	}
 
 	/**
 	 * Returns all the dispatch triggers where companyId = &#63; and userId = &#63;.
@@ -3909,8 +3994,25 @@ public class DispatchTriggerPersistenceImpl
 		"dispatchTrigger.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_DTET;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_DTET() {
+		return _finderPathWithPaginationFindByC_DTET;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_DTET;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_DTET() {
+		return _finderPathWithoutPaginationFindByC_DTET;
+	}
+
 	private FinderPath _finderPathCountByC_DTET;
+
+	@Override
+	public FinderPath getFinderPathCountByC_DTET() {
+		return _finderPathCountByC_DTET;
+	}
 
 	/**
 	 * Returns all the dispatch triggers where companyId = &#63; and dispatchTaskExecutorType = &#63;.
@@ -4962,7 +5064,18 @@ public class DispatchTriggerPersistenceImpl
 			"(dispatchTrigger.dispatchTaskExecutorType IS NULL OR dispatchTrigger.dispatchTaskExecutorType = '')";
 
 	private FinderPath _finderPathFetchByC_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_N() {
+		return _finderPathFetchByC_N;
+	}
+
 	private FinderPath _finderPathCountByC_N;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N() {
+		return _finderPathCountByC_N;
+	}
 
 	/**
 	 * Returns the dispatch trigger where companyId = &#63; and name = &#63; or throws a <code>NoSuchTriggerException</code> if it could not be found.
@@ -5210,9 +5323,32 @@ public class DispatchTriggerPersistenceImpl
 		"(dispatchTrigger.name IS NULL OR dispatchTrigger.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByA_DTCM;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByA_DTCM() {
+		return _finderPathWithPaginationFindByA_DTCM;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByA_DTCM;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByA_DTCM() {
+		return _finderPathWithoutPaginationFindByA_DTCM;
+	}
+
 	private FinderPath _finderPathCountByA_DTCM;
+
+	@Override
+	public FinderPath getFinderPathCountByA_DTCM() {
+		return _finderPathCountByA_DTCM;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByA_DTCM;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByA_DTCM() {
+		return _finderPathWithPaginationCountByA_DTCM;
+	}
 
 	/**
 	 * Returns all the dispatch triggers where active = &#63; and dispatchTaskClusterMode = &#63;.
@@ -6682,7 +6818,18 @@ public class DispatchTriggerPersistenceImpl
 			"dispatchTrigger.dispatchTaskClusterMode IN (";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the dispatch trigger where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchTriggerException</code> if it could not be found.
@@ -7695,6 +7842,61 @@ public class DispatchTriggerPersistenceImpl
 		_setDispatchTriggerUtilPersistence(null);
 
 		entityCache.removeCache(DispatchTriggerImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DispatchTrigger> dispatchTriggers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DispatchTrigger>> resultMap =
+				new HashMap<>();
+
+			for (DispatchTrigger dispatchTrigger : dispatchTriggers) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DispatchTriggerModelImpl dispatchTriggerModelImpl =
+						(DispatchTriggerModelImpl)dispatchTrigger;
+
+					arguments.add(
+						dispatchTriggerModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dispatchTrigger);
+				}
+				else {
+					List<DispatchTrigger> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(dispatchTrigger);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DispatchTrigger>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DispatchTrigger> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDispatchTriggerUtilPersistence(

@@ -16,6 +16,7 @@ package com.liferay.object.service.persistence;
 
 import com.liferay.object.exception.NoSuchObjectLayoutRowException;
 import com.liferay.object.model.ObjectLayoutRow;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface ObjectLayoutRowPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ObjectLayoutRowUtil} to access the object layout row persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the object layout rows where uuid = &#63;.
@@ -183,6 +195,12 @@ public interface ObjectLayoutRowPersistence
 	 * @return the number of matching object layout rows
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the object layout rows where uuid = &#63; and companyId = &#63;.
@@ -338,6 +356,12 @@ public interface ObjectLayoutRowPersistence
 	 * @return the number of matching object layout rows
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByObjectLayoutBoxId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByObjectLayoutBoxId();
+
+	public FinderPath getFinderPathCountByObjectLayoutBoxId();
 
 	/**
 	 * Returns all the object layout rows where objectLayoutBoxId = &#63;.
@@ -602,5 +626,7 @@ public interface ObjectLayoutRowPersistence
 	 * @return the number of object layout rows
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

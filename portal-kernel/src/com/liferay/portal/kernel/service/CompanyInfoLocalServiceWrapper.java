@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link CompanyInfoLocalService}.
  *
@@ -302,7 +304,7 @@ public class CompanyInfoLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _companyInfoLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -315,6 +317,11 @@ public class CompanyInfoLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _companyInfoLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_companyInfoLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

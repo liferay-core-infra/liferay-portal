@@ -17,6 +17,7 @@ package com.liferay.bookmarks.service;
 import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -448,6 +449,10 @@ public class BookmarksEntryLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static BookmarksEntry moveEntry(long entryId, long parentFolderId)

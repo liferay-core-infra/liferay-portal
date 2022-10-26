@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,9 +103,42 @@ public class ObjectStateTransitionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the object state transitions where uuid = &#63;.
@@ -643,8 +678,25 @@ public class ObjectStateTransitionPersistenceImpl
 		"(objectStateTransition.uuid IS NULL OR objectStateTransition.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the object state transitions where uuid = &#63; and companyId = &#63;.
@@ -1229,8 +1281,25 @@ public class ObjectStateTransitionPersistenceImpl
 		"objectStateTransition.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByObjectStateFlowId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByObjectStateFlowId() {
+		return _finderPathWithPaginationFindByObjectStateFlowId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByObjectStateFlowId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByObjectStateFlowId() {
+		return _finderPathWithoutPaginationFindByObjectStateFlowId;
+	}
+
 	private FinderPath _finderPathCountByObjectStateFlowId;
+
+	@Override
+	public FinderPath getFinderPathCountByObjectStateFlowId() {
+		return _finderPathCountByObjectStateFlowId;
+	}
 
 	/**
 	 * Returns all the object state transitions where objectStateFlowId = &#63;.
@@ -1744,8 +1813,27 @@ public class ObjectStateTransitionPersistenceImpl
 			"objectStateTransition.objectStateFlowId = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySourceObjectStateId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySourceObjectStateId() {
+		return _finderPathWithPaginationFindBySourceObjectStateId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySourceObjectStateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindBySourceObjectStateId() {
+
+		return _finderPathWithoutPaginationFindBySourceObjectStateId;
+	}
+
 	private FinderPath _finderPathCountBySourceObjectStateId;
+
+	@Override
+	public FinderPath getFinderPathCountBySourceObjectStateId() {
+		return _finderPathCountBySourceObjectStateId;
+	}
 
 	/**
 	 * Returns all the object state transitions where sourceObjectStateId = &#63;.
@@ -2260,8 +2348,27 @@ public class ObjectStateTransitionPersistenceImpl
 			"objectStateTransition.sourceObjectStateId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByTargetObjectStateId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByTargetObjectStateId() {
+		return _finderPathWithPaginationFindByTargetObjectStateId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByTargetObjectStateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByTargetObjectStateId() {
+
+		return _finderPathWithoutPaginationFindByTargetObjectStateId;
+	}
+
 	private FinderPath _finderPathCountByTargetObjectStateId;
+
+	@Override
+	public FinderPath getFinderPathCountByTargetObjectStateId() {
+		return _finderPathCountByTargetObjectStateId;
+	}
 
 	/**
 	 * Returns all the object state transitions where targetObjectStateId = &#63;.
@@ -3463,6 +3570,66 @@ public class ObjectStateTransitionPersistenceImpl
 		_setObjectStateTransitionUtilPersistence(null);
 
 		entityCache.removeCache(ObjectStateTransitionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ObjectStateTransition> objectStateTransitions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectStateTransition>> resultMap =
+				new HashMap<>();
+
+			for (ObjectStateTransition objectStateTransition :
+					objectStateTransitions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectStateTransitionModelImpl
+						objectStateTransitionModelImpl =
+							(ObjectStateTransitionModelImpl)
+								objectStateTransition;
+
+					arguments.add(
+						objectStateTransitionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectStateTransition);
+				}
+				else {
+					List<ObjectStateTransition> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(objectStateTransition);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectStateTransition>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectStateTransition> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setObjectStateTransitionUtilPersistence(

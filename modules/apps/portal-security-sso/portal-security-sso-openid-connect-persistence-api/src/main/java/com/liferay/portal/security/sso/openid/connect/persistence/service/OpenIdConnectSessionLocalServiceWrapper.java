@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.sso.openid.connect.persistence.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -368,6 +369,11 @@ public class OpenIdConnectSessionLocalServiceWrapper
 
 		return _openIdConnectSessionLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_openIdConnectSessionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -16,6 +16,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -518,6 +519,11 @@ public class DLFileShortcutLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dlFileShortcutLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlFileShortcutLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

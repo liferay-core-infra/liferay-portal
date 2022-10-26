@@ -16,6 +16,7 @@ package com.liferay.mail.reader.service.persistence;
 
 import com.liferay.mail.reader.exception.NoSuchFolderException;
 import com.liferay.mail.reader.model.Folder;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface FolderPersistence extends BasePersistence<Folder> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link FolderUtil} to access the folder persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByAccountId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByAccountId();
+
+	public FinderPath getFinderPathCountByAccountId();
 
 	/**
 	 * Returns all the folders where accountId = &#63;.
@@ -182,6 +194,10 @@ public interface FolderPersistence extends BasePersistence<Folder> {
 	 * @return the number of matching folders
 	 */
 	public int countByAccountId(long accountId);
+
+	public FinderPath getFinderPathFetchByA_F();
+
+	public FinderPath getFinderPathCountByA_F();
 
 	/**
 	 * Returns the folder where accountId = &#63; and fullName = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
@@ -350,5 +366,7 @@ public interface FolderPersistence extends BasePersistence<Folder> {
 	 * @return the number of folders
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

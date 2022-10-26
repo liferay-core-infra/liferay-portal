@@ -119,6 +119,42 @@ public class ExpandoTableUtil {
 		return getPersistence().update(expandoTable, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
+	}
+
 	/**
 	 * Returns all the expando tables where companyId = &#63; and classNameId = &#63;.
 	 *
@@ -304,6 +340,18 @@ public class ExpandoTableUtil {
 	 */
 	public static int countByC_C(long companyId, long classNameId) {
 		return getPersistence().countByC_C(companyId, classNameId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C_N() {
+
+		return getPersistence().getFinderPathFetchByC_C_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_N() {
+
+		return getPersistence().getFinderPathCountByC_C_N();
 	}
 
 	/**
@@ -526,6 +574,12 @@ public class ExpandoTableUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static ExpandoTablePersistence getPersistence() {

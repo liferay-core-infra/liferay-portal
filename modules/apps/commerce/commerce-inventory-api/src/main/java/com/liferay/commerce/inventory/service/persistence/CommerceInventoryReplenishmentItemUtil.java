@@ -127,6 +127,42 @@ public class CommerceInventoryReplenishmentItemUtil {
 			commerceInventoryReplenishmentItem, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the commerce inventory replenishment items where uuid = &#63;.
 	 *
@@ -304,6 +340,24 @@ public class CommerceInventoryReplenishmentItemUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -501,6 +555,27 @@ public class CommerceInventoryReplenishmentItemUtil {
 	 */
 	public static int countByUuid_C(String uuid, long companyId) {
 		return getPersistence().countByUuid_C(uuid, companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceInventoryWarehouseId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceInventoryWarehouseId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceInventoryWarehouseId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceInventoryWarehouseId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceInventoryWarehouseId() {
+
+		return getPersistence().
+			getFinderPathCountByCommerceInventoryWarehouseId();
 	}
 
 	/**
@@ -707,6 +782,24 @@ public class CommerceInventoryReplenishmentItemUtil {
 			commerceInventoryWarehouseId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindBySku() {
+
+		return getPersistence().getFinderPathWithPaginationFindBySku();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindBySku() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindBySku();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySku() {
+
+		return getPersistence().getFinderPathCountBySku();
+	}
+
 	/**
 	 * Returns all the commerce inventory replenishment items where sku = &#63;.
 	 *
@@ -884,6 +977,26 @@ public class CommerceInventoryReplenishmentItemUtil {
 	 */
 	public static int countBySku(String sku) {
 		return getPersistence().countBySku(sku);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByAvailabilityDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByAvailabilityDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByAvailabilityDate() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByAvailabilityDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByAvailabilityDate() {
+
+		return getPersistence().getFinderPathCountByAvailabilityDate();
 	}
 
 	/**
@@ -1079,6 +1192,24 @@ public class CommerceInventoryReplenishmentItemUtil {
 	 */
 	public static int countByAvailabilityDate(Date availabilityDate) {
 		return getPersistence().countByAvailabilityDate(availabilityDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_S() {
+
+		return getPersistence().getFinderPathCountByC_S();
 	}
 
 	/**
@@ -1278,6 +1409,24 @@ public class CommerceInventoryReplenishmentItemUtil {
 		return getPersistence().countByC_S(companyId, sku);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByS_AD() {
+
+		return getPersistence().getFinderPathWithPaginationFindByS_AD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByS_AD() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByS_AD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByS_AD() {
+
+		return getPersistence().getFinderPathCountByS_AD();
+	}
+
 	/**
 	 * Returns all the commerce inventory replenishment items where sku = &#63; and availabilityDate = &#63;.
 	 *
@@ -1474,6 +1623,18 @@ public class CommerceInventoryReplenishmentItemUtil {
 	 */
 	public static int countByS_AD(String sku, Date availabilityDate) {
 		return getPersistence().countByS_AD(sku, availabilityDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_ERC() {
+
+		return getPersistence().getFinderPathFetchByC_ERC();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_ERC() {
+
+		return getPersistence().getFinderPathCountByC_ERC();
 	}
 
 	/**
@@ -1715,6 +1876,12 @@ public class CommerceInventoryReplenishmentItemUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceInventoryReplenishmentItemPersistence

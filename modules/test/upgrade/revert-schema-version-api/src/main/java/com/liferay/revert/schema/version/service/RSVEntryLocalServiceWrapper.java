@@ -14,6 +14,7 @@
 
 package com.liferay.revert.schema.version.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -309,6 +310,11 @@ public class RSVEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _rsvEntryLocalService.getRSVEntry(rsvEntryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_rsvEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -119,6 +119,42 @@ public class VirtualHostUtil {
 		return getPersistence().update(virtualHost, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the virtual hosts where companyId = &#63;.
 	 *
@@ -288,6 +324,18 @@ public class VirtualHostUtil {
 		return getPersistence().countByCompanyId(companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByHostname() {
+
+		return getPersistence().getFinderPathFetchByHostname();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByHostname() {
+
+		return getPersistence().getFinderPathCountByHostname();
+	}
+
 	/**
 	 * Returns the virtual host where hostname = &#63; or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
 	 *
@@ -344,6 +392,24 @@ public class VirtualHostUtil {
 	 */
 	public static int countByHostname(String hostname) {
 		return getPersistence().countByHostname(hostname);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_L() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_L();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_L() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_L();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_L() {
+
+		return getPersistence().getFinderPathCountByC_L();
 	}
 
 	/**
@@ -531,6 +597,18 @@ public class VirtualHostUtil {
 	 */
 	public static int countByC_L(long companyId, long layoutSetId) {
 		return getPersistence().countByC_L(companyId, layoutSetId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByNotL_H() {
+
+		return getPersistence().getFinderPathWithPaginationFindByNotL_H();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByNotL_H() {
+
+		return getPersistence().getFinderPathWithPaginationCountByNotL_H();
 	}
 
 	/**
@@ -815,6 +893,18 @@ public class VirtualHostUtil {
 		return getPersistence().countByNotL_H(layoutSetId, hostnames);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_L_D() {
+
+		return getPersistence().getFinderPathFetchByC_L_D();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_L_D() {
+
+		return getPersistence().getFinderPathCountByC_L_D();
+	}
+
 	/**
 	 * Returns the virtual host where companyId = &#63; and layoutSetId = &#63; and defaultVirtualHost = &#63; or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
 	 *
@@ -1040,6 +1130,12 @@ public class VirtualHostUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static VirtualHostPersistence getPersistence() {

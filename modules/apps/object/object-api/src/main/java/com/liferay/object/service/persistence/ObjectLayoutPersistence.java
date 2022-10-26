@@ -16,6 +16,7 @@ package com.liferay.object.service.persistence;
 
 import com.liferay.object.exception.NoSuchObjectLayoutException;
 import com.liferay.object.model.ObjectLayout;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface ObjectLayoutPersistence extends BasePersistence<ObjectLayout> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ObjectLayoutUtil} to access the object layout persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the object layouts where uuid = &#63;.
@@ -182,6 +194,12 @@ public interface ObjectLayoutPersistence extends BasePersistence<ObjectLayout> {
 	 * @return the number of matching object layouts
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the object layouts where uuid = &#63; and companyId = &#63;.
@@ -338,6 +356,12 @@ public interface ObjectLayoutPersistence extends BasePersistence<ObjectLayout> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByObjectDefinitionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByObjectDefinitionId();
+
+	public FinderPath getFinderPathCountByObjectDefinitionId();
+
 	/**
 	 * Returns all the object layouts where objectDefinitionId = &#63;.
 	 *
@@ -481,6 +505,12 @@ public interface ObjectLayoutPersistence extends BasePersistence<ObjectLayout> {
 	 * @return the number of matching object layouts
 	 */
 	public int countByObjectDefinitionId(long objectDefinitionId);
+
+	public FinderPath getFinderPathWithPaginationFindByODI_DOL();
+
+	public FinderPath getFinderPathWithoutPaginationFindByODI_DOL();
+
+	public FinderPath getFinderPathCountByODI_DOL();
 
 	/**
 	 * Returns all the object layouts where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
@@ -762,5 +792,7 @@ public interface ObjectLayoutPersistence extends BasePersistence<ObjectLayout> {
 	 * @return the number of object layouts
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

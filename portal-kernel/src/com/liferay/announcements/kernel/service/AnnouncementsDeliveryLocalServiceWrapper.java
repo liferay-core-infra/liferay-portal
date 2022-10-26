@@ -14,6 +14,7 @@
 
 package com.liferay.announcements.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -386,6 +387,11 @@ public class AnnouncementsDeliveryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _announcementsDeliveryLocalService.getUserDelivery(userId, type);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_announcementsDeliveryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

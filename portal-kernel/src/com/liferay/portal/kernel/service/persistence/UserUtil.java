@@ -116,6 +116,42 @@ public class UserUtil {
 		return getPersistence().update(user, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the users where uuid = &#63;.
 	 *
@@ -274,6 +310,24 @@ public class UserUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -459,6 +513,24 @@ public class UserUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the users where companyId = &#63;.
 	 *
@@ -627,6 +699,18 @@ public class UserUtil {
 		return getPersistence().countByCompanyId(companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByContactId() {
+
+		return getPersistence().getFinderPathFetchByContactId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByContactId() {
+
+		return getPersistence().getFinderPathCountByContactId();
+	}
+
 	/**
 	 * Returns the user where contactId = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
 	 *
@@ -683,6 +767,25 @@ public class UserUtil {
 	 */
 	public static int countByContactId(long contactId) {
 		return getPersistence().countByContactId(contactId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByEmailAddress() {
+
+		return getPersistence().getFinderPathWithPaginationFindByEmailAddress();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByEmailAddress() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByEmailAddress();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByEmailAddress() {
+
+		return getPersistence().getFinderPathCountByEmailAddress();
 	}
 
 	/**
@@ -853,6 +956,18 @@ public class UserUtil {
 		return getPersistence().countByEmailAddress(emailAddress);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByPortraitId() {
+
+		return getPersistence().getFinderPathFetchByPortraitId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByPortraitId() {
+
+		return getPersistence().getFinderPathCountByPortraitId();
+	}
+
 	/**
 	 * Returns the user where portraitId = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
 	 *
@@ -909,6 +1024,18 @@ public class UserUtil {
 	 */
 	public static int countByPortraitId(long portraitId) {
 		return getPersistence().countByPortraitId(portraitId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGtU_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGtU_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByGtU_C() {
+
+		return getPersistence().getFinderPathWithPaginationCountByGtU_C();
 	}
 
 	/**
@@ -1075,6 +1202,18 @@ public class UserUtil {
 		return getPersistence().countByGtU_C(userId, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_U() {
+
+		return getPersistence().getFinderPathFetchByC_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_U() {
+
+		return getPersistence().getFinderPathCountByC_U();
+	}
+
 	/**
 	 * Returns the user where companyId = &#63; and userId = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
 	 *
@@ -1136,6 +1275,24 @@ public class UserUtil {
 	 */
 	public static int countByC_U(long companyId, long userId) {
 		return getPersistence().countByC_U(companyId, userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_CD() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_CD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_CD() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_CD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_CD() {
+
+		return getPersistence().getFinderPathCountByC_CD();
 	}
 
 	/**
@@ -1322,6 +1479,24 @@ public class UserUtil {
 		return getPersistence().countByC_CD(companyId, createDate);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_MD() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_MD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_MD() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_MD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_MD() {
+
+		return getPersistence().getFinderPathCountByC_MD();
+	}
+
 	/**
 	 * Returns all the users where companyId = &#63; and modifiedDate = &#63;.
 	 *
@@ -1506,6 +1681,18 @@ public class UserUtil {
 		return getPersistence().countByC_MD(companyId, modifiedDate);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_DU() {
+
+		return getPersistence().getFinderPathFetchByC_DU();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_DU() {
+
+		return getPersistence().getFinderPathCountByC_DU();
+	}
+
 	/**
 	 * Returns the user where companyId = &#63; and defaultUser = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
 	 *
@@ -1568,6 +1755,18 @@ public class UserUtil {
 	 */
 	public static int countByC_DU(long companyId, boolean defaultUser) {
 		return getPersistence().countByC_DU(companyId, defaultUser);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_SN() {
+
+		return getPersistence().getFinderPathFetchByC_SN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_SN() {
+
+		return getPersistence().getFinderPathCountByC_SN();
 	}
 
 	/**
@@ -1634,6 +1833,18 @@ public class UserUtil {
 		return getPersistence().countByC_SN(companyId, screenName);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_EA() {
+
+		return getPersistence().getFinderPathFetchByC_EA();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_EA() {
+
+		return getPersistence().getFinderPathCountByC_EA();
+	}
+
 	/**
 	 * Returns the user where companyId = &#63; and emailAddress = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
 	 *
@@ -1696,6 +1907,18 @@ public class UserUtil {
 	 */
 	public static int countByC_EA(long companyId, String emailAddress) {
 		return getPersistence().countByC_EA(companyId, emailAddress);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_FID() {
+
+		return getPersistence().getFinderPathFetchByC_FID();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_FID() {
+
+		return getPersistence().getFinderPathCountByC_FID();
 	}
 
 	/**
@@ -1762,6 +1985,18 @@ public class UserUtil {
 		return getPersistence().countByC_FID(companyId, facebookId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_GUID() {
+
+		return getPersistence().getFinderPathFetchByC_GUID();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_GUID() {
+
+		return getPersistence().getFinderPathCountByC_GUID();
+	}
+
 	/**
 	 * Returns the user where companyId = &#63; and googleUserId = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
 	 *
@@ -1826,6 +2061,18 @@ public class UserUtil {
 		return getPersistence().countByC_GUID(companyId, googleUserId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_O() {
+
+		return getPersistence().getFinderPathFetchByC_O();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_O() {
+
+		return getPersistence().getFinderPathCountByC_O();
+	}
+
 	/**
 	 * Returns the user where companyId = &#63; and openId = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
 	 *
@@ -1887,6 +2134,24 @@ public class UserUtil {
 	 */
 	public static int countByC_O(long companyId, String openId) {
 		return getPersistence().countByC_O(companyId, openId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_S() {
+
+		return getPersistence().getFinderPathCountByC_S();
 	}
 
 	/**
@@ -2068,6 +2333,24 @@ public class UserUtil {
 	 */
 	public static int countByC_S(long companyId, int status) {
 		return getPersistence().countByC_S(companyId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_CD_MD() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_CD_MD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_CD_MD() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_CD_MD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_CD_MD() {
+
+		return getPersistence().getFinderPathCountByC_CD_MD();
 	}
 
 	/**
@@ -2275,6 +2558,24 @@ public class UserUtil {
 			companyId, createDate, modifiedDate);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_DU_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_DU_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_DU_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_DU_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_DU_S() {
+
+		return getPersistence().getFinderPathCountByC_DU_S();
+	}
+
 	/**
 	 * Returns all the users where companyId = &#63; and defaultUser = &#63; and status = &#63;.
 	 *
@@ -2475,6 +2776,18 @@ public class UserUtil {
 		long companyId, boolean defaultUser, int status) {
 
 		return getPersistence().countByC_DU_S(companyId, defaultUser, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_ERC() {
+
+		return getPersistence().getFinderPathFetchByC_ERC();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_ERC() {
+
+		return getPersistence().getFinderPathCountByC_ERC();
 	}
 
 	/**
@@ -3748,6 +4061,12 @@ public class UserUtil {
 		long pk, List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 
 		getPersistence().setUserGroups(pk, userGroups);
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static UserPersistence getPersistence() {

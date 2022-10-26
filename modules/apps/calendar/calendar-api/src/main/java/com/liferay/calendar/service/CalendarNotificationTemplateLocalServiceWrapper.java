@@ -16,6 +16,7 @@ package com.liferay.calendar.service;
 
 import com.liferay.calendar.model.CalendarNotificationTemplate;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -450,6 +451,11 @@ public class CalendarNotificationTemplateLocalServiceWrapper
 
 		return _calendarNotificationTemplateLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_calendarNotificationTemplateLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

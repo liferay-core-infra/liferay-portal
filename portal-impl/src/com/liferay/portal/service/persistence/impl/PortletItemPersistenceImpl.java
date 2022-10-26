@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.PortletItemPersistence;
 import com.liferay.portal.kernel.service.persistence.PortletItemUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -49,8 +50,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -86,9 +89,42 @@ public class PortletItemPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C() {
+		return _finderPathWithPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C() {
+		return _finderPathWithoutPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C() {
+		return _finderPathCountByG_C;
+	}
 
 	/**
 	 * Returns all the portlet items where groupId = &#63; and classNameId = &#63;.
@@ -627,8 +663,25 @@ public class PortletItemPersistenceImpl
 		"portletItem.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P_C() {
+		return _finderPathWithPaginationFindByG_P_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_C() {
+		return _finderPathWithoutPaginationFindByG_P_C;
+	}
+
 	private FinderPath _finderPathCountByG_P_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P_C() {
+		return _finderPathCountByG_P_C;
+	}
 
 	/**
 	 * Returns all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;.
@@ -1249,7 +1302,18 @@ public class PortletItemPersistenceImpl
 		"portletItem.classNameId = ?";
 
 	private FinderPath _finderPathFetchByG_N_P_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_N_P_C() {
+		return _finderPathFetchByG_N_P_C;
+	}
+
 	private FinderPath _finderPathCountByG_N_P_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N_P_C() {
+		return _finderPathCountByG_N_P_C;
+	}
 
 	/**
 	 * Returns the portlet item where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63; or throws a <code>NoSuchPortletItemException</code> if it could not be found.
@@ -2222,6 +2286,59 @@ public class PortletItemPersistenceImpl
 		_setPortletItemUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(PortletItemImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PortletItem> portletItems = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortletItem>> resultMap = new HashMap<>();
+
+			for (PortletItem portletItem : portletItems) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortletItemModelImpl portletItemModelImpl =
+						(PortletItemModelImpl)portletItem;
+
+					arguments.add(
+						portletItemModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), portletItem);
+				}
+				else {
+					List<PortletItem> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(portletItem);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortletItem>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortletItem> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPortletItemUtilPersistence(

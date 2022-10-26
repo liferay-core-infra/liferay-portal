@@ -119,6 +119,42 @@ public class OAuthApplicationUtil {
 		return getPersistence().update(oAuthApplication, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the o auth applications where companyId = &#63;.
 	 *
@@ -367,6 +403,24 @@ public class OAuthApplicationUtil {
 		return getPersistence().filterCountByCompanyId(companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the o auth applications where userId = &#63;.
 	 *
@@ -609,6 +663,18 @@ public class OAuthApplicationUtil {
 		return getPersistence().filterCountByUserId(userId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByConsumerKey() {
+
+		return getPersistence().getFinderPathFetchByConsumerKey();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByConsumerKey() {
+
+		return getPersistence().getFinderPathCountByConsumerKey();
+	}
+
 	/**
 	 * Returns the o auth application where consumerKey = &#63; or throws a <code>NoSuchApplicationException</code> if it could not be found.
 	 *
@@ -665,6 +731,18 @@ public class OAuthApplicationUtil {
 	 */
 	public static int countByConsumerKey(String consumerKey) {
 		return getPersistence().countByConsumerKey(consumerKey);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_LikeN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_LikeN();
 	}
 
 	/**
@@ -936,6 +1014,18 @@ public class OAuthApplicationUtil {
 	 */
 	public static int filterCountByC_LikeN(long companyId, String name) {
 		return getPersistence().filterCountByC_LikeN(companyId, name);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_LikeN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByU_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationCountByU_LikeN();
 	}
 
 	/**
@@ -1357,6 +1447,12 @@ public class OAuthApplicationUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static OAuthApplicationPersistence getPersistence() {

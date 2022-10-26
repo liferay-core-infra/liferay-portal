@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.service;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -279,6 +280,9 @@ public interface UserNotificationDeliveryLocalService
 			long userId, String portletId, long classNameId,
 			int notificationType, int deliveryType, boolean deliver)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	public UserNotificationDelivery updateUserNotificationDelivery(
 		long userNotificationDeliveryId, boolean deliver);

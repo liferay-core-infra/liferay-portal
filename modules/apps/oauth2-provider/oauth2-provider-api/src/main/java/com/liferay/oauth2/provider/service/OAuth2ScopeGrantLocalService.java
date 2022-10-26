@@ -20,6 +20,7 @@ import com.liferay.oauth2.provider.scope.liferay.LiferayOAuth2Scope;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -349,6 +350,9 @@ public interface OAuth2ScopeGrantLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasOAuth2AuthorizationOAuth2ScopeGrants(
 		long oAuth2AuthorizationId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	public void setOAuth2AuthorizationOAuth2ScopeGrants(
 		long oAuth2AuthorizationId, long[] oAuth2ScopeGrantIds);

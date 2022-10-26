@@ -119,6 +119,42 @@ public class BookmarksEntryUtil {
 		return getPersistence().update(bookmarksEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the bookmarks entries where uuid = &#63;.
 	 *
@@ -283,6 +319,18 @@ public class BookmarksEntryUtil {
 		return getPersistence().countByUuid(uuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByUUID_G() {
+
+		return getPersistence().getFinderPathFetchByUUID_G();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUUID_G() {
+
+		return getPersistence().getFinderPathCountByUUID_G();
+	}
+
 	/**
 	 * Returns the bookmarks entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -344,6 +392,24 @@ public class BookmarksEntryUtil {
 	 */
 	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -532,6 +598,24 @@ public class BookmarksEntryUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the bookmarks entries where companyId = &#63;.
 	 *
@@ -699,6 +783,30 @@ public class BookmarksEntryUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_F() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_F() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_F() {
+
+		return getPersistence().getFinderPathCountByG_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_F() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_F();
 	}
 
 	/**
@@ -1127,6 +1235,24 @@ public class BookmarksEntryUtil {
 		return getPersistence().filterCountByG_F(groupId, folderIds);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_S() {
+
+		return getPersistence().getFinderPathCountByG_S();
+	}
+
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and status = &#63;.
 	 *
@@ -1393,6 +1519,18 @@ public class BookmarksEntryUtil {
 	 */
 	public static int filterCountByG_S(long groupId, int status) {
 		return getPersistence().filterCountByG_S(groupId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_NotS();
 	}
 
 	/**
@@ -1663,6 +1801,18 @@ public class BookmarksEntryUtil {
 		return getPersistence().filterCountByG_NotS(groupId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_NotS();
+	}
+
 	/**
 	 * Returns all the bookmarks entries where companyId = &#63; and status &ne; &#63;.
 	 *
@@ -1847,6 +1997,24 @@ public class BookmarksEntryUtil {
 	 */
 	public static int countByC_NotS(long companyId, int status) {
 		return getPersistence().countByC_NotS(companyId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_U_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_U_S() {
+
+		return getPersistence().getFinderPathCountByG_U_S();
 	}
 
 	/**
@@ -2140,6 +2308,18 @@ public class BookmarksEntryUtil {
 		return getPersistence().filterCountByG_U_S(groupId, userId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_U_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_U_NotS();
+	}
+
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and userId = &#63; and status &ne; &#63;.
 	 *
@@ -2429,6 +2609,30 @@ public class BookmarksEntryUtil {
 		long groupId, long userId, int status) {
 
 		return getPersistence().filterCountByG_U_NotS(groupId, userId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_F_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_F_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_F_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_F_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_F_S() {
+
+		return getPersistence().getFinderPathCountByG_F_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_F_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_F_S();
 	}
 
 	/**
@@ -2892,6 +3096,18 @@ public class BookmarksEntryUtil {
 		long groupId, long[] folderIds, int status) {
 
 		return getPersistence().filterCountByG_F_S(groupId, folderIds, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_F_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_F_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_F_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_F_NotS();
 	}
 
 	/**
@@ -3362,6 +3578,30 @@ public class BookmarksEntryUtil {
 
 		return getPersistence().filterCountByG_F_NotS(
 			groupId, folderIds, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_F_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_F_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_U_F_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_U_F_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_U_F_S() {
+
+		return getPersistence().getFinderPathCountByG_U_F_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_U_F_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_U_F_S();
 	}
 
 	/**
@@ -4016,6 +4256,12 @@ public class BookmarksEntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static BookmarksEntryPersistence getPersistence() {

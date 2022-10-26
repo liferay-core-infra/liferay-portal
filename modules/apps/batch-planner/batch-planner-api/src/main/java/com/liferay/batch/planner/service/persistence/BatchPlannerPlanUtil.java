@@ -119,6 +119,42 @@ public class BatchPlannerPlanUtil {
 		return getPersistence().update(batchPlannerPlan, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the batch planner plans where companyId = &#63;.
 	 *
@@ -365,6 +401,24 @@ public class BatchPlannerPlanUtil {
 	 */
 	public static int filterCountByCompanyId(long companyId) {
 		return getPersistence().filterCountByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_U() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_U() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_U() {
+
+		return getPersistence().getFinderPathCountByC_U();
 	}
 
 	/**
@@ -637,6 +691,24 @@ public class BatchPlannerPlanUtil {
 		return getPersistence().filterCountByC_U(companyId, userId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_E() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_E();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_E() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_E();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_E() {
+
+		return getPersistence().getFinderPathCountByC_E();
+	}
+
 	/**
 	 * Returns all the batch planner plans where companyId = &#63; and export = &#63;.
 	 *
@@ -905,6 +977,24 @@ public class BatchPlannerPlanUtil {
 	 */
 	public static int filterCountByC_E(long companyId, boolean export) {
 		return getPersistence().filterCountByC_E(companyId, export);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_N() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_N() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_N() {
+
+		return getPersistence().getFinderPathCountByC_N();
 	}
 
 	/**
@@ -1177,6 +1267,24 @@ public class BatchPlannerPlanUtil {
 		return getPersistence().filterCountByC_N(companyId, name);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_T() {
+
+		return getPersistence().getFinderPathCountByC_T();
+	}
+
 	/**
 	 * Returns all the batch planner plans where companyId = &#63; and template = &#63;.
 	 *
@@ -1446,6 +1554,24 @@ public class BatchPlannerPlanUtil {
 	 */
 	public static int filterCountByC_T(long companyId, boolean template) {
 		return getPersistence().filterCountByC_T(companyId, template);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_E_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_E_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_E_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_E_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_E_T() {
+
+		return getPersistence().getFinderPathCountByC_E_T();
 	}
 
 	/**
@@ -1894,6 +2020,12 @@ public class BatchPlannerPlanUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static BatchPlannerPlanPersistence getPersistence() {

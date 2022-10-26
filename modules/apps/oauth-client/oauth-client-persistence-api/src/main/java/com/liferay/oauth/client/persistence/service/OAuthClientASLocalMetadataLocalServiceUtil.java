@@ -17,6 +17,7 @@ package com.liferay.oauth.client.persistence.service;
 import com.liferay.oauth.client.persistence.model.OAuthClientASLocalMetadata;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -349,6 +350,10 @@ public class OAuthClientASLocalMetadataLocalServiceUtil {
 
 		return getService().getUserOAuthClientASLocalMetadata(
 			userId, start, end);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static OAuthClientASLocalMetadata updateOAuthClientASLocalMetadata(

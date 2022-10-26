@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -48,6 +49,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -86,9 +88,42 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByAccountEntryId() {
+		return _finderPathWithPaginationFindByAccountEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByAccountEntryId() {
+		return _finderPathWithoutPaginationFindByAccountEntryId;
+	}
+
 	private FinderPath _finderPathCountByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByAccountEntryId() {
+		return _finderPathCountByAccountEntryId;
+	}
 
 	/**
 	 * Returns all the commerce shipping option account entry rels where accountEntryId = &#63;.
@@ -625,8 +660,25 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 		"commerceShippingOptionAccountEntryRel.accountEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommerceChannelId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommerceChannelId() {
+		return _finderPathWithPaginationFindByCommerceChannelId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommerceChannelId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceChannelId() {
+		return _finderPathWithoutPaginationFindByCommerceChannelId;
+	}
+
 	private FinderPath _finderPathCountByCommerceChannelId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceChannelId() {
+		return _finderPathCountByCommerceChannelId;
+	}
 
 	/**
 	 * Returns all the commerce shipping option account entry rels where commerceChannelId = &#63;.
@@ -1168,9 +1220,30 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 			"commerceShippingOptionAccountEntryRel.commerceChannelId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommerceShippingOptionKey;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceShippingOptionKey() {
+
+		return _finderPathWithPaginationFindByCommerceShippingOptionKey;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByCommerceShippingOptionKey;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceShippingOptionKey() {
+
+		return _finderPathWithoutPaginationFindByCommerceShippingOptionKey;
+	}
+
 	private FinderPath _finderPathCountByCommerceShippingOptionKey;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceShippingOptionKey() {
+		return _finderPathCountByCommerceShippingOptionKey;
+	}
 
 	/**
 	 * Returns all the commerce shipping option account entry rels where commerceShippingOptionKey = &#63;.
@@ -1779,7 +1852,18 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 			"(commerceShippingOptionAccountEntryRel.commerceShippingOptionKey IS NULL OR commerceShippingOptionAccountEntryRel.commerceShippingOptionKey = '')";
 
 	private FinderPath _finderPathFetchByA_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByA_C() {
+		return _finderPathFetchByA_C;
+	}
+
 	private FinderPath _finderPathCountByA_C;
+
+	@Override
+	public FinderPath getFinderPathCountByA_C() {
+		return _finderPathCountByA_C;
+	}
 
 	/**
 	 * Returns the commerce shipping option account entry rel where accountEntryId = &#63; and commerceChannelId = &#63; or throws a <code>NoSuchShippingOptionAccountEntryRelException</code> if it could not be found.
@@ -2750,6 +2834,71 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 
 		entityCache.removeCache(
 			CommerceShippingOptionAccountEntryRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceShippingOptionAccountEntryRel>
+			commerceShippingOptionAccountEntryRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceShippingOptionAccountEntryRel>>
+				resultMap = new HashMap<>();
+
+			for (CommerceShippingOptionAccountEntryRel
+					commerceShippingOptionAccountEntryRel :
+						commerceShippingOptionAccountEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceShippingOptionAccountEntryRelModelImpl
+						commerceShippingOptionAccountEntryRelModelImpl =
+							(CommerceShippingOptionAccountEntryRelModelImpl)
+								commerceShippingOptionAccountEntryRel;
+
+					arguments.add(
+						commerceShippingOptionAccountEntryRelModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceShippingOptionAccountEntryRel);
+				}
+				else {
+					List<CommerceShippingOptionAccountEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceShippingOptionAccountEntryRel);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>, List<CommerceShippingOptionAccountEntryRel>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceShippingOptionAccountEntryRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceShippingOptionAccountEntryRelUtilPersistence(

@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.RegionLocalizationPersistence;
 import com.liferay.portal.kernel.service.persistence.RegionLocalizationUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -46,6 +47,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -82,9 +85,42 @@ public class RegionLocalizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByRegionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByRegionId() {
+		return _finderPathWithPaginationFindByRegionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByRegionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByRegionId() {
+		return _finderPathWithoutPaginationFindByRegionId;
+	}
+
 	private FinderPath _finderPathCountByRegionId;
+
+	@Override
+	public FinderPath getFinderPathCountByRegionId() {
+		return _finderPathCountByRegionId;
+	}
 
 	/**
 	 * Returns all the region localizations where regionId = &#63;.
@@ -586,7 +622,18 @@ public class RegionLocalizationPersistenceImpl
 		"regionLocalization.regionId = ?";
 
 	private FinderPath _finderPathFetchByRegionId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathFetchByRegionId_LanguageId() {
+		return _finderPathFetchByRegionId_LanguageId;
+	}
+
 	private FinderPath _finderPathCountByRegionId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathCountByRegionId_LanguageId() {
+		return _finderPathCountByRegionId_LanguageId;
+	}
 
 	/**
 	 * Returns the region localization where regionId = &#63; and languageId = &#63; or throws a <code>NoSuchRegionLocalizationException</code> if it could not be found.
@@ -1435,6 +1482,61 @@ public class RegionLocalizationPersistenceImpl
 		_setRegionLocalizationUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(RegionLocalizationImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<RegionLocalization> regionLocalizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RegionLocalization>> resultMap =
+				new HashMap<>();
+
+			for (RegionLocalization regionLocalization : regionLocalizations) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RegionLocalizationModelImpl regionLocalizationModelImpl =
+						(RegionLocalizationModelImpl)regionLocalization;
+
+					arguments.add(
+						regionLocalizationModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), regionLocalization);
+				}
+				else {
+					List<RegionLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(regionLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RegionLocalization>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RegionLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setRegionLocalizationUtilPersistence(

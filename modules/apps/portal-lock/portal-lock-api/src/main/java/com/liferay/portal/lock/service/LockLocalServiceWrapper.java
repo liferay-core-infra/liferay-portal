@@ -14,6 +14,7 @@
 
 package com.liferay.portal.lock.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -385,6 +386,11 @@ public class LockLocalServiceWrapper
 	@Override
 	public boolean isLocked(String className, String key) {
 		return _lockLocalService.isLocked(className, key);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_lockLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

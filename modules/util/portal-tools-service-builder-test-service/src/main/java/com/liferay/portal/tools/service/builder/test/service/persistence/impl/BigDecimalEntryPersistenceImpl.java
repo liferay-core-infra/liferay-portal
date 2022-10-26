@@ -54,6 +54,8 @@ import java.lang.reflect.InvocationHandler;
 
 import java.math.BigDecimal;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -91,9 +93,42 @@ public class BigDecimalEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByBigDecimalValue;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByBigDecimalValue() {
+		return _finderPathWithPaginationFindByBigDecimalValue;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByBigDecimalValue;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByBigDecimalValue() {
+		return _finderPathWithoutPaginationFindByBigDecimalValue;
+	}
+
 	private FinderPath _finderPathCountByBigDecimalValue;
+
+	@Override
+	public FinderPath getFinderPathCountByBigDecimalValue() {
+		return _finderPathCountByBigDecimalValue;
+	}
 
 	/**
 	 * Returns all the big decimal entries where bigDecimalValue = &#63;.
@@ -642,7 +677,18 @@ public class BigDecimalEntryPersistenceImpl
 			"bigDecimalEntry.bigDecimalValue = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGtBigDecimalValue;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGtBigDecimalValue() {
+		return _finderPathWithPaginationFindByGtBigDecimalValue;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGtBigDecimalValue;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGtBigDecimalValue() {
+		return _finderPathWithPaginationCountByGtBigDecimalValue;
+	}
 
 	/**
 	 * Returns all the big decimal entries where bigDecimalValue &gt; &#63;.
@@ -1181,7 +1227,18 @@ public class BigDecimalEntryPersistenceImpl
 			"bigDecimalEntry.bigDecimalValue > ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtBigDecimalValue;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtBigDecimalValue() {
+		return _finderPathWithPaginationFindByLtBigDecimalValue;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtBigDecimalValue;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtBigDecimalValue() {
+		return _finderPathWithPaginationCountByLtBigDecimalValue;
+	}
 
 	/**
 	 * Returns all the big decimal entries where bigDecimalValue &lt; &#63;.
@@ -2633,6 +2690,61 @@ public class BigDecimalEntryPersistenceImpl
 		entityCache.removeCache(BigDecimalEntryImpl.class.getName());
 
 		TableMapperFactory.removeTableMapper("BigDecimalEntries_LVEntries");
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<BigDecimalEntry> bigDecimalEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BigDecimalEntry>> resultMap =
+				new HashMap<>();
+
+			for (BigDecimalEntry bigDecimalEntry : bigDecimalEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BigDecimalEntryModelImpl bigDecimalEntryModelImpl =
+						(BigDecimalEntryModelImpl)bigDecimalEntry;
+
+					arguments.add(
+						bigDecimalEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), bigDecimalEntry);
+				}
+				else {
+					List<BigDecimalEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(bigDecimalEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BigDecimalEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BigDecimalEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setBigDecimalEntryUtilPersistence(

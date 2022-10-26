@@ -16,6 +16,7 @@ package com.liferay.calendar.service;
 
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -672,6 +673,11 @@ public class CalendarBookingLocalServiceWrapper
 
 		return _calendarBookingLocalService.isStagingCalendarBooking(
 			calendarBooking);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_calendarBookingLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.machine.learning.forecast.alert.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -470,6 +471,11 @@ public class CommerceMLForecastAlertEntryLocalServiceWrapper
 
 		return _commerceMLForecastAlertEntryLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceMLForecastAlertEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -112,9 +112,42 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the de data definition field links where uuid = &#63;.
@@ -675,7 +708,18 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		"(deDataDefinitionFieldLink.uuid IS NULL OR deDataDefinitionFieldLink.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the de data definition field link where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchDataDefinitionFieldLinkException</code> if it could not be found.
@@ -942,8 +986,25 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		"deDataDefinitionFieldLink.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the de data definition field links where uuid = &#63; and companyId = &#63;.
@@ -1547,8 +1608,25 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		"deDataDefinitionFieldLink.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDDMStructureId() {
+		return _finderPathWithPaginationFindByDDMStructureId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDDMStructureId() {
+		return _finderPathWithoutPaginationFindByDDMStructureId;
+	}
+
 	private FinderPath _finderPathCountByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathCountByDDMStructureId() {
+		return _finderPathCountByDDMStructureId;
+	}
 
 	/**
 	 * Returns all the de data definition field links where ddmStructureId = &#63;.
@@ -2077,8 +2155,25 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		"deDataDefinitionFieldLink.ddmStructureId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the de data definition field links where classNameId = &#63; and classPK = &#63;.
@@ -2640,8 +2735,25 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		"deDataDefinitionFieldLink.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_DDMSI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_DDMSI() {
+		return _finderPathWithPaginationFindByC_DDMSI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_DDMSI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_DDMSI() {
+		return _finderPathWithoutPaginationFindByC_DDMSI;
+	}
+
 	private FinderPath _finderPathCountByC_DDMSI;
+
+	@Override
+	public FinderPath getFinderPathCountByC_DDMSI() {
+		return _finderPathCountByC_DDMSI;
+	}
 
 	/**
 	 * Returns all the de data definition field links where classNameId = &#63; and ddmStructureId = &#63;.
@@ -3207,9 +3319,32 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		"deDataDefinitionFieldLink.ddmStructureId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByDDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDDMSI_F() {
+		return _finderPathWithPaginationFindByDDMSI_F;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDDMSI_F() {
+		return _finderPathWithoutPaginationFindByDDMSI_F;
+	}
+
 	private FinderPath _finderPathCountByDDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathCountByDDMSI_F() {
+		return _finderPathCountByDDMSI_F;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByDDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByDDMSI_F() {
+		return _finderPathWithPaginationCountByDDMSI_F;
+	}
 
 	/**
 	 * Returns all the de data definition field links where ddmStructureId = &#63; and fieldName = &#63;.
@@ -4146,9 +4281,32 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		"(deDataDefinitionFieldLink.fieldName IS NULL OR deDataDefinitionFieldLink.fieldName = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_DDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_DDMSI_F() {
+		return _finderPathWithPaginationFindByC_DDMSI_F;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_DDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_DDMSI_F() {
+		return _finderPathWithoutPaginationFindByC_DDMSI_F;
+	}
+
 	private FinderPath _finderPathCountByC_DDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathCountByC_DDMSI_F() {
+		return _finderPathCountByC_DDMSI_F;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_DDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_DDMSI_F() {
+		return _finderPathWithPaginationCountByC_DDMSI_F;
+	}
 
 	/**
 	 * Returns all the de data definition field links where classNameId = &#63; and ddmStructureId = &#63; and fieldName = &#63;.
@@ -5155,8 +5313,25 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		"(deDataDefinitionFieldLink.fieldName IS NULL OR deDataDefinitionFieldLink.fieldName = '')";
 
 	private FinderPath _finderPathFetchByC_C_DDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C_DDMSI_F() {
+		return _finderPathFetchByC_C_DDMSI_F;
+	}
+
 	private FinderPath _finderPathCountByC_C_DDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_DDMSI_F() {
+		return _finderPathCountByC_C_DDMSI_F;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_C_DDMSI_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_C_DDMSI_F() {
+		return _finderPathWithPaginationCountByC_C_DDMSI_F;
+	}
 
 	/**
 	 * Returns the de data definition field link where classNameId = &#63; and classPK = &#63; and ddmStructureId = &#63; and fieldName = &#63; or throws a <code>NoSuchDataDefinitionFieldLinkException</code> if it could not be found.
@@ -6688,6 +6863,67 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		_setDEDataDefinitionFieldLinkUtilPersistence(null);
 
 		entityCache.removeCache(DEDataDefinitionFieldLinkImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DEDataDefinitionFieldLink> deDataDefinitionFieldLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DEDataDefinitionFieldLink>> resultMap =
+				new HashMap<>();
+
+			for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
+					deDataDefinitionFieldLinks) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DEDataDefinitionFieldLinkModelImpl
+						deDataDefinitionFieldLinkModelImpl =
+							(DEDataDefinitionFieldLinkModelImpl)
+								deDataDefinitionFieldLink;
+
+					arguments.add(
+						deDataDefinitionFieldLinkModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						deDataDefinitionFieldLink);
+				}
+				else {
+					List<DEDataDefinitionFieldLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(deDataDefinitionFieldLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DEDataDefinitionFieldLink>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DEDataDefinitionFieldLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDEDataDefinitionFieldLinkUtilPersistence(

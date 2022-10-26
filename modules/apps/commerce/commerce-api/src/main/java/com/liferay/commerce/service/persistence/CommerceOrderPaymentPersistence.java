@@ -16,6 +16,7 @@ package com.liferay.commerce.service.persistence;
 
 import com.liferay.commerce.exception.NoSuchOrderPaymentException;
 import com.liferay.commerce.model.CommerceOrderPayment;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface CommerceOrderPaymentPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceOrderPaymentUtil} to access the commerce order payment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCommerceOrderId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceOrderId();
+
+	public FinderPath getFinderPathCountByCommerceOrderId();
 
 	/**
 	 * Returns all the commerce order payments where commerceOrderId = &#63;.
@@ -306,5 +318,7 @@ public interface CommerceOrderPaymentPersistence
 	 * @return the number of commerce order payments
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

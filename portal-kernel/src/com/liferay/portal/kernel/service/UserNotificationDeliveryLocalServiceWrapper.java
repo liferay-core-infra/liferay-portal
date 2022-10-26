@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link UserNotificationDeliveryLocalService}.
  *
@@ -40,7 +42,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	@Override
 	public com.liferay.portal.kernel.model.UserNotificationDelivery
 			addUserNotificationDelivery(
-				long userId, java.lang.String portletId, long classNameId,
+				long userId, String portletId, long classNameId,
 				int notificationType, int deliveryType, boolean deliver)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -136,8 +138,8 @@ public class UserNotificationDeliveryLocalServiceWrapper
 
 	@Override
 	public void deleteUserNotificationDelivery(
-		long userId, java.lang.String portletId, long classNameId,
-		int notificationType, int deliveryType) {
+		long userId, String portletId, long classNameId, int notificationType,
+		int deliveryType) {
 
 		_userNotificationDeliveryLocalService.deleteUserNotificationDelivery(
 			userId, portletId, classNameId, notificationType, deliveryType);
@@ -278,7 +280,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	@Override
 	public com.liferay.portal.kernel.model.UserNotificationDelivery
 		fetchUserNotificationDelivery(
-			long userId, java.lang.String portletId, long classNameId,
+			long userId, String portletId, long classNameId,
 			int notificationType, int deliveryType) {
 
 		return _userNotificationDeliveryLocalService.
@@ -308,7 +310,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _userNotificationDeliveryLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -374,7 +376,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	@Override
 	public com.liferay.portal.kernel.model.UserNotificationDelivery
 			getUserNotificationDelivery(
-				long userId, java.lang.String portletId, long classNameId,
+				long userId, String portletId, long classNameId,
 				int notificationType, int deliveryType, boolean deliver)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -382,6 +384,11 @@ public class UserNotificationDeliveryLocalServiceWrapper
 			getUserNotificationDelivery(
 				userId, portletId, classNameId, notificationType, deliveryType,
 				deliver);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_userNotificationDeliveryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

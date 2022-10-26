@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -40,6 +41,17 @@ public interface OrganizationPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OrganizationUtil} to access the organization persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the organizations where uuid = &#63;.
@@ -247,6 +259,12 @@ public interface OrganizationPersistence
 	 * @return the number of matching organizations that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the organizations where uuid = &#63; and companyId = &#63;.
@@ -473,6 +491,12 @@ public interface OrganizationPersistence
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the organizations where companyId = &#63;.
 	 *
@@ -679,6 +703,12 @@ public interface OrganizationPersistence
 	 * @return the number of matching organizations that the user has permission to view
 	 */
 	public int filterCountByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyIdLocations();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyIdLocations();
+
+	public FinderPath getFinderPathCountByCompanyIdLocations();
 
 	/**
 	 * Returns all the organizations where companyId = &#63;.
@@ -888,6 +918,12 @@ public interface OrganizationPersistence
 	 * @return the number of matching organizations that the user has permission to view
 	 */
 	public int filterCountByCompanyIdLocations(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_P();
+
+	public FinderPath getFinderPathCountByC_P();
 
 	/**
 	 * Returns all the organizations where companyId = &#63; and parentOrganizationId = &#63;.
@@ -1114,6 +1150,10 @@ public interface OrganizationPersistence
 	 */
 	public int filterCountByC_P(long companyId, long parentOrganizationId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_LikeT();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LikeT();
+
 	/**
 	 * Returns all the organizations where companyId = &#63; and treePath LIKE &#63;.
 	 *
@@ -1339,6 +1379,10 @@ public interface OrganizationPersistence
 	 */
 	public int filterCountByC_LikeT(long companyId, String treePath);
 
+	public FinderPath getFinderPathFetchByC_N();
+
+	public FinderPath getFinderPathCountByC_N();
+
 	/**
 	 * Returns the organization where companyId = &#63; and name = &#63; or throws a <code>NoSuchOrganizationException</code> if it could not be found.
 	 *
@@ -1388,6 +1432,10 @@ public interface OrganizationPersistence
 	 * @return the number of matching organizations
 	 */
 	public int countByC_N(long companyId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByC_LikeN();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LikeN();
 
 	/**
 	 * Returns all the organizations where companyId = &#63; and name LIKE &#63;.
@@ -1614,6 +1662,10 @@ public interface OrganizationPersistence
 	 */
 	public int filterCountByC_LikeN(long companyId, String name);
 
+	public FinderPath getFinderPathWithPaginationFindByGtO_C_P();
+
+	public FinderPath getFinderPathWithPaginationCountByGtO_C_P();
+
 	/**
 	 * Returns all the organizations where organizationId &gt; &#63; and companyId = &#63; and parentOrganizationId = &#63;.
 	 *
@@ -1828,6 +1880,10 @@ public interface OrganizationPersistence
 	 */
 	public int filterCountByGtO_C_P(
 		long organizationId, long companyId, long parentOrganizationId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_P_LikeN();
+
+	public FinderPath getFinderPathWithPaginationCountByC_P_LikeN();
 
 	/**
 	 * Returns all the organizations where companyId = &#63; and parentOrganizationId = &#63; and name LIKE &#63;.
@@ -2079,6 +2135,10 @@ public interface OrganizationPersistence
 	 */
 	public int filterCountByC_P_LikeN(
 		long companyId, long parentOrganizationId, String name);
+
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
 
 	/**
 	 * Returns the organization where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchOrganizationException</code> if it could not be found.
@@ -2583,5 +2643,7 @@ public interface OrganizationPersistence
 	 */
 	public void setUsers(
 		long pk, java.util.List<com.liferay.portal.kernel.model.User> users);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

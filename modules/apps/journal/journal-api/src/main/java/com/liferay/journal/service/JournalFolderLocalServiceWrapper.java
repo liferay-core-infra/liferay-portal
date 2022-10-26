@@ -16,6 +16,7 @@ package com.liferay.journal.service;
 
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -679,6 +680,11 @@ public class JournalFolderLocalServiceWrapper
 
 		return _journalFolderLocalService.getUniqueFolderName(
 			uuid, groupId, parentFolderId, name, count);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_journalFolderLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

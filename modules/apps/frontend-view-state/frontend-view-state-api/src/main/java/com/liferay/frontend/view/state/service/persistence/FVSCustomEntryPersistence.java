@@ -16,6 +16,7 @@ package com.liferay.frontend.view.state.service.persistence;
 
 import com.liferay.frontend.view.state.exception.NoSuchCustomEntryException;
 import com.liferay.frontend.view.state.model.FVSCustomEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface FVSCustomEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link FVSCustomEntryUtil} to access the fvs custom entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the fvs custom entries where uuid = &#63;.
@@ -183,6 +195,12 @@ public interface FVSCustomEntryPersistence
 	 * @return the number of matching fvs custom entries
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the fvs custom entries where uuid = &#63; and companyId = &#63;.
@@ -458,5 +476,7 @@ public interface FVSCustomEntryPersistence
 	 * @return the number of fvs custom entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

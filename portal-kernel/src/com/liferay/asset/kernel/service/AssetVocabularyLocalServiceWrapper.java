@@ -16,6 +16,7 @@ package com.liferay.asset.kernel.service;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -668,6 +669,11 @@ public class AssetVocabularyLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _assetVocabularyLocalService.getVocabulary(vocabularyId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_assetVocabularyLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

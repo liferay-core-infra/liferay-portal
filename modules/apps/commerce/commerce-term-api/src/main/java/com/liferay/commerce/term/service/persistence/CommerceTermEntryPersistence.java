@@ -16,6 +16,7 @@ package com.liferay.commerce.term.service.persistence;
 
 import com.liferay.commerce.term.exception.NoSuchTermEntryException;
 import com.liferay.commerce.term.model.CommerceTermEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface CommerceTermEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceTermEntryUtil} to access the commerce term entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce term entries where uuid = &#63;.
@@ -249,6 +261,12 @@ public interface CommerceTermEntryPersistence
 	 * @return the number of matching commerce term entries that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce term entries where uuid = &#63; and companyId = &#63;.
@@ -475,6 +493,12 @@ public interface CommerceTermEntryPersistence
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A();
+
+	public FinderPath getFinderPathCountByC_A();
+
 	/**
 	 * Returns all the commerce term entries where companyId = &#63; and active = &#63;.
 	 *
@@ -700,6 +724,10 @@ public interface CommerceTermEntryPersistence
 	 */
 	public int filterCountByC_A(long companyId, boolean active);
 
+	public FinderPath getFinderPathFetchByC_N();
+
+	public FinderPath getFinderPathCountByC_N();
+
 	/**
 	 * Returns the commerce term entry where companyId = &#63; and name = &#63; or throws a <code>NoSuchTermEntryException</code> if it could not be found.
 	 *
@@ -749,6 +777,10 @@ public interface CommerceTermEntryPersistence
 	 * @return the number of matching commerce term entries
 	 */
 	public int countByC_N(long companyId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByC_LikeType();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LikeType();
 
 	/**
 	 * Returns all the commerce term entries where companyId = &#63; and type LIKE &#63;.
@@ -975,6 +1007,10 @@ public interface CommerceTermEntryPersistence
 	 */
 	public int filterCountByC_LikeType(long companyId, String type);
 
+	public FinderPath getFinderPathWithPaginationFindByLtD_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtD_S();
+
 	/**
 	 * Returns all the commerce term entries where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -1200,6 +1236,10 @@ public interface CommerceTermEntryPersistence
 	 */
 	public int filterCountByLtD_S(Date displayDate, int status);
 
+	public FinderPath getFinderPathWithPaginationFindByLtE_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtE_S();
+
 	/**
 	 * Returns all the commerce term entries where expirationDate &lt; &#63; and status = &#63;.
 	 *
@@ -1424,6 +1464,10 @@ public interface CommerceTermEntryPersistence
 	 * @return the number of matching commerce term entries that the user has permission to view
 	 */
 	public int filterCountByLtE_S(Date expirationDate, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_LikeType();
+
+	public FinderPath getFinderPathWithPaginationCountByC_A_LikeType();
 
 	/**
 	 * Returns all the commerce term entries where companyId = &#63; and active = &#63; and type LIKE &#63;.
@@ -1670,6 +1714,10 @@ public interface CommerceTermEntryPersistence
 	public int filterCountByC_A_LikeType(
 		long companyId, boolean active, String type);
 
+	public FinderPath getFinderPathFetchByC_P_T();
+
+	public FinderPath getFinderPathCountByC_P_T();
+
 	/**
 	 * Returns the commerce term entry where companyId = &#63; and priority = &#63; and type = &#63; or throws a <code>NoSuchTermEntryException</code> if it could not be found.
 	 *
@@ -1727,6 +1775,10 @@ public interface CommerceTermEntryPersistence
 	 * @return the number of matching commerce term entries
 	 */
 	public int countByC_P_T(long companyId, double priority, String type);
+
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
 
 	/**
 	 * Returns the commerce term entry where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchTermEntryException</code> if it could not be found.
@@ -1901,5 +1953,7 @@ public interface CommerceTermEntryPersistence
 	 * @return the number of commerce term entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

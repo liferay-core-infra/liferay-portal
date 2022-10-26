@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.persistence.ImagePersistence;
 import com.liferay.portal.kernel.service.persistence.ImageUtil;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -60,6 +61,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -92,8 +94,35 @@ public class ImagePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByLtSize;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtSize() {
+		return _finderPathWithPaginationFindByLtSize;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtSize;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtSize() {
+		return _finderPathWithPaginationCountByLtSize;
+	}
 
 	/**
 	 * Returns all the images where size &lt; &#63;.
@@ -1345,6 +1374,57 @@ public class ImagePersistenceImpl
 		_setImageUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(ImageImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Image> images = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Image>> resultMap = new HashMap<>();
+
+			for (Image image : images) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ImageModelImpl imageModelImpl = (ImageModelImpl)image;
+
+					arguments.add(imageModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), image);
+				}
+				else {
+					List<Image> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(image);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Image>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Image> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setImageUtilPersistence(ImagePersistence imagePersistence) {

@@ -90,9 +90,42 @@ public class VirtualHostPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the virtual hosts where companyId = &#63;.
@@ -603,7 +636,18 @@ public class VirtualHostPersistenceImpl
 		"virtualHost.companyId = ?";
 
 	private FinderPath _finderPathFetchByHostname;
+
+	@Override
+	public FinderPath getFinderPathFetchByHostname() {
+		return _finderPathFetchByHostname;
+	}
+
 	private FinderPath _finderPathCountByHostname;
+
+	@Override
+	public FinderPath getFinderPathCountByHostname() {
+		return _finderPathCountByHostname;
+	}
 
 	/**
 	 * Returns the virtual host where hostname = &#63; or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
@@ -846,8 +890,25 @@ public class VirtualHostPersistenceImpl
 		"(virtualHost.hostname IS NULL OR virtualHost.hostname = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_L;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_L() {
+		return _finderPathWithPaginationFindByC_L;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_L;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_L() {
+		return _finderPathWithoutPaginationFindByC_L;
+	}
+
 	private FinderPath _finderPathCountByC_L;
+
+	@Override
+	public FinderPath getFinderPathCountByC_L() {
+		return _finderPathCountByC_L;
+	}
 
 	/**
 	 * Returns all the virtual hosts where companyId = &#63; and layoutSetId = &#63;.
@@ -1401,7 +1462,18 @@ public class VirtualHostPersistenceImpl
 		"virtualHost.layoutSetId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByNotL_H;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByNotL_H() {
+		return _finderPathWithPaginationFindByNotL_H;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByNotL_H;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByNotL_H() {
+		return _finderPathWithPaginationCountByNotL_H;
+	}
 
 	/**
 	 * Returns all the virtual hosts where layoutSetId &ne; &#63; and hostname = &#63;.
@@ -2312,7 +2384,18 @@ public class VirtualHostPersistenceImpl
 		"(virtualHost.hostname IS NULL OR virtualHost.hostname = '')";
 
 	private FinderPath _finderPathFetchByC_L_D;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_L_D() {
+		return _finderPathFetchByC_L_D;
+	}
+
 	private FinderPath _finderPathCountByC_L_D;
+
+	@Override
+	public FinderPath getFinderPathCountByC_L_D() {
+		return _finderPathCountByC_L_D;
+	}
 
 	/**
 	 * Returns the virtual host where companyId = &#63; and layoutSetId = &#63; and defaultVirtualHost = &#63; or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
@@ -3448,6 +3531,59 @@ public class VirtualHostPersistenceImpl
 		_setVirtualHostUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(VirtualHostImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<VirtualHost> virtualHosts = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<VirtualHost>> resultMap = new HashMap<>();
+
+			for (VirtualHost virtualHost : virtualHosts) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					VirtualHostModelImpl virtualHostModelImpl =
+						(VirtualHostModelImpl)virtualHost;
+
+					arguments.add(
+						virtualHostModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), virtualHost);
+				}
+				else {
+					List<VirtualHost> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(virtualHost);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<VirtualHost>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<VirtualHost> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setVirtualHostUtilPersistence(

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException;
@@ -42,6 +43,17 @@ public interface KaleoNotificationRecipientPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoNotificationRecipientUtil} to access the kaleo notification recipient persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the kaleo notification recipients where companyId = &#63;.
@@ -186,6 +198,14 @@ public interface KaleoNotificationRecipientPersistence
 	 * @return the number of matching kaleo notification recipients
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId();
+
+	public FinderPath getFinderPathCountByKaleoDefinitionVersionId();
 
 	/**
 	 * Returns all the kaleo notification recipients where kaleoDefinitionVersionId = &#63;.
@@ -335,6 +355,12 @@ public interface KaleoNotificationRecipientPersistence
 	 * @return the number of matching kaleo notification recipients
 	 */
 	public int countByKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
+
+	public FinderPath getFinderPathWithPaginationFindByKaleoNotificationId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoNotificationId();
+
+	public FinderPath getFinderPathCountByKaleoNotificationId();
 
 	/**
 	 * Returns all the kaleo notification recipients where kaleoNotificationId = &#63;.
@@ -605,5 +631,7 @@ public interface KaleoNotificationRecipientPersistence
 	 * @return the number of kaleo notification recipients
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

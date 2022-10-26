@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.PasswordPolicyRelPersistence;
 import com.liferay.portal.kernel.service.persistence.PasswordPolicyRelUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -46,8 +47,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -81,9 +85,42 @@ public class PasswordPolicyRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByPasswordPolicyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByPasswordPolicyId() {
+		return _finderPathWithPaginationFindByPasswordPolicyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByPasswordPolicyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByPasswordPolicyId() {
+		return _finderPathWithoutPaginationFindByPasswordPolicyId;
+	}
+
 	private FinderPath _finderPathCountByPasswordPolicyId;
+
+	@Override
+	public FinderPath getFinderPathCountByPasswordPolicyId() {
+		return _finderPathCountByPasswordPolicyId;
+	}
 
 	/**
 	 * Returns all the password policy rels where passwordPolicyId = &#63;.
@@ -596,7 +633,18 @@ public class PasswordPolicyRelPersistenceImpl
 			"passwordPolicyRel.passwordPolicyId = ?";
 
 	private FinderPath _finderPathFetchByC_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C() {
+		return _finderPathFetchByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns the password policy rel where classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchPasswordPolicyRelException</code> if it could not be found.
@@ -1400,6 +1448,61 @@ public class PasswordPolicyRelPersistenceImpl
 		_setPasswordPolicyRelUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(PasswordPolicyRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PasswordPolicyRel> passwordPolicyRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PasswordPolicyRel>> resultMap =
+				new HashMap<>();
+
+			for (PasswordPolicyRel passwordPolicyRel : passwordPolicyRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PasswordPolicyRelModelImpl passwordPolicyRelModelImpl =
+						(PasswordPolicyRelModelImpl)passwordPolicyRel;
+
+					arguments.add(
+						passwordPolicyRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), passwordPolicyRel);
+				}
+				else {
+					List<PasswordPolicyRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(passwordPolicyRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PasswordPolicyRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PasswordPolicyRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPasswordPolicyRelUtilPersistence(

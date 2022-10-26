@@ -122,6 +122,42 @@ public class CommercePriceEntryUtil {
 		return getPersistence().update(commercePriceEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the commerce price entries where uuid = &#63;.
 	 *
@@ -289,6 +325,24 @@ public class CommercePriceEntryUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -480,6 +534,24 @@ public class CommercePriceEntryUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the commerce price entries where companyId = &#63;.
 	 *
@@ -654,6 +726,26 @@ public class CommercePriceEntryUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommercePriceListId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommercePriceListId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommercePriceListId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommercePriceListId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommercePriceListId() {
+
+		return getPersistence().getFinderPathCountByCommercePriceListId();
 	}
 
 	/**
@@ -835,6 +927,26 @@ public class CommercePriceEntryUtil {
 		return getPersistence().countByCommercePriceListId(commercePriceListId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCPInstanceUuid() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCPInstanceUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCPInstanceUuid() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCPInstanceUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCPInstanceUuid() {
+
+		return getPersistence().getFinderPathCountByCPInstanceUuid();
+	}
+
 	/**
 	 * Returns all the commerce price entries where CPInstanceUuid = &#63;.
 	 *
@@ -1012,6 +1124,24 @@ public class CommercePriceEntryUtil {
 	 */
 	public static int countByCPInstanceUuid(String CPInstanceUuid) {
 		return getPersistence().countByCPInstanceUuid(CPInstanceUuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -1211,6 +1341,18 @@ public class CommercePriceEntryUtil {
 		return getPersistence().countByC_C(commercePriceListId, CPInstanceUuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLtD_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByLtD_S();
+	}
+
 	/**
 	 * Returns all the commerce price entries where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -1398,6 +1540,18 @@ public class CommercePriceEntryUtil {
 	 */
 	public static int countByLtD_S(Date displayDate, int status) {
 		return getPersistence().countByLtD_S(displayDate, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtE_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLtE_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtE_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByLtE_S();
 	}
 
 	/**
@@ -1588,6 +1742,24 @@ public class CommercePriceEntryUtil {
 	 */
 	public static int countByLtE_S(Date expirationDate, int status) {
 		return getPersistence().countByLtE_S(expirationDate, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_S() {
+
+		return getPersistence().getFinderPathCountByC_C_S();
 	}
 
 	/**
@@ -1801,6 +1973,18 @@ public class CommercePriceEntryUtil {
 
 		return getPersistence().countByC_C_S(
 			commercePriceListId, CPInstanceUuid, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_ERC() {
+
+		return getPersistence().getFinderPathFetchByC_ERC();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_ERC() {
+
+		return getPersistence().getFinderPathCountByC_ERC();
 	}
 
 	/**
@@ -2030,6 +2214,12 @@ public class CommercePriceEntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommercePriceEntryPersistence getPersistence() {

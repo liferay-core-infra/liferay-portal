@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -569,6 +570,11 @@ public class PortletPreferencesLocalServiceWrapper
 
 		return _portletPreferencesLocalService.getStrictPreferences(
 			portletPreferencesIds);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_portletPreferencesLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

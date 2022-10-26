@@ -16,6 +16,7 @@ package com.liferay.commerce.service.persistence;
 
 import com.liferay.commerce.exception.NoSuchOrderException;
 import com.liferay.commerce.model.CommerceOrder;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface CommerceOrderPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceOrderUtil} to access the commerce order persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce orders where uuid = &#63;.
@@ -186,6 +198,10 @@ public interface CommerceOrderPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the commerce order where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchOrderException</code> if it could not be found.
 	 *
@@ -235,6 +251,12 @@ public interface CommerceOrderPersistence
 	 * @return the number of matching commerce orders
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce orders where uuid = &#63; and companyId = &#63;.
@@ -391,6 +413,12 @@ public interface CommerceOrderPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
 	/**
 	 * Returns all the commerce orders where groupId = &#63;.
 	 *
@@ -534,6 +562,12 @@ public interface CommerceOrderPersistence
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the commerce orders where userId = &#63;.
 	 *
@@ -676,6 +710,12 @@ public interface CommerceOrderPersistence
 	 * @return the number of matching commerce orders
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByBillingAddressId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByBillingAddressId();
+
+	public FinderPath getFinderPathCountByBillingAddressId();
 
 	/**
 	 * Returns all the commerce orders where billingAddressId = &#63;.
@@ -821,6 +861,12 @@ public interface CommerceOrderPersistence
 	 */
 	public int countByBillingAddressId(long billingAddressId);
 
+	public FinderPath getFinderPathWithPaginationFindByCommerceAccountId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceAccountId();
+
+	public FinderPath getFinderPathCountByCommerceAccountId();
+
 	/**
 	 * Returns all the commerce orders where commerceAccountId = &#63;.
 	 *
@@ -965,6 +1011,12 @@ public interface CommerceOrderPersistence
 	 */
 	public int countByCommerceAccountId(long commerceAccountId);
 
+	public FinderPath getFinderPathWithPaginationFindByShippingAddressId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByShippingAddressId();
+
+	public FinderPath getFinderPathCountByShippingAddressId();
+
 	/**
 	 * Returns all the commerce orders where shippingAddressId = &#63;.
 	 *
@@ -1108,6 +1160,12 @@ public interface CommerceOrderPersistence
 	 * @return the number of matching commerce orders
 	 */
 	public int countByShippingAddressId(long shippingAddressId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C();
+
+	public FinderPath getFinderPathCountByG_C();
 
 	/**
 	 * Returns all the commerce orders where groupId = &#63; and commerceAccountId = &#63;.
@@ -1264,6 +1322,12 @@ public interface CommerceOrderPersistence
 	 */
 	public int countByG_C(long groupId, long commerceAccountId);
 
+	public FinderPath getFinderPathWithPaginationFindByG_CP();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_CP();
+
+	public FinderPath getFinderPathCountByG_CP();
+
 	/**
 	 * Returns all the commerce orders where groupId = &#63; and commercePaymentMethodKey = &#63;.
 	 *
@@ -1418,6 +1482,12 @@ public interface CommerceOrderPersistence
 	 * @return the number of matching commerce orders
 	 */
 	public int countByG_CP(long groupId, String commercePaymentMethodKey);
+
+	public FinderPath getFinderPathWithPaginationFindByG_U_O();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_U_O();
+
+	public FinderPath getFinderPathCountByG_U_O();
 
 	/**
 	 * Returns all the commerce orders where groupId = &#63; and userId = &#63; and orderStatus = &#63;.
@@ -1584,6 +1654,12 @@ public interface CommerceOrderPersistence
 	 * @return the number of matching commerce orders
 	 */
 	public int countByG_U_O(long groupId, long userId, int orderStatus);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_O();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_O();
+
+	public FinderPath getFinderPathCountByG_C_O();
 
 	/**
 	 * Returns all the commerce orders where groupId = &#63; and commerceAccountId = &#63; and orderStatus = &#63;.
@@ -1757,6 +1833,10 @@ public interface CommerceOrderPersistence
 	public int countByG_C_O(
 		long groupId, long commerceAccountId, int orderStatus);
 
+	public FinderPath getFinderPathWithPaginationFindByU_LtC_O();
+
+	public FinderPath getFinderPathWithPaginationCountByU_LtC_O();
+
 	/**
 	 * Returns all the commerce orders where userId = &#63; and createDate &lt; &#63; and orderStatus = &#63;.
 	 *
@@ -1922,6 +2002,10 @@ public interface CommerceOrderPersistence
 	 * @return the number of matching commerce orders
 	 */
 	public int countByU_LtC_O(long userId, Date createDate, int orderStatus);
+
+	public FinderPath getFinderPathWithPaginationFindByC_LtC_O();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LtC_O();
 
 	/**
 	 * Returns all the commerce orders where createDate &lt; &#63; and commerceAccountId = &#63; and orderStatus = &#63;.
@@ -2095,6 +2179,10 @@ public interface CommerceOrderPersistence
 	public int countByC_LtC_O(
 		Date createDate, long commerceAccountId, int orderStatus);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the commerce order where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchOrderException</code> if it could not be found.
 	 *
@@ -2267,5 +2355,7 @@ public interface CommerceOrderPersistence
 	 * @return the number of commerce orders
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

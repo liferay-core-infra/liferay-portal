@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -62,6 +63,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -105,9 +107,42 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByKaleoInstanceId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKaleoInstanceId() {
+		return _finderPathWithPaginationFindByKaleoInstanceId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKaleoInstanceId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoInstanceId() {
+		return _finderPathWithoutPaginationFindByKaleoInstanceId;
+	}
+
 	private FinderPath _finderPathCountByKaleoInstanceId;
+
+	@Override
+	public FinderPath getFinderPathCountByKaleoInstanceId() {
+		return _finderPathCountByKaleoInstanceId;
+	}
 
 	/**
 	 * Returns all the kaleo timer instance tokens where kaleoInstanceId = &#63;.
@@ -635,7 +670,18 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 			"kaleoTimerInstanceToken.kaleoInstanceId = ?";
 
 	private FinderPath _finderPathFetchByKITI_KTI;
+
+	@Override
+	public FinderPath getFinderPathFetchByKITI_KTI() {
+		return _finderPathFetchByKITI_KTI;
+	}
+
 	private FinderPath _finderPathCountByKITI_KTI;
+
+	@Override
+	public FinderPath getFinderPathCountByKITI_KTI() {
+		return _finderPathCountByKITI_KTI;
+	}
 
 	/**
 	 * Returns the kaleo timer instance token where kaleoInstanceTokenId = &#63; and kaleoTimerId = &#63; or throws a <code>NoSuchTimerInstanceTokenException</code> if it could not be found.
@@ -895,8 +941,25 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		"kaleoTimerInstanceToken.kaleoTimerId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKITI_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKITI_C() {
+		return _finderPathWithPaginationFindByKITI_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKITI_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKITI_C() {
+		return _finderPathWithoutPaginationFindByKITI_C;
+	}
+
 	private FinderPath _finderPathCountByKITI_C;
+
+	@Override
+	public FinderPath getFinderPathCountByKITI_C() {
+		return _finderPathCountByKITI_C;
+	}
 
 	/**
 	 * Returns all the kaleo timer instance tokens where kaleoInstanceTokenId = &#63; and completed = &#63;.
@@ -1461,8 +1524,25 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		"kaleoTimerInstanceToken.completed = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKITI_B_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKITI_B_C() {
+		return _finderPathWithPaginationFindByKITI_B_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKITI_B_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKITI_B_C() {
+		return _finderPathWithoutPaginationFindByKITI_B_C;
+	}
+
 	private FinderPath _finderPathCountByKITI_B_C;
+
+	@Override
+	public FinderPath getFinderPathCountByKITI_B_C() {
+		return _finderPathCountByKITI_B_C;
+	}
 
 	/**
 	 * Returns all the kaleo timer instance tokens where kaleoInstanceTokenId = &#63; and blocking = &#63; and completed = &#63;.
@@ -2996,6 +3076,67 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		_setKaleoTimerInstanceTokenUtilPersistence(null);
 
 		entityCache.removeCache(KaleoTimerInstanceTokenImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KaleoTimerInstanceToken> kaleoTimerInstanceTokens = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoTimerInstanceToken>> resultMap =
+				new HashMap<>();
+
+			for (KaleoTimerInstanceToken kaleoTimerInstanceToken :
+					kaleoTimerInstanceTokens) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoTimerInstanceTokenModelImpl
+						kaleoTimerInstanceTokenModelImpl =
+							(KaleoTimerInstanceTokenModelImpl)
+								kaleoTimerInstanceToken;
+
+					arguments.add(
+						kaleoTimerInstanceTokenModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						kaleoTimerInstanceToken);
+				}
+				else {
+					List<KaleoTimerInstanceToken> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoTimerInstanceToken);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoTimerInstanceToken>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoTimerInstanceToken> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKaleoTimerInstanceTokenUtilPersistence(

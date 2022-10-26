@@ -119,6 +119,44 @@ public class OrgLaborUtil {
 		return getPersistence().update(orgLabor, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByOrganizationId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByOrganizationId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByOrganizationId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByOrganizationId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByOrganizationId() {
+
+		return getPersistence().getFinderPathCountByOrganizationId();
+	}
+
 	/**
 	 * Returns all the org labors where organizationId = &#63;.
 	 *
@@ -433,6 +471,12 @@ public class OrgLaborUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static OrgLaborPersistence getPersistence() {

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.service.access.policy.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -430,6 +431,11 @@ public class SAPEntryLocalServiceWrapper
 
 		return _sapEntryLocalService.getSAPEntryByUuidAndCompanyId(
 			uuid, companyId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_sapEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

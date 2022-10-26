@@ -122,6 +122,42 @@ public class KaleoTaskFormInstanceUtil {
 		return getPersistence().update(kaleoTaskFormInstance, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the kaleo task form instances where companyId = &#63;.
 	 *
@@ -296,6 +332,26 @@ public class KaleoTaskFormInstanceUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByKaleoDefinitionVersionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKaleoDefinitionVersionId() {
+
+		return getPersistence().getFinderPathCountByKaleoDefinitionVersionId();
 	}
 
 	/**
@@ -487,6 +543,26 @@ public class KaleoTaskFormInstanceUtil {
 			kaleoDefinitionVersionId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByKaleoInstanceId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByKaleoInstanceId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByKaleoInstanceId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByKaleoInstanceId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKaleoInstanceId() {
+
+		return getPersistence().getFinderPathCountByKaleoInstanceId();
+	}
+
 	/**
 	 * Returns all the kaleo task form instances where kaleoInstanceId = &#63;.
 	 *
@@ -666,6 +742,25 @@ public class KaleoTaskFormInstanceUtil {
 		return getPersistence().countByKaleoInstanceId(kaleoInstanceId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByKaleoTaskId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByKaleoTaskId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByKaleoTaskId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByKaleoTaskId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKaleoTaskId() {
+
+		return getPersistence().getFinderPathCountByKaleoTaskId();
+	}
+
 	/**
 	 * Returns all the kaleo task form instances where kaleoTaskId = &#63;.
 	 *
@@ -842,6 +937,26 @@ public class KaleoTaskFormInstanceUtil {
 	 */
 	public static int countByKaleoTaskId(long kaleoTaskId) {
 		return getPersistence().countByKaleoTaskId(kaleoTaskId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByKaleoTaskInstanceTokenId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByKaleoTaskInstanceTokenId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByKaleoTaskInstanceTokenId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByKaleoTaskInstanceTokenId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKaleoTaskInstanceTokenId() {
+
+		return getPersistence().getFinderPathCountByKaleoTaskInstanceTokenId();
 	}
 
 	/**
@@ -1031,6 +1146,18 @@ public class KaleoTaskFormInstanceUtil {
 
 		return getPersistence().countByKaleoTaskInstanceTokenId(
 			kaleoTaskInstanceTokenId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByKaleoTaskFormId() {
+
+		return getPersistence().getFinderPathFetchByKaleoTaskFormId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKaleoTaskFormId() {
+
+		return getPersistence().getFinderPathCountByKaleoTaskFormId();
 	}
 
 	/**
@@ -1256,6 +1383,12 @@ public class KaleoTaskFormInstanceUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static KaleoTaskFormInstancePersistence getPersistence() {

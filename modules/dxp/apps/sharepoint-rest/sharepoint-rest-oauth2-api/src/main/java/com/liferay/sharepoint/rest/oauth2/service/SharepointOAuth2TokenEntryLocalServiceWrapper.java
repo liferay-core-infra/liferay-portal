@@ -14,6 +14,7 @@
 
 package com.liferay.sharepoint.rest.oauth2.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -385,6 +386,11 @@ public class SharepointOAuth2TokenEntryLocalServiceWrapper
 	public int getUserSharepointOAuth2TokenEntriesCount(long userId) {
 		return _sharepointOAuth2TokenEntryLocalService.
 			getUserSharepointOAuth2TokenEntriesCount(userId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_sharepointOAuth2TokenEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

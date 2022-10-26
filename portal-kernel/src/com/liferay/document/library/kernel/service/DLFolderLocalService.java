@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
@@ -578,6 +579,9 @@ public interface DLFolderLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasInheritableLock(long folderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	public Lock lockFolder(long userId, long folderId) throws PortalException;
 

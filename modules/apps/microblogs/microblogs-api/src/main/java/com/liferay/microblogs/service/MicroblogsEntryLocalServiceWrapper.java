@@ -14,6 +14,7 @@
 
 package com.liferay.microblogs.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -514,6 +515,11 @@ public class MicroblogsEntryLocalServiceWrapper
 	public int getUserMicroblogsEntriesCount(long userId, int type) {
 		return _microblogsEntryLocalService.getUserMicroblogsEntriesCount(
 			userId, type);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_microblogsEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

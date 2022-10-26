@@ -17,6 +17,7 @@ package com.liferay.account.service;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -503,6 +504,10 @@ public class AccountEntryLocalServiceUtil {
 
 		return getService().getUserAccountEntriesCount(
 			userId, parentAccountEntryId, keywords, types, status);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult

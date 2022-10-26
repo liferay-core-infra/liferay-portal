@@ -105,9 +105,42 @@ public class GroupPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the groups where uuid = &#63;.
@@ -649,7 +682,18 @@ public class GroupPersistenceImpl
 		"(group_.uuid IS NULL OR group_.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the group where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
@@ -913,8 +957,25 @@ public class GroupPersistenceImpl
 		"group_.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the groups where uuid = &#63; and companyId = &#63;.
@@ -1504,8 +1565,25 @@ public class GroupPersistenceImpl
 		"group_.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63;.
@@ -2010,7 +2088,18 @@ public class GroupPersistenceImpl
 		"group_.companyId = ?";
 
 	private FinderPath _finderPathFetchByLiveGroupId;
+
+	@Override
+	public FinderPath getFinderPathFetchByLiveGroupId() {
+		return _finderPathFetchByLiveGroupId;
+	}
+
 	private FinderPath _finderPathCountByLiveGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByLiveGroupId() {
+		return _finderPathCountByLiveGroupId;
+	}
 
 	/**
 	 * Returns the group where liveGroupId = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
@@ -2237,8 +2326,25 @@ public class GroupPersistenceImpl
 		"group_.liveGroupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and classNameId = &#63;.
@@ -2790,8 +2896,25 @@ public class GroupPersistenceImpl
 		"group_.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_P() {
+		return _finderPathWithPaginationFindByC_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_P() {
+		return _finderPathWithoutPaginationFindByC_P;
+	}
+
 	private FinderPath _finderPathCountByC_P;
+
+	@Override
+	public FinderPath getFinderPathCountByC_P() {
+		return _finderPathCountByC_P;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and parentGroupId = &#63;.
@@ -3344,10 +3467,39 @@ public class GroupPersistenceImpl
 		"group_.parentGroupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_GK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_GK() {
+		return _finderPathWithPaginationFindByC_GK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_GK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_GK() {
+		return _finderPathWithoutPaginationFindByC_GK;
+	}
+
 	private FinderPath _finderPathFetchByC_GK;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_GK() {
+		return _finderPathFetchByC_GK;
+	}
+
 	private FinderPath _finderPathCountByC_GK;
+
+	@Override
+	public FinderPath getFinderPathCountByC_GK() {
+		return _finderPathCountByC_GK;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_GK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_GK() {
+		return _finderPathWithPaginationCountByC_GK;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and groupKey = any &#63;.
@@ -3939,7 +4091,18 @@ public class GroupPersistenceImpl
 		"(group_.groupKey IS NULL OR group_.groupKey = '')";
 
 	private FinderPath _finderPathFetchByC_F;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_F() {
+		return _finderPathFetchByC_F;
+	}
+
 	private FinderPath _finderPathCountByC_F;
+
+	@Override
+	public FinderPath getFinderPathCountByC_F() {
+		return _finderPathCountByC_F;
+	}
 
 	/**
 	 * Returns the group where companyId = &#63; and friendlyURL = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
@@ -4203,8 +4366,25 @@ public class GroupPersistenceImpl
 		"(group_.friendlyURL IS NULL OR group_.friendlyURL = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S() {
+		return _finderPathWithPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S() {
+		return _finderPathWithoutPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S() {
+		return _finderPathCountByC_S;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and site = &#63;.
@@ -4749,8 +4929,25 @@ public class GroupPersistenceImpl
 	private static final String _FINDER_COLUMN_C_S_SITE_2 = "group_.site = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A() {
+		return _finderPathWithPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_A() {
+		return _finderPathWithoutPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathCountByC_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A() {
+		return _finderPathCountByC_A;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and active = &#63;.
@@ -5298,8 +5495,25 @@ public class GroupPersistenceImpl
 		"group_.active = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_CPK() {
+		return _finderPathWithPaginationFindByC_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_CPK() {
+		return _finderPathWithoutPaginationFindByC_CPK;
+	}
+
 	private FinderPath _finderPathCountByC_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByC_CPK() {
+		return _finderPathCountByC_CPK;
+	}
 
 	/**
 	 * Returns all the groups where classNameId = &#63; and classPK = &#63;.
@@ -5849,8 +6063,25 @@ public class GroupPersistenceImpl
 		"group_.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_A() {
+		return _finderPathWithPaginationFindByT_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_A() {
+		return _finderPathWithoutPaginationFindByT_A;
+	}
+
 	private FinderPath _finderPathCountByT_A;
+
+	@Override
+	public FinderPath getFinderPathCountByT_A() {
+		return _finderPathCountByT_A;
+	}
 
 	/**
 	 * Returns all the groups where type = &#63; and active = &#63;.
@@ -6391,7 +6622,18 @@ public class GroupPersistenceImpl
 		"group_.active = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGtG_C_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGtG_C_P() {
+		return _finderPathWithPaginationFindByGtG_C_P;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGtG_C_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGtG_C_P() {
+		return _finderPathWithPaginationCountByGtG_C_P;
+	}
 
 	/**
 	 * Returns all the groups where groupId &gt; &#63; and companyId = &#63; and parentGroupId = &#63;.
@@ -6814,7 +7056,18 @@ public class GroupPersistenceImpl
 		"group_.parentGroupId = ?";
 
 	private FinderPath _finderPathFetchByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C_C() {
+		return _finderPathFetchByC_C_C;
+	}
+
 	private FinderPath _finderPathCountByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_C() {
+		return _finderPathCountByC_C_C;
+	}
 
 	/**
 	 * Returns the group where companyId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
@@ -7070,8 +7323,25 @@ public class GroupPersistenceImpl
 		"group_.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_P() {
+		return _finderPathWithPaginationFindByC_C_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_P() {
+		return _finderPathWithoutPaginationFindByC_C_P;
+	}
+
 	private FinderPath _finderPathCountByC_C_P;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_P() {
+		return _finderPathCountByC_C_P;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and classNameId = &#63; and parentGroupId = &#63;.
@@ -7672,8 +7942,25 @@ public class GroupPersistenceImpl
 		"group_.parentGroupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_S() {
+		return _finderPathWithPaginationFindByC_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_S() {
+		return _finderPathWithoutPaginationFindByC_C_S;
+	}
+
 	private FinderPath _finderPathCountByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_S() {
+		return _finderPathCountByC_C_S;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and classNameId = &#63; and site = &#63;.
@@ -8261,8 +8548,25 @@ public class GroupPersistenceImpl
 	private static final String _FINDER_COLUMN_C_C_S_SITE_2 = "group_.site = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_P_S() {
+		return _finderPathWithPaginationFindByC_P_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_P_S() {
+		return _finderPathWithoutPaginationFindByC_P_S;
+	}
+
 	private FinderPath _finderPathCountByC_P_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_P_S() {
+		return _finderPathCountByC_P_S;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and parentGroupId = &#63; and site = &#63;.
@@ -8854,7 +9158,18 @@ public class GroupPersistenceImpl
 	private static final String _FINDER_COLUMN_C_P_S_SITE_2 = "group_.site = ?";
 
 	private FinderPath _finderPathFetchByC_L_GK;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_L_GK() {
+		return _finderPathFetchByC_L_GK;
+	}
+
 	private FinderPath _finderPathCountByC_L_GK;
+
+	@Override
+	public FinderPath getFinderPathCountByC_L_GK() {
+		return _finderPathCountByC_L_GK;
+	}
 
 	/**
 	 * Returns the group where companyId = &#63; and liveGroupId = &#63; and groupKey = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
@@ -9144,7 +9459,18 @@ public class GroupPersistenceImpl
 		"(group_.groupKey IS NULL OR group_.groupKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_LikeT_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LikeT_S() {
+		return _finderPathWithPaginationFindByC_LikeT_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LikeT_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LikeT_S() {
+		return _finderPathWithPaginationCountByC_LikeT_S;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and treePath LIKE &#63; and site = &#63;.
@@ -9769,7 +10095,18 @@ public class GroupPersistenceImpl
 		"group_.site = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LikeN_S() {
+		return _finderPathWithPaginationFindByC_LikeN_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LikeN_S() {
+		return _finderPathWithPaginationCountByC_LikeN_S;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and name LIKE &#63; and site = &#63;.
@@ -10388,8 +10725,25 @@ public class GroupPersistenceImpl
 		"group_.site = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_S_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S_A() {
+		return _finderPathWithPaginationFindByC_S_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S_A() {
+		return _finderPathWithoutPaginationFindByC_S_A;
+	}
+
 	private FinderPath _finderPathCountByC_S_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S_A() {
+		return _finderPathCountByC_S_A;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and site = &#63; and active = &#63;.
@@ -10978,7 +11332,18 @@ public class GroupPersistenceImpl
 		"group_.active = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGtG_C_C_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGtG_C_C_P() {
+		return _finderPathWithPaginationFindByGtG_C_C_P;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGtG_C_C_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGtG_C_C_P() {
+		return _finderPathWithPaginationCountByGtG_C_C_P;
+	}
 
 	/**
 	 * Returns all the groups where groupId &gt; &#63; and companyId = &#63; and classNameId = &#63; and parentGroupId = &#63;.
@@ -11436,7 +11801,18 @@ public class GroupPersistenceImpl
 		"group_.parentGroupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGtG_C_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGtG_C_P_S() {
+		return _finderPathWithPaginationFindByGtG_C_P_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGtG_C_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGtG_C_P_S() {
+		return _finderPathWithPaginationCountByGtG_C_P_S;
+	}
 
 	/**
 	 * Returns all the groups where groupId &gt; &#63; and companyId = &#63; and parentGroupId = &#63; and site = &#63;.
@@ -11890,7 +12266,18 @@ public class GroupPersistenceImpl
 		"group_.site = ?";
 
 	private FinderPath _finderPathFetchByC_C_L_GK;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C_L_GK() {
+		return _finderPathFetchByC_C_L_GK;
+	}
+
 	private FinderPath _finderPathCountByC_C_L_GK;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_L_GK() {
+		return _finderPathCountByC_C_L_GK;
+	}
 
 	/**
 	 * Returns the group where companyId = &#63; and classNameId = &#63; and liveGroupId = &#63; and groupKey = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
@@ -12208,7 +12595,18 @@ public class GroupPersistenceImpl
 		"(group_.groupKey IS NULL OR group_.groupKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_P_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_P_LikeN_S() {
+		return _finderPathWithPaginationFindByC_P_LikeN_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_P_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_P_LikeN_S() {
+		return _finderPathWithPaginationCountByC_P_LikeN_S;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and parentGroupId = &#63; and name LIKE &#63; and site = &#63;.
@@ -12872,8 +13270,25 @@ public class GroupPersistenceImpl
 		"group_.site = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_P_S_I;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_P_S_I() {
+		return _finderPathWithPaginationFindByC_P_S_I;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_P_S_I;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_P_S_I() {
+		return _finderPathWithoutPaginationFindByC_P_S_I;
+	}
+
 	private FinderPath _finderPathCountByC_P_S_I;
+
+	@Override
+	public FinderPath getFinderPathCountByC_P_S_I() {
+		return _finderPathCountByC_P_S_I;
+	}
 
 	/**
 	 * Returns all the groups where companyId = &#63; and parentGroupId = &#63; and site = &#63; and inheritContent = &#63;.
@@ -16236,6 +16651,57 @@ public class GroupPersistenceImpl
 		TableMapperFactory.removeTableMapper("Groups_Roles");
 		TableMapperFactory.removeTableMapper("Groups_UserGroups");
 		TableMapperFactory.removeTableMapper("Users_Groups");
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Group> groups = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Group>> resultMap = new HashMap<>();
+
+			for (Group group : groups) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					GroupModelImpl groupModelImpl = (GroupModelImpl)group;
+
+					arguments.add(groupModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), group);
+				}
+				else {
+					List<Group> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(group);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Group>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Group> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setGroupUtilPersistence(GroupPersistence groupPersistence) {

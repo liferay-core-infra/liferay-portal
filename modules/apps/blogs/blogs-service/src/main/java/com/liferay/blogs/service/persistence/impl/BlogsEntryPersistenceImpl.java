@@ -117,9 +117,42 @@ public class BlogsEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the blogs entries where uuid = &#63;.
@@ -662,7 +695,18 @@ public class BlogsEntryPersistenceImpl
 		"(blogsEntry.uuid IS NULL OR blogsEntry.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the blogs entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -925,8 +969,25 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the blogs entries where uuid = &#63; and companyId = &#63;.
@@ -1518,8 +1579,25 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63;.
@@ -2395,8 +2473,25 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63;.
@@ -2906,7 +3001,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.companyId = ?";
 
 	private FinderPath _finderPathFetchByG_UT;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_UT() {
+		return _finderPathFetchByG_UT;
+	}
+
 	private FinderPath _finderPathCountByG_UT;
+
+	@Override
+	public FinderPath getFinderPathCountByG_UT() {
+		return _finderPathCountByG_UT;
+	}
 
 	/**
 	 * Returns the blogs entry where groupId = &#63; and urlTitle = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -3169,7 +3275,18 @@ public class BlogsEntryPersistenceImpl
 		"(blogsEntry.urlTitle IS NULL OR blogsEntry.urlTitle = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_LtD;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_LtD() {
+		return _finderPathWithPaginationFindByG_LtD;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_LtD;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_LtD() {
+		return _finderPathWithPaginationCountByG_LtD;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and displayDate &lt; &#63;.
@@ -4173,8 +4290,25 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.displayDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_S() {
+		return _finderPathWithPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_S() {
+		return _finderPathWithoutPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and status = &#63;.
@@ -5112,7 +5246,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_NotS() {
+		return _finderPathWithPaginationFindByG_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_NotS() {
+		return _finderPathWithPaginationCountByG_NotS;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and status &ne; &#63;.
@@ -6041,8 +6186,25 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U() {
+		return _finderPathWithPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_U() {
+		return _finderPathWithoutPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathCountByC_U;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U() {
+		return _finderPathCountByC_U;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and userId = &#63;.
@@ -6594,7 +6756,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LtD;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LtD() {
+		return _finderPathWithPaginationFindByC_LtD;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LtD;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LtD() {
+		return _finderPathWithPaginationCountByC_LtD;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and displayDate &lt; &#63;.
@@ -7174,8 +7347,25 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.displayDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S() {
+		return _finderPathWithPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S() {
+		return _finderPathWithoutPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S() {
+		return _finderPathCountByC_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and status = &#63;.
@@ -7727,7 +7917,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_NotS() {
+		return _finderPathWithPaginationFindByC_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_NotS() {
+		return _finderPathWithPaginationCountByC_NotS;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and status &ne; &#63;.
@@ -8269,7 +8470,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtD_S() {
+		return _finderPathWithPaginationFindByLtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtD_S() {
+		return _finderPathWithPaginationCountByLtD_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where displayDate &lt; &#63; and status = &#63;.
@@ -8847,7 +9059,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_LtD;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_LtD() {
+		return _finderPathWithPaginationFindByG_U_LtD;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_U_LtD;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_U_LtD() {
+		return _finderPathWithPaginationCountByG_U_LtD;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and userId = &#63; and displayDate &lt; &#63;.
@@ -9913,9 +10136,32 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.displayDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_S() {
+		return _finderPathWithPaginationFindByG_U_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_U_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_U_S() {
+		return _finderPathWithoutPaginationFindByG_U_S;
+	}
+
 	private FinderPath _finderPathCountByG_U_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_U_S() {
+		return _finderPathCountByG_U_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_U_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_U_S() {
+		return _finderPathWithPaginationCountByG_U_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and userId = &#63; and status = &#63;.
@@ -11450,7 +11696,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_NotS() {
+		return _finderPathWithPaginationFindByG_U_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_U_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_U_NotS() {
+		return _finderPathWithPaginationCountByG_U_NotS;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and userId = &#63; and status &ne; &#63;.
@@ -12442,8 +12699,25 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_D_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_D_S() {
+		return _finderPathWithPaginationFindByG_D_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_D_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_D_S() {
+		return _finderPathWithoutPaginationFindByG_D_S;
+	}
+
 	private FinderPath _finderPathCountByG_D_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_D_S() {
+		return _finderPathCountByG_D_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and displayDate = &#63; and status = &#63;.
@@ -13519,7 +13793,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_GtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_GtD_S() {
+		return _finderPathWithPaginationFindByG_GtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_GtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_GtD_S() {
+		return _finderPathWithPaginationCountByG_GtD_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and displayDate &gt; &#63; and status = &#63;.
@@ -14584,7 +14869,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_LtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_LtD_S() {
+		return _finderPathWithPaginationFindByG_LtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_LtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_LtD_S() {
+		return _finderPathWithPaginationCountByG_LtD_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and displayDate &lt; &#63; and status = &#63;.
@@ -15649,7 +15945,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_LtD_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_LtD_NotS() {
+		return _finderPathWithPaginationFindByG_LtD_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_LtD_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_LtD_NotS() {
+		return _finderPathWithPaginationCountByG_LtD_NotS;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and displayDate &lt; &#63; and status &ne; &#63;.
@@ -16714,8 +17021,25 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U_S() {
+		return _finderPathWithPaginationFindByC_U_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_U_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_U_S() {
+		return _finderPathWithoutPaginationFindByC_U_S;
+	}
+
 	private FinderPath _finderPathCountByC_U_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U_S() {
+		return _finderPathCountByC_U_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and userId = &#63; and status = &#63;.
@@ -17304,7 +17628,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U_NotS() {
+		return _finderPathWithPaginationFindByC_U_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_U_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_U_NotS() {
+		return _finderPathWithPaginationCountByC_U_NotS;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and userId = &#63; and status &ne; &#63;.
@@ -17883,7 +18218,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LtD_S() {
+		return _finderPathWithPaginationFindByC_LtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LtD_S() {
+		return _finderPathWithPaginationCountByC_LtD_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and displayDate &lt; &#63; and status = &#63;.
@@ -18503,7 +18849,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LtD_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LtD_NotS() {
+		return _finderPathWithPaginationFindByC_LtD_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LtD_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LtD_NotS() {
+		return _finderPathWithPaginationCountByC_LtD_NotS;
+	}
 
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and displayDate &lt; &#63; and status &ne; &#63;.
@@ -19126,7 +19483,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_LtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_LtD_S() {
+		return _finderPathWithPaginationFindByG_U_LtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_U_LtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_U_LtD_S() {
+		return _finderPathWithPaginationCountByG_U_LtD_S;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and userId = &#63; and displayDate &lt; &#63; and status = &#63;.
@@ -20254,7 +20622,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_LtD_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_LtD_NotS() {
+		return _finderPathWithPaginationFindByG_U_LtD_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_U_LtD_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_U_LtD_NotS() {
+		return _finderPathWithPaginationCountByG_U_LtD_NotS;
+	}
 
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and userId = &#63; and displayDate &lt; &#63; and status &ne; &#63;.
@@ -21382,7 +21761,18 @@ public class BlogsEntryPersistenceImpl
 		"blogsEntry.status != ?";
 
 	private FinderPath _finderPathFetchByG_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_ERC() {
+		return _finderPathFetchByG_ERC;
+	}
+
 	private FinderPath _finderPathCountByG_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByG_ERC() {
+		return _finderPathCountByG_ERC;
+	}
 
 	/**
 	 * Returns the blogs entry where groupId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -23036,6 +23426,59 @@ public class BlogsEntryPersistenceImpl
 		_setBlogsEntryUtilPersistence(null);
 
 		entityCache.removeCache(BlogsEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<BlogsEntry> blogsEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BlogsEntry>> resultMap = new HashMap<>();
+
+			for (BlogsEntry blogsEntry : blogsEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BlogsEntryModelImpl blogsEntryModelImpl =
+						(BlogsEntryModelImpl)blogsEntry;
+
+					arguments.add(
+						blogsEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), blogsEntry);
+				}
+				else {
+					List<BlogsEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(blogsEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BlogsEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BlogsEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setBlogsEntryUtilPersistence(

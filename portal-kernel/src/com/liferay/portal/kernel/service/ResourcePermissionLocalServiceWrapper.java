@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -894,6 +895,11 @@ public class ResourcePermissionLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_resourcePermissionLocalService.initPortletDefaultPermissions(portlet);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_resourcePermissionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

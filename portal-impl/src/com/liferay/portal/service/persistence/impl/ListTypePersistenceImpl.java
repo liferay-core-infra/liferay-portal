@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.model.ListTypeTable;
 import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
 import com.liferay.portal.kernel.service.persistence.ListTypeUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -46,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,9 +84,42 @@ public class ListTypePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByType() {
+		return _finderPathWithPaginationFindByType;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByType() {
+		return _finderPathWithoutPaginationFindByType;
+	}
+
 	private FinderPath _finderPathCountByType;
+
+	@Override
+	public FinderPath getFinderPathCountByType() {
+		return _finderPathCountByType;
+	}
 
 	/**
 	 * Returns all the list types where type = &#63;.
@@ -612,7 +647,18 @@ public class ListTypePersistenceImpl
 		"(listType.type IS NULL OR listType.type = '')";
 
 	private FinderPath _finderPathFetchByN_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByN_T() {
+		return _finderPathFetchByN_T;
+	}
+
 	private FinderPath _finderPathCountByN_T;
+
+	@Override
+	public FinderPath getFinderPathCountByN_T() {
+		return _finderPathCountByN_T;
+	}
 
 	/**
 	 * Returns the list type where name = &#63; and type = &#63; or throws a <code>NoSuchListTypeException</code> if it could not be found.
@@ -1457,6 +1503,58 @@ public class ListTypePersistenceImpl
 		_setListTypeUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(ListTypeImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ListType> listTypes = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ListType>> resultMap = new HashMap<>();
+
+			for (ListType listType : listTypes) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ListTypeModelImpl listTypeModelImpl =
+						(ListTypeModelImpl)listType;
+
+					arguments.add(listTypeModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), listType);
+				}
+				else {
+					List<ListType> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(listType);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ListType>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ListType> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setListTypeUtilPersistence(

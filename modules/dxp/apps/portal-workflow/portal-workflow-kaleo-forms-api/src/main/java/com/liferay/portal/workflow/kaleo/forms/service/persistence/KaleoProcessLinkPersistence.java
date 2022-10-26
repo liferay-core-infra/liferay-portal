@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.forms.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.workflow.kaleo.forms.exception.NoSuchKaleoProcessLinkException;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcessLink;
@@ -40,6 +41,17 @@ public interface KaleoProcessLinkPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoProcessLinkUtil} to access the kaleo process link persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByKaleoProcessId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoProcessId();
+
+	public FinderPath getFinderPathCountByKaleoProcessId();
 
 	/**
 	 * Returns all the kaleo process links where kaleoProcessId = &#63;.
@@ -184,6 +196,10 @@ public interface KaleoProcessLinkPersistence
 	 * @return the number of matching kaleo process links
 	 */
 	public int countByKaleoProcessId(long kaleoProcessId);
+
+	public FinderPath getFinderPathFetchByKPI_WTN();
+
+	public FinderPath getFinderPathCountByKPI_WTN();
 
 	/**
 	 * Returns the kaleo process link where kaleoProcessId = &#63; and workflowTaskName = &#63; or throws a <code>NoSuchKaleoProcessLinkException</code> if it could not be found.
@@ -357,5 +373,7 @@ public interface KaleoProcessLinkPersistence
 	 * @return the number of kaleo process links
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

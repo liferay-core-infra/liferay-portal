@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -55,6 +56,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,9 +102,42 @@ public class LockPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the locks where uuid = &#63;.
@@ -626,8 +661,25 @@ public class LockPersistenceImpl
 		"(lock_.uuid IS NULL OR lock_.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the locks where uuid = &#63; and companyId = &#63;.
@@ -1201,8 +1253,25 @@ public class LockPersistenceImpl
 		"lock_.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByClassName;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByClassName() {
+		return _finderPathWithPaginationFindByClassName;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByClassName;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByClassName() {
+		return _finderPathWithoutPaginationFindByClassName;
+	}
+
 	private FinderPath _finderPathCountByClassName;
+
+	@Override
+	public FinderPath getFinderPathCountByClassName() {
+		return _finderPathCountByClassName;
+	}
 
 	/**
 	 * Returns all the locks where className = &#63;.
@@ -1733,7 +1802,18 @@ public class LockPersistenceImpl
 		"(lock_.className IS NULL OR lock_.className = '')";
 
 	private FinderPath _finderPathWithPaginationFindByLtExpirationDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtExpirationDate() {
+		return _finderPathWithPaginationFindByLtExpirationDate;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtExpirationDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtExpirationDate() {
+		return _finderPathWithPaginationCountByLtExpirationDate;
+	}
 
 	/**
 	 * Returns all the locks where expirationDate &lt; &#63;.
@@ -2260,7 +2340,18 @@ public class LockPersistenceImpl
 			"lock_.expirationDate < ?";
 
 	private FinderPath _finderPathFetchByC_K;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_K() {
+		return _finderPathFetchByC_K;
+	}
+
 	private FinderPath _finderPathCountByC_K;
+
+	@Override
+	public FinderPath getFinderPathCountByC_K() {
+		return _finderPathCountByC_K;
+	}
 
 	/**
 	 * Returns the lock where className = &#63; and key = &#63; or throws a <code>NoSuchLockException</code> if it could not be found.
@@ -3173,6 +3264,57 @@ public class LockPersistenceImpl
 		_setLockUtilPersistence(null);
 
 		entityCache.removeCache(LockImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Lock> locks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Lock>> resultMap = new HashMap<>();
+
+			for (Lock lock : locks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LockModelImpl lockModelImpl = (LockModelImpl)lock;
+
+					arguments.add(lockModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), lock);
+				}
+				else {
+					List<Lock> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(lock);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Lock>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Lock> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLockUtilPersistence(LockPersistence lockPersistence) {

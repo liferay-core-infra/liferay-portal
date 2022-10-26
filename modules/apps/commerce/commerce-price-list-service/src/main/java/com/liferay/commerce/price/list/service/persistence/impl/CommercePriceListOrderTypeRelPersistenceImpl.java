@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -110,9 +111,42 @@ public class CommercePriceListOrderTypeRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce price list order type rels where uuid = &#63;.
@@ -674,8 +708,25 @@ public class CommercePriceListOrderTypeRelPersistenceImpl
 		"(commercePriceListOrderTypeRel.uuid IS NULL OR commercePriceListOrderTypeRel.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce price list order type rels where uuid = &#63; and companyId = &#63;.
@@ -1280,8 +1331,27 @@ public class CommercePriceListOrderTypeRelPersistenceImpl
 		"commercePriceListOrderTypeRel.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommercePriceListId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommercePriceListId() {
+		return _finderPathWithPaginationFindByCommercePriceListId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommercePriceListId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommercePriceListId() {
+
+		return _finderPathWithoutPaginationFindByCommercePriceListId;
+	}
+
 	private FinderPath _finderPathCountByCommercePriceListId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommercePriceListId() {
+		return _finderPathCountByCommercePriceListId;
+	}
 
 	/**
 	 * Returns all the commerce price list order type rels where commercePriceListId = &#63;.
@@ -1819,7 +1889,18 @@ public class CommercePriceListOrderTypeRelPersistenceImpl
 			"commercePriceListOrderTypeRel.commercePriceListId = ?";
 
 	private FinderPath _finderPathFetchByCPI_COTI;
+
+	@Override
+	public FinderPath getFinderPathFetchByCPI_COTI() {
+		return _finderPathFetchByCPI_COTI;
+	}
+
 	private FinderPath _finderPathCountByCPI_COTI;
+
+	@Override
+	public FinderPath getFinderPathCountByCPI_COTI() {
+		return _finderPathCountByCPI_COTI;
+	}
 
 	/**
 	 * Returns the commerce price list order type rel where commercePriceListId = &#63; and commerceOrderTypeId = &#63; or throws a <code>NoSuchPriceListOrderTypeRelException</code> if it could not be found.
@@ -3025,6 +3106,69 @@ public class CommercePriceListOrderTypeRelPersistenceImpl
 
 		entityCache.removeCache(
 			CommercePriceListOrderTypeRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommercePriceListOrderTypeRel> commercePriceListOrderTypeRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommercePriceListOrderTypeRel>> resultMap =
+				new HashMap<>();
+
+			for (CommercePriceListOrderTypeRel commercePriceListOrderTypeRel :
+					commercePriceListOrderTypeRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommercePriceListOrderTypeRelModelImpl
+						commercePriceListOrderTypeRelModelImpl =
+							(CommercePriceListOrderTypeRelModelImpl)
+								commercePriceListOrderTypeRel;
+
+					arguments.add(
+						commercePriceListOrderTypeRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commercePriceListOrderTypeRel);
+				}
+				else {
+					List<CommercePriceListOrderTypeRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commercePriceListOrderTypeRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommercePriceListOrderTypeRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommercePriceListOrderTypeRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommercePriceListOrderTypeRelUtilPersistence(

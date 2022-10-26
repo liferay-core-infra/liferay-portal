@@ -112,9 +112,42 @@ public class CommercePriceModifierPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where uuid = &#63;.
@@ -669,7 +702,18 @@ public class CommercePriceModifierPersistenceImpl
 		"(commercePriceModifier.uuid IS NULL OR commercePriceModifier.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the commerce price modifier where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchPriceModifierException</code> if it could not be found.
@@ -935,8 +979,25 @@ public class CommercePriceModifierPersistenceImpl
 		"commercePriceModifier.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where uuid = &#63; and companyId = &#63;.
@@ -1536,8 +1597,25 @@ public class CommercePriceModifierPersistenceImpl
 		"commercePriceModifier.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where companyId = &#63;.
@@ -2057,8 +2135,27 @@ public class CommercePriceModifierPersistenceImpl
 		"commercePriceModifier.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommercePriceListId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommercePriceListId() {
+		return _finderPathWithPaginationFindByCommercePriceListId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommercePriceListId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommercePriceListId() {
+
+		return _finderPathWithoutPaginationFindByCommercePriceListId;
+	}
+
 	private FinderPath _finderPathCountByCommercePriceListId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommercePriceListId() {
+		return _finderPathCountByCommercePriceListId;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where commercePriceListId = &#63;.
@@ -2588,8 +2685,25 @@ public class CommercePriceModifierPersistenceImpl
 			"commercePriceModifier.commercePriceListId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_T() {
+		return _finderPathWithPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_T() {
+		return _finderPathWithoutPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathCountByC_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_T() {
+		return _finderPathCountByC_T;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where companyId = &#63; and target = &#63;.
@@ -3189,7 +3303,18 @@ public class CommercePriceModifierPersistenceImpl
 		"(commercePriceModifier.target IS NULL OR commercePriceModifier.target = '')";
 
 	private FinderPath _finderPathWithPaginationFindByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtD_S() {
+		return _finderPathWithPaginationFindByLtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtD_S() {
+		return _finderPathWithPaginationCountByLtD_S;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where displayDate &lt; &#63; and status = &#63;.
@@ -3775,7 +3900,18 @@ public class CommercePriceModifierPersistenceImpl
 		"commercePriceModifier.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtE_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtE_S() {
+		return _finderPathWithPaginationFindByLtE_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtE_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtE_S() {
+		return _finderPathWithPaginationCountByLtE_S;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where expirationDate &lt; &#63; and status = &#63;.
@@ -4361,9 +4497,32 @@ public class CommercePriceModifierPersistenceImpl
 		"commercePriceModifier.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_S() {
+		return _finderPathWithPaginationFindByG_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_S() {
+		return _finderPathWithoutPaginationFindByG_C_S;
+	}
+
 	private FinderPath _finderPathCountByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_S() {
+		return _finderPathCountByG_C_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_S() {
+		return _finderPathWithPaginationCountByG_C_S;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where groupId = &#63; and companyId = &#63; and status = &#63;.
@@ -5264,7 +5423,18 @@ public class CommercePriceModifierPersistenceImpl
 		"commercePriceModifier.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_NotS() {
+		return _finderPathWithPaginationFindByG_C_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_NotS() {
+		return _finderPathWithPaginationCountByG_C_NotS;
+	}
 
 	/**
 	 * Returns all the commerce price modifiers where groupId = &#63; and companyId = &#63; and status &ne; &#63;.
@@ -6156,7 +6326,18 @@ public class CommercePriceModifierPersistenceImpl
 		"commercePriceModifier.status != ?";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the commerce price modifier where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchPriceModifierException</code> if it could not be found.
@@ -7511,6 +7692,66 @@ public class CommercePriceModifierPersistenceImpl
 		_setCommercePriceModifierUtilPersistence(null);
 
 		entityCache.removeCache(CommercePriceModifierImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommercePriceModifier> commercePriceModifiers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommercePriceModifier>> resultMap =
+				new HashMap<>();
+
+			for (CommercePriceModifier commercePriceModifier :
+					commercePriceModifiers) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommercePriceModifierModelImpl
+						commercePriceModifierModelImpl =
+							(CommercePriceModifierModelImpl)
+								commercePriceModifier;
+
+					arguments.add(
+						commercePriceModifierModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commercePriceModifier);
+				}
+				else {
+					List<CommercePriceModifier> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commercePriceModifier);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommercePriceModifier>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommercePriceModifier> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommercePriceModifierUtilPersistence(

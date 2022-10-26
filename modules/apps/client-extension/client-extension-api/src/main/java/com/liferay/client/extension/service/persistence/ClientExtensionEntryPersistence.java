@@ -16,6 +16,7 @@ package com.liferay.client.extension.service.persistence;
 
 import com.liferay.client.extension.exception.NoSuchClientExtensionEntryException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface ClientExtensionEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ClientExtensionEntryUtil} to access the client extension entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the client extension entries where uuid = &#63;.
@@ -249,6 +261,12 @@ public interface ClientExtensionEntryPersistence
 	 * @return the number of matching client extension entries that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the client extension entries where uuid = &#63; and companyId = &#63;.
@@ -475,6 +493,12 @@ public interface ClientExtensionEntryPersistence
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the client extension entries where companyId = &#63;.
 	 *
@@ -682,6 +706,12 @@ public interface ClientExtensionEntryPersistence
 	 * @return the number of matching client extension entries that the user has permission to view
 	 */
 	public int filterCountByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_T();
+
+	public FinderPath getFinderPathCountByC_T();
 
 	/**
 	 * Returns all the client extension entries where companyId = &#63; and type = &#63;.
@@ -908,6 +938,10 @@ public interface ClientExtensionEntryPersistence
 	 */
 	public int filterCountByC_T(long companyId, String type);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the client extension entry where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchClientExtensionEntryException</code> if it could not be found.
 	 *
@@ -1082,5 +1116,7 @@ public interface ClientExtensionEntryPersistence
 	 * @return the number of client extension entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

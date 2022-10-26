@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -106,9 +107,42 @@ public class AssetCategoryPropertyPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the asset category properties where companyId = &#63;.
@@ -628,8 +662,25 @@ public class AssetCategoryPropertyPersistenceImpl
 		"assetCategoryProperty.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCategoryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCategoryId() {
+		return _finderPathWithPaginationFindByCategoryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCategoryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCategoryId() {
+		return _finderPathWithoutPaginationFindByCategoryId;
+	}
+
 	private FinderPath _finderPathCountByCategoryId;
+
+	@Override
+	public FinderPath getFinderPathCountByCategoryId() {
+		return _finderPathCountByCategoryId;
+	}
 
 	/**
 	 * Returns all the asset category properties where categoryId = &#63;.
@@ -1150,8 +1201,25 @@ public class AssetCategoryPropertyPersistenceImpl
 		"assetCategoryProperty.categoryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_K;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_K() {
+		return _finderPathWithPaginationFindByC_K;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_K;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_K() {
+		return _finderPathWithoutPaginationFindByC_K;
+	}
+
 	private FinderPath _finderPathCountByC_K;
+
+	@Override
+	public FinderPath getFinderPathCountByC_K() {
+		return _finderPathCountByC_K;
+	}
 
 	/**
 	 * Returns all the asset category properties where companyId = &#63; and key = &#63;.
@@ -1748,7 +1816,18 @@ public class AssetCategoryPropertyPersistenceImpl
 		"(assetCategoryProperty.key IS NULL OR assetCategoryProperty.key = '')";
 
 	private FinderPath _finderPathFetchByCA_K;
+
+	@Override
+	public FinderPath getFinderPathFetchByCA_K() {
+		return _finderPathFetchByCA_K;
+	}
+
 	private FinderPath _finderPathCountByCA_K;
+
+	@Override
+	public FinderPath getFinderPathCountByCA_K() {
+		return _finderPathCountByCA_K;
+	}
 
 	/**
 	 * Returns the asset category property where categoryId = &#63; and key = &#63; or throws a <code>NoSuchCategoryPropertyException</code> if it could not be found.
@@ -2920,6 +2999,66 @@ public class AssetCategoryPropertyPersistenceImpl
 		_setAssetCategoryPropertyUtilPersistence(null);
 
 		entityCache.removeCache(AssetCategoryPropertyImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AssetCategoryProperty> assetCategoryPropertys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetCategoryProperty>> resultMap =
+				new HashMap<>();
+
+			for (AssetCategoryProperty assetCategoryProperty :
+					assetCategoryPropertys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetCategoryPropertyModelImpl
+						assetCategoryPropertyModelImpl =
+							(AssetCategoryPropertyModelImpl)
+								assetCategoryProperty;
+
+					arguments.add(
+						assetCategoryPropertyModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), assetCategoryProperty);
+				}
+				else {
+					List<AssetCategoryProperty> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(assetCategoryProperty);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetCategoryProperty>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetCategoryProperty> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAssetCategoryPropertyUtilPersistence(

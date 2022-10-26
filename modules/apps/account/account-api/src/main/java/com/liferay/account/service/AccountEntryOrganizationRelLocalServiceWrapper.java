@@ -14,6 +14,7 @@
 
 package com.liferay.account.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -464,6 +465,11 @@ public class AccountEntryOrganizationRelLocalServiceWrapper
 
 		return _accountEntryOrganizationRelLocalService.
 			hasAccountEntryOrganizationRel(accountEntryId, organizationId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_accountEntryOrganizationRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

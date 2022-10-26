@@ -16,6 +16,7 @@ package com.liferay.account.service.persistence;
 
 import com.liferay.account.exception.NoSuchGroupRelException;
 import com.liferay.account.model.AccountGroupRel;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface AccountGroupRelPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountGroupRelUtil} to access the account group rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByAccountGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByAccountGroupId();
+
+	public FinderPath getFinderPathCountByAccountGroupId();
 
 	/**
 	 * Returns all the account group rels where accountGroupId = &#63;.
@@ -184,6 +196,12 @@ public interface AccountGroupRelPersistence
 	 * @return the number of matching account group rels
 	 */
 	public int countByAccountGroupId(long accountGroupId);
+
+	public FinderPath getFinderPathWithPaginationFindByA_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByA_C();
+
+	public FinderPath getFinderPathCountByA_C();
 
 	/**
 	 * Returns all the account group rels where accountGroupId = &#63; and classNameId = &#63;.
@@ -340,6 +358,12 @@ public interface AccountGroupRelPersistence
 	 */
 	public int countByA_C(long accountGroupId, long classNameId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
+
 	/**
 	 * Returns all the account group rels where classNameId = &#63; and classPK = &#63;.
 	 *
@@ -494,6 +518,10 @@ public interface AccountGroupRelPersistence
 	 * @return the number of matching account group rels
 	 */
 	public int countByC_C(long classNameId, long classPK);
+
+	public FinderPath getFinderPathFetchByA_C_C();
+
+	public FinderPath getFinderPathCountByA_C_C();
 
 	/**
 	 * Returns the account group rel where accountGroupId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchGroupRelException</code> if it could not be found.
@@ -674,5 +702,7 @@ public interface AccountGroupRelPersistence
 	 * @return the number of account group rels
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

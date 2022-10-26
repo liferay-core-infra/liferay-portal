@@ -126,6 +126,42 @@ public class CommerceMLForecastAlertEntryUtil {
 			commerceMLForecastAlertEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the commerce ml forecast alert entries where uuid = &#63;.
 	 *
@@ -295,6 +331,24 @@ public class CommerceMLForecastAlertEntryUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -486,6 +540,18 @@ public class CommerceMLForecastAlertEntryUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C_T() {
+
+		return getPersistence().getFinderPathFetchByC_C_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_T() {
+
+		return getPersistence().getFinderPathCountByC_C_T();
+	}
+
 	/**
 	 * Returns the commerce ml forecast alert entry where companyId = &#63; and commerceAccountId = &#63; and timestamp = &#63; or throws a <code>NoSuchMLForecastAlertEntryException</code> if it could not be found.
 	 *
@@ -566,6 +632,30 @@ public class CommerceMLForecastAlertEntryUtil {
 
 		return getPersistence().countByC_C_T(
 			companyId, commerceAccountId, timestamp);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_S() {
+
+		return getPersistence().getFinderPathCountByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_C_S();
 	}
 
 	/**
@@ -886,6 +976,18 @@ public class CommerceMLForecastAlertEntryUtil {
 
 		return getPersistence().countByC_C_S(
 			companyId, commerceAccountIds, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C_GtRc_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C_GtRc_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_C_GtRc_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_C_GtRc_S();
 	}
 
 	/**
@@ -1238,6 +1340,18 @@ public class CommerceMLForecastAlertEntryUtil {
 
 		return getPersistence().countByC_C_GtRc_S(
 			companyId, commerceAccountIds, relativeChange, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C_LtRc_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C_LtRc_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_C_LtRc_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_C_LtRc_S();
 	}
 
 	/**
@@ -1757,6 +1871,12 @@ public class CommerceMLForecastAlertEntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceMLForecastAlertEntryPersistence getPersistence() {

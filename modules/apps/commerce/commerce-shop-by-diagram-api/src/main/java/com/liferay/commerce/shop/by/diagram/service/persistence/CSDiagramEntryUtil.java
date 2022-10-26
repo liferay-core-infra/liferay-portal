@@ -119,6 +119,44 @@ public class CSDiagramEntryUtil {
 		return getPersistence().update(csDiagramEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCPDefinitionId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCPDefinitionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCPDefinitionId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCPDefinitionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCPDefinitionId() {
+
+		return getPersistence().getFinderPathCountByCPDefinitionId();
+	}
+
 	/**
 	 * Returns all the cs diagram entries where CPDefinitionId = &#63;.
 	 *
@@ -298,6 +336,25 @@ public class CSDiagramEntryUtil {
 		return getPersistence().countByCPDefinitionId(CPDefinitionId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCPInstanceId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCPInstanceId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCPInstanceId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCPInstanceId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCPInstanceId() {
+
+		return getPersistence().getFinderPathCountByCPInstanceId();
+	}
+
 	/**
 	 * Returns all the cs diagram entries where CPInstanceId = &#63;.
 	 *
@@ -472,6 +529,18 @@ public class CSDiagramEntryUtil {
 	 */
 	public static int countByCPInstanceId(long CPInstanceId) {
 		return getPersistence().countByCPInstanceId(CPInstanceId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByCPDI_S() {
+
+		return getPersistence().getFinderPathFetchByCPDI_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCPDI_S() {
+
+		return getPersistence().getFinderPathCountByCPDI_S();
 	}
 
 	/**
@@ -692,6 +761,12 @@ public class CSDiagramEntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CSDiagramEntryPersistence getPersistence() {

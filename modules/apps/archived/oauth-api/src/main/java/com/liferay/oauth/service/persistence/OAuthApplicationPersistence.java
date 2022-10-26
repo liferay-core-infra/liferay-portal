@@ -16,6 +16,7 @@ package com.liferay.oauth.service.persistence;
 
 import com.liferay.oauth.exception.NoSuchApplicationException;
 import com.liferay.oauth.model.OAuthApplication;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface OAuthApplicationPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OAuthApplicationUtil} to access the o auth application persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the o auth applications where companyId = &#63;.
@@ -249,6 +261,12 @@ public interface OAuthApplicationPersistence
 	 */
 	public int filterCountByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the o auth applications where userId = &#63;.
 	 *
@@ -456,6 +474,10 @@ public interface OAuthApplicationPersistence
 	 */
 	public int filterCountByUserId(long userId);
 
+	public FinderPath getFinderPathFetchByConsumerKey();
+
+	public FinderPath getFinderPathCountByConsumerKey();
+
 	/**
 	 * Returns the o auth application where consumerKey = &#63; or throws a <code>NoSuchApplicationException</code> if it could not be found.
 	 *
@@ -500,6 +522,10 @@ public interface OAuthApplicationPersistence
 	 * @return the number of matching o auth applications
 	 */
 	public int countByConsumerKey(String consumerKey);
+
+	public FinderPath getFinderPathWithPaginationFindByC_LikeN();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LikeN();
 
 	/**
 	 * Returns all the o auth applications where companyId = &#63; and name LIKE &#63;.
@@ -725,6 +751,10 @@ public interface OAuthApplicationPersistence
 	 * @return the number of matching o auth applications that the user has permission to view
 	 */
 	public int filterCountByC_LikeN(long companyId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByU_LikeN();
+
+	public FinderPath getFinderPathWithPaginationCountByU_LikeN();
 
 	/**
 	 * Returns all the o auth applications where userId = &#63; and name LIKE &#63;.
@@ -1070,5 +1100,7 @@ public interface OAuthApplicationPersistence
 	 * @return the number of o auth applications
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

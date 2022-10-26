@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -49,6 +50,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -87,8 +89,35 @@ public class CompanyPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathFetchByWebId;
+
+	@Override
+	public FinderPath getFinderPathFetchByWebId() {
+		return _finderPathFetchByWebId;
+	}
+
 	private FinderPath _finderPathCountByWebId;
+
+	@Override
+	public FinderPath getFinderPathCountByWebId() {
+		return _finderPathCountByWebId;
+	}
 
 	/**
 	 * Returns the company where webId = &#63; or throws a <code>NoSuchCompanyException</code> if it could not be found.
@@ -310,7 +339,18 @@ public class CompanyPersistenceImpl
 		"(company.webId IS NULL OR company.webId = '')";
 
 	private FinderPath _finderPathFetchByMx;
+
+	@Override
+	public FinderPath getFinderPathFetchByMx() {
+		return _finderPathFetchByMx;
+	}
+
 	private FinderPath _finderPathCountByMx;
+
+	@Override
+	public FinderPath getFinderPathCountByMx() {
+		return _finderPathCountByMx;
+	}
 
 	/**
 	 * Returns the company where mx = &#63; or throws a <code>NoSuchCompanyException</code> if it could not be found.
@@ -546,7 +586,18 @@ public class CompanyPersistenceImpl
 		"(company.mx IS NULL OR company.mx = '')";
 
 	private FinderPath _finderPathFetchByLogoId;
+
+	@Override
+	public FinderPath getFinderPathFetchByLogoId() {
+		return _finderPathFetchByLogoId;
+	}
+
 	private FinderPath _finderPathCountByLogoId;
+
+	@Override
+	public FinderPath getFinderPathCountByLogoId() {
+		return _finderPathCountByLogoId;
+	}
 
 	/**
 	 * Returns the company where logoId = &#63; or throws a <code>NoSuchCompanyException</code> if it could not be found.
@@ -1376,6 +1427,58 @@ public class CompanyPersistenceImpl
 		_setCompanyUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(CompanyImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Company> companys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Company>> resultMap = new HashMap<>();
+
+			for (Company company : companys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CompanyModelImpl companyModelImpl =
+						(CompanyModelImpl)company;
+
+					arguments.add(companyModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), company);
+				}
+				else {
+					List<Company> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(company);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Company>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Company> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCompanyUtilPersistence(

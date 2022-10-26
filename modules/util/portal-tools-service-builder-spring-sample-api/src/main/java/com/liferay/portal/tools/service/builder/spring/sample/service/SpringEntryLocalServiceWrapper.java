@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.spring.sample.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -355,6 +356,11 @@ public class SpringEntryLocalServiceWrapper
 
 		return _springEntryLocalService.getSpringEntryByUuidAndCompanyId(
 			uuid, companyId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_springEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

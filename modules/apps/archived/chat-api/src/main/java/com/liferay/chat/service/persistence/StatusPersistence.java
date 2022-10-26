@@ -16,6 +16,7 @@ package com.liferay.chat.service.persistence;
 
 import com.liferay.chat.exception.NoSuchStatusException;
 import com.liferay.chat.model.Status;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,15 @@ public interface StatusPersistence extends BasePersistence<Status> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link StatusUtil} to access the status persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathFetchByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
 
 	/**
 	 * Returns the status where userId = &#63; or throws a <code>NoSuchStatusException</code> if it could not be found.
@@ -81,6 +91,12 @@ public interface StatusPersistence extends BasePersistence<Status> {
 	 * @return the number of matching statuses
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByModifiedDate();
+
+	public FinderPath getFinderPathWithoutPaginationFindByModifiedDate();
+
+	public FinderPath getFinderPathCountByModifiedDate();
 
 	/**
 	 * Returns all the statuses where modifiedDate = &#63;.
@@ -225,6 +241,12 @@ public interface StatusPersistence extends BasePersistence<Status> {
 	 */
 	public int countByModifiedDate(long modifiedDate);
 
+	public FinderPath getFinderPathWithPaginationFindByOnline();
+
+	public FinderPath getFinderPathWithoutPaginationFindByOnline();
+
+	public FinderPath getFinderPathCountByOnline();
+
 	/**
 	 * Returns all the statuses where online = &#63;.
 	 *
@@ -367,6 +389,12 @@ public interface StatusPersistence extends BasePersistence<Status> {
 	 * @return the number of matching statuses
 	 */
 	public int countByOnline(boolean online);
+
+	public FinderPath getFinderPathWithPaginationFindByM_O();
+
+	public FinderPath getFinderPathWithoutPaginationFindByM_O();
+
+	public FinderPath getFinderPathCountByM_O();
 
 	/**
 	 * Returns all the statuses where modifiedDate = &#63; and online = &#63;.
@@ -639,5 +667,7 @@ public interface StatusPersistence extends BasePersistence<Status> {
 	 * @return the number of statuses
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

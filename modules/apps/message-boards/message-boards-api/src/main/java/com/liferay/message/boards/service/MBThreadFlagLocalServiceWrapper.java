@@ -16,6 +16,7 @@ package com.liferay.message.boards.service;
 
 import com.liferay.message.boards.model.MBThreadFlag;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -426,6 +427,11 @@ public class MBThreadFlagLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _mbThreadFlagLocalService.hasThreadFlag(userId, thread);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_mbThreadFlagLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

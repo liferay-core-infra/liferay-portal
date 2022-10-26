@@ -16,6 +16,7 @@ package com.liferay.commerce.inventory.service.persistence;
 
 import com.liferay.commerce.inventory.exception.NoSuchInventoryReplenishmentItemException;
 import com.liferay.commerce.inventory.model.CommerceInventoryReplenishmentItem;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceInventoryReplenishmentItemUtil} to access the commerce inventory replenishment item persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce inventory replenishment items where uuid = &#63;.
@@ -186,6 +198,12 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	 * @return the number of matching commerce inventory replenishment items
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce inventory replenishment items where uuid = &#63; and companyId = &#63;.
@@ -343,6 +361,14 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceInventoryWarehouseId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceInventoryWarehouseId();
+
+	public FinderPath getFinderPathCountByCommerceInventoryWarehouseId();
+
 	/**
 	 * Returns all the commerce inventory replenishment items where commerceInventoryWarehouseId = &#63;.
 	 *
@@ -498,6 +524,12 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	public int countByCommerceInventoryWarehouseId(
 		long commerceInventoryWarehouseId);
 
+	public FinderPath getFinderPathWithPaginationFindBySku();
+
+	public FinderPath getFinderPathWithoutPaginationFindBySku();
+
+	public FinderPath getFinderPathCountBySku();
+
 	/**
 	 * Returns all the commerce inventory replenishment items where sku = &#63;.
 	 *
@@ -641,6 +673,12 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	 * @return the number of matching commerce inventory replenishment items
 	 */
 	public int countBySku(String sku);
+
+	public FinderPath getFinderPathWithPaginationFindByAvailabilityDate();
+
+	public FinderPath getFinderPathWithoutPaginationFindByAvailabilityDate();
+
+	public FinderPath getFinderPathCountByAvailabilityDate();
 
 	/**
 	 * Returns all the commerce inventory replenishment items where availabilityDate = &#63;.
@@ -789,6 +827,12 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	 * @return the number of matching commerce inventory replenishment items
 	 */
 	public int countByAvailabilityDate(Date availabilityDate);
+
+	public FinderPath getFinderPathWithPaginationFindByC_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_S();
+
+	public FinderPath getFinderPathCountByC_S();
 
 	/**
 	 * Returns all the commerce inventory replenishment items where companyId = &#63; and sku = &#63;.
@@ -946,6 +990,12 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	 */
 	public int countByC_S(long companyId, String sku);
 
+	public FinderPath getFinderPathWithPaginationFindByS_AD();
+
+	public FinderPath getFinderPathWithoutPaginationFindByS_AD();
+
+	public FinderPath getFinderPathCountByS_AD();
+
 	/**
 	 * Returns all the commerce inventory replenishment items where sku = &#63; and availabilityDate = &#63;.
 	 *
@@ -1101,6 +1151,10 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	 * @return the number of matching commerce inventory replenishment items
 	 */
 	public int countByS_AD(String sku, Date availabilityDate);
+
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
 
 	/**
 	 * Returns the commerce inventory replenishment item where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchInventoryReplenishmentItemException</code> if it could not be found.
@@ -1283,5 +1337,7 @@ public interface CommerceInventoryReplenishmentItemPersistence
 	 * @return the number of commerce inventory replenishment items
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

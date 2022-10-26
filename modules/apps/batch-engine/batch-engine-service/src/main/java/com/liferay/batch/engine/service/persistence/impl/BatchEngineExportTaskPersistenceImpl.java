@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,9 +103,42 @@ public class BatchEngineExportTaskPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the batch engine export tasks where uuid = &#63;.
@@ -643,8 +678,25 @@ public class BatchEngineExportTaskPersistenceImpl
 		"(batchEngineExportTask.uuid IS NULL OR batchEngineExportTask.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the batch engine export tasks where uuid = &#63; and companyId = &#63;.
@@ -1229,8 +1281,25 @@ public class BatchEngineExportTaskPersistenceImpl
 		"batchEngineExportTask.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the batch engine export tasks where companyId = &#63;.
@@ -1735,8 +1804,25 @@ public class BatchEngineExportTaskPersistenceImpl
 		"batchEngineExportTask.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByExecuteStatus;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByExecuteStatus() {
+		return _finderPathWithPaginationFindByExecuteStatus;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByExecuteStatus;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByExecuteStatus() {
+		return _finderPathWithoutPaginationFindByExecuteStatus;
+	}
+
 	private FinderPath _finderPathCountByExecuteStatus;
+
+	@Override
+	public FinderPath getFinderPathCountByExecuteStatus() {
+		return _finderPathCountByExecuteStatus;
+	}
 
 	/**
 	 * Returns all the batch engine export tasks where executeStatus = &#63;.
@@ -2289,7 +2375,18 @@ public class BatchEngineExportTaskPersistenceImpl
 		"(batchEngineExportTask.executeStatus IS NULL OR batchEngineExportTask.executeStatus = '')";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the batch engine export task where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchExportTaskException</code> if it could not be found.
@@ -3261,6 +3358,66 @@ public class BatchEngineExportTaskPersistenceImpl
 		_setBatchEngineExportTaskUtilPersistence(null);
 
 		entityCache.removeCache(BatchEngineExportTaskImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<BatchEngineExportTask> batchEngineExportTasks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BatchEngineExportTask>> resultMap =
+				new HashMap<>();
+
+			for (BatchEngineExportTask batchEngineExportTask :
+					batchEngineExportTasks) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BatchEngineExportTaskModelImpl
+						batchEngineExportTaskModelImpl =
+							(BatchEngineExportTaskModelImpl)
+								batchEngineExportTask;
+
+					arguments.add(
+						batchEngineExportTaskModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), batchEngineExportTask);
+				}
+				else {
+					List<BatchEngineExportTask> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(batchEngineExportTask);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BatchEngineExportTask>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BatchEngineExportTask> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setBatchEngineExportTaskUtilPersistence(

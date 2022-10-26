@@ -120,6 +120,37 @@ public class SamlIdpSpSessionUtil {
 		return getPersistence().update(samlIdpSpSession, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtCreateDate() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLtCreateDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtCreateDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtCreateDate();
+	}
+
 	/**
 	 * Returns all the saml idp sp sessions where createDate &lt; &#63;.
 	 *
@@ -294,6 +325,26 @@ public class SamlIdpSpSessionUtil {
 	 */
 	public static int countByLtCreateDate(Date createDate) {
 		return getPersistence().countByLtCreateDate(createDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindBySamlIdpSsoSessionId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindBySamlIdpSsoSessionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindBySamlIdpSsoSessionId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindBySamlIdpSsoSessionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySamlIdpSsoSessionId() {
+
+		return getPersistence().getFinderPathCountBySamlIdpSsoSessionId();
 	}
 
 	/**
@@ -626,6 +677,12 @@ public class SamlIdpSpSessionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SamlIdpSpSessionPersistence getPersistence() {

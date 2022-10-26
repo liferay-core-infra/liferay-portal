@@ -122,6 +122,42 @@ public class CountryLocalizationUtil {
 		return getPersistence().update(countryLocalization, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCountryId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCountryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCountryId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCountryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCountryId() {
+
+		return getPersistence().getFinderPathCountByCountryId();
+	}
+
 	/**
 	 * Returns all the country localizations where countryId = &#63;.
 	 *
@@ -296,6 +332,18 @@ public class CountryLocalizationUtil {
 	 */
 	public static int countByCountryId(long countryId) {
 		return getPersistence().countByCountryId(countryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByCountryId_LanguageId() {
+
+		return getPersistence().getFinderPathFetchByCountryId_LanguageId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCountryId_LanguageId() {
+
+		return getPersistence().getFinderPathCountByCountryId_LanguageId();
 	}
 
 	/**
@@ -530,6 +578,12 @@ public class CountryLocalizationUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CountryLocalizationPersistence getPersistence() {

@@ -16,6 +16,7 @@ package com.liferay.friendly.url.service;
 
 import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -605,6 +606,11 @@ public class FriendlyURLEntryLocalServiceWrapper
 
 		return _friendlyURLEntryLocalService.getUniqueUrlTitle(
 			groupId, classNameId, classPK, urlTitle, languageId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_friendlyURLEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

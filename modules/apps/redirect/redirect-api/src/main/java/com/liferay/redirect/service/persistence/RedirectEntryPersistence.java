@@ -14,6 +14,7 @@
 
 package com.liferay.redirect.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.redirect.exception.NoSuchEntryException;
 import com.liferay.redirect.model.RedirectEntry;
@@ -40,6 +41,17 @@ public interface RedirectEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RedirectEntryUtil} to access the redirect entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the redirect entries where uuid = &#63;.
@@ -184,6 +196,10 @@ public interface RedirectEntryPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the redirect entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -233,6 +249,12 @@ public interface RedirectEntryPersistence
 	 * @return the number of matching redirect entries
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the redirect entries where uuid = &#63; and companyId = &#63;.
@@ -388,6 +410,12 @@ public interface RedirectEntryPersistence
 	 * @return the number of matching redirect entries
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the redirect entries where groupId = &#63;.
@@ -595,6 +623,12 @@ public interface RedirectEntryPersistence
 	 * @return the number of matching redirect entries that the user has permission to view
 	 */
 	public int filterCountByGroupId(long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_D();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_D();
+
+	public FinderPath getFinderPathCountByG_D();
 
 	/**
 	 * Returns all the redirect entries where groupId = &#63; and destinationURL = &#63;.
@@ -821,6 +855,10 @@ public interface RedirectEntryPersistence
 	 */
 	public int filterCountByG_D(long groupId, String destinationURL);
 
+	public FinderPath getFinderPathFetchByG_S();
+
+	public FinderPath getFinderPathCountByG_S();
+
 	/**
 	 * Returns the redirect entry where groupId = &#63; and sourceURL = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -990,5 +1028,7 @@ public interface RedirectEntryPersistence
 	 * @return the number of redirect entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

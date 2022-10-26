@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -44,6 +45,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -80,9 +83,42 @@ public class LocalizedEntryLocalizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByLocalizedEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLocalizedEntryId() {
+		return _finderPathWithPaginationFindByLocalizedEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLocalizedEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByLocalizedEntryId() {
+		return _finderPathWithoutPaginationFindByLocalizedEntryId;
+	}
+
 	private FinderPath _finderPathCountByLocalizedEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByLocalizedEntryId() {
+		return _finderPathCountByLocalizedEntryId;
+	}
 
 	/**
 	 * Returns all the localized entry localizations where localizedEntryId = &#63;.
@@ -597,7 +633,18 @@ public class LocalizedEntryLocalizationPersistenceImpl
 			"localizedEntryLocalization.localizedEntryId = ?";
 
 	private FinderPath _finderPathFetchByLocalizedEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathFetchByLocalizedEntryId_LanguageId() {
+		return _finderPathFetchByLocalizedEntryId_LanguageId;
+	}
+
 	private FinderPath _finderPathCountByLocalizedEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathCountByLocalizedEntryId_LanguageId() {
+		return _finderPathCountByLocalizedEntryId_LanguageId;
+	}
 
 	/**
 	 * Returns the localized entry localization where localizedEntryId = &#63; and languageId = &#63; or throws a <code>NoSuchLocalizedEntryLocalizationException</code> if it could not be found.
@@ -1490,6 +1537,68 @@ public class LocalizedEntryLocalizationPersistenceImpl
 		_setLocalizedEntryLocalizationUtilPersistence(null);
 
 		entityCache.removeCache(LocalizedEntryLocalizationImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LocalizedEntryLocalization> localizedEntryLocalizations =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LocalizedEntryLocalization>> resultMap =
+				new HashMap<>();
+
+			for (LocalizedEntryLocalization localizedEntryLocalization :
+					localizedEntryLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LocalizedEntryLocalizationModelImpl
+						localizedEntryLocalizationModelImpl =
+							(LocalizedEntryLocalizationModelImpl)
+								localizedEntryLocalization;
+
+					arguments.add(
+						localizedEntryLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						localizedEntryLocalization);
+				}
+				else {
+					List<LocalizedEntryLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(localizedEntryLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LocalizedEntryLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LocalizedEntryLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLocalizedEntryLocalizationUtilPersistence(

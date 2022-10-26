@@ -14,6 +14,7 @@
 
 package com.liferay.sharing.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -814,6 +815,11 @@ public class SharingEntryLocalServiceWrapper
 
 		return _sharingEntryLocalService.hasSharingPermission(
 			toUserId, classNameId, classPK, sharingEntryAction);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_sharingEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

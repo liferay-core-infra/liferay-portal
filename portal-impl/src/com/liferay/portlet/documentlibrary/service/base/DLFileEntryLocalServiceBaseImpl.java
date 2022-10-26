@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -573,6 +574,11 @@ public abstract class DLFileEntryLocalServiceBaseImpl
 	@Override
 	public int getDLFileEntriesCount() {
 		return dlFileEntryPersistence.countAll();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		dlFileEntryPersistence.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.reports.engine.console.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -455,6 +456,11 @@ public class DefinitionLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _definitionLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_definitionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

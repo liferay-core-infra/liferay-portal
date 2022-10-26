@@ -110,9 +110,42 @@ public class FragmentCollectionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the fragment collections where uuid = &#63;.
@@ -665,7 +698,18 @@ public class FragmentCollectionPersistenceImpl
 		"(fragmentCollection.uuid IS NULL OR fragmentCollection.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the fragment collection where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCollectionException</code> if it could not be found.
@@ -928,8 +972,25 @@ public class FragmentCollectionPersistenceImpl
 		"fragmentCollection.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the fragment collections where uuid = &#63; and companyId = &#63;.
@@ -1526,9 +1587,32 @@ public class FragmentCollectionPersistenceImpl
 		"fragmentCollection.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGroupId() {
+		return _finderPathWithPaginationCountByGroupId;
+	}
 
 	/**
 	 * Returns all the fragment collections where groupId = &#63;.
@@ -2304,7 +2388,18 @@ public class FragmentCollectionPersistenceImpl
 		"fragmentCollection.groupId IN (";
 
 	private FinderPath _finderPathFetchByG_FCK;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_FCK() {
+		return _finderPathFetchByG_FCK;
+	}
+
 	private FinderPath _finderPathCountByG_FCK;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCK() {
+		return _finderPathCountByG_FCK;
+	}
 
 	/**
 	 * Returns the fragment collection where groupId = &#63; and fragmentCollectionKey = &#63; or throws a <code>NoSuchCollectionException</code> if it could not be found.
@@ -2575,7 +2670,18 @@ public class FragmentCollectionPersistenceImpl
 		"(fragmentCollection.fragmentCollectionKey IS NULL OR fragmentCollection.fragmentCollectionKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN() {
+		return _finderPathWithPaginationFindByG_LikeN;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN() {
+		return _finderPathWithPaginationCountByG_LikeN;
+	}
 
 	/**
 	 * Returns all the fragment collections where groupId = &#63; and name LIKE &#63;.
@@ -4434,6 +4540,61 @@ public class FragmentCollectionPersistenceImpl
 		_setFragmentCollectionUtilPersistence(null);
 
 		entityCache.removeCache(FragmentCollectionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<FragmentCollection> fragmentCollections = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<FragmentCollection>> resultMap =
+				new HashMap<>();
+
+			for (FragmentCollection fragmentCollection : fragmentCollections) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					FragmentCollectionModelImpl fragmentCollectionModelImpl =
+						(FragmentCollectionModelImpl)fragmentCollection;
+
+					arguments.add(
+						fragmentCollectionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), fragmentCollection);
+				}
+				else {
+					List<FragmentCollection> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(fragmentCollection);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<FragmentCollection>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<FragmentCollection> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setFragmentCollectionUtilPersistence(

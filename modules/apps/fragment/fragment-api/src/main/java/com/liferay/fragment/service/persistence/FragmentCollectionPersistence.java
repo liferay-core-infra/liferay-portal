@@ -16,6 +16,7 @@ package com.liferay.fragment.service.persistence;
 
 import com.liferay.fragment.exception.NoSuchCollectionException;
 import com.liferay.fragment.model.FragmentCollection;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface FragmentCollectionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link FragmentCollectionUtil} to access the fragment collection persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the fragment collections where uuid = &#63;.
@@ -186,6 +198,10 @@ public interface FragmentCollectionPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the fragment collection where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCollectionException</code> if it could not be found.
 	 *
@@ -235,6 +251,12 @@ public interface FragmentCollectionPersistence
 	 * @return the number of matching fragment collections
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the fragment collections where uuid = &#63; and companyId = &#63;.
@@ -390,6 +412,14 @@ public interface FragmentCollectionPersistence
 	 * @return the number of matching fragment collections
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
+	public FinderPath getFinderPathWithPaginationCountByGroupId();
 
 	/**
 	 * Returns all the fragment collections where groupId = &#63;.
@@ -607,6 +637,10 @@ public interface FragmentCollectionPersistence
 	 */
 	public int countByGroupId(long[] groupIds);
 
+	public FinderPath getFinderPathFetchByG_FCK();
+
+	public FinderPath getFinderPathCountByG_FCK();
+
 	/**
 	 * Returns the fragment collection where groupId = &#63; and fragmentCollectionKey = &#63; or throws a <code>NoSuchCollectionException</code> if it could not be found.
 	 *
@@ -659,6 +693,10 @@ public interface FragmentCollectionPersistence
 	 * @return the number of matching fragment collections
 	 */
 	public int countByG_FCK(long groupId, String fragmentCollectionKey);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN();
 
 	/**
 	 * Returns all the fragment collections where groupId = &#63; and name LIKE &#63;.
@@ -1014,5 +1052,7 @@ public interface FragmentCollectionPersistence
 	 * @return the number of fragment collections
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

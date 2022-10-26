@@ -16,6 +16,7 @@ package com.liferay.mail.reader.service.persistence;
 
 import com.liferay.mail.reader.exception.NoSuchAccountException;
 import com.liferay.mail.reader.model.Account;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface AccountPersistence extends BasePersistence<Account> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountUtil} to access the account persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
 
 	/**
 	 * Returns all the accounts where userId = &#63;.
@@ -182,6 +194,10 @@ public interface AccountPersistence extends BasePersistence<Account> {
 	 * @return the number of matching accounts
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathFetchByU_A();
+
+	public FinderPath getFinderPathCountByU_A();
 
 	/**
 	 * Returns the account where userId = &#63; and address = &#63; or throws a <code>NoSuchAccountException</code> if it could not be found.
@@ -351,5 +367,7 @@ public interface AccountPersistence extends BasePersistence<Account> {
 	 * @return the number of accounts
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

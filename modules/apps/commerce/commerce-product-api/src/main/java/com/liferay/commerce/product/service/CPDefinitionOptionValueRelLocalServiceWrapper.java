@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CPDefinitionOptionValueRel;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -571,6 +572,11 @@ public class CPDefinitionOptionValueRelLocalServiceWrapper
 
 		_cpDefinitionOptionValueRelLocalService.importCPDefinitionOptionRels(
 			cpDefinitionOptionRelId, serviceContext);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_cpDefinitionOptionValueRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

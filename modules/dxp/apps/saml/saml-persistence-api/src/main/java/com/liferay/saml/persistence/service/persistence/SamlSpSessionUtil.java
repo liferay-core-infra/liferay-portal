@@ -119,6 +119,44 @@ public class SamlSpSessionUtil {
 		return getPersistence().update(samlSpSession, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindBySamlPeerBindingId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindBySamlPeerBindingId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindBySamlPeerBindingId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindBySamlPeerBindingId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySamlPeerBindingId() {
+
+		return getPersistence().getFinderPathCountBySamlPeerBindingId();
+	}
+
 	/**
 	 * Returns all the saml sp sessions where samlPeerBindingId = &#63;.
 	 *
@@ -295,6 +333,18 @@ public class SamlSpSessionUtil {
 		return getPersistence().countBySamlPeerBindingId(samlPeerBindingId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByJSessionId() {
+
+		return getPersistence().getFinderPathFetchByJSessionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByJSessionId() {
+
+		return getPersistence().getFinderPathCountByJSessionId();
+	}
+
 	/**
 	 * Returns the saml sp session where jSessionId = &#63; or throws a <code>NoSuchSpSessionException</code> if it could not be found.
 	 *
@@ -351,6 +401,18 @@ public class SamlSpSessionUtil {
 	 */
 	public static int countByJSessionId(String jSessionId) {
 		return getPersistence().countByJSessionId(jSessionId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchBySamlSpSessionKey() {
+
+		return getPersistence().getFinderPathFetchBySamlSpSessionKey();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySamlSpSessionKey() {
+
+		return getPersistence().getFinderPathCountBySamlSpSessionKey();
 	}
 
 	/**
@@ -413,6 +475,18 @@ public class SamlSpSessionUtil {
 	 */
 	public static int countBySamlSpSessionKey(String samlSpSessionKey) {
 		return getPersistence().countBySamlSpSessionKey(samlSpSessionKey);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_SI() {
+
+		return getPersistence().getFinderPathFetchByC_SI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_SI() {
+
+		return getPersistence().getFinderPathCountByC_SI();
 	}
 
 	/**
@@ -628,6 +702,12 @@ public class SamlSpSessionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SamlSpSessionPersistence getPersistence() {

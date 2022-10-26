@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service.persistence;
 
 import com.liferay.dynamic.data.mapping.exception.NoSuchFormInstanceRecordException;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface DDMFormInstanceRecordPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMFormInstanceRecordUtil} to access the ddm form instance record persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the ddm form instance records where uuid = &#63;.
@@ -186,6 +198,10 @@ public interface DDMFormInstanceRecordPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the ddm form instance record where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchFormInstanceRecordException</code> if it could not be found.
 	 *
@@ -235,6 +251,12 @@ public interface DDMFormInstanceRecordPersistence
 	 * @return the number of matching ddm form instance records
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the ddm form instance records where uuid = &#63; and companyId = &#63;.
@@ -391,6 +413,12 @@ public interface DDMFormInstanceRecordPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the ddm form instance records where companyId = &#63;.
 	 *
@@ -535,6 +563,12 @@ public interface DDMFormInstanceRecordPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByFormInstanceId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByFormInstanceId();
+
+	public FinderPath getFinderPathCountByFormInstanceId();
+
 	/**
 	 * Returns all the ddm form instance records where formInstanceId = &#63;.
 	 *
@@ -678,6 +712,12 @@ public interface DDMFormInstanceRecordPersistence
 	 * @return the number of matching ddm form instance records
 	 */
 	public int countByFormInstanceId(long formInstanceId);
+
+	public FinderPath getFinderPathWithPaginationFindByU_F();
+
+	public FinderPath getFinderPathWithoutPaginationFindByU_F();
+
+	public FinderPath getFinderPathCountByU_F();
 
 	/**
 	 * Returns all the ddm form instance records where userId = &#63; and formInstanceId = &#63;.
@@ -833,6 +873,12 @@ public interface DDMFormInstanceRecordPersistence
 	 * @return the number of matching ddm form instance records
 	 */
 	public int countByU_F(long userId, long formInstanceId);
+
+	public FinderPath getFinderPathWithPaginationFindByF_F();
+
+	public FinderPath getFinderPathWithoutPaginationFindByF_F();
+
+	public FinderPath getFinderPathCountByF_F();
 
 	/**
 	 * Returns all the ddm form instance records where formInstanceId = &#63; and formInstanceVersion = &#63;.
@@ -1111,5 +1157,7 @@ public interface DDMFormInstanceRecordPersistence
 	 * @return the number of ddm form instance records
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

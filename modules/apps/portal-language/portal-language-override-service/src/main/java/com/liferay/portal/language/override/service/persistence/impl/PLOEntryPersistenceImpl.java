@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -57,6 +58,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -102,9 +104,42 @@ public class PLOEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the plo entries where companyId = &#63;.
@@ -595,8 +630,25 @@ public class PLOEntryPersistenceImpl
 		"ploEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_K;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_K() {
+		return _finderPathWithPaginationFindByC_K;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_K;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_K() {
+		return _finderPathWithoutPaginationFindByC_K;
+	}
+
 	private FinderPath _finderPathCountByC_K;
+
+	@Override
+	public FinderPath getFinderPathCountByC_K() {
+		return _finderPathCountByC_K;
+	}
 
 	/**
 	 * Returns all the plo entries where companyId = &#63; and key = &#63;.
@@ -1168,8 +1220,25 @@ public class PLOEntryPersistenceImpl
 		"(ploEntry.key IS NULL OR ploEntry.key = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_L;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_L() {
+		return _finderPathWithPaginationFindByC_L;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_L;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_L() {
+		return _finderPathWithoutPaginationFindByC_L;
+	}
+
 	private FinderPath _finderPathCountByC_L;
+
+	@Override
+	public FinderPath getFinderPathCountByC_L() {
+		return _finderPathCountByC_L;
+	}
 
 	/**
 	 * Returns all the plo entries where companyId = &#63; and languageId = &#63;.
@@ -1747,7 +1816,18 @@ public class PLOEntryPersistenceImpl
 		"(ploEntry.languageId IS NULL OR ploEntry.languageId = '')";
 
 	private FinderPath _finderPathFetchByC_K_L;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_K_L() {
+		return _finderPathFetchByC_K_L;
+	}
+
 	private FinderPath _finderPathCountByC_K_L;
+
+	@Override
+	public FinderPath getFinderPathCountByC_K_L() {
+		return _finderPathCountByC_K_L;
+	}
 
 	/**
 	 * Returns the plo entry where companyId = &#63; and key = &#63; and languageId = &#63; or throws a <code>NoSuchPLOEntryException</code> if it could not be found.
@@ -2714,6 +2794,58 @@ public class PLOEntryPersistenceImpl
 		_setPLOEntryUtilPersistence(null);
 
 		entityCache.removeCache(PLOEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PLOEntry> ploEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PLOEntry>> resultMap = new HashMap<>();
+
+			for (PLOEntry ploEntry : ploEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PLOEntryModelImpl ploEntryModelImpl =
+						(PLOEntryModelImpl)ploEntry;
+
+					arguments.add(ploEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ploEntry);
+				}
+				else {
+					List<PLOEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ploEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PLOEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PLOEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPLOEntryUtilPersistence(

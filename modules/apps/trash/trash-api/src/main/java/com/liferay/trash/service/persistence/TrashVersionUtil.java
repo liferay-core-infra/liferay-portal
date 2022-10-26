@@ -119,6 +119,42 @@ public class TrashVersionUtil {
 		return getPersistence().update(trashVersion, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByEntryId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByEntryId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByEntryId() {
+
+		return getPersistence().getFinderPathCountByEntryId();
+	}
+
 	/**
 	 * Returns all the trash versions where entryId = &#63;.
 	 *
@@ -283,6 +319,24 @@ public class TrashVersionUtil {
 	 */
 	public static int countByEntryId(long entryId) {
 		return getPersistence().countByEntryId(entryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByE_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByE_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByE_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByE_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByE_C() {
+
+		return getPersistence().getFinderPathCountByE_C();
 	}
 
 	/**
@@ -468,6 +522,18 @@ public class TrashVersionUtil {
 	 */
 	public static int countByE_C(long entryId, long classNameId) {
 		return getPersistence().countByE_C(entryId, classNameId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C() {
+
+		return getPersistence().getFinderPathFetchByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -679,6 +745,12 @@ public class TrashVersionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static TrashVersionPersistence getPersistence() {

@@ -52,7 +52,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -97,9 +99,42 @@ public class BackgroundTaskPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the background tasks where groupId = &#63;.
@@ -593,8 +628,25 @@ public class BackgroundTaskPersistenceImpl
 		"backgroundTask.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the background tasks where companyId = &#63;.
@@ -1090,8 +1142,25 @@ public class BackgroundTaskPersistenceImpl
 		"backgroundTask.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompleted;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompleted() {
+		return _finderPathWithPaginationFindByCompleted;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompleted;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompleted() {
+		return _finderPathWithoutPaginationFindByCompleted;
+	}
+
 	private FinderPath _finderPathCountByCompleted;
+
+	@Override
+	public FinderPath getFinderPathCountByCompleted() {
+		return _finderPathCountByCompleted;
+	}
 
 	/**
 	 * Returns all the background tasks where completed = &#63;.
@@ -1591,8 +1660,25 @@ public class BackgroundTaskPersistenceImpl
 		"backgroundTask.completed = ?";
 
 	private FinderPath _finderPathWithPaginationFindByStatus;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByStatus() {
+		return _finderPathWithPaginationFindByStatus;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByStatus;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByStatus() {
+		return _finderPathWithoutPaginationFindByStatus;
+	}
+
 	private FinderPath _finderPathCountByStatus;
+
+	@Override
+	public FinderPath getFinderPathCountByStatus() {
+		return _finderPathCountByStatus;
+	}
 
 	/**
 	 * Returns all the background tasks where status = &#63;.
@@ -2083,9 +2169,32 @@ public class BackgroundTaskPersistenceImpl
 		"backgroundTask.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T() {
+		return _finderPathWithPaginationFindByG_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T() {
+		return _finderPathWithoutPaginationFindByG_T;
+	}
+
 	private FinderPath _finderPathCountByG_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T() {
+		return _finderPathCountByG_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_T() {
+		return _finderPathWithPaginationCountByG_T;
+	}
 
 	/**
 	 * Returns all the background tasks where groupId = &#63; and taskExecutorClassName = &#63;.
@@ -3033,8 +3142,25 @@ public class BackgroundTaskPersistenceImpl
 		"(backgroundTask.taskExecutorClassName IS NULL OR backgroundTask.taskExecutorClassName = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_S() {
+		return _finderPathWithPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_S() {
+		return _finderPathWithoutPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns all the background tasks where groupId = &#63; and status = &#63;.
@@ -3572,9 +3698,32 @@ public class BackgroundTaskPersistenceImpl
 		"backgroundTask.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_S() {
+		return _finderPathWithPaginationFindByT_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_S() {
+		return _finderPathWithoutPaginationFindByT_S;
+	}
+
 	private FinderPath _finderPathCountByT_S;
+
+	@Override
+	public FinderPath getFinderPathCountByT_S() {
+		return _finderPathCountByT_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByT_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByT_S() {
+		return _finderPathWithPaginationCountByT_S;
+	}
 
 	/**
 	 * Returns all the background tasks where taskExecutorClassName = &#63; and status = &#63;.
@@ -4492,9 +4641,32 @@ public class BackgroundTaskPersistenceImpl
 		"backgroundTask.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_N_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_N_T() {
+		return _finderPathWithPaginationFindByG_N_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_N_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_N_T() {
+		return _finderPathWithoutPaginationFindByG_N_T;
+	}
+
 	private FinderPath _finderPathCountByG_N_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N_T() {
+		return _finderPathCountByG_N_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_N_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_N_T() {
+		return _finderPathWithPaginationCountByG_N_T;
+	}
 
 	/**
 	 * Returns all the background tasks where groupId = &#63; and name = &#63; and taskExecutorClassName = &#63;.
@@ -5572,9 +5744,32 @@ public class BackgroundTaskPersistenceImpl
 		"(backgroundTask.taskExecutorClassName IS NULL OR backgroundTask.taskExecutorClassName = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_T_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T_C() {
+		return _finderPathWithPaginationFindByG_T_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T_C() {
+		return _finderPathWithoutPaginationFindByG_T_C;
+	}
+
 	private FinderPath _finderPathCountByG_T_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T_C() {
+		return _finderPathCountByG_T_C;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_T_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_T_C() {
+		return _finderPathWithPaginationCountByG_T_C;
+	}
 
 	/**
 	 * Returns all the background tasks where groupId = &#63; and taskExecutorClassName = &#63; and completed = &#63;.
@@ -6600,9 +6795,32 @@ public class BackgroundTaskPersistenceImpl
 		"backgroundTask.completed = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T_S() {
+		return _finderPathWithPaginationFindByG_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T_S() {
+		return _finderPathWithoutPaginationFindByG_T_S;
+	}
+
 	private FinderPath _finderPathCountByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T_S() {
+		return _finderPathCountByG_T_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_T_S() {
+		return _finderPathWithPaginationCountByG_T_S;
+	}
 
 	/**
 	 * Returns all the background tasks where groupId = &#63; and taskExecutorClassName = &#63; and status = &#63;.
@@ -7584,9 +7802,32 @@ public class BackgroundTaskPersistenceImpl
 		"backgroundTask.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_N_T_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_N_T_C() {
+		return _finderPathWithPaginationFindByG_N_T_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_N_T_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_N_T_C() {
+		return _finderPathWithoutPaginationFindByG_N_T_C;
+	}
+
 	private FinderPath _finderPathCountByG_N_T_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N_T_C() {
+		return _finderPathCountByG_N_T_C;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_N_T_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_N_T_C() {
+		return _finderPathWithPaginationCountByG_N_T_C;
+	}
 
 	/**
 	 * Returns all the background tasks where groupId = &#63; and name = &#63; and taskExecutorClassName = &#63; and completed = &#63;.
@@ -9509,6 +9750,59 @@ public class BackgroundTaskPersistenceImpl
 		_setBackgroundTaskUtilPersistence(null);
 
 		entityCache.removeCache(BackgroundTaskImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<BackgroundTask> backgroundTasks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BackgroundTask>> resultMap = new HashMap<>();
+
+			for (BackgroundTask backgroundTask : backgroundTasks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BackgroundTaskModelImpl backgroundTaskModelImpl =
+						(BackgroundTaskModelImpl)backgroundTask;
+
+					arguments.add(
+						backgroundTaskModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), backgroundTask);
+				}
+				else {
+					List<BackgroundTask> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(backgroundTask);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BackgroundTask>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BackgroundTask> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setBackgroundTaskUtilPersistence(

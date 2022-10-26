@@ -15,6 +15,7 @@
 package com.liferay.ratings.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.ratings.kernel.model.RatingsStats;
@@ -337,6 +338,11 @@ public class RatingsStatsLocalServiceWrapper
 		String className, long[] classPKs) {
 
 		return _ratingsStatsLocalService.getStats(className, classPKs);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ratingsStatsLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

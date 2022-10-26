@@ -14,6 +14,7 @@
 
 package com.liferay.ratings.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.ratings.kernel.exception.NoSuchStatsException;
@@ -41,6 +42,21 @@ public interface RatingsStatsPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RatingsStatsUtil} to access the ratings stats persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathFetchByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
+
+	public FinderPath getFinderPathWithPaginationCountByC_C();
 
 	/**
 	 * Returns all the ratings statses where classNameId = &#63; and classPK = any &#63;.
@@ -289,5 +305,7 @@ public interface RatingsStatsPersistence
 	 * @return the number of ratings statses
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

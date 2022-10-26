@@ -16,6 +16,7 @@ package com.liferay.notification.service.persistence;
 
 import com.liferay.notification.exception.NoSuchNotificationQueueEntryAttachmentException;
 import com.liferay.notification.model.NotificationQueueEntryAttachment;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,19 @@ public interface NotificationQueueEntryAttachmentPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link NotificationQueueEntryAttachmentUtil} to access the notification queue entry attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath
+		getFinderPathWithPaginationFindByNotificationQueueEntryId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByNotificationQueueEntryId();
+
+	public FinderPath getFinderPathCountByNotificationQueueEntryId();
 
 	/**
 	 * Returns all the notification queue entry attachments where notificationQueueEntryId = &#63;.
@@ -321,5 +335,7 @@ public interface NotificationQueueEntryAttachmentPersistence
 	 * @return the number of notification queue entry attachments
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

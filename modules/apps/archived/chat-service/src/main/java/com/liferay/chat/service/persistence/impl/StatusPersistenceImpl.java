@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -48,9 +49,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -91,8 +94,35 @@ public class StatusPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathFetchByUserId;
+
+	@Override
+	public FinderPath getFinderPathFetchByUserId() {
+		return _finderPathFetchByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns the status where userId = &#63; or throws a <code>NoSuchStatusException</code> if it could not be found.
@@ -284,8 +314,25 @@ public class StatusPersistenceImpl
 		"status.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByModifiedDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByModifiedDate() {
+		return _finderPathWithPaginationFindByModifiedDate;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByModifiedDate;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByModifiedDate() {
+		return _finderPathWithoutPaginationFindByModifiedDate;
+	}
+
 	private FinderPath _finderPathCountByModifiedDate;
+
+	@Override
+	public FinderPath getFinderPathCountByModifiedDate() {
+		return _finderPathCountByModifiedDate;
+	}
 
 	/**
 	 * Returns all the statuses where modifiedDate = &#63;.
@@ -780,8 +827,25 @@ public class StatusPersistenceImpl
 		"status.modifiedDate = ?";
 
 	private FinderPath _finderPathWithPaginationFindByOnline;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByOnline() {
+		return _finderPathWithPaginationFindByOnline;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByOnline;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByOnline() {
+		return _finderPathWithoutPaginationFindByOnline;
+	}
+
 	private FinderPath _finderPathCountByOnline;
+
+	@Override
+	public FinderPath getFinderPathCountByOnline() {
+		return _finderPathCountByOnline;
+	}
 
 	/**
 	 * Returns all the statuses where online = &#63;.
@@ -1267,8 +1331,25 @@ public class StatusPersistenceImpl
 		"status.online = ?";
 
 	private FinderPath _finderPathWithPaginationFindByM_O;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByM_O() {
+		return _finderPathWithPaginationFindByM_O;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByM_O;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByM_O() {
+		return _finderPathWithoutPaginationFindByM_O;
+	}
+
 	private FinderPath _finderPathCountByM_O;
+
+	@Override
+	public FinderPath getFinderPathCountByM_O() {
+		return _finderPathCountByM_O;
+	}
 
 	/**
 	 * Returns all the statuses where modifiedDate = &#63; and online = &#63;.
@@ -2399,6 +2480,57 @@ public class StatusPersistenceImpl
 		_setStatusUtilPersistence(null);
 
 		entityCache.removeCache(StatusImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Status> statuss = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Status>> resultMap = new HashMap<>();
+
+			for (Status status : statuss) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					StatusModelImpl statusModelImpl = (StatusModelImpl)status;
+
+					arguments.add(statusModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), status);
+				}
+				else {
+					List<Status> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(status);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Status>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Status> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setStatusUtilPersistence(

@@ -16,6 +16,7 @@ package com.liferay.message.boards.service;
 
 import com.liferay.message.boards.model.MBSuspiciousActivity;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -458,6 +459,11 @@ public class MBSuspiciousActivityLocalServiceWrapper
 
 		return _mbSuspiciousActivityLocalService.getThreadSuspiciousActivities(
 			threadId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_mbSuspiciousActivityLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

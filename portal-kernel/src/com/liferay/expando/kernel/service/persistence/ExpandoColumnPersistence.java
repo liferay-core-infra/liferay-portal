@@ -16,6 +16,7 @@ package com.liferay.expando.kernel.service.persistence;
 
 import com.liferay.expando.kernel.exception.NoSuchColumnException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface ExpandoColumnPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ExpandoColumnUtil} to access the expando column persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByTableId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByTableId();
+
+	public FinderPath getFinderPathCountByTableId();
 
 	/**
 	 * Returns all the expando columns where tableId = &#63;.
@@ -248,6 +260,16 @@ public interface ExpandoColumnPersistence
 	 * @return the number of matching expando columns that the user has permission to view
 	 */
 	public int filterCountByTableId(long tableId);
+
+	public FinderPath getFinderPathWithPaginationFindByT_N();
+
+	public FinderPath getFinderPathWithoutPaginationFindByT_N();
+
+	public FinderPath getFinderPathFetchByT_N();
+
+	public FinderPath getFinderPathCountByT_N();
+
+	public FinderPath getFinderPathWithPaginationCountByT_N();
 
 	/**
 	 * Returns all the expando columns where tableId = &#63; and name = any &#63;.
@@ -514,5 +536,7 @@ public interface ExpandoColumnPersistence
 	 * @return the number of expando columns
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

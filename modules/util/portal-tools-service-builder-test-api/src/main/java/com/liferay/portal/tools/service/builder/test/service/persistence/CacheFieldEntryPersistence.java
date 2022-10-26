@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchCacheFieldEntryException;
 import com.liferay.portal.tools.service.builder.test.model.CacheFieldEntry;
@@ -40,6 +41,17 @@ public interface CacheFieldEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CacheFieldEntryUtil} to access the cache field entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the cache field entries where groupId = &#63;.
@@ -303,5 +315,7 @@ public interface CacheFieldEntryPersistence
 	 * @return the number of cache field entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

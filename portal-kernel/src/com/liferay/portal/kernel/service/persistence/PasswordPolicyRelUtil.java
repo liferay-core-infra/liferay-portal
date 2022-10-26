@@ -121,6 +121,44 @@ public class PasswordPolicyRelUtil {
 		return getPersistence().update(passwordPolicyRel, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByPasswordPolicyId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByPasswordPolicyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByPasswordPolicyId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByPasswordPolicyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByPasswordPolicyId() {
+
+		return getPersistence().getFinderPathCountByPasswordPolicyId();
+	}
+
 	/**
 	 * Returns all the password policy rels where passwordPolicyId = &#63;.
 	 *
@@ -298,6 +336,18 @@ public class PasswordPolicyRelUtil {
 	 */
 	public static int countByPasswordPolicyId(long passwordPolicyId) {
 		return getPersistence().countByPasswordPolicyId(passwordPolicyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C() {
+
+		return getPersistence().getFinderPathFetchByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -519,6 +569,12 @@ public class PasswordPolicyRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static PasswordPolicyRelPersistence getPersistence() {

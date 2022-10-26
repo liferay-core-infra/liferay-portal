@@ -16,6 +16,7 @@ package com.liferay.document.library.kernel.service.persistence;
 
 import com.liferay.document.library.kernel.exception.NoSuchFolderException;
 import com.liferay.document.library.kernel.model.DLFolder;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface DLFolderPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DLFolderUtil} to access the document library folder persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the document library folders where uuid = &#63;.
@@ -184,6 +196,10 @@ public interface DLFolderPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the document library folder where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
 	 *
@@ -233,6 +249,12 @@ public interface DLFolderPersistence
 	 * @return the number of matching document library folders
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the document library folders where uuid = &#63; and companyId = &#63;.
@@ -387,6 +409,12 @@ public interface DLFolderPersistence
 	 * @return the number of matching document library folders
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the document library folders where groupId = &#63;.
@@ -595,6 +623,12 @@ public interface DLFolderPersistence
 	 */
 	public int filterCountByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the document library folders where companyId = &#63;.
 	 *
@@ -738,6 +772,12 @@ public interface DLFolderPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByRepositoryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByRepositoryId();
+
+	public FinderPath getFinderPathCountByRepositoryId();
+
 	/**
 	 * Returns all the document library folders where repositoryId = &#63;.
 	 *
@@ -880,6 +920,12 @@ public interface DLFolderPersistence
 	 * @return the number of matching document library folders
 	 */
 	public int countByRepositoryId(long repositoryId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P();
+
+	public FinderPath getFinderPathCountByG_P();
 
 	/**
 	 * Returns all the document library folders where groupId = &#63; and parentFolderId = &#63;.
@@ -1106,6 +1152,10 @@ public interface DLFolderPersistence
 	 */
 	public int filterCountByG_P(long groupId, long parentFolderId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_NotS();
+
+	public FinderPath getFinderPathWithPaginationCountByC_NotS();
+
 	/**
 	 * Returns all the document library folders where companyId = &#63; and status &ne; &#63;.
 	 *
@@ -1260,6 +1310,10 @@ public interface DLFolderPersistence
 	 */
 	public int countByC_NotS(long companyId, int status);
 
+	public FinderPath getFinderPathFetchByR_M();
+
+	public FinderPath getFinderPathCountByR_M();
+
 	/**
 	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
 	 *
@@ -1309,6 +1363,12 @@ public interface DLFolderPersistence
 	 * @return the number of matching document library folders
 	 */
 	public int countByR_M(long repositoryId, boolean mountPoint);
+
+	public FinderPath getFinderPathWithPaginationFindByR_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByR_P();
+
+	public FinderPath getFinderPathCountByR_P();
 
 	/**
 	 * Returns all the document library folders where repositoryId = &#63; and parentFolderId = &#63;.
@@ -1465,6 +1525,12 @@ public interface DLFolderPersistence
 	 */
 	public int countByR_P(long repositoryId, long parentFolderId);
 
+	public FinderPath getFinderPathWithPaginationFindByP_N();
+
+	public FinderPath getFinderPathWithoutPaginationFindByP_N();
+
+	public FinderPath getFinderPathCountByP_N();
+
 	/**
 	 * Returns all the document library folders where parentFolderId = &#63; and name = &#63;.
 	 *
@@ -1619,6 +1685,10 @@ public interface DLFolderPersistence
 	 */
 	public int countByP_N(long parentFolderId, String name);
 
+	public FinderPath getFinderPathWithPaginationFindByGtF_C_P();
+
+	public FinderPath getFinderPathWithPaginationCountByGtF_C_P();
+
 	/**
 	 * Returns all the document library folders where folderId &gt; &#63; and companyId = &#63; and parentFolderId = &#63;.
 	 *
@@ -1769,6 +1839,12 @@ public interface DLFolderPersistence
 	 */
 	public int countByGtF_C_P(
 		long folderId, long companyId, long parentFolderId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_M_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_M_P();
+
+	public FinderPath getFinderPathCountByG_M_P();
 
 	/**
 	 * Returns all the document library folders where groupId = &#63; and mountPoint = &#63; and parentFolderId = &#63;.
@@ -2021,6 +2097,10 @@ public interface DLFolderPersistence
 	public int filterCountByG_M_P(
 		long groupId, boolean mountPoint, long parentFolderId);
 
+	public FinderPath getFinderPathFetchByG_P_N();
+
+	public FinderPath getFinderPathCountByG_P_N();
+
 	/**
 	 * Returns the document library folder where groupId = &#63; and parentFolderId = &#63; and name = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
 	 *
@@ -2077,6 +2157,10 @@ public interface DLFolderPersistence
 	 * @return the number of matching document library folders
 	 */
 	public int countByG_P_N(long groupId, long parentFolderId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByGtF_C_P_NotS();
+
+	public FinderPath getFinderPathWithPaginationCountByGtF_C_P_NotS();
 
 	/**
 	 * Returns all the document library folders where folderId &gt; &#63; and companyId = &#63; and parentFolderId = &#63; and status &ne; &#63;.
@@ -2241,6 +2325,12 @@ public interface DLFolderPersistence
 	 */
 	public int countByGtF_C_P_NotS(
 		long folderId, long companyId, long parentFolderId, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByG_M_P_H();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_M_P_H();
+
+	public FinderPath getFinderPathCountByG_M_P_H();
 
 	/**
 	 * Returns all the document library folders where groupId = &#63; and mountPoint = &#63; and parentFolderId = &#63; and hidden = &#63;.
@@ -2511,6 +2601,10 @@ public interface DLFolderPersistence
 	public int filterCountByG_M_P_H(
 		long groupId, boolean mountPoint, long parentFolderId, boolean hidden);
 
+	public FinderPath getFinderPathWithPaginationFindByG_M_LikeT_H();
+
+	public FinderPath getFinderPathWithPaginationCountByG_M_LikeT_H();
+
 	/**
 	 * Returns all the document library folders where groupId = &#63; and mountPoint = &#63; and treePath LIKE &#63; and hidden = &#63;.
 	 *
@@ -2778,6 +2872,12 @@ public interface DLFolderPersistence
 	public int filterCountByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden);
 
+	public FinderPath getFinderPathWithPaginationFindByG_P_H_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_H_S();
+
+	public FinderPath getFinderPathCountByG_P_H_S();
+
 	/**
 	 * Returns all the document library folders where groupId = &#63; and parentFolderId = &#63; and hidden = &#63; and status = &#63;.
 	 *
@@ -3044,6 +3144,12 @@ public interface DLFolderPersistence
 	 */
 	public int filterCountByG_P_H_S(
 		long groupId, long parentFolderId, boolean hidden, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByG_M_P_H_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_M_P_H_S();
+
+	public FinderPath getFinderPathCountByG_M_P_H_S();
 
 	/**
 	 * Returns all the document library folders where groupId = &#63; and mountPoint = &#63; and parentFolderId = &#63; and hidden = &#63; and status = &#63;.
@@ -3337,6 +3443,10 @@ public interface DLFolderPersistence
 		long groupId, boolean mountPoint, long parentFolderId, boolean hidden,
 		int status);
 
+	public FinderPath getFinderPathWithPaginationFindByG_M_LikeT_H_NotS();
+
+	public FinderPath getFinderPathWithPaginationCountByG_M_LikeT_H_NotS();
+
 	/**
 	 * Returns all the document library folders where groupId = &#63; and mountPoint = &#63; and treePath LIKE &#63; and hidden = &#63; and status &ne; &#63;.
 	 *
@@ -3628,6 +3738,10 @@ public interface DLFolderPersistence
 	public int filterCountByG_M_LikeT_H_NotS(
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		int status);
+
+	public FinderPath getFinderPathFetchByG_ERC();
+
+	public FinderPath getFinderPathCountByG_ERC();
 
 	/**
 	 * Returns the document library folder where groupId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
@@ -3982,5 +4096,7 @@ public interface DLFolderPersistence
 		java.util.List
 			<com.liferay.document.library.kernel.model.DLFileEntryType>
 				dlFileEntryTypes);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

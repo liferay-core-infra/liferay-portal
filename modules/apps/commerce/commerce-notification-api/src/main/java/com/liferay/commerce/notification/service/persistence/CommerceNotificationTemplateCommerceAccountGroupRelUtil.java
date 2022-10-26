@@ -135,6 +135,45 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelUtil {
 			serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceNotificationTemplateId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceNotificationTemplateId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceNotificationTemplateId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceNotificationTemplateId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceNotificationTemplateId() {
+
+		return getPersistence().
+			getFinderPathCountByCommerceNotificationTemplateId();
+	}
+
 	/**
 	 * Returns all the commerce notification template commerce account group rels where commerceNotificationTemplateId = &#63;.
 	 *
@@ -348,6 +387,26 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelUtil {
 			commerceNotificationTemplateId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceAccountGroupId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceAccountGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceAccountGroupId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceAccountGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceAccountGroupId() {
+
+		return getPersistence().getFinderPathCountByCommerceAccountGroupId();
+	}
+
 	/**
 	 * Returns all the commerce notification template commerce account group rels where commerceAccountGroupId = &#63;.
 	 *
@@ -556,6 +615,18 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelUtil {
 
 		return getPersistence().countByCommerceAccountGroupId(
 			commerceAccountGroupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C() {
+
+		return getPersistence().getFinderPathFetchByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -824,6 +895,12 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceNotificationTemplateCommerceAccountGroupRelPersistence

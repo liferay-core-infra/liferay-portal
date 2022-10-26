@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service.persistence;
 
 import com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceLinkException;
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstanceLink;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,18 @@ public interface DDMDataProviderInstanceLinkPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMDataProviderInstanceLinkUtil} to access the ddm data provider instance link persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByDataProviderInstanceId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByDataProviderInstanceId();
+
+	public FinderPath getFinderPathCountByDataProviderInstanceId();
 
 	/**
 	 * Returns all the ddm data provider instance links where dataProviderInstanceId = &#63;.
@@ -191,6 +204,12 @@ public interface DDMDataProviderInstanceLinkPersistence
 	 */
 	public int countByDataProviderInstanceId(long dataProviderInstanceId);
 
+	public FinderPath getFinderPathWithPaginationFindByStructureId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByStructureId();
+
+	public FinderPath getFinderPathCountByStructureId();
+
 	/**
 	 * Returns all the ddm data provider instance links where structureId = &#63;.
 	 *
@@ -334,6 +353,10 @@ public interface DDMDataProviderInstanceLinkPersistence
 	 * @return the number of matching ddm data provider instance links
 	 */
 	public int countByStructureId(long structureId);
+
+	public FinderPath getFinderPathFetchByD_S();
+
+	public FinderPath getFinderPathCountByD_S();
 
 	/**
 	 * Returns the ddm data provider instance link where dataProviderInstanceId = &#63; and structureId = &#63; or throws a <code>NoSuchDataProviderInstanceLinkException</code> if it could not be found.
@@ -514,5 +537,7 @@ public interface DDMDataProviderInstanceLinkPersistence
 	 * @return the number of ddm data provider instance links
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

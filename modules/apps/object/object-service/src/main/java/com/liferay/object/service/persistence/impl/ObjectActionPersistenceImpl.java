@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -99,9 +101,42 @@ public class ObjectActionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the object actions where uuid = &#63;.
@@ -629,8 +664,25 @@ public class ObjectActionPersistenceImpl
 		"(objectAction.uuid IS NULL OR objectAction.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the object actions where uuid = &#63; and companyId = &#63;.
@@ -1209,8 +1261,25 @@ public class ObjectActionPersistenceImpl
 		"objectAction.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByObjectDefinitionId() {
+		return _finderPathWithPaginationFindByObjectDefinitionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByObjectDefinitionId() {
+		return _finderPathWithoutPaginationFindByObjectDefinitionId;
+	}
+
 	private FinderPath _finderPathCountByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathCountByObjectDefinitionId() {
+		return _finderPathCountByObjectDefinitionId;
+	}
 
 	/**
 	 * Returns all the object actions where objectDefinitionId = &#63;.
@@ -1719,8 +1788,25 @@ public class ObjectActionPersistenceImpl
 			"objectAction.objectDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByO_A_OATK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByO_A_OATK() {
+		return _finderPathWithPaginationFindByO_A_OATK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByO_A_OATK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByO_A_OATK() {
+		return _finderPathWithoutPaginationFindByO_A_OATK;
+	}
+
 	private FinderPath _finderPathCountByO_A_OATK;
+
+	@Override
+	public FinderPath getFinderPathCountByO_A_OATK() {
+		return _finderPathCountByO_A_OATK;
+	}
 
 	/**
 	 * Returns all the object actions where objectDefinitionId = &#63; and active = &#63; and objectActionTriggerKey = &#63;.
@@ -3021,6 +3107,59 @@ public class ObjectActionPersistenceImpl
 		_setObjectActionUtilPersistence(null);
 
 		entityCache.removeCache(ObjectActionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ObjectAction> objectActions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectAction>> resultMap = new HashMap<>();
+
+			for (ObjectAction objectAction : objectActions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectActionModelImpl objectActionModelImpl =
+						(ObjectActionModelImpl)objectAction;
+
+					arguments.add(
+						objectActionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectAction);
+				}
+				else {
+					List<ObjectAction> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(objectAction);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectAction>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectAction> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setObjectActionUtilPersistence(

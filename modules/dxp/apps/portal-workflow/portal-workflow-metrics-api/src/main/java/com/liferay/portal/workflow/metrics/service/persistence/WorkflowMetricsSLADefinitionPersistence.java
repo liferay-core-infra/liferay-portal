@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.metrics.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.workflow.metrics.exception.NoSuchSLADefinitionException;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition;
@@ -40,6 +41,17 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WorkflowMetricsSLADefinitionUtil} to access the workflow metrics sla definition persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the workflow metrics sla definitions where uuid = &#63;.
@@ -184,6 +196,10 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the workflow metrics sla definition where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchSLADefinitionException</code> if it could not be found.
 	 *
@@ -235,6 +251,12 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 * @return the number of matching workflow metrics sla definitions
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the workflow metrics sla definitions where uuid = &#63; and companyId = &#63;.
@@ -391,6 +413,10 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathFetchByWMSLAD_A();
+
+	public FinderPath getFinderPathCountByWMSLAD_A();
+
 	/**
 	 * Returns the workflow metrics sla definition where workflowMetricsSLADefinitionId = &#63; and active = &#63; or throws a <code>NoSuchSLADefinitionException</code> if it could not be found.
 	 *
@@ -445,6 +471,12 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 */
 	public int countByWMSLAD_A(
 		long workflowMetricsSLADefinitionId, boolean active);
+
+	public FinderPath getFinderPathWithPaginationFindByC_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_S();
+
+	public FinderPath getFinderPathCountByC_S();
 
 	/**
 	 * Returns all the workflow metrics sla definitions where companyId = &#63; and status = &#63;.
@@ -600,6 +632,12 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 * @return the number of matching workflow metrics sla definitions
 	 */
 	public int countByC_S(long companyId, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_P();
+
+	public FinderPath getFinderPathCountByC_A_P();
 
 	/**
 	 * Returns all the workflow metrics sla definitions where companyId = &#63; and active = &#63; and processId = &#63;.
@@ -767,6 +805,12 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 * @return the number of matching workflow metrics sla definitions
 	 */
 	public int countByC_A_P(long companyId, boolean active, long processId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_N_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_N_P();
+
+	public FinderPath getFinderPathCountByC_A_N_P();
 
 	/**
 	 * Returns all the workflow metrics sla definitions where companyId = &#63; and active = &#63; and name = &#63; and processId = &#63;.
@@ -951,6 +995,12 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	public int countByC_A_N_P(
 		long companyId, boolean active, String name, long processId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_A_P_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_P_S();
+
+	public FinderPath getFinderPathCountByC_A_P_S();
+
 	/**
 	 * Returns all the workflow metrics sla definitions where companyId = &#63; and active = &#63; and processId = &#63; and status = &#63;.
 	 *
@@ -1133,6 +1183,10 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 */
 	public int countByC_A_P_S(
 		long companyId, boolean active, long processId, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_P_NotPV_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_A_P_NotPV_S();
 
 	/**
 	 * Returns all the workflow metrics sla definitions where companyId = &#63; and active = &#63; and processId = &#63; and processVersion &ne; &#63; and status = &#63;.
@@ -1463,5 +1517,7 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 * @return the number of workflow metrics sla definitions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

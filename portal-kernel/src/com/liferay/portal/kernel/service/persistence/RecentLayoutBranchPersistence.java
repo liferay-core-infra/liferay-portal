@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchRecentLayoutBranchException;
 import com.liferay.portal.kernel.model.RecentLayoutBranch;
 
@@ -39,6 +40,17 @@ public interface RecentLayoutBranchPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RecentLayoutBranchUtil} to access the recent layout branch persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the recent layout branches where groupId = &#63;.
@@ -183,6 +195,12 @@ public interface RecentLayoutBranchPersistence
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the recent layout branches where userId = &#63;.
 	 *
@@ -325,6 +343,12 @@ public interface RecentLayoutBranchPersistence
 	 * @return the number of matching recent layout branches
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByLayoutBranchId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLayoutBranchId();
+
+	public FinderPath getFinderPathCountByLayoutBranchId();
 
 	/**
 	 * Returns all the recent layout branches where layoutBranchId = &#63;.
@@ -469,6 +493,10 @@ public interface RecentLayoutBranchPersistence
 	 * @return the number of matching recent layout branches
 	 */
 	public int countByLayoutBranchId(long layoutBranchId);
+
+	public FinderPath getFinderPathFetchByU_L_P();
+
+	public FinderPath getFinderPathCountByU_L_P();
 
 	/**
 	 * Returns the recent layout branch where userId = &#63; and layoutSetBranchId = &#63; and plid = &#63; or throws a <code>NoSuchRecentLayoutBranchException</code> if it could not be found.
@@ -648,5 +676,7 @@ public interface RecentLayoutBranchPersistence
 	 * @return the number of recent layout branches
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

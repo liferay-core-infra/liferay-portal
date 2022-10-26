@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,9 +104,42 @@ public class BookmarksEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where uuid = &#63;.
@@ -636,7 +670,18 @@ public class BookmarksEntryPersistenceImpl
 		"(bookmarksEntry.uuid IS NULL OR bookmarksEntry.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the bookmarks entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -884,8 +929,25 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where uuid = &#63; and companyId = &#63;.
@@ -1466,8 +1528,25 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where companyId = &#63;.
@@ -1963,9 +2042,32 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_F() {
+		return _finderPathWithPaginationFindByG_F;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_F;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_F() {
+		return _finderPathWithoutPaginationFindByG_F;
+	}
+
 	private FinderPath _finderPathCountByG_F;
+
+	@Override
+	public FinderPath getFinderPathCountByG_F() {
+		return _finderPathCountByG_F;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_F() {
+		return _finderPathWithPaginationCountByG_F;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and folderId = &#63;.
@@ -3397,8 +3499,25 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.folderId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_S() {
+		return _finderPathWithPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_S() {
+		return _finderPathWithoutPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and status = &#63;.
@@ -4335,7 +4454,18 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_NotS() {
+		return _finderPathWithPaginationFindByG_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_NotS() {
+		return _finderPathWithPaginationCountByG_NotS;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and status &ne; &#63;.
@@ -5263,7 +5393,18 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_NotS() {
+		return _finderPathWithPaginationFindByC_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_NotS() {
+		return _finderPathWithPaginationCountByC_NotS;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where companyId = &#63; and status &ne; &#63;.
@@ -5792,8 +5933,25 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_S() {
+		return _finderPathWithPaginationFindByG_U_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_U_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_U_S() {
+		return _finderPathWithoutPaginationFindByG_U_S;
+	}
+
 	private FinderPath _finderPathCountByG_U_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_U_S() {
+		return _finderPathCountByG_U_S;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and userId = &#63; and status = &#63;.
@@ -6788,7 +6946,18 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_NotS() {
+		return _finderPathWithPaginationFindByG_U_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_U_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_U_NotS() {
+		return _finderPathWithPaginationCountByG_U_NotS;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and userId = &#63; and status &ne; &#63;.
@@ -7773,9 +7942,32 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_F_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_F_S() {
+		return _finderPathWithPaginationFindByG_F_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_F_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_F_S() {
+		return _finderPathWithoutPaginationFindByG_F_S;
+	}
+
 	private FinderPath _finderPathCountByG_F_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_F_S() {
+		return _finderPathCountByG_F_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_F_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_F_S() {
+		return _finderPathWithPaginationCountByG_F_S;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and folderId = &#63; and status = &#63;.
@@ -9303,7 +9495,18 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_F_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_F_NotS() {
+		return _finderPathWithPaginationFindByG_F_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_F_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_F_NotS() {
+		return _finderPathWithPaginationCountByG_F_NotS;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and folderId = &#63; and status &ne; &#63;.
@@ -10827,9 +11030,32 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_F_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_F_S() {
+		return _finderPathWithPaginationFindByG_U_F_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_U_F_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_U_F_S() {
+		return _finderPathWithoutPaginationFindByG_U_F_S;
+	}
+
 	private FinderPath _finderPathCountByG_U_F_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_U_F_S() {
+		return _finderPathCountByG_U_F_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_U_F_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_U_F_S() {
+		return _finderPathWithPaginationCountByG_U_F_S;
+	}
 
 	/**
 	 * Returns all the bookmarks entries where groupId = &#63; and userId = &#63; and folderId = &#63; and status = &#63;.
@@ -13312,6 +13538,59 @@ public class BookmarksEntryPersistenceImpl
 		_setBookmarksEntryUtilPersistence(null);
 
 		entityCache.removeCache(BookmarksEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<BookmarksEntry> bookmarksEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BookmarksEntry>> resultMap = new HashMap<>();
+
+			for (BookmarksEntry bookmarksEntry : bookmarksEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BookmarksEntryModelImpl bookmarksEntryModelImpl =
+						(BookmarksEntryModelImpl)bookmarksEntry;
+
+					arguments.add(
+						bookmarksEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), bookmarksEntry);
+				}
+				else {
+					List<BookmarksEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(bookmarksEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BookmarksEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BookmarksEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setBookmarksEntryUtilPersistence(

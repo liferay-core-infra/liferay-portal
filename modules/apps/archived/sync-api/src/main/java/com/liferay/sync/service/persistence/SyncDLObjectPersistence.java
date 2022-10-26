@@ -14,6 +14,7 @@
 
 package com.liferay.sync.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.sync.exception.NoSuchDLObjectException;
 import com.liferay.sync.model.SyncDLObject;
@@ -39,6 +40,15 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SyncDLObjectUtil} to access the sync dl object persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByLikeTreePath();
+
+	public FinderPath getFinderPathWithPaginationCountByLikeTreePath();
 
 	/**
 	 * Returns all the sync dl objects where treePath LIKE &#63;.
@@ -182,6 +192,10 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 * @return the number of matching sync dl objects
 	 */
 	public int countByLikeTreePath(String treePath);
+
+	public FinderPath getFinderPathWithPaginationFindByGtM_R();
+
+	public FinderPath getFinderPathWithPaginationCountByGtM_R();
 
 	/**
 	 * Returns all the sync dl objects where modifiedTime &gt; &#63; and repositoryId = &#63;.
@@ -338,6 +352,12 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 */
 	public int countByGtM_R(long modifiedTime, long repositoryId);
 
+	public FinderPath getFinderPathWithPaginationFindByR_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByR_P();
+
+	public FinderPath getFinderPathCountByR_P();
+
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and parentFolderId = &#63;.
 	 *
@@ -492,6 +512,10 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 * @return the number of matching sync dl objects
 	 */
 	public int countByR_P(long repositoryId, long parentFolderId);
+
+	public FinderPath getFinderPathWithPaginationFindByR_NotE();
+
+	public FinderPath getFinderPathWithPaginationCountByR_NotE();
 
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and event &ne; &#63;.
@@ -648,6 +672,12 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 */
 	public int countByR_NotE(long repositoryId, String event);
 
+	public FinderPath getFinderPathWithPaginationFindByR_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByR_T();
+
+	public FinderPath getFinderPathCountByR_T();
+
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and type = &#63;.
 	 *
@@ -802,6 +832,10 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 * @return the number of matching sync dl objects
 	 */
 	public int countByR_T(long repositoryId, String type);
+
+	public FinderPath getFinderPathWithPaginationFindByLikeT_NotE();
+
+	public FinderPath getFinderPathWithPaginationCountByLikeT_NotE();
 
 	/**
 	 * Returns all the sync dl objects where treePath LIKE &#63; and event &ne; &#63;.
@@ -958,6 +992,12 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 */
 	public int countByLikeT_NotE(String treePath, String event);
 
+	public FinderPath getFinderPathWithPaginationFindByV_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByV_T();
+
+	public FinderPath getFinderPathCountByV_T();
+
 	/**
 	 * Returns all the sync dl objects where version = &#63; and type = &#63;.
 	 *
@@ -1112,6 +1152,10 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 */
 	public int countByV_T(String version, String type);
 
+	public FinderPath getFinderPathFetchByT_T();
+
+	public FinderPath getFinderPathCountByT_T();
+
 	/**
 	 * Returns the sync dl object where type = &#63; and typePK = &#63; or throws a <code>NoSuchDLObjectException</code> if it could not be found.
 	 *
@@ -1161,6 +1205,10 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 * @return the number of matching sync dl objects
 	 */
 	public int countByT_T(String type, long typePK);
+
+	public FinderPath getFinderPathWithPaginationFindByGtM_R_NotE();
+
+	public FinderPath getFinderPathWithPaginationCountByGtM_R_NotE();
 
 	/**
 	 * Returns all the sync dl objects where modifiedTime &gt; &#63; and repositoryId = &#63; and event &ne; &#63;.
@@ -1418,6 +1466,14 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 */
 	public int countByGtM_R_NotE(
 		long modifiedTime, long repositoryId, String[] events);
+
+	public FinderPath getFinderPathWithPaginationFindByR_P_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByR_P_T();
+
+	public FinderPath getFinderPathCountByR_P_T();
+
+	public FinderPath getFinderPathWithPaginationCountByR_P_T();
 
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and parentFolderId = &#63; and type = &#63;.
@@ -1796,5 +1852,7 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 * @return the number of sync dl objects
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

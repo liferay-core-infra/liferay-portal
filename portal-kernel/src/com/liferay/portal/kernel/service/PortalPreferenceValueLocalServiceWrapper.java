@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link PortalPreferenceValueLocalService}.
  *
@@ -266,7 +268,7 @@ public class PortalPreferenceValueLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _portalPreferenceValueLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -336,6 +338,11 @@ public class PortalPreferenceValueLocalServiceWrapper
 	public int getPortalPreferenceValuesCount() {
 		return _portalPreferenceValueLocalService.
 			getPortalPreferenceValuesCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_portalPreferenceValueLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

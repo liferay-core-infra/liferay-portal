@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -396,6 +397,11 @@ public abstract class MFAFIDO2CredentialEntryLocalServiceBaseImpl
 	@Override
 	public int getMFAFIDO2CredentialEntriesCount() {
 		return mfaFIDO2CredentialEntryPersistence.countAll();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		mfaFIDO2CredentialEntryPersistence.loadFinderCache(finderPaths);
 	}
 
 	/**

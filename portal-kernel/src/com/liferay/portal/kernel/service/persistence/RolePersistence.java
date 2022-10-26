@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchRoleException;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -40,6 +41,17 @@ public interface RolePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RoleUtil} to access the role persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the roles where uuid = &#63;.
@@ -246,6 +258,12 @@ public interface RolePersistence
 	 * @return the number of matching roles that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the roles where uuid = &#63; and companyId = &#63;.
@@ -470,6 +488,12 @@ public interface RolePersistence
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the roles where companyId = &#63;.
 	 *
@@ -677,6 +701,12 @@ public interface RolePersistence
 	 */
 	public int filterCountByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByName();
+
+	public FinderPath getFinderPathWithoutPaginationFindByName();
+
+	public FinderPath getFinderPathCountByName();
+
 	/**
 	 * Returns all the roles where name = &#63;.
 	 *
@@ -883,6 +913,12 @@ public interface RolePersistence
 	 */
 	public int filterCountByName(String name);
 
+	public FinderPath getFinderPathWithPaginationFindByType();
+
+	public FinderPath getFinderPathWithoutPaginationFindByType();
+
+	public FinderPath getFinderPathCountByType();
+
 	/**
 	 * Returns all the roles where type = &#63;.
 	 *
@@ -1087,6 +1123,12 @@ public interface RolePersistence
 	 * @return the number of matching roles that the user has permission to view
 	 */
 	public int filterCountByType(int type);
+
+	public FinderPath getFinderPathWithPaginationFindBySubtype();
+
+	public FinderPath getFinderPathWithoutPaginationFindBySubtype();
+
+	public FinderPath getFinderPathCountBySubtype();
 
 	/**
 	 * Returns all the roles where subtype = &#63;.
@@ -1295,6 +1337,10 @@ public interface RolePersistence
 	 */
 	public int filterCountBySubtype(String subtype);
 
+	public FinderPath getFinderPathFetchByC_N();
+
+	public FinderPath getFinderPathCountByC_N();
+
 	/**
 	 * Returns the role where companyId = &#63; and name = &#63; or throws a <code>NoSuchRoleException</code> if it could not be found.
 	 *
@@ -1343,6 +1389,14 @@ public interface RolePersistence
 	 * @return the number of matching roles
 	 */
 	public int countByC_N(long companyId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByC_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_T();
+
+	public FinderPath getFinderPathCountByC_T();
+
+	public FinderPath getFinderPathWithPaginationCountByC_T();
 
 	/**
 	 * Returns all the roles where companyId = &#63; and type = &#63;.
@@ -1698,6 +1752,12 @@ public interface RolePersistence
 	 */
 	public int filterCountByC_T(long companyId, int[] types);
 
+	public FinderPath getFinderPathWithPaginationFindByT_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByT_S();
+
+	public FinderPath getFinderPathCountByT_S();
+
 	/**
 	 * Returns all the roles where type = &#63; and subtype = &#63;.
 	 *
@@ -1921,6 +1981,16 @@ public interface RolePersistence
 	 */
 	public int filterCountByT_S(int type, String subtype);
 
+	public FinderPath getFinderPathWithPaginationFindByC_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C();
+
+	public FinderPath getFinderPathFetchByC_C_C();
+
+	public FinderPath getFinderPathCountByC_C_C();
+
+	public FinderPath getFinderPathWithPaginationCountByC_C_C();
+
 	/**
 	 * Returns all the roles where companyId = &#63; and classNameId = &#63; and classPK = any &#63;.
 	 *
@@ -2081,6 +2151,16 @@ public interface RolePersistence
 	 */
 	public int filterCountByC_C_C(
 		long companyId, long classNameId, long[] classPKs);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_C_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C_T();
+
+	public FinderPath getFinderPathFetchByC_C_C_T();
+
+	public FinderPath getFinderPathCountByC_C_C_T();
+
+	public FinderPath getFinderPathWithPaginationCountByC_C_C_T();
 
 	/**
 	 * Returns all the roles where companyId = &#63; and classNameId = &#63; and classPK = any &#63; and type = &#63;.
@@ -2712,5 +2792,7 @@ public interface RolePersistence
 	 */
 	public void setUsers(
 		long pk, java.util.List<com.liferay.portal.kernel.model.User> users);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

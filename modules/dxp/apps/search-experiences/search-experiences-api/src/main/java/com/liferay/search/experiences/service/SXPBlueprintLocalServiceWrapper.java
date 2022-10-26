@@ -14,6 +14,7 @@
 
 package com.liferay.search.experiences.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -428,6 +429,11 @@ public class SXPBlueprintLocalServiceWrapper
 	@Override
 	public int getSXPBlueprintsCount(long companyId) {
 		return _sxpBlueprintLocalService.getSXPBlueprintsCount(companyId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_sxpBlueprintLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

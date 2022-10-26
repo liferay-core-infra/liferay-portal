@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,9 +103,42 @@ public class ObjectFieldSettingPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the object field settings where uuid = &#63;.
@@ -641,8 +676,25 @@ public class ObjectFieldSettingPersistenceImpl
 		"(objectFieldSetting.uuid IS NULL OR objectFieldSetting.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the object field settings where uuid = &#63; and companyId = &#63;.
@@ -1224,8 +1276,25 @@ public class ObjectFieldSettingPersistenceImpl
 		"objectFieldSetting.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByObjectFieldId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByObjectFieldId() {
+		return _finderPathWithPaginationFindByObjectFieldId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByObjectFieldId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByObjectFieldId() {
+		return _finderPathWithoutPaginationFindByObjectFieldId;
+	}
+
 	private FinderPath _finderPathCountByObjectFieldId;
+
+	@Override
+	public FinderPath getFinderPathCountByObjectFieldId() {
+		return _finderPathCountByObjectFieldId;
+	}
 
 	/**
 	 * Returns all the object field settings where objectFieldId = &#63;.
@@ -1734,7 +1803,18 @@ public class ObjectFieldSettingPersistenceImpl
 		"objectFieldSetting.objectFieldId = ?";
 
 	private FinderPath _finderPathFetchByOFI_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByOFI_N() {
+		return _finderPathFetchByOFI_N;
+	}
+
 	private FinderPath _finderPathCountByOFI_N;
+
+	@Override
+	public FinderPath getFinderPathCountByOFI_N() {
+		return _finderPathCountByOFI_N;
+	}
 
 	/**
 	 * Returns the object field setting where objectFieldId = &#63; and name = &#63; or throws a <code>NoSuchObjectFieldSettingException</code> if it could not be found.
@@ -2655,6 +2735,61 @@ public class ObjectFieldSettingPersistenceImpl
 		_setObjectFieldSettingUtilPersistence(null);
 
 		entityCache.removeCache(ObjectFieldSettingImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ObjectFieldSetting> objectFieldSettings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectFieldSetting>> resultMap =
+				new HashMap<>();
+
+			for (ObjectFieldSetting objectFieldSetting : objectFieldSettings) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectFieldSettingModelImpl objectFieldSettingModelImpl =
+						(ObjectFieldSettingModelImpl)objectFieldSetting;
+
+					arguments.add(
+						objectFieldSettingModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectFieldSetting);
+				}
+				else {
+					List<ObjectFieldSetting> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(objectFieldSetting);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectFieldSetting>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectFieldSetting> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setObjectFieldSettingUtilPersistence(

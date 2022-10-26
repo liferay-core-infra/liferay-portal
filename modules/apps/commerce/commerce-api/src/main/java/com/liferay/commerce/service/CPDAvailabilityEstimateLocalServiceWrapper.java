@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -420,6 +421,11 @@ public class CPDAvailabilityEstimateLocalServiceWrapper
 
 		return _cpdAvailabilityEstimateLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_cpdAvailabilityEstimateLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

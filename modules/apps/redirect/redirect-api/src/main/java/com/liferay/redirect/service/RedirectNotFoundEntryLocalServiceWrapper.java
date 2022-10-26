@@ -14,6 +14,7 @@
 
 package com.liferay.redirect.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -404,6 +405,11 @@ public class RedirectNotFoundEntryLocalServiceWrapper
 
 		return _redirectNotFoundEntryLocalService.getRedirectNotFoundEntry(
 			redirectNotFoundEntryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_redirectNotFoundEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.redirect.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.redirect.exception.NoSuchNotFoundEntryException;
 import com.liferay.redirect.model.RedirectNotFoundEntry;
@@ -40,6 +41,17 @@ public interface RedirectNotFoundEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RedirectNotFoundEntryUtil} to access the redirect not found entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the redirect not found entries where groupId = &#63;.
@@ -183,6 +195,10 @@ public interface RedirectNotFoundEntryPersistence
 	 * @return the number of matching redirect not found entries
 	 */
 	public int countByGroupId(long groupId);
+
+	public FinderPath getFinderPathFetchByG_U();
+
+	public FinderPath getFinderPathCountByG_U();
 
 	/**
 	 * Returns the redirect not found entry where groupId = &#63; and url = &#63; or throws a <code>NoSuchNotFoundEntryException</code> if it could not be found.
@@ -356,5 +372,7 @@ public interface RedirectNotFoundEntryPersistence
 	 * @return the number of redirect not found entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchActionException;
@@ -41,6 +42,17 @@ public interface KaleoActionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoActionUtil} to access the kaleo action persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the kaleo actions where companyId = &#63;.
@@ -185,6 +197,14 @@ public interface KaleoActionPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId();
+
+	public FinderPath getFinderPathCountByKaleoDefinitionVersionId();
+
 	/**
 	 * Returns all the kaleo actions where kaleoDefinitionVersionId = &#63;.
 	 *
@@ -328,6 +348,12 @@ public interface KaleoActionPersistence
 	 * @return the number of matching kaleo actions
 	 */
 	public int countByKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
+
+	public FinderPath getFinderPathWithPaginationFindByKCN_KCPK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByKCN_KCPK();
+
+	public FinderPath getFinderPathCountByKCN_KCPK();
 
 	/**
 	 * Returns all the kaleo actions where kaleoClassName = &#63; and kaleoClassPK = &#63;.
@@ -483,6 +509,12 @@ public interface KaleoActionPersistence
 	 * @return the number of matching kaleo actions
 	 */
 	public int countByKCN_KCPK(String kaleoClassName, long kaleoClassPK);
+
+	public FinderPath getFinderPathWithPaginationFindByC_KCN_KCPK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_KCN_KCPK();
+
+	public FinderPath getFinderPathCountByC_KCN_KCPK();
 
 	/**
 	 * Returns all the kaleo actions where companyId = &#63; and kaleoClassName = &#63; and kaleoClassPK = &#63;.
@@ -656,6 +688,12 @@ public interface KaleoActionPersistence
 	public int countByC_KCN_KCPK(
 		long companyId, String kaleoClassName, long kaleoClassPK);
 
+	public FinderPath getFinderPathWithPaginationFindByKCN_KCPK_ET();
+
+	public FinderPath getFinderPathWithoutPaginationFindByKCN_KCPK_ET();
+
+	public FinderPath getFinderPathCountByKCN_KCPK_ET();
+
 	/**
 	 * Returns all the kaleo actions where kaleoClassName = &#63; and kaleoClassPK = &#63; and executionType = &#63;.
 	 *
@@ -827,6 +865,12 @@ public interface KaleoActionPersistence
 	 */
 	public int countByKCN_KCPK_ET(
 		String kaleoClassName, long kaleoClassPK, String executionType);
+
+	public FinderPath getFinderPathWithPaginationFindByC_KCN_KCPK_ET();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_KCN_KCPK_ET();
+
+	public FinderPath getFinderPathCountByC_KCN_KCPK_ET();
 
 	/**
 	 * Returns all the kaleo actions where companyId = &#63; and kaleoClassName = &#63; and kaleoClassPK = &#63; and executionType = &#63;.
@@ -1136,5 +1180,7 @@ public interface KaleoActionPersistence
 	 * @return the number of kaleo actions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

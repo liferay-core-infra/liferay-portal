@@ -14,6 +14,7 @@
 
 package com.liferay.wiki.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -443,6 +444,11 @@ public class WikiPageResourceLocalServiceWrapper
 	@Override
 	public int getWikiPageResourcesCount() {
 		return _wikiPageResourceLocalService.getWikiPageResourcesCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_wikiPageResourceLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

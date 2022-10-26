@@ -122,6 +122,48 @@ public class NestedSetsTreeEntryUtil {
 		return getPersistence().update(nestedSetsTreeEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountAncestors() {
+
+		return getPersistence().getFinderPathWithPaginationCountAncestors();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountDescendants() {
+
+		return getPersistence().getFinderPathWithPaginationCountDescendants();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationGetAncestors() {
+
+		return getPersistence().getFinderPathWithPaginationGetAncestors();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationGetDescendants() {
+
+		return getPersistence().getFinderPathWithPaginationGetDescendants();
+	}
+
 	/**
 	 * Caches the nested sets tree entry in the entity cache if it is enabled.
 	 *
@@ -318,6 +360,12 @@ public class NestedSetsTreeEntryUtil {
 
 	public static void setRebuildTreeEnabled(boolean rebuildTreeEnabled) {
 		getPersistence().setRebuildTreeEnabled(rebuildTreeEnabled);
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static NestedSetsTreeEntryPersistence getPersistence() {

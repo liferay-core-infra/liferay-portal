@@ -16,6 +16,7 @@ package com.liferay.asset.kernel.service.persistence;
 
 import com.liferay.asset.kernel.exception.NoSuchLinkException;
 import com.liferay.asset.kernel.model.AssetLink;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface AssetLinkPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AssetLinkUtil} to access the asset link persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByEntryId1();
+
+	public FinderPath getFinderPathWithoutPaginationFindByEntryId1();
+
+	public FinderPath getFinderPathCountByEntryId1();
 
 	/**
 	 * Returns all the asset links where entryId1 = &#63;.
@@ -185,6 +197,12 @@ public interface AssetLinkPersistence
 	 */
 	public int countByEntryId1(long entryId1);
 
+	public FinderPath getFinderPathWithPaginationFindByEntryId2();
+
+	public FinderPath getFinderPathWithoutPaginationFindByEntryId2();
+
+	public FinderPath getFinderPathCountByEntryId2();
+
 	/**
 	 * Returns all the asset links where entryId2 = &#63;.
 	 *
@@ -327,6 +345,12 @@ public interface AssetLinkPersistence
 	 * @return the number of matching asset links
 	 */
 	public int countByEntryId2(long entryId2);
+
+	public FinderPath getFinderPathWithPaginationFindByE_E();
+
+	public FinderPath getFinderPathWithoutPaginationFindByE_E();
+
+	public FinderPath getFinderPathCountByE_E();
 
 	/**
 	 * Returns all the asset links where entryId1 = &#63; and entryId2 = &#63;.
@@ -482,6 +506,12 @@ public interface AssetLinkPersistence
 	 */
 	public int countByE_E(long entryId1, long entryId2);
 
+	public FinderPath getFinderPathWithPaginationFindByE1_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByE1_T();
+
+	public FinderPath getFinderPathCountByE1_T();
+
 	/**
 	 * Returns all the asset links where entryId1 = &#63; and type = &#63;.
 	 *
@@ -636,6 +666,12 @@ public interface AssetLinkPersistence
 	 */
 	public int countByE1_T(long entryId1, int type);
 
+	public FinderPath getFinderPathWithPaginationFindByE2_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByE2_T();
+
+	public FinderPath getFinderPathCountByE2_T();
+
 	/**
 	 * Returns all the asset links where entryId2 = &#63; and type = &#63;.
 	 *
@@ -789,6 +825,10 @@ public interface AssetLinkPersistence
 	 * @return the number of matching asset links
 	 */
 	public int countByE2_T(long entryId2, int type);
+
+	public FinderPath getFinderPathFetchByE_E_T();
+
+	public FinderPath getFinderPathCountByE_E_T();
 
 	/**
 	 * Returns the asset link where entryId1 = &#63; and entryId2 = &#63; and type = &#63; or throws a <code>NoSuchLinkException</code> if it could not be found.
@@ -962,5 +1002,7 @@ public interface AssetLinkPersistence
 	 * @return the number of asset links
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -119,6 +119,42 @@ public class ObjectStateUtil {
 		return getPersistence().update(objectState, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the object states where uuid = &#63;.
 	 *
@@ -281,6 +317,24 @@ public class ObjectStateUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -467,6 +521,26 @@ public class ObjectStateUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByListTypeEntryId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByListTypeEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByListTypeEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByListTypeEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByListTypeEntryId() {
+
+		return getPersistence().getFinderPathCountByListTypeEntryId();
+	}
+
 	/**
 	 * Returns all the object states where listTypeEntryId = &#63;.
 	 *
@@ -643,6 +717,26 @@ public class ObjectStateUtil {
 		return getPersistence().countByListTypeEntryId(listTypeEntryId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByObjectStateFlowId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByObjectStateFlowId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByObjectStateFlowId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByObjectStateFlowId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByObjectStateFlowId() {
+
+		return getPersistence().getFinderPathCountByObjectStateFlowId();
+	}
+
 	/**
 	 * Returns all the object states where objectStateFlowId = &#63;.
 	 *
@@ -817,6 +911,18 @@ public class ObjectStateUtil {
 	 */
 	public static int countByObjectStateFlowId(long objectStateFlowId) {
 		return getPersistence().countByObjectStateFlowId(objectStateFlowId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByLTEI_OSFI() {
+
+		return getPersistence().getFinderPathFetchByLTEI_OSFI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByLTEI_OSFI() {
+
+		return getPersistence().getFinderPathCountByLTEI_OSFI();
 	}
 
 	/**
@@ -1038,6 +1144,12 @@ public class ObjectStateUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static ObjectStatePersistence getPersistence() {

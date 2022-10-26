@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -99,9 +101,42 @@ public class BatchPlannerPlanPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the batch planner plans where companyId = &#63;.
@@ -984,8 +1019,25 @@ public class BatchPlannerPlanPersistenceImpl
 		"batchPlannerPlan.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U() {
+		return _finderPathWithPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_U() {
+		return _finderPathWithoutPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathCountByC_U;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U() {
+		return _finderPathCountByC_U;
+	}
 
 	/**
 	 * Returns all the batch planner plans where companyId = &#63; and userId = &#63;.
@@ -1927,8 +1979,25 @@ public class BatchPlannerPlanPersistenceImpl
 		"batchPlannerPlan.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_E;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_E() {
+		return _finderPathWithPaginationFindByC_E;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_E;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_E() {
+		return _finderPathWithoutPaginationFindByC_E;
+	}
+
 	private FinderPath _finderPathCountByC_E;
+
+	@Override
+	public FinderPath getFinderPathCountByC_E() {
+		return _finderPathCountByC_E;
+	}
 
 	/**
 	 * Returns all the batch planner plans where companyId = &#63; and export = &#63;.
@@ -2872,8 +2941,25 @@ public class BatchPlannerPlanPersistenceImpl
 		"batchPlannerPlan.export = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_N;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_N() {
+		return _finderPathWithPaginationFindByC_N;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_N;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_N() {
+		return _finderPathWithoutPaginationFindByC_N;
+	}
+
 	private FinderPath _finderPathCountByC_N;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N() {
+		return _finderPathCountByC_N;
+	}
 
 	/**
 	 * Returns all the batch planner plans where companyId = &#63; and name = &#63;.
@@ -3895,8 +3981,25 @@ public class BatchPlannerPlanPersistenceImpl
 		"(batchPlannerPlan.name IS NULL OR batchPlannerPlan.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_T() {
+		return _finderPathWithPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_T() {
+		return _finderPathWithoutPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathCountByC_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_T() {
+		return _finderPathCountByC_T;
+	}
 
 	/**
 	 * Returns all the batch planner plans where companyId = &#63; and template = &#63;.
@@ -4841,8 +4944,25 @@ public class BatchPlannerPlanPersistenceImpl
 		"batchPlannerPlan.template = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_E_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_E_T() {
+		return _finderPathWithPaginationFindByC_E_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_E_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_E_T() {
+		return _finderPathWithoutPaginationFindByC_E_T;
+	}
+
 	private FinderPath _finderPathCountByC_E_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_E_T() {
+		return _finderPathCountByC_E_T;
+	}
 
 	/**
 	 * Returns all the batch planner plans where companyId = &#63; and export = &#63; and template = &#63;.
@@ -6535,6 +6655,61 @@ public class BatchPlannerPlanPersistenceImpl
 		_setBatchPlannerPlanUtilPersistence(null);
 
 		entityCache.removeCache(BatchPlannerPlanImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<BatchPlannerPlan> batchPlannerPlans = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BatchPlannerPlan>> resultMap =
+				new HashMap<>();
+
+			for (BatchPlannerPlan batchPlannerPlan : batchPlannerPlans) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BatchPlannerPlanModelImpl batchPlannerPlanModelImpl =
+						(BatchPlannerPlanModelImpl)batchPlannerPlan;
+
+					arguments.add(
+						batchPlannerPlanModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), batchPlannerPlan);
+				}
+				else {
+					List<BatchPlannerPlan> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(batchPlannerPlan);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BatchPlannerPlan>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BatchPlannerPlan> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setBatchPlannerPlanUtilPersistence(

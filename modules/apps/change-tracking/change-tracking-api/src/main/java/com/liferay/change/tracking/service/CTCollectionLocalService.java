@@ -21,6 +21,7 @@ import com.liferay.change.tracking.model.CTEntry;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -309,6 +310,9 @@ public interface CTCollectionLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean isCTEntryEnclosed(
 		long ctCollectionId, long modelClassNameId, long modelClassPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	public CTCollection undoCTCollection(
 			long ctCollectionId, long userId, String name, String description)

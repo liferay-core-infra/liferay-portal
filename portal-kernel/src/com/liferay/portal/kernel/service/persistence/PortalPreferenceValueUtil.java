@@ -122,6 +122,44 @@ public class PortalPreferenceValueUtil {
 		return getPersistence().update(portalPreferenceValue, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByPortalPreferencesId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByPortalPreferencesId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByPortalPreferencesId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByPortalPreferencesId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByPortalPreferencesId() {
+
+		return getPersistence().getFinderPathCountByPortalPreferencesId();
+	}
+
 	/**
 	 * Returns all the portal preference values where portalPreferencesId = &#63;.
 	 *
@@ -299,6 +337,24 @@ public class PortalPreferenceValueUtil {
 	 */
 	public static int countByPortalPreferencesId(long portalPreferencesId) {
 		return getPersistence().countByPortalPreferencesId(portalPreferencesId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByP_N() {
+
+		return getPersistence().getFinderPathWithPaginationFindByP_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByP_N() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByP_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByP_N() {
+
+		return getPersistence().getFinderPathCountByP_N();
 	}
 
 	/**
@@ -492,6 +548,24 @@ public class PortalPreferenceValueUtil {
 	 */
 	public static int countByP_N(long portalPreferencesId, String namespace) {
 		return getPersistence().countByP_N(portalPreferencesId, namespace);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByP_K_N() {
+
+		return getPersistence().getFinderPathWithPaginationFindByP_K_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByP_K_N() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByP_K_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByP_K_N() {
+
+		return getPersistence().getFinderPathCountByP_K_N();
 	}
 
 	/**
@@ -705,6 +779,18 @@ public class PortalPreferenceValueUtil {
 			portalPreferencesId, key, namespace);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByP_I_K_N() {
+
+		return getPersistence().getFinderPathFetchByP_I_K_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByP_I_K_N() {
+
+		return getPersistence().getFinderPathCountByP_I_K_N();
+	}
+
 	/**
 	 * Returns the portal preference value where portalPreferencesId = &#63; and index = &#63; and key = &#63; and namespace = &#63; or throws a <code>NoSuchPreferenceValueException</code> if it could not be found.
 	 *
@@ -790,6 +876,24 @@ public class PortalPreferenceValueUtil {
 
 		return getPersistence().countByP_I_K_N(
 			portalPreferencesId, index, key, namespace);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByP_K_N_SV() {
+
+		return getPersistence().getFinderPathWithPaginationFindByP_K_N_SV();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByP_K_N_SV() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByP_K_N_SV();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByP_K_N_SV() {
+
+		return getPersistence().getFinderPathCountByP_K_N_SV();
 	}
 
 	/**
@@ -1183,6 +1287,12 @@ public class PortalPreferenceValueUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static PortalPreferenceValuePersistence getPersistence() {

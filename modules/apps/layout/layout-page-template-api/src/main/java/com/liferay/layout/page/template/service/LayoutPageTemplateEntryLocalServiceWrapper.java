@@ -16,6 +16,7 @@ package com.liferay.layout.page.template.service;
 
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -638,6 +639,11 @@ public class LayoutPageTemplateEntryLocalServiceWrapper
 
 		return _layoutPageTemplateEntryLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_layoutPageTemplateEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

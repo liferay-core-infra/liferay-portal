@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchServiceComponentException;
 import com.liferay.portal.kernel.model.ServiceComponent;
 
@@ -39,6 +40,17 @@ public interface ServiceComponentPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ServiceComponentUtil} to access the service component persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByBuildNamespace();
+
+	public FinderPath getFinderPathWithoutPaginationFindByBuildNamespace();
+
+	public FinderPath getFinderPathCountByBuildNamespace();
 
 	/**
 	 * Returns all the service components where buildNamespace = &#63;.
@@ -183,6 +195,10 @@ public interface ServiceComponentPersistence
 	 * @return the number of matching service components
 	 */
 	public int countByBuildNamespace(String buildNamespace);
+
+	public FinderPath getFinderPathFetchByBNS_BNU();
+
+	public FinderPath getFinderPathCountByBNS_BNU();
 
 	/**
 	 * Returns the service component where buildNamespace = &#63; and buildNumber = &#63; or throws a <code>NoSuchServiceComponentException</code> if it could not be found.
@@ -356,5 +372,7 @@ public interface ServiceComponentPersistence
 	 * @return the number of service components
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

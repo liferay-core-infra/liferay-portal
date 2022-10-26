@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.PortalPreferenceValuePersistence;
 import com.liferay.portal.kernel.service.persistence.PortalPreferenceValueUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -47,6 +48,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,9 +86,44 @@ public class PortalPreferenceValuePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByPortalPreferencesId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByPortalPreferencesId() {
+		return _finderPathWithPaginationFindByPortalPreferencesId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByPortalPreferencesId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByPortalPreferencesId() {
+
+		return _finderPathWithoutPaginationFindByPortalPreferencesId;
+	}
+
 	private FinderPath _finderPathCountByPortalPreferencesId;
+
+	@Override
+	public FinderPath getFinderPathCountByPortalPreferencesId() {
+		return _finderPathCountByPortalPreferencesId;
+	}
 
 	/**
 	 * Returns all the portal preference values where portalPreferencesId = &#63;.
@@ -602,8 +639,25 @@ public class PortalPreferenceValuePersistenceImpl
 			"portalPreferenceValue.portalPreferencesId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByP_N;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByP_N() {
+		return _finderPathWithPaginationFindByP_N;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByP_N;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByP_N() {
+		return _finderPathWithoutPaginationFindByP_N;
+	}
+
 	private FinderPath _finderPathCountByP_N;
+
+	@Override
+	public FinderPath getFinderPathCountByP_N() {
+		return _finderPathCountByP_N;
+	}
 
 	/**
 	 * Returns all the portal preference values where portalPreferencesId = &#63; and namespace = &#63;.
@@ -1195,8 +1249,25 @@ public class PortalPreferenceValuePersistenceImpl
 		"(portalPreferenceValue.namespace IS NULL OR portalPreferenceValue.namespace = '')";
 
 	private FinderPath _finderPathWithPaginationFindByP_K_N;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByP_K_N() {
+		return _finderPathWithPaginationFindByP_K_N;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByP_K_N;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByP_K_N() {
+		return _finderPathWithoutPaginationFindByP_K_N;
+	}
+
 	private FinderPath _finderPathCountByP_K_N;
+
+	@Override
+	public FinderPath getFinderPathCountByP_K_N() {
+		return _finderPathCountByP_K_N;
+	}
 
 	/**
 	 * Returns all the portal preference values where portalPreferencesId = &#63; and key = &#63; and namespace = &#63;.
@@ -1869,7 +1940,18 @@ public class PortalPreferenceValuePersistenceImpl
 		"(portalPreferenceValue.namespace IS NULL OR portalPreferenceValue.namespace = '')";
 
 	private FinderPath _finderPathFetchByP_I_K_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByP_I_K_N() {
+		return _finderPathFetchByP_I_K_N;
+	}
+
 	private FinderPath _finderPathCountByP_I_K_N;
+
+	@Override
+	public FinderPath getFinderPathCountByP_I_K_N() {
+		return _finderPathCountByP_I_K_N;
+	}
 
 	/**
 	 * Returns the portal preference value where portalPreferencesId = &#63; and index = &#63; and key = &#63; and namespace = &#63; or throws a <code>NoSuchPreferenceValueException</code> if it could not be found.
@@ -2201,8 +2283,25 @@ public class PortalPreferenceValuePersistenceImpl
 		"(portalPreferenceValue.namespace IS NULL OR portalPreferenceValue.namespace = '')";
 
 	private FinderPath _finderPathWithPaginationFindByP_K_N_SV;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByP_K_N_SV() {
+		return _finderPathWithPaginationFindByP_K_N_SV;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByP_K_N_SV;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByP_K_N_SV() {
+		return _finderPathWithoutPaginationFindByP_K_N_SV;
+	}
+
 	private FinderPath _finderPathCountByP_K_N_SV;
+
+	@Override
+	public FinderPath getFinderPathCountByP_K_N_SV() {
+		return _finderPathCountByP_K_N_SV;
+	}
 
 	/**
 	 * Returns all the portal preference values where portalPreferencesId = &#63; and key = &#63; and namespace = &#63; and smallValue = &#63;.
@@ -3665,6 +3764,66 @@ public class PortalPreferenceValuePersistenceImpl
 		_setPortalPreferenceValueUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(PortalPreferenceValueImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PortalPreferenceValue> portalPreferenceValues = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortalPreferenceValue>> resultMap =
+				new HashMap<>();
+
+			for (PortalPreferenceValue portalPreferenceValue :
+					portalPreferenceValues) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortalPreferenceValueModelImpl
+						portalPreferenceValueModelImpl =
+							(PortalPreferenceValueModelImpl)
+								portalPreferenceValue;
+
+					arguments.add(
+						portalPreferenceValueModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), portalPreferenceValue);
+				}
+				else {
+					List<PortalPreferenceValue> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(portalPreferenceValue);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortalPreferenceValue>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortalPreferenceValue> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPortalPreferenceValueUtilPersistence(

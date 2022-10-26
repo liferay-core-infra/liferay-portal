@@ -125,6 +125,44 @@ public class BatchEngineImportTaskErrorUtil {
 			batchEngineImportTaskError, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByBatchEngineImportTaskId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByBatchEngineImportTaskId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByBatchEngineImportTaskId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByBatchEngineImportTaskId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByBatchEngineImportTaskId() {
+
+		return getPersistence().getFinderPathCountByBatchEngineImportTaskId();
+	}
+
 	/**
 	 * Returns all the batch engine import task errors where batchEngineImportTaskId = &#63;.
 	 *
@@ -481,6 +519,12 @@ public class BatchEngineImportTaskErrorUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static BatchEngineImportTaskErrorPersistence getPersistence() {

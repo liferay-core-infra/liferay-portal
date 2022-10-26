@@ -119,6 +119,44 @@ public class LayoutBranchUtil {
 		return getPersistence().update(layoutBranch, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLayoutSetBranchId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByLayoutSetBranchId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByLayoutSetBranchId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByLayoutSetBranchId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByLayoutSetBranchId() {
+
+		return getPersistence().getFinderPathCountByLayoutSetBranchId();
+	}
+
 	/**
 	 * Returns all the layout branches where layoutSetBranchId = &#63;.
 	 *
@@ -293,6 +331,24 @@ public class LayoutBranchUtil {
 	 */
 	public static int countByLayoutSetBranchId(long layoutSetBranchId) {
 		return getPersistence().countByLayoutSetBranchId(layoutSetBranchId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByL_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByL_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByL_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByL_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByL_P() {
+
+		return getPersistence().getFinderPathCountByL_P();
 	}
 
 	/**
@@ -482,6 +538,18 @@ public class LayoutBranchUtil {
 		return getPersistence().countByL_P(layoutSetBranchId, plid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByL_P_N() {
+
+		return getPersistence().getFinderPathFetchByL_P_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByL_P_N() {
+
+		return getPersistence().getFinderPathCountByL_P_N();
+	}
+
 	/**
 	 * Returns the layout branch where layoutSetBranchId = &#63; and plid = &#63; and name = &#63; or throws a <code>NoSuchLayoutBranchException</code> if it could not be found.
 	 *
@@ -556,6 +624,24 @@ public class LayoutBranchUtil {
 		long layoutSetBranchId, long plid, String name) {
 
 		return getPersistence().countByL_P_N(layoutSetBranchId, plid, name);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByL_P_M() {
+
+		return getPersistence().getFinderPathWithPaginationFindByL_P_M();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByL_P_M() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByL_P_M();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByL_P_M() {
+
+		return getPersistence().getFinderPathCountByL_P_M();
 	}
 
 	/**
@@ -906,6 +992,12 @@ public class LayoutBranchUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static LayoutBranchPersistence getPersistence() {

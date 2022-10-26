@@ -14,6 +14,7 @@
 
 package com.liferay.account.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -455,6 +456,11 @@ public class AccountGroupLocalServiceWrapper
 	@Override
 	public boolean hasDefaultAccountGroup(long companyId) {
 		return _accountGroupLocalService.hasDefaultAccountGroup(companyId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_accountGroupLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -40,6 +41,17 @@ public interface VirtualHostPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link VirtualHostUtil} to access the virtual host persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the virtual hosts where companyId = &#63;.
@@ -184,6 +196,10 @@ public interface VirtualHostPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathFetchByHostname();
+
+	public FinderPath getFinderPathCountByHostname();
+
 	/**
 	 * Returns the virtual host where hostname = &#63; or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
 	 *
@@ -227,6 +243,12 @@ public interface VirtualHostPersistence
 	 * @return the number of matching virtual hosts
 	 */
 	public int countByHostname(String hostname);
+
+	public FinderPath getFinderPathWithPaginationFindByC_L();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_L();
+
+	public FinderPath getFinderPathCountByC_L();
 
 	/**
 	 * Returns all the virtual hosts where companyId = &#63; and layoutSetId = &#63;.
@@ -382,6 +404,10 @@ public interface VirtualHostPersistence
 	 * @return the number of matching virtual hosts
 	 */
 	public int countByC_L(long companyId, long layoutSetId);
+
+	public FinderPath getFinderPathWithPaginationFindByNotL_H();
+
+	public FinderPath getFinderPathWithPaginationCountByNotL_H();
 
 	/**
 	 * Returns all the virtual hosts where layoutSetId &ne; &#63; and hostname = &#63;.
@@ -617,6 +643,10 @@ public interface VirtualHostPersistence
 	 */
 	public int countByNotL_H(long layoutSetId, String[] hostnames);
 
+	public FinderPath getFinderPathFetchByC_L_D();
+
+	public FinderPath getFinderPathCountByC_L_D();
+
 	/**
 	 * Returns the virtual host where companyId = &#63; and layoutSetId = &#63; and defaultVirtualHost = &#63; or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
 	 *
@@ -796,5 +826,7 @@ public interface VirtualHostPersistence
 	 * @return the number of virtual hosts
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

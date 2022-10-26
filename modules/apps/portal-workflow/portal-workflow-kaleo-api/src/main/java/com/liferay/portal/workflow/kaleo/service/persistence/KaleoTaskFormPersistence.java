@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTaskFormException;
@@ -41,6 +42,17 @@ public interface KaleoTaskFormPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoTaskFormUtil} to access the kaleo task form persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the kaleo task forms where companyId = &#63;.
@@ -184,6 +196,14 @@ public interface KaleoTaskFormPersistence
 	 * @return the number of matching kaleo task forms
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId();
+
+	public FinderPath getFinderPathCountByKaleoDefinitionVersionId();
 
 	/**
 	 * Returns all the kaleo task forms where kaleoDefinitionVersionId = &#63;.
@@ -329,6 +349,12 @@ public interface KaleoTaskFormPersistence
 	 */
 	public int countByKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
 
+	public FinderPath getFinderPathWithPaginationFindByKaleoNodeId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoNodeId();
+
+	public FinderPath getFinderPathCountByKaleoNodeId();
+
 	/**
 	 * Returns all the kaleo task forms where kaleoNodeId = &#63;.
 	 *
@@ -472,6 +498,12 @@ public interface KaleoTaskFormPersistence
 	 */
 	public int countByKaleoNodeId(long kaleoNodeId);
 
+	public FinderPath getFinderPathWithPaginationFindByKaleoTaskId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoTaskId();
+
+	public FinderPath getFinderPathCountByKaleoTaskId();
+
 	/**
 	 * Returns all the kaleo task forms where kaleoTaskId = &#63;.
 	 *
@@ -614,6 +646,10 @@ public interface KaleoTaskFormPersistence
 	 * @return the number of matching kaleo task forms
 	 */
 	public int countByKaleoTaskId(long kaleoTaskId);
+
+	public FinderPath getFinderPathFetchByFormUuid_KTI();
+
+	public FinderPath getFinderPathCountByFormUuid_KTI();
 
 	/**
 	 * Returns the kaleo task form where kaleoTaskId = &#63; and formUuid = &#63; or throws a <code>NoSuchTaskFormException</code> if it could not be found.
@@ -784,5 +820,7 @@ public interface KaleoTaskFormPersistence
 	 * @return the number of kaleo task forms
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

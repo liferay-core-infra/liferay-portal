@@ -17,6 +17,7 @@ package com.liferay.commerce.qualifier.service;
 import com.liferay.commerce.qualifier.model.CommerceQualifierEntry;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -384,6 +385,10 @@ public class CommerceQualifierEntryLocalServiceUtil {
 		return getService().getTargetCommerceQualifierEntriesCount(
 			companyId, sourceCommerceQualifierMetadataKey, targetClassName,
 			targetClassPK, keywords);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	/**

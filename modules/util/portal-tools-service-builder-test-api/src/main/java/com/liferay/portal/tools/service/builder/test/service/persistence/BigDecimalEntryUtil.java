@@ -121,6 +121,44 @@ public class BigDecimalEntryUtil {
 		return getPersistence().update(bigDecimalEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByBigDecimalValue() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByBigDecimalValue();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByBigDecimalValue() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByBigDecimalValue();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByBigDecimalValue() {
+
+		return getPersistence().getFinderPathCountByBigDecimalValue();
+	}
+
 	/**
 	 * Returns all the big decimal entries where bigDecimalValue = &#63;.
 	 *
@@ -300,6 +338,20 @@ public class BigDecimalEntryUtil {
 		return getPersistence().countByBigDecimalValue(bigDecimalValue);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGtBigDecimalValue() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByGtBigDecimalValue();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByGtBigDecimalValue() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByGtBigDecimalValue();
+	}
+
 	/**
 	 * Returns all the big decimal entries where bigDecimalValue &gt; &#63;.
 	 *
@@ -477,6 +529,20 @@ public class BigDecimalEntryUtil {
 	 */
 	public static int countByGtBigDecimalValue(BigDecimal bigDecimalValue) {
 		return getPersistence().countByGtBigDecimalValue(bigDecimalValue);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtBigDecimalValue() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByLtBigDecimalValue();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtBigDecimalValue() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtBigDecimalValue();
 	}
 
 	/**
@@ -1031,6 +1097,12 @@ public class BigDecimalEntryUtil {
 			lvEntries) {
 
 		getPersistence().setLVEntries(pk, lvEntries);
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static BigDecimalEntryPersistence getPersistence() {

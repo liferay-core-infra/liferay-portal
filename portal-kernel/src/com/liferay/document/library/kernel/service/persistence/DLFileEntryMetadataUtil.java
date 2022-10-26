@@ -122,6 +122,42 @@ public class DLFileEntryMetadataUtil {
 		return getPersistence().update(dlFileEntryMetadata, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the document library file entry metadatas where uuid = &#63;.
 	 *
@@ -289,6 +325,24 @@ public class DLFileEntryMetadataUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -480,6 +534,25 @@ public class DLFileEntryMetadataUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByFileEntryId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByFileEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByFileEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByFileEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByFileEntryId() {
+
+		return getPersistence().getFinderPathCountByFileEntryId();
+	}
+
 	/**
 	 * Returns all the document library file entry metadatas where fileEntryId = &#63;.
 	 *
@@ -658,6 +731,26 @@ public class DLFileEntryMetadataUtil {
 		return getPersistence().countByFileEntryId(fileEntryId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByFileVersionId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByFileVersionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByFileVersionId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByFileVersionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByFileVersionId() {
+
+		return getPersistence().getFinderPathCountByFileVersionId();
+	}
+
 	/**
 	 * Returns all the document library file entry metadatas where fileVersionId = &#63;.
 	 *
@@ -834,6 +927,18 @@ public class DLFileEntryMetadataUtil {
 	 */
 	public static int countByFileVersionId(long fileVersionId) {
 		return getPersistence().countByFileVersionId(fileVersionId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByD_F() {
+
+		return getPersistence().getFinderPathFetchByD_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByD_F() {
+
+		return getPersistence().getFinderPathCountByD_F();
 	}
 
 	/**
@@ -1061,6 +1166,12 @@ public class DLFileEntryMetadataUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DLFileEntryMetadataPersistence getPersistence() {

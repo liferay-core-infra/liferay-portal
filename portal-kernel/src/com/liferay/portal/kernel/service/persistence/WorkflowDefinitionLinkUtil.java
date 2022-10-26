@@ -124,6 +124,42 @@ public class WorkflowDefinitionLinkUtil {
 		return getPersistence().update(workflowDefinitionLink, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the workflow definition links where companyId = &#63;.
 	 *
@@ -298,6 +334,24 @@ public class WorkflowDefinitionLinkUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_C() {
+
+		return getPersistence().getFinderPathCountByG_C_C();
 	}
 
 	/**
@@ -508,6 +562,24 @@ public class WorkflowDefinitionLinkUtil {
 		return getPersistence().countByG_C_C(groupId, companyId, classNameId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C_CPK() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C_CPK() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_CPK() {
+
+		return getPersistence().getFinderPathCountByG_C_CPK();
+	}
+
 	/**
 	 * Returns all the workflow definition links where groupId = &#63; and companyId = &#63; and classPK = &#63;.
 	 *
@@ -714,6 +786,24 @@ public class WorkflowDefinitionLinkUtil {
 		long groupId, long companyId, long classPK) {
 
 		return getPersistence().countByG_C_CPK(groupId, companyId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_W_W() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_W_W();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_W_W() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_W_W();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_W_W() {
+
+		return getPersistence().getFinderPathCountByC_W_W();
 	}
 
 	/**
@@ -943,6 +1033,24 @@ public class WorkflowDefinitionLinkUtil {
 			companyId, workflowDefinitionName, workflowDefinitionVersion);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C_C_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C_C_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_C_C() {
+
+		return getPersistence().getFinderPathCountByG_C_C_C();
+	}
+
 	/**
 	 * Returns all the workflow definition links where groupId = &#63; and companyId = &#63; and classNameId = &#63; and classPK = &#63;.
 	 *
@@ -1165,6 +1273,18 @@ public class WorkflowDefinitionLinkUtil {
 
 		return getPersistence().countByG_C_C_C(
 			groupId, companyId, classNameId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_C_C_C_T() {
+
+		return getPersistence().getFinderPathFetchByG_C_C_C_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_C_C_T() {
+
+		return getPersistence().getFinderPathCountByG_C_C_C_T();
 	}
 
 	/**
@@ -1421,6 +1541,12 @@ public class WorkflowDefinitionLinkUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static WorkflowDefinitionLinkPersistence getPersistence() {

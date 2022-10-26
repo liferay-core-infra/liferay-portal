@@ -125,6 +125,42 @@ public class DEDataDefinitionFieldLinkUtil {
 			deDataDefinitionFieldLink, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the de data definition field links where uuid = &#63;.
 	 *
@@ -296,6 +332,18 @@ public class DEDataDefinitionFieldLinkUtil {
 		return getPersistence().countByUuid(uuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByUUID_G() {
+
+		return getPersistence().getFinderPathFetchByUUID_G();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUUID_G() {
+
+		return getPersistence().getFinderPathCountByUUID_G();
+	}
+
 	/**
 	 * Returns the de data definition field link where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchDataDefinitionFieldLinkException</code> if it could not be found.
 	 *
@@ -363,6 +411,24 @@ public class DEDataDefinitionFieldLinkUtil {
 	 */
 	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -554,6 +620,26 @@ public class DEDataDefinitionFieldLinkUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByDDMStructureId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByDDMStructureId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByDDMStructureId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByDDMStructureId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByDDMStructureId() {
+
+		return getPersistence().getFinderPathCountByDDMStructureId();
+	}
+
 	/**
 	 * Returns all the de data definition field links where ddmStructureId = &#63;.
 	 *
@@ -731,6 +817,24 @@ public class DEDataDefinitionFieldLinkUtil {
 	 */
 	public static int countByDDMStructureId(long ddmStructureId) {
 		return getPersistence().countByDDMStructureId(ddmStructureId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -924,6 +1028,24 @@ public class DEDataDefinitionFieldLinkUtil {
 		return getPersistence().countByC_C(classNameId, classPK);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_DDMSI() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_DDMSI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_DDMSI() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_DDMSI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_DDMSI() {
+
+		return getPersistence().getFinderPathCountByC_DDMSI();
+	}
+
 	/**
 	 * Returns all the de data definition field links where classNameId = &#63; and ddmStructureId = &#63;.
 	 *
@@ -1115,6 +1237,30 @@ public class DEDataDefinitionFieldLinkUtil {
 	 */
 	public static int countByC_DDMSI(long classNameId, long ddmStructureId) {
 		return getPersistence().countByC_DDMSI(classNameId, ddmStructureId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByDDMSI_F() {
+
+		return getPersistence().getFinderPathWithPaginationFindByDDMSI_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByDDMSI_F() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByDDMSI_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByDDMSI_F() {
+
+		return getPersistence().getFinderPathCountByDDMSI_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByDDMSI_F() {
+
+		return getPersistence().getFinderPathWithPaginationCountByDDMSI_F();
 	}
 
 	/**
@@ -1403,6 +1549,30 @@ public class DEDataDefinitionFieldLinkUtil {
 	 */
 	public static int countByDDMSI_F(long ddmStructureId, String[] fieldNames) {
 		return getPersistence().countByDDMSI_F(ddmStructureId, fieldNames);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_DDMSI_F() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_DDMSI_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_DDMSI_F() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_DDMSI_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_DDMSI_F() {
+
+		return getPersistence().getFinderPathCountByC_DDMSI_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_DDMSI_F() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_DDMSI_F();
 	}
 
 	/**
@@ -1726,6 +1896,24 @@ public class DEDataDefinitionFieldLinkUtil {
 			classNameId, ddmStructureId, fieldNames);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C_DDMSI_F() {
+
+		return getPersistence().getFinderPathFetchByC_C_DDMSI_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_DDMSI_F() {
+
+		return getPersistence().getFinderPathCountByC_C_DDMSI_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_C_DDMSI_F() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_C_DDMSI_F();
+	}
+
 	/**
 	 * Returns the de data definition field link where classNameId = &#63; and classPK = &#63; and ddmStructureId = &#63; and fieldName = &#63; or throws a <code>NoSuchDataDefinitionFieldLinkException</code> if it could not be found.
 	 *
@@ -1993,6 +2181,12 @@ public class DEDataDefinitionFieldLinkUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DEDataDefinitionFieldLinkPersistence getPersistence() {

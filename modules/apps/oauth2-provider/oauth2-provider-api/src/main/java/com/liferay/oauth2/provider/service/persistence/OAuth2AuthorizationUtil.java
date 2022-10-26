@@ -122,6 +122,42 @@ public class OAuth2AuthorizationUtil {
 		return getPersistence().update(oAuth2Authorization, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the o auth2 authorizations where userId = &#63;.
 	 *
@@ -290,6 +326,26 @@ public class OAuth2AuthorizationUtil {
 	 */
 	public static int countByUserId(long userId) {
 		return getPersistence().countByUserId(userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByOAuth2ApplicationId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByOAuth2ApplicationId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByOAuth2ApplicationId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByOAuth2ApplicationId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByOAuth2ApplicationId() {
+
+		return getPersistence().getFinderPathCountByOAuth2ApplicationId();
 	}
 
 	/**
@@ -469,6 +525,24 @@ public class OAuth2AuthorizationUtil {
 	 */
 	public static int countByOAuth2ApplicationId(long oAuth2ApplicationId) {
 		return getPersistence().countByOAuth2ApplicationId(oAuth2ApplicationId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_ATCH() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_ATCH();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_ATCH() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_ATCH();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_ATCH() {
+
+		return getPersistence().getFinderPathCountByC_ATCH();
 	}
 
 	/**
@@ -669,6 +743,24 @@ public class OAuth2AuthorizationUtil {
 			companyId, accessTokenContentHash);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_RTCH() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_RTCH();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_RTCH() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_RTCH();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_RTCH() {
+
+		return getPersistence().getFinderPathCountByC_RTCH();
+	}
+
 	/**
 	 * Returns all the o auth2 authorizations where companyId = &#63; and refreshTokenContentHash = &#63;.
 	 *
@@ -866,6 +958,24 @@ public class OAuth2AuthorizationUtil {
 
 		return getPersistence().countByC_RTCH(
 			companyId, refreshTokenContentHash);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_O_R() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_O_R();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_O_R() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_O_R();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_O_R() {
+
+		return getPersistence().getFinderPathCountByU_O_R();
 	}
 
 	/**
@@ -1475,6 +1585,12 @@ public class OAuth2AuthorizationUtil {
 			oAuth2ScopeGrants) {
 
 		getPersistence().setOAuth2ScopeGrants(pk, oAuth2ScopeGrants);
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static OAuth2AuthorizationPersistence getPersistence() {

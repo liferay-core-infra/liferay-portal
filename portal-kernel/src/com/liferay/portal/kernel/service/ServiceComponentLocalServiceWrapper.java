@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link ServiceComponentLocalService}.
  *
@@ -269,7 +271,7 @@ public class ServiceComponentLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _serviceComponentLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -333,14 +335,18 @@ public class ServiceComponentLocalServiceWrapper
 			initServiceComponent(
 				com.liferay.portal.kernel.service.configuration.
 					ServiceComponentConfiguration serviceComponentConfiguration,
-				java.lang.ClassLoader classLoader,
-				java.lang.String buildNamespace, long buildNumber,
-				long buildDate)
+				ClassLoader classLoader, String buildNamespace,
+				long buildNumber, long buildDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _serviceComponentLocalService.initServiceComponent(
 			serviceComponentConfiguration, classLoader, buildNamespace,
 			buildNumber, buildDate);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_serviceComponentLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**
@@ -364,13 +370,11 @@ public class ServiceComponentLocalServiceWrapper
 
 	@Override
 	public void upgradeDB(
-			java.lang.ClassLoader classLoader, java.lang.String buildNamespace,
-			long buildNumber,
+			ClassLoader classLoader, String buildNamespace, long buildNumber,
 			com.liferay.portal.kernel.model.ServiceComponent
 				previousServiceComponent,
-			java.lang.String tablesSQL, java.lang.String sequencesSQL,
-			java.lang.String indexesSQL)
-		throws java.lang.Exception {
+			String tablesSQL, String sequencesSQL, String indexesSQL)
+		throws Exception {
 
 		_serviceComponentLocalService.upgradeDB(
 			classLoader, buildNamespace, buildNumber, previousServiceComponent,

@@ -16,6 +16,7 @@ package com.liferay.layout.service;
 
 import com.liferay.layout.model.LayoutLocalization;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -435,6 +436,11 @@ public class LayoutLocalizationLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _layoutLocalizationLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_layoutLocalizationLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

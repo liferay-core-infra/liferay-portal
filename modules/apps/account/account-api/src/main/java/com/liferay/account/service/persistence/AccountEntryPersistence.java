@@ -16,6 +16,7 @@ package com.liferay.account.service.persistence;
 
 import com.liferay.account.exception.NoSuchEntryException;
 import com.liferay.account.model.AccountEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountEntryUtil} to access the account entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the account entries where uuid = &#63;.
@@ -246,6 +258,12 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	 * @return the number of matching account entries that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the account entries where uuid = &#63; and companyId = &#63;.
@@ -472,6 +490,12 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the account entries where companyId = &#63;.
 	 *
@@ -678,6 +702,12 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	 * @return the number of matching account entries that the user has permission to view
 	 */
 	public int filterCountByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_S();
+
+	public FinderPath getFinderPathCountByC_S();
 
 	/**
 	 * Returns all the account entries where companyId = &#63; and status = &#63;.
@@ -903,6 +933,12 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	 */
 	public int filterCountByC_S(long companyId, int status);
 
+	public FinderPath getFinderPathWithPaginationFindByU_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByU_T();
+
+	public FinderPath getFinderPathCountByU_T();
+
 	/**
 	 * Returns all the account entries where userId = &#63; and type = &#63;.
 	 *
@@ -1127,6 +1163,10 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	 */
 	public int filterCountByU_T(long userId, String type);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the account entry where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -1298,5 +1338,7 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	 * @return the number of account entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

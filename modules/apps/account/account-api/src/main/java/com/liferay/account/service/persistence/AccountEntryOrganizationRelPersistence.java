@@ -16,6 +16,7 @@ package com.liferay.account.service.persistence;
 
 import com.liferay.account.exception.NoSuchEntryOrganizationRelException;
 import com.liferay.account.model.AccountEntryOrganizationRel;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface AccountEntryOrganizationRelPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountEntryOrganizationRelUtil} to access the account entry organization rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByAccountEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByAccountEntryId();
+
+	public FinderPath getFinderPathCountByAccountEntryId();
 
 	/**
 	 * Returns all the account entry organization rels where accountEntryId = &#63;.
@@ -185,6 +197,12 @@ public interface AccountEntryOrganizationRelPersistence
 	 */
 	public int countByAccountEntryId(long accountEntryId);
 
+	public FinderPath getFinderPathWithPaginationFindByOrganizationId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByOrganizationId();
+
+	public FinderPath getFinderPathCountByOrganizationId();
+
 	/**
 	 * Returns all the account entry organization rels where organizationId = &#63;.
 	 *
@@ -328,6 +346,10 @@ public interface AccountEntryOrganizationRelPersistence
 	 * @return the number of matching account entry organization rels
 	 */
 	public int countByOrganizationId(long organizationId);
+
+	public FinderPath getFinderPathFetchByA_O();
+
+	public FinderPath getFinderPathCountByA_O();
 
 	/**
 	 * Returns the account entry organization rel where accountEntryId = &#63; and organizationId = &#63; or throws a <code>NoSuchEntryOrganizationRelException</code> if it could not be found.
@@ -510,5 +532,7 @@ public interface AccountEntryOrganizationRelPersistence
 	 * @return the number of account entry organization rels
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

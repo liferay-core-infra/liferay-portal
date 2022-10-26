@@ -14,6 +14,7 @@
 
 package com.liferay.portal.reports.engine.console.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -430,6 +431,11 @@ public class SourceLocalServiceWrapper
 
 		return _sourceLocalService.getSourcesCount(
 			groupId, name, driverUrl, andSearch);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_sourceLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

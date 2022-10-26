@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -364,6 +365,11 @@ public class SystemEventLocalServiceWrapper
 	@Override
 	public int getSystemEventsCount() {
 		return _systemEventLocalService.getSystemEventsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_systemEventLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

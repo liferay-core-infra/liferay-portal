@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.discount.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -466,6 +467,12 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceWrapper
 
 		return _commerceDiscountCommerceAccountGroupRelLocalService.
 			getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceDiscountCommerceAccountGroupRelLocalService.loadFinderCache(
+			finderPaths);
 	}
 
 	/**

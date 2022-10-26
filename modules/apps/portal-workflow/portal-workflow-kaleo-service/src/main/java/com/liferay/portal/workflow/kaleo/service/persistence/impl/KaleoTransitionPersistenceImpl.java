@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -104,9 +105,42 @@ public class KaleoTransitionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the kaleo transitions where companyId = &#63;.
@@ -620,9 +654,30 @@ public class KaleoTransitionPersistenceImpl
 		"kaleoTransition.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId() {
+
+		return _finderPathWithPaginationFindByKaleoDefinitionVersionId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId() {
+
+		return _finderPathWithoutPaginationFindByKaleoDefinitionVersionId;
+	}
+
 	private FinderPath _finderPathCountByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath getFinderPathCountByKaleoDefinitionVersionId() {
+		return _finderPathCountByKaleoDefinitionVersionId;
+	}
 
 	/**
 	 * Returns all the kaleo transitions where kaleoDefinitionVersionId = &#63;.
@@ -1157,8 +1212,25 @@ public class KaleoTransitionPersistenceImpl
 			"kaleoTransition.kaleoDefinitionVersionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKaleoNodeId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKaleoNodeId() {
+		return _finderPathWithPaginationFindByKaleoNodeId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKaleoNodeId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoNodeId() {
+		return _finderPathWithoutPaginationFindByKaleoNodeId;
+	}
+
 	private FinderPath _finderPathCountByKaleoNodeId;
+
+	@Override
+	public FinderPath getFinderPathCountByKaleoNodeId() {
+		return _finderPathCountByKaleoNodeId;
+	}
 
 	/**
 	 * Returns all the kaleo transitions where kaleoNodeId = &#63;.
@@ -1676,7 +1748,18 @@ public class KaleoTransitionPersistenceImpl
 		"kaleoTransition.kaleoNodeId = ?";
 
 	private FinderPath _finderPathFetchByKNI_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByKNI_N() {
+		return _finderPathFetchByKNI_N;
+	}
+
 	private FinderPath _finderPathCountByKNI_N;
+
+	@Override
+	public FinderPath getFinderPathCountByKNI_N() {
+		return _finderPathCountByKNI_N;
+	}
 
 	/**
 	 * Returns the kaleo transition where kaleoNodeId = &#63; and name = &#63; or throws a <code>NoSuchTransitionException</code> if it could not be found.
@@ -1954,7 +2037,18 @@ public class KaleoTransitionPersistenceImpl
 		"(kaleoTransition.name IS NULL OR kaleoTransition.name = '')";
 
 	private FinderPath _finderPathFetchByKNI_DT;
+
+	@Override
+	public FinderPath getFinderPathFetchByKNI_DT() {
+		return _finderPathFetchByKNI_DT;
+	}
+
 	private FinderPath _finderPathCountByKNI_DT;
+
+	@Override
+	public FinderPath getFinderPathCountByKNI_DT() {
+		return _finderPathCountByKNI_DT;
+	}
 
 	/**
 	 * Returns the kaleo transition where kaleoNodeId = &#63; and defaultTransition = &#63; or throws a <code>NoSuchTransitionException</code> if it could not be found.
@@ -3119,6 +3213,61 @@ public class KaleoTransitionPersistenceImpl
 		_setKaleoTransitionUtilPersistence(null);
 
 		entityCache.removeCache(KaleoTransitionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KaleoTransition> kaleoTransitions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoTransition>> resultMap =
+				new HashMap<>();
+
+			for (KaleoTransition kaleoTransition : kaleoTransitions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoTransitionModelImpl kaleoTransitionModelImpl =
+						(KaleoTransitionModelImpl)kaleoTransition;
+
+					arguments.add(
+						kaleoTransitionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoTransition);
+				}
+				else {
+					List<KaleoTransition> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoTransition);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoTransition>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoTransition> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKaleoTransitionUtilPersistence(

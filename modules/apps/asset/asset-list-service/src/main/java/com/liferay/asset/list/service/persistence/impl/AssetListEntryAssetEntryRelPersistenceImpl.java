@@ -112,9 +112,42 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the asset list entry asset entry rels where uuid = &#63;.
@@ -675,7 +708,18 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		"(assetListEntryAssetEntryRel.uuid IS NULL OR assetListEntryAssetEntryRel.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the asset list entry asset entry rel where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryAssetEntryRelException</code> if it could not be found.
@@ -944,8 +988,25 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		"assetListEntryAssetEntryRel.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the asset list entry asset entry rels where uuid = &#63; and companyId = &#63;.
@@ -1550,8 +1611,25 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		"assetListEntryAssetEntryRel.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByAssetListEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByAssetListEntryId() {
+		return _finderPathWithPaginationFindByAssetListEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByAssetListEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByAssetListEntryId() {
+		return _finderPathWithoutPaginationFindByAssetListEntryId;
+	}
+
 	private FinderPath _finderPathCountByAssetListEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByAssetListEntryId() {
+		return _finderPathCountByAssetListEntryId;
+	}
 
 	/**
 	 * Returns all the asset list entry asset entry rels where assetListEntryId = &#63;.
@@ -2082,9 +2160,32 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 			"assetListEntryAssetEntryRel.assetListEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByA_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByA_S() {
+		return _finderPathWithPaginationFindByA_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByA_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByA_S() {
+		return _finderPathWithoutPaginationFindByA_S;
+	}
+
 	private FinderPath _finderPathCountByA_S;
+
+	@Override
+	public FinderPath getFinderPathCountByA_S() {
+		return _finderPathCountByA_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByA_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByA_S() {
+		return _finderPathWithPaginationCountByA_S;
+	}
 
 	/**
 	 * Returns all the asset list entry asset entry rels where assetListEntryId = &#63; and segmentsEntryId = &#63;.
@@ -2951,7 +3052,18 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		"assetListEntryAssetEntryRel.segmentsEntryId IN (";
 
 	private FinderPath _finderPathFetchByA_S_P;
+
+	@Override
+	public FinderPath getFinderPathFetchByA_S_P() {
+		return _finderPathFetchByA_S_P;
+	}
+
 	private FinderPath _finderPathCountByA_S_P;
+
+	@Override
+	public FinderPath getFinderPathCountByA_S_P() {
+		return _finderPathCountByA_S_P;
+	}
 
 	/**
 	 * Returns the asset list entry asset entry rel where assetListEntryId = &#63; and segmentsEntryId = &#63; and position = &#63; or throws a <code>NoSuchEntryAssetEntryRelException</code> if it could not be found.
@@ -3222,7 +3334,18 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		"assetListEntryAssetEntryRel.position = ?";
 
 	private FinderPath _finderPathWithPaginationFindByA_S_GtP;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByA_S_GtP() {
+		return _finderPathWithPaginationFindByA_S_GtP;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByA_S_GtP;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByA_S_GtP() {
+		return _finderPathWithPaginationCountByA_S_GtP;
+	}
 
 	/**
 	 * Returns all the asset list entry asset entry rels where assetListEntryId = &#63; and segmentsEntryId = &#63; and position &gt; &#63;.
@@ -4864,6 +4987,69 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 		entityCache.removeCache(
 			AssetListEntryAssetEntryRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AssetListEntryAssetEntryRel> assetListEntryAssetEntryRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetListEntryAssetEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (AssetListEntryAssetEntryRel assetListEntryAssetEntryRel :
+					assetListEntryAssetEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetListEntryAssetEntryRelModelImpl
+						assetListEntryAssetEntryRelModelImpl =
+							(AssetListEntryAssetEntryRelModelImpl)
+								assetListEntryAssetEntryRel;
+
+					arguments.add(
+						assetListEntryAssetEntryRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						assetListEntryAssetEntryRel);
+				}
+				else {
+					List<AssetListEntryAssetEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(assetListEntryAssetEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetListEntryAssetEntryRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetListEntryAssetEntryRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAssetListEntryAssetEntryRelUtilPersistence(

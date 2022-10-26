@@ -125,6 +125,44 @@ public class LocalizedEntryLocalizationUtil {
 			localizedEntryLocalization, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLocalizedEntryId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByLocalizedEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByLocalizedEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByLocalizedEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByLocalizedEntryId() {
+
+		return getPersistence().getFinderPathCountByLocalizedEntryId();
+	}
+
 	/**
 	 * Returns all the localized entry localizations where localizedEntryId = &#63;.
 	 *
@@ -303,6 +341,20 @@ public class LocalizedEntryLocalizationUtil {
 	 */
 	public static int countByLocalizedEntryId(long localizedEntryId) {
 		return getPersistence().countByLocalizedEntryId(localizedEntryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByLocalizedEntryId_LanguageId() {
+
+		return getPersistence().
+			getFinderPathFetchByLocalizedEntryId_LanguageId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByLocalizedEntryId_LanguageId() {
+
+		return getPersistence().
+			getFinderPathCountByLocalizedEntryId_LanguageId();
 	}
 
 	/**
@@ -543,6 +595,12 @@ public class LocalizedEntryLocalizationUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static LocalizedEntryLocalizationPersistence getPersistence() {

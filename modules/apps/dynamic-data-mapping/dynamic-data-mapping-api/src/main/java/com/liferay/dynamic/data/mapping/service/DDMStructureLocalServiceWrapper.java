@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -1132,6 +1133,11 @@ public class DDMStructureLocalServiceWrapper
 	public int getStructuresCount(long[] groupIds, long classNameId) {
 		return _ddmStructureLocalService.getStructuresCount(
 			groupIds, classNameId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ddmStructureLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

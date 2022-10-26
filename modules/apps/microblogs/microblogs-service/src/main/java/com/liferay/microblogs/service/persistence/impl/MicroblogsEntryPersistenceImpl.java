@@ -57,6 +57,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,9 +104,42 @@ public class MicroblogsEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the microblogs entries where companyId = &#63;.
@@ -984,8 +1018,25 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the microblogs entries where userId = &#63;.
@@ -1857,8 +1908,25 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_T() {
+		return _finderPathWithPaginationFindByU_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_T() {
+		return _finderPathWithoutPaginationFindByU_T;
+	}
+
 	private FinderPath _finderPathCountByU_T;
+
+	@Override
+	public FinderPath getFinderPathCountByU_T() {
+		return _finderPathCountByU_T;
+	}
 
 	/**
 	 * Returns all the microblogs entries where userId = &#63; and type = &#63;.
@@ -2797,9 +2865,32 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCCNI_CCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCCNI_CCPK() {
+		return _finderPathWithPaginationFindByCCNI_CCPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCCNI_CCPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCCNI_CCPK() {
+		return _finderPathWithoutPaginationFindByCCNI_CCPK;
+	}
+
 	private FinderPath _finderPathCountByCCNI_CCPK;
+
+	@Override
+	public FinderPath getFinderPathCountByCCNI_CCPK() {
+		return _finderPathCountByCCNI_CCPK;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByCCNI_CCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByCCNI_CCPK() {
+		return _finderPathWithPaginationCountByCCNI_CCPK;
+	}
 
 	/**
 	 * Returns all the microblogs entries where creatorClassNameId = &#63; and creatorClassPK = &#63;.
@@ -4273,8 +4364,25 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.creatorClassPK IN (";
 
 	private FinderPath _finderPathWithPaginationFindByCCNI_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCCNI_T() {
+		return _finderPathWithPaginationFindByCCNI_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCCNI_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCCNI_T() {
+		return _finderPathWithoutPaginationFindByCCNI_T;
+	}
+
 	private FinderPath _finderPathCountByCCNI_T;
+
+	@Override
+	public FinderPath getFinderPathCountByCCNI_T() {
+		return _finderPathCountByCCNI_T;
+	}
 
 	/**
 	 * Returns all the microblogs entries where creatorClassNameId = &#63; and type = &#63;.
@@ -5225,8 +5333,25 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_P() {
+		return _finderPathWithPaginationFindByT_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_P() {
+		return _finderPathWithoutPaginationFindByT_P;
+	}
+
 	private FinderPath _finderPathCountByT_P;
+
+	@Override
+	public FinderPath getFinderPathCountByT_P() {
+		return _finderPathCountByT_P;
+	}
 
 	/**
 	 * Returns all the microblogs entries where type = &#63; and parentMicroblogsEntryId = &#63;.
@@ -6178,9 +6303,32 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.parentMicroblogsEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_CCNI_CCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_CCNI_CCPK() {
+		return _finderPathWithPaginationFindByC_CCNI_CCPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_CCNI_CCPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_CCNI_CCPK() {
+		return _finderPathWithoutPaginationFindByC_CCNI_CCPK;
+	}
+
 	private FinderPath _finderPathCountByC_CCNI_CCPK;
+
+	@Override
+	public FinderPath getFinderPathCountByC_CCNI_CCPK() {
+		return _finderPathCountByC_CCNI_CCPK;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_CCNI_CCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_CCNI_CCPK() {
+		return _finderPathWithPaginationCountByC_CCNI_CCPK;
+	}
 
 	/**
 	 * Returns all the microblogs entries where companyId = &#63; and creatorClassNameId = &#63; and creatorClassPK = &#63;.
@@ -7749,8 +7897,25 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.creatorClassPK IN (";
 
 	private FinderPath _finderPathWithPaginationFindByC_CCNI_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_CCNI_T() {
+		return _finderPathWithPaginationFindByC_CCNI_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_CCNI_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_CCNI_T() {
+		return _finderPathWithoutPaginationFindByC_CCNI_T;
+	}
+
 	private FinderPath _finderPathCountByC_CCNI_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_CCNI_T() {
+		return _finderPathCountByC_CCNI_T;
+	}
 
 	/**
 	 * Returns all the microblogs entries where companyId = &#63; and creatorClassNameId = &#63; and type = &#63;.
@@ -8766,9 +8931,32 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCCNI_CCPK_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCCNI_CCPK_T() {
+		return _finderPathWithPaginationFindByCCNI_CCPK_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCCNI_CCPK_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCCNI_CCPK_T() {
+		return _finderPathWithoutPaginationFindByCCNI_CCPK_T;
+	}
+
 	private FinderPath _finderPathCountByCCNI_CCPK_T;
+
+	@Override
+	public FinderPath getFinderPathCountByCCNI_CCPK_T() {
+		return _finderPathCountByCCNI_CCPK_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByCCNI_CCPK_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByCCNI_CCPK_T() {
+		return _finderPathWithPaginationCountByCCNI_CCPK_T;
+	}
 
 	/**
 	 * Returns all the microblogs entries where creatorClassNameId = &#63; and creatorClassPK = &#63; and type = &#63;.
@@ -10342,9 +10530,32 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_CCNI_CCPK_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_CCNI_CCPK_T() {
+		return _finderPathWithPaginationFindByC_CCNI_CCPK_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_CCNI_CCPK_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_CCNI_CCPK_T() {
+		return _finderPathWithoutPaginationFindByC_CCNI_CCPK_T;
+	}
+
 	private FinderPath _finderPathCountByC_CCNI_CCPK_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_CCNI_CCPK_T() {
+		return _finderPathCountByC_CCNI_CCPK_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_CCNI_CCPK_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_CCNI_CCPK_T() {
+		return _finderPathWithPaginationCountByC_CCNI_CCPK_T;
+	}
 
 	/**
 	 * Returns all the microblogs entries where companyId = &#63; and creatorClassNameId = &#63; and creatorClassPK = &#63; and type = &#63;.
@@ -12020,8 +12231,25 @@ public class MicroblogsEntryPersistenceImpl
 		"microblogsEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_C_T_S() {
+		return _finderPathWithPaginationFindByU_C_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_C_T_S() {
+		return _finderPathWithoutPaginationFindByU_C_T_S;
+	}
+
 	private FinderPath _finderPathCountByU_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByU_C_T_S() {
+		return _finderPathCountByU_C_T_S;
+	}
 
 	/**
 	 * Returns all the microblogs entries where userId = &#63; and createDate = &#63; and type = &#63; and socialRelationType = &#63;.
@@ -14026,6 +14254,61 @@ public class MicroblogsEntryPersistenceImpl
 		_setMicroblogsEntryUtilPersistence(null);
 
 		entityCache.removeCache(MicroblogsEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<MicroblogsEntry> microblogsEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MicroblogsEntry>> resultMap =
+				new HashMap<>();
+
+			for (MicroblogsEntry microblogsEntry : microblogsEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MicroblogsEntryModelImpl microblogsEntryModelImpl =
+						(MicroblogsEntryModelImpl)microblogsEntry;
+
+					arguments.add(
+						microblogsEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), microblogsEntry);
+				}
+				else {
+					List<MicroblogsEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(microblogsEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MicroblogsEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MicroblogsEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setMicroblogsEntryUtilPersistence(

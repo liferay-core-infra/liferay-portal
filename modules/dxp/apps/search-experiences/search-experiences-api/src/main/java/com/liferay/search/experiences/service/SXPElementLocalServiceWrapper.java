@@ -14,6 +14,7 @@
 
 package com.liferay.search.experiences.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -430,6 +431,11 @@ public class SXPElementLocalServiceWrapper
 	@Override
 	public int getSXPElementsCount() {
 		return _sxpElementLocalService.getSXPElementsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_sxpElementLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

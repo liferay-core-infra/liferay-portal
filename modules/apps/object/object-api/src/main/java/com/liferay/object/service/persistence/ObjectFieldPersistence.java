@@ -16,6 +16,7 @@ package com.liferay.object.service.persistence;
 
 import com.liferay.object.exception.NoSuchObjectFieldException;
 import com.liferay.object.model.ObjectField;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ObjectFieldUtil} to access the object field persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the object fields where uuid = &#63;.
@@ -182,6 +194,12 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 * @return the number of matching object fields
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the object fields where uuid = &#63; and companyId = &#63;.
@@ -338,6 +356,13 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByListTypeDefinitionId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByListTypeDefinitionId();
+
+	public FinderPath getFinderPathCountByListTypeDefinitionId();
+
 	/**
 	 * Returns all the object fields where listTypeDefinitionId = &#63;.
 	 *
@@ -482,6 +507,12 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 */
 	public int countByListTypeDefinitionId(long listTypeDefinitionId);
 
+	public FinderPath getFinderPathWithPaginationFindByObjectDefinitionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByObjectDefinitionId();
+
+	public FinderPath getFinderPathCountByObjectDefinitionId();
+
 	/**
 	 * Returns all the object fields where objectDefinitionId = &#63;.
 	 *
@@ -625,6 +656,12 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 * @return the number of matching object fields
 	 */
 	public int countByObjectDefinitionId(long objectDefinitionId);
+
+	public FinderPath getFinderPathWithPaginationFindByLTDI_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLTDI_S();
+
+	public FinderPath getFinderPathCountByLTDI_S();
 
 	/**
 	 * Returns all the object fields where listTypeDefinitionId = &#63; and state = &#63;.
@@ -781,6 +818,12 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 */
 	public int countByLTDI_S(long listTypeDefinitionId, boolean state);
 
+	public FinderPath getFinderPathWithPaginationFindByODI_DTN();
+
+	public FinderPath getFinderPathWithoutPaginationFindByODI_DTN();
+
+	public FinderPath getFinderPathCountByODI_DTN();
+
 	/**
 	 * Returns all the object fields where objectDefinitionId = &#63; and dbTableName = &#63;.
 	 *
@@ -936,6 +979,10 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 */
 	public int countByODI_DTN(long objectDefinitionId, String dbTableName);
 
+	public FinderPath getFinderPathFetchByODI_N();
+
+	public FinderPath getFinderPathCountByODI_N();
+
 	/**
 	 * Returns the object field where objectDefinitionId = &#63; and name = &#63; or throws a <code>NoSuchObjectFieldException</code> if it could not be found.
 	 *
@@ -985,6 +1032,12 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 * @return the number of matching object fields
 	 */
 	public int countByODI_N(long objectDefinitionId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByODI_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByODI_S();
+
+	public FinderPath getFinderPathCountByODI_S();
 
 	/**
 	 * Returns all the object fields where objectDefinitionId = &#63; and system = &#63;.
@@ -1141,6 +1194,10 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 */
 	public int countByODI_S(long objectDefinitionId, boolean system);
 
+	public FinderPath getFinderPathFetchByERC_C_ODI();
+
+	public FinderPath getFinderPathCountByERC_C_ODI();
+
 	/**
 	 * Returns the object field where externalReferenceCode = &#63; and companyId = &#63; and objectDefinitionId = &#63; or throws a <code>NoSuchObjectFieldException</code> if it could not be found.
 	 *
@@ -1202,6 +1259,12 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 */
 	public int countByERC_C_ODI(
 		String externalReferenceCode, long companyId, long objectDefinitionId);
+
+	public FinderPath getFinderPathWithPaginationFindByODI_DBT_I();
+
+	public FinderPath getFinderPathWithoutPaginationFindByODI_DBT_I();
+
+	public FinderPath getFinderPathCountByODI_DBT_I();
 
 	/**
 	 * Returns all the object fields where objectDefinitionId = &#63; and dbType = &#63; and indexed = &#63;.
@@ -1494,5 +1557,7 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 * @return the number of object fields
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

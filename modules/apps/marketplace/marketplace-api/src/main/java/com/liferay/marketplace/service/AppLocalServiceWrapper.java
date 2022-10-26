@@ -14,6 +14,7 @@
 
 package com.liferay.marketplace.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -383,6 +384,11 @@ public class AppLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_appLocalService.installApp(remoteAppId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_appLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -103,9 +104,42 @@ public class CSDiagramEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCPDefinitionId() {
+		return _finderPathWithPaginationFindByCPDefinitionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCPDefinitionId() {
+		return _finderPathWithoutPaginationFindByCPDefinitionId;
+	}
+
 	private FinderPath _finderPathCountByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathCountByCPDefinitionId() {
+		return _finderPathCountByCPDefinitionId;
+	}
 
 	/**
 	 * Returns all the cs diagram entries where CPDefinitionId = &#63;.
@@ -624,8 +658,25 @@ public class CSDiagramEntryPersistenceImpl
 		"csDiagramEntry.CPDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCPInstanceId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCPInstanceId() {
+		return _finderPathWithPaginationFindByCPInstanceId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCPInstanceId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCPInstanceId() {
+		return _finderPathWithoutPaginationFindByCPInstanceId;
+	}
+
 	private FinderPath _finderPathCountByCPInstanceId;
+
+	@Override
+	public FinderPath getFinderPathCountByCPInstanceId() {
+		return _finderPathCountByCPInstanceId;
+	}
 
 	/**
 	 * Returns all the cs diagram entries where CPInstanceId = &#63;.
@@ -1142,7 +1193,18 @@ public class CSDiagramEntryPersistenceImpl
 		"csDiagramEntry.CPInstanceId = ?";
 
 	private FinderPath _finderPathFetchByCPDI_S;
+
+	@Override
+	public FinderPath getFinderPathFetchByCPDI_S() {
+		return _finderPathFetchByCPDI_S;
+	}
+
 	private FinderPath _finderPathCountByCPDI_S;
+
+	@Override
+	public FinderPath getFinderPathCountByCPDI_S() {
+		return _finderPathCountByCPDI_S;
+	}
 
 	/**
 	 * Returns the cs diagram entry where CPDefinitionId = &#63; and sequence = &#63; or throws a <code>NoSuchCSDiagramEntryException</code> if it could not be found.
@@ -2258,6 +2320,59 @@ public class CSDiagramEntryPersistenceImpl
 		_setCSDiagramEntryUtilPersistence(null);
 
 		entityCache.removeCache(CSDiagramEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CSDiagramEntry> csDiagramEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CSDiagramEntry>> resultMap = new HashMap<>();
+
+			for (CSDiagramEntry csDiagramEntry : csDiagramEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CSDiagramEntryModelImpl csDiagramEntryModelImpl =
+						(CSDiagramEntryModelImpl)csDiagramEntry;
+
+					arguments.add(
+						csDiagramEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), csDiagramEntry);
+				}
+				else {
+					List<CSDiagramEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(csDiagramEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CSDiagramEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CSDiagramEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCSDiagramEntryUtilPersistence(

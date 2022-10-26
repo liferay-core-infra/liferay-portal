@@ -16,6 +16,7 @@ package com.liferay.batch.engine.service.persistence;
 
 import com.liferay.batch.engine.exception.NoSuchImportTaskErrorException;
 import com.liferay.batch.engine.model.BatchEngineImportTaskError;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,19 @@ public interface BatchEngineImportTaskErrorPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link BatchEngineImportTaskErrorUtil} to access the batch engine import task error persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath
+		getFinderPathWithPaginationFindByBatchEngineImportTaskId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByBatchEngineImportTaskId();
+
+	public FinderPath getFinderPathCountByBatchEngineImportTaskId();
 
 	/**
 	 * Returns all the batch engine import task errors where batchEngineImportTaskId = &#63;.
@@ -314,5 +328,7 @@ public interface BatchEngineImportTaskErrorPersistence
 	 * @return the number of batch engine import task errors
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

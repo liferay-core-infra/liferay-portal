@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -51,6 +52,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,10 +103,47 @@ public class CommerceShippingFixedOptionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCommerceShippingMethodId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceShippingMethodId() {
+
+		return _finderPathWithPaginationFindByCommerceShippingMethodId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByCommerceShippingMethodId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceShippingMethodId() {
+
+		return _finderPathWithoutPaginationFindByCommerceShippingMethodId;
+	}
+
 	private FinderPath _finderPathCountByCommerceShippingMethodId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceShippingMethodId() {
+		return _finderPathCountByCommerceShippingMethodId;
+	}
 
 	/**
 	 * Returns all the commerce shipping fixed options where commerceShippingMethodId = &#63;.
@@ -636,7 +675,18 @@ public class CommerceShippingFixedOptionPersistenceImpl
 			"commerceShippingFixedOption.commerceShippingMethodId = ?";
 
 	private FinderPath _finderPathFetchByC_K;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_K() {
+		return _finderPathFetchByC_K;
+	}
+
 	private FinderPath _finderPathCountByC_K;
+
+	@Override
+	public FinderPath getFinderPathCountByC_K() {
+		return _finderPathCountByC_K;
+	}
 
 	/**
 	 * Returns the commerce shipping fixed option where companyId = &#63; and key = &#63; or throws a <code>NoSuchShippingFixedOptionException</code> if it could not be found.
@@ -1555,6 +1605,69 @@ public class CommerceShippingFixedOptionPersistenceImpl
 
 		entityCache.removeCache(
 			CommerceShippingFixedOptionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceShippingFixedOption> commerceShippingFixedOptions =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceShippingFixedOption>> resultMap =
+				new HashMap<>();
+
+			for (CommerceShippingFixedOption commerceShippingFixedOption :
+					commerceShippingFixedOptions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceShippingFixedOptionModelImpl
+						commerceShippingFixedOptionModelImpl =
+							(CommerceShippingFixedOptionModelImpl)
+								commerceShippingFixedOption;
+
+					arguments.add(
+						commerceShippingFixedOptionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceShippingFixedOption);
+				}
+				else {
+					List<CommerceShippingFixedOption> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceShippingFixedOption);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceShippingFixedOption>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceShippingFixedOption> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceShippingFixedOptionUtilPersistence(

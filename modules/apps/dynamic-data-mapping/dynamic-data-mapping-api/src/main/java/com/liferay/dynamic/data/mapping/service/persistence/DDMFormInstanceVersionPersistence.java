@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service.persistence;
 
 import com.liferay.dynamic.data.mapping.exception.NoSuchFormInstanceVersionException;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceVersion;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface DDMFormInstanceVersionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMFormInstanceVersionUtil} to access the ddm form instance version persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByFormInstanceId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByFormInstanceId();
+
+	public FinderPath getFinderPathCountByFormInstanceId();
 
 	/**
 	 * Returns all the ddm form instance versions where formInstanceId = &#63;.
@@ -187,6 +199,10 @@ public interface DDMFormInstanceVersionPersistence
 	 */
 	public int countByFormInstanceId(long formInstanceId);
 
+	public FinderPath getFinderPathFetchByF_V();
+
+	public FinderPath getFinderPathCountByF_V();
+
 	/**
 	 * Returns the ddm form instance version where formInstanceId = &#63; and version = &#63; or throws a <code>NoSuchFormInstanceVersionException</code> if it could not be found.
 	 *
@@ -238,6 +254,12 @@ public interface DDMFormInstanceVersionPersistence
 	 * @return the number of matching ddm form instance versions
 	 */
 	public int countByF_V(long formInstanceId, String version);
+
+	public FinderPath getFinderPathWithPaginationFindByF_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByF_S();
+
+	public FinderPath getFinderPathCountByF_S();
 
 	/**
 	 * Returns all the ddm form instance versions where formInstanceId = &#63; and status = &#63;.
@@ -515,5 +537,7 @@ public interface DDMFormInstanceVersionPersistence
 	 * @return the number of ddm form instance versions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

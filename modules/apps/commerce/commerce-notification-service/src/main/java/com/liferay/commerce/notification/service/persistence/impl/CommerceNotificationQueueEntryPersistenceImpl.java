@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,10 +54,12 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -102,9 +105,42 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the commerce notification queue entries where groupId = &#63;.
@@ -615,9 +651,30 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 
 	private FinderPath
 		_finderPathWithPaginationFindByCommerceNotificationTemplateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceNotificationTemplateId() {
+
+		return _finderPathWithPaginationFindByCommerceNotificationTemplateId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByCommerceNotificationTemplateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceNotificationTemplateId() {
+
+		return _finderPathWithoutPaginationFindByCommerceNotificationTemplateId;
+	}
+
 	private FinderPath _finderPathCountByCommerceNotificationTemplateId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceNotificationTemplateId() {
+		return _finderPathCountByCommerceNotificationTemplateId;
+	}
 
 	/**
 	 * Returns all the commerce notification queue entries where commerceNotificationTemplateId = &#63;.
@@ -1171,8 +1228,25 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 			"commerceNotificationQueueEntry.commerceNotificationTemplateId = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySent;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySent() {
+		return _finderPathWithPaginationFindBySent;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySent;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindBySent() {
+		return _finderPathWithoutPaginationFindBySent;
+	}
+
 	private FinderPath _finderPathCountBySent;
+
+	@Override
+	public FinderPath getFinderPathCountBySent() {
+		return _finderPathCountBySent;
+	}
 
 	/**
 	 * Returns all the commerce notification queue entries where sent = &#63;.
@@ -1678,7 +1752,18 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 		"commerceNotificationQueueEntry.sent = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtSentDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtSentDate() {
+		return _finderPathWithPaginationFindByLtSentDate;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtSentDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtSentDate() {
+		return _finderPathWithPaginationCountByLtSentDate;
+	}
 
 	/**
 	 * Returns all the commerce notification queue entries where sentDate &lt; &#63;.
@@ -2219,8 +2304,25 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 		"commerceNotificationQueueEntry.sentDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_S() {
+		return _finderPathWithPaginationFindByG_C_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_S() {
+		return _finderPathWithoutPaginationFindByG_C_C_S;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_S() {
+		return _finderPathCountByG_C_C_S;
+	}
 
 	/**
 	 * Returns all the commerce notification queue entries where groupId = &#63; and classNameId = &#63; and classPK = &#63; and sent = &#63;.
@@ -3568,6 +3670,69 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 
 		entityCache.removeCache(
 			CommerceNotificationQueueEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceNotificationQueueEntry> commerceNotificationQueueEntrys =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceNotificationQueueEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceNotificationQueueEntry commerceNotificationQueueEntry :
+					commerceNotificationQueueEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceNotificationQueueEntryModelImpl
+						commerceNotificationQueueEntryModelImpl =
+							(CommerceNotificationQueueEntryModelImpl)
+								commerceNotificationQueueEntry;
+
+					arguments.add(
+						commerceNotificationQueueEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceNotificationQueueEntry);
+				}
+				else {
+					List<CommerceNotificationQueueEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceNotificationQueueEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceNotificationQueueEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceNotificationQueueEntry> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceNotificationQueueEntryUtilPersistence(

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -333,6 +334,11 @@ public class RedundantIndexEntryLocalServiceWrapper
 
 		return _redundantIndexEntryLocalService.getRedundantIndexEntry(
 			redundantIndexEntryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_redundantIndexEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

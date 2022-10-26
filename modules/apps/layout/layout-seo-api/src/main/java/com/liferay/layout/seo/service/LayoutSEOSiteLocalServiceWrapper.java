@@ -16,6 +16,7 @@ package com.liferay.layout.seo.service;
 
 import com.liferay.layout.seo.model.LayoutSEOSite;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -391,6 +392,11 @@ public class LayoutSEOSiteLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _layoutSEOSiteLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_layoutSEOSiteLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

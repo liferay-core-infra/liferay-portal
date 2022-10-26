@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -1067,6 +1068,11 @@ public class RoleLocalServiceWrapper
 
 		return _roleLocalService.hasUserRoles(
 			userId, companyId, names, inherited);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_roleLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

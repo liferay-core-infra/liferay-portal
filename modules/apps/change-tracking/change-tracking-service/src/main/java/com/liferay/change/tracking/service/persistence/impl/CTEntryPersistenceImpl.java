@@ -52,9 +52,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -95,9 +98,42 @@ public class CTEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCtCollectionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCtCollectionId() {
+		return _finderPathWithPaginationFindByCtCollectionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCtCollectionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCtCollectionId() {
+		return _finderPathWithoutPaginationFindByCtCollectionId;
+	}
+
 	private FinderPath _finderPathCountByCtCollectionId;
+
+	@Override
+	public FinderPath getFinderPathCountByCtCollectionId() {
+		return _finderPathCountByCtCollectionId;
+	}
 
 	/**
 	 * Returns all the ct entries where ctCollectionId = &#63;.
@@ -593,8 +629,25 @@ public class CTEntryPersistenceImpl
 		"ctEntry.ctCollectionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_MCNI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_MCNI() {
+		return _finderPathWithPaginationFindByC_MCNI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_MCNI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_MCNI() {
+		return _finderPathWithoutPaginationFindByC_MCNI;
+	}
+
 	private FinderPath _finderPathCountByC_MCNI;
+
+	@Override
+	public FinderPath getFinderPathCountByC_MCNI() {
+		return _finderPathCountByC_MCNI;
+	}
 
 	/**
 	 * Returns all the ct entries where ctCollectionId = &#63; and modelClassNameId = &#63;.
@@ -1136,7 +1189,18 @@ public class CTEntryPersistenceImpl
 		"ctEntry.modelClassNameId = ?";
 
 	private FinderPath _finderPathFetchByC_MCNI_MCPK;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_MCNI_MCPK() {
+		return _finderPathFetchByC_MCNI_MCPK;
+	}
+
 	private FinderPath _finderPathCountByC_MCNI_MCPK;
+
+	@Override
+	public FinderPath getFinderPathCountByC_MCNI_MCPK() {
+		return _finderPathCountByC_MCNI_MCPK;
+	}
 
 	/**
 	 * Returns the ct entry where ctCollectionId = &#63; and modelClassNameId = &#63; and modelClassPK = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -1389,7 +1453,18 @@ public class CTEntryPersistenceImpl
 		"ctEntry.modelClassPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByNotC_MCNI_MCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByNotC_MCNI_MCPK() {
+		return _finderPathWithPaginationFindByNotC_MCNI_MCPK;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByNotC_MCNI_MCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByNotC_MCNI_MCPK() {
+		return _finderPathWithPaginationCountByNotC_MCNI_MCPK;
+	}
 
 	/**
 	 * Returns all the ct entries where ctCollectionId &ne; &#63; and modelClassNameId = &#63; and modelClassPK = &#63;.
@@ -2897,6 +2972,58 @@ public class CTEntryPersistenceImpl
 		_setCTEntryUtilPersistence(null);
 
 		entityCache.removeCache(CTEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CTEntry> ctEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTEntry>> resultMap = new HashMap<>();
+
+			for (CTEntry ctEntry : ctEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTEntryModelImpl ctEntryModelImpl =
+						(CTEntryModelImpl)ctEntry;
+
+					arguments.add(ctEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ctEntry);
+				}
+				else {
+					List<CTEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ctEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCTEntryUtilPersistence(

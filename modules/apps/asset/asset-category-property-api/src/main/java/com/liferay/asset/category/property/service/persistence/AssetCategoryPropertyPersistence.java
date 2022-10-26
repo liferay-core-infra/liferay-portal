@@ -16,6 +16,7 @@ package com.liferay.asset.category.property.service.persistence;
 
 import com.liferay.asset.category.property.exception.NoSuchCategoryPropertyException;
 import com.liferay.asset.category.property.model.AssetCategoryProperty;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface AssetCategoryPropertyPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AssetCategoryPropertyUtil} to access the asset category property persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the asset category properties where companyId = &#63;.
@@ -187,6 +199,12 @@ public interface AssetCategoryPropertyPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCategoryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCategoryId();
+
+	public FinderPath getFinderPathCountByCategoryId();
+
 	/**
 	 * Returns all the asset category properties where categoryId = &#63;.
 	 *
@@ -330,6 +348,12 @@ public interface AssetCategoryPropertyPersistence
 	 * @return the number of matching asset category properties
 	 */
 	public int countByCategoryId(long categoryId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_K();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_K();
+
+	public FinderPath getFinderPathCountByC_K();
 
 	/**
 	 * Returns all the asset category properties where companyId = &#63; and key = &#63;.
@@ -485,6 +509,10 @@ public interface AssetCategoryPropertyPersistence
 	 * @return the number of matching asset category properties
 	 */
 	public int countByC_K(long companyId, String key);
+
+	public FinderPath getFinderPathFetchByCA_K();
+
+	public FinderPath getFinderPathCountByCA_K();
 
 	/**
 	 * Returns the asset category property where categoryId = &#63; and key = &#63; or throws a <code>NoSuchCategoryPropertyException</code> if it could not be found.
@@ -657,5 +685,7 @@ public interface AssetCategoryPropertyPersistence
 	 * @return the number of asset category properties
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

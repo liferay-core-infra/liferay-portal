@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -51,10 +52,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -95,9 +98,42 @@ public class DispatchLogPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByDispatchTriggerId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDispatchTriggerId() {
+		return _finderPathWithPaginationFindByDispatchTriggerId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDispatchTriggerId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDispatchTriggerId() {
+		return _finderPathWithoutPaginationFindByDispatchTriggerId;
+	}
+
 	private FinderPath _finderPathCountByDispatchTriggerId;
+
+	@Override
+	public FinderPath getFinderPathCountByDispatchTriggerId() {
+		return _finderPathCountByDispatchTriggerId;
+	}
 
 	/**
 	 * Returns all the dispatch logs where dispatchTriggerId = &#63;.
@@ -604,8 +640,25 @@ public class DispatchLogPersistenceImpl
 			"dispatchLog.dispatchTriggerId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByDTI_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDTI_S() {
+		return _finderPathWithPaginationFindByDTI_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDTI_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDTI_S() {
+		return _finderPathWithoutPaginationFindByDTI_S;
+	}
+
 	private FinderPath _finderPathCountByDTI_S;
+
+	@Override
+	public FinderPath getFinderPathCountByDTI_S() {
+		return _finderPathCountByDTI_S;
+	}
 
 	/**
 	 * Returns all the dispatch logs where dispatchTriggerId = &#63; and status = &#63;.
@@ -1736,6 +1789,59 @@ public class DispatchLogPersistenceImpl
 		_setDispatchLogUtilPersistence(null);
 
 		entityCache.removeCache(DispatchLogImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DispatchLog> dispatchLogs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DispatchLog>> resultMap = new HashMap<>();
+
+			for (DispatchLog dispatchLog : dispatchLogs) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DispatchLogModelImpl dispatchLogModelImpl =
+						(DispatchLogModelImpl)dispatchLog;
+
+					arguments.add(
+						dispatchLogModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dispatchLog);
+				}
+				else {
+					List<DispatchLog> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dispatchLog);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DispatchLog>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DispatchLog> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDispatchLogUtilPersistence(

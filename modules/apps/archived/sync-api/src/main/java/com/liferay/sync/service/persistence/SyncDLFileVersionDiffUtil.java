@@ -123,6 +123,43 @@ public class SyncDLFileVersionDiffUtil {
 		return getPersistence().update(syncDLFileVersionDiff, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByFileEntryId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByFileEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByFileEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByFileEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByFileEntryId() {
+
+		return getPersistence().getFinderPathCountByFileEntryId();
+	}
+
 	/**
 	 * Returns all the sync dl file version diffs where fileEntryId = &#63;.
 	 *
@@ -296,6 +333,20 @@ public class SyncDLFileVersionDiffUtil {
 	 */
 	public static int countByFileEntryId(long fileEntryId) {
 		return getPersistence().countByFileEntryId(fileEntryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtExpirationDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByLtExpirationDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtExpirationDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtExpirationDate();
 	}
 
 	/**
@@ -472,6 +523,18 @@ public class SyncDLFileVersionDiffUtil {
 	 */
 	public static int countByLtExpirationDate(Date expirationDate) {
 		return getPersistence().countByLtExpirationDate(expirationDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByF_S_T() {
+
+		return getPersistence().getFinderPathFetchByF_S_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByF_S_T() {
+
+		return getPersistence().getFinderPathCountByF_S_T();
 	}
 
 	/**
@@ -713,6 +776,12 @@ public class SyncDLFileVersionDiffUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SyncDLFileVersionDiffPersistence getPersistence() {

@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -392,6 +393,11 @@ public abstract class CommerceTermEntryRelLocalServiceBaseImpl
 	@Override
 	public int getCommerceTermEntryRelsCount() {
 		return commerceTermEntryRelPersistence.countAll();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		commerceTermEntryRelPersistence.loadFinderCache(finderPaths);
 	}
 
 	/**

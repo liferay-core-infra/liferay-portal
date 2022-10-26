@@ -92,9 +92,42 @@ public class ResourcePermissionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByName;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByName() {
+		return _finderPathWithPaginationFindByName;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByName;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByName() {
+		return _finderPathWithoutPaginationFindByName;
+	}
+
 	private FinderPath _finderPathCountByName;
+
+	@Override
+	public FinderPath getFinderPathCountByName() {
+		return _finderPathCountByName;
+	}
 
 	/**
 	 * Returns all the resource permissions where name = &#63;.
@@ -648,9 +681,32 @@ public class ResourcePermissionPersistenceImpl
 		"(resourcePermission.name IS NULL OR resourcePermission.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByScope;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByScope() {
+		return _finderPathWithPaginationFindByScope;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByScope;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByScope() {
+		return _finderPathWithoutPaginationFindByScope;
+	}
+
 	private FinderPath _finderPathCountByScope;
+
+	@Override
+	public FinderPath getFinderPathCountByScope() {
+		return _finderPathCountByScope;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByScope;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByScope() {
+		return _finderPathWithPaginationCountByScope;
+	}
 
 	/**
 	 * Returns all the resource permissions where scope = &#63;.
@@ -1420,8 +1476,25 @@ public class ResourcePermissionPersistenceImpl
 		"resourcePermission.scope IN (";
 
 	private FinderPath _finderPathWithPaginationFindByRoleId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByRoleId() {
+		return _finderPathWithPaginationFindByRoleId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByRoleId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByRoleId() {
+		return _finderPathWithoutPaginationFindByRoleId;
+	}
+
 	private FinderPath _finderPathCountByRoleId;
+
+	@Override
+	public FinderPath getFinderPathCountByRoleId() {
+		return _finderPathCountByRoleId;
+	}
 
 	/**
 	 * Returns all the resource permissions where roleId = &#63;.
@@ -1934,7 +2007,18 @@ public class ResourcePermissionPersistenceImpl
 		"resourcePermission.roleId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LikeP;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LikeP() {
+		return _finderPathWithPaginationFindByC_LikeP;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LikeP;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LikeP() {
+		return _finderPathWithPaginationCountByC_LikeP;
+	}
 
 	/**
 	 * Returns all the resource permissions where companyId = &#63; and primKey LIKE &#63;.
@@ -2526,8 +2610,25 @@ public class ResourcePermissionPersistenceImpl
 		"(resourcePermission.primKey IS NULL OR resourcePermission.primKey LIKE '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_S_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S_P() {
+		return _finderPathWithPaginationFindByC_S_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S_P() {
+		return _finderPathWithoutPaginationFindByC_S_P;
+	}
+
 	private FinderPath _finderPathCountByC_S_P;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S_P() {
+		return _finderPathCountByC_S_P;
+	}
 
 	/**
 	 * Returns all the resource permissions where companyId = &#63; and scope = &#63; and primKey = &#63;.
@@ -3163,8 +3264,25 @@ public class ResourcePermissionPersistenceImpl
 		"(resourcePermission.primKey IS NULL OR resourcePermission.primKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_N_S_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_N_S_P() {
+		return _finderPathWithPaginationFindByC_N_S_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_N_S_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_N_S_P() {
+		return _finderPathWithoutPaginationFindByC_N_S_P;
+	}
+
 	private FinderPath _finderPathCountByC_N_S_P;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N_S_P() {
+		return _finderPathCountByC_N_S_P;
+	}
 
 	/**
 	 * Returns all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and primKey = &#63;.
@@ -3879,8 +3997,25 @@ public class ResourcePermissionPersistenceImpl
 		"(resourcePermission.primKey IS NULL OR resourcePermission.primKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_N_S_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_N_S_R() {
+		return _finderPathWithPaginationFindByC_N_S_R;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_N_S_R;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_N_S_R() {
+		return _finderPathWithoutPaginationFindByC_N_S_R;
+	}
+
 	private FinderPath _finderPathCountByC_N_S_R;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N_S_R() {
+		return _finderPathCountByC_N_S_R;
+	}
 
 	/**
 	 * Returns all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
@@ -4556,10 +4691,39 @@ public class ResourcePermissionPersistenceImpl
 		"resourcePermission.roleId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_N_S_P_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_N_S_P_R() {
+		return _finderPathWithPaginationFindByC_N_S_P_R;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_N_S_P_R;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_N_S_P_R() {
+		return _finderPathWithoutPaginationFindByC_N_S_P_R;
+	}
+
 	private FinderPath _finderPathFetchByC_N_S_P_R;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_N_S_P_R() {
+		return _finderPathFetchByC_N_S_P_R;
+	}
+
 	private FinderPath _finderPathCountByC_N_S_P_R;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N_S_P_R() {
+		return _finderPathCountByC_N_S_P_R;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_N_S_P_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_N_S_P_R() {
+		return _finderPathWithPaginationCountByC_N_S_P_R;
+	}
 
 	/**
 	 * Returns all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and primKey = &#63; and roleId = any &#63;.
@@ -5394,9 +5558,32 @@ public class ResourcePermissionPersistenceImpl
 		"resourcePermission.roleId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByC_N_S_P_R_V;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_N_S_P_R_V() {
+		return _finderPathWithPaginationFindByC_N_S_P_R_V;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_N_S_P_R_V;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_N_S_P_R_V() {
+		return _finderPathWithoutPaginationFindByC_N_S_P_R_V;
+	}
+
 	private FinderPath _finderPathCountByC_N_S_P_R_V;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N_S_P_R_V() {
+		return _finderPathCountByC_N_S_P_R_V;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_N_S_P_R_V;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_N_S_P_R_V() {
+		return _finderPathWithPaginationCountByC_N_S_P_R_V;
+	}
 
 	/**
 	 * Returns all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and primKeyId = &#63; and roleId = &#63; and viewActionId = &#63;.
@@ -7676,6 +7863,61 @@ public class ResourcePermissionPersistenceImpl
 		_setResourcePermissionUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(ResourcePermissionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ResourcePermission> resourcePermissions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ResourcePermission>> resultMap =
+				new HashMap<>();
+
+			for (ResourcePermission resourcePermission : resourcePermissions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ResourcePermissionModelImpl resourcePermissionModelImpl =
+						(ResourcePermissionModelImpl)resourcePermission;
+
+					arguments.add(
+						resourcePermissionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), resourcePermission);
+				}
+				else {
+					List<ResourcePermission> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(resourcePermission);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ResourcePermission>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ResourcePermission> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setResourcePermissionUtilPersistence(

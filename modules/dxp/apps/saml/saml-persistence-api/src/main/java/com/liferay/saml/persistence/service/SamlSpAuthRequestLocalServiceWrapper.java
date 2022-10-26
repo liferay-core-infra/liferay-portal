@@ -14,6 +14,7 @@
 
 package com.liferay.saml.persistence.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -358,6 +359,11 @@ public class SamlSpAuthRequestLocalServiceWrapper
 	@Override
 	public int getSamlSpAuthRequestsCount() {
 		return _samlSpAuthRequestLocalService.getSamlSpAuthRequestsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_samlSpAuthRequestLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

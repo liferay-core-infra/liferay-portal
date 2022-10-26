@@ -52,9 +52,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -95,9 +98,42 @@ public class AccountRolePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the account roles where companyId = &#63;.
@@ -968,9 +1004,32 @@ public class AccountRolePersistenceImpl
 		"accountRole.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByAccountEntryId() {
+		return _finderPathWithPaginationFindByAccountEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByAccountEntryId() {
+		return _finderPathWithoutPaginationFindByAccountEntryId;
+	}
+
 	private FinderPath _finderPathCountByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByAccountEntryId() {
+		return _finderPathCountByAccountEntryId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByAccountEntryId() {
+		return _finderPathWithPaginationCountByAccountEntryId;
+	}
 
 	/**
 	 * Returns all the account roles where accountEntryId = &#63;.
@@ -2303,7 +2362,18 @@ public class AccountRolePersistenceImpl
 		"accountRole.accountEntryId IN (";
 
 	private FinderPath _finderPathFetchByRoleId;
+
+	@Override
+	public FinderPath getFinderPathFetchByRoleId() {
+		return _finderPathFetchByRoleId;
+	}
+
 	private FinderPath _finderPathCountByRoleId;
+
+	@Override
+	public FinderPath getFinderPathCountByRoleId() {
+		return _finderPathCountByRoleId;
+	}
 
 	/**
 	 * Returns the account role where roleId = &#63; or throws a <code>NoSuchRoleException</code> if it could not be found.
@@ -2510,9 +2580,32 @@ public class AccountRolePersistenceImpl
 		"accountRole.roleId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A() {
+		return _finderPathWithPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_A() {
+		return _finderPathWithoutPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathCountByC_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A() {
+		return _finderPathCountByC_A;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_A() {
+		return _finderPathWithPaginationCountByC_A;
+	}
 
 	/**
 	 * Returns all the account roles where companyId = &#63; and accountEntryId = &#63;.
@@ -4555,6 +4648,59 @@ public class AccountRolePersistenceImpl
 		_setAccountRoleUtilPersistence(null);
 
 		entityCache.removeCache(AccountRoleImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AccountRole> accountRoles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AccountRole>> resultMap = new HashMap<>();
+
+			for (AccountRole accountRole : accountRoles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AccountRoleModelImpl accountRoleModelImpl =
+						(AccountRoleModelImpl)accountRole;
+
+					arguments.add(
+						accountRoleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), accountRole);
+				}
+				else {
+					List<AccountRole> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(accountRole);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AccountRole>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AccountRole> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAccountRoleUtilPersistence(

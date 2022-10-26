@@ -16,6 +16,7 @@ package com.liferay.calendar.service.persistence;
 
 import com.liferay.calendar.exception.NoSuchBookingException;
 import com.liferay.calendar.model.CalendarBooking;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface CalendarBookingPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CalendarBookingUtil} to access the calendar booking persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the calendar bookings where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface CalendarBookingPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the calendar booking where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchBookingException</code> if it could not be found.
 	 *
@@ -234,6 +250,12 @@ public interface CalendarBookingPersistence
 	 * @return the number of matching calendar bookings
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the calendar bookings where uuid = &#63; and companyId = &#63;.
@@ -390,6 +412,12 @@ public interface CalendarBookingPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCalendarId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCalendarId();
+
+	public FinderPath getFinderPathCountByCalendarId();
+
 	/**
 	 * Returns all the calendar bookings where calendarId = &#63;.
 	 *
@@ -532,6 +560,12 @@ public interface CalendarBookingPersistence
 	 * @return the number of matching calendar bookings
 	 */
 	public int countByCalendarId(long calendarId);
+
+	public FinderPath getFinderPathWithPaginationFindByCalendarResourceId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCalendarResourceId();
+
+	public FinderPath getFinderPathCountByCalendarResourceId();
 
 	/**
 	 * Returns all the calendar bookings where calendarResourceId = &#63;.
@@ -677,6 +711,14 @@ public interface CalendarBookingPersistence
 	 */
 	public int countByCalendarResourceId(long calendarResourceId);
 
+	public FinderPath
+		getFinderPathWithPaginationFindByParentCalendarBookingId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByParentCalendarBookingId();
+
+	public FinderPath getFinderPathCountByParentCalendarBookingId();
+
 	/**
 	 * Returns all the calendar bookings where parentCalendarBookingId = &#63;.
 	 *
@@ -820,6 +862,14 @@ public interface CalendarBookingPersistence
 	 * @return the number of matching calendar bookings
 	 */
 	public int countByParentCalendarBookingId(long parentCalendarBookingId);
+
+	public FinderPath
+		getFinderPathWithPaginationFindByRecurringCalendarBookingId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByRecurringCalendarBookingId();
+
+	public FinderPath getFinderPathCountByRecurringCalendarBookingId();
 
 	/**
 	 * Returns all the calendar bookings where recurringCalendarBookingId = &#63;.
@@ -967,6 +1017,10 @@ public interface CalendarBookingPersistence
 	public int countByRecurringCalendarBookingId(
 		long recurringCalendarBookingId);
 
+	public FinderPath getFinderPathFetchByC_P();
+
+	public FinderPath getFinderPathCountByC_P();
+
 	/**
 	 * Returns the calendar booking where calendarId = &#63; and parentCalendarBookingId = &#63; or throws a <code>NoSuchBookingException</code> if it could not be found.
 	 *
@@ -1020,6 +1074,10 @@ public interface CalendarBookingPersistence
 	 */
 	public int countByC_P(long calendarId, long parentCalendarBookingId);
 
+	public FinderPath getFinderPathFetchByC_V();
+
+	public FinderPath getFinderPathCountByC_V();
+
 	/**
 	 * Returns the calendar booking where calendarId = &#63; and vEventUid = &#63; or throws a <code>NoSuchBookingException</code> if it could not be found.
 	 *
@@ -1069,6 +1127,14 @@ public interface CalendarBookingPersistence
 	 * @return the number of matching calendar bookings
 	 */
 	public int countByC_V(long calendarId, String vEventUid);
+
+	public FinderPath getFinderPathWithPaginationFindByC_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_S();
+
+	public FinderPath getFinderPathCountByC_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_S();
 
 	/**
 	 * Returns all the calendar bookings where calendarId = &#63; and status = &#63;.
@@ -1303,6 +1369,12 @@ public interface CalendarBookingPersistence
 	 * @return the number of matching calendar bookings
 	 */
 	public int countByC_S(long calendarId, int[] statuses);
+
+	public FinderPath getFinderPathWithPaginationFindByP_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByP_S();
+
+	public FinderPath getFinderPathCountByP_S();
 
 	/**
 	 * Returns all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;.
@@ -1578,5 +1650,7 @@ public interface CalendarBookingPersistence
 	 * @return the number of calendar bookings
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

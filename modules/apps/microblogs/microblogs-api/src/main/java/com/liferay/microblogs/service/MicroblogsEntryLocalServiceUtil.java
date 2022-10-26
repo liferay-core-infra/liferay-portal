@@ -17,6 +17,7 @@ package com.liferay.microblogs.service;
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -439,6 +440,10 @@ public class MicroblogsEntryLocalServiceUtil {
 
 	public static int getUserMicroblogsEntriesCount(long userId, int type) {
 		return getService().getUserMicroblogsEntriesCount(userId, type);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static void updateAsset(

@@ -17,6 +17,7 @@ package com.liferay.marketplace.service;
 import com.liferay.marketplace.model.App;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -333,6 +334,10 @@ public class AppLocalServiceUtil {
 
 	public static void installApp(long remoteAppId) throws PortalException {
 		getService().installApp(remoteAppId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static void uninstallApp(long remoteAppId) throws PortalException {

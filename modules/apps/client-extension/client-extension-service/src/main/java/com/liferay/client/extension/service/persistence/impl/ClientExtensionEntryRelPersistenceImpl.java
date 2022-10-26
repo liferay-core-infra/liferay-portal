@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -108,9 +109,42 @@ public class ClientExtensionEntryRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the client extension entry rels where uuid = &#63;.
@@ -669,7 +703,18 @@ public class ClientExtensionEntryRelPersistenceImpl
 		"(clientExtensionEntryRel.uuid IS NULL OR clientExtensionEntryRel.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the client extension entry rel where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchClientExtensionEntryRelException</code> if it could not be found.
@@ -936,8 +981,25 @@ public class ClientExtensionEntryRelPersistenceImpl
 		"clientExtensionEntryRel.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the client extension entry rels where uuid = &#63; and companyId = &#63;.
@@ -1538,8 +1600,25 @@ public class ClientExtensionEntryRelPersistenceImpl
 		"clientExtensionEntryRel.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_CETERC;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_CETERC() {
+		return _finderPathWithPaginationFindByC_CETERC;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_CETERC;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_CETERC() {
+		return _finderPathWithoutPaginationFindByC_CETERC;
+	}
+
 	private FinderPath _finderPathCountByC_CETERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_CETERC() {
+		return _finderPathCountByC_CETERC;
+	}
 
 	/**
 	 * Returns all the client extension entry rels where companyId = &#63; and cetExternalReferenceCode = &#63;.
@@ -2157,8 +2236,25 @@ public class ClientExtensionEntryRelPersistenceImpl
 			"(clientExtensionEntryRel.cetExternalReferenceCode IS NULL OR clientExtensionEntryRel.cetExternalReferenceCode = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the client extension entry rels where classNameId = &#63; and classPK = &#63;.
@@ -2718,8 +2814,25 @@ public class ClientExtensionEntryRelPersistenceImpl
 		"clientExtensionEntryRel.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_T() {
+		return _finderPathWithPaginationFindByC_C_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_T() {
+		return _finderPathWithoutPaginationFindByC_C_T;
+	}
+
 	private FinderPath _finderPathCountByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_T() {
+		return _finderPathCountByC_C_T;
+	}
 
 	/**
 	 * Returns all the client extension entry rels where classNameId = &#63; and classPK = &#63; and type = &#63;.
@@ -3356,7 +3469,18 @@ public class ClientExtensionEntryRelPersistenceImpl
 		"(clientExtensionEntryRel.type IS NULL OR clientExtensionEntryRel.type = '')";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the client extension entry rel where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchClientExtensionEntryRelException</code> if it could not be found.
@@ -4641,6 +4765,67 @@ public class ClientExtensionEntryRelPersistenceImpl
 		_setClientExtensionEntryRelUtilPersistence(null);
 
 		entityCache.removeCache(ClientExtensionEntryRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ClientExtensionEntryRel> clientExtensionEntryRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ClientExtensionEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (ClientExtensionEntryRel clientExtensionEntryRel :
+					clientExtensionEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ClientExtensionEntryRelModelImpl
+						clientExtensionEntryRelModelImpl =
+							(ClientExtensionEntryRelModelImpl)
+								clientExtensionEntryRel;
+
+					arguments.add(
+						clientExtensionEntryRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						clientExtensionEntryRel);
+				}
+				else {
+					List<ClientExtensionEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(clientExtensionEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ClientExtensionEntryRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ClientExtensionEntryRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setClientExtensionEntryRelUtilPersistence(

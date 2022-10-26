@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service.persistence;
 
 import com.liferay.dynamic.data.mapping.exception.NoSuchTemplateException;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface DDMTemplatePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMTemplateUtil} to access the ddm template persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the ddm templates where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface DDMTemplatePersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the ddm template where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchTemplateException</code> if it could not be found.
 	 *
@@ -234,6 +250,12 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the ddm templates where uuid = &#63; and companyId = &#63;.
@@ -389,6 +411,12 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63;.
@@ -597,6 +625,12 @@ public interface DDMTemplatePersistence
 	 */
 	public int filterCountByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByClassPK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByClassPK();
+
+	public FinderPath getFinderPathCountByClassPK();
+
 	/**
 	 * Returns all the ddm templates where classPK = &#63;.
 	 *
@@ -739,6 +773,12 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates
 	 */
 	public int countByClassPK(long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByTemplateKey();
+
+	public FinderPath getFinderPathWithoutPaginationFindByTemplateKey();
+
+	public FinderPath getFinderPathCountByTemplateKey();
 
 	/**
 	 * Returns all the ddm templates where templateKey = &#63;.
@@ -883,6 +923,12 @@ public interface DDMTemplatePersistence
 	 */
 	public int countByTemplateKey(String templateKey);
 
+	public FinderPath getFinderPathWithPaginationFindByType();
+
+	public FinderPath getFinderPathWithoutPaginationFindByType();
+
+	public FinderPath getFinderPathCountByType();
+
 	/**
 	 * Returns all the ddm templates where type = &#63;.
 	 *
@@ -1025,6 +1071,12 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates
 	 */
 	public int countByType(String type);
+
+	public FinderPath getFinderPathWithPaginationFindByLanguage();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLanguage();
+
+	public FinderPath getFinderPathCountByLanguage();
 
 	/**
 	 * Returns all the ddm templates where language = &#63;.
@@ -1169,6 +1221,10 @@ public interface DDMTemplatePersistence
 	 */
 	public int countByLanguage(String language);
 
+	public FinderPath getFinderPathFetchBySmallImageId();
+
+	public FinderPath getFinderPathCountBySmallImageId();
+
 	/**
 	 * Returns the ddm template where smallImageId = &#63; or throws a <code>NoSuchTemplateException</code> if it could not be found.
 	 *
@@ -1213,6 +1269,12 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates
 	 */
 	public int countBySmallImageId(long smallImageId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C();
+
+	public FinderPath getFinderPathCountByG_C();
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classNameId = &#63;.
@@ -1438,6 +1500,14 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates that the user has permission to view
 	 */
 	public int filterCountByG_C(long groupId, long classNameId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_CPK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_CPK();
+
+	public FinderPath getFinderPathCountByG_CPK();
+
+	public FinderPath getFinderPathWithPaginationCountByG_CPK();
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classPK = &#63;.
@@ -1795,6 +1865,14 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates that the user has permission to view
 	 */
 	public int filterCountByG_CPK(long[] groupIds, long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C();
+
+	public FinderPath getFinderPathCountByG_C_C();
+
+	public FinderPath getFinderPathWithPaginationCountByG_C_C();
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -2180,6 +2258,10 @@ public interface DDMTemplatePersistence
 	public int filterCountByG_C_C(
 		long[] groupIds, long classNameId, long classPK);
 
+	public FinderPath getFinderPathFetchByG_C_T();
+
+	public FinderPath getFinderPathCountByG_C_T();
+
 	/**
 	 * Returns the ddm template where groupId = &#63; and classNameId = &#63; and templateKey = &#63; or throws a <code>NoSuchTemplateException</code> if it could not be found.
 	 *
@@ -2238,6 +2320,12 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates
 	 */
 	public int countByG_C_T(long groupId, long classNameId, String templateKey);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_T();
+
+	public FinderPath getFinderPathCountByC_C_T();
 
 	/**
 	 * Returns all the ddm templates where classNameId = &#63; and classPK = &#63; and type = &#63;.
@@ -2404,6 +2492,12 @@ public interface DDMTemplatePersistence
 	 * @return the number of matching ddm templates
 	 */
 	public int countByC_C_T(long classNameId, long classPK, String type);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_T();
+
+	public FinderPath getFinderPathCountByG_C_C_T();
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63;.
@@ -2671,6 +2765,12 @@ public interface DDMTemplatePersistence
 	 */
 	public int filterCountByG_C_C_T(
 		long groupId, long classNameId, long classPK, String type);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_T_M();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_T_M();
+
+	public FinderPath getFinderPathCountByG_C_C_T_M();
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and mode = &#63;.
@@ -3075,5 +3175,7 @@ public interface DDMTemplatePersistence
 	 * @return the number of ddm templates
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

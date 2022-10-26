@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -50,7 +51,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -95,9 +98,44 @@ public class SamlPeerBindingPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByC_U_D_SNIF_SNINQ_SPEI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U_D_SNIF_SNINQ_SPEI() {
+		return _finderPathWithPaginationFindByC_U_D_SNIF_SNINQ_SPEI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_U_D_SNIF_SNINQ_SPEI;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByC_U_D_SNIF_SNINQ_SPEI() {
+
+		return _finderPathWithoutPaginationFindByC_U_D_SNIF_SNINQ_SPEI;
+	}
+
 	private FinderPath _finderPathCountByC_U_D_SNIF_SNINQ_SPEI;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U_D_SNIF_SNINQ_SPEI() {
+		return _finderPathCountByC_U_D_SNIF_SNINQ_SPEI;
+	}
 
 	/**
 	 * Returns all the saml peer bindings where companyId = &#63; and userId = &#63; and deleted = &#63; and samlNameIdFormat = &#63; and samlNameIdNameQualifier = &#63; and samlPeerEntityId = &#63;.
@@ -960,9 +998,30 @@ public class SamlPeerBindingPersistenceImpl
 			"(samlPeerBinding.samlPeerEntityId IS NULL OR samlPeerBinding.samlPeerEntityId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_D_SNIF_SNINQ_SNIV_SPEI;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByC_D_SNIF_SNINQ_SNIV_SPEI() {
+
+		return _finderPathWithPaginationFindByC_D_SNIF_SNINQ_SNIV_SPEI;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByC_D_SNIF_SNINQ_SNIV_SPEI;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByC_D_SNIF_SNINQ_SNIV_SPEI() {
+
+		return _finderPathWithoutPaginationFindByC_D_SNIF_SNINQ_SNIV_SPEI;
+	}
+
 	private FinderPath _finderPathCountByC_D_SNIF_SNINQ_SNIV_SPEI;
+
+	@Override
+	public FinderPath getFinderPathCountByC_D_SNIF_SNINQ_SNIV_SPEI() {
+		return _finderPathCountByC_D_SNIF_SNINQ_SNIV_SPEI;
+	}
 
 	/**
 	 * Returns all the saml peer bindings where companyId = &#63; and deleted = &#63; and samlNameIdFormat = &#63; and samlNameIdNameQualifier = &#63; and samlNameIdValue = &#63; and samlPeerEntityId = &#63;.
@@ -2523,6 +2582,61 @@ public class SamlPeerBindingPersistenceImpl
 		_setSamlPeerBindingUtilPersistence(null);
 
 		entityCache.removeCache(SamlPeerBindingImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SamlPeerBinding> samlPeerBindings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SamlPeerBinding>> resultMap =
+				new HashMap<>();
+
+			for (SamlPeerBinding samlPeerBinding : samlPeerBindings) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SamlPeerBindingModelImpl samlPeerBindingModelImpl =
+						(SamlPeerBindingModelImpl)samlPeerBinding;
+
+					arguments.add(
+						samlPeerBindingModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), samlPeerBinding);
+				}
+				else {
+					List<SamlPeerBinding> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(samlPeerBinding);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SamlPeerBinding>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SamlPeerBinding> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSamlPeerBindingUtilPersistence(

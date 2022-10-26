@@ -119,6 +119,42 @@ public class AssetLinkUtil {
 		return getPersistence().update(assetLink, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByEntryId1() {
+
+		return getPersistence().getFinderPathWithPaginationFindByEntryId1();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByEntryId1() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByEntryId1();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByEntryId1() {
+
+		return getPersistence().getFinderPathCountByEntryId1();
+	}
+
 	/**
 	 * Returns all the asset links where entryId1 = &#63;.
 	 *
@@ -288,6 +324,24 @@ public class AssetLinkUtil {
 		return getPersistence().countByEntryId1(entryId1);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByEntryId2() {
+
+		return getPersistence().getFinderPathWithPaginationFindByEntryId2();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByEntryId2() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByEntryId2();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByEntryId2() {
+
+		return getPersistence().getFinderPathCountByEntryId2();
+	}
+
 	/**
 	 * Returns all the asset links where entryId2 = &#63;.
 	 *
@@ -455,6 +509,24 @@ public class AssetLinkUtil {
 	 */
 	public static int countByEntryId2(long entryId2) {
 		return getPersistence().countByEntryId2(entryId2);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByE_E() {
+
+		return getPersistence().getFinderPathWithPaginationFindByE_E();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByE_E() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByE_E();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByE_E() {
+
+		return getPersistence().getFinderPathCountByE_E();
 	}
 
 	/**
@@ -641,6 +713,24 @@ public class AssetLinkUtil {
 		return getPersistence().countByE_E(entryId1, entryId2);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByE1_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByE1_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByE1_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByE1_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByE1_T() {
+
+		return getPersistence().getFinderPathCountByE1_T();
+	}
+
 	/**
 	 * Returns all the asset links where entryId1 = &#63; and type = &#63;.
 	 *
@@ -825,6 +915,24 @@ public class AssetLinkUtil {
 		return getPersistence().countByE1_T(entryId1, type);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByE2_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByE2_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByE2_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByE2_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByE2_T() {
+
+		return getPersistence().getFinderPathCountByE2_T();
+	}
+
 	/**
 	 * Returns all the asset links where entryId2 = &#63; and type = &#63;.
 	 *
@@ -1007,6 +1115,18 @@ public class AssetLinkUtil {
 	 */
 	public static int countByE2_T(long entryId2, int type) {
 		return getPersistence().countByE2_T(entryId2, type);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByE_E_T() {
+
+		return getPersistence().getFinderPathFetchByE_E_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByE_E_T() {
+
+		return getPersistence().getFinderPathCountByE_E_T();
 	}
 
 	/**
@@ -1226,6 +1346,12 @@ public class AssetLinkUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static AssetLinkPersistence getPersistence() {

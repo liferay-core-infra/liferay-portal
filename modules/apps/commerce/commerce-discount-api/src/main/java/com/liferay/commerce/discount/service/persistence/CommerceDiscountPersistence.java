@@ -16,6 +16,7 @@ package com.liferay.commerce.discount.service.persistence;
 
 import com.liferay.commerce.discount.exception.NoSuchDiscountException;
 import com.liferay.commerce.discount.model.CommerceDiscount;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface CommerceDiscountPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceDiscountUtil} to access the commerce discount persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce discounts where uuid = &#63;.
@@ -249,6 +261,12 @@ public interface CommerceDiscountPersistence
 	 * @return the number of matching commerce discounts that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce discounts where uuid = &#63; and companyId = &#63;.
@@ -475,6 +493,12 @@ public interface CommerceDiscountPersistence
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the commerce discounts where companyId = &#63;.
 	 *
@@ -682,6 +706,12 @@ public interface CommerceDiscountPersistence
 	 * @return the number of matching commerce discounts that the user has permission to view
 	 */
 	public int filterCountByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns all the commerce discounts where companyId = &#63; and couponCode = &#63;.
@@ -908,6 +938,10 @@ public interface CommerceDiscountPersistence
 	 */
 	public int filterCountByC_C(long companyId, String couponCode);
 
+	public FinderPath getFinderPathWithPaginationFindByLtD_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtD_S();
+
 	/**
 	 * Returns all the commerce discounts where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -1132,6 +1166,10 @@ public interface CommerceDiscountPersistence
 	 * @return the number of matching commerce discounts that the user has permission to view
 	 */
 	public int filterCountByLtD_S(Date displayDate, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByLtE_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtE_S();
 
 	/**
 	 * Returns all the commerce discounts where expirationDate &lt; &#63; and status = &#63;.
@@ -1358,6 +1396,10 @@ public interface CommerceDiscountPersistence
 	 */
 	public int filterCountByLtE_S(Date expirationDate, int status);
 
+	public FinderPath getFinderPathFetchByC_C_A();
+
+	public FinderPath getFinderPathCountByC_C_A();
+
 	/**
 	 * Returns the commerce discount where companyId = &#63; and couponCode = &#63; and active = &#63; or throws a <code>NoSuchDiscountException</code> if it could not be found.
 	 *
@@ -1416,6 +1458,12 @@ public interface CommerceDiscountPersistence
 	 * @return the number of matching commerce discounts
 	 */
 	public int countByC_C_A(long companyId, String couponCode, boolean active);
+
+	public FinderPath getFinderPathWithPaginationFindByC_L_A_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_L_A_S();
+
+	public FinderPath getFinderPathCountByC_L_A_S();
 
 	/**
 	 * Returns all the commerce discounts where companyId = &#63; and level = &#63; and active = &#63; and status = &#63;.
@@ -1684,6 +1732,10 @@ public interface CommerceDiscountPersistence
 	public int filterCountByC_L_A_S(
 		long companyId, String level, boolean active, int status);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the commerce discount where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchDiscountException</code> if it could not be found.
 	 *
@@ -1856,5 +1908,7 @@ public interface CommerceDiscountPersistence
 	 * @return the number of commerce discounts
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

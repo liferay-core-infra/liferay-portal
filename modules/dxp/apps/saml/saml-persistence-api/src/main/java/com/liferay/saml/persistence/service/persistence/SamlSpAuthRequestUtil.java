@@ -122,6 +122,37 @@ public class SamlSpAuthRequestUtil {
 		return getPersistence().update(samlSpAuthRequest, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtCreateDate() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLtCreateDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtCreateDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtCreateDate();
+	}
+
 	/**
 	 * Returns all the saml sp auth requests where createDate &lt; &#63;.
 	 *
@@ -296,6 +327,18 @@ public class SamlSpAuthRequestUtil {
 	 */
 	public static int countByLtCreateDate(Date createDate) {
 		return getPersistence().countByLtCreateDate(createDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchBySIEI_SSARK() {
+
+		return getPersistence().getFinderPathFetchBySIEI_SSARK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySIEI_SSARK() {
+
+		return getPersistence().getFinderPathCountBySIEI_SSARK();
 	}
 
 	/**
@@ -528,6 +571,12 @@ public class SamlSpAuthRequestUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SamlSpAuthRequestPersistence getPersistence() {

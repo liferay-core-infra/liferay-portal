@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.persistence.CountryLocalizationPersiste
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.CountryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -90,9 +92,42 @@ public class CountryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the countries where uuid = &#63;.
@@ -619,8 +654,25 @@ public class CountryPersistenceImpl
 		"(country.uuid IS NULL OR country.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the countries where uuid = &#63; and companyId = &#63;.
@@ -1197,8 +1249,25 @@ public class CountryPersistenceImpl
 		"country.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the countries where companyId = &#63;.
@@ -1689,8 +1758,25 @@ public class CountryPersistenceImpl
 		"country.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByActive;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByActive() {
+		return _finderPathWithPaginationFindByActive;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByActive;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByActive() {
+		return _finderPathWithoutPaginationFindByActive;
+	}
+
 	private FinderPath _finderPathCountByActive;
+
+	@Override
+	public FinderPath getFinderPathCountByActive() {
+		return _finderPathCountByActive;
+	}
 
 	/**
 	 * Returns all the countries where active = &#63;.
@@ -2177,7 +2263,18 @@ public class CountryPersistenceImpl
 		"country.active = ?";
 
 	private FinderPath _finderPathFetchByC_A2;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_A2() {
+		return _finderPathFetchByC_A2;
+	}
+
 	private FinderPath _finderPathCountByC_A2;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A2() {
+		return _finderPathCountByC_A2;
+	}
 
 	/**
 	 * Returns the country where companyId = &#63; and a2 = &#63; or throws a <code>NoSuchCountryException</code> if it could not be found.
@@ -2425,7 +2522,18 @@ public class CountryPersistenceImpl
 		"(country.a2 IS NULL OR country.a2 = '')";
 
 	private FinderPath _finderPathFetchByC_A3;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_A3() {
+		return _finderPathFetchByC_A3;
+	}
+
 	private FinderPath _finderPathCountByC_A3;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A3() {
+		return _finderPathCountByC_A3;
+	}
 
 	/**
 	 * Returns the country where companyId = &#63; and a3 = &#63; or throws a <code>NoSuchCountryException</code> if it could not be found.
@@ -2673,8 +2781,25 @@ public class CountryPersistenceImpl
 		"(country.a3 IS NULL OR country.a3 = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_Active;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_Active() {
+		return _finderPathWithPaginationFindByC_Active;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_Active;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_Active() {
+		return _finderPathWithoutPaginationFindByC_Active;
+	}
+
 	private FinderPath _finderPathCountByC_Active;
+
+	@Override
+	public FinderPath getFinderPathCountByC_Active() {
+		return _finderPathCountByC_Active;
+	}
 
 	/**
 	 * Returns all the countries where companyId = &#63; and active = &#63;.
@@ -3209,7 +3334,18 @@ public class CountryPersistenceImpl
 		"country.active = ?";
 
 	private FinderPath _finderPathFetchByC_Name;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_Name() {
+		return _finderPathFetchByC_Name;
+	}
+
 	private FinderPath _finderPathCountByC_Name;
+
+	@Override
+	public FinderPath getFinderPathCountByC_Name() {
+		return _finderPathCountByC_Name;
+	}
 
 	/**
 	 * Returns the country where companyId = &#63; and name = &#63; or throws a <code>NoSuchCountryException</code> if it could not be found.
@@ -3458,7 +3594,18 @@ public class CountryPersistenceImpl
 		"(country.name IS NULL OR country.name = '')";
 
 	private FinderPath _finderPathFetchByC_Number;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_Number() {
+		return _finderPathFetchByC_Number;
+	}
+
 	private FinderPath _finderPathCountByC_Number;
+
+	@Override
+	public FinderPath getFinderPathCountByC_Number() {
+		return _finderPathCountByC_Number;
+	}
 
 	/**
 	 * Returns the country where companyId = &#63; and number = &#63; or throws a <code>NoSuchCountryException</code> if it could not be found.
@@ -3707,8 +3854,25 @@ public class CountryPersistenceImpl
 		"(country.number IS NULL OR country.number = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_A_B;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A_B() {
+		return _finderPathWithPaginationFindByC_A_B;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_A_B;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_B() {
+		return _finderPathWithoutPaginationFindByC_A_B;
+	}
+
 	private FinderPath _finderPathCountByC_A_B;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A_B() {
+		return _finderPathCountByC_A_B;
+	}
 
 	/**
 	 * Returns all the countries where companyId = &#63; and active = &#63; and billingAllowed = &#63;.
@@ -4291,8 +4455,25 @@ public class CountryPersistenceImpl
 		"country.billingAllowed = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A_S() {
+		return _finderPathWithPaginationFindByC_A_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_A_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_S() {
+		return _finderPathWithoutPaginationFindByC_A_S;
+	}
+
 	private FinderPath _finderPathCountByC_A_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A_S() {
+		return _finderPathCountByC_A_S;
+	}
 
 	/**
 	 * Returns all the countries where companyId = &#63; and active = &#63; and shippingAllowed = &#63;.
@@ -5681,6 +5862,58 @@ public class CountryPersistenceImpl
 		_setCountryUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(CountryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Country> countrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Country>> resultMap = new HashMap<>();
+
+			for (Country country : countrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CountryModelImpl countryModelImpl =
+						(CountryModelImpl)country;
+
+					arguments.add(countryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), country);
+				}
+				else {
+					List<Country> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(country);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Country>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Country> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCountryUtilPersistence(

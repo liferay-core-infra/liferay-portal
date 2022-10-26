@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,9 +105,42 @@ public class CommerceDiscountAccountRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce discount account rels where uuid = &#63;.
@@ -651,8 +686,25 @@ public class CommerceDiscountAccountRelPersistenceImpl
 		"(commerceDiscountAccountRel.uuid IS NULL OR commerceDiscountAccountRel.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce discount account rels where uuid = &#63; and companyId = &#63;.
@@ -1241,8 +1293,25 @@ public class CommerceDiscountAccountRelPersistenceImpl
 		"commerceDiscountAccountRel.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommerceAccountId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommerceAccountId() {
+		return _finderPathWithPaginationFindByCommerceAccountId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommerceAccountId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceAccountId() {
+		return _finderPathWithoutPaginationFindByCommerceAccountId;
+	}
+
 	private FinderPath _finderPathCountByCommerceAccountId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceAccountId() {
+		return _finderPathCountByCommerceAccountId;
+	}
 
 	/**
 	 * Returns all the commerce discount account rels where commerceAccountId = &#63;.
@@ -1759,8 +1828,25 @@ public class CommerceDiscountAccountRelPersistenceImpl
 			"commerceDiscountAccountRel.commerceAccountId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommerceDiscountId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommerceDiscountId() {
+		return _finderPathWithPaginationFindByCommerceDiscountId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommerceDiscountId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceDiscountId() {
+		return _finderPathWithoutPaginationFindByCommerceDiscountId;
+	}
+
 	private FinderPath _finderPathCountByCommerceDiscountId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceDiscountId() {
+		return _finderPathCountByCommerceDiscountId;
+	}
 
 	/**
 	 * Returns all the commerce discount account rels where commerceDiscountId = &#63;.
@@ -2279,7 +2365,18 @@ public class CommerceDiscountAccountRelPersistenceImpl
 			"commerceDiscountAccountRel.commerceDiscountId = ?";
 
 	private FinderPath _finderPathFetchByCAI_CDI;
+
+	@Override
+	public FinderPath getFinderPathFetchByCAI_CDI() {
+		return _finderPathFetchByCAI_CDI;
+	}
+
 	private FinderPath _finderPathCountByCAI_CDI;
+
+	@Override
+	public FinderPath getFinderPathCountByCAI_CDI() {
+		return _finderPathCountByCAI_CDI;
+	}
 
 	/**
 	 * Returns the commerce discount account rel where commerceAccountId = &#63; and commerceDiscountId = &#63; or throws a <code>NoSuchDiscountAccountRelException</code> if it could not be found.
@@ -3234,6 +3331,68 @@ public class CommerceDiscountAccountRelPersistenceImpl
 		_setCommerceDiscountAccountRelUtilPersistence(null);
 
 		entityCache.removeCache(CommerceDiscountAccountRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceDiscountAccountRel> commerceDiscountAccountRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceDiscountAccountRel>> resultMap =
+				new HashMap<>();
+
+			for (CommerceDiscountAccountRel commerceDiscountAccountRel :
+					commerceDiscountAccountRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceDiscountAccountRelModelImpl
+						commerceDiscountAccountRelModelImpl =
+							(CommerceDiscountAccountRelModelImpl)
+								commerceDiscountAccountRel;
+
+					arguments.add(
+						commerceDiscountAccountRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceDiscountAccountRel);
+				}
+				else {
+					List<CommerceDiscountAccountRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceDiscountAccountRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceDiscountAccountRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceDiscountAccountRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceDiscountAccountRelUtilPersistence(

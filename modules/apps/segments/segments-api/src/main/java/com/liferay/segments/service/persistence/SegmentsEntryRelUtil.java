@@ -119,6 +119,44 @@ public class SegmentsEntryRelUtil {
 		return getPersistence().update(segmentsEntryRel, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindBySegmentsEntryId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindBySegmentsEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindBySegmentsEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindBySegmentsEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySegmentsEntryId() {
+
+		return getPersistence().getFinderPathCountBySegmentsEntryId();
+	}
+
 	/**
 	 * Returns all the segments entry rels where segmentsEntryId = &#63;.
 	 *
@@ -293,6 +331,24 @@ public class SegmentsEntryRelUtil {
 	 */
 	public static int countBySegmentsEntryId(long segmentsEntryId) {
 		return getPersistence().countBySegmentsEntryId(segmentsEntryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCN_CPK() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCN_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCN_CPK() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCN_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCN_CPK() {
+
+		return getPersistence().getFinderPathCountByCN_CPK();
 	}
 
 	/**
@@ -480,6 +536,24 @@ public class SegmentsEntryRelUtil {
 	 */
 	public static int countByCN_CPK(long classNameId, long classPK) {
 		return getPersistence().countByCN_CPK(classNameId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_CN_CPK() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_CN_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_CN_CPK() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_CN_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_CN_CPK() {
+
+		return getPersistence().getFinderPathCountByG_CN_CPK();
 	}
 
 	/**
@@ -684,6 +758,18 @@ public class SegmentsEntryRelUtil {
 		long groupId, long classNameId, long classPK) {
 
 		return getPersistence().countByG_CN_CPK(groupId, classNameId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByS_CN_CPK() {
+
+		return getPersistence().getFinderPathFetchByS_CN_CPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByS_CN_CPK() {
+
+		return getPersistence().getFinderPathCountByS_CN_CPK();
 	}
 
 	/**
@@ -915,6 +1001,12 @@ public class SegmentsEntryRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SegmentsEntryRelPersistence getPersistence() {

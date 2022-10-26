@@ -119,6 +119,42 @@ public class MBMessageUtil {
 		return getPersistence().update(mbMessage, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the message-boards messages where uuid = &#63;.
 	 *
@@ -281,6 +317,18 @@ public class MBMessageUtil {
 		return getPersistence().countByUuid(uuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByUUID_G() {
+
+		return getPersistence().getFinderPathFetchByUUID_G();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUUID_G() {
+
+		return getPersistence().getFinderPathCountByUUID_G();
+	}
+
 	/**
 	 * Returns the message-boards message where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchMessageException</code> if it could not be found.
 	 *
@@ -342,6 +390,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -526,6 +592,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByUuid_C(String uuid, long companyId) {
 		return getPersistence().countByUuid_C(uuid, companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByGroupId() {
+
+		return getPersistence().getFinderPathCountByGroupId();
 	}
 
 	/**
@@ -771,6 +855,24 @@ public class MBMessageUtil {
 		return getPersistence().filterCountByGroupId(groupId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the message-boards messages where companyId = &#63;.
 	 *
@@ -940,6 +1042,24 @@ public class MBMessageUtil {
 		return getPersistence().countByCompanyId(companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the message-boards messages where userId = &#63;.
 	 *
@@ -1103,6 +1223,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByUserId(long userId) {
 		return getPersistence().countByUserId(userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByThreadId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByThreadId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByThreadId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByThreadId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByThreadId() {
+
+		return getPersistence().getFinderPathCountByThreadId();
 	}
 
 	/**
@@ -1274,6 +1412,26 @@ public class MBMessageUtil {
 		return getPersistence().countByThreadId(threadId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByThreadIdReplies() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByThreadIdReplies();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByThreadIdReplies() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByThreadIdReplies();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByThreadIdReplies() {
+
+		return getPersistence().getFinderPathCountByThreadIdReplies();
+	}
+
 	/**
 	 * Returns all the message-boards messages where threadId = &#63;.
 	 *
@@ -1441,6 +1599,26 @@ public class MBMessageUtil {
 	 */
 	public static int countByThreadIdReplies(long threadId) {
 		return getPersistence().countByThreadIdReplies(threadId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByParentMessageId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByParentMessageId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByParentMessageId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByParentMessageId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByParentMessageId() {
+
+		return getPersistence().getFinderPathCountByParentMessageId();
 	}
 
 	/**
@@ -1613,6 +1791,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByParentMessageId(long parentMessageId) {
 		return getPersistence().countByParentMessageId(parentMessageId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_U() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_U() {
+
+		return getPersistence().getFinderPathCountByG_U();
 	}
 
 	/**
@@ -1879,6 +2075,24 @@ public class MBMessageUtil {
 	 */
 	public static int filterCountByG_U(long groupId, long userId) {
 		return getPersistence().filterCountByG_U(groupId, userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C() {
+
+		return getPersistence().getFinderPathCountByG_C();
 	}
 
 	/**
@@ -2150,6 +2364,18 @@ public class MBMessageUtil {
 		return getPersistence().filterCountByG_C(groupId, categoryId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_US() {
+
+		return getPersistence().getFinderPathFetchByG_US();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_US() {
+
+		return getPersistence().getFinderPathCountByG_US();
+	}
+
 	/**
 	 * Returns the message-boards message where groupId = &#63; and urlSubject = &#63; or throws a <code>NoSuchMessageException</code> if it could not be found.
 	 *
@@ -2212,6 +2438,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByG_US(long groupId, String urlSubject) {
 		return getPersistence().countByG_US(groupId, urlSubject);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_S() {
+
+		return getPersistence().getFinderPathCountByG_S();
 	}
 
 	/**
@@ -2480,6 +2724,24 @@ public class MBMessageUtil {
 		return getPersistence().filterCountByG_S(groupId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_S() {
+
+		return getPersistence().getFinderPathCountByC_S();
+	}
+
 	/**
 	 * Returns all the message-boards messages where companyId = &#63; and status = &#63;.
 	 *
@@ -2662,6 +2924,30 @@ public class MBMessageUtil {
 	 */
 	public static int countByC_S(long companyId, int status) {
 		return getPersistence().countByC_S(companyId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_C() {
+
+		return getPersistence().getFinderPathCountByU_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByU_C() {
+
+		return getPersistence().getFinderPathWithPaginationCountByU_C();
 	}
 
 	/**
@@ -2940,6 +3226,24 @@ public class MBMessageUtil {
 		return getPersistence().countByU_C(userId, classNameIds);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
+	}
+
 	/**
 	 * Returns all the message-boards messages where classNameId = &#63; and classPK = &#63;.
 	 *
@@ -3123,6 +3427,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByC_C(long classNameId, long classPK) {
 		return getPersistence().countByC_C(classNameId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByT_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByT_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByT_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByT_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByT_P() {
+
+		return getPersistence().getFinderPathCountByT_P();
 	}
 
 	/**
@@ -3313,6 +3635,24 @@ public class MBMessageUtil {
 		return getPersistence().countByT_P(threadId, parentMessageId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByT_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByT_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByT_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByT_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByT_A() {
+
+		return getPersistence().getFinderPathCountByT_A();
+	}
+
 	/**
 	 * Returns all the message-boards messages where threadId = &#63; and answer = &#63;.
 	 *
@@ -3495,6 +3835,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByT_A(long threadId, boolean answer) {
 		return getPersistence().countByT_A(threadId, answer);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByT_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByT_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByT_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByT_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByT_S() {
+
+		return getPersistence().getFinderPathCountByT_S();
 	}
 
 	/**
@@ -3681,6 +4039,18 @@ public class MBMessageUtil {
 		return getPersistence().countByT_S(threadId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByT_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByT_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByT_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByT_NotS();
+	}
+
 	/**
 	 * Returns all the message-boards messages where threadId = &#63; and status &ne; &#63;.
 	 *
@@ -3863,6 +4233,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByT_NotS(long threadId, int status) {
 		return getPersistence().countByT_NotS(threadId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByTR_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByTR_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByTR_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByTR_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByTR_S() {
+
+		return getPersistence().getFinderPathCountByTR_S();
 	}
 
 	/**
@@ -4049,6 +4437,24 @@ public class MBMessageUtil {
 		return getPersistence().countByTR_S(threadId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByP_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByP_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByP_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByP_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByP_S() {
+
+		return getPersistence().getFinderPathCountByP_S();
+	}
+
 	/**
 	 * Returns all the message-boards messages where parentMessageId = &#63; and status = &#63;.
 	 *
@@ -4232,6 +4638,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByP_S(long parentMessageId, int status) {
 		return getPersistence().countByP_S(parentMessageId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_U_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_U_S() {
+
+		return getPersistence().getFinderPathCountByG_U_S();
 	}
 
 	/**
@@ -4523,6 +4947,24 @@ public class MBMessageUtil {
 		long groupId, long userId, int status) {
 
 		return getPersistence().filterCountByG_U_S(groupId, userId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_T() {
+
+		return getPersistence().getFinderPathCountByG_C_T();
 	}
 
 	/**
@@ -4822,6 +5264,24 @@ public class MBMessageUtil {
 			groupId, categoryId, threadId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_S() {
+
+		return getPersistence().getFinderPathCountByG_C_S();
+	}
+
 	/**
 	 * Returns all the message-boards messages where groupId = &#63; and categoryId = &#63; and status = &#63;.
 	 *
@@ -5115,6 +5575,24 @@ public class MBMessageUtil {
 		return getPersistence().filterCountByG_C_S(groupId, categoryId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_C_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_C_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_C_C() {
+
+		return getPersistence().getFinderPathCountByU_C_C();
+	}
+
 	/**
 	 * Returns all the message-boards messages where userId = &#63; and classNameId = &#63; and classPK = &#63;.
 	 *
@@ -5316,6 +5794,30 @@ public class MBMessageUtil {
 		long userId, long classNameId, long classPK) {
 
 		return getPersistence().countByU_C_C(userId, classNameId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_C_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_C_S() {
+
+		return getPersistence().getFinderPathCountByU_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByU_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByU_C_S();
 	}
 
 	/**
@@ -5621,6 +6123,24 @@ public class MBMessageUtil {
 		return getPersistence().countByU_C_S(userId, classNameIds, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_S() {
+
+		return getPersistence().getFinderPathCountByC_C_S();
+	}
+
 	/**
 	 * Returns all the message-boards messages where classNameId = &#63; and classPK = &#63; and status = &#63;.
 	 *
@@ -5820,6 +6340,24 @@ public class MBMessageUtil {
 	 */
 	public static int countByC_C_S(long classNameId, long classPK, int status) {
 		return getPersistence().countByC_C_S(classNameId, classPK, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C_T_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C_T_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C_T_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C_T_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_T_A() {
+
+		return getPersistence().getFinderPathCountByG_C_T_A();
 	}
 
 	/**
@@ -6143,6 +6681,24 @@ public class MBMessageUtil {
 			groupId, categoryId, threadId, answer);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C_T_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C_T_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C_T_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C_T_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_T_S() {
+
+		return getPersistence().getFinderPathCountByG_C_T_S();
+	}
+
 	/**
 	 * Returns all the message-boards messages where groupId = &#63; and categoryId = &#63; and threadId = &#63; and status = &#63;.
 	 *
@@ -6464,6 +7020,24 @@ public class MBMessageUtil {
 			groupId, categoryId, threadId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_C_C_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_C_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_C_C_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_C_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_C_C_S() {
+
+		return getPersistence().getFinderPathCountByU_C_C_S();
+	}
+
 	/**
 	 * Returns all the message-boards messages where userId = &#63; and classNameId = &#63; and classPK = &#63; and status = &#63;.
 	 *
@@ -6682,6 +7256,18 @@ public class MBMessageUtil {
 			userId, classNameId, classPK, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_ERC() {
+
+		return getPersistence().getFinderPathFetchByG_ERC();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_ERC() {
+
+		return getPersistence().getFinderPathCountByG_ERC();
+	}
+
 	/**
 	 * Returns the message-boards message where groupId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchMessageException</code> if it could not be found.
 	 *
@@ -6895,6 +7481,12 @@ public class MBMessageUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static MBMessagePersistence getPersistence() {

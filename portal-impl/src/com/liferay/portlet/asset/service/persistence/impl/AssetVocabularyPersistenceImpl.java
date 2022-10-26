@@ -100,9 +100,42 @@ public class AssetVocabularyPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the asset vocabularies where uuid = &#63;.
@@ -650,7 +683,18 @@ public class AssetVocabularyPersistenceImpl
 		"(assetVocabulary.uuid IS NULL OR assetVocabulary.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the asset vocabulary where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchVocabularyException</code> if it could not be found.
@@ -914,8 +958,25 @@ public class AssetVocabularyPersistenceImpl
 		"assetVocabulary.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the asset vocabularies where uuid = &#63; and companyId = &#63;.
@@ -1512,9 +1573,32 @@ public class AssetVocabularyPersistenceImpl
 		"assetVocabulary.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGroupId() {
+		return _finderPathWithPaginationCountByGroupId;
+	}
 
 	/**
 	 * Returns all the asset vocabularies where groupId = &#63;.
@@ -2872,8 +2956,25 @@ public class AssetVocabularyPersistenceImpl
 		"assetVocabulary.groupId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the asset vocabularies where companyId = &#63;.
@@ -3388,7 +3489,18 @@ public class AssetVocabularyPersistenceImpl
 		"assetVocabulary.companyId = ?";
 
 	private FinderPath _finderPathFetchByG_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_N() {
+		return _finderPathFetchByG_N;
+	}
+
 	private FinderPath _finderPathCountByG_N;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N() {
+		return _finderPathCountByG_N;
+	}
 
 	/**
 	 * Returns the asset vocabulary where groupId = &#63; and name = &#63; or throws a <code>NoSuchVocabularyException</code> if it could not be found.
@@ -3652,7 +3764,18 @@ public class AssetVocabularyPersistenceImpl
 		"(assetVocabulary.name IS NULL OR assetVocabulary.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN() {
+		return _finderPathWithPaginationFindByG_LikeN;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN() {
+		return _finderPathWithPaginationCountByG_LikeN;
+	}
 
 	/**
 	 * Returns all the asset vocabularies where groupId = &#63; and name LIKE &#63;.
@@ -4681,9 +4804,32 @@ public class AssetVocabularyPersistenceImpl
 		"(assetVocabulary.name IS NULL OR assetVocabulary.name LIKE '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_V;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_V() {
+		return _finderPathWithPaginationFindByG_V;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_V;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_V() {
+		return _finderPathWithoutPaginationFindByG_V;
+	}
+
 	private FinderPath _finderPathCountByG_V;
+
+	@Override
+	public FinderPath getFinderPathCountByG_V() {
+		return _finderPathCountByG_V;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_V;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_V() {
+		return _finderPathWithPaginationCountByG_V;
+	}
 
 	/**
 	 * Returns all the asset vocabularies where groupId = &#63; and visibilityType = &#63;.
@@ -6224,7 +6370,18 @@ public class AssetVocabularyPersistenceImpl
 		"assetVocabulary.visibilityType IN (";
 
 	private FinderPath _finderPathFetchByG_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_ERC() {
+		return _finderPathFetchByG_ERC;
+	}
+
 	private FinderPath _finderPathCountByG_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByG_ERC() {
+		return _finderPathCountByG_ERC;
+	}
 
 	/**
 	 * Returns the asset vocabulary where groupId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchVocabularyException</code> if it could not be found.
@@ -7517,6 +7674,61 @@ public class AssetVocabularyPersistenceImpl
 		_setAssetVocabularyUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(AssetVocabularyImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AssetVocabulary> assetVocabularys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetVocabulary>> resultMap =
+				new HashMap<>();
+
+			for (AssetVocabulary assetVocabulary : assetVocabularys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetVocabularyModelImpl assetVocabularyModelImpl =
+						(AssetVocabularyModelImpl)assetVocabulary;
+
+					arguments.add(
+						assetVocabularyModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), assetVocabulary);
+				}
+				else {
+					List<AssetVocabulary> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(assetVocabulary);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetVocabulary>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetVocabulary> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAssetVocabularyUtilPersistence(

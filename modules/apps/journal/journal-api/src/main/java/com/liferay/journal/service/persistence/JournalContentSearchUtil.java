@@ -122,6 +122,42 @@ public class JournalContentSearchUtil {
 		return getPersistence().update(journalContentSearch, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the journal content searches where companyId = &#63;.
 	 *
@@ -293,6 +329,24 @@ public class JournalContentSearchUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByPortletId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByPortletId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByPortletId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByPortletId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByPortletId() {
+
+		return getPersistence().getFinderPathCountByPortletId();
 	}
 
 	/**
@@ -468,6 +522,24 @@ public class JournalContentSearchUtil {
 		return getPersistence().countByPortletId(portletId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByArticleId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByArticleId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByArticleId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByArticleId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByArticleId() {
+
+		return getPersistence().getFinderPathCountByArticleId();
+	}
+
 	/**
 	 * Returns all the journal content searches where articleId = &#63;.
 	 *
@@ -639,6 +711,24 @@ public class JournalContentSearchUtil {
 	 */
 	public static int countByArticleId(String articleId) {
 		return getPersistence().countByArticleId(articleId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_P() {
+
+		return getPersistence().getFinderPathCountByG_P();
 	}
 
 	/**
@@ -828,6 +918,24 @@ public class JournalContentSearchUtil {
 		return getPersistence().countByG_P(groupId, privateLayout);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_A() {
+
+		return getPersistence().getFinderPathCountByG_A();
+	}
+
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and articleId = &#63;.
 	 *
@@ -1012,6 +1120,24 @@ public class JournalContentSearchUtil {
 	 */
 	public static int countByG_A(long groupId, String articleId) {
 		return getPersistence().countByG_A(groupId, articleId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_P_L() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_P_L();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_P_L() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_P_L();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_P_L() {
+
+		return getPersistence().getFinderPathCountByG_P_L();
 	}
 
 	/**
@@ -1220,6 +1346,24 @@ public class JournalContentSearchUtil {
 		return getPersistence().countByG_P_L(groupId, privateLayout, layoutId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_P_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_P_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_P_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_P_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_P_A() {
+
+		return getPersistence().getFinderPathCountByG_P_A();
+	}
+
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63; and articleId = &#63;.
 	 *
@@ -1424,6 +1568,24 @@ public class JournalContentSearchUtil {
 		long groupId, boolean privateLayout, String articleId) {
 
 		return getPersistence().countByG_P_A(groupId, privateLayout, articleId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_P_L_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_P_L_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_P_L_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_P_L_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_P_L_P() {
+
+		return getPersistence().getFinderPathCountByG_P_L_P();
 	}
 
 	/**
@@ -1649,6 +1811,18 @@ public class JournalContentSearchUtil {
 
 		return getPersistence().countByG_P_L_P(
 			groupId, privateLayout, layoutId, portletId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_P_L_P_A() {
+
+		return getPersistence().getFinderPathFetchByG_P_L_P_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_P_L_P_A() {
+
+		return getPersistence().getFinderPathCountByG_P_L_P_A();
 	}
 
 	/**
@@ -1897,6 +2071,12 @@ public class JournalContentSearchUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static JournalContentSearchPersistence getPersistence() {

@@ -16,6 +16,7 @@ package com.liferay.analytics.message.storage.service.persistence;
 
 import com.liferay.analytics.message.storage.exception.NoSuchMessageException;
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface AnalyticsMessagePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AnalyticsMessageUtil} to access the analytics message persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the analytics messages where companyId = &#63;.
@@ -303,5 +315,7 @@ public interface AnalyticsMessagePersistence
 	 * @return the number of analytics messages
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -119,6 +119,42 @@ public class ObjectLayoutTabUtil {
 		return getPersistence().update(objectLayoutTab, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the object layout tabs where uuid = &#63;.
 	 *
@@ -281,6 +317,24 @@ public class ObjectLayoutTabUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -469,6 +523,26 @@ public class ObjectLayoutTabUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByObjectLayoutId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByObjectLayoutId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByObjectLayoutId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByObjectLayoutId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByObjectLayoutId() {
+
+		return getPersistence().getFinderPathCountByObjectLayoutId();
+	}
+
 	/**
 	 * Returns all the object layout tabs where objectLayoutId = &#63;.
 	 *
@@ -643,6 +717,26 @@ public class ObjectLayoutTabUtil {
 	 */
 	public static int countByObjectLayoutId(long objectLayoutId) {
 		return getPersistence().countByObjectLayoutId(objectLayoutId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByObjectRelationshipId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByObjectRelationshipId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByObjectRelationshipId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByObjectRelationshipId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByObjectRelationshipId() {
+
+		return getPersistence().getFinderPathCountByObjectRelationshipId();
 	}
 
 	/**
@@ -971,6 +1065,12 @@ public class ObjectLayoutTabUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static ObjectLayoutTabPersistence getPersistence() {

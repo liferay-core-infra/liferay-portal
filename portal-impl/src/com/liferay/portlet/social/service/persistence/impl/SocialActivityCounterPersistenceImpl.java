@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -91,9 +92,42 @@ public class SocialActivityCounterPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the social activity counters where groupId = &#63;.
@@ -612,8 +646,25 @@ public class SocialActivityCounterPersistenceImpl
 		"socialActivityCounter.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the social activity counters where classNameId = &#63; and classPK = &#63;.
@@ -1173,8 +1224,25 @@ public class SocialActivityCounterPersistenceImpl
 		"socialActivityCounter.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_O;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_O() {
+		return _finderPathWithPaginationFindByG_C_C_O;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_O;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_O() {
+		return _finderPathWithoutPaginationFindByG_C_C_O;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_O;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_O() {
+		return _finderPathCountByG_C_C_O;
+	}
 
 	/**
 	 * Returns all the social activity counters where groupId = &#63; and classNameId = &#63; and classPK = &#63; and ownerType = &#63;.
@@ -1815,7 +1883,18 @@ public class SocialActivityCounterPersistenceImpl
 		"socialActivityCounter.ownerType = ? AND socialActivityCounter.endPeriod = -1";
 
 	private FinderPath _finderPathFetchByG_C_C_N_O_S;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_C_N_O_S() {
+		return _finderPathFetchByG_C_C_N_O_S;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_N_O_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_N_O_S() {
+		return _finderPathCountByG_C_C_N_O_S;
+	}
 
 	/**
 	 * Returns the social activity counter where groupId = &#63; and classNameId = &#63; and classPK = &#63; and name = &#63; and ownerType = &#63; and startPeriod = &#63; or throws a <code>NoSuchActivityCounterException</code> if it could not be found.
@@ -2178,7 +2257,18 @@ public class SocialActivityCounterPersistenceImpl
 		"socialActivityCounter.startPeriod = ?";
 
 	private FinderPath _finderPathFetchByG_C_C_N_O_E;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_C_N_O_E() {
+		return _finderPathFetchByG_C_C_N_O_E;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_N_O_E;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_N_O_E() {
+		return _finderPathCountByG_C_C_N_O_E;
+	}
 
 	/**
 	 * Returns the social activity counter where groupId = &#63; and classNameId = &#63; and classPK = &#63; and name = &#63; and ownerType = &#63; and endPeriod = &#63; or throws a <code>NoSuchActivityCounterException</code> if it could not be found.
@@ -3521,6 +3611,66 @@ public class SocialActivityCounterPersistenceImpl
 		_setSocialActivityCounterUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(SocialActivityCounterImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SocialActivityCounter> socialActivityCounters = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SocialActivityCounter>> resultMap =
+				new HashMap<>();
+
+			for (SocialActivityCounter socialActivityCounter :
+					socialActivityCounters) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SocialActivityCounterModelImpl
+						socialActivityCounterModelImpl =
+							(SocialActivityCounterModelImpl)
+								socialActivityCounter;
+
+					arguments.add(
+						socialActivityCounterModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), socialActivityCounter);
+				}
+				else {
+					List<SocialActivityCounter> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(socialActivityCounter);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SocialActivityCounter>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SocialActivityCounter> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSocialActivityCounterUtilPersistence(

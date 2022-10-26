@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -360,6 +361,11 @@ public class LayoutSetLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _layoutSetLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_layoutSetLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

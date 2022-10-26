@@ -14,6 +14,7 @@
 
 package com.liferay.account.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -584,6 +585,11 @@ public class AccountEntryLocalServiceWrapper
 
 		return _accountEntryLocalService.getUserAccountEntriesCount(
 			userId, parentAccountEntryId, keywords, types, status);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_accountEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

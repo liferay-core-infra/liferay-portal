@@ -105,9 +105,42 @@ public class RolePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the roles where uuid = &#63;.
@@ -1060,8 +1093,25 @@ public class RolePersistenceImpl
 		"(role_.uuid_ IS NULL OR role_.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the roles where uuid = &#63; and companyId = &#63;.
@@ -2085,8 +2135,25 @@ public class RolePersistenceImpl
 		"role_.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the roles where companyId = &#63;.
@@ -2963,8 +3030,25 @@ public class RolePersistenceImpl
 		"role_.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByName;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByName() {
+		return _finderPathWithPaginationFindByName;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByName;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByName() {
+		return _finderPathWithoutPaginationFindByName;
+	}
+
 	private FinderPath _finderPathCountByName;
+
+	@Override
+	public FinderPath getFinderPathCountByName() {
+		return _finderPathCountByName;
+	}
 
 	/**
 	 * Returns all the roles where name = &#63;.
@@ -3911,8 +3995,25 @@ public class RolePersistenceImpl
 		"(role_.name IS NULL OR role_.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByType() {
+		return _finderPathWithPaginationFindByType;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByType() {
+		return _finderPathWithoutPaginationFindByType;
+	}
+
 	private FinderPath _finderPathCountByType;
+
+	@Override
+	public FinderPath getFinderPathCountByType() {
+		return _finderPathCountByType;
+	}
 
 	/**
 	 * Returns all the roles where type = &#63;.
@@ -4781,8 +4882,25 @@ public class RolePersistenceImpl
 		"role_.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySubtype;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySubtype() {
+		return _finderPathWithPaginationFindBySubtype;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySubtype;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindBySubtype() {
+		return _finderPathWithoutPaginationFindBySubtype;
+	}
+
 	private FinderPath _finderPathCountBySubtype;
+
+	@Override
+	public FinderPath getFinderPathCountBySubtype() {
+		return _finderPathCountBySubtype;
+	}
 
 	/**
 	 * Returns all the roles where subtype = &#63;.
@@ -5736,7 +5854,18 @@ public class RolePersistenceImpl
 		"(role_.subtype IS NULL OR role_.subtype = '')";
 
 	private FinderPath _finderPathFetchByC_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_N() {
+		return _finderPathFetchByC_N;
+	}
+
 	private FinderPath _finderPathCountByC_N;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N() {
+		return _finderPathCountByC_N;
+	}
 
 	/**
 	 * Returns the role where companyId = &#63; and name = &#63; or throws a <code>NoSuchRoleException</code> if it could not be found.
@@ -6000,9 +6129,32 @@ public class RolePersistenceImpl
 		"(role_.name IS NULL OR role_.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_T() {
+		return _finderPathWithPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_T() {
+		return _finderPathWithoutPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathCountByC_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_T() {
+		return _finderPathCountByC_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_T() {
+		return _finderPathWithPaginationCountByC_T;
+	}
 
 	/**
 	 * Returns all the roles where companyId = &#63; and type = &#63;.
@@ -7430,8 +7582,25 @@ public class RolePersistenceImpl
 		"role_.type_ IN (";
 
 	private FinderPath _finderPathWithPaginationFindByT_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_S() {
+		return _finderPathWithPaginationFindByT_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_S() {
+		return _finderPathWithoutPaginationFindByT_S;
+	}
+
 	private FinderPath _finderPathCountByT_S;
+
+	@Override
+	public FinderPath getFinderPathCountByT_S() {
+		return _finderPathCountByT_S;
+	}
 
 	/**
 	 * Returns all the roles where type = &#63; and subtype = &#63;.
@@ -8444,10 +8613,39 @@ public class RolePersistenceImpl
 		"(role_.subtype IS NULL OR role_.subtype = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_C() {
+		return _finderPathWithPaginationFindByC_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C() {
+		return _finderPathWithoutPaginationFindByC_C_C;
+	}
+
 	private FinderPath _finderPathFetchByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C_C() {
+		return _finderPathFetchByC_C_C;
+	}
+
 	private FinderPath _finderPathCountByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_C() {
+		return _finderPathCountByC_C_C;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_C_C() {
+		return _finderPathWithPaginationCountByC_C_C;
+	}
 
 	/**
 	 * Returns all the roles where companyId = &#63; and classNameId = &#63; and classPK = any &#63;.
@@ -9154,10 +9352,39 @@ public class RolePersistenceImpl
 		"role_.classPK IN (";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_C_T() {
+		return _finderPathWithPaginationFindByC_C_C_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C_T() {
+		return _finderPathWithoutPaginationFindByC_C_C_T;
+	}
+
 	private FinderPath _finderPathFetchByC_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C_C_T() {
+		return _finderPathFetchByC_C_C_T;
+	}
+
 	private FinderPath _finderPathCountByC_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_C_T() {
+		return _finderPathCountByC_C_C_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_C_C_T() {
+		return _finderPathWithPaginationCountByC_C_C_T;
+	}
 
 	/**
 	 * Returns all the roles where companyId = &#63; and classNameId = &#63; and classPK = any &#63; and type = &#63;.
@@ -11644,6 +11871,57 @@ public class RolePersistenceImpl
 
 		TableMapperFactory.removeTableMapper("Groups_Roles");
 		TableMapperFactory.removeTableMapper("Users_Roles");
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Role> roles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Role>> resultMap = new HashMap<>();
+
+			for (Role role : roles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RoleModelImpl roleModelImpl = (RoleModelImpl)role;
+
+					arguments.add(roleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), role);
+				}
+				else {
+					List<Role> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(role);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Role>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Role> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setRoleUtilPersistence(RolePersistence rolePersistence) {

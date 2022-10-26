@@ -16,6 +16,7 @@ package com.liferay.analytics.message.storage.service.persistence;
 
 import com.liferay.analytics.message.storage.exception.NoSuchDeleteMessageException;
 import com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface AnalyticsDeleteMessagePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AnalyticsDeleteMessageUtil} to access the analytics delete message persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the analytics delete messages where companyId = &#63;.
@@ -186,6 +198,10 @@ public interface AnalyticsDeleteMessagePersistence
 	 * @return the number of matching analytics delete messages
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_GtM();
+
+	public FinderPath getFinderPathWithPaginationCountByC_GtM();
 
 	/**
 	 * Returns all the analytics delete messages where companyId = &#63; and modifiedDate &gt; &#63;.
@@ -465,5 +481,7 @@ public interface AnalyticsDeleteMessagePersistence
 	 * @return the number of analytics delete messages
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

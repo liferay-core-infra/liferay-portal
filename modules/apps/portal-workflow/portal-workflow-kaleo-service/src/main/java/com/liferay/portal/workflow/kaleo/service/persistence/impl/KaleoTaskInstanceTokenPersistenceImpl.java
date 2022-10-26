@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -106,9 +107,42 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the kaleo task instance tokens where companyId = &#63;.
@@ -628,9 +662,30 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 		"kaleoTaskInstanceToken.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId() {
+
+		return _finderPathWithPaginationFindByKaleoDefinitionVersionId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId() {
+
+		return _finderPathWithoutPaginationFindByKaleoDefinitionVersionId;
+	}
+
 	private FinderPath _finderPathCountByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath getFinderPathCountByKaleoDefinitionVersionId() {
+		return _finderPathCountByKaleoDefinitionVersionId;
+	}
 
 	/**
 	 * Returns all the kaleo task instance tokens where kaleoDefinitionVersionId = &#63;.
@@ -1169,8 +1224,25 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 			"kaleoTaskInstanceToken.kaleoDefinitionVersionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKaleoInstanceId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKaleoInstanceId() {
+		return _finderPathWithPaginationFindByKaleoInstanceId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKaleoInstanceId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoInstanceId() {
+		return _finderPathWithoutPaginationFindByKaleoInstanceId;
+	}
+
 	private FinderPath _finderPathCountByKaleoInstanceId;
+
+	@Override
+	public FinderPath getFinderPathCountByKaleoInstanceId() {
+		return _finderPathCountByKaleoInstanceId;
+	}
 
 	/**
 	 * Returns all the kaleo task instance tokens where kaleoInstanceId = &#63;.
@@ -1697,8 +1769,25 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 			"kaleoTaskInstanceToken.kaleoInstanceId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U() {
+		return _finderPathWithPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_U() {
+		return _finderPathWithoutPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathCountByC_U;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U() {
+		return _finderPathCountByC_U;
+	}
 
 	/**
 	 * Returns all the kaleo task instance tokens where companyId = &#63; and userId = &#63;.
@@ -2254,7 +2343,18 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 		"kaleoTaskInstanceToken.userId = ?";
 
 	private FinderPath _finderPathFetchByKII_KTI;
+
+	@Override
+	public FinderPath getFinderPathFetchByKII_KTI() {
+		return _finderPathFetchByKII_KTI;
+	}
+
 	private FinderPath _finderPathCountByKII_KTI;
+
+	@Override
+	public FinderPath getFinderPathCountByKII_KTI() {
+		return _finderPathCountByKII_KTI;
+	}
 
 	/**
 	 * Returns the kaleo task instance token where kaleoInstanceId = &#63; and kaleoTaskId = &#63; or throws a <code>NoSuchTaskInstanceTokenException</code> if it could not be found.
@@ -2513,8 +2613,25 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 		"kaleoTaskInstanceToken.kaleoTaskId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCN_CPK() {
+		return _finderPathWithPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCN_CPK() {
+		return _finderPathWithoutPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathCountByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByCN_CPK() {
+		return _finderPathCountByCN_CPK;
+	}
 
 	/**
 	 * Returns all the kaleo task instance tokens where className = &#63; and classPK = &#63;.
@@ -3115,8 +3232,25 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 		"kaleoTaskInstanceToken.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U_C() {
+		return _finderPathWithPaginationFindByC_U_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_U_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_U_C() {
+		return _finderPathWithoutPaginationFindByC_U_C;
+	}
+
 	private FinderPath _finderPathCountByC_U_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U_C() {
+		return _finderPathCountByC_U_C;
+	}
 
 	/**
 	 * Returns all the kaleo task instance tokens where companyId = &#63; and userId = &#63; and completed = &#63;.
@@ -4685,6 +4819,67 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 		_setKaleoTaskInstanceTokenUtilPersistence(null);
 
 		entityCache.removeCache(KaleoTaskInstanceTokenImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KaleoTaskInstanceToken> kaleoTaskInstanceTokens = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoTaskInstanceToken>> resultMap =
+				new HashMap<>();
+
+			for (KaleoTaskInstanceToken kaleoTaskInstanceToken :
+					kaleoTaskInstanceTokens) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoTaskInstanceTokenModelImpl
+						kaleoTaskInstanceTokenModelImpl =
+							(KaleoTaskInstanceTokenModelImpl)
+								kaleoTaskInstanceToken;
+
+					arguments.add(
+						kaleoTaskInstanceTokenModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						kaleoTaskInstanceToken);
+				}
+				else {
+					List<KaleoTaskInstanceToken> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoTaskInstanceToken);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoTaskInstanceToken>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoTaskInstanceToken> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKaleoTaskInstanceTokenUtilPersistence(

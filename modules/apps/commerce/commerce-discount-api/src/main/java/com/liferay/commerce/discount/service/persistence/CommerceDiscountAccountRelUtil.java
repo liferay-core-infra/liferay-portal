@@ -125,6 +125,42 @@ public class CommerceDiscountAccountRelUtil {
 			commerceDiscountAccountRel, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the commerce discount account rels where uuid = &#63;.
 	 *
@@ -294,6 +330,24 @@ public class CommerceDiscountAccountRelUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -485,6 +539,26 @@ public class CommerceDiscountAccountRelUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceAccountId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceAccountId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceAccountId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceAccountId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceAccountId() {
+
+		return getPersistence().getFinderPathCountByCommerceAccountId();
+	}
+
 	/**
 	 * Returns all the commerce discount account rels where commerceAccountId = &#63;.
 	 *
@@ -663,6 +737,26 @@ public class CommerceDiscountAccountRelUtil {
 	 */
 	public static int countByCommerceAccountId(long commerceAccountId) {
 		return getPersistence().countByCommerceAccountId(commerceAccountId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceDiscountId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceDiscountId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceDiscountId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceDiscountId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceDiscountId() {
+
+		return getPersistence().getFinderPathCountByCommerceDiscountId();
 	}
 
 	/**
@@ -844,6 +938,18 @@ public class CommerceDiscountAccountRelUtil {
 	 */
 	public static int countByCommerceDiscountId(long commerceDiscountId) {
 		return getPersistence().countByCommerceDiscountId(commerceDiscountId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByCAI_CDI() {
+
+		return getPersistence().getFinderPathFetchByCAI_CDI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCAI_CDI() {
+
+		return getPersistence().getFinderPathCountByCAI_CDI();
 	}
 
 	/**
@@ -1084,6 +1190,12 @@ public class CommerceDiscountAccountRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceDiscountAccountRelPersistence getPersistence() {

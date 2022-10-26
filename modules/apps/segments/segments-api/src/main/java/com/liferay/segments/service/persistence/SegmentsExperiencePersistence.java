@@ -14,6 +14,7 @@
 
 package com.liferay.segments.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.segments.exception.NoSuchExperienceException;
@@ -42,6 +43,17 @@ public interface SegmentsExperiencePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SegmentsExperienceUtil} to access the segments experience persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the segments experiences where uuid = &#63;.
@@ -186,6 +198,10 @@ public interface SegmentsExperiencePersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the segments experience where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchExperienceException</code> if it could not be found.
 	 *
@@ -235,6 +251,12 @@ public interface SegmentsExperiencePersistence
 	 * @return the number of matching segments experiences
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the segments experiences where uuid = &#63; and companyId = &#63;.
@@ -390,6 +412,12 @@ public interface SegmentsExperiencePersistence
 	 * @return the number of matching segments experiences
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the segments experiences where groupId = &#63;.
@@ -598,6 +626,12 @@ public interface SegmentsExperiencePersistence
 	 */
 	public int filterCountByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindBySegmentsEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindBySegmentsEntryId();
+
+	public FinderPath getFinderPathCountBySegmentsEntryId();
+
 	/**
 	 * Returns all the segments experiences where segmentsEntryId = &#63;.
 	 *
@@ -741,6 +775,12 @@ public interface SegmentsExperiencePersistence
 	 * @return the number of matching segments experiences
 	 */
 	public int countBySegmentsEntryId(long segmentsEntryId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C();
+
+	public FinderPath getFinderPathCountByG_C_C();
 
 	/**
 	 * Returns all the segments experiences where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -984,6 +1024,12 @@ public interface SegmentsExperiencePersistence
 	 * @return the number of matching segments experiences that the user has permission to view
 	 */
 	public int filterCountByG_C_C(long groupId, long classNameId, long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByG_S_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_S_C_C();
+
+	public FinderPath getFinderPathCountByG_S_C_C();
 
 	/**
 	 * Returns all the segments experiences where groupId = &#63; and segmentsEntryId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -1252,6 +1298,10 @@ public interface SegmentsExperiencePersistence
 	public int filterCountByG_S_C_C(
 		long groupId, long segmentsEntryId, long classNameId, long classPK);
 
+	public FinderPath getFinderPathFetchByG_SEK_C_C();
+
+	public FinderPath getFinderPathCountByG_SEK_C_C();
+
 	/**
 	 * Returns the segments experience where groupId = &#63; and segmentsExperienceKey = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchExperienceException</code> if it could not be found.
 	 *
@@ -1321,6 +1371,10 @@ public interface SegmentsExperiencePersistence
 		long groupId, String segmentsExperienceKey, long classNameId,
 		long classPK);
 
+	public FinderPath getFinderPathFetchByG_C_C_P();
+
+	public FinderPath getFinderPathCountByG_C_C_P();
+
 	/**
 	 * Returns the segments experience where groupId = &#63; and classNameId = &#63; and classPK = &#63; and priority = &#63; or throws a <code>NoSuchExperienceException</code> if it could not be found.
 	 *
@@ -1385,6 +1439,10 @@ public interface SegmentsExperiencePersistence
 	 */
 	public int countByG_C_C_P(
 		long groupId, long classNameId, long classPK, int priority);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_GtP();
+
+	public FinderPath getFinderPathWithPaginationCountByG_C_C_GtP();
 
 	/**
 	 * Returns all the segments experiences where groupId = &#63; and classNameId = &#63; and classPK = &#63; and priority &gt; &#63;.
@@ -1653,6 +1711,10 @@ public interface SegmentsExperiencePersistence
 	public int filterCountByG_C_C_GtP(
 		long groupId, long classNameId, long classPK, int priority);
 
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_LtP();
+
+	public FinderPath getFinderPathWithPaginationCountByG_C_C_LtP();
+
 	/**
 	 * Returns all the segments experiences where groupId = &#63; and classNameId = &#63; and classPK = &#63; and priority &lt; &#63;.
 	 *
@@ -1920,6 +1982,12 @@ public interface SegmentsExperiencePersistence
 	public int filterCountByG_C_C_LtP(
 		long groupId, long classNameId, long classPK, int priority);
 
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_A();
+
+	public FinderPath getFinderPathCountByG_C_C_A();
+
 	/**
 	 * Returns all the segments experiences where groupId = &#63; and classNameId = &#63; and classPK = &#63; and active = &#63;.
 	 *
@@ -2186,6 +2254,14 @@ public interface SegmentsExperiencePersistence
 	 */
 	public int filterCountByG_C_C_A(
 		long groupId, long classNameId, long classPK, boolean active);
+
+	public FinderPath getFinderPathWithPaginationFindByG_S_C_C_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_S_C_C_A();
+
+	public FinderPath getFinderPathCountByG_S_C_C_A();
+
+	public FinderPath getFinderPathWithPaginationCountByG_S_C_C_A();
 
 	/**
 	 * Returns all the segments experiences where groupId = &#63; and segmentsEntryId = &#63; and classNameId = &#63; and classPK = &#63; and active = &#63;.
@@ -2770,5 +2846,7 @@ public interface SegmentsExperiencePersistence
 	 * @return the number of segments experiences
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

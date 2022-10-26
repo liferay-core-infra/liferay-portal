@@ -16,6 +16,7 @@ package com.liferay.asset.list.service.persistence;
 
 import com.liferay.asset.list.exception.NoSuchEntryException;
 import com.liferay.asset.list.model.AssetListEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface AssetListEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AssetListEntryUtil} to access the asset list entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the asset list entries where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface AssetListEntryPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the asset list entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -234,6 +250,12 @@ public interface AssetListEntryPersistence
 	 * @return the number of matching asset list entries
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the asset list entries where uuid = &#63; and companyId = &#63;.
@@ -389,6 +411,14 @@ public interface AssetListEntryPersistence
 	 * @return the number of matching asset list entries
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
+	public FinderPath getFinderPathWithPaginationCountByGroupId();
 
 	/**
 	 * Returns all the asset list entries where groupId = &#63;.
@@ -719,6 +749,10 @@ public interface AssetListEntryPersistence
 	 */
 	public int filterCountByGroupId(long[] groupIds);
 
+	public FinderPath getFinderPathFetchByG_ALEK();
+
+	public FinderPath getFinderPathCountByG_ALEK();
+
 	/**
 	 * Returns the asset list entry where groupId = &#63; and assetListEntryKey = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -769,6 +803,10 @@ public interface AssetListEntryPersistence
 	 */
 	public int countByG_ALEK(long groupId, String assetListEntryKey);
 
+	public FinderPath getFinderPathFetchByG_T();
+
+	public FinderPath getFinderPathCountByG_T();
+
 	/**
 	 * Returns the asset list entry where groupId = &#63; and title = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -818,6 +856,10 @@ public interface AssetListEntryPersistence
 	 * @return the number of matching asset list entries
 	 */
 	public int countByG_T(long groupId, String title);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LikeT();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeT();
 
 	/**
 	 * Returns all the asset list entries where groupId = &#63; and title LIKE &#63;.
@@ -1177,6 +1219,12 @@ public interface AssetListEntryPersistence
 	 */
 	public int filterCountByG_LikeT(long[] groupIds, String title);
 
+	public FinderPath getFinderPathWithPaginationFindByG_TY();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_TY();
+
+	public FinderPath getFinderPathCountByG_TY();
+
 	/**
 	 * Returns all the asset list entries where groupId = &#63; and type = &#63;.
 	 *
@@ -1400,6 +1448,14 @@ public interface AssetListEntryPersistence
 	 * @return the number of matching asset list entries that the user has permission to view
 	 */
 	public int filterCountByG_TY(long groupId, int type);
+
+	public FinderPath getFinderPathWithPaginationFindByG_AET();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_AET();
+
+	public FinderPath getFinderPathCountByG_AET();
+
+	public FinderPath getFinderPathWithPaginationCountByG_AET();
 
 	/**
 	 * Returns all the asset list entries where groupId = &#63; and assetEntryType = &#63;.
@@ -1758,6 +1814,10 @@ public interface AssetListEntryPersistence
 	 * @return the number of matching asset list entries that the user has permission to view
 	 */
 	public int filterCountByG_AET(long[] groupIds, String[] assetEntryTypes);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LikeT_AET();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeT_AET();
 
 	/**
 	 * Returns all the asset list entries where groupId = &#63; and title LIKE &#63; and assetEntryType = &#63;.
@@ -2153,6 +2213,14 @@ public interface AssetListEntryPersistence
 	 */
 	public int filterCountByG_LikeT_AET(
 		long[] groupIds, String title, String[] assetEntryTypes);
+
+	public FinderPath getFinderPathWithPaginationFindByG_AES_AET();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_AES_AET();
+
+	public FinderPath getFinderPathCountByG_AES_AET();
+
+	public FinderPath getFinderPathWithPaginationCountByG_AES_AET();
 
 	/**
 	 * Returns all the asset list entries where groupId = &#63; and assetEntrySubtype = &#63; and assetEntryType = &#63;.
@@ -2553,6 +2621,10 @@ public interface AssetListEntryPersistence
 	 */
 	public int filterCountByG_AES_AET(
 		long[] groupIds, String assetEntrySubtype, String assetEntryType);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LikeT_AES_AET();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeT_AES_AET();
 
 	/**
 	 * Returns all the asset list entries where groupId = &#63; and title LIKE &#63; and assetEntrySubtype = &#63; and assetEntryType = &#63;.
@@ -3111,5 +3183,7 @@ public interface AssetListEntryPersistence
 	 * @return the number of asset list entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

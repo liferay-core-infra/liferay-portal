@@ -121,6 +121,43 @@ public class DDMTemplateVersionUtil {
 		return getPersistence().update(ddmTemplateVersion, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByTemplateId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByTemplateId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByTemplateId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByTemplateId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByTemplateId() {
+
+		return getPersistence().getFinderPathCountByTemplateId();
+	}
+
 	/**
 	 * Returns all the ddm template versions where templateId = &#63;.
 	 *
@@ -297,6 +334,18 @@ public class DDMTemplateVersionUtil {
 		return getPersistence().countByTemplateId(templateId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByT_V() {
+
+		return getPersistence().getFinderPathFetchByT_V();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByT_V() {
+
+		return getPersistence().getFinderPathCountByT_V();
+	}
+
 	/**
 	 * Returns the ddm template version where templateId = &#63; and version = &#63; or throws a <code>NoSuchTemplateVersionException</code> if it could not be found.
 	 *
@@ -363,6 +412,24 @@ public class DDMTemplateVersionUtil {
 	 */
 	public static int countByT_V(long templateId, String version) {
 		return getPersistence().countByT_V(templateId, version);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByT_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByT_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByT_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByT_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByT_S() {
+
+		return getPersistence().getFinderPathCountByT_S();
 	}
 
 	/**
@@ -707,6 +774,12 @@ public class DDMTemplateVersionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DDMTemplateVersionPersistence getPersistence() {

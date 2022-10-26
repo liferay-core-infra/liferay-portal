@@ -16,6 +16,7 @@ package com.liferay.commerce.shop.by.diagram.service.persistence;
 
 import com.liferay.commerce.shop.by.diagram.exception.NoSuchCSDiagramEntryException;
 import com.liferay.commerce.shop.by.diagram.model.CSDiagramEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface CSDiagramEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CSDiagramEntryUtil} to access the cs diagram entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCPDefinitionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCPDefinitionId();
+
+	public FinderPath getFinderPathCountByCPDefinitionId();
 
 	/**
 	 * Returns all the cs diagram entries where CPDefinitionId = &#63;.
@@ -186,6 +198,12 @@ public interface CSDiagramEntryPersistence
 	 */
 	public int countByCPDefinitionId(long CPDefinitionId);
 
+	public FinderPath getFinderPathWithPaginationFindByCPInstanceId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCPInstanceId();
+
+	public FinderPath getFinderPathCountByCPInstanceId();
+
 	/**
 	 * Returns all the cs diagram entries where CPInstanceId = &#63;.
 	 *
@@ -328,6 +346,10 @@ public interface CSDiagramEntryPersistence
 	 * @return the number of matching cs diagram entries
 	 */
 	public int countByCPInstanceId(long CPInstanceId);
+
+	public FinderPath getFinderPathFetchByCPDI_S();
+
+	public FinderPath getFinderPathCountByCPDI_S();
 
 	/**
 	 * Returns the cs diagram entry where CPDefinitionId = &#63; and sequence = &#63; or throws a <code>NoSuchCSDiagramEntryException</code> if it could not be found.
@@ -498,5 +520,7 @@ public interface CSDiagramEntryPersistence
 	 * @return the number of cs diagram entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

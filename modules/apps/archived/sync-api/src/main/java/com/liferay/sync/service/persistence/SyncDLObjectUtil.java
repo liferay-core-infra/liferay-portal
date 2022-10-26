@@ -119,6 +119,37 @@ public class SyncDLObjectUtil {
 		return getPersistence().update(syncDLObject, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLikeTreePath() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLikeTreePath();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLikeTreePath() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLikeTreePath();
+	}
+
 	/**
 	 * Returns all the sync dl objects where treePath LIKE &#63;.
 	 *
@@ -286,6 +317,18 @@ public class SyncDLObjectUtil {
 	 */
 	public static int countByLikeTreePath(String treePath) {
 		return getPersistence().countByLikeTreePath(treePath);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGtM_R() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGtM_R();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByGtM_R() {
+
+		return getPersistence().getFinderPathWithPaginationCountByGtM_R();
 	}
 
 	/**
@@ -476,6 +519,24 @@ public class SyncDLObjectUtil {
 		return getPersistence().countByGtM_R(modifiedTime, repositoryId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByR_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByR_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByR_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByR_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByR_P() {
+
+		return getPersistence().getFinderPathCountByR_P();
+	}
+
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and parentFolderId = &#63;.
 	 *
@@ -664,6 +725,18 @@ public class SyncDLObjectUtil {
 		return getPersistence().countByR_P(repositoryId, parentFolderId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByR_NotE() {
+
+		return getPersistence().getFinderPathWithPaginationFindByR_NotE();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByR_NotE() {
+
+		return getPersistence().getFinderPathWithPaginationCountByR_NotE();
+	}
+
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and event &ne; &#63;.
 	 *
@@ -850,6 +923,24 @@ public class SyncDLObjectUtil {
 		return getPersistence().countByR_NotE(repositoryId, event);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByR_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByR_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByR_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByR_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByR_T() {
+
+		return getPersistence().getFinderPathCountByR_T();
+	}
+
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and type = &#63;.
 	 *
@@ -1032,6 +1123,18 @@ public class SyncDLObjectUtil {
 	 */
 	public static int countByR_T(long repositoryId, String type) {
 		return getPersistence().countByR_T(repositoryId, type);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLikeT_NotE() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLikeT_NotE();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLikeT_NotE() {
+
+		return getPersistence().getFinderPathWithPaginationCountByLikeT_NotE();
 	}
 
 	/**
@@ -1220,6 +1323,24 @@ public class SyncDLObjectUtil {
 		return getPersistence().countByLikeT_NotE(treePath, event);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByV_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByV_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByV_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByV_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByV_T() {
+
+		return getPersistence().getFinderPathCountByV_T();
+	}
+
 	/**
 	 * Returns all the sync dl objects where version = &#63; and type = &#63;.
 	 *
@@ -1404,6 +1525,18 @@ public class SyncDLObjectUtil {
 		return getPersistence().countByV_T(version, type);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByT_T() {
+
+		return getPersistence().getFinderPathFetchByT_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByT_T() {
+
+		return getPersistence().getFinderPathCountByT_T();
+	}
+
 	/**
 	 * Returns the sync dl object where type = &#63; and typePK = &#63; or throws a <code>NoSuchDLObjectException</code> if it could not be found.
 	 *
@@ -1465,6 +1598,18 @@ public class SyncDLObjectUtil {
 	 */
 	public static int countByT_T(String type, long typePK) {
 		return getPersistence().countByT_T(type, typePK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGtM_R_NotE() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGtM_R_NotE();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByGtM_R_NotE() {
+
+		return getPersistence().getFinderPathWithPaginationCountByGtM_R_NotE();
 	}
 
 	/**
@@ -1777,6 +1922,30 @@ public class SyncDLObjectUtil {
 
 		return getPersistence().countByGtM_R_NotE(
 			modifiedTime, repositoryId, events);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByR_P_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByR_P_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByR_P_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByR_P_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByR_P_T() {
+
+		return getPersistence().getFinderPathCountByR_P_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByR_P_T() {
+
+		return getPersistence().getFinderPathWithPaginationCountByR_P_T();
 	}
 
 	/**
@@ -2235,6 +2404,12 @@ public class SyncDLObjectUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SyncDLObjectPersistence getPersistence() {

@@ -125,6 +125,45 @@ public class CommerceInventoryWarehouseRelUtil {
 			commerceInventoryWarehouseRel, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceInventoryWarehouseId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceInventoryWarehouseId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceInventoryWarehouseId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceInventoryWarehouseId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceInventoryWarehouseId() {
+
+		return getPersistence().
+			getFinderPathCountByCommerceInventoryWarehouseId();
+	}
+
 	/**
 	 * Returns all the commerce inventory warehouse rels where commerceInventoryWarehouseId = &#63;.
 	 *
@@ -328,6 +367,24 @@ public class CommerceInventoryWarehouseRelUtil {
 			commerceInventoryWarehouseId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
+	}
+
 	/**
 	 * Returns all the commerce inventory warehouse rels where classNameId = &#63; and commerceInventoryWarehouseId = &#63;.
 	 *
@@ -527,6 +584,18 @@ public class CommerceInventoryWarehouseRelUtil {
 
 		return getPersistence().countByC_C(
 			classNameId, commerceInventoryWarehouseId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C_CIWI() {
+
+		return getPersistence().getFinderPathFetchByC_C_CIWI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_CIWI() {
+
+		return getPersistence().getFinderPathCountByC_C_CIWI();
 	}
 
 	/**
@@ -776,6 +845,12 @@ public class CommerceInventoryWarehouseRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceInventoryWarehouseRelPersistence getPersistence() {

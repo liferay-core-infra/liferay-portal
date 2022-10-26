@@ -16,6 +16,7 @@ package com.liferay.asset.kernel.service;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -636,6 +637,11 @@ public class AssetEntryLocalServiceWrapper
 
 		_assetEntryLocalService.incrementViewCounter(
 			companyId, userId, className, classPK, increment);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_assetEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

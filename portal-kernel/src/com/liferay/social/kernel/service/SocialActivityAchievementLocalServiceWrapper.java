@@ -15,6 +15,7 @@
 package com.liferay.social.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.social.kernel.model.SocialActivityAchievement;
@@ -406,6 +407,11 @@ public class SocialActivityAchievementLocalServiceWrapper
 	public int getUserAchievementsCount(long userId, long groupId) {
 		return _socialActivityAchievementLocalService.getUserAchievementsCount(
 			userId, groupId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_socialActivityAchievementLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

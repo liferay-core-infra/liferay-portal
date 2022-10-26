@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.sso.openid.connect.persistence.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.security.sso.openid.connect.persistence.exception.NoSuchSessionException;
 import com.liferay.portal.security.sso.openid.connect.persistence.model.OpenIdConnectSession;
@@ -42,6 +43,17 @@ public interface OpenIdConnectSessionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OpenIdConnectSessionUtil} to access the open ID connect session persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
 
 	/**
 	 * Returns all the open ID connect sessions where userId = &#63;.
@@ -185,6 +197,12 @@ public interface OpenIdConnectSessionPersistence
 	 * @return the number of matching open ID connect sessions
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath
+		getFinderPathWithPaginationFindByLtAccessTokenExpirationDate();
+
+	public FinderPath
+		getFinderPathWithPaginationCountByLtAccessTokenExpirationDate();
 
 	/**
 	 * Returns all the open ID connect sessions where accessTokenExpirationDate &lt; &#63;.
@@ -334,6 +352,12 @@ public interface OpenIdConnectSessionPersistence
 	 */
 	public int countByLtAccessTokenExpirationDate(
 		Date accessTokenExpirationDate);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_C();
+
+	public FinderPath getFinderPathCountByC_A_C();
 
 	/**
 	 * Returns all the open ID connect sessions where companyId = &#63; and authServerWellKnownURI = &#63; and clientId = &#63;.
@@ -506,6 +530,10 @@ public interface OpenIdConnectSessionPersistence
 	 */
 	public int countByC_A_C(
 		long companyId, String authServerWellKnownURI, String clientId);
+
+	public FinderPath getFinderPathFetchByU_A_C();
+
+	public FinderPath getFinderPathCountByU_A_C();
 
 	/**
 	 * Returns the open ID connect session where userId = &#63; and authServerWellKnownURI = &#63; and clientId = &#63; or throws a <code>NoSuchSessionException</code> if it could not be found.
@@ -688,5 +716,7 @@ public interface OpenIdConnectSessionPersistence
 	 * @return the number of open ID connect sessions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

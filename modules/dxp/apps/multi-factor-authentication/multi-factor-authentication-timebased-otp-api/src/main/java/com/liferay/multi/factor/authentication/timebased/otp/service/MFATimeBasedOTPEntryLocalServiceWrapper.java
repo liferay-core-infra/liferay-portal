@@ -14,6 +14,7 @@
 
 package com.liferay.multi.factor.authentication.timebased.otp.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -352,6 +353,11 @@ public class MFATimeBasedOTPEntryLocalServiceWrapper
 
 		return _mfaTimeBasedOTPEntryLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_mfaTimeBasedOTPEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

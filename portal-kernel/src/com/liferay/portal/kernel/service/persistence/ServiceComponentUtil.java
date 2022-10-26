@@ -119,6 +119,44 @@ public class ServiceComponentUtil {
 		return getPersistence().update(serviceComponent, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByBuildNamespace() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByBuildNamespace();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByBuildNamespace() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByBuildNamespace();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByBuildNamespace() {
+
+		return getPersistence().getFinderPathCountByBuildNamespace();
+	}
+
 	/**
 	 * Returns all the service components where buildNamespace = &#63;.
 	 *
@@ -296,6 +334,18 @@ public class ServiceComponentUtil {
 	 */
 	public static int countByBuildNamespace(String buildNamespace) {
 		return getPersistence().countByBuildNamespace(buildNamespace);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByBNS_BNU() {
+
+		return getPersistence().getFinderPathFetchByBNS_BNU();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByBNS_BNU() {
+
+		return getPersistence().getFinderPathCountByBNS_BNU();
 	}
 
 	/**
@@ -519,6 +569,12 @@ public class ServiceComponentUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static ServiceComponentPersistence getPersistence() {

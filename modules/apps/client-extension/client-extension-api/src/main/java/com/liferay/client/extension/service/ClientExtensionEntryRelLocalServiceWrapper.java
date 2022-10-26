@@ -16,6 +16,7 @@ package com.liferay.client.extension.service;
 
 import com.liferay.client.extension.model.ClientExtensionEntryRel;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -531,6 +532,11 @@ public class ClientExtensionEntryRelLocalServiceWrapper
 
 		return _clientExtensionEntryRelLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_clientExtensionEntryRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

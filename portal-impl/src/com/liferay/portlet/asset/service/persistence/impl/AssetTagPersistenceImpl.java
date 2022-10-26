@@ -102,9 +102,42 @@ public class AssetTagPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the asset tags where uuid = &#63;.
@@ -647,7 +680,18 @@ public class AssetTagPersistenceImpl
 		"(assetTag.uuid IS NULL OR assetTag.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the asset tag where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchTagException</code> if it could not be found.
@@ -911,8 +955,25 @@ public class AssetTagPersistenceImpl
 		"assetTag.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the asset tags where uuid = &#63; and companyId = &#63;.
@@ -1504,9 +1565,32 @@ public class AssetTagPersistenceImpl
 		"assetTag.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGroupId() {
+		return _finderPathWithPaginationCountByGroupId;
+	}
 
 	/**
 	 * Returns all the asset tags where groupId = &#63;.
@@ -2267,9 +2351,32 @@ public class AssetTagPersistenceImpl
 		"assetTag.groupId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByName;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByName() {
+		return _finderPathWithPaginationFindByName;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByName;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByName() {
+		return _finderPathWithoutPaginationFindByName;
+	}
+
 	private FinderPath _finderPathCountByName;
+
+	@Override
+	public FinderPath getFinderPathCountByName() {
+		return _finderPathCountByName;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByName;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByName() {
+		return _finderPathWithPaginationCountByName;
+	}
 
 	/**
 	 * Returns all the asset tags where name = &#63;.
@@ -3107,7 +3214,18 @@ public class AssetTagPersistenceImpl
 		"(assetTag.name IS NULL OR assetTag.name = '')";
 
 	private FinderPath _finderPathFetchByG_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_N() {
+		return _finderPathFetchByG_N;
+	}
+
 	private FinderPath _finderPathCountByG_N;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N() {
+		return _finderPathCountByG_N;
+	}
 
 	/**
 	 * Returns the asset tag where groupId = &#63; and name = &#63; or throws a <code>NoSuchTagException</code> if it could not be found.
@@ -3371,7 +3489,18 @@ public class AssetTagPersistenceImpl
 		"(assetTag.name IS NULL OR assetTag.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN() {
+		return _finderPathWithPaginationFindByG_LikeN;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN() {
+		return _finderPathWithPaginationCountByG_LikeN;
+	}
 
 	/**
 	 * Returns all the asset tags where groupId = &#63; and name LIKE &#63;.
@@ -5529,6 +5658,58 @@ public class AssetTagPersistenceImpl
 		EntityCacheUtil.removeCache(AssetTagImpl.class.getName());
 
 		TableMapperFactory.removeTableMapper("AssetEntries_AssetTags");
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AssetTag> assetTags = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetTag>> resultMap = new HashMap<>();
+
+			for (AssetTag assetTag : assetTags) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetTagModelImpl assetTagModelImpl =
+						(AssetTagModelImpl)assetTag;
+
+					arguments.add(assetTagModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), assetTag);
+				}
+				else {
+					List<AssetTag> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(assetTag);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetTag>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetTag> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAssetTagUtilPersistence(

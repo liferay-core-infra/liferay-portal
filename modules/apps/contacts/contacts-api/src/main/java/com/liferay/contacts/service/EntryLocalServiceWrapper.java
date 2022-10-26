@@ -14,6 +14,7 @@
 
 package com.liferay.contacts.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -321,6 +322,11 @@ public class EntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _entryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_entryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

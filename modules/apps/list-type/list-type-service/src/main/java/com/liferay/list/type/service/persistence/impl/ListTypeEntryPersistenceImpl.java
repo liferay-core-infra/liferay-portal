@@ -55,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -102,9 +103,42 @@ public class ListTypeEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the list type entries where uuid = &#63;.
@@ -634,8 +668,25 @@ public class ListTypeEntryPersistenceImpl
 		"(listTypeEntry.uuid IS NULL OR listTypeEntry.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the list type entries where uuid = &#63; and companyId = &#63;.
@@ -1216,9 +1267,32 @@ public class ListTypeEntryPersistenceImpl
 		"listTypeEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByListTypeEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByListTypeEntryId() {
+		return _finderPathWithPaginationFindByListTypeEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByListTypeEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByListTypeEntryId() {
+		return _finderPathWithoutPaginationFindByListTypeEntryId;
+	}
+
 	private FinderPath _finderPathCountByListTypeEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByListTypeEntryId() {
+		return _finderPathCountByListTypeEntryId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByListTypeEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByListTypeEntryId() {
+		return _finderPathWithPaginationCountByListTypeEntryId;
+	}
 
 	/**
 	 * Returns all the list type entries where listTypeEntryId = &#63;.
@@ -1825,8 +1899,27 @@ public class ListTypeEntryPersistenceImpl
 			"listTypeEntry.listTypeEntryId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByListTypeDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByListTypeDefinitionId() {
+		return _finderPathWithPaginationFindByListTypeDefinitionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByListTypeDefinitionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByListTypeDefinitionId() {
+
+		return _finderPathWithoutPaginationFindByListTypeDefinitionId;
+	}
+
 	private FinderPath _finderPathCountByListTypeDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathCountByListTypeDefinitionId() {
+		return _finderPathCountByListTypeDefinitionId;
+	}
 
 	/**
 	 * Returns all the list type entries where listTypeDefinitionId = &#63;.
@@ -2339,7 +2432,18 @@ public class ListTypeEntryPersistenceImpl
 			"listTypeEntry.listTypeDefinitionId = ?";
 
 	private FinderPath _finderPathFetchByLTDI_K;
+
+	@Override
+	public FinderPath getFinderPathFetchByLTDI_K() {
+		return _finderPathFetchByLTDI_K;
+	}
+
 	private FinderPath _finderPathCountByLTDI_K;
+
+	@Override
+	public FinderPath getFinderPathCountByLTDI_K() {
+		return _finderPathCountByLTDI_K;
+	}
 
 	/**
 	 * Returns the list type entry where listTypeDefinitionId = &#63; and key = &#63; or throws a <code>NoSuchListTypeEntryException</code> if it could not be found.
@@ -3287,6 +3391,59 @@ public class ListTypeEntryPersistenceImpl
 		_setListTypeEntryUtilPersistence(null);
 
 		entityCache.removeCache(ListTypeEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ListTypeEntry> listTypeEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ListTypeEntry>> resultMap = new HashMap<>();
+
+			for (ListTypeEntry listTypeEntry : listTypeEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ListTypeEntryModelImpl listTypeEntryModelImpl =
+						(ListTypeEntryModelImpl)listTypeEntry;
+
+					arguments.add(
+						listTypeEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), listTypeEntry);
+				}
+				else {
+					List<ListTypeEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(listTypeEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ListTypeEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ListTypeEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setListTypeEntryUtilPersistence(

@@ -14,6 +14,7 @@
 
 package com.liferay.ratings.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.ratings.kernel.exception.NoSuchEntryException;
@@ -41,6 +42,17 @@ public interface RatingsEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RatingsEntryUtil} to access the ratings entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the ratings entries where uuid = &#63;.
@@ -184,6 +196,12 @@ public interface RatingsEntryPersistence
 	 * @return the number of matching ratings entries
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the ratings entries where uuid = &#63; and companyId = &#63;.
@@ -340,6 +358,12 @@ public interface RatingsEntryPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
+
 	/**
 	 * Returns all the ratings entries where classNameId = &#63; and classPK = &#63;.
 	 *
@@ -495,6 +519,16 @@ public interface RatingsEntryPersistence
 	 */
 	public int countByC_C(long classNameId, long classPK);
 
+	public FinderPath getFinderPathWithPaginationFindByU_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByU_C_C();
+
+	public FinderPath getFinderPathFetchByU_C_C();
+
+	public FinderPath getFinderPathCountByU_C_C();
+
+	public FinderPath getFinderPathWithPaginationCountByU_C_C();
+
 	/**
 	 * Returns all the ratings entries where userId = &#63; and classNameId = &#63; and classPK = any &#63;.
 	 *
@@ -635,6 +669,12 @@ public interface RatingsEntryPersistence
 	 * @return the number of matching ratings entries
 	 */
 	public int countByU_C_C(long userId, long classNameId, long[] classPKs);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_S();
+
+	public FinderPath getFinderPathCountByC_C_S();
 
 	/**
 	 * Returns all the ratings entries where classNameId = &#63; and classPK = &#63; and score = &#63;.
@@ -920,5 +960,7 @@ public interface RatingsEntryPersistence
 	 * @return the number of ratings entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

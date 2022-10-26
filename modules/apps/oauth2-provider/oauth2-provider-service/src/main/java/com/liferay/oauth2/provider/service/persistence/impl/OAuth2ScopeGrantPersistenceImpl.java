@@ -55,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -102,11 +103,48 @@ public class OAuth2ScopeGrantPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath
 		_finderPathWithPaginationFindByOAuth2ApplicationScopeAliasesId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByOAuth2ApplicationScopeAliasesId() {
+
+		return _finderPathWithPaginationFindByOAuth2ApplicationScopeAliasesId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId() {
+
+		return _finderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId;
+	}
+
 	private FinderPath _finderPathCountByOAuth2ApplicationScopeAliasesId;
+
+	@Override
+	public FinderPath getFinderPathCountByOAuth2ApplicationScopeAliasesId() {
+		return _finderPathCountByOAuth2ApplicationScopeAliasesId;
+	}
 
 	/**
 	 * Returns all the o auth2 scope grants where oAuth2ApplicationScopeAliasesId = &#63;.
@@ -636,7 +674,18 @@ public class OAuth2ScopeGrantPersistenceImpl
 			"oAuth2ScopeGrant.oAuth2ApplicationScopeAliasesId = ?";
 
 	private FinderPath _finderPathFetchByC_O_A_B_S;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_O_A_B_S() {
+		return _finderPathFetchByC_O_A_B_S;
+	}
+
 	private FinderPath _finderPathCountByC_O_A_B_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_O_A_B_S() {
+		return _finderPathCountByC_O_A_B_S;
+	}
 
 	/**
 	 * Returns the o auth2 scope grant where companyId = &#63; and oAuth2ApplicationScopeAliasesId = &#63; and applicationName = &#63; and bundleSymbolicName = &#63; and scope = &#63; or throws a <code>NoSuchOAuth2ScopeGrantException</code> if it could not be found.
@@ -2018,6 +2067,61 @@ public class OAuth2ScopeGrantPersistenceImpl
 
 		TableMapperFactory.removeTableMapper(
 			"OA2Auths_OA2ScopeGrants#oAuth2ScopeGrantId");
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<OAuth2ScopeGrant> oAuth2ScopeGrants = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OAuth2ScopeGrant>> resultMap =
+				new HashMap<>();
+
+			for (OAuth2ScopeGrant oAuth2ScopeGrant : oAuth2ScopeGrants) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+						(OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant;
+
+					arguments.add(
+						oAuth2ScopeGrantModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), oAuth2ScopeGrant);
+				}
+				else {
+					List<OAuth2ScopeGrant> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(oAuth2ScopeGrant);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OAuth2ScopeGrant>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OAuth2ScopeGrant> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOAuth2ScopeGrantUtilPersistence(

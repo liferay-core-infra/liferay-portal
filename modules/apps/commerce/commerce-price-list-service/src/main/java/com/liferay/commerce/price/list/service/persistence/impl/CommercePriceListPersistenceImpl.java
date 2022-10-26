@@ -114,9 +114,42 @@ public class CommercePriceListPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce price lists where uuid = &#63;.
@@ -665,7 +698,18 @@ public class CommercePriceListPersistenceImpl
 		"(commercePriceList.uuid IS NULL OR commercePriceList.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the commerce price list where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchPriceListException</code> if it could not be found.
@@ -928,8 +972,25 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce price lists where uuid = &#63; and companyId = &#63;.
@@ -1526,8 +1587,25 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the commerce price lists where companyId = &#63;.
@@ -2045,8 +2123,25 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommerceCurrencyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommerceCurrencyId() {
+		return _finderPathWithPaginationFindByCommerceCurrencyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommerceCurrencyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceCurrencyId() {
+		return _finderPathWithoutPaginationFindByCommerceCurrencyId;
+	}
+
 	private FinderPath _finderPathCountByCommerceCurrencyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceCurrencyId() {
+		return _finderPathCountByCommerceCurrencyId;
+	}
 
 	/**
 	 * Returns all the commerce price lists where commerceCurrencyId = &#63;.
@@ -2574,7 +2669,18 @@ public class CommercePriceListPersistenceImpl
 			"commercePriceList.commerceCurrencyId = ?";
 
 	private FinderPath _finderPathFetchByParentCommercePriceListId;
+
+	@Override
+	public FinderPath getFinderPathFetchByParentCommercePriceListId() {
+		return _finderPathFetchByParentCommercePriceListId;
+	}
+
 	private FinderPath _finderPathCountByParentCommercePriceListId;
+
+	@Override
+	public FinderPath getFinderPathCountByParentCommercePriceListId() {
+		return _finderPathCountByParentCommercePriceListId;
+	}
 
 	/**
 	 * Returns the commerce price list where parentCommercePriceListId = &#63; or throws a <code>NoSuchPriceListException</code> if it could not be found.
@@ -2819,9 +2925,32 @@ public class CommercePriceListPersistenceImpl
 			"commercePriceList.parentCommercePriceListId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C() {
+		return _finderPathWithPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C() {
+		return _finderPathWithoutPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C() {
+		return _finderPathCountByG_C;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C() {
+		return _finderPathWithPaginationCountByG_C;
+	}
 
 	/**
 	 * Returns all the commerce price lists where groupId = &#63; and companyId = &#63;.
@@ -4295,7 +4424,18 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.companyId = ?";
 
 	private FinderPath _finderPathFetchByG_CatalogBasePriceList;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_CatalogBasePriceList() {
+		return _finderPathFetchByG_CatalogBasePriceList;
+	}
+
 	private FinderPath _finderPathCountByG_CatalogBasePriceList;
+
+	@Override
+	public FinderPath getFinderPathCountByG_CatalogBasePriceList() {
+		return _finderPathCountByG_CatalogBasePriceList;
+	}
 
 	/**
 	 * Returns the commerce price list where groupId = &#63; and catalogBasePriceList = &#63; or throws a <code>NoSuchPriceListException</code> if it could not be found.
@@ -4561,7 +4701,18 @@ public class CommercePriceListPersistenceImpl
 			"commercePriceList.catalogBasePriceList = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtD_S() {
+		return _finderPathWithPaginationFindByLtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtD_S() {
+		return _finderPathWithPaginationCountByLtD_S;
+	}
 
 	/**
 	 * Returns all the commerce price lists where displayDate &lt; &#63; and status = &#63;.
@@ -5144,9 +5295,32 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_S() {
+		return _finderPathWithPaginationFindByG_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_S() {
+		return _finderPathWithoutPaginationFindByG_C_S;
+	}
+
 	private FinderPath _finderPathCountByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_S() {
+		return _finderPathCountByG_C_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_S() {
+		return _finderPathWithPaginationCountByG_C_S;
+	}
 
 	/**
 	 * Returns all the commerce price lists where groupId = &#63; and companyId = &#63; and status = &#63;.
@@ -6711,7 +6885,18 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_NotS() {
+		return _finderPathWithPaginationFindByG_C_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_NotS() {
+		return _finderPathWithPaginationCountByG_C_NotS;
+	}
 
 	/**
 	 * Returns all the commerce price lists where groupId = &#63; and companyId = &#63; and status &ne; &#63;.
@@ -8271,7 +8456,18 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.status != ?";
 
 	private FinderPath _finderPathFetchByG_C_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_T() {
+		return _finderPathFetchByG_C_T;
+	}
+
 	private FinderPath _finderPathCountByG_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_T() {
+		return _finderPathCountByG_C_T;
+	}
 
 	/**
 	 * Returns the commerce price list where groupId = &#63; and catalogBasePriceList = &#63; and type = &#63; or throws a <code>NoSuchPriceListException</code> if it could not be found.
@@ -8581,9 +8777,32 @@ public class CommercePriceListPersistenceImpl
 		"(commercePriceList.type IS NULL OR commercePriceList.type = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_T_S() {
+		return _finderPathWithPaginationFindByG_C_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_T_S() {
+		return _finderPathWithoutPaginationFindByG_C_T_S;
+	}
+
 	private FinderPath _finderPathCountByG_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_T_S() {
+		return _finderPathCountByG_C_T_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_T_S() {
+		return _finderPathWithPaginationCountByG_C_T_S;
+	}
 
 	/**
 	 * Returns all the commerce price lists where groupId = &#63; and companyId = &#63; and type = &#63; and status = &#63;.
@@ -10388,7 +10607,18 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_T_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_T_NotS() {
+		return _finderPathWithPaginationFindByG_C_T_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_T_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_T_NotS() {
+		return _finderPathWithPaginationCountByG_C_T_NotS;
+	}
 
 	/**
 	 * Returns all the commerce price lists where groupId = &#63; and companyId = &#63; and type = &#63; and status &ne; &#63;.
@@ -12183,7 +12413,18 @@ public class CommercePriceListPersistenceImpl
 		"commercePriceList.status != ?";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the commerce price list where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchPriceListException</code> if it could not be found.
@@ -13650,6 +13891,61 @@ public class CommercePriceListPersistenceImpl
 		_setCommercePriceListUtilPersistence(null);
 
 		entityCache.removeCache(CommercePriceListImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommercePriceList> commercePriceLists = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommercePriceList>> resultMap =
+				new HashMap<>();
+
+			for (CommercePriceList commercePriceList : commercePriceLists) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommercePriceListModelImpl commercePriceListModelImpl =
+						(CommercePriceListModelImpl)commercePriceList;
+
+					arguments.add(
+						commercePriceListModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commercePriceList);
+				}
+				else {
+					List<CommercePriceList> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commercePriceList);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommercePriceList>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommercePriceList> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommercePriceListUtilPersistence(

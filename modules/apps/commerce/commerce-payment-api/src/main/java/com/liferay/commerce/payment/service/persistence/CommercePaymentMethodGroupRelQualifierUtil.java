@@ -130,6 +130,45 @@ public class CommercePaymentMethodGroupRelQualifierUtil {
 			commercePaymentMethodGroupRelQualifier, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommercePaymentMethodGroupRelId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommercePaymentMethodGroupRelId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommercePaymentMethodGroupRelId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommercePaymentMethodGroupRelId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommercePaymentMethodGroupRelId() {
+
+		return getPersistence().
+			getFinderPathCountByCommercePaymentMethodGroupRelId();
+	}
+
 	/**
 	 * Returns all the commerce payment method group rel qualifiers where CommercePaymentMethodGroupRelId = &#63;.
 	 *
@@ -334,6 +373,24 @@ public class CommercePaymentMethodGroupRelQualifierUtil {
 
 		return getPersistence().countByCommercePaymentMethodGroupRelId(
 			CommercePaymentMethodGroupRelId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -546,6 +603,18 @@ public class CommercePaymentMethodGroupRelQualifierUtil {
 
 		return getPersistence().countByC_C(
 			classNameId, CommercePaymentMethodGroupRelId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C_C() {
+
+		return getPersistence().getFinderPathFetchByC_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_C() {
+
+		return getPersistence().getFinderPathCountByC_C_C();
 	}
 
 	/**
@@ -806,6 +875,12 @@ public class CommercePaymentMethodGroupRelQualifierUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommercePaymentMethodGroupRelQualifierPersistence

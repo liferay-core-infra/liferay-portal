@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchCompanyInfoException;
 import com.liferay.portal.kernel.model.CompanyInfo;
 
@@ -38,6 +39,15 @@ public interface CompanyInfoPersistence extends BasePersistence<CompanyInfo> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CompanyInfoUtil} to access the company info persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathFetchByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns the company info where companyId = &#63; or throws a <code>NoSuchCompanyInfoException</code> if it could not be found.
@@ -202,5 +212,7 @@ public interface CompanyInfoPersistence extends BasePersistence<CompanyInfo> {
 	 * @return the number of company infos
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

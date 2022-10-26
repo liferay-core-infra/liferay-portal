@@ -14,6 +14,7 @@
 
 package com.liferay.sync.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -367,6 +368,11 @@ public class SyncDLFileVersionDiffLocalServiceWrapper
 	public int getSyncDLFileVersionDiffsCount() {
 		return _syncDLFileVersionDiffLocalService.
 			getSyncDLFileVersionDiffsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_syncDLFileVersionDiffLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

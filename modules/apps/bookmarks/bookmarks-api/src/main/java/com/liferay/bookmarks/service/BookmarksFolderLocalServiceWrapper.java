@@ -14,6 +14,7 @@
 
 package com.liferay.bookmarks.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -565,6 +566,11 @@ public class BookmarksFolderLocalServiceWrapper
 
 		_bookmarksFolderLocalService.getSubfolderIds(
 			folderIds, groupId, folderId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_bookmarksFolderLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchPhoneException;
 import com.liferay.portal.kernel.model.Phone;
 
@@ -38,6 +39,17 @@ public interface PhonePersistence extends BasePersistence<Phone> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link PhoneUtil} to access the phone persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the phones where uuid = &#63;.
@@ -180,6 +192,12 @@ public interface PhonePersistence extends BasePersistence<Phone> {
 	 * @return the number of matching phones
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the phones where uuid = &#63; and companyId = &#63;.
@@ -335,6 +353,12 @@ public interface PhonePersistence extends BasePersistence<Phone> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the phones where companyId = &#63;.
 	 *
@@ -478,6 +502,12 @@ public interface PhonePersistence extends BasePersistence<Phone> {
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the phones where userId = &#63;.
 	 *
@@ -619,6 +649,12 @@ public interface PhonePersistence extends BasePersistence<Phone> {
 	 * @return the number of matching phones
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns all the phones where companyId = &#63; and classNameId = &#63;.
@@ -773,6 +809,12 @@ public interface PhonePersistence extends BasePersistence<Phone> {
 	 * @return the number of matching phones
 	 */
 	public int countByC_C(long companyId, long classNameId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C();
+
+	public FinderPath getFinderPathCountByC_C_C();
 
 	/**
 	 * Returns all the phones where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -939,6 +981,12 @@ public interface PhonePersistence extends BasePersistence<Phone> {
 	 * @return the number of matching phones
 	 */
 	public int countByC_C_C(long companyId, long classNameId, long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_C_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C_P();
+
+	public FinderPath getFinderPathCountByC_C_C_P();
 
 	/**
 	 * Returns all the phones where companyId = &#63; and classNameId = &#63; and classPK = &#63; and primary = &#63;.
@@ -1240,5 +1288,7 @@ public interface PhonePersistence extends BasePersistence<Phone> {
 	 * @return the number of phones
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

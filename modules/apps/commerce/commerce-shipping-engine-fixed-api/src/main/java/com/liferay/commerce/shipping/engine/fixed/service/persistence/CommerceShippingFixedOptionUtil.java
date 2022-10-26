@@ -125,6 +125,44 @@ public class CommerceShippingFixedOptionUtil {
 			commerceShippingFixedOption, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceShippingMethodId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceShippingMethodId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceShippingMethodId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceShippingMethodId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceShippingMethodId() {
+
+		return getPersistence().getFinderPathCountByCommerceShippingMethodId();
+	}
+
 	/**
 	 * Returns all the commerce shipping fixed options where commerceShippingMethodId = &#63;.
 	 *
@@ -323,6 +361,18 @@ public class CommerceShippingFixedOptionUtil {
 
 		return getPersistence().countByCommerceShippingMethodId(
 			commerceShippingMethodId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_K() {
+
+		return getPersistence().getFinderPathFetchByC_K();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_K() {
+
+		return getPersistence().getFinderPathCountByC_K();
 	}
 
 	/**
@@ -558,6 +608,12 @@ public class CommerceShippingFixedOptionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceShippingFixedOptionPersistence getPersistence() {

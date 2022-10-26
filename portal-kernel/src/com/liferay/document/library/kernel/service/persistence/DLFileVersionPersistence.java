@@ -16,6 +16,7 @@ package com.liferay.document.library.kernel.service.persistence;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileVersionException;
 import com.liferay.document.library.kernel.model.DLFileVersion;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface DLFileVersionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DLFileVersionUtil} to access the document library file version persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the document library file versions where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface DLFileVersionPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the document library file version where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchFileVersionException</code> if it could not be found.
 	 *
@@ -234,6 +250,12 @@ public interface DLFileVersionPersistence
 	 * @return the number of matching document library file versions
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the document library file versions where uuid = &#63; and companyId = &#63;.
@@ -390,6 +412,12 @@ public interface DLFileVersionPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the document library file versions where companyId = &#63;.
 	 *
@@ -532,6 +560,12 @@ public interface DLFileVersionPersistence
 	 * @return the number of matching document library file versions
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByFileEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByFileEntryId();
+
+	public FinderPath getFinderPathCountByFileEntryId();
 
 	/**
 	 * Returns all the document library file versions where fileEntryId = &#63;.
@@ -676,6 +710,12 @@ public interface DLFileVersionPersistence
 	 */
 	public int countByFileEntryId(long fileEntryId);
 
+	public FinderPath getFinderPathWithPaginationFindByMimeType();
+
+	public FinderPath getFinderPathWithoutPaginationFindByMimeType();
+
+	public FinderPath getFinderPathCountByMimeType();
+
 	/**
 	 * Returns all the document library file versions where mimeType = &#63;.
 	 *
@@ -818,6 +858,10 @@ public interface DLFileVersionPersistence
 	 * @return the number of matching document library file versions
 	 */
 	public int countByMimeType(String mimeType);
+
+	public FinderPath getFinderPathWithPaginationFindByC_NotS();
+
+	public FinderPath getFinderPathWithPaginationCountByC_NotS();
 
 	/**
 	 * Returns all the document library file versions where companyId = &#63; and status &ne; &#63;.
@@ -974,6 +1018,10 @@ public interface DLFileVersionPersistence
 	 */
 	public int countByC_NotS(long companyId, int status);
 
+	public FinderPath getFinderPathFetchByF_V();
+
+	public FinderPath getFinderPathCountByF_V();
+
 	/**
 	 * Returns the document library file version where fileEntryId = &#63; and version = &#63; or throws a <code>NoSuchFileVersionException</code> if it could not be found.
 	 *
@@ -1023,6 +1071,12 @@ public interface DLFileVersionPersistence
 	 * @return the number of matching document library file versions
 	 */
 	public int countByF_V(long fileEntryId, String version);
+
+	public FinderPath getFinderPathWithPaginationFindByF_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByF_S();
+
+	public FinderPath getFinderPathCountByF_S();
 
 	/**
 	 * Returns all the document library file versions where fileEntryId = &#63; and status = &#63;.
@@ -1178,6 +1232,12 @@ public interface DLFileVersionPersistence
 	 * @return the number of matching document library file versions
 	 */
 	public int countByF_S(long fileEntryId, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByG_F_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_F_S();
+
+	public FinderPath getFinderPathCountByG_F_S();
 
 	/**
 	 * Returns all the document library file versions where groupId = &#63; and folderId = &#63; and status = &#63;.
@@ -1344,6 +1404,12 @@ public interface DLFileVersionPersistence
 	 * @return the number of matching document library file versions
 	 */
 	public int countByG_F_S(long groupId, long folderId, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByG_F_T_V();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_F_T_V();
+
+	public FinderPath getFinderPathCountByG_F_T_V();
 
 	/**
 	 * Returns all the document library file versions where groupId = &#63; and folderId = &#63; and title = &#63; and version = &#63;.
@@ -1647,5 +1713,7 @@ public interface DLFileVersionPersistence
 	 * @return the number of document library file versions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -61,6 +62,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -102,9 +104,42 @@ public class SegmentsEntryRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindBySegmentsEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySegmentsEntryId() {
+		return _finderPathWithPaginationFindBySegmentsEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySegmentsEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindBySegmentsEntryId() {
+		return _finderPathWithoutPaginationFindBySegmentsEntryId;
+	}
+
 	private FinderPath _finderPathCountBySegmentsEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountBySegmentsEntryId() {
+		return _finderPathCountBySegmentsEntryId;
+	}
 
 	/**
 	 * Returns all the segments entry rels where segmentsEntryId = &#63;.
@@ -629,8 +664,25 @@ public class SegmentsEntryRelPersistenceImpl
 			"segmentsEntryRel.segmentsEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCN_CPK() {
+		return _finderPathWithPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCN_CPK() {
+		return _finderPathWithoutPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathCountByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByCN_CPK() {
+		return _finderPathCountByCN_CPK;
+	}
 
 	/**
 	 * Returns all the segments entry rels where classNameId = &#63; and classPK = &#63;.
@@ -1185,8 +1237,25 @@ public class SegmentsEntryRelPersistenceImpl
 		"segmentsEntryRel.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_CN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_CN_CPK() {
+		return _finderPathWithPaginationFindByG_CN_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_CN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_CN_CPK() {
+		return _finderPathWithoutPaginationFindByG_CN_CPK;
+	}
+
 	private FinderPath _finderPathCountByG_CN_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByG_CN_CPK() {
+		return _finderPathCountByG_CN_CPK;
+	}
 
 	/**
 	 * Returns all the segments entry rels where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -1778,7 +1847,18 @@ public class SegmentsEntryRelPersistenceImpl
 		"segmentsEntryRel.classPK = ?";
 
 	private FinderPath _finderPathFetchByS_CN_CPK;
+
+	@Override
+	public FinderPath getFinderPathFetchByS_CN_CPK() {
+		return _finderPathFetchByS_CN_CPK;
+	}
+
 	private FinderPath _finderPathCountByS_CN_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByS_CN_CPK() {
+		return _finderPathCountByS_CN_CPK;
+	}
 
 	/**
 	 * Returns the segments entry rel where segmentsEntryId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchEntryRelException</code> if it could not be found.
@@ -2925,6 +3005,61 @@ public class SegmentsEntryRelPersistenceImpl
 		_setSegmentsEntryRelUtilPersistence(null);
 
 		entityCache.removeCache(SegmentsEntryRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SegmentsEntryRel> segmentsEntryRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (SegmentsEntryRel segmentsEntryRel : segmentsEntryRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsEntryRelModelImpl segmentsEntryRelModelImpl =
+						(SegmentsEntryRelModelImpl)segmentsEntryRel;
+
+					arguments.add(
+						segmentsEntryRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsEntryRel);
+				}
+				else {
+					List<SegmentsEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsEntryRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsEntryRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSegmentsEntryRelUtilPersistence(

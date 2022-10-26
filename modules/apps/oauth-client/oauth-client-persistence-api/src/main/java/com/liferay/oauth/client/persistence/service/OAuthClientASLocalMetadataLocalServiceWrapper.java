@@ -14,6 +14,7 @@
 
 package com.liferay.oauth.client.persistence.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -410,6 +411,11 @@ public class OAuthClientASLocalMetadataLocalServiceWrapper
 
 		return _oAuthClientASLocalMetadataLocalService.
 			getUserOAuthClientASLocalMetadata(userId, start, end);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_oAuthClientASLocalMetadataLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

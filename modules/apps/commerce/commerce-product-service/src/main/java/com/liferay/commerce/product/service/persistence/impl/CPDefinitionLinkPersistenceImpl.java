@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -95,9 +96,42 @@ public class CPDefinitionLinkPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the cp definition links where uuid = &#63;.
@@ -645,7 +679,18 @@ public class CPDefinitionLinkPersistenceImpl
 		"(cpDefinitionLink.uuid IS NULL OR cpDefinitionLink.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the cp definition link where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCPDefinitionLinkException</code> if it could not be found.
@@ -908,8 +953,25 @@ public class CPDefinitionLinkPersistenceImpl
 		"cpDefinitionLink.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the cp definition links where uuid = &#63; and companyId = &#63;.
@@ -1506,8 +1568,25 @@ public class CPDefinitionLinkPersistenceImpl
 		"cpDefinitionLink.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCPDefinitionId() {
+		return _finderPathWithPaginationFindByCPDefinitionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCPDefinitionId() {
+		return _finderPathWithoutPaginationFindByCPDefinitionId;
+	}
+
 	private FinderPath _finderPathCountByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathCountByCPDefinitionId() {
+		return _finderPathCountByCPDefinitionId;
+	}
 
 	/**
 	 * Returns all the cp definition links where CPDefinitionId = &#63;.
@@ -2030,8 +2109,25 @@ public class CPDefinitionLinkPersistenceImpl
 		"cpDefinitionLink.CPDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCProductId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCProductId() {
+		return _finderPathWithPaginationFindByCProductId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCProductId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCProductId() {
+		return _finderPathWithoutPaginationFindByCProductId;
+	}
+
 	private FinderPath _finderPathCountByCProductId;
+
+	@Override
+	public FinderPath getFinderPathCountByCProductId() {
+		return _finderPathCountByCProductId;
+	}
 
 	/**
 	 * Returns all the cp definition links where CProductId = &#63;.
@@ -2550,8 +2646,25 @@ public class CPDefinitionLinkPersistenceImpl
 		"cpDefinitionLink.CProductId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCPD_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCPD_T() {
+		return _finderPathWithPaginationFindByCPD_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCPD_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCPD_T() {
+		return _finderPathWithoutPaginationFindByCPD_T;
+	}
+
 	private FinderPath _finderPathCountByCPD_T;
+
+	@Override
+	public FinderPath getFinderPathCountByCPD_T() {
+		return _finderPathCountByCPD_T;
+	}
 
 	/**
 	 * Returns all the cp definition links where CPDefinitionId = &#63; and type = &#63;.
@@ -3151,8 +3264,25 @@ public class CPDefinitionLinkPersistenceImpl
 		"(cpDefinitionLink.type IS NULL OR cpDefinitionLink.type = '')";
 
 	private FinderPath _finderPathWithPaginationFindByCP_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCP_T() {
+		return _finderPathWithPaginationFindByCP_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCP_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCP_T() {
+		return _finderPathWithoutPaginationFindByCP_T;
+	}
+
 	private FinderPath _finderPathCountByCP_T;
+
+	@Override
+	public FinderPath getFinderPathCountByCP_T() {
+		return _finderPathCountByCP_T;
+	}
 
 	/**
 	 * Returns all the cp definition links where CProductId = &#63; and type = &#63;.
@@ -3749,7 +3879,18 @@ public class CPDefinitionLinkPersistenceImpl
 		"(cpDefinitionLink.type IS NULL OR cpDefinitionLink.type = '')";
 
 	private FinderPath _finderPathFetchByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C_T() {
+		return _finderPathFetchByC_C_T;
+	}
+
 	private FinderPath _finderPathCountByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_T() {
+		return _finderPathCountByC_C_T;
+	}
 
 	/**
 	 * Returns the cp definition link where CPDefinitionId = &#63; and CProductId = &#63; and type = &#63; or throws a <code>NoSuchCPDefinitionLinkException</code> if it could not be found.
@@ -5025,6 +5166,61 @@ public class CPDefinitionLinkPersistenceImpl
 		_setCPDefinitionLinkUtilPersistence(null);
 
 		entityCache.removeCache(CPDefinitionLinkImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CPDefinitionLink> cpDefinitionLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDefinitionLink>> resultMap =
+				new HashMap<>();
+
+			for (CPDefinitionLink cpDefinitionLink : cpDefinitionLinks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDefinitionLinkModelImpl cpDefinitionLinkModelImpl =
+						(CPDefinitionLinkModelImpl)cpDefinitionLink;
+
+					arguments.add(
+						cpDefinitionLinkModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), cpDefinitionLink);
+				}
+				else {
+					List<CPDefinitionLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpDefinitionLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPDefinitionLink>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDefinitionLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCPDefinitionLinkUtilPersistence(

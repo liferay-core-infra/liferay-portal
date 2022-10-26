@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link UserTrackerPathLocalService}.
  *
@@ -260,7 +262,7 @@ public class UserTrackerPathLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _userTrackerPathLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -325,6 +327,11 @@ public class UserTrackerPathLocalServiceWrapper
 	@Override
 	public int getUserTrackerPathsCount() {
 		return _userTrackerPathLocalService.getUserTrackerPathsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_userTrackerPathLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

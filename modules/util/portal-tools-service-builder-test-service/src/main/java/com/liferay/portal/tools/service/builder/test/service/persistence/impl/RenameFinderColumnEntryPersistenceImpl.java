@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -45,7 +46,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -82,8 +85,35 @@ public class RenameFinderColumnEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathFetchByColumnToRename;
+
+	@Override
+	public FinderPath getFinderPathFetchByColumnToRename() {
+		return _finderPathFetchByColumnToRename;
+	}
+
 	private FinderPath _finderPathCountByColumnToRename;
+
+	@Override
+	public FinderPath getFinderPathCountByColumnToRename() {
+		return _finderPathCountByColumnToRename;
+	}
 
 	/**
 	 * Returns the rename finder column entry where columnToRename = &#63; or throws a <code>NoSuchRenameFinderColumnEntryException</code> if it could not be found.
@@ -916,6 +946,67 @@ public class RenameFinderColumnEntryPersistenceImpl
 		_setRenameFinderColumnEntryUtilPersistence(null);
 
 		entityCache.removeCache(RenameFinderColumnEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<RenameFinderColumnEntry> renameFinderColumnEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RenameFinderColumnEntry>> resultMap =
+				new HashMap<>();
+
+			for (RenameFinderColumnEntry renameFinderColumnEntry :
+					renameFinderColumnEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RenameFinderColumnEntryModelImpl
+						renameFinderColumnEntryModelImpl =
+							(RenameFinderColumnEntryModelImpl)
+								renameFinderColumnEntry;
+
+					arguments.add(
+						renameFinderColumnEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						renameFinderColumnEntry);
+				}
+				else {
+					List<RenameFinderColumnEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(renameFinderColumnEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RenameFinderColumnEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RenameFinderColumnEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setRenameFinderColumnEntryUtilPersistence(

@@ -110,9 +110,42 @@ public class DDLRecordSetPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the ddl record sets where uuid = &#63;.
@@ -655,7 +688,18 @@ public class DDLRecordSetPersistenceImpl
 		"(ddlRecordSet.uuid IS NULL OR ddlRecordSet.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the ddl record set where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchRecordSetException</code> if it could not be found.
@@ -918,8 +962,25 @@ public class DDLRecordSetPersistenceImpl
 		"ddlRecordSet.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the ddl record sets where uuid = &#63; and companyId = &#63;.
@@ -1513,9 +1574,32 @@ public class DDLRecordSetPersistenceImpl
 		"ddlRecordSet.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGroupId() {
+		return _finderPathWithPaginationCountByGroupId;
+	}
 
 	/**
 	 * Returns all the ddl record sets where groupId = &#63;.
@@ -2866,9 +2950,32 @@ public class DDLRecordSetPersistenceImpl
 		"ddlRecordSet.groupId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDDMStructureId() {
+		return _finderPathWithPaginationFindByDDMStructureId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDDMStructureId() {
+		return _finderPathWithoutPaginationFindByDDMStructureId;
+	}
+
 	private FinderPath _finderPathCountByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathCountByDDMStructureId() {
+		return _finderPathCountByDDMStructureId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByDDMStructureId() {
+		return _finderPathWithPaginationCountByDDMStructureId;
+	}
 
 	/**
 	 * Returns all the ddl record sets where DDMStructureId = &#63;.
@@ -3653,7 +3760,18 @@ public class DDLRecordSetPersistenceImpl
 		"ddlRecordSet.DDMStructureId IN (";
 
 	private FinderPath _finderPathFetchByG_R;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_R() {
+		return _finderPathFetchByG_R;
+	}
+
 	private FinderPath _finderPathCountByG_R;
+
+	@Override
+	public FinderPath getFinderPathCountByG_R() {
+		return _finderPathCountByG_R;
+	}
 
 	/**
 	 * Returns the ddl record set where groupId = &#63; and recordSetKey = &#63; or throws a <code>NoSuchRecordSetException</code> if it could not be found.
@@ -4870,6 +4988,59 @@ public class DDLRecordSetPersistenceImpl
 		_setDDLRecordSetUtilPersistence(null);
 
 		entityCache.removeCache(DDLRecordSetImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DDLRecordSet> ddlRecordSets = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDLRecordSet>> resultMap = new HashMap<>();
+
+			for (DDLRecordSet ddlRecordSet : ddlRecordSets) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDLRecordSetModelImpl ddlRecordSetModelImpl =
+						(DDLRecordSetModelImpl)ddlRecordSet;
+
+					arguments.add(
+						ddlRecordSetModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddlRecordSet);
+				}
+				else {
+					List<DDLRecordSet> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ddlRecordSet);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDLRecordSet>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDLRecordSet> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDDLRecordSetUtilPersistence(

@@ -16,6 +16,7 @@ package com.liferay.object.service.persistence;
 
 import com.liferay.object.exception.NoSuchObjectViewFilterColumnException;
 import com.liferay.object.model.ObjectViewFilterColumn;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface ObjectViewFilterColumnPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ObjectViewFilterColumnUtil} to access the object view filter column persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the object view filter columns where uuid = &#63;.
@@ -183,6 +195,12 @@ public interface ObjectViewFilterColumnPersistence
 	 * @return the number of matching object view filter columns
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the object view filter columns where uuid = &#63; and companyId = &#63;.
@@ -339,6 +357,12 @@ public interface ObjectViewFilterColumnPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByObjectViewId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByObjectViewId();
+
+	public FinderPath getFinderPathCountByObjectViewId();
+
 	/**
 	 * Returns all the object view filter columns where objectViewId = &#63;.
 	 *
@@ -482,6 +506,12 @@ public interface ObjectViewFilterColumnPersistence
 	 * @return the number of matching object view filter columns
 	 */
 	public int countByObjectViewId(long objectViewId);
+
+	public FinderPath getFinderPathWithPaginationFindByOVI_OFN();
+
+	public FinderPath getFinderPathWithoutPaginationFindByOVI_OFN();
+
+	public FinderPath getFinderPathCountByOVI_OFN();
 
 	/**
 	 * Returns all the object view filter columns where objectViewId = &#63; and objectFieldName = &#63;.
@@ -762,5 +792,7 @@ public interface ObjectViewFilterColumnPersistence
 	 * @return the number of object view filter columns
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

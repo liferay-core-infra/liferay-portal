@@ -52,9 +52,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -98,9 +101,42 @@ public class CTAutoResolutionInfoPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCtCollectionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCtCollectionId() {
+		return _finderPathWithPaginationFindByCtCollectionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCtCollectionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCtCollectionId() {
+		return _finderPathWithoutPaginationFindByCtCollectionId;
+	}
+
 	private FinderPath _finderPathCountByCtCollectionId;
+
+	@Override
+	public FinderPath getFinderPathCountByCtCollectionId() {
+		return _finderPathCountByCtCollectionId;
+	}
 
 	/**
 	 * Returns all the ct auto resolution infos where ctCollectionId = &#63;.
@@ -611,9 +647,32 @@ public class CTAutoResolutionInfoPersistenceImpl
 		"ctAutoResolutionInfo.ctCollectionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_MCNI_SMCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_MCNI_SMCPK() {
+		return _finderPathWithPaginationFindByC_MCNI_SMCPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_MCNI_SMCPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_MCNI_SMCPK() {
+		return _finderPathWithoutPaginationFindByC_MCNI_SMCPK;
+	}
+
 	private FinderPath _finderPathCountByC_MCNI_SMCPK;
+
+	@Override
+	public FinderPath getFinderPathCountByC_MCNI_SMCPK() {
+		return _finderPathCountByC_MCNI_SMCPK;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_MCNI_SMCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_MCNI_SMCPK() {
+		return _finderPathWithPaginationCountByC_MCNI_SMCPK;
+	}
 
 	/**
 	 * Returns all the ct auto resolution infos where ctCollectionId = &#63; and modelClassNameId = &#63; and sourceModelClassPK = &#63;.
@@ -2143,6 +2202,65 @@ public class CTAutoResolutionInfoPersistenceImpl
 		_setCTAutoResolutionInfoUtilPersistence(null);
 
 		entityCache.removeCache(CTAutoResolutionInfoImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CTAutoResolutionInfo> ctAutoResolutionInfos = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTAutoResolutionInfo>> resultMap =
+				new HashMap<>();
+
+			for (CTAutoResolutionInfo ctAutoResolutionInfo :
+					ctAutoResolutionInfos) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTAutoResolutionInfoModelImpl
+						ctAutoResolutionInfoModelImpl =
+							(CTAutoResolutionInfoModelImpl)ctAutoResolutionInfo;
+
+					arguments.add(
+						ctAutoResolutionInfoModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ctAutoResolutionInfo);
+				}
+				else {
+					List<CTAutoResolutionInfo> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ctAutoResolutionInfo);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTAutoResolutionInfo>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTAutoResolutionInfo> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCTAutoResolutionInfoUtilPersistence(

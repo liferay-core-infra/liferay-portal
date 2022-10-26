@@ -125,6 +125,44 @@ public class NotificationQueueEntryAttachmentUtil {
 			notificationQueueEntryAttachment, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByNotificationQueueEntryId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByNotificationQueueEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByNotificationQueueEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByNotificationQueueEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByNotificationQueueEntryId() {
+
+		return getPersistence().getFinderPathCountByNotificationQueueEntryId();
+	}
+
 	/**
 	 * Returns all the notification queue entry attachments where notificationQueueEntryId = &#63;.
 	 *
@@ -495,6 +533,12 @@ public class NotificationQueueEntryAttachmentUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static NotificationQueueEntryAttachmentPersistence getPersistence() {

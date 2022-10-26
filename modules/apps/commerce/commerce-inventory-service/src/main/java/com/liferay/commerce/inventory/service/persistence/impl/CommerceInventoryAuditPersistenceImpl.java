@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,8 +103,35 @@ public class CommerceInventoryAuditPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByLtCreateDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtCreateDate() {
+		return _finderPathWithPaginationFindByLtCreateDate;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtCreateDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtCreateDate() {
+		return _finderPathWithPaginationCountByLtCreateDate;
+	}
 
 	/**
 	 * Returns all the commerce inventory audits where createDate &lt; &#63;.
@@ -637,8 +666,25 @@ public class CommerceInventoryAuditPersistenceImpl
 		"commerceInventoryAudit.createDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S() {
+		return _finderPathWithPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S() {
+		return _finderPathWithoutPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S() {
+		return _finderPathCountByC_S;
+	}
 
 	/**
 	 * Returns all the commerce inventory audits where companyId = &#63; and sku = &#63;.
@@ -1841,6 +1887,67 @@ public class CommerceInventoryAuditPersistenceImpl
 		_setCommerceInventoryAuditUtilPersistence(null);
 
 		entityCache.removeCache(CommerceInventoryAuditImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceInventoryAudit> commerceInventoryAudits = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceInventoryAudit>> resultMap =
+				new HashMap<>();
+
+			for (CommerceInventoryAudit commerceInventoryAudit :
+					commerceInventoryAudits) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceInventoryAuditModelImpl
+						commerceInventoryAuditModelImpl =
+							(CommerceInventoryAuditModelImpl)
+								commerceInventoryAudit;
+
+					arguments.add(
+						commerceInventoryAuditModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceInventoryAudit);
+				}
+				else {
+					List<CommerceInventoryAudit> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceInventoryAudit);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceInventoryAudit>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceInventoryAudit> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceInventoryAuditUtilPersistence(

@@ -16,6 +16,7 @@ package com.liferay.exportimport.kernel.service.persistence;
 
 import com.liferay.exportimport.kernel.exception.NoSuchConfigurationException;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface ExportImportConfigurationPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ExportImportConfigurationUtil} to access the export import configuration persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63;.
@@ -185,6 +197,12 @@ public interface ExportImportConfigurationPersistence
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the export import configurations where companyId = &#63;.
 	 *
@@ -328,6 +346,12 @@ public interface ExportImportConfigurationPersistence
 	 * @return the number of matching export import configurations
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_T();
+
+	public FinderPath getFinderPathCountByG_T();
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and type = &#63;.
@@ -484,6 +508,12 @@ public interface ExportImportConfigurationPersistence
 	 */
 	public int countByG_T(long groupId, int type);
 
+	public FinderPath getFinderPathWithPaginationFindByG_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_S();
+
+	public FinderPath getFinderPathCountByG_S();
+
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and status = &#63;.
 	 *
@@ -638,6 +668,12 @@ public interface ExportImportConfigurationPersistence
 	 * @return the number of matching export import configurations
 	 */
 	public int countByG_S(long groupId, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByG_T_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_T_S();
+
+	public FinderPath getFinderPathCountByG_T_S();
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
@@ -931,5 +967,7 @@ public interface ExportImportConfigurationPersistence
 	 * @return the number of export import configurations
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

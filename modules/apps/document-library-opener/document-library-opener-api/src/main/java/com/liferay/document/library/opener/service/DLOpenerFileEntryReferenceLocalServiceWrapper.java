@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.opener.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -471,6 +472,11 @@ public class DLOpenerFileEntryReferenceLocalServiceWrapper
 
 		return _dlOpenerFileEntryReferenceLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlOpenerFileEntryReferenceLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -52,7 +53,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -96,9 +99,42 @@ public class OAuthUserPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the o auth users where userId = &#63;.
@@ -955,8 +991,25 @@ public class OAuthUserPersistenceImpl
 		"oAuthUser.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByOAuthApplicationId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByOAuthApplicationId() {
+		return _finderPathWithPaginationFindByOAuthApplicationId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByOAuthApplicationId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByOAuthApplicationId() {
+		return _finderPathWithoutPaginationFindByOAuthApplicationId;
+	}
+
 	private FinderPath _finderPathCountByOAuthApplicationId;
+
+	@Override
+	public FinderPath getFinderPathCountByOAuthApplicationId() {
+		return _finderPathCountByOAuthApplicationId;
+	}
 
 	/**
 	 * Returns all the o auth users where oAuthApplicationId = &#63;.
@@ -1841,7 +1894,18 @@ public class OAuthUserPersistenceImpl
 			"oAuthUser.oAuthApplicationId = ?";
 
 	private FinderPath _finderPathFetchByAccessToken;
+
+	@Override
+	public FinderPath getFinderPathFetchByAccessToken() {
+		return _finderPathFetchByAccessToken;
+	}
+
 	private FinderPath _finderPathCountByAccessToken;
+
+	@Override
+	public FinderPath getFinderPathCountByAccessToken() {
+		return _finderPathCountByAccessToken;
+	}
 
 	/**
 	 * Returns the o auth user where accessToken = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
@@ -2068,7 +2132,18 @@ public class OAuthUserPersistenceImpl
 		"(oAuthUser.accessToken IS NULL OR oAuthUser.accessToken = '')";
 
 	private FinderPath _finderPathFetchByU_OAI;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_OAI() {
+		return _finderPathFetchByU_OAI;
+	}
+
 	private FinderPath _finderPathCountByU_OAI;
+
+	@Override
+	public FinderPath getFinderPathCountByU_OAI() {
+		return _finderPathCountByU_OAI;
+	}
 
 	/**
 	 * Returns the o auth user where userId = &#63; and oAuthApplicationId = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
@@ -2915,6 +2990,59 @@ public class OAuthUserPersistenceImpl
 		_setOAuthUserUtilPersistence(null);
 
 		entityCache.removeCache(OAuthUserImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<OAuthUser> oAuthUsers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OAuthUser>> resultMap = new HashMap<>();
+
+			for (OAuthUser oAuthUser : oAuthUsers) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OAuthUserModelImpl oAuthUserModelImpl =
+						(OAuthUserModelImpl)oAuthUser;
+
+					arguments.add(
+						oAuthUserModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), oAuthUser);
+				}
+				else {
+					List<OAuthUser> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(oAuthUser);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OAuthUser>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OAuthUser> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOAuthUserUtilPersistence(

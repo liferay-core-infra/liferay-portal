@@ -16,6 +16,7 @@ package com.liferay.dispatch.service.persistence;
 
 import com.liferay.dispatch.exception.NoSuchLogException;
 import com.liferay.dispatch.model.DispatchLog;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface DispatchLogPersistence extends BasePersistence<DispatchLog> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DispatchLogUtil} to access the dispatch log persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByDispatchTriggerId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByDispatchTriggerId();
+
+	public FinderPath getFinderPathCountByDispatchTriggerId();
 
 	/**
 	 * Returns all the dispatch logs where dispatchTriggerId = &#63;.
@@ -183,6 +195,12 @@ public interface DispatchLogPersistence extends BasePersistence<DispatchLog> {
 	 * @return the number of matching dispatch logs
 	 */
 	public int countByDispatchTriggerId(long dispatchTriggerId);
+
+	public FinderPath getFinderPathWithPaginationFindByDTI_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByDTI_S();
+
+	public FinderPath getFinderPathCountByDTI_S();
 
 	/**
 	 * Returns all the dispatch logs where dispatchTriggerId = &#63; and status = &#63;.
@@ -457,5 +475,7 @@ public interface DispatchLogPersistence extends BasePersistence<DispatchLog> {
 	 * @return the number of dispatch logs
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

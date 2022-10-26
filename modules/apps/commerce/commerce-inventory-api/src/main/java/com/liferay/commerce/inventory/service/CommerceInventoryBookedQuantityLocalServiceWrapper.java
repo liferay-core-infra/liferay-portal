@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.inventory.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -398,6 +399,12 @@ public class CommerceInventoryBookedQuantityLocalServiceWrapper
 
 		return _commerceInventoryBookedQuantityLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceInventoryBookedQuantityLocalService.loadFinderCache(
+			finderPaths);
 	}
 
 	@Override

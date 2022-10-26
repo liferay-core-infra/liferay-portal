@@ -121,6 +121,44 @@ public class BatchPlannerPolicyUtil {
 		return getPersistence().update(batchPlannerPolicy, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByBatchPlannerPlanId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByBatchPlannerPlanId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByBatchPlannerPlanId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByBatchPlannerPlanId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByBatchPlannerPlanId() {
+
+		return getPersistence().getFinderPathCountByBatchPlannerPlanId();
+	}
+
 	/**
 	 * Returns all the batch planner policies where batchPlannerPlanId = &#63;.
 	 *
@@ -295,6 +333,18 @@ public class BatchPlannerPolicyUtil {
 	 */
 	public static int countByBatchPlannerPlanId(long batchPlannerPlanId) {
 		return getPersistence().countByBatchPlannerPlanId(batchPlannerPlanId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByBPPI_N() {
+
+		return getPersistence().getFinderPathFetchByBPPI_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByBPPI_N() {
+
+		return getPersistence().getFinderPathCountByBPPI_N();
 	}
 
 	/**
@@ -518,6 +568,12 @@ public class BatchPlannerPolicyUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static BatchPlannerPolicyPersistence getPersistence() {

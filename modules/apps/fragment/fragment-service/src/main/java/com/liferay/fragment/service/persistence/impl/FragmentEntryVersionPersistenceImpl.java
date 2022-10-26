@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -106,9 +107,42 @@ public class FragmentEntryVersionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByFragmentEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByFragmentEntryId() {
+		return _finderPathWithPaginationFindByFragmentEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByFragmentEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByFragmentEntryId() {
+		return _finderPathWithoutPaginationFindByFragmentEntryId;
+	}
+
 	private FinderPath _finderPathCountByFragmentEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByFragmentEntryId() {
+		return _finderPathCountByFragmentEntryId;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where fragmentEntryId = &#63;.
@@ -635,7 +669,18 @@ public class FragmentEntryVersionPersistenceImpl
 			"fragmentEntryVersion.fragmentEntryId = ?";
 
 	private FinderPath _finderPathFetchByFragmentEntryId_Version;
+
+	@Override
+	public FinderPath getFinderPathFetchByFragmentEntryId_Version() {
+		return _finderPathFetchByFragmentEntryId_Version;
+	}
+
 	private FinderPath _finderPathCountByFragmentEntryId_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByFragmentEntryId_Version() {
+		return _finderPathCountByFragmentEntryId_Version;
+	}
 
 	/**
 	 * Returns the fragment entry version where fragmentEntryId = &#63; and version = &#63; or throws a <code>NoSuchEntryVersionException</code> if it could not be found.
@@ -882,8 +927,25 @@ public class FragmentEntryVersionPersistenceImpl
 			"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where uuid = &#63;.
@@ -1438,8 +1500,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"(fragmentEntryVersion.uuid IS NULL OR fragmentEntryVersion.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_Version() {
+		return _finderPathWithPaginationFindByUuid_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_Version() {
+		return _finderPathWithoutPaginationFindByUuid_Version;
+	}
+
 	private FinderPath _finderPathCountByUuid_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_Version() {
+		return _finderPathCountByUuid_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where uuid = &#63; and version = &#63;.
@@ -2038,8 +2117,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUUID_G() {
+		return _finderPathWithPaginationFindByUUID_G;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUUID_G() {
+		return _finderPathWithoutPaginationFindByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where uuid = &#63; and groupId = &#63;.
@@ -2635,7 +2731,18 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.groupId = ?";
 
 	private FinderPath _finderPathFetchByUUID_G_Version;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G_Version() {
+		return _finderPathFetchByUUID_G_Version;
+	}
+
 	private FinderPath _finderPathCountByUUID_G_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G_Version() {
+		return _finderPathCountByUUID_G_Version;
+	}
 
 	/**
 	 * Returns the fragment entry version where uuid = &#63; and groupId = &#63; and version = &#63; or throws a <code>NoSuchEntryVersionException</code> if it could not be found.
@@ -2925,8 +3032,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where uuid = &#63; and companyId = &#63;.
@@ -3526,8 +3650,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C_Version() {
+		return _finderPathWithPaginationFindByUuid_C_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C_Version() {
+		return _finderPathWithoutPaginationFindByUuid_C_Version;
+	}
+
 	private FinderPath _finderPathCountByUuid_C_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C_Version() {
+		return _finderPathCountByUuid_C_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where uuid = &#63; and companyId = &#63; and version = &#63;.
@@ -4164,8 +4305,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63;.
@@ -4682,8 +4840,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId_Version() {
+		return _finderPathWithPaginationFindByGroupId_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId_Version() {
+		return _finderPathWithoutPaginationFindByGroupId_Version;
+	}
+
 	private FinderPath _finderPathCountByGroupId_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId_Version() {
+		return _finderPathCountByGroupId_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and version = &#63;.
@@ -5241,8 +5416,27 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByFragmentCollectionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByFragmentCollectionId() {
+		return _finderPathWithPaginationFindByFragmentCollectionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByFragmentCollectionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByFragmentCollectionId() {
+
+		return _finderPathWithoutPaginationFindByFragmentCollectionId;
+	}
+
 	private FinderPath _finderPathCountByFragmentCollectionId;
+
+	@Override
+	public FinderPath getFinderPathCountByFragmentCollectionId() {
+		return _finderPathCountByFragmentCollectionId;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where fragmentCollectionId = &#63;.
@@ -5776,9 +5970,30 @@ public class FragmentEntryVersionPersistenceImpl
 
 	private FinderPath
 		_finderPathWithPaginationFindByFragmentCollectionId_Version;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByFragmentCollectionId_Version() {
+
+		return _finderPathWithPaginationFindByFragmentCollectionId_Version;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByFragmentCollectionId_Version;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByFragmentCollectionId_Version() {
+
+		return _finderPathWithoutPaginationFindByFragmentCollectionId_Version;
+	}
+
 	private FinderPath _finderPathCountByFragmentCollectionId_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByFragmentCollectionId_Version() {
+		return _finderPathCountByFragmentCollectionId_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where fragmentCollectionId = &#63; and version = &#63;.
@@ -6356,8 +6571,25 @@ public class FragmentEntryVersionPersistenceImpl
 			"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByType() {
+		return _finderPathWithPaginationFindByType;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByType() {
+		return _finderPathWithoutPaginationFindByType;
+	}
+
 	private FinderPath _finderPathCountByType;
+
+	@Override
+	public FinderPath getFinderPathCountByType() {
+		return _finderPathCountByType;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where type = &#63;.
@@ -6864,8 +7096,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.type = ?";
 
 	private FinderPath _finderPathWithPaginationFindByType_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByType_Version() {
+		return _finderPathWithPaginationFindByType_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByType_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByType_Version() {
+		return _finderPathWithoutPaginationFindByType_Version;
+	}
+
 	private FinderPath _finderPathCountByType_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByType_Version() {
+		return _finderPathCountByType_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where type = &#63; and version = &#63;.
@@ -7422,8 +7671,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI() {
+		return _finderPathWithPaginationFindByG_FCI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI() {
+		return _finderPathWithoutPaginationFindByG_FCI;
+	}
+
 	private FinderPath _finderPathCountByG_FCI;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI() {
+		return _finderPathCountByG_FCI;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63;.
@@ -7984,8 +8250,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.fragmentCollectionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_Version() {
+		return _finderPathWithPaginationFindByG_FCI_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_Version() {
+		return _finderPathWithoutPaginationFindByG_FCI_Version;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_Version() {
+		return _finderPathCountByG_FCI_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and version = &#63;.
@@ -8592,8 +8875,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FEK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FEK() {
+		return _finderPathWithPaginationFindByG_FEK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FEK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FEK() {
+		return _finderPathWithoutPaginationFindByG_FEK;
+	}
+
 	private FinderPath _finderPathCountByG_FEK;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FEK() {
+		return _finderPathCountByG_FEK;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentEntryKey = &#63;.
@@ -9195,7 +9495,18 @@ public class FragmentEntryVersionPersistenceImpl
 		"(fragmentEntryVersion.fragmentEntryKey IS NULL OR fragmentEntryVersion.fragmentEntryKey = '')";
 
 	private FinderPath _finderPathFetchByG_FEK_Version;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_FEK_Version() {
+		return _finderPathFetchByG_FEK_Version;
+	}
+
 	private FinderPath _finderPathCountByG_FEK_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FEK_Version() {
+		return _finderPathCountByG_FEK_Version;
+	}
 
 	/**
 	 * Returns the fragment entry version where groupId = &#63; and fragmentEntryKey = &#63; and version = &#63; or throws a <code>NoSuchEntryVersionException</code> if it could not be found.
@@ -9492,8 +9803,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_LikeN() {
+		return _finderPathWithPaginationFindByG_FCI_LikeN;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_LikeN() {
+		return _finderPathWithoutPaginationFindByG_FCI_LikeN;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_LikeN;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_LikeN() {
+		return _finderPathCountByG_FCI_LikeN;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and name = &#63;.
@@ -10139,8 +10467,27 @@ public class FragmentEntryVersionPersistenceImpl
 		"(fragmentEntryVersion.name IS NULL OR fragmentEntryVersion.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_LikeN_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_LikeN_Version() {
+		return _finderPathWithPaginationFindByG_FCI_LikeN_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_LikeN_Version;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByG_FCI_LikeN_Version() {
+
+		return _finderPathWithoutPaginationFindByG_FCI_LikeN_Version;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_LikeN_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_LikeN_Version() {
+		return _finderPathCountByG_FCI_LikeN_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and name = &#63; and version = &#63;.
@@ -10834,8 +11181,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_T() {
+		return _finderPathWithPaginationFindByG_FCI_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_T() {
+		return _finderPathWithoutPaginationFindByG_FCI_T;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_T() {
+		return _finderPathCountByG_FCI_T;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and type = &#63;.
@@ -11437,8 +11801,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.type = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_T_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_T_Version() {
+		return _finderPathWithPaginationFindByG_FCI_T_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_T_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_T_Version() {
+		return _finderPathWithoutPaginationFindByG_FCI_T_Version;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_T_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_T_Version() {
+		return _finderPathCountByG_FCI_T_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and type = &#63; and version = &#63;.
@@ -12085,8 +12466,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_S() {
+		return _finderPathWithPaginationFindByG_FCI_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_S() {
+		return _finderPathWithoutPaginationFindByG_FCI_S;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_S() {
+		return _finderPathCountByG_FCI_S;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and status = &#63;.
@@ -12691,8 +13089,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_S_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_S_Version() {
+		return _finderPathWithPaginationFindByG_FCI_S_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_S_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_S_Version() {
+		return _finderPathWithoutPaginationFindByG_FCI_S_Version;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_S_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_S_Version() {
+		return _finderPathCountByG_FCI_S_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and status = &#63; and version = &#63;.
@@ -13339,8 +13754,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_LikeN_S() {
+		return _finderPathWithPaginationFindByG_FCI_LikeN_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_LikeN_S() {
+		return _finderPathWithoutPaginationFindByG_FCI_LikeN_S;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_LikeN_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_LikeN_S() {
+		return _finderPathCountByG_FCI_LikeN_S;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and name = &#63; and status = &#63;.
@@ -14027,8 +14459,27 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_LikeN_S_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_LikeN_S_Version() {
+		return _finderPathWithPaginationFindByG_FCI_LikeN_S_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_LikeN_S_Version;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByG_FCI_LikeN_S_Version() {
+
+		return _finderPathWithoutPaginationFindByG_FCI_LikeN_S_Version;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_LikeN_S_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_LikeN_S_Version() {
+		return _finderPathCountByG_FCI_LikeN_S_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and name = &#63; and status = &#63; and version = &#63;.
@@ -14763,8 +15214,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_T_S() {
+		return _finderPathWithPaginationFindByG_FCI_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_T_S() {
+		return _finderPathWithoutPaginationFindByG_FCI_T_S;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_T_S() {
+		return _finderPathCountByG_FCI_T_S;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and type = &#63; and status = &#63;.
@@ -15409,8 +15877,25 @@ public class FragmentEntryVersionPersistenceImpl
 		"fragmentEntryVersion.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_FCI_T_S_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_FCI_T_S_Version() {
+		return _finderPathWithPaginationFindByG_FCI_T_S_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_FCI_T_S_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_FCI_T_S_Version() {
+		return _finderPathWithoutPaginationFindByG_FCI_T_S_Version;
+	}
+
 	private FinderPath _finderPathCountByG_FCI_T_S_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByG_FCI_T_S_Version() {
+		return _finderPathCountByG_FCI_T_S_Version;
+	}
 
 	/**
 	 * Returns all the fragment entry versions where groupId = &#63; and fragmentCollectionId = &#63; and type = &#63; and status = &#63; and version = &#63;.
@@ -17663,6 +18148,65 @@ public class FragmentEntryVersionPersistenceImpl
 		_setFragmentEntryVersionUtilPersistence(null);
 
 		entityCache.removeCache(FragmentEntryVersionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<FragmentEntryVersion> fragmentEntryVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<FragmentEntryVersion>> resultMap =
+				new HashMap<>();
+
+			for (FragmentEntryVersion fragmentEntryVersion :
+					fragmentEntryVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					FragmentEntryVersionModelImpl
+						fragmentEntryVersionModelImpl =
+							(FragmentEntryVersionModelImpl)fragmentEntryVersion;
+
+					arguments.add(
+						fragmentEntryVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), fragmentEntryVersion);
+				}
+				else {
+					List<FragmentEntryVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(fragmentEntryVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<FragmentEntryVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<FragmentEntryVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setFragmentEntryVersionUtilPersistence(

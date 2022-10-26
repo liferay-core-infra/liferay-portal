@@ -54,9 +54,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -98,9 +101,42 @@ public class CTCollectionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the ct collections where companyId = &#63;.
@@ -973,8 +1009,25 @@ public class CTCollectionPersistenceImpl
 		"ctCollection.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySchemaVersionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySchemaVersionId() {
+		return _finderPathWithPaginationFindBySchemaVersionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySchemaVersionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindBySchemaVersionId() {
+		return _finderPathWithoutPaginationFindBySchemaVersionId;
+	}
+
 	private FinderPath _finderPathCountBySchemaVersionId;
+
+	@Override
+	public FinderPath getFinderPathCountBySchemaVersionId() {
+		return _finderPathCountBySchemaVersionId;
+	}
 
 	/**
 	 * Returns all the ct collections where schemaVersionId = &#63;.
@@ -1861,9 +1914,32 @@ public class CTCollectionPersistenceImpl
 			"ctCollection.schemaVersionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S() {
+		return _finderPathWithPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S() {
+		return _finderPathWithoutPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S() {
+		return _finderPathCountByC_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_S() {
+		return _finderPathWithPaginationCountByC_S;
+	}
 
 	/**
 	 * Returns all the ct collections where companyId = &#63; and status = &#63;.
@@ -3896,6 +3972,59 @@ public class CTCollectionPersistenceImpl
 		_setCTCollectionUtilPersistence(null);
 
 		entityCache.removeCache(CTCollectionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CTCollection> ctCollections = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTCollection>> resultMap = new HashMap<>();
+
+			for (CTCollection ctCollection : ctCollections) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTCollectionModelImpl ctCollectionModelImpl =
+						(CTCollectionModelImpl)ctCollection;
+
+					arguments.add(
+						ctCollectionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ctCollection);
+				}
+				else {
+					List<CTCollection> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ctCollection);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTCollection>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTCollection> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCTCollectionUtilPersistence(

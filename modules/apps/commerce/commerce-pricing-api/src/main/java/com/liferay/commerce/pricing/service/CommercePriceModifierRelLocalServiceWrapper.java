@@ -16,6 +16,7 @@ package com.liferay.commerce.pricing.service;
 
 import com.liferay.commerce.pricing.model.CommercePriceModifierRel;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -471,6 +472,11 @@ public class CommercePriceModifierRelLocalServiceWrapper
 
 		return _commercePriceModifierRelLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commercePriceModifierRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

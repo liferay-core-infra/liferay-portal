@@ -119,6 +119,44 @@ public class KaleoProcessLinkUtil {
 		return getPersistence().update(kaleoProcessLink, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByKaleoProcessId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByKaleoProcessId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByKaleoProcessId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByKaleoProcessId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKaleoProcessId() {
+
+		return getPersistence().getFinderPathCountByKaleoProcessId();
+	}
+
 	/**
 	 * Returns all the kaleo process links where kaleoProcessId = &#63;.
 	 *
@@ -296,6 +334,18 @@ public class KaleoProcessLinkUtil {
 	 */
 	public static int countByKaleoProcessId(long kaleoProcessId) {
 		return getPersistence().countByKaleoProcessId(kaleoProcessId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByKPI_WTN() {
+
+		return getPersistence().getFinderPathFetchByKPI_WTN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKPI_WTN() {
+
+		return getPersistence().getFinderPathCountByKPI_WTN();
 	}
 
 	/**
@@ -524,6 +574,12 @@ public class KaleoProcessLinkUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static KaleoProcessLinkPersistence getPersistence() {

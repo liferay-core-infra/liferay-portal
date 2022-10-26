@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -52,11 +53,13 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -97,9 +100,42 @@ public class DLFileRankPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the document library file ranks where userId = &#63;.
@@ -586,8 +622,25 @@ public class DLFileRankPersistenceImpl
 		"dlFileRank.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByFileEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByFileEntryId() {
+		return _finderPathWithPaginationFindByFileEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByFileEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByFileEntryId() {
+		return _finderPathWithoutPaginationFindByFileEntryId;
+	}
+
 	private FinderPath _finderPathCountByFileEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByFileEntryId() {
+		return _finderPathCountByFileEntryId;
+	}
 
 	/**
 	 * Returns all the document library file ranks where fileEntryId = &#63;.
@@ -1083,8 +1136,25 @@ public class DLFileRankPersistenceImpl
 		"dlFileRank.fileEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U() {
+		return _finderPathWithPaginationFindByG_U;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_U;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_U() {
+		return _finderPathWithoutPaginationFindByG_U;
+	}
+
 	private FinderPath _finderPathCountByG_U;
+
+	@Override
+	public FinderPath getFinderPathCountByG_U() {
+		return _finderPathCountByG_U;
+	}
 
 	/**
 	 * Returns all the document library file ranks where groupId = &#63; and userId = &#63;.
@@ -1618,8 +1688,25 @@ public class DLFileRankPersistenceImpl
 		"dlFileRank.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_A() {
+		return _finderPathWithPaginationFindByG_U_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_U_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_U_A() {
+		return _finderPathWithoutPaginationFindByG_U_A;
+	}
+
 	private FinderPath _finderPathCountByG_U_A;
+
+	@Override
+	public FinderPath getFinderPathCountByG_U_A() {
+		return _finderPathCountByG_U_A;
+	}
 
 	/**
 	 * Returns all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;.
@@ -2193,7 +2280,18 @@ public class DLFileRankPersistenceImpl
 		"dlFileRank.active = ?";
 
 	private FinderPath _finderPathFetchByC_U_F;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_U_F() {
+		return _finderPathFetchByC_U_F;
+	}
+
 	private FinderPath _finderPathCountByC_U_F;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U_F() {
+		return _finderPathCountByC_U_F;
+	}
 
 	/**
 	 * Returns the document library file rank where companyId = &#63; and userId = &#63; and fileEntryId = &#63; or throws a <code>NoSuchFileRankException</code> if it could not be found.
@@ -3111,6 +3209,59 @@ public class DLFileRankPersistenceImpl
 		_setDLFileRankUtilPersistence(null);
 
 		entityCache.removeCache(DLFileRankImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DLFileRank> dlFileRanks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLFileRank>> resultMap = new HashMap<>();
+
+			for (DLFileRank dlFileRank : dlFileRanks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLFileRankModelImpl dlFileRankModelImpl =
+						(DLFileRankModelImpl)dlFileRank;
+
+					arguments.add(
+						dlFileRankModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dlFileRank);
+				}
+				else {
+					List<DLFileRank> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlFileRank);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLFileRank>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLFileRank> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDLFileRankUtilPersistence(

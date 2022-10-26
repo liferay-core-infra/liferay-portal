@@ -16,6 +16,7 @@ package com.liferay.message.boards.service.persistence;
 
 import com.liferay.message.boards.exception.NoSuchThreadFlagException;
 import com.liferay.message.boards.model.MBThreadFlag;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface MBThreadFlagPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link MBThreadFlagUtil} to access the message boards thread flag persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the message boards thread flags where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface MBThreadFlagPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the message boards thread flag where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchThreadFlagException</code> if it could not be found.
 	 *
@@ -234,6 +250,12 @@ public interface MBThreadFlagPersistence
 	 * @return the number of matching message boards thread flags
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the message boards thread flags where uuid = &#63; and companyId = &#63;.
@@ -390,6 +412,12 @@ public interface MBThreadFlagPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the message boards thread flags where userId = &#63;.
 	 *
@@ -533,6 +561,12 @@ public interface MBThreadFlagPersistence
 	 */
 	public int countByUserId(long userId);
 
+	public FinderPath getFinderPathWithPaginationFindByThreadId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByThreadId();
+
+	public FinderPath getFinderPathCountByThreadId();
+
 	/**
 	 * Returns all the message boards thread flags where threadId = &#63;.
 	 *
@@ -675,6 +709,10 @@ public interface MBThreadFlagPersistence
 	 * @return the number of matching message boards thread flags
 	 */
 	public int countByThreadId(long threadId);
+
+	public FinderPath getFinderPathFetchByU_T();
+
+	public FinderPath getFinderPathCountByU_T();
 
 	/**
 	 * Returns the message boards thread flag where userId = &#63; and threadId = &#63; or throws a <code>NoSuchThreadFlagException</code> if it could not be found.
@@ -845,5 +883,7 @@ public interface MBThreadFlagPersistence
 	 * @return the number of message boards thread flags
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -106,9 +106,42 @@ public class OrganizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the organizations where uuid = &#63;.
@@ -1075,8 +1108,25 @@ public class OrganizationPersistenceImpl
 		"(organization.uuid_ IS NULL OR organization.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the organizations where uuid = &#63; and companyId = &#63;.
@@ -2113,8 +2163,25 @@ public class OrganizationPersistenceImpl
 		"organization.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the organizations where companyId = &#63;.
@@ -3003,8 +3070,25 @@ public class OrganizationPersistenceImpl
 		"organization.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyIdLocations;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyIdLocations() {
+		return _finderPathWithPaginationFindByCompanyIdLocations;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyIdLocations;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyIdLocations() {
+		return _finderPathWithoutPaginationFindByCompanyIdLocations;
+	}
+
 	private FinderPath _finderPathCountByCompanyIdLocations;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyIdLocations() {
+		return _finderPathCountByCompanyIdLocations;
+	}
 
 	/**
 	 * Returns all the organizations where companyId = &#63;.
@@ -3896,8 +3980,25 @@ public class OrganizationPersistenceImpl
 		"organization.companyId = ? AND organization.parentOrganizationId != 0";
 
 	private FinderPath _finderPathWithPaginationFindByC_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_P() {
+		return _finderPathWithPaginationFindByC_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_P() {
+		return _finderPathWithoutPaginationFindByC_P;
+	}
+
 	private FinderPath _finderPathCountByC_P;
+
+	@Override
+	public FinderPath getFinderPathCountByC_P() {
+		return _finderPathCountByC_P;
+	}
 
 	/**
 	 * Returns all the organizations where companyId = &#63; and parentOrganizationId = &#63;.
@@ -4861,7 +4962,18 @@ public class OrganizationPersistenceImpl
 		"organization.parentOrganizationId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LikeT;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LikeT() {
+		return _finderPathWithPaginationFindByC_LikeT;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LikeT;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LikeT() {
+		return _finderPathWithPaginationCountByC_LikeT;
+	}
 
 	/**
 	 * Returns all the organizations where companyId = &#63; and treePath LIKE &#63;.
@@ -5889,7 +6001,18 @@ public class OrganizationPersistenceImpl
 		"(organization.treePath IS NULL OR organization.treePath LIKE '')";
 
 	private FinderPath _finderPathFetchByC_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_N() {
+		return _finderPathFetchByC_N;
+	}
+
 	private FinderPath _finderPathCountByC_N;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N() {
+		return _finderPathCountByC_N;
+	}
 
 	/**
 	 * Returns the organization where companyId = &#63; and name = &#63; or throws a <code>NoSuchOrganizationException</code> if it could not be found.
@@ -6153,7 +6276,18 @@ public class OrganizationPersistenceImpl
 		"(organization.name IS NULL OR organization.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LikeN() {
+		return _finderPathWithPaginationFindByC_LikeN;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LikeN() {
+		return _finderPathWithPaginationCountByC_LikeN;
+	}
 
 	/**
 	 * Returns all the organizations where companyId = &#63; and name LIKE &#63;.
@@ -7177,7 +7311,18 @@ public class OrganizationPersistenceImpl
 		"(organization.name IS NULL OR organization.name LIKE '')";
 
 	private FinderPath _finderPathWithPaginationFindByGtO_C_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGtO_C_P() {
+		return _finderPathWithPaginationFindByGtO_C_P;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGtO_C_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGtO_C_P() {
+		return _finderPathWithPaginationCountByGtO_C_P;
+	}
 
 	/**
 	 * Returns all the organizations where organizationId &gt; &#63; and companyId = &#63; and parentOrganizationId = &#63;.
@@ -7822,7 +7967,18 @@ public class OrganizationPersistenceImpl
 		"organization.parentOrganizationId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_P_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_P_LikeN() {
+		return _finderPathWithPaginationFindByC_P_LikeN;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_P_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_P_LikeN() {
+		return _finderPathWithPaginationCountByC_P_LikeN;
+	}
 
 	/**
 	 * Returns all the organizations where companyId = &#63; and parentOrganizationId = &#63; and name LIKE &#63;.
@@ -8920,7 +9076,18 @@ public class OrganizationPersistenceImpl
 		"(organization.name IS NULL OR organization.name LIKE '')";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the organization where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchOrganizationException</code> if it could not be found.
@@ -10859,6 +11026,59 @@ public class OrganizationPersistenceImpl
 
 		TableMapperFactory.removeTableMapper("Groups_Orgs");
 		TableMapperFactory.removeTableMapper("Users_Orgs");
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Organization> organizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Organization>> resultMap = new HashMap<>();
+
+			for (Organization organization : organizations) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OrganizationModelImpl organizationModelImpl =
+						(OrganizationModelImpl)organization;
+
+					arguments.add(
+						organizationModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), organization);
+				}
+				else {
+					List<Organization> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(organization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Organization>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Organization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOrganizationUtilPersistence(

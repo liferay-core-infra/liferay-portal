@@ -16,6 +16,7 @@ package com.liferay.message.boards.service;
 
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -1084,6 +1085,11 @@ public class MBMessageLocalServiceWrapper
 
 		return _mbMessageLocalService.getUserDiscussionMessagesCount(
 			userId, className, classPK, status);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_mbMessageLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

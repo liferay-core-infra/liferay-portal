@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.tax.engine.fixed.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -411,6 +412,11 @@ public class CommerceTaxFixedRateLocalServiceWrapper
 
 		return _commerceTaxFixedRateLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceTaxFixedRateLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

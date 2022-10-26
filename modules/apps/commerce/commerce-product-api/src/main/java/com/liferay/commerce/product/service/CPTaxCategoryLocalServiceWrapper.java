@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CPTaxCategory;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -446,6 +447,11 @@ public class CPTaxCategoryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _cpTaxCategoryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_cpTaxCategoryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

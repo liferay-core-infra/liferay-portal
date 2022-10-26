@@ -109,9 +109,42 @@ public class DDMTemplatePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the ddm templates where uuid = &#63;.
@@ -654,7 +687,18 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.uuid IS NULL OR ddmTemplate.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the ddm template where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchTemplateException</code> if it could not be found.
@@ -917,8 +961,25 @@ public class DDMTemplatePersistenceImpl
 		"ddmTemplate.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the ddm templates where uuid = &#63; and companyId = &#63;.
@@ -1511,8 +1572,25 @@ public class DDMTemplatePersistenceImpl
 		"ddmTemplate.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63;.
@@ -2394,8 +2472,25 @@ public class DDMTemplatePersistenceImpl
 		"ddmTemplate.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByClassPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByClassPK() {
+		return _finderPathWithPaginationFindByClassPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByClassPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByClassPK() {
+		return _finderPathWithoutPaginationFindByClassPK;
+	}
+
 	private FinderPath _finderPathCountByClassPK;
+
+	@Override
+	public FinderPath getFinderPathCountByClassPK() {
+		return _finderPathCountByClassPK;
+	}
 
 	/**
 	 * Returns all the ddm templates where classPK = &#63;.
@@ -2901,8 +2996,25 @@ public class DDMTemplatePersistenceImpl
 		"ddmTemplate.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByTemplateKey;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByTemplateKey() {
+		return _finderPathWithPaginationFindByTemplateKey;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByTemplateKey;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByTemplateKey() {
+		return _finderPathWithoutPaginationFindByTemplateKey;
+	}
+
 	private FinderPath _finderPathCountByTemplateKey;
+
+	@Override
+	public FinderPath getFinderPathCountByTemplateKey() {
+		return _finderPathCountByTemplateKey;
+	}
 
 	/**
 	 * Returns all the ddm templates where templateKey = &#63;.
@@ -3457,8 +3569,25 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.templateKey IS NULL OR ddmTemplate.templateKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByType() {
+		return _finderPathWithPaginationFindByType;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByType() {
+		return _finderPathWithoutPaginationFindByType;
+	}
+
 	private FinderPath _finderPathCountByType;
+
+	@Override
+	public FinderPath getFinderPathCountByType() {
+		return _finderPathCountByType;
+	}
 
 	/**
 	 * Returns all the ddm templates where type = &#63;.
@@ -4001,8 +4130,25 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.type IS NULL OR ddmTemplate.type = '')";
 
 	private FinderPath _finderPathWithPaginationFindByLanguage;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLanguage() {
+		return _finderPathWithPaginationFindByLanguage;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLanguage;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByLanguage() {
+		return _finderPathWithoutPaginationFindByLanguage;
+	}
+
 	private FinderPath _finderPathCountByLanguage;
+
+	@Override
+	public FinderPath getFinderPathCountByLanguage() {
+		return _finderPathCountByLanguage;
+	}
 
 	/**
 	 * Returns all the ddm templates where language = &#63;.
@@ -4552,7 +4698,18 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.language IS NULL OR ddmTemplate.language = '')";
 
 	private FinderPath _finderPathFetchBySmallImageId;
+
+	@Override
+	public FinderPath getFinderPathFetchBySmallImageId() {
+		return _finderPathFetchBySmallImageId;
+	}
+
 	private FinderPath _finderPathCountBySmallImageId;
+
+	@Override
+	public FinderPath getFinderPathCountBySmallImageId() {
+		return _finderPathCountBySmallImageId;
+	}
 
 	/**
 	 * Returns the ddm template where smallImageId = &#63; or throws a <code>NoSuchTemplateException</code> if it could not be found.
@@ -4780,8 +4937,25 @@ public class DDMTemplatePersistenceImpl
 		"ddmTemplate.smallImageId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C() {
+		return _finderPathWithPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C() {
+		return _finderPathWithoutPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C() {
+		return _finderPathCountByG_C;
+	}
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classNameId = &#63;.
@@ -5731,9 +5905,32 @@ public class DDMTemplatePersistenceImpl
 		"ddmTemplate.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_CPK() {
+		return _finderPathWithPaginationFindByG_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_CPK() {
+		return _finderPathWithoutPaginationFindByG_CPK;
+	}
+
 	private FinderPath _finderPathCountByG_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByG_CPK() {
+		return _finderPathCountByG_CPK;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_CPK() {
+		return _finderPathWithPaginationCountByG_CPK;
+	}
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classPK = &#63;.
@@ -7190,9 +7387,32 @@ public class DDMTemplatePersistenceImpl
 		"ddmTemplate.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C() {
+		return _finderPathWithPaginationFindByG_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C() {
+		return _finderPathWithoutPaginationFindByG_C_C;
+	}
+
 	private FinderPath _finderPathCountByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C() {
+		return _finderPathCountByG_C_C;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_C() {
+		return _finderPathWithPaginationCountByG_C_C;
+	}
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -8752,7 +8972,18 @@ public class DDMTemplatePersistenceImpl
 		"ddmTemplate.classPK = ?";
 
 	private FinderPath _finderPathFetchByG_C_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_T() {
+		return _finderPathFetchByG_C_T;
+	}
+
 	private FinderPath _finderPathCountByG_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_T() {
+		return _finderPathCountByG_C_T;
+	}
 
 	/**
 	 * Returns the ddm template where groupId = &#63; and classNameId = &#63; and templateKey = &#63; or throws a <code>NoSuchTemplateException</code> if it could not be found.
@@ -9044,8 +9275,25 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.templateKey IS NULL OR ddmTemplate.templateKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_T() {
+		return _finderPathWithPaginationFindByC_C_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_T() {
+		return _finderPathWithoutPaginationFindByC_C_T;
+	}
+
 	private FinderPath _finderPathCountByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_T() {
+		return _finderPathCountByC_C_T;
+	}
 
 	/**
 	 * Returns all the ddm templates where classNameId = &#63; and classPK = &#63; and type = &#63;.
@@ -9676,8 +9924,25 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.type IS NULL OR ddmTemplate.type = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_T() {
+		return _finderPathWithPaginationFindByG_C_C_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_T() {
+		return _finderPathWithoutPaginationFindByG_C_C_T;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_T() {
+		return _finderPathCountByG_C_C_T;
+	}
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63;.
@@ -10835,8 +11100,25 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.type_ IS NULL OR ddmTemplate.type_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_T_M;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_T_M() {
+		return _finderPathWithPaginationFindByG_C_C_T_M;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_T_M;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_T_M() {
+		return _finderPathWithoutPaginationFindByG_C_C_T_M;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_T_M;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_T_M() {
+		return _finderPathCountByG_C_C_T_M;
+	}
 
 	/**
 	 * Returns all the ddm templates where groupId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and mode = &#63;.
@@ -13328,6 +13610,59 @@ public class DDMTemplatePersistenceImpl
 		_setDDMTemplateUtilPersistence(null);
 
 		entityCache.removeCache(DDMTemplateImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DDMTemplate> ddmTemplates = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMTemplate>> resultMap = new HashMap<>();
+
+			for (DDMTemplate ddmTemplate : ddmTemplates) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMTemplateModelImpl ddmTemplateModelImpl =
+						(DDMTemplateModelImpl)ddmTemplate;
+
+					arguments.add(
+						ddmTemplateModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmTemplate);
+				}
+				else {
+					List<DDMTemplate> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmTemplate);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMTemplate>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMTemplate> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDDMTemplateUtilPersistence(

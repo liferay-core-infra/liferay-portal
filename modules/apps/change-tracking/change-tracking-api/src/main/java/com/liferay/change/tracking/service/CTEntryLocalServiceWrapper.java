@@ -14,6 +14,7 @@
 
 package com.liferay.change.tracking.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -388,6 +389,11 @@ public class CTEntryLocalServiceWrapper
 
 		return _ctEntryLocalService.hasCTEntry(
 			ctCollectionId, modelClassNameId, modelClassPK);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ctEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

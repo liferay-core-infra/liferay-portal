@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -50,6 +51,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -88,9 +90,42 @@ public class CPDAvailabilityEstimatePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the cpd availability estimates where uuid = &#63;.
@@ -634,8 +669,25 @@ public class CPDAvailabilityEstimatePersistenceImpl
 		"(cpdAvailabilityEstimate.uuid IS NULL OR cpdAvailabilityEstimate.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the cpd availability estimates where uuid = &#63; and companyId = &#63;.
@@ -1222,9 +1274,30 @@ public class CPDAvailabilityEstimatePersistenceImpl
 
 	private FinderPath
 		_finderPathWithPaginationFindByCommerceAvailabilityEstimateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceAvailabilityEstimateId() {
+
+		return _finderPathWithPaginationFindByCommerceAvailabilityEstimateId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByCommerceAvailabilityEstimateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceAvailabilityEstimateId() {
+
+		return _finderPathWithoutPaginationFindByCommerceAvailabilityEstimateId;
+	}
+
 	private FinderPath _finderPathCountByCommerceAvailabilityEstimateId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceAvailabilityEstimateId() {
+		return _finderPathCountByCommerceAvailabilityEstimateId;
+	}
 
 	/**
 	 * Returns all the cpd availability estimates where commerceAvailabilityEstimateId = &#63;.
@@ -1760,7 +1833,18 @@ public class CPDAvailabilityEstimatePersistenceImpl
 			"cpdAvailabilityEstimate.commerceAvailabilityEstimateId = ?";
 
 	private FinderPath _finderPathFetchByCProductId;
+
+	@Override
+	public FinderPath getFinderPathFetchByCProductId() {
+		return _finderPathFetchByCProductId;
+	}
+
 	private FinderPath _finderPathCountByCProductId;
+
+	@Override
+	public FinderPath getFinderPathCountByCProductId() {
+		return _finderPathCountByCProductId;
+	}
 
 	/**
 	 * Returns the cpd availability estimate where CProductId = &#63; or throws a <code>NoSuchCPDAvailabilityEstimateException</code> if it could not be found.
@@ -2652,6 +2736,67 @@ public class CPDAvailabilityEstimatePersistenceImpl
 		_setCPDAvailabilityEstimateUtilPersistence(null);
 
 		entityCache.removeCache(CPDAvailabilityEstimateImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CPDAvailabilityEstimate> cpdAvailabilityEstimates = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDAvailabilityEstimate>> resultMap =
+				new HashMap<>();
+
+			for (CPDAvailabilityEstimate cpdAvailabilityEstimate :
+					cpdAvailabilityEstimates) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDAvailabilityEstimateModelImpl
+						cpdAvailabilityEstimateModelImpl =
+							(CPDAvailabilityEstimateModelImpl)
+								cpdAvailabilityEstimate;
+
+					arguments.add(
+						cpdAvailabilityEstimateModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cpdAvailabilityEstimate);
+				}
+				else {
+					List<CPDAvailabilityEstimate> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpdAvailabilityEstimate);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPDAvailabilityEstimate>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDAvailabilityEstimate> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCPDAvailabilityEstimateUtilPersistence(

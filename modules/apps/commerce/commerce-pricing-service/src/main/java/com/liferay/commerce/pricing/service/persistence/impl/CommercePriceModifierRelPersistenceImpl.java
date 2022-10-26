@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -61,6 +62,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -104,10 +106,47 @@ public class CommercePriceModifierRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCommercePriceModifierId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCommercePriceModifierId() {
+
+		return _finderPathWithPaginationFindByCommercePriceModifierId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByCommercePriceModifierId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommercePriceModifierId() {
+
+		return _finderPathWithoutPaginationFindByCommercePriceModifierId;
+	}
+
 	private FinderPath _finderPathCountByCommercePriceModifierId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommercePriceModifierId() {
+		return _finderPathCountByCommercePriceModifierId;
+	}
 
 	/**
 	 * Returns all the commerce price modifier rels where commercePriceModifierId = &#63;.
@@ -644,8 +683,25 @@ public class CommercePriceModifierRelPersistenceImpl
 			"commercePriceModifierRel.commercePriceModifierId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCPM_CN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCPM_CN() {
+		return _finderPathWithPaginationFindByCPM_CN;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCPM_CN;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCPM_CN() {
+		return _finderPathWithoutPaginationFindByCPM_CN;
+	}
+
 	private FinderPath _finderPathCountByCPM_CN;
+
+	@Override
+	public FinderPath getFinderPathCountByCPM_CN() {
+		return _finderPathCountByCPM_CN;
+	}
 
 	/**
 	 * Returns all the commerce price modifier rels where commercePriceModifierId = &#63; and classNameId = &#63;.
@@ -1216,8 +1272,25 @@ public class CommercePriceModifierRelPersistenceImpl
 		"commercePriceModifierRel.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCN_CPK() {
+		return _finderPathWithPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCN_CPK() {
+		return _finderPathWithoutPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathCountByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByCN_CPK() {
+		return _finderPathCountByCN_CPK;
+	}
 
 	/**
 	 * Returns all the commerce price modifier rels where classNameId = &#63; and classPK = &#63;.
@@ -1777,7 +1850,18 @@ public class CommercePriceModifierRelPersistenceImpl
 		"commercePriceModifierRel.classPK = ?";
 
 	private FinderPath _finderPathFetchByCPM_CN_CPK;
+
+	@Override
+	public FinderPath getFinderPathFetchByCPM_CN_CPK() {
+		return _finderPathFetchByCPM_CN_CPK;
+	}
+
 	private FinderPath _finderPathCountByCPM_CN_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByCPM_CN_CPK() {
+		return _finderPathCountByCPM_CN_CPK;
+	}
 
 	/**
 	 * Returns the commerce price modifier rel where commercePriceModifierId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchPriceModifierRelException</code> if it could not be found.
@@ -2969,6 +3053,67 @@ public class CommercePriceModifierRelPersistenceImpl
 		_setCommercePriceModifierRelUtilPersistence(null);
 
 		entityCache.removeCache(CommercePriceModifierRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommercePriceModifierRel> commercePriceModifierRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommercePriceModifierRel>> resultMap =
+				new HashMap<>();
+
+			for (CommercePriceModifierRel commercePriceModifierRel :
+					commercePriceModifierRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommercePriceModifierRelModelImpl
+						commercePriceModifierRelModelImpl =
+							(CommercePriceModifierRelModelImpl)
+								commercePriceModifierRel;
+
+					arguments.add(
+						commercePriceModifierRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commercePriceModifierRel);
+				}
+				else {
+					List<CommercePriceModifierRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commercePriceModifierRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommercePriceModifierRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommercePriceModifierRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommercePriceModifierRelUtilPersistence(

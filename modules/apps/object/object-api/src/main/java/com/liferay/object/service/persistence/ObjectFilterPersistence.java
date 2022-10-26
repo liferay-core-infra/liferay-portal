@@ -16,6 +16,7 @@ package com.liferay.object.service.persistence;
 
 import com.liferay.object.exception.NoSuchObjectFilterException;
 import com.liferay.object.model.ObjectFilter;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface ObjectFilterPersistence extends BasePersistence<ObjectFilter> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ObjectFilterUtil} to access the object filter persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the object filters where uuid = &#63;.
@@ -182,6 +194,12 @@ public interface ObjectFilterPersistence extends BasePersistence<ObjectFilter> {
 	 * @return the number of matching object filters
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the object filters where uuid = &#63; and companyId = &#63;.
@@ -337,6 +355,12 @@ public interface ObjectFilterPersistence extends BasePersistence<ObjectFilter> {
 	 * @return the number of matching object filters
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByObjectFieldId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByObjectFieldId();
+
+	public FinderPath getFinderPathCountByObjectFieldId();
 
 	/**
 	 * Returns all the object filters where objectFieldId = &#63;.
@@ -600,5 +624,7 @@ public interface ObjectFilterPersistence extends BasePersistence<ObjectFilter> {
 	 * @return the number of object filters
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

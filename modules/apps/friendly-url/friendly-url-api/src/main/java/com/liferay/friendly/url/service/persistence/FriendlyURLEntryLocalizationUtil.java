@@ -125,6 +125,44 @@ public class FriendlyURLEntryLocalizationUtil {
 			friendlyURLEntryLocalization, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByFriendlyURLEntryId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByFriendlyURLEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByFriendlyURLEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByFriendlyURLEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByFriendlyURLEntryId() {
+
+		return getPersistence().getFinderPathCountByFriendlyURLEntryId();
+	}
+
 	/**
 	 * Returns all the friendly url entry localizations where friendlyURLEntryId = &#63;.
 	 *
@@ -307,6 +345,20 @@ public class FriendlyURLEntryLocalizationUtil {
 		return getPersistence().countByFriendlyURLEntryId(friendlyURLEntryId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByFriendlyURLEntryId_LanguageId() {
+
+		return getPersistence().
+			getFinderPathFetchByFriendlyURLEntryId_LanguageId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByFriendlyURLEntryId_LanguageId() {
+
+		return getPersistence().
+			getFinderPathCountByFriendlyURLEntryId_LanguageId();
+	}
+
 	/**
 	 * Returns the friendly url entry localization where friendlyURLEntryId = &#63; and languageId = &#63; or throws a <code>NoSuchFriendlyURLEntryLocalizationException</code> if it could not be found.
 	 *
@@ -388,6 +440,18 @@ public class FriendlyURLEntryLocalizationUtil {
 			friendlyURLEntryId, languageId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_C_U() {
+
+		return getPersistence().getFinderPathFetchByG_C_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_U() {
+
+		return getPersistence().getFinderPathCountByG_C_U();
+	}
+
 	/**
 	 * Returns the friendly url entry localization where groupId = &#63; and classNameId = &#63; and urlTitle = &#63; or throws a <code>NoSuchFriendlyURLEntryLocalizationException</code> if it could not be found.
 	 *
@@ -464,6 +528,24 @@ public class FriendlyURLEntryLocalizationUtil {
 		long groupId, long classNameId, String urlTitle) {
 
 		return getPersistence().countByG_C_U(groupId, classNameId, urlTitle);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C_C_L() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C_C_L();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C_C_L() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C_C_L();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C_C_L() {
+
+		return getPersistence().getFinderPathCountByG_C_C_L();
 	}
 
 	/**
@@ -857,6 +939,12 @@ public class FriendlyURLEntryLocalizationUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static FriendlyURLEntryLocalizationPersistence getPersistence() {

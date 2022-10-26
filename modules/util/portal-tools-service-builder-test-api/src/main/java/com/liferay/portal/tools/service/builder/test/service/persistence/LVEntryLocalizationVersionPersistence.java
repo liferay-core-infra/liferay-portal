@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchLVEntryLocalizationVersionException;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryLocalizationVersion;
@@ -40,6 +41,18 @@ public interface LVEntryLocalizationVersionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LVEntryLocalizationVersionUtil} to access the lv entry localization version persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByLvEntryLocalizationId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByLvEntryLocalizationId();
+
+	public FinderPath getFinderPathCountByLvEntryLocalizationId();
 
 	/**
 	 * Returns all the lv entry localization versions where lvEntryLocalizationId = &#63;.
@@ -188,6 +201,10 @@ public interface LVEntryLocalizationVersionPersistence
 	 */
 	public int countByLvEntryLocalizationId(long lvEntryLocalizationId);
 
+	public FinderPath getFinderPathFetchByLvEntryLocalizationId_Version();
+
+	public FinderPath getFinderPathCountByLvEntryLocalizationId_Version();
+
 	/**
 	 * Returns the lv entry localization version where lvEntryLocalizationId = &#63; and version = &#63; or throws a <code>NoSuchLVEntryLocalizationVersionException</code> if it could not be found.
 	 *
@@ -241,6 +258,12 @@ public interface LVEntryLocalizationVersionPersistence
 	 */
 	public int countByLvEntryLocalizationId_Version(
 		long lvEntryLocalizationId, int version);
+
+	public FinderPath getFinderPathWithPaginationFindByLvEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLvEntryId();
+
+	public FinderPath getFinderPathCountByLvEntryId();
 
 	/**
 	 * Returns all the lv entry localization versions where lvEntryId = &#63;.
@@ -385,6 +408,12 @@ public interface LVEntryLocalizationVersionPersistence
 	 * @return the number of matching lv entry localization versions
 	 */
 	public int countByLvEntryId(long lvEntryId);
+
+	public FinderPath getFinderPathWithPaginationFindByLvEntryId_Version();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLvEntryId_Version();
+
+	public FinderPath getFinderPathCountByLvEntryId_Version();
 
 	/**
 	 * Returns all the lv entry localization versions where lvEntryId = &#63; and version = &#63;.
@@ -540,6 +569,13 @@ public interface LVEntryLocalizationVersionPersistence
 	 * @return the number of matching lv entry localization versions
 	 */
 	public int countByLvEntryId_Version(long lvEntryId, int version);
+
+	public FinderPath getFinderPathWithPaginationFindByLvEntryId_LanguageId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByLvEntryId_LanguageId();
+
+	public FinderPath getFinderPathCountByLvEntryId_LanguageId();
 
 	/**
 	 * Returns all the lv entry localization versions where lvEntryId = &#63; and languageId = &#63;.
@@ -699,6 +735,10 @@ public interface LVEntryLocalizationVersionPersistence
 	 * @return the number of matching lv entry localization versions
 	 */
 	public int countByLvEntryId_LanguageId(long lvEntryId, String languageId);
+
+	public FinderPath getFinderPathFetchByLvEntryId_LanguageId_Version();
+
+	public FinderPath getFinderPathCountByLvEntryId_LanguageId_Version();
 
 	/**
 	 * Returns the lv entry localization version where lvEntryId = &#63; and languageId = &#63; and version = &#63; or throws a <code>NoSuchLVEntryLocalizationVersionException</code> if it could not be found.
@@ -884,5 +924,7 @@ public interface LVEntryLocalizationVersionPersistence
 	 * @return the number of lv entry localization versions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

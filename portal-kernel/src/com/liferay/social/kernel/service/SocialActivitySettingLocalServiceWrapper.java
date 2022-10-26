@@ -15,6 +15,7 @@
 package com.liferay.social.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.social.kernel.model.SocialActivitySetting;
@@ -377,6 +378,11 @@ public class SocialActivitySettingLocalServiceWrapper
 	public boolean isEnabled(long groupId, long classNameId, long classPK) {
 		return _socialActivitySettingLocalService.isEnabled(
 			groupId, classNameId, classPK);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_socialActivitySettingLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

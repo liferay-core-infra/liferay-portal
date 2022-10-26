@@ -119,6 +119,42 @@ public class OAuthUserUtil {
 		return getPersistence().update(oAuthUser, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the o auth users where userId = &#63;.
 	 *
@@ -359,6 +395,26 @@ public class OAuthUserUtil {
 	 */
 	public static int filterCountByUserId(long userId) {
 		return getPersistence().filterCountByUserId(userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByOAuthApplicationId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByOAuthApplicationId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByOAuthApplicationId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByOAuthApplicationId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByOAuthApplicationId() {
+
+		return getPersistence().getFinderPathCountByOAuthApplicationId();
 	}
 
 	/**
@@ -619,6 +675,18 @@ public class OAuthUserUtil {
 			oAuthApplicationId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByAccessToken() {
+
+		return getPersistence().getFinderPathFetchByAccessToken();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByAccessToken() {
+
+		return getPersistence().getFinderPathCountByAccessToken();
+	}
+
 	/**
 	 * Returns the o auth user where accessToken = &#63; or throws a <code>NoSuchUserException</code> if it could not be found.
 	 *
@@ -675,6 +743,18 @@ public class OAuthUserUtil {
 	 */
 	public static int countByAccessToken(String accessToken) {
 		return getPersistence().countByAccessToken(accessToken);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByU_OAI() {
+
+		return getPersistence().getFinderPathFetchByU_OAI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_OAI() {
+
+		return getPersistence().getFinderPathCountByU_OAI();
 	}
 
 	/**
@@ -886,6 +966,12 @@ public class OAuthUserUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static OAuthUserPersistence getPersistence() {

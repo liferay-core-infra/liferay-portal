@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CPOptionValue;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -475,6 +476,11 @@ public class CPOptionValueLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _cpOptionValueLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_cpOptionValueLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

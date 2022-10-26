@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.service;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -446,6 +447,9 @@ public interface SubscriptionLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean isSubscribed(
 		long companyId, long userId, String className, long[] classPKs);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	/**
 	 * Updates the subscription in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

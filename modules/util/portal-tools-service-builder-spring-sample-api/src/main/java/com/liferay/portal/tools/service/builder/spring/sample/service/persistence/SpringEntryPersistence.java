@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.spring.sample.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.spring.sample.exception.NoSuchSpringEntryException;
 import com.liferay.portal.tools.service.builder.spring.sample.model.SpringEntry;
@@ -39,6 +40,17 @@ public interface SpringEntryPersistence extends BasePersistence<SpringEntry> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SpringEntryUtil} to access the spring entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the spring entries where uuid = &#63;.
@@ -182,6 +194,12 @@ public interface SpringEntryPersistence extends BasePersistence<SpringEntry> {
 	 * @return the number of matching spring entries
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the spring entries where uuid = &#63; and companyId = &#63;.
@@ -337,6 +355,12 @@ public interface SpringEntryPersistence extends BasePersistence<SpringEntry> {
 	 * @return the number of matching spring entries
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the spring entries where companyId = &#63;.
@@ -600,5 +624,7 @@ public interface SpringEntryPersistence extends BasePersistence<SpringEntry> {
 	 * @return the number of spring entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

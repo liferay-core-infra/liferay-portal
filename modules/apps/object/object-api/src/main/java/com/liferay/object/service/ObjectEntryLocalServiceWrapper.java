@@ -14,6 +14,7 @@
 
 package com.liferay.object.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -637,6 +638,11 @@ public class ObjectEntryLocalServiceWrapper
 
 		_objectEntryLocalService.insertIntoOrUpdateExtensionTable(
 			objectDefinitionId, primaryKey, values);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_objectEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

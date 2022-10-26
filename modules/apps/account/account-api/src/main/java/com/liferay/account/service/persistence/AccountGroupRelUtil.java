@@ -119,6 +119,44 @@ public class AccountGroupRelUtil {
 		return getPersistence().update(accountGroupRel, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByAccountGroupId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByAccountGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByAccountGroupId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByAccountGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByAccountGroupId() {
+
+		return getPersistence().getFinderPathCountByAccountGroupId();
+	}
+
 	/**
 	 * Returns all the account group rels where accountGroupId = &#63;.
 	 *
@@ -293,6 +331,24 @@ public class AccountGroupRelUtil {
 	 */
 	public static int countByAccountGroupId(long accountGroupId) {
 		return getPersistence().countByAccountGroupId(accountGroupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByA_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByA_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByA_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByA_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByA_C() {
+
+		return getPersistence().getFinderPathCountByA_C();
 	}
 
 	/**
@@ -483,6 +539,24 @@ public class AccountGroupRelUtil {
 		return getPersistence().countByA_C(accountGroupId, classNameId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
+	}
+
 	/**
 	 * Returns all the account group rels where classNameId = &#63; and classPK = &#63;.
 	 *
@@ -668,6 +742,18 @@ public class AccountGroupRelUtil {
 	 */
 	public static int countByC_C(long classNameId, long classPK) {
 		return getPersistence().countByC_C(classNameId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByA_C_C() {
+
+		return getPersistence().getFinderPathFetchByA_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByA_C_C() {
+
+		return getPersistence().getFinderPathCountByA_C_C();
 	}
 
 	/**
@@ -897,6 +983,12 @@ public class AccountGroupRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static AccountGroupRelPersistence getPersistence() {

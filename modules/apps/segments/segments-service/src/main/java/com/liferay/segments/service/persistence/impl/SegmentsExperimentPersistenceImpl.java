@@ -112,9 +112,42 @@ public class SegmentsExperimentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the segments experiments where uuid = &#63;.
@@ -667,7 +700,18 @@ public class SegmentsExperimentPersistenceImpl
 		"(segmentsExperiment.uuid IS NULL OR segmentsExperiment.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the segments experiment where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchExperimentException</code> if it could not be found.
@@ -930,8 +974,25 @@ public class SegmentsExperimentPersistenceImpl
 		"segmentsExperiment.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the segments experiments where uuid = &#63; and companyId = &#63;.
@@ -1528,8 +1589,25 @@ public class SegmentsExperimentPersistenceImpl
 		"segmentsExperiment.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the segments experiments where groupId = &#63;.
@@ -2425,8 +2503,27 @@ public class SegmentsExperimentPersistenceImpl
 		"segmentsExperiment.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySegmentsExperimentKey;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySegmentsExperimentKey() {
+		return _finderPathWithPaginationFindBySegmentsExperimentKey;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySegmentsExperimentKey;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindBySegmentsExperimentKey() {
+
+		return _finderPathWithoutPaginationFindBySegmentsExperimentKey;
+	}
+
 	private FinderPath _finderPathCountBySegmentsExperimentKey;
+
+	@Override
+	public FinderPath getFinderPathCountBySegmentsExperimentKey() {
+		return _finderPathCountBySegmentsExperimentKey;
+	}
 
 	/**
 	 * Returns all the segments experiments where segmentsExperimentKey = &#63;.
@@ -3006,7 +3103,18 @@ public class SegmentsExperimentPersistenceImpl
 			"(segmentsExperiment.segmentsExperimentKey IS NULL OR segmentsExperiment.segmentsExperimentKey = '')";
 
 	private FinderPath _finderPathFetchByG_S;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_S() {
+		return _finderPathFetchByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns the segments experiment where groupId = &#63; and segmentsExperimentKey = &#63; or throws a <code>NoSuchExperimentException</code> if it could not be found.
@@ -3277,8 +3385,25 @@ public class SegmentsExperimentPersistenceImpl
 		"(segmentsExperiment.segmentsExperimentKey IS NULL OR segmentsExperiment.segmentsExperimentKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C() {
+		return _finderPathWithPaginationFindByG_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C() {
+		return _finderPathWithoutPaginationFindByG_C_C;
+	}
+
 	private FinderPath _finderPathCountByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C() {
+		return _finderPathCountByG_C_C;
+	}
 
 	/**
 	 * Returns all the segments experiments where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -4300,8 +4425,25 @@ public class SegmentsExperimentPersistenceImpl
 		"segmentsExperiment.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByS_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByS_C_C() {
+		return _finderPathWithPaginationFindByS_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByS_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByS_C_C() {
+		return _finderPathWithoutPaginationFindByS_C_C;
+	}
+
 	private FinderPath _finderPathCountByS_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByS_C_C() {
+		return _finderPathCountByS_C_C;
+	}
 
 	/**
 	 * Returns all the segments experiments where segmentsExperienceId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -4909,9 +5051,32 @@ public class SegmentsExperimentPersistenceImpl
 		"segmentsExperiment.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByS_C_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByS_C_C_S() {
+		return _finderPathWithPaginationFindByS_C_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByS_C_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByS_C_C_S() {
+		return _finderPathWithoutPaginationFindByS_C_C_S;
+	}
+
 	private FinderPath _finderPathCountByS_C_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByS_C_C_S() {
+		return _finderPathCountByS_C_C_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByS_C_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByS_C_C_S() {
+		return _finderPathWithPaginationCountByS_C_C_S;
+	}
 
 	/**
 	 * Returns all the segments experiments where segmentsExperienceId = &#63; and classNameId = &#63; and classPK = &#63; and status = &#63;.
@@ -6987,6 +7152,61 @@ public class SegmentsExperimentPersistenceImpl
 		_setSegmentsExperimentUtilPersistence(null);
 
 		entityCache.removeCache(SegmentsExperimentImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SegmentsExperiment> segmentsExperiments = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsExperiment>> resultMap =
+				new HashMap<>();
+
+			for (SegmentsExperiment segmentsExperiment : segmentsExperiments) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsExperimentModelImpl segmentsExperimentModelImpl =
+						(SegmentsExperimentModelImpl)segmentsExperiment;
+
+					arguments.add(
+						segmentsExperimentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsExperiment);
+				}
+				else {
+					List<SegmentsExperiment> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsExperiment);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsExperiment>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsExperiment> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSegmentsExperimentUtilPersistence(

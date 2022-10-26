@@ -47,7 +47,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Albert Lee
  */
 @Component(
-	immediate = true,
 	property = "javax.portlet.name=" + UsersAdminPortletKeys.USERS_ADMIN,
 	service = PortletConfigurationIcon.class
 )

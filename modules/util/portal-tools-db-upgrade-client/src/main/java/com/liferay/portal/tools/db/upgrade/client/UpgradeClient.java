@@ -23,6 +23,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 
@@ -37,9 +38,12 @@ import java.security.ProtectionDomain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -165,6 +169,14 @@ public class UpgradeClient {
 
 		_portalUpgradeExtProperties = _readProperties(
 			_portalUpgradeExtPropertiesFile);
+
+		_systemUpgradeExtPropertiesFile = new File(
+			_jarDir, "system-upgrade-ext.properties");
+
+		_systemUpgradeExtProperties = _readProperties(
+			_systemUpgradeExtPropertiesFile);
+
+		_systemUpgradeProperties = _readProperties("system-upgrade.properties");
 	}
 
 	public void upgrade() throws IOException {
@@ -214,7 +226,7 @@ public class UpgradeClient {
 				inputStreamReader)) {
 
 			bootstrapObjectOutputStream.writeObject(_getClassPath());
-
+			bootstrapObjectOutputStream.writeObject(_getSystemProperties());
 			bootstrapObjectOutputStream.flush();
 
 			String line = null;
@@ -272,7 +284,7 @@ public class UpgradeClient {
 		try {
 			_verifyAppServerProperties();
 			_verifyPortalUpgradeDatabaseProperties();
-			_verifyPortalUpgradeExtProperties();
+			_verifySystemUpgradeExtProperties();
 
 			_saveProperties();
 		}
@@ -365,6 +377,27 @@ public class UpgradeClient {
 		_appendClassPath(sb, _appServer.getExtraLibDirs());
 
 		return sb.toString();
+	}
+
+	private Map<String, String> _getSystemProperties() {
+		Map<String, String> systemProperties = new HashMap<>();
+
+		Set<String> systemKeys = _systemUpgradeProperties.propertyNames();
+
+		for (String systemKey : systemKeys) {
+			systemProperties.put(
+				systemKey, _systemUpgradeProperties.getProperty(systemKey));
+		}
+
+		Set<String> systemExtKeys = _systemUpgradeExtProperties.propertyNames();
+
+		for (String systemExtKey : systemExtKeys) {
+			systemProperties.put(
+				systemExtKey,
+				_systemUpgradeExtProperties.getProperty(systemExtKey));
+		}
+
+		return systemProperties;
 	}
 
 	private GogoShellClient _initGogoShellClient() throws IOException {
@@ -469,11 +502,35 @@ public class UpgradeClient {
 		return properties;
 	}
 
+	private Properties _readProperties(String fileName) throws IOException {
+		Properties properties = new Properties();
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader classLoader = currentThread.getContextClassLoader();
+
+		Enumeration<URL> enumeration = classLoader.getResources(fileName);
+
+		while (enumeration.hasMoreElements()) {
+			URL url = enumeration.nextElement();
+
+			try (InputStream inputStream = url.openStream()) {
+				properties.load(inputStream);
+			}
+			catch (IOException ioException) {
+				System.err.println("Unable to load " + url);
+			}
+		}
+
+		return properties;
+	}
+
 	private void _saveProperties() throws IOException {
 		_appServerProperties.store(_appServerPropertiesFile);
 		_portalUpgradeDatabaseProperties.store(
 			_portalUpgradeDatabasePropertiesFile);
 		_portalUpgradeExtProperties.store(_portalUpgradeExtPropertiesFile);
+		_systemUpgradeExtProperties.store(_systemUpgradeExtPropertiesFile);
 	}
 
 	private void _verifyAppServerProperties() throws IOException {
@@ -699,8 +756,8 @@ public class UpgradeClient {
 			"jdbc.default.username", userName);
 	}
 
-	private void _verifyPortalUpgradeExtProperties() throws IOException {
-		String value = _portalUpgradeExtProperties.getProperty("liferay.home");
+	private void _verifySystemUpgradeExtProperties() throws IOException {
+		String value = _systemUpgradeExtProperties.getProperty("liferay.home");
 
 		File baseDir = new File(".");
 
@@ -727,7 +784,7 @@ public class UpgradeClient {
 			liferayHome = new File(baseDir, value);
 		}
 
-		_portalUpgradeExtProperties.setProperty(
+		_systemUpgradeExtProperties.setProperty(
 			"liferay.home", liferayHome.getCanonicalPath());
 	}
 
@@ -794,5 +851,8 @@ public class UpgradeClient {
 	private final Properties _portalUpgradeExtProperties;
 	private final File _portalUpgradeExtPropertiesFile;
 	private final boolean _shell;
+	private final Properties _systemUpgradeExtProperties;
+	private final File _systemUpgradeExtPropertiesFile;
+	private final Properties _systemUpgradeProperties;
 
 }

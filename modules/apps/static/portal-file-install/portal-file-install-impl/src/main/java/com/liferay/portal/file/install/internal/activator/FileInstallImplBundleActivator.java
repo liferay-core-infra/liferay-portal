@@ -20,6 +20,7 @@ import com.liferay.portal.file.install.internal.DirectoryWatcher;
 import com.liferay.portal.file.install.internal.Scanner;
 import com.liferay.portal.file.install.internal.configuration.ConfigurationFileInstaller;
 import com.liferay.portal.file.install.internal.configuration.FileSyncConfigurationListener;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 
 import java.io.File;
@@ -46,7 +47,9 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 		_bundleContext = bundleContext;
 
 		_jarFileInstallerServiceRegistration = _bundleContext.registerService(
-			FileInstaller.class, new DefaultJarInstaller(), null);
+			FileInstaller.class, new DefaultJarInstaller(),
+			MapUtil.singletonDictionary(
+				"impl.class", DefaultJarInstaller.class.getName()));
 
 		_serviceTracker = new ServiceTracker<>(
 			bundleContext, ConfigurationAdmin.class.getName(),
@@ -67,7 +70,9 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 								configurationAdmin,
 								ModuleFrameworkPropsValues.
 									MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING),
-							null),
+							MapUtil.singletonDictionary(
+								"impl.class",
+								ConfigurationFileInstaller.class.getName())),
 						_bundleContext.registerService(
 							ConfigurationListener.class.getName(),
 							new FileSyncConfigurationListener(
@@ -75,7 +80,10 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 								FileInstallImplBundleActivator.this,
 								ModuleFrameworkPropsValues.
 									MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING),
-							null));
+							MapUtil.singletonDictionary(
+								"impl.class",
+								FileSyncConfigurationListener.class.
+									getName())));
 				}
 
 				@Override

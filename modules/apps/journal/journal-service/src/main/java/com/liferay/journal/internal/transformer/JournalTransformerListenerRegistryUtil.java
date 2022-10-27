@@ -14,14 +14,15 @@
 
 package com.liferay.journal.internal.transformer;
 
-import com.liferay.journal.util.JournalTransformerListenerRegistry;
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.journal.constants.JournalPortletKeys;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.templateparser.TransformerListener;
+import com.liferay.portal.kernel.util.ListUtil;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Pavel Savinov
@@ -29,24 +30,29 @@ import org.osgi.util.tracker.ServiceTracker;
 public class JournalTransformerListenerRegistryUtil {
 
 	public static TransformerListener getTransformerListener(String className) {
-		JournalTransformerListenerRegistry journalTransformerListenerRegistry =
-			_serviceTracker.getService();
-
-		return journalTransformerListenerRegistry.getTransformerListener(
-			className);
+		return _serviceTrackerMap.getService(className);
 	}
 
 	public static List<TransformerListener> getTransformerListeners() {
-		JournalTransformerListenerRegistry journalTransformerListenerRegistry =
-			_serviceTracker.getService();
+		return ListUtil.filter(
+			new ArrayList<>(_serviceTrackerMap.values()),
+			transformerListener -> {
+				if (transformerListener.isEnabled()) {
+					return true;
+				}
 
-		return journalTransformerListenerRegistry.getTransformerListeners();
+				return false;
+			});
 	}
 
-	private static final ServiceTracker<?, JournalTransformerListenerRegistry>
-		_serviceTracker = ServiceTrackerFactory.open(
-			FrameworkUtil.getBundle(
-				JournalTransformerListenerRegistryUtil.class),
-			JournalTransformerListenerRegistry.class);
+	private static final ServiceTrackerMap<String, TransformerListener>
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			SystemBundleUtil.getBundleContext(), TransformerListener.class,
+			"(javax.portlet.name=" + JournalPortletKeys.JOURNAL + ")",
+			(serviceReference, emitter) -> {
+				Class<?> clazz = serviceReference.getClass();
+
+				emitter.emit(clazz.getName());
+			});
 
 }

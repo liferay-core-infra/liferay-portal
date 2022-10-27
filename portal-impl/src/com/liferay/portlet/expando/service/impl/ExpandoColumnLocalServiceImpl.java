@@ -540,7 +540,7 @@ public class ExpandoColumnLocalServiceImpl
 			Map<Locale, String> defaultValuesMap =
 				(Map<Locale, String>)defaultData;
 
-			Locale defaultLocale = LocaleUtil.getDefault();
+			Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 			if (Validator.isNull(defaultValuesMap.get(defaultLocale))) {
 				for (String defaultValue : defaultValuesMap.values()) {

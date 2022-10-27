@@ -473,6 +473,8 @@ upgrade.database.auto.run=false</echo>
 
 		<delete file="${db.upgrade.client.home}/portal-upgrade-ext.properties" />
 
+		<delete file="${db.upgrade.client.home}/system-upgrade-ext.properties" />
+
 		<prepare-database-upgrade-configuration />
 
 		<clean-database-upgrade-client />
@@ -502,7 +504,7 @@ upgrade.database.auto.run=false</echo>
 				/>
 			</delete>
 
-			<for list="app-server.properties,com.liferay.portal.tools.db.upgrade.client.jar,db_upgrade.bat,db_upgrade.sh,portal-upgrade-database.properties,portal-upgrade-ext.properties" param="upgrade.file">
+			<for list="app-server.properties,com.liferay.portal.tools.db.upgrade.client.jar,db_upgrade.bat,db_upgrade.sh,portal-upgrade-database.properties,portal-upgrade-ext.properties,system-upgrade-ext.properties" param="upgrade.file">
 				<sequential>
 					<if>
 						<available file="${db.upgrade.client.home}/@{upgrade.file}" />
@@ -526,6 +528,8 @@ upgrade.database.auto.run=false</echo>
 		<prepare-database-upgrade-configuration />
 
 		<delete file="${db.upgrade.client.home}/portal-upgrade-ext.properties" />
+
+		<delete file="${db.upgrade.client.home}/system-upgrade-ext.properties" />
 
 		<run-expect
 			db.upgrade.client.home="${db.upgrade.client.home}"
@@ -605,6 +609,8 @@ upgrade.database.auto.run=false</echo>
 		<delete file="${db.upgrade.client.home}/portal-upgrade-database.properties" />
 
 		<delete file="${db.upgrade.client.home}/portal-upgrade-ext.properties" />
+
+		<delete file="${db.upgrade.client.home}/system-upgrade-ext.properties" />
 
 		<run-expect
 			db.upgrade.client.home="${db.upgrade.client.home}"

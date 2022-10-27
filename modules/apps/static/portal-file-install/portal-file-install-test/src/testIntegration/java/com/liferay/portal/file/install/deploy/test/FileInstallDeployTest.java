@@ -15,10 +15,15 @@
 package com.liferay.portal.file.install.deploy.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.file.install.FileInstaller;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
@@ -471,6 +476,52 @@ public class FileInstallDeployTest {
 		}
 	}
 
+	@Test
+	public void testFindExistingConfiguration() throws Exception {
+		String configFileName = _CONFIGURATION_PID.concat(
+			".testFindExistingConfiguration.config");
+
+		_testFindExistingConfiguration(
+			configFileName,
+			(path) -> {
+				String content = StringBundler.concat(
+					_TEST_KEY, StringPool.EQUAL, StringPool.QUOTE,
+					_TEST_VALUE_1, StringPool.QUOTE);
+
+				Files.write(path, content.getBytes());
+
+				return null;
+			});
+	}
+
+	@Test
+	public void testFindExistingConfigurationWithSymlink() throws Exception {
+		String configFileName = _CONFIGURATION_PID.concat(
+			".testFindExistingConfigurationWithSymlink.config");
+
+		Path targetConfigPath = Paths.get(
+			FileUtil.createTempFileName("config"));
+
+		try {
+			_testFindExistingConfiguration(
+				configFileName,
+				(path) -> {
+					String content = StringBundler.concat(
+						_TEST_KEY, StringPool.EQUAL, StringPool.QUOTE,
+						_TEST_VALUE_1, StringPool.QUOTE);
+
+					Files.write(targetConfigPath, content.getBytes());
+
+					Files.createSymbolicLink(path, targetConfigPath);
+
+					return null;
+				});
+		}
+		finally {
+			Files.deleteIfExists(targetConfigPath);
+		}
+	}
+
 	private Bundle _getBundle(String symbolicName) {
 		for (Bundle currentBundle : _bundleContext.getBundles()) {
 			if (Objects.equals(currentBundle.getSymbolicName(), symbolicName)) {
@@ -479,6 +530,49 @@ public class FileInstallDeployTest {
 		}
 
 		return null;
+	}
+
+	private void _testFindExistingConfiguration(
+			String fileName,
+			UnsafeFunction<Path, Void, Exception> unsafeFunction)
+		throws Exception {
+
+		Path path = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, fileName);
+
+		try {
+			Configuration configuration =
+				ConfigurationTestUtil.updateConfiguration(
+					_CONFIGURATION_PID, () -> unsafeFunction.apply(path));
+
+			Dictionary<String, Object> properties =
+				configuration.getProperties();
+
+			Assert.assertEquals(_TEST_VALUE_1, properties.get(_TEST_KEY));
+
+			configuration = ReflectionTestUtil.invoke(
+				_fileInstaller, "_findExistingConfiguration",
+				new Class<?>[] {String.class}, fileName);
+
+			Assert.assertNotNull(configuration);
+
+			properties = configuration.getProperties();
+
+			Assert.assertEquals(_TEST_VALUE_1, properties.get(_TEST_KEY));
+
+			configuration = ConfigurationTestUtil.updateConfiguration(
+				_CONFIGURATION_PID, () -> Files.delete(path));
+
+			Assert.assertNull(configuration);
+
+			Assert.assertNull(
+				ReflectionTestUtil.invoke(
+					_fileInstaller, "_findExistingConfiguration",
+					new Class<?>[] {String.class}, fileName));
+		}
+		finally {
+			Files.deleteIfExists(path);
+		}
 	}
 
 	private void _uninstall(String symbolicName, Path path) throws Exception {
@@ -534,6 +628,11 @@ public class FileInstallDeployTest {
 
 	@Inject
 	private static ConfigurationAdmin _configurationAdmin;
+
+	@Inject(
+		filter = "impl.class=com.liferay.portal.file.install.internal.configuration.ConfigurationFileInstaller"
+	)
+	private static FileInstaller _fileInstaller;
 
 	static {
 		Package pkg = FileInstallDeployTest.class.getPackage();

@@ -21,6 +21,8 @@ public interface SystemPropsKeys {
 
 	public static final String DEFAULT_LIFERAY_HOME = "default.liferay.home";
 
+	public static final String LIFERAY_HOME = "liferay.home";
+
 	public static final String LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR =
 		"liferay.shielded.container.lib.portal.dir";
 

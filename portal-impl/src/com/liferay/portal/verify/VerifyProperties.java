@@ -308,6 +308,7 @@ public class VerifyProperties {
 			"http.header.secure.x.frame.options.255",
 			"http.header.secure.x.frame.options.255"
 		},
+		{"liferay.home", "liferay.home"},
 		{
 			"liferay.shielded.container.lib.portal.dir",
 			"liferay.shielded.container.lib.portal.dir"

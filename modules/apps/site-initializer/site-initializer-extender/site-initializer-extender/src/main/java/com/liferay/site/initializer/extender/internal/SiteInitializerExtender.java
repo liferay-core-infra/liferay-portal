@@ -67,8 +67,9 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.segments.service.SegmentsEntryLocalService;
 import com.liferay.site.initializer.extender.internal.file.backed.osgi.FileBackedBundleDelegate;
 import com.liferay.site.initializer.extender.internal.file.backed.servlet.FileBackedServletContextDelegate;
@@ -188,7 +189,8 @@ public class SiteInitializerExtender
 		_bundleTracker.open();
 
 		File siteInitializersDirectoryFile = new File(
-			PropsValues.LIFERAY_HOME, "site-initializers");
+			SystemProperties.get(SystemPropsKeys.LIFERAY_HOME),
+			"site-initializers");
 
 		if (siteInitializersDirectoryFile.isDirectory()) {
 			for (File file : siteInitializersDirectoryFile.listFiles()) {

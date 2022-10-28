@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Lourdes Fernández Besada
  */
 @Component(service = LayoutDisplayPageInfoItemFieldValuesProviderRegistry.class)
-public class LayoutDisplayPageInfoItemFieldValuesProviderTrackerImpl
+public class LayoutDisplayPageInfoItemFieldValuesProviderRegistryImpl
 	implements LayoutDisplayPageInfoItemFieldValuesProviderRegistry {
 
 	@Override

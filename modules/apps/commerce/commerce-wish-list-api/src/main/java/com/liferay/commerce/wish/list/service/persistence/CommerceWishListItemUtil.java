@@ -122,6 +122,44 @@ public class CommerceWishListItemUtil {
 		return getPersistence().update(commerceWishListItem, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceWishListId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceWishListId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceWishListId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceWishListId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceWishListId() {
+
+		return getPersistence().getFinderPathCountByCommerceWishListId();
+	}
+
 	/**
 	 * Returns all the commerce wish list items where commerceWishListId = &#63;.
 	 *
@@ -299,6 +337,26 @@ public class CommerceWishListItemUtil {
 	 */
 	public static int countByCommerceWishListId(long commerceWishListId) {
 		return getPersistence().countByCommerceWishListId(commerceWishListId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCPInstanceUuid() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCPInstanceUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCPInstanceUuid() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCPInstanceUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCPInstanceUuid() {
+
+		return getPersistence().getFinderPathCountByCPInstanceUuid();
 	}
 
 	/**
@@ -480,6 +538,25 @@ public class CommerceWishListItemUtil {
 		return getPersistence().countByCPInstanceUuid(CPInstanceUuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCProductId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCProductId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCProductId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCProductId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCProductId() {
+
+		return getPersistence().getFinderPathCountByCProductId();
+	}
+
 	/**
 	 * Returns all the commerce wish list items where CProductId = &#63;.
 	 *
@@ -654,6 +731,24 @@ public class CommerceWishListItemUtil {
 	 */
 	public static int countByCProductId(long CProductId) {
 		return getPersistence().countByCProductId(CProductId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCW_CPI() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCW_CPI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCW_CPI() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCW_CPI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCW_CPI() {
+
+		return getPersistence().getFinderPathCountByCW_CPI();
 	}
 
 	/**
@@ -855,6 +950,24 @@ public class CommerceWishListItemUtil {
 			commerceWishListId, CPInstanceUuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCW_CP() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCW_CP();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCW_CP() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCW_CP();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCW_CP() {
+
+		return getPersistence().getFinderPathCountByCW_CP();
+	}
+
 	/**
 	 * Returns all the commerce wish list items where commerceWishListId = &#63; and CProductId = &#63;.
 	 *
@@ -1046,6 +1159,18 @@ public class CommerceWishListItemUtil {
 	 */
 	public static int countByCW_CP(long commerceWishListId, long CProductId) {
 		return getPersistence().countByCW_CP(commerceWishListId, CProductId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByCW_CPI_CP() {
+
+		return getPersistence().getFinderPathFetchByCW_CPI_CP();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCW_CPI_CP() {
+
+		return getPersistence().getFinderPathCountByCW_CPI_CP();
 	}
 
 	/**
@@ -1286,6 +1411,12 @@ public class CommerceWishListItemUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceWishListItemPersistence getPersistence() {

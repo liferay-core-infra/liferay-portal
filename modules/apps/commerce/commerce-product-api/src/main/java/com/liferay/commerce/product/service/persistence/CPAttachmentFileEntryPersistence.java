@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service.persistence;
 
 import com.liferay.commerce.product.exception.NoSuchCPAttachmentFileEntryException;
 import com.liferay.commerce.product.model.CPAttachmentFileEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -44,6 +45,17 @@ public interface CPAttachmentFileEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CPAttachmentFileEntryUtil} to access the cp attachment file entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the cp attachment file entries where uuid = &#63;.
@@ -188,6 +200,10 @@ public interface CPAttachmentFileEntryPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the cp attachment file entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCPAttachmentFileEntryException</code> if it could not be found.
 	 *
@@ -237,6 +253,12 @@ public interface CPAttachmentFileEntryPersistence
 	 * @return the number of matching cp attachment file entries
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the cp attachment file entries where uuid = &#63; and companyId = &#63;.
@@ -393,6 +415,12 @@ public interface CPAttachmentFileEntryPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
+
 	/**
 	 * Returns all the cp attachment file entries where classNameId = &#63; and classPK = &#63;.
 	 *
@@ -548,6 +576,10 @@ public interface CPAttachmentFileEntryPersistence
 	 */
 	public int countByC_C(long classNameId, long classPK);
 
+	public FinderPath getFinderPathWithPaginationFindByLtD_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtD_S();
+
 	/**
 	 * Returns all the cp attachment file entries where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -702,6 +734,12 @@ public interface CPAttachmentFileEntryPersistence
 	 * @return the number of matching cp attachment file entries
 	 */
 	public int countByLtD_S(Date displayDate, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_F();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_F();
+
+	public FinderPath getFinderPathCountByC_C_F();
 
 	/**
 	 * Returns all the cp attachment file entries where classNameId = &#63; and classPK = &#63; and fileEntryId = &#63;.
@@ -870,6 +908,12 @@ public interface CPAttachmentFileEntryPersistence
 	 */
 	public int countByC_C_F(long classNameId, long classPK, long fileEntryId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C();
+
+	public FinderPath getFinderPathCountByC_C_C();
+
 	/**
 	 * Returns all the cp attachment file entries where classNameId = &#63; and classPK = &#63; and cdnURL = &#63;.
 	 *
@@ -1036,6 +1080,10 @@ public interface CPAttachmentFileEntryPersistence
 	 * @return the number of matching cp attachment file entries
 	 */
 	public int countByC_C_C(long classNameId, long classPK, String cdnURL);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_LtD_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_C_LtD_S();
 
 	/**
 	 * Returns all the cp attachment file entries where classNameId = &#63; and classPK = &#63; and displayDate &lt; &#63; and status = &#63;.
@@ -1220,6 +1268,12 @@ public interface CPAttachmentFileEntryPersistence
 	public int countByC_C_LtD_S(
 		long classNameId, long classPK, Date displayDate, int status);
 
+	public FinderPath getFinderPathWithPaginationFindByC_C_T_ST();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_T_ST();
+
+	public FinderPath getFinderPathCountByC_C_T_ST();
+
 	/**
 	 * Returns all the cp attachment file entries where classNameId = &#63; and classPK = &#63; and type = &#63; and status = &#63;.
 	 *
@@ -1402,6 +1456,10 @@ public interface CPAttachmentFileEntryPersistence
 	 */
 	public int countByC_C_T_ST(
 		long classNameId, long classPK, int type, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_T_NotST();
+
+	public FinderPath getFinderPathWithPaginationCountByC_C_T_NotST();
 
 	/**
 	 * Returns all the cp attachment file entries where classNameId = &#63; and classPK = &#63; and type = &#63; and status &ne; &#63;.
@@ -1586,6 +1644,10 @@ public interface CPAttachmentFileEntryPersistence
 	public int countByC_C_T_NotST(
 		long classNameId, long classPK, int type, int status);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the cp attachment file entry where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCPAttachmentFileEntryException</code> if it could not be found.
 	 *
@@ -1761,5 +1823,7 @@ public interface CPAttachmentFileEntryPersistence
 	 * @return the number of cp attachment file entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -105,9 +106,42 @@ public class KaleoDefinitionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the kaleo definitions where companyId = &#63;.
@@ -621,7 +655,18 @@ public class KaleoDefinitionPersistenceImpl
 		"kaleoDefinition.companyId = ?";
 
 	private FinderPath _finderPathFetchByC_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_N() {
+		return _finderPathFetchByC_N;
+	}
+
 	private FinderPath _finderPathCountByC_N;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N() {
+		return _finderPathCountByC_N;
+	}
 
 	/**
 	 * Returns the kaleo definition where companyId = &#63; and name = &#63; or throws a <code>NoSuchDefinitionException</code> if it could not be found.
@@ -899,8 +944,25 @@ public class KaleoDefinitionPersistenceImpl
 		"(kaleoDefinition.name IS NULL OR kaleoDefinition.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S() {
+		return _finderPathWithPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S() {
+		return _finderPathWithoutPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S() {
+		return _finderPathCountByC_S;
+	}
 
 	/**
 	 * Returns all the kaleo definitions where companyId = &#63; and scope = &#63;.
@@ -1495,8 +1557,25 @@ public class KaleoDefinitionPersistenceImpl
 		"(kaleoDefinition.scope IS NULL OR kaleoDefinition.scope = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A() {
+		return _finderPathWithPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_A() {
+		return _finderPathWithoutPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathCountByC_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A() {
+		return _finderPathCountByC_A;
+	}
 
 	/**
 	 * Returns all the kaleo definitions where companyId = &#63; and active = &#63;.
@@ -2050,7 +2129,18 @@ public class KaleoDefinitionPersistenceImpl
 		"kaleoDefinition.active = ?";
 
 	private FinderPath _finderPathFetchByC_N_V;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_N_V() {
+		return _finderPathFetchByC_N_V;
+	}
+
 	private FinderPath _finderPathCountByC_N_V;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N_V() {
+		return _finderPathCountByC_N_V;
+	}
 
 	/**
 	 * Returns the kaleo definition where companyId = &#63; and name = &#63; and version = &#63; or throws a <code>NoSuchDefinitionException</code> if it could not be found.
@@ -2354,7 +2444,18 @@ public class KaleoDefinitionPersistenceImpl
 		"kaleoDefinition.version = ?";
 
 	private FinderPath _finderPathFetchByC_N_A;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_N_A() {
+		return _finderPathFetchByC_N_A;
+	}
+
 	private FinderPath _finderPathCountByC_N_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_N_A() {
+		return _finderPathCountByC_N_A;
+	}
 
 	/**
 	 * Returns the kaleo definition where companyId = &#63; and name = &#63; and active = &#63; or throws a <code>NoSuchDefinitionException</code> if it could not be found.
@@ -2658,8 +2759,25 @@ public class KaleoDefinitionPersistenceImpl
 		"kaleoDefinition.active = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_S_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S_A() {
+		return _finderPathWithPaginationFindByC_S_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S_A() {
+		return _finderPathWithoutPaginationFindByC_S_A;
+	}
+
 	private FinderPath _finderPathCountByC_S_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S_A() {
+		return _finderPathCountByC_S_A;
+	}
 
 	/**
 	 * Returns all the kaleo definitions where companyId = &#63; and scope = &#63; and active = &#63;.
@@ -4271,6 +4389,61 @@ public class KaleoDefinitionPersistenceImpl
 		_setKaleoDefinitionUtilPersistence(null);
 
 		entityCache.removeCache(KaleoDefinitionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KaleoDefinition> kaleoDefinitions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoDefinition>> resultMap =
+				new HashMap<>();
+
+			for (KaleoDefinition kaleoDefinition : kaleoDefinitions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoDefinitionModelImpl kaleoDefinitionModelImpl =
+						(KaleoDefinitionModelImpl)kaleoDefinition;
+
+					arguments.add(
+						kaleoDefinitionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoDefinition);
+				}
+				else {
+					List<KaleoDefinition> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoDefinition);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoDefinition>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoDefinition> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKaleoDefinitionUtilPersistence(

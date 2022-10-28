@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -113,9 +114,42 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the layout page template collections where uuid = &#63;.
@@ -676,7 +710,18 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		"(layoutPageTemplateCollection.uuid IS NULL OR layoutPageTemplateCollection.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the layout page template collection where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchPageTemplateCollectionException</code> if it could not be found.
@@ -946,8 +991,25 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		"layoutPageTemplateCollection.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the layout page template collections where uuid = &#63; and companyId = &#63;.
@@ -1552,8 +1614,25 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		"layoutPageTemplateCollection.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the layout page template collections where groupId = &#63;.
@@ -2465,7 +2544,18 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		"layoutPageTemplateCollection.groupId = ?";
 
 	private FinderPath _finderPathFetchByG_LPTCK;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_LPTCK() {
+		return _finderPathFetchByG_LPTCK;
+	}
+
 	private FinderPath _finderPathCountByG_LPTCK;
+
+	@Override
+	public FinderPath getFinderPathCountByG_LPTCK() {
+		return _finderPathCountByG_LPTCK;
+	}
 
 	/**
 	 * Returns the layout page template collection where groupId = &#63; and layoutPageTemplateCollectionKey = &#63; or throws a <code>NoSuchPageTemplateCollectionException</code> if it could not be found.
@@ -2754,7 +2844,18 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 			"(layoutPageTemplateCollection.layoutPageTemplateCollectionKey IS NULL OR layoutPageTemplateCollection.layoutPageTemplateCollectionKey = '')";
 
 	private FinderPath _finderPathFetchByG_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_N() {
+		return _finderPathFetchByG_N;
+	}
+
 	private FinderPath _finderPathCountByG_N;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N() {
+		return _finderPathCountByG_N;
+	}
 
 	/**
 	 * Returns the layout page template collection where groupId = &#63; and name = &#63; or throws a <code>NoSuchPageTemplateCollectionException</code> if it could not be found.
@@ -3021,7 +3122,18 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		"(layoutPageTemplateCollection.name IS NULL OR layoutPageTemplateCollection.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN() {
+		return _finderPathWithPaginationFindByG_LikeN;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_LikeN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN() {
+		return _finderPathWithPaginationCountByG_LikeN;
+	}
 
 	/**
 	 * Returns all the layout page template collections where groupId = &#63; and name LIKE &#63;.
@@ -5097,6 +5209,69 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 
 		entityCache.removeCache(
 			LayoutPageTemplateCollectionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LayoutPageTemplateCollection> layoutPageTemplateCollections =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutPageTemplateCollection>> resultMap =
+				new HashMap<>();
+
+			for (LayoutPageTemplateCollection layoutPageTemplateCollection :
+					layoutPageTemplateCollections) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutPageTemplateCollectionModelImpl
+						layoutPageTemplateCollectionModelImpl =
+							(LayoutPageTemplateCollectionModelImpl)
+								layoutPageTemplateCollection;
+
+					arguments.add(
+						layoutPageTemplateCollectionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						layoutPageTemplateCollection);
+				}
+				else {
+					List<LayoutPageTemplateCollection> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutPageTemplateCollection);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutPageTemplateCollection>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutPageTemplateCollection> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutPageTemplateCollectionUtilPersistence(

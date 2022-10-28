@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -110,9 +111,42 @@ public class LayoutUtilityPageEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the layout utility page entries where uuid = &#63;.
@@ -669,7 +703,18 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"(layoutUtilityPageEntry.uuid IS NULL OR layoutUtilityPageEntry.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the layout utility page entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchLayoutUtilityPageEntryException</code> if it could not be found.
@@ -935,8 +980,25 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"layoutUtilityPageEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the layout utility page entries where uuid = &#63; and companyId = &#63;.
@@ -1536,8 +1598,25 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"layoutUtilityPageEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the layout utility page entries where groupId = &#63;.
@@ -2441,8 +2520,25 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"layoutUtilityPageEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T() {
+		return _finderPathWithPaginationFindByG_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T() {
+		return _finderPathWithoutPaginationFindByG_T;
+	}
+
 	private FinderPath _finderPathCountByG_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T() {
+		return _finderPathCountByG_T;
+	}
 
 	/**
 	 * Returns all the layout utility page entries where groupId = &#63; and type = &#63;.
@@ -3405,8 +3501,25 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"layoutUtilityPageEntry.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_D_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_D_T() {
+		return _finderPathWithPaginationFindByG_D_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_D_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_D_T() {
+		return _finderPathWithoutPaginationFindByG_D_T;
+	}
+
 	private FinderPath _finderPathCountByG_D_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_D_T() {
+		return _finderPathCountByG_D_T;
+	}
 
 	/**
 	 * Returns all the layout utility page entries where groupId = &#63; and defaultLayoutUtilityPageEntry = &#63; and type = &#63;.
@@ -4453,7 +4566,18 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"layoutUtilityPageEntry.type_ = ?";
 
 	private FinderPath _finderPathFetchByG_N_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_N_T() {
+		return _finderPathFetchByG_N_T;
+	}
+
 	private FinderPath _finderPathCountByG_N_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_N_T() {
+		return _finderPathCountByG_N_T;
+	}
 
 	/**
 	 * Returns the layout utility page entry where groupId = &#63; and name = &#63; and type = &#63; or throws a <code>NoSuchLayoutUtilityPageEntryException</code> if it could not be found.
@@ -4743,7 +4867,18 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"layoutUtilityPageEntry.type = ?";
 
 	private FinderPath _finderPathFetchByG_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_ERC() {
+		return _finderPathFetchByG_ERC;
+	}
+
 	private FinderPath _finderPathCountByG_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByG_ERC() {
+		return _finderPathCountByG_ERC;
+	}
 
 	/**
 	 * Returns the layout utility page entry where groupId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchLayoutUtilityPageEntryException</code> if it could not be found.
@@ -6064,6 +6199,67 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		_setLayoutUtilityPageEntryUtilPersistence(null);
 
 		entityCache.removeCache(LayoutUtilityPageEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LayoutUtilityPageEntry> layoutUtilityPageEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutUtilityPageEntry>> resultMap =
+				new HashMap<>();
+
+			for (LayoutUtilityPageEntry layoutUtilityPageEntry :
+					layoutUtilityPageEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutUtilityPageEntryModelImpl
+						layoutUtilityPageEntryModelImpl =
+							(LayoutUtilityPageEntryModelImpl)
+								layoutUtilityPageEntry;
+
+					arguments.add(
+						layoutUtilityPageEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						layoutUtilityPageEntry);
+				}
+				else {
+					List<LayoutUtilityPageEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutUtilityPageEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutUtilityPageEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutUtilityPageEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutUtilityPageEntryUtilPersistence(

@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -110,9 +111,42 @@ public class CommerceTierPriceEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce tier price entries where uuid = &#63;.
@@ -669,8 +703,25 @@ public class CommerceTierPriceEntryPersistenceImpl
 		"(commerceTierPriceEntry.uuid IS NULL OR commerceTierPriceEntry.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce tier price entries where uuid = &#63; and companyId = &#63;.
@@ -1270,8 +1321,25 @@ public class CommerceTierPriceEntryPersistenceImpl
 		"commerceTierPriceEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the commerce tier price entries where companyId = &#63;.
@@ -1791,8 +1859,27 @@ public class CommerceTierPriceEntryPersistenceImpl
 		"commerceTierPriceEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommercePriceEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommercePriceEntryId() {
+		return _finderPathWithPaginationFindByCommercePriceEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommercePriceEntryId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommercePriceEntryId() {
+
+		return _finderPathWithoutPaginationFindByCommercePriceEntryId;
+	}
+
 	private FinderPath _finderPathCountByCommercePriceEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommercePriceEntryId() {
+		return _finderPathCountByCommercePriceEntryId;
+	}
 
 	/**
 	 * Returns all the commerce tier price entries where commercePriceEntryId = &#63;.
@@ -2325,7 +2412,18 @@ public class CommerceTierPriceEntryPersistenceImpl
 			"commerceTierPriceEntry.commercePriceEntryId = ?";
 
 	private FinderPath _finderPathFetchByC_M;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_M() {
+		return _finderPathFetchByC_M;
+	}
+
 	private FinderPath _finderPathCountByC_M;
+
+	@Override
+	public FinderPath getFinderPathCountByC_M() {
+		return _finderPathCountByC_M;
+	}
 
 	/**
 	 * Returns the commerce tier price entry where commercePriceEntryId = &#63; and minQuantity = &#63; or throws a <code>NoSuchTierPriceEntryException</code> if it could not be found.
@@ -2567,7 +2665,18 @@ public class CommerceTierPriceEntryPersistenceImpl
 		"commerceTierPriceEntry.minQuantity = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LteM;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LteM() {
+		return _finderPathWithPaginationFindByC_LteM;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LteM;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LteM() {
+		return _finderPathWithPaginationCountByC_LteM;
+	}
 
 	/**
 	 * Returns all the commerce tier price entries where commercePriceEntryId = &#63; and minQuantity &le; &#63;.
@@ -3122,7 +3231,18 @@ public class CommerceTierPriceEntryPersistenceImpl
 		"commerceTierPriceEntry.minQuantity <= ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtD_S() {
+		return _finderPathWithPaginationFindByLtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtD_S() {
+		return _finderPathWithPaginationCountByLtD_S;
+	}
 
 	/**
 	 * Returns all the commerce tier price entries where displayDate &lt; &#63; and status = &#63;.
@@ -3708,7 +3828,18 @@ public class CommerceTierPriceEntryPersistenceImpl
 		"commerceTierPriceEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtE_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtE_S() {
+		return _finderPathWithPaginationFindByLtE_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtE_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtE_S() {
+		return _finderPathWithPaginationCountByLtE_S;
+	}
 
 	/**
 	 * Returns all the commerce tier price entries where expirationDate &lt; &#63; and status = &#63;.
@@ -4294,7 +4425,18 @@ public class CommerceTierPriceEntryPersistenceImpl
 		"commerceTierPriceEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LteM_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LteM_S() {
+		return _finderPathWithPaginationFindByC_LteM_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LteM_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LteM_S() {
+		return _finderPathWithPaginationCountByC_LteM_S;
+	}
 
 	/**
 	 * Returns all the commerce tier price entries where commercePriceEntryId = &#63; and minQuantity &le; &#63; and status = &#63;.
@@ -4890,7 +5032,18 @@ public class CommerceTierPriceEntryPersistenceImpl
 		"commerceTierPriceEntry.status = ?";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the commerce tier price entry where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchTierPriceEntryException</code> if it could not be found.
@@ -6216,6 +6369,67 @@ public class CommerceTierPriceEntryPersistenceImpl
 		_setCommerceTierPriceEntryUtilPersistence(null);
 
 		entityCache.removeCache(CommerceTierPriceEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceTierPriceEntry> commerceTierPriceEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceTierPriceEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceTierPriceEntry commerceTierPriceEntry :
+					commerceTierPriceEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceTierPriceEntryModelImpl
+						commerceTierPriceEntryModelImpl =
+							(CommerceTierPriceEntryModelImpl)
+								commerceTierPriceEntry;
+
+					arguments.add(
+						commerceTierPriceEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceTierPriceEntry);
+				}
+				else {
+					List<CommerceTierPriceEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceTierPriceEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceTierPriceEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceTierPriceEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceTierPriceEntryUtilPersistence(

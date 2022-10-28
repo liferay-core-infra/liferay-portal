@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchCacheMissEntryException;
@@ -41,6 +42,11 @@ public interface CacheMissEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CacheMissEntryUtil} to access the cache miss entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
 
 	/**
 	 * Caches the cache miss entry in the entity cache if it is enabled.
@@ -161,5 +167,7 @@ public interface CacheMissEntryPersistence
 	 * @return the number of cache miss entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

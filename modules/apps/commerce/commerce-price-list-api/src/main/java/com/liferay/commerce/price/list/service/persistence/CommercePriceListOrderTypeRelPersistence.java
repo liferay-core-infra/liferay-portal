@@ -16,6 +16,7 @@ package com.liferay.commerce.price.list.service.persistence;
 
 import com.liferay.commerce.price.list.exception.NoSuchPriceListOrderTypeRelException;
 import com.liferay.commerce.price.list.model.CommercePriceListOrderTypeRel;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface CommercePriceListOrderTypeRelPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommercePriceListOrderTypeRelUtil} to access the commerce price list order type rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce price list order type rels where uuid = &#63;.
@@ -186,6 +198,12 @@ public interface CommercePriceListOrderTypeRelPersistence
 	 * @return the number of matching commerce price list order type rels
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce price list order type rels where uuid = &#63; and companyId = &#63;.
@@ -342,6 +360,12 @@ public interface CommercePriceListOrderTypeRelPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCommercePriceListId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCommercePriceListId();
+
+	public FinderPath getFinderPathCountByCommercePriceListId();
+
 	/**
 	 * Returns all the commerce price list order type rels where commercePriceListId = &#63;.
 	 *
@@ -488,6 +512,10 @@ public interface CommercePriceListOrderTypeRelPersistence
 	 * @return the number of matching commerce price list order type rels
 	 */
 	public int countByCommercePriceListId(long commercePriceListId);
+
+	public FinderPath getFinderPathFetchByCPI_COTI();
+
+	public FinderPath getFinderPathCountByCPI_COTI();
 
 	/**
 	 * Returns the commerce price list order type rel where commercePriceListId = &#63; and commerceOrderTypeId = &#63; or throws a <code>NoSuchPriceListOrderTypeRelException</code> if it could not be found.
@@ -672,5 +700,7 @@ public interface CommercePriceListOrderTypeRelPersistence
 	 * @return the number of commerce price list order type rels
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

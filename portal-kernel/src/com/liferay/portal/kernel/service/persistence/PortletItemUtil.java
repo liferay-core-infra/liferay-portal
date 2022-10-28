@@ -119,6 +119,42 @@ public class PortletItemUtil {
 		return getPersistence().update(portletItem, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_C() {
+
+		return getPersistence().getFinderPathCountByG_C();
+	}
+
 	/**
 	 * Returns all the portlet items where groupId = &#63; and classNameId = &#63;.
 	 *
@@ -302,6 +338,24 @@ public class PortletItemUtil {
 	 */
 	public static int countByG_C(long groupId, long classNameId) {
 		return getPersistence().countByG_C(groupId, classNameId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_P_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_P_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_P_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_P_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_P_C() {
+
+		return getPersistence().getFinderPathCountByG_P_C();
 	}
 
 	/**
@@ -505,6 +559,18 @@ public class PortletItemUtil {
 		long groupId, String portletId, long classNameId) {
 
 		return getPersistence().countByG_P_C(groupId, portletId, classNameId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_N_P_C() {
+
+		return getPersistence().getFinderPathFetchByG_N_P_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_N_P_C() {
+
+		return getPersistence().getFinderPathCountByG_N_P_C();
 	}
 
 	/**
@@ -737,6 +803,12 @@ public class PortletItemUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static PortletItemPersistence getPersistence() {

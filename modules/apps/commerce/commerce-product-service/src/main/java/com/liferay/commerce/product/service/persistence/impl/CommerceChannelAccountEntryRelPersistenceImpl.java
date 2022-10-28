@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -59,6 +60,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -92,9 +94,42 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByAccountEntryId() {
+		return _finderPathWithPaginationFindByAccountEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByAccountEntryId() {
+		return _finderPathWithoutPaginationFindByAccountEntryId;
+	}
+
 	private FinderPath _finderPathCountByAccountEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByAccountEntryId() {
+		return _finderPathCountByAccountEntryId;
+	}
 
 	/**
 	 * Returns all the commerce channel account entry rels where accountEntryId = &#63;.
@@ -626,8 +661,25 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		"commerceChannelAccountEntryRel.accountEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCommerceChannelId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommerceChannelId() {
+		return _finderPathWithPaginationFindByCommerceChannelId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommerceChannelId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceChannelId() {
+		return _finderPathWithoutPaginationFindByCommerceChannelId;
+	}
+
 	private FinderPath _finderPathCountByCommerceChannelId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceChannelId() {
+		return _finderPathCountByCommerceChannelId;
+	}
 
 	/**
 	 * Returns all the commerce channel account entry rels where commerceChannelId = &#63;.
@@ -1162,8 +1214,25 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 			"commerceChannelAccountEntryRel.commerceChannelId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByA_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByA_T() {
+		return _finderPathWithPaginationFindByA_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByA_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByA_T() {
+		return _finderPathWithoutPaginationFindByA_T;
+	}
+
 	private FinderPath _finderPathCountByA_T;
+
+	@Override
+	public FinderPath getFinderPathCountByA_T() {
+		return _finderPathCountByA_T;
+	}
 
 	/**
 	 * Returns all the commerce channel account entry rels where accountEntryId = &#63; and type = &#63;.
@@ -1729,8 +1798,25 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		"commerceChannelAccountEntryRel.type = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the commerce channel account entry rels where classNameId = &#63; and classPK = &#63;.
@@ -2296,8 +2382,25 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		"commerceChannelAccountEntryRel.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_T() {
+		return _finderPathWithPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_T() {
+		return _finderPathWithoutPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathCountByC_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_T() {
+		return _finderPathCountByC_T;
+	}
 
 	/**
 	 * Returns all the commerce channel account entry rels where commerceChannelId = &#63; and type = &#63;.
@@ -2864,8 +2967,25 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		"commerceChannelAccountEntryRel.type = ?";
 
 	private FinderPath _finderPathWithPaginationFindByA_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByA_C_T() {
+		return _finderPathWithPaginationFindByA_C_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByA_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByA_C_T() {
+		return _finderPathWithoutPaginationFindByA_C_T;
+	}
+
 	private FinderPath _finderPathCountByA_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByA_C_T() {
+		return _finderPathCountByA_C_T;
+	}
 
 	/**
 	 * Returns all the commerce channel account entry rels where accountEntryId = &#63; and commerceChannelId = &#63; and type = &#63;.
@@ -3482,8 +3602,25 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		"commerceChannelAccountEntryRel.type = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_C_T() {
+		return _finderPathWithPaginationFindByC_C_C_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C_T() {
+		return _finderPathWithoutPaginationFindByC_C_C_T;
+	}
+
 	private FinderPath _finderPathCountByC_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_C_T() {
+		return _finderPathCountByC_C_C_T;
+	}
 
 	/**
 	 * Returns all the commerce channel account entry rels where classNameId = &#63; and classPK = &#63; and commerceChannelId = &#63; and type = &#63;.
@@ -4139,7 +4276,18 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		"commerceChannelAccountEntryRel.type = ?";
 
 	private FinderPath _finderPathFetchByA_C_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByA_C_C_C_T() {
+		return _finderPathFetchByA_C_C_C_T;
+	}
+
 	private FinderPath _finderPathCountByA_C_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByA_C_C_C_T() {
+		return _finderPathCountByA_C_C_C_T;
+	}
 
 	/**
 	 * Returns the commerce channel account entry rel where accountEntryId = &#63; and classNameId = &#63; and classPK = &#63; and commerceChannelId = &#63; and type = &#63; or throws a <code>NoSuchChannelAccountEntryRelException</code> if it could not be found.
@@ -5531,6 +5679,69 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 
 		entityCache.removeCache(
 			CommerceChannelAccountEntryRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceChannelAccountEntryRel> commerceChannelAccountEntryRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceChannelAccountEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
+					commerceChannelAccountEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceChannelAccountEntryRelModelImpl
+						commerceChannelAccountEntryRelModelImpl =
+							(CommerceChannelAccountEntryRelModelImpl)
+								commerceChannelAccountEntryRel;
+
+					arguments.add(
+						commerceChannelAccountEntryRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceChannelAccountEntryRel);
+				}
+				else {
+					List<CommerceChannelAccountEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceChannelAccountEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceChannelAccountEntryRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceChannelAccountEntryRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceChannelAccountEntryRelUtilPersistence(

@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -44,8 +45,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -79,9 +83,42 @@ public class VersionedEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the versioned entries where groupId = &#63;.
@@ -575,8 +612,25 @@ public class VersionedEntryPersistenceImpl
 		"versionedEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId_Head;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId_Head() {
+		return _finderPathWithPaginationFindByGroupId_Head;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId_Head;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId_Head() {
+		return _finderPathWithoutPaginationFindByGroupId_Head;
+	}
+
 	private FinderPath _finderPathCountByGroupId_Head;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId_Head() {
+		return _finderPathCountByGroupId_Head;
+	}
 
 	/**
 	 * Returns all the versioned entries where groupId = &#63; and head = &#63;.
@@ -1115,7 +1169,18 @@ public class VersionedEntryPersistenceImpl
 		"versionedEntry.head = ?";
 
 	private FinderPath _finderPathFetchByHeadId;
+
+	@Override
+	public FinderPath getFinderPathFetchByHeadId() {
+		return _finderPathFetchByHeadId;
+	}
+
 	private FinderPath _finderPathCountByHeadId;
+
+	@Override
+	public FinderPath getFinderPathCountByHeadId() {
+		return _finderPathCountByHeadId;
+	}
 
 	/**
 	 * Returns the versioned entry where headId = &#63; or throws a <code>NoSuchVersionedEntryException</code> if it could not be found.
@@ -1895,6 +1960,59 @@ public class VersionedEntryPersistenceImpl
 		_setVersionedEntryUtilPersistence(null);
 
 		entityCache.removeCache(VersionedEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<VersionedEntry> versionedEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<VersionedEntry>> resultMap = new HashMap<>();
+
+			for (VersionedEntry versionedEntry : versionedEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					VersionedEntryModelImpl versionedEntryModelImpl =
+						(VersionedEntryModelImpl)versionedEntry;
+
+					arguments.add(
+						versionedEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), versionedEntry);
+				}
+				else {
+					List<VersionedEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(versionedEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<VersionedEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<VersionedEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setVersionedEntryUtilPersistence(

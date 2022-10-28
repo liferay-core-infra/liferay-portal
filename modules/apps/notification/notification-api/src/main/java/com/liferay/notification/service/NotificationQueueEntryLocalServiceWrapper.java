@@ -14,6 +14,7 @@
 
 package com.liferay.notification.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -362,6 +363,11 @@ public class NotificationQueueEntryLocalServiceWrapper
 
 		return _notificationQueueEntryLocalService.getUnsentNotificationEntries(
 			type);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_notificationQueueEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

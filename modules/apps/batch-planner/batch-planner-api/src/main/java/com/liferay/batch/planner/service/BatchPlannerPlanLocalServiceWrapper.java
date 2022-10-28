@@ -14,6 +14,7 @@
 
 package com.liferay.batch.planner.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -342,6 +343,11 @@ public class BatchPlannerPlanLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _batchPlannerPlanLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_batchPlannerPlanLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

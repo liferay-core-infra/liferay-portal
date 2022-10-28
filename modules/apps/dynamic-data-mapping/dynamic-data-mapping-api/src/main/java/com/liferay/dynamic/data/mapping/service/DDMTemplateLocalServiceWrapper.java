@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service;
 
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -1033,6 +1034,11 @@ public class DDMTemplateLocalServiceWrapper
 
 		return _ddmTemplateLocalService.getTemplatesCount(
 			groupIds, classNameId, classPK);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ddmTemplateLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

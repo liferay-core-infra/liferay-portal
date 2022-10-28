@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -61,6 +62,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -104,9 +106,44 @@ public class SegmentsExperimentRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindBySegmentsExperimentId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySegmentsExperimentId() {
+		return _finderPathWithPaginationFindBySegmentsExperimentId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySegmentsExperimentId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindBySegmentsExperimentId() {
+
+		return _finderPathWithoutPaginationFindBySegmentsExperimentId;
+	}
+
 	private FinderPath _finderPathCountBySegmentsExperimentId;
+
+	@Override
+	public FinderPath getFinderPathCountBySegmentsExperimentId() {
+		return _finderPathCountBySegmentsExperimentId;
+	}
 
 	/**
 	 * Returns all the segments experiment rels where segmentsExperimentId = &#63;.
@@ -639,8 +676,27 @@ public class SegmentsExperimentRelPersistenceImpl
 			"segmentsExperimentRel.segmentsExperimentId = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySegmentsExperienceId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySegmentsExperienceId() {
+		return _finderPathWithPaginationFindBySegmentsExperienceId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySegmentsExperienceId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindBySegmentsExperienceId() {
+
+		return _finderPathWithoutPaginationFindBySegmentsExperienceId;
+	}
+
 	private FinderPath _finderPathCountBySegmentsExperienceId;
+
+	@Override
+	public FinderPath getFinderPathCountBySegmentsExperienceId() {
+		return _finderPathCountBySegmentsExperienceId;
+	}
 
 	/**
 	 * Returns all the segments experiment rels where segmentsExperienceId = &#63;.
@@ -1173,7 +1229,18 @@ public class SegmentsExperimentRelPersistenceImpl
 			"segmentsExperimentRel.segmentsExperienceId = ?";
 
 	private FinderPath _finderPathFetchByS_S;
+
+	@Override
+	public FinderPath getFinderPathFetchByS_S() {
+		return _finderPathFetchByS_S;
+	}
+
 	private FinderPath _finderPathCountByS_S;
+
+	@Override
+	public FinderPath getFinderPathCountByS_S() {
+		return _finderPathCountByS_S;
+	}
 
 	/**
 	 * Returns the segments experiment rel where segmentsExperimentId = &#63; and segmentsExperienceId = &#63; or throws a <code>NoSuchExperimentRelException</code> if it could not be found.
@@ -2305,6 +2372,66 @@ public class SegmentsExperimentRelPersistenceImpl
 		_setSegmentsExperimentRelUtilPersistence(null);
 
 		entityCache.removeCache(SegmentsExperimentRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SegmentsExperimentRel> segmentsExperimentRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsExperimentRel>> resultMap =
+				new HashMap<>();
+
+			for (SegmentsExperimentRel segmentsExperimentRel :
+					segmentsExperimentRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsExperimentRelModelImpl
+						segmentsExperimentRelModelImpl =
+							(SegmentsExperimentRelModelImpl)
+								segmentsExperimentRel;
+
+					arguments.add(
+						segmentsExperimentRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsExperimentRel);
+				}
+				else {
+					List<SegmentsExperimentRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsExperimentRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsExperimentRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsExperimentRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSegmentsExperimentRelUtilPersistence(

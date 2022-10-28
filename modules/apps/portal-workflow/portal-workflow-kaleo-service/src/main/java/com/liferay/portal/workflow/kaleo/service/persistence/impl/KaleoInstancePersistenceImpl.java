@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -107,9 +108,42 @@ public class KaleoInstancePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the kaleo instances where companyId = &#63;.
@@ -620,9 +654,30 @@ public class KaleoInstancePersistenceImpl
 		"kaleoInstance.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId() {
+
+		return _finderPathWithPaginationFindByKaleoDefinitionVersionId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId() {
+
+		return _finderPathWithoutPaginationFindByKaleoDefinitionVersionId;
+	}
+
 	private FinderPath _finderPathCountByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath getFinderPathCountByKaleoDefinitionVersionId() {
+		return _finderPathCountByKaleoDefinitionVersionId;
+	}
 
 	/**
 	 * Returns all the kaleo instances where kaleoDefinitionVersionId = &#63;.
@@ -1156,8 +1211,25 @@ public class KaleoInstancePersistenceImpl
 			"kaleoInstance.kaleoDefinitionVersionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_U() {
+		return _finderPathWithPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_U;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_U() {
+		return _finderPathWithoutPaginationFindByC_U;
+	}
+
 	private FinderPath _finderPathCountByC_U;
+
+	@Override
+	public FinderPath getFinderPathCountByC_U() {
+		return _finderPathCountByC_U;
+	}
 
 	/**
 	 * Returns all the kaleo instances where companyId = &#63; and userId = &#63;.
@@ -1711,8 +1783,25 @@ public class KaleoInstancePersistenceImpl
 		"kaleoInstance.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKDI_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKDI_C() {
+		return _finderPathWithPaginationFindByKDI_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKDI_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKDI_C() {
+		return _finderPathWithoutPaginationFindByKDI_C;
+	}
+
 	private FinderPath _finderPathCountByKDI_C;
+
+	@Override
+	public FinderPath getFinderPathCountByKDI_C() {
+		return _finderPathCountByKDI_C;
+	}
 
 	/**
 	 * Returns all the kaleo instances where kaleoDefinitionId = &#63; and completed = &#63;.
@@ -2270,8 +2359,25 @@ public class KaleoInstancePersistenceImpl
 		"kaleoInstance.completed = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKDVI_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKDVI_C() {
+		return _finderPathWithPaginationFindByKDVI_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKDVI_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKDVI_C() {
+		return _finderPathWithoutPaginationFindByKDVI_C;
+	}
+
 	private FinderPath _finderPathCountByKDVI_C;
+
+	@Override
+	public FinderPath getFinderPathCountByKDVI_C() {
+		return _finderPathCountByKDVI_C;
+	}
 
 	/**
 	 * Returns all the kaleo instances where kaleoDefinitionVersionId = &#63; and completed = &#63;.
@@ -2837,8 +2943,25 @@ public class KaleoInstancePersistenceImpl
 		"kaleoInstance.completed = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCN_CPK() {
+		return _finderPathWithPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCN_CPK() {
+		return _finderPathWithoutPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathCountByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByCN_CPK() {
+		return _finderPathCountByCN_CPK;
+	}
 
 	/**
 	 * Returns all the kaleo instances where className = &#63; and classPK = &#63;.
@@ -3434,7 +3557,18 @@ public class KaleoInstancePersistenceImpl
 		"kaleoInstance.classPK = ?";
 
 	private FinderPath _finderPathFetchByKII_C_U;
+
+	@Override
+	public FinderPath getFinderPathFetchByKII_C_U() {
+		return _finderPathFetchByKII_C_U;
+	}
+
 	private FinderPath _finderPathCountByKII_C_U;
+
+	@Override
+	public FinderPath getFinderPathCountByKII_C_U() {
+		return _finderPathCountByKII_C_U;
+	}
 
 	/**
 	 * Returns the kaleo instance where kaleoInstanceId = &#63; and companyId = &#63; and userId = &#63; or throws a <code>NoSuchInstanceException</code> if it could not be found.
@@ -3714,8 +3848,25 @@ public class KaleoInstancePersistenceImpl
 		"kaleoInstance.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_KDN_KDV_CD;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_KDN_KDV_CD() {
+		return _finderPathWithPaginationFindByC_KDN_KDV_CD;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_KDN_KDV_CD;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_KDN_KDV_CD() {
+		return _finderPathWithoutPaginationFindByC_KDN_KDV_CD;
+	}
+
 	private FinderPath _finderPathCountByC_KDN_KDV_CD;
+
+	@Override
+	public FinderPath getFinderPathCountByC_KDN_KDV_CD() {
+		return _finderPathCountByC_KDN_KDV_CD;
+	}
 
 	/**
 	 * Returns all the kaleo instances where companyId = &#63; and kaleoDefinitionName = &#63; and kaleoDefinitionVersion = &#63; and completionDate = &#63;.
@@ -5446,6 +5597,59 @@ public class KaleoInstancePersistenceImpl
 		_setKaleoInstanceUtilPersistence(null);
 
 		entityCache.removeCache(KaleoInstanceImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KaleoInstance> kaleoInstances = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoInstance>> resultMap = new HashMap<>();
+
+			for (KaleoInstance kaleoInstance : kaleoInstances) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoInstanceModelImpl kaleoInstanceModelImpl =
+						(KaleoInstanceModelImpl)kaleoInstance;
+
+					arguments.add(
+						kaleoInstanceModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoInstance);
+				}
+				else {
+					List<KaleoInstance> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoInstance);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoInstance>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoInstance> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKaleoInstanceUtilPersistence(

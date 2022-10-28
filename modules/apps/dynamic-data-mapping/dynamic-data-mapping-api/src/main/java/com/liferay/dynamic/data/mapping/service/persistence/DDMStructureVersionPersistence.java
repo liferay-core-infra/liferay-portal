@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service.persistence;
 
 import com.liferay.dynamic.data.mapping.exception.NoSuchStructureVersionException;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface DDMStructureVersionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMStructureVersionUtil} to access the ddm structure version persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByStructureId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByStructureId();
+
+	public FinderPath getFinderPathCountByStructureId();
 
 	/**
 	 * Returns all the ddm structure versions where structureId = &#63;.
@@ -187,6 +199,10 @@ public interface DDMStructureVersionPersistence
 	 */
 	public int countByStructureId(long structureId);
 
+	public FinderPath getFinderPathFetchByS_V();
+
+	public FinderPath getFinderPathCountByS_V();
+
 	/**
 	 * Returns the ddm structure version where structureId = &#63; and version = &#63; or throws a <code>NoSuchStructureVersionException</code> if it could not be found.
 	 *
@@ -236,6 +252,12 @@ public interface DDMStructureVersionPersistence
 	 * @return the number of matching ddm structure versions
 	 */
 	public int countByS_V(long structureId, String version);
+
+	public FinderPath getFinderPathWithPaginationFindByS_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByS_S();
+
+	public FinderPath getFinderPathCountByS_S();
 
 	/**
 	 * Returns all the ddm structure versions where structureId = &#63; and status = &#63;.
@@ -513,5 +535,7 @@ public interface DDMStructureVersionPersistence
 	 * @return the number of ddm structure versions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

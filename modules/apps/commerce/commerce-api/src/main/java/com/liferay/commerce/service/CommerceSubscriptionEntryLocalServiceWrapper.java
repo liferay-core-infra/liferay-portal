@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -581,6 +582,11 @@ public class CommerceSubscriptionEntryLocalServiceWrapper
 		return _commerceSubscriptionEntryLocalService.
 			incrementCommerceSubscriptionEntryCycle(
 				commerceSubscriptionEntryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceSubscriptionEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

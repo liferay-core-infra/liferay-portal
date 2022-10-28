@@ -14,6 +14,7 @@
 
 package com.liferay.mail.reader.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -371,6 +372,11 @@ public class MessageLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _messageLocalService.getRemoteMessage(folderId, oldest);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_messageLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

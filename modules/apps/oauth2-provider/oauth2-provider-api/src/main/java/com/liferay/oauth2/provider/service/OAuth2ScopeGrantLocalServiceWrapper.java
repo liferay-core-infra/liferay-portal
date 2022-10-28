@@ -14,6 +14,7 @@
 
 package com.liferay.oauth2.provider.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -550,6 +551,11 @@ public class OAuth2ScopeGrantLocalServiceWrapper
 
 		return _oAuth2ScopeGrantLocalService.
 			hasOAuth2AuthorizationOAuth2ScopeGrants(oAuth2AuthorizationId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_oAuth2ScopeGrantLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

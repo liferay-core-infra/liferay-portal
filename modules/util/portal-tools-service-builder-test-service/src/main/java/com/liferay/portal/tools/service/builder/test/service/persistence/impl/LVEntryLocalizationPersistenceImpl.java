@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -45,6 +46,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -81,9 +84,42 @@ public class LVEntryLocalizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByLvEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLvEntryId() {
+		return _finderPathWithPaginationFindByLvEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLvEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByLvEntryId() {
+		return _finderPathWithoutPaginationFindByLvEntryId;
+	}
+
 	private FinderPath _finderPathCountByLvEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByLvEntryId() {
+		return _finderPathCountByLvEntryId;
+	}
 
 	/**
 	 * Returns all the lv entry localizations where lvEntryId = &#63;.
@@ -588,7 +624,18 @@ public class LVEntryLocalizationPersistenceImpl
 		"lvEntryLocalization.lvEntryId = ?";
 
 	private FinderPath _finderPathFetchByLvEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathFetchByLvEntryId_LanguageId() {
+		return _finderPathFetchByLvEntryId_LanguageId;
+	}
+
 	private FinderPath _finderPathCountByLvEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathCountByLvEntryId_LanguageId() {
+		return _finderPathCountByLvEntryId_LanguageId;
+	}
 
 	/**
 	 * Returns the lv entry localization where lvEntryId = &#63; and languageId = &#63; or throws a <code>NoSuchLVEntryLocalizationException</code> if it could not be found.
@@ -848,7 +895,18 @@ public class LVEntryLocalizationPersistenceImpl
 			"(lvEntryLocalization.languageId IS NULL OR lvEntryLocalization.languageId = '')";
 
 	private FinderPath _finderPathFetchByHeadId;
+
+	@Override
+	public FinderPath getFinderPathFetchByHeadId() {
+		return _finderPathFetchByHeadId;
+	}
+
 	private FinderPath _finderPathCountByHeadId;
+
+	@Override
+	public FinderPath getFinderPathCountByHeadId() {
+		return _finderPathCountByHeadId;
+	}
 
 	/**
 	 * Returns the lv entry localization where headId = &#63; or throws a <code>NoSuchLVEntryLocalizationException</code> if it could not be found.
@@ -1656,6 +1714,64 @@ public class LVEntryLocalizationPersistenceImpl
 		_setLVEntryLocalizationUtilPersistence(null);
 
 		entityCache.removeCache(LVEntryLocalizationImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LVEntryLocalization> lvEntryLocalizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LVEntryLocalization>> resultMap =
+				new HashMap<>();
+
+			for (LVEntryLocalization lvEntryLocalization :
+					lvEntryLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LVEntryLocalizationModelImpl lvEntryLocalizationModelImpl =
+						(LVEntryLocalizationModelImpl)lvEntryLocalization;
+
+					arguments.add(
+						lvEntryLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), lvEntryLocalization);
+				}
+				else {
+					List<LVEntryLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(lvEntryLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LVEntryLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LVEntryLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLVEntryLocalizationUtilPersistence(

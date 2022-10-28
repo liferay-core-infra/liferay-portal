@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -54,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -100,9 +102,42 @@ public class ObjectFieldPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the object fields where uuid = &#63;.
@@ -630,8 +665,25 @@ public class ObjectFieldPersistenceImpl
 		"(objectField.uuid IS NULL OR objectField.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the object fields where uuid = &#63; and companyId = &#63;.
@@ -1209,8 +1261,27 @@ public class ObjectFieldPersistenceImpl
 		"objectField.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByListTypeDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByListTypeDefinitionId() {
+		return _finderPathWithPaginationFindByListTypeDefinitionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByListTypeDefinitionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByListTypeDefinitionId() {
+
+		return _finderPathWithoutPaginationFindByListTypeDefinitionId;
+	}
+
 	private FinderPath _finderPathCountByListTypeDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathCountByListTypeDefinitionId() {
+		return _finderPathCountByListTypeDefinitionId;
+	}
 
 	/**
 	 * Returns all the object fields where listTypeDefinitionId = &#63;.
@@ -1722,8 +1793,25 @@ public class ObjectFieldPersistenceImpl
 			"objectField.listTypeDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByObjectDefinitionId() {
+		return _finderPathWithPaginationFindByObjectDefinitionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByObjectDefinitionId() {
+		return _finderPathWithoutPaginationFindByObjectDefinitionId;
+	}
+
 	private FinderPath _finderPathCountByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathCountByObjectDefinitionId() {
+		return _finderPathCountByObjectDefinitionId;
+	}
 
 	/**
 	 * Returns all the object fields where objectDefinitionId = &#63;.
@@ -2230,8 +2318,25 @@ public class ObjectFieldPersistenceImpl
 			"objectField.objectDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLTDI_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLTDI_S() {
+		return _finderPathWithPaginationFindByLTDI_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLTDI_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByLTDI_S() {
+		return _finderPathWithoutPaginationFindByLTDI_S;
+	}
+
 	private FinderPath _finderPathCountByLTDI_S;
+
+	@Override
+	public FinderPath getFinderPathCountByLTDI_S() {
+		return _finderPathCountByLTDI_S;
+	}
 
 	/**
 	 * Returns all the object fields where listTypeDefinitionId = &#63; and state = &#63;.
@@ -2773,8 +2878,25 @@ public class ObjectFieldPersistenceImpl
 		"objectField.state = ?";
 
 	private FinderPath _finderPathWithPaginationFindByODI_DTN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByODI_DTN() {
+		return _finderPathWithPaginationFindByODI_DTN;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByODI_DTN;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByODI_DTN() {
+		return _finderPathWithoutPaginationFindByODI_DTN;
+	}
+
 	private FinderPath _finderPathCountByODI_DTN;
+
+	@Override
+	public FinderPath getFinderPathCountByODI_DTN() {
+		return _finderPathCountByODI_DTN;
+	}
 
 	/**
 	 * Returns all the object fields where objectDefinitionId = &#63; and dbTableName = &#63;.
@@ -3360,7 +3482,18 @@ public class ObjectFieldPersistenceImpl
 		"(objectField.dbTableName IS NULL OR objectField.dbTableName = '')";
 
 	private FinderPath _finderPathFetchByODI_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByODI_N() {
+		return _finderPathFetchByODI_N;
+	}
+
 	private FinderPath _finderPathCountByODI_N;
+
+	@Override
+	public FinderPath getFinderPathCountByODI_N() {
+		return _finderPathCountByODI_N;
+	}
 
 	/**
 	 * Returns the object field where objectDefinitionId = &#63; and name = &#63; or throws a <code>NoSuchObjectFieldException</code> if it could not be found.
@@ -3625,8 +3758,25 @@ public class ObjectFieldPersistenceImpl
 		"(objectField.name IS NULL OR objectField.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByODI_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByODI_S() {
+		return _finderPathWithPaginationFindByODI_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByODI_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByODI_S() {
+		return _finderPathWithoutPaginationFindByODI_S;
+	}
+
 	private FinderPath _finderPathCountByODI_S;
+
+	@Override
+	public FinderPath getFinderPathCountByODI_S() {
+		return _finderPathCountByODI_S;
+	}
 
 	/**
 	 * Returns all the object fields where objectDefinitionId = &#63; and system = &#63;.
@@ -4168,7 +4318,18 @@ public class ObjectFieldPersistenceImpl
 		"objectField.system = ?";
 
 	private FinderPath _finderPathFetchByERC_C_ODI;
+
+	@Override
+	public FinderPath getFinderPathFetchByERC_C_ODI() {
+		return _finderPathFetchByERC_C_ODI;
+	}
+
 	private FinderPath _finderPathCountByERC_C_ODI;
+
+	@Override
+	public FinderPath getFinderPathCountByERC_C_ODI() {
+		return _finderPathCountByERC_C_ODI;
+	}
 
 	/**
 	 * Returns the object field where externalReferenceCode = &#63; and companyId = &#63; and objectDefinitionId = &#63; or throws a <code>NoSuchObjectFieldException</code> if it could not be found.
@@ -4456,8 +4617,25 @@ public class ObjectFieldPersistenceImpl
 		"objectField.objectDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByODI_DBT_I;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByODI_DBT_I() {
+		return _finderPathWithPaginationFindByODI_DBT_I;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByODI_DBT_I;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByODI_DBT_I() {
+		return _finderPathWithoutPaginationFindByODI_DBT_I;
+	}
+
 	private FinderPath _finderPathCountByODI_DBT_I;
+
+	@Override
+	public FinderPath getFinderPathCountByODI_DBT_I() {
+		return _finderPathCountByODI_DBT_I;
+	}
 
 	/**
 	 * Returns all the object fields where objectDefinitionId = &#63; and dbType = &#63; and indexed = &#63;.
@@ -5886,6 +6064,59 @@ public class ObjectFieldPersistenceImpl
 		_setObjectFieldUtilPersistence(null);
 
 		entityCache.removeCache(ObjectFieldImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ObjectField> objectFields = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectField>> resultMap = new HashMap<>();
+
+			for (ObjectField objectField : objectFields) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectFieldModelImpl objectFieldModelImpl =
+						(ObjectFieldModelImpl)objectField;
+
+					arguments.add(
+						objectFieldModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectField);
+				}
+				else {
+					List<ObjectField> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(objectField);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectField>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectField> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setObjectFieldUtilPersistence(

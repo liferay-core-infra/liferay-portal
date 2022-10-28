@@ -17,6 +17,7 @@ package com.liferay.depot.service;
 import com.liferay.depot.model.DepotEntryGroupRel;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -423,6 +424,10 @@ public class DepotEntryGroupRelLocalServiceUtil {
 
 	public static int getSearchableDepotEntryGroupRelsCount(long groupId) {
 		return getService().getSearchableDepotEntryGroupRelsCount(groupId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static DepotEntryGroupRel updateDDMStructuresAvailable(

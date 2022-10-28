@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.product.type.virtual.order.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -516,6 +517,11 @@ public class CommerceVirtualOrderItemLocalServiceWrapper
 
 		return _commerceVirtualOrderItemLocalService.
 			incrementCommerceVirtualOrderItemUsages(commerceVirtualOrderItemId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceVirtualOrderItemLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

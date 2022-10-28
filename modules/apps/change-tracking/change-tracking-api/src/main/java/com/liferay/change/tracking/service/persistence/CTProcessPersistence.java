@@ -16,6 +16,7 @@ package com.liferay.change.tracking.service.persistence;
 
 import com.liferay.change.tracking.exception.NoSuchProcessException;
 import com.liferay.change.tracking.model.CTProcess;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface CTProcessPersistence extends BasePersistence<CTProcess> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CTProcessUtil} to access the ct process persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the ct processes where companyId = &#63;.
@@ -182,6 +194,12 @@ public interface CTProcessPersistence extends BasePersistence<CTProcess> {
 	 * @return the number of matching ct processes
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByCtCollectionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCtCollectionId();
+
+	public FinderPath getFinderPathCountByCtCollectionId();
 
 	/**
 	 * Returns all the ct processes where ctCollectionId = &#63;.
@@ -444,5 +462,7 @@ public interface CTProcessPersistence extends BasePersistence<CTProcess> {
 	 * @return the number of ct processes
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

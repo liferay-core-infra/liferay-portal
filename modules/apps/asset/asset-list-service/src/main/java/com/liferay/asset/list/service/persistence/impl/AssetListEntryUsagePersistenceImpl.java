@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -108,9 +109,42 @@ public class AssetListEntryUsagePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the asset list entry usages where uuid = &#63;.
@@ -663,7 +697,18 @@ public class AssetListEntryUsagePersistenceImpl
 		"(assetListEntryUsage.uuid IS NULL OR assetListEntryUsage.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the asset list entry usage where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryUsageException</code> if it could not be found.
@@ -927,8 +972,25 @@ public class AssetListEntryUsagePersistenceImpl
 		"assetListEntryUsage.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the asset list entry usages where uuid = &#63; and companyId = &#63;.
@@ -1526,8 +1588,25 @@ public class AssetListEntryUsagePersistenceImpl
 		"assetListEntryUsage.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByAssetListEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByAssetListEntryId() {
+		return _finderPathWithPaginationFindByAssetListEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByAssetListEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByAssetListEntryId() {
+		return _finderPathWithoutPaginationFindByAssetListEntryId;
+	}
+
 	private FinderPath _finderPathCountByAssetListEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByAssetListEntryId() {
+		return _finderPathCountByAssetListEntryId;
+	}
 
 	/**
 	 * Returns all the asset list entry usages where assetListEntryId = &#63;.
@@ -2054,8 +2133,25 @@ public class AssetListEntryUsagePersistenceImpl
 			"assetListEntryUsage.assetListEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByPlid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByPlid() {
+		return _finderPathWithPaginationFindByPlid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByPlid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByPlid() {
+		return _finderPathWithoutPaginationFindByPlid;
+	}
+
 	private FinderPath _finderPathCountByPlid;
+
+	@Override
+	public FinderPath getFinderPathCountByPlid() {
+		return _finderPathCountByPlid;
+	}
 
 	/**
 	 * Returns all the asset list entry usages where plid = &#63;.
@@ -2562,8 +2658,25 @@ public class AssetListEntryUsagePersistenceImpl
 		"assetListEntryUsage.plid = ?";
 
 	private FinderPath _finderPathWithPaginationFindByA_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByA_C() {
+		return _finderPathWithPaginationFindByA_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByA_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByA_C() {
+		return _finderPathWithoutPaginationFindByA_C;
+	}
+
 	private FinderPath _finderPathCountByA_C;
+
+	@Override
+	public FinderPath getFinderPathCountByA_C() {
+		return _finderPathCountByA_C;
+	}
 
 	/**
 	 * Returns all the asset list entry usages where assetListEntryId = &#63; and classNameId = &#63;.
@@ -3123,8 +3236,25 @@ public class AssetListEntryUsagePersistenceImpl
 		"assetListEntryUsage.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_K;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_K() {
+		return _finderPathWithPaginationFindByG_C_K;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_K;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_K() {
+		return _finderPathWithoutPaginationFindByG_C_K;
+	}
+
 	private FinderPath _finderPathCountByG_C_K;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_K() {
+		return _finderPathCountByG_C_K;
+	}
 
 	/**
 	 * Returns all the asset list entry usages where groupId = &#63; and classNameId = &#63; and key = &#63;.
@@ -3759,8 +3889,25 @@ public class AssetListEntryUsagePersistenceImpl
 		"(assetListEntryUsage.key IS NULL OR assetListEntryUsage.key = '')";
 
 	private FinderPath _finderPathWithPaginationFindByCK_CT_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCK_CT_P() {
+		return _finderPathWithPaginationFindByCK_CT_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCK_CT_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCK_CT_P() {
+		return _finderPathWithoutPaginationFindByCK_CT_P;
+	}
+
 	private FinderPath _finderPathCountByCK_CT_P;
+
+	@Override
+	public FinderPath getFinderPathCountByCK_CT_P() {
+		return _finderPathCountByCK_CT_P;
+	}
 
 	/**
 	 * Returns all the asset list entry usages where containerKey = &#63; and containerType = &#63; and plid = &#63;.
@@ -4404,8 +4551,25 @@ public class AssetListEntryUsagePersistenceImpl
 		"assetListEntryUsage.plid = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_K_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_K_T() {
+		return _finderPathWithPaginationFindByG_C_K_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_K_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_K_T() {
+		return _finderPathWithoutPaginationFindByG_C_K_T;
+	}
+
 	private FinderPath _finderPathCountByG_C_K_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_K_T() {
+		return _finderPathCountByG_C_K_T;
+	}
 
 	/**
 	 * Returns all the asset list entry usages where groupId = &#63; and classNameId = &#63; and key = &#63; and type = &#63;.
@@ -5080,7 +5244,18 @@ public class AssetListEntryUsagePersistenceImpl
 		"assetListEntryUsage.type = ?";
 
 	private FinderPath _finderPathFetchByG_C_CK_CT_K_P;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_CK_CT_K_P() {
+		return _finderPathFetchByG_C_CK_CT_K_P;
+	}
+
 	private FinderPath _finderPathCountByG_C_CK_CT_K_P;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_CK_CT_K_P() {
+		return _finderPathCountByG_C_CK_CT_K_P;
+	}
 
 	/**
 	 * Returns the asset list entry usage where groupId = &#63; and classNameId = &#63; and containerKey = &#63; and containerType = &#63; and key = &#63; and plid = &#63; or throws a <code>NoSuchEntryUsageException</code> if it could not be found.
@@ -6552,6 +6727,64 @@ public class AssetListEntryUsagePersistenceImpl
 		_setAssetListEntryUsageUtilPersistence(null);
 
 		entityCache.removeCache(AssetListEntryUsageImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AssetListEntryUsage> assetListEntryUsages = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetListEntryUsage>> resultMap =
+				new HashMap<>();
+
+			for (AssetListEntryUsage assetListEntryUsage :
+					assetListEntryUsages) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetListEntryUsageModelImpl assetListEntryUsageModelImpl =
+						(AssetListEntryUsageModelImpl)assetListEntryUsage;
+
+					arguments.add(
+						assetListEntryUsageModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), assetListEntryUsage);
+				}
+				else {
+					List<AssetListEntryUsage> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(assetListEntryUsage);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetListEntryUsage>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetListEntryUsage> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAssetListEntryUsageUtilPersistence(

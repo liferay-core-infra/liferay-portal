@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersisten
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesUtil;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -91,9 +92,42 @@ public class PortletPreferencesPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByOwnerId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByOwnerId() {
+		return _finderPathWithPaginationFindByOwnerId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByOwnerId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByOwnerId() {
+		return _finderPathWithoutPaginationFindByOwnerId;
+	}
+
 	private FinderPath _finderPathCountByOwnerId;
+
+	@Override
+	public FinderPath getFinderPathCountByOwnerId() {
+		return _finderPathCountByOwnerId;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where ownerId = &#63;.
@@ -607,8 +641,25 @@ public class PortletPreferencesPersistenceImpl
 		"portletPreferences.ownerId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByPlid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByPlid() {
+		return _finderPathWithPaginationFindByPlid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByPlid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByPlid() {
+		return _finderPathWithoutPaginationFindByPlid;
+	}
+
 	private FinderPath _finderPathCountByPlid;
+
+	@Override
+	public FinderPath getFinderPathCountByPlid() {
+		return _finderPathCountByPlid;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where plid = &#63;.
@@ -1116,8 +1167,25 @@ public class PortletPreferencesPersistenceImpl
 		"portletPreferences.plid = ?";
 
 	private FinderPath _finderPathWithPaginationFindByPortletId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByPortletId() {
+		return _finderPathWithPaginationFindByPortletId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByPortletId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByPortletId() {
+		return _finderPathWithoutPaginationFindByPortletId;
+	}
+
 	private FinderPath _finderPathCountByPortletId;
+
+	@Override
+	public FinderPath getFinderPathCountByPortletId() {
+		return _finderPathCountByPortletId;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where portletId = &#63;.
@@ -1680,8 +1748,25 @@ public class PortletPreferencesPersistenceImpl
 		"(portletPreferences.portletId IS NULL OR portletPreferences.portletId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByO_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByO_P() {
+		return _finderPathWithPaginationFindByO_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByO_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByO_P() {
+		return _finderPathWithoutPaginationFindByO_P;
+	}
+
 	private FinderPath _finderPathCountByO_P;
+
+	@Override
+	public FinderPath getFinderPathCountByO_P() {
+		return _finderPathCountByO_P;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where ownerType = &#63; and portletId = &#63;.
@@ -2280,8 +2365,25 @@ public class PortletPreferencesPersistenceImpl
 		"(portletPreferences.portletId IS NULL OR portletPreferences.portletId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByP_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByP_P() {
+		return _finderPathWithPaginationFindByP_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByP_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByP_P() {
+		return _finderPathWithoutPaginationFindByP_P;
+	}
+
 	private FinderPath _finderPathCountByP_P;
+
+	@Override
+	public FinderPath getFinderPathCountByP_P() {
+		return _finderPathCountByP_P;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where plid = &#63; and portletId = &#63;.
@@ -2879,8 +2981,25 @@ public class PortletPreferencesPersistenceImpl
 		"(portletPreferences.portletId IS NULL OR portletPreferences.portletId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByO_O_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByO_O_P() {
+		return _finderPathWithPaginationFindByO_O_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByO_O_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByO_O_P() {
+		return _finderPathWithoutPaginationFindByO_O_P;
+	}
+
 	private FinderPath _finderPathCountByO_O_P;
+
+	@Override
+	public FinderPath getFinderPathCountByO_O_P() {
+		return _finderPathCountByO_O_P;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where ownerId = &#63; and ownerType = &#63; and plid = &#63;.
@@ -3473,8 +3592,25 @@ public class PortletPreferencesPersistenceImpl
 		"portletPreferences.plid = ?";
 
 	private FinderPath _finderPathWithPaginationFindByO_O_PI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByO_O_PI() {
+		return _finderPathWithPaginationFindByO_O_PI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByO_O_PI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByO_O_PI() {
+		return _finderPathWithoutPaginationFindByO_O_PI;
+	}
+
 	private FinderPath _finderPathCountByO_O_PI;
+
+	@Override
+	public FinderPath getFinderPathCountByO_O_PI() {
+		return _finderPathCountByO_O_PI;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where ownerId = &#63; and ownerType = &#63; and portletId = &#63;.
@@ -4110,8 +4246,25 @@ public class PortletPreferencesPersistenceImpl
 		"(portletPreferences.portletId IS NULL OR portletPreferences.portletId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByO_P_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByO_P_P() {
+		return _finderPathWithPaginationFindByO_P_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByO_P_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByO_P_P() {
+		return _finderPathWithoutPaginationFindByO_P_P;
+	}
+
 	private FinderPath _finderPathCountByO_P_P;
+
+	@Override
+	public FinderPath getFinderPathCountByO_P_P() {
+		return _finderPathCountByO_P_P;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where ownerType = &#63; and plid = &#63; and portletId = &#63;.
@@ -4747,7 +4900,18 @@ public class PortletPreferencesPersistenceImpl
 		"(portletPreferences.portletId IS NULL OR portletPreferences.portletId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_O_O_LikeP;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_O_O_LikeP() {
+		return _finderPathWithPaginationFindByC_O_O_LikeP;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_O_O_LikeP;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_O_O_LikeP() {
+		return _finderPathWithPaginationCountByC_O_O_LikeP;
+	}
 
 	/**
 	 * Returns all the portlet preferenceses where companyId = &#63; and ownerId = &#63; and ownerType = &#63; and portletId LIKE &#63;.
@@ -5422,7 +5586,18 @@ public class PortletPreferencesPersistenceImpl
 		"(portletPreferences.portletId IS NULL OR portletPreferences.portletId LIKE '')";
 
 	private FinderPath _finderPathFetchByO_O_P_P;
+
+	@Override
+	public FinderPath getFinderPathFetchByO_O_P_P() {
+		return _finderPathFetchByO_O_P_P;
+	}
+
 	private FinderPath _finderPathCountByO_O_P_P;
+
+	@Override
+	public FinderPath getFinderPathCountByO_O_P_P() {
+		return _finderPathCountByO_O_P_P;
+	}
 
 	/**
 	 * Returns the portlet preferences where ownerId = &#63; and ownerType = &#63; and plid = &#63; and portletId = &#63; or throws a <code>NoSuchPortletPreferencesException</code> if it could not be found.
@@ -6727,6 +6902,61 @@ public class PortletPreferencesPersistenceImpl
 		_setPortletPreferencesUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(PortletPreferencesImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PortletPreferences> portletPreferencess = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortletPreferences>> resultMap =
+				new HashMap<>();
+
+			for (PortletPreferences portletPreferences : portletPreferencess) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortletPreferencesModelImpl portletPreferencesModelImpl =
+						(PortletPreferencesModelImpl)portletPreferences;
+
+					arguments.add(
+						portletPreferencesModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), portletPreferences);
+				}
+				else {
+					List<PortletPreferences> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(portletPreferences);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortletPreferences>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortletPreferences> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPortletPreferencesUtilPersistence(

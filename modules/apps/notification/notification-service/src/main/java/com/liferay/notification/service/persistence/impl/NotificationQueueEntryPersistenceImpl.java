@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -55,6 +56,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,9 +105,46 @@ public class NotificationQueueEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByNotificationTemplateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByNotificationTemplateId() {
+
+		return _finderPathWithPaginationFindByNotificationTemplateId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByNotificationTemplateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByNotificationTemplateId() {
+
+		return _finderPathWithoutPaginationFindByNotificationTemplateId;
+	}
+
 	private FinderPath _finderPathCountByNotificationTemplateId;
+
+	@Override
+	public FinderPath getFinderPathCountByNotificationTemplateId() {
+		return _finderPathCountByNotificationTemplateId;
+	}
 
 	/**
 	 * Returns all the notification queue entries where notificationTemplateId = &#63;.
@@ -1023,7 +1062,18 @@ public class NotificationQueueEntryPersistenceImpl
 			"notificationQueueEntry.notificationTemplateId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtSentDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtSentDate() {
+		return _finderPathWithPaginationFindByLtSentDate;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtSentDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtSentDate() {
+		return _finderPathWithPaginationCountByLtSentDate;
+	}
 
 	/**
 	 * Returns all the notification queue entries where sentDate &lt; &#63;.
@@ -1976,8 +2026,25 @@ public class NotificationQueueEntryPersistenceImpl
 		"notificationQueueEntry.sentDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_S() {
+		return _finderPathWithPaginationFindByT_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_S() {
+		return _finderPathWithoutPaginationFindByT_S;
+	}
+
 	private FinderPath _finderPathCountByT_S;
+
+	@Override
+	public FinderPath getFinderPathCountByT_S() {
+		return _finderPathCountByT_S;
+	}
 
 	/**
 	 * Returns all the notification queue entries where type = &#63; and status = &#63;.
@@ -3653,6 +3720,67 @@ public class NotificationQueueEntryPersistenceImpl
 		_setNotificationQueueEntryUtilPersistence(null);
 
 		entityCache.removeCache(NotificationQueueEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<NotificationQueueEntry> notificationQueueEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<NotificationQueueEntry>> resultMap =
+				new HashMap<>();
+
+			for (NotificationQueueEntry notificationQueueEntry :
+					notificationQueueEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					NotificationQueueEntryModelImpl
+						notificationQueueEntryModelImpl =
+							(NotificationQueueEntryModelImpl)
+								notificationQueueEntry;
+
+					arguments.add(
+						notificationQueueEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						notificationQueueEntry);
+				}
+				else {
+					List<NotificationQueueEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(notificationQueueEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<NotificationQueueEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<NotificationQueueEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setNotificationQueueEntryUtilPersistence(

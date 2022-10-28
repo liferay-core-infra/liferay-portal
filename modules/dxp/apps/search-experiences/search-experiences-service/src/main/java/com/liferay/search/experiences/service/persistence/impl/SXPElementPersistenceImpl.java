@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -61,6 +62,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -106,9 +108,42 @@ public class SXPElementPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the sxp elements where uuid = &#63;.
@@ -1051,8 +1086,25 @@ public class SXPElementPersistenceImpl
 		"(sxpElement.uuid_ IS NULL OR sxpElement.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the sxp elements where uuid = &#63; and companyId = &#63;.
@@ -2063,8 +2115,25 @@ public class SXPElementPersistenceImpl
 		"sxpElement.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the sxp elements where companyId = &#63;.
@@ -2931,8 +3000,25 @@ public class SXPElementPersistenceImpl
 		"sxpElement.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_R() {
+		return _finderPathWithPaginationFindByC_R;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_R;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_R() {
+		return _finderPathWithoutPaginationFindByC_R;
+	}
+
 	private FinderPath _finderPathCountByC_R;
+
+	@Override
+	public FinderPath getFinderPathCountByC_R() {
+		return _finderPathCountByC_R;
+	}
 
 	/**
 	 * Returns all the sxp elements where companyId = &#63; and readOnly = &#63;.
@@ -3863,8 +3949,25 @@ public class SXPElementPersistenceImpl
 		"sxpElement.readOnly = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_T() {
+		return _finderPathWithPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_T() {
+		return _finderPathWithoutPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathCountByC_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_T() {
+		return _finderPathCountByC_T;
+	}
 
 	/**
 	 * Returns all the sxp elements where companyId = &#63; and type = &#63;.
@@ -4790,8 +4893,25 @@ public class SXPElementPersistenceImpl
 		"sxpElement.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_T_S() {
+		return _finderPathWithPaginationFindByC_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_T_S() {
+		return _finderPathWithoutPaginationFindByC_T_S;
+	}
+
 	private FinderPath _finderPathCountByC_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_T_S() {
+		return _finderPathCountByC_T_S;
+	}
 
 	/**
 	 * Returns all the sxp elements where companyId = &#63; and type = &#63; and status = &#63;.
@@ -5779,7 +5899,18 @@ public class SXPElementPersistenceImpl
 		"sxpElement.status = ?";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the sxp element where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchSXPElementException</code> if it could not be found.
@@ -6778,6 +6909,59 @@ public class SXPElementPersistenceImpl
 		_setSXPElementUtilPersistence(null);
 
 		entityCache.removeCache(SXPElementImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SXPElement> sxpElements = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SXPElement>> resultMap = new HashMap<>();
+
+			for (SXPElement sxpElement : sxpElements) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SXPElementModelImpl sxpElementModelImpl =
+						(SXPElementModelImpl)sxpElement;
+
+					arguments.add(
+						sxpElementModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), sxpElement);
+				}
+				else {
+					List<SXPElement> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(sxpElement);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SXPElement>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SXPElement> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSXPElementUtilPersistence(

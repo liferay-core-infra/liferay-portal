@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service.persistence;
 
 import com.liferay.commerce.product.exception.NoSuchCPMeasurementUnitException;
 import com.liferay.commerce.product.model.CPMeasurementUnit;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface CPMeasurementUnitPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CPMeasurementUnitUtil} to access the cp measurement unit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the cp measurement units where uuid = &#63;.
@@ -186,6 +198,10 @@ public interface CPMeasurementUnitPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the cp measurement unit where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCPMeasurementUnitException</code> if it could not be found.
 	 *
@@ -235,6 +251,12 @@ public interface CPMeasurementUnitPersistence
 	 * @return the number of matching cp measurement units
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the cp measurement units where uuid = &#63; and companyId = &#63;.
@@ -391,6 +413,12 @@ public interface CPMeasurementUnitPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the cp measurement units where companyId = &#63;.
 	 *
@@ -534,6 +562,10 @@ public interface CPMeasurementUnitPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathFetchByC_K();
+
+	public FinderPath getFinderPathCountByC_K();
+
 	/**
 	 * Returns the cp measurement unit where companyId = &#63; and key = &#63; or throws a <code>NoSuchCPMeasurementUnitException</code> if it could not be found.
 	 *
@@ -583,6 +615,12 @@ public interface CPMeasurementUnitPersistence
 	 * @return the number of matching cp measurement units
 	 */
 	public int countByC_K(long companyId, String key);
+
+	public FinderPath getFinderPathWithPaginationFindByC_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_T();
+
+	public FinderPath getFinderPathCountByC_T();
 
 	/**
 	 * Returns all the cp measurement units where companyId = &#63; and type = &#63;.
@@ -738,6 +776,12 @@ public interface CPMeasurementUnitPersistence
 	 * @return the number of matching cp measurement units
 	 */
 	public int countByC_T(long companyId, int type);
+
+	public FinderPath getFinderPathWithPaginationFindByC_P_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_P_T();
+
+	public FinderPath getFinderPathCountByC_P_T();
 
 	/**
 	 * Returns all the cp measurement units where companyId = &#63; and primary = &#63; and type = &#63;.
@@ -904,6 +948,10 @@ public interface CPMeasurementUnitPersistence
 	 * @return the number of matching cp measurement units
 	 */
 	public int countByC_P_T(long companyId, boolean primary, int type);
+
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
 
 	/**
 	 * Returns the cp measurement unit where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCPMeasurementUnitException</code> if it could not be found.
@@ -1078,5 +1126,7 @@ public interface CPMeasurementUnitPersistence
 	 * @return the number of cp measurement units
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

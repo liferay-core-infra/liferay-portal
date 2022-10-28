@@ -14,6 +14,7 @@
 
 package com.liferay.site.navigation.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.site.navigation.exception.NoSuchMenuException;
@@ -42,6 +43,17 @@ public interface SiteNavigationMenuPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SiteNavigationMenuUtil} to access the site navigation menu persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the site navigation menus where uuid = &#63;.
@@ -186,6 +198,10 @@ public interface SiteNavigationMenuPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the site navigation menu where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchMenuException</code> if it could not be found.
 	 *
@@ -235,6 +251,12 @@ public interface SiteNavigationMenuPersistence
 	 * @return the number of matching site navigation menus
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the site navigation menus where uuid = &#63; and companyId = &#63;.
@@ -390,6 +412,14 @@ public interface SiteNavigationMenuPersistence
 	 * @return the number of matching site navigation menus
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
+	public FinderPath getFinderPathWithPaginationCountByGroupId();
 
 	/**
 	 * Returns all the site navigation menus where groupId = &#63;.
@@ -721,6 +751,12 @@ public interface SiteNavigationMenuPersistence
 	 */
 	public int filterCountByGroupId(long[] groupIds);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the site navigation menus where companyId = &#63;.
 	 *
@@ -864,6 +900,10 @@ public interface SiteNavigationMenuPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathFetchByG_N();
+
+	public FinderPath getFinderPathCountByG_N();
+
 	/**
 	 * Returns the site navigation menu where groupId = &#63; and name = &#63; or throws a <code>NoSuchMenuException</code> if it could not be found.
 	 *
@@ -913,6 +953,10 @@ public interface SiteNavigationMenuPersistence
 	 * @return the number of matching site navigation menus
 	 */
 	public int countByG_N(long groupId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN();
 
 	/**
 	 * Returns all the site navigation menus where groupId = &#63; and name LIKE &#63;.
@@ -1272,6 +1316,12 @@ public interface SiteNavigationMenuPersistence
 	 */
 	public int filterCountByG_LikeN(long[] groupIds, String name);
 
+	public FinderPath getFinderPathWithPaginationFindByG_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_T();
+
+	public FinderPath getFinderPathCountByG_T();
+
 	/**
 	 * Returns all the site navigation menus where groupId = &#63; and type = &#63;.
 	 *
@@ -1495,6 +1545,12 @@ public interface SiteNavigationMenuPersistence
 	 * @return the number of matching site navigation menus that the user has permission to view
 	 */
 	public int filterCountByG_T(long groupId, int type);
+
+	public FinderPath getFinderPathWithPaginationFindByG_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_A();
+
+	public FinderPath getFinderPathCountByG_A();
 
 	/**
 	 * Returns all the site navigation menus where groupId = &#63; and auto = &#63;.
@@ -1841,5 +1897,7 @@ public interface SiteNavigationMenuPersistence
 	 * @return the number of site navigation menus
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

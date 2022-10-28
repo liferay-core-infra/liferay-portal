@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -106,9 +107,42 @@ public class DDLRecordSetVersionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByRecordSetId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByRecordSetId() {
+		return _finderPathWithPaginationFindByRecordSetId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByRecordSetId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByRecordSetId() {
+		return _finderPathWithoutPaginationFindByRecordSetId;
+	}
+
 	private FinderPath _finderPathCountByRecordSetId;
+
+	@Override
+	public FinderPath getFinderPathCountByRecordSetId() {
+		return _finderPathCountByRecordSetId;
+	}
 
 	/**
 	 * Returns all the ddl record set versions where recordSetId = &#63;.
@@ -629,7 +663,18 @@ public class DDLRecordSetVersionPersistenceImpl
 		"ddlRecordSetVersion.recordSetId = ?";
 
 	private FinderPath _finderPathFetchByRS_V;
+
+	@Override
+	public FinderPath getFinderPathFetchByRS_V() {
+		return _finderPathFetchByRS_V;
+	}
+
 	private FinderPath _finderPathCountByRS_V;
+
+	@Override
+	public FinderPath getFinderPathCountByRS_V() {
+		return _finderPathCountByRS_V;
+	}
 
 	/**
 	 * Returns the ddl record set version where recordSetId = &#63; and version = &#63; or throws a <code>NoSuchRecordSetVersionException</code> if it could not be found.
@@ -895,8 +940,25 @@ public class DDLRecordSetVersionPersistenceImpl
 		"(ddlRecordSetVersion.version IS NULL OR ddlRecordSetVersion.version = '')";
 
 	private FinderPath _finderPathWithPaginationFindByRS_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByRS_S() {
+		return _finderPathWithPaginationFindByRS_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByRS_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByRS_S() {
+		return _finderPathWithoutPaginationFindByRS_S;
+	}
+
 	private FinderPath _finderPathCountByRS_S;
+
+	@Override
+	public FinderPath getFinderPathCountByRS_S() {
+		return _finderPathCountByRS_S;
+	}
 
 	/**
 	 * Returns all the ddl record set versions where recordSetId = &#63; and status = &#63;.
@@ -2321,6 +2383,64 @@ public class DDLRecordSetVersionPersistenceImpl
 		_setDDLRecordSetVersionUtilPersistence(null);
 
 		entityCache.removeCache(DDLRecordSetVersionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DDLRecordSetVersion> ddlRecordSetVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDLRecordSetVersion>> resultMap =
+				new HashMap<>();
+
+			for (DDLRecordSetVersion ddlRecordSetVersion :
+					ddlRecordSetVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDLRecordSetVersionModelImpl ddlRecordSetVersionModelImpl =
+						(DDLRecordSetVersionModelImpl)ddlRecordSetVersion;
+
+					arguments.add(
+						ddlRecordSetVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddlRecordSetVersion);
+				}
+				else {
+					List<DDLRecordSetVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddlRecordSetVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDLRecordSetVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDLRecordSetVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDDLRecordSetVersionUtilPersistence(

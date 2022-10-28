@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,9 +104,42 @@ public class AccountGroupPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the account groups where uuid = &#63;.
@@ -1056,8 +1090,25 @@ public class AccountGroupPersistenceImpl
 		"(accountGroup.uuid_ IS NULL OR accountGroup.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the account groups where uuid = &#63; and companyId = &#63;.
@@ -2078,9 +2129,32 @@ public class AccountGroupPersistenceImpl
 		"accountGroup.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByAccountGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByAccountGroupId() {
+		return _finderPathWithPaginationFindByAccountGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByAccountGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByAccountGroupId() {
+		return _finderPathWithoutPaginationFindByAccountGroupId;
+	}
+
 	private FinderPath _finderPathCountByAccountGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByAccountGroupId() {
+		return _finderPathCountByAccountGroupId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByAccountGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByAccountGroupId() {
+		return _finderPathWithPaginationCountByAccountGroupId;
+	}
 
 	/**
 	 * Returns all the account groups where accountGroupId = &#63;.
@@ -3072,8 +3146,25 @@ public class AccountGroupPersistenceImpl
 		"accountGroup.accountGroupId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the account groups where companyId = &#63;.
@@ -3946,8 +4037,25 @@ public class AccountGroupPersistenceImpl
 		"accountGroup.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_D;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_D() {
+		return _finderPathWithPaginationFindByC_D;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_D;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_D() {
+		return _finderPathWithoutPaginationFindByC_D;
+	}
+
 	private FinderPath _finderPathCountByC_D;
+
+	@Override
+	public FinderPath getFinderPathCountByC_D() {
+		return _finderPathCountByC_D;
+	}
 
 	/**
 	 * Returns all the account groups where companyId = &#63; and defaultAccountGroup = &#63;.
@@ -4895,8 +5003,25 @@ public class AccountGroupPersistenceImpl
 		"accountGroup.defaultAccountGroup = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_T() {
+		return _finderPathWithPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_T() {
+		return _finderPathWithoutPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathCountByC_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_T() {
+		return _finderPathCountByC_T;
+	}
 
 	/**
 	 * Returns all the account groups where companyId = &#63; and type = &#63;.
@@ -5916,7 +6041,18 @@ public class AccountGroupPersistenceImpl
 		"(accountGroup.type_ IS NULL OR accountGroup.type_ = '')";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the account group where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
@@ -6893,6 +7029,59 @@ public class AccountGroupPersistenceImpl
 		_setAccountGroupUtilPersistence(null);
 
 		entityCache.removeCache(AccountGroupImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AccountGroup> accountGroups = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AccountGroup>> resultMap = new HashMap<>();
+
+			for (AccountGroup accountGroup : accountGroups) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AccountGroupModelImpl accountGroupModelImpl =
+						(AccountGroupModelImpl)accountGroup;
+
+					arguments.add(
+						accountGroupModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), accountGroup);
+				}
+				else {
+					List<AccountGroup> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(accountGroup);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AccountGroup>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AccountGroup> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAccountGroupUtilPersistence(

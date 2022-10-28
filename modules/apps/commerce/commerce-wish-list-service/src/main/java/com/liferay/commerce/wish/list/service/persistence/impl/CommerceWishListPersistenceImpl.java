@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -55,6 +56,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,9 +103,42 @@ public class CommerceWishListPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce wish lists where uuid = &#63;.
@@ -636,7 +671,18 @@ public class CommerceWishListPersistenceImpl
 		"(commerceWishList.uuid IS NULL OR commerceWishList.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the commerce wish list where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchWishListException</code> if it could not be found.
@@ -884,8 +930,25 @@ public class CommerceWishListPersistenceImpl
 		"commerceWishList.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce wish lists where uuid = &#63; and companyId = &#63;.
@@ -1467,8 +1530,25 @@ public class CommerceWishListPersistenceImpl
 		"commerceWishList.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the commerce wish lists where groupId = &#63;.
@@ -1964,8 +2044,25 @@ public class CommerceWishListPersistenceImpl
 		"commerceWishList.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the commerce wish lists where userId = &#63;.
@@ -2460,8 +2557,25 @@ public class CommerceWishListPersistenceImpl
 		"commerceWishList.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U() {
+		return _finderPathWithPaginationFindByG_U;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_U;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_U() {
+		return _finderPathWithoutPaginationFindByG_U;
+	}
+
 	private FinderPath _finderPathCountByG_U;
+
+	@Override
+	public FinderPath getFinderPathCountByG_U() {
+		return _finderPathCountByG_U;
+	}
 
 	/**
 	 * Returns all the commerce wish lists where groupId = &#63; and userId = &#63;.
@@ -3000,7 +3114,18 @@ public class CommerceWishListPersistenceImpl
 		"commerceWishList.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_LtC;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_LtC() {
+		return _finderPathWithPaginationFindByU_LtC;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByU_LtC;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByU_LtC() {
+		return _finderPathWithPaginationCountByU_LtC;
+	}
 
 	/**
 	 * Returns all the commerce wish lists where userId = &#63; and createDate &lt; &#63;.
@@ -3567,8 +3692,25 @@ public class CommerceWishListPersistenceImpl
 		"commerceWishList.createDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_U_D;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_U_D() {
+		return _finderPathWithPaginationFindByG_U_D;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_U_D;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_U_D() {
+		return _finderPathWithoutPaginationFindByG_U_D;
+	}
+
 	private FinderPath _finderPathCountByG_U_D;
+
+	@Override
+	public FinderPath getFinderPathCountByG_U_D() {
+		return _finderPathCountByG_U_D;
+	}
 
 	/**
 	 * Returns all the commerce wish lists where groupId = &#63; and userId = &#63; and defaultWishList = &#63;.
@@ -4891,6 +5033,61 @@ public class CommerceWishListPersistenceImpl
 		_setCommerceWishListUtilPersistence(null);
 
 		entityCache.removeCache(CommerceWishListImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceWishList> commerceWishLists = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceWishList>> resultMap =
+				new HashMap<>();
+
+			for (CommerceWishList commerceWishList : commerceWishLists) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceWishListModelImpl commerceWishListModelImpl =
+						(CommerceWishListModelImpl)commerceWishList;
+
+					arguments.add(
+						commerceWishListModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commerceWishList);
+				}
+				else {
+					List<CommerceWishList> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceWishList);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceWishList>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceWishList> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceWishListUtilPersistence(

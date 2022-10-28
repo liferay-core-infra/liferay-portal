@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service.persistence;
 
 import com.liferay.commerce.product.exception.NoSuchCatalogException;
 import com.liferay.commerce.product.model.CommerceCatalog;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface CommerceCatalogPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceCatalogUtil} to access the commerce catalog persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce catalogs where uuid = &#63;.
@@ -248,6 +260,12 @@ public interface CommerceCatalogPersistence
 	 * @return the number of matching commerce catalogs that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce catalogs where uuid = &#63; and companyId = &#63;.
@@ -474,6 +492,12 @@ public interface CommerceCatalogPersistence
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the commerce catalogs where companyId = &#63;.
 	 *
@@ -681,6 +705,12 @@ public interface CommerceCatalogPersistence
 	 * @return the number of matching commerce catalogs that the user has permission to view
 	 */
 	public int filterCountByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_S();
+
+	public FinderPath getFinderPathCountByC_S();
 
 	/**
 	 * Returns all the commerce catalogs where companyId = &#63; and system = &#63;.
@@ -907,6 +937,10 @@ public interface CommerceCatalogPersistence
 	 */
 	public int filterCountByC_S(long companyId, boolean system);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the commerce catalog where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCatalogException</code> if it could not be found.
 	 *
@@ -1079,5 +1113,7 @@ public interface CommerceCatalogPersistence
 	 * @return the number of commerce catalogs
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

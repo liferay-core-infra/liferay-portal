@@ -122,6 +122,43 @@ public class DepotAppCustomizationUtil {
 		return getPersistence().update(depotAppCustomization, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByDepotEntryId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByDepotEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByDepotEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByDepotEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByDepotEntryId() {
+
+		return getPersistence().getFinderPathCountByDepotEntryId();
+	}
+
 	/**
 	 * Returns all the depot app customizations where depotEntryId = &#63;.
 	 *
@@ -297,6 +334,18 @@ public class DepotAppCustomizationUtil {
 		return getPersistence().countByDepotEntryId(depotEntryId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByD_E() {
+
+		return getPersistence().getFinderPathFetchByD_E();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByD_E() {
+
+		return getPersistence().getFinderPathCountByD_E();
+	}
+
 	/**
 	 * Returns the depot app customization where depotEntryId = &#63; and enabled = &#63; or throws a <code>NoSuchAppCustomizationException</code> if it could not be found.
 	 *
@@ -363,6 +412,18 @@ public class DepotAppCustomizationUtil {
 	 */
 	public static int countByD_E(long depotEntryId, boolean enabled) {
 		return getPersistence().countByD_E(depotEntryId, enabled);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByD_P() {
+
+		return getPersistence().getFinderPathFetchByD_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByD_P() {
+
+		return getPersistence().getFinderPathCountByD_P();
 	}
 
 	/**
@@ -589,6 +650,12 @@ public class DepotAppCustomizationUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DepotAppCustomizationPersistence getPersistence() {

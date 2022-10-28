@@ -16,6 +16,7 @@ package com.liferay.object.service.persistence;
 
 import com.liferay.object.exception.NoSuchObjectViewException;
 import com.liferay.object.model.ObjectView;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface ObjectViewPersistence extends BasePersistence<ObjectView> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ObjectViewUtil} to access the object view persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the object views where uuid = &#63;.
@@ -182,6 +194,12 @@ public interface ObjectViewPersistence extends BasePersistence<ObjectView> {
 	 * @return the number of matching object views
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the object views where uuid = &#63; and companyId = &#63;.
@@ -337,6 +355,12 @@ public interface ObjectViewPersistence extends BasePersistence<ObjectView> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByObjectDefinitionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByObjectDefinitionId();
+
+	public FinderPath getFinderPathCountByObjectDefinitionId();
+
 	/**
 	 * Returns all the object views where objectDefinitionId = &#63;.
 	 *
@@ -480,6 +504,12 @@ public interface ObjectViewPersistence extends BasePersistence<ObjectView> {
 	 * @return the number of matching object views
 	 */
 	public int countByObjectDefinitionId(long objectDefinitionId);
+
+	public FinderPath getFinderPathWithPaginationFindByODI_DOV();
+
+	public FinderPath getFinderPathWithoutPaginationFindByODI_DOV();
+
+	public FinderPath getFinderPathCountByODI_DOV();
 
 	/**
 	 * Returns all the object views where objectDefinitionId = &#63; and defaultObjectView = &#63;.
@@ -758,5 +788,7 @@ public interface ObjectViewPersistence extends BasePersistence<ObjectView> {
 	 * @return the number of object views
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

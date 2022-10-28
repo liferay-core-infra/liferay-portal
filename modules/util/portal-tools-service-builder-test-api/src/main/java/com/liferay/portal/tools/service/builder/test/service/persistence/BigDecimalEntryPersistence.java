@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchBigDecimalEntryException;
 import com.liferay.portal.tools.service.builder.test.model.BigDecimalEntry;
@@ -42,6 +43,17 @@ public interface BigDecimalEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link BigDecimalEntryUtil} to access the big decimal entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByBigDecimalValue();
+
+	public FinderPath getFinderPathWithoutPaginationFindByBigDecimalValue();
+
+	public FinderPath getFinderPathCountByBigDecimalValue();
 
 	/**
 	 * Returns all the big decimal entries where bigDecimalValue = &#63;.
@@ -187,6 +199,10 @@ public interface BigDecimalEntryPersistence
 	 */
 	public int countByBigDecimalValue(BigDecimal bigDecimalValue);
 
+	public FinderPath getFinderPathWithPaginationFindByGtBigDecimalValue();
+
+	public FinderPath getFinderPathWithPaginationCountByGtBigDecimalValue();
+
 	/**
 	 * Returns all the big decimal entries where bigDecimalValue &gt; &#63;.
 	 *
@@ -330,6 +346,10 @@ public interface BigDecimalEntryPersistence
 	 * @return the number of matching big decimal entries
 	 */
 	public int countByGtBigDecimalValue(BigDecimal bigDecimalValue);
+
+	public FinderPath getFinderPathWithPaginationFindByLtBigDecimalValue();
+
+	public FinderPath getFinderPathWithPaginationCountByLtBigDecimalValue();
 
 	/**
 	 * Returns all the big decimal entries where bigDecimalValue &lt; &#63;.
@@ -777,5 +797,7 @@ public interface BigDecimalEntryPersistence
 		java.util.List
 			<com.liferay.portal.tools.service.builder.test.model.LVEntry>
 				lvEntries);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

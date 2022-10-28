@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -51,10 +52,12 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -98,9 +101,42 @@ public class SyncDLFileVersionDiffPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByFileEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByFileEntryId() {
+		return _finderPathWithPaginationFindByFileEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByFileEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByFileEntryId() {
+		return _finderPathWithoutPaginationFindByFileEntryId;
+	}
+
 	private FinderPath _finderPathCountByFileEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByFileEntryId() {
+		return _finderPathCountByFileEntryId;
+	}
 
 	/**
 	 * Returns all the sync dl file version diffs where fileEntryId = &#63;.
@@ -606,7 +642,18 @@ public class SyncDLFileVersionDiffPersistenceImpl
 		"syncDLFileVersionDiff.fileEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtExpirationDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtExpirationDate() {
+		return _finderPathWithPaginationFindByLtExpirationDate;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtExpirationDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtExpirationDate() {
+		return _finderPathWithPaginationCountByLtExpirationDate;
+	}
 
 	/**
 	 * Returns all the sync dl file version diffs where expirationDate &lt; &#63;.
@@ -1147,7 +1194,18 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			"syncDLFileVersionDiff.expirationDate < ?";
 
 	private FinderPath _finderPathFetchByF_S_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByF_S_T() {
+		return _finderPathFetchByF_S_T;
+	}
+
 	private FinderPath _finderPathCountByF_S_T;
+
+	@Override
+	public FinderPath getFinderPathCountByF_S_T() {
+		return _finderPathCountByF_S_T;
+	}
 
 	/**
 	 * Returns the sync dl file version diff where fileEntryId = &#63; and sourceFileVersionId = &#63; and targetFileVersionId = &#63; or throws a <code>NoSuchDLFileVersionDiffException</code> if it could not be found.
@@ -2042,6 +2100,66 @@ public class SyncDLFileVersionDiffPersistenceImpl
 		_setSyncDLFileVersionDiffUtilPersistence(null);
 
 		entityCache.removeCache(SyncDLFileVersionDiffImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SyncDLFileVersionDiff> syncDLFileVersionDiffs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SyncDLFileVersionDiff>> resultMap =
+				new HashMap<>();
+
+			for (SyncDLFileVersionDiff syncDLFileVersionDiff :
+					syncDLFileVersionDiffs) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SyncDLFileVersionDiffModelImpl
+						syncDLFileVersionDiffModelImpl =
+							(SyncDLFileVersionDiffModelImpl)
+								syncDLFileVersionDiff;
+
+					arguments.add(
+						syncDLFileVersionDiffModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), syncDLFileVersionDiff);
+				}
+				else {
+					List<SyncDLFileVersionDiff> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(syncDLFileVersionDiff);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SyncDLFileVersionDiff>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SyncDLFileVersionDiff> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSyncDLFileVersionDiffUtilPersistence(

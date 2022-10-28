@@ -14,6 +14,7 @@
 
 package com.liferay.chat.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -338,6 +339,11 @@ public class StatusLocalServiceWrapper
 	@Override
 	public com.liferay.chat.model.Status getUserStatus(long userId) {
 		return _statusLocalService.getUserStatus(userId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_statusLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,8 +54,10 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -101,8 +104,35 @@ public class SamlSpAuthRequestPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByLtCreateDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtCreateDate() {
+		return _finderPathWithPaginationFindByLtCreateDate;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtCreateDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtCreateDate() {
+		return _finderPathWithPaginationCountByLtCreateDate;
+	}
 
 	/**
 	 * Returns all the saml sp auth requests where createDate &lt; &#63;.
@@ -635,7 +665,18 @@ public class SamlSpAuthRequestPersistenceImpl
 		"samlSpAuthRequest.createDate < ?";
 
 	private FinderPath _finderPathFetchBySIEI_SSARK;
+
+	@Override
+	public FinderPath getFinderPathFetchBySIEI_SSARK() {
+		return _finderPathFetchBySIEI_SSARK;
+	}
+
 	private FinderPath _finderPathCountBySIEI_SSARK;
+
+	@Override
+	public FinderPath getFinderPathCountBySIEI_SSARK() {
+		return _finderPathCountBySIEI_SSARK;
+	}
 
 	/**
 	 * Returns the saml sp auth request where samlIdpEntityId = &#63; and samlSpAuthRequestKey = &#63; or throws a <code>NoSuchSpAuthRequestException</code> if it could not be found.
@@ -1539,6 +1580,61 @@ public class SamlSpAuthRequestPersistenceImpl
 		_setSamlSpAuthRequestUtilPersistence(null);
 
 		entityCache.removeCache(SamlSpAuthRequestImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SamlSpAuthRequest> samlSpAuthRequests = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SamlSpAuthRequest>> resultMap =
+				new HashMap<>();
+
+			for (SamlSpAuthRequest samlSpAuthRequest : samlSpAuthRequests) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SamlSpAuthRequestModelImpl samlSpAuthRequestModelImpl =
+						(SamlSpAuthRequestModelImpl)samlSpAuthRequest;
+
+					arguments.add(
+						samlSpAuthRequestModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), samlSpAuthRequest);
+				}
+				else {
+					List<SamlSpAuthRequest> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(samlSpAuthRequest);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SamlSpAuthRequest>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SamlSpAuthRequest> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSamlSpAuthRequestUtilPersistence(

@@ -52,7 +52,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -99,8 +101,35 @@ public class PushNotificationsDevicePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathFetchByToken;
+
+	@Override
+	public FinderPath getFinderPathFetchByToken() {
+		return _finderPathFetchByToken;
+	}
+
 	private FinderPath _finderPathCountByToken;
+
+	@Override
+	public FinderPath getFinderPathCountByToken() {
+		return _finderPathCountByToken;
+	}
 
 	/**
 	 * Returns the push notifications device where token = &#63; or throws a <code>NoSuchDeviceException</code> if it could not be found.
@@ -329,9 +358,32 @@ public class PushNotificationsDevicePersistenceImpl
 		"(pushNotificationsDevice.token IS NULL OR pushNotificationsDevice.token = '')";
 
 	private FinderPath _finderPathWithPaginationFindByU_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_P() {
+		return _finderPathWithPaginationFindByU_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_P() {
+		return _finderPathWithoutPaginationFindByU_P;
+	}
+
 	private FinderPath _finderPathCountByU_P;
+
+	@Override
+	public FinderPath getFinderPathCountByU_P() {
+		return _finderPathCountByU_P;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByU_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByU_P() {
+		return _finderPathWithPaginationCountByU_P;
+	}
 
 	/**
 	 * Returns all the push notifications devices where userId = &#63; and platform = &#63;.
@@ -1843,6 +1895,67 @@ public class PushNotificationsDevicePersistenceImpl
 		_setPushNotificationsDeviceUtilPersistence(null);
 
 		entityCache.removeCache(PushNotificationsDeviceImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PushNotificationsDevice> pushNotificationsDevices = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PushNotificationsDevice>> resultMap =
+				new HashMap<>();
+
+			for (PushNotificationsDevice pushNotificationsDevice :
+					pushNotificationsDevices) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PushNotificationsDeviceModelImpl
+						pushNotificationsDeviceModelImpl =
+							(PushNotificationsDeviceModelImpl)
+								pushNotificationsDevice;
+
+					arguments.add(
+						pushNotificationsDeviceModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						pushNotificationsDevice);
+				}
+				else {
+					List<PushNotificationsDevice> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(pushNotificationsDevice);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PushNotificationsDevice>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PushNotificationsDevice> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPushNotificationsDeviceUtilPersistence(

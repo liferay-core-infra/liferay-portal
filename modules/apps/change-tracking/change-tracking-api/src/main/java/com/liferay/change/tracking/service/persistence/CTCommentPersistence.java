@@ -16,6 +16,7 @@ package com.liferay.change.tracking.service.persistence;
 
 import com.liferay.change.tracking.exception.NoSuchCommentException;
 import com.liferay.change.tracking.model.CTComment;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface CTCommentPersistence extends BasePersistence<CTComment> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CTCommentUtil} to access the ct comment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCtCollectionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCtCollectionId();
+
+	public FinderPath getFinderPathCountByCtCollectionId();
 
 	/**
 	 * Returns all the ct comments where ctCollectionId = &#63;.
@@ -182,6 +194,12 @@ public interface CTCommentPersistence extends BasePersistence<CTComment> {
 	 * @return the number of matching ct comments
 	 */
 	public int countByCtCollectionId(long ctCollectionId);
+
+	public FinderPath getFinderPathWithPaginationFindByCtEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCtEntryId();
+
+	public FinderPath getFinderPathCountByCtEntryId();
 
 	/**
 	 * Returns all the ct comments where ctEntryId = &#63;.
@@ -444,5 +462,7 @@ public interface CTCommentPersistence extends BasePersistence<CTComment> {
 	 * @return the number of ct comments
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

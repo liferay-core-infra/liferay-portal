@@ -16,6 +16,7 @@ package com.liferay.document.library.content.service;
 
 import com.liferay.document.library.content.model.DLContent;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -428,6 +429,11 @@ public class DLContentLocalServiceWrapper
 
 		return _dlContentLocalService.hasContent(
 			companyId, repositoryId, path, version);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlContentLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

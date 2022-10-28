@@ -14,6 +14,7 @@
 
 package com.liferay.trash.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.trash.exception.NoSuchVersionException;
@@ -41,6 +42,17 @@ public interface TrashVersionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TrashVersionUtil} to access the trash version persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByEntryId();
+
+	public FinderPath getFinderPathCountByEntryId();
 
 	/**
 	 * Returns all the trash versions where entryId = &#63;.
@@ -184,6 +196,12 @@ public interface TrashVersionPersistence
 	 * @return the number of matching trash versions
 	 */
 	public int countByEntryId(long entryId);
+
+	public FinderPath getFinderPathWithPaginationFindByE_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByE_C();
+
+	public FinderPath getFinderPathCountByE_C();
 
 	/**
 	 * Returns all the trash versions where entryId = &#63; and classNameId = &#63;.
@@ -339,6 +357,10 @@ public interface TrashVersionPersistence
 	 * @return the number of matching trash versions
 	 */
 	public int countByE_C(long entryId, long classNameId);
+
+	public FinderPath getFinderPathFetchByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns the trash version where classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchVersionException</code> if it could not be found.
@@ -508,5 +530,7 @@ public interface TrashVersionPersistence
 	 * @return the number of trash versions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

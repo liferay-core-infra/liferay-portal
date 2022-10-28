@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -1190,6 +1191,11 @@ public class OrganizationLocalServiceWrapper
 	@Override
 	public boolean isRootable(String type) {
 		return _organizationLocalService.isRootable(type);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_organizationLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

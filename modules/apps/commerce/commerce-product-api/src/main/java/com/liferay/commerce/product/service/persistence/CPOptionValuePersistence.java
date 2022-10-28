@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service.persistence;
 
 import com.liferay.commerce.product.exception.NoSuchCPOptionValueException;
 import com.liferay.commerce.product.model.CPOptionValue;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface CPOptionValuePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CPOptionValueUtil} to access the cp option value persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the cp option values where uuid = &#63;.
@@ -184,6 +196,12 @@ public interface CPOptionValuePersistence
 	 * @return the number of matching cp option values
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the cp option values where uuid = &#63; and companyId = &#63;.
@@ -340,6 +358,12 @@ public interface CPOptionValuePersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the cp option values where companyId = &#63;.
 	 *
@@ -482,6 +506,12 @@ public interface CPOptionValuePersistence
 	 * @return the number of matching cp option values
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByCPOptionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCPOptionId();
+
+	public FinderPath getFinderPathCountByCPOptionId();
 
 	/**
 	 * Returns all the cp option values where CPOptionId = &#63;.
@@ -626,6 +656,10 @@ public interface CPOptionValuePersistence
 	 */
 	public int countByCPOptionId(long CPOptionId);
 
+	public FinderPath getFinderPathFetchByC_K();
+
+	public FinderPath getFinderPathCountByC_K();
+
 	/**
 	 * Returns the cp option value where CPOptionId = &#63; and key = &#63; or throws a <code>NoSuchCPOptionValueException</code> if it could not be found.
 	 *
@@ -675,6 +709,10 @@ public interface CPOptionValuePersistence
 	 * @return the number of matching cp option values
 	 */
 	public int countByC_K(long CPOptionId, String key);
+
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
 
 	/**
 	 * Returns the cp option value where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCPOptionValueException</code> if it could not be found.
@@ -848,5 +886,7 @@ public interface CPOptionValuePersistence
 	 * @return the number of cp option values
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

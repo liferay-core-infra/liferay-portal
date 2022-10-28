@@ -16,6 +16,7 @@ package com.liferay.asset.list.service;
 
 import com.liferay.asset.list.model.AssetListEntryAssetEntryRel;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -521,6 +522,11 @@ public class AssetListEntryAssetEntryRelLocalServiceWrapper
 
 		return _assetListEntryAssetEntryRelLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_assetListEntryAssetEntryRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

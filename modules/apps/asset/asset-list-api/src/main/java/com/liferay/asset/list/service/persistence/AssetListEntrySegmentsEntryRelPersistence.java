@@ -16,6 +16,7 @@ package com.liferay.asset.list.service.persistence;
 
 import com.liferay.asset.list.exception.NoSuchEntrySegmentsEntryRelException;
 import com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AssetListEntrySegmentsEntryRelUtil} to access the asset list entry segments entry rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the asset list entry segments entry rels where uuid = &#63;.
@@ -187,6 +199,10 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the asset list entry segments entry rel where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntrySegmentsEntryRelException</code> if it could not be found.
 	 *
@@ -239,6 +255,12 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 * @return the number of matching asset list entry segments entry rels
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the asset list entry segments entry rels where uuid = &#63; and companyId = &#63;.
@@ -395,6 +417,12 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByAssetListEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByAssetListEntryId();
+
+	public FinderPath getFinderPathCountByAssetListEntryId();
+
 	/**
 	 * Returns all the asset list entry segments entry rels where assetListEntryId = &#63;.
 	 *
@@ -541,6 +569,12 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 */
 	public int countByAssetListEntryId(long assetListEntryId);
 
+	public FinderPath getFinderPathWithPaginationFindBySegmentsEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindBySegmentsEntryId();
+
+	public FinderPath getFinderPathCountBySegmentsEntryId();
+
 	/**
 	 * Returns all the asset list entry segments entry rels where segmentsEntryId = &#63;.
 	 *
@@ -685,6 +719,10 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 */
 	public int countBySegmentsEntryId(long segmentsEntryId);
 
+	public FinderPath getFinderPathFetchByA_S();
+
+	public FinderPath getFinderPathCountByA_S();
+
 	/**
 	 * Returns the asset list entry segments entry rel where assetListEntryId = &#63; and segmentsEntryId = &#63; or throws a <code>NoSuchEntrySegmentsEntryRelException</code> if it could not be found.
 	 *
@@ -737,6 +775,14 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 * @return the number of matching asset list entry segments entry rels
 	 */
 	public int countByA_S(long assetListEntryId, long segmentsEntryId);
+
+	public FinderPath getFinderPathWithPaginationFindByA_S_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByA_S_C();
+
+	public FinderPath getFinderPathCountByA_S_C();
+
+	public FinderPath getFinderPathWithPaginationCountByA_S_C();
 
 	/**
 	 * Returns all the asset list entry segments entry rels where assetListEntryId = &#63; and segmentsEntryId = &#63;.
@@ -1101,5 +1147,7 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 * @return the number of asset list entry segments entry rels
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

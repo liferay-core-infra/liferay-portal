@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -60,6 +61,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -92,9 +94,42 @@ public class AssetLinkPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByEntryId1;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByEntryId1() {
+		return _finderPathWithPaginationFindByEntryId1;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByEntryId1;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByEntryId1() {
+		return _finderPathWithoutPaginationFindByEntryId1;
+	}
+
 	private FinderPath _finderPathCountByEntryId1;
+
+	@Override
+	public FinderPath getFinderPathCountByEntryId1() {
+		return _finderPathCountByEntryId1;
+	}
 
 	/**
 	 * Returns all the asset links where entryId1 = &#63;.
@@ -600,8 +635,25 @@ public class AssetLinkPersistenceImpl
 		"assetLink.entryId1 = ?";
 
 	private FinderPath _finderPathWithPaginationFindByEntryId2;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByEntryId2() {
+		return _finderPathWithPaginationFindByEntryId2;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByEntryId2;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByEntryId2() {
+		return _finderPathWithoutPaginationFindByEntryId2;
+	}
+
 	private FinderPath _finderPathCountByEntryId2;
+
+	@Override
+	public FinderPath getFinderPathCountByEntryId2() {
+		return _finderPathCountByEntryId2;
+	}
 
 	/**
 	 * Returns all the asset links where entryId2 = &#63;.
@@ -1107,8 +1159,25 @@ public class AssetLinkPersistenceImpl
 		"assetLink.entryId2 = ?";
 
 	private FinderPath _finderPathWithPaginationFindByE_E;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByE_E() {
+		return _finderPathWithPaginationFindByE_E;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByE_E;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByE_E() {
+		return _finderPathWithoutPaginationFindByE_E;
+	}
+
 	private FinderPath _finderPathCountByE_E;
+
+	@Override
+	public FinderPath getFinderPathCountByE_E() {
+		return _finderPathCountByE_E;
+	}
 
 	/**
 	 * Returns all the asset links where entryId1 = &#63; and entryId2 = &#63;.
@@ -1661,8 +1730,25 @@ public class AssetLinkPersistenceImpl
 		"assetLink.entryId2 = ?";
 
 	private FinderPath _finderPathWithPaginationFindByE1_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByE1_T() {
+		return _finderPathWithPaginationFindByE1_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByE1_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByE1_T() {
+		return _finderPathWithoutPaginationFindByE1_T;
+	}
+
 	private FinderPath _finderPathCountByE1_T;
+
+	@Override
+	public FinderPath getFinderPathCountByE1_T() {
+		return _finderPathCountByE1_T;
+	}
 
 	/**
 	 * Returns all the asset links where entryId1 = &#63; and type = &#63;.
@@ -2212,8 +2298,25 @@ public class AssetLinkPersistenceImpl
 		"assetLink.type = ?";
 
 	private FinderPath _finderPathWithPaginationFindByE2_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByE2_T() {
+		return _finderPathWithPaginationFindByE2_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByE2_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByE2_T() {
+		return _finderPathWithoutPaginationFindByE2_T;
+	}
+
 	private FinderPath _finderPathCountByE2_T;
+
+	@Override
+	public FinderPath getFinderPathCountByE2_T() {
+		return _finderPathCountByE2_T;
+	}
 
 	/**
 	 * Returns all the asset links where entryId2 = &#63; and type = &#63;.
@@ -2763,7 +2866,18 @@ public class AssetLinkPersistenceImpl
 		"assetLink.type = ?";
 
 	private FinderPath _finderPathFetchByE_E_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByE_E_T() {
+		return _finderPathFetchByE_E_T;
+	}
+
 	private FinderPath _finderPathCountByE_E_T;
+
+	@Override
+	public FinderPath getFinderPathCountByE_E_T() {
+		return _finderPathCountByE_E_T;
+	}
 
 	/**
 	 * Returns the asset link where entryId1 = &#63; and entryId2 = &#63; and type = &#63; or throws a <code>NoSuchLinkException</code> if it could not be found.
@@ -3911,6 +4025,59 @@ public class AssetLinkPersistenceImpl
 		_setAssetLinkUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(AssetLinkImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AssetLink> assetLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetLink>> resultMap = new HashMap<>();
+
+			for (AssetLink assetLink : assetLinks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetLinkModelImpl assetLinkModelImpl =
+						(AssetLinkModelImpl)assetLink;
+
+					arguments.add(
+						assetLinkModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), assetLink);
+				}
+				else {
+					List<AssetLink> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(assetLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetLink>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAssetLinkUtilPersistence(

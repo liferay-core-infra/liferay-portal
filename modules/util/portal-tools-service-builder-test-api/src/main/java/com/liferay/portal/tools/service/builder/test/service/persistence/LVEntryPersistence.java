@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchLVEntryException;
 import com.liferay.portal.tools.service.builder.test.model.LVEntry;
@@ -39,6 +40,17 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LVEntryUtil} to access the lv entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the lv entries where uuid = &#63;.
@@ -181,6 +193,12 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 * @return the number of matching lv entries
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_Head();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_Head();
+
+	public FinderPath getFinderPathCountByUuid_Head();
 
 	/**
 	 * Returns all the lv entries where uuid = &#63; and head = &#63;.
@@ -336,6 +354,12 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 */
 	public int countByUuid_Head(String uuid, boolean head);
 
+	public FinderPath getFinderPathWithPaginationFindByUUID_G();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns all the lv entries where uuid = &#63; and groupId = &#63;.
 	 *
@@ -490,6 +514,10 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 */
 	public int countByUUID_G(String uuid, long groupId);
 
+	public FinderPath getFinderPathFetchByUUID_G_Head();
+
+	public FinderPath getFinderPathCountByUUID_G_Head();
+
 	/**
 	 * Returns the lv entry where uuid = &#63; and groupId = &#63; and head = &#63; or throws a <code>NoSuchLVEntryException</code> if it could not be found.
 	 *
@@ -544,6 +572,12 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 * @return the number of matching lv entries
 	 */
 	public int countByUUID_G_Head(String uuid, long groupId, boolean head);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the lv entries where uuid = &#63; and companyId = &#63;.
@@ -698,6 +732,12 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 * @return the number of matching lv entries
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C_Head();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C_Head();
+
+	public FinderPath getFinderPathCountByUuid_C_Head();
 
 	/**
 	 * Returns all the lv entries where uuid = &#63; and companyId = &#63; and head = &#63;.
@@ -864,6 +904,14 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 * @return the number of matching lv entries
 	 */
 	public int countByUuid_C_Head(String uuid, long companyId, boolean head);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
+	public FinderPath getFinderPathWithPaginationCountByGroupId();
 
 	/**
 	 * Returns all the lv entries where groupId = &#63;.
@@ -1080,6 +1128,14 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 * @return the number of matching lv entries
 	 */
 	public int countByGroupId(long[] groupIds);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId_Head();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId_Head();
+
+	public FinderPath getFinderPathCountByGroupId_Head();
+
+	public FinderPath getFinderPathWithPaginationCountByGroupId_Head();
 
 	/**
 	 * Returns all the lv entries where groupId = &#63; and head = &#63;.
@@ -1315,6 +1371,12 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 */
 	public int countByGroupId_Head(long[] groupIds, boolean head);
 
+	public FinderPath getFinderPathWithPaginationFindByG_UGK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_UGK();
+
+	public FinderPath getFinderPathCountByG_UGK();
+
 	/**
 	 * Returns all the lv entries where groupId = &#63; and uniqueGroupKey = &#63;.
 	 *
@@ -1470,6 +1532,10 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 */
 	public int countByG_UGK(long groupId, String uniqueGroupKey);
 
+	public FinderPath getFinderPathFetchByG_UGK_Head();
+
+	public FinderPath getFinderPathCountByG_UGK_Head();
+
 	/**
 	 * Returns the lv entry where groupId = &#63; and uniqueGroupKey = &#63; and head = &#63; or throws a <code>NoSuchLVEntryException</code> if it could not be found.
 	 *
@@ -1529,6 +1595,10 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 	 */
 	public int countByG_UGK_Head(
 		long groupId, String uniqueGroupKey, boolean head);
+
+	public FinderPath getFinderPathFetchByHeadId();
+
+	public FinderPath getFinderPathCountByHeadId();
 
 	/**
 	 * Returns the lv entry where headId = &#63; or throws a <code>NoSuchLVEntryException</code> if it could not be found.
@@ -1875,5 +1945,7 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 		java.util.List
 			<com.liferay.portal.tools.service.builder.test.model.
 				BigDecimalEntry> bigDecimalEntries);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -109,9 +109,42 @@ public class MBCategoryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the message boards categories where uuid = &#63;.
@@ -654,7 +687,18 @@ public class MBCategoryPersistenceImpl
 		"(mbCategory.uuid IS NULL OR mbCategory.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the message boards category where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCategoryException</code> if it could not be found.
@@ -917,8 +961,25 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the message boards categories where uuid = &#63; and companyId = &#63;.
@@ -1510,8 +1571,25 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the message boards categories where groupId = &#63;.
@@ -2387,8 +2465,25 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the message boards categories where companyId = &#63;.
@@ -2898,9 +2993,32 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P() {
+		return _finderPathWithPaginationFindByG_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P() {
+		return _finderPathWithoutPaginationFindByG_P;
+	}
+
 	private FinderPath _finderPathCountByG_P;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P() {
+		return _finderPathCountByG_P;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_P() {
+		return _finderPathWithPaginationCountByG_P;
+	}
 
 	/**
 	 * Returns all the message boards categories where groupId = &#63; and parentCategoryId = &#63;.
@@ -4359,8 +4477,25 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.parentCategoryId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_S() {
+		return _finderPathWithPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_S() {
+		return _finderPathWithoutPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns all the message boards categories where groupId = &#63; and status = &#63;.
@@ -5298,8 +5433,25 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S() {
+		return _finderPathWithPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S() {
+		return _finderPathWithoutPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S() {
+		return _finderPathCountByC_S;
+	}
 
 	/**
 	 * Returns all the message boards categories where companyId = &#63; and status = &#63;.
@@ -5851,7 +6003,18 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByNotC_G_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByNotC_G_P() {
+		return _finderPathWithPaginationFindByNotC_G_P;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByNotC_G_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByNotC_G_P() {
+		return _finderPathWithPaginationCountByNotC_G_P;
+	}
 
 	/**
 	 * Returns all the message boards categories where categoryId &ne; &#63; and groupId = &#63; and parentCategoryId = &#63;.
@@ -7109,9 +7272,32 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.parentCategoryId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P_S() {
+		return _finderPathWithPaginationFindByG_P_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_S() {
+		return _finderPathWithoutPaginationFindByG_P_S;
+	}
+
 	private FinderPath _finderPathCountByG_P_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P_S() {
+		return _finderPathCountByG_P_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_P_S() {
+		return _finderPathWithPaginationCountByG_P_S;
+	}
 
 	/**
 	 * Returns all the message boards categories where groupId = &#63; and parentCategoryId = &#63; and status = &#63;.
@@ -8677,7 +8863,18 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P_NotS() {
+		return _finderPathWithPaginationFindByG_P_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_P_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_P_NotS() {
+		return _finderPathWithPaginationCountByG_P_NotS;
+	}
 
 	/**
 	 * Returns all the message boards categories where groupId = &#63; and parentCategoryId = &#63; and status &ne; &#63;.
@@ -10239,7 +10436,18 @@ public class MBCategoryPersistenceImpl
 		"mbCategory.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByNotC_G_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByNotC_G_P_S() {
+		return _finderPathWithPaginationFindByNotC_G_P_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByNotC_G_P_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByNotC_G_P_S() {
+		return _finderPathWithPaginationCountByNotC_G_P_S;
+	}
 
 	/**
 	 * Returns all the message boards categories where categoryId &ne; &#63; and groupId = &#63; and parentCategoryId = &#63; and status = &#63;.
@@ -12632,6 +12840,59 @@ public class MBCategoryPersistenceImpl
 		_setMBCategoryUtilPersistence(null);
 
 		entityCache.removeCache(MBCategoryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<MBCategory> mbCategorys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MBCategory>> resultMap = new HashMap<>();
+
+			for (MBCategory mbCategory : mbCategorys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MBCategoryModelImpl mbCategoryModelImpl =
+						(MBCategoryModelImpl)mbCategory;
+
+					arguments.add(
+						mbCategoryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), mbCategory);
+				}
+				else {
+					List<MBCategory> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(mbCategory);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MBCategory>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MBCategory> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setMBCategoryUtilPersistence(

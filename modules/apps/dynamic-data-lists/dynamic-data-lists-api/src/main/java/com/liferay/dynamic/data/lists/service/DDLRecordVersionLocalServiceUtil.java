@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.lists.service;
 import com.liferay.dynamic.data.lists.model.DDLRecordVersion;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -379,6 +380,10 @@ public class DDLRecordVersionLocalServiceUtil {
 	 */
 	public static int getRecordVersionsCount(long recordId) {
 		return getService().getRecordVersionsCount(recordId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	/**

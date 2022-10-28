@@ -14,6 +14,7 @@
 
 package com.liferay.object.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -386,6 +387,11 @@ public class ObjectViewFilterColumnLocalServiceWrapper
 
 		return _objectViewFilterColumnLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_objectViewFilterColumnLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.oauth.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -392,6 +393,11 @@ public class OAuthApplicationLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _oAuthApplicationLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_oAuthApplicationLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

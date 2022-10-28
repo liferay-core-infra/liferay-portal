@@ -16,6 +16,7 @@ package com.liferay.object.service.persistence;
 
 import com.liferay.object.exception.NoSuchObjectStateException;
 import com.liferay.object.model.ObjectState;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface ObjectStatePersistence extends BasePersistence<ObjectState> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ObjectStateUtil} to access the object state persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the object states where uuid = &#63;.
@@ -182,6 +194,12 @@ public interface ObjectStatePersistence extends BasePersistence<ObjectState> {
 	 * @return the number of matching object states
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the object states where uuid = &#63; and companyId = &#63;.
@@ -338,6 +356,12 @@ public interface ObjectStatePersistence extends BasePersistence<ObjectState> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByListTypeEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByListTypeEntryId();
+
+	public FinderPath getFinderPathCountByListTypeEntryId();
+
 	/**
 	 * Returns all the object states where listTypeEntryId = &#63;.
 	 *
@@ -482,6 +506,12 @@ public interface ObjectStatePersistence extends BasePersistence<ObjectState> {
 	 */
 	public int countByListTypeEntryId(long listTypeEntryId);
 
+	public FinderPath getFinderPathWithPaginationFindByObjectStateFlowId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByObjectStateFlowId();
+
+	public FinderPath getFinderPathCountByObjectStateFlowId();
+
 	/**
 	 * Returns all the object states where objectStateFlowId = &#63;.
 	 *
@@ -625,6 +655,10 @@ public interface ObjectStatePersistence extends BasePersistence<ObjectState> {
 	 * @return the number of matching object states
 	 */
 	public int countByObjectStateFlowId(long objectStateFlowId);
+
+	public FinderPath getFinderPathFetchByLTEI_OSFI();
+
+	public FinderPath getFinderPathCountByLTEI_OSFI();
 
 	/**
 	 * Returns the object state where listTypeEntryId = &#63; and objectStateFlowId = &#63; or throws a <code>NoSuchObjectStateException</code> if it could not be found.
@@ -798,5 +832,7 @@ public interface ObjectStatePersistence extends BasePersistence<ObjectState> {
 	 * @return the number of object states
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

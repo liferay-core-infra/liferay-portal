@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -52,6 +53,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,8 +101,35 @@ public class MemberRequestPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathFetchByKey;
+
+	@Override
+	public FinderPath getFinderPathFetchByKey() {
+		return _finderPathFetchByKey;
+	}
+
 	private FinderPath _finderPathCountByKey;
+
+	@Override
+	public FinderPath getFinderPathCountByKey() {
+		return _finderPathCountByKey;
+	}
 
 	/**
 	 * Returns the member request where key = &#63; or throws a <code>NoSuchMemberRequestException</code> if it could not be found.
@@ -340,8 +369,25 @@ public class MemberRequestPersistenceImpl
 		"(memberRequest.key IS NULL OR memberRequest.key = '')";
 
 	private FinderPath _finderPathWithPaginationFindByReceiverUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByReceiverUserId() {
+		return _finderPathWithPaginationFindByReceiverUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByReceiverUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByReceiverUserId() {
+		return _finderPathWithoutPaginationFindByReceiverUserId;
+	}
+
 	private FinderPath _finderPathCountByReceiverUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByReceiverUserId() {
+		return _finderPathCountByReceiverUserId;
+	}
 
 	/**
 	 * Returns all the member requests where receiverUserId = &#63;.
@@ -845,8 +891,25 @@ public class MemberRequestPersistenceImpl
 		"memberRequest.receiverUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByR_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByR_S() {
+		return _finderPathWithPaginationFindByR_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByR_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByR_S() {
+		return _finderPathWithoutPaginationFindByR_S;
+	}
+
 	private FinderPath _finderPathCountByR_S;
+
+	@Override
+	public FinderPath getFinderPathCountByR_S() {
+		return _finderPathCountByR_S;
+	}
 
 	/**
 	 * Returns all the member requests where receiverUserId = &#63; and status = &#63;.
@@ -1385,7 +1448,18 @@ public class MemberRequestPersistenceImpl
 		"memberRequest.status = ?";
 
 	private FinderPath _finderPathFetchByG_R_S;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_R_S() {
+		return _finderPathFetchByG_R_S;
+	}
+
 	private FinderPath _finderPathCountByG_R_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_R_S() {
+		return _finderPathCountByG_R_S;
+	}
 
 	/**
 	 * Returns the member request where groupId = &#63; and receiverUserId = &#63; and status = &#63; or throws a <code>NoSuchMemberRequestException</code> if it could not be found.
@@ -2302,6 +2376,59 @@ public class MemberRequestPersistenceImpl
 		_setMemberRequestUtilPersistence(null);
 
 		entityCache.removeCache(MemberRequestImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<MemberRequest> memberRequests = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MemberRequest>> resultMap = new HashMap<>();
+
+			for (MemberRequest memberRequest : memberRequests) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MemberRequestModelImpl memberRequestModelImpl =
+						(MemberRequestModelImpl)memberRequest;
+
+					arguments.add(
+						memberRequestModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), memberRequest);
+				}
+				else {
+					List<MemberRequest> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(memberRequest);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MemberRequest>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MemberRequest> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setMemberRequestUtilPersistence(

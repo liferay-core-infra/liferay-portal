@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.persistence.WorkflowDefinitionLinkPersi
 import com.liferay.portal.kernel.service.persistence.WorkflowDefinitionLinkUtil;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -94,9 +95,42 @@ public class WorkflowDefinitionLinkPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the workflow definition links where companyId = &#63;.
@@ -617,8 +651,25 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		"workflowDefinitionLink.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C() {
+		return _finderPathWithPaginationFindByG_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C() {
+		return _finderPathWithoutPaginationFindByG_C_C;
+	}
+
 	private FinderPath _finderPathCountByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C() {
+		return _finderPathCountByG_C_C;
+	}
 
 	/**
 	 * Returns all the workflow definition links where groupId = &#63; and companyId = &#63; and classNameId = &#63;.
@@ -1215,8 +1266,25 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		"workflowDefinitionLink.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_CPK() {
+		return _finderPathWithPaginationFindByG_C_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_CPK() {
+		return _finderPathWithoutPaginationFindByG_C_CPK;
+	}
+
 	private FinderPath _finderPathCountByG_C_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_CPK() {
+		return _finderPathCountByG_C_CPK;
+	}
 
 	/**
 	 * Returns all the workflow definition links where groupId = &#63; and companyId = &#63; and classPK = &#63;.
@@ -1810,8 +1878,25 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		"workflowDefinitionLink.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_W_W;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_W_W() {
+		return _finderPathWithPaginationFindByC_W_W;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_W_W;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_W_W() {
+		return _finderPathWithoutPaginationFindByC_W_W;
+	}
+
 	private FinderPath _finderPathCountByC_W_W;
+
+	@Override
+	public FinderPath getFinderPathCountByC_W_W() {
+		return _finderPathCountByC_W_W;
+	}
 
 	/**
 	 * Returns all the workflow definition links where companyId = &#63; and workflowDefinitionName = &#63; and workflowDefinitionVersion = &#63;.
@@ -2483,8 +2568,25 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			"workflowDefinitionLink.workflowDefinitionVersion = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_C() {
+		return _finderPathWithPaginationFindByG_C_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_C() {
+		return _finderPathWithoutPaginationFindByG_C_C_C;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_C() {
+		return _finderPathCountByG_C_C_C;
+	}
 
 	/**
 	 * Returns all the workflow definition links where groupId = &#63; and companyId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -3125,7 +3227,18 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		"workflowDefinitionLink.classPK = ?";
 
 	private FinderPath _finderPathFetchByG_C_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_C_C_T() {
+		return _finderPathFetchByG_C_C_C_T;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_C_T() {
+		return _finderPathCountByG_C_C_C_T;
+	}
 
 	/**
 	 * Returns the workflow definition link where groupId = &#63; and companyId = &#63; and classNameId = &#63; and classPK = &#63; and typePK = &#63; or throws a <code>NoSuchWorkflowDefinitionLinkException</code> if it could not be found.
@@ -4450,6 +4563,67 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		_setWorkflowDefinitionLinkUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(WorkflowDefinitionLinkImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<WorkflowDefinitionLink> workflowDefinitionLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<WorkflowDefinitionLink>> resultMap =
+				new HashMap<>();
+
+			for (WorkflowDefinitionLink workflowDefinitionLink :
+					workflowDefinitionLinks) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					WorkflowDefinitionLinkModelImpl
+						workflowDefinitionLinkModelImpl =
+							(WorkflowDefinitionLinkModelImpl)
+								workflowDefinitionLink;
+
+					arguments.add(
+						workflowDefinitionLinkModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(),
+						workflowDefinitionLink);
+				}
+				else {
+					List<WorkflowDefinitionLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(workflowDefinitionLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<WorkflowDefinitionLink>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<WorkflowDefinitionLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setWorkflowDefinitionLinkUtilPersistence(

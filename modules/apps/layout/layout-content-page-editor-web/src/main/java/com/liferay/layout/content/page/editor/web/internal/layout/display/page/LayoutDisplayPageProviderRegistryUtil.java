@@ -34,11 +34,13 @@ public class LayoutDisplayPageProviderRegistryUtil {
 	}
 
 	@Reference(unbind = "-")
-	protected void setLayoutDisplayPageProviderTracker(LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry) {
+	protected void setLayoutDisplayPageProviderTracker(
+		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry) {
+
 		_layoutDisplayPageProviderRegistry = layoutDisplayPageProviderRegistry;
 	}
 
 	private static LayoutDisplayPageProviderRegistry
-_layoutDisplayPageProviderRegistry;
+		_layoutDisplayPageProviderRegistry;
 
 }

@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Jorge Ferrer
  */
 @Component(service = LayoutDisplayPageProviderRegistry.class)
-public class LayoutDisplayPageProviderTrackerImpl
+public class LayoutDisplayPageProviderRegistryImpl
 	implements LayoutDisplayPageProviderRegistry {
 
 	@Override

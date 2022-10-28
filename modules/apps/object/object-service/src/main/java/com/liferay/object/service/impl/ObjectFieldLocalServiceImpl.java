@@ -32,7 +32,7 @@ import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
 import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.internal.field.setting.contributor.ObjectFieldSettingContributor;
-import com.liferay.object.internal.field.setting.contributor.ObjectFieldSettingContributorTracker;
+import com.liferay.object.internal.field.setting.contributor.ObjectFieldSettingContributorRegistryImpl;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
@@ -736,7 +736,7 @@ public class ObjectFieldLocalServiceImpl
 					newObjectFieldSetting.getName());
 
 			ObjectFieldSettingContributor objectFieldSettingContributor =
-				_objectFieldSettingContributorTracker.
+				_objectFieldSettingContributorRegistryImpl.
 					getObjectFieldSettingContributor(
 						newObjectFieldSetting.getName());
 
@@ -1126,8 +1126,8 @@ public class ObjectFieldLocalServiceImpl
 	private ObjectFieldBusinessTypeRegistry _objectFieldBusinessTypeRegistry;
 
 	@Reference
-	private ObjectFieldSettingContributorTracker
-		_objectFieldSettingContributorTracker;
+	private ObjectFieldSettingContributorRegistryImpl
+		_objectFieldSettingContributorRegistryImpl;
 
 	@Reference
 	private ObjectFieldSettingLocalService _objectFieldSettingLocalService;

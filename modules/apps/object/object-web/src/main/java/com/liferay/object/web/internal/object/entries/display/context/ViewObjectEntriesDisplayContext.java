@@ -31,7 +31,7 @@ import com.liferay.object.service.ObjectViewLocalService;
 import com.liferay.object.web.internal.constants.ObjectWebKeys;
 import com.liferay.object.web.internal.display.context.helper.ObjectRequestHelper;
 import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactory;
-import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactoryTracker;
+import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactoryRegistryImpl;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -69,7 +69,8 @@ public class ViewObjectEntriesDisplayContext {
 
 	public ViewObjectEntriesDisplayContext(
 		HttpServletRequest httpServletRequest,
-		ObjectFieldFDSFilterFactoryTracker objectFieldFDSFilterFactoryTracker,
+		ObjectFieldFDSFilterFactoryRegistryImpl
+			objectFieldFDSFilterFactoryRegistryImpl,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectScopeProvider objectScopeProvider,
 		ObjectViewLocalService objectViewLocalService,
@@ -77,8 +78,8 @@ public class ViewObjectEntriesDisplayContext {
 		String restContextPath) {
 
 		_httpServletRequest = httpServletRequest;
-		_objectFieldFDSFilterFactoryTracker =
-			objectFieldFDSFilterFactoryTracker;
+		_objectFieldFDSFilterFactoryRegistryImpl =
+			objectFieldFDSFilterFactoryRegistryImpl;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectScopeProvider = objectScopeProvider;
 		_objectViewLocalService = objectViewLocalService;
@@ -166,7 +167,7 @@ public class ViewObjectEntriesDisplayContext {
 			objectView.getObjectViewFilterColumns(),
 			objectViewFilterColumn -> {
 				ObjectFieldFDSFilterFactory objectFieldFDSFilterFactory =
-					_objectFieldFDSFilterFactoryTracker.
+					_objectFieldFDSFilterFactoryRegistryImpl.
 						getObjectFieldFDSFilterFactory(
 							objectView.getObjectDefinitionId(),
 							objectViewFilterColumn);
@@ -356,8 +357,8 @@ public class ViewObjectEntriesDisplayContext {
 	private final String _apiURL;
 	private final HttpServletRequest _httpServletRequest;
 	private ObjectDefinition _objectDefinition;
-	private final ObjectFieldFDSFilterFactoryTracker
-		_objectFieldFDSFilterFactoryTracker;
+	private final ObjectFieldFDSFilterFactoryRegistryImpl
+		_objectFieldFDSFilterFactoryRegistryImpl;
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectRequestHelper _objectRequestHelper;
 	private final ObjectScopeProvider _objectScopeProvider;

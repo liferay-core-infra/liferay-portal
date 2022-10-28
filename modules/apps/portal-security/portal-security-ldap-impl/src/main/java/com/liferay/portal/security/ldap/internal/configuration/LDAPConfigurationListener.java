@@ -107,17 +107,12 @@ public class LDAPConfigurationListener implements ConfigurationListener {
 		_serviceTrackerMap.close();
 	}
 
-	@Reference(unbind = "-")
-	protected void setConfigurationAdmin(
-		ConfigurationAdmin configurationAdmin) {
-
-		_configurationAdmin = configurationAdmin;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		LDAPConfigurationListener.class);
 
+	@Reference
 	private ConfigurationAdmin _configurationAdmin;
+
 	private volatile ServiceTrackerMap<String, ConfigurationProvider<?>>
 		_serviceTrackerMap;
 

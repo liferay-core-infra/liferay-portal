@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Lourdes Fernández Besada
  */
 @Component(service = LayoutDisplayPageMultiSelectionProviderRegistry.class)
-public class LayoutDisplayPageMultiSelectionProviderTrackerImpl
+public class LayoutDisplayPageMultiSelectionProviderRegistryImpl
 	implements LayoutDisplayPageMultiSelectionProviderRegistry {
 
 	@Override

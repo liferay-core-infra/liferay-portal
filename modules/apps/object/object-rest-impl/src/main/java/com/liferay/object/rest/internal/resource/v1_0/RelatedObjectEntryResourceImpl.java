@@ -18,7 +18,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerTracker;
+import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.service.ObjectRelationshipService;
@@ -77,7 +77,7 @@ public class RelatedObjectEntryResourceImpl
 			systemObjectDefinition, objectRelationship);
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerTracker.getObjectEntryManager(
+			_objectEntryManagerRegistry.getObjectEntryManager(
 				systemObjectDefinition.getStorageType());
 
 		if (relatedObjectDefinition.isSystem()) {
@@ -128,7 +128,7 @@ public class RelatedObjectEntryResourceImpl
 			new ServiceContext());
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerTracker.getObjectEntryManager(
+			_objectEntryManagerRegistry.getObjectEntryManager(
 				systemObjectDefinition.getStorageType());
 
 		ObjectDefinition relatedObjectDefinition = _getRelatedObjectDefinition(
@@ -252,7 +252,7 @@ public class RelatedObjectEntryResourceImpl
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
-	private ObjectEntryManagerTracker _objectEntryManagerTracker;
+	private ObjectEntryManagerRegistry _objectEntryManagerRegistry;
 
 	@Reference
 	private ObjectRelationshipLocalService _objectRelationshipLocalService;

@@ -99,11 +99,14 @@ public class DDMFormInstanceRecordWriterTrackerImpl
 				extension = StringUtil.toUpperCase(type);
 			}
 
+			DDMFormInstanceRecordWriter ddmFormInstanceRecordWriter =
+				_bundleContext.getService(serviceReference);
+
 			_ddmFormInstanceRecordWriterExtensions.put(type, extension);
 			_ddmFormInstanceRecordWriters.put(
-				type, _bundleContext.getService(serviceReference));
+				type, ddmFormInstanceRecordWriter);
 
-			return _bundleContext.getService(serviceReference);
+			return ddmFormInstanceRecordWriter;
 		}
 
 		@Override

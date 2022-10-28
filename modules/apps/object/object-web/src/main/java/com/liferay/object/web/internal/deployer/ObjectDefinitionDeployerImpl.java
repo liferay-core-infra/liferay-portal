@@ -67,7 +67,7 @@ import com.liferay.object.web.internal.item.selector.ObjectEntryItemSelectorView
 import com.liferay.object.web.internal.layout.display.page.ObjectEntryLayoutDisplayPageProvider;
 import com.liferay.object.web.internal.object.entries.application.list.ObjectEntriesPanelApp;
 import com.liferay.object.web.internal.object.entries.display.context.ObjectEntryDisplayContextFactory;
-import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactoryTracker;
+import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactoryRegistryImpl;
 import com.liferay.object.web.internal.object.entries.frontend.data.set.view.table.ObjectEntriesTableFDSView;
 import com.liferay.object.web.internal.object.entries.portlet.ObjectEntriesPortlet;
 import com.liferay.object.web.internal.object.entries.portlet.action.EditObjectEntryMVCActionCommand;
@@ -272,7 +272,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				new ObjectEntriesPortlet(
 					objectDefinition.getObjectDefinitionId(),
 					_objectDefinitionLocalService,
-					_objectFieldFDSFilterFactoryTracker,
+					_objectFieldFDSFilterFactoryRegistryImpl,
 					_objectFieldLocalService, _objectScopeProviderRegistry,
 					_objectViewLocalService, _portal,
 					_getPortletResourcePermission(
@@ -466,8 +466,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private ObjectEntryService _objectEntryService;
 
 	@Reference
-	private ObjectFieldFDSFilterFactoryTracker
-		_objectFieldFDSFilterFactoryTracker;
+	private ObjectFieldFDSFilterFactoryRegistryImpl
+		_objectFieldFDSFilterFactoryRegistryImpl;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

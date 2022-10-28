@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Eudaldo Alonso
  */
 @Component(service = ListObjectReferenceFactoryRegistry.class)
-public class ListObjectReferenceTrackerImpl
+public class ListObjectReferenceRegistryImpl
 	implements ListObjectReferenceFactoryRegistry {
 
 	@Override

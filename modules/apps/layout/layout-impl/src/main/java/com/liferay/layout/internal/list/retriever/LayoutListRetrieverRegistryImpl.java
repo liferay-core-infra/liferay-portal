@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Eudaldo Alonso
  */
 @Component(service = LayoutListRetrieverRegistry.class)
-public class LayoutListRetrieverTrackerImpl
+public class LayoutListRetrieverRegistryImpl
 	implements LayoutListRetrieverRegistry {
 
 	@Override

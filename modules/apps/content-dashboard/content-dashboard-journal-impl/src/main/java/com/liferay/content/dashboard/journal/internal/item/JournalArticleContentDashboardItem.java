@@ -21,7 +21,7 @@ import com.liferay.content.dashboard.item.VersionableContentDashboardItem;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemAction;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemActionProviderRegistry;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemVersionAction;
-import com.liferay.content.dashboard.item.action.ContentDashboardItemVersionActionProviderTracker;
+import com.liferay.content.dashboard.item.action.ContentDashboardItemVersionActionProviderRegistry;
 import com.liferay.content.dashboard.item.action.exception.ContentDashboardItemActionException;
 import com.liferay.content.dashboard.item.action.exception.ContentDashboardItemVersionActionException;
 import com.liferay.content.dashboard.item.action.provider.ContentDashboardItemActionProvider;
@@ -84,8 +84,8 @@ public class JournalArticleContentDashboardItem
 		List<AssetCategory> assetCategories, List<AssetTag> assetTags,
 		ContentDashboardItemActionProviderRegistry
 			contentDashboardItemActionProviderRegistry,
-		ContentDashboardItemVersionActionProviderTracker
-			contentDashboardItemVersionActionProviderTracker,
+		ContentDashboardItemVersionActionProviderRegistry
+			contentDashboardItemVersionActionProviderRegistry,
 		ContentDashboardItemSubtype contentDashboardItemSubtype, Group group,
 		InfoItemFieldValuesProvider<JournalArticle> infoItemFieldValuesProvider,
 		JournalArticle journalArticle,
@@ -108,8 +108,8 @@ public class JournalArticleContentDashboardItem
 
 		_contentDashboardItemActionProviderRegistry =
 			contentDashboardItemActionProviderRegistry;
-		_contentDashboardItemVersionActionProviderTracker =
-			contentDashboardItemVersionActionProviderTracker;
+		_contentDashboardItemVersionActionProviderRegistry =
+			contentDashboardItemVersionActionProviderRegistry;
 		_contentDashboardItemSubtype = contentDashboardItemSubtype;
 		_group = group;
 		_infoItemFieldValuesProvider = infoItemFieldValuesProvider;
@@ -482,7 +482,7 @@ public class JournalArticleContentDashboardItem
 
 		List<ContentDashboardItemVersionActionProvider>
 			contentDashboardItemVersionActionProviders =
-				_contentDashboardItemVersionActionProviderTracker.
+				_contentDashboardItemVersionActionProviderRegistry.
 					getContentDashboardItemVersionActionProviders(
 						JournalArticle.class.getName());
 
@@ -587,8 +587,8 @@ public class JournalArticleContentDashboardItem
 	private final ContentDashboardItemActionProviderRegistry
 		_contentDashboardItemActionProviderRegistry;
 	private final ContentDashboardItemSubtype _contentDashboardItemSubtype;
-	private final ContentDashboardItemVersionActionProviderTracker
-		_contentDashboardItemVersionActionProviderTracker;
+	private final ContentDashboardItemVersionActionProviderRegistry
+		_contentDashboardItemVersionActionProviderRegistry;
 	private final Group _group;
 	private final InfoItemFieldValuesProvider<JournalArticle>
 		_infoItemFieldValuesProvider;

@@ -23,7 +23,7 @@ import org.osgi.util.tracker.ServiceTracker;
 /**
  * @author Jürgen Kappler
  */
-public class LayoutDisplayPageProviderTrackerUtil {
+public class LayoutDisplayPageProviderRegistryUtil {
 
 	public static LayoutDisplayPageProviderRegistry
 		getLayoutDisplayPageProviderTracker() {
@@ -40,8 +40,9 @@ public class LayoutDisplayPageProviderTrackerUtil {
 			LayoutDisplayPageProviderRegistry.class);
 
 		ServiceTracker
-			<LayoutDisplayPageProviderRegistry, LayoutDisplayPageProviderRegistry>
-				serviceTracker = new ServiceTracker<>(
+			<LayoutDisplayPageProviderRegistry,
+			 LayoutDisplayPageProviderRegistry> serviceTracker =
+				new ServiceTracker<>(
 					bundle.getBundleContext(),
 					LayoutDisplayPageProviderRegistry.class, null);
 

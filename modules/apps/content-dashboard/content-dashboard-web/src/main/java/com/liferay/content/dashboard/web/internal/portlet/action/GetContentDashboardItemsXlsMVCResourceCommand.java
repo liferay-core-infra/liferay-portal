@@ -24,7 +24,7 @@ import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPort
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.content.dashboard.web.internal.search.request.ContentDashboardSearchContextBuilder;
 import com.liferay.content.dashboard.web.internal.searcher.ContentDashboardSearchRequestBuilderFactory;
-import com.liferay.info.search.InfoSearchClassMapperTracker;
+import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -309,7 +309,7 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 	private ContentDashboardItem<?> _toContentDashboardItem(Document document) {
 		ContentDashboardItemFactory<?> contentDashboardItemFactory =
 			_contentDashboardItemFactoryTracker.getContentDashboardItemFactory(
-				_infoSearchClassMapperTracker.getClassName(
+				_infoSearchClassMapperRegistry.getClassName(
 					document.get(Field.ENTRY_CLASS_NAME)));
 
 		if (contentDashboardItemFactory == null) {
@@ -386,7 +386,7 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 		_defaultSearchResultPermissionFilterConfiguration;
 
 	@Reference
-	private InfoSearchClassMapperTracker _infoSearchClassMapperTracker;
+	private InfoSearchClassMapperRegistry _infoSearchClassMapperRegistry;
 
 	@Reference
 	private Language _language;

@@ -287,12 +287,13 @@ public class CollectionLayoutStructureItemImporter
 		String className = (String)collectionReference.get("className");
 
 		InfoCollectionProvider<?> infoCollectionProvider =
-			infoItemServiceTracker.getInfoItemService(
+			infoItemServiceRegistry.getInfoItemService(
 				InfoCollectionProvider.class, className);
 
 		if (infoCollectionProvider == null) {
-			infoCollectionProvider = infoItemServiceTracker.getInfoItemService(
-				RelatedInfoItemCollectionProvider.class, className);
+			infoCollectionProvider =
+				infoItemServiceRegistry.getInfoItemService(
+					RelatedInfoItemCollectionProvider.class, className);
 		}
 
 		if (infoCollectionProvider == null) {

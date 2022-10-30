@@ -15,7 +15,7 @@
 package com.liferay.layout.content.page.editor.web.internal.portlet.action;
 
 import com.liferay.fragment.listener.FragmentEntryLinkListener;
-import com.liferay.fragment.listener.FragmentEntryLinkListenerTracker;
+import com.liferay.fragment.listener.FragmentEntryLinkListenerRegistry;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.service.FragmentEntryLinkService;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
@@ -72,7 +72,7 @@ public class EditFragmentEntryLinkMVCActionCommand
 				fragmentEntryLinkId, editableValues);
 
 		List<FragmentEntryLinkListener> fragmentEntryLinkListeners =
-			_fragmentEntryLinkListenerTracker.getFragmentEntryLinkListeners();
+			_fragmentEntryLinkListenerRegistry.getFragmentEntryLinkListeners();
 
 		for (FragmentEntryLinkListener fragmentEntryLinkListener :
 				fragmentEntryLinkListeners) {
@@ -108,7 +108,8 @@ public class EditFragmentEntryLinkMVCActionCommand
 	}
 
 	@Reference
-	private FragmentEntryLinkListenerTracker _fragmentEntryLinkListenerTracker;
+	private FragmentEntryLinkListenerRegistry
+		_fragmentEntryLinkListenerRegistry;
 
 	@Reference
 	private FragmentEntryLinkManager _fragmentEntryLinkManager;

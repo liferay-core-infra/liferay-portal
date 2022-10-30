@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author Eudaldo Alonso
  */
-public interface FragmentEntryLinkListenerTracker {
+public interface FragmentEntryLinkListenerRegistry {
 
 	public List<FragmentEntryLinkListener> getFragmentEntryLinkListeners();
 

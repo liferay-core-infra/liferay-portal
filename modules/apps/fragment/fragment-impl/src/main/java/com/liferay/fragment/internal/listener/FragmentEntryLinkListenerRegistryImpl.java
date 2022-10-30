@@ -15,7 +15,7 @@
 package com.liferay.fragment.internal.listener;
 
 import com.liferay.fragment.listener.FragmentEntryLinkListener;
-import com.liferay.fragment.listener.FragmentEntryLinkListenerTracker;
+import com.liferay.fragment.listener.FragmentEntryLinkListenerRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +29,9 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 /**
  * @author Eudaldo Alonso
  */
-@Component(immediate = true, service = FragmentEntryLinkListenerTracker.class)
-public class FragmentEntryLinkListenerTrackerImpl
-	implements FragmentEntryLinkListenerTracker {
+@Component(immediate = true, service = FragmentEntryLinkListenerRegistry.class)
+public class FragmentEntryLinkListenerRegistryImpl
+	implements FragmentEntryLinkListenerRegistry {
 
 	@Override
 	public List<FragmentEntryLinkListener> getFragmentEntryLinkListeners() {

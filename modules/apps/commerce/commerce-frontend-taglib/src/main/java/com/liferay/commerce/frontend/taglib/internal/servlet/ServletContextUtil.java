@@ -28,7 +28,7 @@ import com.liferay.commerce.product.util.CPSubscriptionTypeRegistry;
 import com.liferay.commerce.service.CommerceOrderItemLocalService;
 import com.liferay.commerce.service.CommerceOrderTypeLocalService;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
-import com.liferay.info.item.renderer.InfoItemRendererTracker;
+import com.liferay.info.item.renderer.InfoItemRendererRegistry;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 
 import javax.servlet.ServletContext;
@@ -103,7 +103,7 @@ public class ServletContextUtil {
 		return _servletContextUtil._getCPSubscriptionTypeRegistry();
 	}
 
-	public static InfoItemRendererTracker getInfoItemRendererTracker() {
+	public static InfoItemRendererRegistry getInfoItemRendererTracker() {
 		return _servletContextUtil._getInfoItemRendererTracker();
 	}
 
@@ -214,9 +214,9 @@ public class ServletContextUtil {
 
 	@Reference(unbind = "-")
 	protected void setInfoItemRendererTracker(
-		InfoItemRendererTracker infoItemRendererTracker) {
+		InfoItemRendererRegistry infoItemRendererRegistry) {
 
-		_infoItemRendererTracker = infoItemRendererTracker;
+		_infoItemRendererRegistry = infoItemRendererRegistry;
 	}
 
 	@Reference(unbind = "-")
@@ -291,8 +291,8 @@ public class ServletContextUtil {
 		return _cpSubscriptionTypeRegistry;
 	}
 
-	private InfoItemRendererTracker _getInfoItemRendererTracker() {
-		return _infoItemRendererTracker;
+	private InfoItemRendererRegistry _getInfoItemRendererTracker() {
+		return _infoItemRendererRegistry;
 	}
 
 	private NPMResolver _getNPMResolver() {
@@ -322,7 +322,7 @@ public class ServletContextUtil {
 	private CPFriendlyURL _cpFriendlyURL;
 	private CPInstanceHelper _cpInstanceHelper;
 	private CPSubscriptionTypeRegistry _cpSubscriptionTypeRegistry;
-	private InfoItemRendererTracker _infoItemRendererTracker;
+	private InfoItemRendererRegistry _infoItemRendererRegistry;
 	private NPMResolver _npmResolver;
 	private ProductHelper _productHelper;
 	private ServletContext _servletContext;

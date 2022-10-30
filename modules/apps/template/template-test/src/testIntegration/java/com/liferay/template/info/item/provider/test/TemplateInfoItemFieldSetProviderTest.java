@@ -28,7 +28,7 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldSet;
 import com.liferay.info.field.InfoFieldValue;
-import com.liferay.info.item.InfoItemServiceTracker;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.journal.constants.JournalFolderConstants;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
@@ -490,7 +490,7 @@ public class TemplateInfoItemFieldSetProviderTest {
 	private Group _group;
 
 	@Inject
-	private InfoItemServiceTracker _infoItemServiceTracker;
+	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 	private JournalArticle _journalArticle;
 	private Layout _layout;

@@ -17,7 +17,7 @@ package com.liferay.content.dashboard.document.library.internal.item.action.prov
 import com.liferay.content.dashboard.document.library.internal.item.action.DownloadFileVersionContentDashboardItemVersionAction;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemVersionAction;
 import com.liferay.content.dashboard.item.action.provider.ContentDashboardItemVersionActionProvider;
-import com.liferay.info.item.InfoItemServiceTracker;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
@@ -89,7 +89,7 @@ public class DownloadFileVersionContentDashboardItemVersionActionProvider
 		_getContentDashboardItemVersionAction(FileEntry fileEntry) {
 
 		InfoItemFieldValuesProvider<FileEntry> infoItemFieldValuesProvider =
-			_infoItemServiceTracker.getFirstInfoItemService(
+			_infoItemServiceRegistry.getFirstInfoItemService(
 				InfoItemFieldValuesProvider.class, FileEntry.class.getName());
 
 		return new DownloadFileVersionContentDashboardItemVersionAction(
@@ -111,7 +111,7 @@ public class DownloadFileVersionContentDashboardItemVersionActionProvider
 		DownloadFileVersionContentDashboardItemVersionActionProvider.class);
 
 	@Reference
-	private InfoItemServiceTracker _infoItemServiceTracker;
+	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 	@Reference
 	private Language _language;

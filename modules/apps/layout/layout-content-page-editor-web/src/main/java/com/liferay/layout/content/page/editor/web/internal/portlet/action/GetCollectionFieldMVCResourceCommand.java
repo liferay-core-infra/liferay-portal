@@ -30,7 +30,7 @@ import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
-import com.liferay.info.item.InfoItemServiceTracker;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
@@ -266,7 +266,7 @@ public class GetCollectionFieldMVCResourceCommand
 
 		InfoItemFieldValuesProvider<Object> infoItemFieldValuesProvider =
 			(InfoItemFieldValuesProvider<Object>)
-				_infoItemServiceTracker.getFirstInfoItemService(
+				_infoItemServiceRegistry.getFirstInfoItemService(
 					InfoItemFieldValuesProvider.class, itemType);
 
 		if (infoItemFieldValuesProvider == null) {
@@ -500,7 +500,7 @@ public class GetCollectionFieldMVCResourceCommand
 
 		InfoItemObjectProvider<Object> infoItemObjectProvider =
 			(InfoItemObjectProvider<Object>)
-				_infoItemServiceTracker.getFirstInfoItemService(
+				_infoItemServiceRegistry.getFirstInfoItemService(
 					InfoItemObjectProvider.class,
 					_portal.getClassName(classNameId));
 
@@ -528,7 +528,7 @@ public class GetCollectionFieldMVCResourceCommand
 		List<String> infoItemClassNames = new ArrayList<>();
 
 		for (String className :
-				_infoItemServiceTracker.getInfoItemClassNames(
+				_infoItemServiceRegistry.getInfoItemClassNames(
 					InfoItemFormProvider.class)) {
 
 			infoItemClassNames.add(
@@ -551,7 +551,7 @@ public class GetCollectionFieldMVCResourceCommand
 	private FragmentEntryProcessorHelper _fragmentEntryProcessorHelper;
 
 	@Reference
-	private InfoItemServiceTracker _infoItemServiceTracker;
+	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 	@Reference
 	private InfoListRendererTracker _infoListRendererTracker;

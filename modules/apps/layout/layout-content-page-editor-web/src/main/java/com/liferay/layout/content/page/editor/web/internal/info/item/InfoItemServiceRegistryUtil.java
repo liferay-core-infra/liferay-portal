@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jürgen Kappler
  */
 @Component(service = {})
-public class InfoItemServiceTrackerUtil {
+public class InfoItemServiceRegistryUtil {
 
 	public static InfoItemServiceRegistry getInfoItemServiceTracker() {
 		return _infoItemServiceRegistry;

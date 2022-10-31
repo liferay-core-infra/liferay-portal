@@ -62,7 +62,7 @@ import com.liferay.object.service.persistence.ObjectFieldPersistence;
 import com.liferay.object.service.persistence.ObjectFieldSettingPersistence;
 import com.liferay.object.service.persistence.ObjectRelationshipPersistence;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
-import com.liferay.object.system.SystemObjectDefinitionMetadataTracker;
+import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
 import com.liferay.object.util.ObjectFieldSettingValueUtil;
 import com.liferay.object.util.ObjectRelationshipUtil;
 import com.liferay.petra.function.transform.TransformUtil;
@@ -1349,7 +1349,7 @@ public class ObjectEntryLocalServiceImpl
 
 			if (objectDefinition.isSystem()) {
 				SystemObjectDefinitionMetadata systemObjectDefinitionMetadata =
-					_systemObjectDefinitionMetadataTracker.
+					_systemObjectDefinitionMetadataRegistry.
 						getSystemObjectDefinitionMetadata(
 							objectDefinition.getName());
 
@@ -3376,8 +3376,8 @@ public class ObjectEntryLocalServiceImpl
 	private Sorts _sorts;
 
 	@Reference
-	private SystemObjectDefinitionMetadataTracker
-		_systemObjectDefinitionMetadataTracker;
+	private SystemObjectDefinitionMetadataRegistry
+		_systemObjectDefinitionMetadataRegistry;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -19,7 +19,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.template.info.field.transformer.TemplateNodeTransformer;
-import com.liferay.template.info.field.transformer.TemplateNodeTransformerTracker;
+import com.liferay.template.info.field.transformer.TemplateNodeTransformerRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +31,9 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Lourdes Fernández Besada
  */
-@Component(service = TemplateNodeTransformerTracker.class)
-public class TemplateNodeTransformerTrackerImpl
-	implements TemplateNodeTransformerTracker {
+@Component(service = TemplateNodeTransformerRegistry.class)
+public class TemplateNodeTransformerRegistryImpl
+	implements TemplateNodeTransformerRegistry {
 
 	@Override
 	public TemplateNodeTransformer geTemplateNodeTransformer(String className) {

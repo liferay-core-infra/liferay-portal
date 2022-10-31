@@ -17,9 +17,9 @@ package com.liferay.journal.transformer.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
+import com.liferay.journal.internal.transformer.JournalTransformerListenerRegistryUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
-import com.liferay.journal.util.JournalTransformerListenerRegistry;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.xml.Attribute;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
-import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.lang.reflect.Method;
@@ -259,7 +258,7 @@ public class JournalTransformerTest {
 
 	protected void initRegexTransformerListener() {
 		TransformerListener transformerListener =
-			_journalTransformerListenerRegistry.getTransformerListener(
+			JournalTransformerListenerRegistryUtil.getTransformerListener(
 				"com.liferay.journal.internal.transformer." +
 					"RegexTransformerListener");
 
@@ -293,10 +292,6 @@ public class JournalTransformerTest {
 
 	@DeleteAfterTestRun
 	private DDMStructure _ddmStructure;
-
-	@Inject
-	private JournalTransformerListenerRegistry
-		_journalTransformerListenerRegistry;
 
 	private Method _transformMethod;
 

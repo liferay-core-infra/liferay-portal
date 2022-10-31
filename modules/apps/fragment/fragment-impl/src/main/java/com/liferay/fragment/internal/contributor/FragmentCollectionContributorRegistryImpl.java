@@ -52,9 +52,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 /**
  * @author Jürgen Kappler
  */
-@Component(
-	immediate = true, service = FragmentCollectionContributorRegistry.class
-)
+@Component(service = FragmentCollectionContributorRegistry.class)
 public class FragmentCollectionContributorRegistryImpl
 	implements FragmentCollectionContributorRegistry {
 

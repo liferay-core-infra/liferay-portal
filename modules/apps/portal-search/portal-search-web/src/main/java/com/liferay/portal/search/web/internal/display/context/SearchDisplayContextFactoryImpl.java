@@ -21,7 +21,7 @@ import com.liferay.portal.search.context.SearchContextFactory;
 import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.searcher.Searcher;
 import com.liferay.portal.search.summary.SummaryBuilderFactory;
-import com.liferay.portal.search.web.internal.facet.SearchFacetTracker;
+import com.liferay.portal.search.web.internal.facet.SearchFacetRegistryImpl;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
@@ -49,7 +49,7 @@ public class SearchDisplayContextFactoryImpl
 			language, searcher, new IndexSearchPropsValuesImpl(),
 			new ClassicPortletURLFactoryImpl(renderRequest, renderResponse),
 			summaryBuilderFactory, searchContextFactory,
-			searchRequestBuilderFactory, searchFacetTracker);
+			searchRequestBuilderFactory, searchFacetRegistryImpl);
 	}
 
 	@Reference
@@ -65,7 +65,7 @@ public class SearchDisplayContextFactoryImpl
 	protected Searcher searcher;
 
 	@Reference
-	protected SearchFacetTracker searchFacetTracker;
+	protected SearchFacetRegistryImpl searchFacetRegistryImpl;
 
 	@Reference
 	protected SearchRequestBuilderFactory searchRequestBuilderFactory;

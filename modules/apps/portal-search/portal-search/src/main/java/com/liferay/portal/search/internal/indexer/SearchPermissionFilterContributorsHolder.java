@@ -16,13 +16,13 @@ package com.liferay.portal.search.internal.indexer;
 
 import com.liferay.portal.search.permission.SearchPermissionFilterContributor;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 /**
  * @author André de Oliveira
  */
 public interface SearchPermissionFilterContributorsHolder {
 
-	public Stream<SearchPermissionFilterContributor> getAll();
+	public List<SearchPermissionFilterContributor> getAll();
 
 }

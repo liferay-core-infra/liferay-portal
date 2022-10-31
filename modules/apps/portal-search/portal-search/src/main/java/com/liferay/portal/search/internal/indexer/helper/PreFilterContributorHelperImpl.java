@@ -36,10 +36,8 @@ import com.liferay.portal.search.spi.model.registrar.ModelSearchSettings;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -224,14 +222,9 @@ public class PreFilterContributorHelperImpl
 	private Optional<String> _getParentEntryClassNameOptional(
 		String entryClassName) {
 
-		Stream<SearchPermissionFilterContributor> stream =
-			searchPermissionFilterContributorsHolder.getAll();
-
-		List<SearchPermissionFilterContributor> list = stream.collect(
-			Collectors.toList());
-
 		for (SearchPermissionFilterContributor
-				searchPermissionFilterContributor : list) {
+				searchPermissionFilterContributor :
+					searchPermissionFilterContributorsHolder.getAll()) {
 
 			Optional<String> parentEntryClassNameOptional =
 				searchPermissionFilterContributor.

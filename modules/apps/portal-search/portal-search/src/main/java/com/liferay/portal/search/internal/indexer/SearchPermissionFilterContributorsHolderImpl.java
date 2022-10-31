@@ -17,8 +17,8 @@ package com.liferay.portal.search.internal.indexer;
 import com.liferay.portal.search.permission.SearchPermissionFilterContributor;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -36,8 +36,9 @@ public class SearchPermissionFilterContributorsHolderImpl
 	implements SearchPermissionFilterContributorsHolder {
 
 	@Override
-	public Stream<SearchPermissionFilterContributor> getAll() {
-		return _searchPermissionFilterContributors.stream();
+	public List<SearchPermissionFilterContributor> getAll() {
+		return (List<SearchPermissionFilterContributor>)
+			_searchPermissionFilterContributors;
 	}
 
 	@Reference(

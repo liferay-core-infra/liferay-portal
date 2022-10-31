@@ -20,7 +20,7 @@ import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItemRegistry;
 import com.liferay.analytics.reports.info.item.ClassNameClassPKInfoItemIdentifier;
 import com.liferay.analytics.reports.info.item.provider.AnalyticsReportsInfoItemObjectProvider;
 import com.liferay.analytics.reports.web.internal.constants.AnalyticsReportsPortletKeys;
-import com.liferay.analytics.reports.web.internal.info.item.provider.AnalyticsReportsInfoItemObjectProviderTracker;
+import com.liferay.analytics.reports.web.internal.info.item.provider.AnalyticsReportsInfoItemObjectProviderRegistryImpl;
 import com.liferay.analytics.reports.web.internal.util.AnalyticsReportsUtil;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
@@ -197,7 +197,7 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		AnalyticsReportsInfoItemObjectProvider<Object>
 			analyticsReportsInfoItemObjectProvider =
 				(AnalyticsReportsInfoItemObjectProvider<Object>)
-					_analyticsReportsInfoItemObjectProviderTracker.
+					_analyticsReportsInfoItemObjectProviderRegistryImpl.
 						getAnalyticsReportsInfoItemObjectProvider(
 							infoItemReference.getClassName());
 
@@ -413,8 +413,8 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		"com.liferay.analytics.reports.web_panelState";
 
 	@Reference
-	private AnalyticsReportsInfoItemObjectProviderTracker
-		_analyticsReportsInfoItemObjectProviderTracker;
+	private AnalyticsReportsInfoItemObjectProviderRegistryImpl
+		_analyticsReportsInfoItemObjectProviderRegistryImpl;
 
 	@Reference
 	private AnalyticsReportsInfoItemRegistry _analyticsReportsInfoItemRegistry;

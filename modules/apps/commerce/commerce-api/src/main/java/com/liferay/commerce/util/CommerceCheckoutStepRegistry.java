@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Marco Leo
  */
-public interface CommerceCheckoutStepServicesTracker {
+public interface CommerceCheckoutStepRegistry {
 
 	public CommerceCheckoutStep getCommerceCheckoutStep(
 		String commerceCheckoutStepName);

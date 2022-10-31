@@ -16,7 +16,7 @@ package com.liferay.commerce.checkout.web.internal.util;
 
 import com.liferay.commerce.checkout.web.internal.util.comparator.CommerceCheckoutStepServiceWrapperOrderComparator;
 import com.liferay.commerce.util.CommerceCheckoutStep;
-import com.liferay.commerce.util.CommerceCheckoutStepServicesTracker;
+import com.liferay.commerce.util.CommerceCheckoutStepRegistry;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory.ServiceWrapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -42,11 +42,9 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Marco Leo
  */
-@Component(
-	immediate = true, service = CommerceCheckoutStepServicesTracker.class
-)
-public class CommerceCheckoutStepServicesTrackerImpl
-	implements CommerceCheckoutStepServicesTracker {
+@Component(immediate = true, service = CommerceCheckoutStepRegistry.class)
+public class CommerceCheckoutStepRegistryImpl
+	implements CommerceCheckoutStepRegistry {
 
 	@Override
 	public CommerceCheckoutStep getCommerceCheckoutStep(
@@ -210,7 +208,7 @@ public class CommerceCheckoutStepServicesTrackerImpl
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceCheckoutStepServicesTrackerImpl.class);
+		CommerceCheckoutStepRegistryImpl.class);
 
 	private BundleContext _bundleContext;
 	private ServiceTrackerMap<String, ServiceWrapper<CommerceCheckoutStep>>

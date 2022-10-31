@@ -27,8 +27,8 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 /**
  * @author Jürgen Kappler
  */
-@Component(service = PortletConfigurationExporterTracker.class)
-public class PortletConfigurationExporterTracker {
+@Component(service = PortletConfigurationExporterRegistry.class)
+public class PortletConfigurationExporterRegistry {
 
 	public PortletConfigurationExporter getPortletConfigurationExporter(
 		String portletName) {

@@ -26,7 +26,7 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalServiceUtil;
 import com.liferay.object.service.ObjectRelationshipLocalServiceUtil;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
-import com.liferay.object.system.SystemObjectDefinitionMetadataTracker;
+import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
 import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.petra.string.StringBundler;
@@ -111,7 +111,7 @@ public class SystemObjectRelatedObjectsTest {
 		_user = TestPropsValues.getUser();
 
 		_userSystemObjectDefinitionMetadata =
-			_systemObjectDefinitionMetadataTracker.
+			_systemObjectDefinitionMetadataRegistry.
 				getSystemObjectDefinitionMetadata("User");
 
 		_userSystemObjectDefinition =
@@ -366,8 +366,8 @@ public class SystemObjectRelatedObjectsTest {
 		new ArrayList<>();
 
 	@Inject
-	private SystemObjectDefinitionMetadataTracker
-		_systemObjectDefinitionMetadataTracker;
+	private SystemObjectDefinitionMetadataRegistry
+		_systemObjectDefinitionMetadataRegistry;
 
 	private User _user;
 	private ObjectDefinition _userSystemObjectDefinition;

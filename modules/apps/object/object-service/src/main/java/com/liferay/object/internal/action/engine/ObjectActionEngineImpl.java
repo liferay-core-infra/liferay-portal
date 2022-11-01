@@ -26,7 +26,7 @@ import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
-import com.liferay.object.system.SystemObjectDefinitionMetadataTracker;
+import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -122,7 +122,7 @@ public class ObjectActionEngineImpl implements ObjectActionEngine {
 		Set<Long> objectActionIds = _objectActionIdsThreadLocal.get();
 		Map<String, Object> variables = ObjectActionVariablesUtil.toVariables(
 			_dtoConverterRegistry, objectDefinition, payloadJSONObject,
-			_systemObjectDefinitionMetadataTracker);
+			_systemObjectDefinitionMetadataRegistry);
 
 		for (ObjectAction objectAction :
 				_objectActionLocalService.getObjectActions(
@@ -187,8 +187,8 @@ public class ObjectActionEngineImpl implements ObjectActionEngine {
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
-	private SystemObjectDefinitionMetadataTracker
-		_systemObjectDefinitionMetadataTracker;
+	private SystemObjectDefinitionMetadataRegistry
+		_systemObjectDefinitionMetadataRegistry;
 
 	@Reference
 	private UserLocalService _userLocalService;

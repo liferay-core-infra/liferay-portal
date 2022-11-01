@@ -32,7 +32,7 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
-import com.liferay.object.system.SystemObjectDefinitionMetadataTracker;
+import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.Field;
@@ -133,7 +133,7 @@ public class ListObjectFieldFilterContributor
 				objectField, _objectFieldLocalService,
 				_objectRelationshipLocalService, objectViewFilterColumn,
 				_persistedModelLocalServiceRegistry,
-				_systemObjectDefinitionMetadataTracker);
+				_systemObjectDefinitionMetadataRegistry);
 		}
 
 		throw new UnsupportedOperationException();
@@ -167,7 +167,7 @@ public class ListObjectFieldFilterContributor
 		_persistedModelLocalServiceRegistry;
 
 	@Reference
-	private SystemObjectDefinitionMetadataTracker
-		_systemObjectDefinitionMetadataTracker;
+	private SystemObjectDefinitionMetadataRegistry
+		_systemObjectDefinitionMetadataRegistry;
 
 }

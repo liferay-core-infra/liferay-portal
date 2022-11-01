@@ -24,7 +24,7 @@ import com.liferay.object.rest.internal.util.ObjectEntryValuesUtil;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
-import com.liferay.object.system.SystemObjectDefinitionMetadataTracker;
+import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
 import com.liferay.object.util.ObjectFieldSettingValueUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -136,7 +136,7 @@ public class ObjectEntryExtensionProvider extends BaseObjectExtensionProvider {
 				Object value = ObjectEntryValuesUtil.getValue(
 					objectDefinitionLocalService, _objectEntryLocalService,
 					objectField, _objectRelationshipLocalService,
-					_systemObjectDefinitionMetadataTracker, userId,
+					_systemObjectDefinitionMetadataRegistry, userId,
 					extendedProperties);
 
 				if (value == null) {
@@ -181,7 +181,7 @@ public class ObjectEntryExtensionProvider extends BaseObjectExtensionProvider {
 	private ObjectRelationshipLocalService _objectRelationshipLocalService;
 
 	@Reference
-	private SystemObjectDefinitionMetadataTracker
-		_systemObjectDefinitionMetadataTracker;
+	private SystemObjectDefinitionMetadataRegistry
+		_systemObjectDefinitionMetadataRegistry;
 
 }

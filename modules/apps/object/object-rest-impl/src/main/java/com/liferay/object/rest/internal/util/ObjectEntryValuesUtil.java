@@ -24,7 +24,7 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
-import com.liferay.object.system.SystemObjectDefinitionMetadataTracker;
+import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
 import com.liferay.object.util.ObjectFieldSettingValueUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -45,8 +45,8 @@ public class ObjectEntryValuesUtil {
 			ObjectEntryLocalService objectEntryLocalService,
 			ObjectField objectField,
 			ObjectRelationshipLocalService objectRelationshipLocalService,
-			SystemObjectDefinitionMetadataTracker
-				systemObjectDefinitionMetadataTracker,
+			SystemObjectDefinitionMetadataRegistry
+				systemObjectDefinitionMetadataRegistry,
 			long userId, Map<String, ?> values)
 		throws PortalException {
 
@@ -83,7 +83,7 @@ public class ObjectEntryValuesUtil {
 
 		if (objectDefinition.isSystem()) {
 			SystemObjectDefinitionMetadata systemObjectDefinitionMetadata =
-				systemObjectDefinitionMetadataTracker.
+				systemObjectDefinitionMetadataRegistry.
 					getSystemObjectDefinitionMetadata(
 						objectDefinition.getName());
 

@@ -19,10 +19,10 @@ import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.BaseTemplateResourceLoader;
 import com.liferay.portal.template.TemplateResourceParser;
 
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -48,8 +48,17 @@ public class VelocityTemplateResourceLoader extends BaseTemplateResourceLoader {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
+		HashSet<TemplateResourceParser> templateResourceParsers =
+			new HashSet<>();
+
+		for (TemplateResourceParser templateResourceParser :
+				_templateResourceParsers) {
+
+			templateResourceParsers.add(templateResourceParser);
+		}
+
 		init(
-			TemplateConstants.LANG_TYPE_VM, _templateResourceParsers,
+			TemplateConstants.LANG_TYPE_VM, templateResourceParsers,
 			_velocityTemplateResourceCache);
 	}
 
@@ -76,8 +85,8 @@ public class VelocityTemplateResourceLoader extends BaseTemplateResourceLoader {
 		_templateResourceParsers.remove(templateResourceParser);
 	}
 
-	private final Set<TemplateResourceParser> _templateResourceParsers =
-		Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final List<TemplateResourceParser> _templateResourceParsers =
+		new CopyOnWriteArrayList<>();
 
 	@Reference
 	private VelocityTemplateResourceCache _velocityTemplateResourceCache;

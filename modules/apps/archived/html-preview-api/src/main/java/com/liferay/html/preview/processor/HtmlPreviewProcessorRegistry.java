@@ -17,7 +17,7 @@ package com.liferay.html.preview.processor;
 /**
  * @author Lance Ji
  */
-public interface HtmlPreviewProcessorTracker {
+public interface HtmlPreviewProcessorRegistry {
 
 	public HtmlPreviewProcessor getHtmlPreviewProcessor(String mimeType);
 

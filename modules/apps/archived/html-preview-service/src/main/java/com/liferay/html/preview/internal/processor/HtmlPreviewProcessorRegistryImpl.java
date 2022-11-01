@@ -15,7 +15,7 @@
 package com.liferay.html.preview.internal.processor;
 
 import com.liferay.html.preview.processor.HtmlPreviewProcessor;
-import com.liferay.html.preview.processor.HtmlPreviewProcessorTracker;
+import com.liferay.html.preview.processor.HtmlPreviewProcessorRegistry;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,9 +28,9 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 /**
  * @author Pavel Savinov
  */
-@Component(immediate = true, service = HtmlPreviewProcessorTracker.class)
-public class HtmlPreviewProcessorTrackerImpl
-	implements HtmlPreviewProcessorTracker {
+@Component(immediate = true, service = HtmlPreviewProcessorRegistry.class)
+public class HtmlPreviewProcessorRegistryImpl
+	implements HtmlPreviewProcessorRegistry {
 
 	@Override
 	public HtmlPreviewProcessor getHtmlPreviewProcessor(String mimeType) {

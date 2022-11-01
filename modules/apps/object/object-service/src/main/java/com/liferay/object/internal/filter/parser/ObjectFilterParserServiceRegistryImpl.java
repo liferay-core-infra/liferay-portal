@@ -25,8 +25,8 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Feliphe Marinho
  */
-@Component(service = ObjectFilterParserServiceTracker.class)
-public class ObjectFilterParserServiceTracker {
+@Component(service = ObjectFilterParserServiceRegistryImpl.class)
+public class ObjectFilterParserServiceRegistryImpl {
 
 	public ObjectFilterParser getObjectFilterParser(String type) {
 		return _serviceTrackerMap.getService(type);

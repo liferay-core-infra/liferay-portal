@@ -22,7 +22,7 @@ import com.liferay.frontend.token.definition.FrontendTokenDefinitionRegistry;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.list.renderer.InfoListRendererTracker;
 import com.liferay.layout.adaptive.media.LayoutAdaptiveMediaProcessor;
-import com.liferay.layout.display.page.LayoutDisplayPageProviderTracker;
+import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
 import com.liferay.layout.helper.CollectionPaginationHelper;
 import com.liferay.layout.list.retriever.LayoutListRetrieverTracker;
 import com.liferay.layout.list.retriever.ListObjectReferenceFactoryTracker;
@@ -100,10 +100,10 @@ public class ServletContextUtil {
 		return _layoutClassedModelUsageRecorders;
 	}
 
-	public static LayoutDisplayPageProviderTracker
+	public static LayoutDisplayPageProviderRegistry
 		getLayoutDisplayPageProviderTracker() {
 
-		return _layoutDisplayPageProviderTracker;
+		return _layoutDisplayPageProviderRegistry;
 	}
 
 	public static LayoutListRetrieverTracker getLayoutListRetrieverTracker() {
@@ -232,10 +232,10 @@ public class ServletContextUtil {
 	}
 
 	@Reference(unbind = "-")
-	protected void setLayoutDisplayPageProviderTracker(
-		LayoutDisplayPageProviderTracker layoutDisplayPageProviderTracker) {
+	protected void setLayoutDisplayPageProviderRegistry(
+		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry) {
 
-		_layoutDisplayPageProviderTracker = layoutDisplayPageProviderTracker;
+		_layoutDisplayPageProviderRegistry = layoutDisplayPageProviderRegistry;
 	}
 
 	@Reference(unbind = "-")
@@ -294,8 +294,8 @@ public class ServletContextUtil {
 	private static LayoutAdaptiveMediaProcessor _layoutAdaptiveMediaProcessor;
 	private static final Map<String, LayoutClassedModelUsageRecorder>
 		_layoutClassedModelUsageRecorders = new ConcurrentHashMap<>();
-	private static LayoutDisplayPageProviderTracker
-		_layoutDisplayPageProviderTracker;
+	private static LayoutDisplayPageProviderRegistry
+		_layoutDisplayPageProviderRegistry;
 	private static LayoutListRetrieverTracker _layoutListRetrieverTracker;
 	private static ListObjectReferenceFactoryTracker
 		_listObjectReferenceFactoryTracker;

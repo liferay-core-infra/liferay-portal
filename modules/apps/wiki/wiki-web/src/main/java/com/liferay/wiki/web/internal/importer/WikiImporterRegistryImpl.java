@@ -30,8 +30,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Iván Zaera
  */
-@Component(immediate = true, service = WikiImporterTracker.class)
-public class WikiImporterTracker {
+@Component(immediate = true, service = WikiImporterRegistryImpl.class)
+public class WikiImporterRegistryImpl {
 
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,

@@ -336,7 +336,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				containerTag.doStartTag();
 
 				InfoItemServiceRegistry infoItemServiceRegistry =
-					ServletContextUtil.getInfoItemServiceTracker();
+					ServletContextUtil.getInfoItemServiceRegistry();
 
 				InfoItemDetailsProvider infoItemDetailsProvider =
 					infoItemServiceRegistry.getFirstInfoItemService(

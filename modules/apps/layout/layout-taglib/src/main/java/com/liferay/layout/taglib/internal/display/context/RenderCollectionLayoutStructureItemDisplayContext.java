@@ -214,7 +214,7 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 		}
 
 		InfoListRendererRegistry infoListRendererRegistry =
-			ServletContextUtil.getInfoListRendererTracker();
+			ServletContextUtil.getInfoListRendererRegistry();
 
 		return infoListRendererRegistry.getInfoListRenderer(
 			_collectionStyledLayoutStructureItem.getListStyle());
@@ -367,7 +367,7 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 			infoItemReference.getInfoItemIdentifier();
 
 		InfoItemServiceRegistry infoItemServiceRegistry =
-			ServletContextUtil.getInfoItemServiceTracker();
+			ServletContextUtil.getInfoItemServiceRegistry();
 
 		InfoItemObjectProvider<Object> infoItemObjectProvider =
 			infoItemServiceRegistry.getFirstInfoItemService(
@@ -476,7 +476,7 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 		Map<String, InfoFilter> infoFilters = new HashMap<>();
 
 		InfoItemServiceRegistry infoItemServiceRegistry =
-			ServletContextUtil.getInfoItemServiceTracker();
+			ServletContextUtil.getInfoItemServiceRegistry();
 
 		Map<String, String[]> filterValues = _getFilterValues();
 

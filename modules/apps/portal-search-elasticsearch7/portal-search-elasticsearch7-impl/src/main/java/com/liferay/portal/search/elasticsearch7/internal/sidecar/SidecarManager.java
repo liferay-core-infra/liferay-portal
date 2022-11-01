@@ -37,8 +37,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -222,8 +222,8 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
 
-	private final Set<SettingsContributor> _settingsContributors =
-		new ConcurrentSkipListSet<>();
+	private final List<SettingsContributor> _settingsContributors =
+		new CopyOnWriteArrayList<>();
 	private Sidecar _sidecar;
 	private boolean _startupSuccessful;
 

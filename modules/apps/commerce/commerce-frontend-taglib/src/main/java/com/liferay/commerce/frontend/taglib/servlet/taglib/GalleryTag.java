@@ -83,7 +83,7 @@ public class GalleryTag extends IncludeTag {
 		setServletContext(ServletContextUtil.getServletContext());
 
 		_infoItemRendererRegistry =
-			ServletContextUtil.getInfoItemRendererTracker();
+			ServletContextUtil.getInfoItemRendererRegistry();
 	}
 
 	@Override

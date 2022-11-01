@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
@@ -37,16 +39,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Tina Tian
@@ -73,22 +72,14 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 	}
 
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		elasticsearchConfigurationWrapper.register(this);
 
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, SettingsContributor.class,
+			"(operation.mode=SIDECAR)");
+
 		applyConfigurations();
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(operation.mode=SIDECAR)"
-	)
-	protected void addSettingsContributor(
-		SettingsContributor settingsContributor) {
-
-		_settingsContributors.add(settingsContributor);
 	}
 
 	protected void applyConfigurations() {
@@ -115,10 +106,19 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 				_sidecar.stop();
 			}
 
+			ArrayList<SettingsContributor> settingsContributors =
+				new ArrayList<>();
+
+			for (SettingsContributor settingsContributor :
+					_serviceTrackerList) {
+
+				settingsContributors.add(settingsContributor);
+			}
+
 			_sidecar = new Sidecar(
 				clusterExecutor, elasticsearchConfigurationWrapper,
 				_getElasticsearchInstancePaths(), processExecutor,
-				new ProcessExecutorPathsImpl(props), _settingsContributors,
+				new ProcessExecutorPathsImpl(props), settingsContributors,
 				this);
 
 			ElasticsearchConnectionBuilder elasticsearchConnectionBuilder =
@@ -149,16 +149,11 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 	@Deactivate
 	protected void deactivate() {
 		elasticsearchConfigurationWrapper.unregister(this);
+		_serviceTrackerList.close();
 	}
 
 	protected boolean isStartupSuccessful() {
 		return _startupSuccessful;
-	}
-
-	protected void removeSettingsContributor(
-		SettingsContributor settingsContributor) {
-
-		_settingsContributors.remove(settingsContributor);
 	}
 
 	@Reference
@@ -222,8 +217,7 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
 
-	private final List<SettingsContributor> _settingsContributors =
-		new CopyOnWriteArrayList<>();
+	private ServiceTrackerList<SettingsContributor> _serviceTrackerList;
 	private Sidecar _sidecar;
 	private boolean _startupSuccessful;
 

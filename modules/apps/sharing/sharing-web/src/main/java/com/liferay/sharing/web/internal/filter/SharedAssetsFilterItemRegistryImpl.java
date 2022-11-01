@@ -32,8 +32,8 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Alejandro Tardín
  */
-@Component(service = SharedAssetsFilterItemTracker.class)
-public class SharedAssetsFilterItemTracker {
+@Component(service = SharedAssetsFilterItemRegistryImpl.class)
+public class SharedAssetsFilterItemRegistryImpl {
 
 	public SharedAssetsFilterItem getSharedAssetsFilterItem(String className) {
 		for (SharedAssetsFilterItem sharedAssetsFilterItem :

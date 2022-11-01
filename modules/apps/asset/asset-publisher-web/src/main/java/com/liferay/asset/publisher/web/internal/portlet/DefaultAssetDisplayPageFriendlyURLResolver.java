@@ -525,7 +525,7 @@ public class DefaultAssetDisplayPageFriendlyURLResolver
 		_getLayoutDisplayPageObjectProvider(JournalArticle journalArticle) {
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			layoutDisplayPageProviderTracker.
+			layoutDisplayPageProviderRegistry.
 				getLayoutDisplayPageProviderByClassName(
 					JournalArticle.class.getName());
 

@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author Lourdes Fernández Besada
  */
-public interface TemplateNodeTransformerTracker {
+public interface TemplateNodeTransformerRegistry {
 
 	public TemplateNodeTransformer geTemplateNodeTransformer(String className);
 

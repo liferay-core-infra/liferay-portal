@@ -80,11 +80,11 @@ public class ServletContextUtil {
 		return _frontendTokenDefinitionRegistry;
 	}
 
-	public static InfoItemServiceRegistry getInfoItemServiceTracker() {
+	public static InfoItemServiceRegistry getInfoItemServiceRegistry() {
 		return _infoItemServiceRegistry;
 	}
 
-	public static InfoListRendererRegistry getInfoListRendererTracker() {
+	public static InfoListRendererRegistry getInfoListRendererRegistry() {
 		return _infoListRendererRegistry;
 	}
 

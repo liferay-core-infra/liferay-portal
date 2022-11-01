@@ -26,8 +26,8 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Cristina González
  */
-@Component(service = AnalyticsReportsInfoItemObjectProviderTracker.class)
-public class AnalyticsReportsInfoItemObjectProviderTracker {
+@Component(service = AnalyticsReportsInfoItemObjectProviderRegistryImpl.class)
+public class AnalyticsReportsInfoItemObjectProviderRegistry {
 
 	public AnalyticsReportsInfoItemObjectProvider<?>
 		getAnalyticsReportsInfoItemObjectProvider(String className) {

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.properties.swapper.internal;
 
+import com.liferay.document.library.kernel.store.DLStore;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.LayoutSet;
@@ -47,7 +48,10 @@ public class DefaultGuestGroupLogoSwapper {
 		LayoutSet layoutSet = _layoutSetLocalService.getLayoutSet(
 			group.getGroupId(), false);
 
-		if (layoutSet.getLogoId() != 0) {
+		if ((layoutSet.getLogoId() != 0) &&
+			_dlStore.hasFile(
+				layoutSet.getCompanyId(), 0, layoutSet.getLogoId() + ".png")) {
+
 			return;
 		}
 
@@ -65,6 +69,9 @@ public class DefaultGuestGroupLogoSwapper {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private DLStore _dlStore;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

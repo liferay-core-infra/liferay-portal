@@ -103,7 +103,7 @@ public class ServletContextUtil {
 		return _servletContextUtil._getCPSubscriptionTypeRegistry();
 	}
 
-	public static InfoItemRendererRegistry getInfoItemRendererTracker() {
+	public static InfoItemRendererRegistry getInfoItemRendererRegistry() {
 		return _servletContextUtil._getInfoItemRendererRegistry();
 	}
 

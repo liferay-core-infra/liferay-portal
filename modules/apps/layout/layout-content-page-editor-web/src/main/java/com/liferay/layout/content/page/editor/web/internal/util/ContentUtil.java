@@ -27,7 +27,7 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.content.page.editor.web.internal.info.display.url.provider.InfoEditURLProviderUtil;
 import com.liferay.layout.content.page.editor.web.internal.info.search.InfoSearchClassMapperTrackerUtil;
-import com.liferay.layout.content.page.editor.web.internal.layout.display.page.LayoutDisplayPageProviderTrackerUtil;
+import com.liferay.layout.content.page.editor.web.internal.layout.display.page.LayoutDisplayPageProviderRegistryUtil;
 import com.liferay.layout.content.page.editor.web.internal.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.layout.content.page.editor.web.internal.util.layout.structure.LayoutStructureUtil;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
@@ -153,7 +153,7 @@ public class ContentUtil {
 		String className = layoutClassedModelUsage.getClassName();
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			LayoutDisplayPageProviderTrackerUtil.getLayoutDisplayPageProvider(
+			LayoutDisplayPageProviderRegistryUtil.getLayoutDisplayPageProvider(
 				layoutClassedModelUsage.getClassName());
 
 		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =
@@ -537,7 +537,7 @@ public class ContentUtil {
 		String className = PortalUtil.getClassName(classNameId);
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			LayoutDisplayPageProviderTrackerUtil.getLayoutDisplayPageProvider(
+			LayoutDisplayPageProviderRegistryUtil.getLayoutDisplayPageProvider(
 				className);
 
 		if (layoutDisplayPageProvider == null) {
@@ -682,7 +682,7 @@ public class ContentUtil {
 		);
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			LayoutDisplayPageProviderTrackerUtil.getLayoutDisplayPageProvider(
+			LayoutDisplayPageProviderRegistryUtil.getLayoutDisplayPageProvider(
 				layoutClassedModelUsage.getClassName());
 
 		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =

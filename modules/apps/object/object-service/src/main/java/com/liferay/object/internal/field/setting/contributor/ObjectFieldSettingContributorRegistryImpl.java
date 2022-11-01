@@ -12,17 +12,10 @@
  * details.
  */
 
-package com.liferay.object.internal.field.business.type;
+package com.liferay.object.internal.field.setting.contributor;
 
-import com.liferay.object.field.business.type.ObjectFieldBusinessType;
-import com.liferay.object.field.business.type.ObjectFieldBusinessTypeTracker;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -30,40 +23,29 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
- * @author Marcela Cunha
+ * @author Feliphe Marinho
  */
-@Component(service = ObjectFieldBusinessTypeTracker.class)
-public class ObjectFieldBusinessTypeTrackerImpl
-	implements ObjectFieldBusinessTypeTracker {
+@Component(service = ObjectFieldSettingContributorRegistryImpl.class)
+public class ObjectFieldSettingContributorRegistryImpl {
 
-	@Override
-	public ObjectFieldBusinessType getObjectFieldBusinessType(String key) {
-		return _serviceTrackerMap.getService(key);
-	}
+	public ObjectFieldSettingContributor getObjectFieldSettingContributor(
+		String key) {
 
-	@Override
-	public List<ObjectFieldBusinessType> getObjectFieldBusinessTypes() {
-		return new ArrayList(_serviceTrackerMap.values());
-	}
+		ObjectFieldSettingContributor objectFieldSettingContributor =
+			_serviceTrackerMap.getService(key);
 
-	@Override
-	public Set<String> getObjectFieldDBTypes() {
-		Set<String> objectFieldDBTypes = new HashSet<>();
-
-		for (ObjectFieldBusinessType objectFieldBusinessType :
-				_serviceTrackerMap.values()) {
-
-			objectFieldDBTypes.add(objectFieldBusinessType.getDBType());
+		if (objectFieldSettingContributor != null) {
+			return objectFieldSettingContributor;
 		}
 
-		return objectFieldDBTypes;
+		return _serviceTrackerMap.getService("default");
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, ObjectFieldBusinessType.class,
-			"object.field.business.type.key");
+			bundleContext, ObjectFieldSettingContributor.class,
+			"object.field.setting.type.key");
 	}
 
 	@Deactivate
@@ -71,7 +53,7 @@ public class ObjectFieldBusinessTypeTrackerImpl
 		_serviceTrackerMap.close();
 	}
 
-	private ServiceTrackerMap<String, ObjectFieldBusinessType>
+	private ServiceTrackerMap<String, ObjectFieldSettingContributor>
 		_serviceTrackerMap;
 
 }

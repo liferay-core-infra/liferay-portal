@@ -12,17 +12,18 @@
  * details.
  */
 
-package com.liferay.object.field.filter.parser;
+package com.liferay.object.validation.rule;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import java.util.List;
 
 /**
- * @author Feliphe Marinho
+ * @author Marco Leo
  */
-public interface ObjectFieldFilterContributorTracker {
+public interface ObjectValidationRuleEngineRegistry {
 
-	public ObjectFieldFilterContributor getObjectFieldFilterContributor(
-			ObjectFieldFilterContext objectFieldFilterContext)
-		throws PortalException;
+	public ObjectValidationRuleEngine getObjectValidationRuleEngine(
+		String name);
+
+	public List<ObjectValidationRuleEngine> getObjectValidationRuleEngines();
 
 }

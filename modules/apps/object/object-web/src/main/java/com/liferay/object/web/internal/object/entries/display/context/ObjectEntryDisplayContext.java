@@ -43,7 +43,7 @@ import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.exception.NoSuchObjectLayoutException;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
-import com.liferay.object.field.business.type.ObjectFieldBusinessTypeTracker;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.field.render.ObjectFieldRenderingContext;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
@@ -57,7 +57,7 @@ import com.liferay.object.rest.dto.v1_0.FileEntry;
 import com.liferay.object.rest.dto.v1_0.ListEntry;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerTracker;
+import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerRegistry;
 import com.liferay.object.scope.ObjectScopeProvider;
 import com.liferay.object.scope.ObjectScopeProviderRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
@@ -124,9 +124,9 @@ public class ObjectEntryDisplayContext {
 		DDMFormRenderer ddmFormRenderer, HttpServletRequest httpServletRequest,
 		ItemSelector itemSelector,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
-		ObjectEntryManagerTracker objectEntryManagerTracker,
+		ObjectEntryManagerRegistry objectEntryManagerRegistry,
 		ObjectEntryService objectEntryService,
-		ObjectFieldBusinessTypeTracker objectFieldBusinessTypeTracker,
+		ObjectFieldBusinessTypeRegistry objectFieldBusinessTypeRegistry,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectLayoutLocalService objectLayoutLocalService,
 		ObjectRelationshipLocalService objectRelationshipLocalService,
@@ -136,9 +136,9 @@ public class ObjectEntryDisplayContext {
 		_ddmFormRenderer = ddmFormRenderer;
 		_itemSelector = itemSelector;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
-		_objectEntryManagerTracker = objectEntryManagerTracker;
+		_objectEntryManagerRegistry = objectEntryManagerRegistry;
 		_objectEntryService = objectEntryService;
-		_objectFieldBusinessTypeTracker = objectFieldBusinessTypeTracker;
+		_objectFieldBusinessTypeRegistry = objectFieldBusinessTypeRegistry;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectLayoutLocalService = objectLayoutLocalService;
 		_objectRelationshipLocalService = objectRelationshipLocalService;
@@ -239,7 +239,7 @@ public class ObjectEntryDisplayContext {
 		ObjectDefinition objectDefinition = getObjectDefinition();
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerTracker.getObjectEntryManager(
+			_objectEntryManagerRegistry.getObjectEntryManager(
 				objectDefinition.getStorageType());
 
 		try {
@@ -651,7 +651,7 @@ public class ObjectEntryDisplayContext {
 		// TODO Store the type and the object field type in the database
 
 		ObjectFieldBusinessType objectFieldBusinessType =
-			_objectFieldBusinessTypeTracker.getObjectFieldBusinessType(
+			_objectFieldBusinessTypeRegistry.getObjectFieldBusinessType(
 				objectField.getBusinessType());
 
 		DDMFormField ddmFormField = new DDMFormField(
@@ -1103,10 +1103,10 @@ public class ObjectEntryDisplayContext {
 	private final ItemSelector _itemSelector;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private ObjectEntry _objectEntry;
-	private final ObjectEntryManagerTracker _objectEntryManagerTracker;
+	private final ObjectEntryManagerRegistry _objectEntryManagerRegistry;
 	private final ObjectEntryService _objectEntryService;
-	private final ObjectFieldBusinessTypeTracker
-		_objectFieldBusinessTypeTracker;
+	private final ObjectFieldBusinessTypeRegistry
+		_objectFieldBusinessTypeRegistry;
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final Map<Long, String> _objectFieldNames = new HashMap<>();
 	private final ObjectLayoutLocalService _objectLayoutLocalService;

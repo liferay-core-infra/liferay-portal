@@ -43,7 +43,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.related.models.ObjectRelatedModelsProviderRegistry;
 import com.liferay.object.rest.context.path.RESTContextPathResolverRegistry;
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerTracker;
+import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerRegistry;
 import com.liferay.object.scope.ObjectScopeProviderRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
@@ -67,7 +67,7 @@ import com.liferay.object.web.internal.item.selector.ObjectEntryItemSelectorView
 import com.liferay.object.web.internal.layout.display.page.ObjectEntryLayoutDisplayPageProvider;
 import com.liferay.object.web.internal.object.entries.application.list.ObjectEntriesPanelApp;
 import com.liferay.object.web.internal.object.entries.display.context.ObjectEntryDisplayContextFactory;
-import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactoryTracker;
+import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactoryRegistryImpl;
 import com.liferay.object.web.internal.object.entries.frontend.data.set.view.table.ObjectEntriesTableFDSView;
 import com.liferay.object.web.internal.object.entries.portlet.ObjectEntriesPortlet;
 import com.liferay.object.web.internal.object.entries.portlet.action.EditObjectEntryMVCActionCommand;
@@ -252,7 +252,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					infoPermissionProvider, _itemSelectorViewDescriptorRenderer,
 					objectDefinition, _objectDefinitionLocalService,
 					_objectEntryLocalService,
-					_objectEntryManagerTracker.getObjectEntryManager(
+					_objectEntryManagerRegistry.getObjectEntryManager(
 						objectDefinition.getStorageType()),
 					_objectRelatedModelsProviderRegistry,
 					_objectScopeProviderRegistry, _portal),
@@ -272,7 +272,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				new ObjectEntriesPortlet(
 					objectDefinition.getObjectDefinitionId(),
 					_objectDefinitionLocalService,
-					_objectFieldFDSFilterFactoryTracker,
+					_objectFieldFDSFilterFactoryRegistryImpl,
 					_objectFieldLocalService, _objectScopeProviderRegistry,
 					_objectViewLocalService, _portal,
 					_getPortletResourcePermission(
@@ -352,7 +352,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_assetDisplayPageFriendlyURLProvider,
 					_infoItemFieldReaderFieldSetProvider, _jsonFactory,
 					_listTypeEntryLocalService, objectDefinition,
-					_objectEntryLocalService, _objectEntryManagerTracker,
+					_objectEntryLocalService, _objectEntryManagerRegistry,
 					_objectFieldLocalService, _templateInfoItemFieldSetProvider,
 					_userLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -460,14 +460,14 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private ObjectEntryLocalService _objectEntryLocalService;
 
 	@Reference
-	private ObjectEntryManagerTracker _objectEntryManagerTracker;
+	private ObjectEntryManagerRegistry _objectEntryManagerRegistry;
 
 	@Reference
 	private ObjectEntryService _objectEntryService;
 
 	@Reference
-	private ObjectFieldFDSFilterFactoryTracker
-		_objectFieldFDSFilterFactoryTracker;
+	private ObjectFieldFDSFilterFactoryRegistryImpl
+		_objectFieldFDSFilterFactoryRegistryImpl;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

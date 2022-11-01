@@ -12,16 +12,10 @@
  * details.
  */
 
-package com.liferay.object.rest.internal.manager.v1_0;
+package com.liferay.object.internal.filter.parser;
 
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerTracker;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -29,32 +23,19 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
- * @author Guilherme Camacho
+ * @author Feliphe Marinho
  */
-@Component(service = ObjectEntryManagerTracker.class)
-public class ObjectEntryManagerTrackerImpl
-	implements ObjectEntryManagerTracker {
+@Component(service = ObjectFilterParserServiceRegistryImpl.class)
+public class ObjectFilterParserServiceRegistryImpl {
 
-	@Override
-	public ObjectEntryManager getObjectEntryManager(String storageType) {
-		return _serviceTrackerMap.getService(storageType);
-	}
-
-	@Override
-	public List<ObjectEntryManager> getObjectEntryManagers() {
-		return new ArrayList(_serviceTrackerMap.values());
-	}
-
-	@Override
-	public Set<String> getStorageTypes() {
-		return _serviceTrackerMap.keySet();
+	public ObjectFilterParser getObjectFilterParser(String type) {
+		return _serviceTrackerMap.getService(type);
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, ObjectEntryManager.class,
-			"object.entry.manager.storage.type");
+			bundleContext, ObjectFilterParser.class, "filter.type");
 	}
 
 	@Deactivate
@@ -62,6 +43,6 @@ public class ObjectEntryManagerTrackerImpl
 		_serviceTrackerMap.close();
 	}
 
-	private ServiceTrackerMap<String, ObjectEntryManager> _serviceTrackerMap;
+	private ServiceTrackerMap<String, ObjectFilterParser> _serviceTrackerMap;
 
 }

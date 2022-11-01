@@ -27,7 +27,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = {})
 public class ServletContextUtil {
 
-	public static InfoItemRendererRegistry getInfoItemRendererTracker() {
+	public static InfoItemRendererRegistry getInfoItemRendererRegistry() {
 		return _infoItemRendererRegistry;
 	}
 

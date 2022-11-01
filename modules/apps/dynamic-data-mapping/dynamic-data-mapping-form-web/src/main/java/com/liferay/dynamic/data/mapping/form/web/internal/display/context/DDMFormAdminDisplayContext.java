@@ -41,7 +41,7 @@ import com.liferay.dynamic.data.mapping.form.web.internal.search.DDMFormInstance
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerSerializeRequest;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerSerializeResponse;
-import com.liferay.dynamic.data.mapping.io.exporter.DDMFormInstanceRecordWriterTracker;
+import com.liferay.dynamic.data.mapping.io.exporter.DDMFormInstanceRecordWriterRegistry;
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -60,7 +60,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapter;
-import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterTracker;
+import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterRegistry;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
@@ -158,7 +158,7 @@ public class DDMFormAdminDisplayContext {
 		DDMFormFieldTypesSerializer ddmFormFieldTypesSerializer,
 		DDMFormInstanceLocalService ddmFormInstanceLocalService,
 		DDMFormInstanceRecordLocalService ddmFormInstanceRecordLocalService,
-		DDMFormInstanceRecordWriterTracker ddmFormInstanceRecordWriterTracker,
+		DDMFormInstanceRecordWriterRegistry ddmFormInstanceRecordWriterRegistry,
 		DDMFormInstanceService ddmFormInstanceService,
 		DDMFormInstanceVersionLocalService ddmFormInstanceVersionLocalService,
 		DDMFormRenderer ddmFormRenderer,
@@ -166,7 +166,7 @@ public class DDMFormAdminDisplayContext {
 		DDMFormValuesFactory ddmFormValuesFactory,
 		DDMFormValuesMerger ddmFormValuesMerger,
 		DDMFormWebConfiguration ddmFormWebConfiguration,
-		DDMStorageAdapterTracker ddmStorageAdapterTracker,
+		DDMStorageAdapterRegistry ddmStorageAdapterRegistry,
 		DDMStructureLocalService ddmStructureLocalService,
 		DDMStructureService ddmStructureService, JSONFactory jsonFactory,
 		NPMResolver npmResolver,
@@ -182,8 +182,8 @@ public class DDMFormAdminDisplayContext {
 		_ddmFormFieldTypesSerializer = ddmFormFieldTypesSerializer;
 		_ddmFormInstanceLocalService = ddmFormInstanceLocalService;
 		_ddmFormInstanceRecordLocalService = ddmFormInstanceRecordLocalService;
-		_ddmFormInstanceRecordWriterTracker =
-			ddmFormInstanceRecordWriterTracker;
+		_ddmFormInstanceRecordWriterRegistry =
+			ddmFormInstanceRecordWriterRegistry;
 		_ddmFormInstanceService = ddmFormInstanceService;
 		_ddmFormInstanceVersionLocalService =
 			ddmFormInstanceVersionLocalService;
@@ -191,7 +191,7 @@ public class DDMFormAdminDisplayContext {
 		_ddmFormValuesFactory = ddmFormValuesFactory;
 		_ddmFormValuesMerger = ddmFormValuesMerger;
 		_ddmFormWebConfiguration = ddmFormWebConfiguration;
-		_ddmStorageAdapterTracker = ddmStorageAdapterTracker;
+		_ddmStorageAdapterRegistry = ddmStorageAdapterRegistry;
 		_ddmStructureLocalService = ddmStructureLocalService;
 		_ddmStructureService = ddmStructureService;
 		_npmResolver = npmResolver;
@@ -267,7 +267,7 @@ public class DDMFormAdminDisplayContext {
 	}
 
 	public Map<String, String> getAvailableExportExtensions() {
-		return _ddmFormInstanceRecordWriterTracker.
+		return _ddmFormInstanceRecordWriterRegistry.
 			getDDMFormInstanceRecordWriterExtensions();
 	}
 
@@ -1256,7 +1256,7 @@ public class DDMFormAdminDisplayContext {
 	public boolean hasValidStorageType(DDMFormInstance ddmFormInstance) {
 		try {
 			DDMStorageAdapter ddmStorageAdapter =
-				_ddmStorageAdapterTracker.getDDMStorageAdapter(
+				_ddmStorageAdapterRegistry.getDDMStorageAdapter(
 					ddmFormInstance.getStorageType());
 
 			if (ddmStorageAdapter != null) {
@@ -1795,8 +1795,8 @@ public class DDMFormAdminDisplayContext {
 	private final DDMFormInstanceLocalService _ddmFormInstanceLocalService;
 	private final DDMFormInstanceRecordLocalService
 		_ddmFormInstanceRecordLocalService;
-	private final DDMFormInstanceRecordWriterTracker
-		_ddmFormInstanceRecordWriterTracker;
+	private final DDMFormInstanceRecordWriterRegistry
+		_ddmFormInstanceRecordWriterRegistry;
 	private final DDMFormInstanceService _ddmFormInstanceService;
 	private final DDMFormInstanceVersionLocalService
 		_ddmFormInstanceVersionLocalService;
@@ -1804,7 +1804,7 @@ public class DDMFormAdminDisplayContext {
 	private final DDMFormValuesFactory _ddmFormValuesFactory;
 	private final DDMFormValuesMerger _ddmFormValuesMerger;
 	private final DDMFormWebConfiguration _ddmFormWebConfiguration;
-	private final DDMStorageAdapterTracker _ddmStorageAdapterTracker;
+	private final DDMStorageAdapterRegistry _ddmStorageAdapterRegistry;
 	private DDMStructure _ddmStructure;
 	private final DDMStructureLocalService _ddmStructureLocalService;
 	private final DDMStructureService _ddmStructureService;

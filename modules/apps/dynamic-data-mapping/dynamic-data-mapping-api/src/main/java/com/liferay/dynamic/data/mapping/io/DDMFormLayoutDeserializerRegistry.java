@@ -22,8 +22,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @Deprecated
 @ProviderType
-public interface DDMFormLayoutSerializerTracker {
+public interface DDMFormLayoutDeserializerRegistry {
 
-	public DDMFormLayoutSerializer getDDMFormLayoutSerializer(String type);
+	public DDMFormLayoutDeserializer getDDMFormLayoutDeserializer(String type);
 
 }

@@ -27,7 +27,7 @@ import com.liferay.dynamic.data.mapping.form.web.internal.display.context.DDMFor
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.DDMFormAdminFieldSetDisplayContext;
 import com.liferay.dynamic.data.mapping.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializer;
-import com.liferay.dynamic.data.mapping.io.exporter.DDMFormInstanceRecordWriterTracker;
+import com.liferay.dynamic.data.mapping.io.exporter.DDMFormInstanceRecordWriterRegistry;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
@@ -35,7 +35,7 @@ import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalServi
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterTracker;
+import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterRegistry;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.object.service.ObjectDefinitionLocalService;
@@ -151,14 +151,14 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 					_ddmFormFieldTypeServicesTracker,
 					_ddmFormFieldTypesSerializer, _ddmFormInstanceLocalService,
 					_ddmFormInstanceRecordLocalService,
-					_ddmFormInstanceRecordWriterTracker,
+					_ddmFormInstanceRecordWriterRegistry,
 					_ddmFormInstanceService,
 					_ddmFormInstanceVersionLocalService, _ddmFormRenderer,
 					_ddmFormTemplateContextFactory, _ddmFormValuesFactory,
 					_ddmFormValuesMerger,
 					_ddmFormWebConfigurationActivator.
 						getDDMFormWebConfiguration(),
-					_ddmStorageAdapterTracker, _ddmStructureLocalService,
+					_ddmStorageAdapterRegistry, _ddmStructureLocalService,
 					_ddmStructureService, _jsonFactory, _npmResolver,
 					_objectDefinitionLocalService, _portal));
 		}
@@ -174,14 +174,14 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 					_ddmFormFieldTypeServicesTracker,
 					_ddmFormFieldTypesSerializer, _ddmFormInstanceLocalService,
 					_ddmFormInstanceRecordLocalService,
-					_ddmFormInstanceRecordWriterTracker,
+					_ddmFormInstanceRecordWriterRegistry,
 					_ddmFormInstanceService,
 					_ddmFormInstanceVersionLocalService, _ddmFormRenderer,
 					_ddmFormTemplateContextFactory, _ddmFormValuesFactory,
 					_ddmFormValuesMerger,
 					_ddmFormWebConfigurationActivator.
 						getDDMFormWebConfiguration(),
-					_ddmStorageAdapterTracker, _ddmStructureLocalService,
+					_ddmStorageAdapterRegistry, _ddmStructureLocalService,
 					_ddmStructureService, _jsonFactory, _npmResolver,
 					_objectDefinitionLocalService, _portal));
 		}
@@ -226,8 +226,8 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 		_ddmFormInstanceRecordLocalService;
 
 	@Reference
-	private DDMFormInstanceRecordWriterTracker
-		_ddmFormInstanceRecordWriterTracker;
+	private DDMFormInstanceRecordWriterRegistry
+		_ddmFormInstanceRecordWriterRegistry;
 
 	@Reference
 	private DDMFormInstanceService _ddmFormInstanceService;
@@ -258,7 +258,7 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 		_ddmFormWebConfigurationActivator;
 
 	@Reference
-	private DDMStorageAdapterTracker _ddmStorageAdapterTracker;
+	private DDMStorageAdapterRegistry _ddmStorageAdapterRegistry;
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;

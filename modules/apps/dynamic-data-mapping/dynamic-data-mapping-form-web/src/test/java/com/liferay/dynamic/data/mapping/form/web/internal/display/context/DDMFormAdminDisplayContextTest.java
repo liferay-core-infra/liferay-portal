@@ -24,7 +24,7 @@ import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory
 import com.liferay.dynamic.data.mapping.form.web.internal.configuration.DDMFormWebConfiguration;
 import com.liferay.dynamic.data.mapping.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializer;
-import com.liferay.dynamic.data.mapping.io.exporter.DDMFormInstanceRecordWriterTracker;
+import com.liferay.dynamic.data.mapping.io.exporter.DDMFormInstanceRecordWriterRegistry;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
 import com.liferay.dynamic.data.mapping.model.UnlocalizedValue;
@@ -35,7 +35,7 @@ import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalServi
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterTracker;
+import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterRegistry;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
@@ -355,7 +355,7 @@ public class DDMFormAdminDisplayContextTest {
 			Mockito.mock(DDMFormFieldTypesSerializer.class),
 			Mockito.mock(DDMFormInstanceLocalService.class),
 			Mockito.mock(DDMFormInstanceRecordLocalService.class),
-			Mockito.mock(DDMFormInstanceRecordWriterTracker.class),
+			Mockito.mock(DDMFormInstanceRecordWriterRegistry.class),
 			_mockDDMFormInstanceService(),
 			Mockito.mock(DDMFormInstanceVersionLocalService.class),
 			Mockito.mock(DDMFormRenderer.class),
@@ -363,7 +363,7 @@ public class DDMFormAdminDisplayContextTest {
 			Mockito.mock(DDMFormValuesFactory.class),
 			Mockito.mock(DDMFormValuesMerger.class),
 			Mockito.mock(DDMFormWebConfiguration.class),
-			Mockito.mock(DDMStorageAdapterTracker.class),
+			Mockito.mock(DDMStorageAdapterRegistry.class),
 			Mockito.mock(DDMStructureLocalService.class),
 			Mockito.mock(DDMStructureService.class),
 			Mockito.mock(JSONFactory.class), Mockito.mock(NPMResolver.class),

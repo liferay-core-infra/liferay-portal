@@ -12,21 +12,18 @@
  * details.
  */
 
-package com.liferay.dynamic.data.mapping.io.exporter;
-
-import java.util.Map;
+package com.liferay.dynamic.data.mapping.io;
 
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * @author Leonardo Barros
+ * @author     Leonardo Barros
+ * @deprecated As of Mueller (7.2.x), with no direct replacement
  */
+@Deprecated
 @ProviderType
-public interface DDMFormInstanceRecordWriterTracker {
+public interface DDMFormLayoutSerializerRegistry {
 
-	public DDMFormInstanceRecordWriter getDDMFormInstanceRecordWriter(
-		String type);
-
-	public Map<String, String> getDDMFormInstanceRecordWriterExtensions();
+	public DDMFormLayoutSerializer getDDMFormLayoutSerializer(String type);
 
 }

@@ -29,7 +29,7 @@ import com.liferay.frontend.taglib.servlet.taglib.ComponentTag;
 import com.liferay.info.constants.InfoDisplayWebKeys;
 import com.liferay.info.form.InfoForm;
 import com.liferay.info.item.InfoItemDetails;
-import com.liferay.info.item.InfoItemServiceTracker;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.info.item.provider.InfoItemDetailsProvider;
 import com.liferay.info.list.renderer.DefaultInfoListRendererContext;
 import com.liferay.info.list.renderer.InfoListRenderer;
@@ -335,11 +335,11 @@ public class RenderLayoutStructureTag extends IncludeTag {
 
 				containerTag.doStartTag();
 
-				InfoItemServiceTracker infoItemServiceTracker =
+				InfoItemServiceRegistry infoItemServiceRegistry =
 					ServletContextUtil.getInfoItemServiceTracker();
 
 				InfoItemDetailsProvider infoItemDetailsProvider =
-					infoItemServiceTracker.getFirstInfoItemService(
+					infoItemServiceRegistry.getFirstInfoItemService(
 						InfoItemDetailsProvider.class,
 						InfoSearchClassMapperTrackerUtil.getClassName(
 							renderCollectionLayoutStructureItemDisplayContext.

@@ -17,7 +17,7 @@ package com.liferay.object.rest.internal.vulcan.extension.v1_0;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
-import com.liferay.object.field.business.type.ObjectFieldBusinessTypeTracker;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.rest.internal.util.ObjectEntryValuesUtil;
@@ -86,7 +86,7 @@ public class ObjectEntryExtensionProvider extends BaseObjectExtensionProvider {
 					objectDefinition.getObjectDefinitionId(), false)) {
 
 			ObjectFieldBusinessType objectFieldBusinessType =
-				_objectFieldBusinessTypeTracker.getObjectFieldBusinessType(
+				_objectFieldBusinessTypeRegistry.getObjectFieldBusinessType(
 					objectField.getBusinessType());
 
 			extendedPropertyDefinitions.put(
@@ -172,7 +172,7 @@ public class ObjectEntryExtensionProvider extends BaseObjectExtensionProvider {
 	private ObjectEntryLocalService _objectEntryLocalService;
 
 	@Reference
-	private ObjectFieldBusinessTypeTracker _objectFieldBusinessTypeTracker;
+	private ObjectFieldBusinessTypeRegistry _objectFieldBusinessTypeRegistry;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

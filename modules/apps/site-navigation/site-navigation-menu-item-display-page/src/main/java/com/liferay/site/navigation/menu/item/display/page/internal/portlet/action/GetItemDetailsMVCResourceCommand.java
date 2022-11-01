@@ -28,7 +28,7 @@ import com.liferay.layout.display.page.LayoutDisplayPageInfoItemFieldValuesProvi
 import com.liferay.layout.display.page.LayoutDisplayPageInfoItemFieldValuesProviderRegistry;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
-import com.liferay.layout.display.page.LayoutDisplayPageProviderTracker;
+import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -171,7 +171,7 @@ public class GetItemDetailsMVCResourceCommand extends BaseMVCResourceCommand {
 		}
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			_layoutDisplayPageProviderTracker.
+			_layoutDisplayPageProviderRegistry.
 				getLayoutDisplayPageProviderByClassName(className);
 
 		if (layoutDisplayPageProvider == null) {
@@ -231,7 +231,8 @@ public class GetItemDetailsMVCResourceCommand extends BaseMVCResourceCommand {
 		_layoutDisplayPageInfoItemFieldValuesProviderRegistry;
 
 	@Reference
-	private LayoutDisplayPageProviderTracker _layoutDisplayPageProviderTracker;
+	private LayoutDisplayPageProviderRegistry
+		_layoutDisplayPageProviderRegistry;
 
 	@Reference
 	private Portal _portal;

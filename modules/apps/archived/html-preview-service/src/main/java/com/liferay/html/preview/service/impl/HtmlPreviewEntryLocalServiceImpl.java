@@ -18,7 +18,7 @@ import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.html.preview.exception.InvalidHtmlPreviewEntryMimeTypeException;
 import com.liferay.html.preview.model.HtmlPreviewEntry;
 import com.liferay.html.preview.processor.HtmlPreviewProcessor;
-import com.liferay.html.preview.processor.HtmlPreviewProcessorTracker;
+import com.liferay.html.preview.processor.HtmlPreviewProcessorRegistry;
 import com.liferay.html.preview.service.base.HtmlPreviewEntryLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -138,7 +138,7 @@ public class HtmlPreviewEntryLocalServiceImpl
 		throws PortalException {
 
 		HtmlPreviewProcessor htmlPreviewProcessor =
-			_htmlPreviewProcessorTracker.getHtmlPreviewProcessor(mimeType);
+			_htmlPreviewProcessorRegistry.getHtmlPreviewProcessor(mimeType);
 
 		if (htmlPreviewProcessor == null) {
 			throw new InvalidHtmlPreviewEntryMimeTypeException(
@@ -177,7 +177,7 @@ public class HtmlPreviewEntryLocalServiceImpl
 	}
 
 	@Reference
-	private HtmlPreviewProcessorTracker _htmlPreviewProcessorTracker;
+	private HtmlPreviewProcessorRegistry _htmlPreviewProcessorRegistry;
 
 	@Reference
 	private UserLocalService _userLocalService;

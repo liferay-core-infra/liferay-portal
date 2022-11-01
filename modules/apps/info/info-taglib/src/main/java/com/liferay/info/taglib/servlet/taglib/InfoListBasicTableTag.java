@@ -97,7 +97,7 @@ public class InfoListBasicTableTag extends IncludeTag {
 
 	private InfoItemRenderer<?> _getInfoItemRenderer() {
 		InfoItemRendererRegistry infoItemRendererRegistry =
-			ServletContextUtil.getInfoItemRendererTracker();
+			ServletContextUtil.getInfoItemRendererRegistry();
 
 		return infoItemRendererRegistry.getInfoItemRenderer(
 			getItemRendererKey());

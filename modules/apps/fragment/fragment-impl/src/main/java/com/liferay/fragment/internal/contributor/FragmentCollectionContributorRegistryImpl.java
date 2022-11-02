@@ -261,7 +261,7 @@ public class FragmentCollectionContributorRegistryImpl
 	private ServiceTrackerMap<String, FragmentCollectionContributor>
 		_serviceTrackerMap;
 
-	private class FragmentCollectionContributorTrackerServiceTrackerCustomizer
+	private class FragmentCollectionContributorRegistryServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
 			<FragmentCollectionContributor, FragmentCollectionContributor> {
 
@@ -346,7 +346,7 @@ public class FragmentCollectionContributorRegistryImpl
 			_bundleContext.ungetService(serviceReference);
 		}
 
-		private FragmentCollectionContributorTrackerServiceTrackerCustomizer(
+		private FragmentCollectionContributorRegistryServiceTrackerCustomizer(
 			BundleContext bundleContext) {
 
 			_bundleContext = bundleContext;

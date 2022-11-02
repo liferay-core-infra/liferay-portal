@@ -19,7 +19,7 @@ import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.content.dashboard.item.ContentDashboardItemVersion;
 import com.liferay.content.dashboard.item.VersionableContentDashboardItem;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemAction;
-import com.liferay.content.dashboard.item.action.ContentDashboardItemActionProviderTracker;
+import com.liferay.content.dashboard.item.action.ContentDashboardItemActionProviderRegistry;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemVersionAction;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemVersionActionProviderTracker;
 import com.liferay.content.dashboard.item.action.exception.ContentDashboardItemActionException;
@@ -82,8 +82,8 @@ public class JournalArticleContentDashboardItem
 
 	public JournalArticleContentDashboardItem(
 		List<AssetCategory> assetCategories, List<AssetTag> assetTags,
-		ContentDashboardItemActionProviderTracker
-			contentDashboardItemActionProviderTracker,
+		ContentDashboardItemActionProviderRegistry
+			contentDashboardItemActionProviderRegistry,
 		ContentDashboardItemVersionActionProviderTracker
 			contentDashboardItemVersionActionProviderTracker,
 		ContentDashboardItemSubtype contentDashboardItemSubtype, Group group,
@@ -106,8 +106,8 @@ public class JournalArticleContentDashboardItem
 			_assetTags = Collections.unmodifiableList(assetTags);
 		}
 
-		_contentDashboardItemActionProviderTracker =
-			contentDashboardItemActionProviderTracker;
+		_contentDashboardItemActionProviderRegistry =
+			contentDashboardItemActionProviderRegistry;
 		_contentDashboardItemVersionActionProviderTracker =
 			contentDashboardItemVersionActionProviderTracker;
 		_contentDashboardItemSubtype = contentDashboardItemSubtype;
@@ -212,7 +212,7 @@ public class JournalArticleContentDashboardItem
 
 		List<ContentDashboardItemActionProvider>
 			contentDashboardItemActionProviders =
-				_contentDashboardItemActionProviderTracker.
+				_contentDashboardItemActionProviderRegistry.
 					getContentDashboardItemActionProviders(
 						JournalArticle.class.getName(), types);
 
@@ -275,7 +275,7 @@ public class JournalArticleContentDashboardItem
 
 			Optional<ContentDashboardItemActionProvider>
 				contentDashboardItemActionProviderOptional =
-					_contentDashboardItemActionProviderTracker.
+					_contentDashboardItemActionProviderRegistry.
 						getContentDashboardItemActionProviderOptional(
 							JournalArticle.class.getName(),
 							ContentDashboardItemAction.Type.EDIT);
@@ -291,7 +291,7 @@ public class JournalArticleContentDashboardItem
 
 		Optional<ContentDashboardItemActionProvider>
 			viewContentDashboardItemActionProviderOptional =
-				_contentDashboardItemActionProviderTracker.
+				_contentDashboardItemActionProviderRegistry.
 					getContentDashboardItemActionProviderOptional(
 						JournalArticle.class.getName(),
 						ContentDashboardItemAction.Type.VIEW);
@@ -303,7 +303,7 @@ public class JournalArticleContentDashboardItem
 			() -> {
 				Optional<ContentDashboardItemActionProvider>
 					editContentDashboardItemActionProviderOptional =
-						_contentDashboardItemActionProviderTracker.
+						_contentDashboardItemActionProviderRegistry.
 							getContentDashboardItemActionProviderOptional(
 								JournalArticle.class.getName(),
 								ContentDashboardItemAction.Type.EDIT);
@@ -458,7 +458,7 @@ public class JournalArticleContentDashboardItem
 
 		Optional<ContentDashboardItemActionProvider>
 			contentDashboardItemActionProviderOptional =
-				_contentDashboardItemActionProviderTracker.
+				_contentDashboardItemActionProviderRegistry.
 					getContentDashboardItemActionProviderOptional(
 						JournalArticle.class.getName(),
 						ContentDashboardItemAction.Type.VIEW);
@@ -584,8 +584,8 @@ public class JournalArticleContentDashboardItem
 
 	private final List<AssetCategory> _assetCategories;
 	private final List<AssetTag> _assetTags;
-	private final ContentDashboardItemActionProviderTracker
-		_contentDashboardItemActionProviderTracker;
+	private final ContentDashboardItemActionProviderRegistry
+		_contentDashboardItemActionProviderRegistry;
 	private final ContentDashboardItemSubtype _contentDashboardItemSubtype;
 	private final ContentDashboardItemVersionActionProviderTracker
 		_contentDashboardItemVersionActionProviderTracker;

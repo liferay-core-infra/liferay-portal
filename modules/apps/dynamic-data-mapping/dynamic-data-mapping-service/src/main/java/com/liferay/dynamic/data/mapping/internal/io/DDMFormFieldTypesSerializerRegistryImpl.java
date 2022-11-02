@@ -15,7 +15,7 @@
 package com.liferay.dynamic.data.mapping.internal.io;
 
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializer;
-import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerTracker;
+import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerRegistry;
 
 import java.util.Objects;
 
@@ -26,10 +26,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author     Leonardo Barros
  * @deprecated As of Mueller (7.2.x), with no direct replacement
  */
-@Component(service = DDMFormFieldTypesSerializerTracker.class)
+@Component(service = DDMFormFieldTypesSerializerRegistry.class)
 @Deprecated
-public class DDMFormFieldTypesSerializerTrackerImpl
-	implements DDMFormFieldTypesSerializerTracker {
+public class DDMFormFieldTypesSerializerRegistryImpl
+	implements DDMFormFieldTypesSerializerRegistry {
 
 	@Override
 	public DDMFormFieldTypesSerializer getDDMFormFieldTypesSerializer(

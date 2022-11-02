@@ -15,7 +15,7 @@
 package com.liferay.dynamic.data.mapping.internal.io;
 
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutDeserializer;
-import com.liferay.dynamic.data.mapping.io.DDMFormLayoutDeserializerTracker;
+import com.liferay.dynamic.data.mapping.io.DDMFormLayoutDeserializerRegistry;
 
 import java.util.Objects;
 
@@ -26,10 +26,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author     Leonardo Barros
  * @deprecated As of Mueller (7.2.x), with no direct replacement
  */
-@Component(service = DDMFormLayoutDeserializerTracker.class)
+@Component(service = DDMFormLayoutDeserializerRegistry.class)
 @Deprecated
-public class DDMFormLayoutDeserializerTrackerImpl
-	implements DDMFormLayoutDeserializerTracker {
+public class DDMFormLayoutDeserializerRegistryImpl
+	implements DDMFormLayoutDeserializerRegistry {
 
 	@Override
 	public DDMFormLayoutDeserializer getDDMFormLayoutDeserializer(String type) {

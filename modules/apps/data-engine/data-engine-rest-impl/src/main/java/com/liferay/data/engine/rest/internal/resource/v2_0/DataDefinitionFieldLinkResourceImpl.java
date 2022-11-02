@@ -25,7 +25,7 @@ import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionFieldLinkResource;
 import com.liferay.data.engine.service.DEDataDefinitionFieldLinkLocalService;
 import com.liferay.data.engine.service.DEDataListViewLocalService;
-import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
+import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesRegistry;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalService;
@@ -179,7 +179,7 @@ public class DataDefinitionFieldLinkResourceImpl
 			{
 				dataDefinition = DataDefinitionUtil.toDataDefinition(
 					_dataDefinitionContentTypeTracker,
-					_ddmFormFieldTypeServicesTracker,
+					_ddmFormFieldTypeServicesRegistry,
 					_ddmStructureLocalService.getDDMStructure(dataDefinitionId),
 					_ddmStructureLayoutLocalService, _spiDDMFormRuleConverter);
 				dataLayouts = new DataLayout[0];
@@ -192,7 +192,7 @@ public class DataDefinitionFieldLinkResourceImpl
 	private DataDefinitionContentTypeTracker _dataDefinitionContentTypeTracker;
 
 	@Reference
-	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
+	private DDMFormFieldTypeServicesRegistry _ddmFormFieldTypeServicesRegistry;
 
 	@Reference
 	private DDMStructureLayoutLocalService _ddmStructureLayoutLocalService;

@@ -198,7 +198,7 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 		}
 
 		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry =
-			ServletContextUtil.getLayoutDisplayPageProviderTracker();
+			ServletContextUtil.getLayoutDisplayPageProviderRegistry();
 
 		return layoutDisplayPageProviderRegistry.
 			getLayoutDisplayPageProviderByClassName(

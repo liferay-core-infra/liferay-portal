@@ -225,7 +225,7 @@ public class DDMFormInstanceReportLocalServiceImpl
 
 	@Reference
 	private DDMFormFieldTypeReportProcessorRegistry
-			_ddmFormFieldTypeReportProcessorRegistry;
+		_ddmFormFieldTypeReportProcessorRegistry;
 
 	@Reference
 	private DDMFormInstancePersistence _ddmFormInstancePersistence;

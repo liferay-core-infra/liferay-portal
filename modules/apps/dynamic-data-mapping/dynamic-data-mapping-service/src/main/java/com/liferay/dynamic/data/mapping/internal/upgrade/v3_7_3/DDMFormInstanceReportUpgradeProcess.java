@@ -218,7 +218,7 @@ public class DDMFormInstanceReportUpgradeProcess extends UpgradeProcess {
 				ddmFormValues.getDDMFormFieldValues()) {
 
 			DDMFormFieldTypeReportProcessor ddmFormFieldTypeReportProcessor =
-				_ddmFormFieldTypeReportProcessorTracker.
+				_ddmFormFieldTypeReportProcessorRegistry.
 					getDDMFormFieldTypeReportProcessor(
 						ddmFormFieldValue.getDDMFormField(),
 						ddmFormFieldValue.getType());
@@ -265,12 +265,12 @@ public class DDMFormInstanceReportUpgradeProcess extends UpgradeProcess {
 		DDMFormInstanceReportUpgradeProcess.class);
 
 	private final DDMFormDeserializer _ddmFormDeserializer;
-	private final DDMFormFieldTypeReportProcessorTracker
-		_ddmFormFieldTypeReportProcessorTracker =
-			new DDMFormFieldTypeReportProcessorTracker();
+	private final DDMFormFieldTypeReportProcessorRegistry
+			_ddmFormFieldTypeReportProcessorRegistry =
+			new DDMFormFieldTypeReportProcessorRegistry();
 	private final JSONFactory _jsonFactory;
 
-	private class DDMFormFieldTypeReportProcessorTracker {
+	private class DDMFormFieldTypeReportProcessorRegistry {
 
 		public DDMFormFieldTypeReportProcessor
 			getDDMFormFieldTypeReportProcessor(

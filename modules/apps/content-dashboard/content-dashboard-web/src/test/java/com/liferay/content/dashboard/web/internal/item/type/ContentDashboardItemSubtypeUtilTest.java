@@ -206,7 +206,7 @@ public class ContentDashboardItemSubtypeUtilTest {
 	}
 
 	private ContentDashboardItemSubtypeFactoryRegistry
-	_getContentDashboardItemSubtypeFactoryRegistry(
+		_getContentDashboardItemSubtypeFactoryRegistry(
 			ContentDashboardItemSubtype contentDashboardItemSubtype,
 			ContentDashboardItemSubtypeFactory
 				contentDashboardItemSubtypeFactory) {

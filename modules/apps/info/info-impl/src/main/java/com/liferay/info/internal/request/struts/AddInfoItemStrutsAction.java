@@ -15,7 +15,7 @@
 package com.liferay.info.internal.request.struts;
 
 import com.liferay.captcha.util.CaptchaUtil;
-import com.liferay.fragment.contributor.FragmentCollectionContributorTracker;
+import com.liferay.fragment.contributor.FragmentCollectionContributorRegistry;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
@@ -340,7 +340,7 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 
 		if (Validator.isNotNull(rendererKey)) {
 			fragmentEntry =
-				_fragmentCollectionContributorTracker.getFragmentEntry(
+				_fragmentCollectionContributorRegistry.getFragmentEntry(
 					rendererKey);
 		}
 
@@ -405,8 +405,8 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 		AddInfoItemStrutsAction.class);
 
 	@Reference
-	private FragmentCollectionContributorTracker
-		_fragmentCollectionContributorTracker;
+	private FragmentCollectionContributorRegistry
+		_fragmentCollectionContributorRegistry;
 
 	@Reference
 	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;

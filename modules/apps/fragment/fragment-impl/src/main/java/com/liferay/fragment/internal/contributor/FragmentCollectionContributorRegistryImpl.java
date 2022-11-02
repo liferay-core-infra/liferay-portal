@@ -151,7 +151,7 @@ public class FragmentCollectionContributorRegistryImpl
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, FragmentCollectionContributor.class,
 			"fragment.collection.key",
-			new FragmentCollectionContributorTrackerServiceTrackerCustomizer(
+			new FragmentCollectionContributorRegistryServiceTrackerCustomizer(
 				bundleContext));
 	}
 

@@ -101,7 +101,7 @@ public class ServletContextUtil {
 	}
 
 	public static LayoutDisplayPageProviderRegistry
-		getLayoutDisplayPageProviderTracker() {
+		getLayoutDisplayPageProviderRegistry() {
 
 		return _layoutDisplayPageProviderRegistry;
 	}

@@ -16,6 +16,7 @@ package com.liferay.portal.template.freemarker.internal;
 
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateException;
@@ -84,7 +85,8 @@ public class FreeMarkerTemplateTest {
 			_freeMarkerTemplateResourceLoader,
 			"_freeMarkerTemplateResourceCache", _templateResourceCache);
 
-		_freeMarkerTemplateResourceLoader.activate(Collections.emptyMap());
+		_freeMarkerTemplateResourceLoader.activate(
+			SystemBundleUtil.getBundleContext(), Collections.emptyMap());
 
 		_freeMarkerManager = new FreeMarkerManager();
 

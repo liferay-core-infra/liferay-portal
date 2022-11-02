@@ -280,7 +280,7 @@ public class DDMFormInstanceReportUpgradeProcess extends UpgradeProcess {
 
 	private final DDMFormDeserializer _ddmFormDeserializer;
 	private final DDMFormFieldTypeReportProcessorRegistry
-			_ddmFormFieldTypeReportProcessorRegistry =
+		_ddmFormFieldTypeReportProcessorRegistry =
 			new DDMFormFieldTypeReportProcessorRegistry();
 	private final JSONFactory _jsonFactory;
 

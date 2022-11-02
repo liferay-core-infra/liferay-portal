@@ -116,9 +116,9 @@
 				languageValue = ParamUtil.getString(request, name + StringPool.UNDERLINE + curLanguageId, languageValue);
 			}
 
-			if (curLanguageId.equals(defaultLanguageId) && Validator.isNull(languageValue)) {
+			/*if (curLanguageId.equals(defaultLanguageId) && Validator.isNull(languageValue)) {
 				languageValue = LocalizationUtil.getLocalization(xml, defaultLanguageId, true);
-			}
+			}*/
 		%>
 
 			<aui:input dir="<%= curLanguageDir %>" disabled="<%= disabled %>" id="<%= HtmlUtil.escapeAttribute(id + StringPool.UNDERLINE + curLanguageId) %>" name="<%= HtmlUtil.escapeAttribute(fieldNamePrefix + name + StringPool.UNDERLINE + curLanguageId + fieldNameSuffix) %>" type="hidden" value="<%= languageValue %>" />

@@ -14,24 +14,26 @@
 
 package com.liferay.portal.template.freemarker.internal;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.BaseTemplateResourceLoader;
 import com.liferay.portal.template.TemplateResourceParser;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Igor Spasic
@@ -47,7 +49,51 @@ public class FreeMarkerTemplateResourceLoader
 
 	@Activate
 	@Modified
-	protected void activate(Map<String, Object> properties) {
+	protected void activate(
+			BundleContext bundleContext, Map<String, Object> properties)
+		throws InvalidSyntaxException {
+
+		String filterString = StringBundler.concat(
+			"(&(lang.type=", TemplateConstants.LANG_TYPE_FTL, ")(objectClass=",
+			TemplateResourceParser.class.getName(), "))");
+
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, bundleContext.createFilter(filterString),
+			new ServiceTrackerCustomizer
+				<TemplateResourceParser, TemplateResourceParser>() {
+
+				@Override
+				public TemplateResourceParser addingService(
+					ServiceReference<TemplateResourceParser> serviceReference) {
+
+					TemplateResourceParser templateResourceParser =
+						bundleContext.getService(serviceReference);
+
+					_templateResourceParsers.add(templateResourceParser);
+
+					return templateResourceParser;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<TemplateResourceParser> serviceReference,
+					TemplateResourceParser templateResourceParser) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<TemplateResourceParser> serviceReference,
+					TemplateResourceParser templateResourceParser) {
+
+					_templateResourceParsers.remove(templateResourceParser);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
+
 		init(
 			TemplateConstants.LANG_TYPE_FTL, _templateResourceParsers,
 			_freeMarkerTemplateResourceCache);
@@ -55,31 +101,16 @@ public class FreeMarkerTemplateResourceLoader
 
 	@Deactivate
 	protected void deactivate() {
+		_serviceTracker.close();
 		destroy();
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(lang.type=" + TemplateConstants.LANG_TYPE_FTL + ")"
-	)
-	protected void setTemplateResourceParser(
-		TemplateResourceParser templateResourceParser) {
-
-		_templateResourceParsers.add(templateResourceParser);
-	}
-
-	protected void unsetTemplateResourceParser(
-		TemplateResourceParser templateResourceParser) {
-
-		_templateResourceParsers.remove(templateResourceParser);
 	}
 
 	@Reference
 	private FreeMarkerTemplateResourceCache _freeMarkerTemplateResourceCache;
 
+	private ServiceTracker
+		<TemplateResourceParser, TemplateResourceParser> _serviceTracker;
 	private final Set<TemplateResourceParser> _templateResourceParsers =
-		Collections.newSetFromMap(new ConcurrentHashMap<>());
+		new ConcurrentSkipListSet<>();
 
 }

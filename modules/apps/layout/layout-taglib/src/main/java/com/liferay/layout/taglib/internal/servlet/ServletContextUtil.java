@@ -101,17 +101,17 @@ public class ServletContextUtil {
 	}
 
 	public static LayoutDisplayPageProviderRegistry
-		getLayoutDisplayPageProviderTracker() {
+		getLayoutDisplayPageProviderRegistry() {
 
 		return _layoutDisplayPageProviderRegistry;
 	}
 
-	public static LayoutListRetrieverRegistry getLayoutListRetrieverTracker() {
+	public static LayoutListRetrieverRegistry getLayoutListRetrieverRegistry() {
 		return _layoutListRetrieverRegistry;
 	}
 
 	public static ListObjectReferenceFactoryRegistry
-		getListObjectReferenceFactoryTracker() {
+		getListObjectReferenceFactoryRegistry() {
 
 		return _listObjectReferenceFactoryRegistry;
 	}

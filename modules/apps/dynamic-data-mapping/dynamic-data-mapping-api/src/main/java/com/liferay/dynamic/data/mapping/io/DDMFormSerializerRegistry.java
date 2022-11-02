@@ -22,7 +22,7 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @Deprecated
 @ProviderType
-public interface DDMFormSerializerTracker {
+public interface DDMFormSerializerRegistry {
 
 	public DDMFormSerializer getDDMFormSerializer(String type);
 

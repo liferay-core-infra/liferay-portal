@@ -199,6 +199,46 @@ definition {
 			value1 = "assert-no-document-in-container -Dazure.container.id=${containerId} -DcompanyId=${companyId} -DgroupId=${groupId}");
 	}
 
+	@description = "This is a use case for LPS-151902."
+	@priority = "3"
+	test ChangeStoreToAWSS3FromDefault {
+		property test.name.skip.portal.instance = "DocumentLibraryStore#ChangeStoreToAWSS3FromDefault";
+
+		Portlet.shutdownServer();
+
+		var awsBucketId = DateUtil.getFormattedCurrentDate("yyyyMMddHHmmss");
+
+		AntCommand(
+			locator1 = "build-test-aws-s3.xml",
+			value1 = "configure-aws-cli");
+
+		AntCommand(
+			locator1 = "build-test-aws-s3.xml",
+			value1 = "create-s3-bucket -Daws.bucket.id=${awsBucketId}");
+
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "prepare-aws-s3-configuration -Daws.bucket.id=${awsBucketId}");
+
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=dl.store.impl=com.liferay.portal.store.s3.S3Store");
+
+		Portlet.startServer(deleteLiferayHome = "false");
+
+		Navigator.openURL();
+
+		takeScreenshot();
+
+		AssertConsoleTextNotPresent(value1 = "Unable to read image");
+
+		Portlet.shutdownServer();
+
+		AntCommand(
+			locator1 = "build-test-aws-s3.xml",
+			value1 = "delete-s3-bucket -Daws.bucket.id=${awsBucketId}");
+	}
+
 	@priority = "5"
 	@refactorneeded
 	test DBStoreSmoke {

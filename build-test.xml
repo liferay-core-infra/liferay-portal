@@ -10784,6 +10784,12 @@ ${update.properties}</echo>
 		</if>
 	</target>
 
+	<target name="prepare-aws-s3-configuration">
+		<property name="aws.bucket.id" value="${aws.bucket.id}" />
+
+		<prepare-aws-s3-configuration />
+	</target>
+
 	<target name="prepare-chrome-driver">
 		<prepare-chrome-driver />
 	</target>

@@ -20,21 +20,21 @@ import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
@@ -66,7 +66,7 @@ public class DefaultDestinationFactory implements DestinationFactory {
 	}
 
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		_destinationPrototypes.put(
 			DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
 			new ParallelDestinationPrototype(
@@ -80,34 +80,56 @@ public class DefaultDestinationFactory implements DestinationFactory {
 		_destinationPrototypes.put(
 			DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
 			new SynchronousDestinationPrototype());
-	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addDestinationPrototype(
-		DestinationPrototype destinationPrototype,
-		Map<String, Object> properties) {
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, DestinationPrototype.class,
+			new ServiceTrackerCustomizer
+				<DestinationPrototype, DestinationPrototype>() {
 
-		_destinationPrototypes.put(
-			MapUtil.getString(properties, "destination.type"),
-			destinationPrototype);
+				@Override
+				public DestinationPrototype addingService(
+					ServiceReference<DestinationPrototype> serviceReference) {
+
+					DestinationPrototype destinationPrototype =
+						bundleContext.getService(serviceReference);
+
+					_destinationPrototypes.put(
+						GetterUtil.getString(
+							serviceReference.getProperty("destination.type")),
+						destinationPrototype);
+
+					return destinationPrototype;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<DestinationPrototype> serviceReference,
+					DestinationPrototype service) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<DestinationPrototype> serviceReference,
+					DestinationPrototype service) {
+
+					_destinationPrototypes.remove(
+						GetterUtil.getString(
+							serviceReference.getProperty("destination.type")),
+						service);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_destinationPrototypes.clear();
-	}
 
-	protected void removeDestinationPrototype(
-		DestinationPrototype destinationPrototype,
-		Map<String, Object> properties) {
-
-		_destinationPrototypes.remove(
-			MapUtil.getString(properties, "destination.type"),
-			destinationPrototype);
+		_serviceTracker.close();
 	}
 
 	private final ConcurrentMap<String, DestinationPrototype>
@@ -118,6 +140,9 @@ public class DefaultDestinationFactory implements DestinationFactory {
 
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
+
+	private ServiceTracker<DestinationPrototype, DestinationPrototype>
+		_serviceTracker;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -24,10 +24,10 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalLifecycle;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.shielded.container.Ordered;
 import com.liferay.shielded.container.ShieldedContainerInitializer;
@@ -83,7 +83,8 @@ public class JSPEngineShieldedContainerInitializer
 			}
 
 			System.setProperty(
-				PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR, path);
+				SystemPropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
+				path);
 		}
 		catch (IOException ioException) {
 			throw new ServletException(ioException);

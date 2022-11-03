@@ -14,16 +14,19 @@
 
 package com.liferay.portal.search.web.internal.facet;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.search.web.facet.SearchFacet;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Eudaldo Alonso
@@ -35,20 +38,50 @@ public class SearchFacetRegistry {
 		return _searchFacets;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addSearchFacet(SearchFacet searchFacet) {
-		_searchFacets.add(searchFacet);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = ServiceTrackerFactory.open(
+			bundleContext, SearchFacet.class,
+			new ServiceTrackerCustomizer<SearchFacet, SearchFacet>() {
+
+				@Override
+				public SearchFacet addingService(
+					ServiceReference<SearchFacet> serviceReference) {
+
+					SearchFacet searchFacet = bundleContext.getService(
+						serviceReference);
+
+					_searchFacets.add(searchFacet);
+
+					return searchFacet;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<SearchFacet> serviceReference,
+					SearchFacet service) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<SearchFacet> serviceReference,
+					SearchFacet service) {
+
+					_searchFacets.remove(service);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
 	}
 
-	protected void removeSearchFacet(SearchFacet searchFacet) {
-		_searchFacets.remove(searchFacet);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	private final List<SearchFacet> _searchFacets =
 		new CopyOnWriteArrayList<>();
+	private ServiceTracker<SearchFacet, SearchFacet> _serviceTracker;
 
 }

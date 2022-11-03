@@ -18,9 +18,9 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.servlet.ServletContextClassLoaderPool;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
@@ -55,8 +55,9 @@ public class PortalDirTest {
 		Assert.assertTrue(portalWebInfDir.isDirectory());
 
 		Assert.assertTrue(
-			PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR.endsWith(
-				"WEB-INF/shielded-container-lib/"));
+			ModuleFrameworkPropsValues.
+				LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR.endsWith(
+					"WEB-INF/shielded-container-lib/"));
 	}
 
 }

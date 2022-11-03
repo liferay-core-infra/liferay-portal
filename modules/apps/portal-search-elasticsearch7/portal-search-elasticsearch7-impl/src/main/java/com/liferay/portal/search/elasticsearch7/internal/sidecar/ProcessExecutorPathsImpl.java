@@ -15,7 +15,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
 import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,7 +32,8 @@ public class ProcessExecutorPathsImpl implements ProcessExecutorPaths {
 	@Override
 	public Path getLibPath() {
 		return Paths.get(
-			_props.get(PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR));
+			_props.get(
+				SystemPropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR));
 	}
 
 	private final Props _props;

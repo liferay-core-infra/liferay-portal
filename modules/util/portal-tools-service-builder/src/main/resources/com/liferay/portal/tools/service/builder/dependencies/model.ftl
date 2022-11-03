@@ -8,6 +8,7 @@ import ${serviceBuilder.getCompatJavaClassName("ProviderType")};
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -564,6 +565,10 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 	<#if serviceBuilder.isVersionGTE_7_4_0()>
 		@Override
 		public ${entity.name} cloneWithOriginalValues();
+
+		public default String toXmlString() {
+			return StringPool.BLANK;
+		}
 	</#if>
 
 }

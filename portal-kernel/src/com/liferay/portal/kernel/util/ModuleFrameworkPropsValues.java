@@ -19,6 +19,10 @@ package com.liferay.portal.kernel.util;
  */
 public class ModuleFrameworkPropsValues {
 
+	public static final String LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR =
+		SystemProperties.get(
+			SystemPropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);
+
 	public static final int MODULE_FRAMEWORK_BEGINNING_START_LEVEL =
 		GetterUtil.getInteger(
 			SystemProperties.get("module.framework.beginning.start.level"));

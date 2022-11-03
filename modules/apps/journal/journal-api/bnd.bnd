@@ -10,4 +10,5 @@ Export-Package:\
 	com.liferay.journal.service,\
 	com.liferay.journal.service.persistence,\
 	com.liferay.journal.util,\
-	com.liferay.journal.util.comparator
+	com.liferay.journal.util.comparator,\
+	com.liferay.journal.util.transform

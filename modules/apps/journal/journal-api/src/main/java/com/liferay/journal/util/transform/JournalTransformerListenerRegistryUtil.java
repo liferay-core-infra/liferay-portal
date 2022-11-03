@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.journal.internal.transformer;
+package com.liferay.journal.util.transform;
 
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -49,6 +49,7 @@ public class JournalTransformerListenerRegistryUtil {
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
+
 	private static final ServiceTrackerMap<String, TransformerListener>
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			_bundleContext, TransformerListener.class,
@@ -61,6 +62,5 @@ public class JournalTransformerListenerRegistryUtil {
 
 				emitter.emit(clazz.getName());
 			});
-	}
 
 }

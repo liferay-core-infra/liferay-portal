@@ -14,12 +14,15 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.assignment;
 
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
+import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -35,6 +39,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Rafael Praxedes
@@ -49,6 +56,14 @@ public class AggregateKaleoTaskAssignmentSelectorImplTest {
 	@Before
 	public void setUp() throws Exception {
 		_setUpAggregateKaleoTaskAssignmentSelectorImpl();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		_kaleoTaskAssignmentSelectorTracker.deactivate();
+
+		_serviceRegistrations.forEach(
+			serviceRegistration -> serviceRegistration.unregister());
 	}
 
 	@Test
@@ -144,28 +159,37 @@ public class AggregateKaleoTaskAssignmentSelectorImplTest {
 	private void _setUpAggregateKaleoTaskAssignmentSelectorImpl()
 		throws Exception {
 
-		KaleoTaskAssignmentSelectorTracker kaleoTaskAssignmentSelectorTracker =
+		_kaleoTaskAssignmentSelectorTracker =
 			new KaleoTaskAssignmentSelectorTracker();
+
+		_serviceRegistrations = new ArrayList<>();
 
 		for (Map.Entry<String, List<KaleoTaskAssignment>> entry :
 				_kaleoTaskAssignmentSelectors.entrySet()) {
 
-			kaleoTaskAssignmentSelectorTracker.addKaleoTaskAssignmentSelector(
-				(kaleoTaskAssignment, executionContext) -> entry.getValue(),
-				HashMapBuilder.<String, Object>put(
-					"assignee.class.name", entry.getKey()
-				).build());
+			_serviceRegistrations.add(
+				_bundleContext.registerService(
+					KaleoTaskAssignmentSelector.class,
+					(KaleoTaskAssignmentSelector)
+						(kaleoTaskAssignment, executionContext) ->
+							entry.getValue(),
+					MapUtil.singletonDictionary(
+						"assignee.class.name", entry.getKey())));
 		}
+
+		_kaleoTaskAssignmentSelectorTracker.activate(_bundleContext);
 
 		ReflectionTestUtil.setFieldValue(
 			_aggregateKaleoTaskAssignmentSelectorImpl,
 			"_kaleoTaskAssignmentSelectorRegistry",
-			kaleoTaskAssignmentSelectorTracker);
+			_kaleoTaskAssignmentSelectorTracker);
 	}
 
 	private final AggregateKaleoTaskAssignmentSelectorImpl
 		_aggregateKaleoTaskAssignmentSelectorImpl =
 			new AggregateKaleoTaskAssignmentSelectorImpl();
+	private final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 	private final Map<String, List<KaleoTaskAssignment>>
 		_kaleoTaskAssignmentSelectors =
 			HashMapBuilder.<String, List<KaleoTaskAssignment>>put(
@@ -183,5 +207,9 @@ public class AggregateKaleoTaskAssignmentSelectorImplTest {
 						RandomTestUtil.randomString(),
 						RandomTestUtil.randomLong()))
 			).build();
+	private KaleoTaskAssignmentSelectorTracker
+		_kaleoTaskAssignmentSelectorTracker;
+	private List<ServiceRegistration<KaleoTaskAssignmentSelector>>
+		_serviceRegistrations;
 
 }

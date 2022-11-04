@@ -28,7 +28,7 @@ import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipService;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
-import com.liferay.object.system.SystemObjectDefinitionMetadataTracker;
+import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.search.Sort;
@@ -66,8 +66,8 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectRelationshipService objectRelationshipService,
 		ObjectScopeProviderRegistry objectScopeProviderRegistry,
-		SystemObjectDefinitionMetadataTracker
-			systemObjectDefinitionMetadataTracker) {
+		SystemObjectDefinitionMetadataRegistry
+			systemObjectDefinitionMetadataRegistry) {
 
 		_filterPredicateFactory = filterPredicateFactory;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
@@ -76,8 +76,8 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectRelationshipService = objectRelationshipService;
 		_objectScopeProviderRegistry = objectScopeProviderRegistry;
-		_systemObjectDefinitionMetadataTracker =
-			systemObjectDefinitionMetadataTracker;
+		_systemObjectDefinitionMetadataRegistry =
+			systemObjectDefinitionMetadataRegistry;
 	}
 
 	@Override
@@ -494,7 +494,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 
 		if (objectDefinition.isSystem()) {
 			SystemObjectDefinitionMetadata systemObjectDefinitionMetadata =
-				_systemObjectDefinitionMetadataTracker.
+				_systemObjectDefinitionMetadataRegistry.
 					getSystemObjectDefinitionMetadata(
 						objectDefinition.getName());
 
@@ -586,7 +586,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectRelationshipService _objectRelationshipService;
 	private final ObjectScopeProviderRegistry _objectScopeProviderRegistry;
-	private final SystemObjectDefinitionMetadataTracker
-		_systemObjectDefinitionMetadataTracker;
+	private final SystemObjectDefinitionMetadataRegistry
+		_systemObjectDefinitionMetadataRegistry;
 
 }

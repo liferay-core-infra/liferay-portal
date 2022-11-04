@@ -14,27 +14,28 @@
 
 package com.liferay.portal.messaging.internal;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.List;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -48,8 +49,8 @@ public class DefaultDestinationFactory implements DestinationFactory {
 
 		String type = destinationConfiguration.getDestinationType();
 
-		DestinationPrototype destinationPrototype = _destinationPrototypes.get(
-			type);
+		DestinationPrototype destinationPrototype =
+			_serviceTrackerMap.getService(type);
 
 		if (destinationPrototype == null) {
 			throw new IllegalArgumentException(
@@ -61,63 +62,60 @@ public class DefaultDestinationFactory implements DestinationFactory {
 
 	@Override
 	public Collection<String> getDestinationTypes() {
-		return Collections.unmodifiableCollection(
-			_destinationPrototypes.keySet());
+		return Collections.unmodifiableCollection(_serviceTrackerMap.keySet());
 	}
 
 	@Activate
-	protected void activate() {
-		_destinationPrototypes.put(
-			DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-			new ParallelDestinationPrototype(
-				_portalExecutorManager, _permissionCheckerFactory,
-				_userLocalService));
-		_destinationPrototypes.put(
-			DestinationConfiguration.DESTINATION_TYPE_SERIAL,
-			new SerialDestinationPrototype(
-				_portalExecutorManager, _permissionCheckerFactory,
-				_userLocalService));
-		_destinationPrototypes.put(
-			DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
-			new SynchronousDestinationPrototype());
-	}
+	protected void activate(BundleContext bundleContext) {
+		_serviceRegistrations.add(
+			bundleContext.registerService(
+				DestinationPrototype.class,
+				new ParallelDestinationPrototype(
+					_portalExecutorManager, _permissionCheckerFactory,
+					_userLocalService),
+				MapUtil.singletonDictionary(
+					"destination.type",
+					DestinationConfiguration.DESTINATION_TYPE_PARALLEL)));
+		_serviceRegistrations.add(
+			bundleContext.registerService(
+				DestinationPrototype.class,
+				new SerialDestinationPrototype(
+					_portalExecutorManager, _permissionCheckerFactory,
+					_userLocalService),
+				MapUtil.singletonDictionary(
+					"destination.type",
+					DestinationConfiguration.DESTINATION_TYPE_SERIAL)));
+		_serviceRegistrations.add(
+			bundleContext.registerService(
+				DestinationPrototype.class,
+				new SynchronousDestinationPrototype(),
+				MapUtil.singletonDictionary(
+					"destination.type",
+					DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS)));
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addDestinationPrototype(
-		DestinationPrototype destinationPrototype,
-		Map<String, Object> properties) {
-
-		_destinationPrototypes.put(
-			MapUtil.getString(properties, "destination.type"),
-			destinationPrototype);
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, DestinationPrototype.class, null,
+			(serviceReference, emitter) -> emitter.emit(
+				GetterUtil.getString(
+					serviceReference.getProperty("destination.type"))));
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_destinationPrototypes.clear();
+		_serviceTrackerMap.close();
+
+		_serviceRegistrations.forEach(ServiceRegistration::unregister);
 	}
-
-	protected void removeDestinationPrototype(
-		DestinationPrototype destinationPrototype,
-		Map<String, Object> properties) {
-
-		_destinationPrototypes.remove(
-			MapUtil.getString(properties, "destination.type"),
-			destinationPrototype);
-	}
-
-	private final ConcurrentMap<String, DestinationPrototype>
-		_destinationPrototypes = new ConcurrentHashMap<>();
 
 	@Reference
 	private PermissionCheckerFactory _permissionCheckerFactory;
 
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
+
+	private final List<ServiceRegistration<DestinationPrototype>>
+		_serviceRegistrations = new ArrayList<>();
+	private ServiceTrackerMap<String, DestinationPrototype> _serviceTrackerMap;
 
 	@Reference
 	private UserLocalService _userLocalService;

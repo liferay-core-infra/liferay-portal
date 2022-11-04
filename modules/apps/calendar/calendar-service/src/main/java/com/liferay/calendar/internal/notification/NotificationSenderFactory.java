@@ -22,11 +22,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Eduardo Lundgren
@@ -48,42 +50,79 @@ public class NotificationSenderFactory {
 		return notificationSender;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setNotificationSender(
-		NotificationSender notificationSender, Map<String, Object> properties) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, NotificationSender.class,
+			new ServiceTrackerCustomizer
+				<NotificationSender, NotificationSender>() {
 
-		String notificationType = (String)properties.get("notification.type");
+				@Override
+				public NotificationSender addingService(
+					ServiceReference<NotificationSender> serviceReference) {
 
-		if (notificationType == null) {
-			throw new IllegalArgumentException(
-				"The property \"notification.type\" is null");
-		}
+					NotificationSender notificationSender =
+						bundleContext.getService(serviceReference);
 
-		NotificationSender previousNotificationSender =
-			_notificationSenders.put(notificationType, notificationSender);
+					String notificationType =
+						(String)serviceReference.getProperty(
+							"notification.type");
 
-		if (_log.isWarnEnabled() && (previousNotificationSender != null)) {
-			Class<?> clazz = previousNotificationSender.getClass();
+					if (notificationType == null) {
+						throw new IllegalArgumentException(
+							"The property \"notification.type\" is null");
+					}
 
-			_log.warn("Overriding notification sender " + clazz.getName());
-		}
+					NotificationSender previousNotificationSender =
+						_notificationSenders.put(
+							notificationType, notificationSender);
+
+					if (_log.isWarnEnabled() &&
+						(previousNotificationSender != null)) {
+
+						Class<?> clazz = previousNotificationSender.getClass();
+
+						_log.warn(
+							"Overriding notification sender " +
+								clazz.getName());
+					}
+
+					return notificationSender;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<NotificationSender> serviceReference,
+					NotificationSender service) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<NotificationSender> serviceReference,
+					NotificationSender service) {
+
+					String notificationType =
+						(String)serviceReference.getProperty(
+							"notification.type");
+
+					if (notificationType == null) {
+						throw new IllegalArgumentException(
+							"The property \"notification.type\" is null");
+					}
+
+					_notificationSenders.remove(notificationType);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
-	protected void unsetNotificationSender(
-		NotificationSender notificationSender, Map<String, Object> properties) {
-
-		String notificationType = (String)properties.get("notification.type");
-
-		if (notificationType == null) {
-			throw new IllegalArgumentException(
-				"The property \"notification.type\" is null");
-		}
-
-		_notificationSenders.remove(notificationType);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -91,5 +130,7 @@ public class NotificationSenderFactory {
 
 	private final Map<String, NotificationSender> _notificationSenders =
 		new ConcurrentHashMap<>();
+	private ServiceTracker<NotificationSender, NotificationSender>
+		_serviceTracker;
 
 }

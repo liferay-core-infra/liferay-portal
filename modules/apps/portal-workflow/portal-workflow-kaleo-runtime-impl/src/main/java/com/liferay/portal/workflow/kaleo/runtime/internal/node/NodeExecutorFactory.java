@@ -14,17 +14,17 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.node;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.workflow.kaleo.definition.NodeTypeDependentObjectRegistry;
 import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.runtime.node.NodeExecutor;
 
-import java.util.Map;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
@@ -38,38 +38,62 @@ public class NodeExecutorFactory {
 		return _nodeExecutors.getNodeTypeDependentObjects(nodeTypeString);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addNodeExporter(
-		NodeExecutor nodeExecutor, Map<String, Object> properties) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = ServiceTrackerFactory.open(
+			bundleContext, NodeExecutor.class,
+			new ServiceTrackerCustomizer<NodeExecutor, NodeExecutor>() {
 
-		String nodeType = (String)properties.get("node.type");
+				@Override
+				public NodeExecutor addingService(
+					ServiceReference<NodeExecutor> serviceReference) {
 
-		if (nodeType == null) {
-			throw new IllegalArgumentException(
-				"The property \"node.type\" is null");
-		}
+					NodeExecutor nodeExecutor = bundleContext.getService(
+						serviceReference);
 
-		_nodeExecutors.addNodeTypeDependentObject(nodeType, nodeExecutor);
-	}
+					String nodeType = (String)serviceReference.getProperty(
+						"node.type");
 
-	protected void removeNodeExporter(
-		NodeExecutor nodeExecutor, Map<String, Object> properties) {
+					if (nodeType == null) {
+						throw new IllegalArgumentException(
+							"The property \"node.type\" is null");
+					}
 
-		String nodeType = (String)properties.get("node.type");
+					_nodeExecutors.addNodeTypeDependentObject(
+						nodeType, nodeExecutor);
 
-		if (nodeType == null) {
-			throw new IllegalArgumentException(
-				"The property \"node.type\" is null");
-		}
+					return nodeExecutor;
+				}
 
-		_nodeExecutors.removeNodeTypeDependentObjects(nodeType);
+				@Override
+				public void modifiedService(
+					ServiceReference<NodeExecutor> serviceReference,
+					NodeExecutor service) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<NodeExecutor> serviceReference,
+					NodeExecutor service) {
+
+					String nodeType = (String)serviceReference.getProperty(
+						"node.type");
+
+					if (nodeType == null) {
+						throw new IllegalArgumentException(
+							"The property \"node.type\" is null");
+					}
+
+					_nodeExecutors.removeNodeTypeDependentObjects(nodeType);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
 	}
 
 	private final NodeTypeDependentObjectRegistry<NodeExecutor> _nodeExecutors =
 		new NodeTypeDependentObjectRegistry<>();
+	private ServiceTracker<NodeExecutor, NodeExecutor> _serviceTracker;
 
 }

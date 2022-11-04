@@ -24,7 +24,7 @@ import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.exception.NoSuchObjectEntryException;
-import com.liferay.object.field.business.type.ObjectFieldBusinessTypeTracker;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
@@ -963,7 +963,7 @@ public class DefaultObjectEntryManagerImpl
 
 			Object value = ObjectEntryValuesUtil.getValue(
 				_objectDefinitionLocalService, _objectEntryLocalService,
-				objectField, _objectFieldBusinessTypeTracker, userId,
+				objectField, _objectFieldBusinessTypeRegistry, userId,
 				properties);
 
 			if ((value == null) && !objectField.isRequired()) {
@@ -1039,7 +1039,7 @@ public class DefaultObjectEntryManagerImpl
 	private ObjectEntryService _objectEntryService;
 
 	@Reference
-	private ObjectFieldBusinessTypeTracker _objectFieldBusinessTypeTracker;
+	private ObjectFieldBusinessTypeRegistry _objectFieldBusinessTypeRegistry;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

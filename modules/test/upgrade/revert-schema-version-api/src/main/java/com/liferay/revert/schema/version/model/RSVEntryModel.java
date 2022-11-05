@@ -14,6 +14,7 @@
 
 package com.liferay.revert.schema.version.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -103,5 +104,9 @@ public interface RSVEntryModel
 
 	@Override
 	public RSVEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

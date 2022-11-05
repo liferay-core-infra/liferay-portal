@@ -14,6 +14,7 @@
 
 package com.liferay.message.boards.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -348,5 +349,9 @@ public interface MBSuspiciousActivityModel
 
 	@Override
 	public MBSuspiciousActivity cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

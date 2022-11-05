@@ -14,6 +14,7 @@
 
 package com.liferay.data.engine.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -278,5 +279,9 @@ public interface DEDataDefinitionFieldLinkModel
 
 	@Override
 	public DEDataDefinitionFieldLink cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

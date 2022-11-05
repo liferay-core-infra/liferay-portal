@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.kernel.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -517,5 +518,9 @@ public interface DLFileEntryTypeModel
 
 	@Override
 	public DLFileEntryType cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

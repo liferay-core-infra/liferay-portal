@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.wedeploy.auth.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -215,5 +216,9 @@ public interface WeDeployAuthTokenModel
 
 	@Override
 	public WeDeployAuthToken cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

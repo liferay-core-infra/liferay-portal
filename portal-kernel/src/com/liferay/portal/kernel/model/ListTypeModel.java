@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -114,5 +115,9 @@ public interface ListTypeModel extends BaseModel<ListType>, MVCCModel {
 
 	@Override
 	public ListType cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.ratings.kernel.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
@@ -238,5 +239,9 @@ public interface RatingsStatsModel
 
 	@Override
 	public RatingsStats cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

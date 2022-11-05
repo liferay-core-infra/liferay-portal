@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.model;
 
+import com.liferay.petra.string.StringPool;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -169,5 +171,9 @@ public interface RecentLayoutSetBranchModel
 
 	@Override
 	public RecentLayoutSetBranch cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -181,5 +182,9 @@ public interface LVEntryLocalizationVersionModel
 
 	@Override
 	public LVEntryLocalizationVersion cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

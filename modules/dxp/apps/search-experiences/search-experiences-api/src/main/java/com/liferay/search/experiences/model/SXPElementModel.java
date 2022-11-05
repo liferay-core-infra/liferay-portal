@@ -14,6 +14,7 @@
 
 package com.liferay.search.experiences.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -553,5 +554,9 @@ public interface SXPElementModel
 
 	@Override
 	public SXPElement cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

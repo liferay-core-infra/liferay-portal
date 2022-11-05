@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 
 import java.util.Date;
@@ -222,5 +223,9 @@ public interface ReleaseModel extends BaseModel<Release>, MVCCModel {
 
 	@Override
 	public Release cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

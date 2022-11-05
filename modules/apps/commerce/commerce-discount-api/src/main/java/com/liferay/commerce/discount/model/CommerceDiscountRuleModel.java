@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.discount.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -248,5 +249,9 @@ public interface CommerceDiscountRuleModel
 
 	@Override
 	public CommerceDiscountRule cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

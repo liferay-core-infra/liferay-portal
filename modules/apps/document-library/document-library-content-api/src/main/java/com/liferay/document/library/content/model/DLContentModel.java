@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.content.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
@@ -211,5 +212,9 @@ public interface DLContentModel
 
 	@Override
 	public DLContent cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.qualifier.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -277,5 +278,9 @@ public interface CommerceQualifierEntryModel
 
 	@Override
 	public CommerceQualifierEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -179,5 +180,9 @@ public interface DLFileVersionPreviewModel
 
 	@Override
 	public DLFileVersionPreview cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

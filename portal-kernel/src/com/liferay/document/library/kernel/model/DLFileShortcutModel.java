@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.kernel.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -522,5 +523,9 @@ public interface DLFileShortcutModel
 
 	@Override
 	public DLFileShortcut cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

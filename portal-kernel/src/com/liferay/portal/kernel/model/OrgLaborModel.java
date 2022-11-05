@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.model;
 
+import com.liferay.petra.string.StringPool;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -323,5 +325,9 @@ public interface OrgLaborModel
 
 	@Override
 	public OrgLabor cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

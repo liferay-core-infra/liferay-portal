@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.audit.storage.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -294,5 +295,9 @@ public interface AuditEventModel extends BaseModel<AuditEvent>, ShardedModel {
 
 	@Override
 	public AuditEvent cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

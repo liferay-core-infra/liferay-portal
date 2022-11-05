@@ -14,6 +14,7 @@
 
 package com.liferay.saml.persistence.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -186,5 +187,9 @@ public interface SamlIdpSsoSessionModel
 
 	@Override
 	public SamlIdpSsoSession cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

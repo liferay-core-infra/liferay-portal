@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.lists.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
@@ -401,5 +402,9 @@ public interface DDLRecordModel
 
 	@Override
 	public DDLRecord cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

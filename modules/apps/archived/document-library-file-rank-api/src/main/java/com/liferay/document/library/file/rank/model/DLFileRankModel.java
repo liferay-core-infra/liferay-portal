@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.file.rank.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -196,5 +197,9 @@ public interface DLFileRankModel
 
 	@Override
 	public DLFileRank cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

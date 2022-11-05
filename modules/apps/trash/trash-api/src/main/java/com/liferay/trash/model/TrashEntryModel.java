@@ -14,6 +14,7 @@
 
 package com.liferay.trash.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -283,5 +284,9 @@ public interface TrashEntryModel
 
 	@Override
 	public TrashEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

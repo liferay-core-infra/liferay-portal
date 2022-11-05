@@ -14,6 +14,7 @@
 
 package com.liferay.segments.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -555,5 +556,9 @@ public interface SegmentsEntryModel
 
 	@Override
 	public SegmentsEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

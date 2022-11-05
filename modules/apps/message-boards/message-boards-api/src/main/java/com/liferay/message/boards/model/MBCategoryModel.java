@@ -14,6 +14,7 @@
 
 package com.liferay.message.boards.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -545,5 +546,9 @@ public interface MBCategoryModel
 
 	@Override
 	public MBCategory cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

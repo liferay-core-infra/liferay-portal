@@ -14,6 +14,7 @@
 
 package com.liferay.social.kernel.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
@@ -278,5 +279,9 @@ public interface SocialActivitySetModel
 
 	@Override
 	public SocialActivitySet cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

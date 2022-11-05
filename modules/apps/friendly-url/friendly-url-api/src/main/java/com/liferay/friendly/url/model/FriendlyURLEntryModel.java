@@ -14,6 +14,7 @@
 
 package com.liferay.friendly.url.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -261,5 +262,9 @@ public interface FriendlyURLEntryModel
 
 	@Override
 	public FriendlyURLEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

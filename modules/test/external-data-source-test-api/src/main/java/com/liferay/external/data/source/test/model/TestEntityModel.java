@@ -14,6 +14,7 @@
 
 package com.liferay.external.data.source.test.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 
@@ -84,5 +85,9 @@ public interface TestEntityModel extends BaseModel<TestEntity> {
 
 	@Override
 	public TestEntity cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

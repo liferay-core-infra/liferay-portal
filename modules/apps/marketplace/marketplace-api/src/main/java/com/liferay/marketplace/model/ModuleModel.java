@@ -14,6 +14,7 @@
 
 package com.liferay.marketplace.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -160,5 +161,9 @@ public interface ModuleModel extends BaseModel<Module>, ShardedModel {
 
 	@Override
 	public Module cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

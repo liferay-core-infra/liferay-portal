@@ -14,6 +14,7 @@
 
 package com.liferay.adaptive.media.image.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -218,5 +219,9 @@ public interface AMImageEntryModel
 
 	@Override
 	public AMImageEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

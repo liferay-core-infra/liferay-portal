@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -295,5 +296,9 @@ public interface CommerceShipmentItemModel
 
 	@Override
 	public CommerceShipmentItem cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.asset.category.property.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -252,5 +253,9 @@ public interface AssetCategoryPropertyModel
 
 	@Override
 	public AssetCategoryProperty cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

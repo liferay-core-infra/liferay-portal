@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.shipping.engine.fixed.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -365,5 +366,9 @@ public interface CommerceShippingFixedOptionRelModel
 
 	@Override
 	public CommerceShippingFixedOptionRel cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

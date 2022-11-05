@@ -14,6 +14,7 @@
 
 package com.liferay.microblogs.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -256,5 +257,9 @@ public interface MicroblogsEntryModel
 
 	@Override
 	public MicroblogsEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.sharepoint.rest.oauth2.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -206,5 +207,9 @@ public interface SharepointOAuth2TokenEntryModel
 
 	@Override
 	public SharepointOAuth2TokenEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.discount.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
@@ -263,5 +264,9 @@ public interface CommerceDiscountOrderTypeRelModel
 
 	@Override
 	public CommerceDiscountOrderTypeRel cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

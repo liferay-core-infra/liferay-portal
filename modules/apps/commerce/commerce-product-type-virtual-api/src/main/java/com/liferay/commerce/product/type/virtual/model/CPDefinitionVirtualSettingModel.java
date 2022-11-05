@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.product.type.virtual.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.AttachedModel;
@@ -579,5 +580,9 @@ public interface CPDefinitionVirtualSettingModel
 
 	@Override
 	public CPDefinitionVirtualSetting cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

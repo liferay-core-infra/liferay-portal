@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.wish.list.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -259,5 +260,9 @@ public interface CommerceWishListModel
 
 	@Override
 	public CommerceWishList cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

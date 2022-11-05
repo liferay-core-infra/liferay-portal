@@ -14,6 +14,7 @@
 
 package com.liferay.change.tracking.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -231,5 +232,9 @@ public interface CTEntryModel
 
 	@Override
 	public CTEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

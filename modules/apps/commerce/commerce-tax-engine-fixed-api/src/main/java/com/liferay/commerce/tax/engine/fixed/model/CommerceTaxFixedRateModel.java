@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.tax.engine.fixed.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -247,5 +248,9 @@ public interface CommerceTaxFixedRateModel
 
 	@Override
 	public CommerceTaxFixedRate cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

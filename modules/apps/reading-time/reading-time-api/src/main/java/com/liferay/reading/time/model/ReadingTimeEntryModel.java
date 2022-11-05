@@ -14,6 +14,7 @@
 
 package com.liferay.reading.time.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.AttachedModel;
@@ -297,5 +298,9 @@ public interface ReadingTimeEntryModel
 
 	@Override
 	public ReadingTimeEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

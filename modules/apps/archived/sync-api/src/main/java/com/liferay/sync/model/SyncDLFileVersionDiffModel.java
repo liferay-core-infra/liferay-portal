@@ -14,6 +14,7 @@
 
 package com.liferay.sync.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 
@@ -172,5 +173,9 @@ public interface SyncDLFileVersionDiffModel
 
 	@Override
 	public SyncDLFileVersionDiff cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

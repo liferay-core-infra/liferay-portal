@@ -14,6 +14,7 @@
 
 package com.liferay.blogs.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -713,5 +714,9 @@ public interface BlogsEntryModel
 
 	@Override
 	public BlogsEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.account.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.AuditedModel;
@@ -246,5 +247,9 @@ public interface AccountGroupRelModel
 
 	@Override
 	public AccountGroupRel cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

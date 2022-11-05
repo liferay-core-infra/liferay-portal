@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.account.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.AuditedModel;
@@ -229,5 +230,9 @@ public interface CommerceAccountGroupRelModel
 
 	@Override
 	public CommerceAccountGroupRel cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

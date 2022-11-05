@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -116,5 +117,9 @@ public interface CompanyInfoModel
 
 	@Override
 	public CompanyInfo cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

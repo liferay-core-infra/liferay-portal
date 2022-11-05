@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.BaseModel;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -126,5 +127,9 @@ public interface NestedSetsTreeEntryModel
 
 	@Override
 	public NestedSetsTreeEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.inventory.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.AuditedModel;
@@ -248,5 +249,9 @@ public interface CommerceInventoryWarehouseRelModel
 
 	@Override
 	public CommerceInventoryWarehouseRel cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

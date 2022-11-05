@@ -14,6 +14,7 @@
 
 package com.liferay.frontend.view.state.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -262,5 +263,9 @@ public interface FVSEntryModel
 
 	@Override
 	public FVSEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

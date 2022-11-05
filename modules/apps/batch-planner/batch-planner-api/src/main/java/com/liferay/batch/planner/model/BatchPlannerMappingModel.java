@@ -14,6 +14,7 @@
 
 package com.liferay.batch.planner.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -278,5 +279,9 @@ public interface BatchPlannerMappingModel
 
 	@Override
 	public BatchPlannerMapping cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

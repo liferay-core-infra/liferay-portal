@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 
@@ -84,5 +85,9 @@ public interface DSLQueryEntryModel extends BaseModel<DSLQueryEntry> {
 
 	@Override
 	public DSLQueryEntry cloneWithOriginalValues();
+
+	public default String toXmlString() {
+		return StringPool.BLANK;
+	}
 
 }

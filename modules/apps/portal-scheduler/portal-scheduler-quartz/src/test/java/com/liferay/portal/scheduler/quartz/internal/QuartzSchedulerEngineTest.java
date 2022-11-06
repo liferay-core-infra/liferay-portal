@@ -428,6 +428,36 @@ public class QuartzSchedulerEngineTest {
 	}
 
 	@Test
+	public void testSchedulerResponseMessageContainsRequiredParameters()
+		throws SchedulerException {
+
+		// SchedulerEventMessageListenerWrapper (portal-kernel) is
+		// responsible for handling scheduler jobs defined by portlets.
+		// It requires the message properties:
+		// - DESTINATION_NAME
+		// - JOB_NAME
+		// - GROUP_NAME
+		// to properly filter the right job to invoke
+
+		SchedulerResponse schedulerResponse =
+			_quartzSchedulerEngine.getScheduledJob(
+				_TEST_JOB_NAME_0, _MEMORY_TEST_GROUP_NAME, StorageType.MEMORY);
+
+		Message message = schedulerResponse.getMessage();
+
+		Assert.assertNotNull(message.get(SchedulerEngine.JOB_NAME));
+		Assert.assertNotNull(message.get(SchedulerEngine.GROUP_NAME));
+		Assert.assertNotNull(message.get(SchedulerEngine.DESTINATION_NAME));
+		Assert.assertEquals(
+			_TEST_JOB_NAME_0, message.get(SchedulerEngine.JOB_NAME));
+		Assert.assertEquals(
+			_MEMORY_TEST_GROUP_NAME, message.get(SchedulerEngine.GROUP_NAME));
+		Assert.assertEquals(
+			schedulerResponse.getDestinationName(),
+			message.get(SchedulerEngine.DESTINATION_NAME));
+	}
+
+	@Test
 	public void testUnschedule1() throws Exception {
 
 		// Unschedule memory job

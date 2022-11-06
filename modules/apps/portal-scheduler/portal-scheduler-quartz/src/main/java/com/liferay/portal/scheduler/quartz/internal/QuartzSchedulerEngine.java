@@ -611,6 +611,12 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		String jobName = jobKey.getName();
 		String groupName = jobKey.getGroup();
 
+		message.put(
+			SchedulerEngine.DESTINATION_NAME,
+			jobDataMap.getString(SchedulerEngine.DESTINATION_NAME));
+		message.put(SchedulerEngine.JOB_NAME, jobName);
+		message.put(SchedulerEngine.GROUP_NAME, groupName);
+
 		TriggerKey triggerKey = new TriggerKey(jobName, groupName);
 
 		Trigger trigger = scheduler.getTrigger(triggerKey);

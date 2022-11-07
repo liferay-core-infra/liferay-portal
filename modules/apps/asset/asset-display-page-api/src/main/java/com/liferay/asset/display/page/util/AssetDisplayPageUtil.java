@@ -22,7 +22,7 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
-import com.liferay.layout.display.page.LayoutDisplayPageProviderTrackerUtil;
+import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistryUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryServiceUtil;
@@ -43,8 +43,8 @@ public class AssetDisplayPageUtil {
 					groupId, classNameId, classTypeId);
 
 		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry =
-			LayoutDisplayPageProviderTrackerUtil.
-				getLayoutDisplayPageProviderTracker();
+			LayoutDisplayPageProviderRegistryUtil.
+				getLayoutDisplayPageProviderRegistry();
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 			layoutDisplayPageProviderRegistry.

@@ -218,7 +218,8 @@ public class DisplayPageRendererUtil {
 	private static LayoutDisplayPageObjectProvider<?>
 		_getLayoutDisplayPageObjectProvider(
 			InfoItemReference infoItemReference,
-			LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry) {
+			LayoutDisplayPageProviderRegistry
+				layoutDisplayPageProviderRegistry) {
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 			layoutDisplayPageProviderRegistry.

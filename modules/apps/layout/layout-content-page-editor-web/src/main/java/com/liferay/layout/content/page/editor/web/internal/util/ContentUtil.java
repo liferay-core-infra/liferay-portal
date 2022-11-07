@@ -31,7 +31,7 @@ import com.liferay.layout.content.page.editor.web.internal.security.permission.r
 import com.liferay.layout.content.page.editor.web.internal.util.layout.structure.LayoutStructureUtil;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
-import com.liferay.layout.display.page.LayoutDisplayPageProviderTrackerUtil;
+import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistryUtil;
 import com.liferay.layout.model.LayoutClassedModelUsage;
 import com.liferay.layout.service.LayoutClassedModelUsageLocalServiceUtil;
 import com.liferay.layout.util.structure.ContainerStyledLayoutStructureItem;
@@ -153,7 +153,7 @@ public class ContentUtil {
 		String className = layoutClassedModelUsage.getClassName();
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			LayoutDisplayPageProviderTrackerUtil.getLayoutDisplayPageProvider(
+			LayoutDisplayPageProviderRegistryUtil.getLayoutDisplayPageProvider(
 				layoutClassedModelUsage.getClassName());
 
 		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =
@@ -537,7 +537,7 @@ public class ContentUtil {
 		String className = PortalUtil.getClassName(classNameId);
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			LayoutDisplayPageProviderTrackerUtil.getLayoutDisplayPageProvider(
+			LayoutDisplayPageProviderRegistryUtil.getLayoutDisplayPageProvider(
 				className);
 
 		if (layoutDisplayPageProvider == null) {
@@ -682,7 +682,7 @@ public class ContentUtil {
 		);
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			LayoutDisplayPageProviderTrackerUtil.getLayoutDisplayPageProvider(
+			LayoutDisplayPageProviderRegistryUtil.getLayoutDisplayPageProvider(
 				layoutClassedModelUsage.getClassName());
 
 		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =

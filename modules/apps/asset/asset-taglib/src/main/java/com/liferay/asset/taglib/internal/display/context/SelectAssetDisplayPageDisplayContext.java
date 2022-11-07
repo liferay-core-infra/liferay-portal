@@ -31,7 +31,7 @@ import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
-import com.liferay.layout.display.page.LayoutDisplayPageProviderTrackerUtil;
+import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistryUtil;
 import com.liferay.layout.item.selector.criterion.LayoutItemSelectorCriterion;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
@@ -298,8 +298,8 @@ public class SelectAssetDisplayPageDisplayContext {
 		}
 
 		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry =
-			LayoutDisplayPageProviderTrackerUtil.
-				getLayoutDisplayPageProviderTracker();
+			LayoutDisplayPageProviderRegistryUtil.
+				getLayoutDisplayPageProviderRegistry();
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 			layoutDisplayPageProviderRegistry.
@@ -350,8 +350,8 @@ public class SelectAssetDisplayPageDisplayContext {
 		try {
 			LayoutDisplayPageProviderRegistry
 				layoutDisplayPageProviderRegistry =
-				LayoutDisplayPageProviderTrackerUtil.
-					getLayoutDisplayPageProviderTracker();
+					LayoutDisplayPageProviderRegistryUtil.
+						getLayoutDisplayPageProviderRegistry();
 
 			LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 				layoutDisplayPageProviderRegistry.

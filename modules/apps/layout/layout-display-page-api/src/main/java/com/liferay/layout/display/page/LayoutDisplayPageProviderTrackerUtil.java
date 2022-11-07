@@ -12,35 +12,43 @@
  * details.
  */
 
-package com.liferay.layout.content.page.editor.web.internal.layout.display.page;
+package com.liferay.layout.display.page;
 
-import com.liferay.layout.display.page.LayoutDisplayPageProvider;
-import com.liferay.layout.display.page.LayoutDisplayPageProviderTracker;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * @author Eudaldo Alonso
+ * @author Jiaxu Wei
  */
-@Component(service = {})
 public class LayoutDisplayPageProviderTrackerUtil {
 
 	public static LayoutDisplayPageProvider<?> getLayoutDisplayPageProvider(
 		String className) {
 
-		return _layoutDisplayPageProviderTracker.
+		return getLayoutDisplayPageProviderTracker().
 			getLayoutDisplayPageProviderByClassName(className);
 	}
 
-	@Reference(unbind = "-")
-	protected void setLayoutDisplayPageProviderTracker(
-		LayoutDisplayPageProviderTracker layoutDisplayPageProviderTracker) {
+	public static LayoutDisplayPageProviderTracker
+		getLayoutDisplayPageProviderTracker() {
 
-		_layoutDisplayPageProviderTracker = layoutDisplayPageProviderTracker;
+		return _serviceTracker.getService();
 	}
 
-	private static LayoutDisplayPageProviderTracker
-		_layoutDisplayPageProviderTracker;
+	private static final ServiceTracker
+		<LayoutDisplayPageProviderTracker, LayoutDisplayPageProviderTracker>
+			_serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutDisplayPageProviderTracker.class);
+
+		_serviceTracker = new ServiceTracker<>(
+			bundle.getBundleContext(), LayoutDisplayPageProviderTracker.class,
+			null);
+
+		_serviceTracker.open();
+	}
 
 }

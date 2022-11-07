@@ -21,17 +21,17 @@ import org.osgi.util.tracker.ServiceTracker;
 /**
  * @author Jiaxu Wei
  */
-public class LayoutDisplayPageProviderTrackerUtil {
+public class LayoutDisplayPageProviderRegistryUtil {
 
 	public static LayoutDisplayPageProvider<?> getLayoutDisplayPageProvider(
 		String className) {
 
-		return getLayoutDisplayPageProviderTracker().
+		return getLayoutDisplayPageProviderRegistry().
 			getLayoutDisplayPageProviderByClassName(className);
 	}
 
 	public static LayoutDisplayPageProviderRegistry
-		getLayoutDisplayPageProviderTracker() {
+		getLayoutDisplayPageProviderRegistry() {
 
 		return _serviceTracker.getService();
 	}

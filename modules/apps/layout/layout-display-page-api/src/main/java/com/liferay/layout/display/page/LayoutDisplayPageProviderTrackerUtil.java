@@ -36,19 +36,21 @@ public class LayoutDisplayPageProviderTrackerUtil {
 		return _serviceTracker.getService();
 	}
 
+	private static final Bundle _bundle = FrameworkUtil.getBundle(
+		LayoutDisplayPageProviderTracker.class);
+
 	private static final ServiceTracker
 		<LayoutDisplayPageProviderTracker, LayoutDisplayPageProviderTracker>
-			_serviceTracker;
+			_serviceTracker =
+				new ServiceTracker
+					<LayoutDisplayPageProviderTracker,
+					 LayoutDisplayPageProviderTracker>(
+						 _bundle.getBundleContext(),
+						 LayoutDisplayPageProviderTracker.class, null) {
 
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutDisplayPageProviderTracker.class);
-
-		_serviceTracker = new ServiceTracker<>(
-			bundle.getBundleContext(), LayoutDisplayPageProviderTracker.class,
-			null);
-
-		_serviceTracker.open();
-	}
+					{
+						open();
+					}
+				};
 
 }

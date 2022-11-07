@@ -27,6 +27,7 @@ import com.liferay.exportimport.resources.importer.internal.constants.ResourcesI
 import com.liferay.exportimport.resources.importer.portlet.preferences.PortletPreferencesTranslator;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalFolderLocalService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -59,11 +60,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
@@ -154,51 +159,87 @@ public class ImporterFactory {
 		return importer;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.AT_LEAST_ONE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(!(portlet.preferences.translator.portlet.id=" + ResourcesImporterConstants.PORTLET_ID_DEFAULT + "))"
-	)
-	protected void setPortletPreferencesTranslator(
-		PortletPreferencesTranslator portletPreferencesTranslator,
-		Map<String, Object> properties) {
+	@Activate
+	protected void activate(BundleContext bundleContext)
+		throws InvalidSyntaxException {
 
-		String rootPortletId = GetterUtil.getString(
-			properties.get("portlet.preferences.translator.portlet.id"));
+		String filterString = StringBundler.concat(
+			"(&(!(", _PORTLET_ID_KEY, "=",
+			ResourcesImporterConstants.PORTLET_ID_DEFAULT, "))(objectClass=",
+			PortletPreferencesTranslator.class.getName(), "))");
 
-		if (Validator.isNotNull(rootPortletId)) {
-			_portletPreferencesTranslators.put(
-				rootPortletId, portletPreferencesTranslator);
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, bundleContext.createFilter(filterString),
+			new ServiceTrackerCustomizer
+				<PortletPreferencesTranslator, PortletPreferencesTranslator>() {
 
-			return;
-		}
+				@Override
+				public PortletPreferencesTranslator addingService(
+					ServiceReference<PortletPreferencesTranslator>
+						serviceReference) {
 
-		if (_log.isWarnEnabled()) {
-			_log.warn(
-				"The property \"portlet.preferences.translator.portlet.id\" " +
-					"is null");
-		}
+					PortletPreferencesTranslator portletPreferencesTranslator =
+						bundleContext.getService(serviceReference);
+
+					String rootPortletId = GetterUtil.getString(
+						serviceReference.getProperty(_PORTLET_ID_KEY));
+
+					if (Validator.isNotNull(rootPortletId)) {
+						_portletPreferencesTranslators.put(
+							rootPortletId, portletPreferencesTranslator);
+
+						return portletPreferencesTranslator;
+					}
+
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"The property \"" + _PORTLET_ID_KEY + "\" is null");
+					}
+
+					return portletPreferencesTranslator;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<PortletPreferencesTranslator>
+						serviceReference,
+					PortletPreferencesTranslator portletPreferencesTranslator) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<PortletPreferencesTranslator>
+						serviceReference,
+					PortletPreferencesTranslator portletPreferencesTranslator) {
+
+					String rootPortletId = GetterUtil.getString(
+						serviceReference.getProperty(_PORTLET_ID_KEY));
+
+					bundleContext.ungetService(serviceReference);
+
+					if (Validator.isNull(rootPortletId)) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								StringBundler.concat(
+									"No ", _PORTLET_ID_KEY,
+									" defined for service: ",
+									portletPreferencesTranslator));
+						}
+
+						return;
+					}
+
+					_portletPreferencesTranslators.remove(rootPortletId);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
-	protected void unsetPortletPreferencesTranslator(
-		PortletPreferencesTranslator portletPreferencesTranslator,
-		Map<String, Object> properties) {
-
-		String rootPortletId = GetterUtil.getString(
-			properties.get("portlet.preferences.translator.portlet.id"));
-
-		if (Validator.isNull(rootPortletId)) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"No portlet.preferences.translator.portlet.id defined " +
-						"for service: " + portletPreferencesTranslator);
-			}
-
-			return;
-		}
-
-		_portletPreferencesTranslators.remove(rootPortletId);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	private void _configureImporter(
@@ -273,6 +314,9 @@ public class ImporterFactory {
 			_repositoryLocalService, _saxReader, _themeLocalService,
 			_dlURLHelper);
 	}
+
+	private static final String _PORTLET_ID_KEY =
+		"portlet.preferences.translator.portlet.id";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ImporterFactory.class);
@@ -356,6 +400,10 @@ public class ImporterFactory {
 
 	@Reference
 	private SAXReader _saxReader;
+
+	private ServiceTracker
+		<PortletPreferencesTranslator, PortletPreferencesTranslator>
+			_serviceTracker;
 
 	@Reference
 	private ThemeLocalService _themeLocalService;

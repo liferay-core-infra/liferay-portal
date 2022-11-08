@@ -30,12 +30,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Shuyang Zhou
@@ -112,28 +113,52 @@ public class DefaultPortalExecutorManager implements PortalExecutorManager {
 		}
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addPortalExecutorConfig(
-		PortalExecutorConfig portalExecutorConfig) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, PortalExecutorConfig.class,
+			new ServiceTrackerCustomizer
+				<PortalExecutorConfig, PortalExecutorConfig>() {
 
-		_portalExecutorConfigs.putIfAbsent(
-			portalExecutorConfig.getName(), portalExecutorConfig);
+				@Override
+				public PortalExecutorConfig addingService(
+					ServiceReference<PortalExecutorConfig> serviceReference) {
+
+					PortalExecutorConfig portalExecutorConfig =
+						bundleContext.getService(serviceReference);
+
+					_portalExecutorConfigs.putIfAbsent(
+						portalExecutorConfig.getName(), portalExecutorConfig);
+
+					return portalExecutorConfig;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<PortalExecutorConfig> serviceReference,
+					PortalExecutorConfig service) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<PortalExecutorConfig> serviceReference,
+					PortalExecutorConfig service) {
+
+					_portalExecutorConfigs.remove(service.getName(), service);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
 	@Deactivate
 	protected void deactivate() {
+		_serviceTracker.close();
+
 		shutdown(true);
-	}
-
-	protected void removePortalExecutorConfig(
-		PortalExecutorConfig portalExecutorConfig) {
-
-		_portalExecutorConfigs.remove(
-			portalExecutorConfig.getName(), portalExecutorConfig);
 	}
 
 	private NoticeableExecutorService _createPortalExecutor(
@@ -187,5 +212,7 @@ public class DefaultPortalExecutorManager implements PortalExecutorManager {
 		_noticeableExecutorServices = new ConcurrentHashMap<>();
 	private final ConcurrentMap<String, PortalExecutorConfig>
 		_portalExecutorConfigs = new ConcurrentHashMap<>();
+	private ServiceTracker<PortalExecutorConfig, PortalExecutorConfig>
+		_serviceTracker;
 
 }

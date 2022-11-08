@@ -12,5 +12,6 @@ dependencies {
 	testIntegrationCompile project(":apps:portal-workflow:portal-workflow-kaleo-definition-api")
 	testIntegrationCompile project(":apps:portal-workflow:portal-workflow-kaleo-runtime-api")
 	testIntegrationCompile project(":apps:static:portal:portal-upgrade-api")
+	testIntegrationCompile project(":core:osgi-service-tracker-collections")
 	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
 }

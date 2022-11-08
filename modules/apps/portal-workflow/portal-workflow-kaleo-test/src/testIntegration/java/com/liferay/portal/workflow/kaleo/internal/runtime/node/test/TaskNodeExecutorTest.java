@@ -15,6 +15,9 @@
 package com.liferay.portal.workflow.kaleo.internal.runtime.node.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -39,6 +42,7 @@ import com.liferay.portal.test.mail.MailServiceTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
+import com.liferay.portal.workflow.kaleo.definition.NodeType;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
@@ -126,6 +130,13 @@ public class TaskNodeExecutorTest {
 			HashMapDictionaryBuilder.put(
 				"model.class.name=", TaskNodeExecutorTest.class.getName()
 			).build());
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, NodeExecutor.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(nodeExecutor, emitter) -> emitter.emit(
+					nodeExecutor.getNodeType())));
 	}
 
 	@AfterClass
@@ -277,11 +288,14 @@ public class TaskNodeExecutorTest {
 			KaleoTimerInstanceToken kaleoTimerInstanceToken)
 		throws Exception {
 
+		NodeExecutor nodeExecutor = _serviceTrackerMap.getService(
+			NodeType.TASK);
+
 		Method executeTimerMethod = ReflectionUtil.getDeclaredMethod(
-			_nodeExecutor.getClass(), "executeTimer", ExecutionContext.class);
+			nodeExecutor.getClass(), "executeTimer", ExecutionContext.class);
 
 		executeTimerMethod.invoke(
-			_nodeExecutor,
+			nodeExecutor,
 			new ExecutionContext(
 				kaleoInstanceToken, kaleoTimerInstanceToken, _workflowContext,
 				_serviceContext) {
@@ -326,6 +340,7 @@ public class TaskNodeExecutorTest {
 		return kaleoTimer.getKaleoTimerId();
 	}
 
+	private static ServiceTrackerMap<NodeType, NodeExecutor> _serviceTrackerMap;
 	private static ServiceRegistration<WorkflowHandler<?>>
 		_workflowHandlerServiceRegistration;
 
@@ -363,9 +378,6 @@ public class TaskNodeExecutorTest {
 
 	@Inject
 	private KaleoTimerLocalService _kaleoTimerLocalService;
-
-	@Inject(filter = "node.type=TASK")
-	private NodeExecutor _nodeExecutor;
 
 	private ServiceContext _serviceContext;
 	private Map<String, Serializable> _workflowContext;

@@ -272,12 +272,12 @@ public class SearchResultSummaryDisplayContextBuilder {
 	}
 
 	public SearchResultSummaryDisplayContextBuilder
-		setSearchResultImageContributorsStream(
-			Stream<SearchResultImageContributor>
-				searchResultImageContributorsStream) {
+		setSearchResultImageContributorsIterable(
+			Iterable<SearchResultImageContributor>
+				searchResultImageContributorsIterable) {
 
-		_searchResultImageContributorsStream =
-			searchResultImageContributorsStream;
+		_searchResultImageContributorsIterable =
+			searchResultImageContributorsIterable;
 
 		return this;
 	}
@@ -795,7 +795,7 @@ public class SearchResultSummaryDisplayContextBuilder {
 
 		};
 
-		_searchResultImageContributorsStream.forEach(
+		_searchResultImageContributorsIterable.forEach(
 			searchResultImageContributor ->
 				searchResultImageContributor.contribute(searchResultImage));
 	}
@@ -1135,8 +1135,8 @@ public class SearchResultSummaryDisplayContextBuilder {
 	private RenderRequest _renderRequest;
 	private RenderResponse _renderResponse;
 	private ResourceActions _resourceActions;
-	private Stream<SearchResultImageContributor>
-		_searchResultImageContributorsStream = Stream.empty();
+	private Iterable<SearchResultImageContributor>
+		_searchResultImageContributorsIterable;
 	private SearchResultPreferences _searchResultPreferences;
 	private SearchResultViewURLSupplier _searchResultViewURLSupplier;
 	private SummaryBuilderFactory _summaryBuilderFactory;

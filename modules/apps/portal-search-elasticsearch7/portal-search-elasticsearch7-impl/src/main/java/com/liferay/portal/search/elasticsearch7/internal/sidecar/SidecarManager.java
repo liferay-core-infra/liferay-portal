@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
@@ -40,13 +41,14 @@ import java.nio.file.Paths;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Tina Tian
@@ -73,22 +75,47 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 	}
 
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		elasticsearchConfigurationWrapper.register(this);
 
+		_serviceTracker = ServiceTrackerFactory.open(
+			bundleContext,
+			"(&(operation.mode=SIDECAR)(objectClass=" +
+				SettingsContributor.class.getName() + "))",
+			new ServiceTrackerCustomizer
+				<SettingsContributor, SettingsContributor>() {
+
+				@Override
+				public SettingsContributor addingService(
+					ServiceReference<SettingsContributor> serviceReference) {
+
+					SettingsContributor settingsContributor =
+						bundleContext.getService(serviceReference);
+
+					_settingsContributors.add(settingsContributor);
+
+					return settingsContributor;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<SettingsContributor> serviceReference,
+					SettingsContributor settingsContributor) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<SettingsContributor> serviceReference,
+					SettingsContributor settingsContributor) {
+
+					_settingsContributors.remove(settingsContributor);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
 		applyConfigurations();
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(operation.mode=SIDECAR)"
-	)
-	protected void addSettingsContributor(
-		SettingsContributor settingsContributor) {
-
-		_settingsContributors.add(settingsContributor);
 	}
 
 	protected void applyConfigurations() {
@@ -149,16 +176,12 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 	@Deactivate
 	protected void deactivate() {
 		elasticsearchConfigurationWrapper.unregister(this);
+
+		_serviceTracker.close();
 	}
 
 	protected boolean isStartupSuccessful() {
 		return _startupSuccessful;
-	}
-
-	protected void removeSettingsContributor(
-		SettingsContributor settingsContributor) {
-
-		_settingsContributors.remove(settingsContributor);
 	}
 
 	@Reference
@@ -222,6 +245,8 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
 
+	private ServiceTracker<SettingsContributor, SettingsContributor>
+		_serviceTracker;
 	private final Set<SettingsContributor> _settingsContributors =
 		new ConcurrentSkipListSet<>();
 	private Sidecar _sidecar;

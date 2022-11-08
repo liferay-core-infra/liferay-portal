@@ -14,7 +14,7 @@
 
 (function ($) {
 
-	/*!
+	/* !
 	 * jQuery fm Plugin
 	 * version: 0.1
 	 * Copyright (c) 2014 Nate Cavanaugh / Liferay Inc.
@@ -22,25 +22,25 @@
 	 */
 
 	$.fn.fm = function (name, value) {
-		var instance = this;
+		const instance = this;
 
-		var retVal = instance;
+		let retVal = instance;
 
 		if (arguments.length === 1) {
-			var nodes = instance.map(function (index, item) {
-				var formEl = item.form || item;
+			const nodes = instance.map((index, item) => {
+				const formEl = item.form || item;
 
 				if (formEl && $.nodeName(formEl, 'form')) {
-					var form = $(formEl);
+					const form = $(formEl);
 
-					var ns =
+					const ns =
 						form.data('fm.namespace') ||
 						form.data('fm-namespace') ||
 						'';
 
-					var inputName = ns + name;
+					const inputName = ns + name;
 
-					var inputNode =
+					let inputNode =
 						formEl[inputName] ||
 						formEl.ownerDocument.getElementById(inputName);
 

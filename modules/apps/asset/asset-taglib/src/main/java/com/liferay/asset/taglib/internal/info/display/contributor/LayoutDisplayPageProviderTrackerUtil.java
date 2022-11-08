@@ -22,7 +22,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alejandro Tardín
  */
-@Component(immediate = true, service = {})
+@Component(service = {})
 public class LayoutDisplayPageProviderTrackerUtil {
 
 	public static LayoutDisplayPageProviderTracker

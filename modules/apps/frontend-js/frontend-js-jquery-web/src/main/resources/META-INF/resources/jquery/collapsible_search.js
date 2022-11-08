@@ -13,8 +13,8 @@
  */
 
 +(function ($) {
-	var CollapsibleSearch = function (element) {
-		var instance = this;
+	const CollapsibleSearch = function (element) {
+		const instance = this;
 
 		instance.$element = $(element);
 		instance.$close = instance.$element.find('.basic-search-close');
@@ -44,26 +44,26 @@
 
 	CollapsibleSearch.prototype = {
 		blur(event) {
-			var $input = $(event.currentTarget);
+			const $input = $(event.currentTarget);
 
 			$input.closest('.basic-search').removeClass('focus');
 		},
 
 		close(event) {
-			var instance = this;
+			const instance = this;
 
-			var basicSearch = $(event.currentTarget).closest('.basic-search');
+			const basicSearch = $(event.currentTarget).closest('.basic-search');
 
-			var basicSearchSlider = basicSearch.find('.basic-search-slider');
-			var basicSearchSubmit = basicSearch.find('[type="submit"]');
+			const basicSearchSlider = basicSearch.find('.basic-search-slider');
+			const basicSearchSubmit = basicSearch.find('[type="submit"]');
 
-			var complete = function () {
+			const complete = function () {
 				basicSearch.removeClass('basic-search-transition');
 
 				basicSearch.trigger('closed.lexicon.collapsible.search');
 			};
 
-			var supportsTransition = bootstrap.Util.supportsTransitionEnd();
+			const supportsTransition = bootstrap.Util.supportsTransitionEnd();
 
 			if (supportsTransition) {
 				basicSearchSlider
@@ -84,7 +84,7 @@
 		},
 
 		destroy() {
-			var instance = this;
+			const instance = this;
 
 			instance.$close.off('click.lexicon.close.collapsible-search');
 			instance.$input.off('blur.lexicon.collapsible-search');
@@ -97,19 +97,19 @@
 		},
 
 		submit(event) {
-			var instance = this;
+			const instance = this;
 
 			if (window.innerWidth < CollapsibleSearch.BREAKPOINT) {
-				var basicSearch = $(event.currentTarget).parents(
+				const basicSearch = $(event.currentTarget).parents(
 					'.basic-search'
 				);
 
-				var basicSearchInput = basicSearch.find('input[type="text"]');
-				var basicSearchSlider = basicSearch.find(
+				const basicSearchInput = basicSearch.find('input[type="text"]');
+				const basicSearchSlider = basicSearch.find(
 					'.basic-search-slider'
 				);
 
-				var complete = function () {
+				const complete = function () {
 					basicSearch.removeClass('basic-search-transition');
 					basicSearchInput.focus();
 
@@ -119,7 +119,7 @@
 				if (!basicSearch.hasClass('open')) {
 					event.preventDefault();
 
-					var supportsTransition = bootstrap.Util.supportsTransitionEnd();
+					const supportsTransition = bootstrap.Util.supportsTransitionEnd();
 
 					if (supportsTransition) {
 						basicSearchSlider
@@ -141,11 +141,11 @@
 		},
 	};
 
-	var Plugin = function (option) {
+	const Plugin = function (option) {
 		return this.each(function () {
-			var $this = $(this);
+			const $this = $(this);
 
-			var data = $this.data('lexicon.collapsible-search');
+			let data = $this.data('lexicon.collapsible-search');
 
 			if (!data) {
 				data = new CollapsibleSearch(this);
@@ -159,7 +159,7 @@
 		});
 	};
 
-	var old = $.fn.collapsibleSearch;
+	const old = $.fn.collapsibleSearch;
 
 	$.fn.collapsibleSearch = Plugin;
 	$.fn.collapsibleSearch.Constructor = CollapsibleSearch;
@@ -170,9 +170,9 @@
 		return this;
 	};
 
-	var close = '[data-toggle="collapsible-search"] .basic-search-close';
-	var input = '[data-toggle="collapsible-search"] input[type="text"]';
-	var submit = '[data-toggle="collapsible-search"] [type="submit"]';
+	const close = '[data-toggle="collapsible-search"] .basic-search-close';
+	const input = '[data-toggle="collapsible-search"] input[type="text"]';
+	const submit = '[data-toggle="collapsible-search"] [type="submit"]';
 
 	$(document)
 		.on(

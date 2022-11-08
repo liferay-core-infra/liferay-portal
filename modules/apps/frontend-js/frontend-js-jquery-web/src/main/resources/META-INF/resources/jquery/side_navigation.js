@@ -13,18 +13,18 @@
  */
 
 +(function ($) {
-	var doc = $(document);
+	const doc = $(document);
 
-	var listenerAdded = false;
+	let listenerAdded = false;
 
 	// Make sure we only add one resize listener to the page,
 	// no matter how many components we have
 
-	var addResizeListener = function () {
+	const addResizeListener = function () {
 		if (!listenerAdded) {
 			$(window).on(
 				'resize',
-				debounce(function () {
+				debounce(() => {
 					doc.trigger('screenChange.lexicon.sidenav');
 				}, 150)
 			);
@@ -34,14 +34,14 @@
 	};
 
 	var debounce = function (fn, delay) {
-		var id;
+		let id;
 
 		return function () {
-			var instance = this;
+			const instance = this;
 
-			var args = arguments;
+			const args = arguments;
 
-			var later = function () {
+			const later = function () {
 				id = null;
 
 				fn.apply(instance, args);
@@ -53,14 +53,14 @@
 		};
 	};
 
-	var getBreakpointRegion = function () {
-		var screenXs = 480;
-		var screenSm = 768;
-		var screenMd = 992;
-		var screenLg = 1200;
+	const getBreakpointRegion = function () {
+		const screenXs = 480;
+		const screenSm = 768;
+		const screenMd = 992;
+		const screenLg = 1200;
 
-		var windowWidth = window.innerWidth;
-		var region = '';
+		const windowWidth = window.innerWidth;
+		let region = '';
 
 		if (windowWidth >= screenLg) {
 			region = 'lg';
@@ -81,11 +81,11 @@
 		return region;
 	};
 
-	var guid = (function () {
-		var counter = 0;
+	const guid = (function () {
+		let counter = 0;
 
 		return function (toggler, ns) {
-			var strId = toggler.attr('id');
+			let strId = toggler.attr('id');
 
 			if (!strId) {
 				strId = ns + counter++;
@@ -97,11 +97,11 @@
 		};
 	})();
 
-	var toInt = function (str) {
+	const toInt = function (str) {
 		return parseInt(str, 10) || 0;
 	};
 
-	var SideNavigation = function (toggler, options) {
+	const SideNavigation = function (toggler, options) {
 		this.init(toggler, options);
 	};
 
@@ -109,7 +109,7 @@
 
 	SideNavigation.prototype = {
 		_bindUI() {
-			var instance = this;
+			const instance = this;
 
 			if (!instance.useDataAttribute) {
 				addResizeListener();
@@ -134,14 +134,14 @@
 		},
 
 		_getSidenavWidth() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var widthOriginal = options.widthOriginal;
+			const widthOriginal = options.widthOriginal;
 
-			var width = widthOriginal;
-			var winWidth = window.innerWidth;
+			let width = widthOriginal;
+			const winWidth = window.innerWidth;
 
 			if (winWidth < widthOriginal + 40) {
 				width = winWidth - 40;
@@ -151,13 +151,13 @@
 		},
 
 		_getSimpleSidenavType() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var desktop = instance._isDesktop();
-			var type = options.type;
-			var typeMobile = options.typeMobile;
+			const desktop = instance._isDesktop();
+			const type = options.type;
+			const typeMobile = options.typeMobile;
 
 			if (desktop && type === 'fixed-push') {
 				return 'desktop-fixed-push';
@@ -174,36 +174,36 @@
 		},
 
 		_isSidenavRight() {
-			var instance = this;
-			var options = instance.options;
+			const instance = this;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var isSidenavRight = container.hasClass('sidenav-right');
+			const container = $(options.container);
+			const isSidenavRight = container.hasClass('sidenav-right');
 
 			return isSidenavRight;
 		},
 
 		_isSimpleSidenavClosed() {
-			var instance = this;
-			var options = instance.options;
+			const instance = this;
+			const options = instance.options;
 
-			var openClass = options.openClass;
+			const openClass = options.openClass;
 
-			var container = $(options.container);
+			const container = $(options.container);
 
 			return !container.hasClass(openClass);
 		},
 
 		_loadUrl(sidenav, url, eventTarget) {
-			var instance = this;
+			const instance = this;
 
-			var urlLoaded = sidenav.data('url-loaded');
+			let urlLoaded = sidenav.data('url-loaded');
 
-			var readyState = urlLoaded ? urlLoaded.readyState : 0;
+			const readyState = urlLoaded ? urlLoaded.readyState : 0;
 
 			eventTarget = eventTarget || sidenav;
 
-			var sidebarBody = sidenav.find('.sidebar-body').first();
+			const sidebarBody = sidenav.find('.sidebar-body').first();
 
 			if (
 				!readyState &&
@@ -216,7 +216,7 @@
 						'</div>'
 				);
 
-				urlLoaded = $.ajax(url).done(function (response) {
+				urlLoaded = $.ajax(url).done((response) => {
 					sidebarBody.append(response);
 
 					eventTarget.trigger('urlLoaded.lexicon.sidenav');
@@ -231,18 +231,18 @@
 		},
 
 		_onClickSidenavClose() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var containerSelector = options.container;
+			const containerSelector = options.container;
 
-			var closeButton = $(containerSelector)
+			const closeButton = $(containerSelector)
 				.find('.sidenav-close')
 				.first();
-			var closeButtonSelector =
+			const closeButtonSelector =
 				'#' + guid(closeButton, 'generatedLexiconSidenavCloseId');
-			var dataCloseButtonSelector = 'lexicon.' + closeButtonSelector;
+			const dataCloseButtonSelector = 'lexicon.' + closeButtonSelector;
 
 			if (!doc.data(dataCloseButtonSelector)) {
 				doc.data(dataCloseButtonSelector, 'true');
@@ -250,7 +250,7 @@
 				doc.on(
 					'click.close.lexicon.sidenav',
 					closeButtonSelector,
-					function (event) {
+					(event) => {
 						event.preventDefault();
 
 						instance.toggle();
@@ -263,31 +263,29 @@
 		},
 
 		_onClickTrigger() {
-			var instance = this;
+			const instance = this;
 
-			var el = instance.toggler;
+			const el = instance.toggler;
 
-			el.on('click.lexicon.sidenav', function () {
+			el.on('click.lexicon.sidenav', () => {
 				instance.toggle();
 			});
 		},
 
 		_onDelegateClickTrigger() {
-			var instance = this;
+			const instance = this;
 
-			var toggler = instance.toggler;
+			const toggler = instance.toggler;
 
-			var togglerSelector =
+			const togglerSelector =
 				'#' + guid(toggler, 'generatedLexiconSidenavTogglerId');
 
-			var dataTogglerSelector = 'lexicon.' + togglerSelector;
+			const dataTogglerSelector = 'lexicon.' + togglerSelector;
 
 			if (!doc.data(dataTogglerSelector)) {
 				doc.data(dataTogglerSelector, 'true');
 
-				doc.on('click.lexicon.sidenav', togglerSelector, function (
-					event
-				) {
+				doc.on('click.lexicon.sidenav', togglerSelector, (event) => {
 					instance.toggle();
 
 					event.preventDefault();
@@ -299,28 +297,28 @@
 		},
 
 		_onScreenChange() {
-			var instance = this;
-			var options = instance.options;
+			const instance = this;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var toggler = instance.toggler;
+			const container = $(options.container);
+			const toggler = instance.toggler;
 
-			var screenStartDesktop = instance._setScreenSize();
+			let screenStartDesktop = instance._setScreenSize();
 
-			doc.on('screenChange.lexicon.sidenav', function () {
-				var desktop = instance._setScreenSize();
-				var sidenavRight = instance._isSidenavRight();
-				var type = desktop ? options.type : options.typeMobile;
+			doc.on('screenChange.lexicon.sidenav', () => {
+				const desktop = instance._setScreenSize();
+				const sidenavRight = instance._isSidenavRight();
+				const type = desktop ? options.type : options.typeMobile;
 
-				var fixedMenu = type === 'fixed' || type === 'fixed-push';
+				const fixedMenu = type === 'fixed' || type === 'fixed-push';
 
-				var menu = container.find('.sidenav-menu').first();
+				const menu = container.find('.sidenav-menu').first();
 
-				var menuWidth;
+				let menuWidth;
 
-				var originalMenuWidth = options.widthOriginal;
+				const originalMenuWidth = options.widthOriginal;
 
-				var positionDirection = options.rtl ? 'left' : 'right';
+				const positionDirection = options.rtl ? 'left' : 'right';
 
 				container.toggleClass('sidenav-fixed', fixedMenu);
 
@@ -349,7 +347,7 @@
 					}
 				}
 
-				var closed = container.hasClass('closed');
+				const closed = container.hasClass('closed');
 
 				if (!desktop) {
 					menuWidth = originalMenuWidth;
@@ -379,11 +377,11 @@
 		},
 
 		_onSidenavTransitionEnd(el, fn) {
-			var instance = this;
+			const instance = this;
 
-			var transitionEnd = 'bsTransitionEnd';
+			const transitionEnd = 'bsTransitionEnd';
 
-			var complete = function () {
+			const complete = function () {
 				el.removeClass('sidenav-transition');
 
 				if (fn) {
@@ -395,29 +393,29 @@
 				complete.call(instance);
 			}
 			else {
-				el.one(transitionEnd, function () {
+				el.one(transitionEnd, () => {
 					complete();
 				}).emulateTransitionEnd(SideNavigation.TRANSITION_DURATION);
 			}
 		},
 
 		_renderNav() {
-			var instance = this;
-			var options = instance.options;
+			const instance = this;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var slider = container.find(options.navigation).first();
-			var menu = slider.find('.sidenav-menu').first();
+			const container = $(options.container);
+			const slider = container.find(options.navigation).first();
+			const menu = slider.find('.sidenav-menu').first();
 
-			var closed = container.hasClass('closed');
-			var sidenavRight = instance._isSidenavRight();
-			var width = instance._getSidenavWidth();
+			const closed = container.hasClass('closed');
+			const sidenavRight = instance._isSidenavRight();
+			const width = instance._getSidenavWidth();
 
 			if (closed) {
 				menu.css('width', width);
 
 				if (sidenavRight) {
-					var positionDirection = options.rtl ? 'left' : 'right';
+					const positionDirection = options.rtl ? 'left' : 'right';
 
 					menu.css(positionDirection, width);
 				}
@@ -431,14 +429,14 @@
 		},
 
 		_renderUI() {
-			var instance = this;
-			var options = instance.options;
+			const instance = this;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var toggler = instance.toggler;
+			const container = $(options.container);
+			const toggler = instance.toggler;
 
-			var mobile = instance.mobile;
-			var type = mobile ? options.typeMobile : options.type;
+			const mobile = instance.mobile;
+			const type = mobile ? options.typeMobile : options.type;
 
 			if (!instance.useDataAttribute) {
 				if (mobile) {
@@ -461,11 +459,11 @@
 		},
 
 		_setScreenSize() {
-			var instance = this;
+			const instance = this;
 
-			var screenSize = getBreakpointRegion();
+			const screenSize = getBreakpointRegion();
 
-			var desktop =
+			const desktop =
 				screenSize === 'sm' ||
 				screenSize === 'md' ||
 				screenSize === 'lg';
@@ -477,20 +475,20 @@
 		},
 
 		clearStyle(attribute) {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var content = container.find(options.content).first();
-			var navigation = container.find(options.navigation).first();
+			const container = $(options.container);
+			const content = container.find(options.content).first();
+			const navigation = container.find(options.navigation).first();
 
-			var menu = container.find('.sidenav-menu').first();
+			const menu = container.find('.sidenav-menu').first();
 
-			var els = content.add(navigation).add(menu);
+			const els = content.add(navigation).add(menu);
 
 			if (Array.isArray(attribute)) {
-				for (var i = 0; i < attribute.length; i++) {
+				for (let i = 0; i < attribute.length; i++) {
 					els.css(attribute[i], '');
 				}
 			}
@@ -500,11 +498,11 @@
 		},
 
 		destroy() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var container = $(instance.options.container);
+			const container = $(instance.options.container);
 
 			// Detach sidenav close
 
@@ -530,7 +528,7 @@
 		},
 
 		hide() {
-			var instance = this;
+			const instance = this;
 
 			if (instance.useDataAttribute) {
 				instance.hideSimpleSidenav();
@@ -541,23 +539,23 @@
 		},
 
 		hideSidenav() {
-			var instance = this;
-			var options = instance.options;
+			const instance = this;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var content = container.find(options.content).first();
-			var navigation = container.find(options.navigation).first();
-			var menu = navigation.find('.sidenav-menu').first();
+			const container = $(options.container);
+			const content = container.find(options.content).first();
+			const navigation = container.find(options.navigation).first();
+			const menu = navigation.find('.sidenav-menu').first();
 
-			var sidenavRight = instance._isSidenavRight();
+			const sidenavRight = instance._isSidenavRight();
 
-			var positionDirection = options.rtl ? 'right' : 'left';
+			let positionDirection = options.rtl ? 'right' : 'left';
 
 			if (sidenavRight) {
 				positionDirection = options.rtl ? 'left' : 'right';
 			}
 
-			var paddingDirection = 'padding-' + positionDirection;
+			const paddingDirection = 'padding-' + positionDirection;
 
 			content.css(paddingDirection, '').css(positionDirection, '');
 
@@ -569,22 +567,22 @@
 		},
 
 		hideSimpleSidenav() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var simpleSidenavClosed = instance._isSimpleSidenavClosed();
+			const simpleSidenavClosed = instance._isSimpleSidenavClosed();
 
 			if (!simpleSidenavClosed) {
-				var content = $(options.content).first();
-				var sidenav = $(options.container);
+				const content = $(options.content).first();
+				const sidenav = $(options.container);
 
-				var closedClass = options.closedClass;
-				var openClass = options.openClass;
+				const closedClass = options.closedClass;
+				const openClass = options.openClass;
 
-				var toggler = instance.toggler;
+				const toggler = instance.toggler;
 
-				var target =
+				const target =
 					toggler.attr('href') || toggler.attr('data-target');
 
 				sidenav.trigger({
@@ -592,7 +590,7 @@
 					type: 'closedStart.lexicon.sidenav',
 				});
 
-				instance._onSidenavTransitionEnd(content, function () {
+				instance._onSidenavTransitionEnd(content, () => {
 					sidenav.removeClass('sidenav-transition');
 					toggler.removeClass('sidenav-transition');
 
@@ -624,9 +622,9 @@
 		},
 
 		init(toggler, options) {
-			var instance = this;
+			const instance = this;
 
-			var useDataAttribute = toggler.data('toggle') === 'sidenav';
+			const useDataAttribute = toggler.data('toggle') === 'sidenav';
 
 			options = $.extend({}, $.fn.sideNavigation.defaults, options);
 
@@ -674,22 +672,22 @@
 		},
 
 		setEqualHeight() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var content = options.content;
-			var navigation = options.navigation;
+			const container = $(options.container);
+			const content = options.content;
+			const navigation = options.navigation;
 
-			var type = instance.mobile ? options.typeMobile : options.type;
+			const type = instance.mobile ? options.typeMobile : options.type;
 
 			if (type !== 'fixed' && type !== 'fixed-push') {
-				var contentNode = container.find(content).first();
-				var navNode = container.find(navigation).first();
-				var sideNavMenuNode = container.find('.sidenav-menu').first();
+				const contentNode = container.find(content).first();
+				const navNode = container.find(navigation).first();
+				const sideNavMenuNode = container.find('.sidenav-menu').first();
 
-				var tallest = Math.max(
+				const tallest = Math.max(
 					contentNode.outerHeight(),
 					navNode.outerHeight()
 				);
@@ -709,20 +707,20 @@
 		},
 
 		setFullHeight() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var navigation = options.navigation;
+			const container = $(options.container);
+			const navigation = options.navigation;
 
-			var type = instance.mobile ? options.typeMobile : options.type;
+			const type = instance.mobile ? options.typeMobile : options.type;
 
 			if (type === 'relative') {
-				var navNode = container.find(navigation).first();
-				var sidenavMenuNode = container.find('.sidenav-menu').first();
+				const navNode = container.find(navigation).first();
+				const sidenavMenuNode = container.find('.sidenav-menu').first();
 
-				var minHeight = doc.innerHeight() - navNode.offset().top;
+				let minHeight = doc.innerHeight() - navNode.offset().top;
 
 				if (
 					sidenavMenuNode.innerHeight() + navNode.offset().top >
@@ -744,9 +742,9 @@
 		},
 
 		setHeight() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
 			if (options.heightType === 'equalHeight') {
 				instance.setEqualHeight();
@@ -757,7 +755,7 @@
 		},
 
 		show() {
-			var instance = this;
+			const instance = this;
 
 			if (instance.useDataAttribute) {
 				instance.showSimpleSidenav();
@@ -768,24 +766,24 @@
 		},
 
 		showSidenav() {
-			var instance = this;
-			var mobile = instance.mobile;
-			var options = instance.options;
+			const instance = this;
+			const mobile = instance.mobile;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var content = container.find(options.content).first();
-			var navigation = container.find(options.navigation).first();
-			var menu = navigation.find('.sidenav-menu').first();
+			const container = $(options.container);
+			const content = container.find(options.content).first();
+			const navigation = container.find(options.navigation).first();
+			const menu = navigation.find('.sidenav-menu').first();
 
-			var sidenavRight = instance._isSidenavRight();
-			var width = instance._getSidenavWidth();
+			const sidenavRight = instance._isSidenavRight();
+			const width = instance._getSidenavWidth();
 
-			var offset = width + options.gutter;
+			const offset = width + options.gutter;
 
-			var url = options.url;
+			const url = options.url;
 
 			if (url) {
-				container.one('urlLoaded.lexicon.sidenav', function () {
+				container.one('urlLoaded.lexicon.sidenav', () => {
 					instance.setHeight();
 				});
 
@@ -795,28 +793,28 @@
 			navigation.css('width', width);
 			menu.css('width', width);
 
-			var positionDirection = options.rtl ? 'right' : 'left';
+			let positionDirection = options.rtl ? 'right' : 'left';
 
 			if (sidenavRight) {
 				positionDirection = options.rtl ? 'left' : 'right';
 			}
 
-			var paddingDirection = 'padding-' + positionDirection;
+			const paddingDirection = 'padding-' + positionDirection;
 
-			var pushContentCssProperty = mobile
+			const pushContentCssProperty = mobile
 				? positionDirection
 				: paddingDirection;
-			var type = mobile ? options.typeMobile : options.type;
+			const type = mobile ? options.typeMobile : options.type;
 
 			if (type !== 'fixed') {
-				var navigationStartX = container.hasClass('open')
+				let navigationStartX = container.hasClass('open')
 					? navigation.offset().left - options.gutter
 					: navigation.offset().left - offset;
 
-				var contentStartX = content.offset().left;
-				var contentWidth = content.innerWidth();
+				const contentStartX = content.offset().left;
+				const contentWidth = content.innerWidth();
 
-				var padding = '';
+				let padding = '';
 
 				if (
 					(options.rtl && sidenavRight) ||
@@ -847,22 +845,22 @@
 		},
 
 		showSimpleSidenav() {
-			var instance = this;
+			const instance = this;
 
-			var options = instance.options;
+			const options = instance.options;
 
-			var simpleSidenavClosed = instance._isSimpleSidenavClosed();
+			const simpleSidenavClosed = instance._isSimpleSidenavClosed();
 
 			if (simpleSidenavClosed) {
-				var content = $(options.content).first();
-				var sidenav = $(options.container);
+				const content = $(options.content).first();
+				const sidenav = $(options.container);
 
-				var closedClass = options.closedClass;
-				var openClass = options.openClass;
+				const closedClass = options.closedClass;
+				const openClass = options.openClass;
 
-				var toggler = options.toggler;
+				const toggler = options.toggler;
 
-				var url = toggler.data('url');
+				const url = toggler.data('url');
 
 				if (url) {
 					instance._loadUrl(sidenav, url);
@@ -873,7 +871,7 @@
 					type: 'openStart.lexicon.sidenav',
 				});
 
-				instance._onSidenavTransitionEnd(content, function () {
+				instance._onSidenavTransitionEnd(content, () => {
 					sidenav.removeClass('sidenav-transition');
 					toggler.removeClass('sidenav-transition');
 
@@ -896,7 +894,7 @@
 		},
 
 		toggle() {
-			var instance = this;
+			const instance = this;
 
 			if (instance.useDataAttribute) {
 				instance.toggleSimpleSidenav();
@@ -907,22 +905,22 @@
 		},
 
 		toggleNavigation(force) {
-			var instance = this;
-			var options = instance.options;
+			const instance = this;
+			const options = instance.options;
 
-			var container = $(options.container);
-			var menu = container.find('.sidenav-menu').first();
-			var toggler = instance.toggler;
+			const container = $(options.container);
+			const menu = container.find('.sidenav-menu').first();
+			const toggler = instance.toggler;
 
-			var width = options.width;
+			const width = options.width;
 
-			var closed =
+			const closed =
 				$.type(force) === 'boolean'
 					? force
 					: container.hasClass('closed');
-			var sidenavRight = instance._isSidenavRight();
+			const sidenavRight = instance._isSidenavRight();
 
-			var widthMethod = closed ? 'showSidenav' : 'hideSidenav';
+			const widthMethod = closed ? 'showSidenav' : 'hideSidenav';
 
 			if (closed) {
 				container.trigger({
@@ -937,8 +935,8 @@
 				});
 			}
 
-			instance._onSidenavTransitionEnd(container, function () {
-				var menu = container.find('.sidenav-menu').first();
+			instance._onSidenavTransitionEnd(container, () => {
+				const menu = container.find('.sidenav-menu').first();
 
 				if (container.hasClass('closed')) {
 					instance.clearStyle(['min-height', 'height']);
@@ -971,7 +969,7 @@
 
 				menu.css('width', width);
 
-				var positionDirection = options.rtl ? 'left' : 'right';
+				const positionDirection = options.rtl ? 'left' : 'right';
 
 				if (sidenavRight) {
 					menu.css(positionDirection, '');
@@ -990,9 +988,9 @@
 		},
 
 		toggleSimpleSidenav() {
-			var instance = this;
+			const instance = this;
 
-			var simpleSidenavClosed = instance._isSimpleSidenavClosed();
+			const simpleSidenavClosed = instance._isSimpleSidenavClosed();
 
 			if (simpleSidenavClosed) {
 				instance.showSimpleSidenav();
@@ -1003,15 +1001,15 @@
 		},
 
 		visible() {
-			var instance = this;
+			const instance = this;
 
-			var closed;
+			let closed;
 
 			if (instance.useDataAttribute) {
 				closed = instance._isSimpleSidenavClosed();
 			}
 			else {
-				var container = $(instance.options.container);
+				const container = $(instance.options.container);
 
 				closed = container.hasClass('sidenav-transition')
 					? !container.hasClass('closed')
@@ -1022,10 +1020,10 @@
 		},
 	};
 
-	var old = $.fn.sideNavigation;
+	const old = $.fn.sideNavigation;
 
-	var initialize = function (toggler, options, selector) {
-		var data = toggler.data('lexicon.sidenav');
+	const initialize = function (toggler, options, selector) {
+		let data = toggler.data('lexicon.sidenav');
 
 		if (!data) {
 			if (!options) {
@@ -1042,21 +1040,21 @@
 		return data;
 	};
 
-	var Plugin = function (options) {
-		var instance = this;
+	const Plugin = function (options) {
+		const instance = this;
 
-		var selector = instance.selector;
+		const selector = instance.selector;
 
-		var retVal = instance;
-		var methodCall = typeof options === 'string';
-		var returnInstance = options === 'instance';
-		var args = $.makeArray(arguments).slice(1);
+		let retVal = instance;
+		const methodCall = typeof options === 'string';
+		const returnInstance = options === 'instance';
+		const args = $.makeArray(arguments).slice(1);
 
 		if (methodCall) {
 			this.each(function () {
-				var $this = $(this);
+				const $this = $(this);
 
-				var data = $this.data('lexicon.sidenav');
+				const data = $this.data('lexicon.sidenav');
 
 				if (data) {
 					if (returnInstance) {
@@ -1065,7 +1063,7 @@
 						return false;
 					}
 
-					var methodRetVal;
+					let methodRetVal;
 
 					if (
 						$.isFunction(data[options]) &&
@@ -1145,8 +1143,8 @@
 
 	$.fn.sideNavigation = Plugin;
 
-	$(function () {
-		var sidenav = $('[data-toggle="sidenav"]');
+	$(() => {
+		const sidenav = $('[data-toggle="sidenav"]');
 
 		Plugin.call(sidenav);
 	});

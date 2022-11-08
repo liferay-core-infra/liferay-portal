@@ -13,7 +13,7 @@
  */
 
 (function ($) {
-	var jqueryInit = $.prototype.init;
+	const jqueryInit = $.prototype.init;
 
 	$.prototype.init = function (selector, context, root) {
 		if (selector === '#') {

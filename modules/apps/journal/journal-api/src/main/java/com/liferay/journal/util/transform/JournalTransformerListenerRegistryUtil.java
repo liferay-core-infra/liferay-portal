@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.journal.internal.transformer;
+package com.liferay.journal.util.transform;
 
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;

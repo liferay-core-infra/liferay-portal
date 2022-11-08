@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 /**
  * @author Jürgen Kappler
  */
-@Component(immediate = true, service = InfoDisplayContributorFieldTracker.class)
+@Component(service = InfoDisplayContributorFieldTracker.class)
 public class InfoDisplayContributorFieldTrackerImpl
 	implements InfoDisplayContributorFieldTracker {
 

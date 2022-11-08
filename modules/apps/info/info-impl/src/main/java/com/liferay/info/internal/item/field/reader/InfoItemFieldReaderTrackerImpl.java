@@ -50,7 +50,7 @@ import org.osgi.service.component.annotations.ReferencePolicy;
  * @author Jürgen Kappler
  * @author Jorge Ferrer
  */
-@Component(immediate = true, service = InfoItemFieldReaderTracker.class)
+@Component(service = InfoItemFieldReaderTracker.class)
 public class InfoItemFieldReaderTrackerImpl
 	implements InfoItemFieldReaderTracker {
 

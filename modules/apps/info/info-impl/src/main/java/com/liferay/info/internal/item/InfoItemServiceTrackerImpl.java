@@ -85,7 +85,7 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Jürgen Kappler
  * @author Jorge Ferrer
  */
-@Component(immediate = true, service = InfoItemServiceTracker.class)
+@Component(service = InfoItemServiceTracker.class)
 public class InfoItemServiceTrackerImpl implements InfoItemServiceTracker {
 
 	@Override

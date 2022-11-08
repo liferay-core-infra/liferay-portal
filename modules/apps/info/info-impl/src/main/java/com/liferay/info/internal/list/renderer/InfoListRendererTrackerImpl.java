@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jorge Ferrer
  */
-@Component(immediate = true, service = InfoListRendererTracker.class)
+@Component(service = InfoListRendererTracker.class)
 public class InfoListRendererTrackerImpl implements InfoListRendererTracker {
 
 	@Override

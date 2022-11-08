@@ -27,7 +27,7 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Jürgen Kappler
  */
-@Component(immediate = true, service = InfoEditURLProviderTracker.class)
+@Component(service = InfoEditURLProviderTracker.class)
 public class InfoEditURLProviderTrackerImpl
 	implements InfoEditURLProviderTracker {
 

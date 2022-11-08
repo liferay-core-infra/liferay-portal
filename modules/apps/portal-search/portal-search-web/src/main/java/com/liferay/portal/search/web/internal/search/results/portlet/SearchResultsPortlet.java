@@ -17,6 +17,8 @@ package com.liferay.portal.search.web.internal.search.results.portlet;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.util.AssetRendererFactoryLookup;
 import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -55,10 +57,8 @@ import com.liferay.portal.search.web.search.result.SearchResultImageContributor;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -69,10 +69,11 @@ import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * @author André de Oliveira
@@ -127,14 +128,15 @@ public class SearchResultsPortlet extends MVCPortlet {
 		super.render(renderRequest, renderResponse);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void addSearchResultImageContributor(
-		SearchResultImageContributor searchResultImageContributor) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, SearchResultImageContributor.class);
+	}
 
-		_searchResultImageContributors.add(searchResultImageContributor);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerList.close();
 	}
 
 	protected String getCurrentURL(RenderRequest renderRequest) {
@@ -188,12 +190,6 @@ public class SearchResultsPortlet extends MVCPortlet {
 		}
 
 		return false;
-	}
-
-	protected void removeSearchResultImageContributor(
-		SearchResultImageContributor searchResultImageContributor) {
-
-		_searchResultImageContributors.remove(searchResultImageContributor);
 	}
 
 	@Reference
@@ -369,6 +365,9 @@ public class SearchResultsPortlet extends MVCPortlet {
 			searchResultSummaryDisplayContextBuilder =
 				new SearchResultSummaryDisplayContextBuilder();
 
+		List<SearchResultImageContributor> searchResultImageContributors =
+			_serviceTrackerList.toList();
+
 		searchResultSummaryDisplayContextBuilder.setAssetEntryLocalService(
 			assetEntryLocalService
 		).setAssetRendererFactoryLookup(
@@ -406,7 +405,7 @@ public class SearchResultsPortlet extends MVCPortlet {
 		).setResourceActions(
 			resourceActions
 		).setSearchResultImageContributorsStream(
-			_searchResultImageContributors.stream()
+			searchResultImageContributors.stream()
 		).setSearchResultPreferences(
 			searchResultPreferences
 		).setSummaryBuilderFactory(
@@ -498,7 +497,7 @@ public class SearchResultsPortlet extends MVCPortlet {
 	@Reference
 	private Portal _portal;
 
-	private final Set<SearchResultImageContributor>
-		_searchResultImageContributors = new HashSet<>();
+	private ServiceTrackerList<SearchResultImageContributor>
+		_serviceTrackerList;
 
 }

@@ -49,6 +49,7 @@ import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimer;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
+import com.liferay.portal.workflow.kaleo.runtime.internal.node.NodeExecutorFactory;
 import com.liferay.portal.workflow.kaleo.runtime.node.NodeExecutor;
 import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionVersionLocalService;
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalService;
@@ -277,11 +278,14 @@ public class TaskNodeExecutorTest {
 			KaleoTimerInstanceToken kaleoTimerInstanceToken)
 		throws Exception {
 
+		NodeExecutor nodeExecutor = _nodeExecutorFactory.getNodeExecutor(
+			"TASK");
+
 		Method executeTimerMethod = ReflectionUtil.getDeclaredMethod(
-			_nodeExecutor.getClass(), "executeTimer", ExecutionContext.class);
+			nodeExecutor.getClass(), "executeTimer", ExecutionContext.class);
 
 		executeTimerMethod.invoke(
-			_nodeExecutor,
+			nodeExecutor,
 			new ExecutionContext(
 				kaleoInstanceToken, kaleoTimerInstanceToken, _workflowContext,
 				_serviceContext) {
@@ -364,8 +368,8 @@ public class TaskNodeExecutorTest {
 	@Inject
 	private KaleoTimerLocalService _kaleoTimerLocalService;
 
-	@Inject(filter = "node.type=TASK")
-	private NodeExecutor _nodeExecutor;
+	@Inject
+	private NodeExecutorFactory _nodeExecutorFactory;
 
 	private ServiceContext _serviceContext;
 	private Map<String, Serializable> _workflowContext;

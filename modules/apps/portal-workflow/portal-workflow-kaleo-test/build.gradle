@@ -11,6 +11,7 @@ dependencies {
 	testIntegrationCompile project(":apps:portal-workflow:portal-workflow-kaleo-api")
 	testIntegrationCompile project(":apps:portal-workflow:portal-workflow-kaleo-definition-api")
 	testIntegrationCompile project(":apps:portal-workflow:portal-workflow-kaleo-runtime-api")
+	testIntegrationCompile project(":apps:portal-workflow:portal-workflow-kaleo-runtime-impl")
 	testIntegrationCompile project(":apps:static:portal:portal-upgrade-api")
 	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
 }

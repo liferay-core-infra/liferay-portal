@@ -39,7 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Eudaldo Alonso
  */
-@Component(immediate = true, service = DocumentContributor.class)
+@Component(service = DocumentContributor.class)
 public class TrashedModelDocumentContributor
 	implements DocumentContributor<TrashedModel> {
 

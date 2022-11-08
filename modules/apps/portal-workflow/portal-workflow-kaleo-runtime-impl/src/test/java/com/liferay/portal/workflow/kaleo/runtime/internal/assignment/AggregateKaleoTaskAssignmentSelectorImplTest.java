@@ -144,13 +144,14 @@ public class AggregateKaleoTaskAssignmentSelectorImplTest {
 	private void _setUpAggregateKaleoTaskAssignmentSelectorImpl()
 		throws Exception {
 
-		KaleoTaskAssignmentSelectorTracker kaleoTaskAssignmentSelectorTracker =
-			new KaleoTaskAssignmentSelectorTracker();
+		KaleoTaskAssignmentSelectorRegistryImpl
+			kaleoTaskAssignmentSelectorRegistryImpl =
+			new KaleoTaskAssignmentSelectorRegistryImpl();
 
 		for (Map.Entry<String, List<KaleoTaskAssignment>> entry :
 				_kaleoTaskAssignmentSelectors.entrySet()) {
 
-			kaleoTaskAssignmentSelectorTracker.addKaleoTaskAssignmentSelector(
+			kaleoTaskAssignmentSelectorRegistryImpl.addKaleoTaskAssignmentSelector(
 				(kaleoTaskAssignment, executionContext) -> entry.getValue(),
 				HashMapBuilder.<String, Object>put(
 					"assignee.class.name", entry.getKey()
@@ -160,7 +161,7 @@ public class AggregateKaleoTaskAssignmentSelectorImplTest {
 		ReflectionTestUtil.setFieldValue(
 			_aggregateKaleoTaskAssignmentSelectorImpl,
 			"_kaleoTaskAssignmentSelectorRegistry",
-			kaleoTaskAssignmentSelectorTracker);
+			kaleoTaskAssignmentSelectorRegistryImpl);
 	}
 
 	private final AggregateKaleoTaskAssignmentSelectorImpl

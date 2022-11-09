@@ -69,6 +69,7 @@ import com.liferay.wiki.service.persistence.WikiPagePersistence;
 
 import java.io.InputStream;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -330,6 +331,10 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 		return wikiNodePersistence.countByC_S(companyId, status);
 	}
 
+	public Collection<String> getImporters() {
+		return _wikiImporterServiceTrackerMap.keySet();
+	}
+
 	@Override
 	public WikiNode getNode(long nodeId) throws PortalException {
 		return wikiNodePersistence.findByPrimaryKey(nodeId);
@@ -390,6 +395,13 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 	@Override
 	public int getNodesCount(long groupId, int status) {
 		return wikiNodePersistence.countByG_S(groupId, status);
+	}
+
+	public String getPage(String importer) {
+		WikiImporter wikiImporter = _wikiImporterServiceTrackerMap.getService(
+			importer);
+
+		return wikiImporter.getPage();
 	}
 
 	@Override

@@ -15,14 +15,14 @@
 package com.liferay.layout.page.template.admin.web.internal.importer;
 
 import com.liferay.layout.page.template.importer.PortletConfigurationImporter;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Jürgen Kappler
@@ -33,29 +33,25 @@ public class PortletConfigurationImporterRegistry {
 	public PortletConfigurationImporter getPortletConfigurationImporter(
 		String portletName) {
 
-		return _portletConfigurationImporters.get(portletName);
+		return _serviceTrackerMap.getService(portletName);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setPortletConfigurationImporter(
-		PortletConfigurationImporter portletConfigurationImporter) {
-
-		_portletConfigurationImporters.put(
-			portletConfigurationImporter.getPortletName(),
-			portletConfigurationImporter);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, PortletConfigurationImporter.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(portletConfigurationImporter, emitter) -> emitter.emit(
+					portletConfigurationImporter.getPortletName())));
 	}
 
-	protected void unsetPortletConfigurationImporter(
-		PortletConfigurationImporter portletConfigurationImporter) {
-
-		_portletConfigurationImporters.remove(
-			portletConfigurationImporter.getPortletName());
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
-	private final Map<String, PortletConfigurationImporter>
-		_portletConfigurationImporters = new ConcurrentHashMap<>();
+	private ServiceTrackerMap<String, PortletConfigurationImporter>
+		_serviceTrackerMap;
 
 }

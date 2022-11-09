@@ -301,7 +301,8 @@ public class ConfigurationUpgradeStepFactoryTest {
 		_assert(factory, data, configFile, felixFileName, true);
 	}
 
-	private static final String _TEST_PID = "test.pid";
+	private static final String _TEST_PID =
+		ConfigurationUpgradeStepFactoryTest.class.getName();
 
 	private static final String _TEST_PID_NEW = _TEST_PID + ".new";
 

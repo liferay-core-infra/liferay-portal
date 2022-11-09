@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutTemplate;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
+import com.liferay.portal.kernel.module.util.BundleUtil;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
@@ -53,7 +54,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.portlet.PortletPreferences;
 
@@ -65,7 +65,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
 /**
@@ -374,24 +373,8 @@ public class UpgradePortletPreferencesTest {
 		Bundle bundle = FrameworkUtil.getBundle(
 			UpgradePortletPreferencesTest.class);
 
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		Bundle journalContentWebBundle = null;
-
-		for (Bundle curBundle : bundleContext.getBundles()) {
-			if (Objects.equals(
-					curBundle.getSymbolicName(),
-					"com.liferay.journal.content.web")) {
-
-				journalContentWebBundle = curBundle;
-
-				break;
-			}
-		}
-
-		Assert.assertNotNull(
-			"Unable to find journal-content-web bundle",
-			journalContentWebBundle);
+		Bundle journalContentWebBundle = BundleUtil.getBundle(
+			bundle.getBundleContext(), "com.liferay.journal.content.web");
 
 		Class<?> clazz = journalContentWebBundle.loadClass(
 			"com.liferay.journal.content.web.internal.upgrade.v1_1_0." +

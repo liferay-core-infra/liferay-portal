@@ -19,6 +19,7 @@ import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.module.util.BundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.log.LogCapture;
@@ -68,21 +69,9 @@ public class ConfiguratorExtenderTest {
 	public void setUp() {
 		Bundle bundle = FrameworkUtil.getBundle(ConfiguratorExtenderTest.class);
 
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		String symbolicName = "com.liferay.portal.configuration.extender";
-
-		for (Bundle curBundle : bundleContext.getBundles()) {
-			if (symbolicName.equals(curBundle.getSymbolicName())) {
-				_bundle = curBundle;
-
-				break;
-			}
-		}
-
-		Assert.assertNotNull(
-			"Unable to find bundle with symbolic name: " + symbolicName,
-			_bundle);
+		_bundle = BundleUtil.getBundle(
+			bundle.getBundleContext(),
+			"com.liferay.portal.configuration.extender");
 	}
 
 	@After

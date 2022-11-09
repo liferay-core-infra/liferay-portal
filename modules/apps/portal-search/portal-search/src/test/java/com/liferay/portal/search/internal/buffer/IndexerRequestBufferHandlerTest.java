@@ -22,7 +22,6 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.ClassRule;
@@ -87,31 +86,13 @@ public class IndexerRequestBufferHandlerTest {
 			RandomTestUtil.randomLong());
 	}
 
-	private IndexerRequestBufferExecutorWatcher
-		_createIndexerRequestBufferExecutorWatcher() {
-
-		IndexerRequestBufferExecutorWatcher
-			indexerRequestBufferExecutorWatcher =
-				new IndexerRequestBufferExecutorWatcher();
-
-		indexerRequestBufferExecutorWatcher.activate(
-			Collections.<String, Object>emptyMap());
-
-		indexerRequestBufferExecutorWatcher.addIndexerRequestBufferExecutor(
-			new DefaultIndexerRequestBufferExecutor(),
-			Collections.singletonMap(
-				"buffered.execution.mode", (Object)"DEFAULT"));
-
-		return indexerRequestBufferExecutorWatcher;
-	}
-
 	private IndexerRequestBufferOverflowHandler
 		_createIndexerRequestBufferOverflowHandler() {
 
 		return new DefaultIndexerRequestBufferOverflowHandler() {
 			{
-				indexerRequestBufferExecutorWatcher =
-					_createIndexerRequestBufferExecutorWatcher();
+				indexerRequestBufferExecutor =
+					new DefaultIndexerRequestBufferExecutor();
 			}
 		};
 	}

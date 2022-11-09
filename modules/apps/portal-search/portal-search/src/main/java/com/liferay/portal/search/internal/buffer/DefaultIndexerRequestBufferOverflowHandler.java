@@ -61,10 +61,6 @@ public class DefaultIndexerRequestBufferOverflowHandler
 			try {
 				BufferOverflowThreadLocal.setOverflowMode(true);
 
-				IndexerRequestBufferExecutor indexerRequestBufferExecutor =
-					indexerRequestBufferExecutorWatcher.
-						getIndexerRequestBufferExecutor();
-
 				indexerRequestBufferExecutor.execute(
 					indexerRequestBuffer, numRequests);
 			}
@@ -104,8 +100,7 @@ public class DefaultIndexerRequestBufferOverflowHandler
 	}
 
 	@Reference
-	protected IndexerRequestBufferExecutorWatcher
-		indexerRequestBufferExecutorWatcher;
+	protected IndexerRequestBufferExecutor indexerRequestBufferExecutor;
 
 	private static final float _DEFAULT_MINIMUM_BUFFER_AVAILABILITY_PERCENTAGE =
 		0.90F;

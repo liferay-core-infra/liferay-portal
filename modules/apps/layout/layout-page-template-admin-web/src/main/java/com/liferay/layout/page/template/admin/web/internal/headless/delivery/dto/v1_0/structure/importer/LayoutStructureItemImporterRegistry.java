@@ -15,14 +15,14 @@
 package com.liferay.layout.page.template.admin.web.internal.headless.delivery.dto.v1_0.structure.importer;
 
 import com.liferay.headless.delivery.dto.v1_0.PageElement;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Jürgen Kappler
@@ -33,28 +33,25 @@ public class LayoutStructureItemImporterRegistry {
 	public LayoutStructureItemImporter getLayoutStructureItemImporter(
 		PageElement.Type type) {
 
-		return _layoutStructureItemImporters.get(type);
+		return _serviceTrackerMap.getService(type);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setLayoutStructureItemImporter(
-		LayoutStructureItemImporter layoutStructureItemImporter) {
-
-		_layoutStructureItemImporters.put(
-			layoutStructureItemImporter.getPageElementType(),
-			layoutStructureItemImporter);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, LayoutStructureItemImporter.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(layoutStructureItemImporter, emitter) -> emitter.emit(
+					layoutStructureItemImporter.getPageElementType())));
 	}
 
-	protected void unsetLayoutStructureItemImporter(
-		LayoutStructureItemImporter layoutStructureItemImporter) {
-
-		_layoutStructureItemImporters.remove(layoutStructureItemImporter);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
-	private final Map<PageElement.Type, LayoutStructureItemImporter>
-		_layoutStructureItemImporters = new ConcurrentHashMap<>();
+	private ServiceTrackerMap<PageElement.Type, LayoutStructureItemImporter>
+		_serviceTrackerMap;
 
 }

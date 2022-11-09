@@ -22,6 +22,8 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface SortFieldNameTranslator {
 
+	public String getEntryClassName();
+
 	public String getSortFieldName(String orderByCol);
 
 }

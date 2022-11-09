@@ -15,7 +15,6 @@
 package com.liferay.trash.internal.search.contributor.sort;
 
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.search.contributor.constants.ContributorConstants;
 import com.liferay.portal.search.contributor.sort.SortFieldNameTranslator;
 
 import org.osgi.service.component.annotations.Component;
@@ -23,12 +22,13 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Michael C. Han
  */
-@Component(
-	immediate = true,
-	property = ContributorConstants.ENTRY_CLASS_NAME_PROPERTY_KEY + "=com.liferay.trash.model.TrashEntry",
-	service = SortFieldNameTranslator.class
-)
+@Component(immediate = true, service = SortFieldNameTranslator.class)
 public class TrashSortFieldNameTranslator implements SortFieldNameTranslator {
+
+	@Override
+	public String getEntryClassName() {
+		return "com.liferay.trash.model.TrashEntry";
+	}
 
 	@Override
 	public String getSortFieldName(String orderByCol) {

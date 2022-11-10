@@ -20,31 +20,19 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Iván Zaera
  */
 @Component(immediate = true, service = WikiImporterRegistry.class)
 public class WikiImporterRegistry {
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		service = WikiImporter.class, unbind = "removedService",
-		updated = "modifiedService"
-	)
-	public void addingService(ServiceReference<WikiImporter> serviceReference) {
-		String format = (String)serviceReference.getProperty("importer");
-
-		_serviceReferences.put(format, serviceReference);
-	}
 
 	public Collection<String> getImporters() {
 		return _serviceReferences.keySet();
@@ -57,23 +45,60 @@ public class WikiImporterRegistry {
 		return (String)serviceReference.getProperty(key);
 	}
 
-	public void modifiedService(
-		ServiceReference<WikiImporter> serviceReference) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, WikiImporter.class,
+			new ServiceTrackerCustomizer<WikiImporter, WikiImporter>() {
 
-		removedService(serviceReference);
+				@Override
+				public WikiImporter addingService(
+					ServiceReference<WikiImporter> serviceReference) {
 
-		addingService(serviceReference);
+					String format = (String)serviceReference.getProperty(
+						"importer");
+
+					_serviceReferences.put(format, serviceReference);
+
+					return bundleContext.getService(serviceReference);
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<WikiImporter> serviceReference,
+					WikiImporter wikiImporter) {
+
+					removedService(serviceReference, wikiImporter);
+
+					addingService(serviceReference);
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<WikiImporter> serviceReference,
+					WikiImporter wikiImporter) {
+
+					String importer = (String)serviceReference.getProperty(
+						"importer");
+
+					_serviceReferences.remove(importer);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
-	public void removedService(
-		ServiceReference<WikiImporter> serviceReference) {
-
-		String importer = (String)serviceReference.getProperty("importer");
-
-		_serviceReferences.remove(importer);
+	@Deactivate
+	protected void deactivate() {
+		_serviceReferences.clear();
+		_serviceTracker.close();
 	}
 
 	private final ConcurrentMap<String, ServiceReference<WikiImporter>>
 		_serviceReferences = new ConcurrentSkipListMap<>();
+	private ServiceTracker<WikiImporter, WikiImporter> _serviceTracker;
 
 }

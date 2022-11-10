@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -66,6 +67,33 @@ public class ServiceTrackerListTest {
 			_serviceTrackerList.close();
 
 			_serviceTrackerList = null;
+		}
+	}
+
+	@Test
+	public void testGetListAndArray() {
+		try (ServiceTrackerList<TrackedOne> serviceTrackerList =
+				ServiceTrackerListFactory.open(
+					_bundleContext, TrackedOne.class)) {
+
+			TrackedOne[] trackedOnes = {new TrackedOne(), new TrackedOne()};
+
+			Collection<ServiceRegistration<TrackedOne>> serviceRegistrations =
+				registerServices(TrackedOne.class, trackedOnes);
+
+			List<TrackedOne> trackedOneList = serviceTrackerList.toList();
+
+			Assert.assertArrayEquals(
+				serviceTrackerList.toString(), trackedOnes,
+				trackedOneList.toArray(new TrackedOne[0]));
+
+			TrackedOne[] trackedOneArray = serviceTrackerList.toArray(
+				new TrackedOne[0]);
+
+			Assert.assertArrayEquals(
+				serviceTrackerList.toString(), trackedOnes, trackedOneArray);
+
+			unregister(serviceRegistrations);
 		}
 	}
 

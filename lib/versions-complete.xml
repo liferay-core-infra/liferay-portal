@@ -89,8 +89,8 @@
 				<latest-version-publish-date>2019-07-05 11:10:18</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.batch.engine.service.jar!poi-ooxml-schemas.jar</file-name>
-				<version>4.1.2</version>
+				<file-name>com.liferay.batch.engine.service.jar!poi-ooxml-lite.jar</file-name>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -104,7 +104,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.batch.engine.service.jar!poi-ooxml.jar</file-name>
-				<version>4.1.2</version>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -132,7 +132,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.batch.engine.service.jar!xmlbeans.jar</file-name>
-				<version>3.1.0</version>
+				<version>5.0.3.LIFERAY-PATCHED-1</version>
 				<project-name>XmlBeans</project-name>
 				<project-url>https://xmlbeans.apache.org/</project-url>
 				<licenses>
@@ -781,7 +781,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.commerce.report.impl.jar!jasperreports-fonts.jar</file-name>
-				<version>6.8.1</version>
+				<version>6.20.0</version>
 				<project-name>JasperReports Font Extension</project-name>
 				<project-url>http://jasperreports.sourceforge.net</project-url>
 				<licenses>
@@ -795,7 +795,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.commerce.report.impl.jar!jasperreports-metadata.jar</file-name>
-				<version>6.8.1</version>
+				<version>6.20.0</version>
 				<project-name>JasperReports Metadata</project-name>
 				<project-url>http://jasperreports.sourceforge.net</project-url>
 				<licenses>
@@ -809,7 +809,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.commerce.report.impl.jar!jasperreports.jar</file-name>
-				<version>6.8.1</version>
+				<version>6.20.0</version>
 				<project-name>JasperReports Library</project-name>
 				<project-url>http://jasperreports.sourceforge.net</project-url>
 				<licenses>
@@ -943,8 +943,8 @@
 				<latest-version-publish-date>2016-03-22 18:38:44</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.commerce.report.impl.jar!poi-ooxml-schemas.jar</file-name>
-				<version>4.1.2</version>
+				<file-name>com.liferay.commerce.report.impl.jar!poi-ooxml-lite.jar</file-name>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -958,7 +958,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.commerce.report.impl.jar!poi-ooxml.jar</file-name>
-				<version>4.1.2</version>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -1081,8 +1081,8 @@
 				<latest-version-publish-date>2021-02-26 12:40:52</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.content.dashboard.web.jar!poi-ooxml-schemas.jar</file-name>
-				<version>4.1.2</version>
+				<file-name>com.liferay.content.dashboard.web.jar!poi-ooxml-lite.jar</file-name>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -1096,7 +1096,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.content.dashboard.web.jar!poi-ooxml.jar</file-name>
-				<version>4.1.2</version>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -1124,7 +1124,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.content.dashboard.web.jar!xmlbeans.jar</file-name>
-				<version>3.1.0</version>
+				<version>5.0.3.LIFERAY-PATCHED-1</version>
 				<project-name>XmlBeans</project-name>
 				<project-url>https://xmlbeans.apache.org/</project-url>
 				<licenses>
@@ -1816,8 +1816,8 @@
 				<latest-version-publish-date>2019-07-05 11:10:18</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.dynamic.data.lists.service.jar!poi-ooxml-schemas.jar</file-name>
-				<version>4.1.2</version>
+				<file-name>com.liferay.dynamic.data.lists.service.jar!poi-ooxml-lite.jar</file-name>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -1831,7 +1831,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.dynamic.data.lists.service.jar!poi-ooxml.jar</file-name>
-				<version>4.1.2</version>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -1859,7 +1859,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.dynamic.data.lists.service.jar!xmlbeans.jar</file-name>
-				<version>3.1.0</version>
+				<version>5.0.3.LIFERAY-PATCHED-1</version>
 				<project-name>XmlBeans</project-name>
 				<project-url>https://xmlbeans.apache.org/</project-url>
 				<licenses>
@@ -2135,8 +2135,8 @@
 				<latest-version-publish-date>2022-02-12 23:37:47</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.dynamic.data.mapping.service.jar!poi-ooxml-schemas.jar</file-name>
-				<version>4.1.2</version>
+				<file-name>com.liferay.dynamic.data.mapping.service.jar!poi-ooxml-lite.jar</file-name>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -2150,7 +2150,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.dynamic.data.mapping.service.jar!poi-ooxml.jar</file-name>
-				<version>4.1.2</version>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -2178,7 +2178,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.dynamic.data.mapping.service.jar!xmlbeans.jar</file-name>
-				<version>3.1.0</version>
+				<version>5.0.3.LIFERAY-PATCHED-1</version>
 				<project-name>XmlBeans</project-name>
 				<project-url>https://xmlbeans.apache.org/</project-url>
 				<licenses>
@@ -5794,8 +5794,8 @@
 				<latest-version-publish-date>2021-03-04 06:27:43</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.portal.tika.jar!poi-ooxml-schemas.jar</file-name>
-				<version>4.1.2</version>
+				<file-name>com.liferay.portal.tika.jar!poi-ooxml-lite.jar</file-name>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -5809,7 +5809,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.tika.jar!poi-ooxml.jar</file-name>
-				<version>4.1.2</version>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -5823,7 +5823,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.tika.jar!poi-scratchpad.jar</file-name>
-				<version>4.1.2</version>
+				<version>5.2.2.LIFERAY-PATCHED-1</version>
 				<project-name>Apache POI</project-name>
 				<project-url>http://poi.apache.org/</project-url>
 				<licenses>
@@ -5865,7 +5865,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.tika.jar!tika-core.jar</file-name>
-				<version>1.26</version>
+				<version>1.28.5</version>
 				<project-name>Apache Tika core</project-name>
 				<project-url>http://tika.apache.org/</project-url>
 				<licenses>
@@ -5879,7 +5879,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.tika.jar!tika-parsers.jar</file-name>
-				<version>1.26</version>
+				<version>1.28.5</version>
 				<project-name>Apache Tika parsers</project-name>
 				<project-url>http://tika.apache.org/</project-url>
 				<licenses>

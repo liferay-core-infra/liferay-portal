@@ -66,6 +66,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -1519,14 +1520,18 @@ public class CommercePriceEntryLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommercePriceEntryLocalServiceImpl.class);
 
+	private static volatile CPDefinitionLocalService _cpDefinitionLocalService =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			CPDefinitionLocalService.class,
+			CommercePriceEntryLocalServiceImpl.class,
+			"_cpDefinitionLocalService",
+			"(model.class.name=" + CPDefinition.class.getName() + ")", true);
+
 	@Reference
 	private CommercePriceListFinder _commercePriceListFinder;
 
 	@Reference
 	private CommercePriceListPersistence _commercePriceListPersistence;
-
-	@Reference
-	private CPDefinitionLocalService _cpDefinitionLocalService;
 
 	@Reference
 	private CPInstanceLocalService _cpInstanceLocalService;

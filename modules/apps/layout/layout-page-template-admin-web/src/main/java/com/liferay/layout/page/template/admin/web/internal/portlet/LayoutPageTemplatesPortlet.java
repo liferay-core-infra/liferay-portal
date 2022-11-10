@@ -18,7 +18,7 @@ import com.liferay.asset.display.page.service.AssetDisplayPageEntryService;
 import com.liferay.asset.kernel.service.AssetEntryService;
 import com.liferay.info.constants.InfoDisplayWebKeys;
 import com.liferay.info.item.InfoItemServiceTracker;
-import com.liferay.info.search.InfoSearchClassMapperTracker;
+import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.layout.page.template.admin.constants.LayoutPageTemplateAdminPortletKeys;
 import com.liferay.layout.page.template.admin.web.internal.configuration.LayoutPageTemplateAdminWebConfiguration;
@@ -153,8 +153,8 @@ public class LayoutPageTemplatesPortlet extends MVCPortlet {
 			new AssetDisplayPageUsagesDisplayContext(
 				_assetDisplayPageEntryService, _assetEntryService,
 				_portal.getHttpServletRequest(renderRequest),
-				_infoSearchClassMapperTracker, _infoItemServiceTracker, _portal,
-				renderRequest, renderResponse));
+				_infoSearchClassMapperRegistry, _infoItemServiceTracker,
+				_portal, renderRequest, renderResponse));
 		renderRequest.setAttribute(
 			LayoutPageTemplateAdminWebConfiguration.class.getName(),
 			_layoutPageTemplateAdminWebConfiguration);
@@ -183,7 +183,7 @@ public class LayoutPageTemplatesPortlet extends MVCPortlet {
 	private InfoItemServiceTracker _infoItemServiceTracker;
 
 	@Reference
-	private InfoSearchClassMapperTracker _infoSearchClassMapperTracker;
+	private InfoSearchClassMapperRegistry _infoSearchClassMapperRegistry;
 
 	@Reference
 	private ItemSelector _itemSelector;

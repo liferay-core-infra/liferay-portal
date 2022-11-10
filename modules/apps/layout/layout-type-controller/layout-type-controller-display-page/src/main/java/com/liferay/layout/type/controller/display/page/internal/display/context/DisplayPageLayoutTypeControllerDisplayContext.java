@@ -30,7 +30,7 @@ import com.liferay.info.item.provider.InfoItemDetailsProvider;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.info.item.provider.InfoItemPermissionProvider;
-import com.liferay.info.search.InfoSearchClassMapperTracker;
+import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -46,12 +46,12 @@ public class DisplayPageLayoutTypeControllerDisplayContext {
 	public DisplayPageLayoutTypeControllerDisplayContext(
 			HttpServletRequest httpServletRequest,
 			InfoItemServiceTracker infoItemServiceTracker,
-			InfoSearchClassMapperTracker infoSearchClassMapperTracker)
+			InfoSearchClassMapperRegistry infoSearchClassMapperRegistry)
 		throws Exception {
 
 		_httpServletRequest = httpServletRequest;
 		_infoItemServiceTracker = infoItemServiceTracker;
-		_infoSearchClassMapperTracker = infoSearchClassMapperTracker;
+		_infoSearchClassMapperRegistry = infoSearchClassMapperRegistry;
 
 		long assetEntryId = ParamUtil.getLong(
 			_httpServletRequest, "assetEntryId");
@@ -68,7 +68,7 @@ public class DisplayPageLayoutTypeControllerDisplayContext {
 			AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(
 				assetEntryId);
 
-			String className = _infoSearchClassMapperTracker.getClassName(
+			String className = _infoSearchClassMapperRegistry.getClassName(
 				assetEntry.getClassName());
 
 			InfoItemObjectProvider<Object> infoItemObjectProvider =
@@ -157,6 +157,6 @@ public class DisplayPageLayoutTypeControllerDisplayContext {
 	private final Object _infoItem;
 	private final InfoItemDetails _infoItemDetails;
 	private final InfoItemServiceTracker _infoItemServiceTracker;
-	private final InfoSearchClassMapperTracker _infoSearchClassMapperTracker;
+	private final InfoSearchClassMapperRegistry _infoSearchClassMapperRegistry;
 
 }

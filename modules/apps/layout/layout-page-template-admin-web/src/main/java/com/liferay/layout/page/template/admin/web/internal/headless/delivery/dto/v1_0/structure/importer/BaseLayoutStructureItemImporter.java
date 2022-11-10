@@ -22,7 +22,7 @@ import com.liferay.info.field.InfoField;
 import com.liferay.info.form.InfoForm;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFormProvider;
-import com.liferay.info.search.InfoSearchClassMapperTracker;
+import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -480,7 +480,7 @@ public abstract class BaseLayoutStructureItemImporter {
 	protected InfoItemServiceTracker infoItemServiceTracker;
 
 	@Reference
-	protected InfoSearchClassMapperTracker infoSearchClassMapperTracker;
+	protected InfoSearchClassMapperRegistry infoSearchClassMapperRegistry;
 
 	@Reference
 	protected LayoutLocalService layoutLocalService;
@@ -552,7 +552,7 @@ public abstract class BaseLayoutStructureItemImporter {
 		InfoItemFormProvider<Object> infoItemFormProvider =
 			infoItemServiceTracker.getFirstInfoItemService(
 				InfoItemFormProvider.class,
-				infoSearchClassMapperTracker.getClassName(
+				infoSearchClassMapperRegistry.getClassName(
 					portal.getClassName(
 						layoutPageTemplateEntry.getClassNameId())));
 

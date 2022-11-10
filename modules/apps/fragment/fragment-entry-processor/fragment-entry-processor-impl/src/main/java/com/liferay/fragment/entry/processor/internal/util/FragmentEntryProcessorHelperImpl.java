@@ -27,7 +27,7 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
-import com.liferay.info.search.InfoSearchClassMapperTracker;
+import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.info.type.Labeled;
 import com.liferay.info.type.WebImage;
 import com.liferay.petra.string.StringPool;
@@ -170,7 +170,7 @@ public class FragmentEntryProcessorHelperImpl
 
 		InfoItemReference infoItemReference = infoItemReferenceOptional.get();
 
-		String className = _infoSearchClassMapperTracker.getClassName(
+		String className = _infoSearchClassMapperRegistry.getClassName(
 			infoItemReference.getClassName());
 
 		InfoItemFieldValuesProvider<Object> infoItemFieldValuesProvider =
@@ -479,7 +479,7 @@ public class FragmentEntryProcessorHelperImpl
 	private InfoItemServiceTracker _infoItemServiceTracker;
 
 	@Reference
-	private InfoSearchClassMapperTracker _infoSearchClassMapperTracker;
+	private InfoSearchClassMapperRegistry _infoSearchClassMapperRegistry;
 
 	@Reference
 	private JSONFactory _jsonFactory;

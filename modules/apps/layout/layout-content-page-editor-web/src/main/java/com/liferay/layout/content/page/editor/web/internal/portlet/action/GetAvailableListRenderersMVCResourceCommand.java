@@ -16,7 +16,7 @@ package com.liferay.layout.content.page.editor.web.internal.portlet.action;
 
 import com.liferay.info.list.renderer.InfoListRenderer;
 import com.liferay.info.list.renderer.InfoListRendererTracker;
-import com.liferay.info.search.InfoSearchClassMapperTracker;
+import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -58,7 +58,7 @@ public class GetAvailableListRenderersMVCResourceCommand
 
 		List<InfoListRenderer<?>> infoListRenderers =
 			_infoListRendererTracker.getInfoListRenderers(
-				_infoSearchClassMapperTracker.getClassName(
+				_infoSearchClassMapperRegistry.getClassName(
 					ParamUtil.getString(resourceRequest, "className")));
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
@@ -81,7 +81,7 @@ public class GetAvailableListRenderersMVCResourceCommand
 	private InfoListRendererTracker _infoListRendererTracker;
 
 	@Reference
-	private InfoSearchClassMapperTracker _infoSearchClassMapperTracker;
+	private InfoSearchClassMapperRegistry _infoSearchClassMapperRegistry;
 
 	@Reference
 	private JSONFactory _jsonFactory;

@@ -79,18 +79,6 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 		applyConfigurations();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(operation.mode=SIDECAR)"
-	)
-	protected void addSettingsContributor(
-		SettingsContributor settingsContributor) {
-
-		_settingsContributors.add(settingsContributor);
-	}
-
 	protected void applyConfigurations() {
 		if (operationModeResolver.isProductionModeEnabled()) {
 			elasticsearchConnectionManager.removeElasticsearchConnection(
@@ -115,10 +103,17 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 				_sidecar.stop();
 			}
 
+			Set<SettingsContributor> settingsContributorSet =
+				new ConcurrentSkipListSet<>();
+
+			if (_settingsContributor != null) {
+				settingsContributorSet.add(_settingsContributor);
+			}
+
 			_sidecar = new Sidecar(
 				clusterExecutor, elasticsearchConfigurationWrapper,
 				_getElasticsearchInstancePaths(), processExecutor,
-				new ProcessExecutorPathsImpl(props), _settingsContributors,
+				new ProcessExecutorPathsImpl(props), settingsContributorSet,
 				this);
 
 			ElasticsearchConnectionBuilder elasticsearchConnectionBuilder =
@@ -153,12 +148,6 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 	protected boolean isStartupSuccessful() {
 		return _startupSuccessful;
-	}
-
-	protected void removeSettingsContributor(
-		SettingsContributor settingsContributor) {
-
-		_settingsContributors.remove(settingsContributor);
 	}
 
 	@Reference
@@ -222,8 +211,14 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
 
-	private final Set<SettingsContributor> _settingsContributors =
-		new ConcurrentSkipListSet<>();
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(operation.mode=SIDECAR)"
+	)
+	private volatile SettingsContributor _settingsContributor;
+
 	private Sidecar _sidecar;
 	private boolean _startupSuccessful;
 

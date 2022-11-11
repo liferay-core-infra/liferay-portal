@@ -58,6 +58,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.junit.Assert;
@@ -319,10 +320,26 @@ public class JournalTransformerTest {
 	}
 
 	protected void initRegexTransformerListener() {
-		TransformerListener transformerListener =
-			_journalTransformerListenerRegistry.getTransformerListener(
-				"com.liferay.journal.internal.transformer." +
-					"RegexTransformerListener");
+		List<TransformerListener> transformerListeners =
+			_journalTransformerListenerRegistry.getTransformerListeners();
+
+		TransformerListener transformerListener = null;
+
+		for (TransformerListener currentTransformerListener :
+				transformerListeners) {
+
+			Class<?> clazz = currentTransformerListener.getClass();
+
+			if (Objects.equals(
+					clazz.getName(),
+					"com.liferay.journal.internal.transformer." +
+						"RegexTransformerListener")) {
+
+				transformerListener = currentTransformerListener;
+
+				break;
+			}
+		}
 
 		CacheRegistryUtil.setActive(true);
 

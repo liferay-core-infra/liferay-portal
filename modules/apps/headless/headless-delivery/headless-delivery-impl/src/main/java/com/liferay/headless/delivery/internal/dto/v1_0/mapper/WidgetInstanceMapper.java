@@ -18,8 +18,10 @@ import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.headless.delivery.dto.v1_0.WidgetInstance;
 import com.liferay.headless.delivery.dto.v1_0.WidgetPermission;
 import com.liferay.layout.page.template.exporter.PortletConfigurationExporter;
-import com.liferay.layout.page.template.exporter.PortletConfigurationExporterRegistry;
 import com.liferay.layout.page.template.exporter.PortletPreferencesPortletConfigurationExporter;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -47,7 +49,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -77,6 +82,21 @@ public class WidgetInstanceMapper {
 		};
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, PortletConfigurationExporter.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(portletConfigurationExporter, emitter) -> emitter.emit(
+					portletConfigurationExporter.getPortletName())));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
+	}
+
 	private Map<String, Object> _getWidgetConfig(long plid, String portletId) {
 		Layout layout = _layoutLocalService.fetchLayout(plid);
 
@@ -93,8 +113,7 @@ public class WidgetInstanceMapper {
 		}
 
 		PortletConfigurationExporter portletConfigurationExporter =
-			_portletConfigurationExporterRegistry.
-				getPortletConfigurationExporter(portletName);
+			_serviceTrackerMap.getService(portletName);
 
 		if (portletConfigurationExporter != null) {
 			return portletConfigurationExporter.getPortletConfiguration(
@@ -228,10 +247,6 @@ public class WidgetInstanceMapper {
 	private Portal _portal;
 
 	@Reference
-	private PortletConfigurationExporterRegistry
-		_portletConfigurationExporterRegistry;
-
-	@Reference
 	private PortletLocalService _portletLocalService;
 
 	@Reference
@@ -249,6 +264,9 @@ public class WidgetInstanceMapper {
 
 	@Reference
 	private RoleLocalService _roleLocalService;
+
+	private ServiceTrackerMap<String, PortletConfigurationExporter>
+		_serviceTrackerMap;
 
 	@Reference
 	private TeamLocalService _teamLocalService;

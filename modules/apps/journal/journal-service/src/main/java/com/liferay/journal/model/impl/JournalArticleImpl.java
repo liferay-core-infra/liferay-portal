@@ -79,6 +79,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -98,9 +99,25 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	public static String getContentByLocale(
 		Document document, String languageId, Map<String, String> tokens) {
 
-		TransformerListener transformerListener =
-			JournalTransformerListenerRegistryUtil.getTransformerListener(
-				LocaleTransformerListener.class.getName());
+		List<TransformerListener> transformerListeners =
+			JournalTransformerListenerRegistryUtil.getTransformerListeners();
+
+		TransformerListener transformerListener = null;
+
+		for (TransformerListener currentTransformerListener :
+				transformerListeners) {
+
+			Class<?> clazz = currentTransformerListener.getClass();
+
+			if (Objects.equals(
+					LocaleTransformerListener.class.getName(),
+					clazz.getName())) {
+
+				transformerListener = currentTransformerListener;
+
+				break;
+			}
+		}
 
 		if (transformerListener != null) {
 			document = transformerListener.onXml(

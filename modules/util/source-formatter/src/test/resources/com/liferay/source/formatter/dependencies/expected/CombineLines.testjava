@@ -35,7 +35,6 @@ import java.util.Set;
  * @author Hugo Huijser
  */
 @Component(
-	immediate = true,
 	property = {"editor.config.key=contentEditor", "service.ranking:Integer=0"},
 	service = {AddPortletProvider.class, ViewPortletProvider.class}
 )

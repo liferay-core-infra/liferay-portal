@@ -16,6 +16,7 @@ package com.liferay.portal.search.web.internal.facet;
 
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.portal.kernel.search.SearchEngineHelper;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.internal.asset.AssetRendererFactoryRegistry;
 import com.liferay.portal.search.internal.asset.SearchableAssetClassNamesProviderImpl;
@@ -51,18 +52,18 @@ public class AssetEntriesSearchFacetTest {
 
 		_searchEngineHelper = Mockito.mock(SearchEngineHelper.class);
 
-		assetEntriesSearchFacet = new AssetEntriesSearchFacet() {
+		assetEntriesSearchFacet = new AssetEntriesSearchFacet();
+
+		ReflectionTestUtil.setFieldValue(
+			assetEntriesSearchFacet,
+			"_searchableAssetClassNamesProvider",
+			new SearchableAssetClassNamesProviderImpl() {
 			{
-				searchableAssetClassNamesProvider =
-					new SearchableAssetClassNamesProviderImpl() {
-						{
-							assetRendererFactoryRegistry =
-								_assetRendererFactoryRegistry;
-							searchEngineHelper = _searchEngineHelper;
-						}
-					};
+				assetRendererFactoryRegistry =
+					_assetRendererFactoryRegistry;
+				searchEngineHelper = _searchEngineHelper;
 			}
-		};
+		});
 
 		_mockAssetRendererFactoryGetClassName(
 			assetRendererFactory1, CLASS_NAME_1);

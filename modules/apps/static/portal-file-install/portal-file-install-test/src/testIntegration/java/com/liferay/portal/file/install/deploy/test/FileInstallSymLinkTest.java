@@ -113,11 +113,11 @@ public class FileInstallSymLinkTest {
 		String configKey = "testKey";
 		String configValue = "testValue";
 
-		String content = _getContent(configKey, configValue);
-
 		_configuration = ConfigurationTestUtil.updateConfiguration(
 			configurationPid,
-			() -> Files.write(configFile.toPath(), content.getBytes()));
+			() -> FileUtils.writeStringToFile(
+				configFile, _getContent(configKey, configValue),
+				Charset.defaultCharset()));
 
 		Dictionary<String, Object> dictionary = _configuration.getProperties();
 
@@ -135,9 +135,9 @@ public class FileInstallSymLinkTest {
 		String configKey = "testKey";
 		String configValue = "testValue";
 
-		String content = _getContent(configKey, configValue);
-
-		Path configPath = Files.write(configFile.toPath(), content.getBytes());
+		FileUtils.writeStringToFile(
+			configFile, _getContent(configKey, configValue),
+			Charset.defaultCharset());
 
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testConfigurationWithSymbolicLink");
@@ -148,7 +148,8 @@ public class FileInstallSymLinkTest {
 
 		_configuration = ConfigurationTestUtil.updateConfiguration(
 			configurationPid,
-			() -> Files.createSymbolicLink(_symbolicLinkPath, configPath));
+			() -> Files.createSymbolicLink(
+				_symbolicLinkPath, configFile.toPath()));
 
 		Dictionary<String, Object> dictionary = _configuration.getProperties();
 
@@ -167,14 +168,14 @@ public class FileInstallSymLinkTest {
 		String configKey = "testKey";
 		String configValue = "testValue";
 
-		String content = _getContent(configKey, configValue);
-
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testConfigurationWithSymbolicLinkFolder");
 
 		_configuration = ConfigurationTestUtil.updateConfiguration(
 			configurationPid,
-			() -> Files.write(configFile.toPath(), content.getBytes()));
+			() -> FileUtils.writeStringToFile(
+				configFile, _getContent(configKey, configValue),
+				Charset.defaultCharset()));
 
 		Dictionary<String, Object> dictionary = _configuration.getProperties();
 
@@ -192,10 +193,9 @@ public class FileInstallSymLinkTest {
 		String originalKey = "originalKey";
 		String originalValue = "originalValue";
 
-		String originalContent = _getContent(originalKey, originalValue);
-
-		Path configPath = Files.write(
-			configFile.toPath(), originalContent.getBytes());
+		FileUtils.writeStringToFile(
+			configFile, _getContent(originalKey, originalValue),
+			Charset.defaultCharset());
 
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testUpdateConfigurationWithSymbolicLink");
@@ -206,17 +206,17 @@ public class FileInstallSymLinkTest {
 
 		ConfigurationTestUtil.updateConfiguration(
 			configurationPid,
-			() -> Files.createSymbolicLink(_symbolicLinkPath, configPath));
+			() -> Files.createSymbolicLink(
+				_symbolicLinkPath, configFile.toPath()));
 
 		String updatedKey = "testKey";
 		String updatedValue = "testValue";
 
-		String updatedContent = _getContent(updatedKey, updatedValue);
-
 		_configuration = ConfigurationTestUtil.updateConfiguration(
 			configurationPid,
 			() -> FileUtils.writeStringToFile(
-				configFile, updatedContent, Charset.defaultCharset()));
+				configFile, _getContent(updatedKey, updatedValue),
+				Charset.defaultCharset()));
 
 		Dictionary<String, Object> dictionary = _configuration.getProperties();
 
@@ -235,22 +235,23 @@ public class FileInstallSymLinkTest {
 			_customConfigurationDirectory,
 			RandomTestUtil.randomString() + ".config");
 
-		String content = _getContent(
-			RandomTestUtil.randomString(), RandomTestUtil.randomString());
-
-		Files.write(configFile.toPath(), content.getBytes());
+		FileUtils.writeStringToFile(
+			configFile,
+			_getContent(
+				RandomTestUtil.randomString(), RandomTestUtil.randomString()),
+			Charset.defaultCharset());
 
 		String updatedKey = "testKey";
 		String updatedValue = "testValue";
-
-		String updatedContent = _getContent(updatedKey, updatedValue);
 
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testConfigurationWithSymbolicLinkFolder");
 
 		_configuration = ConfigurationTestUtil.updateConfiguration(
 			configurationPid,
-			() -> Files.write(configFile.toPath(), updatedContent.getBytes()));
+			() -> FileUtils.writeStringToFile(
+				configFile, _getContent(updatedKey, updatedValue),
+				Charset.defaultCharset()));
 
 		Dictionary<String, Object> dictionary = _configuration.getProperties();
 

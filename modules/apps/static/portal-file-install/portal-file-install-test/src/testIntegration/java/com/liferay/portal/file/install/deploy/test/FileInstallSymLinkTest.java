@@ -97,10 +97,9 @@ public class FileInstallSymLinkTest {
 	public void testConfigurationWithDanglingSymbolicLink() throws Exception {
 		_createOSGiConfigFolder(false);
 
-		String fileName = RandomTestUtil.randomString();
-
 		File configFile = new File(
-			_customConfigurationDirectory, fileName.concat(".config"));
+			_customConfigurationDirectory,
+			RandomTestUtil.randomString() + ".config");
 
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testConfigurationWithDanglingSymbolicLink");
@@ -133,10 +132,9 @@ public class FileInstallSymLinkTest {
 	public void testConfigurationWithSymbolicLink() throws Exception {
 		_createOSGiConfigFolder(false);
 
-		String fileName = RandomTestUtil.randomString();
-
 		File configFile = new File(
-			_customConfigurationDirectory, fileName.concat(".config"));
+			_customConfigurationDirectory,
+			RandomTestUtil.randomString() + ".config");
 
 		String configKey = "testKey";
 		String configValue = "testValue";
@@ -168,10 +166,9 @@ public class FileInstallSymLinkTest {
 	public void testConfigurationWithSymbolicLinkFolder() throws Exception {
 		_createOSGiConfigFolder(true);
 
-		String fileName = RandomTestUtil.randomString();
-
 		File configFile = new File(
-			_customConfigurationDirectory, fileName.concat(".config"));
+			_customConfigurationDirectory,
+			RandomTestUtil.randomString() + ".config");
 
 		String configKey = "testKey";
 		String configValue = "testValue";
@@ -196,10 +193,9 @@ public class FileInstallSymLinkTest {
 	public void testUpdateConfigurationWithSymbolicLink() throws Exception {
 		_createOSGiConfigFolder(false);
 
-		String fileName = RandomTestUtil.randomString();
-
 		File configFile = new File(
-			_customConfigurationDirectory, fileName.concat(".config"));
+			_customConfigurationDirectory,
+			RandomTestUtil.randomString() + ".config");
 
 		String originalKey = "originalKey";
 		String originalValue = "originalValue";
@@ -243,10 +239,9 @@ public class FileInstallSymLinkTest {
 
 		_createOSGiConfigFolder(true);
 
-		String fileName = RandomTestUtil.randomString();
-
 		File configFile = new File(
-			_customConfigurationDirectory, fileName.concat(".config"));
+			_customConfigurationDirectory,
+			RandomTestUtil.randomString() + ".config");
 
 		String content = _getContent(
 			RandomTestUtil.randomString(), RandomTestUtil.randomString());

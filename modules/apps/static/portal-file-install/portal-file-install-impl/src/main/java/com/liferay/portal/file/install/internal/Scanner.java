@@ -17,7 +17,9 @@ package com.liferay.portal.file.install.internal;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -30,6 +32,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,6 +43,8 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.CRC32;
+
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * @author Matthew Tambara
@@ -214,6 +219,18 @@ public class Scanner {
 
 		for (File file : list) {
 			if (file.isDirectory()) {
+				continue;
+			}
+
+			String path = file.getParent();
+			String extention = FilenameUtils.getExtension(file.getName());
+			List<String> extentions = new ArrayList<>(
+				Arrays.asList("config", "cfg"));
+
+			if (extentions.contains(extention) &&
+				!StringUtil.equals(
+					path, PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR)) {
+
 				continue;
 			}
 

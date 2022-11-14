@@ -80,7 +80,7 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
  * @author Jorge Ferrer
  * @author Shuyang Zhou
  */
-@Component(immediate = true, service = SettingsLocatorHelper.class)
+@Component(service = SettingsLocatorHelper.class)
 public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 	@Override

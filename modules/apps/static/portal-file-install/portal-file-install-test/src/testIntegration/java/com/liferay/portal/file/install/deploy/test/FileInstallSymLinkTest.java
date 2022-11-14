@@ -168,11 +168,9 @@ public class FileInstallSymLinkTest {
 		String configKey = "testKey";
 		String configValue = "testValue";
 
-		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
-			".testConfigurationWithSymbolicLinkFolder");
-
 		_configuration = ConfigurationTestUtil.updateConfiguration(
-			configurationPid,
+			_CONFIGURATION_PID_PREFIX.concat(
+				".testConfigurationWithSymbolicLinkFolder"),
 			() -> FileUtils.writeStringToFile(
 				configFile, _getContent(configKey, configValue),
 				Charset.defaultCharset()));
@@ -244,11 +242,9 @@ public class FileInstallSymLinkTest {
 		String updatedKey = "testKey";
 		String updatedValue = "testValue";
 
-		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
-			".testConfigurationWithSymbolicLinkFolder");
-
 		_configuration = ConfigurationTestUtil.updateConfiguration(
-			configurationPid,
+			_CONFIGURATION_PID_PREFIX.concat(
+				".testConfigurationWithSymbolicLinkFolder"),
 			() -> FileUtils.writeStringToFile(
 				configFile, _getContent(updatedKey, updatedValue),
 				Charset.defaultCharset()));

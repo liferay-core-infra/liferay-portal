@@ -15,15 +15,23 @@
 package com.liferay.dynamic.data.mapping.internal.io.exporter;
 
 import com.liferay.dynamic.data.mapping.io.exporter.DDMFormInstanceRecordWriter;
-import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Leonardo Barros
@@ -35,19 +43,37 @@ public class DDMFormInstanceRecordWriterRegistryImplTest {
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@Before
+	public void setUp() {
+		_ddmFormInstanceRecordWriterRegistryImpl =
+			new DDMFormInstanceRecordWriterRegistryImpl();
+
+		_bundleContext = SystemBundleUtil.getBundleContext();
+
+		_ddmFormInstanceRecordWriterRegistryImpl.activate(_bundleContext);
+	}
+
+	@After
+	public void tearDown() {
+		_ddmFormInstanceRecordWriterRegistryImpl.deactivate();
+
+		for (ServiceRegistration<DDMFormInstanceRecordWriter>
+				serviceRegistration : _serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
+
+		_serviceRegistrations.clear();
+	}
+
 	@Test
 	public void testDeactivate() {
-		DDMFormInstanceRecordWriterRegistryImpl
-			ddmFormInstanceRecordWriterRegistryImpl =
-				new DDMFormInstanceRecordWriterRegistryImpl();
+		_addDDMFormInstanceRecordCSVWriter();
 
-		_addDDMFormInstanceRecordCSVWriter(
-			ddmFormInstanceRecordWriterRegistryImpl);
-
-		ddmFormInstanceRecordWriterRegistryImpl.deactivate();
+		_ddmFormInstanceRecordWriterRegistryImpl.deactivate();
 
 		Map<String, String> ddmFormInstanceRecordWriterExtensions =
-			ddmFormInstanceRecordWriterRegistryImpl.
+			_ddmFormInstanceRecordWriterRegistryImpl.
 				getDDMFormInstanceRecordWriterExtensions();
 
 		Assert.assertTrue(ddmFormInstanceRecordWriterExtensions.isEmpty());
@@ -55,15 +81,10 @@ public class DDMFormInstanceRecordWriterRegistryImplTest {
 
 	@Test
 	public void testGetDDMFormInstanceRecordWriter() {
-		DDMFormInstanceRecordWriterRegistryImpl
-			ddmFormInstanceRecordWriterRegistryImpl =
-				new DDMFormInstanceRecordWriterRegistryImpl();
-
-		_addDDMFormInstanceRecordCSVWriter(
-			ddmFormInstanceRecordWriterRegistryImpl);
+		_addDDMFormInstanceRecordCSVWriter();
 
 		DDMFormInstanceRecordWriter ddmFormInstanceRecordWriter =
-			ddmFormInstanceRecordWriterRegistryImpl.
+			_ddmFormInstanceRecordWriterRegistryImpl.
 				getDDMFormInstanceRecordWriter("csv");
 
 		Assert.assertTrue(
@@ -73,15 +94,10 @@ public class DDMFormInstanceRecordWriterRegistryImplTest {
 
 	@Test
 	public void testGetDDMFormInstanceRecordWriterDefaultUpperCaseExtension() {
-		DDMFormInstanceRecordWriterRegistryImpl
-			ddmFormInstanceRecordWriterRegistryImpl =
-				new DDMFormInstanceRecordWriterRegistryImpl();
-
-		_addDDMFormInstanceRecordXMLWriter(
-			ddmFormInstanceRecordWriterRegistryImpl);
+		_addDDMFormInstanceRecordXMLWriter();
 
 		Map<String, String> ddmFormInstanceRecordWriterExtensions =
-			ddmFormInstanceRecordWriterRegistryImpl.
+			_ddmFormInstanceRecordWriterRegistryImpl.
 				getDDMFormInstanceRecordWriterExtensions();
 
 		Assert.assertEquals(
@@ -90,17 +106,11 @@ public class DDMFormInstanceRecordWriterRegistryImplTest {
 
 	@Test
 	public void testGetDDMFormInstanceRecordWriterTypes() {
-		DDMFormInstanceRecordWriterRegistryImpl
-			ddmFormInstanceRecordWriterRegistryImpl =
-				new DDMFormInstanceRecordWriterRegistryImpl();
-
-		_addDDMFormInstanceRecordCSVWriter(
-			ddmFormInstanceRecordWriterRegistryImpl);
-		_addDDMFormInstanceRecordJSONWriter(
-			ddmFormInstanceRecordWriterRegistryImpl);
+		_addDDMFormInstanceRecordCSVWriter();
+		_addDDMFormInstanceRecordJSONWriter();
 
 		Map<String, String> ddmFormInstanceRecordWriterExtensions =
-			ddmFormInstanceRecordWriterRegistryImpl.
+			_ddmFormInstanceRecordWriterRegistryImpl.
 				getDDMFormInstanceRecordWriterExtensions();
 
 		Assert.assertEquals(
@@ -111,64 +121,60 @@ public class DDMFormInstanceRecordWriterRegistryImplTest {
 
 	@Test
 	public void testRemoveDDMFormInstanceRecordWriter() {
-		DDMFormInstanceRecordWriterRegistryImpl
-			ddmFormInstanceRecordWriterRegistryImpl =
-				new DDMFormInstanceRecordWriterRegistryImpl();
+		_addDDMFormInstanceRecordCSVWriter();
 
-		_addDDMFormInstanceRecordCSVWriter(
-			ddmFormInstanceRecordWriterRegistryImpl);
-		_addDDMFormInstanceRecordJSONWriter(
-			ddmFormInstanceRecordWriterRegistryImpl);
+		Assert.assertNotNull(
+			_ddmFormInstanceRecordWriterRegistryImpl.
+				getDDMFormInstanceRecordWriter("csv"));
 
-		ddmFormInstanceRecordWriterRegistryImpl.
-			removeDDMFormInstanceRecordWriter(
-				new DDMFormInstanceRecordCSVWriter(),
-				HashMapBuilder.<String, Object>put(
-					"ddm.form.instance.record.writer.extension", "csv"
-				).put(
-					"ddm.form.instance.record.writer.type", "csv"
-				).build());
+		ServiceRegistration<DDMFormInstanceRecordWriter> serviceRegistration =
+			_serviceRegistrations.remove(0);
+
+		serviceRegistration.unregister();
 
 		Assert.assertNull(
-			ddmFormInstanceRecordWriterRegistryImpl.
+			_ddmFormInstanceRecordWriterRegistryImpl.
 				getDDMFormInstanceRecordWriter("csv"));
 	}
 
-	private void _addDDMFormInstanceRecordCSVWriter(
-		DDMFormInstanceRecordWriterRegistryImpl
-			ddmFormInstanceRecordWriterRegistryImpl) {
-
-		ddmFormInstanceRecordWriterRegistryImpl.addDDMFormInstanceRecordWriter(
-			new DDMFormInstanceRecordCSVWriter(),
-			HashMapBuilder.<String, Object>put(
-				"ddm.form.instance.record.writer.extension", "csv"
-			).put(
-				"ddm.form.instance.record.writer.type", "csv"
-			).build());
+	private void _addDDMFormInstanceRecordCSVWriter() {
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				DDMFormInstanceRecordWriter.class,
+				new DDMFormInstanceRecordCSVWriter(),
+				HashMapDictionaryBuilder.put(
+					"ddm.form.instance.record.writer.extension", "csv"
+				).put(
+					"ddm.form.instance.record.writer.type", "csv"
+				).build()));
 	}
 
-	private void _addDDMFormInstanceRecordJSONWriter(
-		DDMFormInstanceRecordWriterRegistryImpl
-			ddmFormInstanceRecordWriterRegistryImpl) {
-
-		ddmFormInstanceRecordWriterRegistryImpl.addDDMFormInstanceRecordWriter(
-			new DDMFormInstanceRecordJSONWriter(),
-			HashMapBuilder.<String, Object>put(
-				"ddm.form.instance.record.writer.extension", "json"
-			).put(
-				"ddm.form.instance.record.writer.type", "json"
-			).build());
+	private void _addDDMFormInstanceRecordJSONWriter() {
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				DDMFormInstanceRecordWriter.class,
+				new DDMFormInstanceRecordJSONWriter(),
+				HashMapDictionaryBuilder.put(
+					"ddm.form.instance.record.writer.extension", "json"
+				).put(
+					"ddm.form.instance.record.writer.type", "json"
+				).build()));
 	}
 
-	private void _addDDMFormInstanceRecordXMLWriter(
-		DDMFormInstanceRecordWriterRegistryImpl
-			ddmFormInstanceRecordWriterRegistryImpl) {
-
-		ddmFormInstanceRecordWriterRegistryImpl.addDDMFormInstanceRecordWriter(
-			new DDMFormInstanceRecordXMLWriter(),
-			HashMapBuilder.<String, Object>put(
-				"ddm.form.instance.record.writer.type", "xml"
-			).build());
+	private void _addDDMFormInstanceRecordXMLWriter() {
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				DDMFormInstanceRecordWriter.class,
+				new DDMFormInstanceRecordXMLWriter(),
+				HashMapDictionaryBuilder.put(
+					"ddm.form.instance.record.writer.type", "xml"
+				).build()));
 	}
+
+	private BundleContext _bundleContext;
+	private DDMFormInstanceRecordWriterRegistryImpl
+		_ddmFormInstanceRecordWriterRegistryImpl;
+	private final List<ServiceRegistration<DDMFormInstanceRecordWriter>>
+		_serviceRegistrations = new ArrayList<>();
 
 }

@@ -113,15 +113,11 @@ public class FileInstallSymLinkTest {
 		String configKey = "testKey";
 		String configValue = "testValue";
 
+		String content = _getContent(configKey, configValue);
+
 		_configuration = ConfigurationTestUtil.updateConfiguration(
 			configurationPid,
-			() -> {
-				String content = StringBundler.concat(
-					configKey, StringPool.EQUAL, StringPool.QUOTE, configValue,
-					StringPool.QUOTE);
-
-				Files.write(configFile.toPath(), content.getBytes());
-			});
+			() -> Files.write(configFile.toPath(), content.getBytes()));
 
 		Dictionary<String, Object> dictionary = _configuration.getProperties();
 
@@ -139,9 +135,7 @@ public class FileInstallSymLinkTest {
 		String configKey = "testKey";
 		String configValue = "testValue";
 
-		String content = StringBundler.concat(
-			configKey, StringPool.EQUAL, StringPool.QUOTE, configValue,
-			StringPool.QUOTE);
+		String content = _getContent(configKey, configValue);
 
 		Path configPath = Files.write(configFile.toPath(), content.getBytes());
 
@@ -173,9 +167,7 @@ public class FileInstallSymLinkTest {
 		String configKey = "testKey";
 		String configValue = "testValue";
 
-		String content = StringBundler.concat(
-			configKey, StringPool.EQUAL, StringPool.QUOTE, configValue,
-			StringPool.QUOTE);
+		String content = _getContent(configKey, configValue);
 
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testConfigurationWithSymbolicLinkFolder");

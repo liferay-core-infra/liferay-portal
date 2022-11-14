@@ -118,7 +118,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Adam Brandizzi
  */
 @Component(
-	immediate = true,
 	property = "verify.process.name=com.liferay.calevent.importer",
 	service = VerifyProcess.class
 )

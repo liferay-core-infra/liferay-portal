@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.recent.documents.web.internal.configuration.RecentDocumentsConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	configurationPolicy = ConfigurationPolicy.OPTIONAL,
 	service = RecentDocumentsMessageListener.class
 )
 public class RecentDocumentsMessageListener extends BaseMessageListener {

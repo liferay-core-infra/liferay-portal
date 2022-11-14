@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  * @author Igor Beslic
  */
-@Component(immediate = true, service = {})
+@Component(service = {})
 public class OAuthUtil {
 
 	public static String getAccessTokenURI() {

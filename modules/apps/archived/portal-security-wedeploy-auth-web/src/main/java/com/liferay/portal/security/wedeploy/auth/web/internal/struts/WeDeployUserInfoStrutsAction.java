@@ -42,8 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Supritha Sundaram
  */
 @Component(
-	immediate = true, property = "path=/portal/wedeploy/user",
-	service = StrutsAction.class
+	property = "path=/portal/wedeploy/user", service = StrutsAction.class
 )
 public class WeDeployUserInfoStrutsAction implements StrutsAction {
 

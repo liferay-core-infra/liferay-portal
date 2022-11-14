@@ -55,7 +55,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Tomas Polesovsky
  */
 @Component(
-	immediate = true,
 	property = {
 		"auth.verifier.OAuthVerifier.send.body=true",
 		"auth.verifier.OAuthVerifier.urls.includes=/api/*"

@@ -22,7 +22,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Shinn Lok
  */
 @Component(
-	immediate = true,
 	property = {
 		"auth.public.path=" + OAuthConstants.PUBLIC_PATH_ACCESS_TOKEN,
 		"auth.public.path=" + OAuthConstants.PUBLIC_PATH_AUTHORIZE,

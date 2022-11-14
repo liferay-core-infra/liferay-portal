@@ -49,7 +49,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.security.sso.ntlm.configuration.NtlmConfiguration",
-	immediate = true,
 	property = {
 		"after-filter=SSO Ntlm Filter", "servlet-context-name=",
 		"servlet-filter-name=SSO Ntlm Post Filter", "url-pattern=/*"

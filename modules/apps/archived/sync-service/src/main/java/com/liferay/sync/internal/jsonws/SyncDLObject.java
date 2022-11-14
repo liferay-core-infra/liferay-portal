@@ -25,7 +25,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Shinn Lok
  */
 @Component(
-	immediate = true,
 	property = {
 		"json.web.service.context.name=sync-web",
 		"json.web.service.context.path=SyncDLObject"

@@ -39,7 +39,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.xsl.content.web.internal.configuration.XSLContentConfiguration",
-	immediate = true,
 	property = {
 		"com.liferay.portlet.css-class-wrapper=portlet-xsl-content",
 		"com.liferay.portlet.display-category=category.hidden",

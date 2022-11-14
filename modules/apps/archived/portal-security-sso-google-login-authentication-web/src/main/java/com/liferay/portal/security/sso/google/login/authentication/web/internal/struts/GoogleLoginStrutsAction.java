@@ -51,10 +51,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Federico Budassi
  * @author Stian Sigvartsen
  */
-@Component(
-	immediate = true, property = "path=/portal/google_login",
-	service = StrutsAction.class
-)
+@Component(property = "path=/portal/google_login", service = StrutsAction.class)
 public class GoogleLoginStrutsAction implements StrutsAction {
 
 	@Override

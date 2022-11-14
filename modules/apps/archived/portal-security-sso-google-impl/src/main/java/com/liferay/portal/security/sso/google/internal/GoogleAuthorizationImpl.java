@@ -72,7 +72,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.security.sso.google.configuration.GoogleAuthorizationConfiguration",
-	immediate = true, service = GoogleAuthorization.class
+	service = GoogleAuthorization.class
 )
 public class GoogleAuthorizationImpl implements GoogleAuthorization {
 

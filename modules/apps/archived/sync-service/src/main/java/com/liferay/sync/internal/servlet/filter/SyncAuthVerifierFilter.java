@@ -24,7 +24,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Shinn Lok
  */
 @Component(
-	immediate = true,
 	property = {
 		"filter.init.auth.verifier.OAuthVerifier.urls.includes=/sync/download/*",
 		"filter.init.auth.verifier.SyncAuthVerifier.urls.includes=/sync/download/*",

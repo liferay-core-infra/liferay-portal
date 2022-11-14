@@ -26,7 +26,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Luan Maoski
  */
 @Component(
-	immediate = true,
 	property = "model.class.name=com.liferay.mail.reader.model.Account",
 	service = BaseSearcher.class
 )

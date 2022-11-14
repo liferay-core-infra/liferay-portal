@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jonathan McCann
  */
-@Component(immediate = true, service = ModelListener.class)
+@Component(service = ModelListener.class)
 public class UserModelListener extends BaseSyncModelListener<User> {
 
 	@Override

@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Shinn Lok
  */
-@Component(immediate = true, service = SyncOAuthHelper.class)
+@Component(service = SyncOAuthHelper.class)
 public class SyncOAuthHelperImpl implements SyncOAuthHelper {
 
 	@Override

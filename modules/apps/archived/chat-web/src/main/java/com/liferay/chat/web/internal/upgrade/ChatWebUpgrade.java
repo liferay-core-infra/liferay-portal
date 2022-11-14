@@ -26,9 +26,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Peter Fellwock
  */
-@Component(
-	enabled = false, immediate = true, service = UpgradeStepRegistrator.class
-)
+@Component(enabled = false, service = UpgradeStepRegistrator.class)
 public class ChatWebUpgrade implements UpgradeStepRegistrator {
 
 	@Override

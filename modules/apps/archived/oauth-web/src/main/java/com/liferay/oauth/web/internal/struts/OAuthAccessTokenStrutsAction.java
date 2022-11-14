@@ -40,7 +40,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  */
 @Component(
-	immediate = true,
 	property = "path=" + OAuthConstants.PUBLIC_PATH_ACCESS_TOKEN,
 	service = StrutsAction.class
 )

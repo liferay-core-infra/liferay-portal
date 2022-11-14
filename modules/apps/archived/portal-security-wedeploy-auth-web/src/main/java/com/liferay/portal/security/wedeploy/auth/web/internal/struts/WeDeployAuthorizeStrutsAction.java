@@ -36,8 +36,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Supritha Sundaram
  */
 @Component(
-	immediate = true, property = "path=/portal/wedeploy/authorize",
-	service = StrutsAction.class
+	property = "path=/portal/wedeploy/authorize", service = StrutsAction.class
 )
 public class WeDeployAuthorizeStrutsAction implements StrutsAction {
 

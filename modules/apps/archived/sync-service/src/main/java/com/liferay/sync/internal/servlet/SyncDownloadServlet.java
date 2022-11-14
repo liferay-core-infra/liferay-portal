@@ -81,7 +81,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Dennis Ju
  */
 @Component(
-	immediate = true,
 	property = {
 		"osgi.http.whiteboard.context.path=/sync",
 		"osgi.http.whiteboard.servlet.name=com.liferay.sync.internal.servlet.SyncDownloadServlet",

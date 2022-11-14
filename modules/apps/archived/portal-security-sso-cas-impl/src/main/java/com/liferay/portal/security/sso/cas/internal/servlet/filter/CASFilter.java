@@ -83,7 +83,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.security.sso.cas.configuration.CASConfiguration",
-	immediate = true,
 	property = {
 		"before-filter=Auto Login Filter", "dispatcher=FORWARD",
 		"dispatcher=REQUEST", "servlet-context-name=",

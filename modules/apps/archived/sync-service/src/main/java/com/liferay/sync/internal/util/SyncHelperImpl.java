@@ -106,7 +106,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Dennis Ju
  */
-@Component(immediate = true, service = SyncHelper.class)
+@Component(service = SyncHelper.class)
 public class SyncHelperImpl implements SyncHelper {
 
 	@Override

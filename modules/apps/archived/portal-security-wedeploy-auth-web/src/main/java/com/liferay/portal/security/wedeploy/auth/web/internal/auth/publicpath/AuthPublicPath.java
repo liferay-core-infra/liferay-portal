@@ -20,7 +20,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Supritha Sundaram
  */
 @Component(
-	immediate = true,
 	property = {
 		"auth.public.path=/portal/wedeploy/access_token",
 		"auth.public.path=/portal/wedeploy/authorize",

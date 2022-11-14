@@ -50,7 +50,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Dennis Ju
  */
-@Component(immediate = true, service = SyncMaintenanceMessageListener.class)
+@Component(service = SyncMaintenanceMessageListener.class)
 public class SyncMaintenanceMessageListener extends BaseMessageListener {
 
 	public static final String DESTINATION_NAME =

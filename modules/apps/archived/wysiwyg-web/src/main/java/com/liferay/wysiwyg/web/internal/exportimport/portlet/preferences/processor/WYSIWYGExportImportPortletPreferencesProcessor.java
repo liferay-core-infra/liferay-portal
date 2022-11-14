@@ -33,7 +33,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Lianne Louie
  */
 @Component(
-	immediate = true,
 	property = "javax.portlet.name=" + WYSIWYGPortletKeys.WYSIWYG,
 	service = ExportImportPortletPreferencesProcessor.class
 )

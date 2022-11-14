@@ -24,7 +24,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Shinn Lok
  */
-@Component(immediate = true, service = SyncOAuthHelperUtil.class)
+@Component(service = SyncOAuthHelperUtil.class)
 public class SyncOAuthHelperUtil {
 
 	public static void enableOAuth(

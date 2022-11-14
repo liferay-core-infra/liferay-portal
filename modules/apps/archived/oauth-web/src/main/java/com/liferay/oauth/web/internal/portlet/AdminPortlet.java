@@ -37,7 +37,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Igor Beslic
  */
 @Component(
-	immediate = true,
 	property = {
 		"com.liferay.portlet.add-default-resource=false",
 		"com.liferay.portlet.css-class-wrapper=oauth-portlet oauth-portlet-admin",

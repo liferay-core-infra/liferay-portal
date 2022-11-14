@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 /**
  * @author Pavel Savinov
  */
-@Component(immediate = true, service = HtmlPreviewProcessorTracker.class)
+@Component(service = HtmlPreviewProcessorTracker.class)
 public class HtmlPreviewProcessorTrackerImpl
 	implements HtmlPreviewProcessorTracker {
 

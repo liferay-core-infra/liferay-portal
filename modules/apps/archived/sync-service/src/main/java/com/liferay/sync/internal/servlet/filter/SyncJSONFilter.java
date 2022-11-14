@@ -61,7 +61,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Shinn Lok
  */
 @Component(
-	immediate = true,
 	property = {
 		"after-filter=Upload Servlet Request Filter", "servlet-context-name=",
 		"servlet-filter-name=Sync JSON Filter", "url-pattern=/api/jsonws/*"

@@ -24,7 +24,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Shinn Lok
  */
 @Component(
-	immediate = true,
 	property = {
 		"osgi.http.whiteboard.filter.name=com.liferay.oauth.web.internal.servlet.filter.OAuthAutoLoginFilter",
 		"osgi.http.whiteboard.filter.pattern=/c/portal/oauth/*"

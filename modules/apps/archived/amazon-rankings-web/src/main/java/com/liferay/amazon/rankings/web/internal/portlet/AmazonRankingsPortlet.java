@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.amazon.rankings.web.internal.configuration.AmazonRankingsConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	configurationPolicy = ConfigurationPolicy.OPTIONAL,
 	property = {
 		"com.liferay.portlet.css-class-wrapper=portlet-amazon-rankings",
 		"com.liferay.portlet.display-category=category.shopping",

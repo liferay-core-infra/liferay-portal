@@ -32,7 +32,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Daniel Couso
  */
 @Component(
-	immediate = true,
 	property = {
 		"before-filter=Valid Host Name Filter", "dispatcher=FORWARD",
 		"dispatcher=REQUEST", "servlet-context-name=",

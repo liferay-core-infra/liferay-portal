@@ -32,7 +32,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Stian Sigvartsen
  */
 @Component(
-	immediate = true,
 	property = "verify.process.name=com.liferay.portal.security.sso.google",
 	service = VerifyProcess.class
 )

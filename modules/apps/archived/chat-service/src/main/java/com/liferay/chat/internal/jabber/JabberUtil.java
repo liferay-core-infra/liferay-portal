@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.chat.configuration.ChatConfiguration",
 	configurationPolicy = ConfigurationPolicy.OPTIONAL, enabled = false,
-	immediate = true, service = JabberUtil.class
+	service = JabberUtil.class
 )
 public class JabberUtil {
 

@@ -27,7 +27,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Supritha Sundaram
  */
 @Component(
-	immediate = true,
 	property = {
 		"javax.portlet.name=" + WeDeployAuthPortletKeys.WEDEPLOY_AUTH_ADMIN,
 		"mvc.command.name=/", "mvc.command.name=/wedeploy_auth_admin/view"

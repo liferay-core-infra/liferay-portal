@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Ivica Cardic
  */
 @Component(
-	immediate = true, property = "path=" + OAuthConstants.PUBLIC_PATH_AUTHORIZE,
+	property = "path=" + OAuthConstants.PUBLIC_PATH_AUTHORIZE,
 	service = StrutsAction.class
 )
 public class OAuthAuthorizeStrutsAction implements StrutsAction {

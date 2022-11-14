@@ -78,7 +78,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  * @author Igor Beslic
  */
-@Component(immediate = true, service = OAuth.class)
+@Component(service = OAuth.class)
 public class V10aOAuth implements IdentifiableOSGiService, OAuth {
 
 	@Override

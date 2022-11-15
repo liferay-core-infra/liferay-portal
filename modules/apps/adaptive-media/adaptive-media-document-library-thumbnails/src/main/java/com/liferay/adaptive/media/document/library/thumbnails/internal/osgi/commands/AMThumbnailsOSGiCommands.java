@@ -61,7 +61,7 @@ import org.osgi.service.component.annotations.Reference;
 		"osgi.command.function=check", "osgi.command.function=cleanUp",
 		"osgi.command.function=migrate", "osgi.command.scope=thumbnails"
 	},
-	service = AMThumbnailsOSGiCommands.class
+	service = {}
 )
 public class AMThumbnailsOSGiCommands {
 

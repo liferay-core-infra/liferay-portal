@@ -14,10 +14,13 @@
 
 package com.liferay.petra.sql.dsl.spi.query.sort;
 
+import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.ast.ASTNodeListener;
 import com.liferay.petra.sql.dsl.expression.Expression;
 import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
 import com.liferay.petra.sql.dsl.spi.ast.BaseASTNode;
+
+import java.sql.Types;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -33,6 +36,15 @@ public class DefaultOrderByExpression
 
 		_expression = Objects.requireNonNull(expression);
 		_ascending = ascending;
+
+		if (_expression instanceof Column) {
+			Column<?, ?> column = (Column<?, ?>)_expression;
+
+			_sqlType = column.getSQLType();
+		}
+		else {
+			_sqlType = Types.NULL;
+		}
 	}
 
 	@Override
@@ -49,7 +61,16 @@ public class DefaultOrderByExpression
 	protected void doToSQL(
 		Consumer<String> consumer, ASTNodeListener astNodeListener) {
 
-		_expression.toSQL(consumer, astNodeListener);
+		if (_sqlType == Types.CLOB) {
+			consumer.accept("CAST_CLOB_TEXT(");
+
+			_expression.toSQL(consumer, astNodeListener);
+
+			consumer.accept(")");
+		}
+		else {
+			_expression.toSQL(consumer, astNodeListener);
+		}
 
 		if (_ascending) {
 			consumer.accept(" asc");
@@ -61,5 +82,6 @@ public class DefaultOrderByExpression
 
 	private final boolean _ascending;
 	private final Expression<?> _expression;
+	private final int _sqlType;
 
 }

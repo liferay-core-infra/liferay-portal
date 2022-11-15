@@ -16,14 +16,14 @@ package com.liferay.layout.page.template.internal.exporter;
 
 import com.liferay.layout.page.template.exporter.PortletConfigurationExporter;
 import com.liferay.layout.page.template.exporter.PortletConfigurationExporterRegistry;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Jürgen Kappler
@@ -36,29 +36,25 @@ public class PortletConfigurationExporterRegistryImpl
 	public PortletConfigurationExporter getPortletConfigurationExporter(
 		String portletName) {
 
-		return _portletConfigurationExporters.get(portletName);
+		return _serviceTrackerMap.getService(portletName);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setPortletConfigurationExporter(
-		PortletConfigurationExporter portletConfigurationExporter) {
-
-		_portletConfigurationExporters.put(
-			portletConfigurationExporter.getPortletName(),
-			portletConfigurationExporter);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, PortletConfigurationExporter.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(portletConfigurationExporter, emitter) -> emitter.emit(
+					portletConfigurationExporter.getPortletName())));
 	}
 
-	protected void unsetPortletConfigurationExporter(
-		PortletConfigurationExporter portletConfigurationExporter) {
-
-		_portletConfigurationExporters.remove(
-			portletConfigurationExporter.getPortletName());
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
-	private final Map<String, PortletConfigurationExporter>
-		_portletConfigurationExporters = new ConcurrentHashMap<>();
+	private ServiceTrackerMap<String, PortletConfigurationExporter>
+		_serviceTrackerMap;
 
 }

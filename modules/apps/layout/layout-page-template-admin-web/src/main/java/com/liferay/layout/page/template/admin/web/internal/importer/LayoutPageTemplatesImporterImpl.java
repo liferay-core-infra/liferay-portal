@@ -35,7 +35,6 @@ import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.page.template.admin.web.internal.exception.DropzoneLayoutStructureItemException;
 import com.liferay.layout.page.template.admin.web.internal.headless.delivery.dto.v1_0.structure.importer.LayoutStructureItemImporter;
 import com.liferay.layout.page.template.admin.web.internal.headless.delivery.dto.v1_0.structure.importer.LayoutStructureItemImporterContext;
-import com.liferay.layout.page.template.admin.web.internal.headless.delivery.dto.v1_0.structure.importer.LayoutStructureItemImporterRegistry;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateExportImportConstants;
 import com.liferay.layout.page.template.exception.DisplayPageTemplateValidatorException;
@@ -60,6 +59,9 @@ import com.liferay.layout.util.constants.LayoutStructureConstants;
 import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -114,7 +116,10 @@ import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -212,6 +217,21 @@ public class LayoutPageTemplatesImporterImpl
 		return _importPageElement(
 			consumer, layout, layoutStructure, parentItemId, pageElementJSON,
 			position, segmentsExperienceId);
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, LayoutStructureItemImporter.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(layoutStructureItemImporter, emitter) -> emitter.emit(
+					layoutStructureItemImporter.getPageElementType())));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	private void _deleteExistingPortletPreferences(long plid) {
@@ -1127,8 +1147,7 @@ public class LayoutPageTemplatesImporterImpl
 		throws Exception {
 
 		LayoutStructureItemImporter layoutStructureItemImporter =
-			_layoutStructureItemImporterRegistry.getLayoutStructureItemImporter(
-				pageElement.getType());
+			_serviceTrackerMap.getService(pageElement.getType());
 
 		LayoutStructureItem layoutStructureItem = null;
 
@@ -1441,10 +1460,6 @@ public class LayoutPageTemplatesImporterImpl
 		_layoutPageTemplateStructureLocalService;
 
 	@Reference
-	private LayoutStructureItemImporterRegistry
-		_layoutStructureItemImporterRegistry;
-
-	@Reference
 	private Portal _portal;
 
 	@Reference
@@ -1455,6 +1470,9 @@ public class LayoutPageTemplatesImporterImpl
 
 	@Reference
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
+
+	private ServiceTrackerMap<PageElement.Type, LayoutStructureItemImporter>
+		_serviceTrackerMap;
 
 	@Reference
 	private StyleBookEntryLocalService _styleBookEntryLocalService;

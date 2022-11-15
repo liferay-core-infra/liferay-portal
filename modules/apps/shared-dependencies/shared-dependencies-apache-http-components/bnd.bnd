@@ -1,6 +1,12 @@
 Bundle-Name: Liferay Shared Dependencies Apache Http Components
 Bundle-SymbolicName: com.liferay.shared.dependencies.apache.http.components
 Bundle-Version: 1.0.2
+Import-Package:\
+	!net.sf.ehcache,\
+	\
+	!net.spy.memcached.*,\
+	\
+	*
 -exportcontents:\
 	org.apache.http,\
 	org.apache.http.auth,\

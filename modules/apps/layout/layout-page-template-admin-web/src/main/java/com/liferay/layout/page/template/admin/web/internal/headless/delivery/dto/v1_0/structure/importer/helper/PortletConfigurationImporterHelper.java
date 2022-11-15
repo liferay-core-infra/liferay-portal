@@ -14,9 +14,11 @@
 
 package com.liferay.layout.page.template.admin.web.internal.headless.delivery.dto.v1_0.structure.importer.helper;
 
-import com.liferay.layout.page.template.admin.web.internal.importer.PortletConfigurationImporterRegistry;
 import com.liferay.layout.page.template.importer.PortletConfigurationImporter;
 import com.liferay.layout.page.template.importer.PortletPreferencesPortletConfigurationImporter;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
@@ -25,7 +27,10 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 
 import java.util.Map;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,8 +62,7 @@ public class PortletConfigurationImporterHelper {
 		}
 
 		PortletConfigurationImporter portletConfigurationImporter =
-			_portletConfigurationImporterRegistry.
-				getPortletConfigurationImporter(portletName);
+			_serviceTrackerMap.getService(portletName);
 
 		if (portletConfigurationImporter != null) {
 			portletConfigurationImporter.importPortletConfiguration(
@@ -71,12 +75,23 @@ public class PortletConfigurationImporterHelper {
 		}
 	}
 
-	@Reference
-	private LayoutLocalService _layoutLocalService;
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, PortletConfigurationImporter.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(portletConfigurationImporter, emitter) -> emitter.emit(
+					portletConfigurationImporter.getPortletName())));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
+	}
 
 	@Reference
-	private PortletConfigurationImporterRegistry
-		_portletConfigurationImporterRegistry;
+	private LayoutLocalService _layoutLocalService;
 
 	@Reference
 	private PortletLocalService _portletLocalService;
@@ -84,5 +99,8 @@ public class PortletConfigurationImporterHelper {
 	@Reference
 	private PortletPreferencesPortletConfigurationImporter
 		_portletPreferencesPortletConfigurationImporter;
+
+	private ServiceTrackerMap<String, PortletConfigurationImporter>
+		_serviceTrackerMap;
 
 }

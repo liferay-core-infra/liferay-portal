@@ -17,6 +17,7 @@ package com.liferay.fragment.internal.processor;
 import com.liferay.fragment.contributor.PortletAliasRegistration;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.PortletRegistry;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -28,7 +29,7 @@ import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.render.PortletRenderParts;
 import com.liferay.portal.kernel.portlet.render.PortletRenderUtil;
 import com.liferay.portal.kernel.service.PortletLocalService;
-import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -48,14 +49,16 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Pavel Savinov
@@ -189,51 +192,84 @@ public class PortletRegistryImpl implements PortletRegistry {
 		}
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		target = "(com.liferay.fragment.entry.processor.portlet.alias=*)"
-	)
-	protected void setPortlet(
-		javax.portlet.Portlet jxPortlet, Map<String, Object> properties) {
+	@Activate
+	protected void activate(BundleContext bundleContext)
+		throws InvalidSyntaxException {
 
-		String alias = MapUtil.getString(
-			properties, "com.liferay.fragment.entry.processor.portlet.alias");
-		String portletName = MapUtil.getString(
-			properties, "javax.portlet.name");
+		String filterString = StringBundler.concat(
+			"(&(", _ALIAS_KEY, "=*)(objectClass=",
+			javax.portlet.Portlet.class.getName(), "))");
 
-		_portletNames.put(alias, portletName);
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, bundleContext.createFilter(filterString),
+			new ServiceTrackerCustomizer
+				<javax.portlet.Portlet, javax.portlet.Portlet>() {
 
-		Bundle bundle = FrameworkUtil.getBundle(jxPortlet.getClass());
+				@Override
+				public javax.portlet.Portlet addingService(
+					ServiceReference<javax.portlet.Portlet> serviceReference) {
 
-		BundleContext bundleContext = bundle.getBundleContext();
+					String alias = GetterUtil.getString(
+						serviceReference.getProperty(_ALIAS_KEY));
 
-		_serviceRegistrations.put(
-			alias,
-			bundleContext.registerService(
-				PortletAliasRegistration.class,
-				new PortletAliasRegistration() {
-				},
-				HashMapDictionaryBuilder.<String, Object>put(
-					"com.liferay.fragment.entry.processor.portlet.alias", alias
-				).build()));
+					_portletNames.put(
+						alias,
+						GetterUtil.getString(
+							serviceReference.getProperty(
+								"javax.portlet.name")));
+
+					_serviceRegistrations.put(
+						alias,
+						bundleContext.registerService(
+							PortletAliasRegistration.class,
+							new PortletAliasRegistration() {
+							},
+							MapUtil.singletonDictionary(_ALIAS_KEY, alias)));
+
+					return bundleContext.getService(serviceReference);
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<javax.portlet.Portlet> serviceReference,
+					javax.portlet.Portlet jxPortlet) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<javax.portlet.Portlet> serviceReference,
+					javax.portlet.Portlet jxPortlet) {
+
+					String alias = GetterUtil.getString(
+						serviceReference.getProperty(_ALIAS_KEY));
+
+					_portletNames.remove(
+						alias,
+						GetterUtil.getString(
+							serviceReference.getProperty(
+								"javax.portlet.name")));
+
+					bundleContext.ungetService(serviceReference);
+
+					ServiceRegistration<PortletAliasRegistration>
+						serviceRegistration = _serviceRegistrations.remove(
+							alias);
+
+					serviceRegistration.unregister();
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
-	protected void unsetPortlet(
-		javax.portlet.Portlet jxPortlet, Map<String, Object> properties) {
-
-		String alias = MapUtil.getString(
-			properties, "com.liferay.fragment.entry.processor.portlet.alias");
-		String portletName = MapUtil.getString(
-			properties, "javax.portlet.name");
-
-		_portletNames.remove(alias, portletName);
-
-		ServiceRegistration<PortletAliasRegistration> serviceRegistration =
-			_serviceRegistrations.remove(alias);
-
-		serviceRegistration.unregister();
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
+
+	private static final String _ALIAS_KEY =
+		"com.liferay.fragment.entry.processor.portlet.alias";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletRegistryImpl.class);
@@ -247,5 +283,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 	private final Map<String, String> _portletNames = new ConcurrentHashMap<>();
 	private final Map<String, ServiceRegistration<PortletAliasRegistration>>
 		_serviceRegistrations = new ConcurrentHashMap<>();
+	private ServiceTracker<javax.portlet.Portlet, javax.portlet.Portlet>
+		_serviceTracker;
 
 }

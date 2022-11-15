@@ -41,7 +41,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Tina Tian
  */
 @Component(
-	immediate = true,
 	service = {
 		CheckEntryMessageListener.class,
 		ClusterMasterTokenTransitionListener.class

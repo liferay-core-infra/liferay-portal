@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,14 +32,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * @author Raymond Augé
  */
 public class TemplateManagerUtil {
-
-	public static void destroy() {
-		for (TemplateManager templateManager : _templateManagers.values()) {
-			templateManager.destroy();
-		}
-
-		_templateManagers.clear();
-	}
 
 	public static Template getTemplate(
 			String templateManagerName, TemplateResource templateResource,
@@ -61,10 +52,6 @@ public class TemplateManagerUtil {
 
 	public static Set<String> getTemplateManagerNames() {
 		return _templateManagers.keySet();
-	}
-
-	public static Map<String, TemplateManager> getTemplateManagers() {
-		return Collections.unmodifiableMap(_templateManagers);
 	}
 
 	public static boolean hasTemplateManager(String templateManagerName) {

@@ -47,7 +47,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.redirect.internal.configuration.RedirectConfiguration",
-	immediate = true, service = MessageListener.class
+	service = MessageListener.class
 )
 public class CheckRedirectNotFoundEntriesMessageListener
 	extends BaseMessageListener {

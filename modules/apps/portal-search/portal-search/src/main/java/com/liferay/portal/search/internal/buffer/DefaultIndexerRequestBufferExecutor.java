@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.IndexWriterHelper;
+import com.liferay.portal.kernel.search.SearchException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,13 +32,14 @@ import org.osgi.util.tracker.ServiceTracker;
 /**
  * @author Michael C. Han
  */
-@Component(
-	immediate = true, property = "buffered.execution.mode=DEFAULT",
-	service = IndexerRequestBufferExecutor.class
-)
+@Component(immediate = true, service = IndexerRequestBufferExecutor.class)
 public class DefaultIndexerRequestBufferExecutor
-	extends BaseIndexerRequestBufferExecutor
 	implements IndexerRequestBufferExecutor {
+
+	@Override
+	public void execute(IndexerRequestBuffer indexerRequestBuffer) {
+		execute(indexerRequestBuffer, indexerRequestBuffer.size());
+	}
 
 	@Override
 	public void execute(
@@ -67,7 +69,7 @@ public class DefaultIndexerRequestBufferExecutor
 						indexerRequest));
 			}
 
-			executeIndexerRequest(indexerRequest);
+			_executeIndexerRequest(indexerRequest);
 
 			completedIndexerRequests.add(indexerRequest);
 
@@ -81,7 +83,7 @@ public class DefaultIndexerRequestBufferExecutor
 		}
 
 		if (!BufferOverflowThreadLocal.isOverflowMode()) {
-			commit();
+			_commit();
 		}
 	}
 
@@ -98,8 +100,41 @@ public class DefaultIndexerRequestBufferExecutor
 		_indexWriterHelperServiceTracker.close();
 	}
 
-	@Override
-	protected IndexWriterHelper getIndexWriterHelper() {
+	private void _commit() {
+		IndexWriterHelper indexWriterHelper = _getIndexWriterHelper();
+
+		if (indexWriterHelper == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Index writer helper is null");
+			}
+
+			return;
+		}
+
+		try {
+			indexWriterHelper.commit();
+		}
+		catch (SearchException searchException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to commit search engine", searchException);
+			}
+		}
+	}
+
+	private void _executeIndexerRequest(IndexerRequest indexerRequest) {
+		try {
+			indexerRequest.execute();
+		}
+		catch (Exception exception) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to execute index request " + indexerRequest,
+					exception);
+			}
+		}
+	}
+
+	private IndexWriterHelper _getIndexWriterHelper() {
 		return _indexWriterHelperServiceTracker.getService();
 	}
 

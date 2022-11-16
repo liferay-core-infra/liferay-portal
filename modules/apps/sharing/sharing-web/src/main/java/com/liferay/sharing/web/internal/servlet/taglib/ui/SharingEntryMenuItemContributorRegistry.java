@@ -39,9 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Adolfo Pérez
  */
-@Component(
-	immediate = true, service = SharingEntryMenuItemContributorRegistry.class
-)
+@Component(service = SharingEntryMenuItemContributorRegistry.class)
 public class SharingEntryMenuItemContributorRegistry {
 
 	public SharingEntryMenuItemContributor getSharingEntryMenuItemContributor(

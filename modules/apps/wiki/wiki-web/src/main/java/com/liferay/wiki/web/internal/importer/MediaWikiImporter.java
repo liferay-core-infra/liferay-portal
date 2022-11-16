@@ -79,10 +79,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alvaro del Castillo
  * @author Jorge Ferrer
  */
-@Component(
-	property = {"importer=MediaWiki", "page=/wiki/import/mediawiki.jsp"},
-	service = WikiImporter.class
-)
+@Component(property = "importer=MediaWiki", service = WikiImporter.class)
 public class MediaWikiImporter implements WikiImporter {
 
 	public static final String FORMAT_CREOLE = "creole";
@@ -98,6 +95,11 @@ public class MediaWikiImporter implements WikiImporter {
 	public static final String SHARED_IMAGES_CONTENT = "See attachments";
 
 	public static final String SHARED_IMAGES_TITLE = "SharedImages";
+
+	@Override
+	public String getPage() {
+		return "/wiki/import/mediawiki.jsp";
+	}
 
 	@Override
 	public void importPages(

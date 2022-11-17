@@ -843,7 +843,12 @@ public class SQLDSLTest {
 		OrderByExpression orderByExpression =
 			MainExampleTable.INSTANCE.nameColumn.ascending();
 
-		OrderByExpression[] orderByExpressions = {orderByExpression};
+		OrderByExpression orderByExpressionClob =
+			MainExampleTable.INSTANCE.descriptionColumn.descending();
+
+		OrderByExpression[] orderByExpressions = {
+			orderByExpression, orderByExpressionClob
+		};
 
 		OrderBy orderBy = new OrderBy(joinStep, orderByExpressions);
 
@@ -856,8 +861,10 @@ public class SQLDSLTest {
 			orderByExpression.toString(), orderByExpression.isAscending());
 
 		Assert.assertEquals(
-			"select MainExample.name from MainExample order by " +
-				"MainExample.name asc",
+			StringBundler.concat(
+				"select MainExample.name from MainExample order by ",
+				"MainExample.name asc, ",
+				"CAST_CLOB_TEXT(MainExample.description) desc"),
 			orderBy.toString());
 	}
 

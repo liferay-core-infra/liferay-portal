@@ -25,4 +25,10 @@ import org.osgi.service.component.annotations.Component;
 )
 public class DefaultDataLayoutBuilderDefinition
 	implements DataLayoutBuilderDefinition {
+
+	@Override
+	public String getContentType() {
+		return "default";
+	}
+
 }

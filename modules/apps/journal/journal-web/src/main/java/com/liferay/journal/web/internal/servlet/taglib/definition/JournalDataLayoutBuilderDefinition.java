@@ -44,6 +44,11 @@ public class JournalDataLayoutBuilderDefinition
 	}
 
 	@Override
+	public String getContentType() {
+		return "journal";
+	}
+
+	@Override
 	public String[] getDisabledProperties() {
 		return new String[] {
 			"objectFieldName", "predefinedValue", "requiredErrorMessage"

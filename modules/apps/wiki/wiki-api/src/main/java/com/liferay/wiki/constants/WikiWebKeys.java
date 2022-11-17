@@ -23,12 +23,11 @@ public class WikiWebKeys {
 
 	public static final String WIKI_ENGINE_RENDERER = "WIKI_ENGINE_RENDERER";
 
-	public static final String WIKI_IMPORTER_REGISTRY =
-		"WIKI_IMPORTER_REGISTRY";
-
 	public static final String WIKI_NODE = "WIKI_NODE";
 
 	public static final String WIKI_NODE_ID = "WIKI_NODE_ID";
+
+	public static final String WIKI_NODE_SERVICE = "WIKI_NODE_SERVICE";
 
 	public static final String WIKI_NODES = "WIKI_NODES";
 

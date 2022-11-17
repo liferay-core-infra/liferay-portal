@@ -16,13 +16,13 @@ package com.liferay.portal.tools;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.xml.SecureXMLFactoryProviderImpl;
+import com.liferay.portal.xml.DocumentImpl;
 import com.liferay.portal.xml.SAXReaderFactory;
 
 import java.io.BufferedReader;
@@ -89,10 +89,13 @@ public class XSLTBuilder {
 
 			Document document = _combineAndSortXMLs(xmls, prefix + ".xsl");
 
+			com.liferay.portal.kernel.xml.Document documentWrapper =
+				new DocumentImpl(document);
+
 			if (xmls.length > 1) {
 				String completeXml = prefix + "-complete.xml";
 
-				String completeContent = Dom4jUtil.toString(document);
+				String completeContent = documentWrapper.formattedString();
 
 				Files.write(
 					Paths.get(completeXml),

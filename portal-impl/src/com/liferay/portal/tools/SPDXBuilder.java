@@ -16,7 +16,6 @@ package com.liferay.portal.tools;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.util.CSVUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.xml.DocumentImpl;
 import com.liferay.portal.xml.SAXReaderFactory;
 
 import java.io.BufferedReader;
@@ -110,9 +110,12 @@ public class SPDXBuilder {
 			Document document = _getDocument(
 				xmls, spdxFile, licenseOverrideProperties);
 
+			com.liferay.portal.kernel.xml.Document documentWrapper =
+				new DocumentImpl(document);
+
 			_write(
 				new File(spdxFile.getParentFile(), "versions-spdx.xml"),
-				Dom4jUtil.toString(document));
+				documentWrapper.formattedString());
 
 			_write(
 				new File(spdxFile.getParentFile(), "versions-spdx.csv"),

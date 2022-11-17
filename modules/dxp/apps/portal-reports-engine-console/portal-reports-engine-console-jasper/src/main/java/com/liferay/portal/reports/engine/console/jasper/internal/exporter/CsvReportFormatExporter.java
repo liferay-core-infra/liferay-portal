@@ -14,6 +14,7 @@
 
 package com.liferay.portal.reports.engine.console.jasper.internal.exporter;
 
+import com.liferay.portal.reports.engine.ReportFormat;
 import com.liferay.portal.reports.engine.ReportFormatExporter;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -25,8 +26,13 @@ import org.osgi.service.component.annotations.Component;
  * @author Michael C. Han
  * @author Brian Wing Shun Chan
  */
-@Component(property = "reportFormat=csv", service = ReportFormatExporter.class)
+@Component(service = ReportFormatExporter.class)
 public class CsvReportFormatExporter extends BaseReportFormatExporter {
+
+	@Override
+	public ReportFormat getReportFormat() {
+		return ReportFormat.CSV;
+	}
 
 	@Override
 	protected JRExporter getJRExporter() {

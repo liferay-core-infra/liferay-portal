@@ -24,4 +24,6 @@ public interface ReportFormatExporter {
 			ReportResultContainer reportResultContainer)
 		throws ReportGenerationException;
 
+	public ReportFormat getReportFormat();
+
 }

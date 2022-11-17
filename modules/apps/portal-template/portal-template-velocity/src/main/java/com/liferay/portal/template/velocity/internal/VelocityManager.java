@@ -39,6 +39,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
@@ -55,17 +56,6 @@ import org.osgi.service.component.annotations.Reference;
 public class VelocityManager extends BaseTemplateManager {
 
 	@Override
-	public void destroy() {
-		if (_velocityEngine == null) {
-			return;
-		}
-
-		_velocityEngine = null;
-
-		_templateContextHelper.removeAllHelperUtilities();
-	}
-
-	@Override
 	public String getName() {
 		return TemplateConstants.LANG_TYPE_VM;
 	}
@@ -75,8 +65,74 @@ public class VelocityManager extends BaseTemplateManager {
 		return _velocityEngineConfiguration.restrictedVariables();
 	}
 
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties)
+		throws TemplateException {
+
+		_velocityEngineConfiguration = ConfigurableUtil.createConfigurable(
+			VelocityEngineConfiguration.class, properties);
+
+		_destroy();
+		_init();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_destroy();
+	}
+
 	@Override
-	public void init() throws TemplateException {
+	protected Template doGetTemplate(
+		TemplateResource templateResource, boolean restricted,
+		Map<String, Object> helperUtilities) {
+
+		return new VelocityTemplate(
+			templateResource, helperUtilities, _velocityEngine,
+			_templateContextHelper, _velocityTemplateResourceCache, restricted);
+	}
+
+	@Override
+	protected TemplateContextHelper getTemplateContextHelper() {
+		return _templateContextHelper;
+	}
+
+	private void _destroy() {
+		if (_velocityEngine == null) {
+			return;
+		}
+
+		_velocityEngine = null;
+
+		_templateContextHelper.removeAllHelperUtilities();
+	}
+
+	private String _getVelocimacroLibrary(Class<?> clazz) {
+		String contextName = ClassLoaderPool.getContextName(
+			clazz.getClassLoader());
+
+		contextName = contextName.concat(
+			TemplateConstants.CLASS_LOADER_SEPARATOR);
+
+		String[] velocimacroLibrary =
+			_velocityEngineConfiguration.velocimacroLibrary();
+
+		StringBundler sb = new StringBundler(3 * velocimacroLibrary.length);
+
+		for (String library : velocimacroLibrary) {
+			sb.append(contextName);
+			sb.append(library);
+			sb.append(StringPool.COMMA);
+		}
+
+		if (velocimacroLibrary.length > 0) {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		return sb.toString();
+	}
+
+	private void _init() throws TemplateException {
 		if (_velocityEngine != null) {
 			return;
 		}
@@ -201,53 +257,6 @@ public class VelocityManager extends BaseTemplateManager {
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
 		}
-	}
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_velocityEngineConfiguration = ConfigurableUtil.createConfigurable(
-			VelocityEngineConfiguration.class, properties);
-	}
-
-	@Override
-	protected Template doGetTemplate(
-		TemplateResource templateResource, boolean restricted,
-		Map<String, Object> helperUtilities) {
-
-		return new VelocityTemplate(
-			templateResource, helperUtilities, _velocityEngine,
-			_templateContextHelper, _velocityTemplateResourceCache, restricted);
-	}
-
-	@Override
-	protected TemplateContextHelper getTemplateContextHelper() {
-		return _templateContextHelper;
-	}
-
-	private String _getVelocimacroLibrary(Class<?> clazz) {
-		String contextName = ClassLoaderPool.getContextName(
-			clazz.getClassLoader());
-
-		contextName = contextName.concat(
-			TemplateConstants.CLASS_LOADER_SEPARATOR);
-
-		String[] velocimacroLibrary =
-			_velocityEngineConfiguration.velocimacroLibrary();
-
-		StringBundler sb = new StringBundler(3 * velocimacroLibrary.length);
-
-		for (String library : velocimacroLibrary) {
-			sb.append(contextName);
-			sb.append(library);
-			sb.append(StringPool.COMMA);
-		}
-
-		if (velocimacroLibrary.length > 0) {
-			sb.setIndex(sb.index() - 1);
-		}
-
-		return sb.toString();
 	}
 
 	private static volatile VelocityEngineConfiguration

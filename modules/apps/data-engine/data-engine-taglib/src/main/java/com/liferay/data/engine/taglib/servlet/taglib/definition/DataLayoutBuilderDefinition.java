@@ -44,6 +44,8 @@ public interface DataLayoutBuilderDefinition {
 		return false;
 	}
 
+	public String getContentType();
+
 	public default String[] getDisabledProperties() {
 		return new String[0];
 	}

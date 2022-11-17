@@ -34,6 +34,11 @@ public class DocumentLibraryDataLayoutBuilderDefinition
 	}
 
 	@Override
+	public String getContentType() {
+		return "document-library";
+	}
+
+	@Override
 	public String[] getDisabledProperties() {
 		return new String[] {"objectFieldName", "requiredErrorMessage"};
 	}

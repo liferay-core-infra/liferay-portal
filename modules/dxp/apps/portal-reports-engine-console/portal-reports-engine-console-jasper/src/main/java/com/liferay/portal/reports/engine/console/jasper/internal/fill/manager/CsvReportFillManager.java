@@ -16,6 +16,7 @@ package com.liferay.portal.reports.engine.console.jasper.internal.fill.manager;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.reports.engine.ReportDataSourceType;
 import com.liferay.portal.reports.engine.ReportRequest;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -27,10 +28,13 @@ import org.osgi.service.component.annotations.Component;
  * @author Gavin Wan
  * @author Brian Wing Shun Chan
  */
-@Component(
-	property = "reportDataSourceType=csv", service = ReportFillManager.class
-)
+@Component(service = ReportFillManager.class)
 public class CsvReportFillManager extends BaseReportFillManager {
+
+	@Override
+	public ReportDataSourceType getReportDataSourceType() {
+		return ReportDataSourceType.CSV;
+	}
 
 	@Override
 	protected JRDataSource getJRDataSource(ReportRequest reportRequest)

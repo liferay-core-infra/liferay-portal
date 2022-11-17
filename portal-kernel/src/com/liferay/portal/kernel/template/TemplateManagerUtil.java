@@ -18,14 +18,9 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Tina Tian
@@ -47,7 +42,7 @@ public class TemplateManagerUtil {
 	public static TemplateManager getTemplateManager(
 		String templateManagerName) {
 
-		return _templateManagers.get(templateManagerName);
+		return _templateManagers.getService(templateManagerName);
 	}
 
 	public static Set<String> getTemplateManagerNames() {
@@ -62,7 +57,7 @@ public class TemplateManagerUtil {
 			String templateManagerName)
 		throws TemplateException {
 
-		TemplateManager templateManager = _templateManagers.get(
+		TemplateManager templateManager = _templateManagers.getService(
 			templateManagerName);
 
 		if (templateManager == null) {
@@ -75,89 +70,17 @@ public class TemplateManagerUtil {
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
-	private static final ServiceTracker<TemplateManager, TemplateManager>
-		_serviceTracker;
-	private static final Map<String, TemplateManager> _templateManagers =
-		new ConcurrentHashMap<>();
 
-	private static class TemplateManagerServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<TemplateManager, TemplateManager> {
+	private static final ServiceTrackerMap<String, TemplateManager>
+		_templateManagers = ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext, TemplateManager.class, null,
+			(serviceReference, emitter) -> {
+				TemplateManager templateManager = _bundleContext.getService(
+					serviceReference);
 
-		@Override
-		public TemplateManager addingService(
-			ServiceReference<TemplateManager> serviceReference) {
+				emitter.emit(templateManager.getName());
 
-			TemplateManager templateManager = _bundleContext.getService(
-				serviceReference);
-
-			try {
-				templateManager.init();
-
-				_templateManagers.put(
-					templateManager.getName(), templateManager);
-			}
-			catch (TemplateException templateException) {
-				if (_log.isWarnEnabled()) {
-					String name = templateManager.getName();
-
-					_log.warn(
-						"Unable to init template manager " + name,
-						templateException);
-				}
-			}
-
-			return templateManager;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<TemplateManager> serviceReference,
-			TemplateManager templateManager) {
-
-			_templateManagers.compute(
-				templateManager.getName(),
-				(key, value) -> {
-					templateManager.destroy();
-
-					try {
-						templateManager.init();
-					}
-					catch (TemplateException templateException) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"unable to init " + templateManager.getName() +
-									" Template Manager ",
-								templateException);
-						}
-					}
-
-					return templateManager;
-				});
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<TemplateManager> serviceReference,
-			TemplateManager templateManager) {
-
-			_bundleContext.ungetService(serviceReference);
-
-			_templateManagers.remove(templateManager.getName());
-
-			templateManager.destroy();
-		}
-
-	}
-
-	static {
-		_serviceTracker = new ServiceTracker<>(
-			_bundleContext,
-			SystemBundleUtil.createFilter(
-				"(&(language.type=*)(objectClass=" +
-					TemplateManager.class.getName() + "))"),
-			new TemplateManagerServiceTrackerCustomizer());
-
-		_serviceTracker.open();
-	}
+				_bundleContext.ungetService(serviceReference);
+			});
 
 }

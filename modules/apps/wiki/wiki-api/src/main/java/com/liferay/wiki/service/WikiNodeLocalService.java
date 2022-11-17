@@ -41,6 +41,7 @@ import com.liferay.wiki.model.WikiNode;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -306,6 +307,9 @@ public interface WikiNodeLocalService
 		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Collection<String> getImporters();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -342,6 +346,9 @@ public interface WikiNodeLocalService
 	 * @return the OSGi service identifier
 	 */
 	public String getOSGiServiceIdentifier();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public String getPage(String importer);
 
 	/**
 	 * @throws PortalException

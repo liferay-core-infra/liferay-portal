@@ -413,6 +413,11 @@ public class WikiNodeLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.Collection<String> getImporters() {
+		return _wikiNodeLocalService.getImporters();
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
@@ -484,6 +489,11 @@ public class WikiNodeLocalServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _wikiNodeLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public String getPage(String importer) {
+		return _wikiNodeLocalService.getPage(importer);
 	}
 
 	/**

@@ -360,6 +360,10 @@ public class WikiNodeLocalServiceUtil {
 		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
+	public static java.util.Collection<String> getImporters() {
+		return getService().getImporters();
+	}
+
 	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {
@@ -415,6 +419,10 @@ public class WikiNodeLocalServiceUtil {
 	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static String getPage(String importer) {
+		return getService().getPage(importer);
 	}
 
 	/**

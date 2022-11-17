@@ -21,10 +21,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Eudaldo Alonso
  */
-@Component(
-	immediate = true, property = "content.type=document-library",
-	service = DataLayoutBuilderDefinition.class
-)
+@Component(immediate = true, service = DataLayoutBuilderDefinition.class)
 public class DocumentLibraryDataLayoutBuilderDefinition
 	implements DataLayoutBuilderDefinition {
 

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.reports.engine.console.jasper.internal.fill.manager;
 
+import com.liferay.portal.reports.engine.ReportDataSourceType;
 import com.liferay.portal.reports.engine.ReportRequest;
 
 import net.sf.jasperreports.engine.JRException;
@@ -29,5 +30,7 @@ public interface ReportFillManager {
 	public JasperPrint fillReport(
 			JasperReport jasperReport, ReportRequest reportRequest)
 		throws JRException;
+
+	public ReportDataSourceType getReportDataSourceType();
 
 }

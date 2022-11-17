@@ -14,6 +14,7 @@
 
 package com.liferay.portal.reports.engine.console.jasper.internal.fill.manager;
 
+import com.liferay.portal.reports.engine.ReportDataSourceType;
 import com.liferay.portal.reports.engine.ReportRequest;
 import com.liferay.portal.reports.engine.ReportRequestContext;
 
@@ -31,10 +32,13 @@ import org.osgi.service.component.annotations.Component;
  * @author Gavin Wan
  * @author Brian Wing Shun Chan
  */
-@Component(
-	property = "reportDataSourceType=jdbc", service = ReportFillManager.class
-)
+@Component(service = ReportFillManager.class)
 public class JdbcReportFillManager extends BaseReportFillManager {
+
+	@Override
+	public ReportDataSourceType getReportDataSourceType() {
+		return ReportDataSourceType.JDBC;
+	}
 
 	@Override
 	protected Connection getConnection(ReportRequest reportRequest)

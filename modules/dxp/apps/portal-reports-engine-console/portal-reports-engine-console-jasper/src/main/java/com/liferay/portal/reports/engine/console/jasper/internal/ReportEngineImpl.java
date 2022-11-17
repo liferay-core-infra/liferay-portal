@@ -17,7 +17,6 @@ package com.liferay.portal.reports.engine.console.jasper.internal;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.reports.engine.ReportDataSourceType;
 import com.liferay.portal.reports.engine.ReportEngine;
@@ -144,12 +143,10 @@ public class ReportEngineImpl implements ReportEngine {
 		_reportFormatExporterServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, ReportFormatExporter.class, null,
-				(serviceReference, emitter) -> {
-					String reportFormatString = GetterUtil.getString(
-						serviceReference.getProperty("reportFormat"));
-
-					emitter.emit(ReportFormat.parse(reportFormatString));
-				});
+				ServiceReferenceMapperFactory.create(
+					bundleContext,
+					(reportFormatExporter, emitter) -> emitter.emit(
+						reportFormatExporter.getReportFormat())));
 	}
 
 	@Deactivate

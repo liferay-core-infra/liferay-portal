@@ -17,6 +17,7 @@ package com.liferay.portal.reports.engine.console.jasper.internal.exporter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.reports.engine.ReportExportException;
+import com.liferay.portal.reports.engine.ReportFormat;
 import com.liferay.portal.reports.engine.ReportFormatExporter;
 import com.liferay.portal.reports.engine.ReportRequest;
 import com.liferay.portal.reports.engine.ReportResultContainer;
@@ -34,7 +35,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Michael C. Han
  * @author Brian Wing Shun Chan
  */
-@Component(property = "reportFormat=txt", service = ReportFormatExporter.class)
+@Component(service = ReportFormatExporter.class)
 public class TxtReportFormatExporter extends BaseReportFormatExporter {
 
 	@Override
@@ -83,6 +84,11 @@ public class TxtReportFormatExporter extends BaseReportFormatExporter {
 		catch (Exception exception) {
 			throw new ReportExportException(exception);
 		}
+	}
+
+	@Override
+	public ReportFormat getReportFormat() {
+		return ReportFormat.TXT;
 	}
 
 	@Override

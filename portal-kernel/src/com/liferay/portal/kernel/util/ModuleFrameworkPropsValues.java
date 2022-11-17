@@ -19,6 +19,9 @@ package com.liferay.portal.kernel.util;
  */
 public class ModuleFrameworkPropsValues {
 
+	public static final String LIFERAY_HOME = SystemProperties.get(
+		SystemPropsKeys.LIFERAY_HOME);
+
 	public static final int MODULE_FRAMEWORK_BEGINNING_START_LEVEL =
 		GetterUtil.getInteger(
 			SystemProperties.get("module.framework.beginning.start.level"));

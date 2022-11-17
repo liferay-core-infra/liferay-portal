@@ -31,11 +31,11 @@ import com.liferay.portal.kernel.service.PasswordPolicyLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -165,10 +165,6 @@ public class SetupWizardUtil {
 
 		UnicodeProperties unicodeProperties = PropertiesParamUtil.getProperties(
 			httpServletRequest, _PROPERTIES_PREFIX);
-
-		unicodeProperties.setProperty(
-			PropsKeys.LIFERAY_HOME,
-			SystemProperties.get(PropsKeys.LIFERAY_HOME));
 
 		boolean databaseConfigured = _isDatabaseConfigured(unicodeProperties);
 
@@ -496,11 +492,11 @@ public class SetupWizardUtil {
 
 		try {
 			FileUtil.write(
-				PropsValues.LIFERAY_HOME, PROPERTIES_FILE_NAME,
+				ModuleFrameworkPropsValues.LIFERAY_HOME, PROPERTIES_FILE_NAME,
 				_getUnicodePropertiesStringWithEmptyValue(unicodeProperties));
 
 			if (FileUtil.exists(
-					PropsValues.LIFERAY_HOME + StringPool.SLASH +
+					ModuleFrameworkPropsValues.LIFERAY_HOME + StringPool.SLASH +
 						PROPERTIES_FILE_NAME)) {
 
 				return true;

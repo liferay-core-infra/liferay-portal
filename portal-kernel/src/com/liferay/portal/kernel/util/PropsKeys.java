@@ -1422,8 +1422,6 @@ public interface PropsKeys {
 	public static final String LEARN_RESOURCES_REFRESH_TIME =
 		"learn.resources.refresh.time";
 
-	public static final String LIFERAY_HOME = "liferay.home";
-
 	public static final String LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR =
 		"liferay.shielded.container.lib.portal.dir";
 

@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -72,7 +73,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LicenseUtil {
 
 	public static final String LICENSE_REPOSITORY_DIR =
-		PropsValues.LIFERAY_HOME.concat("/data/license");
+		ModuleFrameworkPropsValues.LIFERAY_HOME + "/data/license";
 
 	public static final String LICENSE_SERVER_URL = GetterUtil.get(
 		PropsUtil.get("license.server.url"), "https://www.liferay.com");

@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -69,7 +70,8 @@ public class JspReloader {
 	}
 
 	private static final String _WORK_DIR = StringBundler.concat(
-		PropsValues.LIFERAY_HOME, File.separator, "work", File.separator);
+		ModuleFrameworkPropsValues.LIFERAY_HOME, File.separator, "work",
+		File.separator);
 
 	private static final Log _log = LogFactoryUtil.getLog(JspReloader.class);
 

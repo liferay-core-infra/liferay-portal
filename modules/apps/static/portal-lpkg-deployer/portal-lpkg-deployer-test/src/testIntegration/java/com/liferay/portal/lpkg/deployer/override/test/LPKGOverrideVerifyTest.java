@@ -14,8 +14,8 @@
 
 package com.liferay.portal.lpkg.deployer.override.test;
 
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.util.PropsValues;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,7 +51,8 @@ public class LPKGOverrideVerifyTest {
 
 		Properties properties = new Properties();
 
-		Path path = Paths.get(PropsValues.LIFERAY_HOME, "/overrides");
+		Path path = Paths.get(
+			ModuleFrameworkPropsValues.LIFERAY_HOME, "/overrides");
 
 		Assert.assertTrue(Files.exists(path));
 

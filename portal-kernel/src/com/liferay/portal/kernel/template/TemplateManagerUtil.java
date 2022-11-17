@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.template;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.Map;
@@ -72,9 +72,6 @@ public class TemplateManagerUtil {
 
 		return templateManager;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		TemplateManagerUtil.class);
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();

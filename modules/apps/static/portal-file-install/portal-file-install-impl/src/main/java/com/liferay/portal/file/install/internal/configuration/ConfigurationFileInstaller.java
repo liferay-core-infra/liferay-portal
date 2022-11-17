@@ -28,9 +28,13 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.net.URI;
 import java.net.URL;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -54,21 +58,30 @@ public class ConfigurationFileInstaller implements FileInstaller {
 	}
 
 	@Override
-	public boolean canTransformURL(File file) {
+	public boolean canTransformURL(File file) throws IOException {
 		String name = file.getName();
+		String path = file.getParent();
 
-		if (name.endsWith(".config")) {
-			return true;
-		}
-		else if (name.endsWith(".cfg")) {
-			if (PropsValues.MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED) {
+		String configsDir = PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR;
+
+		Path configsPath = Paths.get(configsDir);
+
+		configsDir = String.valueOf(configsPath.toRealPath());
+
+		if (StringUtil.equals(path, configsDir)) {
+			if (name.endsWith(".config")) {
 				return true;
 			}
+			else if (name.endsWith(".cfg")) {
+				if (PropsValues.MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED) {
+					return true;
+				}
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to install .cfg file " + file +
-						", please use .config file instead.");
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to install .cfg file " + file +
+							", please use .config file instead.");
+				}
 			}
 		}
 

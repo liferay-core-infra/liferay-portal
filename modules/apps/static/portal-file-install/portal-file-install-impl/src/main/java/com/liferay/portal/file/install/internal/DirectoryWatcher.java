@@ -30,6 +30,7 @@ import com.liferay.portal.util.PropsValues;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.URI;
@@ -470,7 +471,8 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 	}
 
 	private FileInstaller _findFileInstaller(
-		File file, Iterable<FileInstaller> iterable) {
+			File file, Iterable<FileInstaller> iterable)
+		throws IOException {
 
 		for (FileInstaller fileInstaller : iterable) {
 			if (fileInstaller.canTransformURL(file)) {

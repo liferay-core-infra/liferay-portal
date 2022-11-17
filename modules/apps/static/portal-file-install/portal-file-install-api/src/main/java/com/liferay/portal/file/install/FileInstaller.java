@@ -15,6 +15,7 @@
 package com.liferay.portal.file.install;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.net.URL;
 
@@ -23,7 +24,7 @@ import java.net.URL;
  */
 public interface FileInstaller {
 
-	public boolean canTransformURL(File file);
+	public boolean canTransformURL(File file) throws IOException;
 
 	public URL transformURL(File file) throws Exception;
 

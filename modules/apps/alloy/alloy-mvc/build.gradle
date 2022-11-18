@@ -1,6 +1,6 @@
 dependencies {
-	compileInclude group: "org.ow2.asm", name: "asm", version: "4.1"
-	compileInclude group: "org.ow2.asm", name: "asm-util", version: "4.1"
+	compileInclude group: "org.ow2.asm", name: "asm", version: "7.0"
+	compileInclude group: "org.ow2.asm", name: "asm-util", version: "7.0"
 
 	compileOnly group: "com.liferay", name: "com.sun.el.javax.el", version: "3.0.1.LIFERAY-PATCHED-1"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"

@@ -8,7 +8,7 @@ dependencies {
 	compileInclude group: "net.minidev", name: "accessors-smart", version: "2.4.2"
 	compileInclude group: "net.minidev", name: "json-smart", version: "2.4.5"
 	compileInclude group: "org.hdrhistogram", name: "HdrHistogram", version: "2.1.9"
-	compileInclude group: "org.ow2.asm", name: "asm", version: "5.0.3"
+	compileInclude group: "org.ow2.asm", name: "asm", version: "7.0"
 
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"

@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseDestination;
 import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationEventListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusEventListener;
@@ -398,34 +397,6 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(destination.name=*)"
-	)
-	protected synchronized void registerDestinationEventListener(
-		DestinationEventListener destinationEventListener,
-		Map<String, Object> properties) {
-
-		String destinationName = MapUtil.getString(
-			properties, "destination.name");
-
-		Destination destination = _destinations.get(destinationName);
-
-		if (destination == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Unable to unregister destination event listener for " +
-						destinationName);
-			}
-
-			return;
-		}
-
-		destination.addDestinationEventListener(destinationEventListener);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void registerMessageBusEventListener(
@@ -438,28 +409,6 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		Destination destination, Map<String, Object> properties) {
 
 		_removeDestination(destination.getName());
-	}
-
-	protected synchronized void unregisterDestinationEventListener(
-		DestinationEventListener destinationEventListener,
-		Map<String, Object> properties) {
-
-		String destinationName = MapUtil.getString(
-			properties, "destination.name");
-
-		Destination destination = _destinations.get(destinationName);
-
-		if (destination == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Unable to unregister destination event listener for " +
-						destinationName);
-			}
-
-			return;
-		}
-
-		destination.removeDestinationEventListener(destinationEventListener);
 	}
 
 	protected void unregisterMessageBusEventListener(

@@ -108,7 +108,7 @@ public class FreeMarkerTemplateResourceLoader
 	@Reference
 	private FreeMarkerTemplateResourceCache _freeMarkerTemplateResourceCache;
 
-	private ServiceTracker
+	private volatile ServiceTracker
 		<TemplateResourceParser, TemplateResourceParser> _serviceTracker;
 	private final Set<TemplateResourceParser> _templateResourceParsers =
 		new ConcurrentSkipListSet<>();

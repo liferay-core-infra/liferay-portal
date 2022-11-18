@@ -26,6 +26,10 @@ import java.util.Map;
  */
 public interface WikiImporter {
 
+	public String getImporterName();
+
+	public String getPage();
+
 	public void importPages(
 			long userId, WikiNode node, InputStream[] inputStream,
 			Map<String, String[]> options)

@@ -394,27 +394,10 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		_updateDestination(destination, destinationWorkerConfiguration);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void registerMessageBusEventListener(
-		MessageBusEventListener messageBusEventListener) {
-
-		addMessageBusEventListener(messageBusEventListener);
-	}
-
 	protected synchronized void unregisterDestination(
 		Destination destination, Map<String, Object> properties) {
 
 		_removeDestination(destination.getName());
-	}
-
-	protected void unregisterMessageBusEventListener(
-		MessageBusEventListener messageBusEventListener) {
-
-		removeMessageBusEventListener(messageBusEventListener);
 	}
 
 	private void _addDestination(Destination destination) {

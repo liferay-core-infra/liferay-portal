@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.redirect.internal.configuration.RedirectConfiguration;
 import com.liferay.redirect.model.RedirectNotFoundEntry;
@@ -36,6 +37,8 @@ import com.liferay.redirect.service.RedirectNotFoundEntryLocalService;
 import java.util.Date;
 import java.util.Map;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -47,13 +50,21 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.redirect.internal.configuration.RedirectConfiguration",
-	service = MessageListener.class
+	service = {}
 )
 public class CheckRedirectNotFoundEntriesMessageListener
 	extends BaseMessageListener {
 
 	@Activate
-	protected void activate(Map<String, Object> properties) {
+	protected void activate(
+		BundleContext bundleContext, Map<String, Object> properties) {
+
+		_serviceRegistration = bundleContext.registerService(
+			MessageListener.class, this,
+			MapUtil.singletonDictionary(
+				"component.name",
+				CheckRedirectNotFoundEntriesMessageListener.class.getName()));
+
 		_redirectConfiguration = ConfigurableUtil.createConfigurable(
 			RedirectConfiguration.class, properties);
 
@@ -75,6 +86,8 @@ public class CheckRedirectNotFoundEntriesMessageListener
 
 	@Deactivate
 	protected void deactivate() {
+		_serviceRegistration.unregister();
+
 		_schedulerEngineHelper.unregister(this);
 	}
 
@@ -150,6 +163,8 @@ public class CheckRedirectNotFoundEntriesMessageListener
 
 	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;
+
+	private ServiceRegistration<MessageListener> _serviceRegistration;
 
 	@Reference
 	private TriggerFactory _triggerFactory;

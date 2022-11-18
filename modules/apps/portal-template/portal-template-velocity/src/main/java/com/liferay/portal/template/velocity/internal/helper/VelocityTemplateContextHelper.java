@@ -222,7 +222,7 @@ public class VelocityTemplateContextHelper extends TemplateContextHelper {
 	@Reference
 	private RolePermission _rolePermission;
 
-	private ServiceTrackerList<TemplateContextContributor>
+	private volatile ServiceTrackerList<TemplateContextContributor>
 		_serviceTrackerList;
 
 }

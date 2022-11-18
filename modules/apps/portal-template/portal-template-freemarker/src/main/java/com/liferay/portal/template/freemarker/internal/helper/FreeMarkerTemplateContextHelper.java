@@ -208,7 +208,7 @@ public class FreeMarkerTemplateContextHelper extends TemplateContextHelper {
 		_freeMarkerEngineConfiguration;
 	private BeansWrapper _restrictedBeansWrapper;
 	private volatile Set<String> _restrictedVariables;
-	private ServiceTrackerList<TemplateContextContributor>
+	private volatile ServiceTrackerList<TemplateContextContributor>
 		_serviceTrackerList;
 
 }

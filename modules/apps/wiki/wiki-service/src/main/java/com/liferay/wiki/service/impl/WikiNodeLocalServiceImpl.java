@@ -394,7 +394,7 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 
 	@Override
 	public void importPages(
-			long userId, long nodeId, String importer,
+			long userId, long nodeId, WikiImporter wikiImporter,
 			InputStream[] inputStreams, Map<String, String[]> options)
 		throws PortalException {
 

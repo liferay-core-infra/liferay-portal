@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.wiki.constants.WikiConstants;
+import com.liferay.wiki.importer.WikiImporter;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.service.base.WikiNodeServiceBaseImpl;
 
@@ -192,7 +193,7 @@ public class WikiNodeServiceImpl extends WikiNodeServiceBaseImpl {
 
 	@Override
 	public void importPages(
-			long nodeId, String importer, InputStream[] inputStreams,
+			long nodeId, WikiImporter wikiImporter, InputStream[] inputStreams,
 			Map<String, String[]> options)
 		throws PortalException {
 
@@ -200,7 +201,7 @@ public class WikiNodeServiceImpl extends WikiNodeServiceBaseImpl {
 			getPermissionChecker(), nodeId, ActionKeys.IMPORT);
 
 		wikiNodeLocalService.importPages(
-			getUserId(), nodeId, importer, inputStreams, options);
+			getUserId(), nodeId, wikiImporter, inputStreams, options);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ dependencies {
 	compileInclude group: "net.minidev", name: "accessors-smart", version: "2.4.2"
 	compileInclude group: "net.minidev", name: "json-smart", version: "2.4.5"
 	compileInclude group: "org.apache.commons", name: "commons-lang3", version: "3.4"
-	compileInclude group: "org.ow2.asm", name: "asm", version: "7.0"
 
 	compileOnly group: "com.liferay", name: "biz.aQute.bnd.annotation", version: "4.2.0.LIFERAY-PATCHED-2"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
@@ -20,6 +19,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.service.cm", version: "1.6.0"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
+	compileOnly group: "org.ow2.asm", name: "asm", version: "7.0"
 	compileOnly project(":apps:oauth-client:oauth-client-persistence-api")
 	compileOnly project(":apps:portal-security-sso:portal-security-sso-openid-connect-api")
 	compileOnly project(":apps:portal-security-sso:portal-security-sso-openid-connect-persistence-api")

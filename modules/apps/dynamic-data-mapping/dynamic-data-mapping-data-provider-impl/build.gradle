@@ -8,7 +8,6 @@ dependencies {
 	compileInclude group: "net.minidev", name: "accessors-smart", version: "2.4.2"
 	compileInclude group: "net.minidev", name: "json-smart", version: "2.4.5"
 	compileInclude group: "org.hdrhistogram", name: "HdrHistogram", version: "2.1.9"
-	compileInclude group: "org.ow2.asm", name: "asm", version: "7.0"
 
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
@@ -16,6 +15,7 @@ dependencies {
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.http.servlet-api", version: "1.1.2"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	compileOnly group: "org.osgi", name: "org.osgi.service.http.whiteboard", version: "1.0.0"
+	compileOnly group: "org.ow2.asm", name: "asm", version: "7.0"
 	compileOnly group: "org.slf4j", name: "slf4j-api", version: "1.7.26"
 	compileOnly project(":apps:dynamic-data-mapping:dynamic-data-mapping-api")
 	compileOnly project(":apps:portal:portal-json-web-service-client")

@@ -28,8 +28,8 @@ import com.liferay.portal.kernel.messaging.MessageBusEventListener;
 import com.liferay.portal.kernel.messaging.MessageBusInterceptor;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.messaging.internal.configuration.DestinationWorkerConfiguration;
 
@@ -45,16 +45,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedServiceFactory;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -270,7 +267,18 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	}
 
 	@Activate
-	protected void activate(BundleContext bundleContext) {
+	protected void activate(BundleContext bundleContext)
+		throws InvalidSyntaxException {
+
+		_destinationServiceTracker = new ServiceTracker<>(
+			bundleContext,
+			bundleContext.createFilter(
+				"(&(destination.name=*)(objectClass=" +
+					Destination.class.getName() + "))"),
+			new DestinationServiceTrackerCustomizer(bundleContext));
+
+		_destinationServiceTracker.open();
+
 		_messageListenerServiceTracker = new ServiceTracker<>(
 			bundleContext, MessageListener.class,
 			new ServiceTrackerCustomizer
@@ -355,6 +363,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 		_messageListenerServiceTracker.close();
 
+		_destinationServiceTracker.close();
+
 		shutdown(true);
 
 		for (Destination destination : _destinations.values()) {
@@ -364,40 +374,6 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		_messageBusEventListeners.clear();
 
 		_destinations.clear();
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(destination.name=*)"
-	)
-	protected synchronized void registerDestination(
-		Destination destination, Map<String, Object> properties) {
-
-		String destinationName = MapUtil.getString(
-			properties, "destination.name");
-
-		if (BaseDestination.class.isInstance(destination)) {
-			BaseDestination baseDestination = (BaseDestination)destination;
-
-			baseDestination.setName(destinationName);
-
-			baseDestination.afterPropertiesSet();
-		}
-
-		_addDestination(destination);
-
-		DestinationWorkerConfiguration destinationWorkerConfiguration =
-			_destinationWorkerConfigurations.get(destinationName);
-
-		_updateDestination(destination, destinationWorkerConfiguration);
-	}
-
-	protected synchronized void unregisterDestination(
-		Destination destination, Map<String, Object> properties) {
-
-		_removeDestination(destination.getName());
 	}
 
 	private void _addDestination(Destination destination) {
@@ -490,6 +466,7 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 	private final Map<String, Destination> _destinations =
 		new ConcurrentHashMap<>();
+	private ServiceTracker<Destination, Destination> _destinationServiceTracker;
 	private final Map<String, DestinationWorkerConfiguration>
 		_destinationWorkerConfigurations = new ConcurrentHashMap<>();
 	private final Map<String, String> _factoryPidsToDestinationName =
@@ -502,5 +479,62 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	private final Map<String, List<MessageListener>> _queuedMessageListeners =
 		new HashMap<>();
 	private ServiceTrackerList<MessageBusInterceptor> _serviceTrackerList;
+
+	private class DestinationServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<Destination, Destination> {
+
+		public DestinationServiceTrackerCustomizer(
+			BundleContext bundleContext) {
+
+			_bundleContext = bundleContext;
+		}
+
+		@Override
+		public Destination addingService(
+			ServiceReference<Destination> serviceReference) {
+
+			Destination destination = _bundleContext.getService(
+				serviceReference);
+
+			String destinationName = GetterUtil.getString(
+				serviceReference.getProperty("destination.name"));
+
+			if (BaseDestination.class.isInstance(destination)) {
+				BaseDestination baseDestination = (BaseDestination)destination;
+
+				baseDestination.setName(destinationName);
+
+				baseDestination.afterPropertiesSet();
+			}
+
+			_addDestination(destination);
+
+			DestinationWorkerConfiguration destinationWorkerConfiguration =
+				_destinationWorkerConfigurations.get(destinationName);
+
+			_updateDestination(destination, destinationWorkerConfiguration);
+
+			return destination;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<Destination> serviceReference,
+			Destination service) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<Destination> serviceReference,
+			Destination service) {
+
+			_bundleContext.ungetService(serviceReference);
+
+			_removeDestination(service.getName());
+		}
+
+		private final BundleContext _bundleContext;
+
+	}
 
 }

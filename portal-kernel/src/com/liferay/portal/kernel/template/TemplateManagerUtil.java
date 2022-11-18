@@ -73,9 +73,6 @@ public class TemplateManagerUtil {
 		return templateManager;
 	}
 
-	private TemplateManagerUtil() {
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		TemplateManagerUtil.class);
 

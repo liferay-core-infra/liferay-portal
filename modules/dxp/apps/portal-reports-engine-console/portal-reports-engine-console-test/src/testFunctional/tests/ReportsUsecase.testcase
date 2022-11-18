@@ -63,7 +63,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -71,7 +71,7 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = "test@liferay.com",
 			emailRecipientAddress = "test@liferay.com",
-			reportFormat = "pdf",
+			reportFormat = "PDF",
 			reportsDefinitionName = "Reports Definition Name");
 
 		ProductMenu.gotoPortlet(
@@ -86,7 +86,7 @@ definition {
 
 		ReportsDisplayPortlet.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
-		ReportsDisplayPortlet.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.pdf");
+		ReportsDisplayPortlet.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.PDF");
 	}
 
 	@description = "This is a use case for LPS-50501."
@@ -102,7 +102,7 @@ definition {
 			ReportsAdmin.gotoDefinitions();
 
 			ReportsAdmin.addReportDefinition(
-				dataSource = "Portal",
+				dataSource = "PORTAL",
 				reportsDefinitionDescription = "Reports Definition Description",
 				reportsDefinitionName = "Reports Definition ${number}",
 				templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -182,7 +182,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -190,7 +190,7 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = PropsUtil.get("email.address.4"),
 			emailRecipientAddress = PropsUtil.get("email.address.3"),
-			reportFormat = "pdf",
+			reportFormat = "PDF",
 			reportsDefinitionName = "Reports Definition Name");
 
 		Pause(locator1 = "30000");
@@ -203,13 +203,13 @@ definition {
 
 		Gmail.viewMail(
 			emailFromUserName = "Liferay QA",
-			gmailAssetType = "New Report From QA: reports_admin_template_source_sample_class_name.pdf",
+			gmailAssetType = "New Report From QA: reports_admin_template_source_sample_class_name.PDF",
 			gmailMessageBody = "You have a new report from your friends in QA.",
-			gmailMessageTitle = "New Report From QA: reports_admin_template_source_sample_class_name.pdf");
+			gmailMessageTitle = "New Report From QA: reports_admin_template_source_sample_class_name.PDF");
 
 		Gmail.gotoHtmlMode();
 
-		Gmail.deleteSpecificMail(gmailMessageTitleList = "New Report From QA: reports_admin_template_source_sample_class_name.pdf");
+		Gmail.deleteSpecificMail(gmailMessageTitleList = "New Report From QA: reports_admin_template_source_sample_class_name.PDF");
 
 		Gmail.logoutAndLogin(
 			userEmailAddress = PropsUtil.get("email.address.3"),
@@ -219,14 +219,14 @@ definition {
 
 		Gmail.viewMail(
 			emailFromUserName = "Liferay QA",
-			gmailAssetType = "New Report From QA: reports_admin_template_source_sample_class_name.pdf",
-			gmailMessageAttachment = "reports_admin_template_source_sample_class_name.pdf",
+			gmailAssetType = "New Report From QA: reports_admin_template_source_sample_class_name.PDF",
+			gmailMessageAttachment = "reports_admin_template_source_sample_class_name.PDF",
 			gmailMessageBody = "Please review the attached report from your friends in QA!",
-			gmailMessageTitle = "New Report From QA: reports_admin_template_source_sample_class_name.pdf");
+			gmailMessageTitle = "New Report From QA: reports_admin_template_source_sample_class_name.PDF");
 
 		Gmail.gotoHtmlMode();
 
-		Gmail.deleteSpecificMail(gmailMessageTitleList = "New Report From QA: reports_admin_template_source_sample_class_name.pdf");
+		Gmail.deleteSpecificMail(gmailMessageTitleList = "New Report From QA: reports_admin_template_source_sample_class_name.PDF");
 
 		Navigator.openSpecificURL(url = "${portalURL}");
 	}
@@ -242,7 +242,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -266,10 +266,10 @@ definition {
 		ReportsDisplayPortlet.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsDisplayPortlet.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.csv",
+			reportsFileName = "reports_admin_template_source_sample_class_name.CSV",
 			userName = "Test Test");
 	}
 

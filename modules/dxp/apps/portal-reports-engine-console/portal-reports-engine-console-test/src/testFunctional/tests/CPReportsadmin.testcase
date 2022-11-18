@@ -41,7 +41,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -102,7 +102,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -110,7 +110,7 @@ definition {
 		ReportsAdmin.addScheduleEntry(
 			emailNotificationsAddress = "test@liferay.com",
 			emailRecipientAddress = "test@liferay.com",
-			reportFormat = "pdf",
+			reportFormat = "PDF",
 			reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
@@ -134,7 +134,7 @@ definition {
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			reportsFileName = "reports_admin_template_source_sample_class_name",
@@ -153,7 +153,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -168,10 +168,10 @@ definition {
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "Custom Name.csv",
+			reportsFileName = "Custom Name.CSV",
 			userName = "Test Test");
 
 		ReportsAdmin.viewNoReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name");
@@ -191,7 +191,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -214,7 +214,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -228,13 +228,13 @@ definition {
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.csv",
+			reportsFileName = "reports_admin_template_source_sample_class_name.CSV",
 			userName = "Test Test");
 
-		ReportsAdmin.deleteReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.csv");
+		ReportsAdmin.deleteReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.CSV");
 
 		Navigator.openURL();
 
@@ -244,7 +244,7 @@ definition {
 
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
-		ReportsAdmin.viewNoReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.csv");
+		ReportsAdmin.viewNoReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.CSV");
 	}
 
 	@priority = "4"
@@ -264,7 +264,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -272,28 +272,28 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = "test@liferay.com",
 			emailRecipientAddress = "test@liferay.com",
-			reportFormat = "pdf",
+			reportFormat = "PDF",
 			reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.pdf",
+			reportsFileName = "reports_admin_template_source_sample_class_name.PDF",
 			userName = "Test Test");
 
 		ReportsAdmin.deliverReportEntryFile(
 			emailRecipientAddress = "user1@liferay.com",
-			reportsFileName = "reports_admin_template_source_sample_class_name.pdf");
+			reportsFileName = "reports_admin_template_source_sample_class_name.PDF");
 
 		MockMock.viewMail(
-			asset = "New Report: reports_admin_template_source_sample_class_name.pdf",
-			content = "New Report: reports_admin_template_source_sample_class_name.pdf",
+			asset = "New Report: reports_admin_template_source_sample_class_name.PDF",
+			content = "New Report: reports_admin_template_source_sample_class_name.PDF",
 			recipient = "user1@liferay.com",
 			sender = "Joe Bloggs",
-			subject = "New Report: reports_admin_template_source_sample_class_name.pdf");
+			subject = "New Report: reports_admin_template_source_sample_class_name.PDF");
 
 		Navigator.openSpecificURL(url = "${portalURL}");
 	}
@@ -309,7 +309,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -323,13 +323,13 @@ definition {
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.csv",
+			reportsFileName = "reports_admin_template_source_sample_class_name.CSV",
 			userName = "Test Test");
 
-		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.csv");
+		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.CSV");
 	}
 
 	@priority = "4"
@@ -343,7 +343,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -357,13 +357,13 @@ definition {
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.html",
+			reportsFileName = "reports_admin_template_source_sample_class_name.HTML",
 			userName = "Test Test");
 
-		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.html");
+		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.HTML");
 	}
 
 	@priority = "4"
@@ -377,7 +377,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -385,21 +385,21 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = "test@liferay.com",
 			emailRecipientAddress = "test@liferay.com",
-			reportFormat = "pdf",
+			reportFormat = "PDF",
 			reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.pdf",
+			reportsFileName = "reports_admin_template_source_sample_class_name.PDF",
 			userName = "Test Test");
 
 		takeScreenshot();
 
-		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.pdf");
+		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.PDF");
 	}
 
 	@priority = "4"
@@ -413,7 +413,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -421,19 +421,19 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = "test@liferay.com",
 			emailRecipientAddress = "test@liferay.com",
-			reportFormat = "rtf",
+			reportFormat = "RTF",
 			reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.rtf",
+			reportsFileName = "reports_admin_template_source_sample_class_name.RTF",
 			userName = "Test Test");
 
-		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.rtf");
+		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.RTF");
 	}
 
 	@priority = "4"
@@ -447,7 +447,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -455,19 +455,19 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = "test@liferay.com",
 			emailRecipientAddress = "test@liferay.com",
-			reportFormat = "txt",
+			reportFormat = "TXT",
 			reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.txt",
+			reportsFileName = "reports_admin_template_source_sample_class_name.TXT",
 			userName = "Test Test");
 
-		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.txt");
+		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.TXT");
 	}
 
 	@priority = "4"
@@ -481,7 +481,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -489,19 +489,19 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = "test@liferay.com",
 			emailRecipientAddress = "test@liferay.com",
-			reportFormat = "xls",
+			reportFormat = "XLS",
 			reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.xls",
+			reportsFileName = "reports_admin_template_source_sample_class_name.XLS",
 			userName = "Test Test");
 
-		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.xls");
+		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.XLS");
 	}
 
 	@priority = "4"
@@ -515,7 +515,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -529,13 +529,13 @@ definition {
 		ReportsAdmin.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
-			reportsFileName = "reports_admin_template_source_sample_class_name.xml",
+			reportsFileName = "reports_admin_template_source_sample_class_name.XML",
 			userName = "Test Test");
 
-		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.xml");
+		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.XML");
 	}
 
 	@description = "This is a use case for LPS-43525."
@@ -594,7 +594,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -602,7 +602,7 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = PropsUtil.get("email.address.4"),
 			emailRecipientAddress = "test@liferay.com",
-			reportFormat = "pdf",
+			reportFormat = "PDF",
 			reportName = "Custom Report Name",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -628,7 +628,7 @@ definition {
 		SelectWindow(locator1 = "title=Reports Definition Name - ${siteName}");
 
 		ReportsAdmin.viewReportEntryFields(
-			dataSource = "portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			reportsFileName = "Custom Report Name.pdf",
@@ -667,7 +667,7 @@ definition {
 		ReportsAdmin.gotoDefinitions();
 
 		ReportsAdmin.addReportDefinition(
-			dataSource = "Portal",
+			dataSource = "PORTAL",
 			reportsDefinitionDescription = "Reports Definition Description",
 			reportsDefinitionName = "Reports Definition Name",
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
@@ -675,7 +675,7 @@ definition {
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = "test@liferay.com",
 			emailRecipientAddress = PropsUtil.get("email.address.4"),
-			reportFormat = "pdf",
+			reportFormat = "PDF",
 			reportsDefinitionName = "Reports Definition Name");
 
 		Gmail.login(
@@ -686,19 +686,19 @@ definition {
 
 		Gmail.viewMail(
 			emailFromUserName = "Joe Bloggs",
-			gmailAssetType = "New Report: reports_admin_template_source_sample_class_name.pdf",
-			gmailMessageAttachment = "reports_admin_template_source_sample_class_name.pdf",
+			gmailAssetType = "New Report: reports_admin_template_source_sample_class_name.PDF",
+			gmailMessageAttachment = "reports_admin_template_source_sample_class_name.PDF",
 			gmailMessageBody = "Please review the attached report.",
-			gmailMessageTitle = "New Report: reports_admin_template_source_sample_class_name.pdf");
+			gmailMessageTitle = "New Report: reports_admin_template_source_sample_class_name.PDF");
 
-		var key_gmailAssetType = "New Report: reports_admin_template_source_sample_class_name.pdf";
+		var key_gmailAssetType = "New Report: reports_admin_template_source_sample_class_name.PDF";
 		var key_pageNameURL = "report";
 
 		AssertElementNotPresent(locator1 = "Gmail#GMAIL_HTML_MODE_MESSAGE_BODY_LINK");
 
 		Gmail.gotoHtmlMode();
 
-		Gmail.deleteSpecificMail(gmailMessageTitleList = "New Report: reports_admin_template_source_sample_class_name.pdf,Your New Account,Your New Password");
+		Gmail.deleteSpecificMail(gmailMessageTitleList = "New Report: reports_admin_template_source_sample_class_name.PDF,Your New Account,Your New Password");
 
 		Navigator.openSpecificURL(url = "${portalURL}");
 	}

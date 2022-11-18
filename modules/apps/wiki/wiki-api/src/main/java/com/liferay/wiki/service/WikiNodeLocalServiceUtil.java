@@ -524,12 +524,13 @@ public class WikiNodeLocalServiceUtil {
 	}
 
 	public static void importPages(
-			long userId, long nodeId, String importer,
+			long userId, long nodeId,
+			com.liferay.wiki.importer.WikiImporter wikiImporter,
 			InputStream[] inputStreams, Map<String, String[]> options)
 		throws PortalException {
 
 		getService().importPages(
-			userId, nodeId, importer, inputStreams, options);
+			userId, nodeId, wikiImporter, inputStreams, options);
 	}
 
 	public static WikiNode moveNodeToTrash(long userId, long nodeId)

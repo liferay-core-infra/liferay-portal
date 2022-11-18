@@ -133,11 +133,11 @@ public class WikiNodeServiceUtil {
 	}
 
 	public static void importPages(
-			long nodeId, String importer, InputStream[] inputStreams,
-			Map<String, String[]> options)
+			long nodeId, com.liferay.wiki.importer.WikiImporter wikiImporter,
+			InputStream[] inputStreams, Map<String, String[]> options)
 		throws PortalException {
 
-		getService().importPages(nodeId, importer, inputStreams, options);
+		getService().importPages(nodeId, wikiImporter, inputStreams, options);
 	}
 
 	public static WikiNode moveNodeToTrash(long nodeId) throws PortalException {

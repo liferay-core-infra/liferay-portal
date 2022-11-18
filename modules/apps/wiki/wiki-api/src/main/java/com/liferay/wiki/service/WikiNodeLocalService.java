@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.wiki.importer.WikiImporter;
 import com.liferay.wiki.model.WikiNode;
 
 import java.io.InputStream;
@@ -435,7 +436,7 @@ public interface WikiNodeLocalService
 	public int getWikiNodesCount();
 
 	public void importPages(
-			long userId, long nodeId, String importer,
+			long userId, long nodeId, WikiImporter wikiImporter,
 			InputStream[] inputStreams, Map<String, String[]> options)
 		throws PortalException;
 

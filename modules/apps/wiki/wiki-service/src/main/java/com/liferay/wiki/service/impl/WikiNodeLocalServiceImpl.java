@@ -398,14 +398,6 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 			InputStream[] inputStreams, Map<String, String[]> options)
 		throws PortalException {
 
-		WikiImporter wikiImporter = _wikiImporterServiceTrackerMap.getService(
-			importer);
-
-		if (wikiImporter == null) {
-			throw new SystemException(
-				"Unable to instantiate wiki importer with name " + importer);
-		}
-
 		WikiNode node = getNode(nodeId);
 
 		boolean notificationsEnabled = NotificationThreadLocal.isEnabled();

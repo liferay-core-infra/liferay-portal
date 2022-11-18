@@ -36,6 +36,8 @@ if (Validator.isNull(tabs2)) {
 	tabs2 = importers[0];
 }
 
+WikiImporter wikiImporter = wikiImporterRegistry.getWikiImporter(tabs2);
+
 PortletURL portletURL = PortletURLBuilder.createRenderURL(
 	renderResponse
 ).setMVCRenderCommandName(
@@ -79,7 +81,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "import-pages"));
 			<liferay-ui:error exception="<%= ImportFilesException.class %>" message="please-provide-all-mandatory-files-and-make-sure-the-file-types-are-valid" />
 			<liferay-ui:error exception="<%= NoSuchNodeException.class %>" message="the-node-could-not-be-found" />
 
-			<liferay-util:include page='<%= wikiImporterRegistry.getProperty(tabs2, "page") %>' servletContext="<%= application %>" />
+			<liferay-util:include page="<%= wikiImporter.getPage() %>" servletContext="<%= application %>" />
 
 			<div class="sheet-footer">
 				<aui:button type="submit" value="import" />

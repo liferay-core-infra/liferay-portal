@@ -29,7 +29,9 @@ import com.liferay.portal.kernel.util.ProgressTracker;
 import com.liferay.portal.kernel.util.ProgressTrackerThreadLocal;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.exception.NoSuchNodeException;
+import com.liferay.wiki.importer.WikiImporter;
 import com.liferay.wiki.service.WikiNodeService;
+import com.liferay.wiki.web.internal.importer.WikiImporterRegistry;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,8 +92,14 @@ public class ImportPagesMVCActionCommand extends BaseMVCActionCommand {
 
 		progressTracker.start(actionRequest);
 
+		WikiImporter wikiImporter = _wikiImporterRegistry.getWikiImporter(
+			ParamUtil.getString(uploadPortletRequest, "importer"));
+
+		if (wikiImporter == null) {
+			throw new PortalException("Unable to instantiate wiki importer");
+		}
+
 		long nodeId = ParamUtil.getLong(uploadPortletRequest, "nodeId");
-		String importer = ParamUtil.getString(uploadPortletRequest, "importer");
 
 		InputStream[] inputStreams = new InputStream[_MAX_FILE_COUNT];
 
@@ -102,7 +110,7 @@ public class ImportPagesMVCActionCommand extends BaseMVCActionCommand {
 			}
 
 			_wikiNodeService.importPages(
-				nodeId, importer, inputStreams,
+				nodeId, wikiImporter, inputStreams,
 				actionRequest.getParameterMap());
 		}
 		finally {
@@ -126,6 +134,9 @@ public class ImportPagesMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private WikiImporterRegistry _wikiImporterRegistry;
 
 	@Reference
 	private WikiNodeService _wikiNodeService;

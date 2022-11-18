@@ -47,6 +47,7 @@ page import="com.liferay.wiki.exception.PageTitleException" %><%@
 page import="com.liferay.wiki.exception.PageVersionException" %><%@
 page import="com.liferay.wiki.exception.RequiredNodeException" %><%@
 page import="com.liferay.wiki.exception.WikiFormatException" %><%@
+page import="com.liferay.wiki.importer.WikiImporter" %><%@
 page import="com.liferay.wiki.social.WikiActivityKeys" %><%@
 page import="com.liferay.wiki.util.comparator.PageVersionComparator" %><%@
 page import="com.liferay.wiki.validator.WikiPageTitleValidator" %><%@

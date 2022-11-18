@@ -14,8 +14,6 @@
 
 package com.liferay.social.bookmarks.taglib.internal.util;
 
-import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
-import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -25,9 +23,11 @@ import com.liferay.social.bookmarks.SocialBookmark;
 import com.liferay.social.bookmarks.SocialBookmarksRegistry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -71,57 +71,96 @@ public class SocialBookmarksRegistryImpl implements SocialBookmarksRegistry {
 	public List<String> getSocialBookmarksTypes() {
 		Set<String> socialBookmarksTypes = new LinkedHashSet<>();
 
-		for (String type : _serviceTrackerList) {
-			socialBookmarksTypes.add(type);
-		}
+		_serviceReferences.forEach(
+			serviceReference -> socialBookmarksTypes.add(
+				(String)serviceReference.getProperty("social.bookmarks.type")));
 
 		return new ArrayList<>(socialBookmarksTypes);
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_serviceTrackerList = ServiceTrackerListFactory.open(
-			bundleContext, SocialBookmark.class, null,
-			new SocialBookmarkTypeServiceTrackerCustomizer(),
-			new PropertyServiceReferenceComparator<>(
-				"social.bookmarks.priority"));
-
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, SocialBookmark.class, "social.bookmarks.type");
+			bundleContext, SocialBookmark.class, "social.bookmarks.type",
+			new SocialBookmarkTypeServiceTrackerCustomizer(
+				bundleContext, _serviceReferences));
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTrackerList.close();
 		_serviceTrackerMap.close();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SocialBookmarksRegistryImpl.class);
 
-	private ServiceTrackerList<String> _serviceTrackerList;
+	private List<ServiceReference<SocialBookmark>> _serviceReferences =
+		new CopyOnWriteArrayList<>();
 	private ServiceTrackerMap<String, SocialBookmark> _serviceTrackerMap;
 
 	private static class SocialBookmarkTypeServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<SocialBookmark, String> {
+		implements ServiceTrackerCustomizer<SocialBookmark, SocialBookmark> {
+
+		public SocialBookmarkTypeServiceTrackerCustomizer(
+			BundleContext bundleContext,
+			List<ServiceReference<SocialBookmark>> serviceReferences) {
+
+			_bundleContext = bundleContext;
+			_serviceReferences = serviceReferences;
+		}
 
 		@Override
-		public String addingService(
+		public SocialBookmark addingService(
 			ServiceReference<SocialBookmark> serviceReference) {
 
-			return (String)serviceReference.getProperty(
-				"social.bookmarks.type");
+			SocialBookmark socialBookmark = _bundleContext.getService(
+				serviceReference);
+
+			_update(serviceReference, false);
+
+			return socialBookmark;
 		}
 
 		@Override
 		public void modifiedService(
-			ServiceReference<SocialBookmark> serviceReference, String service) {
+			ServiceReference<SocialBookmark> serviceReference,
+			SocialBookmark socialBookmark) {
+
+			_serviceReferences.sort(_comparator);
 		}
 
 		@Override
 		public void removedService(
-			ServiceReference<SocialBookmark> serviceReference, String service) {
+			ServiceReference<SocialBookmark> serviceReference,
+			SocialBookmark socialBookmark) {
+
+			_update(serviceReference, true);
+			_bundleContext.ungetService(serviceReference);
 		}
+
+		private void _update(
+			ServiceReference<SocialBookmark> serviceReference, boolean remove) {
+
+			synchronized (_serviceReferences) {
+				int index = Collections.binarySearch(
+					_serviceReferences, serviceReference, _comparator);
+
+				if (remove) {
+					if (index >= 0) {
+						_serviceReferences.remove(index);
+					}
+				}
+				else if (index < 0) {
+					_serviceReferences.add(-index - 1, serviceReference);
+				}
+			}
+		}
+
+		private final BundleContext _bundleContext;
+		private PropertyServiceReferenceComparator<SocialBookmark> _comparator =
+			new PropertyServiceReferenceComparator<>(
+				"social.bookmarks.priority");
+		private final List<ServiceReference<SocialBookmark>> _serviceReferences;
 
 	}
 

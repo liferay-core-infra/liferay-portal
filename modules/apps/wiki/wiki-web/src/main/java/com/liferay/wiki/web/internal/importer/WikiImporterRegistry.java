@@ -14,18 +14,16 @@
 
 package com.liferay.wiki.web.internal.importer;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.wiki.importer.WikiImporter;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.osgi.framework.ServiceReference;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Iván Zaera
@@ -33,47 +31,24 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 @Component(immediate = true, service = WikiImporterRegistry.class)
 public class WikiImporterRegistry {
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		service = WikiImporter.class, unbind = "removedService",
-		updated = "modifiedService"
-	)
-	public void addingService(ServiceReference<WikiImporter> serviceReference) {
-		String format = (String)serviceReference.getProperty("importer");
-
-		_serviceReferences.put(format, serviceReference);
-	}
-
 	public Collection<String> getImporters() {
-		return _serviceReferences.keySet();
+		return _serviceTrackerMap.keySet();
 	}
 
-	public String getProperty(String importer, String key) {
-		ServiceReference<WikiImporter> serviceReference =
-			_serviceReferences.get(importer);
-
-		return (String)serviceReference.getProperty(key);
+	public WikiImporter getWikiImporter(String importer) {
+		return _serviceTrackerMap.getService(importer);
 	}
 
-	public void modifiedService(
-		ServiceReference<WikiImporter> serviceReference) {
-
-		removedService(serviceReference);
-
-		addingService(serviceReference);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, WikiImporter.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(wikiImporter, emitter) -> emitter.emit(
+					wikiImporter.getImporterName())));
 	}
 
-	public void removedService(
-		ServiceReference<WikiImporter> serviceReference) {
-
-		String importer = (String)serviceReference.getProperty("importer");
-
-		_serviceReferences.remove(importer);
-	}
-
-	private final ConcurrentMap<String, ServiceReference<WikiImporter>>
-		_serviceReferences = new ConcurrentSkipListMap<>();
+	private ServiceTrackerMap<String, WikiImporter> _serviceTrackerMap;
 
 }

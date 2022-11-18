@@ -199,7 +199,7 @@ public class ReportEngineImplTest extends TestCase {
 
 		return new ReportRequest(
 			reportRequestContext, reportDesignRetriever,
-			new HashMap<String, String>(), reportFormat.getValue());
+			new HashMap<String, String>(), reportFormat);
 	}
 
 	private void _testExportPdfWithFontExtension(

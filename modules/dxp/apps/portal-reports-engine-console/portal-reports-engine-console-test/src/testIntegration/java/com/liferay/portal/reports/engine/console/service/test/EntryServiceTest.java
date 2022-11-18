@@ -218,7 +218,7 @@ public class EntryServiceTest {
 		for (int i = 0; i < 5; i++) {
 			EntryLocalServiceUtil.addEntry(
 				TestPropsValues.getUserId(), _group.getGroupId(),
-				_definition.getDefinitionId(), "txt", false, null, null, false,
+				_definition.getDefinitionId(), "TXT", false, null, null, false,
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
 				StringPool.BLANK, StringPool.BLANK,
 				RandomTestUtil.randomString(), StringPool.BLANK,
@@ -233,7 +233,7 @@ public class EntryServiceTest {
 		for (int i = 0; i < 5; i++) {
 			EntryLocalServiceUtil.addEntry(
 				TestPropsValues.getUserId(), _group.getGroupId(),
-				_definition.getDefinitionId(), "txt", false, null, null, false,
+				_definition.getDefinitionId(), "TXT", false, null, null, false,
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
 				StringPool.BLANK, StringPool.BLANK,
 				RandomTestUtil.randomString(), StringPool.BLANK,

@@ -31,6 +31,8 @@ import com.liferay.portal.util.PropsValues;
 
 import java.util.Date;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -40,12 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  * @author Tina Tian
  */
-@Component(
-	service = {
-		CheckEntryMessageListener.class,
-		ClusterMasterTokenTransitionListener.class
-	}
-)
+@Component(service = {})
 public class CheckEntryMessageListener
 	extends BaseMessageListener
 	implements ClusterMasterTokenTransitionListener {
@@ -60,7 +57,7 @@ public class CheckEntryMessageListener
 	}
 
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		Class<?> clazz = getClass();
 
 		String className = clazz.getName();
@@ -74,11 +71,20 @@ public class CheckEntryMessageListener
 
 		_schedulerEngineHelper.register(
 			this, schedulerEntry, DestinationNames.SCHEDULER_DISPATCH);
+
+		if (PropsValues.CLUSTER_LINK_ENABLED) {
+			_serviceRegistration = bundleContext.registerService(
+				ClusterMasterTokenTransitionListener.class, this, null);
+		}
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_schedulerEngineHelper.unregister(this);
+
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -109,6 +115,9 @@ public class CheckEntryMessageListener
 
 	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;
+
+	private ServiceRegistration<ClusterMasterTokenTransitionListener>
+		_serviceRegistration;
 
 	@Reference
 	private TriggerFactory _triggerFactory;

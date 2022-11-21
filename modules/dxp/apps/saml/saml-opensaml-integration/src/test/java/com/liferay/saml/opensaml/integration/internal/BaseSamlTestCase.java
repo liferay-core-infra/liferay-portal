@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.saml.constants.SamlProviderConfigurationKeys;
@@ -741,9 +740,9 @@ public abstract class BaseSamlTestCase {
 	private void _setupProps() {
 		PropsTestUtil.setProps(
 			HashMapBuilder.<String, Object>put(
-				PropsKeys.LIFERAY_HOME, System.getProperty("java.io.tmpdir")
-			).put(
 				"configuration.override.", new Properties()
+			).put(
+				"liferay.home", System.getProperty("java.io.tmpdir")
 			).build());
 	}
 

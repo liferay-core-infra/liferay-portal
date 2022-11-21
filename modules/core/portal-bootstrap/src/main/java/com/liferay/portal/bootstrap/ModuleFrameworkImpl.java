@@ -458,7 +458,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		properties.put("java.security.manager", null);
 		properties.put("org.osgi.framework.security", null);
 
-		File file = new File(PropsValues.LIFERAY_HOME);
+		File file = new File(SystemProperties.LIFERAY_HOME);
 
 		URI uri = file.toURI();
 

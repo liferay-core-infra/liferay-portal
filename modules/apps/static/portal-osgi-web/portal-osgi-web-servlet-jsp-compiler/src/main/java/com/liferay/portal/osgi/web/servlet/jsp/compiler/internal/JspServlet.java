@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.taglib.servlet.JspFactorySwapper;
 
@@ -376,7 +377,7 @@ public class JspServlet extends HttpServlet {
 	private static final String _INIT_PARAMETER_NAME_SCRATCH_DIR = "scratchdir";
 
 	private static final String _WORK_DIR = StringBundler.concat(
-		PropsValues.LIFERAY_HOME, File.separator, "work", File.separator);
+		SystemProperties.LIFERAY_HOME, File.separator, "work", File.separator);
 
 	private static final Log _log = LogFactoryUtil.getLog(JspServlet.class);
 

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -308,7 +309,8 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 		return bundle.getDataFile(
 			StringUtil.replace(
 				StringUtil.replace(
-					url.getPath(), PropsValues.LIFERAY_HOME, "_liferay_home_"),
+					url.getPath(), SystemProperties.LIFERAY_HOME,
+					"_liferay_home_"),
 				new char[] {
 					CharPool.COLON, CharPool.EXCLAMATION, CharPool.SLASH
 				},

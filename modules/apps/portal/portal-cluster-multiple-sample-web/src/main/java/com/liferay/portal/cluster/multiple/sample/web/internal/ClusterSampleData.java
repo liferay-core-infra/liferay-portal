@@ -28,7 +28,7 @@ public class ClusterSampleData implements Serializable {
 	public ClusterSampleData() {
 		_computerName = PortalUtil.getComputerName();
 		_data = StringUtil.randomString(20);
-		_liferayHome = SystemProperties.get("liferay.home");
+		_liferayHome = SystemProperties.LIFERAY_HOME;
 		_timestamp = System.currentTimeMillis();
 	}
 

@@ -20,10 +20,9 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactory;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.log4j.internal.Log4jConfigUtil;
 
@@ -179,8 +178,7 @@ public class Log4JUtil {
 
 	private static String _getLiferayHome() {
 		if (_liferayHome == null) {
-			_liferayHome = _escapeXMLAttribute(
-				PropsUtil.get(PropsKeys.LIFERAY_HOME));
+			_liferayHome = _escapeXMLAttribute(SystemProperties.LIFERAY_HOME);
 		}
 
 		return _liferayHome;

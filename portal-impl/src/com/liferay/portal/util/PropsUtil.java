@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
@@ -287,22 +286,13 @@ public class PropsUtil {
 
 	static {
 
-		// Liferay home directory
+		// Ehcache disk directory
 
 		_configuration = ConfigurationFactoryImpl.CONFIGURATION_PORTAL;
 
-		String liferayHome = _configuration.get(PropsKeys.LIFERAY_HOME);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Configured Liferay home " + liferayHome);
-		}
-
-		SystemProperties.set(PropsKeys.LIFERAY_HOME, liferayHome);
-
-		// Ehcache disk directory
-
 		SystemProperties.set(
-			"ehcache.disk.store.dir", liferayHome + "/data/ehcache");
+			"ehcache.disk.store.dir",
+			SystemProperties.LIFERAY_HOME + "/data/ehcache");
 
 		if (GetterUtil.getBoolean(
 				SystemProperties.get("company-id-properties"))) {

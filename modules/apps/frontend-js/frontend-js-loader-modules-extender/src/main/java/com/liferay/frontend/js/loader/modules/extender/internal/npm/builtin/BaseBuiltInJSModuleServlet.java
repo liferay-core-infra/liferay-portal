@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -61,7 +62,7 @@ public abstract class BaseBuiltInJSModuleServlet extends HttpServlet {
 
 	public BaseBuiltInJSModuleServlet() {
 		_workDirName = StringBundler.concat(
-			PropsValues.LIFERAY_HOME, File.separator, "work");
+			SystemProperties.LIFERAY_HOME, File.separator, "work");
 	}
 
 	@Override

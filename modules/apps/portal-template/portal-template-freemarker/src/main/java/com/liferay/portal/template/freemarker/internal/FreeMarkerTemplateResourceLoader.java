@@ -21,13 +21,10 @@ import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.BaseTemplateResourceLoader;
 import com.liferay.portal.template.TemplateResourceParser;
 
-import java.util.Map;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -42,10 +39,7 @@ public class FreeMarkerTemplateResourceLoader
 	extends BaseTemplateResourceLoader {
 
 	@Activate
-	@Modified
-	protected void activate(
-		BundleContext bundleContext, Map<String, Object> properties) {
-
+	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerList = ServiceTrackerListFactory.open(
 			bundleContext, TemplateResourceParser.class,
 			"(lang.type=" + TemplateConstants.LANG_TYPE_FTL + ")");

@@ -86,7 +86,7 @@ public class FreeMarkerTemplateTest {
 			"_freeMarkerTemplateResourceCache", _templateResourceCache);
 
 		_freeMarkerTemplateResourceLoader.activate(
-			SystemBundleUtil.getBundleContext(), Collections.emptyMap());
+			SystemBundleUtil.getBundleContext());
 
 		_freeMarkerManager = new FreeMarkerManager();
 

@@ -94,8 +94,7 @@ public class VelocityTemplateTest {
 			MapUtil.singletonDictionary(
 				"lang.type", TemplateConstants.LANG_TYPE_VM));
 
-		_velocityTemplateResourceLoader.activate(
-			bundleContext, Collections.emptyMap());
+		_velocityTemplateResourceLoader.activate(bundleContext);
 	}
 
 	@AfterClass

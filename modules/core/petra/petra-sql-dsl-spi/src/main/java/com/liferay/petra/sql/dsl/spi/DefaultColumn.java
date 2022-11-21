@@ -19,9 +19,14 @@ import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.ast.ASTNodeListener;
 import com.liferay.petra.sql.dsl.base.BaseTable;
 import com.liferay.petra.sql.dsl.expression.ColumnAlias;
+import com.liferay.petra.sql.dsl.expression.Expression;
+import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
 import com.liferay.petra.sql.dsl.spi.ast.BaseASTNode;
 import com.liferay.petra.sql.dsl.spi.expression.DefaultColumnAlias;
 import com.liferay.petra.sql.dsl.spi.expression.DefaultExpression;
+import com.liferay.petra.sql.dsl.spi.query.sort.DefaultOrderByExpression;
+
+import java.sql.Types;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -54,6 +59,16 @@ public class DefaultColumn<T extends BaseTable<T>, C>
 		}
 
 		return new DefaultColumnAlias<>(_table.aliasColumn(this, name), name);
+	}
+
+	@Override
+	public OrderByExpression ascending() {
+		return new DefaultColumnOrderByExpression(this, true);
+	}
+
+	@Override
+	public OrderByExpression descending() {
+		return new DefaultColumnOrderByExpression(this, false);
 	}
 
 	@Override
@@ -123,5 +138,42 @@ public class DefaultColumn<T extends BaseTable<T>, C>
 	private final String _name;
 	private final int _sqlType;
 	private final T _table;
+
+	private class DefaultColumnOrderByExpression
+		extends DefaultOrderByExpression {
+
+		public DefaultColumnOrderByExpression(
+			Expression<?> expression, boolean ascending) {
+
+			super(expression, ascending);
+		}
+
+		@Override
+		protected void doToSQL(
+			Consumer<String> consumer, ASTNodeListener astNodeListener) {
+
+			if (_sqlType != Types.CLOB) {
+				super.doToSQL(consumer, astNodeListener);
+
+				return;
+			}
+
+			consumer.accept("CAST_CLOB_TEXT(");
+
+			Expression<?> expression = getExpression();
+
+			expression.toSQL(consumer, astNodeListener);
+
+			consumer.accept(")");
+
+			if (isAscending()) {
+				consumer.accept(" asc");
+			}
+			else {
+				consumer.accept(" desc");
+			}
+		}
+
+	}
 
 }

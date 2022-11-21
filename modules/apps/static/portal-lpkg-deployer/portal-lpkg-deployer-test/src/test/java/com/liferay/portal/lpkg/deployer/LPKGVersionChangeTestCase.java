@@ -45,7 +45,7 @@ public abstract class LPKGVersionChangeTestCase {
 			int majorDelta, int minorDelta, int microDelta)
 		throws IOException {
 
-		String liferayHome = SystemProperties.get("liferay.home");
+		String liferayHome = SystemProperties.LIFERAY_HOME;
 
 		Assert.assertNotNull(
 			"Missing system property \"liferay.home\"", liferayHome);

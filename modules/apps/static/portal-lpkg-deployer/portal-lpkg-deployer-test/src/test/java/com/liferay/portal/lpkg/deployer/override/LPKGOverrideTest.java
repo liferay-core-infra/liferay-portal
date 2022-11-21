@@ -68,7 +68,7 @@ public class LPKGOverrideTest {
 
 	@Test
 	public void testOverrideLPKG() throws IOException {
-		String liferayHome = SystemProperties.get("liferay.home");
+		String liferayHome = SystemProperties.LIFERAY_HOME;
 
 		Assert.assertFalse(
 			"Missing system property \"liferay.home\"",

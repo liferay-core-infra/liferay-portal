@@ -46,7 +46,7 @@ public class LPKGVersionChangeLogAssertorTest {
 
 	@Test
 	public void testUpgradeLog() throws IOException {
-		String liferayHome = SystemProperties.get("liferay.home");
+		String liferayHome = SystemProperties.LIFERAY_HOME;
 
 		Assert.assertNotNull(
 			"Missing system property \"liferay.home\"", liferayHome);

@@ -39,7 +39,7 @@ public class LPKGControllerTest {
 
 	@Test
 	public void testLPKGControllerDeploy() throws Exception {
-		String liferayHome = SystemProperties.get("liferay.home");
+		String liferayHome = SystemProperties.LIFERAY_HOME;
 
 		Assert.assertNotNull(
 			"Missing system property \"liferay.home\"", liferayHome);

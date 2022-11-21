@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.template.ClassLoaderResourceParser;
+import com.liferay.portal.template.URLResourceParser;
 import com.liferay.portal.template.engine.TemplateContextHelper;
 import com.liferay.portal.template.velocity.configuration.VelocityEngineConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -34,6 +34,8 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.Reader;
 import java.io.StringReader;
+
+import java.net.URL;
 
 import java.util.Collections;
 import java.util.Map;
@@ -80,7 +82,7 @@ public class VelocityTemplateTest {
 			_templateResourceCache);
 
 		_velocityTemplateResourceLoader.setTemplateResourceParser(
-			new ClassLoaderResourceParser());
+			new TestClassLoaderResourceParser());
 
 		_velocityTemplateResourceLoader.activate(Collections.emptyMap());
 	}
@@ -458,6 +460,18 @@ public class VelocityTemplateTest {
 
 		private long _lastModified = System.currentTimeMillis();
 		private String _templateId;
+
+	}
+
+	private static class TestClassLoaderResourceParser
+		extends URLResourceParser {
+
+		@Override
+		public URL getURL(String templateId) {
+			ClassLoader classLoader = getClass().getClassLoader();
+
+			return classLoader.getResource(templateId);
+		}
 
 	}
 

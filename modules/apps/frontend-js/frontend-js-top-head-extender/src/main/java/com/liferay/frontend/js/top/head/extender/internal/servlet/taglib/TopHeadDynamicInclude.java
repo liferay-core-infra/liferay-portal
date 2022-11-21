@@ -33,15 +33,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -118,12 +115,9 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC
 	)
-	protected void addTopHeadResources(
-		ServiceReference<TopHeadResources> topHeadResourcesServiceReference) {
-
-		synchronized (_topHeadResourcesServiceReferences) {
-			_topHeadResourcesServiceReferences.add(
-				topHeadResourcesServiceReference);
+	protected void addTopHeadResources(TopHeadResources topHeadResources) {
+		synchronized (_topHeadResourcesList) {
+			_topHeadResourcesList.add(topHeadResources);
 		}
 
 		_rebuild();
@@ -141,12 +135,9 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 		}
 	}
 
-	protected void removeTopHeadResources(
-		ServiceReference<TopHeadResources> topHeadResourcesServiceReference) {
-
-		synchronized (_topHeadResourcesServiceReferences) {
-			_topHeadResourcesServiceReferences.remove(
-				topHeadResourcesServiceReference);
+	protected void removeTopHeadResources(TopHeadResources topHeadResources) {
+		synchronized (_topHeadResourcesList) {
+			_topHeadResourcesList.remove(topHeadResources);
 		}
 
 		_rebuild();
@@ -176,44 +167,31 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 
 		_addPortalBundles(_jsResourceURLs, PropsKeys.JAVASCRIPT_BAREBONE_FILES);
 
-		synchronized (_topHeadResourcesServiceReferences) {
-			for (ServiceReference<TopHeadResources>
-					topHeadResourcesServiceReference :
-						_topHeadResourcesServiceReferences) {
+		synchronized (_topHeadResourcesList) {
+			for (TopHeadResources topHeadResources : _topHeadResourcesList) {
+				String bundleContextPath = _portal.getPathContext(
+					topHeadResources.getServletContextPath());
 
-				TopHeadResources topHeadResources = _bundleContext.getService(
-					topHeadResourcesServiceReference);
+				String proxyPath = _portal.getPathProxy();
 
-				try {
-					String bundleContextPath = _portal.getPathContext(
-						topHeadResources.getServletContextPath());
+				String unproxiedBundleContextPath = bundleContextPath.substring(
+					proxyPath.length());
 
-					String proxyPath = _portal.getPathProxy();
+				String urlPrefix = proxyPath + unproxiedBundleContextPath;
 
-					String unproxiedBundleContextPath =
-						bundleContextPath.substring(proxyPath.length());
+				for (String jsResourcePath :
+						topHeadResources.getJsResourcePaths()) {
 
-					String urlPrefix = proxyPath + unproxiedBundleContextPath;
+					String url = urlPrefix + jsResourcePath;
 
-					for (String jsResourcePath :
-							topHeadResources.getJsResourcePaths()) {
-
-						String url = urlPrefix + jsResourcePath;
-
-						_allJsResourceURLs.add(url);
-						_jsResourceURLs.add(url);
-					}
-
-					for (String jsResourcePath :
-							topHeadResources.
-								getAuthenticatedJsResourcePaths()) {
-
-						_allJsResourceURLs.add(urlPrefix + jsResourcePath);
-					}
+					_allJsResourceURLs.add(url);
+					_jsResourceURLs.add(url);
 				}
-				finally {
-					_bundleContext.ungetService(
-						topHeadResourcesServiceReference);
+
+				for (String jsResourcePath :
+						topHeadResources.getAuthenticatedJsResourcePaths()) {
+
+					_allJsResourceURLs.add(urlPrefix + jsResourcePath);
 				}
 			}
 		}
@@ -294,7 +272,7 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 	private Portal _portal;
 
 	private PortalWebResources _portalWebResources;
-	private final Collection<ServiceReference<TopHeadResources>>
-		_topHeadResourcesServiceReferences = new TreeSet<>();
+	private final List<TopHeadResources> _topHeadResourcesList =
+		new ArrayList<>();
 
 }

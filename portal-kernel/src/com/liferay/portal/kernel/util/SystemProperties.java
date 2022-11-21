@@ -45,6 +45,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SystemProperties {
 
+	public static final String LIFERAY_HOME;
+
 	public static final String SYSTEM_ENV_OVERRIDE_PREFIX = "SYSTEM_LIFERAY_";
 
 	public static final String SYSTEM_PROPERTIES_QUIET =
@@ -349,6 +351,8 @@ public class SystemProperties {
 		ClassLoader classLoader = currentThread.getContextClassLoader();
 
 		load(classLoader);
+
+		LIFERAY_HOME = get("liferay.home");
 	}
 
 }

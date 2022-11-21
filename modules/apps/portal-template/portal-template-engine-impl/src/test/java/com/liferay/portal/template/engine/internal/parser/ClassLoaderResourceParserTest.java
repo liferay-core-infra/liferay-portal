@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.template;
+package com.liferay.portal.template.engine.internal.parser;
 
 import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.petra.string.StringBundler;

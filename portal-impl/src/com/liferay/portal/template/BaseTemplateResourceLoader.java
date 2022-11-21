@@ -23,8 +23,6 @@ import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Set;
-
 /**
  * @author Tina Tian
  */
@@ -86,7 +84,7 @@ public abstract class BaseTemplateResourceLoader
 	}
 
 	protected void init(
-		String name, Set<TemplateResourceParser> templateResourceParsers,
+		String name, Iterable<TemplateResourceParser> templateResourceParsers,
 		TemplateResourceCache templateResourceCache) {
 
 		if (Validator.isNull(name)) {
@@ -137,6 +135,6 @@ public abstract class BaseTemplateResourceLoader
 
 	private String _name;
 	private TemplateResourceCache _templateResourceCache;
-	private Set<TemplateResourceParser> _templateResourceParsers;
+	private Iterable<TemplateResourceParser> _templateResourceParsers;
 
 }

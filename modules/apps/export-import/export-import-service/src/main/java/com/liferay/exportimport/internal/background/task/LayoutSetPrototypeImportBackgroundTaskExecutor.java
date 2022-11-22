@@ -53,6 +53,7 @@ import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -180,6 +181,7 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 	}
 
 	@Activate
+	@Modified
 	protected void activate(Map<String, Object> properties) {
 		setBackgroundTaskStatusMessageTranslator(
 			new LayoutExportImportBackgroundTaskStatusMessageTranslator());

@@ -16,18 +16,20 @@ package com.liferay.data.engine.rest.internal.content.type;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
-import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Leonardo Barros
@@ -64,48 +66,77 @@ public class DataDefinitionContentTypeRegistry {
 		);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType,
-		Map<String, Object> properties) {
+	@Activate
+	protected void activate(BundleContext bundleContext)
+		throws InvalidSyntaxException {
 
-		if (!properties.containsKey("content.type")) {
-			return;
-		}
+		String filterString =
+			"(&(content.type=*)(objectClass=" +
+				DataDefinitionContentType.class.getName() + "))";
 
-		String contentType = MapUtil.getString(properties, "content.type");
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, bundleContext.createFilter(filterString),
+			new ServiceTrackerCustomizer
+				<DataDefinitionContentType, DataDefinitionContentType>() {
 
-		_dataDefinitionContentTypesByClassNameId.put(
-			dataDefinitionContentType.getClassNameId(),
-			dataDefinitionContentType);
+				@Override
+				public DataDefinitionContentType addingService(
+					ServiceReference<DataDefinitionContentType>
+						serviceReference) {
 
-		_dataDefinitionContentTypesByContentType.put(
-			contentType, dataDefinitionContentType);
+					DataDefinitionContentType dataDefinitionContentType =
+						bundleContext.getService(serviceReference);
+
+					_dataDefinitionContentTypesByClassNameId.put(
+						dataDefinitionContentType.getClassNameId(),
+						dataDefinitionContentType);
+
+					_dataDefinitionContentTypesByContentType.put(
+						GetterUtil.getString("content.type"),
+						dataDefinitionContentType);
+
+					return dataDefinitionContentType;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<DataDefinitionContentType>
+						serviceReference,
+					DataDefinitionContentType dataDefinitionContentType) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<DataDefinitionContentType>
+						serviceReference,
+					DataDefinitionContentType dataDefinitionContentType) {
+
+					_dataDefinitionContentTypesByClassNameId.remove(
+						dataDefinitionContentType.getClassNameId());
+
+					_dataDefinitionContentTypesByContentType.remove(
+						GetterUtil.getString("content.type"));
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_dataDefinitionContentTypesByContentType.clear();
-	}
 
-	protected void removeDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType,
-		Map<String, Object> properties) {
-
-		_dataDefinitionContentTypesByClassNameId.remove(
-			dataDefinitionContentType.getClassNameId());
-
-		_dataDefinitionContentTypesByContentType.remove(
-			MapUtil.getString(properties, "content.type"));
+		_serviceTracker.close();
 	}
 
 	private final Map<Long, DataDefinitionContentType>
 		_dataDefinitionContentTypesByClassNameId = new TreeMap<>();
 	private final Map<String, DataDefinitionContentType>
 		_dataDefinitionContentTypesByContentType = new TreeMap<>();
+	private ServiceTracker<DataDefinitionContentType, DataDefinitionContentType>
+		_serviceTracker;
 
 }

@@ -28,7 +28,6 @@ import com.liferay.calendar.exception.NoSuchCalendarException;
 import com.liferay.calendar.exporter.CalendarDataFormat;
 import com.liferay.calendar.exporter.CalendarDataHandler;
 import com.liferay.calendar.exporter.CalendarDataHandlerFactory;
-import com.liferay.calendar.internal.notification.NotificationSenderFactory;
 import com.liferay.calendar.internal.notification.NotificationTemplateContextFactory;
 import com.liferay.calendar.internal.recurrence.RecurrenceSplit;
 import com.liferay.calendar.internal.recurrence.RecurrenceSplitter;
@@ -121,8 +120,15 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Eduardo Lundgren
@@ -1690,6 +1696,65 @@ public class CalendarBookingLocalServiceImpl
 			userId, calendarBooking, status, serviceContext);
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext)
+		throws InvalidSyntaxException {
+
+		String filterString =
+			"(&(notification.type=email)(objectClass=" +
+				NotificationSender.class.getName() + "))";
+
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, bundleContext.createFilter(filterString),
+			new ServiceTrackerCustomizer
+				<NotificationSender, NotificationSender>() {
+
+				@Override
+				public NotificationSender addingService(
+					ServiceReference<NotificationSender> serviceReference) {
+
+					if (_log.isWarnEnabled() && (_notificationSender != null)) {
+						Class<?> clazz = _notificationSender.getClass();
+
+						_log.warn(
+							"Overriding notification sender " +
+								clazz.getName());
+					}
+
+					_notificationSender = bundleContext.getService(
+						serviceReference);
+
+					return _notificationSender;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<NotificationSender> serviceReference,
+					NotificationSender notificationSender) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<NotificationSender> serviceReference,
+					NotificationSender notificationSender) {
+
+					if (notificationSender == _notificationSender) {
+						_notificationSender = null;
+					}
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
+	}
+
 	@Reference
 	protected MBMessageLocalService mbMessageLocalService;
 
@@ -2196,10 +2261,6 @@ public class CalendarBookingLocalServiceImpl
 			ServiceContext serviceContext)
 		throws Exception {
 
-		NotificationSender notificationSender =
-			_notificationSenderFactory.getNotificationSender(
-				notificationType.toString());
-
 		if (notificationTemplateType == NotificationTemplateType.DECLINE) {
 			User recipientUser = senderUser;
 
@@ -2218,7 +2279,7 @@ public class CalendarBookingLocalServiceImpl
 					notificationType, notificationTemplateType, calendarBooking,
 					recipientUser, serviceContext);
 
-			notificationSender.sendNotification(
+			_notificationSender.sendNotification(
 				senderUser.getEmailAddress(), resourceName,
 				notificationRecipient, notificationTemplateContext);
 		}
@@ -2240,7 +2301,7 @@ public class CalendarBookingLocalServiceImpl
 						notificationType, notificationTemplateType,
 						calendarBooking, user, serviceContext);
 
-				notificationSender.sendNotification(
+				_notificationSender.sendNotification(
 					senderUser.getEmailAddress(), senderUser.getFullName(),
 					notificationRecipient, notificationTemplateContext);
 			}
@@ -2286,16 +2347,12 @@ public class CalendarBookingLocalServiceImpl
 
 			User user = notificationRecipient.getUser();
 
-			NotificationSender notificationSender =
-				_notificationSenderFactory.getNotificationSender(
-					notificationType.toString());
-
 			NotificationTemplateContext notificationTemplateContext =
 				NotificationTemplateContextFactory.getInstance(
 					notificationType, NotificationTemplateType.REMINDER,
 					calendarBooking, user);
 
-			notificationSender.sendNotification(
+			_notificationSender.sendNotification(
 				user.getEmailAddress(), user.getFullName(),
 				notificationRecipient, notificationTemplateContext);
 		}
@@ -2739,8 +2796,7 @@ public class CalendarBookingLocalServiceImpl
 	@Reference
 	private HtmlParser _htmlParser;
 
-	@Reference
-	private NotificationSenderFactory _notificationSenderFactory;
+	private volatile NotificationSender _notificationSender;
 
 	@Reference
 	private PortalUUID _portalUUID;
@@ -2750,6 +2806,9 @@ public class CalendarBookingLocalServiceImpl
 
 	@Reference
 	private ResourceLocalService _resourceLocalService;
+
+	private ServiceTracker<NotificationSender, NotificationSender>
+		_serviceTracker;
 
 	@Reference
 	private SocialActivityCounterLocalService

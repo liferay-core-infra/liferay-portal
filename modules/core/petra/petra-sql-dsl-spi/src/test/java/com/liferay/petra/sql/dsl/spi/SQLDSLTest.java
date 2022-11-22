@@ -108,6 +108,11 @@ public class SQLDSLTest {
 					assertClasses.add(DefaultAlias.class);
 					assertClasses.add(DefaultASTNodeListener.class);
 					assertClasses.add(DefaultColumn.class);
+
+					Collections.addAll(
+						assertClasses,
+						DefaultColumn.class.getDeclaredClasses());
+
 					assertClasses.add(DefaultColumnAlias.class);
 					assertClasses.add(DefaultOrderByExpression.class);
 					assertClasses.add(DefaultPredicate.class);
@@ -795,36 +800,38 @@ public class SQLDSLTest {
 	@Test
 	public void testOrderBy() {
 		JoinStep joinStep = DSLQueryFactoryUtil.select(
-			MainExampleTable.INSTANCE.nameColumn
+			MainExampleTable.INSTANCE.nameColumn,
+			MainExampleTable.INSTANCE.descriptionColumn
 		).from(
 			MainExampleTable.INSTANCE
 		);
 
-		Assert.assertEquals(
-			"select MainExample.name from MainExample", joinStep.toString());
+		String expectedJoinStepSql =
+			"select MainExample.name, MainExample.description from MainExample";
+
+		Assert.assertEquals(expectedJoinStepSql, joinStep.toString());
 
 		LimitStep limitStep = joinStep.orderBy();
 
-		Assert.assertEquals(
-			"select MainExample.name from MainExample", limitStep.toString());
+		Assert.assertEquals(expectedJoinStepSql, limitStep.toString());
 
 		limitStep = joinStep.orderBy((OrderByExpression[])null);
 
-		Assert.assertEquals(
-			"select MainExample.name from MainExample", limitStep.toString());
+		Assert.assertEquals(expectedJoinStepSql, limitStep.toString());
 
 		limitStep = joinStep.orderBy(orderByStep -> null);
 
-		Assert.assertEquals(
-			"select MainExample.name from MainExample", limitStep.toString());
+		Assert.assertEquals(expectedJoinStepSql, limitStep.toString());
 
 		limitStep = joinStep.orderBy(
 			orderByStep -> orderByStep.orderBy(
-				MainExampleTable.INSTANCE.nameColumn.ascending()));
+				MainExampleTable.INSTANCE.nameColumn.ascending(),
+				MainExampleTable.INSTANCE.descriptionColumn.ascending()));
 
 		Assert.assertEquals(
-			"select MainExample.name from MainExample order by " +
-				"MainExample.name asc",
+			StringBundler.concat(
+				expectedJoinStepSql, " order by MainExample.name asc, ",
+				"CAST_CLOB_TEXT(MainExample.description) asc"),
 			limitStep.toString());
 
 		try {
@@ -840,14 +847,14 @@ public class SQLDSLTest {
 				"Order by expressions is empty", exception.getMessage());
 		}
 
-		OrderByExpression orderByExpression =
-			MainExampleTable.INSTANCE.nameColumn.ascending();
+		OrderByExpression orderByNameColumnExpression =
+			MainExampleTable.INSTANCE.nameColumn.descending();
 
-		OrderByExpression orderByExpressionClob =
+		OrderByExpression orderByDescriptionColumnExpression =
 			MainExampleTable.INSTANCE.descriptionColumn.descending();
 
 		OrderByExpression[] orderByExpressions = {
-			orderByExpression, orderByExpressionClob
+			orderByNameColumnExpression, orderByDescriptionColumnExpression
 		};
 
 		OrderBy orderBy = new OrderBy(joinStep, orderByExpressions);
@@ -856,14 +863,20 @@ public class SQLDSLTest {
 
 		Assert.assertEquals(
 			MainExampleTable.INSTANCE.nameColumn,
-			orderByExpression.getExpression());
-		Assert.assertTrue(
-			orderByExpression.toString(), orderByExpression.isAscending());
+			orderByNameColumnExpression.getExpression());
+		Assert.assertEquals(
+			MainExampleTable.INSTANCE.descriptionColumn,
+			orderByDescriptionColumnExpression.getExpression());
+		Assert.assertFalse(
+			orderByNameColumnExpression.toString(),
+			orderByNameColumnExpression.isAscending());
+		Assert.assertFalse(
+			orderByDescriptionColumnExpression.toString(),
+			orderByDescriptionColumnExpression.isAscending());
 
 		Assert.assertEquals(
 			StringBundler.concat(
-				"select MainExample.name from MainExample order by ",
-				"MainExample.name asc, ",
+				expectedJoinStepSql, " order by MainExample.name desc, ",
 				"CAST_CLOB_TEXT(MainExample.description) desc"),
 			orderBy.toString());
 	}

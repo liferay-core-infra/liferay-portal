@@ -281,42 +281,6 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 		}
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setIndexerRequestBufferOverflowHandler(
-		IndexerRequestBufferOverflowHandler
-			indexerRequestBufferOverflowHandler) {
-
-		_indexerRequestBufferOverflowHandler =
-			indexerRequestBufferOverflowHandler;
-
-		for (BufferedIndexerInvocationHandler bufferedIndexerInvocationHandler :
-				_bufferedInvocationHandlers.values()) {
-
-			bufferedIndexerInvocationHandler.
-				setIndexerRequestBufferOverflowHandler(
-					_indexerRequestBufferOverflowHandler);
-		}
-	}
-
-	protected void unsetIndexerRequestBufferOverflowHandler(
-		IndexerRequestBufferOverflowHandler
-			indexerRequestBufferOverflowHandler) {
-
-		_indexerRequestBufferOverflowHandler = null;
-
-		for (BufferedIndexerInvocationHandler bufferedIndexerInvocationHandler :
-				_bufferedInvocationHandlers.values()) {
-
-			bufferedIndexerInvocationHandler.
-				setIndexerRequestBufferOverflowHandler(
-					_defaultIndexerRequestBufferOverflowHandler);
-		}
-	}
-
 	private <T> Indexer<T> _proxyIndexer(Indexer<T> indexer) {
 		if (indexer == null) {
 			return null;
@@ -342,16 +306,9 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 					indexer, _indexStatusManager, _indexerRegistryConfiguration,
 					_persistedModelLocalServiceRegistry);
 
-			if (_indexerRequestBufferOverflowHandler == null) {
-				bufferedIndexerInvocationHandler.
-					setIndexerRequestBufferOverflowHandler(
-						_defaultIndexerRequestBufferOverflowHandler);
-			}
-			else {
-				bufferedIndexerInvocationHandler.
-					setIndexerRequestBufferOverflowHandler(
-						_indexerRequestBufferOverflowHandler);
-			}
+			bufferedIndexerInvocationHandler.
+				setIndexerRequestBufferOverflowHandler(
+					_indexerRequestBufferOverflowHandler);
 
 			_bufferedInvocationHandlers.put(
 				indexer.getClassName(), bufferedIndexerInvocationHandler);
@@ -372,15 +329,13 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 
 	private final Map<String, BufferedIndexerInvocationHandler>
 		_bufferedInvocationHandlers = new ConcurrentHashMap<>();
-
-	@Reference(target = "(mode=DEFAULT)")
-	private IndexerRequestBufferOverflowHandler
-		_defaultIndexerRequestBufferOverflowHandler;
-
 	private final Indexer<?> _dummyIndexer = new DummyIndexer();
 	private volatile IndexerRegistryConfiguration _indexerRegistryConfiguration;
-	private volatile IndexerRequestBufferOverflowHandler
+
+	@Reference
+	private IndexerRequestBufferOverflowHandler
 		_indexerRequestBufferOverflowHandler;
+
 	private final Map<String, Indexer<? extends Object>> _indexers =
 		new ConcurrentHashMap<>();
 	private ServiceTracker<Indexer<?>, Indexer<?>> _indexerServiceTracker;

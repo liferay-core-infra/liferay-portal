@@ -12,9 +12,10 @@
  * details.
  */
 
-package com.liferay.data.engine.rest.internal.content.type;
+package com.liferay.data.engine.service.impl;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
+import com.liferay.data.engine.nativeobject.tracker.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -31,10 +32,11 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
- * @author Leonardo Barros
+ * @author Janis Zhang
  */
 @Component(service = DataDefinitionContentTypeRegistry.class)
-public class DataDefinitionContentTypeRegistry {
+public class DataDefinitionContentTypeRegistryImpl
+	implements DataDefinitionContentTypeRegistry {
 
 	public Long getClassNameId(String contentType) {
 		return Optional.ofNullable(

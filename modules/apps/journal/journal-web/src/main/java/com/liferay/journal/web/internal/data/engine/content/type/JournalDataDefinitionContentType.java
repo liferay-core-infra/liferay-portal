@@ -33,10 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Bruno Basto
  */
-@Component(
-	immediate = true, property = "content.type=journal",
-	service = DataDefinitionContentType.class
-)
+@Component(immediate = true, service = DataDefinitionContentType.class)
 public class JournalDataDefinitionContentType
 	implements DataDefinitionContentType {
 

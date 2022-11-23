@@ -37,10 +37,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alejandro Tardín
  */
-@Component(
-	property = "model.class.name=com.liferay.document.library.asset.auto.tagger.tensorflow.internal.configuration.TensorFlowImageAssetAutoTagProviderCompanyConfiguration",
-	service = ConfigurationModelListener.class
-)
+@Component(service = {})
 public class
 	TensorFlowImageAssetAutoTagProviderCompanyConfigurationModelListener
 		implements ConfigurationModelListener {
@@ -75,12 +72,24 @@ public class
 			Destination.class, destination,
 			MapUtil.singletonDictionary(
 				"destination.name", destination.getName()));
+
+		_configurationModelListenerServiceRegistration =
+			bundleContext.registerService(
+				ConfigurationModelListener.class, this,
+				MapUtil.singletonDictionary(
+					"model.class.name",
+					TensorFlowImageAssetAutoTagProviderCompanyConfiguration.
+						class.getName()));
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_destinationServiceRegistration.unregister();
+		_configurationModelListenerServiceRegistration.unregister();
 	}
+
+	private ServiceRegistration<ConfigurationModelListener>
+		_configurationModelListenerServiceRegistration;
 
 	@Reference
 	private DestinationFactory _destinationFactory;

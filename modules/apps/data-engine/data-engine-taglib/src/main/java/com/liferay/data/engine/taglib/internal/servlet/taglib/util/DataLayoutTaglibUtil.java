@@ -16,6 +16,7 @@ package com.liferay.data.engine.taglib.internal.servlet.taglib.util;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
+import com.liferay.data.engine.nativeobject.tracker.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.renderer.DataLayoutRenderer;
 import com.liferay.data.engine.renderer.DataLayoutRendererContext;
 import com.liferay.data.engine.rest.dto.v2_0.DataDefinition;
@@ -121,13 +122,11 @@ public class DataLayoutTaglibUtil {
 		String contentType) {
 
 		DataDefinitionContentType dataDefinitionContentType =
-			_dataDefinitionContentTypesServiceTrackerMap.getService(
-				contentType);
+			_dataLayoutTaglibUtil._getDataDefinitionContentType(contentType);
 
 		if (dataDefinitionContentType == null) {
 			dataDefinitionContentType =
-				_dataDefinitionContentTypesServiceTrackerMap.getService(
-					"default");
+				_dataLayoutTaglibUtil._getDataDefinitionContentType("default");
 		}
 
 		return JSONUtil.put(
@@ -260,39 +259,28 @@ public class DataLayoutTaglibUtil {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_dataLayoutTaglibUtil = this;
-		_dataDefinitionContentTypesServiceTrackerMap =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, DataDefinitionContentType.class, null,
-				ServiceReferenceMapperFactory.create(
-					bundleContext,
-					(dataDefinitionContentType, emitter) -> emitter.emit(
-						dataDefinitionContentType.getContentType())));
-		_dataLayoutBuilderDefinitionServiceTrackerMap =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, DataLayoutBuilderDefinition.class, null,
-				ServiceReferenceMapperFactory.create(
-					bundleContext,
-					(dataLayoutBuilderDefinition, emitter) -> emitter.emit(
-						dataLayoutBuilderDefinition.getContentType())));
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, DataLayoutBuilderDefinition.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(dataLayoutBuilderDefinition, emitter) -> emitter.emit(
+					dataLayoutBuilderDefinition.getContentType())));
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_dataLayoutTaglibUtil = null;
-		_dataLayoutBuilderDefinitionServiceTrackerMap.close();
-		_dataDefinitionContentTypesServiceTrackerMap.close();
+		_serviceTrackerMap.close();
 	}
 
 	private static DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(
 		String contentType) {
 
 		DataLayoutBuilderDefinition dataLayoutBuilderDefinition =
-			_dataLayoutBuilderDefinitionServiceTrackerMap.getService(
-				contentType);
+			_serviceTrackerMap.getService(contentType);
 
 		if (dataLayoutBuilderDefinition == null) {
-			return _dataLayoutBuilderDefinitionServiceTrackerMap.getService(
-				"default");
+			return _serviceTrackerMap.getService("default");
 		}
 
 		return dataLayoutBuilderDefinition;
@@ -355,6 +343,13 @@ public class DataLayoutTaglibUtil {
 			).build();
 
 		return dataDefinitionResource.getDataDefinition(dataDefinitionId);
+	}
+
+	private DataDefinitionContentType _getDataDefinitionContentType(
+		String contentType) {
+
+		return _dataDefinitionContentTypeRegistry.getDataDefinitionContentType(
+			contentType);
 	}
 
 	private DataLayout _getDataLayout(
@@ -618,11 +613,13 @@ public class DataLayoutTaglibUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataLayoutTaglibUtil.class);
 
-	private static ServiceTrackerMap<String, DataDefinitionContentType>
-		_dataDefinitionContentTypesServiceTrackerMap;
-	private static ServiceTrackerMap<String, DataLayoutBuilderDefinition>
-		_dataLayoutBuilderDefinitionServiceTrackerMap;
 	private static DataLayoutTaglibUtil _dataLayoutTaglibUtil;
+	private static ServiceTrackerMap<String, DataLayoutBuilderDefinition>
+		_serviceTrackerMap;
+
+	@Reference
+	private DataDefinitionContentTypeRegistry
+		_dataDefinitionContentTypeRegistry;
 
 	@Reference
 	private DataDefinitionResource.Factory _dataDefinitionResourceFactory;

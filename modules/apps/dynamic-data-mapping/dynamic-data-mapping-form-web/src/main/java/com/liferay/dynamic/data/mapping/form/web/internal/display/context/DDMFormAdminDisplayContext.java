@@ -266,9 +266,17 @@ public class DDMFormAdminDisplayContext {
 		return _ddmFormWebConfiguration.autosaveInterval();
 	}
 
-	public Map<String, String> getAvailableExportExtensions() {
-		return _ddmFormInstanceRecordWriterRegistry.
-			getDDMFormInstanceRecordWriterExtensions();
+	public Map<String, String> getAvailableExportTypes() {
+		Map<String, String> ddmFormInstanceRecordWriterTypes = new HashMap<>();
+
+		for (String type :
+				_ddmFormInstanceRecordWriterRegistry.
+					getDDMFormInstanceRecordWriterTypes()) {
+
+			ddmFormInstanceRecordWriterTypes.put(type, type.toUpperCase());
+		}
+
+		return ddmFormInstanceRecordWriterTypes;
 	}
 
 	public JSONArray getAvailableLanguageIdsJSONArray() {

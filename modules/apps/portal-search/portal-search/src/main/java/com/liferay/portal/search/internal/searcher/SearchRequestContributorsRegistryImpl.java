@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.internal.searcher;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.search.spi.searcher.SearchRequestContributor;
@@ -22,17 +24,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author André de Oliveira
@@ -54,31 +51,17 @@ public class SearchRequestContributorsRegistryImpl
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, SearchRequestContributor.class);
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
 			bundleContext, SearchRequestContributor.class,
 			"search.request.contributor.id");
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addSearchRequestContributor(
-		SearchRequestContributor searchRequestContributor) {
-
-		_searchRequestContributors.add(searchRequestContributor);
-	}
-
 	@Deactivate
 	protected void deactivate() {
+		_serviceTrackerList.close();
 		_serviceTrackerMap.close();
-	}
-
-	protected void removeSearchRequestContributor(
-		SearchRequestContributor searchRequestContributor) {
-
-		_searchRequestContributors.remove(searchRequestContributor);
 	}
 
 	private void _exclude(
@@ -99,7 +82,7 @@ public class SearchRequestContributorsRegistryImpl
 		Collection<String> ids) {
 
 		if ((ids == null) || ids.isEmpty()) {
-			return new ArrayList<>(_searchRequestContributors);
+			return _serviceTrackerList.toList();
 		}
 
 		Collection<SearchRequestContributor> collection = new ArrayList<>();
@@ -111,8 +94,7 @@ public class SearchRequestContributorsRegistryImpl
 		return collection;
 	}
 
-	private final Collection<SearchRequestContributor>
-		_searchRequestContributors = new CopyOnWriteArrayList<>();
+	private ServiceTrackerList<SearchRequestContributor> _serviceTrackerList;
 	private ServiceTrackerMap<String, List<SearchRequestContributor>>
 		_serviceTrackerMap;
 

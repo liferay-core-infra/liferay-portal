@@ -49,6 +49,7 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactory;
 import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
+import com.liferay.wiki.constants.WikiImporterKeys;
 import com.liferay.wiki.constants.WikiPageConstants;
 import com.liferay.wiki.exception.ImportFilesException;
 import com.liferay.wiki.exception.NoSuchPageException;
@@ -84,20 +85,6 @@ import org.osgi.service.component.annotations.Reference;
 	service = WikiImporter.class
 )
 public class MediaWikiImporter implements WikiImporter {
-
-	public static final String FORMAT_CREOLE = "creole";
-
-	public static final String OPTIONS_FRONT_PAGE = "OPTIONS_FRONT_PAGE";
-
-	public static final String OPTIONS_IMPORT_LATEST_VERSION =
-		"OPTIONS_IMPORT_LATEST_VERSION";
-
-	public static final String OPTIONS_STRICT_IMPORT_MODE =
-		"OPTIONS_STRICT_IMPORT_MODE";
-
-	public static final String SHARED_IMAGES_CONTENT = "See attachments";
-
-	public static final String SHARED_IMAGES_TITLE = "SharedImages";
 
 	@Override
 	public void importPages(
@@ -233,8 +220,8 @@ public class MediaWikiImporter implements WikiImporter {
 
 			_wikiPageLocalService.updatePage(
 				authorUserId, node.getNodeId(), title, page.getVersion(),
-				content, summary, true, FORMAT_CREOLE, parentTitle,
-				redirectTitle, serviceContext);
+				content, summary, true, WikiImporterKeys.FORMAT_CREOLE,
+				parentTitle, redirectTitle, serviceContext);
 		}
 		catch (Exception exception) {
 			throw new PortalException(
@@ -283,7 +270,8 @@ public class MediaWikiImporter implements WikiImporter {
 	private void _moveFrontPage(
 		long userId, WikiNode node, Map<String, String[]> options) {
 
-		String frontPageTitle = MapUtil.getString(options, OPTIONS_FRONT_PAGE);
+		String frontPageTitle = MapUtil.getString(
+			options, WikiImporterKeys.OPTIONS_FRONT_PAGE);
 
 		if (Validator.isNull(frontPageTitle)) {
 			return;
@@ -351,7 +339,7 @@ public class MediaWikiImporter implements WikiImporter {
 		if (total > 0) {
 			try {
 				_wikiPageLocalService.getPage(
-					node.getNodeId(), SHARED_IMAGES_TITLE);
+					node.getNodeId(), WikiImporterKeys.SHARED_IMAGES_TITLE);
 			}
 			catch (NoSuchPageException noSuchPageException) {
 				if (_log.isDebugEnabled()) {
@@ -364,8 +352,10 @@ public class MediaWikiImporter implements WikiImporter {
 				serviceContext.setAddGuestPermissions(true);
 
 				_wikiPageLocalService.addPage(
-					userId, node.getNodeId(), SHARED_IMAGES_TITLE,
-					SHARED_IMAGES_CONTENT, null, true, serviceContext);
+					userId, node.getNodeId(),
+					WikiImporterKeys.SHARED_IMAGES_TITLE,
+					WikiImporterKeys.SHARED_IMAGES_CONTENT, null, true,
+					serviceContext);
 			}
 		}
 
@@ -405,8 +395,8 @@ public class MediaWikiImporter implements WikiImporter {
 
 				if ((i % 5) == 0) {
 					_wikiPageLocalService.addPageAttachments(
-						userId, node.getNodeId(), SHARED_IMAGES_TITLE,
-						inputStreamOVPs);
+						userId, node.getNodeId(),
+						WikiImporterKeys.SHARED_IMAGES_TITLE, inputStreamOVPs);
 
 					inputStreamOVPs.clear();
 
@@ -420,8 +410,8 @@ public class MediaWikiImporter implements WikiImporter {
 
 			if (!inputStreamOVPs.isEmpty()) {
 				_wikiPageLocalService.addPageAttachments(
-					userId, node.getNodeId(), SHARED_IMAGES_TITLE,
-					inputStreamOVPs);
+					userId, node.getNodeId(),
+					WikiImporterKeys.SHARED_IMAGES_TITLE, inputStreamOVPs);
 			}
 		}
 		finally {
@@ -453,9 +443,9 @@ public class MediaWikiImporter implements WikiImporter {
 		InputStream imagesInputStream, Map<String, String[]> options) {
 
 		boolean importLatestVersion = MapUtil.getBoolean(
-			options, OPTIONS_IMPORT_LATEST_VERSION);
+			options, WikiImporterKeys.OPTIONS_IMPORT_LATEST_VERSION);
 		boolean strictImportMode = MapUtil.getBoolean(
-			options, OPTIONS_STRICT_IMPORT_MODE);
+			options, WikiImporterKeys.OPTIONS_STRICT_IMPORT_MODE);
 
 		ProgressTracker progressTracker =
 			ProgressTrackerThreadLocal.getProgressTracker();
@@ -719,7 +709,7 @@ public class MediaWikiImporter implements WikiImporter {
 			StringBuffer sb = new StringBuffer();
 
 			WikiPage sharedImagesPage = _wikiPageLocalService.getPage(
-				node.getNodeId(), SHARED_IMAGES_TITLE);
+				node.getNodeId(), WikiImporterKeys.SHARED_IMAGES_TITLE);
 
 			Company company = _companyLocalService.getCompany(
 				node.getCompanyId());

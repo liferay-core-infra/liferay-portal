@@ -256,7 +256,8 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 			existingFiles[0]);
 
 		ReportDesignRetriever retriever = new MemoryReportDesignRetriever(
-			reportName + StringPool.PERIOD + entry.getFormat(),
+			reportName + StringPool.PERIOD +
+				StringUtil.toLowerCase(entry.getFormat()),
 			definition.getModifiedDate(), templateFile);
 
 		long sourceId = definition.getSourceId();

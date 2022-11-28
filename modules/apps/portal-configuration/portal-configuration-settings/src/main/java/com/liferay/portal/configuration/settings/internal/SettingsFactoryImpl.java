@@ -44,10 +44,14 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.portlet.PortletPreferences;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Raymond Augé
@@ -127,6 +131,68 @@ public class SettingsFactoryImpl implements SettingsFactory {
 		}
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker =
+			new ServiceTracker
+				<ConfigurationPidMapping, ConfigurationPidMapping>(
+					bundleContext, ConfigurationPidMapping.class,
+					new ServiceTrackerCustomizer
+						<ConfigurationPidMapping, ConfigurationPidMapping>() {
+
+						@Override
+						public ConfigurationPidMapping addingService(
+							ServiceReference<ConfigurationPidMapping>
+								serviceReference) {
+
+							ConfigurationPidMapping configurationPidMapping =
+								bundleContext.getService(serviceReference);
+
+							String settingsId =
+								configurationPidMapping.getConfigurationPid();
+
+							ConfigurationBeanClassSettingsDescriptor
+								configurationBeanClassSettingsDescriptor =
+									new ConfigurationBeanClassSettingsDescriptor(
+										configurationPidMapping.
+											getConfigurationBeanClass());
+
+							register(
+								settingsId,
+								configurationBeanClassSettingsDescriptor, null);
+
+							return configurationPidMapping;
+						}
+
+						@Override
+						public void modifiedService(
+							ServiceReference<ConfigurationPidMapping>
+								serviceReference,
+							ConfigurationPidMapping configurationPidMapping) {
+						}
+
+						@Override
+						public void removedService(
+							ServiceReference<ConfigurationPidMapping>
+								serviceReference,
+							ConfigurationPidMapping configurationPidMapping) {
+
+							unregister(
+								configurationPidMapping.getConfigurationPid());
+
+							bundleContext.ungetService(serviceReference);
+						}
+
+					});
+
+		_serviceTracker.open();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
+	}
+
 	protected long getCompanyId(long groupId) throws SettingsException {
 		try {
 			Group group = _groupLocalService.getGroup(groupId);
@@ -163,23 +229,6 @@ public class SettingsFactoryImpl implements SettingsFactory {
 		register(settingsId, configurationBeanClassSettingsDescriptor, null);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setConfigurationPidMapping(
-		ConfigurationPidMapping configurationPidMapping) {
-
-		String settingsId = configurationPidMapping.getConfigurationPid();
-
-		ConfigurationBeanClassSettingsDescriptor
-			configurationBeanClassSettingsDescriptor =
-				new ConfigurationBeanClassSettingsDescriptor(
-					configurationPidMapping.getConfigurationBeanClass());
-
-		register(settingsId, configurationBeanClassSettingsDescriptor, null);
-	}
-
 	protected void unregister(String settingsId) {
 		_fallbackKeysMap.remove(settingsId);
 
@@ -193,12 +242,6 @@ public class SettingsFactoryImpl implements SettingsFactory {
 			configurationBeanClass);
 
 		unregister(settingsId);
-	}
-
-	protected void unsetConfigurationPidMapping(
-		ConfigurationPidMapping configurationPidMapping) {
-
-		unregister(configurationPidMapping.getConfigurationPid());
 	}
 
 	private Settings _applyFallbackKeys(String settingsId, Settings settings) {
@@ -255,6 +298,8 @@ public class SettingsFactoryImpl implements SettingsFactory {
 	@Reference
 	private PortletItemLocalService _portletItemLocalService;
 
+	private ServiceTracker<ConfigurationPidMapping, ConfigurationPidMapping>
+		_serviceTracker;
 	private final Map<String, SettingsDescriptor> _settingsDescriptors =
 		new ConcurrentHashMap<>();
 

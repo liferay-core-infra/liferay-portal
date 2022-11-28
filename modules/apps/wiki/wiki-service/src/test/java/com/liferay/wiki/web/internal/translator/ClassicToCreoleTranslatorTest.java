@@ -15,6 +15,7 @@
 package com.liferay.wiki.web.internal.translator;
 
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.wiki.internal.translator.ClassicToCreoleTranslator;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

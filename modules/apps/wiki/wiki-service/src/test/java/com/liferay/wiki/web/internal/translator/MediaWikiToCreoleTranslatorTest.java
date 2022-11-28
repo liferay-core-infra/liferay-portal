@@ -15,10 +15,12 @@
 package com.liferay.wiki.web.internal.translator;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.wiki.internal.translator.MediaWikiToCreoleTranslator;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -124,10 +126,12 @@ public class MediaWikiToCreoleTranslatorTest {
 		String expected =
 			MediaWikiToCreoleTranslator.TABLE_OF_CONTENTS +
 				"== Header 1 ==\n=== Header 2 ===";
-		String actual = _mediaWikiToCreoleTranslator.postProcess(
-			_translate(content));
 
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(
+			expected,
+			ReflectionTestUtil.invoke(
+				_mediaWikiToCreoleTranslator, "postProcess",
+				new Class<?>[] {String.class}, _translate(content)));
 	}
 
 	@Test
@@ -136,10 +140,12 @@ public class MediaWikiToCreoleTranslatorTest {
 
 		String expected =
 			MediaWikiToCreoleTranslator.TABLE_OF_CONTENTS + content;
-		String actual = _mediaWikiToCreoleTranslator.postProcess(
-			_translate(content));
 
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(
+			expected,
+			ReflectionTestUtil.invoke(
+				_mediaWikiToCreoleTranslator, "postProcess",
+				new Class<?>[] {String.class}, _translate(content)));
 	}
 
 	@Test
@@ -176,7 +182,9 @@ public class MediaWikiToCreoleTranslatorTest {
 				"test1 {{SharedImages/sample1.png}} test2 ",
 				"{{SharedImages/sample2.png}} test3 ",
 				"{{SharedImages/sample3.png}} test4"),
-			_mediaWikiToCreoleTranslator.postProcess(_translate(content)));
+			ReflectionTestUtil.invoke(
+				_mediaWikiToCreoleTranslator, "postProcess",
+				new Class<?>[] {String.class}, _translate(content)));
 	}
 
 	@Test
@@ -216,10 +224,12 @@ public class MediaWikiToCreoleTranslatorTest {
 		String expected =
 			MediaWikiToCreoleTranslator.TABLE_OF_CONTENTS +
 				"[[Link With Underscores]]";
-		String actual = _mediaWikiToCreoleTranslator.postProcess(
-			_translate(content));
 
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(
+			expected,
+			ReflectionTestUtil.invoke(
+				_mediaWikiToCreoleTranslator, "postProcess",
+				new Class<?>[] {String.class}, _translate(content)));
 	}
 
 	@Test
@@ -380,10 +390,12 @@ public class MediaWikiToCreoleTranslatorTest {
 
 		String expected =
 			MediaWikiToCreoleTranslator.TABLE_OF_CONTENTS + "text\n\ntextx";
-		String actual = _mediaWikiToCreoleTranslator.postProcess(
-			_translate(content));
 
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(
+			expected,
+			ReflectionTestUtil.invoke(
+				_mediaWikiToCreoleTranslator, "postProcess",
+				new Class<?>[] {String.class}, _translate(content)));
 	}
 
 	@Test
@@ -457,7 +469,9 @@ public class MediaWikiToCreoleTranslatorTest {
 	}
 
 	private String _translate(String content) {
-		return _mediaWikiToCreoleTranslator.runRegexps(content);
+		return ReflectionTestUtil.invoke(
+			_mediaWikiToCreoleTranslator, "runRegexps",
+			new Class<?>[] {String.class}, content);
 	}
 
 	private final MediaWikiToCreoleTranslator _mediaWikiToCreoleTranslator =

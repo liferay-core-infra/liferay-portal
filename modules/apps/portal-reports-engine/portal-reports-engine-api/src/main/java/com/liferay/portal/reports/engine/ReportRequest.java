@@ -14,8 +14,6 @@
 
 package com.liferay.portal.reports.engine;
 
-import com.liferay.portal.kernel.util.StringUtil;
-
 import java.io.Serializable;
 
 import java.util.Map;
@@ -29,14 +27,12 @@ public class ReportRequest implements Serializable {
 	public ReportRequest(
 		ReportRequestContext reportRequestContext,
 		ReportDesignRetriever reportDesignRetriever,
-		Map<String, String> reportParameters, String reportFormat) {
+		Map<String, String> reportParameters, ReportFormat reportFormat) {
 
 		_reportRequestContext = reportRequestContext;
 		_reportDesignRetriever = reportDesignRetriever;
 		_reportParameters = reportParameters;
-
-		_reportFormat = ReportFormat.valueOf(
-			StringUtil.toUpperCase(reportFormat));
+		_reportFormat = reportFormat;
 	}
 
 	public ReportDesignRetriever getReportDesignRetriever() {

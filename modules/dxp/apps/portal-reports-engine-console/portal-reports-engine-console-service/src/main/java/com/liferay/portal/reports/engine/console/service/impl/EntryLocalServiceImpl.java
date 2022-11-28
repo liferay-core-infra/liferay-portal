@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.reports.engine.MemoryReportDesignRetriever;
 import com.liferay.portal.reports.engine.ReportDataSourceType;
 import com.liferay.portal.reports.engine.ReportDesignRetriever;
+import com.liferay.portal.reports.engine.ReportFormat;
 import com.liferay.portal.reports.engine.ReportRequest;
 import com.liferay.portal.reports.engine.ReportRequestContext;
 import com.liferay.portal.reports.engine.console.configuration.ReportsGroupServiceEmailConfiguration;
@@ -302,7 +303,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 		ReportRequest reportRequest = new ReportRequest(
 			reportRequestContext, retriever, reportParameters,
-			entry.getFormat());
+			Enum.valueOf(ReportFormat.class, entry.getFormat()));
 
 		Message message = new Message();
 

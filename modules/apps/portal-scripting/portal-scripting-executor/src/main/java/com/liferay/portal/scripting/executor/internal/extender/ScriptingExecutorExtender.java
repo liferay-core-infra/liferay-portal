@@ -14,6 +14,9 @@
 
 package com.liferay.portal.scripting.executor.internal.extender;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -36,7 +39,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,9 +50,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -64,33 +63,26 @@ public class ScriptingExecutorExtender {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, ScriptingExecutor.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(scriptingExecutor, emitter) -> emitter.emit(
+					scriptingExecutor.getLanguage())));
 		_serviceTracker = ServiceTrackerFactory.open(
 			bundleContext, ScriptBundleProvider.class,
 			new ScriptBundleProviderServiceTrackerCustomizer());
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addScriptingExecutor(ScriptingExecutor scriptingExecutor) {
-		_scriptingLanguages.add(scriptingExecutor.getLanguage());
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_serviceTracker.close();
 
+		_serviceTrackerMap.close();
+
 		_bundleContext = null;
 
 		_serviceTracker = null;
-	}
-
-	protected void removeScriptingExecutor(
-		ScriptingExecutor scriptingExecutor) {
-
-		_scriptingLanguages.remove(scriptingExecutor.getLanguage());
 	}
 
 	private static final String _SCRIPTS_DIR = "/META-INF/resources/scripts/";
@@ -114,9 +106,9 @@ public class ScriptingExecutorExtender {
 	@Reference
 	private Portal _portal;
 
-	private final Set<String> _scriptingLanguages = new HashSet<>();
 	private ServiceTracker<ScriptBundleProvider, ScriptBundleProvider>
 		_serviceTracker;
+	private ServiceTrackerMap<String, ScriptingExecutor> _serviceTrackerMap;
 
 	@Reference
 	private UserLocalService _userLocalService;
@@ -156,7 +148,9 @@ public class ScriptingExecutorExtender {
 						SCRIPTING_LANGUAGE_DEFAULT;
 			}
 
-			if (!_scriptingLanguages.contains(scriptingLanguage)) {
+			Set<String> scriptingLanguages = _serviceTrackerMap.keySet();
+
+			if (!scriptingLanguages.contains(scriptingLanguage)) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						StringBundler.concat(

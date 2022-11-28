@@ -23,15 +23,16 @@ import com.liferay.portal.kernel.search.hits.HitsProcessorRegistry;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
@@ -64,47 +65,77 @@ public class HitsProcessorRegistryImpl implements HitsProcessorRegistry {
 		return true;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addHitsProcessor(
-		HitsProcessor hitsProcessor, Map<String, Object> properties) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<HitsProcessor, HitsProcessor>(
+			bundleContext, HitsProcessor.class,
+			new ServiceTrackerCustomizer<HitsProcessor, HitsProcessor>() {
 
-		String sortOrderString = (String)properties.get("sort.order");
+				@Override
+				public HitsProcessor addingService(
+					ServiceReference<HitsProcessor> serviceReference) {
 
-		Integer sortOrder = null;
+					HitsProcessor hitsProcessor = bundleContext.getService(
+						serviceReference);
 
-		if (Validator.isNotNull(sortOrderString)) {
-			sortOrder = GetterUtil.getInteger(sortOrderString);
-		}
+					String sortOrderString =
+						(String)serviceReference.getProperty("sort.order");
 
-		SortableHitsProcessor sortableHitsProcessor = new SortableHitsProcessor(
-			hitsProcessor, sortOrder);
+					Integer sortOrder = null;
 
-		_hitsProcessors.add(sortableHitsProcessor);
+					if (Validator.isNotNull(sortOrderString)) {
+						sortOrder = GetterUtil.getInteger(sortOrderString);
+					}
+
+					SortableHitsProcessor sortableHitsProcessor =
+						new SortableHitsProcessor(hitsProcessor, sortOrder);
+
+					_hitsProcessors.add(sortableHitsProcessor);
+
+					return hitsProcessor;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<HitsProcessor> serviceReference,
+					HitsProcessor hitsProcessor) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<HitsProcessor> serviceReference,
+					HitsProcessor hitsProcessor) {
+
+					String sortOrderString =
+						(String)serviceReference.getProperty("sort.order");
+
+					Integer sortOrder = null;
+
+					if (Validator.isNotNull(sortOrderString)) {
+						sortOrder = GetterUtil.getInteger(sortOrderString);
+					}
+
+					SortableHitsProcessor sortableHitsProcessor =
+						new SortableHitsProcessor(hitsProcessor, sortOrder);
+
+					_hitsProcessors.remove(sortableHitsProcessor);
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
-	protected void removeHitsProcessor(
-		HitsProcessor hitsProcessor, Map<String, Object> properties) {
-
-		String sortOrderString = (String)properties.get("sort.order");
-
-		Integer sortOrder = null;
-
-		if (Validator.isNotNull(sortOrderString)) {
-			sortOrder = GetterUtil.getInteger(sortOrderString);
-		}
-
-		SortableHitsProcessor sortableHitsProcessor = new SortableHitsProcessor(
-			hitsProcessor, sortOrder);
-
-		_hitsProcessors.remove(sortableHitsProcessor);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	private final Set<SortableHitsProcessor> _hitsProcessors =
 		new ConcurrentSkipListSet<>();
+	private ServiceTracker<HitsProcessor, HitsProcessor> _serviceTracker;
 
 	private static class SortableHitsProcessor
 		implements Comparable<SortableHitsProcessor>, HitsProcessor {

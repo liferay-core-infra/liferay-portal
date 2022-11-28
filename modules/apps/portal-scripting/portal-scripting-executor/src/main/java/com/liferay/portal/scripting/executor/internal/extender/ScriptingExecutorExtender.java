@@ -95,13 +95,6 @@ public class ScriptingExecutorExtender {
 		_scriptingLanguages.remove(scriptingExecutor.getLanguage());
 	}
 
-	@Reference(
-		target = "(destination.name=" + ScriptingExecutorMessagingConstants.DESTINATION_NAME + ")",
-		unbind = "-"
-	)
-	protected void setDestination(Destination destination) {
-	}
-
 	private static final String _SCRIPTS_DIR = "/META-INF/resources/scripts/";
 
 	private static final Log _log = LogFactoryUtil.getLog(

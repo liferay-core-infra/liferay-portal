@@ -41,11 +41,17 @@ import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Adam Brandizzi
@@ -146,21 +152,52 @@ public class SearchAdminPortlet extends MVCPortlet {
 		super.render(renderRequest, renderResponse);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addIndexReindexer(IndexReindexer indexReindexer) {
-		Class<?> clazz = indexReindexer.getClass();
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<IndexReindexer, IndexReindexer>(
+			bundleContext, IndexReindexer.class,
+			new ServiceTrackerCustomizer<IndexReindexer, IndexReindexer>() {
 
-		_indexReindexerClassNames.add(clazz.getName());
+				@Override
+				public IndexReindexer addingService(
+					ServiceReference<IndexReindexer> serviceReference) {
+
+					IndexReindexer indexReindexer = bundleContext.getService(
+						serviceReference);
+
+					Class<?> clazz = indexReindexer.getClass();
+
+					_indexReindexerClassNames.add(clazz.getName());
+
+					return indexReindexer;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<IndexReindexer> serviceReference,
+					IndexReindexer indexReindexer) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<IndexReindexer> serviceReference,
+					IndexReindexer indexReindexer) {
+
+					Class<?> clazz = indexReindexer.getClass();
+
+					_indexReindexerClassNames.remove(clazz.getName());
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
-	protected void removeIndexReindexer(IndexReindexer indexReindexer) {
-		Class<?> clazz = indexReindexer.getClass();
-
-		_indexReindexerClassNames.remove(clazz.getName());
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	@Reference(
@@ -185,5 +222,7 @@ public class SearchAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private Portal _portal;
+
+	private ServiceTracker<IndexReindexer, IndexReindexer> _serviceTracker;
 
 }

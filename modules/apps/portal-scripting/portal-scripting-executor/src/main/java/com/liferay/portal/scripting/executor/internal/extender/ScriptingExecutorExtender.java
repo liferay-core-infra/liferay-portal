@@ -64,11 +64,9 @@ public class ScriptingExecutorExtender {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_serviceTracker = ServiceTrackerFactory.create(
+		_serviceTracker = ServiceTrackerFactory.open(
 			bundleContext, ScriptBundleProvider.class,
 			new ScriptBundleProviderServiceTrackerCustomizer());
-
-		_serviceTracker.open();
 	}
 
 	@Reference(

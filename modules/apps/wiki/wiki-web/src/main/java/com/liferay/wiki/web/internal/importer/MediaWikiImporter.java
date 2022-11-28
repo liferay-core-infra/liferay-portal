@@ -84,9 +84,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"importer=MediaWiki", "page=/wiki/import/mediawiki.jsp"},
 	service = WikiImporter.class
 )
-public class MediaWikiImporter implements WikiImporter {
+public class MediaWikiImporter {
 
-	@Override
 	public void importPages(
 			long userId, WikiNode node, InputStream[] inputStreams,
 			Map<String, String[]> options)

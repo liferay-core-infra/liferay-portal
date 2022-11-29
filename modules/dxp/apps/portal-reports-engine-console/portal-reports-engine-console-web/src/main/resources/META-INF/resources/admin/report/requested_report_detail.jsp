@@ -78,7 +78,7 @@ renderResponse.setTitle(definition.getName(locale));
 							Source source = SourceLocalServiceUtil.fetchSource(definition.getSourceId());
 							%>
 
-							<%= (source == null) ? ReportDataSourceType.PORTAL.getValue() : HtmlUtil.escape(source.getName(locale)) %>
+							<%= (source == null) ? ReportDataSourceType.PORTAL.toString() : HtmlUtil.escape(source.getName(locale)) %>
 						</aui:field-wrapper>
 					</clay:col>
 

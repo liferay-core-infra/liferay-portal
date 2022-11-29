@@ -56,7 +56,7 @@
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
 				name="source-name"
-				value="<%= (source == null) ? ReportDataSourceType.PORTAL.getValue() : HtmlUtil.escape(source.getName(locale)) %>"
+				value="<%= (source == null) ? ReportDataSourceType.PORTAL.toString() : HtmlUtil.escape(source.getName(locale)) %>"
 			/>
 
 			<liferay-ui:search-container-column-date

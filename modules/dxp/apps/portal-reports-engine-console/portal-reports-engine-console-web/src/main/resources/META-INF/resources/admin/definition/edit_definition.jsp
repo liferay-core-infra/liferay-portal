@@ -96,7 +96,7 @@ else {
 				<aui:input name="description" />
 
 				<aui:select label="data-source-name" name="sourceId">
-					<aui:option label="<%= ReportDataSourceType.PORTAL.getValue() %>" selected="<%= sourceId == 0 %>" value="<%= 0 %>" />
+					<aui:option label="<%= ReportDataSourceType.PORTAL.toString() %>" selected="<%= sourceId == 0 %>" value="<%= 0 %>" />
 
 					<%
 					for (Source source : SourceServiceUtil.getSources(themeDisplay.getSiteGroupId(), null, null, false, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {

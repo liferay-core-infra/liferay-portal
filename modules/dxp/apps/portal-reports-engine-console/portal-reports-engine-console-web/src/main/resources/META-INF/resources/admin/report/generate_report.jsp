@@ -70,7 +70,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "new-report-entry"));
 					for (ReportFormat reportFormat : ReportFormat.values()) {
 					%>
 
-						<aui:option label="<%= reportFormat.getValue() %>" value="<%= reportFormat.getValue() %>" />
+						<aui:option label="<%= reportFormat.toString() %>" value="<%= reportFormat.toString() %>" />
 
 					<%
 					}

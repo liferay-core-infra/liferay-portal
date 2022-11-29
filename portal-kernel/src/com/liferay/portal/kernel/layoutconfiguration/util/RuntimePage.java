@@ -34,21 +34,9 @@ public interface RuntimePage {
 	public LayoutTemplate getLayoutTemplate(String velocityTemplateId);
 
 	public StringBundler getProcessedTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource)
-		throws Exception;
-
-	public void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource)
-		throws Exception;
-
-	public void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource, String langType)
 		throws Exception;
 
 	public void processTemplate(
@@ -59,6 +47,18 @@ public interface RuntimePage {
 
 	public void processTemplate(
 			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
+			TemplateResource templateResource, String langType)
+		throws Exception;
+
+	public void processTemplate(
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
+			TemplateResource templateResource)
+		throws Exception;
+
+	public void processTemplate(
+			String portletId, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource, String langType)
 		throws Exception;

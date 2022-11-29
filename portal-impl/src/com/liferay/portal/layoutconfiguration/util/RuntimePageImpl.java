@@ -98,25 +98,48 @@ public class RuntimePageImpl implements RuntimePage {
 
 	@Override
 	public StringBundler getProcessedTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource)
 		throws Exception {
 
 		return doDispatch(
-			httpServletRequest, httpServletResponse, portletId,
+			portletId, httpServletRequest, httpServletResponse,
 			templateResource, TemplateConstants.LANG_TYPE_VM);
 	}
 
 	@Override
 	public void processTemplate(
 			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
+			HttpServletResponse httpServletResponse,
+			TemplateResource templateResource)
+		throws Exception {
+
+		processTemplate(
+			null, httpServletRequest, httpServletResponse, templateResource);
+	}
+
+	@Override
+	public void processTemplate(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
+			TemplateResource templateResource, String langType)
+		throws Exception {
+
+		processTemplate(
+			null, httpServletRequest, httpServletResponse, templateResource,
+			langType);
+	}
+
+	@Override
+	public void processTemplate(
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource)
 		throws Exception {
 
 		StringBundler sb = doDispatch(
-			httpServletRequest, httpServletResponse, portletId,
+			portletId, httpServletRequest, httpServletResponse,
 			templateResource, TemplateConstants.LANG_TYPE_VM);
 
 		sb.writeTo(httpServletResponse.getWriter());
@@ -124,44 +147,21 @@ public class RuntimePageImpl implements RuntimePage {
 
 	@Override
 	public void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource, String langType)
 		throws Exception {
 
 		StringBundler sb = doDispatch(
-			httpServletRequest, httpServletResponse, portletId,
+			portletId, httpServletRequest, httpServletResponse,
 			templateResource, langType);
 
 		sb.writeTo(httpServletResponse.getWriter());
 	}
 
-	@Override
-	public void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource)
-		throws Exception {
-
-		processTemplate(
-			httpServletRequest, httpServletResponse, null, templateResource);
-	}
-
-	@Override
-	public void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType)
-		throws Exception {
-
-		processTemplate(
-			httpServletRequest, httpServletResponse, null, templateResource,
-			langType);
-	}
-
 	protected StringBundler doDispatch(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource, String langType)
 		throws Exception {
 
@@ -196,7 +196,7 @@ public class RuntimePageImpl implements RuntimePage {
 			}
 
 			return doProcessTemplate(
-				httpServletRequest, httpServletResponse, portletId,
+				portletId, httpServletRequest, httpServletResponse,
 				templateResource, langType, false);
 		}
 		finally {
@@ -209,8 +209,8 @@ public class RuntimePageImpl implements RuntimePage {
 	}
 
 	protected StringBundler doProcessTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource, String langType,
 			boolean restricted)
 		throws Exception {

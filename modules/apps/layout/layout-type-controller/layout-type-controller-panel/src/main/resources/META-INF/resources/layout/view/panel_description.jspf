@@ -36,7 +36,7 @@ if (themeDisplay.isStatePopUp() || layoutTypePortlet.hasStateMax()) {
 	}
 
 	if (Validator.isNotNull(templateContent)) {
-		RuntimePageUtil.processTemplate(ppid, request, response, new StringTemplateResource(templateId, templateContent), langType);
+		RuntimePageUtil.processTemplate(ppid, request, response, templateId, templateContent, langType);
 	}
 }
 else {

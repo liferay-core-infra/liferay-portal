@@ -77,13 +77,11 @@ public class MultiVMEhcachePortalCacheManager
 		return _portalCacheListenerFactory;
 	}
 
-	@Reference(unbind = "-")
-	protected void setPortalCacheManagerListenerFactory(
-		PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
-			portalCacheManagerListenerFactory) {
+	@Override
+	protected PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
+		getPortalCacheManagerListenerFactory() {
 
-		this.portalCacheManagerListenerFactory =
-			portalCacheManagerListenerFactory;
+		return _portalCacheManagerListenerFactory;
 	}
 
 	@Reference(unbind = "-")
@@ -103,5 +101,9 @@ public class MultiVMEhcachePortalCacheManager
 
 	@Reference
 	private PortalCacheListenerFactory _portalCacheListenerFactory;
+
+	@Reference
+	private PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
+		_portalCacheManagerListenerFactory;
 
 }

@@ -76,13 +76,11 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 		return _portalCacheListenerFactory;
 	}
 
-	@Reference(unbind = "-")
-	protected void setPortalCacheManagerListenerFactory(
-		PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
-			portalCacheManagerListenerFactory) {
+	@Override
+	protected PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
+		getPortalCacheManagerListenerFactory() {
 
-		this.portalCacheManagerListenerFactory =
-			portalCacheManagerListenerFactory;
+		return _portalCacheManagerListenerFactory;
 	}
 
 	@Reference(unbind = "-")
@@ -98,6 +96,10 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 
 	@Reference
 	private PortalCacheListenerFactory _portalCacheListenerFactory;
+
+	@Reference
+	private PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
+		_portalCacheManagerListenerFactory;
 
 	@Reference
 	private SingleVMEhcachePortalCacheManagerConfigurator

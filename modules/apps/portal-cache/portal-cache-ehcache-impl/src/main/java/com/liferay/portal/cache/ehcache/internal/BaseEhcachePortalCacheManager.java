@@ -289,6 +289,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	protected abstract PortalCacheListenerFactory
 		getPortalCacheListenerFactory();
 
+	protected abstract PortalCacheManagerListenerFactory
+		<PortalCacheManager<K, V>> getPortalCacheManagerListenerFactory();
+
 	protected void initialize() {
 		if (_portalCacheManagerConfiguration != null) {
 			return;
@@ -385,6 +388,10 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 
 		_mBeanServerServiceTracker.open();
 
+		PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
+			portalCacheManagerListenerFactory =
+				getPortalCacheManagerListenerFactory();
+
 		for (Properties properties :
 				_portalCacheManagerConfiguration.
 					getPortalCacheManagerListenerPropertiesSet()) {
@@ -399,8 +406,6 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	}
 
 	protected BundleContext bundleContext;
-	protected PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
-		portalCacheManagerListenerFactory;
 	protected volatile Props props;
 
 	private void _initPortalCacheListeners(

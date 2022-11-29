@@ -33,40 +33,18 @@ public class RuntimePageUtil {
 	}
 
 	public static StringBundler getProcessedTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource)
 		throws Exception {
 
 		return _runtimePage.getProcessedTemplate(
-			httpServletRequest, httpServletResponse, portletId,
+			portletId, httpServletRequest, httpServletResponse,
 			templateResource);
 	}
 
 	public static RuntimePage getRuntimePage() {
 		return _runtimePage;
-	}
-
-	public static void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource)
-		throws Exception {
-
-		_runtimePage.processTemplate(
-			httpServletRequest, httpServletResponse, portletId,
-			templateResource);
-	}
-
-	public static void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource, String langType)
-		throws Exception {
-
-		_runtimePage.processTemplate(
-			httpServletRequest, httpServletResponse, portletId,
-			templateResource, langType);
 	}
 
 	public static void processTemplate(
@@ -88,6 +66,28 @@ public class RuntimePageUtil {
 		_runtimePage.processTemplate(
 			httpServletRequest, httpServletResponse, templateResource,
 			langType);
+	}
+
+	public static void processTemplate(
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
+			TemplateResource templateResource)
+		throws Exception {
+
+		_runtimePage.processTemplate(
+			portletId, httpServletRequest, httpServletResponse,
+			templateResource);
+	}
+
+	public static void processTemplate(
+			String portletId, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
+			TemplateResource templateResource, String langType)
+		throws Exception {
+
+		_runtimePage.processTemplate(
+			portletId, httpServletRequest, httpServletResponse,
+			templateResource, langType);
 	}
 
 	public void setRuntimePage(RuntimePage runtimePage) {

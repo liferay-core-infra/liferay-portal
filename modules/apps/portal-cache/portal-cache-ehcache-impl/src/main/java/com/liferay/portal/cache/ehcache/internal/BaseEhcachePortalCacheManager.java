@@ -286,6 +286,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	protected abstract BaseEhcachePortalCacheManagerConfigurator
 		getBaseEhcachePortalCacheManagerConfigurator();
 
+	protected abstract PortalCacheListenerFactory
+		getPortalCacheListenerFactory();
+
 	protected void initialize() {
 		if (_portalCacheManagerConfiguration != null) {
 			return;
@@ -396,7 +399,6 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	}
 
 	protected BundleContext bundleContext;
-	protected PortalCacheListenerFactory portalCacheListenerFactory;
 	protected PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
 		portalCacheManagerListenerFactory;
 	protected volatile Props props;
@@ -408,6 +410,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		if (portalCacheConfiguration == null) {
 			return;
 		}
+
+		PortalCacheListenerFactory portalCacheListenerFactory =
+			getPortalCacheListenerFactory();
 
 		for (Properties properties :
 				portalCacheConfiguration.

@@ -71,11 +71,9 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 		return _singleVMEhcachePortalCacheManagerConfigurator;
 	}
 
-	@Reference(unbind = "-")
-	protected void setPortalCacheListenerFactory(
-		PortalCacheListenerFactory portalCacheListenerFactory) {
-
-		this.portalCacheListenerFactory = portalCacheListenerFactory;
+	@Override
+	protected PortalCacheListenerFactory getPortalCacheListenerFactory() {
+		return _portalCacheListenerFactory;
 	}
 
 	@Reference(unbind = "-")
@@ -97,6 +95,9 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SingleVMEhcachePortalCacheManager.class);
+
+	@Reference
+	private PortalCacheListenerFactory _portalCacheListenerFactory;
 
 	@Reference
 	private SingleVMEhcachePortalCacheManagerConfigurator

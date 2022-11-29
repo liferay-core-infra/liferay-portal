@@ -48,7 +48,7 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 	protected void activate(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
 
-		setConfigFile(props.get(PropsKeys.EHCACHE_SINGLE_VM_CONFIG_LOCATION));
+		setConfigFile(_props.get(PropsKeys.EHCACHE_SINGLE_VM_CONFIG_LOCATION));
 		setDefaultConfigFile(_DEFAULT_CONFIG_FILE_NAME);
 		setPortalCacheManagerName(PortalCacheManagerNames.SINGLE_VM);
 
@@ -83,9 +83,9 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 		return _portalCacheManagerListenerFactory;
 	}
 
-	@Reference(unbind = "-")
-	protected void setProps(Props props) {
-		this.props = props;
+	@Override
+	protected Props getProps() {
+		return _props;
 	}
 
 	private static final String _DEFAULT_CONFIG_FILE_NAME =
@@ -100,6 +100,9 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 	@Reference
 	private PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
 		_portalCacheManagerListenerFactory;
+
+	@Reference
+	private volatile Props _props;
 
 	@Reference
 	private SingleVMEhcachePortalCacheManagerConfigurator

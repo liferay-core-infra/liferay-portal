@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
+import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.List;
@@ -113,6 +114,11 @@ public class BaseEhcachePortalCacheTest {
 					<PortalCacheManager<?, ?>>
 						getPortalCacheManagerListenerFactory() {
 
+					return null;
+				}
+
+				@Override
+				protected Props getProps() {
 					return null;
 				}
 
@@ -659,6 +665,11 @@ public class BaseEhcachePortalCacheTest {
 					<PortalCacheManager<?, ?>>
 						getPortalCacheManagerListenerFactory() {
 
+					return null;
+				}
+
+				@Override
+				protected Props getProps() {
 					return null;
 				}
 

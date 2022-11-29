@@ -49,7 +49,7 @@ public class MultiVMEhcachePortalCacheManager
 	protected void activate(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
 
-		setConfigFile(props.get(PropsKeys.EHCACHE_MULTI_VM_CONFIG_LOCATION));
+		setConfigFile(_props.get(PropsKeys.EHCACHE_MULTI_VM_CONFIG_LOCATION));
 		setDefaultConfigFile(_DEFAULT_CONFIG_FILE_NAME);
 		setPortalCacheManagerName(PortalCacheManagerNames.MULTI_VM);
 
@@ -84,9 +84,9 @@ public class MultiVMEhcachePortalCacheManager
 		return _portalCacheManagerListenerFactory;
 	}
 
-	@Reference(unbind = "-")
-	protected void setProps(Props props) {
-		this.props = props;
+	@Override
+	protected Props getProps() {
+		return _props;
 	}
 
 	private static final String _DEFAULT_CONFIG_FILE_NAME =
@@ -105,5 +105,8 @@ public class MultiVMEhcachePortalCacheManager
 	@Reference
 	private PortalCacheManagerListenerFactory<PortalCacheManager<K, V>>
 		_portalCacheManagerListenerFactory;
+
+	@Reference
+	private volatile Props _props;
 
 }

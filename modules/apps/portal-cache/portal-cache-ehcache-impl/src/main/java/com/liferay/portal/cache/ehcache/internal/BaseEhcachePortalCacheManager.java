@@ -292,6 +292,8 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	protected abstract PortalCacheManagerListenerFactory
 		<PortalCacheManager<K, V>> getPortalCacheManagerListenerFactory();
 
+	protected abstract Props getProps();
+
 	protected void initialize() {
 		if (_portalCacheManagerConfiguration != null) {
 			return;
@@ -301,6 +303,8 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 			throw new IllegalArgumentException(
 				"Portal cache manager name is not specified");
 		}
+
+		Props props = getProps();
 
 		_transactionalPortalCacheEnabled = GetterUtil.getBoolean(
 			props.get(PropsKeys.TRANSACTIONAL_CACHE_ENABLED));
@@ -406,7 +410,6 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	}
 
 	protected BundleContext bundleContext;
-	protected volatile Props props;
 
 	private void _initPortalCacheListeners(
 		PortalCache<K, V> portalCache,

@@ -84,7 +84,7 @@ public class PanelAppContentHelper {
 				getOriginalHttpServletRequest(_httpServletRequest);
 
 			StringBundler sb = RuntimePageUtil.getProcessedTemplate(
-				httpServletRequest, _httpServletResponse, getPortletId(),
+				getPortletId(), httpServletRequest, _httpServletResponse,
 				new StringTemplateResource(velocityTemplateId, content));
 
 			if (sb != null) {

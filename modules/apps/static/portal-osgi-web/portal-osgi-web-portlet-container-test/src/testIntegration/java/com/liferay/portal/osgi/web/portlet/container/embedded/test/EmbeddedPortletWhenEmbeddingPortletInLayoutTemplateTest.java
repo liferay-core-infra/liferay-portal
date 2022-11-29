@@ -146,7 +146,7 @@ public class EmbeddedPortletWhenEmbeddingPortletInLayoutTemplateTest
 		themeDisplay.setRealUser(TestPropsValues.getUser());
 
 		RuntimePageUtil.processTemplate(
-			mockHttpServletRequest, new MockHttpServletResponse(), null,
+			null, mockHttpServletRequest, new MockHttpServletResponse(),
 			new StringTemplateResource(_TEMPLATE_ID, templateContent),
 			TemplateConstants.LANG_TYPE_FTL);
 	}

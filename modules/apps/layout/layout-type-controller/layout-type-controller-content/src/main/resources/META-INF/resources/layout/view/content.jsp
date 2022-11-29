@@ -44,7 +44,7 @@ String ppid = ParamUtil.getString(request, "p_p_id");
 		}
 
 		if (Validator.isNotNull(templateContent)) {
-			RuntimePageUtil.processTemplate(request, response, ppid, new StringTemplateResource(templateId, templateContent), langType);
+			RuntimePageUtil.processTemplate(ppid, request, response, new StringTemplateResource(templateId, templateContent), langType);
 		}
 		%>
 

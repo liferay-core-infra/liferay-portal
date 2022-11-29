@@ -27,11 +27,11 @@ import com.liferay.portal.kernel.service.LayoutTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.PluginContextListener;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
+import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.layoutconfiguration.util.velocity.TemplateProcessor;
@@ -99,48 +99,48 @@ public class RuntimePageImpl implements RuntimePage {
 	@Override
 	public StringBundler getProcessedTemplate(
 			String portletId, HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content)
 		throws Exception {
 
 		return doDispatch(
-			portletId, httpServletRequest, httpServletResponse,
-			templateResource, TemplateConstants.LANG_TYPE_VM);
+			portletId, httpServletRequest, httpServletResponse, templateId,
+			content, TemplateConstants.LANG_TYPE_VM);
 	}
 
 	@Override
 	public void processTemplate(
 			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content)
 		throws Exception {
 
 		processTemplate(
-			null, httpServletRequest, httpServletResponse, templateResource);
+			null, httpServletRequest, httpServletResponse, templateId, content);
 	}
 
 	@Override
 	public void processTemplate(
 			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content, String langType)
 		throws Exception {
 
 		processTemplate(
-			null, httpServletRequest, httpServletResponse, templateResource,
+			null, httpServletRequest, httpServletResponse, templateId, content,
 			langType);
 	}
 
 	@Override
 	public void processTemplate(
 			String portletId, HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content)
 		throws Exception {
 
 		StringBundler sb = doDispatch(
-			portletId, httpServletRequest, httpServletResponse,
-			templateResource, TemplateConstants.LANG_TYPE_VM);
+			portletId, httpServletRequest, httpServletResponse, templateId,
+			content, TemplateConstants.LANG_TYPE_VM);
 
 		sb.writeTo(httpServletResponse.getWriter());
 	}
@@ -148,27 +148,26 @@ public class RuntimePageImpl implements RuntimePage {
 	@Override
 	public void processTemplate(
 			String portletId, HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content, String langType)
 		throws Exception {
 
 		StringBundler sb = doDispatch(
-			portletId, httpServletRequest, httpServletResponse,
-			templateResource, langType);
+			portletId, httpServletRequest, httpServletResponse, templateId,
+			content, langType);
 
 		sb.writeTo(httpServletResponse.getWriter());
 	}
 
 	protected StringBundler doDispatch(
 			String portletId, HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content, String langType)
 		throws Exception {
 
 		ClassLoader pluginClassLoader = null;
 
-		LayoutTemplate layoutTemplate = getLayoutTemplate(
-			templateResource.getTemplateId());
+		LayoutTemplate layoutTemplate = getLayoutTemplate(templateId);
 
 		if (layoutTemplate != null) {
 			String pluginServletContextName = GetterUtil.getString(
@@ -196,8 +195,8 @@ public class RuntimePageImpl implements RuntimePage {
 			}
 
 			return doProcessTemplate(
-				portletId, httpServletRequest, httpServletResponse,
-				templateResource, langType, false);
+				portletId, httpServletRequest, httpServletResponse, templateId,
+				content, langType, false);
 		}
 		finally {
 			if ((pluginClassLoader != null) &&
@@ -210,9 +209,8 @@ public class RuntimePageImpl implements RuntimePage {
 
 	protected StringBundler doProcessTemplate(
 			String portletId, HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType,
-			boolean restricted)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content, String langType, boolean restricted)
 		throws Exception {
 
 		TemplateProcessor processor = new TemplateProcessor(
@@ -222,7 +220,7 @@ public class RuntimePageImpl implements RuntimePage {
 			TemplateManagerUtil.getTemplateManager(langType);
 
 		Template template = templateManager.getTemplate(
-			templateResource, restricted);
+			new StringTemplateResource(templateId, content), restricted);
 
 		template.put("processor", processor);
 

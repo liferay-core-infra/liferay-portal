@@ -19,6 +19,8 @@ import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.constants.ApplicationListWebKeys;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.application.list.display.context.logic.PersonalMenuEntryHelper;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -34,11 +36,14 @@ import javax.portlet.PortletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Pei-Jung Lan
@@ -57,7 +62,7 @@ public class AccountRoleRequestHelper {
 			_panelCategoryRegistry);
 		httpServletRequest.setAttribute(
 			ApplicationListWebKeys.PERSONAL_MENU_ENTRY_HELPER,
-			new PersonalMenuEntryHelper(_personalMenuEntries));
+			new PersonalMenuEntryHelper(_serviceTrackerList.toList()));
 		httpServletRequest.setAttribute(
 			RolesAdminWebKeys.CURRENT_ROLE_TYPE, _accountRoleTypeContributor);
 		httpServletRequest.setAttribute(
@@ -71,43 +76,72 @@ public class AccountRoleRequestHelper {
 		setRequestAttributes(_portal.getHttpServletRequest(portletRequest));
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "_removePanelCategoryRoleTypeMapper"
-	)
-	private void _addPanelCategoryRoleTypeMapper(
-		PanelCategoryRoleTypeMapper panelCategoryRoleTypeMapper) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker =
+			new ServiceTracker
+				<PanelCategoryRoleTypeMapper, PanelCategoryRoleTypeMapper>(
+					bundleContext, PanelCategoryRoleTypeMapper.class,
+					new ServiceTrackerCustomizer
+						<PanelCategoryRoleTypeMapper,
+						 PanelCategoryRoleTypeMapper>() {
 
-		if (ArrayUtil.contains(
-				panelCategoryRoleTypeMapper.getRoleTypes(),
-				RoleConstants.TYPE_ACCOUNT)) {
+						@Override
+						public PanelCategoryRoleTypeMapper addingService(
+							ServiceReference<PanelCategoryRoleTypeMapper>
+								serviceReference) {
 
-			_panelCategoryKeys.add(
-				panelCategoryRoleTypeMapper.getPanelCategoryKey());
-		}
+							PanelCategoryRoleTypeMapper
+								panelCategoryRoleTypeMapper =
+									bundleContext.getService(serviceReference);
+
+							if (ArrayUtil.contains(
+									panelCategoryRoleTypeMapper.getRoleTypes(),
+									RoleConstants.TYPE_ACCOUNT)) {
+
+								_panelCategoryKeys.add(
+									panelCategoryRoleTypeMapper.
+										getPanelCategoryKey());
+							}
+
+							return panelCategoryRoleTypeMapper;
+						}
+
+						@Override
+						public void modifiedService(
+							ServiceReference<PanelCategoryRoleTypeMapper>
+								serviceReference,
+							PanelCategoryRoleTypeMapper
+								panelCategoryRoleTypeMapper) {
+						}
+
+						@Override
+						public void removedService(
+							ServiceReference<PanelCategoryRoleTypeMapper>
+								serviceReference,
+							PanelCategoryRoleTypeMapper
+								panelCategoryRoleTypeMapper) {
+
+							_panelCategoryKeys.remove(
+								panelCategoryRoleTypeMapper.
+									getPanelCategoryKey());
+
+							bundleContext.ungetService(serviceReference);
+						}
+
+					});
+
+		_serviceTracker.open();
+
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, PersonalMenuEntry.class);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "_removePersonalMenuEntry"
-	)
-	private void _addPersonalMenuEntry(PersonalMenuEntry personalMenuEntry) {
-		_personalMenuEntries.add(personalMenuEntry);
-	}
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 
-	private void _removePanelCategoryRoleTypeMapper(
-		PanelCategoryRoleTypeMapper panelCategoryRoleTypeMapper) {
-
-		_panelCategoryKeys.remove(
-			panelCategoryRoleTypeMapper.getPanelCategoryKey());
-	}
-
-	private void _removePersonalMenuEntry(PersonalMenuEntry personalMenuEntry) {
-		_personalMenuEntries.remove(personalMenuEntry);
+		_serviceTrackerList.close();
 	}
 
 	@Reference(target = "(component.name=*.AccountRoleTypeContributor)")
@@ -122,10 +156,12 @@ public class AccountRoleRequestHelper {
 	@Reference
 	private PanelCategoryRegistry _panelCategoryRegistry;
 
-	private final List<PersonalMenuEntry> _personalMenuEntries =
-		new CopyOnWriteArrayList<>();
-
 	@Reference
 	private Portal _portal;
+
+	private ServiceTracker
+		<PanelCategoryRoleTypeMapper, PanelCategoryRoleTypeMapper>
+			_serviceTracker;
+	private ServiceTrackerList<PersonalMenuEntry> _serviceTrackerList;
 
 }

@@ -110,7 +110,7 @@ public class SearchResultsPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		PortletSharedSearchResponse portletSharedSearchResponse =
-			portletSharedSearchRequest.search(renderRequest);
+			_portletSharedSearchRequest.search(renderRequest);
 
 		SearchResultsPortletDisplayContext searchResultsPortletDisplayContext =
 			_buildDisplayContext(
@@ -191,44 +191,6 @@ public class SearchResultsPortlet extends MVCPortlet {
 
 		return false;
 	}
-
-	@Reference
-	protected AssetEntryLocalService assetEntryLocalService;
-
-	protected AssetRendererFactoryLookup assetRendererFactoryLookup;
-
-	@Reference
-	protected DocumentBuilderFactory documentBuilderFactory;
-
-	@Reference
-	protected FastDateFormatFactory fastDateFormatFactory;
-
-	@Reference
-	protected GroupLocalService groupLocalService;
-
-	@Reference
-	protected IndexerRegistry indexerRegistry;
-
-	@Reference
-	protected Language language;
-
-	@Reference
-	protected ObjectDefinitionLocalService objectDefinitionLocalService;
-
-	@Reference
-	protected PortletSharedRequestHelper portletSharedRequestHelper;
-
-	@Reference
-	protected PortletSharedSearchRequest portletSharedSearchRequest;
-
-	@Reference
-	protected ResourceActions resourceActions;
-
-	@Reference
-	protected SummaryBuilderFactory summaryBuilderFactory;
-
-	@Reference
-	protected UserLocalService userLocalService;
 
 	private SearchResultsPortletDisplayContext _buildDisplayContext(
 			PortletSharedSearchResponse portletSharedSearchResponse,
@@ -366,31 +328,31 @@ public class SearchResultsPortlet extends MVCPortlet {
 				new SearchResultSummaryDisplayContextBuilder();
 
 		searchResultSummaryDisplayContextBuilder.setAssetEntryLocalService(
-			assetEntryLocalService
+			_assetEntryLocalService
 		).setAssetRendererFactoryLookup(
-			assetRendererFactoryLookup
+			_assetRendererFactoryLookup
 		).setCurrentURL(
 			getCurrentURL(renderRequest)
 		).setDocument(
 			document
 		).setDocumentBuilderFactory(
-			documentBuilderFactory
+			_documentBuilderFactory
 		).setFastDateFormatFactory(
-			fastDateFormatFactory
+			_fastDateFormatFactory
 		).setGroupLocalService(
-			groupLocalService
+			_groupLocalService
 		).setHighlightEnabled(
 			searchResultsPortletPreferences.isHighlightEnabled()
 		).setImageRequested(
 			true
 		).setIndexerRegistry(
-			indexerRegistry
+			_indexerRegistry
 		).setLanguage(
-			language
+			_language
 		).setLocale(
 			themeDisplay.getLocale()
 		).setObjectDefinitionLocalService(
-			objectDefinitionLocalService
+			_objectDefinitionLocalService
 		).setPortletURLFactory(
 			portletURLFactory
 		).setRenderRequest(
@@ -400,17 +362,17 @@ public class SearchResultsPortlet extends MVCPortlet {
 		).setRequest(
 			getHttpServletRequest(renderRequest)
 		).setResourceActions(
-			resourceActions
+			_resourceActions
 		).setSearchResultImageContributors(
 			_serviceTrackerList.toList()
 		).setSearchResultPreferences(
 			searchResultPreferences
 		).setSummaryBuilderFactory(
-			summaryBuilderFactory
+			_summaryBuilderFactory
 		).setThemeDisplay(
 			themeDisplay
 		).setUserLocalService(
-			userLocalService
+			_userLocalService
 		);
 
 		return searchResultSummaryDisplayContextBuilder.build();
@@ -487,14 +449,52 @@ public class SearchResultsPortlet extends MVCPortlet {
 		RenderRequest renderRequest, String paginationStartParameterName) {
 
 		return HttpComponentsUtil.removeParameter(
-			portletSharedRequestHelper.getCompleteURL(renderRequest),
+			_portletSharedRequestHelper.getCompleteURL(renderRequest),
 			paginationStartParameterName);
 	}
 
 	@Reference
+	private AssetEntryLocalService _assetEntryLocalService;
+
+	private AssetRendererFactoryLookup _assetRendererFactoryLookup;
+
+	@Reference
+	private DocumentBuilderFactory _documentBuilderFactory;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private IndexerRegistry _indexerRegistry;
+
+	@Reference
+	private Language _language;
+
+	@Reference
+	private ObjectDefinitionLocalService _objectDefinitionLocalService;
+
+	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortletSharedRequestHelper _portletSharedRequestHelper;
+
+	@Reference
+	private PortletSharedSearchRequest _portletSharedSearchRequest;
+
+	@Reference
+	private ResourceActions _resourceActions;
 
 	private ServiceTrackerList<SearchResultImageContributor>
 		_serviceTrackerList;
+
+	@Reference
+	private SummaryBuilderFactory _summaryBuilderFactory;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

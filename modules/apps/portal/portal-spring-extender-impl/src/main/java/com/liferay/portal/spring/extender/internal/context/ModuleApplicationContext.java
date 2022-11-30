@@ -16,7 +16,6 @@ package com.liferay.portal.spring.extender.internal.context;
 
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
-import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
 
 import java.net.URL;
 
@@ -54,7 +53,7 @@ public class ModuleApplicationContext extends ClassPathXmlApplicationContext {
 			return;
 		}
 
-		DataSource dataSource = DataSourceUtil.getDataSource(
+		DataSource dataSource = DataSourceFactoryUtil.getDataSource(
 			extendeeClassLoader);
 
 		configurableListableBeanFactory.registerSingleton(

@@ -149,7 +149,8 @@ public class LiferayServiceExtender
 						_extendeeBundle.getSymbolicName())));
 
 			ClassLoader classLoader = new ModuleAggregareClassLoader(
-				extendeeClassLoader, _extendeeBundle.getSymbolicName());
+				_extenderClassLoader, extendeeClassLoader,
+				_extendeeBundle.getSymbolicName());
 
 			PortletHibernateConfiguration portletHibernateConfiguration =
 				new PortletHibernateConfiguration(classLoader, _dataSource);
@@ -256,6 +257,9 @@ public class LiferayServiceExtender
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LiferayServiceExtender.class);
+
+	private static final ClassLoader _extenderClassLoader =
+		LiferayServiceExtender.class.getClassLoader();
 
 	private BundleTracker<?> _bundleTracker;
 

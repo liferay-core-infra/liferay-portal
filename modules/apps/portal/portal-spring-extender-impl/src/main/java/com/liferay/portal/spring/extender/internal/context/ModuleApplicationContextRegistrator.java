@@ -61,7 +61,8 @@ public class ModuleApplicationContextRegistrator {
 		_extendeeClassLoader = extendeeBundleWiring.getClassLoader();
 
 		_classLoader = new ModuleAggregareClassLoader(
-			_extendeeClassLoader, _extendeeBundle.getSymbolicName());
+			_extenderClassLoader, _extendeeClassLoader,
+			_extendeeBundle.getSymbolicName());
 
 		Dictionary<String, String> headers = _extendeeBundle.getHeaders(
 			StringPool.BLANK);
@@ -158,6 +159,9 @@ public class ModuleApplicationContextRegistrator {
 					_extendeeBundle.getSymbolicName()));
 		}
 	}
+
+	private static final ClassLoader _extenderClassLoader =
+		ModuleApplicationContextRegistrator.class.getClassLoader();
 
 	private final ClassLoader _classLoader;
 	private final ConfigurableApplicationContextConfigurator

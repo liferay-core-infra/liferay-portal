@@ -37,10 +37,12 @@ import java.util.Objects;
 public class ModuleAggregareClassLoader extends ClassLoader {
 
 	public ModuleAggregareClassLoader(
-		ClassLoader moduleClassLoader, String symbolicName) {
+		ClassLoader extenderClassLoader, ClassLoader moduleClassLoader,
+		String symbolicName) {
 
 		super(null);
 
+		_extenderClassLoader = extenderClassLoader;
 		_moduleClassLoader = moduleClassLoader;
 
 		int index = symbolicName.lastIndexOf('.');
@@ -145,9 +147,6 @@ public class ModuleAggregareClassLoader extends ClassLoader {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ModuleAggregareClassLoader.class);
 
-	private static final ClassLoader _extenderClassLoader =
-		ModuleAggregareClassLoader.class.getClassLoader();
-
 	static {
 		try {
 			_FIND_CLASS_METHOD = ReflectionUtil.getDeclaredMethod(
@@ -158,6 +157,7 @@ public class ModuleAggregareClassLoader extends ClassLoader {
 		}
 	}
 
+	private final ClassLoader _extenderClassLoader;
 	private final ClassLoader _moduleClassLoader;
 	private final String _namespace;
 

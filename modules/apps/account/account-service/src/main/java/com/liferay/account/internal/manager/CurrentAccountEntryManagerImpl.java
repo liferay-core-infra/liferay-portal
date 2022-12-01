@@ -110,6 +110,19 @@ public class CurrentAccountEntryManagerImpl
 	}
 
 	@Override
+	public long getCurrentAccountEntryId(long groupId, long userId)
+		throws PortalException {
+
+		AccountEntry accountEntry = getCurrentAccountEntry(groupId, userId);
+
+		if (accountEntry != null) {
+			return accountEntry.getAccountEntryId();
+		}
+
+		return 0;
+	}
+
+	@Override
 	public void setCurrentAccountEntry(
 		long accountEntryId, long groupId, long userId) {
 

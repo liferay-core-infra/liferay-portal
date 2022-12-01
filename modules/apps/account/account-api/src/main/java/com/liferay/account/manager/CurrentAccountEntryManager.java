@@ -25,6 +25,9 @@ public interface CurrentAccountEntryManager {
 	public AccountEntry getCurrentAccountEntry(long groupId, long userId)
 		throws PortalException;
 
+	public long getCurrentAccountEntryId(long groupId, long userId)
+		throws PortalException;
+
 	public void setCurrentAccountEntry(
 			long accountEntryId, long groupId, long userId)
 		throws PortalException;

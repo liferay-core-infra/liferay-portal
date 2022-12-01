@@ -33,13 +33,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Objects;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Pei-Jung Lan
  */
-@Component(service = {})
 public class AccountOrganizationSearchContainerFactory {
 
 	public static SearchContainer<Organization> create(
@@ -101,8 +97,7 @@ public class AccountOrganizationSearchContainerFactory {
 		return searchContainer;
 	}
 
-	@Reference(unbind = "-")
-	protected void setAccountEntryOrganizationRelLocalService(
+	public static void setAccountEntryOrganizationRelLocalService(
 		AccountEntryOrganizationRelLocalService
 			accountEntryOrganizationRelLocalService) {
 
@@ -110,8 +105,7 @@ public class AccountOrganizationSearchContainerFactory {
 			accountEntryOrganizationRelLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setAccountOrganizationRetriever(
+	public static void setAccountOrganizationRetriever(
 		AccountOrganizationRetriever accountOrganizationRetriever) {
 
 		_accountOrganizationRetriever = accountOrganizationRetriever;

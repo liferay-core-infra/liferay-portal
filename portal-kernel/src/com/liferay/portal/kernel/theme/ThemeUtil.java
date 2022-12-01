@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.theme;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Theme;
@@ -29,12 +30,15 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
+import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.Writer;
+
+import java.net.URL;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -149,27 +153,30 @@ public class ThemeUtil {
 		String resourcePath = theme.getResourcePath(
 			servletContext, portletId, path);
 
-		if (Validator.isNotNull(portletId) &&
-			PortletIdCodec.hasInstanceId(portletId) &&
-			!TemplateResourceLoaderUtil.hasTemplateResource(
-				TemplateConstants.LANG_TYPE_FTL, resourcePath)) {
+		if (Validator.isNotNull(portletId)) {
+			if (PortletIdCodec.hasInstanceId(portletId)) {
+				String rootPortletId = PortletIdCodec.decodePortletName(
+					portletId);
 
-			String rootPortletId = PortletIdCodec.decodePortletName(portletId);
-
-			resourcePath = theme.getResourcePath(
-				servletContext, rootPortletId, path);
+				resourcePath = theme.getResourcePath(
+					servletContext, rootPortletId, path);
+			}
+			else {
+				resourcePath = theme.getResourcePath(
+					servletContext, null, path);
+			}
 		}
 
-		if (Validator.isNotNull(portletId) &&
-			!TemplateResourceLoaderUtil.hasTemplateResource(
-				TemplateConstants.LANG_TYPE_FTL, resourcePath)) {
+		ServletContext servletContext1 = ServletContextPool.get(
+			servletContextName);
 
-			resourcePath = theme.getResourcePath(servletContext, null, path);
-		}
+		URL url = servletContext1.getResource(
+			StringBundler.concat(
+				theme.getTemplatesPath(), StringPool.SLASH,
+				path.substring(0, path.lastIndexOf('.')), StringPool.PERIOD,
+				TemplateConstants.LANG_TYPE_FTL));
 
-		if (!TemplateResourceLoaderUtil.hasTemplateResource(
-				TemplateConstants.LANG_TYPE_FTL, resourcePath)) {
-
+		if (url == null) {
 			_log.error(resourcePath + " does not exist");
 
 			return null;
@@ -177,9 +184,7 @@ public class ThemeUtil {
 
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_FTL,
-			TemplateResourceLoaderUtil.getTemplateResource(
-				TemplateConstants.LANG_TYPE_FTL, resourcePath),
-			restricted);
+			new URLTemplateResource(resourcePath, url), restricted);
 
 		// FreeMarker variables
 

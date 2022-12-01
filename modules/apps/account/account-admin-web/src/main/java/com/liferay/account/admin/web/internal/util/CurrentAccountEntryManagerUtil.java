@@ -40,14 +40,6 @@ public class CurrentAccountEntryManagerUtil {
 		return 0;
 	}
 
-	public void setCurrentAccountEntry(
-			long accountEntryId, long groupId, long userId)
-		throws PortalException {
-
-		_currentAccountEntryManager.setCurrentAccountEntry(
-			accountEntryId, groupId, userId);
-	}
-
 	@Reference(unbind = "-")
 	protected void setCurrentAccountEntryManager(
 		CurrentAccountEntryManager currentAccountEntryManager) {

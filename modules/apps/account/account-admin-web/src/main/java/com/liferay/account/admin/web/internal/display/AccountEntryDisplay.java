@@ -14,11 +14,15 @@
 
 package com.liferay.account.admin.web.internal.display;
 
-import com.liferay.account.admin.web.internal.util.CurrentAccountEntryManagerUtil;
+import com.liferay.account.manager.CurrentAccountEntryManager;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.model.AccountEntryWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Drew Brokke
@@ -65,8 +69,17 @@ public class AccountEntryDisplay extends AccountEntryWrapper {
 			return false;
 		}
 
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		CurrentAccountEntryManager currentAccountEntryManager =
+			bundleContext.getService(
+				bundleContext.getServiceReference(
+					CurrentAccountEntryManager.class));
+
 		long currentAccountEntryId =
-			CurrentAccountEntryManagerUtil.getCurrentAccountEntryId(
+			currentAccountEntryManager.getCurrentAccountEntryId(
 				groupId, userId);
 
 		if (currentAccountEntryId == getAccountEntryId()) {

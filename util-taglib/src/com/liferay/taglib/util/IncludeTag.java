@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.servlet.taglib.TagDynamicIdFactory;
 import com.liferay.portal.kernel.servlet.taglib.TagDynamicIdFactoryRegistry;
 import com.liferay.portal.kernel.servlet.taglib.TagDynamicIncludeUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.theme.ThemeUtil;
 import com.liferay.portal.kernel.util.CustomJspRegistryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;

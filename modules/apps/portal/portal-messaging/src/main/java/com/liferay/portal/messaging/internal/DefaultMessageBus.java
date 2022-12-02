@@ -265,17 +265,13 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 			"(&(destination.name=*)(objectClass=" +
 				Destination.class.getName() + "))",
 			new DestinationServiceTrackerCustomizer());
+		_messageListenerServiceTracker = ServiceTrackerFactory.open(
+			bundleContext, MessageListener.class,
+			new MessageListenerServiceTrackerCustomizer());
 
 		_messageBusEventListenerServiceTrackerList =
 			ServiceTrackerListFactory.open(
 				bundleContext, MessageBusEventListener.class);
-
-		_messageListenerServiceTracker = new ServiceTracker<>(
-			bundleContext, MessageListener.class,
-			new MessageListenerServiceTrackerCustomizer());
-
-		_messageListenerServiceTracker.open();
-
 		_messageBusInterceptorServiceTrackerList =
 			ServiceTrackerListFactory.open(
 				bundleContext, MessageBusInterceptor.class);

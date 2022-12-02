@@ -23,7 +23,6 @@ import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
-import com.liferay.asset.taglib.internal.info.display.contributor.LayoutDisplayPageProviderRegistryUtil;
 import com.liferay.asset.taglib.internal.item.selector.ItemSelectorUtil;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.item.selector.ItemSelector;
@@ -59,6 +58,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Pavel Savinov
@@ -297,9 +300,14 @@ public class SelectAssetDisplayPageDisplayContext {
 			return _inheritableDisplayPageTemplate;
 		}
 
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
 		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry =
-			LayoutDisplayPageProviderRegistryUtil.
-				getLayoutDisplayPageProviderRegistry();
+			bundleContext.getService(
+				bundleContext.getServiceReference(
+					LayoutDisplayPageProviderRegistry.class));
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 			layoutDisplayPageProviderRegistry.
@@ -348,10 +356,14 @@ public class SelectAssetDisplayPageDisplayContext {
 				WebKeys.THEME_DISPLAY);
 
 		try {
+			Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+			BundleContext bundleContext = bundle.getBundleContext();
+
 			LayoutDisplayPageProviderRegistry
-				layoutDisplayPageProviderRegistry =
-					LayoutDisplayPageProviderRegistryUtil.
-						getLayoutDisplayPageProviderRegistry();
+				layoutDisplayPageProviderRegistry = bundleContext.getService(
+					bundleContext.getServiceReference(
+						LayoutDisplayPageProviderRegistry.class));
 
 			LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 				layoutDisplayPageProviderRegistry.

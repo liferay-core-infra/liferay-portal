@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.reports.engine.ReportFormat;
 import com.liferay.portal.reports.engine.console.model.Definition;
 import com.liferay.portal.reports.engine.console.model.Entry;
 import com.liferay.portal.reports.engine.console.service.DefinitionLocalServiceUtil;
@@ -218,9 +219,9 @@ public class EntryServiceTest {
 		for (int i = 0; i < 5; i++) {
 			EntryLocalServiceUtil.addEntry(
 				TestPropsValues.getUserId(), _group.getGroupId(),
-				_definition.getDefinitionId(), "TXT", false, null, null, false,
+				_definition.getDefinitionId(), ReportFormat.TXT, false, null,
+				null, false, StringPool.BLANK, StringPool.BLANK,
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
-				StringPool.BLANK, StringPool.BLANK,
 				RandomTestUtil.randomString(), StringPool.BLANK,
 				serviceContext);
 		}
@@ -233,9 +234,9 @@ public class EntryServiceTest {
 		for (int i = 0; i < 5; i++) {
 			EntryLocalServiceUtil.addEntry(
 				TestPropsValues.getUserId(), _group.getGroupId(),
-				_definition.getDefinitionId(), "TXT", false, null, null, false,
+				_definition.getDefinitionId(), ReportFormat.TXT, false, null,
+				null, false, StringPool.BLANK, StringPool.BLANK,
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
-				StringPool.BLANK, StringPool.BLANK,
 				RandomTestUtil.randomString(), StringPool.BLANK,
 				serviceContext);
 		}

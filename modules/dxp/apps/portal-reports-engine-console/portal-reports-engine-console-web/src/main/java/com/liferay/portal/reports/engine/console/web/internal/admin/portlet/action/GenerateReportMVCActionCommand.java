@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.reports.engine.ReportFormat;
 import com.liferay.portal.reports.engine.console.constants.ReportsEngineConsolePortletKeys;
 import com.liferay.portal.reports.engine.console.model.Definition;
 import com.liferay.portal.reports.engine.console.model.Entry;
@@ -68,7 +69,8 @@ public class GenerateReportMVCActionCommand extends BaseMVCActionCommand {
 
 		long definitionId = ParamUtil.getLong(actionRequest, "definitionId");
 
-		String format = ParamUtil.getString(actionRequest, "format");
+		ReportFormat reportFormat = ReportFormat.valueOf(
+			ParamUtil.getString(actionRequest, "format"));
 		String emailNotifications = ParamUtil.getString(
 			actionRequest, "emailNotifications");
 		String emailDelivery = ParamUtil.getString(
@@ -122,7 +124,7 @@ public class GenerateReportMVCActionCommand extends BaseMVCActionCommand {
 			Entry.class.getName(), actionRequest);
 
 		_entryService.addEntry(
-			themeDisplay.getScopeGroupId(), definitionId, format, false, null,
+			themeDisplay.getScopeGroupId(), definitionId, reportFormat, false, null,
 			null, false, null, emailNotifications, emailDelivery, portletId,
 			generatedReportsURL, reportName,
 			entryReportParametersJSONArray.toString(), serviceContext);

@@ -124,9 +124,9 @@ public class GenerateReportMVCActionCommand extends BaseMVCActionCommand {
 			Entry.class.getName(), actionRequest);
 
 		_entryService.addEntry(
-			themeDisplay.getScopeGroupId(), definitionId, reportFormat, false, null,
-			null, false, null, emailNotifications, emailDelivery, portletId,
-			generatedReportsURL, reportName,
+			themeDisplay.getScopeGroupId(), definitionId, reportFormat, false,
+			null, null, false, null, emailNotifications, emailDelivery,
+			portletId, generatedReportsURL, reportName,
 			entryReportParametersJSONArray.toString(), serviceContext);
 	}
 

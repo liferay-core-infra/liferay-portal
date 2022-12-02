@@ -97,11 +97,11 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 	@Override
 	public Entry addEntry(
-			long userId, long groupId, long definitionId, String format,
-			boolean schedulerRequest, Date startDate, Date endDate,
-			boolean repeating, String recurrence, String emailNotifications,
-			String emailDelivery, String portletId, String pageURL,
-			String reportName, String reportParameters,
+			long userId, long groupId, long definitionId,
+			ReportFormat reportFormat, boolean schedulerRequest, Date startDate,
+			Date endDate, boolean repeating, String recurrence,
+			String emailNotifications, String emailDelivery, String portletId,
+			String pageURL, String reportName, String reportParameters,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -123,7 +123,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 		entry.setCreateDate(serviceContext.getCreateDate(date));
 		entry.setModifiedDate(serviceContext.getModifiedDate(date));
 		entry.setDefinitionId(definitionId);
-		entry.setFormat(format);
+		entry.setFormat(reportFormat.toString());
 		entry.setScheduleRequest(schedulerRequest);
 		entry.setStartDate(startDate);
 		entry.setEndDate(endDate);

@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.reports.engine.ReportFormat;
 import com.liferay.portal.reports.engine.console.model.Definition;
 import com.liferay.portal.reports.engine.console.model.Entry;
 import com.liferay.portal.reports.engine.console.service.base.EntryServiceBaseImpl;
@@ -45,7 +46,7 @@ public class EntryServiceImpl extends EntryServiceBaseImpl {
 
 	@Override
 	public Entry addEntry(
-			long groupId, long definitionId, String format,
+			long groupId, long definitionId, ReportFormat reportFormat,
 			boolean schedulerRequest, Date startDate, Date endDate,
 			boolean repeating, String recurrence, String emailNotifications,
 			String emailDelivery, String portletId, String pageURL,
@@ -57,7 +58,7 @@ public class EntryServiceImpl extends EntryServiceBaseImpl {
 			getPermissionChecker(), definitionId, ReportsActionKeys.ADD_REPORT);
 
 		return entryLocalService.addEntry(
-			getUserId(), groupId, definitionId, format, schedulerRequest,
+			getUserId(), groupId, definitionId, reportFormat, schedulerRequest,
 			startDate, endDate, repeating, recurrence, emailNotifications,
 			emailDelivery, portletId, pageURL, reportName, reportParameters,
 			serviceContext);

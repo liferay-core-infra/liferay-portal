@@ -303,7 +303,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 		ReportRequest reportRequest = new ReportRequest(
 			reportRequestContext, retriever, reportParameters,
-			Enum.valueOf(ReportFormat.class, entry.getFormat()));
+			ReportFormat.valueOf(entry.getFormat()));
 
 		Message message = new Message();
 

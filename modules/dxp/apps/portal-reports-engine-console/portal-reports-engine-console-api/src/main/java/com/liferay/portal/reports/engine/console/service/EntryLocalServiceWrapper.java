@@ -53,7 +53,8 @@ public class EntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.reports.engine.console.model.Entry addEntry(
-			long userId, long groupId, long definitionId, String format,
+			long userId, long groupId, long definitionId,
+			com.liferay.portal.reports.engine.ReportFormat reportFormat,
 			boolean schedulerRequest, java.util.Date startDate,
 			java.util.Date endDate, boolean repeating, String recurrence,
 			String emailNotifications, String emailDelivery, String portletId,
@@ -62,9 +63,10 @@ public class EntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _entryLocalService.addEntry(
-			userId, groupId, definitionId, format, schedulerRequest, startDate,
-			endDate, repeating, recurrence, emailNotifications, emailDelivery,
-			portletId, pageURL, reportName, reportParameters, serviceContext);
+			userId, groupId, definitionId, reportFormat, schedulerRequest,
+			startDate, endDate, repeating, recurrence, emailNotifications,
+			emailDelivery, portletId, pageURL, reportName, reportParameters,
+			serviceContext);
 	}
 
 	@Override

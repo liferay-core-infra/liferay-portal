@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.reports.engine.ReportFormat;
 import com.liferay.portal.reports.engine.console.model.Entry;
 import com.liferay.portal.reports.engine.console.status.ReportStatus;
 
@@ -81,11 +82,11 @@ public interface EntryLocalService
 	public Entry addEntry(Entry entry);
 
 	public Entry addEntry(
-			long userId, long groupId, long definitionId, String format,
-			boolean schedulerRequest, Date startDate, Date endDate,
-			boolean repeating, String recurrence, String emailNotifications,
-			String emailDelivery, String portletId, String pageURL,
-			String reportName, String reportParameters,
+			long userId, long groupId, long definitionId,
+			ReportFormat reportFormat, boolean schedulerRequest, Date startDate,
+			Date endDate, boolean repeating, String recurrence,
+			String emailNotifications, String emailDelivery, String portletId,
+			String pageURL, String reportName, String reportParameters,
 			ServiceContext serviceContext)
 		throws PortalException;
 

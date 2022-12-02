@@ -53,11 +53,12 @@ public class EntryServiceHttp {
 	public static com.liferay.portal.reports.engine.console.model.Entry
 			addEntry(
 				HttpPrincipal httpPrincipal, long groupId, long definitionId,
-				String format, boolean schedulerRequest,
-				java.util.Date startDate, java.util.Date endDate,
-				boolean repeating, String recurrence, String emailNotifications,
-				String emailDelivery, String portletId, String pageURL,
-				String reportName, String reportParameters,
+				com.liferay.portal.reports.engine.ReportFormat reportFormat,
+				boolean schedulerRequest, java.util.Date startDate,
+				java.util.Date endDate, boolean repeating, String recurrence,
+				String emailNotifications, String emailDelivery,
+				String portletId, String pageURL, String reportName,
+				String reportParameters,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -66,10 +67,10 @@ public class EntryServiceHttp {
 				EntryServiceUtil.class, "addEntry", _addEntryParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, groupId, definitionId, format, schedulerRequest,
-				startDate, endDate, repeating, recurrence, emailNotifications,
-				emailDelivery, portletId, pageURL, reportName, reportParameters,
-				serviceContext);
+				methodKey, groupId, definitionId, reportFormat,
+				schedulerRequest, startDate, endDate, repeating, recurrence,
+				emailNotifications, emailDelivery, portletId, pageURL,
+				reportName, reportParameters, serviceContext);
 
 			Object returnObj = null;
 
@@ -345,7 +346,8 @@ public class EntryServiceHttp {
 	private static Log _log = LogFactoryUtil.getLog(EntryServiceHttp.class);
 
 	private static final Class<?>[] _addEntryParameterTypes0 = new Class[] {
-		long.class, long.class, String.class, boolean.class,
+		long.class, long.class,
+		com.liferay.portal.reports.engine.ReportFormat.class, boolean.class,
 		java.util.Date.class, java.util.Date.class, boolean.class, String.class,
 		String.class, String.class, String.class, String.class, String.class,
 		String.class, com.liferay.portal.kernel.service.ServiceContext.class

@@ -60,7 +60,8 @@ public class EntryLocalServiceUtil {
 	}
 
 	public static Entry addEntry(
-			long userId, long groupId, long definitionId, String format,
+			long userId, long groupId, long definitionId,
+			com.liferay.portal.reports.engine.ReportFormat reportFormat,
 			boolean schedulerRequest, java.util.Date startDate,
 			java.util.Date endDate, boolean repeating, String recurrence,
 			String emailNotifications, String emailDelivery, String portletId,
@@ -69,9 +70,10 @@ public class EntryLocalServiceUtil {
 		throws PortalException {
 
 		return getService().addEntry(
-			userId, groupId, definitionId, format, schedulerRequest, startDate,
-			endDate, repeating, recurrence, emailNotifications, emailDelivery,
-			portletId, pageURL, reportName, reportParameters, serviceContext);
+			userId, groupId, definitionId, reportFormat, schedulerRequest,
+			startDate, endDate, repeating, recurrence, emailNotifications,
+			emailDelivery, portletId, pageURL, reportName, reportParameters,
+			serviceContext);
 	}
 
 	public static void addEntryResources(

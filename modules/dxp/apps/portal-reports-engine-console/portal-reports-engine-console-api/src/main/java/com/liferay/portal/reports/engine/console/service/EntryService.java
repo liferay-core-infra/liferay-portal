@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.reports.engine.ReportFormat;
 import com.liferay.portal.reports.engine.console.model.Entry;
 
 import java.util.Date;
@@ -55,7 +56,7 @@ public interface EntryService extends BaseService {
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.portal.reports.engine.console.service.impl.EntryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the entry remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link EntryServiceUtil} if injection and service tracking are not available.
 	 */
 	public Entry addEntry(
-			long groupId, long definitionId, String format,
+			long groupId, long definitionId, ReportFormat reportFormat,
 			boolean schedulerRequest, Date startDate, Date endDate,
 			boolean repeating, String recurrence, String emailNotifications,
 			String emailDelivery, String portletId, String pageURL,

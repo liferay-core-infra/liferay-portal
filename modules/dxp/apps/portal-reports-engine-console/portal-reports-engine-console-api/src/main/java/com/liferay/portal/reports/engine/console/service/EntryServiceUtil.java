@@ -40,7 +40,8 @@ public class EntryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.reports.engine.console.service.impl.EntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static Entry addEntry(
-			long groupId, long definitionId, String format,
+			long groupId, long definitionId,
+			com.liferay.portal.reports.engine.ReportFormat reportFormat,
 			boolean schedulerRequest, java.util.Date startDate,
 			java.util.Date endDate, boolean repeating, String recurrence,
 			String emailNotifications, String emailDelivery, String portletId,
@@ -49,9 +50,9 @@ public class EntryServiceUtil {
 		throws PortalException {
 
 		return getService().addEntry(
-			groupId, definitionId, format, schedulerRequest, startDate, endDate,
-			repeating, recurrence, emailNotifications, emailDelivery, portletId,
-			pageURL, reportName, reportParameters, serviceContext);
+			groupId, definitionId, reportFormat, schedulerRequest, startDate,
+			endDate, repeating, recurrence, emailNotifications, emailDelivery,
+			portletId, pageURL, reportName, reportParameters, serviceContext);
 	}
 
 	public static void deleteAttachment(

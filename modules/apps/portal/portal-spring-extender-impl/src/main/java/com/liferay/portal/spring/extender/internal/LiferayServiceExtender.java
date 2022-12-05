@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
 import com.liferay.portal.spring.extender.internal.loader.ModuleAggregareClassLoader;
 import com.liferay.portal.spring.hibernate.PortletHibernateConfiguration;
@@ -71,7 +72,7 @@ public class LiferayServiceExtender
 		Dictionary<String, String> headers = bundle.getHeaders(
 			StringPool.BLANK);
 
-		if ((headers.get("Liferay-Service") == null) ||
+		if (!BundleUtil.isLiferayServiceBundle(bundle) ||
 			(headers.get("Liferay-Spring-Context") != null)) {
 
 			return null;

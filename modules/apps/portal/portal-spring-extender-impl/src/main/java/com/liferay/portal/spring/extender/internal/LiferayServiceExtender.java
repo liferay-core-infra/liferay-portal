@@ -24,10 +24,13 @@ import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceComponentLocalService;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.spring.extender.internal.configuration.PortletConfigurationExtension;
+import com.liferay.portal.spring.extender.internal.configuration.ServiceConfigurationExtension;
+import com.liferay.portal.spring.extender.internal.configuration.ServiceConfigurationInitializer;
 import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
 import com.liferay.portal.spring.extender.internal.loader.ModuleAggregareClassLoader;
 import com.liferay.portal.spring.extender.internal.upgrade.InitialUpgradeExtension;
@@ -57,6 +60,7 @@ import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.BundleTracker;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
 
@@ -82,6 +86,7 @@ public class LiferayServiceExtender
 			_startLiferayServiceExtension(bundle);
 			_startInitialUpgradeExtension(bundle);
 			_startPortletConfigurationExtension(bundle);
+			_startServiceConfigurationExtension(bundle);
 
 			return new LiferayPortalServiceExtension() {
 			};
@@ -130,6 +135,15 @@ public class LiferayServiceExtender
 
 			if (portletConfigurationExtension != null) {
 				portletConfigurationExtension.destroy();
+			}
+		}
+
+		if (_serviceConfigurationExtensions != null) {
+			ServiceConfigurationExtension serviceConfigurationExtension =
+				_serviceConfigurationExtensions.remove(bundleSymbolicName);
+
+			if (serviceConfigurationExtension != null) {
+				serviceConfigurationExtension.destroy();
 			}
 		}
 	}
@@ -334,6 +348,39 @@ public class LiferayServiceExtender
 			bundle.getSymbolicName(), portletConfigurationExtension);
 	}
 
+	private void _startServiceConfigurationExtension(Bundle bundle) {
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
+
+		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+		ClassLoader classLoader = bundleWiring.getClassLoader();
+
+		Configuration serviceConfiguration =
+			ConfigurationFactoryUtil.getConfiguration(classLoader, "service");
+
+		if (serviceConfiguration == null) {
+			return;
+		}
+
+		String requireSchemaVersion = headers.get(
+			"Liferay-Require-SchemaVersion");
+
+		ServiceConfigurationInitializer serviceConfigurationInitializer =
+			new ServiceConfigurationInitializer(
+				bundle, classLoader, serviceConfiguration,
+				_serviceComponentLocalService);
+
+		ServiceConfigurationExtension serviceConfigurationExtension =
+			new ServiceConfigurationExtension(
+				bundle, requireSchemaVersion, serviceConfigurationInitializer);
+
+		serviceConfigurationExtension.start();
+
+		_serviceConfigurationExtensions.put(
+			bundle.getSymbolicName(), serviceConfigurationExtension);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LiferayServiceExtender.class);
 
@@ -344,5 +391,11 @@ public class LiferayServiceExtender
 		_liferayServiceExtensions = new HashMap<>();
 	private final Map<String, PortletConfigurationExtension>
 		_portletConfigurationExtensions = new HashMap<>();
+
+	@Reference
+	private ServiceComponentLocalService _serviceComponentLocalService;
+
+	private final Map<String, ServiceConfigurationExtension>
+		_serviceConfigurationExtensions = new HashMap<>();
 
 }

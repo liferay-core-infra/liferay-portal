@@ -255,7 +255,7 @@ public class WikiUtil {
 	}
 
 	@Reference(unbind = "-")
-	protected void setWikiPageLocalService(
+	protected static void setWikiPageLocalService(
 		WikiPageLocalService wikiPageLocalService) {
 
 		_wikiPageLocalService = wikiPageLocalService;

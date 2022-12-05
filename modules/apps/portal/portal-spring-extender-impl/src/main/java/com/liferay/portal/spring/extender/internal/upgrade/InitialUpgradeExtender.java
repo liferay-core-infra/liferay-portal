@@ -176,7 +176,7 @@ public class InitialUpgradeExtender
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleTracker = new BundleTracker<>(
-			bundleContext, Bundle.ACTIVE, this);
+			bundleContext, Bundle.ACTIVE | Bundle.STARTING, this);
 
 		_bundleTracker.open();
 	}

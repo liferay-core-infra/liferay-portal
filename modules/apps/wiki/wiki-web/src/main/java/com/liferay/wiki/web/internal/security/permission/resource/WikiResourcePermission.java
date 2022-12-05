@@ -38,7 +38,7 @@ public class WikiResourcePermission {
 		target = "(resource.name=" + WikiConstants.RESOURCE_NAME + ")",
 		unbind = "-"
 	)
-	protected void setPortletResourcePermission(
+	protected static void setPortletResourcePermission(
 		PortletResourcePermission portletResourcePermission) {
 
 		_portletResourcePermission = portletResourcePermission;

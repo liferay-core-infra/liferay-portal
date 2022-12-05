@@ -49,13 +49,9 @@ import java.io.Serializable;
 
 import java.util.Objects;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Pei-Jung Lan
  */
-@Component(service = {})
 public class AssignableAccountUserDisplaySearchContainerFactory {
 
 	public static SearchContainer<AccountUserDisplay> create(
@@ -129,36 +125,31 @@ public class AssignableAccountUserDisplaySearchContainerFactory {
 		return searchContainer;
 	}
 
-	@Reference(unbind = "-")
-	protected void setAccountEntryLocalService(
+	public static void setAccountEntryLocalService(
 		AccountEntryLocalService accountEntryLocalService) {
 
 		_accountEntryLocalService = accountEntryLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setAccountEntryUserRelLocalService(
+	public static void setAccountEntryUserRelLocalService(
 		AccountEntryUserRelLocalService accountEntryUserRelLocalService) {
 
 		_accountEntryUserRelLocalService = accountEntryUserRelLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setAccountRoleLocalService(
+	public static void setAccountRoleLocalService(
 		AccountRoleLocalService accountRoleLocalService) {
 
 		_accountRoleLocalService = accountRoleLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setAccountUserRetriever(
+	public static void setAccountUserRetriever(
 		AccountUserRetriever accountUserRetriever) {
 
 		_accountUserRetriever = accountUserRetriever;
 	}
 
-	@Reference(unbind = "-")
-	protected void setUserGroupRoleLocalService(
+	public static void setUserGroupRoleLocalService(
 		UserGroupRoleLocalService userGroupRoleLocalService) {
 
 		_userGroupRoleLocalService = userGroupRoleLocalService;

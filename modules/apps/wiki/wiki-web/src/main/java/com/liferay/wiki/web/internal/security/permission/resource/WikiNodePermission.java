@@ -19,13 +19,9 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.wiki.model.WikiNode;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Preston Crary
  */
-@Component(service = {})
 public class WikiNodePermission {
 
 	public static boolean contains(
@@ -44,10 +40,6 @@ public class WikiNodePermission {
 			permissionChecker, node, actionId);
 	}
 
-	@Reference(
-		target = "(model.class.name=com.liferay.wiki.model.WikiNode)",
-		unbind = "-"
-	)
 	protected static void setModelResourcePermission(
 		ModelResourcePermission<WikiNode> modelResourcePermission) {
 

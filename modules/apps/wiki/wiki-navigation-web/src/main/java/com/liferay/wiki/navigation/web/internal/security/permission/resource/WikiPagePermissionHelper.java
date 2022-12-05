@@ -14,31 +14,26 @@
 
 package com.liferay.wiki.navigation.web.internal.security.permission.resource;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.wiki.model.WikiPage;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
- * @author Preston Crary
+ * @author Jiaxu Wei
  */
-public class WikiPagePermission {
+@Component(service = {})
+public class WikiPagePermissionHelper {
 
-	public static boolean contains(
-			PermissionChecker permissionChecker, WikiPage page, String actionId)
-		throws PortalException {
-
-		return _wikiPageModelResourcePermission.contains(
-			permissionChecker, page, actionId);
+	@Activate
+	protected void activate() {
+		WikiPagePermission.setModelResourcePermission(
+			_wikiPageModelResourcePermission);
 	}
 
-	protected static void setModelResourcePermission(
-		ModelResourcePermission<WikiPage> modelResourcePermission) {
-
-		_wikiPageModelResourcePermission = modelResourcePermission;
-	}
-
-	private static ModelResourcePermission<WikiPage>
-		_wikiPageModelResourcePermission;
+	@Reference(target = "(model.class.name=com.liferay.wiki.model.WikiPage)")
+	private ModelResourcePermission<WikiPage> _wikiPageModelResourcePermission;
 
 }

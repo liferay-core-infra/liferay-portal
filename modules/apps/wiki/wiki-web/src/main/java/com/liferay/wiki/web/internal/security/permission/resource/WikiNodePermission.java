@@ -48,7 +48,7 @@ public class WikiNodePermission {
 		target = "(model.class.name=com.liferay.wiki.model.WikiNode)",
 		unbind = "-"
 	)
-	protected void setModelResourcePermission(
+	protected static void setModelResourcePermission(
 		ModelResourcePermission<WikiNode> modelResourcePermission) {
 
 		_wikiNodeModelResourcePermission = modelResourcePermission;

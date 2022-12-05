@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -41,6 +40,7 @@ import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageDisplay;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
+import com.liferay.wiki.web.internal.security.permission.resource.WikiNodePermission;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -185,7 +185,7 @@ public class WikiUtil {
 			WikiNode node = iterator.next();
 
 			if (!(Arrays.binarySearch(hiddenNodes, node.getName()) < 0) ||
-				!_wikiNodeModelResourcePermission.contains(
+				!WikiNodePermission.contains(
 					permissionChecker, node, ActionKeys.VIEW)) {
 
 				iterator.remove();
@@ -254,16 +254,6 @@ public class WikiUtil {
 		writer.write(sb.toString());
 	}
 
-	@Reference(
-		target = "(model.class.name=com.liferay.wiki.model.WikiNode)",
-		unbind = "-"
-	)
-	protected void setModelResourcePermission(
-		ModelResourcePermission<WikiNode> modelResourcePermission) {
-
-		_wikiNodeModelResourcePermission = modelResourcePermission;
-	}
-
 	@Reference(unbind = "-")
 	protected void setWikiPageLocalService(
 		WikiPageLocalService wikiPageLocalService) {
@@ -271,8 +261,6 @@ public class WikiUtil {
 		_wikiPageLocalService = wikiPageLocalService;
 	}
 
-	private static ModelResourcePermission<WikiNode>
-		_wikiNodeModelResourcePermission;
 	private static WikiPageLocalService _wikiPageLocalService;
 
 }

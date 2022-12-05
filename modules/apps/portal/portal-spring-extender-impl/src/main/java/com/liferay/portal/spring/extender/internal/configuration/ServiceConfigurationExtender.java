@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ServiceComponentLocalService;
+import com.liferay.portal.module.util.BundleUtil;
 
 import java.util.Dictionary;
 
@@ -56,7 +57,7 @@ public class ServiceConfigurationExtender
 		Dictionary<String, String> headers = bundle.getHeaders(
 			StringPool.BLANK);
 
-		if (headers.get("Liferay-Service") == null) {
+		if (!BundleUtil.isLiferayServiceBundle(bundle)) {
 			return null;
 		}
 

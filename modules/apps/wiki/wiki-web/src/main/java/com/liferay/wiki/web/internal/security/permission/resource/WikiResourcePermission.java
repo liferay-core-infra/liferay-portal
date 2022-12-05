@@ -16,15 +16,10 @@ package com.liferay.wiki.web.internal.security.permission.resource;
 
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.wiki.constants.WikiConstants;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Preston Crary
  */
-@Component(service = {})
 public class WikiResourcePermission {
 
 	public static boolean contains(
@@ -34,10 +29,6 @@ public class WikiResourcePermission {
 			permissionChecker, groupId, actionId);
 	}
 
-	@Reference(
-		target = "(resource.name=" + WikiConstants.RESOURCE_NAME + ")",
-		unbind = "-"
-	)
 	protected static void setPortletResourcePermission(
 		PortletResourcePermission portletResourcePermission) {
 

@@ -42,13 +42,9 @@ import com.liferay.users.admin.kernel.util.UsersAdmin;
 import java.util.List;
 import java.util.Objects;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Pei-Jung Lan
  */
-@Component(service = {})
 public class AccountUserDisplaySearchContainerFactory {
 
 	public static SearchContainer<AccountUserDisplay> create(
@@ -131,29 +127,25 @@ public class AccountUserDisplaySearchContainerFactory {
 			liferayPortletRequest, liferayPortletResponse);
 	}
 
-	@Reference(unbind = "-")
-	protected void setAccountEntryLocalService(
+	public static void setAccountEntryLocalService(
 		AccountEntryLocalService accountEntryLocalService) {
 
 		_accountEntryLocalService = accountEntryLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setAccountUserRetriever(
+	public static void setAccountUserRetriever(
 		AccountUserRetriever accountUserRetriever) {
 
 		_accountUserRetriever = accountUserRetriever;
 	}
 
-	@Reference(unbind = "-")
-	protected void setUserGroupRoleLocalService(
+	public static void setUserGroupRoleLocalService(
 		UserGroupRoleLocalService userGroupRoleLocalService) {
 
 		_userGroupRoleLocalService = userGroupRoleLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setUsersAdmin(UsersAdmin usersAdmin) {
+	public static void setUsersAdmin(UsersAdmin usersAdmin) {
 		_usersAdmin = usersAdmin;
 	}
 

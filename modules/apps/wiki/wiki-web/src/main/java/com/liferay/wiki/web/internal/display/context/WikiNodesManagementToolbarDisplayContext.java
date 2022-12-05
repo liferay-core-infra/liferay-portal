@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -44,7 +45,6 @@ import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.service.WikiNodeServiceUtil;
 import com.liferay.wiki.web.internal.search.NodesChecker;
 import com.liferay.wiki.web.internal.security.permission.resource.WikiNodePermission;
-import com.liferay.wiki.web.internal.security.permission.resource.WikiResourcePermission;
 import com.liferay.wiki.web.internal.util.WikiPortletUtil;
 
 import java.util.ArrayList;
@@ -62,6 +62,12 @@ import javax.servlet.http.HttpServletRequest;
  * @author Alejandro Tardín
  */
 public class WikiNodesManagementToolbarDisplayContext {
+
+	public static void setPortletResourcePermission(
+		PortletResourcePermission portletResourcePermission) {
+
+		_portletResourcePermission = portletResourcePermission;
+	}
 
 	public WikiNodesManagementToolbarDisplayContext(
 		HttpServletRequest httpServletRequest,
@@ -129,7 +135,7 @@ public class WikiNodesManagementToolbarDisplayContext {
 	}
 
 	public CreationMenu getCreationMenu() {
-		if (!WikiResourcePermission.contains(
+		if (!_portletResourcePermission.contains(
 				_themeDisplay.getPermissionChecker(),
 				_themeDisplay.getScopeGroupId(), ActionKeys.ADD_NODE)) {
 
@@ -331,6 +337,8 @@ public class WikiNodesManagementToolbarDisplayContext {
 			return ReflectionUtil.throwException(portalException);
 		}
 	}
+
+	private static PortletResourcePermission _portletResourcePermission;
 
 	private String _displayStyle;
 	private final HttpServletRequest _httpServletRequest;

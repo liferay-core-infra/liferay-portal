@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.security.permission.resource.PortletResourcePer
 import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.web.internal.display.context.WikiNodesManagementToolbarDisplayContext;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -38,7 +39,7 @@ public class WikiPermissionHelper {
 		WikiPagePermission.setModelResourcePermission(
 			_wikiPageModelResourcePermission);
 
-		WikiResourcePermission.setPortletResourcePermission(
+		WikiNodesManagementToolbarDisplayContext.setPortletResourcePermission(
 			_portletResourcePermission);
 	}
 

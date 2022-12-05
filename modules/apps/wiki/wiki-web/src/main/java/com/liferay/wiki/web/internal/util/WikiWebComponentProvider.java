@@ -40,13 +40,6 @@ public class WikiWebComponentProvider {
 		return _wikiGroupServiceConfiguration;
 	}
 
-	@Reference(unbind = "-")
-	public void setWikiDisplayContextProvider(
-		WikiDisplayContextProvider wikiDisplayContextProvider) {
-
-		_wikiDisplayContextProvider = wikiDisplayContextProvider;
-	}
-
 	@Activate
 	protected void activate() {
 		_wikiWebComponentProvider = this;
@@ -57,13 +50,6 @@ public class WikiWebComponentProvider {
 		_wikiWebComponentProvider = null;
 	}
 
-	@Reference
-	protected void setWikiGroupServiceConfiguration(
-		WikiGroupServiceConfiguration wikiGroupServiceConfiguration) {
-
-		_wikiGroupServiceConfiguration = wikiGroupServiceConfiguration;
-	}
-
 	protected void unsetWikiGroupServiceConfiguration(
 		WikiGroupServiceConfiguration wikiGroupServiceConfiguration) {
 
@@ -72,7 +58,10 @@ public class WikiWebComponentProvider {
 
 	private static WikiWebComponentProvider _wikiWebComponentProvider;
 
+	@Reference
 	private WikiDisplayContextProvider _wikiDisplayContextProvider;
+
+	@Reference
 	private WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;
 
 }

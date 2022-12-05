@@ -60,14 +60,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Brian Wing Shun Chan
  * @author Jorge Ferrer
  */
-@Component(service = {})
 public class WikiUtil {
 
 	public static String getAttachmentURLPrefix(
@@ -254,7 +250,6 @@ public class WikiUtil {
 		writer.write(sb.toString());
 	}
 
-	@Reference(unbind = "-")
 	protected static void setWikiPageLocalService(
 		WikiPageLocalService wikiPageLocalService) {
 

@@ -17,6 +17,7 @@ package com.liferay.application.list.taglib.internal.display.context;
 import com.liferay.application.list.constants.ApplicationListWebKeys;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
+import com.liferay.application.list.taglib.internal.helper.ServletContextHelper;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -35,6 +36,10 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Pavel Savinov
@@ -121,6 +126,15 @@ public class ContentPanelCategoryDisplayContext {
 		}
 
 		return dropdownItems;
+	}
+
+	public ServletContextHelper getServletContextHelper() {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		return bundleContext.getService(
+			bundleContext.getServiceReference(ServletContextHelper.class));
 	}
 
 	private final HttpServletRequest _httpServletRequest;

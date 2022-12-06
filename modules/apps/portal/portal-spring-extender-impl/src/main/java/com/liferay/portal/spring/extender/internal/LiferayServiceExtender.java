@@ -14,6 +14,7 @@
 
 package com.liferay.portal.spring.extender.internal;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.orm.hibernate.SessionFactoryImpl;
 import com.liferay.portal.dao.orm.hibernate.VerifySessionFactoryWrapper;
@@ -32,7 +33,6 @@ import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.spring.extender.internal.configuration.PortletConfigurationExtension;
 import com.liferay.portal.spring.extender.internal.configuration.ServiceConfigurationExtension;
 import com.liferay.portal.spring.extender.internal.configuration.ServiceConfigurationInitializer;
-import com.liferay.portal.spring.extender.internal.loader.ModuleAggregareClassLoader;
 import com.liferay.portal.spring.extender.internal.upgrade.InitialUpgradeExtension;
 import com.liferay.portal.spring.hibernate.PortletHibernateConfiguration;
 import com.liferay.portal.spring.hibernate.PortletTransactionManager;
@@ -41,12 +41,22 @@ import com.liferay.portal.spring.transaction.TransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionHandler;
 import com.liferay.portal.spring.transaction.TransactionManagerFactory;
 
+import java.io.IOException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import java.net.URL;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.FutureTask;
 
@@ -160,6 +170,136 @@ public class LiferayServiceExtender
 				serviceRegistration.unregister();
 			}
 		}
+	}
+
+	public static class ModuleAggregareClassLoader extends ClassLoader {
+
+		public ModuleAggregareClassLoader(
+			ClassLoader moduleClassLoader, String symbolicName) {
+
+			super(null);
+
+			_moduleClassLoader = moduleClassLoader;
+
+			int index = symbolicName.lastIndexOf('.');
+
+			if (index == -1) {
+				_namespace = symbolicName;
+			}
+			else {
+				_namespace = symbolicName.substring(0, index);
+			}
+		}
+
+		@Override
+		public boolean equals(Object object) {
+			if (this == object) {
+				return true;
+			}
+
+			if (!(object instanceof ModuleAggregareClassLoader)) {
+				return false;
+			}
+
+			ModuleAggregareClassLoader moduleAggregareClassLoader =
+				(ModuleAggregareClassLoader)object;
+
+			if (Objects.equals(
+					_moduleClassLoader,
+					moduleAggregareClassLoader._moduleClassLoader)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public URL getResource(String name) {
+			URL url = _moduleClassLoader.getResource(name);
+
+			if (url != null) {
+				return url;
+			}
+
+			return _extenderClassLoader.getResource(name);
+		}
+
+		@Override
+		public Enumeration<URL> getResources(String name) throws IOException {
+			List<URL> urls = new ArrayList<>();
+
+			urls.addAll(
+				Collections.list(_moduleClassLoader.getResources(name)));
+
+			urls.addAll(
+				Collections.list(_extenderClassLoader.getResources(name)));
+
+			return Collections.enumeration(urls);
+		}
+
+		@Override
+		public int hashCode() {
+			return _moduleClassLoader.hashCode();
+		}
+
+		@Override
+		public Class<?> loadClass(String name, boolean resolve)
+			throws ClassNotFoundException {
+
+			if (name.startsWith(_namespace)) {
+				return _moduleClassLoader.loadClass(name);
+			}
+
+			try {
+				return _extenderClassLoader.loadClass(name);
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(classNotFoundException);
+				}
+
+				return _moduleClassLoader.loadClass(name);
+			}
+		}
+
+		@Override
+		protected Class<?> findClass(String name)
+			throws ClassNotFoundException {
+
+			try {
+				return (Class<?>)_FIND_CLASS_METHOD.invoke(
+					_moduleClassLoader, name);
+			}
+			catch (InvocationTargetException invocationTargetException) {
+				throw new ClassNotFoundException(
+					"Unable to find class " + name,
+					invocationTargetException.getTargetException());
+			}
+			catch (Exception exception) {
+				throw new ClassNotFoundException(
+					"Unable to find class " + name, exception);
+			}
+		}
+
+		private static final Method _FIND_CLASS_METHOD;
+
+		private static final ClassLoader _extenderClassLoader =
+			LiferayServiceExtender.class.getClassLoader();
+
+		static {
+			try {
+				_FIND_CLASS_METHOD = ReflectionUtil.getDeclaredMethod(
+					ClassLoader.class, "findClass", String.class);
+			}
+			catch (Exception exception) {
+				throw new ExceptionInInitializerError(exception);
+			}
+		}
+
+		private final ClassLoader _moduleClassLoader;
+		private final String _namespace;
+
 	}
 
 	public class LiferayServiceExtension

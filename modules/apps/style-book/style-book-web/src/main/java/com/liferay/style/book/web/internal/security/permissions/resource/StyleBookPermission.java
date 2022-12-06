@@ -38,7 +38,7 @@ public class StyleBookPermission {
 		target = "(resource.name=" + StyleBookConstants.RESOURCE_NAME + ")",
 		unbind = "-"
 	)
-	protected void setPortletResourcePermission(
+	protected static void setPortletResourcePermission(
 		PortletResourcePermission portletResourcePermission) {
 
 		_portletResourcePermission = portletResourcePermission;

@@ -26,12 +26,14 @@ import org.osgi.service.component.annotations.Deactivate;
 @Component(service = {})
 public class WikiWebComponentProvider {
 
-	public static WikiWebComponentProvider getWikiWebComponentProvider() {
-		return _wikiWebComponentProvider;
+	public static WikiGroupServiceConfiguration
+		getWikiGroupServiceConfiguration() {
+
+		return _wikiGroupServiceConfiguration;
 	}
 
-	public WikiGroupServiceConfiguration getWikiGroupServiceConfiguration() {
-		return _wikiGroupServiceConfiguration;
+	public static WikiWebComponentProvider getWikiWebComponentProvider() {
+		return _wikiWebComponentProvider;
 	}
 
 	protected static void setWikiGroupServiceConfiguration(

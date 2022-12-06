@@ -72,7 +72,7 @@ public class ModuleApplicationContextRegistrator {
 				headers.get("Liferay-Spring-Context"), CharPool.COMMA));
 
 		_moduleApplicationContext.addBeanFactoryPostProcessor(
-			beanFactory -> ModuleApplicationContext.registerDataSourceBean(
+			beanFactory -> _moduleApplicationContext.registerDataSourceBean(
 				beanFactory, _extendeeClassLoader));
 
 		_moduleApplicationContext.addBeanFactoryPostProcessor(

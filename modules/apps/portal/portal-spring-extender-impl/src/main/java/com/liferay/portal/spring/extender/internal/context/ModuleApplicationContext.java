@@ -46,30 +46,6 @@ import org.springframework.core.io.UrlResource;
  */
 public class ModuleApplicationContext extends ClassPathXmlApplicationContext {
 
-	public static void registerDataSourceBean(
-		ConfigurableListableBeanFactory configurableListableBeanFactory,
-		ClassLoader extendeeClassLoader) {
-
-		if (configurableListableBeanFactory.containsBean("liferayDataSource")) {
-			return;
-		}
-
-		DataSource dataSource = DataSourceUtil.getDataSource(
-			extendeeClassLoader);
-
-		configurableListableBeanFactory.registerSingleton(
-			"liferayDataSource", dataSource);
-
-		if (InfrastructureUtil.getDataSource() != dataSource) {
-			DefaultSingletonBeanRegistry defaultSingletonBeanRegistry =
-				(DefaultSingletonBeanRegistry)configurableListableBeanFactory;
-
-			defaultSingletonBeanRegistry.registerDisposableBean(
-				"dataSourceDestroyer",
-				() -> DataSourceFactoryUtil.destroyDataSource(dataSource));
-		}
-	}
-
 	public ModuleApplicationContext(
 		Bundle bundle, ClassLoader extendeeClassLoader,
 		ClassLoader resourceLoaderClassLoader, String[] configLocations) {
@@ -119,6 +95,30 @@ public class ModuleApplicationContext extends ClassPathXmlApplicationContext {
 		super.refresh();
 
 		_dataSource = getBean("liferayDataSource", DataSource.class);
+	}
+
+	public void registerDataSourceBean(
+		ConfigurableListableBeanFactory configurableListableBeanFactory,
+		ClassLoader extendeeClassLoader) {
+
+		if (configurableListableBeanFactory.containsBean("liferayDataSource")) {
+			return;
+		}
+
+		DataSource dataSource = DataSourceUtil.getDataSource(
+			extendeeClassLoader);
+
+		configurableListableBeanFactory.registerSingleton(
+			"liferayDataSource", dataSource);
+
+		if (InfrastructureUtil.getDataSource() != dataSource) {
+			DefaultSingletonBeanRegistry defaultSingletonBeanRegistry =
+				(DefaultSingletonBeanRegistry)configurableListableBeanFactory;
+
+			defaultSingletonBeanRegistry.registerDisposableBean(
+				"dataSourceDestroyer",
+				() -> DataSourceFactoryUtil.destroyDataSource(dataSource));
+		}
 	}
 
 	@Override

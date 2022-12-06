@@ -14,7 +14,6 @@
 
 package com.liferay.account.admin.web.internal.security.permission.resource;
 
-import com.liferay.account.constants.AccountConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -25,13 +24,9 @@ import com.liferay.portal.kernel.service.OrganizationLocalService;
 
 import java.util.List;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Pei-Jung Lan
  */
-@Component(service = {})
 public class AccountPermission {
 
 	public static boolean contains(
@@ -67,21 +62,16 @@ public class AccountPermission {
 		return false;
 	}
 
-	@Reference(
-		target = "(resource.name=" + AccountConstants.RESOURCE_NAME + ")",
-		unbind = "-"
-	)
-	protected void setPortletResourcePermission(
-		PortletResourcePermission portletResourcePermission) {
-
-		_portletResourcePermission = portletResourcePermission;
-	}
-
-	@Reference(unbind = "-")
-	private void _setOrganizationLocalService(
+	public static void setOrganizationLocalService(
 		OrganizationLocalService organizationLocalService) {
 
 		_organizationLocalService = organizationLocalService;
+	}
+
+	public static void setPortletResourcePermission(
+		PortletResourcePermission portletResourcePermission) {
+
+		_portletResourcePermission = portletResourcePermission;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -21,13 +21,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Pei-Jung Lan
  */
-@Component(service = {})
 public class AccountGroupPermission {
 
 	public static boolean contains(
@@ -64,11 +60,7 @@ public class AccountGroupPermission {
 		return false;
 	}
 
-	@Reference(
-		target = "(model.class.name=com.liferay.account.model.AccountGroup)",
-		unbind = "-"
-	)
-	protected void setModelResourcePermission(
+	public static void setModelResourcePermission(
 		ModelResourcePermission<AccountGroup> modelResourcePermission) {
 
 		_accountGroupModelResourcePermission = modelResourcePermission;

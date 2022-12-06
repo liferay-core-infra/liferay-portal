@@ -21,14 +21,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
-
 /**
  * @author Pei-Jung Lan
  */
-@Component(service = {})
 public class AccountEntryPermission {
 
 	public static boolean contains(
@@ -65,12 +60,7 @@ public class AccountEntryPermission {
 		return false;
 	}
 
-	@Reference(
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(model.class.name=com.liferay.account.model.AccountEntry)",
-		unbind = "-"
-	)
-	protected void setModelResourcePermission(
+	public static void setModelResourcePermission(
 		ModelResourcePermission<AccountEntry> modelResourcePermission) {
 
 		_accountEntryModelResourcePermission = modelResourcePermission;

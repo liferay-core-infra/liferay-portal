@@ -16,12 +16,9 @@ package com.liferay.wiki.web.internal.util;
 
 import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Iván Zaera
  */
-@Component(service = {})
 public class WikiWebComponentProvider {
 
 	public static WikiGroupServiceConfiguration

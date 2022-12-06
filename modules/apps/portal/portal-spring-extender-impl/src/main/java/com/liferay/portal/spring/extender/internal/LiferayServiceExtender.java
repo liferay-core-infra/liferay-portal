@@ -32,7 +32,6 @@ import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.spring.extender.internal.configuration.PortletConfigurationExtension;
 import com.liferay.portal.spring.extender.internal.configuration.ServiceConfigurationExtension;
 import com.liferay.portal.spring.extender.internal.configuration.ServiceConfigurationInitializer;
-import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
 import com.liferay.portal.spring.extender.internal.loader.ModuleAggregareClassLoader;
 import com.liferay.portal.spring.extender.internal.upgrade.InitialUpgradeExtension;
 import com.liferay.portal.spring.hibernate.PortletHibernateConfiguration;
@@ -190,13 +189,7 @@ public class LiferayServiceExtender
 
 		@Override
 		public void start() throws Exception {
-			BundleWiring extendeeBundleWiring = _extendeeBundle.adapt(
-				BundleWiring.class);
-
-			ClassLoader extendeeClassLoader =
-				extendeeBundleWiring.getClassLoader();
-
-			_dataSource = DataSourceUtil.getDataSource(extendeeClassLoader);
+			_dataSource = _getDataSource(_extendeeBundle);
 
 			BundleContext extendeeBundleContext =
 				_extendeeBundle.getBundleContext();
@@ -207,6 +200,12 @@ public class LiferayServiceExtender
 					MapUtil.singletonDictionary(
 						"origin.bundle.symbolic.name",
 						_extendeeBundle.getSymbolicName())));
+
+			BundleWiring extendeeBundleWiring = _extendeeBundle.adapt(
+				BundleWiring.class);
+
+			ClassLoader extendeeClassLoader =
+				extendeeBundleWiring.getClassLoader();
 
 			ClassLoader classLoader = new ModuleAggregareClassLoader(
 				extendeeClassLoader, _extendeeBundle.getSymbolicName());

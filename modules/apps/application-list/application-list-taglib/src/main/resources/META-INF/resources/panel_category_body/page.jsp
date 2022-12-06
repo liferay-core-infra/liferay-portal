@@ -32,7 +32,9 @@
 				<c:if test="<%= Validator.isNotNull(url) %>">
 
 					<%
-					String label = PanelAppUtil.getLabel(request, panelApp);
+					ContentPanelCategoryDisplayContext contentPanelCategoryDisplayContext = new ContentPanelCategoryDisplayContext(request);
+
+					String label = PanelAppUtil.getLabel(request, panelApp, contentPanelCategoryDisplayContext.getServletContextHelper());
 					%>
 
 					<li class="<%= PanelAppUtil.isActive(request, panelApp) ? "active" : StringPool.BLANK %> nav-item" role="presentation">

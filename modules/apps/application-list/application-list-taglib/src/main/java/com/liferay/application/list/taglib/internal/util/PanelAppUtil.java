@@ -15,7 +15,7 @@
 package com.liferay.application.list.taglib.internal.util;
 
 import com.liferay.application.list.PanelApp;
-import com.liferay.application.list.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.application.list.taglib.internal.helper.ServletContextHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -38,7 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 public class PanelAppUtil {
 
 	public static String getLabel(
-		HttpServletRequest httpServletRequest, PanelApp panelApp) {
+		HttpServletRequest httpServletRequest, PanelApp panelApp,
+		ServletContextHelper servletContextHelper) {
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
@@ -53,7 +54,7 @@ public class PanelAppUtil {
 
 			label = HtmlUtil.escape(
 				PortalUtil.getPortletTitle(
-					portlet, ServletContextUtil.getServletContext(),
+					portlet, servletContextHelper.getServletContext(),
 					themeDisplay.getLocale()));
 		}
 

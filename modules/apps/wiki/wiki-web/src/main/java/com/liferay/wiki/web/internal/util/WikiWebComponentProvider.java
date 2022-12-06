@@ -35,6 +35,13 @@ public class WikiWebComponentProvider {
 		return _wikiGroupServiceConfiguration;
 	}
 
+	@Reference
+	protected static void setWikiGroupServiceConfiguration(
+		WikiGroupServiceConfiguration wikiGroupServiceConfiguration) {
+
+		_wikiGroupServiceConfiguration = wikiGroupServiceConfiguration;
+	}
+
 	@Activate
 	protected void activate() {
 		_wikiWebComponentProvider = this;
@@ -45,21 +52,13 @@ public class WikiWebComponentProvider {
 		_wikiWebComponentProvider = null;
 	}
 
-	@Reference
-	protected void setWikiGroupServiceConfiguration(
-		WikiGroupServiceConfiguration wikiGroupServiceConfiguration) {
-
-		_wikiGroupServiceConfiguration = wikiGroupServiceConfiguration;
-	}
-
 	protected void unsetWikiGroupServiceConfiguration(
 		WikiGroupServiceConfiguration wikiGroupServiceConfiguration) {
 
 		_wikiGroupServiceConfiguration = null;
 	}
 
+	private static WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;
 	private static WikiWebComponentProvider _wikiWebComponentProvider;
-
-	private WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;
 
 }

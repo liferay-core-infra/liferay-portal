@@ -14,12 +14,18 @@
 
 package com.liferay.portal.spring.extender.internal;
 
+import javax.sql.DataSource;
+
 /**
  * @author Hai Yu
  */
 public interface LiferayPortalServiceExtension {
 
 	public default void destroy() {
+	}
+
+	public default DataSource getDataSource() {
+		return null;
 	}
 
 	public default void start() throws Exception {

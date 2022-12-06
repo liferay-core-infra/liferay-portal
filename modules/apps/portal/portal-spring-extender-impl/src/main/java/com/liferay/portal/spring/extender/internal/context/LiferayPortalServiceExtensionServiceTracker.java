@@ -41,11 +41,15 @@ public class LiferayPortalServiceExtensionServiceTracker
 	public LiferayPortalServiceExtension addingService(
 		ServiceReference<LiferayPortalServiceExtension> serviceReference) {
 
+		LiferayPortalServiceExtension liferayPortalServiceExtension =
+			_bundleContext.getService(serviceReference);
+
 		try {
 			ModuleApplicationContextExtension
 				moduleApplicationContextExtension =
 					new ModuleApplicationContextExtension(
 						serviceReference.getBundle(), _bundleContext,
+						liferayPortalServiceExtension.getDataSource(),
 						_configurableApplicationContextConfigurator);
 
 			moduleApplicationContextExtension.start();

@@ -33,6 +33,8 @@ import java.net.URL;
 
 import java.util.Dictionary;
 
+import javax.sql.DataSource;
+
 import org.apache.felix.dm.Component;
 import org.apache.felix.dm.DependencyManager;
 import org.apache.felix.dm.ServiceDependency;
@@ -49,10 +51,12 @@ public class ModuleApplicationContextExtension
 
 	public ModuleApplicationContextExtension(
 		Bundle bundle, BundleContext extenderBundleContext,
+		DataSource extendeeDataSource,
 		ConfigurableApplicationContextConfigurator
 			configurableApplicationContextConfigurator) {
 
 		_bundle = bundle;
+		_extendeeDataSource = extendeeDataSource;
 		_configurableApplicationContextConfigurator =
 			configurableApplicationContextConfigurator;
 
@@ -77,7 +81,7 @@ public class ModuleApplicationContextExtension
 		_component.setImplementation(
 			new ModuleApplicationContextRegistrator(
 				_configurableApplicationContextConfigurator, _bundle,
-				bundleContext.getBundle()));
+				bundleContext.getBundle(), _extendeeDataSource));
 
 		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
@@ -192,5 +196,6 @@ public class ModuleApplicationContextExtension
 	private final ConfigurableApplicationContextConfigurator
 		_configurableApplicationContextConfigurator;
 	private final DependencyManager _dependencyManager;
+	private final DataSource _extendeeDataSource;
 
 }

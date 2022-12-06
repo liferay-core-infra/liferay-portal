@@ -16,15 +16,10 @@ package com.liferay.style.book.web.internal.security.permissions.resource;
 
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.style.book.constants.StyleBookConstants;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
  */
-@Component(service = {})
 public class StyleBookPermission {
 
 	public static boolean contains(
@@ -34,10 +29,6 @@ public class StyleBookPermission {
 			permissionChecker, groupId, actionId);
 	}
 
-	@Reference(
-		target = "(resource.name=" + StyleBookConstants.RESOURCE_NAME + ")",
-		unbind = "-"
-	)
 	protected static void setPortletResourcePermission(
 		PortletResourcePermission portletResourcePermission) {
 

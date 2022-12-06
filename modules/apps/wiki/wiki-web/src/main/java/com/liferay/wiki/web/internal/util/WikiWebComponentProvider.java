@@ -19,7 +19,6 @@ import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Iván Zaera
@@ -35,7 +34,6 @@ public class WikiWebComponentProvider {
 		return _wikiGroupServiceConfiguration;
 	}
 
-	@Reference
 	protected static void setWikiGroupServiceConfiguration(
 		WikiGroupServiceConfiguration wikiGroupServiceConfiguration) {
 
@@ -50,12 +48,6 @@ public class WikiWebComponentProvider {
 	@Deactivate
 	protected void deactivate() {
 		_wikiWebComponentProvider = null;
-	}
-
-	protected void unsetWikiGroupServiceConfiguration(
-		WikiGroupServiceConfiguration wikiGroupServiceConfiguration) {
-
-		_wikiGroupServiceConfiguration = null;
 	}
 
 	private static WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;

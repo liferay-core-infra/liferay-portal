@@ -276,11 +276,8 @@ public class EditPageMVCActionCommand extends BaseMVCActionCommand {
 			String title = _trashHelper.getOriginalTitle(
 				pageResource.getTitle());
 
-			WikiWebComponentProvider wikiWebComponentProvider =
-				WikiWebComponentProvider.getWikiWebComponentProvider();
-
 			WikiGroupServiceConfiguration wikiGroupServiceConfiguration =
-				wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+				WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 			if (title.equals(wikiGroupServiceConfiguration.frontPageName())) {
 				WikiPage overridePage = _wikiPageLocalService.fetchPage(

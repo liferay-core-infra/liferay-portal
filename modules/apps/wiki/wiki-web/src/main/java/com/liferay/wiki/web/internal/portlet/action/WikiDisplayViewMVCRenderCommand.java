@@ -76,11 +76,8 @@ public class WikiDisplayViewMVCRenderCommand implements MVCRenderCommand {
 			PortletPreferences portletPreferences =
 				renderRequest.getPreferences();
 
-			WikiWebComponentProvider wikiWebComponentProvider =
-				WikiWebComponentProvider.getWikiWebComponentProvider();
-
 			WikiGroupServiceConfiguration wikiGroupServiceConfiguration =
-				wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+				WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 			String title = ParamUtil.getString(
 				renderRequest, "title",

@@ -79,9 +79,7 @@ WikiGroupServiceOverriddenConfiguration wikiGroupServiceOverriddenConfiguration 
 
 WikiPortletInstanceSettingsHelper wikiPortletInstanceSettingsHelper = new WikiPortletInstanceSettingsHelper(wikiRequestHelper);
 
-WikiWebComponentProvider wikiWebComponentProvider = WikiWebComponentProvider.getWikiWebComponentProvider();
-
-WikiGroupServiceConfiguration wikiGroupServiceConfiguration = wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+WikiGroupServiceConfiguration wikiGroupServiceConfiguration = WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
 %>

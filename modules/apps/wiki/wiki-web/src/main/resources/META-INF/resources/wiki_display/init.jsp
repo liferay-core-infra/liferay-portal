@@ -21,9 +21,7 @@ page import="com.liferay.wiki.exception.NoSuchNodeException" %><%@
 page import="com.liferay.wiki.web.internal.util.WikiWebComponentProvider" %>
 
 <%
-WikiWebComponentProvider wikiWebComponentProvider = WikiWebComponentProvider.getWikiWebComponentProvider();
-
-WikiGroupServiceConfiguration wikiGroupServiceConfiguration = wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+WikiGroupServiceConfiguration wikiGroupServiceConfiguration = WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 long nodeId = GetterUtil.getLong(portletPreferences.getValue("nodeId", StringPool.BLANK));
 String title = GetterUtil.getString(portletPreferences.getValue("title", wikiGroupServiceConfiguration.frontPageName()));

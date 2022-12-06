@@ -154,11 +154,8 @@ public class EditPageMVCRenderCommand implements MVCRenderCommand {
 					_log.debug(noSuchPageException2);
 				}
 
-				WikiWebComponentProvider wikiWebComponentProvider =
-					WikiWebComponentProvider.getWikiWebComponentProvider();
-
 				WikiGroupServiceConfiguration wikiGroupServiceConfiguration =
-					wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+					WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 				if (title.equals(
 						wikiGroupServiceConfiguration.frontPageName()) &&

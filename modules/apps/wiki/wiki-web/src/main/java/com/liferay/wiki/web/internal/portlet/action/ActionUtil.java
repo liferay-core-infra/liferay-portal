@@ -184,11 +184,8 @@ public class ActionUtil {
 			long nodeId, PortletRequest portletRequest)
 		throws PortalException {
 
-		WikiWebComponentProvider wikiWebComponentProvider =
-			WikiWebComponentProvider.getWikiWebComponentProvider();
-
 		WikiGroupServiceConfiguration wikiGroupServiceConfiguration =
-			wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+			WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 		WikiPage page = WikiPageLocalServiceUtil.fetchPage(
 			nodeId, wikiGroupServiceConfiguration.frontPageName(), 0);
@@ -362,11 +359,8 @@ public class ActionUtil {
 			}
 		}
 
-		WikiWebComponentProvider wikiWebComponentProvider =
-			WikiWebComponentProvider.getWikiWebComponentProvider();
-
 		WikiGroupServiceConfiguration wikiGroupServiceConfiguration =
-			wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+			WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 		if (Validator.isNull(title)) {
 			title = wikiGroupServiceConfiguration.frontPageName();

@@ -113,11 +113,8 @@ public class WikiListPagesDisplayContext {
 			return "there-are-no-drafts";
 		}
 		else if (navigation.equals("frontpage")) {
-			WikiWebComponentProvider wikiWebComponentProvider =
-				WikiWebComponentProvider.getWikiWebComponentProvider();
-
 			WikiGroupServiceConfiguration wikiGroupServiceConfiguration =
-				wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+				WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 			return LanguageUtil.format(
 				_httpServletRequest, "there-is-no-x",
@@ -344,11 +341,8 @@ public class WikiListPagesDisplayContext {
 					_wikiNode.getNodeId(), wikiPageStatus));
 		}
 		else if (navigation.equals("frontpage")) {
-			WikiWebComponentProvider wikiWebComponentProvider =
-				WikiWebComponentProvider.getWikiWebComponentProvider();
-
 			WikiGroupServiceConfiguration wikiGroupServiceConfiguration =
-				wikiWebComponentProvider.getWikiGroupServiceConfiguration();
+				WikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
 			searchContainer.setResultsAndTotal(
 				() -> ListUtil.fromArray(

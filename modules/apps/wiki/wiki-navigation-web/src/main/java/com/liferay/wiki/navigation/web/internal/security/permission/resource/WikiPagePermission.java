@@ -19,13 +19,9 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.wiki.model.WikiPage;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Preston Crary
  */
-@Component(service = {})
 public class WikiPagePermission {
 
 	public static boolean contains(
@@ -36,10 +32,6 @@ public class WikiPagePermission {
 			permissionChecker, page, actionId);
 	}
 
-	@Reference(
-		target = "(model.class.name=com.liferay.wiki.model.WikiPage)",
-		unbind = "-"
-	)
 	protected static void setModelResourcePermission(
 		ModelResourcePermission<WikiPage> modelResourcePermission) {
 

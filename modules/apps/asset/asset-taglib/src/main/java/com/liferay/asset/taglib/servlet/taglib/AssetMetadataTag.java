@@ -16,7 +16,7 @@ package com.liferay.asset.taglib.servlet.taglib;
 
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.asset.taglib.internal.helper.ServletContextHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -27,6 +27,10 @@ import com.liferay.taglib.util.IncludeTag;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Eudaldo Alonso
@@ -89,7 +93,14 @@ public class AssetMetadataTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServletContextHelper servletContextHelper = bundleContext.getService(
+			bundleContext.getServiceReference(ServletContextHelper.class));
+
+		setServletContext(servletContextHelper.getServletContext());
 	}
 
 	@Override

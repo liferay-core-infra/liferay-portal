@@ -15,7 +15,7 @@
 package com.liferay.asset.taglib.servlet.taglib;
 
 import com.liferay.asset.kernel.model.AssetTag;
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.asset.taglib.internal.helper.ServletContextHelper;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.ArrayList;
@@ -25,6 +25,10 @@ import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -75,7 +79,14 @@ public class AssetTagsSummaryTag<R> extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServletContextHelper servletContextHelper = bundleContext.getService(
+			bundleContext.getServiceReference(ServletContextHelper.class));
+
+		setServletContext(servletContextHelper.getServletContext());
 	}
 
 	public void setParamName(String paramName) {

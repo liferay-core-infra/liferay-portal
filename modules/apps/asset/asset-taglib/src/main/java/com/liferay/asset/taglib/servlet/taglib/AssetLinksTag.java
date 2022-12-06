@@ -21,7 +21,7 @@ import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetLinkLocalServiceUtil;
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.asset.taglib.internal.helper.ServletContextHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -56,6 +56,10 @@ import javax.portlet.WindowState;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Juan Fernández
@@ -103,7 +107,14 @@ public class AssetLinksTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServletContextHelper servletContextHelper = bundleContext.getService(
+			bundleContext.getServiceReference(ServletContextHelper.class));
+
+		setServletContext(servletContextHelper.getServletContext());
 	}
 
 	public void setPortletURL(PortletURL portletURL) {

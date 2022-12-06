@@ -20,6 +20,7 @@ import com.liferay.portal.dao.orm.hibernate.VerifySessionFactoryWrapper;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
+import com.liferay.portal.kernel.dao.jdbc.DataSourceProvider;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -44,8 +45,10 @@ import com.liferay.portal.spring.transaction.TransactionManagerFactory;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.FutureTask;
 
 import javax.sql.DataSource;
@@ -311,6 +314,24 @@ public class LiferayServiceExtender
 		_bundleTracker.close();
 	}
 
+	private DataSource _getDataSource(Bundle extendeeBundle) {
+		BundleWiring extendeeBundleWiring = extendeeBundle.adapt(
+			BundleWiring.class);
+
+		ServiceLoader<DataSourceProvider> serviceLoader = ServiceLoader.load(
+			DataSourceProvider.class, extendeeBundleWiring.getClassLoader());
+
+		Iterator<DataSourceProvider> iterator = serviceLoader.iterator();
+
+		if (iterator.hasNext()) {
+			DataSourceProvider dataSourceProvider = iterator.next();
+
+			return dataSourceProvider.getDataSource();
+		}
+
+		return InfrastructureUtil.getDataSource();
+	}
+
 	private void _registerLiferayPortalServiceExtension(Bundle bundle) {
 		Dictionary<String, String> headers = bundle.getHeaders(
 			StringPool.BLANK);
@@ -321,13 +342,20 @@ public class LiferayServiceExtender
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
+		LiferayPortalServiceExtension liferayPortalServiceExtension =
+			new LiferayPortalServiceExtension() {
+
+				public DataSource getDataSource() {
+					return _getDataSource(bundle);
+				}
+
+			};
+
 		_liferayPortalServiceExtensionServiceRegistrations.put(
 			bundle.getSymbolicName(),
 			bundleContext.registerService(
 				LiferayPortalServiceExtension.class,
-				new LiferayPortalServiceExtension() {
-				},
-				null));
+				liferayPortalServiceExtension, null));
 	}
 
 	private void _startInitialUpgradeExtension(Bundle bundle) {

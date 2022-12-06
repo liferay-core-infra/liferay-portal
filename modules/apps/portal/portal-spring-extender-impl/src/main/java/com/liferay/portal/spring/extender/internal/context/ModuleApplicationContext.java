@@ -16,7 +16,6 @@ package com.liferay.portal.spring.extender.internal.context;
 
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
-import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
 
 import java.net.URL;
 
@@ -48,7 +47,8 @@ public class ModuleApplicationContext extends ClassPathXmlApplicationContext {
 
 	public ModuleApplicationContext(
 		Bundle bundle, ClassLoader extendeeClassLoader,
-		ClassLoader resourceLoaderClassLoader, String[] configLocations) {
+		DataSource extendeeDataSource, ClassLoader resourceLoaderClassLoader,
+		String[] configLocations) {
 
 		super(configLocations, false, null);
 
@@ -57,6 +57,8 @@ public class ModuleApplicationContext extends ClassPathXmlApplicationContext {
 		setClassLoader(resourceLoaderClassLoader);
 
 		super.refreshBeanFactory();
+
+		_extendeeDataSource = extendeeDataSource;
 
 		ConfigurableListableBeanFactory configurableListableBeanFactory =
 			getBeanFactory();
@@ -105,19 +107,17 @@ public class ModuleApplicationContext extends ClassPathXmlApplicationContext {
 			return;
 		}
 
-		DataSource dataSource = DataSourceUtil.getDataSource(
-			extendeeClassLoader);
-
 		configurableListableBeanFactory.registerSingleton(
-			"liferayDataSource", dataSource);
+			"liferayDataSource", _extendeeDataSource);
 
-		if (InfrastructureUtil.getDataSource() != dataSource) {
+		if (InfrastructureUtil.getDataSource() != _extendeeDataSource) {
 			DefaultSingletonBeanRegistry defaultSingletonBeanRegistry =
 				(DefaultSingletonBeanRegistry)configurableListableBeanFactory;
 
 			defaultSingletonBeanRegistry.registerDisposableBean(
 				"dataSourceDestroyer",
-				() -> DataSourceFactoryUtil.destroyDataSource(dataSource));
+				() -> DataSourceFactoryUtil.destroyDataSource(
+					_extendeeDataSource));
 		}
 	}
 
@@ -182,6 +182,7 @@ public class ModuleApplicationContext extends ClassPathXmlApplicationContext {
 	protected final Bundle bundle;
 
 	private volatile DataSource _dataSource;
+	private final DataSource _extendeeDataSource;
 	private final AtomicBoolean _freshBeanFactory = new AtomicBoolean(true);
 
 }

@@ -48,12 +48,14 @@ public class ModuleApplicationContextRegistrator {
 	public ModuleApplicationContextRegistrator(
 		ConfigurableApplicationContextConfigurator
 			configurableApplicationContextConfigurator,
-		Bundle extendeeBundle, Bundle extenderBundle) {
+		Bundle extendeeBundle, Bundle extenderBundle,
+		DataSource extendeeDataSource) {
 
 		_configurableApplicationContextConfigurator =
 			configurableApplicationContextConfigurator;
 		_extendeeBundle = extendeeBundle;
 		_extenderBundle = extenderBundle;
+		_extendeeDataSource = extendeeDataSource;
 
 		BundleWiring extendeeBundleWiring = _extendeeBundle.adapt(
 			BundleWiring.class);
@@ -67,7 +69,8 @@ public class ModuleApplicationContextRegistrator {
 			StringPool.BLANK);
 
 		_moduleApplicationContext = new ModuleApplicationContext(
-			_extendeeBundle, _extendeeClassLoader, _classLoader,
+			_extendeeBundle, _extendeeClassLoader, _extendeeDataSource,
+			_classLoader,
 			StringUtil.split(
 				headers.get("Liferay-Spring-Context"), CharPool.COMMA));
 
@@ -166,6 +169,7 @@ public class ModuleApplicationContextRegistrator {
 		_dataSourceServiceRegistration;
 	private final Bundle _extendeeBundle;
 	private final ClassLoader _extendeeClassLoader;
+	private final DataSource _extendeeDataSource;
 	private final Bundle _extenderBundle;
 	private final ModuleApplicationContext _moduleApplicationContext;
 	private List<ServiceRegistration<?>> _serviceRegistrations;

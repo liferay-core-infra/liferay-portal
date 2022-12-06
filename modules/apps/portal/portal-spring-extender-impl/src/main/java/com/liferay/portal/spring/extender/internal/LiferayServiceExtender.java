@@ -87,6 +87,7 @@ public class LiferayServiceExtender
 			_startInitialUpgradeExtension(bundle);
 			_startPortletConfigurationExtension(bundle);
 			_startServiceConfigurationExtension(bundle);
+			_registerLiferayPortalServiceExtension(bundle);
 
 			return new LiferayPortalServiceExtension() {
 			};
@@ -144,6 +145,17 @@ public class LiferayServiceExtender
 
 			if (serviceConfigurationExtension != null) {
 				serviceConfigurationExtension.destroy();
+			}
+		}
+
+		if (_liferayPortalServiceExtensionServiceRegistrations != null) {
+			ServiceRegistration<LiferayPortalServiceExtension>
+				serviceRegistration =
+					_liferayPortalServiceExtensionServiceRegistrations.remove(
+						bundleSymbolicName);
+
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
 			}
 		}
 	}
@@ -299,6 +311,25 @@ public class LiferayServiceExtender
 		_bundleTracker.close();
 	}
 
+	private void _registerLiferayPortalServiceExtension(Bundle bundle) {
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
+
+		if (headers.get("Liferay-Spring-Context") == null) {
+			return;
+		}
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		_liferayPortalServiceExtensionServiceRegistrations.put(
+			bundle.getSymbolicName(),
+			bundleContext.registerService(
+				LiferayPortalServiceExtension.class,
+				new LiferayPortalServiceExtension() {
+				},
+				null));
+	}
+
 	private void _startInitialUpgradeExtension(Bundle bundle) {
 		InitialUpgradeExtension initialUpgradeExtension =
 			new InitialUpgradeExtension(bundle);
@@ -387,6 +418,10 @@ public class LiferayServiceExtender
 	private BundleTracker<?> _bundleTracker;
 	private final Map<String, InitialUpgradeExtension>
 		_initialUpgradeExtensions = new HashMap<>();
+	private final Map
+		<String, ServiceRegistration<LiferayPortalServiceExtension>>
+			_liferayPortalServiceExtensionServiceRegistrations =
+				new HashMap<>();
 	private final Map<String, LiferayServiceExtension>
 		_liferayServiceExtensions = new HashMap<>();
 	private final Map<String, PortletConfigurationExtension>

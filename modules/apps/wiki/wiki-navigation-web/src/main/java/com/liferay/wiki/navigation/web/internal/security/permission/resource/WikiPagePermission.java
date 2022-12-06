@@ -40,7 +40,7 @@ public class WikiPagePermission {
 		target = "(model.class.name=com.liferay.wiki.model.WikiPage)",
 		unbind = "-"
 	)
-	protected void setModelResourcePermission(
+	protected static void setModelResourcePermission(
 		ModelResourcePermission<WikiPage> modelResourcePermission) {
 
 		_wikiPageModelResourcePermission = modelResourcePermission;

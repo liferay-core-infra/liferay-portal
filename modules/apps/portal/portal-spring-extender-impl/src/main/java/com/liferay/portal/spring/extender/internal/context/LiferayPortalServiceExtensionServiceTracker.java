@@ -48,7 +48,10 @@ public class LiferayPortalServiceExtensionServiceTracker
 			ModuleApplicationContextExtension
 				moduleApplicationContextExtension =
 					new ModuleApplicationContextExtension(
-						serviceReference.getBundle(), _bundleContext,
+						serviceReference.getBundle(),
+						liferayPortalServiceExtension.
+							getModuleAggregareClassLoader(),
+						_bundleContext,
 						liferayPortalServiceExtension.getDataSource(),
 						_configurableApplicationContextConfigurator);
 

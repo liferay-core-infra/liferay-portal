@@ -28,6 +28,10 @@ public interface LiferayPortalServiceExtension {
 		return null;
 	}
 
+	public default ClassLoader getModuleAggregareClassLoader() {
+		return null;
+	}
+
 	public default void start() throws Exception {
 	}
 

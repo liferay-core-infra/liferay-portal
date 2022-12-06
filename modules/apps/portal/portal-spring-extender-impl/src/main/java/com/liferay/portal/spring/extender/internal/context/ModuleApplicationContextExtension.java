@@ -50,12 +50,13 @@ public class ModuleApplicationContextExtension
 	implements LiferayPortalServiceExtension {
 
 	public ModuleApplicationContextExtension(
-		Bundle bundle, BundleContext extenderBundleContext,
-		DataSource extendeeDataSource,
+		Bundle bundle, ClassLoader moduleAggregareClassLoader,
+		BundleContext extenderBundleContext, DataSource extendeeDataSource,
 		ConfigurableApplicationContextConfigurator
 			configurableApplicationContextConfigurator) {
 
 		_bundle = bundle;
+		_moduleAggregareClassLoader = moduleAggregareClassLoader;
 		_extendeeDataSource = extendeeDataSource;
 		_configurableApplicationContextConfigurator =
 			configurableApplicationContextConfigurator;
@@ -81,7 +82,8 @@ public class ModuleApplicationContextExtension
 		_component.setImplementation(
 			new ModuleApplicationContextRegistrator(
 				_configurableApplicationContextConfigurator, _bundle,
-				bundleContext.getBundle(), _extendeeDataSource));
+				bundleContext.getBundle(), _moduleAggregareClassLoader,
+				_extendeeDataSource));
 
 		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
@@ -197,5 +199,6 @@ public class ModuleApplicationContextExtension
 		_configurableApplicationContextConfigurator;
 	private final DependencyManager _dependencyManager;
 	private final DataSource _extendeeDataSource;
+	private final ClassLoader _moduleAggregareClassLoader;
 
 }

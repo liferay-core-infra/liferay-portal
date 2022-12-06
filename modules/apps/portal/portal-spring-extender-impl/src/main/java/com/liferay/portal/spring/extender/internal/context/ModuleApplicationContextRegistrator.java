@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
 import com.liferay.portal.spring.extender.internal.bean.ApplicationContextServicePublisherUtil;
-import com.liferay.portal.spring.extender.internal.loader.ModuleAggregareClassLoader;
 
 import java.beans.Introspector;
 
@@ -49,7 +48,7 @@ public class ModuleApplicationContextRegistrator {
 		ConfigurableApplicationContextConfigurator
 			configurableApplicationContextConfigurator,
 		Bundle extendeeBundle, Bundle extenderBundle,
-		DataSource extendeeDataSource) {
+		ClassLoader moduleAggregareClassLoader, DataSource extendeeDataSource) {
 
 		_configurableApplicationContextConfigurator =
 			configurableApplicationContextConfigurator;
@@ -62,8 +61,7 @@ public class ModuleApplicationContextRegistrator {
 
 		_extendeeClassLoader = extendeeBundleWiring.getClassLoader();
 
-		_classLoader = new ModuleAggregareClassLoader(
-			_extendeeClassLoader, _extendeeBundle.getSymbolicName());
+		_classLoader = moduleAggregareClassLoader;
 
 		Dictionary<String, String> headers = _extendeeBundle.getHeaders(
 			StringPool.BLANK);

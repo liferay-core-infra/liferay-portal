@@ -331,6 +331,16 @@ public class LiferayServiceExtender
 		return InfrastructureUtil.getDataSource();
 	}
 
+	private ClassLoader _getModuleAggregareClassLoader(Bundle extendeeBundle) {
+		BundleWiring extendeeBundleWiring = extendeeBundle.adapt(
+			BundleWiring.class);
+
+		ClassLoader extendeeClassLoader = extendeeBundleWiring.getClassLoader();
+
+		return new ModuleAggregareClassLoader(
+			extendeeClassLoader, extendeeBundle.getSymbolicName());
+	}
+
 	private void _registerLiferayPortalServiceExtension(Bundle bundle) {
 		Dictionary<String, String> headers = bundle.getHeaders(
 			StringPool.BLANK);
@@ -346,6 +356,10 @@ public class LiferayServiceExtender
 
 				public DataSource getDataSource() {
 					return _getDataSource(bundle);
+				}
+
+				public ClassLoader getModuleAggregareClassLoader() {
+					return _getModuleAggregareClassLoader(bundle);
 				}
 
 			};

@@ -201,14 +201,8 @@ public class LiferayServiceExtender
 						"origin.bundle.symbolic.name",
 						_extendeeBundle.getSymbolicName())));
 
-			BundleWiring extendeeBundleWiring = _extendeeBundle.adapt(
-				BundleWiring.class);
-
-			ClassLoader extendeeClassLoader =
-				extendeeBundleWiring.getClassLoader();
-
-			ClassLoader classLoader = new ModuleAggregareClassLoader(
-				extendeeClassLoader, _extendeeBundle.getSymbolicName());
+			ClassLoader classLoader = _getModuleAggregareClassLoader(
+				_extendeeBundle);
 
 			PortletHibernateConfiguration portletHibernateConfiguration =
 				new PortletHibernateConfiguration(classLoader, _dataSource);

@@ -49,7 +49,7 @@ public class ServletContextUtil {
 	}
 
 	@Reference(unbind = "-")
-	protected void setInfoItemServiceRegistry(
+	protected static void setInfoItemServiceRegistry(
 		InfoItemServiceRegistry infoItemServiceRegistry) {
 
 		_infoItemServiceRegistry = infoItemServiceRegistry;
@@ -59,12 +59,12 @@ public class ServletContextUtil {
 		target = "(osgi.web.symbolicname=com.liferay.site.navigation.taglib)",
 		unbind = "-"
 	)
-	protected void setServletContext(ServletContext servletContext) {
+	protected static void setServletContext(ServletContext servletContext) {
 		_servletContext = servletContext;
 	}
 
 	@Reference(unbind = "-")
-	protected void setSiteNavigationMenuItemTypeRegistry(
+	protected static void setSiteNavigationMenuItemTypeRegistry(
 		SiteNavigationMenuItemTypeRegistry siteNavigationMenuItemTypeRegistry) {
 
 		_siteNavigationMenuItemTypeRegistry =

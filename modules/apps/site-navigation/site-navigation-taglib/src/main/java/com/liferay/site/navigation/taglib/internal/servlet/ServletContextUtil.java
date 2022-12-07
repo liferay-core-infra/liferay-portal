@@ -25,10 +25,6 @@ import javax.servlet.ServletContext;
  */
 public class ServletContextUtil {
 
-	public static String getContextPath() {
-		return _servletContext.getContextPath();
-	}
-
 	public static InfoItemServiceRegistry getInfoItemServiceRegistry() {
 		return _infoItemServiceRegistry;
 	}

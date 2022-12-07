@@ -42,9 +42,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.cm.Configuration;
-import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -401,7 +399,7 @@ public class LDAPServerConfigurationProviderImpl
 			Configuration configuration = null;
 
 			if (objectValuePair == null) {
-				configuration = _configurationAdmin.createFactoryConfiguration(
+				configuration = configurationAdmin.createFactoryConfiguration(
 					getMetatypeId(), StringPool.QUESTION);
 			}
 			else {
@@ -418,9 +416,6 @@ public class LDAPServerConfigurationProviderImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LDAPServerConfigurationProviderImpl.class);
-
-	@Reference
-	private ConfigurationAdmin _configurationAdmin;
 
 	private final Map
 		<Long,

@@ -19,13 +19,9 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Preston Crary
  */
-@Component(service = {})
 public class SiteNavigationMenuPermission {
 
 	public static boolean contains(
@@ -46,10 +42,6 @@ public class SiteNavigationMenuPermission {
 			permissionChecker, siteNavigationMenu, actionId);
 	}
 
-	@Reference(
-		target = "(model.class.name=com.liferay.site.navigation.model.SiteNavigationMenu)",
-		unbind = "-"
-	)
 	protected static void setModelResourcePermission(
 		ModelResourcePermission<SiteNavigationMenu> modelResourcePermission) {
 

@@ -19,13 +19,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Eudaldo Alonso
  */
-@Component(service = {})
 public class DDMTemplatePermission {
 
 	public static boolean contains(
@@ -46,10 +42,6 @@ public class DDMTemplatePermission {
 			permissionChecker, templateId, actionId);
 	}
 
-	@Reference(
-		target = "(model.class.name=com.liferay.dynamic.data.mapping.model.DDMTemplate)",
-		unbind = "-"
-	)
 	protected static void setModelResourcePermission(
 		ModelResourcePermission<DDMTemplate> modelResourcePermission) {
 

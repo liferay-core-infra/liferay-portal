@@ -16,15 +16,10 @@ package com.liferay.site.navigation.admin.web.internal.security.permission.resou
 
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.site.navigation.constants.SiteNavigationConstants;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Preston Crary
  */
-@Component(service = {})
 public class SiteNavigationPermission {
 
 	public static boolean contains(
@@ -34,10 +29,6 @@ public class SiteNavigationPermission {
 			permissionChecker, groupId, actionId);
 	}
 
-	@Reference(
-		target = "(resource.name=" + SiteNavigationConstants.RESOURCE_NAME + ")",
-		unbind = "-"
-	)
 	protected static void setPortletResourcePermission(
 		PortletResourcePermission portletResourcePermission) {
 

@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.theme.NavItem;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -51,7 +52,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.display.template.PortletDisplayTemplate;
 import com.liferay.site.navigation.admin.constants.SiteNavigationAdminPortletKeys;
-import com.liferay.site.navigation.admin.web.internal.security.permission.resource.DDMTemplatePermission;
 import com.liferay.site.navigation.admin.web.internal.security.permission.resource.SiteNavigationMenuPermission;
 import com.liferay.site.navigation.admin.web.internal.util.SiteNavigationMenuPortletUtil;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
@@ -83,6 +83,12 @@ import javax.servlet.http.HttpServletRequest;
  * @author Pavel Savinov
  */
 public class SiteNavigationAdminDisplayContext {
+
+	public static void setModelResourcePermission(
+		ModelResourcePermission<DDMTemplate> modelResourcePermission) {
+
+		_ddmTemplateModelResourcePermission = modelResourcePermission;
+	}
 
 	public SiteNavigationAdminDisplayContext(
 		HttpServletRequest httpServletRequest,
@@ -444,7 +450,7 @@ public class SiteNavigationAdminDisplayContext {
 
 		for (DDMTemplate ddmTemplate : ddmTemplates) {
 			try {
-				if (!DDMTemplatePermission.contains(
+				if (!_ddmTemplateModelResourcePermission.contains(
 						_themeDisplay.getPermissionChecker(),
 						ddmTemplate.getTemplateId(), ActionKeys.VIEW) ||
 					!DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY.equals(
@@ -586,6 +592,9 @@ public class SiteNavigationAdminDisplayContext {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SiteNavigationAdminDisplayContext.class);
+
+	private static ModelResourcePermission<DDMTemplate>
+		_ddmTemplateModelResourcePermission;
 
 	private String _ddmTemplateKey;
 	private String _displayStyle;

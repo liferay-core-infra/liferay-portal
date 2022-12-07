@@ -17,6 +17,7 @@ package com.liferay.site.navigation.admin.web.internal.security.permission.resou
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.site.navigation.admin.web.internal.display.context.SiteNavigationAdminDisplayContext;
 import com.liferay.site.navigation.constants.SiteNavigationConstants;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 
@@ -32,7 +33,7 @@ public class PermissionHelper {
 
 	@Activate
 	protected void activate() {
-		DDMTemplatePermission.setModelResourcePermission(
+		SiteNavigationAdminDisplayContext.setModelResourcePermission(
 			_ddmTemplateModelResourcePermission);
 
 		SiteNavigationMenuPermission.setModelResourcePermission(

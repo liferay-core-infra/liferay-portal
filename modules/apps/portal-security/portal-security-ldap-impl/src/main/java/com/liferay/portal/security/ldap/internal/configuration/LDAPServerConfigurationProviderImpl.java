@@ -42,15 +42,10 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.cm.Configuration;
-import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Michael C. Han
  */
-@Component(
-	property = "factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration",
-	service = ConfigurationProvider.class
-)
 public class LDAPServerConfigurationProviderImpl
 	extends BaseConfigurationProvider<LDAPServerConfiguration>
 	implements ConfigurationProvider<LDAPServerConfiguration> {

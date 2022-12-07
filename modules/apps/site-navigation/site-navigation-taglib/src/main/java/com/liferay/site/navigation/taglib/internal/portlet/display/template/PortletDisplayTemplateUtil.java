@@ -30,16 +30,16 @@ public class PortletDisplayTemplateUtil {
 		return _portletDisplayTemplate;
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_portletDisplayTemplate = null;
-	}
-
 	@Reference(unbind = "-")
-	protected void setPortletDisplayTemplate(
+	protected static void setPortletDisplayTemplate(
 		PortletDisplayTemplate portletDisplayTemplate) {
 
 		_portletDisplayTemplate = portletDisplayTemplate;
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_portletDisplayTemplate = null;
 	}
 
 	private static PortletDisplayTemplate _portletDisplayTemplate;

@@ -86,6 +86,15 @@ public class LiferayServiceExtender
 			_registerLiferayPortalServiceExtension(bundle);
 
 			return new LiferayPortalServiceExtension() {
+
+				@Override
+				public void destroy() {
+				}
+
+				@Override
+				public void start() {
+				}
+
 			};
 		}
 		catch (Exception exception) {
@@ -355,12 +364,20 @@ public class LiferayServiceExtender
 		LiferayPortalServiceExtension liferayPortalServiceExtension =
 			new LiferayPortalServiceExtension() {
 
+				@Override
+				public void destroy() {
+				}
+
 				public DataSource getDataSource() {
 					return _getDataSource(bundle);
 				}
 
 				public ClassLoader getModuleAggregareClassLoader() {
 					return _getModuleAggregareClassLoader(bundle);
+				}
+
+				@Override
+				public void start() {
 				}
 
 			};

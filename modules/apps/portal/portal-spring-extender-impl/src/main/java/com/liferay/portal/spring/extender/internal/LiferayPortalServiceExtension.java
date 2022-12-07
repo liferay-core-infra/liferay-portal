@@ -21,8 +21,7 @@ import javax.sql.DataSource;
  */
 public interface LiferayPortalServiceExtension {
 
-	public default void destroy() {
-	}
+	public void destroy();
 
 	public default DataSource getDataSource() {
 		return null;
@@ -32,7 +31,6 @@ public interface LiferayPortalServiceExtension {
 		return null;
 	}
 
-	public default void start() throws Exception {
-	}
+	public void start() throws Exception;
 
 }

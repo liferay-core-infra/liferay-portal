@@ -16,17 +16,10 @@ package com.liferay.portal.security.ldap.internal.authenticator.configuration;
 
 import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration;
 import com.liferay.portal.security.ldap.configuration.CompanyScopedConfigurationProvider;
-import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
-
-import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Michael C. Han
  */
-@Component(
-	property = "factoryPid=com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration",
-	service = ConfigurationProvider.class
-)
 public class LDAPAuthConfigurationProviderImpl
 	extends CompanyScopedConfigurationProvider<LDAPAuthConfiguration> {
 

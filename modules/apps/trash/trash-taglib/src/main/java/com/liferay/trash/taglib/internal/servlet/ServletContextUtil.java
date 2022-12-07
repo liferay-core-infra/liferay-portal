@@ -18,13 +18,9 @@ import com.liferay.trash.TrashHelper;
 
 import javax.servlet.ServletContext;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Michael Bradford
  */
-@Component(service = {})
 public class ServletContextUtil {
 
 	public static String getContextPath() {
@@ -39,15 +35,10 @@ public class ServletContextUtil {
 		return _trashHelper;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.trash.taglib)",
-		unbind = "-"
-	)
 	protected static void setServletContext(ServletContext servletContext) {
 		_servletContext = servletContext;
 	}
 
-	@Reference(unbind = "-")
 	protected static void setTrashHelper(TrashHelper trashHelper) {
 		_trashHelper = trashHelper;
 	}

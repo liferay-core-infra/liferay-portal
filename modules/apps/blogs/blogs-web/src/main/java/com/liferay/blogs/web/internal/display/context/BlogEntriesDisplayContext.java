@@ -63,7 +63,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -335,11 +334,7 @@ public class BlogEntriesDisplayContext {
 					Stream<SearchResult> stream = searchResults.stream();
 
 					return stream.map(
-						this::_toBlogsEntryOptional
-					).filter(
-						Optional::isPresent
-					).map(
-						Optional::get
+						this::_toBlogsEntry
 					).collect(
 						Collectors.toList()
 					);
@@ -348,12 +343,9 @@ public class BlogEntriesDisplayContext {
 		}
 	}
 
-	private Optional<BlogsEntry> _toBlogsEntryOptional(
-		SearchResult searchResult) {
-
+	private BlogsEntry _toBlogsEntry(SearchResult searchResult) {
 		try {
-			return Optional.of(
-				BlogsEntryServiceUtil.getEntry(searchResult.getClassPK()));
+			return BlogsEntryServiceUtil.getEntry(searchResult.getClassPK());
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
@@ -363,7 +355,7 @@ public class BlogEntriesDisplayContext {
 					exception);
 			}
 
-			return Optional.empty();
+			return null;
 		}
 	}
 

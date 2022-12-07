@@ -15,18 +15,11 @@
 package com.liferay.portal.security.ldap.internal.exportimport.configuration;
 
 import com.liferay.portal.security.ldap.configuration.CompanyScopedConfigurationProvider;
-import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration;
-
-import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Michael C. Han
  */
-@Component(
-	property = "factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration",
-	service = ConfigurationProvider.class
-)
 public class LDAPImportConfigurationProviderImpl
 	extends CompanyScopedConfigurationProvider<LDAPImportConfiguration> {
 

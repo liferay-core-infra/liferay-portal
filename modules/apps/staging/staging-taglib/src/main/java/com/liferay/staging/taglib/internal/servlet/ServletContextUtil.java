@@ -16,13 +16,9 @@ package com.liferay.staging.taglib.internal.servlet;
 
 import javax.servlet.ServletContext;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Daniel Kocsis
  */
-@Component(service = {})
 public class ServletContextUtil {
 
 	public static String getContextPath() {
@@ -33,10 +29,6 @@ public class ServletContextUtil {
 		return _servletContext;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.staging.taglib)",
-		unbind = "-"
-	)
 	protected static void setServletContext(ServletContext servletContext) {
 		_servletContext = servletContext;
 	}

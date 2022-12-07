@@ -167,10 +167,12 @@ public class PreFilterContributorHelperImpl
 			return;
 		}
 
-		Optional<String> optional = _getParentEntryClassNameOptional(
+		String permissionedEntryClassName = _getParentEntryClassName(
 			entryClassName);
 
-		String permissionedEntryClassName = optional.orElse(entryClassName);
+		if (permissionedEntryClassName == null) {
+			permissionedEntryClassName = entryClassName;
+		}
 
 		searchPermissionChecker.getPermissionBooleanFilter(
 			searchContext.getCompanyId(), searchContext.getGroupIds(),
@@ -223,9 +225,7 @@ public class PreFilterContributorHelperImpl
 		return modelSearchSettingsImpl;
 	}
 
-	private Optional<String> _getParentEntryClassNameOptional(
-		String entryClassName) {
-
+	private String _getParentEntryClassName(String entryClassName) {
 		Stream<SearchPermissionFilterContributor> stream =
 			searchPermissionFilterContributorsRegistry.getAll();
 
@@ -235,18 +235,16 @@ public class PreFilterContributorHelperImpl
 		for (SearchPermissionFilterContributor
 				searchPermissionFilterContributor : list) {
 
-			Optional<String> parentEntryClassNameOptional =
-				searchPermissionFilterContributor.
-					getParentEntryClassNameOptional(entryClassName);
+			String parentEntryClassName =
+				searchPermissionFilterContributor.getParentEntryClassName(
+					entryClassName);
 
-			if ((parentEntryClassNameOptional != null) &&
-				parentEntryClassNameOptional.isPresent()) {
-
-				return parentEntryClassNameOptional;
+			if (parentEntryClassName != null) {
+				return parentEntryClassName;
 			}
 		}
 
-		return Optional.empty();
+		return null;
 	}
 
 }

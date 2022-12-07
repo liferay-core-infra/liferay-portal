@@ -61,20 +61,6 @@
 				<latest-version-publish-date>2022-10-02 07:17:11</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.batch.engine.service.jar!commons-collections4.jar</file-name>
-				<version>4.3</version>
-				<project-name>Apache Commons Collections</project-name>
-				<project-url>http://commons.apache.org/proper/commons-collections/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2018-12-26 13:12:49</current-version-publish-date>
-				<latest-version-publish-date>2019-07-05 18:10:18</latest-version-publish-date>
-			</library>
-			<library>
 				<file-name>com.liferay.batch.engine.service.jar!commons-io.jar</file-name>
 				<version>2.11.0</version>
 				<project-name>Apache Commons IO</project-name>
@@ -543,20 +529,6 @@
 				<latest-version-publish-date>2020-08-28 12:02:55</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.commerce.report.impl.jar!commons-collections4.jar</file-name>
-				<version>4.3</version>
-				<project-name>Apache Commons Collections</project-name>
-				<project-url>http://commons.apache.org/proper/commons-collections/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2018-12-26 13:12:49</current-version-publish-date>
-				<latest-version-publish-date>2019-07-05 18:10:18</latest-version-publish-date>
-			</library>
-			<library>
 				<file-name>com.liferay.commerce.report.impl.jar!commons-dbcp2.jar</file-name>
 				<version>2.0</version>
 				<project-name>Apache Commons DBCP</project-name>
@@ -911,20 +883,6 @@
 				</licenses>
 				<current-version-publish-date>2020-01-06 21:55:57</current-version-publish-date>
 				<latest-version-publish-date>2020-01-06 21:55:57</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.content.dashboard.web.jar!commons-collections4.jar</file-name>
-				<version>4.3</version>
-				<project-name>Apache Commons Collections</project-name>
-				<project-url>http://commons.apache.org/proper/commons-collections/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2018-12-26 13:12:49</current-version-publish-date>
-				<latest-version-publish-date>2019-07-05 18:10:18</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.content.dashboard.web.jar!commons-lang3.jar</file-name>
@@ -1606,20 +1564,6 @@
 				<latest-version-publish-date>2022-11-22 07:41:18</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.dynamic.data.lists.service.jar!commons-collections4.jar</file-name>
-				<version>4.3</version>
-				<project-name>Apache Commons Collections</project-name>
-				<project-url>http://commons.apache.org/proper/commons-collections/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2018-12-26 13:12:49</current-version-publish-date>
-				<latest-version-publish-date>2019-07-05 18:10:18</latest-version-publish-date>
-			</library>
-			<library>
 				<file-name>com.liferay.dynamic.data.lists.service.jar!xmlbeans.jar</file-name>
 				<version>3.1.0</version>
 				<project-name>XmlBeans</project-name>
@@ -1839,20 +1783,6 @@
 				</licenses>
 				<current-version-publish-date>2021-04-04 16:18:50</current-version-publish-date>
 				<latest-version-publish-date>2022-02-13 07:37:17</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.dynamic.data.mapping.service.jar!commons-collections4.jar</file-name>
-				<version>4.3</version>
-				<project-name>Apache Commons Collections</project-name>
-				<project-url>http://commons.apache.org/proper/commons-collections/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2018-12-26 13:12:49</current-version-publish-date>
-				<latest-version-publish-date>2019-07-05 18:10:18</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.dynamic.data.mapping.service.jar!json-path.jar</file-name>
@@ -2546,7 +2476,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2020-05-31 11:45:35</current-version-publish-date>
-				<latest-version-publish-date>2022-12-06 09:58:57</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 12:27:40</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.oauth2.provider.rest.jar!javax.annotation-api.jar</file-name>
@@ -3511,7 +3441,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-09-22 16:39:02</current-version-publish-date>
-				<latest-version-publish-date>2022-11-17 15:46:46</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 23:21:15</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.scheduler.quartz.jar!org.quartz.jar</file-name>
@@ -4417,7 +4347,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2020-05-31 11:45:35</current-version-publish-date>
-				<latest-version-publish-date>2022-12-06 09:58:57</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 12:27:40</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.openid.connect.persistence.service.jar!accessors-smart.jar</file-name>
@@ -4515,7 +4445,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2020-05-31 11:45:35</current-version-publish-date>
-				<latest-version-publish-date>2022-12-06 09:58:57</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 12:27:40</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.gcs.jar!api-common.jar</file-name>
@@ -4529,7 +4459,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2020-10-16 20:08:49</current-version-publish-date>
-				<latest-version-publish-date>2022-10-27 20:08:58</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 18:20:56</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.gcs.jar!auto-value-annotations.jar</file-name>
@@ -4998,7 +4928,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 20:54:32</current-version-publish-date>
-				<latest-version-publish-date>2022-12-05 21:36:30</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 21:38:55</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-kms.jar</file-name>
@@ -5012,7 +4942,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 20:54:29</current-version-publish-date>
-				<latest-version-publish-date>2022-12-05 21:37:25</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 21:38:17</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-s3.jar</file-name>
@@ -5026,7 +4956,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 20:53:45</current-version-publish-date>
-				<latest-version-publish-date>2022-12-05 21:37:04</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 21:38:54</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!commons-codec.jar</file-name>
@@ -5248,20 +5178,6 @@
 				</licenses>
 				<current-version-publish-date>2019-03-14 04:47:21</current-version-publish-date>
 				<latest-version-publish-date>2022-10-28 02:18:07</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.tika.jar!commons-collections4.jar</file-name>
-				<version>4.2</version>
-				<project-name>Apache Commons Collections</project-name>
-				<project-url>http://commons.apache.org/proper/commons-collections/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2018-07-08 13:28:14</current-version-publish-date>
-				<latest-version-publish-date>2019-07-05 18:10:18</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.tika.jar!commons-exec.jar</file-name>
@@ -5718,7 +5634,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-26 23:55:52</current-version-publish-date>
-				<latest-version-publish-date>2022-12-06 04:35:20</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 23:50:45</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.vulcan.impl.jar!guava.jar</file-name>
@@ -6258,6 +6174,20 @@
 				<latest-version-publish-date>2020-08-28 12:02:55</latest-version-publish-date>
 			</library>
 			<library>
+				<file-name>com.liferay.shared.dependencies.apache.commons.jar!commons-collections4.jar</file-name>
+				<version>4.4</version>
+				<project-name>Apache Commons Collections</project-name>
+				<project-url>https://commons.apache.org/proper/commons-collections/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+				<current-version-publish-date>2019-07-05 18:10:18</current-version-publish-date>
+				<latest-version-publish-date>2019-07-05 18:10:18</latest-version-publish-date>
+			</library>
+			<library>
 				<file-name>com.liferay.shared.dependencies.apache.commons.jar!commons-compress.jar</file-name>
 				<version>1.21</version>
 				<project-name>Apache Commons Compress</project-name>
@@ -6745,20 +6675,6 @@
 				<latest-version-publish-date>2022-09-26 15:17:51</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.shared.dependencies.poi.jar!commons-collections4.jar</file-name>
-				<version>4.4</version>
-				<project-name>Apache Commons Collections</project-name>
-				<project-url>https://commons.apache.org/proper/commons-collections/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2019-07-05 18:10:18</current-version-publish-date>
-				<latest-version-publish-date>2019-07-05 18:10:18</latest-version-publish-date>
-			</library>
-			<library>
 				<file-name>com.liferay.shared.dependencies.poi.jar!poi-ooxml-lite.jar</file-name>
 				<version>5.2.2</version>
 				<project-name>Apache POI</project-name>
@@ -6922,7 +6838,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2020-10-16 20:08:49</current-version-publish-date>
-				<latest-version-publish-date>2022-10-27 20:08:58</latest-version-publish-date>
+				<latest-version-publish-date>2022-12-06 18:20:56</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.site.initializer.testray.dispatch.task.executor.jar!auto-value-annotations.jar</file-name>

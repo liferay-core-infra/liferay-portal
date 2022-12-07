@@ -16,11 +16,17 @@ package com.liferay.portal.security.ldap.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
+import org.osgi.service.cm.ConfigurationAdmin;
+
 /**
  * @author Michael C. Han
  */
 public abstract class BaseConfigurationProvider<T>
 	implements ConfigurationProvider<T> {
+
+	public void setConfigurationAdmin(ConfigurationAdmin configurationAdmin) {
+		this.configurationAdmin = configurationAdmin;
+	}
 
 	protected String getMetatypeId() {
 		if (_factoryPid != null) {
@@ -43,6 +49,8 @@ public abstract class BaseConfigurationProvider<T>
 
 		return _factoryPid;
 	}
+
+	protected ConfigurationAdmin configurationAdmin;
 
 	private String _factoryPid;
 

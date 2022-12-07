@@ -26,10 +26,10 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.navigation.admin.web.internal.security.permission.resource.SiteNavigationMenuPermission;
-import com.liferay.site.navigation.admin.web.internal.security.permission.resource.SiteNavigationPermission;
 import com.liferay.site.navigation.constants.SiteNavigationActionKeys;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 
@@ -42,6 +42,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class SiteNavigationAdminManagementToolbarDisplayContext
 	extends SearchContainerManagementToolbarDisplayContext {
+
+	public static void setPortletResourcePermission(
+		PortletResourcePermission portletResourcePermission) {
+
+		_portletResourcePermission = portletResourcePermission;
+	}
 
 	public SiteNavigationAdminManagementToolbarDisplayContext(
 		HttpServletRequest httpServletRequest,
@@ -137,7 +143,7 @@ public class SiteNavigationAdminManagementToolbarDisplayContext
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		if (SiteNavigationPermission.contains(
+		if (_portletResourcePermission.contains(
 				themeDisplay.getPermissionChecker(),
 				themeDisplay.getSiteGroupId(),
 				SiteNavigationActionKeys.ADD_SITE_NAVIGATION_MENU)) {
@@ -167,6 +173,8 @@ public class SiteNavigationAdminManagementToolbarDisplayContext
 	protected String[] getOrderByKeys() {
 		return new String[] {"create-date", "name"};
 	}
+
+	private static PortletResourcePermission _portletResourcePermission;
 
 	private final SiteNavigationAdminDisplayContext
 		_siteNavigationAdminDisplayContext;

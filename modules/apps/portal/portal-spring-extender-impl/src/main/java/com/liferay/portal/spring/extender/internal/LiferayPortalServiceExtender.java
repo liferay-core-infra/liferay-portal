@@ -67,7 +67,7 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
  * @author Preston Crary
  */
 @Component(immediate = true, service = {})
-public class LiferayServiceExtender
+public class LiferayPortalServiceExtender
 	implements BundleTrackerCustomizer<LiferayPortalServiceExtension> {
 
 	@Override
@@ -278,7 +278,7 @@ public class LiferayServiceExtender
 		private static final Method _FIND_CLASS_METHOD;
 
 		private static final ClassLoader _extenderClassLoader =
-			LiferayServiceExtender.class.getClassLoader();
+			LiferayPortalServiceExtender.class.getClassLoader();
 
 		static {
 			try {
@@ -309,7 +309,8 @@ public class LiferayServiceExtender
 
 		Thread bundleTrackerOpenerThread = new Thread(
 			futureTask,
-			LiferayServiceExtender.class.getName() + "-BundleTrackerOpener");
+			LiferayPortalServiceExtender.class.getName() +
+				"-BundleTrackerOpener");
 
 		bundleTrackerOpenerThread.setDaemon(true);
 
@@ -474,7 +475,7 @@ public class LiferayServiceExtender
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LiferayServiceExtender.class);
+		LiferayPortalServiceExtender.class);
 
 	private BundleTracker<?> _bundleTracker;
 	private final Map<String, InitialUpgradeExtension>

@@ -15,44 +15,84 @@
 package com.liferay.portal.kernel.util;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Marcellus Tavares
  */
-@ProviderType
-public interface CalendarFactory {
+public class CalendarFactory {
 
-	public Calendar getCalendar();
+	public static Calendar getCalendar() {
+		return new GregorianCalendar();
+	}
 
-	public Calendar getCalendar(int year, int month, int date);
+	public static Calendar getCalendar(int year, int month, int date) {
+		return new GregorianCalendar(year, month, date);
+	}
 
-	public Calendar getCalendar(
-		int year, int month, int date, int hour, int minute);
+	public static Calendar getCalendar(
+		int year, int month, int date, int hour, int minute) {
 
-	public Calendar getCalendar(
-		int year, int month, int date, int hour, int minute, int second);
+		return new GregorianCalendar(year, month, date, hour, minute);
+	}
 
-	public Calendar getCalendar(
+	public static Calendar getCalendar(
+		int year, int month, int date, int hour, int minute, int second) {
+
+		return new GregorianCalendar(year, month, date, hour, minute, second);
+	}
+
+	public static Calendar getCalendar(
 		int year, int month, int date, int hour, int minute, int second,
-		int millisecond);
+		int millisecond) {
 
-	public Calendar getCalendar(
+		return getCalendar(
+			year, month, date, hour, minute, second, millisecond,
+			TimeZoneUtil.getDefault());
+	}
+
+	public static Calendar getCalendar(
 		int year, int month, int date, int hour, int minute, int second,
-		int millisecond, TimeZone timeZone);
+		int millisecond, TimeZone timeZone) {
 
-	public Calendar getCalendar(Locale locale);
+		Calendar calendar = new GregorianCalendar(timeZone);
 
-	public Calendar getCalendar(long time);
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DATE, date);
+		calendar.set(Calendar.HOUR_OF_DAY, hour);
+		calendar.set(Calendar.MINUTE, minute);
+		calendar.set(Calendar.SECOND, second);
+		calendar.set(Calendar.MILLISECOND, millisecond);
 
-	public Calendar getCalendar(long time, TimeZone timeZone);
+		return calendar;
+	}
 
-	public Calendar getCalendar(TimeZone timeZone);
+	public static Calendar getCalendar(Locale locale) {
+		return new GregorianCalendar(locale);
+	}
 
-	public Calendar getCalendar(TimeZone timeZone, Locale locale);
+	public static Calendar getCalendar(long time) {
+		return getCalendar(time, TimeZoneUtil.getDefault());
+	}
+
+	public static Calendar getCalendar(long time, TimeZone timeZone) {
+		Calendar calendar = new GregorianCalendar(timeZone);
+
+		calendar.setTimeInMillis(time);
+
+		return calendar;
+	}
+
+	public static Calendar getCalendar(TimeZone timeZone) {
+		return new GregorianCalendar(timeZone);
+	}
+
+	public static Calendar getCalendar(TimeZone timeZone, Locale locale) {
+		return new GregorianCalendar(timeZone, locale);
+	}
 
 }

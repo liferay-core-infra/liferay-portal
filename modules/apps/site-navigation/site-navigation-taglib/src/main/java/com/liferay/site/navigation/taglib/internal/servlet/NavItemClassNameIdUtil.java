@@ -32,6 +32,10 @@ public class NavItemClassNameIdUtil {
 		return _navItemClassNameId;
 	}
 
+	protected static void setNavItemClassNameId(long navItemClassNameId) {
+		_navItemClassNameId = navItemClassNameId;
+	}
+
 	@Activate
 	protected void activate() {
 		_navItemClassNameId = _portal.getClassNameId(NavItem.class);

@@ -42,13 +42,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Pavel Savinov
  */
-@Component(service = {})
 public class NavItemUtil {
 
 	public static List<NavItem> getBranchNavItems(
@@ -222,19 +218,16 @@ public class NavItemUtil {
 		return rootNavItem.getChildren();
 	}
 
-	@Reference(unbind = "-")
 	protected static void setLayoutLocalService(
 		LayoutLocalService layoutLocalService) {
 
 		_layoutLocalService = layoutLocalService;
 	}
 
-	@Reference(unbind = "-")
 	protected static void setPortal(Portal portal) {
 		_portal = portal;
 	}
 
-	@Reference(unbind = "-")
 	protected static void setSiteNavigationMenuItemLocalService(
 		SiteNavigationMenuItemLocalService siteNavigationMenuItemLocalService) {
 
@@ -242,14 +235,12 @@ public class NavItemUtil {
 			siteNavigationMenuItemLocalService;
 	}
 
-	@Reference(unbind = "-")
 	protected static void setSiteNavigationMenuItemService(
 		SiteNavigationMenuItemService siteNavigationMenuItemService) {
 
 		_siteNavigationMenuItemService = siteNavigationMenuItemService;
 	}
 
-	@Reference(unbind = "-")
 	protected static void setSiteNavigationMenuItemTypeRegistry(
 		SiteNavigationMenuItemTypeRegistry siteNavigationMenuItemTypeRegistry) {
 

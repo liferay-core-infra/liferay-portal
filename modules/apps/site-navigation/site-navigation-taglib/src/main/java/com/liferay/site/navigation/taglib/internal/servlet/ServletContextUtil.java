@@ -20,13 +20,9 @@ import com.liferay.site.navigation.type.SiteNavigationMenuItemTypeRegistry;
 
 import javax.servlet.ServletContext;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Michael Bradford
  */
-@Component(service = {})
 public class ServletContextUtil {
 
 	public static String getContextPath() {
@@ -48,22 +44,16 @@ public class ServletContextUtil {
 			getSiteNavigationMenuItemType(type);
 	}
 
-	@Reference(unbind = "-")
 	protected static void setInfoItemServiceRegistry(
 		InfoItemServiceRegistry infoItemServiceRegistry) {
 
 		_infoItemServiceRegistry = infoItemServiceRegistry;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.site.navigation.taglib)",
-		unbind = "-"
-	)
 	protected static void setServletContext(ServletContext servletContext) {
 		_servletContext = servletContext;
 	}
 
-	@Reference(unbind = "-")
 	protected static void setSiteNavigationMenuItemTypeRegistry(
 		SiteNavigationMenuItemTypeRegistry siteNavigationMenuItemTypeRegistry) {
 

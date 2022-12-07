@@ -21,10 +21,6 @@ import javax.servlet.ServletContext;
  */
 public class ServletContextUtil {
 
-	public static String getContextPath() {
-		return _servletContext.getContextPath();
-	}
-
 	public static ServletContext getServletContext() {
 		return _servletContext;
 	}

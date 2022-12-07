@@ -38,7 +38,7 @@ public class SiteNavigationPermission {
 		target = "(resource.name=" + SiteNavigationConstants.RESOURCE_NAME + ")",
 		unbind = "-"
 	)
-	protected void setPortletResourcePermission(
+	protected static void setPortletResourcePermission(
 		PortletResourcePermission portletResourcePermission) {
 
 		_portletResourcePermission = portletResourcePermission;

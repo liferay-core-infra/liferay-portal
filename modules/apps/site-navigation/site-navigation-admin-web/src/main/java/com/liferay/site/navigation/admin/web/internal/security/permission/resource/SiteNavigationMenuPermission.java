@@ -50,7 +50,7 @@ public class SiteNavigationMenuPermission {
 		target = "(model.class.name=com.liferay.site.navigation.model.SiteNavigationMenu)",
 		unbind = "-"
 	)
-	protected void setModelResourcePermission(
+	protected static void setModelResourcePermission(
 		ModelResourcePermission<SiteNavigationMenu> modelResourcePermission) {
 
 		_siteNavigationMenuModelResourcePermission = modelResourcePermission;

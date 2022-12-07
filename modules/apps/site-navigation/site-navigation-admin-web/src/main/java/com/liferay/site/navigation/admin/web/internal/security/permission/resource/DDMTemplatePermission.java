@@ -50,7 +50,7 @@ public class DDMTemplatePermission {
 		target = "(model.class.name=com.liferay.dynamic.data.mapping.model.DDMTemplate)",
 		unbind = "-"
 	)
-	protected void setModelResourcePermission(
+	protected static void setModelResourcePermission(
 		ModelResourcePermission<DDMTemplate> modelResourcePermission) {
 
 		_ddmTemplateModelResourcePermission = modelResourcePermission;

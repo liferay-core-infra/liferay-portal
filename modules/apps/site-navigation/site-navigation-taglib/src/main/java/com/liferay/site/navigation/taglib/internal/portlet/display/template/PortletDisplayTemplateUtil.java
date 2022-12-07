@@ -16,30 +16,19 @@ package com.liferay.site.navigation.taglib.internal.portlet.display.template;
 
 import com.liferay.portlet.display.template.PortletDisplayTemplate;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Preston Crary
  */
-@Component(service = {})
 public class PortletDisplayTemplateUtil {
 
 	public static PortletDisplayTemplate getPortletDisplayTemplate() {
 		return _portletDisplayTemplate;
 	}
 
-	@Reference(unbind = "-")
 	protected static void setPortletDisplayTemplate(
 		PortletDisplayTemplate portletDisplayTemplate) {
 
 		_portletDisplayTemplate = portletDisplayTemplate;
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_portletDisplayTemplate = null;
 	}
 
 	private static PortletDisplayTemplate _portletDisplayTemplate;

@@ -96,11 +96,7 @@ public class BlogsEntriesWithSameAssetCategoryRelatedInfoItemCollectionProvider
 
 			return InfoPage.of(
 				stream.map(
-					this::_toBlogsEntryOptional
-				).filter(
-					Optional::isPresent
-				).map(
-					Optional::get
+					this::_toBlogsEntry
 				).collect(
 					Collectors.toList()
 				),
@@ -178,12 +174,9 @@ public class BlogsEntriesWithSameAssetCategoryRelatedInfoItemCollectionProvider
 			serviceContext.getScopeGroupId(), null, serviceContext.getUserId());
 	}
 
-	private Optional<BlogsEntry> _toBlogsEntryOptional(
-		SearchResult searchResult) {
-
+	private BlogsEntry _toBlogsEntry(SearchResult searchResult) {
 		try {
-			return Optional.of(
-				_blogsEntryService.getEntry(searchResult.getClassPK()));
+			return _blogsEntryService.getEntry(searchResult.getClassPK());
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
@@ -193,7 +186,7 @@ public class BlogsEntriesWithSameAssetCategoryRelatedInfoItemCollectionProvider
 					exception);
 			}
 
-			return Optional.empty();
+			return null;
 		}
 	}
 

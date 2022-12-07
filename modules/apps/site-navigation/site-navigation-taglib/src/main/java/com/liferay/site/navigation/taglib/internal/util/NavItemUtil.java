@@ -223,19 +223,19 @@ public class NavItemUtil {
 	}
 
 	@Reference(unbind = "-")
-	protected void setLayoutLocalService(
+	protected static void setLayoutLocalService(
 		LayoutLocalService layoutLocalService) {
 
 		_layoutLocalService = layoutLocalService;
 	}
 
 	@Reference(unbind = "-")
-	protected void setPortal(Portal portal) {
+	protected static void setPortal(Portal portal) {
 		_portal = portal;
 	}
 
 	@Reference(unbind = "-")
-	protected void setSiteNavigationMenuItemLocalService(
+	protected static void setSiteNavigationMenuItemLocalService(
 		SiteNavigationMenuItemLocalService siteNavigationMenuItemLocalService) {
 
 		_siteNavigationMenuItemLocalService =
@@ -243,14 +243,14 @@ public class NavItemUtil {
 	}
 
 	@Reference(unbind = "-")
-	protected void setSiteNavigationMenuItemService(
+	protected static void setSiteNavigationMenuItemService(
 		SiteNavigationMenuItemService siteNavigationMenuItemService) {
 
 		_siteNavigationMenuItemService = siteNavigationMenuItemService;
 	}
 
 	@Reference(unbind = "-")
-	protected void setSiteNavigationMenuItemTypeRegistry(
+	protected static void setSiteNavigationMenuItemTypeRegistry(
 		SiteNavigationMenuItemTypeRegistry siteNavigationMenuItemTypeRegistry) {
 
 		_siteNavigationMenuItemTypeRegistry =

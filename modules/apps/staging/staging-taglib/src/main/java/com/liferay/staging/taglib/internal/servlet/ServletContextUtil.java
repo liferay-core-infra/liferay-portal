@@ -37,7 +37,7 @@ public class ServletContextUtil {
 		target = "(osgi.web.symbolicname=com.liferay.staging.taglib)",
 		unbind = "-"
 	)
-	protected void setServletContext(ServletContext servletContext) {
+	protected static void setServletContext(ServletContext servletContext) {
 		_servletContext = servletContext;
 	}
 

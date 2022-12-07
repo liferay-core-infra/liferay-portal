@@ -43,12 +43,12 @@ public class ServletContextUtil {
 		target = "(osgi.web.symbolicname=com.liferay.trash.taglib)",
 		unbind = "-"
 	)
-	protected void setServletContext(ServletContext servletContext) {
+	protected static void setServletContext(ServletContext servletContext) {
 		_servletContext = servletContext;
 	}
 
 	@Reference(unbind = "-")
-	protected void setTrashHelper(TrashHelper trashHelper) {
+	protected static void setTrashHelper(TrashHelper trashHelper) {
 		_trashHelper = trashHelper;
 	}
 

@@ -186,15 +186,15 @@ public class LiferayServiceExtender
 		Bundle bundle, ClassLoader classLoader,
 		List<LiferayServiceExtension> liferayServiceExtensions) {
 
-		Dictionary<String, String> headers = bundle.getHeaders(
-			StringPool.BLANK);
-
 		Configuration serviceConfiguration =
 			ConfigurationFactoryUtil.getConfiguration(classLoader, "service");
 
 		if (serviceConfiguration == null) {
 			return;
 		}
+
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
 
 		String requireSchemaVersion = headers.get(
 			"Liferay-Require-SchemaVersion");

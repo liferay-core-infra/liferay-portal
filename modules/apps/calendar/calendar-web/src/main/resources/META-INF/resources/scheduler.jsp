@@ -166,7 +166,7 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 		calendarContainer: calendarContainer,
 
 		<%
-		java.util.Calendar nowJCalendar = CalendarFactoryUtil.getCalendar(userTimeZone);
+		java.util.Calendar nowJCalendar = CalendarFactory.getCalendar(userTimeZone);
 		%>
 
 		currentTime: new Date(
@@ -179,7 +179,7 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 		currentTimeFn: A.bind(remoteServices.getCurrentTime, remoteServices),
 
 		<%
-		java.util.Calendar dateJCalendar = CalendarFactoryUtil.getCalendar(userTimeZone);
+		java.util.Calendar dateJCalendar = CalendarFactory.getCalendar(userTimeZone);
 
 		dateJCalendar.setTimeInMillis(date);
 		%>
@@ -218,7 +218,7 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 		},
 
 		<%
-		java.util.Calendar todayJCalendar = CalendarFactoryUtil.getCalendar(userTimeZone);
+		java.util.Calendar todayJCalendar = CalendarFactory.getCalendar(userTimeZone);
 		%>
 
 		todayDate: new Date(

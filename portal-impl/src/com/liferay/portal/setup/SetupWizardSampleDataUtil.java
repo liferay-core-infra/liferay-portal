@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -172,7 +172,7 @@ public class SetupWizardSampleDataUtil {
 
 			Contact contact = adminUser.getContact();
 
-			Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+			Calendar birthdayCal = CalendarFactory.getCalendar();
 
 			birthdayCal.setTime(contact.getBirthday());
 

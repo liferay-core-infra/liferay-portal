@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -64,7 +64,7 @@ public class ReschedulePublicationDisplayContext {
 	}
 
 	public Map<String, Object> getReactData() {
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			_themeDisplay.getTimeZone(), _themeDisplay.getLocale());
 
 		calendar.setTime(_scheduledPublishInfo.getStartDate());

@@ -14,7 +14,7 @@
 
 package com.liferay.headless.commerce.core.util;
 
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -27,10 +27,10 @@ public class DateConfig {
 
 	public static DateConfig toDisplayDateConfig(Date date, TimeZone timeZone) {
 		if (date == null) {
-			return new DateConfig(CalendarFactoryUtil.getCalendar(timeZone));
+			return new DateConfig(CalendarFactory.getCalendar(timeZone));
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			date.getTime(), timeZone);
 
 		return new DateConfig(calendar);
@@ -40,15 +40,14 @@ public class DateConfig {
 		Date date, TimeZone timeZone) {
 
 		if (date == null) {
-			Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
-				timeZone);
+			Calendar expirationCalendar = CalendarFactory.getCalendar(timeZone);
 
 			expirationCalendar.add(Calendar.MONTH, 1);
 
 			return new DateConfig(expirationCalendar);
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			date.getTime(), timeZone);
 
 		return new DateConfig(calendar);

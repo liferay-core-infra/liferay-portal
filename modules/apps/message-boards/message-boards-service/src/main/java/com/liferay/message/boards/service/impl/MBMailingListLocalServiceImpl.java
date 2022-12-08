@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Closeable;
@@ -244,7 +244,7 @@ public class MBMailingListLocalServiceImpl
 
 		String groupName = _getSchedulerGroupName(mailingList);
 
-		Calendar startDate = CalendarFactoryUtil.getCalendar();
+		Calendar startDate = CalendarFactory.getCalendar();
 
 		Trigger trigger = _triggerFactory.createTrigger(
 			groupName, groupName, startDate.getTime(), null,

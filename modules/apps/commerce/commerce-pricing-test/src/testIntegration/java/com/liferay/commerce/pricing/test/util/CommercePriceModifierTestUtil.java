@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.math.BigDecimal;
@@ -55,7 +55,7 @@ public class CommercePriceModifierTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -82,7 +82,7 @@ public class CommercePriceModifierTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -109,7 +109,7 @@ public class CommercePriceModifierTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		return CommercePriceModifierLocalServiceUtil.addCommercePriceModifier(
 			groupId, RandomTestUtil.randomString(), commercePriceListId, type,
@@ -142,7 +142,7 @@ public class CommercePriceModifierTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		return CommercePriceModifierLocalServiceUtil.addCommercePriceModifier(
 			groupId, title, target, commercePriceListId, type, amount, 0.0,
@@ -179,7 +179,7 @@ public class CommercePriceModifierTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		return CommercePriceModifierLocalServiceUtil.
 			updateCommercePriceModifier(

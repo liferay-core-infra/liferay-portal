@@ -60,7 +60,7 @@ page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.kernel.service.LayoutLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.permission.GroupPermissionUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
-page import="com.liferay.portal.kernel.util.CalendarFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.util.CalendarFactory" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
@@ -109,7 +109,7 @@ page import="javax.portlet.PortletURL" %>
 <%
 PortalPreferences portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(liferayPortletRequest);
 
-Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+Calendar calendar = CalendarFactory.getCalendar(timeZone, locale);
 
 int timeZoneOffset = timeZone.getOffset(calendar.getTimeInMillis());
 

@@ -21,7 +21,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 boolean male = ParamUtil.getBoolean(request, "male", true);
 
-Calendar birthdayCalendar = CalendarFactoryUtil.getCalendar();
+Calendar birthdayCalendar = CalendarFactory.getCalendar();
 
 birthdayCalendar.set(Calendar.MONTH, Calendar.JANUARY);
 birthdayCalendar.set(Calendar.DATE, 1);

@@ -73,7 +73,7 @@ import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -772,7 +772,7 @@ public class FedExCommerceShippingOptionHelper {
 	}
 
 	private Calendar _getShipTimestamp() {
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = CalendarFactory.getCalendar();
 
 		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
 			calendar.add(Calendar.DATE, 2);

@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 
@@ -133,7 +133,7 @@ public class CPAttachmentFileEntryStagedModelDataHandler
 		int displayDateMinute = 0;
 
 		if (displayDate != null) {
-			Calendar displayCal = CalendarFactoryUtil.getCalendar(
+			Calendar displayCal = CalendarFactory.getCalendar(
 				user.getTimeZone());
 
 			displayCal.setTime(displayDate);
@@ -160,7 +160,7 @@ public class CPAttachmentFileEntryStagedModelDataHandler
 		int expirationDateMinute = 0;
 
 		if (expirationDate != null) {
-			Calendar expirationCal = CalendarFactoryUtil.getCalendar(
+			Calendar expirationCal = CalendarFactory.getCalendar(
 				user.getTimeZone());
 
 			expirationCal.setTime(expirationDate);

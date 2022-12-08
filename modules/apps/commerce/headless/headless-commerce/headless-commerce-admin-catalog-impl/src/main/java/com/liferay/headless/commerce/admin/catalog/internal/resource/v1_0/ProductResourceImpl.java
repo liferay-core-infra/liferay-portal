@@ -107,7 +107,7 @@ import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
@@ -1163,12 +1163,12 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 			serviceContext.setExpandoBridgeAttributes(expandoBridgeAttributes);
 		}
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		DateConfig displayDateConfig = new DateConfig(displayCalendar);
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);

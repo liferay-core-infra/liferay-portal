@@ -188,7 +188,7 @@ if (deliveryMaxSubscriptionCycles > 0) {
 					int nextIterationDateYear = 0;
 
 					if (nextIterationDate != null) {
-						Calendar calendar = CalendarFactoryUtil.getCalendar(nextIterationDate.getTime());
+						Calendar calendar = CalendarFactory.getCalendar(nextIterationDate.getTime());
 
 						nextIterationDateDay = calendar.get(Calendar.DAY_OF_MONTH);
 						nextIterationDateMonth = calendar.get(Calendar.MONTH);
@@ -313,7 +313,7 @@ if (deliveryMaxSubscriptionCycles > 0) {
 					int deliveryNextIterationDateYear = 0;
 
 					if (deliveryNextIterationDate != null) {
-						Calendar calendar = CalendarFactoryUtil.getCalendar(deliveryNextIterationDate.getTime());
+						Calendar calendar = CalendarFactory.getCalendar(deliveryNextIterationDate.getTime());
 
 						deliveryNextIterationDateDay = calendar.get(Calendar.DAY_OF_MONTH);
 						deliveryNextIterationDateMonth = calendar.get(Calendar.MONTH);

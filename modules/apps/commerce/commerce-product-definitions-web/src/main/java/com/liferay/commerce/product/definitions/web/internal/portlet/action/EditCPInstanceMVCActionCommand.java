@@ -52,7 +52,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -316,7 +316,7 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 				DateFormatFactoryUtil.getSimpleDateFormat("MM/dd/yyyy"), null);
 
 			if (discontinuedDate != null) {
-				Calendar calendar = CalendarFactoryUtil.getCalendar(
+				Calendar calendar = CalendarFactory.getCalendar(
 					discontinuedDate.getTime());
 
 				discontinuedDateDay = calendar.get(Calendar.DAY_OF_MONTH);

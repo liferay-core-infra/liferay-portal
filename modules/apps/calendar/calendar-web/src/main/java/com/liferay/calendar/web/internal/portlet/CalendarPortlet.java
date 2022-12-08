@@ -101,7 +101,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -935,7 +935,7 @@ public class CalendarPortlet extends MVCPortlet {
 
 		List<Integer> daysOfWeek = _getDaysOfWeek(recurrenceObj);
 
-		java.util.Calendar startTimeJCalendar = CalendarFactoryUtil.getCalendar(
+		java.util.Calendar startTimeJCalendar = CalendarFactory.getCalendar(
 			calendarBooking.getStartTime(), timeZone);
 
 		int startTimeDayOfWeek = startTimeJCalendar.get(
@@ -1030,17 +1030,17 @@ public class CalendarPortlet extends MVCPortlet {
 			TimeZone timeZone = editedCalendarBookingInstance.getTimeZone();
 
 			java.util.Calendar oldStartTimeJCalendar =
-				CalendarFactoryUtil.getCalendar(oldStartTime, timeZone);
+				CalendarFactory.getCalendar(oldStartTime, timeZone);
 
 			java.util.Calendar firstInstanceJCalendar =
-				CalendarFactoryUtil.getCalendar(
+				CalendarFactory.getCalendar(
 					firstInstance.getStartTime(), timeZone);
 
 			if (!JCalendarUtil.isSameDayOfWeek(
 					oldStartTimeJCalendar, firstInstanceJCalendar)) {
 
 				java.util.Calendar newStartTimeJCalendar =
-					CalendarFactoryUtil.getCalendar(newStartTime, timeZone);
+					CalendarFactory.getCalendar(newStartTime, timeZone);
 
 				newStartTimeJCalendar = JCalendarUtil.mergeJCalendar(
 					oldStartTimeJCalendar, newStartTimeJCalendar, timeZone);
@@ -1575,7 +1575,7 @@ public class CalendarPortlet extends MVCPortlet {
 			timeZoneId = user.getTimeZoneId();
 		}
 
-		java.util.Calendar nowCalendar = CalendarFactoryUtil.getCalendar(
+		java.util.Calendar nowCalendar = CalendarFactory.getCalendar(
 			TimeZone.getTimeZone(timeZoneId));
 
 		writeJSON(

@@ -18,7 +18,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.model.OrgLabor;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -149,7 +149,7 @@ public class OrgLaborFormDisplay {
 		Format timeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"HH:mm", locale);
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = CalendarFactory.getCalendar();
 
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);

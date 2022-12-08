@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class AnnouncementsEntryUADTestUtil {
 			ClassNameLocalService classNameLocalService, long userId)
 		throws Exception {
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = CalendarFactory.getCalendar();
 
 		calendar.add(Calendar.DATE, 1);
 

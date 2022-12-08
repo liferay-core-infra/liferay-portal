@@ -14,7 +14,7 @@
 
 package com.liferay.headless.commerce.admin.catalog.internal.util;
 
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +25,7 @@ import java.util.Date;
 public class DateConfigUtil {
 
 	public static Calendar convertDateToCalendar(Date date) {
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = CalendarFactory.getCalendar();
 
 		calendar.setTime(date);
 

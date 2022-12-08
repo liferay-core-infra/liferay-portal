@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.OrgLabor;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
@@ -73,7 +73,7 @@ public class OrgLaborDisplay {
 			return "";
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = CalendarFactory.getCalendar();
 
 		calendar.set(Calendar.MILLISECOND, 0);
 		calendar.set(Calendar.SECOND, 0);

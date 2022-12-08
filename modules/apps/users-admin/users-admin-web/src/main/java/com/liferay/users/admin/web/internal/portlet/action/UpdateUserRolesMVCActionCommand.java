@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.service.permission.OrganizationPermission;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -90,7 +90,7 @@ public class UpdateUserRolesMVCActionCommand extends BaseMVCActionCommand {
 
 			Contact contact = user.getContact();
 
-			Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+			Calendar birthdayCal = CalendarFactory.getCalendar();
 
 			birthdayCal.setTime(user.getBirthday());
 

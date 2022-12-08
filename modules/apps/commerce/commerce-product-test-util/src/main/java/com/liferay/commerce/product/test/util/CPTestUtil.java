@@ -57,7 +57,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -197,7 +197,7 @@ public class CPTestUtil {
 		Date displayDate = new Date(time - Time.HOUR);
 		Date expirationDate = new Date(time + Time.DAY);
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		displayCalendar.setTime(displayDate);
@@ -212,7 +212,7 @@ public class CPTestUtil {
 			displayDateHour += 12;
 		}
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		expirationCalendar.setTime(expirationDate);
@@ -869,8 +869,7 @@ public class CPTestUtil {
 		Date displayDate = new Date(time - Time.HOUR);
 		Date expirationDate = new Date(time + Time.DAY);
 
-		Calendar displayCal = CalendarFactoryUtil.getCalendar(
-			user.getTimeZone());
+		Calendar displayCal = CalendarFactory.getCalendar(user.getTimeZone());
 
 		displayCal.setTime(displayDate);
 
@@ -884,7 +883,7 @@ public class CPTestUtil {
 			displayDateHour += 12;
 		}
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		expirationCalendar.setTime(expirationDate);
@@ -966,8 +965,7 @@ public class CPTestUtil {
 		Date displayDate = new Date(time - Time.HOUR);
 		Date expirationDate = new Date(time + Time.DAY);
 
-		Calendar displayCal = CalendarFactoryUtil.getCalendar(
-			user.getTimeZone());
+		Calendar displayCal = CalendarFactory.getCalendar(user.getTimeZone());
 
 		displayCal.setTime(displayDate);
 
@@ -981,7 +979,7 @@ public class CPTestUtil {
 			displayDateHour += 12;
 		}
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		expirationCalendar.setTime(expirationDate);
@@ -1079,8 +1077,7 @@ public class CPTestUtil {
 		Date displayDate = new Date(time - Time.HOUR);
 		Date expirationDate = new Date(time + Time.DAY);
 
-		Calendar displayCal = CalendarFactoryUtil.getCalendar(
-			user.getTimeZone());
+		Calendar displayCal = CalendarFactory.getCalendar(user.getTimeZone());
 
 		displayCal.setTime(displayDate);
 
@@ -1094,7 +1091,7 @@ public class CPTestUtil {
 			displayDateHour += 12;
 		}
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		expirationCalendar.setTime(expirationDate);

@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Calendar;
@@ -69,7 +69,7 @@ public class CommercePriceListTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -101,7 +101,7 @@ public class CommercePriceListTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -131,7 +131,7 @@ public class CommercePriceListTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -161,7 +161,7 @@ public class CommercePriceListTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 

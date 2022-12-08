@@ -79,7 +79,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserService;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -966,7 +966,7 @@ public class UserAccountResourceImpl
 			userAccount.getBirthDate()
 		).map(
 			date -> {
-				Calendar calendar = CalendarFactoryUtil.getCalendar();
+				Calendar calendar = CalendarFactory.getCalendar();
 
 				calendar.setTime(date);
 

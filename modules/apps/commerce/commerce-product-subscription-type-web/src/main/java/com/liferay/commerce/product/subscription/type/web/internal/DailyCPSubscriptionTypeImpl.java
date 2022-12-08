@@ -17,7 +17,7 @@ package com.liferay.commerce.product.subscription.type.web.internal;
 import com.liferay.commerce.product.constants.CPConstants;
 import com.liferay.commerce.product.util.CPSubscriptionType;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.util.Calendar;
@@ -56,7 +56,7 @@ public class DailyCPSubscriptionTypeImpl implements CPSubscriptionType {
 		UnicodeProperties subscriptionTypeSettingsUnicodeProperties,
 		Date lastIterationDate) {
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone);
+		Calendar calendar = CalendarFactory.getCalendar(timeZone);
 
 		if (lastIterationDate == null) {
 			lastIterationDate = getSubscriptionStartDate(

@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
@@ -143,7 +143,7 @@ public class AttachmentUtil {
 			int type, ServiceContext serviceContext)
 		throws Exception {
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		if (attachmentBase64.getDisplayDate() != null) {
@@ -153,7 +153,7 @@ public class AttachmentUtil {
 
 		DateConfig displayDateConfig = new DateConfig(displayCalendar);
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);
@@ -197,7 +197,7 @@ public class AttachmentUtil {
 			int type, ServiceContext serviceContext)
 		throws Exception {
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		if (attachmentUrl.getDisplayDate() != null) {
@@ -207,7 +207,7 @@ public class AttachmentUtil {
 
 		DateConfig displayDateConfig = new DateConfig(displayCalendar);
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);
@@ -266,7 +266,7 @@ public class AttachmentUtil {
 			fileEntryId = fileEntry.getFileEntryId();
 		}
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		if (attachment.getDisplayDate() != null) {
@@ -276,7 +276,7 @@ public class AttachmentUtil {
 
 		DateConfig displayDateConfig = new DateConfig(displayCalendar);
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);

@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
@@ -113,7 +113,7 @@ public class CommercePricingClassLocalServiceImpl
 
 		Date date = new Date();
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			date.getTime(), user.getTimeZone());
 
 		commercePricingClass.setLastPublishDate(calendar.getTime());
@@ -328,7 +328,7 @@ public class CommercePricingClassLocalServiceImpl
 
 		Date date = new Date();
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			date.getTime(), user.getTimeZone());
 
 		commercePricingClass.setLastPublishDate(calendar.getTime());

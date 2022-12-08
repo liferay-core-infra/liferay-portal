@@ -97,7 +97,7 @@ if (hints != null) {
 				cal = (Calendar)defaultValue;
 			}
 			else {
-				cal = CalendarFactoryUtil.getCalendar(timeZone, locale);
+				cal = CalendarFactory.getCalendar(timeZone, locale);
 
 				Date date = (Date)BeanPropertiesUtil.getObject(bean, methodName);
 

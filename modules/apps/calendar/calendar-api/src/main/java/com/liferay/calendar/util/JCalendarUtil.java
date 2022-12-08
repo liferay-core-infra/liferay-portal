@@ -15,7 +15,7 @@
 package com.liferay.calendar.util;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Time;
 
 import java.util.Calendar;
@@ -82,7 +82,7 @@ public class JCalendarUtil {
 	}
 
 	public static Calendar getJCalendar(Calendar jCalendar, TimeZone timeZone) {
-		return CalendarFactoryUtil.getCalendar(
+		return CalendarFactory.getCalendar(
 			jCalendar.getTimeInMillis(), timeZone);
 	}
 
@@ -90,7 +90,7 @@ public class JCalendarUtil {
 		int year, int month, int day, int hour, int minutes, int seconds,
 		int milliseconds, TimeZone timeZone) {
 
-		Calendar jCalendar = CalendarFactoryUtil.getCalendar(timeZone);
+		Calendar jCalendar = CalendarFactory.getCalendar(timeZone);
 
 		jCalendar.set(Calendar.YEAR, year);
 		jCalendar.set(Calendar.MONTH, month);
@@ -108,7 +108,7 @@ public class JCalendarUtil {
 	}
 
 	public static Calendar getJCalendar(long time, TimeZone timeZone) {
-		Calendar jCalendar = CalendarFactoryUtil.getCalendar(timeZone);
+		Calendar jCalendar = CalendarFactory.getCalendar(timeZone);
 
 		jCalendar.setTimeInMillis(time);
 
@@ -146,7 +146,7 @@ public class JCalendarUtil {
 	public static Calendar mergeJCalendar(
 		Calendar dateJCalendar, Calendar timeJCalendar, TimeZone timeZone) {
 
-		return CalendarFactoryUtil.getCalendar(
+		return CalendarFactory.getCalendar(
 			dateJCalendar.get(Calendar.YEAR), dateJCalendar.get(Calendar.MONTH),
 			dateJCalendar.get(Calendar.DAY_OF_MONTH),
 			timeJCalendar.get(Calendar.HOUR_OF_DAY),

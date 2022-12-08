@@ -28,7 +28,7 @@ Format timeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("HH:mm", local
 	<h3 class="icon-cogs"><liferay-ui:message key="services" /></h3>
 
 	<%
-	Calendar cal = CalendarFactoryUtil.getCalendar();
+	Calendar cal = CalendarFactory.getCalendar();
 	String[] days = CalendarUtil.getDays(locale);
 	String[] paramPrefixes = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
 

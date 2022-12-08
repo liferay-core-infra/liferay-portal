@@ -115,7 +115,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "new-report-entry"));
 										<%
 										String[] date = value.split("-");
 
-										Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+										Calendar calendar = CalendarFactory.getCalendar(timeZone, locale);
 
 										calendar.set(Calendar.YEAR, GetterUtil.getInteger(date[0]));
 										calendar.set(Calendar.MONTH, GetterUtil.getInteger(date[1]) - 1);

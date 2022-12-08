@@ -81,7 +81,7 @@ public class CalendarUtil {
 	}
 
 	public static int getAge(Date date, Calendar today) {
-		Calendar birthday = CalendarFactoryUtil.getCalendar();
+		Calendar birthday = CalendarFactory.getCalendar();
 
 		birthday.setTime(date);
 
@@ -100,7 +100,7 @@ public class CalendarUtil {
 	}
 
 	public static int getAge(Date date, TimeZone tz) {
-		return getAge(date, CalendarFactoryUtil.getCalendar(tz));
+		return getAge(date, CalendarFactory.getCalendar(tz));
 	}
 
 	public static String[] getDays(Locale locale) {
@@ -124,7 +124,7 @@ public class CalendarUtil {
 			Format dayFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 				pattern, locale);
 
-			Calendar cal = CalendarFactoryUtil.getCalendar();
+			Calendar cal = CalendarFactory.getCalendar();
 
 			cal.set(Calendar.DATE, 1);
 
@@ -252,7 +252,7 @@ public class CalendarUtil {
 			Format monthFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 				pattern, locale);
 
-			Calendar cal = CalendarFactoryUtil.getCalendar();
+			Calendar cal = CalendarFactory.getCalendar();
 
 			cal.set(Calendar.DATE, 1);
 
@@ -281,7 +281,7 @@ public class CalendarUtil {
 		int month2, int day2, int year2, int hour2, int minute2, int amPm2,
 		TimeZone timeZone, Locale locale) {
 
-		Calendar cal1 = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar cal1 = CalendarFactory.getCalendar(timeZone, locale);
 
 		cal1.set(Calendar.MONTH, month1);
 		cal1.set(Calendar.DATE, day1);
@@ -290,7 +290,7 @@ public class CalendarUtil {
 		cal1.set(Calendar.MINUTE, minute1);
 		cal1.set(Calendar.AM_PM, amPm1);
 
-		Calendar cal2 = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar cal2 = CalendarFactory.getCalendar(timeZone, locale);
 
 		cal2.set(Calendar.MONTH, month2);
 		cal2.set(Calendar.DATE, day2);
@@ -307,14 +307,14 @@ public class CalendarUtil {
 			return false;
 		}
 
-		Calendar cal1 = CalendarFactoryUtil.getCalendar();
+		Calendar cal1 = CalendarFactory.getCalendar();
 
 		cal1.setFirstDayOfWeek(Calendar.MONDAY);
 		cal1.set(Calendar.MONTH, month);
 		cal1.set(Calendar.DATE, day);
 		cal1.set(Calendar.YEAR, year);
 
-		Calendar cal2 = CalendarFactoryUtil.getCalendar();
+		Calendar cal2 = CalendarFactory.getCalendar();
 
 		cal2.setFirstDayOfWeek(Calendar.MONDAY);
 		cal2.set(Calendar.MONTH, month + 1);
@@ -358,7 +358,7 @@ public class CalendarUtil {
 		int month, int day, int year, int hour, int minute, int amPm,
 		TimeZone timeZone, Locale locale) {
 
-		Calendar curCal = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar curCal = CalendarFactory.getCalendar(timeZone, locale);
 
 		Calendar cal = (Calendar)curCal.clone();
 
@@ -375,7 +375,7 @@ public class CalendarUtil {
 	public static boolean isFuture(
 		int month, int day, int year, TimeZone timeZone, Locale locale) {
 
-		Calendar curCal = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar curCal = CalendarFactory.getCalendar(timeZone, locale);
 
 		Calendar cal = (Calendar)curCal.clone();
 
@@ -389,7 +389,7 @@ public class CalendarUtil {
 	public static boolean isFuture(
 		int month, int year, TimeZone timeZone, Locale locale) {
 
-		Calendar curCal = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar curCal = CalendarFactory.getCalendar(timeZone, locale);
 
 		curCal.set(Calendar.DATE, 1);
 
@@ -431,7 +431,7 @@ public class CalendarUtil {
 	}
 
 	private static long _getTimeInMillis(Date date) {
-		Calendar cal = CalendarFactoryUtil.getCalendar();
+		Calendar cal = CalendarFactory.getCalendar();
 
 		cal.setTime(date);
 

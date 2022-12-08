@@ -19,7 +19,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cal.DayAndPosition;
 import com.liferay.portal.kernel.cal.Duration;
 import com.liferay.portal.kernel.cal.Recurrence;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -45,7 +45,7 @@ public class CronTextUtil {
 		Calendar recurrenceCalendar = null;
 
 		if (timeZoneSensitive) {
-			recurrenceCalendar = CalendarFactoryUtil.getCalendar();
+			recurrenceCalendar = CalendarFactory.getCalendar();
 
 			recurrenceCalendar.setTime(calendar.getTime());
 		}
@@ -183,7 +183,7 @@ public class CronTextUtil {
 	}
 
 	private static String _getDayOfWeek(DayAndPosition dayPos) {
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = CalendarFactory.getCalendar();
 
 		calendar.set(Calendar.DAY_OF_WEEK, dayPos.getDayOfWeek());
 

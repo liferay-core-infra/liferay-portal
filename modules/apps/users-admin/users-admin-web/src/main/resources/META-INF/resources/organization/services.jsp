@@ -105,7 +105,7 @@ Format timeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("HH:mm", local
 <aui:fieldset id='<%= liferayPortletResponse.getNamespace() + "services" %>'>
 
 	<%
-	Calendar cal = CalendarFactoryUtil.getCalendar();
+	Calendar cal = CalendarFactory.getCalendar();
 	String[] days = CalendarUtil.getDays(locale);
 	String[] paramPrefixes = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
 

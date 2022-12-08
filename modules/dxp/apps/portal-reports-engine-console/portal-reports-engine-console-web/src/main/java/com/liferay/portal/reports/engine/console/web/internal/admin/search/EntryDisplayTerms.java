@@ -16,7 +16,7 @@ package com.liferay.portal.reports.engine.console.web.internal.admin.search;
 
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -53,7 +53,7 @@ public class EntryDisplayTerms extends DisplayTerms {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			themeDisplay.getTimeZone(), themeDisplay.getLocale());
 
 		endDateDay = ParamUtil.getInteger(

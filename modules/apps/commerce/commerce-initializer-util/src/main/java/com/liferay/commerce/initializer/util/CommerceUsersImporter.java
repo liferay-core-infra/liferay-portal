@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserIdMapperLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -299,7 +299,7 @@ public class CommerceUsersImporter {
 			male = gender.equals("male");
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone);
+		Calendar calendar = CalendarFactory.getCalendar(timeZone);
 
 		int birthdayMonth = calendar.get(
 			jsonObject.getInt("birthdayMonth", Calendar.MONTH));

@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -105,7 +105,7 @@ public abstract class BaseBlogsEntryDemoDataCreator
 	protected RootFolderDemoDataCreator rootFolderDemoDataCreator;
 
 	private Date _getRandomDate() {
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = CalendarFactory.getCalendar();
 
 		calendar.set(2000, Calendar.JANUARY, 1);
 

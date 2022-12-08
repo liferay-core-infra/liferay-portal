@@ -84,7 +84,7 @@ import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -673,7 +673,7 @@ public class JournalArticleStagedModelDataHandler
 		int displayDateMinute = 0;
 
 		if (displayDate != null) {
-			Calendar displayCal = CalendarFactoryUtil.getCalendar(
+			Calendar displayCal = CalendarFactory.getCalendar(
 				user.getTimeZone());
 
 			displayCal.setTime(displayDate);
@@ -699,7 +699,7 @@ public class JournalArticleStagedModelDataHandler
 		boolean neverExpire = true;
 
 		if (expirationDate != null) {
-			Calendar expirationCal = CalendarFactoryUtil.getCalendar(
+			Calendar expirationCal = CalendarFactory.getCalendar(
 				user.getTimeZone());
 
 			expirationCal.setTime(expirationDate);
@@ -727,7 +727,7 @@ public class JournalArticleStagedModelDataHandler
 		boolean neverReview = true;
 
 		if (reviewDate != null) {
-			Calendar reviewCal = CalendarFactoryUtil.getCalendar(
+			Calendar reviewCal = CalendarFactory.getCalendar(
 				user.getTimeZone());
 
 			reviewCal.setTime(reviewDate);

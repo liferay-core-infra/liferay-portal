@@ -21,7 +21,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.editor.constants.EditorConstants;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -48,8 +48,7 @@ public class BlogsTestUtil {
 		try {
 			WorkflowThreadLocal.setEnabled(true);
 
-			Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
-				2012, 1, 1);
+			Calendar displayCalendar = CalendarFactory.getCalendar(2012, 1, 1);
 
 			serviceContext = (ServiceContext)serviceContext.clone();
 

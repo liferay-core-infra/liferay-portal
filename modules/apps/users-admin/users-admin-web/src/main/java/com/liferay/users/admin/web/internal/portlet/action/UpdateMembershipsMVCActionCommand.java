@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 import com.liferay.users.admin.kernel.util.UsersAdmin;
@@ -65,7 +65,7 @@ public class UpdateMembershipsMVCActionCommand extends BaseMVCActionCommand {
 
 			Contact contact = user.getContact();
 
-			Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+			Calendar birthdayCal = CalendarFactory.getCalendar();
 
 			birthdayCal.setTime(user.getBirthday());
 

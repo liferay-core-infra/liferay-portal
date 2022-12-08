@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Calendar;
@@ -236,7 +236,7 @@ public class CommercePriceListTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -280,9 +280,9 @@ public class CommercePriceListTestUtil {
 		CommerceCatalog commerceCatalog = commerceCatalogs.get(0);
 
 		DateElements displayDateElements = new DateElements(
-			displayDate, CalendarFactoryUtil.getCalendar(user.getTimeZone()));
+			displayDate, CalendarFactory.getCalendar(user.getTimeZone()));
 
-		Calendar defaultExpirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar defaultExpirationCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		defaultExpirationCalendar.add(Calendar.MONTH, 1);
@@ -366,9 +366,9 @@ public class CommercePriceListTestUtil {
 		CommerceCatalog commerceCatalog = commerceCatalogs.get(0);
 
 		DateElements displayDateElements = new DateElements(
-			displayDate, CalendarFactoryUtil.getCalendar(user.getTimeZone()));
+			displayDate, CalendarFactory.getCalendar(user.getTimeZone()));
 
-		Calendar defaultExpirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar defaultExpirationCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		defaultExpirationCalendar.add(Calendar.MONTH, 1);
@@ -423,9 +423,9 @@ public class CommercePriceListTestUtil {
 			serviceContext.getUserId());
 
 		DateElements displayDateElements = new DateElements(
-			displayDate, CalendarFactoryUtil.getCalendar(user.getTimeZone()));
+			displayDate, CalendarFactory.getCalendar(user.getTimeZone()));
 
-		Calendar defaultExpirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar defaultExpirationCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		defaultExpirationCalendar.add(Calendar.MONTH, 1);
@@ -494,7 +494,7 @@ public class CommercePriceListTestUtil {
 		}
 
 		private Calendar _convertDateToCalendar(Date date) {
-			Calendar calendar = CalendarFactoryUtil.getCalendar();
+			Calendar calendar = CalendarFactory.getCalendar();
 
 			calendar.setTime(date);
 

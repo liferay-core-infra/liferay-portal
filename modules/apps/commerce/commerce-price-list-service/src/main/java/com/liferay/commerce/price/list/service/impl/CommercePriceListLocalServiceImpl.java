@@ -84,7 +84,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -133,7 +133,7 @@ public class CommercePriceListLocalServiceImpl
 
 		Date date = new Date();
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(date.getTime());
+		Calendar calendar = CalendarFactory.getCalendar(date.getTime());
 
 		int displayDateHour = calendar.get(Calendar.HOUR);
 

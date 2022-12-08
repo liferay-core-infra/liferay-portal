@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -91,7 +91,7 @@ public class SkuUtil {
 			}
 		}
 
-		Calendar discontinuedCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar discontinuedCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		if (sku.getDiscontinuedDate() != null) {
@@ -102,7 +102,7 @@ public class SkuUtil {
 		DateConfig discontinuedDateConfig = new DateConfig(
 			discontinuedCalendar);
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		if (sku.getDisplayDate() != null) {
@@ -112,7 +112,7 @@ public class SkuUtil {
 
 		DateConfig displayDateConfig = new DateConfig(displayCalendar);
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);

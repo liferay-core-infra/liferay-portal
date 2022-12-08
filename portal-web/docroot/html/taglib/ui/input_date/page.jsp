@@ -50,14 +50,14 @@ String yearParamId = namespace + HtmlUtil.getAUICompatibleId(yearParam);
 Calendar calendar = null;
 
 if (required && (yearValue == 0) && (monthValue == -1) && (dayValue == 0)) {
-	calendar = CalendarFactoryUtil.getCalendar(timeZone);
+	calendar = CalendarFactory.getCalendar(timeZone);
 
 	dayValue = calendar.get(Calendar.DAY_OF_MONTH);
 	monthValue = calendar.get(Calendar.MONTH);
 	yearValue = calendar.get(Calendar.YEAR);
 }
 else {
-	calendar = CalendarFactoryUtil.getCalendar(yearValue, monthValue, dayValue);
+	calendar = CalendarFactory.getCalendar(yearValue, monthValue, dayValue);
 }
 
 String mask = _MASK_YMD;

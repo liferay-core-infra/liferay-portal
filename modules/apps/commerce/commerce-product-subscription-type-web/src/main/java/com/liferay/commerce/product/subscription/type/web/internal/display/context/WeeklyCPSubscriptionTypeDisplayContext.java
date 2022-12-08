@@ -18,7 +18,7 @@ import com.liferay.commerce.product.subscription.type.web.internal.display.conte
 import com.liferay.commerce.product.subscription.type.web.internal.display.context.util.comparator.WeeklyCPSubscriptionTypeCalendarWeekDaysComparator;
 import com.liferay.commerce.util.CommerceSubscriptionTypeUtil;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
@@ -102,7 +102,7 @@ public class WeeklyCPSubscriptionTypeDisplayContext {
 	}
 
 	private Map<String, Integer> _getCalendarWeekDaysDisplayNames() {
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			_cpSubscriptionTypeRequestHelper.getLocale());
 
 		return calendar.getDisplayNames(

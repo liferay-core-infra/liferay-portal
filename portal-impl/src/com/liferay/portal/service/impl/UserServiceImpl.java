@@ -74,7 +74,7 @@ import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserGroupPersistence;
 import com.liferay.portal.kernel.service.persistence.UserGroupRolePersistence;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -3819,7 +3819,7 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 
 		Contact contact = user.getContact();
 
-		Calendar birthday = CalendarFactoryUtil.getCalendar();
+		Calendar birthday = CalendarFactory.getCalendar();
 
 		birthday.setTime(contact.getBirthday());
 

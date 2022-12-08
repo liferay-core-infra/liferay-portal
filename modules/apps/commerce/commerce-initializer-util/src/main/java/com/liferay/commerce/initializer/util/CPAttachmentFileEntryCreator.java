@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.repository.RepositoryProvider;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MimeTypes;
@@ -139,7 +139,7 @@ public class CPAttachmentFileEntryCreator {
 			inputStream.close();
 		}
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		displayCalendar.add(Calendar.YEAR, -1);
@@ -155,7 +155,7 @@ public class CPAttachmentFileEntryCreator {
 			displayDateHour += 12;
 		}
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = CalendarFactory.getCalendar(
 			user.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);

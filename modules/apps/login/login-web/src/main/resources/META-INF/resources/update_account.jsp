@@ -43,7 +43,7 @@ String lastName = BeanParamUtil.getString(selUser, request, "lastName");
 int prefixListTypeId = BeanParamUtil.getInteger(selContact, request, "prefixListTypeId");
 int suffixListTypeId = BeanParamUtil.getInteger(selContact, request, "suffixListTypeId");
 
-Calendar birthdayCalendar = CalendarFactoryUtil.getCalendar();
+Calendar birthdayCalendar = CalendarFactory.getCalendar();
 
 int birthdayDay = ParamUtil.getInteger(request, "birthdayDay");
 int birthdayMonth = ParamUtil.getInteger(request, "birthdayMonth");

@@ -28,7 +28,7 @@ int shippingMonth = -1;
 int shippingYear = 0;
 
 if (shippingDate != null) {
-	Calendar calendar = CalendarFactoryUtil.getCalendar(shippingDate.getTime());
+	Calendar calendar = CalendarFactory.getCalendar(shippingDate.getTime());
 
 	shippingDay = calendar.get(Calendar.DAY_OF_MONTH);
 	shippingMonth = calendar.get(Calendar.MONTH);

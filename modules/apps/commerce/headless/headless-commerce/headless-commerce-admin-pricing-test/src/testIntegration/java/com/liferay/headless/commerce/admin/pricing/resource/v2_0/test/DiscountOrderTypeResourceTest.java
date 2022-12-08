@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.test.rule.Inject;
 
@@ -61,8 +61,7 @@ public class DiscountOrderTypeResourceTest
 			testCompany.getCompanyId(), testGroup.getGroupId(),
 			_user.getUserId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
-			_user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(_user.getTimeZone());
 
 		_commerceDiscount =
 			_commerceDiscountLocalService.addOrUpdateCommerceDiscount(

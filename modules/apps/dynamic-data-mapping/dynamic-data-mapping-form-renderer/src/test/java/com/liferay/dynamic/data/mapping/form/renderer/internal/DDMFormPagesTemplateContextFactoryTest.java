@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -67,7 +66,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.CalendarFactoryImpl;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 import com.liferay.portal.util.HtmlImpl;
 
@@ -103,7 +101,6 @@ public class DDMFormPagesTemplateContextFactoryTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		_setUpCalendarFactoryUtil();
 		_setUpDDMFormFieldTypeServicesRegistry();
 		_setUpFastDateFormatFactoryUtil();
 		_setUpGooglePlacesUtil();
@@ -852,12 +849,6 @@ public class DDMFormPagesTemplateContextFactoryTest {
 		).thenReturn(
 			ddmFormFieldTemplateContextContributor
 		);
-	}
-
-	private static void _setUpCalendarFactoryUtil() {
-		CalendarFactoryUtil calendarFactoryUtil = new CalendarFactoryUtil();
-
-		calendarFactoryUtil.setCalendarFactory(new CalendarFactoryImpl());
 	}
 
 	private static void _setUpDDMFormFieldTypeServicesRegistry() {

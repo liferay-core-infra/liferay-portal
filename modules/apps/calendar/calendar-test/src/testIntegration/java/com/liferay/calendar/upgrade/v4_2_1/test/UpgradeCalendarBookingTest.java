@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
@@ -82,11 +82,11 @@ public class UpgradeCalendarBookingTest {
 		setUserTimeZoneId("Europe/Paris");
 
 		java.util.Calendar expectedStartTimeJCalendar =
-			CalendarFactoryUtil.getCalendar(
+			CalendarFactory.getCalendar(
 				2022, java.util.Calendar.JANUARY, 1, 0, 0);
 
 		java.util.Calendar expectedEndTimeJCalendar =
-			CalendarFactoryUtil.getCalendar(
+			CalendarFactory.getCalendar(
 				2022, java.util.Calendar.JANUARY, 1, 23, 59);
 
 		ServiceContext serviceContext = createServiceContext();

@@ -15,7 +15,7 @@
 package com.liferay.portal.test.rule;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -37,8 +37,8 @@ public class InitializeKernelUtilTestRuleTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
-	public void testCalendarFactoryUtil() {
-		Assert.assertNotNull(CalendarFactoryUtil.getCalendar());
+	public void testCalendarFactory() {
+		Assert.assertNotNull(CalendarFactory.getCalendar());
 	}
 
 	@Test

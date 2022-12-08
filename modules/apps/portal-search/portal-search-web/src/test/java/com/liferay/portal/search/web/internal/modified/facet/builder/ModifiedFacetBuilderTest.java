@@ -40,10 +40,12 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 /**
@@ -56,9 +58,20 @@ public class ModifiedFacetBuilderTest {
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@BeforeClass
+	public static void setUpClass() {
+		MockedStatic<CalendarFactory> mockedStatic = Mockito.mockStatic(
+			CalendarFactory.class);
+
+		mockedStatic.when(
+			CalendarFactory::getCalendar
+		).thenAnswer(
+			input -> new GregorianCalendar(2018, Calendar.MARCH, 1, 15, 19, 23)
+		);
+	}
+
 	@Before
 	public void setUp() {
-		calendarFactory = _createCalendarFactory();
 		dateFormatFactory = new DateFormatFactoryImpl();
 		filterBuilders = new FilterBuildersImpl();
 		jsonFactory = new JSONFactoryImpl();
@@ -67,12 +80,6 @@ public class ModifiedFacetBuilderTest {
 
 	@Test
 	public void testBuiltInNamedRange() {
-		Mockito.doReturn(
-			new GregorianCalendar(2018, Calendar.MARCH, 1, 15, 19, 23)
-		).when(
-			calendarFactory
-		).getCalendar();
-
 		ModifiedFacetBuilder modifiedFacetBuilder =
 			_createModifiedFacetBuilder();
 
@@ -138,7 +145,6 @@ public class ModifiedFacetBuilderTest {
 		_assertRangesJSONArray(rangesJSONArray, modifiedFacetBuilder.build());
 	}
 
-	protected CalendarFactory calendarFactory;
 	protected DateFormatFactory dateFormatFactory;
 	protected FilterBuilders filterBuilders;
 	protected JSONFactory jsonFactory;
@@ -204,25 +210,12 @@ public class ModifiedFacetBuilderTest {
 		}
 	}
 
-	private CalendarFactory _createCalendarFactory() {
-		CalendarFactory calendarFactory = Mockito.mock(CalendarFactory.class);
-
-		Mockito.doReturn(
-			Calendar.getInstance()
-		).when(
-			calendarFactory
-		).getCalendar();
-
-		return calendarFactory;
-	}
-
 	private ModifiedFacetBuilder _createModifiedFacetBuilder() {
 		ModifiedFacetFactory modifiedFacetFactory =
 			_createModifiedFacetFactory();
 
 		ModifiedFacetBuilder modifiedFacetBuilder = new ModifiedFacetBuilder(
-			modifiedFacetFactory, calendarFactory, dateFormatFactory,
-			jsonFactory);
+			modifiedFacetFactory, dateFormatFactory, jsonFactory);
 
 		modifiedFacetBuilder.setSearchContext(searchContext);
 

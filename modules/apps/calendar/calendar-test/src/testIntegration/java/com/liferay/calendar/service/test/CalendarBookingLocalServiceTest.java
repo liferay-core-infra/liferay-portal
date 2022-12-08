@@ -53,7 +53,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -571,7 +571,7 @@ public class CalendarBookingLocalServiceTest {
 		Calendar calendar = CalendarTestUtil.addCalendar(
 			_user, _losAngelesTimeZone, serviceContext);
 
-		java.util.Calendar startTimeJCalendar = CalendarFactoryUtil.getCalendar(
+		java.util.Calendar startTimeJCalendar = CalendarFactory.getCalendar(
 			2017, java.util.Calendar.JANUARY, 1, 20, 0, 0, 0,
 			_losAngelesTimeZone);
 
@@ -2106,7 +2106,7 @@ public class CalendarBookingLocalServiceTest {
 
 		long startTime = System.currentTimeMillis();
 
-		java.util.Calendar untilJCalendar = CalendarFactoryUtil.getCalendar(
+		java.util.Calendar untilJCalendar = CalendarFactory.getCalendar(
 			startTime);
 
 		untilJCalendar.add(java.util.Calendar.DAY_OF_MONTH, -2);
@@ -2901,7 +2901,7 @@ public class CalendarBookingLocalServiceTest {
 				calendarBooking, 2, RandomTestUtil.randomLocaleStringMap(),
 				serviceContext);
 
-		java.util.Calendar untilJCalendar = CalendarFactoryUtil.getCalendar(
+		java.util.Calendar untilJCalendar = CalendarFactory.getCalendar(
 			calendarBooking.getStartTime());
 
 		untilJCalendar.add(java.util.Calendar.DAY_OF_MONTH, 10);
@@ -2934,7 +2934,7 @@ public class CalendarBookingLocalServiceTest {
 				calendarBooking, 2, RandomTestUtil.randomLocaleStringMap(),
 				serviceContext);
 
-		java.util.Calendar untilJCalendar = CalendarFactoryUtil.getCalendar(
+		java.util.Calendar untilJCalendar = CalendarFactory.getCalendar(
 			calendarBooking.getStartTime());
 
 		untilJCalendar.add(java.util.Calendar.DAY_OF_MONTH, 10);
@@ -2967,7 +2967,7 @@ public class CalendarBookingLocalServiceTest {
 				calendarBooking, 2, RandomTestUtil.randomLocaleStringMap(),
 				serviceContext);
 
-		java.util.Calendar untilJCalendar = CalendarFactoryUtil.getCalendar(
+		java.util.Calendar untilJCalendar = CalendarFactory.getCalendar(
 			calendarBooking.getStartTime());
 
 		untilJCalendar.add(java.util.Calendar.DAY_OF_MONTH, 10);
@@ -2981,7 +2981,7 @@ public class CalendarBookingLocalServiceTest {
 				RecurrenceSerializer.serialize(recurrence));
 
 		java.util.Calendar instanceStartTimeJCalendar =
-			CalendarFactoryUtil.getCalendar(
+			CalendarFactory.getCalendar(
 				calendarBookingInstance.getStartTime(), _utcTimeZone);
 
 		assertRepeatsExceptFor(calendarBooking, instanceStartTimeJCalendar);
@@ -3045,7 +3045,7 @@ public class CalendarBookingLocalServiceTest {
 		Calendar calendar = CalendarTestUtil.addCalendar(
 			_user, _losAngelesTimeZone, serviceContext);
 
-		java.util.Calendar startTimeJCalendar = CalendarFactoryUtil.getCalendar(
+		java.util.Calendar startTimeJCalendar = CalendarFactory.getCalendar(
 			2017, java.util.Calendar.JANUARY, 1, 20, 0, 0, 0,
 			_losAngelesTimeZone);
 

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
@@ -242,8 +242,7 @@ public class DiscountAccountGroupResourceTest
 	protected DiscountAccountGroup randomDiscountAccountGroup()
 		throws Exception {
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
-			_user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(_user.getTimeZone());
 
 		CommerceDiscount commerceDiscount =
 			_commerceDiscountLocalService.addOrUpdateCommerceDiscount(
@@ -311,7 +310,7 @@ public class DiscountAccountGroupResourceTest
 		throws Exception {
 
 		if (_commerceDiscount == null) {
-			Calendar calendar = CalendarFactoryUtil.getCalendar(
+			Calendar calendar = CalendarFactory.getCalendar(
 				_user.getTimeZone());
 
 			_commerceDiscount =
@@ -360,7 +359,7 @@ public class DiscountAccountGroupResourceTest
 		throws Exception {
 
 		if (_commerceDiscount == null) {
-			Calendar calendar = CalendarFactoryUtil.getCalendar(
+			Calendar calendar = CalendarFactory.getCalendar(
 				_user.getTimeZone());
 
 			_commerceDiscount =

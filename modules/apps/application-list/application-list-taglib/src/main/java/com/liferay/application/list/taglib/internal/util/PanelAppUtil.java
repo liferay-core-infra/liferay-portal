@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Objects;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -101,6 +102,12 @@ public class PanelAppUtil {
 		return active;
 	}
 
+	public static void setServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(PanelAppUtil.class);
+
+	private static ServletContext _servletContext;
 
 }

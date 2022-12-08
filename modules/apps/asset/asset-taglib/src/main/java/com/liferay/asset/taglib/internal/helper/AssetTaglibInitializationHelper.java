@@ -12,23 +12,28 @@
  * details.
  */
 
-package com.liferay.asset.taglib.internal.servlet;
+package com.liferay.asset.taglib.internal.helper;
+
+import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
 
 import javax.servlet.ServletContext;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
- * @author Michael Bradford
+ * @author Lily Chi
  */
-public class ServletContextUtil {
+@Component(service = {})
+public class AssetTaglibInitializationHelper {
 
-	public static ServletContext getServletContext() {
-		return _servletContext;
+	@Activate
+	protected void activate() {
+		ServletContextUtil.setServletContext(_servletContext);
 	}
 
-	public static void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
-	private static ServletContext _servletContext;
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.asset.taglib)")
+	private ServletContext _servletContext;
 
 }

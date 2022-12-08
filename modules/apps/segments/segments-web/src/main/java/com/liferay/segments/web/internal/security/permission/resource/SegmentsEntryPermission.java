@@ -25,14 +25,6 @@ import com.liferay.segments.model.SegmentsEntry;
 public class SegmentsEntryPermission {
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, long entryId, String actionId)
-		throws PortalException {
-
-		return _segmentsEntryModelResourcePermission.contains(
-			permissionChecker, entryId, actionId);
-	}
-
-	public static boolean contains(
 			PermissionChecker permissionChecker, SegmentsEntry segmentsEntry,
 			String actionId)
 		throws PortalException {

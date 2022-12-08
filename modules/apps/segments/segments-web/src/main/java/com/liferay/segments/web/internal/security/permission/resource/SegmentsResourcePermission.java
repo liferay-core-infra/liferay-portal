@@ -14,7 +14,6 @@
 
 package com.liferay.segments.web.internal.security.permission.resource;
 
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 
@@ -22,15 +21,6 @@ import com.liferay.portal.kernel.security.permission.resource.PortletResourcePer
  * @author Eduardo García
  */
 public class SegmentsResourcePermission {
-
-	public static void check(
-			PermissionChecker permissionChecker, long scopeGroupId,
-			String actionId)
-		throws PrincipalException {
-
-		_portletResourcePermission.check(
-			permissionChecker, scopeGroupId, actionId);
-	}
 
 	public static boolean contains(
 		PermissionChecker permissionChecker, long groupId, String actionId) {

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -29,6 +30,10 @@ import javax.servlet.jsp.PageContext;
  * @author Shuyang Zhou
  */
 public class InputAssetLinksTag extends AssetLinksTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	@Override
 	public void setPageContext(PageContext pageContext) {
@@ -78,5 +83,7 @@ public class InputAssetLinksTag extends AssetLinksTag {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		InputAssetLinksTag.class);
+
+	private static ServletContext _servletContext;
 
 }

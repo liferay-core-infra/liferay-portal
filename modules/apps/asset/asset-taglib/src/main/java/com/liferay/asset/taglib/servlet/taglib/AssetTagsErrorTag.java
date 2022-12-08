@@ -17,12 +17,17 @@ package com.liferay.asset.taglib.servlet.taglib;
 import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
+import javax.servlet.ServletContext;
 import javax.servlet.jsp.PageContext;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class AssetTagsErrorTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	@Override
 	public void setPageContext(PageContext pageContext) {
@@ -37,5 +42,7 @@ public class AssetTagsErrorTag extends IncludeTag {
 	}
 
 	private static final String _PAGE = "/asset_tags_error/page.jsp";
+
+	private static ServletContext _servletContext;
 
 }

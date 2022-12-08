@@ -54,6 +54,7 @@ import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.WindowState;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -62,6 +63,10 @@ import javax.servlet.jsp.PageContext;
  * @author Shuyang Zhou
  */
 public class AssetLinksTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	public long getAssetEntryId() {
 		return _assetEntryId;
@@ -349,6 +354,8 @@ public class AssetLinksTag extends IncludeTag {
 	private static final String _PAGE = "/asset_links/page.jsp";
 
 	private static final Log _log = LogFactoryUtil.getLog(AssetLinksTag.class);
+
+	private static ServletContext _servletContext;
 
 	private long _assetEntryId;
 	private String _className = StringPool.BLANK;

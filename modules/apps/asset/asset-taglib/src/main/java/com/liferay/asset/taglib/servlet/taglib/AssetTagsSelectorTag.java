@@ -43,6 +43,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -50,6 +51,10 @@ import javax.servlet.jsp.PageContext;
  * @author Antonio Pol
  */
 public class AssetTagsSelectorTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	public String getAddCallback() {
 		return _addCallback;
@@ -349,6 +354,8 @@ public class AssetTagsSelectorTag extends IncludeTag {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetTagsSelectorTag.class);
+
+	private static ServletContext _servletContext;
 
 	private String _addCallback;
 	private boolean _allowAddEntry = true;

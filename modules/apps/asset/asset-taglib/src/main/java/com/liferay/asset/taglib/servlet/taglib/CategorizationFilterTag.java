@@ -19,6 +19,7 @@ import com.liferay.taglib.util.IncludeTag;
 
 import javax.portlet.PortletURL;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -26,6 +27,10 @@ import javax.servlet.jsp.PageContext;
  * @author Julio Camarero
  */
 public class CategorizationFilterTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	public String getAssetType() {
 		return _assetType;
@@ -83,6 +88,8 @@ public class CategorizationFilterTag extends IncludeTag {
 	}
 
 	private static final String _PAGE = "/categorization_filter/page.jsp";
+
+	private static ServletContext _servletContext;
 
 	private String _assetType;
 	private long[] _groupIds;

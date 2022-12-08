@@ -28,6 +28,7 @@ import com.liferay.taglib.util.IncludeTag;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +39,10 @@ import javax.servlet.jsp.PageContext;
  * @author Julio Camarero
  */
 public class AssetDisplayTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	@Override
 	public int doEndTag() throws JspException {
@@ -274,6 +279,8 @@ public class AssetDisplayTag extends IncludeTag {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetDisplayTag.class);
+
+	private static ServletContext _servletContext;
 
 	private int _abstractLength = 200;
 	private AssetEntry _assetEntry;

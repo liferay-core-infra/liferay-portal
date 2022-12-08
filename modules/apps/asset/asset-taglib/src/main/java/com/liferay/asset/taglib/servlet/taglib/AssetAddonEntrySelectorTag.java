@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -35,6 +36,10 @@ import javax.servlet.jsp.PageContext;
  */
 @Deprecated
 public class AssetAddonEntrySelectorTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	public List<AssetAddonEntry> getAssetAddonEntries() {
 		return _assetAddonEntries;
@@ -134,6 +139,8 @@ public class AssetAddonEntrySelectorTag extends IncludeTag {
 	}
 
 	private static final String _PAGE = "/asset_addon_entry_selector/page.jsp";
+
+	private static ServletContext _servletContext;
 
 	private List<AssetAddonEntry> _assetAddonEntries;
 	private String _hiddenInput;

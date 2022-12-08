@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.portlet.PortletURL;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -32,6 +33,10 @@ import javax.servlet.jsp.PageContext;
  * @author Jorge Ferrer
  */
 public class AssetCategoriesSummaryTag<R> extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	public String getClassName() {
 		return _className;
@@ -156,6 +161,8 @@ public class AssetCategoriesSummaryTag<R> extends IncludeTag {
 	}
 
 	private static final String _PAGE = "/asset_categories_summary/page.jsp";
+
+	private static ServletContext _servletContext;
 
 	private String _className;
 	private long _classPK;

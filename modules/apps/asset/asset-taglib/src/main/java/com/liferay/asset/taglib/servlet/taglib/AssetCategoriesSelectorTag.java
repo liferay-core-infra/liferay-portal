@@ -56,6 +56,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -64,6 +65,10 @@ import javax.servlet.jsp.PageContext;
  * @author Carlos Lancha
  */
 public class AssetCategoriesSelectorTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	public String getCategoryIds() {
 		return _categoryIds;
@@ -522,6 +527,8 @@ public class AssetCategoriesSelectorTag extends IncludeTag {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetCategoriesSelectorTag.class);
+
+	private static ServletContext _servletContext;
 
 	private String _categoryIds;
 	private String _className;

@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.taglib.util.IncludeTag;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -32,6 +33,10 @@ import javax.servlet.jsp.PageContext;
  * @author Eudaldo Alonso
  */
 public class AssetMetadataTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	@Override
 	public int doEndTag() throws JspException {
@@ -140,6 +145,8 @@ public class AssetMetadataTag extends IncludeTag {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetMetadataTag.class);
+
+	private static ServletContext _servletContext;
 
 	private String _className = StringPool.BLANK;
 	private long _classPK;

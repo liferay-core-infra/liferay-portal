@@ -61,13 +61,19 @@ public class LiferayServiceExtender
 		List<LiferayServiceExtension> liferayServiceExtensions =
 			new ArrayList<>();
 
+		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+		ClassLoader classLoader = bundleWiring.getClassLoader();
+
 		try {
-			_startDefaultServiceExtension(bundle, liferayServiceExtensions);
-			_startInitialUpgradeExtension(bundle, liferayServiceExtensions);
+			_startDefaultServiceExtension(
+				bundle, classLoader, liferayServiceExtensions);
+			_startInitialUpgradeExtension(
+				bundle, classLoader, liferayServiceExtensions);
 			_startPortletConfigurationExtension(
-				bundle, liferayServiceExtensions);
+				bundle, classLoader, liferayServiceExtensions);
 			_startServiceConfigurationExtension(
-				bundle, liferayServiceExtensions);
+				bundle, classLoader, liferayServiceExtensions);
 
 			return liferayServiceExtensions;
 		}
@@ -125,7 +131,7 @@ public class LiferayServiceExtender
 	}
 
 	private void _startDefaultServiceExtension(
-			Bundle bundle,
+			Bundle bundle, ClassLoader classLoader,
 			List<LiferayServiceExtension> liferayServiceExtensions)
 		throws Exception {
 
@@ -137,7 +143,7 @@ public class LiferayServiceExtender
 		}
 
 		LiferayServiceExtension defaultServiceExtension =
-			new DefaultServiceExtension(bundle);
+			new DefaultServiceExtension(bundle, classLoader);
 
 		liferayServiceExtensions.add(defaultServiceExtension);
 
@@ -145,10 +151,11 @@ public class LiferayServiceExtender
 	}
 
 	private void _startInitialUpgradeExtension(
-		Bundle bundle, List<LiferayServiceExtension> liferayServiceExtensions) {
+		Bundle bundle, ClassLoader classLoader,
+		List<LiferayServiceExtension> liferayServiceExtensions) {
 
 		InitialUpgradeExtension initialUpgradeExtension =
-			new InitialUpgradeExtension(bundle);
+			new InitialUpgradeExtension(bundle, classLoader);
 
 		liferayServiceExtensions.add(initialUpgradeExtension);
 
@@ -156,11 +163,8 @@ public class LiferayServiceExtender
 	}
 
 	private void _startPortletConfigurationExtension(
-		Bundle bundle, List<LiferayServiceExtension> liferayServiceExtensions) {
-
-		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
-
-		ClassLoader classLoader = bundleWiring.getClassLoader();
+		Bundle bundle, ClassLoader classLoader,
+		List<LiferayServiceExtension> liferayServiceExtensions) {
 
 		Configuration portletConfiguration =
 			ConfigurationFactoryUtil.getConfiguration(classLoader, "portlet");
@@ -179,14 +183,11 @@ public class LiferayServiceExtender
 	}
 
 	private void _startServiceConfigurationExtension(
-		Bundle bundle, List<LiferayServiceExtension> liferayServiceExtensions) {
+		Bundle bundle, ClassLoader classLoader,
+		List<LiferayServiceExtension> liferayServiceExtensions) {
 
 		Dictionary<String, String> headers = bundle.getHeaders(
 			StringPool.BLANK);
-
-		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
-
-		ClassLoader classLoader = bundleWiring.getClassLoader();
 
 		Configuration serviceConfiguration =
 			ConfigurationFactoryUtil.getConfiguration(classLoader, "service");

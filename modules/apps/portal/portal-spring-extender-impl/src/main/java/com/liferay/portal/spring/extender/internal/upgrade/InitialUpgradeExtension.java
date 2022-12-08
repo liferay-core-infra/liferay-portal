@@ -45,15 +45,15 @@ import org.apache.felix.dm.DependencyManager;
 import org.apache.felix.dm.ServiceDependency;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.wiring.BundleWiring;
 
 /**
  * @author Preston Crary
  */
 public class InitialUpgradeExtension implements LiferayServiceExtension {
 
-	public InitialUpgradeExtension(Bundle bundle) {
+	public InitialUpgradeExtension(Bundle bundle, ClassLoader classLoader) {
 		_bundle = bundle;
+		_classLoader = classLoader;
 
 		_dependencyManager = new DependencyManager(bundle.getBundleContext());
 	}
@@ -94,10 +94,8 @@ public class InitialUpgradeExtension implements LiferayServiceExtension {
 	private Dictionary<String, Object> _buildServiceProperties() {
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
-
 		Configuration configuration = ConfigurationFactoryUtil.getConfiguration(
-			bundleWiring.getClassLoader(), "service");
+			_classLoader, "service");
 
 		if (configuration != null) {
 			String buildNumber = configuration.get("build.number");
@@ -129,6 +127,7 @@ public class InitialUpgradeExtension implements LiferayServiceExtension {
 		InitialUpgradeExtension.class);
 
 	private final Bundle _bundle;
+	private final ClassLoader _classLoader;
 	private Component _component;
 	private final DependencyManager _dependencyManager;
 

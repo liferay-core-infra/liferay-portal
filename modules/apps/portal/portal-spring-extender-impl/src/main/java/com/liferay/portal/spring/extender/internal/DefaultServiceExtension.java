@@ -41,7 +41,6 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.framework.wiring.BundleWiring;
 
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -51,8 +50,12 @@ import org.springframework.transaction.PlatformTransactionManager;
  */
 public class DefaultServiceExtension implements LiferayServiceExtension {
 
-	public DefaultServiceExtension(Bundle extendeeBundle) {
+	public DefaultServiceExtension(
+		Bundle extendeeBundle, ClassLoader classLoader) {
+
 		_extendeeBundle = extendeeBundle;
+
+		_extendeeClassLoader = classLoader;
 	}
 
 	@Override
@@ -79,12 +82,7 @@ public class DefaultServiceExtension implements LiferayServiceExtension {
 
 	@Override
 	public void start() throws Exception {
-		BundleWiring extendeeBundleWiring = _extendeeBundle.adapt(
-			BundleWiring.class);
-
-		ClassLoader extendeeClassLoader = extendeeBundleWiring.getClassLoader();
-
-		_dataSource = DataSourceUtil.getDataSource(extendeeClassLoader);
+		_dataSource = DataSourceUtil.getDataSource(_extendeeClassLoader);
 
 		BundleContext extendeeBundleContext =
 			_extendeeBundle.getBundleContext();
@@ -97,7 +95,7 @@ public class DefaultServiceExtension implements LiferayServiceExtension {
 					_extendeeBundle.getSymbolicName())));
 
 		ClassLoader classLoader = new ModuleAggregareClassLoader(
-			extendeeClassLoader, _extendeeBundle.getSymbolicName());
+			_extendeeClassLoader, _extendeeBundle.getSymbolicName());
 
 		PortletHibernateConfiguration portletHibernateConfiguration =
 			new PortletHibernateConfiguration(classLoader, _dataSource);
@@ -166,6 +164,7 @@ public class DefaultServiceExtension implements LiferayServiceExtension {
 
 	private DataSource _dataSource;
 	private final Bundle _extendeeBundle;
+	private final ClassLoader _extendeeClassLoader;
 	private final List<ServiceRegistration<?>> _serviceRegistrations =
 		new ArrayList<>();
 	private SessionFactoryImplementor _sessionFactoryImplementor;

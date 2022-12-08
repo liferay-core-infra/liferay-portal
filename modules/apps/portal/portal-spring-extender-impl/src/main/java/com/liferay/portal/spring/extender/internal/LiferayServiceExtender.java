@@ -17,6 +17,8 @@ package com.liferay.portal.spring.extender.internal;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.orm.hibernate.SessionFactoryImpl;
 import com.liferay.portal.dao.orm.hibernate.VerifySessionFactoryWrapper;
+import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
@@ -25,6 +27,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.module.util.BundleUtil;
+import com.liferay.portal.spring.extender.internal.configuration.PortletConfigurationExtension;
 import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
 import com.liferay.portal.spring.extender.internal.loader.ModuleAggregareClassLoader;
 import com.liferay.portal.spring.extender.internal.upgrade.InitialUpgradeExtension;
@@ -79,6 +82,8 @@ public class LiferayServiceExtender
 		try {
 			_startDefaultServiceExtension(bundle, liferayServiceExtensions);
 			_startInitialUpgradeExtension(bundle, liferayServiceExtensions);
+			_startPortletConfigurationExtension(
+				bundle, liferayServiceExtensions);
 
 			return liferayServiceExtensions;
 		}
@@ -286,6 +291,29 @@ public class LiferayServiceExtender
 		liferayServiceExtensions.add(initialUpgradeExtension);
 
 		initialUpgradeExtension.start();
+	}
+
+	private void _startPortletConfigurationExtension(
+		Bundle bundle, List<LiferayServiceExtension> liferayServiceExtensions) {
+
+		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+		ClassLoader classLoader = bundleWiring.getClassLoader();
+
+		Configuration portletConfiguration =
+			ConfigurationFactoryUtil.getConfiguration(classLoader, "portlet");
+
+		if (portletConfiguration == null) {
+			return;
+		}
+
+		PortletConfigurationExtension portletConfigurationExtension =
+			new PortletConfigurationExtension(
+				bundle, classLoader, portletConfiguration);
+
+		liferayServiceExtensions.add(portletConfigurationExtension);
+
+		portletConfigurationExtension.start();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

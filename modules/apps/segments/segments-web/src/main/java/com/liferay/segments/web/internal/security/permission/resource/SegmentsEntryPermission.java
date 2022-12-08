@@ -49,7 +49,7 @@ public class SegmentsEntryPermission {
 		target = "(model.class.name=com.liferay.segments.model.SegmentsEntry)",
 		unbind = "-"
 	)
-	protected void setModelResourcePermission(
+	protected static void setModelResourcePermission(
 		ModelResourcePermission<SegmentsEntry> modelResourcePermission) {
 
 		_segmentsEntryModelResourcePermission = modelResourcePermission;

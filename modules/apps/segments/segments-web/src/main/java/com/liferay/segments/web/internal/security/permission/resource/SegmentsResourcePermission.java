@@ -48,7 +48,7 @@ public class SegmentsResourcePermission {
 		target = "(resource.name=" + SegmentsConstants.RESOURCE_NAME + ")",
 		unbind = "-"
 	)
-	protected void setPortletResourcePermission(
+	protected static void setPortletResourcePermission(
 		PortletResourcePermission portletResourcePermission) {
 
 		_portletResourcePermission = portletResourcePermission;

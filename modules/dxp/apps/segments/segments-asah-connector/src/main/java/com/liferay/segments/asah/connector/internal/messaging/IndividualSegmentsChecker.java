@@ -215,7 +215,7 @@ public class IndividualSegmentsChecker {
 
 				individuals.forEach(
 					individual -> {
-						Long userId = _getUserIdOptional(
+						Long userId = _getUserId(
 							segmentsEntry.getCompanyId(), individual);
 
 						if (userId != null) {
@@ -319,7 +319,7 @@ public class IndividualSegmentsChecker {
 		return serviceContext;
 	}
 
-	private Long _getUserIdOptional(long companyId, Individual individual) {
+	private Long _getUserId(long companyId, Individual individual) {
 		Long userId = null;
 
 		List<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =

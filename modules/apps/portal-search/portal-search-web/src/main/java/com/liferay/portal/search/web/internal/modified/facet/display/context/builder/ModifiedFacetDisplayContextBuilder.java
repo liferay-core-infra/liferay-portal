@@ -58,11 +58,9 @@ import javax.portlet.RenderRequest;
 public class ModifiedFacetDisplayContextBuilder implements Serializable {
 
 	public ModifiedFacetDisplayContextBuilder(
-			CalendarFactory calendarFactory,
 			DateFormatFactory dateFormatFactory, RenderRequest renderRequest)
 		throws ConfigurationException {
 
-		_calendarFactory = calendarFactory;
 		_dateFormatFactory = dateFormatFactory;
 
 		_dateRangeFactory = new DateRangeFactory(dateFormatFactory);
@@ -81,10 +79,8 @@ public class ModifiedFacetDisplayContextBuilder implements Serializable {
 		ModifiedFacetDisplayContext modifiedFacetDisplayContext =
 			new ModifiedFacetDisplayContext();
 
-		if (_calendarFactory != null) {
-			modifiedFacetDisplayContext.setCalendarDisplayContext(
-				_buildCalendarDisplayContext());
-		}
+		modifiedFacetDisplayContext.setCalendarDisplayContext(
+			_buildCalendarDisplayContext());
 
 		if ((_dateFormatFactory != null) && (_dateRangeFactory != null)) {
 			modifiedFacetDisplayContext.
@@ -207,8 +203,7 @@ public class ModifiedFacetDisplayContextBuilder implements Serializable {
 	private ModifiedFacetCalendarDisplayContext _buildCalendarDisplayContext() {
 		ModifiedFacetCalendarDisplayContextBuilder
 			modifiedFacetCalendarDisplayContextBuilder =
-				new ModifiedFacetCalendarDisplayContextBuilder(
-					_calendarFactory);
+				new ModifiedFacetCalendarDisplayContextBuilder();
 
 		Stream<String> selectedRangesStream = _selectedRanges.stream();
 
@@ -320,7 +315,7 @@ public class ModifiedFacetDisplayContextBuilder implements Serializable {
 		DateFormat format = _dateFormatFactory.getSimpleDateFormat(
 			"yyyy-MM-dd");
 
-		Calendar calendar = _calendarFactory.getCalendar(_timeZone);
+		Calendar calendar = CalendarFactory.getCalendar(_timeZone);
 
 		String to = format.format(calendar.getTime());
 
@@ -372,7 +367,6 @@ public class ModifiedFacetDisplayContextBuilder implements Serializable {
 		return true;
 	}
 
-	private final CalendarFactory _calendarFactory;
 	private String _currentURL;
 	private final DateFormatFactory _dateFormatFactory;
 	private final DateRangeFactory _dateRangeFactory;

@@ -27,7 +27,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -208,7 +208,7 @@ public class RecurrenceSerializer {
 			second = dateTimeValue.second();
 		}
 
-		return CalendarFactoryUtil.getCalendar(
+		return CalendarFactory.getCalendar(
 			dateValue.year(), dateValue.month() - 1, dateValue.day(), hour,
 			minute, second, 0, timeZone);
 	}

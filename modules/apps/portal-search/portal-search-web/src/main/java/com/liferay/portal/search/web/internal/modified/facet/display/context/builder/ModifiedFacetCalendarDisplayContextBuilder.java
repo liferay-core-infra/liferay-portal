@@ -32,12 +32,6 @@ import java.util.TimeZone;
  */
 public class ModifiedFacetCalendarDisplayContextBuilder {
 
-	public ModifiedFacetCalendarDisplayContextBuilder(
-		CalendarFactory calendarFactory) {
-
-		_calendarFactory = calendarFactory;
-	}
-
 	public ModifiedFacetCalendarDisplayContext build() {
 		_buildBounds();
 
@@ -121,11 +115,11 @@ public class ModifiedFacetCalendarDisplayContextBuilder {
 
 	private Calendar _getFromCalendar() {
 		if (Validator.isGregorianDate(_fromMonth, _fromDay, _fromYear)) {
-			return _calendarFactory.getCalendar(
+			return CalendarFactory.getCalendar(
 				_fromYear, _fromMonth, _fromDay, 0, 0, 0, 0, _timeZone);
 		}
 
-		Calendar calendar = _calendarFactory.getCalendar(_timeZone, _locale);
+		Calendar calendar = CalendarFactory.getCalendar(_timeZone, _locale);
 
 		calendar.add(Calendar.DATE, -1);
 
@@ -134,11 +128,11 @@ public class ModifiedFacetCalendarDisplayContextBuilder {
 
 	private Calendar _getToCalendar() {
 		if (Validator.isGregorianDate(_toMonth, _toDay, _toYear)) {
-			return _calendarFactory.getCalendar(
+			return CalendarFactory.getCalendar(
 				_toYear, _toMonth, _toDay, 0, 0, 0, 0, _timeZone);
 		}
 
-		return _calendarFactory.getCalendar(_timeZone, _locale);
+		return CalendarFactory.getCalendar(_timeZone, _locale);
 	}
 
 	private boolean _isRangeBackwards(
@@ -183,7 +177,6 @@ public class ModifiedFacetCalendarDisplayContextBuilder {
 		_toYear = to[2];
 	}
 
-	private final CalendarFactory _calendarFactory;
 	private String _from;
 	private int _fromDay;
 	private int _fromMonth;

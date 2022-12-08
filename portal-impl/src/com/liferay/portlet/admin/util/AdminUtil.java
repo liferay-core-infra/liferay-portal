@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserServiceUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Calendar;
@@ -91,7 +91,7 @@ public class AdminUtil {
 
 		Contact contact = user.getContact();
 
-		Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+		Calendar birthdayCal = CalendarFactory.getCalendar();
 
 		birthdayCal.setTime(contact.getBirthday());
 
@@ -132,7 +132,7 @@ public class AdminUtil {
 
 		Contact contact = user.getContact();
 
-		Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+		Calendar birthdayCal = CalendarFactory.getCalendar();
 
 		birthdayCal.setTime(contact.getBirthday());
 

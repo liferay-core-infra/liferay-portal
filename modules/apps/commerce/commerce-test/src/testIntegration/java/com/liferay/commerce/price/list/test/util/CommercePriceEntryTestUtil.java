@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.math.BigDecimal;
@@ -72,7 +72,7 @@ public class CommercePriceEntryTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		if (publish) {
 			serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
@@ -130,7 +130,7 @@ public class CommercePriceEntryTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		if (publish) {
 			serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);

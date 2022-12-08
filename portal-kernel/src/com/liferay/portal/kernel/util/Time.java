@@ -52,7 +52,7 @@ public class Time {
 	public static final long YEAR = DAY * 365;
 
 	public static Date getDate(Calendar cal) {
-		Calendar adjustedCal = CalendarFactoryUtil.getCalendar();
+		Calendar adjustedCal = CalendarFactory.getCalendar();
 
 		adjustedCal.set(Calendar.YEAR, cal.get(Calendar.YEAR));
 		adjustedCal.set(Calendar.MONTH, cal.get(Calendar.MONTH));
@@ -66,7 +66,7 @@ public class Time {
 	}
 
 	public static Date getDate(Date date, TimeZone tz) {
-		Calendar cal = CalendarFactoryUtil.getCalendar(tz);
+		Calendar cal = CalendarFactory.getCalendar(tz);
 
 		cal.setTime(date);
 
@@ -74,7 +74,7 @@ public class Time {
 	}
 
 	public static Date getDate(TimeZone tz) {
-		Calendar cal = CalendarFactoryUtil.getCalendar(tz);
+		Calendar cal = CalendarFactory.getCalendar(tz);
 
 		return getDate(cal);
 	}

@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-Calendar cal = CalendarFactoryUtil.getCalendar(timeZone, locale);
+Calendar cal = CalendarFactory.getCalendar(timeZone, locale);
 %>
 
 <aui:fieldset>

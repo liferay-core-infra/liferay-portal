@@ -439,7 +439,7 @@ Map<Long, List<CommerceOrderValidatorResult>> commerceOrderValidatorResultsMap =
 						Date requestedDeliveryDate = commerceOrder.getRequestedDeliveryDate();
 
 						if (requestedDeliveryDate != null) {
-							Calendar calendar = CalendarFactoryUtil.getCalendar(requestedDeliveryDate.getTime());
+							Calendar calendar = CalendarFactory.getCalendar(requestedDeliveryDate.getTime());
 
 							requestedDeliveryDay = calendar.get(Calendar.DAY_OF_MONTH);
 							requestedDeliveryMonth = calendar.get(Calendar.MONTH);

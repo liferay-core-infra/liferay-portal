@@ -167,7 +167,7 @@ int index = 0;
 					</li>
 
 					<%
-					Calendar fromCalendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+					Calendar fromCalendar = CalendarFactory.getCalendar(timeZone, locale);
 
 					if (fromDate != null) {
 						fromCalendar.setTime(fromDate);
@@ -176,7 +176,7 @@ int index = 0;
 						fromCalendar.add(Calendar.DATE, -1);
 					}
 
-					Calendar toCalendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+					Calendar toCalendar = CalendarFactory.getCalendar(timeZone, locale);
 
 					if (toDate != null) {
 						toCalendar.setTime(toDate);

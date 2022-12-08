@@ -67,13 +67,12 @@ public class ModifiedFacetPortletSharedSearchContributor
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
 		ModifiedFacetBuilder modifiedFacetBuilder = new ModifiedFacetBuilder(
-			_modifiedFacetFactory, _calendarFactory, _dateFormatFactory,
-			_jsonFactory);
+			_modifiedFacetFactory, _dateFormatFactory, _jsonFactory);
 
 		modifiedFacetBuilder.setRangesJSONArray(
 			_dateRangeFactory.replaceAliases(
 				modifiedFacetPortletPreferences.getRangesJSONArray(),
-				_calendarFactory.getCalendar(), _jsonFactory));
+				CalendarFactory.getCalendar(), _jsonFactory));
 
 		modifiedFacetBuilder.setSearchContext(
 			portletSharedSearchSettings.getSearchContext());
@@ -96,9 +95,6 @@ public class ModifiedFacetPortletSharedSearchContributor
 
 		return modifiedFacetBuilder.build();
 	}
-
-	@Reference
-	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private DateFormatFactory _dateFormatFactory;

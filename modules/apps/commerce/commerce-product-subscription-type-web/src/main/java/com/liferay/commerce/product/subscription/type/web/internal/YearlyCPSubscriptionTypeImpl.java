@@ -18,7 +18,7 @@ import com.liferay.commerce.product.constants.CPConstants;
 import com.liferay.commerce.product.subscription.type.web.internal.constants.CPSubscriptionTypeConstants;
 import com.liferay.commerce.product.util.CPSubscriptionType;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
@@ -58,7 +58,7 @@ public class YearlyCPSubscriptionTypeImpl implements CPSubscriptionType {
 		UnicodeProperties subscriptionTypeSettingsUnicodeProperties,
 		Date lastIterationDate) {
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone);
+		Calendar calendar = CalendarFactory.getCalendar(timeZone);
 
 		if (lastIterationDate == null) {
 			lastIterationDate = getSubscriptionStartDate(
@@ -101,7 +101,7 @@ public class YearlyCPSubscriptionTypeImpl implements CPSubscriptionType {
 			return date;
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			date.getTime(), timeZone);
 
 		int today = calendar.get(Calendar.DAY_OF_YEAR);

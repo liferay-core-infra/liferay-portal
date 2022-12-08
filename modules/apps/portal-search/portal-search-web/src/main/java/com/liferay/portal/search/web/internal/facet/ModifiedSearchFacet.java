@@ -166,7 +166,7 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 			_dateFormatFactory);
 
 		return dateRangeFactory.replaceAliases(
-			rangesJSONArray, _calendarFactory.getCalendar(), _jsonFactory);
+			rangesJSONArray, CalendarFactory.getCalendar(), _jsonFactory);
 	}
 
 	private static final String[] _LABELS = {
@@ -177,9 +177,6 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 		"[past-hour TO *]", "[past-24-hours TO *]", "[past-week TO *]",
 		"[past-month TO *]", "[past-year TO *]"
 	};
-
-	@Reference
-	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private DateFormatFactory _dateFormatFactory;

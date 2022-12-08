@@ -137,7 +137,7 @@ import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -1902,7 +1902,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				serviceContext.getScopeGroupId(),
 				_portal.getClassNameId(DDMStructure.class), ddmTemplateKey);
 
-			Calendar calendar = CalendarFactoryUtil.getCalendar(
+			Calendar calendar = CalendarFactory.getCalendar(
 				serviceContext.getTimeZone());
 
 			serviceContext.setAssetCategoryIds(

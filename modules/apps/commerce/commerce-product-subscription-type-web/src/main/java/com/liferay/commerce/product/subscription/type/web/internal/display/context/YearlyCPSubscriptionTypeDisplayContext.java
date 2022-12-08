@@ -19,7 +19,7 @@ import com.liferay.commerce.product.subscription.type.web.internal.display.conte
 import com.liferay.commerce.product.subscription.type.web.internal.display.context.util.comparator.YearlyCPSubscriptionTypeCalendarMonthsComparator;
 import com.liferay.commerce.util.CommerceSubscriptionTypeUtil;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
@@ -140,7 +140,7 @@ public class YearlyCPSubscriptionTypeDisplayContext {
 	}
 
 	private Map<String, Integer> _getCalendarMonthsDisplayNames() {
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			_cpSubscriptionTypeRequestHelper.getLocale());
 
 		return calendar.getDisplayNames(

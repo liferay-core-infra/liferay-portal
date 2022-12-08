@@ -22,7 +22,7 @@ User selUser = (User)request.getAttribute(UsersAdminWebKeys.SELECTED_USER);
 PasswordPolicy passwordPolicy = userDisplayContext.getPasswordPolicy();
 Contact selContact = userDisplayContext.getContact();
 
-Calendar birthday = CalendarFactoryUtil.getCalendar();
+Calendar birthday = CalendarFactory.getCalendar();
 
 birthday.set(Calendar.MONTH, Calendar.JANUARY);
 birthday.set(Calendar.DATE, 1);

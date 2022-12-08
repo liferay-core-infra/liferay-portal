@@ -37,11 +37,9 @@ public class ModifiedFacetBuilder {
 
 	public ModifiedFacetBuilder(
 		ModifiedFacetFactory modifiedFacetFactory,
-		CalendarFactory calendarFactory, DateFormatFactory dateFormatFactory,
-		JSONFactory jsonFactory) {
+		DateFormatFactory dateFormatFactory, JSONFactory jsonFactory) {
 
 		_modifiedFacetFactory = modifiedFacetFactory;
-		_calendarFactory = calendarFactory;
 		_jsonFactory = jsonFactory;
 
 		_dateRangeFactory = new DateRangeFactory(dateFormatFactory);
@@ -101,7 +99,7 @@ public class ModifiedFacetBuilder {
 		JSONObject jsonObject = facetConfiguration.getData();
 
 		jsonObject.put(
-			"ranges", getRangesJSONArray(_calendarFactory.getCalendar()));
+			"ranges", getRangesJSONArray(CalendarFactory.getCalendar()));
 
 		return facetConfiguration;
 	}
@@ -163,13 +161,12 @@ public class ModifiedFacetBuilder {
 			}
 
 			return _dateRangeFactory.getRangeString(
-				selectedRange, _calendarFactory.getCalendar());
+				selectedRange, CalendarFactory.getCalendar());
 		}
 
 		return null;
 	}
 
-	private final CalendarFactory _calendarFactory;
 	private String _customRangeFrom;
 	private String _customRangeTo;
 	private final DateRangeFactory _dateRangeFactory;

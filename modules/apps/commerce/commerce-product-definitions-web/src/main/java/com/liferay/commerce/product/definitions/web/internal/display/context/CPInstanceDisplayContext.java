@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.CustomAttributesUtil;
@@ -213,7 +213,7 @@ public class CPInstanceDisplayContext extends BaseCPDefinitionsDisplayContext {
 		Date discontinuedDate = cpInstance.getDiscontinuedDate();
 
 		if (discontinuedDate != null) {
-			Calendar calendar = CalendarFactoryUtil.getCalendar(
+			Calendar calendar = CalendarFactory.getCalendar(
 				discontinuedDate.getTime());
 
 			return calendar.get(field);

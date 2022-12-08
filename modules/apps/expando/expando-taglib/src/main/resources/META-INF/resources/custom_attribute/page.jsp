@@ -93,7 +93,7 @@ ExpandoBridge expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(company.
 							<span id="<portlet:namespace /><%= randomNamespace %><%= HtmlUtil.getAUICompatibleId(name) %>">
 
 								<%
-								Calendar valueDate = CalendarFactoryUtil.getCalendar(timeZone, locale);
+								Calendar valueDate = CalendarFactory.getCalendar(timeZone, locale);
 
 								if (value != null) {
 									valueDate.setTime((Date)value);

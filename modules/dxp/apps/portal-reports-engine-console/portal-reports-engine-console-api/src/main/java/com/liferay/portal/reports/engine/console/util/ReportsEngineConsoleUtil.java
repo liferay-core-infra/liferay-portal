@@ -18,7 +18,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
@@ -83,7 +83,7 @@ public class ReportsEngineConsoleUtil {
 			timeZone = TimeZoneUtil.getDefault();
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar calendar = CalendarFactory.getCalendar(timeZone, locale);
 
 		calendar.set(Calendar.MONTH, dateMonth);
 		calendar.set(Calendar.DATE, dateDay);

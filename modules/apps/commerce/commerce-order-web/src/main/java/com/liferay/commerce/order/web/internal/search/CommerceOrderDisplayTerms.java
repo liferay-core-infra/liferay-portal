@@ -16,7 +16,7 @@ package com.liferay.commerce.order.web.internal.search;
 
 import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.Calendar;
@@ -108,7 +108,7 @@ public class CommerceOrderDisplayTerms extends DisplayTerms {
 			return null;
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			_endCreateDateYear, _endCreateDateMonth, _endCreateDateDay, 23, 59,
 			59);
 
@@ -139,7 +139,7 @@ public class CommerceOrderDisplayTerms extends DisplayTerms {
 			return null;
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			_startCreateDateYear, _startCreateDateMonth, _startCreateDateDay, 0,
 			0, 0);
 

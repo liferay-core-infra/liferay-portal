@@ -67,7 +67,7 @@
 	<c:when test="<%= propertyDisplayType.equals(ExpandoColumnConstants.PROPERTY_DISPLAY_TYPE_DATE) %>">
 
 		<%
-		Calendar defaultValueDate = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar defaultValueDate = CalendarFactory.getCalendar(timeZone, locale);
 
 		if (defaultValue != null) {
 			defaultValueDate.setTime((Date)defaultValue);

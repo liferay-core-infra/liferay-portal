@@ -97,13 +97,13 @@
 											</div>
 
 											<%
-											Calendar endCalendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+											Calendar endCalendar = CalendarFactory.getCalendar(timeZone, locale);
 
 											if (endDate != null) {
 												endCalendar.setTime(endDate);
 											}
 
-											Calendar startCalendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+											Calendar startCalendar = CalendarFactory.getCalendar(timeZone, locale);
 
 											if (startDate != null) {
 												startCalendar.setTime(startDate);

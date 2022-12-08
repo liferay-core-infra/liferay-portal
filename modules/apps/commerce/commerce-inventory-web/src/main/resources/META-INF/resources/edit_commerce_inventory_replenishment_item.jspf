@@ -51,7 +51,7 @@ if (commerceInventoryReplenishmentItem == null) {
 else {
 	Date availabilityDate = commerceInventoryReplenishmentItem.getAvailabilityDate();
 
-	startCalendar = CalendarFactoryUtil.getCalendar(availabilityDate.getTime(), user.getTimeZone());
+	startCalendar = CalendarFactory.getCalendar(availabilityDate.getTime(), user.getTimeZone());
 }
 %>
 

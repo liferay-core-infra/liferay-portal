@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.DateRange;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -411,7 +411,7 @@ public class ExportImportDateUtil {
 			timeZone = TimeZoneUtil.getTimeZone(StringPool.UTC);
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar calendar = CalendarFactory.getCalendar(timeZone, locale);
 
 		calendar.set(Calendar.MONTH, dateMonth);
 		calendar.set(Calendar.DATE, dateDay);

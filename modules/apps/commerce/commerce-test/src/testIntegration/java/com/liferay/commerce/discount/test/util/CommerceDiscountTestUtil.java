@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 
 import java.math.BigDecimal;
 
@@ -292,7 +292,7 @@ public class CommerceDiscountTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		return CommerceDiscountLocalServiceUtil.updateCommerceDiscount(
 			commerceDiscount.getCommerceDiscountId(),
@@ -351,7 +351,7 @@ public class CommerceDiscountTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		CommerceDiscount commerceDiscount =
 			CommerceDiscountLocalServiceUtil.addCommerceDiscount(
@@ -383,7 +383,7 @@ public class CommerceDiscountTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		CommerceDiscount commerceDiscount =
 			CommerceDiscountLocalServiceUtil.addCommerceDiscount(
@@ -421,7 +421,7 @@ public class CommerceDiscountTestUtil {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			serviceContext.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		CommerceDiscount commerceDiscount =
 			CommerceDiscountLocalServiceUtil.addCommerceDiscount(

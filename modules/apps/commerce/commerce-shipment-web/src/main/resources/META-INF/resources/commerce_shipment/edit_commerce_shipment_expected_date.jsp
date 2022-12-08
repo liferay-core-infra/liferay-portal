@@ -28,7 +28,7 @@ int expectedMonth = -1;
 int expectedYear = 0;
 
 if (expectedDate != null) {
-	Calendar calendar = CalendarFactoryUtil.getCalendar(expectedDate.getTime());
+	Calendar calendar = CalendarFactory.getCalendar(expectedDate.getTime());
 
 	expectedDay = calendar.get(Calendar.DAY_OF_MONTH);
 	expectedMonth = calendar.get(Calendar.MONTH);

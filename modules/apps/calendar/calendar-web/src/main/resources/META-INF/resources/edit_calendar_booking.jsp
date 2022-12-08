@@ -23,7 +23,7 @@ TimeZone calendarBookingTimeZone = userTimeZone;
 
 boolean allDay = BeanParamUtil.getBoolean(calendarBooking, request, "allDay");
 
-java.util.Calendar defaultStartTimeJCalendar = CalendarFactoryUtil.getCalendar(calendarBookingTimeZone);
+java.util.Calendar defaultStartTimeJCalendar = CalendarFactory.getCalendar(calendarBookingTimeZone);
 
 defaultStartTimeJCalendar.add(java.util.Calendar.HOUR, 1);
 
@@ -51,7 +51,7 @@ if (startTimeAmPm == java.util.Calendar.PM) {
 	startTimeHour += 12;
 }
 
-startTimeJCalendar = CalendarFactoryUtil.getCalendar(startTimeYear, startTimeMonth, startTimeDay, startTimeHour, startTimeMinute, 0, 0, calendarBookingTimeZone);
+startTimeJCalendar = CalendarFactory.getCalendar(startTimeYear, startTimeMonth, startTimeDay, startTimeHour, startTimeMinute, 0, 0, calendarBookingTimeZone);
 
 startTimeJCalendar.setFirstDayOfWeek(weekStartsOn + 1);
 
@@ -77,7 +77,7 @@ if (endTimeAmPm == java.util.Calendar.PM) {
 	endTimeHour += 12;
 }
 
-endTimeJCalendar = CalendarFactoryUtil.getCalendar(endTimeYear, endTimeMonth, endTimeDay, endTimeHour, endTimeMinute, 0, 0, calendarBookingTimeZone);
+endTimeJCalendar = CalendarFactory.getCalendar(endTimeYear, endTimeMonth, endTimeDay, endTimeHour, endTimeMinute, 0, 0, calendarBookingTimeZone);
 
 endTimeJCalendar.setFirstDayOfWeek(weekStartsOn + 1);
 

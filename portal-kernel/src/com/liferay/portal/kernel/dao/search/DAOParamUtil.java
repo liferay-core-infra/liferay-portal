@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.dao.search;
 
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -63,7 +63,7 @@ public class DAOParamUtil {
 		int year = ParamUtil.getInteger(httpServletRequest, param + "Year");
 
 		if ((month >= 0) && (day > 0) && (year > 0)) {
-			Calendar cal = CalendarFactoryUtil.getCalendar();
+			Calendar cal = CalendarFactory.getCalendar();
 
 			int minute = ParamUtil.getInteger(
 				httpServletRequest, param + "Minute", -1);
@@ -100,7 +100,7 @@ public class DAOParamUtil {
 		int year = ParamUtil.getInteger(portletRequest, param + "Year");
 
 		if ((month >= 0) && (day > 0) && (year > 0)) {
-			Calendar cal = CalendarFactoryUtil.getCalendar();
+			Calendar cal = CalendarFactory.getCalendar();
 
 			int minute = ParamUtil.getInteger(
 				portletRequest, param + "Minute", -1);

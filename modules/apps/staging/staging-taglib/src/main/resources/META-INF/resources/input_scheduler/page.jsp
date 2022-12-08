@@ -37,7 +37,7 @@
 		<aui:input name="jobName" type="hidden" />
 
 		<%
-		Calendar cal = CalendarFactoryUtil.getCalendar(timeZone, locale);
+		Calendar cal = CalendarFactory.getCalendar(timeZone, locale);
 
 		int endAmPm = ParamUtil.get(request, "schedulerEndDateAmPm", cal.get(Calendar.AM_PM));
 		int endDay = ParamUtil.get(request, "schedulerEndDateDay", cal.get(Calendar.DATE));

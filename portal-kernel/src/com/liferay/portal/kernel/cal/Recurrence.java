@@ -47,7 +47,7 @@ package com.liferay.portal.kernel.cal;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 
 import java.io.Serializable;
@@ -546,7 +546,7 @@ public class Recurrence implements Serializable {
 		}
 
 		if (start == null) {
-			dtStart = CalendarFactoryUtil.getCalendar(
+			dtStart = CalendarFactory.getCalendar(
 				TimeZoneUtil.getTimeZone(StringPool.UTC));
 
 			dtStart.setTime(new Date(0L));

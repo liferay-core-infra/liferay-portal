@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
@@ -81,8 +81,7 @@ public class BlogsEntryFixture {
 		try {
 			WorkflowThreadLocal.setEnabled(true);
 
-			Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
-				2012, 1, 1);
+			Calendar displayCalendar = CalendarFactory.getCalendar(2012, 1, 1);
 
 			serviceContext.setWorkflowAction(
 				WorkflowConstants.ACTION_SAVE_DRAFT);

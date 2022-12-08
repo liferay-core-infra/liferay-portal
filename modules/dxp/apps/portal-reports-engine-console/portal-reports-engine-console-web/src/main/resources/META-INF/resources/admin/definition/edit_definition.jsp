@@ -140,7 +140,7 @@ else {
 					>
 
 						<%
-						Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+						Calendar calendar = CalendarFactory.getCalendar(timeZone, locale);
 						%>
 
 						<aui:field-wrapper>

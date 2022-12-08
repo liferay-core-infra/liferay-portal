@@ -128,7 +128,7 @@ String languageId = LanguageUtil.getLanguageId(request);
 		</c:choose>
 
 		<%
-		java.util.Calendar nowJCalendar = CalendarFactoryUtil.getCalendar(timeZone);
+		java.util.Calendar nowJCalendar = CalendarFactory.getCalendar(timeZone);
 
 		CalendarBooking nextCalendarBooking = RecurrenceUtil.getCalendarBookingInstance(calendarBooking, RecurrenceUtil.getIndexOfInstance(calendarBooking.getRecurrence(), startTimeJCalendar.getTimeInMillis(), nowJCalendar.getTimeInMillis()));
 		%>

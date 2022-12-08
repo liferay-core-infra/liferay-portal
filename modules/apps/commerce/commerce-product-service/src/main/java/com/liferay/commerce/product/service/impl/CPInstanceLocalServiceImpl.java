@@ -67,7 +67,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -363,7 +363,7 @@ public class CPInstanceLocalServiceImpl extends CPInstanceLocalServiceBaseImpl {
 		if (!neverExpire) {
 			Date expirationDate = cpDefinition.getExpirationDate();
 
-			Calendar expirationDateCalendar = CalendarFactoryUtil.getCalendar(
+			Calendar expirationDateCalendar = CalendarFactory.getCalendar(
 				expirationDate.getTime(), user.getTimeZone());
 
 			expirationDateMonth = expirationDateCalendar.get(Calendar.MONTH);
@@ -379,7 +379,7 @@ public class CPInstanceLocalServiceImpl extends CPInstanceLocalServiceBaseImpl {
 
 		Date displayDate = cpDefinition.getDisplayDate();
 
-		Calendar displayDateCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayDateCalendar = CalendarFactory.getCalendar(
 			displayDate.getTime(), user.getTimeZone());
 
 		List<CPInstance> cpInstances = new ArrayList<>();

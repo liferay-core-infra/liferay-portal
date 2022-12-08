@@ -58,7 +58,7 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -332,7 +332,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 		// Order date
 
 		if (order.getOrderDate() != null) {
-			Calendar orderDateCalendar = CalendarFactoryUtil.getCalendar(
+			Calendar orderDateCalendar = CalendarFactory.getCalendar(
 				serviceContext.getTimeZone());
 
 			orderDateCalendar.setTime(order.getOrderDate());
@@ -349,7 +349,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 
 		if (order.getRequestedDeliveryDate() != null) {
 			Calendar requestedDeliveryDateCalendar =
-				CalendarFactoryUtil.getCalendar(serviceContext.getTimeZone());
+				CalendarFactory.getCalendar(serviceContext.getTimeZone());
 
 			requestedDeliveryDateCalendar.setTime(
 				order.getRequestedDeliveryDate());
@@ -799,7 +799,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 					commerceOrder.getGroupId());
 
 			Calendar requestedDeliveryDateCalendar =
-				CalendarFactoryUtil.getCalendar(serviceContext.getTimeZone());
+				CalendarFactory.getCalendar(serviceContext.getTimeZone());
 
 			requestedDeliveryDateCalendar.setTime(
 				order.getRequestedDeliveryDate());

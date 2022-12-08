@@ -19,7 +19,7 @@ import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
@@ -36,7 +36,7 @@ public class BlogsEntryUADTestUtil {
 			BlogsEntryLocalService blogsEntryLocalService, long userId)
 		throws Exception {
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = CalendarFactory.getCalendar();
 
 		calendar.add(Calendar.DATE, 1);
 

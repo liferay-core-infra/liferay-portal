@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
@@ -378,7 +378,7 @@ public class CommerceVirtualOrderItemLocalServiceImpl
 		User defaultUser = _userLocalService.getDefaultUser(
 			commerceVirtualOrderItem.getCompanyId());
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = CalendarFactory.getCalendar(
 			defaultUser.getTimeZone());
 
 		calendar.setTimeInMillis(calendar.getTimeInMillis() + duration);

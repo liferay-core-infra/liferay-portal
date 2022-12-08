@@ -166,7 +166,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DeterminateKeyGenerator;
@@ -2114,10 +2114,10 @@ public class PortalImpl implements Portal {
 			Calendar cal = null;
 
 			if (timeZone == null) {
-				cal = CalendarFactoryUtil.getCalendar();
+				cal = CalendarFactory.getCalendar();
 			}
 			else {
-				cal = CalendarFactoryUtil.getCalendar(timeZone);
+				cal = CalendarFactory.getCalendar(timeZone);
 			}
 
 			if ((hour == -1) || (min == -1)) {
@@ -2132,7 +2132,7 @@ public class PortalImpl implements Portal {
 			Date date = cal.getTime();
 
 			/*if ((timeZone != null) &&
-				cal.before(CalendarFactoryUtil.getCalendar(timeZone))) {
+				cal.before(CalendarFactory.getCalendar(timeZone))) {
 
 				throw pe;
 			}*/

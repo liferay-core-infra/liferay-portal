@@ -57,7 +57,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -419,7 +419,7 @@ public class JournalTestUtil {
 		if (expirationDate != null) {
 			neverExpire = false;
 
-			Calendar expirationCal = CalendarFactoryUtil.getCalendar(
+			Calendar expirationCal = CalendarFactory.getCalendar(
 				user.getTimeZone());
 
 			expirationCal.setTime(expirationDate);
@@ -431,8 +431,7 @@ public class JournalTestUtil {
 			expirationDateMinute = expirationCal.get(Calendar.MINUTE);
 		}
 
-		Calendar displayCal = CalendarFactoryUtil.getCalendar(
-			user.getTimeZone());
+		Calendar displayCal = CalendarFactory.getCalendar(user.getTimeZone());
 
 		if (displayDate != null) {
 			displayCal.setTime(displayDate);
@@ -881,7 +880,7 @@ public class JournalTestUtil {
 
 		User user = TestPropsValues.getUser();
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(user.getTimeZone());
 
 		int displayDateDay = calendar.get(Calendar.DATE);
 		int displayDateMonth = calendar.get(Calendar.MONTH);
@@ -1104,7 +1103,7 @@ public class JournalTestUtil {
 		if (displayDate != null) {
 			User user = TestPropsValues.getUser();
 
-			Calendar displayCal = CalendarFactoryUtil.getCalendar(
+			Calendar displayCal = CalendarFactory.getCalendar(
 				user.getTimeZone());
 
 			displayCal.setTime(displayDate);

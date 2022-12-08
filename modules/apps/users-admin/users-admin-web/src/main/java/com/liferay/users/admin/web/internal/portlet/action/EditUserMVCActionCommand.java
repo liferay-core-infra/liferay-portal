@@ -61,7 +61,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -378,7 +378,7 @@ public class EditUserMVCActionCommand
 		boolean male = BeanParamUtil.getBoolean(
 			user, actionRequest, "male", true);
 
-		Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+		Calendar birthdayCal = CalendarFactory.getCalendar();
 
 		birthdayCal.setTime(contact.getBirthday());
 

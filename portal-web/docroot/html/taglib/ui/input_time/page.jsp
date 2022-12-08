@@ -59,7 +59,7 @@ String hourParamId = namespace + HtmlUtil.getAUICompatibleId(hourParam);
 String minuteParamId = namespace + HtmlUtil.getAUICompatibleId(minuteParam);
 String nameId = namespace + HtmlUtil.getAUICompatibleId(name);
 
-Calendar calendar = CalendarFactoryUtil.getCalendar(1970, 0, 1, hourOfDayValue, minuteValue, 0, 0, timeZone);
+Calendar calendar = CalendarFactory.getCalendar(1970, 0, 1, hourOfDayValue, minuteValue, 0, 0, timeZone);
 
 String simpleDateFormatPattern = _SIMPLE_DATE_FORMAT_PATTERN_ISO;
 

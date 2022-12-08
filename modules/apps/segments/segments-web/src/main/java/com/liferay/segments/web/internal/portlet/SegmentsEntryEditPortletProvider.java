@@ -18,17 +18,19 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.EditPortletProvider;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.constants.SegmentsActionKeys;
+import com.liferay.segments.constants.SegmentsConstants;
 import com.liferay.segments.constants.SegmentsPortletKeys;
-import com.liferay.segments.web.internal.security.permission.resource.SegmentsResourcePermission;
 
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eduardo García
@@ -53,7 +55,7 @@ public class SegmentsEntryEditPortletProvider
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		if (!SegmentsResourcePermission.contains(
+		if (!_portletResourcePermission.contains(
 				themeDisplay.getPermissionChecker(),
 				themeDisplay.getScopeGroupId(),
 				SegmentsActionKeys.MANAGE_SEGMENTS_ENTRIES)) {
@@ -67,5 +69,10 @@ public class SegmentsEntryEditPortletProvider
 			"/segments/edit_segments_entry"
 		).buildPortletURL();
 	}
+
+	@Reference(
+		target = "(resource.name=" + SegmentsConstants.RESOURCE_NAME + ")"
+	)
+	private PortletResourcePermission _portletResourcePermission;
 
 }

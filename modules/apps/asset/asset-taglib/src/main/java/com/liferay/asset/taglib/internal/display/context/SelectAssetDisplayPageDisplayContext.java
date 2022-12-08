@@ -65,6 +65,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class SelectAssetDisplayPageDisplayContext {
 
+	public static void setLayoutDisplayPageProviderRegistry(
+		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry) {
+
+		_layoutDisplayPageProviderRegistry = layoutDisplayPageProviderRegistry;
+	}
+
 	public SelectAssetDisplayPageDisplayContext(
 		HttpServletRequest httpServletRequest,
 		LiferayPortletRequest liferayPortletRequest,
@@ -448,6 +454,9 @@ public class SelectAssetDisplayPageDisplayContext {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SelectAssetDisplayPageDisplayContext.class);
+
+	private static LayoutDisplayPageProviderRegistry
+		_layoutDisplayPageProviderRegistry;
 
 	private AssetDisplayPageEntry _assetDisplayPageEntry;
 	private Long _assetDisplayPageId;

@@ -19,13 +19,9 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.segments.model.SegmentsEntry;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Eduardo García
  */
-@Component(service = {})
 public class SegmentsEntryPermission {
 
 	public static boolean contains(
@@ -45,10 +41,6 @@ public class SegmentsEntryPermission {
 			permissionChecker, segmentsEntry, actionId);
 	}
 
-	@Reference(
-		target = "(model.class.name=com.liferay.segments.model.SegmentsEntry)",
-		unbind = "-"
-	)
 	protected static void setModelResourcePermission(
 		ModelResourcePermission<SegmentsEntry> modelResourcePermission) {
 

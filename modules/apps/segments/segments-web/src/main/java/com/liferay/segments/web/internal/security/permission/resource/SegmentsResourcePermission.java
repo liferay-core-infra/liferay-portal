@@ -17,15 +17,10 @@ package com.liferay.segments.web.internal.security.permission.resource;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.segments.constants.SegmentsConstants;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eduardo García
  */
-@Component(service = {})
 public class SegmentsResourcePermission {
 
 	public static void check(
@@ -44,10 +39,6 @@ public class SegmentsResourcePermission {
 			permissionChecker, groupId, actionId);
 	}
 
-	@Reference(
-		target = "(resource.name=" + SegmentsConstants.RESOURCE_NAME + ")",
-		unbind = "-"
-	)
 	protected static void setPortletResourcePermission(
 		PortletResourcePermission portletResourcePermission) {
 

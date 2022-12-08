@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -29,6 +30,10 @@ import javax.servlet.jsp.PageContext;
  * @author Adolfo Pérez
  */
 public class BasePanelTag extends IncludeTag {
+
+	public static void initServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
 
 	public Group getGroup() {
 		HttpServletRequest httpServletRequest = getRequest();
@@ -58,5 +63,7 @@ public class BasePanelTag extends IncludeTag {
 
 		setServletContext(ServletContextUtil.getServletContext());
 	}
+
+	private static ServletContext _servletContext;
 
 }

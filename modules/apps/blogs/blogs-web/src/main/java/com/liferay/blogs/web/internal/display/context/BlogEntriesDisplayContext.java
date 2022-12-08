@@ -64,8 +64,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletURL;
@@ -331,13 +329,13 @@ public class BlogEntriesDisplayContext {
 						SearchResultUtil.getSearchResults(
 							hits, LocaleUtil.getDefault());
 
-					Stream<SearchResult> stream = searchResults.stream();
+					List<BlogsEntry> blogsEntry = new ArrayList<>();
 
-					return stream.map(
-						this::_toBlogsEntry
-					).collect(
-						Collectors.toList()
-					);
+					for (SearchResult searchResult : searchResults) {
+						blogsEntry.add(_toBlogsEntry(searchResult));
+					}
+
+					return blogsEntry;
 				},
 				hits.getLength());
 		}

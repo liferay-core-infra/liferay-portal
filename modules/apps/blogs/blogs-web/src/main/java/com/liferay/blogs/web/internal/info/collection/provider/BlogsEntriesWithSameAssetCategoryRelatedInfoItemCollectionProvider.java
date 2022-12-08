@@ -43,12 +43,11 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -92,15 +91,14 @@ public class BlogsEntriesWithSameAssetCategoryRelatedInfoItemCollectionProvider
 				SearchResultUtil.getSearchResults(
 					hits, LocaleUtil.getDefault());
 
-			Stream<SearchResult> stream = searchResults.stream();
+			List<BlogsEntry> blogsEntry = new ArrayList<>();
+
+			for (SearchResult searchResult : searchResults) {
+				blogsEntry.add(_toBlogsEntry(searchResult));
+			}
 
 			return InfoPage.of(
-				stream.map(
-					this::_toBlogsEntry
-				).collect(
-					Collectors.toList()
-				),
-				collectionQuery.getPagination(), count.intValue());
+				blogsEntry, collectionQuery.getPagination(), count.intValue());
 		}
 		catch (Exception exception) {
 			_log.error("Unable to get blogs entries", exception);

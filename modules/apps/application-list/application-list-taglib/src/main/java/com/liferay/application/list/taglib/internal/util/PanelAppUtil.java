@@ -15,7 +15,6 @@
 package com.liferay.application.list.taglib.internal.util;
 
 import com.liferay.application.list.PanelApp;
-import com.liferay.application.list.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -54,8 +53,7 @@ public class PanelAppUtil {
 
 			label = HtmlUtil.escape(
 				PortalUtil.getPortletTitle(
-					portlet, ServletContextUtil.getServletContext(),
-					themeDisplay.getLocale()));
+					portlet, _servletContext, themeDisplay.getLocale()));
 		}
 
 		return label;

@@ -14,6 +14,7 @@
 
 package com.liferay.asset.taglib.internal.helper;
 
+import com.liferay.asset.taglib.internal.display.context.SelectAssetDisplayPageDisplayContext;
 import com.liferay.asset.taglib.servlet.taglib.AssetAddonEntrySelectorTag;
 import com.liferay.asset.taglib.servlet.taglib.AssetCategoriesErrorTag;
 import com.liferay.asset.taglib.servlet.taglib.AssetCategoriesNavigationTag;
@@ -29,6 +30,7 @@ import com.liferay.asset.taglib.servlet.taglib.AssetTagsSummaryTag;
 import com.liferay.asset.taglib.servlet.taglib.CategorizationFilterTag;
 import com.liferay.asset.taglib.servlet.taglib.InputAssetLinksTag;
 import com.liferay.asset.taglib.servlet.taglib.SelectAssetDisplayPageTag;
+import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
 
 import javax.servlet.ServletContext;
 
@@ -59,7 +61,15 @@ public class AssetTaglibInitializationHelper {
 		CategorizationFilterTag.initServletContext(_servletContext);
 		InputAssetLinksTag.initServletContext(_servletContext);
 		SelectAssetDisplayPageTag.initServletContext(_servletContext);
+
+		SelectAssetDisplayPageDisplayContext.
+			setLayoutDisplayPageProviderRegistry(
+				_layoutDisplayPageProviderRegistry);
 	}
+
+	@Reference
+	private LayoutDisplayPageProviderRegistry
+		_layoutDisplayPageProviderRegistry;
 
 	@Reference(target = "(osgi.web.symbolicname=com.liferay.asset.taglib)")
 	private ServletContext _servletContext;

@@ -62,8 +62,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  */
 @Component(service = {})
 public class LiferayServiceExtender
-	implements BundleTrackerCustomizer
-		<LiferayServiceExtender.LiferayServiceExtension> {
+	implements BundleTrackerCustomizer<LiferayServiceExtension> {
 
 	@Override
 	public LiferayServiceExtension addingBundle(
@@ -79,12 +78,12 @@ public class LiferayServiceExtender
 		}
 
 		try {
-			LiferayServiceExtension liferayServiceExtension =
-				new LiferayServiceExtension(bundle);
+			LiferayServiceExtension defaultServiceExtension =
+				new DefaultServiceExtension(bundle);
 
-			liferayServiceExtension.start();
+			defaultServiceExtension.start();
 
-			return liferayServiceExtension;
+			return defaultServiceExtension;
 		}
 		catch (Exception exception) {
 			_log.error(exception);
@@ -107,8 +106,9 @@ public class LiferayServiceExtender
 		liferayServiceExtension.destroy();
 	}
 
-	public class LiferayServiceExtension {
+	public class DefaultServiceExtension implements LiferayServiceExtension {
 
+		@Override
 		public void destroy() {
 			for (ServiceRegistration<?> serviceRegistration :
 					_serviceRegistrations) {
@@ -130,6 +130,7 @@ public class LiferayServiceExtender
 			}
 		}
 
+		@Override
 		public void start() throws Exception {
 			BundleWiring extendeeBundleWiring = _extendeeBundle.adapt(
 				BundleWiring.class);
@@ -194,7 +195,7 @@ public class LiferayServiceExtender
 						_extendeeBundle.getSymbolicName())));
 		}
 
-		private LiferayServiceExtension(Bundle extendeeBundle) {
+		private DefaultServiceExtension(Bundle extendeeBundle) {
 			_extendeeBundle = extendeeBundle;
 		}
 

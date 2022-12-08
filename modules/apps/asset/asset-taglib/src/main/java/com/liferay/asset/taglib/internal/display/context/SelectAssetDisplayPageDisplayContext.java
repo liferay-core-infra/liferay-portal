@@ -302,11 +302,8 @@ public class SelectAssetDisplayPageDisplayContext {
 			return _inheritableDisplayPageTemplate;
 		}
 
-		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry =
-			_layoutDisplayPageProviderRegistry;
-
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-			layoutDisplayPageProviderRegistry.
+			_layoutDisplayPageProviderRegistry.
 				getLayoutDisplayPageProviderByClassName(
 					PortalUtil.getClassName(_classNameId));
 
@@ -352,12 +349,8 @@ public class SelectAssetDisplayPageDisplayContext {
 				WebKeys.THEME_DISPLAY);
 
 		try {
-			LayoutDisplayPageProviderRegistry
-				layoutDisplayPageProviderRegistry =
-					_layoutDisplayPageProviderRegistry;
-
 			LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-				layoutDisplayPageProviderRegistry.
+				_layoutDisplayPageProviderRegistry.
 					getLayoutDisplayPageProviderByClassName(
 						PortalUtil.getClassName(_classNameId));
 

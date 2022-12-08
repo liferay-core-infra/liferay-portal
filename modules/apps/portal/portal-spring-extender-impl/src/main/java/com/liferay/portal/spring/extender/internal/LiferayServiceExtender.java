@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
 import com.liferay.portal.spring.extender.internal.loader.ModuleAggregareClassLoader;
+import com.liferay.portal.spring.extender.internal.upgrade.InitialUpgradeExtension;
 import com.liferay.portal.spring.hibernate.PortletHibernateConfiguration;
 import com.liferay.portal.spring.hibernate.PortletTransactionManager;
 import com.liferay.portal.spring.transaction.DefaultTransactionExecutor;
@@ -62,28 +63,24 @@ import org.springframework.transaction.PlatformTransactionManager;
  */
 @Component(service = {})
 public class LiferayServiceExtender
-	implements BundleTrackerCustomizer<LiferayServiceExtension> {
+	implements BundleTrackerCustomizer<List<LiferayServiceExtension>> {
 
 	@Override
-	public LiferayServiceExtension addingBundle(
+	public List<LiferayServiceExtension> addingBundle(
 		Bundle bundle, BundleEvent bundleEvent) {
 
-		Dictionary<String, String> headers = bundle.getHeaders(
-			StringPool.BLANK);
-
-		if (!BundleUtil.isLiferayServiceBundle(bundle) ||
-			(headers.get("Liferay-Spring-Context") != null)) {
-
+		if (!BundleUtil.isLiferayServiceBundle(bundle)) {
 			return null;
 		}
 
+		List<LiferayServiceExtension> liferayServiceExtensions =
+			new ArrayList<>();
+
 		try {
-			LiferayServiceExtension defaultServiceExtension =
-				new DefaultServiceExtension(bundle);
+			_startDefaultServiceExtension(bundle, liferayServiceExtensions);
+			_startInitialUpgradeExtension(bundle, liferayServiceExtensions);
 
-			defaultServiceExtension.start();
-
-			return defaultServiceExtension;
+			return liferayServiceExtensions;
 		}
 		catch (Exception exception) {
 			_log.error(exception);
@@ -95,15 +92,19 @@ public class LiferayServiceExtender
 	@Override
 	public void modifiedBundle(
 		Bundle bundle, BundleEvent bundleEvent,
-		LiferayServiceExtension liferayServiceExtension) {
+		List<LiferayServiceExtension> liferayServiceExtensions) {
 	}
 
 	@Override
 	public void removedBundle(
 		Bundle bundle, BundleEvent bundleEvent,
-		LiferayServiceExtension liferayServiceExtension) {
+		List<LiferayServiceExtension> liferayServiceExtensions) {
 
-		liferayServiceExtension.destroy();
+		for (LiferayServiceExtension liferayPortalServiceExtension :
+				liferayServiceExtensions) {
+
+			liferayPortalServiceExtension.destroy();
+		}
 	}
 
 	public class DefaultServiceExtension implements LiferayServiceExtension {
@@ -254,6 +255,37 @@ public class LiferayServiceExtender
 	@Deactivate
 	protected void deactivate() {
 		_bundleTracker.close();
+	}
+
+	private void _startDefaultServiceExtension(
+			Bundle bundle,
+			List<LiferayServiceExtension> liferayServiceExtensions)
+		throws Exception {
+
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
+
+		if (headers.get("Liferay-Spring-Context") != null) {
+			return;
+		}
+
+		LiferayServiceExtension defaultServiceExtension =
+			new DefaultServiceExtension(bundle);
+
+		liferayServiceExtensions.add(defaultServiceExtension);
+
+		defaultServiceExtension.start();
+	}
+
+	private void _startInitialUpgradeExtension(
+		Bundle bundle, List<LiferayServiceExtension> liferayServiceExtensions) {
+
+		InitialUpgradeExtension initialUpgradeExtension =
+			new InitialUpgradeExtension(bundle);
+
+		liferayServiceExtensions.add(initialUpgradeExtension);
+
+		initialUpgradeExtension.start();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

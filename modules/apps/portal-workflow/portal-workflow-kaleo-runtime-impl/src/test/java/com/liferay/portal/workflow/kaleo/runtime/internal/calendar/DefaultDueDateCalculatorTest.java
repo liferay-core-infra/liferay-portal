@@ -14,7 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.calendar;
 
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.workflow.kaleo.definition.DelayDuration;
 import com.liferay.portal.workflow.kaleo.definition.DurationScale;
@@ -59,7 +59,7 @@ public class DefaultDueDateCalculatorTest {
 
 	@Test
 	public void testGetDueDate() {
-		Calendar defaultCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar defaultCalendar = CalendarFactory.getCalendar(
 			2021, Calendar.JANUARY, 1, 1, 1, 1);
 
 		Date startDate = defaultCalendar.getTime();
@@ -70,7 +70,7 @@ public class DefaultDueDateCalculatorTest {
 		Date dueDate = _defaultDueDateCalculator.getDueDate(
 			startDate, delayDuration);
 
-		Calendar expectedCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expectedCalendar = CalendarFactory.getCalendar(
 			2021, Calendar.JANUARY, 1, 1, 1, 1);
 
 		expectedCalendar.add(calendarTimeUnit, expectedDuration);

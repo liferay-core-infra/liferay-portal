@@ -43,7 +43,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.asset.service.impl.AssetEntryServiceImpl;
@@ -988,8 +988,7 @@ public class AssetEntryQueryTest {
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId());
 
-		Calendar displayDateCalendar = CalendarFactoryUtil.getCalendar(
-			2012, 1, 1);
+		Calendar displayDateCalendar = CalendarFactory.getCalendar(2012, 1, 1);
 
 		for (double score : scores) {
 			BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
@@ -1037,8 +1036,7 @@ public class AssetEntryQueryTest {
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId());
 
-		Calendar displayDateCalendar = CalendarFactoryUtil.getCalendar(
-			2012, 1, 1);
+		Calendar displayDateCalendar = CalendarFactory.getCalendar(2012, 1, 1);
 
 		for (int score : scores) {
 			BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(

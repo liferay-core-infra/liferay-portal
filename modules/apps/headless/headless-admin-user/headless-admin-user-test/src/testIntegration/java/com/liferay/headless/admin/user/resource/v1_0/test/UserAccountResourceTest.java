@@ -60,7 +60,7 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -953,7 +953,7 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 
 		userAccount.setBirthDate(
 			() -> {
-				Calendar calendar = CalendarFactoryUtil.getCalendar();
+				Calendar calendar = CalendarFactory.getCalendar();
 
 				calendar.setTime(RandomTestUtil.nextDate());
 				calendar.set(Calendar.HOUR_OF_DAY, 0);

@@ -65,7 +65,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -1278,8 +1278,7 @@ public class CommercePricingTest {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(groupId);
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
-			_user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(_user.getTimeZone());
 
 		return _commercePriceModifierLocalService.addCommercePriceModifier(
 			groupId, RandomTestUtil.randomString(), target, commercePriceListId,

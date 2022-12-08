@@ -15,7 +15,7 @@
 package com.liferay.calendar.util;
 
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -91,7 +91,7 @@ public class JCalendarUtilTest {
 
 	@Test
 	public void testGetJCalendar() {
-		Calendar losAngelesJCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar losAngelesJCalendar = CalendarFactory.getCalendar(
 			randomYear(), randomMonth(), randomDayOfMonth(), randomHour(),
 			randomMinute(), randomSecond(), randomMillisecond(),
 			_losAngelesTimeZone);
@@ -107,16 +107,15 @@ public class JCalendarUtilTest {
 
 	@Test
 	public void testIsSameDayOfWeek() {
-		Calendar jCalendar1 = CalendarFactoryUtil.getCalendar(
+		Calendar jCalendar1 = CalendarFactory.getCalendar(
 			2015, Calendar.DECEMBER, 4);
-		Calendar jCalendar2 = CalendarFactoryUtil.getCalendar(
+		Calendar jCalendar2 = CalendarFactory.getCalendar(
 			2015, Calendar.DECEMBER, 11);
 
 		Assert.assertTrue(
 			JCalendarUtil.isSameDayOfWeek(jCalendar1, jCalendar2));
 
-		jCalendar2 = CalendarFactoryUtil.getCalendar(
-			2015, Calendar.DECEMBER, 12);
+		jCalendar2 = CalendarFactory.getCalendar(2015, Calendar.DECEMBER, 12);
 
 		Assert.assertFalse(
 			JCalendarUtil.isSameDayOfWeek(jCalendar1, jCalendar2));
@@ -124,11 +123,11 @@ public class JCalendarUtilTest {
 
 	@Test
 	public void testMergeJCalendar() {
-		Calendar dateJCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar dateJCalendar = CalendarFactory.getCalendar(
 			randomYear(), randomMonth(), randomDayOfMonth(), randomHour(),
 			randomMinute(), randomSecond(), randomMillisecond(),
 			_losAngelesTimeZone);
-		Calendar timeJCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar timeJCalendar = CalendarFactory.getCalendar(
 			randomYear(), randomMonth(), randomDayOfMonth(), randomHour(),
 			randomMinute(), randomSecond(), randomMillisecond(),
 			_madridTimeZone);

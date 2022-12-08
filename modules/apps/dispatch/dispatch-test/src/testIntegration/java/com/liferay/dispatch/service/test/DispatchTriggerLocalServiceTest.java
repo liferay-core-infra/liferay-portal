@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.test.rule.Inject;
@@ -131,7 +131,7 @@ public class DispatchTriggerLocalServiceTest {
 
 		Date date = simpleDateFormat.parse(dateString);
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(date.getTime());
+		Calendar calendar = CalendarFactory.getCalendar(date.getTime());
 
 		String timeZoneId = "Europe/Paris";
 

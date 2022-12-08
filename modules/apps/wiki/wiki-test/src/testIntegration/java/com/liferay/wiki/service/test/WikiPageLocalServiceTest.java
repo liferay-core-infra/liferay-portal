@@ -58,7 +58,7 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -678,7 +678,7 @@ public class WikiPageLocalServiceTest {
 			TestPropsValues.getUserId(), _node.getNodeId(), "Page1",
 			RandomTestUtil.randomString(), true, serviceContext);
 
-		Calendar cal = CalendarFactoryUtil.getCalendar();
+		Calendar cal = CalendarFactory.getCalendar();
 
 		cal.add(Calendar.WEEK_OF_YEAR, -2);
 
@@ -711,7 +711,7 @@ public class WikiPageLocalServiceTest {
 			TestPropsValues.getUserId(), _node.getNodeId(), "Page1",
 			RandomTestUtil.randomString(), true, serviceContext);
 
-		Calendar cal = CalendarFactoryUtil.getCalendar();
+		Calendar cal = CalendarFactory.getCalendar();
 
 		cal.add(Calendar.WEEK_OF_YEAR, -2);
 

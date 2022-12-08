@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -946,7 +946,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 
 				setBirthDate(
 					() -> {
-						Calendar calendar = CalendarFactoryUtil.getCalendar();
+						Calendar calendar = CalendarFactory.getCalendar();
 
 						calendar.setTime(RandomTestUtil.nextDate());
 						calendar.set(Calendar.HOUR_OF_DAY, 0);

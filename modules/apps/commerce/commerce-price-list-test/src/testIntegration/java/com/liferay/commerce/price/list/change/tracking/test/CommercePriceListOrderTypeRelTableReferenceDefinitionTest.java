@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -65,8 +65,7 @@ public class CommercePriceListOrderTypeRelTableReferenceDefinitionTest
 
 		_user = TestPropsValues.getUser();
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
-			_user.getTimeZone());
+		Calendar calendar = CalendarFactory.getCalendar(_user.getTimeZone());
 
 		_commerceOrderType =
 			_commerceOrderTypeLocalService.addCommerceOrderType(

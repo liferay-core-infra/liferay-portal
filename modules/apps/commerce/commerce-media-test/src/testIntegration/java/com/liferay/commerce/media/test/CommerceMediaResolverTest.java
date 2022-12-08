@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -124,8 +124,7 @@ public class CommerceMediaResolverTest {
 		Date displayDate = new Date(now - Time.HOUR);
 		Date expirationDate = new Date(now + Time.DAY);
 
-		Calendar displayCal = CalendarFactoryUtil.getCalendar(
-			_user.getTimeZone());
+		Calendar displayCal = CalendarFactory.getCalendar(_user.getTimeZone());
 
 		displayCal.setTime(displayDate);
 
@@ -139,7 +138,7 @@ public class CommerceMediaResolverTest {
 			displayDateHour += 12;
 		}
 
-		Calendar expirationCal = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCal = CalendarFactory.getCalendar(
 			_user.getTimeZone());
 
 		expirationCal.setTime(expirationDate);

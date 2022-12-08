@@ -14,7 +14,6 @@
 
 package com.liferay.asset.taglib.servlet.taglib;
 
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.ServletContext;
@@ -76,7 +75,7 @@ public class AssetTagsNavigationTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		setServletContext(_servletContext);
 	}
 
 	public void setShowAssetCount(boolean showAssetCount) {

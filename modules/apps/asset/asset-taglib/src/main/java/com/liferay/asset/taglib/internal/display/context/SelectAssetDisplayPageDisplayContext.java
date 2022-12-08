@@ -23,7 +23,6 @@ import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
-import com.liferay.asset.taglib.internal.info.display.contributor.LayoutDisplayPageProviderRegistryUtil;
 import com.liferay.asset.taglib.internal.item.selector.ItemSelectorUtil;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.item.selector.ItemSelector;
@@ -304,8 +303,7 @@ public class SelectAssetDisplayPageDisplayContext {
 		}
 
 		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry =
-			LayoutDisplayPageProviderRegistryUtil.
-				getLayoutDisplayPageProviderRegistry();
+			_layoutDisplayPageProviderRegistry;
 
 		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 			layoutDisplayPageProviderRegistry.
@@ -356,8 +354,7 @@ public class SelectAssetDisplayPageDisplayContext {
 		try {
 			LayoutDisplayPageProviderRegistry
 				layoutDisplayPageProviderRegistry =
-					LayoutDisplayPageProviderRegistryUtil.
-						getLayoutDisplayPageProviderRegistry();
+					_layoutDisplayPageProviderRegistry;
 
 			LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 				layoutDisplayPageProviderRegistry.

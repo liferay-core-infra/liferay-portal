@@ -14,7 +14,9 @@
 
 package com.liferay.asset.taglib.internal.helper;
 
+import com.liferay.asset.taglib.internal.display.context.SelectAssetDisplayPageDisplayContext;
 import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
 
 import javax.servlet.ServletContext;
 
@@ -31,7 +33,14 @@ public class AssetTaglibInitializationHelper {
 	@Activate
 	protected void activate() {
 		ServletContextUtil.setServletContext(_servletContext);
+		SelectAssetDisplayPageDisplayContext.
+			setLayoutDisplayPageProviderRegistry(
+				_layoutDisplayPageProviderRegistry);
 	}
+
+	@Reference
+	private LayoutDisplayPageProviderRegistry
+		_layoutDisplayPageProviderRegistry;
 
 	@Reference(target = "(osgi.web.symbolicname=com.liferay.asset.taglib)")
 	private ServletContext _servletContext;

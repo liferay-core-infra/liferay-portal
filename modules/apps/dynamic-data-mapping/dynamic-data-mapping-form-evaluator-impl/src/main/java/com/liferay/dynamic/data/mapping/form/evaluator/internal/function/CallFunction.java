@@ -45,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author Leonardo Barros
@@ -198,27 +197,24 @@ public class CallFunction
 				continue;
 			}
 
-			Optional<List<KeyValuePair>> optionsOptional =
-				ddmDataProviderResponse.getOutputOptional(
-					outputName, List.class);
+			List<KeyValuePair> keyValuePairs =
+				ddmDataProviderResponse.getOutput(outputName, List.class);
 
-			if (optionsOptional.isPresent()) {
-				setDDMFormFieldOptions(ddmFormFieldName, optionsOptional.get());
+			if (keyValuePairs != null) {
+				setDDMFormFieldOptions(ddmFormFieldName, keyValuePairs);
 			}
 			else {
-				Optional<Object> valueOptional =
-					ddmDataProviderResponse.getOutputOptional(
-						outputName, String.class);
+				Object output = ddmDataProviderResponse.getOutput(
+					outputName, String.class);
 
-				if (!valueOptional.isPresent()) {
-					valueOptional = ddmDataProviderResponse.getOutputOptional(
+				if (output == null) {
+					output = ddmDataProviderResponse.getOutput(
 						outputName, Number.class);
 
-					valueOptional = valueOptional.map(
-						value -> new BigDecimal(value.toString()));
+					output = new BigDecimal(output.toString());
 				}
 
-				_setDDMFormFieldValue(ddmFormFieldName, valueOptional.get());
+				_setDDMFormFieldValue(ddmFormFieldName, output);
 			}
 		}
 	}

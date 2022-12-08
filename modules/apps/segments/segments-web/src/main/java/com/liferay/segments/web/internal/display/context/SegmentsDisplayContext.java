@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -58,7 +59,6 @@ import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.service.SegmentsEntryService;
 import com.liferay.segments.web.internal.constants.SegmentsWebKeys;
 import com.liferay.segments.web.internal.security.permission.resource.SegmentsEntryPermission;
-import com.liferay.segments.web.internal.security.permission.resource.SegmentsResourcePermission;
 import com.liferay.segments.web.internal.util.comparator.SegmentsEntryModifiedDateComparator;
 import com.liferay.segments.web.internal.util.comparator.SegmentsEntryNameComparator;
 
@@ -77,6 +77,12 @@ import javax.servlet.http.HttpServletRequest;
  * @author Eduardo García
  */
 public class SegmentsDisplayContext {
+
+	public static void setPortletResourcePermission(
+		PortletResourcePermission portletResourcePermission) {
+
+		_portletResourcePermission = portletResourcePermission;
+	}
 
 	public SegmentsDisplayContext(
 		GroupLocalService groupLocalService, Language language, Portal portal,
@@ -477,7 +483,7 @@ public class SegmentsDisplayContext {
 	}
 
 	public boolean isShowCreationMenu() {
-		if (SegmentsResourcePermission.contains(
+		if (_portletResourcePermission.contains(
 				_themeDisplay.getPermissionChecker(),
 				_themeDisplay.getScopeGroupId(),
 				SegmentsActionKeys.MANAGE_SEGMENTS_ENTRIES)) {
@@ -685,6 +691,8 @@ public class SegmentsDisplayContext {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SegmentsDisplayContext.class);
+
+	private static PortletResourcePermission _portletResourcePermission;
 
 	private String _displayStyle;
 	private final GroupLocalService _groupLocalService;

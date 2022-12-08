@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.segments.constants.SegmentsConstants;
 import com.liferay.segments.model.SegmentsEntry;
+import com.liferay.segments.web.internal.display.context.SegmentsDisplayContext;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -34,7 +35,7 @@ public class SegmentsPermissionHelper {
 		SegmentsEntryPermission.setModelResourcePermission(
 			_segmentsEntryModelResourcePermission);
 
-		SegmentsResourcePermission.setPortletResourcePermission(
+		SegmentsDisplayContext.setPortletResourcePermission(
 			_portletResourcePermission);
 	}
 

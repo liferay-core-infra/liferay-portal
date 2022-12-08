@@ -62,7 +62,6 @@ public class ModifiedFacetPortletSharedSearchContributor
 	protected CalendarFactory calendarFactory;
 	protected DateFormatFactory dateFormatFactory;
 	protected DateRangeFactory dateRangeFactory;
-	protected JSONFactory jsonFactory;
 
 	@Reference
 	protected ModifiedFacetFactory modifiedFacetFactory;

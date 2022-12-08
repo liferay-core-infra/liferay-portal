@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.module.util.BundleUtil;
+import com.liferay.portal.spring.extender.internal.LiferayServiceExtension;
 import com.liferay.portal.spring.extender.internal.upgrade.InitialUpgradeExtender.InitialUpgradeExtension;
 import com.liferay.portal.spring.hibernate.DialectDetector;
 
@@ -91,7 +92,7 @@ public class InitialUpgradeExtender
 		initialUpgradeExtension.destroy();
 	}
 
-	public class InitialUpgradeExtension {
+	public class InitialUpgradeExtension implements LiferayServiceExtension {
 
 		public InitialUpgradeExtension(Bundle bundle) {
 			_bundle = bundle;
@@ -100,12 +101,14 @@ public class InitialUpgradeExtender
 				bundle.getBundleContext());
 		}
 
+		@Override
 		public void destroy() {
 			if (_component != null) {
 				_dependencyManager.remove(_component);
 			}
 		}
 
+		@Override
 		public void start() {
 			_component = _dependencyManager.createComponent();
 

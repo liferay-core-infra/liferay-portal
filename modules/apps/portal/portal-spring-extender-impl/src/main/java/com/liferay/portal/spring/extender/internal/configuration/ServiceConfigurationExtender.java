@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ServiceComponentLocalService;
 import com.liferay.portal.module.util.BundleUtil;
+import com.liferay.portal.spring.extender.internal.LiferayServiceExtension;
 
 import java.util.Dictionary;
 
@@ -103,12 +104,15 @@ public class ServiceConfigurationExtender
 		serviceConfigurationExtension.destroy();
 	}
 
-	public static class ServiceConfigurationExtension {
+	public static class ServiceConfigurationExtension
+		implements LiferayServiceExtension {
 
+		@Override
 		public void destroy() {
 			_dependencyManager.remove(_component);
 		}
 
+		@Override
 		public void start() {
 			_dependencyManager.add(_component);
 		}

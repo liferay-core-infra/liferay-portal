@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
+import com.liferay.portal.spring.extender.internal.LiferayServiceExtension;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -98,7 +99,8 @@ public class ModuleApplicationContextExtender
 		moduleApplicationContextExtension.destroy();
 	}
 
-	public class ModuleApplicationContextExtension {
+	public class ModuleApplicationContextExtension
+		implements LiferayServiceExtension {
 
 		public ModuleApplicationContextExtension(Bundle bundle) {
 			_bundle = bundle;
@@ -107,12 +109,14 @@ public class ModuleApplicationContextExtender
 				bundle.getBundleContext());
 		}
 
+		@Override
 		public void destroy() {
 			if (_component != null) {
 				_dependencyManager.remove(_component);
 			}
 		}
 
+		@Override
 		public void start() throws Exception {
 			_component = _dependencyManager.createComponent();
 

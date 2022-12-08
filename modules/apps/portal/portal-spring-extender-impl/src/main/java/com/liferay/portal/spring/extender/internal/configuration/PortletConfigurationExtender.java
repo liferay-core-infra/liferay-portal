@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.module.util.BundleUtil;
+import com.liferay.portal.spring.extender.internal.LiferayServiceExtension;
 import com.liferay.portal.util.PropsValues;
 
 import org.osgi.framework.Bundle;
@@ -87,8 +88,10 @@ public class PortletConfigurationExtender
 		portletConfigurationExtension.destroy();
 	}
 
-	public class PortletConfigurationExtension {
+	public class PortletConfigurationExtension
+		implements LiferayServiceExtension {
 
+		@Override
 		public void destroy() {
 			if (_configurationServiceRegistration != null) {
 				_configurationServiceRegistration.unregister();
@@ -97,6 +100,7 @@ public class PortletConfigurationExtender
 			}
 		}
 
+		@Override
 		public void start() {
 			try {
 				_resourceActions.populateModelResources(

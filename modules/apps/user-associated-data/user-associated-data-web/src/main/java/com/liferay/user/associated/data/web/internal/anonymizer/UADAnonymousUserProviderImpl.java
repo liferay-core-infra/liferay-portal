@@ -39,7 +39,6 @@ import com.liferay.user.associated.data.web.internal.configuration.AnonymousUser
 import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.Locale;
-import java.util.Optional;
 
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.component.annotations.Component;
@@ -130,10 +129,10 @@ public class UADAnonymousUserProviderImpl implements UADAnonymousUserProvider {
 	}
 
 	private User _getAnonymousUser(long companyId) throws Exception {
-		Optional<Configuration> configurationOptional =
+		Configuration configurationOptional =
 			_anonymousUserConfigurationRetriever.getOptional(companyId);
 
-		if (!configurationOptional.isPresent()) {
+		if (configurationOptional == null) {
 			User anonymousUser = _createAnonymousUser(companyId);
 
 			_configurationProvider.saveCompanyConfiguration(
@@ -147,9 +146,8 @@ public class UADAnonymousUserProviderImpl implements UADAnonymousUserProvider {
 			return anonymousUser;
 		}
 
-		Configuration configuration = configurationOptional.get();
-
-		Dictionary<String, Object> properties = configuration.getProperties();
+		Dictionary<String, Object> properties =
+			configurationOptional.getProperties();
 
 		AnonymousUserConfiguration anonymousUserConfiguration =
 			ConfigurableUtil.createConfigurable(
@@ -166,7 +164,7 @@ public class UADAnonymousUserProviderImpl implements UADAnonymousUserProvider {
 
 		properties.put("userId", anonymousUser.getUserId());
 
-		configuration.update(properties);
+		configurationOptional.update(properties);
 
 		return anonymousUser;
 	}

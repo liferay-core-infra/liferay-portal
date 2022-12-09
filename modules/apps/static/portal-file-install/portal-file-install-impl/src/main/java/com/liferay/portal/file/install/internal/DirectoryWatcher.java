@@ -106,7 +106,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 			uri = uri.normalize();
 
-			_watchedDirPaths.add(uri.getPath());
+			_watchedDirPaths.put(dir, uri.getPath());
 		}
 
 		_fileInstallers = ServiceTrackerListFactory.open(
@@ -229,6 +229,10 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		return _scanner;
 	}
 
+	public String getWatchedDirPath(String dir) {
+		return _watchedDirPaths.get(dir);
+	}
+
 	@Override
 	public void run() {
 		if (!PropsValues.MODULE_FRAMEWORK_FILE_INSTALL_NO_INITIAL_DELAY) {
@@ -313,7 +317,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		super.start();
 	}
 
-	private boolean _contains(String path, List<String> dirPaths) {
+	private boolean _contains(String path, Collection<String> dirPaths) {
 		for (String dirPath : dirPaths) {
 			if (path.contains(dirPath)) {
 				return true;
@@ -590,7 +594,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 			String path = null;
 
 			if ((location != null) &&
-				_contains(locationPath, _watchedDirPaths)) {
+				_contains(locationPath, _watchedDirPaths.values())) {
 
 				String schemeSpecificPart = uri.getSchemeSpecificPart();
 
@@ -628,7 +632,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 			int index = path.lastIndexOf(CharPool.SLASH);
 
-			if ((index != -1) && _startWith(path, _watchedDirPaths)) {
+			if ((index != -1) && _startWith(path, _watchedDirPaths.values())) {
 				if (!_filenameFilter.accept(
 						new File(path.substring(0, index)),
 						path.substring(index + 1))) {
@@ -1207,7 +1211,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		}
 	}
 
-	private boolean _startWith(String path, List<String> dirPaths) {
+	private boolean _startWith(String path, Collection<String> dirPaths) {
 		for (String dirPath : dirPaths) {
 			if (path.startsWith(dirPath)) {
 				return true;
@@ -1386,7 +1390,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 	private final Scanner _scanner;
 	private final AtomicBoolean _stateChanged = new AtomicBoolean();
 	private final Bundle _systemBundle;
-	private final List<String> _watchedDirPaths = new ArrayList<>();
+	private final Map<String, String> _watchedDirPaths = new HashMap<>();
 	private final List<File> _watchedDirs = new ArrayList<>();
 
 }

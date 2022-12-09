@@ -21,6 +21,7 @@ import com.liferay.portal.file.install.internal.Scanner;
 import com.liferay.portal.file.install.internal.configuration.ConfigurationFileInstaller;
 import com.liferay.portal.file.install.internal.configuration.FileSyncConfigurationListener;
 import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
@@ -48,6 +49,8 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 		_jarFileInstallerServiceRegistration = _bundleContext.registerService(
 			FileInstaller.class, new DefaultJarInstaller(), null);
 
+		_directoryWatcher = new DirectoryWatcher(_bundleContext);
+
 		_serviceTracker = new ServiceTracker<>(
 			bundleContext, ConfigurationAdmin.class.getName(),
 			new ServiceTrackerCustomizer
@@ -65,6 +68,8 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 							FileInstaller.class.getName(),
 							new ConfigurationFileInstaller(
 								configurationAdmin,
+								_directoryWatcher.getWatchedDirPath(
+									PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR),
 								ModuleFrameworkPropsValues.
 									MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING),
 							null),
@@ -101,8 +106,6 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 			});
 
 		_serviceTracker.open();
-
-		_directoryWatcher = new DirectoryWatcher(_bundleContext);
 
 		_directoryWatcher.start();
 	}

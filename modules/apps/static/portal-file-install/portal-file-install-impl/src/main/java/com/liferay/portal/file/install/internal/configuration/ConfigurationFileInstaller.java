@@ -46,14 +46,20 @@ import org.osgi.service.cm.ConfigurationAdmin;
 public class ConfigurationFileInstaller implements FileInstaller {
 
 	public ConfigurationFileInstaller(
-		ConfigurationAdmin configurationAdmin, String encoding) {
+		ConfigurationAdmin configurationAdmin, String configsDirPath,
+		String encoding) {
 
 		_configurationAdmin = configurationAdmin;
+		_configsDirPath = configsDirPath;
 		_encoding = encoding;
 	}
 
 	@Override
 	public boolean canTransformURL(File file) {
+		if (!Objects.equals(_configsDirPath, file.getParent())) {
+			return false;
+		}
+
 		String name = file.getName();
 
 		if (name.endsWith(".config")) {
@@ -309,6 +315,7 @@ public class ConfigurationFileInstaller implements FileInstaller {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConfigurationFileInstaller.class);
 
+	private final String _configsDirPath;
 	private final ConfigurationAdmin _configurationAdmin;
 	private final String _encoding;
 

@@ -64,15 +64,54 @@ public class LiferayServiceExtender
 
 		ClassLoader classLoader = bundleWiring.getClassLoader();
 
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
+
 		try {
-			_startDefaultServiceExtension(
-				bundle, classLoader, liferayServiceExtensions);
-			_startInitialUpgradeExtension(
-				bundle, classLoader, liferayServiceExtensions);
-			_startPortletConfigurationExtension(
-				bundle, classLoader, liferayServiceExtensions);
-			_startServiceConfigurationExtension(
-				bundle, classLoader, liferayServiceExtensions);
+			if (headers.get("Liferay-Spring-Context") == null) {
+				LiferayServiceExtension defaultServiceExtension =
+					new DefaultServiceExtension(bundle, classLoader);
+
+				liferayServiceExtensions.add(defaultServiceExtension);
+
+				defaultServiceExtension.start();
+			}
+
+			InitialUpgradeExtension initialUpgradeExtension =
+				new InitialUpgradeExtension(bundle, classLoader);
+
+			liferayServiceExtensions.add(initialUpgradeExtension);
+
+			initialUpgradeExtension.start();
+
+			Configuration portletConfiguration =
+				ConfigurationFactoryUtil.getConfiguration(
+					classLoader, "portlet");
+
+			if (portletConfiguration != null) {
+				PortletConfigurationExtension portletConfigurationExtension =
+					new PortletConfigurationExtension(
+						bundle, classLoader, portletConfiguration);
+
+				liferayServiceExtensions.add(portletConfigurationExtension);
+
+				portletConfigurationExtension.start();
+			}
+
+			Configuration serviceConfiguration =
+				ConfigurationFactoryUtil.getConfiguration(
+					classLoader, "service");
+
+			if (serviceConfiguration != null) {
+				ServiceConfigurationExtension serviceConfigurationExtension =
+					new ServiceConfigurationExtension(
+						bundle, classLoader, serviceConfiguration,
+						_serviceComponentLocalService);
+
+				liferayServiceExtensions.add(serviceConfigurationExtension);
+
+				serviceConfigurationExtension.start();
+			}
 
 			return liferayServiceExtensions;
 		}
@@ -127,79 +166,6 @@ public class LiferayServiceExtender
 	@Deactivate
 	protected void deactivate() {
 		_bundleTracker.close();
-	}
-
-	private void _startDefaultServiceExtension(
-			Bundle bundle, ClassLoader classLoader,
-			List<LiferayServiceExtension> liferayServiceExtensions)
-		throws Exception {
-
-		Dictionary<String, String> headers = bundle.getHeaders(
-			StringPool.BLANK);
-
-		if (headers.get("Liferay-Spring-Context") != null) {
-			return;
-		}
-
-		LiferayServiceExtension defaultServiceExtension =
-			new DefaultServiceExtension(bundle, classLoader);
-
-		liferayServiceExtensions.add(defaultServiceExtension);
-
-		defaultServiceExtension.start();
-	}
-
-	private void _startInitialUpgradeExtension(
-		Bundle bundle, ClassLoader classLoader,
-		List<LiferayServiceExtension> liferayServiceExtensions) {
-
-		InitialUpgradeExtension initialUpgradeExtension =
-			new InitialUpgradeExtension(bundle, classLoader);
-
-		liferayServiceExtensions.add(initialUpgradeExtension);
-
-		initialUpgradeExtension.start();
-	}
-
-	private void _startPortletConfigurationExtension(
-		Bundle bundle, ClassLoader classLoader,
-		List<LiferayServiceExtension> liferayServiceExtensions) {
-
-		Configuration portletConfiguration =
-			ConfigurationFactoryUtil.getConfiguration(classLoader, "portlet");
-
-		if (portletConfiguration == null) {
-			return;
-		}
-
-		PortletConfigurationExtension portletConfigurationExtension =
-			new PortletConfigurationExtension(
-				bundle, classLoader, portletConfiguration);
-
-		liferayServiceExtensions.add(portletConfigurationExtension);
-
-		portletConfigurationExtension.start();
-	}
-
-	private void _startServiceConfigurationExtension(
-		Bundle bundle, ClassLoader classLoader,
-		List<LiferayServiceExtension> liferayServiceExtensions) {
-
-		Configuration serviceConfiguration =
-			ConfigurationFactoryUtil.getConfiguration(classLoader, "service");
-
-		if (serviceConfiguration == null) {
-			return;
-		}
-
-		ServiceConfigurationExtension serviceConfigurationExtension =
-			new ServiceConfigurationExtension(
-				bundle, classLoader, serviceConfiguration,
-				_serviceComponentLocalService);
-
-		liferayServiceExtensions.add(serviceConfigurationExtension);
-
-		serviceConfigurationExtension.start();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

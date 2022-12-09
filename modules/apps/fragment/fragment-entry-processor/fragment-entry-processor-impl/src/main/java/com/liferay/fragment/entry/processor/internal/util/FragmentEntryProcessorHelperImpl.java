@@ -59,7 +59,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -131,16 +130,12 @@ public class FragmentEntryProcessorHelperImpl
 			object = _getInfoItem(className, infoItemIdentifier);
 		}
 		else if (isMappedCollection(editableValueJSONObject)) {
-			Optional<InfoItemReference> infoItemReferenceOptional =
-				fragmentEntryProcessorContext.
-					getContextInfoItemReferenceOptional();
+			InfoItemReference infoItemReference =
+				fragmentEntryProcessorContext.getContextInfoItemReference();
 
-			if (!infoItemReferenceOptional.isPresent()) {
+			if (infoItemReference == null) {
 				return null;
 			}
-
-			InfoItemReference infoItemReference =
-				infoItemReferenceOptional.get();
 
 			className = infoItemReference.getClassName();
 			classPK = infoItemReference.getClassPK();
@@ -530,7 +525,7 @@ public class FragmentEntryProcessorHelperImpl
 			else if (infoField.getInfoFieldType() instanceof
 						TextInfoFieldType) {
 
-				Optional<Boolean> htmlOptional = infoField.getAttributeOptional(
+				Boolean htmlOptional = infoField.getAttributeOptional(
 					TextInfoFieldType.HTML);
 
 				if (!htmlOptional.orElse(false)) {

@@ -1,0 +1,10 @@
+Bundle-Name: Liferay Portal Service Extender Implementation
+Bundle-SymbolicName: com.liferay.portal.service.extender.impl
+Bundle-Version: 4.0.29
+Provide-Capability:\
+	liferay.extender;\
+		liferay.extender="service.extender";\
+		version:Version="${serviceExtenderApiVersion}",\
+	liferay.extender;\
+		liferay.extender="service.extender";\
+		version:Version="2.0.0"

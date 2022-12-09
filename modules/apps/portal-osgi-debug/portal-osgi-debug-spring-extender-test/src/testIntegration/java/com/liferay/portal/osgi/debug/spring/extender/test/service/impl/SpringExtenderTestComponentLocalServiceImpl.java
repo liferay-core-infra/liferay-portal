@@ -15,7 +15,7 @@
 package com.liferay.portal.osgi.debug.spring.extender.test.service.impl;
 
 import com.liferay.portal.osgi.debug.spring.extender.test.reference.SpringExtenderTestComponentReference;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 
 /**
  * @author Matthew Tambara

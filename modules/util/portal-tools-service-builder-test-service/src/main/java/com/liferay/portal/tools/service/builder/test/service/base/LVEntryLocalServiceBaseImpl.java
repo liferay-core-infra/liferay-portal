@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.service.version.VersionServiceListener;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.LVEntry;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryLocalization;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryLocalizationVersion;

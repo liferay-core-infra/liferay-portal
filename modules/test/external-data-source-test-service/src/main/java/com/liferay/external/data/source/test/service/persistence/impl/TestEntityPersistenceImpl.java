@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 
 import java.io.Serializable;
 

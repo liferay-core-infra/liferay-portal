@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchLVEntryException;
 import com.liferay.portal.tools.service.builder.test.model.LVEntry;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryTable;

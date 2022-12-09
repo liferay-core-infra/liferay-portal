@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntryBlob1BlobModel;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntryBlob2BlobModel;

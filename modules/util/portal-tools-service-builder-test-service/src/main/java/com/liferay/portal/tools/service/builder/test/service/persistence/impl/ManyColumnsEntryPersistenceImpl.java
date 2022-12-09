@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchManyColumnsEntryException;
 import com.liferay.portal.tools.service.builder.test.model.ManyColumnsEntry;
 import com.liferay.portal.tools.service.builder.test.model.ManyColumnsEntryTable;

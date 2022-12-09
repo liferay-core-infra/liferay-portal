@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.service.GenericMethodsEntryLocalService;
 import com.liferay.portal.tools.service.builder.test.service.GenericMethodsEntryLocalServiceUtil;
 

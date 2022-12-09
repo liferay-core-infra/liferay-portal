@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry;
 import com.liferay.portal.tools.service.builder.test.service.LazyBlobEntryService;
 import com.liferay.portal.tools.service.builder.test.service.LazyBlobEntryServiceUtil;

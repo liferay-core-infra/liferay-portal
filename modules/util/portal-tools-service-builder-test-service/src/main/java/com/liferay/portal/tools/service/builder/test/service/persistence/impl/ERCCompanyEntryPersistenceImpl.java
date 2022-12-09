@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.exception.DuplicateERCCompanyEntryExternalReferenceCodeException;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchERCCompanyEntryException;
 import com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry;

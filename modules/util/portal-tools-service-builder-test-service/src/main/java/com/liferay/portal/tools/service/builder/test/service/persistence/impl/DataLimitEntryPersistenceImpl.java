@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.portal.service.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchDataLimitEntryException;
 import com.liferay.portal.tools.service.builder.test.model.DataLimitEntry;
 import com.liferay.portal.tools.service.builder.test.model.DataLimitEntryTable;

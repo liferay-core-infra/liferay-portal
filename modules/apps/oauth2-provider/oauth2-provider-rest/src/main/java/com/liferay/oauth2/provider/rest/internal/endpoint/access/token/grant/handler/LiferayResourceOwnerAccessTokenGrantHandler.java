@@ -104,50 +104,22 @@ public class LiferayResourceOwnerAccessTokenGrantHandler
 			allowResourceOwnerPasswordCredentialsGrant();
 	}
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setLiferayOAuthDataProvider(
-		LiferayOAuthDataProvider liferayOAuthDataProvider) {
-
-		_liferayOAuthDataProvider = liferayOAuthDataProvider;
-
-		if (_resourceOwnerGrantHandler != null) {
-			_resourceOwnerGrantHandler.setDataProvider(
-				_liferayOAuthDataProvider);
-		}
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setResourceOwnerLoginHandler(
-		ResourceOwnerLoginHandler resourceOwnerLoginHandler) {
-
-		_resourceOwnerLoginHandler = resourceOwnerLoginHandler;
-
-		if (_resourceOwnerGrantHandler != null) {
-			_resourceOwnerGrantHandler.setLoginHandler(
-				_resourceOwnerLoginHandler);
-		}
-	}
-
-	protected void unsetLiferayOAuthDataProvider(
-		LiferayOAuthDataProvider liferayOAuthDataProvider) {
-	}
-
-	protected void unsetResourceOwnerLoginHandler(
-		ResourceOwnerLoginHandler resourceOwnerLoginHandler) {
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		LiferayResourceOwnerAccessTokenGrantHandler.class);
 
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
 	private volatile LiferayOAuthDataProvider _liferayOAuthDataProvider;
+
 	private OAuth2ProviderConfiguration _oAuth2ProviderConfiguration;
 	private ResourceOwnerGrantHandler _resourceOwnerGrantHandler;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
 	private volatile ResourceOwnerLoginHandler _resourceOwnerLoginHandler;
 
 }

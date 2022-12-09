@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.spring.extender.service;
+package com.liferay.portal.service.extender.service;
 
 import com.liferay.petra.string.StringPool;
 

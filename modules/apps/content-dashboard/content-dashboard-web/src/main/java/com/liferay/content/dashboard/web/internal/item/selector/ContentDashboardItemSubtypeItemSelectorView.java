@@ -234,30 +234,27 @@ public class ContentDashboardItemSubtypeItemSelectorView
 	private String _getInfoItemFormVariationLabel(
 		InfoItemFormVariation infoItemFormVariation, Locale locale) {
 
-		Optional<Long> groupIdOptional =
-			infoItemFormVariation.getGroupIdOptional();
+		Long groupId = infoItemFormVariation.getGroupId();
 
 		InfoLocalizedValue<String> labelInfoLocalizedValue =
 			infoItemFormVariation.getLabelInfoLocalizedValue();
 
-		return groupIdOptional.map(
-			groupId -> {
-				Group group = _groupLocalService.fetchGroup(groupId);
+		if (groupId != null) {
+			Group group = _groupLocalService.fetchGroup(groupId);
 
-				if (group == null) {
-					return labelInfoLocalizedValue.getValue(locale);
-				}
-
-				return _language.format(
-					locale, "x-group-x",
-					new String[] {
-						labelInfoLocalizedValue.getValue(locale),
-						ContentDashboardGroupUtil.getGroupName(group, locale)
-					});
+			if (group == null) {
+				return labelInfoLocalizedValue.getValue(locale);
 			}
-		).orElseGet(
-			() -> labelInfoLocalizedValue.getValue(locale)
-		);
+
+			return _language.format(
+				locale, "x-group-x",
+				new String[] {
+					labelInfoLocalizedValue.getValue(locale),
+					ContentDashboardGroupUtil.getGroupName(group, locale)
+				});
+		}
+
+		return labelInfoLocalizedValue.getValue(locale);
 	}
 
 	private void _populateContentDashboardItemTypesJSONArray(

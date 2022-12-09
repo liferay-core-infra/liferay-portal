@@ -48,7 +48,6 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import java.io.InputStream;
 
 import java.util.Date;
-import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -116,10 +115,13 @@ public class BlogsEntryInfoItemFieldValuesProviderTest {
 
 		InfoField infoField = contentInfoFieldValue.getInfoField();
 
-		Optional<Boolean> optional = infoField.getAttributeOptional(
-			TextInfoFieldType.HTML);
+		Boolean value = (Boolean)infoField.getAttribute(TextInfoFieldType.HTML);
 
-		Assert.assertTrue(optional.orElse(false));
+		if (value == null) {
+			value = false;
+		}
+
+		Assert.assertTrue(value);
 	}
 
 	@Test

@@ -525,10 +525,14 @@ public class FragmentEntryProcessorHelperImpl
 			else if (infoField.getInfoFieldType() instanceof
 						TextInfoFieldType) {
 
-				Boolean htmlOptional = infoField.getAttributeOptional(
+				Boolean html = (Boolean)infoField.getAttribute(
 					TextInfoFieldType.HTML);
 
-				if (!htmlOptional.orElse(false)) {
+				if (html == null) {
+					html = false;
+				}
+
+				if (!html) {
 					return _html.escape((String)value);
 				}
 			}

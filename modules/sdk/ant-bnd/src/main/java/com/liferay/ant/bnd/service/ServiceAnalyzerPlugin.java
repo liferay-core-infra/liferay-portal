@@ -341,7 +341,7 @@ public class ServiceAnalyzerPlugin implements AnalyzerPlugin {
 	protected void processSpringDependency(Analyzer analyzer) {
 		merge(
 			analyzer, "-liferay-spring-dependency",
-			"com.liferay.portal.spring.extender.service.ServiceReference");
+			"com.liferay.portal.service.extender.service.ServiceReference");
 	}
 
 	private static final String _LIFERAY_EXTENDER = "liferay.extender";

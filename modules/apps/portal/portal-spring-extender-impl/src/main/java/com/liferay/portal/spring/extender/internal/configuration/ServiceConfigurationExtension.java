@@ -15,10 +15,15 @@
 package com.liferay.portal.spring.extender.internal.configuration;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.service.ServiceComponentLocalService;
 import com.liferay.portal.spring.extender.internal.LiferayServiceExtension;
+
+import java.util.Dictionary;
 
 import org.apache.felix.dm.Component;
 import org.apache.felix.dm.DependencyManager;
@@ -34,14 +39,24 @@ import org.osgi.framework.VersionRange;
 public class ServiceConfigurationExtension implements LiferayServiceExtension {
 
 	public ServiceConfigurationExtension(
-		Bundle bundle, String requireSchemaVersion,
-		ServiceConfigurationInitializer serviceConfigurationInitializer) {
+		Bundle bundle, ClassLoader classLoader,
+		Configuration serviceConfiguration,
+		ServiceComponentLocalService serviceComponentLocalService) {
 
 		_dependencyManager = new DependencyManager(bundle.getBundleContext());
 
 		_component = _dependencyManager.createComponent();
 
-		_component.setImplementation(serviceConfigurationInitializer);
+		_component.setImplementation(
+			new ServiceConfigurationInitializer(
+				bundle, classLoader, serviceConfiguration,
+				serviceComponentLocalService));
+
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
+
+		String requireSchemaVersion = headers.get(
+			"Liferay-Require-SchemaVersion");
 
 		if (requireSchemaVersion == null) {
 			return;

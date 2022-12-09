@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.service.ServiceComponentLocalService;
 import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.spring.extender.internal.configuration.PortletConfigurationExtension;
 import com.liferay.portal.spring.extender.internal.configuration.ServiceConfigurationExtension;
-import com.liferay.portal.spring.extender.internal.configuration.ServiceConfigurationInitializer;
 import com.liferay.portal.spring.extender.internal.upgrade.InitialUpgradeExtension;
 
 import java.util.ArrayList;
@@ -193,20 +192,10 @@ public class LiferayServiceExtender
 			return;
 		}
 
-		Dictionary<String, String> headers = bundle.getHeaders(
-			StringPool.BLANK);
-
-		String requireSchemaVersion = headers.get(
-			"Liferay-Require-SchemaVersion");
-
-		ServiceConfigurationInitializer serviceConfigurationInitializer =
-			new ServiceConfigurationInitializer(
-				bundle, classLoader, serviceConfiguration,
-				_serviceComponentLocalService);
-
 		ServiceConfigurationExtension serviceConfigurationExtension =
 			new ServiceConfigurationExtension(
-				bundle, requireSchemaVersion, serviceConfigurationInitializer);
+				bundle, classLoader, serviceConfiguration,
+				_serviceComponentLocalService);
 
 		liferayServiceExtensions.add(serviceConfigurationExtension);
 

@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = AnonymousUserConfigurationRetriever.class)
 public class AnonymousUserConfigurationRetriever {
 
-	public Optional<Configuration> getOptional(long companyId)
+	public Configuration getOptional(long companyId)
 		throws InvalidSyntaxException, IOException {
 
 		String filterString = String.format(
@@ -40,7 +40,7 @@ public class AnonymousUserConfigurationRetriever {
 		return _getOptional(filterString);
 	}
 
-	public Optional<Configuration> getOptional(long companyId, long userId)
+	public Configuration getOptional(long companyId, long userId)
 		throws InvalidSyntaxException, IOException {
 
 		String filterString = String.format(
@@ -55,17 +55,17 @@ public class AnonymousUserConfigurationRetriever {
 		return AnonymousUserConfiguration.class.getName() + ".scoped";
 	}
 
-	private Optional<Configuration> _getOptional(String filterString)
+	private Configuration _getOptional(String filterString)
 		throws InvalidSyntaxException, IOException {
 
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			filterString);
 
 		if (configurations == null) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.of(configurations[0]);
+		return configurations[0];
 	}
 
 	@Reference

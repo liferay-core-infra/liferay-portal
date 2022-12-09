@@ -134,7 +134,14 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+
+<#if serviceBuilder.isVersionGTE_7_4_0()>
+	import com.liferay.portal.service.extender.service.ServiceReference;
+
+<#else>
+	import com.liferay.portal.spring.extender.service.ServiceReference;
+</#if>
+
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 

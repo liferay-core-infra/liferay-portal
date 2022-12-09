@@ -62,7 +62,13 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+
+<#if serviceBuilder.isVersionGTE_7_4_0()>
+	import com.liferay.portal.service.extender.service.ServiceReference;
+
+<#else>
+	import com.liferay.portal.spring.extender.service.ServiceReference;
+</#if>
 
 import java.io.InputStream;
 import java.io.Serializable;

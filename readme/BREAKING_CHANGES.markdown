@@ -1232,3 +1232,26 @@ Delete usages of `<liferay-frontend:fieldset-group>` and replace usages of `<aui
 ### Why was this change made?
 
 The tags `<aui:fieldset-group>` and `<liferay-frontend:fieldset-group>` added unnecessary markup to the page and caused accessibility issues.
+
+---------------------------------------
+
+## Disable liferay service spring support
+
+- **Date:** 2022-Dec-9
+- **JIRA Ticket:** [LPS-170709](https://issues.liferay.com/browse/LPS-170709)
+
+### What changed?
+
+Disable support for service modules using spring as dependency injector by default.
+
+### Who is affected?
+
+Anyone using spring as dependency injector for its service modules.
+
+### How should I update my code?
+
+Enable the support by adding `spring.extender.enabled=true` to your `portal-ext.properties`.
+
+### Why was this change made?
+
+This change was made to improve performance.

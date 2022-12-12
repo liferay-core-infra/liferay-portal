@@ -4,7 +4,6 @@ Bundle-Version: 25.0.1
 Export-Package:\
 	com.liferay.info.collection.provider,\
 	com.liferay.info.constants,\
-	com.liferay.info.display.contributor.field,\
 	com.liferay.info.display.request.attributes.contributor,\
 	com.liferay.info.display.url.provider,\
 	com.liferay.info.exception,\

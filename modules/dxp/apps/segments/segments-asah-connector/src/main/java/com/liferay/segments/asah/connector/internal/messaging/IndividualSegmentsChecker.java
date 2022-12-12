@@ -166,7 +166,7 @@ public class IndividualSegmentsChecker {
 		try {
 			_segmentsEntryLocalService.addSegmentsEntryClassPKs(
 				segmentsEntry.getSegmentsEntryId(),
-				ArrayUtil.toArray(userIds.toArray(new Long[0])),
+				ArrayUtil.toLongArray(userIds),
 				_getServiceContext(segmentsEntry.getCompanyId()));
 		}
 		catch (PortalException portalException) {

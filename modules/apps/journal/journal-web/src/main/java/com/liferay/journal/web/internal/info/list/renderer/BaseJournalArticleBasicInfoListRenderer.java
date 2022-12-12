@@ -24,10 +24,8 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.web.internal.info.item.renderer.JournalArticleTitleInfoItemRenderer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,14 +64,11 @@ public abstract class BaseJournalArticleBasicInfoListRenderer
 
 		infoListBasicListTag.setInfoListObjects(articles);
 
-		Optional<String> infoListItemRendererKeyOptional =
-			infoListRendererContext.getListItemRendererKeyOptional();
+		String infoListItemRendererKey =
+			infoListRendererContext.getListItemRendererKey();
 
-		if (infoListItemRendererKeyOptional.isPresent() &&
-			Validator.isNotNull(infoListItemRendererKeyOptional.get())) {
-
-			infoListBasicListTag.setItemRendererKey(
-				infoListItemRendererKeyOptional.get());
+		if (infoListItemRendererKey != null) {
+			infoListBasicListTag.setItemRendererKey(infoListItemRendererKey);
 		}
 		else {
 			infoListBasicListTag.setItemRendererKey(
@@ -82,13 +77,10 @@ public abstract class BaseJournalArticleBasicInfoListRenderer
 
 		infoListBasicListTag.setListStyleKey(getListStyle());
 
-		Optional<String> templateKeyOptional =
-			infoListRendererContext.getTemplateKeyOptional();
+		String templateKey = infoListRendererContext.getTemplateKey();
 
-		if (templateKeyOptional.isPresent() &&
-			Validator.isNotNull(templateKeyOptional.get())) {
-
-			infoListBasicListTag.setTemplateKey(templateKeyOptional.get());
+		if (templateKey != null) {
+			infoListBasicListTag.setTemplateKey(templateKey);
 		}
 
 		try {

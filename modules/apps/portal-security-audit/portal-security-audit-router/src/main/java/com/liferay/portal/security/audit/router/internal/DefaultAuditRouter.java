@@ -14,7 +14,6 @@
 
 package com.liferay.portal.security.audit.router.internal;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.audit.AuditException;
 import com.liferay.portal.kernel.audit.AuditMessage;
@@ -27,7 +26,6 @@ import com.liferay.portal.security.audit.AuditMessageProcessor;
 import com.liferay.portal.security.audit.configuration.AuditConfiguration;
 import com.liferay.portal.security.audit.router.internal.constants.AuditConstants;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -121,54 +119,15 @@ public class DefaultAuditRouter implements AuditRouter {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void setAuditMessageProcessor(
-		AuditMessageProcessor auditMessageProcessor,
-		Map<String, Object> properties) {
+		AuditMessageProcessor auditMessageProcessor) {
 
-		String[] eventTypes = _getEventTypes(properties);
-
-		if ((eventTypes.length == 1) && eventTypes[0].equals(StringPool.STAR)) {
-			_globalAuditMessageProcessors.add(auditMessageProcessor);
-
-			return;
-		}
-
-		for (String eventType : eventTypes) {
-			Set<AuditMessageProcessor> auditMessageProcessorsSet =
-				_auditMessageProcessors.get(eventType);
-
-			if (auditMessageProcessorsSet == null) {
-				auditMessageProcessorsSet = new HashSet<>();
-
-				_auditMessageProcessors.put(
-					eventType, auditMessageProcessorsSet);
-			}
-
-			auditMessageProcessorsSet.add(auditMessageProcessor);
-		}
+		_globalAuditMessageProcessors.add(auditMessageProcessor);
 	}
 
 	protected void unsetAuditMessageProcessor(
-		AuditMessageProcessor auditMessageProcessor,
-		Map<String, Object> properties) {
+		AuditMessageProcessor auditMessageProcessor) {
 
-		String[] eventTypes = _getEventTypes(properties);
-
-		if ((eventTypes.length == 1) && eventTypes[0].equals(StringPool.STAR)) {
-			_globalAuditMessageProcessors.remove(auditMessageProcessor);
-
-			return;
-		}
-
-		for (String eventType : eventTypes) {
-			Set<AuditMessageProcessor> auditMessageProcessorsSet =
-				_auditMessageProcessors.get(eventType);
-
-			if (auditMessageProcessorsSet == null) {
-				continue;
-			}
-
-			auditMessageProcessorsSet.remove(auditMessageProcessor);
-		}
+		_globalAuditMessageProcessors.remove(auditMessageProcessor);
 	}
 
 	private String[] _getEventTypes(Map<String, Object> properties) {

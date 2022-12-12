@@ -25,8 +25,6 @@ import com.liferay.portal.security.audit.configuration.AuditConfiguration;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.framework.BundleContext;
@@ -54,11 +52,7 @@ public class DefaultAuditRouter implements AuditRouter {
 
 	@Override
 	public boolean isDeployed() {
-		int auditMessageProcessorsCount = _auditMessageProcessors.size();
-
-		if ((auditMessageProcessorsCount > 0) ||
-			!_globalAuditMessageProcessors.isEmpty()) {
-
+		if (!_globalAuditMessageProcessors.isEmpty()) {
 			return true;
 		}
 
@@ -80,17 +74,6 @@ public class DefaultAuditRouter implements AuditRouter {
 				_globalAuditMessageProcessors) {
 
 			globalAuditMessageProcessor.process(auditMessage);
-		}
-
-		Set<AuditMessageProcessor> auditMessageProcessors =
-			_auditMessageProcessors.get(auditMessage.getEventType());
-
-		if (auditMessageProcessors != null) {
-			for (AuditMessageProcessor auditMessageProcessor :
-					auditMessageProcessors) {
-
-				auditMessageProcessor.process(auditMessage);
-			}
 		}
 	}
 
@@ -131,8 +114,6 @@ public class DefaultAuditRouter implements AuditRouter {
 		DefaultAuditRouter.class);
 
 	private volatile boolean _auditEnabled;
-	private final Map<String, Set<AuditMessageProcessor>>
-		_auditMessageProcessors = new ConcurrentHashMap<>();
 	private final List<AuditMessageProcessor> _globalAuditMessageProcessors =
 		new CopyOnWriteArrayList<>();
 

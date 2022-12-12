@@ -14,16 +14,8 @@
 
 package com.liferay.info.internal.item.field.reader;
 
-import com.liferay.info.display.contributor.field.InfoDisplayContributorField;
-import com.liferay.info.display.contributor.field.InfoDisplayContributorFieldType;
-import com.liferay.info.field.InfoField;
-import com.liferay.info.field.type.ImageInfoFieldType;
-import com.liferay.info.field.type.InfoFieldType;
-import com.liferay.info.field.type.TextInfoFieldType;
-import com.liferay.info.field.type.URLInfoFieldType;
 import com.liferay.info.item.field.reader.InfoItemFieldReader;
 import com.liferay.info.item.field.reader.InfoItemFieldReaderRegistry;
-import com.liferay.info.localized.InfoLocalizedValue;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -81,64 +73,5 @@ public class InfoItemFieldReaderRegistryImpl
 
 	private ServiceTrackerMap<String, List<InfoItemFieldReader>>
 		_itemInfoItemFieldReaderServiceTrackerMap;
-
-	private class InfoItemFieldReaderWrapper implements InfoItemFieldReader {
-
-		public InfoItemFieldReaderWrapper(
-			InfoDisplayContributorField<Object> infoDisplayContributorField) {
-
-			_infoDisplayContributorField = infoDisplayContributorField;
-		}
-
-		public InfoDisplayContributorField<?> getInfoDisplayContributorField() {
-			return _infoDisplayContributorField;
-		}
-
-		@Override
-		public InfoField<?> getInfoField() {
-			InfoFieldType infoFieldType = TextInfoFieldType.INSTANCE;
-
-			InfoDisplayContributorFieldType infoDisplayContributorFieldType =
-				_infoDisplayContributorField.getType();
-
-			if (infoDisplayContributorFieldType ==
-					InfoDisplayContributorFieldType.IMAGE) {
-
-				infoFieldType = ImageInfoFieldType.INSTANCE;
-			}
-			else if (infoDisplayContributorFieldType ==
-						InfoDisplayContributorFieldType.URL) {
-
-				infoFieldType = URLInfoFieldType.INSTANCE;
-			}
-
-			return InfoField.builder(
-			).infoFieldType(
-				infoFieldType
-			).namespace(
-				InfoDisplayContributorField.class.getSimpleName()
-			).name(
-				getKey()
-			).labelInfoLocalizedValue(
-				(InfoLocalizedValue<String>)InfoLocalizedValue.function(
-					locale -> _infoDisplayContributorField.getLabel(locale))
-			).build();
-		}
-
-		@Override
-		public String getKey() {
-			return _infoDisplayContributorField.getKey();
-		}
-
-		@Override
-		public Object getValue(Object model) {
-			return InfoLocalizedValue.function(
-				locale -> _infoDisplayContributorField.getValue(model, locale));
-		}
-
-		private final InfoDisplayContributorField<Object>
-			_infoDisplayContributorField;
-
-	}
 
 }

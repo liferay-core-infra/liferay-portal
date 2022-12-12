@@ -20,8 +20,12 @@ import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.field.type.URLInfoFieldType;
 import com.liferay.info.item.field.reader.InfoItemFieldReader;
 import com.liferay.info.item.field.reader.InfoItemFieldReaderFieldSetProvider;
-import com.liferay.info.item.field.reader.InfoItemFieldReaderRegistry;
 import com.liferay.info.localized.InfoLocalizedValue;
+import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.reflect.GenericUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
 import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
@@ -30,10 +34,13 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.ContentTypes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Jürgen Kappler
@@ -49,8 +56,7 @@ public class InfoItemFieldReaderFieldSetProviderImpl
 		).infoFieldSetEntry(
 			unsafeConsumer -> {
 				List<InfoItemFieldReader> infoItemFieldReaders =
-					_infoItemFieldReaderRegistry.getInfoItemFieldReaders(
-						className);
+					_getInfoItemFieldReaders(className);
 
 				for (InfoItemFieldReader infoItemFieldReader :
 						infoItemFieldReaders) {
@@ -72,7 +78,7 @@ public class InfoItemFieldReaderFieldSetProviderImpl
 		List<InfoFieldValue<Object>> infoFieldValues = new ArrayList<>();
 
 		List<InfoItemFieldReader> infoItemFieldReaders =
-			_infoItemFieldReaderRegistry.getInfoItemFieldReaders(className);
+			_getInfoItemFieldReaders(className);
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
@@ -104,7 +110,39 @@ public class InfoItemFieldReaderFieldSetProviderImpl
 		return infoFieldValues;
 	}
 
-	@Reference
-	private InfoItemFieldReaderRegistry _infoItemFieldReaderRegistry;
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_itemInfoItemFieldReaderServiceTrackerMap =
+			ServiceTrackerMapFactory.openMultiValueMap(
+				bundleContext, InfoItemFieldReader.class, null,
+				ServiceReferenceMapperFactory.create(
+					bundleContext,
+					(infoItemFieldReader, emitter) -> emitter.emit(
+						GenericUtil.getGenericClassName(infoItemFieldReader))),
+				Collections.reverseOrder(
+					new PropertyServiceReferenceComparator<>(
+						"info.item.field.order")));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_itemInfoItemFieldReaderServiceTrackerMap.close();
+	}
+
+	private List<InfoItemFieldReader> _getInfoItemFieldReaders(
+		String itemClassName) {
+
+		List<InfoItemFieldReader> infoItemFieldReaders =
+			_itemInfoItemFieldReaderServiceTrackerMap.getService(itemClassName);
+
+		if (infoItemFieldReaders == null) {
+			infoItemFieldReaders = Collections.emptyList();
+		}
+
+		return infoItemFieldReaders;
+	}
+
+	private ServiceTrackerMap<String, List<InfoItemFieldReader>>
+		_itemInfoItemFieldReaderServiceTrackerMap;
 
 }

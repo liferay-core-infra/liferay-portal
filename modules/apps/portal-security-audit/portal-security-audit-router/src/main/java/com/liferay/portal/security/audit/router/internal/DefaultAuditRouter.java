@@ -14,6 +14,8 @@
 
 package com.liferay.portal.security.audit.router.internal;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.audit.AuditException;
 import com.liferay.portal.kernel.audit.AuditMessage;
@@ -23,19 +25,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.security.audit.AuditMessageProcessor;
 import com.liferay.portal.security.audit.configuration.AuditConfiguration;
 
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -52,7 +49,9 @@ public class DefaultAuditRouter implements AuditRouter {
 
 	@Override
 	public boolean isDeployed() {
-		if (!_globalAuditMessageProcessors.isEmpty()) {
+		int auditMessageProcessorsCount = _serviceTrackerList.size();
+
+		if (auditMessageProcessorsCount > 0) {
 			return true;
 		}
 
@@ -71,7 +70,7 @@ public class DefaultAuditRouter implements AuditRouter {
 		}
 
 		for (AuditMessageProcessor globalAuditMessageProcessor :
-				_globalAuditMessageProcessors) {
+				_serviceTrackerList) {
 
 			globalAuditMessageProcessor.process(auditMessage);
 		}
@@ -82,6 +81,14 @@ public class DefaultAuditRouter implements AuditRouter {
 		BundleContext bundleContext, Map<String, Object> properties) {
 
 		modified(properties);
+
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, AuditMessageProcessor.class);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerList.close();
 	}
 
 	@Modified
@@ -93,28 +100,10 @@ public class DefaultAuditRouter implements AuditRouter {
 		_auditEnabled = auditConfiguration.enabled();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setAuditMessageProcessor(
-		AuditMessageProcessor auditMessageProcessor) {
-
-		_globalAuditMessageProcessors.add(auditMessageProcessor);
-	}
-
-	protected void unsetAuditMessageProcessor(
-		AuditMessageProcessor auditMessageProcessor) {
-
-		_globalAuditMessageProcessors.remove(auditMessageProcessor);
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultAuditRouter.class);
 
 	private volatile boolean _auditEnabled;
-	private final List<AuditMessageProcessor> _globalAuditMessageProcessors =
-		new CopyOnWriteArrayList<>();
+	private ServiceTrackerList<AuditMessageProcessor> _serviceTrackerList;
 
 }

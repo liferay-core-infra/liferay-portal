@@ -92,7 +92,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				groupId, objectDefinitionId, ObjectActionKeys.ADD_OBJECT_ENTRY);
 		}
 		else {
-			_checkModelResourcePermission(
+			objectEntryService.checkModelResourcePermission(
 				objectDefinitionId, objectEntry.getObjectEntryId(),
 				ActionKeys.UPDATE);
 		}
@@ -100,6 +100,22 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 		return objectEntryLocalService.addOrUpdateObjectEntry(
 			externalReferenceCode, getUserId(), groupId, objectDefinitionId,
 			values, serviceContext);
+	}
+
+	@Override
+	public void checkModelResourcePermission(
+			long objectDefinitionId, long objectEntryId, String actionId)
+		throws PortalException {
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
+
+		ModelResourcePermission<ObjectEntry> modelResourcePermission =
+			_modelResourcePermissionsServiceTrackerMap.getService(
+				objectDefinition.getClassName());
+
+		modelResourcePermission.check(
+			getPermissionChecker(), objectEntryId, actionId);
 	}
 
 	@Override
@@ -152,7 +168,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				start, end);
 
 		for (ObjectEntry objectEntry : objectEntries) {
-			_checkModelResourcePermission(
+			objectEntryService.checkModelResourcePermission(
 				objectEntry.getObjectDefinitionId(),
 				objectEntry.getObjectEntryId(), ActionKeys.VIEW);
 		}
@@ -206,7 +222,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				groupId, objectRelationshipId, primaryKey, related, start, end);
 
 		for (ObjectEntry objectEntry : objectEntries) {
-			_checkModelResourcePermission(
+			objectEntryService.checkModelResourcePermission(
 				objectEntry.getObjectDefinitionId(),
 				objectEntry.getObjectEntryId(), ActionKeys.VIEW);
 		}
@@ -278,7 +294,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 		ObjectEntry objectEntry = objectEntryLocalService.getObjectEntry(
 			objectEntryId);
 
-		_checkModelResourcePermission(
+		objectEntryService.checkModelResourcePermission(
 			objectEntry.getObjectDefinitionId(), objectEntry.getObjectEntryId(),
 			ActionKeys.UPDATE);
 
@@ -315,25 +331,10 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 		_portletResourcePermissionsServiceTrackerMap.close();
 	}
 
-	private void _checkModelResourcePermission(
-			long objectDefinitionId, long objectEntryId, String actionId)
-		throws PortalException {
-
-		ObjectDefinition objectDefinition =
-			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
-
-		ModelResourcePermission<ObjectEntry> modelResourcePermission =
-			_modelResourcePermissionsServiceTrackerMap.getService(
-				objectDefinition.getClassName());
-
-		modelResourcePermission.check(
-			getPermissionChecker(), objectEntryId, actionId);
-	}
-
 	private void _checkPermissions(ObjectEntry objectEntry, String actionId)
 		throws PortalException {
 
-		_checkModelResourcePermission(
+		objectEntryService.checkModelResourcePermission(
 			objectEntry.getObjectDefinitionId(), objectEntry.getObjectEntryId(),
 			actionId);
 

@@ -961,7 +961,7 @@ public class DefaultObjectEntryManagerImpl
 					actions.put(
 						objectAction.getName(),
 						_addAction(
-							ActionKeys.VIEW,
+							objectAction.getName(),
 							"putByExternalReferenceCodeObjectEntryExternal" +
 								"ReferenceCodeObjectActionObjectActionName",
 							objectEntry, dtoConverterContext.getUriInfo()));

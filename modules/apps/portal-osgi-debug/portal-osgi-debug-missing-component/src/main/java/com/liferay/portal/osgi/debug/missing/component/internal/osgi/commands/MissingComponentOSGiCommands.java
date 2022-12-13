@@ -26,11 +26,10 @@ import org.osgi.service.component.runtime.ServiceComponentRuntime;
  * @author Matthew Tambara
  */
 @Component(
-	immediate = true,
 	property = {
 		"osgi.command.function=missingComponent", "osgi.command.scope=ds"
 	},
-	service = MissingComponentOSGiCommands.class
+	service = {}
 )
 public class MissingComponentOSGiCommands {
 

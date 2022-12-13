@@ -26,9 +26,8 @@ import org.osgi.service.component.runtime.ServiceComponentRuntime;
  * @author Tina Tian
  */
 @Component(
-	immediate = true,
 	property = {"osgi.command.function=unsatisfied", "osgi.command.scope=ds"},
-	service = UnsatisfiedComponentOSGiCommands.class
+	service = {}
 )
 public class UnsatisfiedComponentOSGiCommands {
 

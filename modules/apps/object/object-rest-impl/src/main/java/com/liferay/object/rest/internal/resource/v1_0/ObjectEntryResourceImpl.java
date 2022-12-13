@@ -490,9 +490,11 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			String objectActionName, ObjectEntry objectEntry)
 		throws Exception {
 
-		_objectEntryService.checkModelResourcePermission(
-			_objectDefinition.getObjectDefinitionId(), objectEntry.getId(),
-			objectActionName);
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-169994"))) {
+			_objectEntryService.checkModelResourcePermission(
+				_objectDefinition.getObjectDefinitionId(), objectEntry.getId(),
+				objectActionName);
+		}
 
 		com.liferay.object.model.ObjectEntry serviceBuilderObjectEntry =
 			_objectEntryLocalService.getObjectEntry(objectEntry.getId());

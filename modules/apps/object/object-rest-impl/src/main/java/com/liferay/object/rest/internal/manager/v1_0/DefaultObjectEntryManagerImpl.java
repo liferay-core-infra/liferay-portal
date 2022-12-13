@@ -958,10 +958,18 @@ public class DefaultObjectEntryManagerImpl
 							objectDefinition.getObjectDefinitionId(),
 							ObjectActionTriggerConstants.KEY_STANDALONE)) {
 
+					String actionName = ActionKeys.VIEW;
+
+					if (GetterUtil.getBoolean(
+							PropsUtil.get("feature.flag.LPS-169994"))) {
+
+						actionName = objectAction.getName();
+					}
+
 					actions.put(
 						objectAction.getName(),
 						_addAction(
-							objectAction.getName(),
+							actionName,
 							"putByExternalReferenceCodeObjectEntryExternal" +
 								"ReferenceCodeObjectActionObjectActionName",
 							objectEntry, dtoConverterContext.getUriInfo()));

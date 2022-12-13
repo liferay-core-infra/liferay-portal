@@ -130,7 +130,8 @@ public class ObjectActionLocalServiceImpl
 			_objectDefinitionPersistence.findByPrimaryKey(
 				objectAction.getObjectDefinitionId());
 
-		if (objectDefinition.isApproved() &&
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-169994")) &&
+			objectDefinition.isApproved() &&
 			Objects.equals(
 				objectAction.getObjectActionTriggerKey(),
 				ObjectActionTriggerConstants.KEY_STANDALONE)) {
@@ -166,7 +167,8 @@ public class ObjectActionLocalServiceImpl
 			_objectDefinitionPersistence.fetchByPrimaryKey(
 				objectAction.getObjectDefinitionId());
 
-		if (objectDefinition.isApproved() &&
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-169994")) &&
+			objectDefinition.isApproved() &&
 			Objects.equals(
 				objectAction.getObjectActionTriggerKey(),
 				ObjectActionTriggerConstants.KEY_STANDALONE)) {

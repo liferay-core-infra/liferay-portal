@@ -26,7 +26,7 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionVersionLocalService;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition;
-import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilderRegistry;
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionLocalService;
 import com.liferay.portal.workflow.metrics.service.util.BaseWorkflowMetricsIndexerTestCase;
 
@@ -48,14 +48,14 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 	public void testReindex() throws Exception {
 		assertCount(
 			4,
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "node"),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "processId",
 			workflowDefinition.getWorkflowDefinitionId());
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "process"),
 			"WorkflowMetricsProcessType", "companyId",
 			workflowDefinition.getCompanyId(), "processId",
 			workflowDefinition.getWorkflowDefinitionId());
@@ -110,8 +110,8 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 			completeKaleoInstance(kaleoInstance);
 
 			assertCount(
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId()),
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					workflowDefinition.getCompanyId(), "instance"),
 				"WorkflowMetricsInstanceType", "className",
 				kaleoInstance.getClassName(), "classPK",
 				kaleoInstance.getClassPK(), "companyId",
@@ -125,8 +125,9 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 
 			assertSLAReindex(
 				LinkedHashMapBuilder.put(
-					_slaInstanceResultWorkflowMetricsIndexNameBuilder.
-						getIndexName(workflowDefinition.getCompanyId()),
+					_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+						workflowDefinition.getCompanyId(),
+						"sla-instance-result"),
 					2
 				).build(),
 				new String[] {"WorkflowMetricsSLAInstanceResultType"},
@@ -143,8 +144,9 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 
 				assertSLAReindex(
 					new String[] {
-						_slaInstanceResultWorkflowMetricsIndexNameBuilder.
-							getIndexName(workflowDefinition.getCompanyId())
+						_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+							workflowDefinition.getCompanyId(),
+							"sla-instance-result")
 					},
 					new String[] {"WorkflowMetricsSLAInstanceResultType"},
 					"companyId", workflowDefinition.getCompanyId(),
@@ -157,10 +159,6 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 		}
 	}
 
-	@Inject(filter = "workflow.metrics.index.entity.name=instance")
-	private WorkflowMetricsIndexNameBuilder
-		_instanceWorkflowMetricsIndexNameBuilder;
-
 	@Inject
 	private JSONFactory _jsonFactory;
 
@@ -168,17 +166,9 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 	private KaleoDefinitionVersionLocalService
 		_kaleoDefinitionVersionLocalService;
 
-	@Inject(filter = "workflow.metrics.index.entity.name=node")
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
-	@Inject(filter = "workflow.metrics.index.entity.name=process")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
-	@Inject(filter = "workflow.metrics.index.entity.name=sla-instance-result")
-	private WorkflowMetricsIndexNameBuilder
-		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
+	@Inject
+	private WorkflowMetricsIndexNameBuilderRegistry
+		_workflowMetricsIndexNameBuilderRegistry;
 
 	@Inject
 	private WorkflowMetricsSLADefinitionLocalService

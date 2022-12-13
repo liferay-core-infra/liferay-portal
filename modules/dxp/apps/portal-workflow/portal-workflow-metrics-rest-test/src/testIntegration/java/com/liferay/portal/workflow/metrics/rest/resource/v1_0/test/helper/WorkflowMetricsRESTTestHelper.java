@@ -71,7 +71,7 @@ import com.liferay.portal.workflow.metrics.search.index.InstanceWorkflowMetricsI
 import com.liferay.portal.workflow.metrics.search.index.NodeWorkflowMetricsIndexer;
 import com.liferay.portal.workflow.metrics.search.index.ProcessWorkflowMetricsIndexer;
 import com.liferay.portal.workflow.metrics.search.index.TaskWorkflowMetricsIndexer;
-import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilderRegistry;
 
 import java.io.Serializable;
 
@@ -158,7 +158,8 @@ public class WorkflowMetricsRESTTestHelper {
 			creator.getId(), creator.getName());
 
 		_assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "instance"),
 			"active", true, "companyId", companyId, "deleted", false,
 			"instanceId", instance.getId(), "processId",
 			instance.getProcessId());
@@ -238,7 +239,8 @@ public class WorkflowMetricsRESTTestHelper {
 			).build());
 
 		_assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "node"),
 			"companyId", companyId, "deleted", false, "name", node.getName(),
 			"processId", processId, "version", version);
 
@@ -324,7 +326,8 @@ public class WorkflowMetricsRESTTestHelper {
 		}
 
 		_assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "node"),
 			"companyId", companyId, "deleted", false, "name", node.getName(),
 			"processId", processId);
 
@@ -386,7 +389,8 @@ public class WorkflowMetricsRESTTestHelper {
 			).build());
 
 		_assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "process"),
 			"companyId", companyId, "deleted", false, "processId",
 			process.getId());
 
@@ -490,8 +494,8 @@ public class WorkflowMetricsRESTTestHelper {
 					companyId, instance, slaResult));
 
 			_assertCount(
-				_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-					companyId),
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					companyId, "sla-instance-result"),
 				"blocked", false, "companyId", companyId, "deleted", false,
 				"instanceCompleted",
 				Objects.nonNull(instance.getDateCompletion()), "instanceId",
@@ -521,8 +525,8 @@ public class WorkflowMetricsRESTTestHelper {
 				status, taskId, taskName));
 
 		_assertCount(
-			_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "sla-task-result"),
 			"breached", breached, "assigneeIds", assigneeId, "assigneeType",
 			User.class.getName(), "companyId", companyId, "deleted", false,
 			"instanceCompleted", Objects.nonNull(instance.getDateCompletion()),
@@ -620,8 +624,8 @@ public class WorkflowMetricsRESTTestHelper {
 		_taskWorkflowMetricsIndexer.addTask(addTaskRequest);
 
 		_assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				addTaskRequest.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				addTaskRequest.getCompanyId(), "task"),
 			"active", true, "companyId", addTaskRequest.getCompanyId(),
 			"deleted", false, "instanceId", instance.getId(), "processId",
 			addTaskRequest.getProcessId(), "nodeId", addTaskRequest.getNodeId(),
@@ -636,8 +640,8 @@ public class WorkflowMetricsRESTTestHelper {
 						_queries.term(
 							"tasks.taskId", addTaskRequest.getTaskId()))),
 				1,
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					addTaskRequest.getCompanyId()),
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					addTaskRequest.getCompanyId(), "instance"),
 				"companyId", addTaskRequest.getCompanyId(), "deleted", false,
 				"instanceId", instance.getId(), "processId",
 				addTaskRequest.getProcessId());
@@ -673,7 +677,8 @@ public class WorkflowMetricsRESTTestHelper {
 			}
 
 			_assertCount(
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					companyId, "task"),
 				"assigneeIds", assignment.getAssignmentId(), "assigneeType",
 				assignmentType, "companyId", addTaskRequest.getCompanyId(),
 				"deleted", false, "instanceId", instance.getId(), "processId",
@@ -704,8 +709,8 @@ public class WorkflowMetricsRESTTestHelper {
 				).build());
 
 			_assertCount(
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-					addTaskRequest.getCompanyId()),
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					addTaskRequest.getCompanyId(), "task"),
 				"companyId", addTaskRequest.getCompanyId(), "completed", true,
 				"completionUserId", addTaskRequest.getCompletionUserId(),
 				"deleted", false, "duration", durationAvg, "instanceId",
@@ -792,7 +797,8 @@ public class WorkflowMetricsRESTTestHelper {
 			).build());
 
 		_assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "task"),
 			"companyId", companyId, "deleted", false, "instanceId",
 			instance.getId(), "processId", task.getProcessId(), "nodeId",
 			task.getNodeId(), "name", task.getName(), "taskId", task.getId());
@@ -801,7 +807,9 @@ public class WorkflowMetricsRESTTestHelper {
 			booleanQuery -> booleanQuery.addMustQueryClauses(
 				_queries.nested(
 					"tasks", _queries.term("tasks.taskId", task.getId()))),
-			1, _instanceWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			1,
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "instance"),
 			"companyId", companyId, "deleted", false, "instanceId",
 			instance.getId(), "processId", task.getProcessId());
 
@@ -829,7 +837,8 @@ public class WorkflowMetricsRESTTestHelper {
 			Assignment assignment = assignments.get(0);
 
 			_assertCount(
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					companyId, "task"),
 				"assigneeIds", assignment.getAssignmentId(), "assigneeType",
 				assigneeType, "companyId", companyId, "deleted", false,
 				"instanceId", instance.getId(), "processId",
@@ -859,7 +868,8 @@ public class WorkflowMetricsRESTTestHelper {
 				).build());
 
 			_assertCount(
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					companyId, "task"),
 				"companyId", companyId, "completed", true, "completionUserId",
 				task.getCompletionUserId(), "deleted", false, "duration",
 				task.getDuration(), "instanceId", instance.getId(), "processId",
@@ -895,8 +905,8 @@ public class WorkflowMetricsRESTTestHelper {
 		method.invoke(indexer, companyId, processId, slaDefinitionId);
 
 		_assertCount(
-			_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "sla-instance-result"),
 			"blocked", true, "companyId", companyId, "deleted", false,
 			"processId", processId, "slaDefinitionId", slaDefinitionId);
 	}
@@ -924,7 +934,8 @@ public class WorkflowMetricsRESTTestHelper {
 			));
 
 		_assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "instance"),
 			"companyId", companyId, "completed", true, "deleted", false,
 			"instanceId", instance.getId(), "processId",
 			instance.getProcessId());
@@ -937,7 +948,8 @@ public class WorkflowMetricsRESTTestHelper {
 			companyId, instance.getId());
 
 		_assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "instance"),
 			"companyId", companyId, "deleted", true, "instanceId",
 			instance.getId(), "processId", instance.getProcessId());
 	}
@@ -955,7 +967,8 @@ public class WorkflowMetricsRESTTestHelper {
 			).build());
 
 		_assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "node"),
 			"companyId", companyId, "deleted", true, "name", node.getName(),
 			"processId", processId);
 	}
@@ -972,7 +985,8 @@ public class WorkflowMetricsRESTTestHelper {
 			).build());
 
 		_assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "process"),
 			"companyId", companyId, "deleted", true, "processId", processId);
 	}
 
@@ -986,15 +1000,16 @@ public class WorkflowMetricsRESTTestHelper {
 		throws Exception {
 
 		_deleteDocuments(
-			_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "sla-task-result"),
 			"WorkflowMetricsSLATaskResultType", "companyId", companyId,
 			"processId", processId);
 	}
 
 	public void deleteTasks(long companyId, long processId) throws Exception {
 		_deleteDocuments(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "task"),
 			"WorkflowMetricsTaskType", "companyId", companyId, "processId",
 			processId);
 	}
@@ -1007,7 +1022,8 @@ public class WorkflowMetricsRESTTestHelper {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "process"));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -1068,8 +1084,8 @@ public class WorkflowMetricsRESTTestHelper {
 			).build());
 
 		_assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				document.getLong("companyId")),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				document.getLong("companyId"), "process"),
 			"companyId", document.getLong("companyId"), "deleted", false,
 			"processId", document.getLong("processId"));
 	}
@@ -1100,7 +1116,8 @@ public class WorkflowMetricsRESTTestHelper {
 			).build());
 
 		_assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "process"),
 			"companyId", companyId, "deleted", false, "processId", processId,
 			"version", version);
 	}
@@ -1523,7 +1540,8 @@ public class WorkflowMetricsRESTTestHelper {
 		).build();
 
 		UpdateDocumentRequest updateDocumentRequest = new UpdateDocumentRequest(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "instance"),
 			document.getString("uid"), document);
 
 		updateDocumentRequest.setRefresh(true);
@@ -1539,8 +1557,8 @@ public class WorkflowMetricsRESTTestHelper {
 							"slaResults.overdueDate",
 							_getDateString(slaResult.getDateOverdue())))),
 				1,
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					companyId),
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					companyId, "instance"),
 				"companyId", companyId, "deleted", false, "instanceId",
 				instance.getId(), "processId", instance.getProcessId());
 		}
@@ -1565,26 +1583,14 @@ public class WorkflowMetricsRESTTestHelper {
 	@Reference
 	private InstanceWorkflowMetricsIndexer _instanceWorkflowMetricsIndexer;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=instance)")
-	private WorkflowMetricsIndexNameBuilder
-		_instanceWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Language _language;
 
 	@Reference
 	private NodeWorkflowMetricsIndexer _nodeWorkflowMetricsIndexer;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private ProcessWorkflowMetricsIndexer _processWorkflowMetricsIndexer;
-
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
 
 	@Reference
 	private Queries _queries;
@@ -1592,24 +1598,14 @@ public class WorkflowMetricsRESTTestHelper {
 	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private volatile SearchEngineAdapter _searchEngineAdapter;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=sla-instance-result)"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
-
-	@Reference(target = "(workflow.metrics.index.entity.name=sla-task-result)")
-	private WorkflowMetricsIndexNameBuilder
-		_slaTaskResultWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private TaskWorkflowMetricsIndexer _taskWorkflowMetricsIndexer;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=task)")
-	private WorkflowMetricsIndexNameBuilder
-		_taskWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilderRegistry
+		_workflowMetricsIndexNameBuilderRegistry;
 
 }

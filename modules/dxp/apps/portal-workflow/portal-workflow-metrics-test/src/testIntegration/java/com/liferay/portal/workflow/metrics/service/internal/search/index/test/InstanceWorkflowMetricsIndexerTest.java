@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.service.KaleoTaskInstanceTokenLocalService;
-import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilderRegistry;
 import com.liferay.portal.workflow.metrics.service.util.BaseWorkflowMetricsIndexerTestCase;
 
 import java.time.Duration;
@@ -49,8 +49,8 @@ public class InstanceWorkflowMetricsIndexerTest
 		KaleoInstance kaleoInstance = addKaleoInstance();
 
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "instance"),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -64,8 +64,8 @@ public class InstanceWorkflowMetricsIndexerTest
 		KaleoInstance kaleoInstance = addKaleoInstance();
 
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "instance"),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -83,8 +83,8 @@ public class InstanceWorkflowMetricsIndexerTest
 			createDate.toInstant(), completionDate.toInstant());
 
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "instance"),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", true,
@@ -100,8 +100,8 @@ public class InstanceWorkflowMetricsIndexerTest
 		deleteKaleoInstance(kaleoInstance);
 
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "instance"),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -116,8 +116,8 @@ public class InstanceWorkflowMetricsIndexerTest
 
 		assertReindex(
 			new String[] {
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId())
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					workflowDefinition.getCompanyId(), "instance")
 			},
 			new String[] {"WorkflowMetricsInstanceType"}, "companyId",
 			kaleoInstance.getCompanyId(), "instanceId",
@@ -135,8 +135,8 @@ public class InstanceWorkflowMetricsIndexerTest
 					"tasks",
 					queries.term("tasks.assigneeType", Role.class.getName()))),
 			1,
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "instance"),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -160,8 +160,8 @@ public class InstanceWorkflowMetricsIndexerTest
 					"tasks",
 					queries.term("tasks.assigneeName", user.getFullName()))),
 			1,
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "instance"),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -180,8 +180,8 @@ public class InstanceWorkflowMetricsIndexerTest
 					queries.term(
 						"tasks.assigneeName", updatedUser.getFullName()))),
 			1,
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				workflowDefinition.getCompanyId(), "instance"),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -190,15 +190,15 @@ public class InstanceWorkflowMetricsIndexerTest
 			"version", "1.0");
 	}
 
-	@Inject(filter = "workflow.metrics.index.entity.name=instance")
-	private WorkflowMetricsIndexNameBuilder
-		_instanceWorkflowMetricsIndexNameBuilder;
-
 	@Inject
 	private KaleoTaskInstanceTokenLocalService
 		_kaleoTaskInstanceTokenLocalService;
 
 	@Inject
 	private UserLocalService _userLocalService;
+
+	@Inject
+	private WorkflowMetricsIndexNameBuilderRegistry
+		_workflowMetricsIndexNameBuilderRegistry;
 
 }

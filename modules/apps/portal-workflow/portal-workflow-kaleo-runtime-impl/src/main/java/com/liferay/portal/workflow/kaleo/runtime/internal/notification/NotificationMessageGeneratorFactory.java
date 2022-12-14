@@ -14,18 +14,15 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.notification;
 
-import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationMessageGenerator;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Michael C. Han
@@ -38,7 +35,7 @@ public class NotificationMessageGeneratorFactory {
 		throws WorkflowException {
 
 		NotificationMessageGenerator notificationMessageGenerator =
-			_notificationMessageGenerators.get(templateLanguage);
+			_serviceTrackerMap.getService(templateLanguage);
 
 		if (notificationMessageGenerator == null) {
 			throw new WorkflowException(
@@ -48,43 +45,19 @@ public class NotificationMessageGeneratorFactory {
 		return notificationMessageGenerator;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(template.language=*)"
-	)
-	protected void addNotificationMessageGenerator(
-		NotificationMessageGenerator notificationMessageGenerator,
-		Map<String, Object> properties) {
-
-		String[] templateLanguages = _getTemplateLanguages(properties);
-
-		for (String templateLanguage : templateLanguages) {
-			_notificationMessageGenerators.put(
-				templateLanguage, notificationMessageGenerator);
-		}
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, NotificationMessageGenerator.class,
+			"template.language");
 	}
 
-	protected void removeNotificationMessageGenerator(
-		NotificationMessageGenerator notificationMessageGenerator,
-		Map<String, Object> properties) {
-
-		String[] templateLanguages = _getTemplateLanguages(properties);
-
-		for (String templateLanguage : templateLanguages) {
-			_notificationMessageGenerators.remove(templateLanguage);
-		}
+	@Deactivate
+	protected void deactivate(BundleContext bundleContext) {
+		_serviceTrackerMap.close();
 	}
 
-	private String[] _getTemplateLanguages(Map<String, Object> properties) {
-		Object value = properties.get("template.language");
-
-		return GetterUtil.getStringValues(
-			value, new String[] {String.valueOf(value)});
-	}
-
-	private final Map<String, NotificationMessageGenerator>
-		_notificationMessageGenerators = new HashMap<>();
+	private ServiceTrackerMap<String, NotificationMessageGenerator>
+		_serviceTrackerMap;
 
 }

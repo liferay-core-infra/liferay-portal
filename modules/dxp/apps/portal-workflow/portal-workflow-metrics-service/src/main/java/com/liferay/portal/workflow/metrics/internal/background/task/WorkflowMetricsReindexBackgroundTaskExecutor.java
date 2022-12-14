@@ -86,7 +86,7 @@ public class WorkflowMetricsReindexBackgroundTaskExecutor
 
 		for (String indexEntityName : indexEntityNames) {
 			WorkflowMetricsIndex workflowMetricsIndex =
-				_workflowMetricsIndexes.getService(indexEntityName);
+				_serviceTrackerMap.getService(indexEntityName);
 
 			workflowMetricsIndex.removeIndex(backgroundTask.getCompanyId());
 
@@ -136,14 +136,14 @@ public class WorkflowMetricsReindexBackgroundTaskExecutor
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_workflowMetricsIndexes = ServiceTrackerMapFactory.openSingleValueMap(
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, WorkflowMetricsIndex.class,
 			"workflow.metrics.index.entity.name");
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_workflowMetricsIndexes.close();
+		_serviceTrackerMap.close();
 	}
 
 	private String[] _getIndexEntityNames(BackgroundTask backgroundTask) {
@@ -153,7 +153,7 @@ public class WorkflowMetricsReindexBackgroundTaskExecutor
 		return Stream.of(
 			(String[])taskContextMap.get("workflow.metrics.index.entity.names")
 		).filter(
-			_workflowMetricsIndexes::containsKey
+			_serviceTrackerMap::containsKey
 		).filter(
 			_workflowMetricsReindexerRegistry::containsKey
 		).sorted(
@@ -197,8 +197,7 @@ public class WorkflowMetricsReindexBackgroundTaskExecutor
 	private BackgroundTaskStatusMessageSender
 		_backgroundTaskStatusMessageSender;
 
-	private ServiceTrackerMap<String, WorkflowMetricsIndex>
-		_workflowMetricsIndexes;
+	private ServiceTrackerMap<String, WorkflowMetricsIndex> _serviceTrackerMap;
 
 	@Reference
 	private WorkflowMetricsPortalExecutor _workflowMetricsPortalExecutor;

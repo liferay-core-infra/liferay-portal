@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.notification;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationMessageGenerator;
@@ -60,8 +58,7 @@ public class NotificationMessageGeneratorFactory {
 		NotificationMessageGenerator notificationMessageGenerator,
 		Map<String, Object> properties) {
 
-		String[] templateLanguages = _getTemplateLanguages(
-			notificationMessageGenerator, properties);
+		String[] templateLanguages = _getTemplateLanguages(properties);
 
 		for (String templateLanguage : templateLanguages) {
 			_notificationMessageGenerators.put(
@@ -73,30 +70,18 @@ public class NotificationMessageGeneratorFactory {
 		NotificationMessageGenerator notificationMessageGenerator,
 		Map<String, Object> properties) {
 
-		String[] templateLanguages = _getTemplateLanguages(
-			notificationMessageGenerator, properties);
+		String[] templateLanguages = _getTemplateLanguages(properties);
 
 		for (String templateLanguage : templateLanguages) {
 			_notificationMessageGenerators.remove(templateLanguage);
 		}
 	}
 
-	private String[] _getTemplateLanguages(
-		NotificationMessageGenerator notificationMessageGenerator,
-		Map<String, Object> properties) {
-
+	private String[] _getTemplateLanguages(Map<String, Object> properties) {
 		Object value = properties.get("template.language");
 
-		String[] templateLanguages = GetterUtil.getStringValues(
+		return GetterUtil.getStringValues(
 			value, new String[] {String.valueOf(value)});
-
-		if (ArrayUtil.isEmpty(templateLanguages)) {
-			throw new IllegalArgumentException(
-				"The property \"template.language\" is invalid for " +
-					ClassUtil.getClassName(notificationMessageGenerator));
-		}
-
-		return templateLanguages;
 	}
 
 	private final Map<String, NotificationMessageGenerator>

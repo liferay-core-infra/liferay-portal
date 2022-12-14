@@ -19,7 +19,6 @@ import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleListener;
 import com.liferay.exportimport.kernel.lifecycle.constants.ExportImportLifecycleConstants;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.staging.StagingURLHelper;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -41,7 +40,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Activate;
@@ -92,33 +90,41 @@ public class EventRemotePropagatorExportImportLifecycleListener
 			return false;
 		}
 
-		Optional<ExportImportConfiguration> exportImportConfigurationOptional =
+		long sourceGroupId = GetterUtil.getLong(
+			GroupConstants.ANY_PARENT_GROUP_ID);
+
+		long targetGroupId = GetterUtil.getLong(
+			GroupConstants.ANY_PARENT_GROUP_ID);
+
+		Object remoteAddressValue = null;
+
+		ExportImportConfiguration exportImportConfiguration =
 			_getExportImportConfiguration(exportImportLifecycleEvent);
 
-		Optional<Map<String, Serializable>> settingsMapOptional =
-			exportImportConfigurationOptional.map(
-				exportImportConfiguration ->
-					exportImportConfiguration.getSettingsMap());
+		if (exportImportConfiguration != null) {
+			Map<String, Serializable> settingsMap =
+				exportImportConfiguration.getSettingsMap();
 
-		long sourceGroupId = GetterUtil.getLong(
-			settingsMapOptional.map(
-				settingsMap -> settingsMap.get("sourceGroupId")
-			).orElse(
-				GroupConstants.ANY_PARENT_GROUP_ID
-			));
+			Object sourceGroupValue = settingsMap.get("sourceGroupId");
+
+			if (sourceGroupValue != null) {
+				sourceGroupId = GetterUtil.getLong(sourceGroupValue);
+			}
+
+			Object targetGroupValue = settingsMap.get("targetGroupId");
+
+			if (targetGroupValue != null) {
+				targetGroupId = GetterUtil.getLong(targetGroupValue);
+			}
+
+			remoteAddressValue = settingsMap.get("remoteAddress");
+		}
 
 		Group sourceGroup = _groupLocalService.fetchGroup(sourceGroupId);
 
 		if ((sourceGroup == null) || !sourceGroup.isStagedRemotely()) {
 			return false;
 		}
-
-		long targetGroupId = GetterUtil.getLong(
-			settingsMapOptional.map(
-				settingsMap -> settingsMap.get("targetGroupId")
-			).orElse(
-				GroupConstants.ANY_PARENT_GROUP_ID
-			));
 
 		Group targetGroup = _groupLocalService.fetchGroup(targetGroupId);
 
@@ -138,48 +144,38 @@ public class EventRemotePropagatorExportImportLifecycleListener
 			return false;
 		}
 
-		String remoteAddress = GetterUtil.getString(
-			settingsMapOptional.map(
-				settingsMap -> settingsMap.get("remoteAddress")
-			).orElse(
-				StringPool.BLANK
-			));
+		if (remoteAddressValue != null) {
+			String remoteAddress = GetterUtil.getString(remoteAddressValue);
 
-		return !remoteAddress.equals("localhost");
+			return !remoteAddress.equals("localhost");
+		}
+
+		return true;
 	}
 
-	private Optional<ExportImportConfiguration> _getExportImportConfiguration(
+	private ExportImportConfiguration _getExportImportConfiguration(
 		ExportImportLifecycleEvent exportImportLifecycleEvent) {
 
 		List<Serializable> attributes =
 			exportImportLifecycleEvent.getAttributes();
 
-		return Optional.ofNullable(
-			(ExportImportConfiguration)attributes.get(0));
+		return (ExportImportConfiguration)attributes.get(0);
 	}
 
-	private Optional<HttpPrincipal> _getHttpPrincipal(
+	private HttpPrincipal _getHttpPrincipal(
 		ExportImportLifecycleEvent exportImportLifecycleEvent) {
 
-		Optional<ExportImportConfiguration> exportImportConfigurationOptional =
+		ExportImportConfiguration exportImportConfiguration =
 			_getExportImportConfiguration(exportImportLifecycleEvent);
 
-		return exportImportConfigurationOptional.map(
-			exportImportConfiguration ->
-				exportImportConfiguration.getSettingsMap()
-		).map(
-			settingsMap -> MapUtil.getLong(settingsMap, "userId")
-		).map(
-			userId -> _userLocalService.fetchUser(userId)
-		).flatMap(
-			user -> _getHttpPrincipal(
-				user, _getRemoteURL(exportImportLifecycleEvent))
-		);
+		return _getHttpPrincipal(
+			_userLocalService.fetchUser(
+				MapUtil.getLong(
+					exportImportConfiguration.getSettingsMap(), "userId")),
+			_getRemoteURL(exportImportLifecycleEvent));
 	}
 
-	private Optional<HttpPrincipal> _getHttpPrincipal(
-		User user, String remoteURL) {
-
+	private HttpPrincipal _getHttpPrincipal(User user, String remoteURL) {
 		HttpPrincipal httpPrincipal = null;
 
 		try {
@@ -196,7 +192,7 @@ public class EventRemotePropagatorExportImportLifecycleListener
 			}
 		}
 
-		return Optional.ofNullable(httpPrincipal);
+		return httpPrincipal;
 	}
 
 	private String _getRemoteURL(
@@ -214,25 +210,24 @@ public class EventRemotePropagatorExportImportLifecycleListener
 	private void _propagateEvent(
 		ExportImportLifecycleEvent exportImportLifecycleEvent) {
 
-		_getHttpPrincipal(
-			exportImportLifecycleEvent
-		).ifPresent(
-			httpPrincipal -> {
-				try {
-					StagingServiceHttp.propagateExportImportLifecycleEvent(
-						httpPrincipal, exportImportLifecycleEvent.getCode(),
-						exportImportLifecycleEvent.getProcessFlag(),
-						exportImportLifecycleEvent.getProcessId(),
-						exportImportLifecycleEvent.getAttributes());
-				}
-				catch (PortalException portalException) {
-					_log.error(
-						"Unable to propagate staging lifecycle event to the " +
-							"remote live site",
-						portalException);
-				}
+		HttpPrincipal httpPrincipal = _getHttpPrincipal(
+			exportImportLifecycleEvent);
+
+		if (httpPrincipal != null) {
+			try {
+				StagingServiceHttp.propagateExportImportLifecycleEvent(
+					httpPrincipal, exportImportLifecycleEvent.getCode(),
+					exportImportLifecycleEvent.getProcessFlag(),
+					exportImportLifecycleEvent.getProcessId(),
+					exportImportLifecycleEvent.getAttributes());
 			}
-		);
+			catch (PortalException portalException) {
+				_log.error(
+					"Unable to propagate staging lifecycle event to the " +
+						"remote live site",
+					portalException);
+			}
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

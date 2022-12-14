@@ -50,10 +50,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import java.net.URI;
 import java.net.URL;
 
@@ -69,8 +65,6 @@ import java.security.CodeSource;
 import java.security.ProtectionDomain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Dictionary;
@@ -78,12 +72,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.Queue;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -114,7 +106,6 @@ import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.framework.wiring.BundleRevision;
-import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogReaderService;
@@ -956,53 +947,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 	}
 
-	private void _installConfigs(ClassLoader classLoader) throws Exception {
-		BundleContext bundleContext = _framework.getBundleContext();
-
-		Class<?> configurationFileInstallerClass = classLoader.loadClass(
-			"com.liferay.portal.file.install.internal.configuration." +
-				"ConfigurationFileInstaller");
-
-		Constructor<?> constructor =
-			configurationFileInstallerClass.getDeclaredConstructor(
-				classLoader.loadClass("org.osgi.service.cm.ConfigurationAdmin"),
-				String.class);
-
-		constructor.setAccessible(true);
-
-		Method canTransformURLMethod =
-			configurationFileInstallerClass.getDeclaredMethod(
-				"canTransformURL", File.class);
-		Method transformURLMethod =
-			configurationFileInstallerClass.getDeclaredMethod(
-				"transformURL", File.class);
-
-		Object configurationFileInstaller = constructor.newInstance(
-			bundleContext.getService(
-				bundleContext.getServiceReference(
-					"org.osgi.service.cm.ConfigurationAdmin")),
-			ModuleFrameworkPropsValues.
-				MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING);
-
-		File dir = new File(PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
-
-		dir = dir.getCanonicalFile();
-
-		for (File file : _listConfigs(dir)) {
-			if ((boolean)canTransformURLMethod.invoke(
-					configurationFileInstaller, file)) {
-
-				try {
-					transformURLMethod.invoke(configurationFileInstaller, file);
-				}
-				catch (InvocationTargetException invocationTargetException) {
-					_log.error(
-						"Unable to install " + file, invocationTargetException);
-				}
-			}
-		}
-	}
-
 	private Map<String, Long> _installDynamicBundles() throws Exception {
 		Map<String, Long> checksums = new HashMap<>();
 
@@ -1102,58 +1046,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 
 		return true;
-	}
-
-	private List<File> _listConfigs(File dir) {
-		if (!dir.isDirectory()) {
-			return Collections.<File>emptyList();
-		}
-
-		BundleContext bundleContext = _framework.getBundleContext();
-
-		String subdirMode = bundleContext.getProperty(
-			"file.install.subdir.mode");
-
-		if (Objects.equals(subdirMode, "recurse")) {
-			Queue<File> queue = new LinkedList<>();
-
-			queue.add(dir);
-
-			List<File> files = new ArrayList<>();
-
-			File curDir = null;
-
-			while ((curDir = queue.poll()) != null) {
-				for (File file : curDir.listFiles()) {
-					if (file.isDirectory()) {
-						queue.add(file);
-					}
-					else {
-						String name = file.getName();
-
-						if (name.endsWith(".cfg") || name.endsWith(".config")) {
-							files.add(file);
-						}
-					}
-				}
-			}
-
-			return files;
-		}
-
-		return Arrays.asList(
-			dir.listFiles(
-				file -> {
-					if (file.isFile()) {
-						String name = file.getName();
-
-						if (name.endsWith(".cfg") || name.endsWith(".config")) {
-							return true;
-						}
-					}
-
-					return false;
-				}));
 	}
 
 	private String _parseBundleSymbolicName(Attributes attributes) {
@@ -1507,12 +1399,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		frameworkWiring.resolveBundles(bundles);
 
-		_startConfigurationBundles(bundles);
-
-		BundleWiring bundleWiring = fileInstallBundle.adapt(BundleWiring.class);
-
-		_installConfigs(bundleWiring.getClassLoader());
-
 		if (ModuleFrameworkPropsValues.
 				MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
 
@@ -1605,24 +1491,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			_log.debug(
 				"Registered required service as " +
 					serviceRegistration.getReference());
-		}
-	}
-
-	private void _startConfigurationBundles(Collection<Bundle> bundles)
-		throws Exception {
-
-		Iterator<Bundle> iterator = bundles.iterator();
-
-		while (iterator.hasNext()) {
-			Bundle bundle = iterator.next();
-
-			if (_configurationBundleSymbolicNames.contains(
-					bundle.getSymbolicName())) {
-
-				bundle.start();
-
-				iterator.remove();
-			}
 		}
 	}
 
@@ -1774,11 +1642,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ModuleFrameworkImpl.class);
-
-	private static final List<String> _configurationBundleSymbolicNames =
-		Arrays.asList(
-			ModuleFrameworkPropsValues.
-				MODULE_FRAMEWORK_CONFIGURATION_BUNDLE_SYMBOLIC_NAMES);
 
 	private BundleListener _bundleListener;
 	private Framework _framework;

@@ -2040,7 +2040,8 @@ public class VerifyProperties {
 		"com.liferay.util.axis.SimpleHTTPSender.regexp.pattern",
 		"com.liferay.util.Http.proxy.host", "com.liferay.util.Http.proxy.port",
 		"com.liferay.util.XSSUtil.regexp.pattern",
-		"finalize.manager.thread.enabled"
+		"finalize.manager.thread.enabled",
+		"module.framework.configuration.bundle.symbolic.names"
 	};
 
 	private static final String[][] _RENAMED_PORTAL_KEYS = {

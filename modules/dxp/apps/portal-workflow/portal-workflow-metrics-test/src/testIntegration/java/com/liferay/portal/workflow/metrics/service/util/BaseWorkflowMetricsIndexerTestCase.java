@@ -48,6 +48,7 @@ import com.liferay.portal.workflow.kaleo.service.KaleoNodeLocalService;
 import com.liferay.portal.workflow.kaleo.service.KaleoTaskInstanceTokenLocalService;
 import com.liferay.portal.workflow.kaleo.service.KaleoTaskLocalService;
 import com.liferay.portal.workflow.metrics.search.index.reindexer.WorkflowMetricsReindexer;
+import com.liferay.portal.workflow.metrics.search.index.reindexer.WorkflowMetricsReindexerRegistry;
 
 import java.io.Serializable;
 
@@ -478,16 +479,49 @@ public abstract class BaseWorkflowMetricsIndexerTestCase
 	}
 
 	private void _reindexMetricIndexes(long companyId) throws Exception {
-		_instanceWorkflowMetricsReindexer.reindex(companyId);
-		_nodeWorkflowMetricsReindexer.reindex(companyId);
-		_processWorkflowMetricsReindexer.reindex(companyId);
-		_taskWorkflowMetricsReindexer.reindex(companyId);
-		_transitionWorkflowMetricsReindexer.reindex(companyId);
+		WorkflowMetricsReindexer instanceWorkflowMetricsReindexer =
+			_workflowMetricsReindexerRegistry.getWorkflowMetricsReindexer(
+				"instance");
+
+		instanceWorkflowMetricsReindexer.reindex(companyId);
+
+		WorkflowMetricsReindexer nodeWorkflowMetricsReindexer =
+			_workflowMetricsReindexerRegistry.getWorkflowMetricsReindexer(
+				"node");
+
+		nodeWorkflowMetricsReindexer.reindex(companyId);
+
+		WorkflowMetricsReindexer processWorkflowMetricsReindexer =
+			_workflowMetricsReindexerRegistry.getWorkflowMetricsReindexer(
+				"process");
+
+		processWorkflowMetricsReindexer.reindex(companyId);
+
+		WorkflowMetricsReindexer taskWorkflowMetricsReindexer =
+			_workflowMetricsReindexerRegistry.getWorkflowMetricsReindexer(
+				"task");
+
+		taskWorkflowMetricsReindexer.reindex(companyId);
+
+		WorkflowMetricsReindexer transitionWorkflowMetricsReindexer =
+			_workflowMetricsReindexerRegistry.getWorkflowMetricsReindexer(
+				"transition");
+
+		transitionWorkflowMetricsReindexer.reindex(companyId);
 	}
 
 	private void _reindexSLAIndexes(long companyId) throws Exception {
-		_slaInstanceResultWorkflowMetricsReindexer.reindex(companyId);
-		_slaTaskResultWorkflowMetricsReindexer.reindex(companyId);
+		WorkflowMetricsReindexer slaInstanceResultWorkflowMetricsReindexer =
+			_workflowMetricsReindexerRegistry.getWorkflowMetricsReindexer(
+				"sla-instance-result");
+
+		slaInstanceResultWorkflowMetricsReindexer.reindex(companyId);
+
+		WorkflowMetricsReindexer slaTaskResultWorkflowMetricsReindexer =
+			_workflowMetricsReindexerRegistry.getWorkflowMetricsReindexer(
+				"sla-task-result");
+
+		slaTaskResultWorkflowMetricsReindexer.reindex(companyId);
 	}
 
 	private final List<BlogsEntry> _blogsEntries = new ArrayList<>();
@@ -497,9 +531,6 @@ public abstract class BaseWorkflowMetricsIndexerTestCase
 
 	@Inject
 	private DocumentBuilderFactory _documentBuilderFactory;
-
-	@Inject(filter = "workflow.metrics.index.entity.name=instance")
-	private WorkflowMetricsReindexer _instanceWorkflowMetricsReindexer;
 
 	private KaleoDefinition _kaleoDefinition;
 
@@ -531,29 +562,14 @@ public abstract class BaseWorkflowMetricsIndexerTestCase
 
 	private final List<KaleoTask> _kaleoTasks = new ArrayList<>();
 
-	@Inject(filter = "workflow.metrics.index.entity.name=node")
-	private WorkflowMetricsReindexer _nodeWorkflowMetricsReindexer;
-
-	@Inject(filter = "workflow.metrics.index.entity.name=process")
-	private WorkflowMetricsReindexer _processWorkflowMetricsReindexer;
-
-	@Inject(filter = "workflow.metrics.index.entity.name=sla-instance-result")
-	private WorkflowMetricsReindexer _slaInstanceResultWorkflowMetricsReindexer;
-
-	@Inject(filter = "workflow.metrics.index.entity.name=sla-task-result")
-	private WorkflowMetricsReindexer _slaTaskResultWorkflowMetricsReindexer;
-
-	@Inject(filter = "workflow.metrics.index.entity.name=task")
-	private WorkflowMetricsReindexer _taskWorkflowMetricsReindexer;
-
-	@Inject(filter = "workflow.metrics.index.entity.name=transition")
-	private WorkflowMetricsReindexer _transitionWorkflowMetricsReindexer;
-
 	@Inject
 	private WorkflowDefinitionLinkLocalService
 		_workflowDefinitionLinkLocalService;
 
 	@Inject
 	private WorkflowInstanceLinkLocalService _workflowInstanceLinkLocalService;
+
+	@Inject
+	private WorkflowMetricsReindexerRegistry _workflowMetricsReindexerRegistry;
 
 }

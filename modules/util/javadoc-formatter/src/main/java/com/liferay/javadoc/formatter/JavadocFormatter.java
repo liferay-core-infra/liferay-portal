@@ -18,7 +18,6 @@ import com.liferay.javadoc.formatter.util.JavadocFormatterUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
@@ -1174,7 +1173,7 @@ public class JavadocFormatter {
 	}
 
 	private String _formattedString(Node node) throws Exception {
-		return Dom4jUtil.toString(node);
+		return Dom4jDocUtil.toString(node);
 	}
 
 	private int _getAdjustedLineNumber(int lineNumber, JavaModel javaModel) {

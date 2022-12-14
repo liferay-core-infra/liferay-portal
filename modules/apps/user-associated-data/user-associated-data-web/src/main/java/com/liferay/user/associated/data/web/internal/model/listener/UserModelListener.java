@@ -48,7 +48,8 @@ public class UserModelListener extends BaseModelListener<User> {
 		throws InvalidSyntaxException, IOException {
 
 		Configuration configurationOptional =
-			_anonymousUserConfigurationRetriever.getOptional(companyId, userId);
+			_anonymousUserConfigurationRetriever.getConfioguration(
+				companyId, userId);
 
 		if (configurationOptional == null) {
 			return;

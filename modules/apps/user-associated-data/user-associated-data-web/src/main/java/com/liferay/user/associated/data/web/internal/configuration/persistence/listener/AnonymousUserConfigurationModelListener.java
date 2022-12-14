@@ -75,13 +75,11 @@ public class AnonymousUserConfigurationModelListener
 		throws Exception {
 
 		Configuration configurationOptional =
-			_anonymousUserConfigurationRetriever.getOptional(companyId);
+			_anonymousUserConfigurationRetriever.getConfiguration(companyId);
 
-		if (configurationOptional == null) {
-			return;
-		}
+		if ((configurationOptional == null) ||
+			pid.equals(configurationOptional.getPid())) {
 
-		if (pid.equals(configurationOptional.getPid())) {
 			return;
 		}
 

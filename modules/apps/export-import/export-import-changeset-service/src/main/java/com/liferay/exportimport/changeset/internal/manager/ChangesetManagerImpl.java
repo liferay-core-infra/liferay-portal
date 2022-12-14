@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import java.io.Serializable;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -84,8 +83,8 @@ public class ChangesetManagerImpl
 	 */
 	@Deprecated
 	@Override
-	public Optional<Changeset> peekChangeset(String changesetUuid) {
-		return Optional.ofNullable(_changesets.get(changesetUuid));
+	public Changeset peekChangeset(String changesetUuid) {
+		return _changesets.get(changesetUuid);
 	}
 
 	/**
@@ -94,10 +93,8 @@ public class ChangesetManagerImpl
 	 */
 	@Deprecated
 	@Override
-	public Optional<Changeset> popChangeset(String changesetUuid) {
-		Changeset changeset = _changesets.remove(changesetUuid);
-
-		return Optional.ofNullable(changeset);
+	public Changeset popChangeset(String changesetUuid) {
+		return _changesets.remove(changesetUuid);
 	}
 
 	/**

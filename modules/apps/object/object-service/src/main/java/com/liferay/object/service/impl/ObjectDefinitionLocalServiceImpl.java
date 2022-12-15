@@ -593,13 +593,13 @@ public class ObjectDefinitionLocalServiceImpl
 				_assetCategoryLocalService, _assetTagLocalService,
 				_assetVocabularyLocalService, _bundleContext,
 				_dynamicQueryBatchIndexingActionableFactory, _groupLocalService,
-				_listTypeEntryLocalService, _modelSearchRegistrarHelper, this,
-				_objectEntryLocalService, _objectEntryManagerRegistry,
-				_objectEntryService, _objectFieldLocalService,
-				_objectLayoutLocalService, _objectRelationshipLocalService,
-				_objectScopeProviderRegistry, _objectViewLocalService,
-				_persistedModelLocalServiceRegistry, _portletLocalService,
-				_resourceActions, _userLocalService,
+				_listTypeEntryLocalService, _modelSearchRegistrarHelper,
+				_objectActionLocalService, this, _objectEntryLocalService,
+				_objectEntryManagerRegistry, _objectEntryService,
+				_objectFieldLocalService, _objectLayoutLocalService,
+				_objectRelationshipLocalService, _objectScopeProviderRegistry,
+				_objectViewLocalService, _persistedModelLocalServiceRegistry,
+				_portletLocalService, _resourceActions, _userLocalService,
 				_workflowStatusModelPreFilterContributor));
 
 		_objectDefinitionDeployerServiceTracker = new ServiceTracker<>(

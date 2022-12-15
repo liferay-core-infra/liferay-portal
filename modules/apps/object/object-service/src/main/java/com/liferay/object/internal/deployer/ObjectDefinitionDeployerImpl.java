@@ -21,6 +21,7 @@ import com.liferay.info.collection.provider.InfoCollectionProvider;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.notification.handler.NotificationHandler;
 import com.liferay.notification.term.evaluator.NotificationTermEvaluator;
+import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.internal.info.collection.provider.ObjectEntrySingleFormVariationInfoCollectionProvider;
 import com.liferay.object.internal.language.ObjectResourceBundle;
@@ -41,12 +42,14 @@ import com.liferay.object.internal.search.spi.model.result.contributor.ObjectEnt
 import com.liferay.object.internal.security.permission.resource.ObjectEntryModelResourcePermission;
 import com.liferay.object.internal.security.permission.resource.ObjectEntryPortletResourcePermissionLogic;
 import com.liferay.object.internal.workflow.ObjectEntryWorkflowHandler;
+import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.related.models.ObjectRelatedModelsPredicateProvider;
 import com.liferay.object.related.models.ObjectRelatedModelsProvider;
 import com.liferay.object.rest.context.path.RESTContextPathResolver;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerRegistry;
 import com.liferay.object.scope.ObjectScopeProviderRegistry;
+import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
@@ -106,6 +109,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		GroupLocalService groupLocalService,
 		ListTypeEntryLocalService listTypeEntryLocalService,
 		ModelSearchRegistrarHelper modelSearchRegistrarHelper,
+		ObjectActionLocalService objectActionLocalService,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectEntryLocalService objectEntryLocalService,
 		ObjectEntryManagerRegistry objectEntryManagerRegistry,
@@ -129,6 +133,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		_groupLocalService = groupLocalService;
 		_listTypeEntryLocalService = listTypeEntryLocalService;
 		_modelSearchRegistrarHelper = modelSearchRegistrarHelper;
+		_objectActionLocalService = objectActionLocalService;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectEntryLocalService = objectEntryLocalService;
 		_objectEntryManagerRegistry = objectEntryManagerRegistry;
@@ -339,6 +344,22 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			objectDefinition.getClassName());
 	}
 
+	private String _getObjectActionPermissionKeys(long objectDefinitionId) {
+		String objectActionPermissionKeys = StringPool.BLANK;
+
+		for (ObjectAction objectAction :
+				_objectActionLocalService.getObjectActions(
+					objectDefinitionId,
+					ObjectActionTriggerConstants.KEY_STANDALONE)) {
+
+			objectActionPermissionKeys = StringBundler.concat(
+				objectActionPermissionKeys, "<action-key>",
+				objectAction.getName(), "</action-key>");
+		}
+
+		return objectActionPermissionKeys;
+	}
+
 	private String _getPermissionsGuestUnsupported(
 		ObjectDefinition objectDefinition) {
 
@@ -367,6 +388,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		ClassLoader classLoader =
 			ObjectDefinitionDeployerImpl.class.getClassLoader();
 
+		String objectActionPermissionKeys = _getObjectActionPermissionKeys(
+			objectDefinition.getObjectDefinitionId());
+
 		Document document = SAXReaderUtil.read(
 			StringUtil.replace(
 				StringUtil.read(
@@ -378,8 +402,10 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				},
 				new String[] {
 					objectDefinition.getClassName(),
-					_getPermissionsGuestUnsupported(objectDefinition),
-					_getPermissionsSupports(objectDefinition),
+					_getPermissionsGuestUnsupported(objectDefinition) +
+						objectActionPermissionKeys,
+					_getPermissionsSupports(objectDefinition) +
+						objectActionPermissionKeys,
 					objectDefinition.getPortletId(),
 					objectDefinition.getResourceName()
 				}));
@@ -401,6 +427,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private final GroupLocalService _groupLocalService;
 	private final ListTypeEntryLocalService _listTypeEntryLocalService;
 	private final ModelSearchRegistrarHelper _modelSearchRegistrarHelper;
+	private final ObjectActionLocalService _objectActionLocalService;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private final ObjectEntryLocalService _objectEntryLocalService;
 	private final ObjectEntryManagerRegistry _objectEntryManagerRegistry;

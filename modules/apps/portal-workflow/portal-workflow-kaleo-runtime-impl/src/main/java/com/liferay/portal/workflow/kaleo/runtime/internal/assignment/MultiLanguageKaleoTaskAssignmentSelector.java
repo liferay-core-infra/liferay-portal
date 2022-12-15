@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.assignment;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceAction;
@@ -30,14 +32,12 @@ import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentS
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalService;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -60,7 +60,7 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 		KaleoTaskAssignmentSelector kaleoTaskAssignmentSelector = null;
 
 		if (assigneeClassName.equals(ResourceAction.class.getName())) {
-			kaleoTaskAssignmentSelector = _kaleoTaskAssignmentSelectors.get(
+			kaleoTaskAssignmentSelector = _serviceTrackerMap.getService(
 				assigneeClassName);
 		}
 		else {
@@ -69,7 +69,7 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 					kaleoTaskAssignment.getAssigneeScriptLanguage(),
 					StringUtil.trim(kaleoTaskAssignment.getAssigneeScript()));
 
-			kaleoTaskAssignmentSelector = _kaleoTaskAssignmentSelectors.get(
+			kaleoTaskAssignmentSelector = _serviceTrackerMap.getService(
 				kaleoTaskAssignmentSelectorKey);
 		}
 
@@ -94,41 +94,46 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 		return kaleoTaskAssignments;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(scripting.language=*)"
-	)
-	protected void addKaleoTaskAssignmentSelector(
-			KaleoTaskAssignmentSelector kaleoTaskAssignmentSelector,
-			Map<String, Object> properties)
-		throws KaleoDefinitionValidationException {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, KaleoTaskAssignmentSelector.class,
+			"(scripting.language=*)",
+			(serviceReference, emitter) -> {
+				Object propertyValue = serviceReference.getProperty(
+					"scripting.language");
 
-		String[] scriptingLanguages = _getScriptingLanguages(properties);
+				KaleoTaskAssignmentSelector kaleoTaskAssignmentSelector =
+					bundleContext.getService(serviceReference);
 
-		for (String scriptingLanguage : scriptingLanguages) {
-			_kaleoTaskAssignmentSelectors.put(
-				_getKaleoTaskAssignmentSelectKey(
-					scriptingLanguage,
-					ClassUtil.getClassName(kaleoTaskAssignmentSelector)),
-				kaleoTaskAssignmentSelector);
-		}
+				try {
+					for (String scriptingLanguage :
+							GetterUtil.getStringValues(
+								propertyValue,
+								new String[] {String.valueOf(propertyValue)})) {
+
+						emitter.emit(
+							_getKaleoTaskAssignmentSelectKey(
+								scriptingLanguage,
+								ClassUtil.getClassName(
+									kaleoTaskAssignmentSelector)));
+					}
+				}
+				catch (KaleoDefinitionValidationException
+							kaleoDefinitionValidationException) {
+
+					throw new RuntimeException(
+						kaleoDefinitionValidationException);
+				}
+				finally {
+					bundleContext.ungetService(serviceReference);
+				}
+			});
 	}
 
-	protected void removeKaleoTaskAssignmentSelector(
-			KaleoTaskAssignmentSelector kaleoTaskAssignmentSelector,
-			Map<String, Object> properties)
-		throws KaleoDefinitionValidationException {
-
-		String[] scriptingLanguages = _getScriptingLanguages(properties);
-
-		for (String scriptingLanguage : scriptingLanguages) {
-			_kaleoTaskAssignmentSelectors.remove(
-				_getKaleoTaskAssignmentSelectKey(
-					scriptingLanguage,
-					ClassUtil.getClassName(kaleoTaskAssignmentSelector)));
-		}
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	private String _getKaleoTaskAssignmentSelectKey(
@@ -145,17 +150,10 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 		return language;
 	}
 
-	private String[] _getScriptingLanguages(Map<String, Object> properties) {
-		Object value = properties.get("scripting.language");
-
-		return GetterUtil.getStringValues(
-			value, new String[] {String.valueOf(value)});
-	}
-
 	@Reference
 	private KaleoInstanceLocalService _kaleoInstanceLocalService;
 
-	private final Map<String, KaleoTaskAssignmentSelector>
-		_kaleoTaskAssignmentSelectors = new HashMap<>();
+	private ServiceTrackerMap<String, KaleoTaskAssignmentSelector>
+		_serviceTrackerMap;
 
 }

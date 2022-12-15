@@ -42,14 +42,16 @@ public class UADApplicationSummaryHelper {
 		String applicationKey) {
 
 		List<UADDisplay<?>> uadDisplayList =
-			_uadRegistry.getApplicationUADDisplayStream(applicationKey);
+			_uadRegistry.getApplicationUADDisplayList(applicationKey);
 
 		List<UADAnonymizer<?>> uadAnonymizerList = new ArrayList<>();
 
 		for (UADDisplay<?> uadDisplay : uadDisplayList) {
-			String key = uadDisplay.getTypeClass().getName();
+			Class<?> typeClass = uadDisplay.getTypeClass();
 
-			uadAnonymizerList.add(_uadRegistry.getUADAnonymizer(key));
+			String entityName = typeClass.getName();
+
+			uadAnonymizerList.add(_uadRegistry.getUADAnonymizer(entityName));
 		}
 
 		return uadAnonymizerList;
@@ -80,24 +82,23 @@ public class UADApplicationSummaryHelper {
 
 	public int getTotalNonreviewableUADEntitiesCount(long userId) {
 		return _getNonreviewableUADEntitiesCount(
-			_uadRegistry.getNonreviewableUADAnonymizerStream(), userId);
+			_uadRegistry.getNonreviewableUADAnonymizerList(), userId);
 	}
 
 	public int getTotalReviewableUADEntitiesCount(long userId) {
 		return _getReviewableUADEntitiesCount(
-			_uadRegistry.getUADDisplayStream(), userId);
+			_uadRegistry.getUADDisplayList(), userId);
 	}
 
 	public UADApplicationSummaryDisplay getUADApplicationSummaryDisplay(
-		String applicationKey, List<UADDisplay<?>> uadDisplayStream,
-		long userId, long[] groupIds) {
+		String applicationKey, List<UADDisplay<?>> uadDisplayList, long userId,
+		long[] groupIds) {
 
 		UADApplicationSummaryDisplay uadApplicationSummaryDisplay =
 			new UADApplicationSummaryDisplay();
 
 		uadApplicationSummaryDisplay.setCount(
-			_getReviewableUADEntitiesCount(
-				uadDisplayStream, userId, groupIds));
+			_getReviewableUADEntitiesCount(uadDisplayList, userId, groupIds));
 		uadApplicationSummaryDisplay.setApplicationKey(applicationKey);
 
 		return uadApplicationSummaryDisplay;
@@ -130,14 +131,15 @@ public class UADApplicationSummaryHelper {
 			String applicationKey = iterator.next();
 
 			List<UADDisplay<?>> uadDisplayList =
-				_uadRegistry.getApplicationUADDisplayStream(applicationKey);
+				_uadRegistry.getApplicationUADDisplayList(applicationKey);
 
 			List<UADDisplay<?>> applicationUADDisplays = new ArrayList<>();
 
 			for (UADDisplay<?> uadDisplay : uadDisplayList) {
 				if (ArrayUtil.isNotEmpty(groupIds) ==
-					uadDisplay.isSiteScoped()) {
-						applicationUADDisplays.add(uadDisplay);
+						uadDisplay.isSiteScoped()) {
+
+					applicationUADDisplays.add(uadDisplay);
 				}
 			}
 

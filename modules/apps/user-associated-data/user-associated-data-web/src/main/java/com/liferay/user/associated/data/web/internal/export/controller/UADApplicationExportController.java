@@ -122,12 +122,16 @@ public class UADApplicationExportController {
 		String applicationKey) {
 
 		List<UADDisplay<?>> uadDisplayList =
-			_uadRegistry.getApplicationUADDisplayStream(applicationKey);
+			_uadRegistry.getApplicationUADDisplayList(applicationKey);
 
 		List<String> typeClassNames = new ArrayList<>();
 
 		for (UADDisplay<?> uadDisplay : uadDisplayList) {
-			typeClassNames.add(uadDisplay.getTypeClass().getName());
+			Class<?> typeClass = uadDisplay.getTypeClass();
+
+			String entityName = typeClass.getName();
+
+			typeClassNames.add(entityName);
 		}
 
 		return typeClassNames;

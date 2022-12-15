@@ -43,6 +43,12 @@ import org.osgi.service.component.annotations.Deactivate;
 @Component(service = UADRegistry.class)
 public class UADRegistry {
 
+	public List<UADAnonymizer<?>> getApplicationUADAnonymizerList(
+		String applicationKey) {
+
+		return getApplicationUADAnonymizers(applicationKey);
+	}
+
 	public List<UADAnonymizer<?>> getApplicationUADAnonymizers(
 		String applicationKey) {
 
@@ -53,23 +59,7 @@ public class UADRegistry {
 		return _bundleUADAnonymizerServiceTrackerMap.keySet();
 	}
 
-	public List<UADAnonymizer<?>> getApplicationUADAnonymizerStream(
-		String applicationKey) {
-
-		return getApplicationUADAnonymizers(applicationKey);
-	}
-
-	public List<UADDisplay<?>> getApplicationUADDisplays(
-		String applicationKey) {
-
-		return _bundleUADDisplayServiceTrackerMap.getService(applicationKey);
-	}
-
-	public Set<String> getApplicationUADDisplaysKeySet() {
-		return _bundleUADDisplayServiceTrackerMap.keySet();
-	}
-
-	public List<UADDisplay<?>> getApplicationUADDisplayStream(
+	public List<UADDisplay<?>> getApplicationUADDisplayList(
 		String applicationKey) {
 
 		List<UADDisplay<?>> uadDisplayList = getApplicationUADDisplays(
@@ -80,6 +70,16 @@ public class UADRegistry {
 		}
 
 		return uadDisplayList;
+	}
+
+	public List<UADDisplay<?>> getApplicationUADDisplays(
+		String applicationKey) {
+
+		return _bundleUADDisplayServiceTrackerMap.getService(applicationKey);
+	}
+
+	public Set<String> getApplicationUADDisplaysKeySet() {
+		return _bundleUADDisplayServiceTrackerMap.keySet();
 	}
 
 	public List<UADExporter<?>> getApplicationUADExporters(
@@ -98,40 +98,40 @@ public class UADRegistry {
 		return new ArrayList<>(
 			_getNonreviewableUADAnonymizers(
 				getApplicationUADAnonymizers(applicationKey),
-				getApplicationUADDisplayStream(applicationKey)));
+				getApplicationUADDisplayList(applicationKey)));
+	}
+
+	public List<UADAnonymizer<?>> getNonreviewableUADAnonymizerList() {
+		return new ArrayList<>(getNonreviewableUADAnonymizers());
 	}
 
 	public Collection<UADAnonymizer<?>> getNonreviewableUADAnonymizers() {
 		return _getNonreviewableUADAnonymizers(
-			getUADAnonymizers(), getUADDisplayStream());
-	}
-
-	public List<UADAnonymizer<?>> getNonreviewableUADAnonymizerStream() {
-		return new ArrayList<>(getNonreviewableUADAnonymizers());
+			getUADAnonymizers(), getUADDisplayList());
 	}
 
 	public UADAnonymizer<?> getUADAnonymizer(String key) {
 		return _uadAnonymizerServiceTrackerMap.getService(key);
 	}
 
-	public Collection<UADAnonymizer<?>> getUADAnonymizers() {
-		return _uadAnonymizerServiceTrackerMap.values();
+	public List<UADAnonymizer<?>> getUADAnonymizerList() {
+		return new ArrayList<>(getUADAnonymizers());
 	}
 
-	public List<UADAnonymizer<?>> getUADAnonymizerStream() {
-		return new ArrayList<>(getUADAnonymizers());
+	public Collection<UADAnonymizer<?>> getUADAnonymizers() {
+		return _uadAnonymizerServiceTrackerMap.values();
 	}
 
 	public UADDisplay<?> getUADDisplay(String key) {
 		return _uadDisplayServiceTrackerMap.getService(key);
 	}
 
-	public Collection<UADDisplay<?>> getUADDisplays() {
-		return _uadDisplayServiceTrackerMap.values();
+	public List<UADDisplay<?>> getUADDisplayList() {
+		return new ArrayList<>(getUADDisplays());
 	}
 
-	public List<UADDisplay<?>> getUADDisplayStream() {
-		return new ArrayList<>(getUADDisplays());
+	public Collection<UADDisplay<?>> getUADDisplays() {
+		return _uadDisplayServiceTrackerMap.values();
 	}
 
 	public UADExporter<?> getUADExporter(String key) {

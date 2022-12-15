@@ -14,18 +14,15 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.notification;
 
-import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationSender;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Michael C. Han
@@ -36,7 +33,7 @@ public class NotificationSenderFactory {
 	public NotificationSender getNotificationSender(String notificationType)
 		throws WorkflowException {
 
-		NotificationSender notificationSender = _notificationSenders.get(
+		NotificationSender notificationSender = _serviceTrackerMap.getService(
 			notificationType);
 
 		if (notificationSender == null) {
@@ -47,40 +44,17 @@ public class NotificationSenderFactory {
 		return notificationSender;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(notification.type=*)"
-	)
-	protected void addNotificationSender(
-		NotificationSender notificationSender, Map<String, Object> properties) {
-
-		String[] notificationTypes = _getNotificationTypes(properties);
-
-		for (String notificationType : notificationTypes) {
-			_notificationSenders.put(notificationType, notificationSender);
-		}
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, NotificationSender.class, "notification.type");
 	}
 
-	protected void removeNotificationSender(
-		NotificationSender notificationSender, Map<String, Object> properties) {
-
-		String[] notificationTypes = _getNotificationTypes(properties);
-
-		for (String notificationType : notificationTypes) {
-			_notificationSenders.remove(notificationType);
-		}
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
-	private String[] _getNotificationTypes(Map<String, Object> properties) {
-		Object value = properties.get("notification.type");
-
-		return GetterUtil.getStringValues(
-			value, new String[] {String.valueOf(value)});
-	}
-
-	private final Map<String, NotificationSender> _notificationSenders =
-		new HashMap<>();
+	private ServiceTrackerMap<String, NotificationSender> _serviceTrackerMap;
 
 }

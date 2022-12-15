@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -99,7 +97,7 @@ public class UADApplicationSummaryHelper {
 
 		uadApplicationSummaryDisplay.setCount(
 			_getReviewableUADEntitiesCount(
-				uadDisplayStream.stream(), userId, groupIds));
+				uadDisplayStream, userId, groupIds));
 		uadApplicationSummaryDisplay.setApplicationKey(applicationKey);
 
 		return uadApplicationSummaryDisplay;
@@ -210,11 +208,17 @@ public class UADApplicationSummaryHelper {
 	}
 
 	private int _getReviewableUADEntitiesCount(
-		Stream<UADDisplay<?>> uadDisplayStream, long userId, long[] groupIds) {
+		List<UADDisplay<?>> uadDisplayList, long userId, long[] groupIds) {
 
-		return uadDisplayStream.mapToInt(
-			uadDisplay -> (int)uadDisplay.searchCount(userId, groupIds, null)
-		).sum();
+		int sum = 0;
+
+		for (UADDisplay<?> uadDisplay : uadDisplayList) {
+			int userIds = (int)uadDisplay.searchCount(userId, groupIds, null);
+
+			sum += userIds;
+		}
+
+		return sum;
 	}
 
 	@Reference

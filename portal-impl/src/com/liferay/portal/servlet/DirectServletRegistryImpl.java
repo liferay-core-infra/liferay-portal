@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.DirectServletRegistry;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -49,6 +50,8 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 
 	@Override
 	public Servlet getServlet(String path) {
+		path = _trimContextPrefix(path);
+
 		ServletInfo servletInfo = _servletInfos.get(path);
 
 		if (servletInfo == null) {
@@ -81,11 +84,13 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 
 	@Override
 	public void putServlet(String path, Servlet servlet) {
-		if (path.startsWith(PathModulePrefixHolder._PATH_MODULE_PREFIX) ||
+		if (path.startsWith(PathPrefixHolder._PATH_MODULE_PREFIX) ||
 			_servletInfos.containsKey(path)) {
 
 			return;
 		}
+
+		path = _trimContextPrefix(path);
 
 		long lastModified = 1;
 
@@ -211,6 +216,17 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 		file.setLastModified(System.currentTimeMillis());
 	}
 
+	private String _trimContextPrefix(String path) {
+		if (Validator.isNotNull(PathPrefixHolder._PATH_CONTEXT_PREFIX) &&
+			path.startsWith(PathPrefixHolder._PATH_CONTEXT_PREFIX)) {
+
+			path = path.substring(
+				PathPrefixHolder._PATH_CONTEXT_PREFIX.length());
+		}
+
+		return path;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DirectServletRegistryImpl.class);
 
@@ -220,7 +236,10 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 	private final Map<String, ServletInfo> _servletInfos =
 		new ConcurrentHashMap<>();
 
-	private static class PathModulePrefixHolder {
+	private static class PathPrefixHolder {
+
+		private static final String _PATH_CONTEXT_PREFIX =
+			PortalUtil.getPathProxy() + PortalUtil.getPathContext();
 
 		private static final String _PATH_MODULE_PREFIX = StringBundler.concat(
 			PortalUtil.getPathProxy(), PortalUtil.getPathContext(),

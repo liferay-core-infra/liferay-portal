@@ -397,13 +397,6 @@ public class ItemSelectorImpl implements ItemSelector {
 		return values[0];
 	}
 
-	@Reference(unbind = "-")
-	protected void setItemSelectorCriterionSerializer(
-		ItemSelectorCriterionSerializer itemSelectorCriterionSerializer) {
-
-		_itemSelectionCriterionSerializer = itemSelectorCriterionSerializer;
-	}
-
 	private ItemSelectorViewRenderer _applyCustomizations(
 		ItemSelectorViewRenderer itemSelectorViewRenderer) {
 
@@ -474,7 +467,9 @@ public class ItemSelectorImpl implements ItemSelector {
 	private static final Pattern _itemSelectorURLPattern = Pattern.compile(
 		".*select\\/([^/]+)\\/([^$?/]+).*");
 
+	@Reference
 	private ItemSelectorCriterionSerializer _itemSelectionCriterionSerializer;
+
 	private ServiceTrackerMap
 		<String, ItemSelectorCriterionHandler<ItemSelectorCriterion>>
 			_itemSelectorCriterionHandlerServiceTrackerMap;

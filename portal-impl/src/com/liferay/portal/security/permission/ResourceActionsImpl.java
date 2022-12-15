@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -83,6 +84,48 @@ import javax.servlet.http.HttpSession;
  * @author Raymond Augé
  */
 public class ResourceActionsImpl implements ResourceActions {
+
+	@Override
+	public void addModelResourceAction(String action, String name)
+		throws ResourceActionsException {
+
+		if (Validator.isNull(action) || Validator.isNull(name)) {
+			return;
+		}
+
+		ResourceActionsBag resourceActionsBag = _getResourceActionsBag(name);
+
+		Set<String> resourceActions = resourceActionsBag.getSupportsActions();
+
+		resourceActions.add(action);
+
+		if (resourceActions.size() > 64) {
+			throw new ResourceActionsException(
+				"There are more than 64 actions for resource " + name);
+		}
+
+		resourceActionLocalService.checkResourceActions(
+			name, getModelResourceActions(name));
+	}
+
+	public void addModelResourceGuestUnsupportedAction(
+		String action, String name) {
+
+		if (Validator.isNull(action) || Validator.isNull(name)) {
+			return;
+		}
+
+		ResourceActionsBag resourceActionsBag = _getResourceActionsBag(name);
+
+		Set<String> guestUnsupportedActions =
+			resourceActionsBag.getGuestUnsupportedActions();
+
+		guestUnsupportedActions.add(action);
+
+		_checkGuestUnsupportedActions(
+			guestUnsupportedActions,
+			resourceActionsBag.getGuestDefaultActions());
+	}
 
 	@Override
 	public void check(String portletName) {
@@ -563,6 +606,28 @@ public class ResourceActionsImpl implements ResourceActions {
 		_read(
 			classLoader, source,
 			rootElement -> _readModelResources(rootElement, null));
+	}
+
+	@Override
+	public void removeModelResourceAction(String action, String name) {
+		if (Validator.isNull(action) || Validator.isNull(name)) {
+			return;
+		}
+
+		ResourceActionsBag resourceActionsBag = _getResourceActionsBag(name);
+
+		Set<String> resourceActions = resourceActionsBag.getSupportsActions();
+
+		resourceActions.remove(action);
+
+		ResourceAction resourceAction =
+			resourceActionLocalService.fetchResourceAction(name, action);
+
+		if (resourceAction == null) {
+			return;
+		}
+
+		resourceActionLocalService.deleteResourceAction(resourceAction);
 	}
 
 	@BeanReference(type = PortletLocalService.class)

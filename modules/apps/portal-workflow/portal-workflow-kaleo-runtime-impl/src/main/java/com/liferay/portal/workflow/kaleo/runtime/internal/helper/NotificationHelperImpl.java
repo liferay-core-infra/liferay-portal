@@ -62,19 +62,20 @@ public class NotificationHelperImpl implements NotificationHelper {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_notificationMessageGeneratorServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundleContext, NotificationMessageGenerator.class,
+				"template.language");
 		_notificationSenderServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, NotificationSender.class, "notification.type");
-		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, NotificationMessageGenerator.class,
-			"template.language");
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_notificationSenderServiceTrackerMap.close();
+		_notificationMessageGeneratorServiceTrackerMap.close();
 
-		_serviceTrackerMap.close();
+		_notificationSenderServiceTrackerMap.close();
 	}
 
 	private NotificationMessageGenerator _getNotificationMessageGenerator(
@@ -82,7 +83,8 @@ public class NotificationHelperImpl implements NotificationHelper {
 		throws WorkflowException {
 
 		NotificationMessageGenerator notificationMessageGenerator =
-			_serviceTrackerMap.getService(templateLanguage);
+			_notificationMessageGeneratorServiceTrackerMap.getService(
+				templateLanguage);
 
 		if (notificationMessageGenerator == null) {
 			throw new WorkflowException(
@@ -151,9 +153,9 @@ public class NotificationHelperImpl implements NotificationHelper {
 	private KaleoNotificationRecipientLocalService
 		_kaleoNotificationRecipientLocalService;
 
+	private ServiceTrackerMap<String, NotificationMessageGenerator>
+		_notificationMessageGeneratorServiceTrackerMap;
 	private ServiceTrackerMap<String, NotificationSender>
 		_notificationSenderServiceTrackerMap;
-	private ServiceTrackerMap<String, NotificationMessageGenerator>
-		_serviceTrackerMap;
 
 }

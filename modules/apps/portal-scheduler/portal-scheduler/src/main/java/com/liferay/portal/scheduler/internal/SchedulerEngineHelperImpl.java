@@ -390,8 +390,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				"destination.name", destinationName
 			).build();
 
-		Class<?> messageListenerClass = messageListener.getClass();
-
 		SchedulerEventMessageListenerWrapper
 			schedulerEventMessageListenerWrapper =
 				new SchedulerEventMessageListenerWrapper();
@@ -407,7 +405,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				schedulerEventMessageListenerWrapper, properties);
 
 		_serviceRegistrations.put(
-			messageListenerClass.getName(), serviceRegistration);
+			schedulerEntry.getEventListenerClass(), serviceRegistration);
 	}
 
 	@Override

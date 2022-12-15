@@ -287,26 +287,27 @@ public class ItemSelectorImpl implements ItemSelector {
 						bundleContext.ungetService(serviceReference);
 					}
 				});
-		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
-			bundleContext, ItemSelectorViewRendererCustomizer.class, null,
-			ServiceReferenceMapperFactory.create(
-				bundleContext,
-				(itemSelectorViewRendererCustomizer, emitter) -> {
-					for (Class<? extends ItemSelectorCriterion>
-							itemSelectorCriterionClass :
-								itemSelectorViewRendererCustomizer.
-									getSupportedItemSelectorCriterionClasses()) {
+		_itemSelectorViewRendererCustomizersServiceTracker =
+			ServiceTrackerMapFactory.openMultiValueMap(
+				bundleContext, ItemSelectorViewRendererCustomizer.class, null,
+				ServiceReferenceMapperFactory.create(
+					bundleContext,
+					(itemSelectorViewRendererCustomizer, emitter) -> {
+						for (Class<? extends ItemSelectorCriterion>
+								itemSelectorCriterionClass :
+									itemSelectorViewRendererCustomizer.
+										getSupportedItemSelectorCriterionClasses()) {
 
-						emitter.emit(itemSelectorCriterionClass.getName());
-					}
-				}));
+							emitter.emit(itemSelectorCriterionClass.getName());
+						}
+					}));
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_itemSelectorCriterionHandlerServiceTrackerMap.close();
 
-		_serviceTrackerMap.close();
+		_itemSelectorViewRendererCustomizersServiceTracker.close();
 	}
 
 	protected Map<String, String[]> getItemSelectorParameters(
@@ -407,8 +408,9 @@ public class ItemSelectorImpl implements ItemSelector {
 			itemSelectorCriterion.getClass();
 
 		List<ItemSelectorViewRendererCustomizer>
-			itemSelectorViewRendererCustomizers = _serviceTrackerMap.getService(
-				clazz.getName());
+			itemSelectorViewRendererCustomizers =
+				_itemSelectorViewRendererCustomizersServiceTracker.getService(
+					clazz.getName());
 
 		if (itemSelectorViewRendererCustomizers == null) {
 			return itemSelectorViewRenderer;
@@ -473,11 +475,10 @@ public class ItemSelectorImpl implements ItemSelector {
 	private ServiceTrackerMap
 		<String, ItemSelectorCriterionHandler<ItemSelectorCriterion>>
 			_itemSelectorCriterionHandlerServiceTrackerMap;
+	private ServiceTrackerMap<String, List<ItemSelectorViewRendererCustomizer>>
+		_itemSelectorViewRendererCustomizersServiceTracker;
 
 	@Reference
 	private Portal _portal;
-
-	private ServiceTrackerMap<String, List<ItemSelectorViewRendererCustomizer>>
-		_serviceTrackerMap;
 
 }

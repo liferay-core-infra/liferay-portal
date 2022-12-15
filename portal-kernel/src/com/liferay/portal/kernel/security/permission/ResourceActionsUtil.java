@@ -31,6 +31,18 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ResourceActionsUtil {
 
+	public static void addModelResourceAction(String action, String name)
+		throws ResourceActionsException {
+
+		_resourceActions.addModelResourceAction(action, name);
+	}
+
+	public static void addModelResourceGuestUnsupportedAction(
+		String action, String name) {
+
+		_resourceActions.addModelResourceGuestUnsupportedAction(action, name);
+	}
+
 	public static void check(String portletName) {
 		_resourceActions.check(portletName);
 	}
@@ -209,6 +221,10 @@ public class ResourceActionsUtil {
 		throws ResourceActionsException {
 
 		_resourceActions.populatePortletResources(classLoader, sources);
+	}
+
+	public static void removeModelResourceAction(String action, String name) {
+		_resourceActions.removeModelResourceAction(action, name);
 	}
 
 	public void setResourceActions(ResourceActions resourceActions) {

@@ -34,6 +34,12 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface ResourceActions {
 
+	public void addModelResourceAction(String action, String name)
+		throws ResourceActionsException;
+
+	public void addModelResourceGuestUnsupportedAction(
+		String action, String name);
+
 	public void check(String portletName);
 
 	public String getAction(
@@ -117,5 +123,7 @@ public interface ResourceActions {
 	public void populatePortletResources(
 			ClassLoader classLoader, String... sources)
 		throws ResourceActionsException;
+
+	public void removeModelResourceAction(String action, String name);
 
 }

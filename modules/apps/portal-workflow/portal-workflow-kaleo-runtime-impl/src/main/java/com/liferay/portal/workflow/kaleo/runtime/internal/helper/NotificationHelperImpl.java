@@ -25,7 +25,6 @@ import com.liferay.portal.workflow.kaleo.definition.ExecutionType;
 import com.liferay.portal.workflow.kaleo.model.KaleoNotification;
 import com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
-import com.liferay.portal.workflow.kaleo.runtime.internal.notification.NotificationSenderFactory;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationHelper;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationMessageGenerator;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationSender;
@@ -63,6 +62,9 @@ public class NotificationHelperImpl implements NotificationHelper {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_notificationSenderServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundleContext, NotificationSender.class, "notification.type");
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, NotificationMessageGenerator.class,
 			"template.language");
@@ -70,6 +72,8 @@ public class NotificationHelperImpl implements NotificationHelper {
 
 	@Deactivate
 	protected void deactivate() {
+		_notificationSenderServiceTrackerMap.close();
+
 		_serviceTrackerMap.close();
 	}
 
@@ -126,8 +130,13 @@ public class NotificationHelperImpl implements NotificationHelper {
 
 		for (String notificationType : notificationTypes) {
 			NotificationSender notificationSender =
-				_notificationSenderFactory.getNotificationSender(
+				_notificationSenderServiceTrackerMap.getService(
 					notificationType);
+
+			if (notificationSender == null) {
+				throw new WorkflowException(
+					"Invalid notification type " + notificationType);
+			}
 
 			notificationSender.sendNotification(
 				kaleoNotificationRecipient, notificationSubject,
@@ -142,9 +151,8 @@ public class NotificationHelperImpl implements NotificationHelper {
 	private KaleoNotificationRecipientLocalService
 		_kaleoNotificationRecipientLocalService;
 
-	@Reference
-	private NotificationSenderFactory _notificationSenderFactory;
-
+	private ServiceTrackerMap<String, NotificationSender>
+		_notificationSenderServiceTrackerMap;
 	private ServiceTrackerMap<String, NotificationMessageGenerator>
 		_serviceTrackerMap;
 

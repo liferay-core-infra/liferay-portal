@@ -482,6 +482,11 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	}
 
 	@Override
+	public void unregister(String schedulerEntryEventListenerClass) {
+		
+	}
+
+	@Override
 	public void unschedule(
 			SchedulerEntry schedulerEntry, StorageType storageType)
 		throws SchedulerException {

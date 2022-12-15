@@ -129,6 +129,8 @@ public interface SchedulerEngineHelper {
 
 	public void unregister(MessageListener messageListener);
 
+	public void unregister(String schedulerEntryEventListenerClass);
+
 	public void unschedule(
 			SchedulerEntry schedulerEntry, StorageType storageType)
 		throws SchedulerException;

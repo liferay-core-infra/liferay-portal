@@ -7,7 +7,7 @@
 	<description/>
 	<groupId>com.liferay</groupId>
 	<artifactId>com.liferay.javadoc.formatter</artifactId>
-	<version>1.0.36</version>
+	<version>1.0.38</version>
 	<goalPrefix>javadoc-formatter</goalPrefix>
 	<isolatedRealm>false</isolatedRealm>
 	<inheritedByDefault>true</inheritedByDefault>
@@ -106,13 +106,13 @@
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
 			<type>jar</type>
-			<version>1.9.15</version>
+			<version>1.10.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant-launcher</artifactId>
 			<type>jar</type>
-			<version>1.9.15</version>
+			<version>1.10.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.dom4j</groupId>

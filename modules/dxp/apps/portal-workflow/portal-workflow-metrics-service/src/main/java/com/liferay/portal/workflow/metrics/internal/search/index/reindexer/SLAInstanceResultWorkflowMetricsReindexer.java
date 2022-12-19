@@ -31,7 +31,7 @@ import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.workflow.metrics.internal.background.task.WorkflowMetricsSLAProcessBackgroundTaskHelper;
 import com.liferay.portal.workflow.metrics.internal.search.index.SLAInstanceResultWorkflowMetricsIndexer;
-import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilderRegistry;
 import com.liferay.portal.workflow.metrics.search.index.reindexer.WorkflowMetricsReindexer;
 
 import java.util.List;
@@ -73,8 +73,8 @@ public class SLAInstanceResultWorkflowMetricsReindexer
 	private void _creatDefaultDocuments(long companyId) {
 		if (!_searchCapabilities.isWorkflowMetricsSupported() ||
 			!_hasIndex(
-				_processWorkflowMetricsIndexNameBuilder.getIndexName(
-					companyId))) {
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					companyId, "process"))) {
 
 			return;
 		}
@@ -82,7 +82,8 @@ public class SLAInstanceResultWorkflowMetricsReindexer
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				companyId, "process"));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -152,10 +153,6 @@ public class SLAInstanceResultWorkflowMetricsReindexer
 		return indicesExistsIndexResponse.isExists();
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -165,6 +162,10 @@ public class SLAInstanceResultWorkflowMetricsReindexer
 	@Reference
 	private SLAInstanceResultWorkflowMetricsIndexer
 		_slaInstanceResultWorkflowMetricsIndexer;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilderRegistry
+		_workflowMetricsIndexNameBuilderRegistry;
 
 	@Reference(
 		cardinality = ReferenceCardinality.OPTIONAL,

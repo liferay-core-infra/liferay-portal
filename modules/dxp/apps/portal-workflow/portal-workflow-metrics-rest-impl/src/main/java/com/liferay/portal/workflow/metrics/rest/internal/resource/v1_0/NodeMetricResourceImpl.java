@@ -48,7 +48,7 @@ import com.liferay.portal.workflow.metrics.rest.dto.v1_0.NodeMetric;
 import com.liferay.portal.workflow.metrics.rest.internal.odata.entity.v1_0.NodeMetricEntityModel;
 import com.liferay.portal.workflow.metrics.rest.internal.resource.helper.ResourceHelper;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.NodeMetricResource;
-import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilderRegistry;
 import com.liferay.portal.workflow.metrics.sla.processor.WorkflowMetricsSLAStatus;
 
 import java.util.Collection;
@@ -130,8 +130,8 @@ public class NodeMetricResourceImpl extends BaseNodeMetricResourceImpl {
 		slaTaskResultsBooleanQuery.addFilterQueryClauses(
 			_queries.term(
 				"_index",
-				_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-					contextCompany.getCompanyId())));
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					contextCompany.getCompanyId(), "sla-task-result")));
 		slaTaskResultsBooleanQuery.addMustQueryClauses(
 			_createSLATaskResultsBooleanQuery(
 				completed, dateEnd, dateStart, processId, taskNames));
@@ -141,8 +141,8 @@ public class NodeMetricResourceImpl extends BaseNodeMetricResourceImpl {
 		tasksBooleanQuery.addFilterQueryClauses(
 			_queries.term(
 				"_index",
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-					contextCompany.getCompanyId())));
+				_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+					contextCompany.getCompanyId(), "task")));
 		tasksBooleanQuery.addMustQueryClauses(
 			_createTasksBooleanQuery(
 				completed, dateEnd, dateStart, processId, taskNames));
@@ -412,10 +412,10 @@ public class NodeMetricResourceImpl extends BaseNodeMetricResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()),
-			_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				contextCompany.getCompanyId(), "task"),
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				contextCompany.getCompanyId(), "sla-task-result"));
 		searchSearchRequest.setQuery(
 			_createBooleanQuery(
 				completed, dateEnd, dateStart, processId,
@@ -461,8 +461,8 @@ public class NodeMetricResourceImpl extends BaseNodeMetricResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				contextCompany.getCompanyId(), "node"));
 
 		searchSearchRequest.setQuery(
 			_createNodesBooleanQuery(
@@ -517,8 +517,8 @@ public class NodeMetricResourceImpl extends BaseNodeMetricResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilderRegistry.getIndexName(
+				contextCompany.getCompanyId(), "task"));
 
 		searchSearchRequest.setQuery(
 			_createTasksBooleanQuery(
@@ -718,10 +718,6 @@ public class NodeMetricResourceImpl extends BaseNodeMetricResourceImpl {
 	@Reference
 	private Language _language;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -734,15 +730,11 @@ public class NodeMetricResourceImpl extends BaseNodeMetricResourceImpl {
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=sla-task-result)")
-	private WorkflowMetricsIndexNameBuilder
-		_slaTaskResultWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Sorts _sorts;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=task)")
-	private WorkflowMetricsIndexNameBuilder
-		_taskWorkflowMetricsIndexNameBuilder;
+	@Reference
+	private WorkflowMetricsIndexNameBuilderRegistry
+		_workflowMetricsIndexNameBuilderRegistry;
 
 }

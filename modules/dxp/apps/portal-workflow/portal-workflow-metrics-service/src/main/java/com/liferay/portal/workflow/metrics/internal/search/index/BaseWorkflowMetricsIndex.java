@@ -28,6 +28,7 @@ import com.liferay.portal.search.engine.adapter.index.CreateIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.DeleteIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexResponse;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilderRegistry;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -68,6 +69,10 @@ public abstract class BaseWorkflowMetricsIndex implements WorkflowMetricsIndex {
 
 	@Reference
 	protected SearchEngineAdapter searchEngineAdapter;
+
+	@Reference
+	protected WorkflowMetricsIndexNameBuilderRegistry
+		workflowMetricsIndexNameBuilderRegistry;
 
 	private String _createIndex(String indexName) {
 		IndicesExistsIndexResponse indicesExistsIndexResponse =

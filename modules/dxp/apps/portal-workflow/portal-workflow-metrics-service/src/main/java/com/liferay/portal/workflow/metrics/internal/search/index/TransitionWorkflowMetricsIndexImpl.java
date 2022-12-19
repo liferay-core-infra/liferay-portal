@@ -14,10 +14,7 @@
 
 package com.liferay.portal.workflow.metrics.internal.search.index;
 
-import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
-
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Rafael Praxedes
@@ -31,15 +28,13 @@ public class TransitionWorkflowMetricsIndexImpl
 
 	@Override
 	public String getIndexName(long companyId) {
-		return _workflowMetricsIndexNameBuilder.getIndexName(companyId);
+		return workflowMetricsIndexNameBuilderRegistry.getIndexName(
+			companyId, "transition");
 	}
 
 	@Override
 	public String getIndexType() {
 		return "WorkflowMetricsTransitionType";
 	}
-
-	@Reference(target = "(workflow.metrics.index.entity.name=transition)")
-	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

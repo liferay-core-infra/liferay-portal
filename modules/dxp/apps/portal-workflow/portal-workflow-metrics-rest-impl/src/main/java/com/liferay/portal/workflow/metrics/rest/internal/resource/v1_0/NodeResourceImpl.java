@@ -26,7 +26,7 @@ import com.liferay.portal.workflow.metrics.rest.dto.v1_0.util.NodeUtil;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.NodeResource;
 import com.liferay.portal.workflow.metrics.rest.spi.resource.SPINodeResource;
 import com.liferay.portal.workflow.metrics.search.index.NodeWorkflowMetricsIndexer;
-import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilderRegistry;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -97,9 +97,12 @@ public class NodeResourceImpl extends BaseNodeResourceImpl {
 
 	private SPINodeResource<Node> _getSPINodeResource() {
 		return new SPINodeResource<>(
-			contextCompany.getCompanyId(), _nodeWorkflowMetricsIndexNameBuilder,
-			_processWorkflowMetricsIndexNameBuilder, _queries,
-			_searchRequestExecutor,
+			contextCompany.getCompanyId(),
+			_workflowMetricsIndexNameBuilderRegistry.
+				getWorkflowMetricsIndexNameBuilder("node"),
+			_workflowMetricsIndexNameBuilderRegistry.
+				getWorkflowMetricsIndexNameBuilder("process"),
+			_queries, _searchRequestExecutor,
 			document -> NodeUtil.toNode(
 				document, _language,
 				ResourceBundleUtil.getModuleAndPortalResourceBundle(
@@ -113,18 +116,14 @@ public class NodeResourceImpl extends BaseNodeResourceImpl {
 	@Reference
 	private NodeWorkflowMetricsIndexer _nodeWorkflowMetricsIndexer;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilderRegistry
+		_workflowMetricsIndexNameBuilderRegistry;
 
 }

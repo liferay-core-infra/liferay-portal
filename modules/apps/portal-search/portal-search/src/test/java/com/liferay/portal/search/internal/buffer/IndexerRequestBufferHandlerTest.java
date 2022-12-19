@@ -108,7 +108,7 @@ public class IndexerRequestBufferHandlerTest {
 	private IndexerRequestBufferOverflowHandler
 		_createIndexerRequestBufferOverflowHandler() {
 
-		return new DefaultIndexerRequestBufferOverflowHandler() {
+		return new IndexerRequestBufferOverflowHandler() {
 			{
 				indexerRequestBufferExecutorWatcher =
 					_createIndexerRequestBufferExecutorWatcher();

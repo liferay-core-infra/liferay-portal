@@ -33,17 +33,9 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-
 /**
  * @author Sam Ziemer
  */
-@Component(
-	property = "appender.name=UpgradeReportLogAppender",
-	service = Appender.class
-)
 public class UpgradeReportLogAppender implements Appender {
 
 	@Override
@@ -120,6 +112,16 @@ public class UpgradeReportLogAppender implements Appender {
 	public void setHandler(ErrorHandler handler) {
 	}
 
+	public void setPersistenceManager(PersistenceManager persistenceManager) {
+		_persistenceManager = persistenceManager;
+	}
+
+	public void setReleaseManagerOSGiCommands(
+		ReleaseManagerOSGiCommands releaseManagerOSGiCommands) {
+
+		_releaseManagerOSGiCommands = releaseManagerOSGiCommands;
+	}
+
 	@Override
 	public void start() {
 		_started = true;
@@ -144,12 +146,8 @@ public class UpgradeReportLogAppender implements Appender {
 	private static final Logger _rootLogger =
 		(Logger)LogManager.getRootLogger();
 
-	@Reference
 	private PersistenceManager _persistenceManager;
-
-	@Reference(cardinality = ReferenceCardinality.OPTIONAL)
-	private volatile ReleaseManagerOSGiCommands _releaseManagerOSGiCommands;
-
+	private ReleaseManagerOSGiCommands _releaseManagerOSGiCommands;
 	private volatile boolean _started;
 	private volatile UpgradeReport _upgradeReport;
 

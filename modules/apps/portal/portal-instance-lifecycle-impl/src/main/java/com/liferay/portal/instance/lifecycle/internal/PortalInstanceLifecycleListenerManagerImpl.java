@@ -37,11 +37,14 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
@@ -91,60 +94,19 @@ public class PortalInstanceLifecycleListenerManagerImpl
 		}
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addPortalInstanceLifecycleListener(
-			PortalInstanceLifecycleListener portalInstanceLifecycleListener)
-		throws Throwable {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, PortalInstanceLifecycleListener.class,
+			new PortalInstanceLifecycleListenerServiceTrackerCustomizer(
+				bundleContext));
 
-		_portalInstanceLifecycleListeners.add(portalInstanceLifecycleListener);
+		_serviceTracker.open();
+	}
 
-		if (_companies.isEmpty()) {
-			return;
-		}
-
-		Iterator<Company> iterator = _companies.iterator();
-
-		while (iterator.hasNext()) {
-			Company company = iterator.next();
-
-			Company fetchedCompany = _companyLocalService.fetchCompanyById(
-				company.getCompanyId());
-
-			if (fetchedCompany == null) {
-				TransactionInvokerUtil.invoke(
-					_transactionConfig,
-					() -> {
-						unregisterCompany(company);
-
-						return null;
-					});
-			}
-		}
-
-		_companyLocalService.forEachCompany(
-			company -> {
-				try {
-					TransactionInvokerUtil.invoke(
-						_transactionConfig,
-						() -> {
-							preregisterCompany(
-								portalInstanceLifecycleListener, company);
-
-							registerCompany(
-								portalInstanceLifecycleListener, company);
-
-							return null;
-						});
-				}
-				catch (Throwable throwable) {
-					throw new Exception(throwable);
-				}
-			},
-			new ArrayList<>(_companies));
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	protected void preregisterCompany(
@@ -238,23 +200,6 @@ public class PortalInstanceLifecycleListenerManagerImpl
 		}
 	}
 
-	protected void removePortalInstanceLifecycleListener(
-		PortalInstanceLifecycleListener portalInstanceLifecycleListener) {
-
-		if (!(portalInstanceLifecycleListener instanceof Clusterable) &&
-			!clusterMasterExecutor.isMaster()) {
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Skipping " + portalInstanceLifecycleListener);
-			}
-
-			return;
-		}
-
-		_portalInstanceLifecycleListeners.remove(
-			portalInstanceLifecycleListener);
-	}
-
 	protected void unregisterCompany(
 		PortalInstanceLifecycleListener portalInstanceLifecycleListener,
 		Company company) {
@@ -298,5 +243,112 @@ public class PortalInstanceLifecycleListenerManagerImpl
 
 	private final Set<PortalInstanceLifecycleListener>
 		_portalInstanceLifecycleListeners = new CopyOnWriteArraySet<>();
+	private ServiceTracker
+		<PortalInstanceLifecycleListener, PortalInstanceLifecycleListener>
+			_serviceTracker;
+
+	private class PortalInstanceLifecycleListenerServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer
+			<PortalInstanceLifecycleListener, PortalInstanceLifecycleListener> {
+
+		public PortalInstanceLifecycleListenerServiceTrackerCustomizer(
+			BundleContext bundleContext) {
+
+			_bundleContext = bundleContext;
+		}
+
+		@Override
+		public PortalInstanceLifecycleListener addingService(
+			ServiceReference<PortalInstanceLifecycleListener>
+				serviceReference) {
+
+			PortalInstanceLifecycleListener portalInstanceLifecycleListener =
+				_bundleContext.getService(serviceReference);
+
+			_portalInstanceLifecycleListeners.add(
+				portalInstanceLifecycleListener);
+
+			if (_companies.isEmpty()) {
+				return portalInstanceLifecycleListener;
+			}
+
+			Iterator<Company> iterator = _companies.iterator();
+
+			while (iterator.hasNext()) {
+				Company company = iterator.next();
+
+				Company fetchedCompany = _companyLocalService.fetchCompanyById(
+					company.getCompanyId());
+
+				if (fetchedCompany == null) {
+					try {
+						TransactionInvokerUtil.invoke(
+							_transactionConfig,
+							() -> {
+								unregisterCompany(company);
+
+								return portalInstanceLifecycleListener;
+							});
+					}
+					catch (Throwable throwable) {
+						throw new RuntimeException(throwable);
+					}
+				}
+			}
+
+			_companyLocalService.forEachCompany(
+				company -> {
+					try {
+						TransactionInvokerUtil.invoke(
+							_transactionConfig,
+							() -> {
+								preregisterCompany(
+									portalInstanceLifecycleListener, company);
+
+								registerCompany(
+									portalInstanceLifecycleListener, company);
+
+								return portalInstanceLifecycleListener;
+							});
+					}
+					catch (Throwable throwable) {
+						throw new RuntimeException(throwable);
+					}
+				},
+				new ArrayList<>(_companies));
+
+			return portalInstanceLifecycleListener;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<PortalInstanceLifecycleListener> serviceReference,
+			PortalInstanceLifecycleListener portalInstanceLifecycleListener) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<PortalInstanceLifecycleListener> serviceReference,
+			PortalInstanceLifecycleListener portalInstanceLifecycleListener) {
+
+			_bundleContext.ungetService(serviceReference);
+
+			if (!(portalInstanceLifecycleListener instanceof Clusterable) &&
+				!clusterMasterExecutor.isMaster()) {
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Skipping " + portalInstanceLifecycleListener);
+				}
+
+				return;
+			}
+
+			_portalInstanceLifecycleListeners.remove(
+				portalInstanceLifecycleListener);
+		}
+
+		private final BundleContext _bundleContext;
+
+	}
 
 }

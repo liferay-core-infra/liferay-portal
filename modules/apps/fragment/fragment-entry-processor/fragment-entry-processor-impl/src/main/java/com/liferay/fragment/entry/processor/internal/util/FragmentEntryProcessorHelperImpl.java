@@ -59,7 +59,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -526,10 +525,10 @@ public class FragmentEntryProcessorHelperImpl
 			else if (infoField.getInfoFieldType() instanceof
 						TextInfoFieldType) {
 
-				Optional<Boolean> htmlOptional = infoField.getAttributeOptional(
+				Boolean html = (Boolean)infoField.getAttribute(
 					TextInfoFieldType.HTML);
 
-				if (!htmlOptional.orElse(false)) {
+				if ((html == null) || !html) {
 					return _html.escape((String)value);
 				}
 			}

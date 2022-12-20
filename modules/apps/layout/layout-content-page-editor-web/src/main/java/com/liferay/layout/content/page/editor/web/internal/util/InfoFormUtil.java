@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * @author Jürgen Kappler
@@ -114,11 +113,13 @@ public class InfoFormUtil {
 		);
 
 		if (infoFieldType instanceof SelectInfoFieldType) {
-			Optional<List<SelectInfoFieldType.Option>> optionsOptional =
-				infoField.getAttributeOptional(SelectInfoFieldType.OPTIONS);
+			List<SelectInfoFieldType.Option> options =
+				(List<SelectInfoFieldType.Option>)infoField.getAttribute(
+					SelectInfoFieldType.OPTIONS);
 
-			List<SelectInfoFieldType.Option> options = optionsOptional.orElse(
-				Collections.emptyList());
+			if (options == null) {
+				options = Collections.emptyList();
+			}
 
 			try {
 				jsonObject.put(
@@ -126,11 +127,14 @@ public class InfoFormUtil {
 					JSONUtil.put(
 						"multiSelect",
 						() -> {
-							Optional<Boolean> multipleOptional =
-								infoField.getAttributeOptional(
-									SelectInfoFieldType.MULTIPLE);
+							Boolean multiple = (Boolean)infoField.getAttribute(
+								SelectInfoFieldType.MULTIPLE);
 
-							return multipleOptional.orElse(false);
+							if (multiple == null) {
+								return false;
+							}
+
+							return multiple;
 						}
 					).put(
 						"validValues",

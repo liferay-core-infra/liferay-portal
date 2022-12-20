@@ -14,23 +14,34 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.action;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ClassUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.kaleo.definition.ExecutionType;
+import com.liferay.portal.workflow.kaleo.definition.ScriptLanguage;
+import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
-import com.liferay.portal.workflow.kaleo.runtime.action.ActionExecutorManager;
 import com.liferay.portal.workflow.kaleo.runtime.action.KaleoActionExecutor;
+import com.liferay.portal.workflow.kaleo.runtime.action.executor.ActionExecutor;
 import com.liferay.portal.workflow.kaleo.service.KaleoActionLocalService;
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalService;
 import com.liferay.portal.workflow.kaleo.service.KaleoLogLocalService;
 
 import java.util.List;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -58,8 +69,7 @@ public class KaleoActionExecutorImpl implements KaleoActionExecutor {
 			String comment = _COMMENT_ACTION_SUCCESS;
 
 			try {
-				actionExecutorManager.executeKaleoAction(
-					kaleoAction, executionContext);
+				_executeKaleoAction(kaleoAction, executionContext);
 
 				KaleoInstanceToken kaleoInstanceToken =
 					executionContext.getKaleoInstanceToken();
@@ -82,8 +92,77 @@ public class KaleoActionExecutorImpl implements KaleoActionExecutor {
 		}
 	}
 
-	@Reference
-	protected ActionExecutorManager actionExecutorManager;
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, ActionExecutor.class, null,
+			(serviceReference, emitter) -> {
+				try {
+					ActionExecutor actionExecutor = bundleContext.getService(
+						serviceReference);
+
+					Object value = serviceReference.getProperty(
+						"com.liferay.portal.workflow.kaleo.runtime.action." +
+							"executor.language");
+
+					for (String language :
+							GetterUtil.getStringValues(
+								value, new String[] {String.valueOf(value)})) {
+
+						emitter.emit(
+							_getActionExecutorKey(
+								language,
+								ClassUtil.getClassName(actionExecutor)));
+					}
+				}
+				catch (KaleoDefinitionValidationException
+							kaleoDefinitionValidationException) {
+
+					throw new RuntimeException(
+						kaleoDefinitionValidationException);
+				}
+				finally {
+					bundleContext.ungetService(serviceReference);
+				}
+			});
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
+	}
+
+	private void _executeKaleoAction(
+			KaleoAction kaleoAction, ExecutionContext executionContext)
+		throws PortalException {
+
+		String actionExecutorKey = _getActionExecutorKey(
+			kaleoAction.getScriptLanguage(),
+			StringUtil.trim(kaleoAction.getScript()));
+
+		ActionExecutor actionExecutor = _serviceTrackerMap.getService(
+			actionExecutorKey);
+
+		if (actionExecutor == null) {
+			throw new PortalException(
+				"No action executor for " + actionExecutorKey);
+		}
+
+		actionExecutor.execute(kaleoAction, executionContext);
+	}
+
+	private String _getActionExecutorKey(
+			String language, String actionExecutorClassName)
+		throws KaleoDefinitionValidationException {
+
+		ScriptLanguage scriptLanguage = ScriptLanguage.parse(language);
+
+		if (scriptLanguage.equals(ScriptLanguage.JAVA)) {
+			return language + StringPool.COLON + actionExecutorClassName;
+		}
+
+		return language;
+	}
 
 	private static final String _COMMENT_ACTION_SUCCESS =
 		"Action completed successfully.";
@@ -99,5 +178,7 @@ public class KaleoActionExecutorImpl implements KaleoActionExecutor {
 
 	@Reference
 	private KaleoLogLocalService _kaleoLogLocalService;
+
+	private ServiceTrackerMap<String, ActionExecutor> _serviceTrackerMap;
 
 }

@@ -39,6 +39,7 @@ import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.query.TermsQuery;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexEntityName;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionLocalService;
 
@@ -148,8 +149,9 @@ public class WorkflowMetricsSLADefinitionTransformer {
 		searchSearchRequest.addAggregation(nameTermsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowMetricsSLADefinition.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowMetricsSLADefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityName.NODES));
 		searchSearchRequest.setQuery(
 			_createNodeBooleanQuery(
 				currentProcessVersion, latestProcessVersion,
@@ -266,15 +268,14 @@ public class WorkflowMetricsSLADefinitionTransformer {
 	@Reference
 	private Aggregations _aggregations;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsSLADefinitionLocalService

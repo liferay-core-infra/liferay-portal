@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexEntityName;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.service.util.BaseWorkflowMetricsIndexerTestCase;
 
@@ -42,8 +43,9 @@ public class TaskWorkflowMetricsIndexerTest
 			addKaleoTaskInstanceToken("review");
 
 		assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASKS),
 			"WorkflowMetricsTaskType", "companyId",
 			workflowDefinition.getCompanyId(), "completed", false, "deleted",
 			false, "processId", workflowDefinition.getWorkflowDefinitionId(),
@@ -58,8 +60,9 @@ public class TaskWorkflowMetricsIndexerTest
 			addKaleoTaskInstanceToken("review");
 
 		assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASKS),
 			"WorkflowMetricsTaskType", "companyId",
 			workflowDefinition.getCompanyId(), "completed", false, "deleted",
 			false, "processId", workflowDefinition.getWorkflowDefinitionId(),
@@ -71,8 +74,9 @@ public class TaskWorkflowMetricsIndexerTest
 			kaleoTaskInstanceToken);
 
 		assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASKS),
 			"WorkflowMetricsTaskType", "assigneeIds",
 			TestPropsValues.getUserId(), "assigneeType", User.class.getName(),
 			"companyId", workflowDefinition.getCompanyId(), "processId",
@@ -87,8 +91,9 @@ public class TaskWorkflowMetricsIndexerTest
 			addKaleoTaskInstanceToken("review");
 
 		assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASKS),
 			"WorkflowMetricsTaskType", "companyId",
 			workflowDefinition.getCompanyId(), "completed", false, "deleted",
 			false, "processId", workflowDefinition.getWorkflowDefinitionId(),
@@ -107,8 +112,9 @@ public class TaskWorkflowMetricsIndexerTest
 			createDate.toInstant(), completionDate.toInstant());
 
 		assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASKS),
 			"WorkflowMetricsTaskType", "assigneeIds",
 			TestPropsValues.getUserId(), "assigneeType", User.class.getName(),
 			"companyId", workflowDefinition.getCompanyId(), "duration",
@@ -126,8 +132,9 @@ public class TaskWorkflowMetricsIndexerTest
 		deleteKaleoTaskInstanceToken(kaleoTaskInstanceToken);
 
 		assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASKS),
 			"WorkflowMetricsTaskType", "companyId",
 			workflowDefinition.getCompanyId(), "completed", false, "deleted",
 			true, "processId", workflowDefinition.getWorkflowDefinitionId(),
@@ -143,8 +150,9 @@ public class TaskWorkflowMetricsIndexerTest
 
 		assertReindex(
 			new String[] {
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId())
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityName.TASKS)
 			},
 			new String[] {"WorkflowMetricsTaskType"}, "companyId",
 			workflowDefinition.getCompanyId(), "completed", false, "processId",
@@ -154,8 +162,7 @@ public class TaskWorkflowMetricsIndexerTest
 			"1.0");
 	}
 
-	@Inject(filter = "workflow.metrics.index.entity.name=task")
-	private WorkflowMetricsIndexNameBuilder
-		_taskWorkflowMetricsIndexNameBuilder;
+	@Inject
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

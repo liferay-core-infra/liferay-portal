@@ -31,7 +31,8 @@ public class ProcessWorkflowMetricsIndexImpl
 
 	@Override
 	public String getIndexName(long companyId) {
-		return _workflowMetricsIndexNameBuilder.getIndexName(companyId);
+		return _workflowMetricsIndexNameBuilder.getIndexName(
+			companyId, "process");
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class ProcessWorkflowMetricsIndexImpl
 		return "WorkflowMetricsProcessType";
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
+	@Reference
 	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

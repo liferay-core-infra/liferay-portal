@@ -148,8 +148,8 @@ public class WorkflowMetricsSLADefinitionTransformer {
 		searchSearchRequest.addAggregation(nameTermsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowMetricsSLADefinition.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowMetricsSLADefinition.getCompanyId(), "node"));
 		searchSearchRequest.setQuery(
 			_createNodeBooleanQuery(
 				currentProcessVersion, latestProcessVersion,
@@ -266,15 +266,14 @@ public class WorkflowMetricsSLADefinitionTransformer {
 	@Reference
 	private Aggregations _aggregations;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsSLADefinitionLocalService

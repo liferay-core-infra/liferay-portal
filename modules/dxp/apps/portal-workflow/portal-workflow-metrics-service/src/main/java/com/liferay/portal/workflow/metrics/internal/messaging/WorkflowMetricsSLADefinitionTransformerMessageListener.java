@@ -120,8 +120,8 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 
 		IndicesExistsIndexRequest indicesExistsIndexRequest =
 			new IndicesExistsIndexRequest(
-				_processWorkflowMetricsIndexNameBuilder.getIndexName(
-					companyId));
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					companyId, "process"));
 
 		IndicesExistsIndexResponse indicesExistsIndexResponse =
 			_searchEngineAdapter.execute(indicesExistsIndexRequest);
@@ -137,7 +137,8 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, "process"));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -180,10 +181,6 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -200,6 +197,9 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 	private TriggerFactory _triggerFactory;
 
 	private volatile WorkflowMetricsConfiguration _workflowMetricsConfiguration;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsSLADefinitionTransformer

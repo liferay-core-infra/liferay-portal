@@ -73,8 +73,8 @@ public class SLAInstanceResultWorkflowMetricsReindexer
 	private void _creatDefaultDocuments(long companyId) {
 		if (!_searchCapabilities.isWorkflowMetricsSupported() ||
 			!_hasIndex(
-				_processWorkflowMetricsIndexNameBuilder.getIndexName(
-					companyId))) {
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					companyId, "process"))) {
 
 			return;
 		}
@@ -82,7 +82,8 @@ public class SLAInstanceResultWorkflowMetricsReindexer
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, "process"));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -152,10 +153,6 @@ public class SLAInstanceResultWorkflowMetricsReindexer
 		return indicesExistsIndexResponse.isExists();
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -165,6 +162,9 @@ public class SLAInstanceResultWorkflowMetricsReindexer
 	@Reference
 	private SLAInstanceResultWorkflowMetricsIndexer
 		_slaInstanceResultWorkflowMetricsIndexer;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference(
 		cardinality = ReferenceCardinality.OPTIONAL,

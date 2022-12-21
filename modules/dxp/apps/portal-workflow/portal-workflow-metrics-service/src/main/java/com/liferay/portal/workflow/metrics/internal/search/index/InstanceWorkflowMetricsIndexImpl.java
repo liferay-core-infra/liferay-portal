@@ -31,7 +31,8 @@ public class InstanceWorkflowMetricsIndexImpl
 
 	@Override
 	public String getIndexName(long companyId) {
-		return _workflowMetricsIndexNameBuilder.getIndexName(companyId);
+		return _workflowMetricsIndexNameBuilder.getIndexName(
+			companyId, "instance");
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class InstanceWorkflowMetricsIndexImpl
 		return "WorkflowMetricsInstanceType";
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=instance)")
+	@Reference
 	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

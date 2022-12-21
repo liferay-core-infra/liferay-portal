@@ -39,12 +39,13 @@ import com.liferay.portal.workflow.metrics.search.index.reindexer.WorkflowMetric
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -91,19 +92,18 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 			throw new IndexKeyException();
 		}
 
+		List<String> indexNames = new ArrayList<>();
+
+		long companyId = contextCompany.getCompanyId();
+
+		for (String indexEntityName : indexEntityNames) {
+			indexNames.add(
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					companyId, indexEntityName));
+		}
+
 		_searchEngineAdapter.execute(
-			new RefreshIndexRequest(
-				Stream.of(
-					indexEntityNames
-				).map(
-					_workflowMetricsIndexNameBuilderMap::get
-				).map(
-					workflowMetricsIndexNameBuilder ->
-						workflowMetricsIndexNameBuilder.getIndexName(
-							contextCompany.getCompanyId())
-				).toArray(
-					String[]::new
-				)));
+			new RefreshIndexRequest(indexNames.toArray(new String[0])));
 	}
 
 	@Override
@@ -138,26 +138,6 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
-	protected void addWorkflowMetricsIndexNameBuilder(
-		WorkflowMetricsIndexNameBuilder workflowMetricsIndexNameBuilder,
-		Map<String, Object> properties) {
-
-		String workflowMetricsIndexEntityName = GetterUtil.getString(
-			properties.get("workflow.metrics.index.entity.name"));
-
-		if (Validator.isNull(workflowMetricsIndexEntityName)) {
-			return;
-		}
-
-		_workflowMetricsIndexNameBuilderMap.put(
-			workflowMetricsIndexEntityName, workflowMetricsIndexNameBuilder);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
 	protected void addWorkflowMetricsReindexer(
 		WorkflowMetricsReindexer workflowMetricsReindexer,
 		Map<String, Object> properties) {
@@ -170,17 +150,6 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 		}
 
 		_indexEntityNameSet.add(workflowMetricsIndexEntityName);
-	}
-
-	protected void removeWorkflowMetricsIndexNameBuilder(
-		WorkflowMetricsIndexNameBuilder workflowMetricsIndexNameBuilder,
-		Map<String, Object> properties) {
-
-		String workflowMetricsIndexEntityName = GetterUtil.getString(
-			properties.get("workflow.metrics.index.entity.name"));
-
-		_workflowMetricsIndexNameBuilderMap.remove(
-			workflowMetricsIndexEntityName);
 	}
 
 	protected void removeWorkflowMetricsReindexer(
@@ -239,8 +208,6 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 	}
 
 	private static final Set<String> _indexEntityNameSet = new HashSet<>();
-	private static final Map<String, WorkflowMetricsIndexNameBuilder>
-		_workflowMetricsIndexNameBuilderMap = new ConcurrentHashMap<>();
 
 	@Reference
 	private BackgroundTaskLocalService _backgroundTaskLocalService;
@@ -253,5 +220,8 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 
 	@Reference
 	private SearchEngineAdapter _searchEngineAdapter;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

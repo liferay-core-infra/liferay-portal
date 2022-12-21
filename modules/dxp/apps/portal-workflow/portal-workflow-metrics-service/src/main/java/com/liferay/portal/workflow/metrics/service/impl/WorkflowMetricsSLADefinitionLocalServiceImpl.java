@@ -400,7 +400,8 @@ public class WorkflowMetricsSLADefinitionLocalServiceImpl
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, "process"));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -543,7 +544,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceImpl
 			_createNodeIdAggregation("stop", stopNodeIds));
 
 		searchSearchRequest.setIndexNames(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(companyId, "node"));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -593,14 +594,6 @@ public class WorkflowMetricsSLADefinitionLocalServiceImpl
 	@Reference
 	private Aggregations _aggregations;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -617,6 +610,9 @@ public class WorkflowMetricsSLADefinitionLocalServiceImpl
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsPortalExecutor _workflowMetricsPortalExecutor;

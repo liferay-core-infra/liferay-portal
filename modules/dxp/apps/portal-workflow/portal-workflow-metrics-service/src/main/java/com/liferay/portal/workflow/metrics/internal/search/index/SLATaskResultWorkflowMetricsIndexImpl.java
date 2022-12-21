@@ -31,7 +31,8 @@ public class SLATaskResultWorkflowMetricsIndexImpl
 
 	@Override
 	public String getIndexName(long companyId) {
-		return _workflowMetricsIndexNameBuilder.getIndexName(companyId);
+		return _workflowMetricsIndexNameBuilder.getIndexName(
+			companyId, "sla-task-result");
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class SLATaskResultWorkflowMetricsIndexImpl
 		return "WorkflowMetricsSLATaskResultType";
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=sla-task-result)")
+	@Reference
 	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

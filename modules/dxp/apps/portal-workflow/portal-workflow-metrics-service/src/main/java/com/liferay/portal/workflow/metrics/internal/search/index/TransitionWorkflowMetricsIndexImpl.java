@@ -31,7 +31,8 @@ public class TransitionWorkflowMetricsIndexImpl
 
 	@Override
 	public String getIndexName(long companyId) {
-		return _workflowMetricsIndexNameBuilder.getIndexName(companyId);
+		return _workflowMetricsIndexNameBuilder.getIndexName(
+			companyId, "transition");
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class TransitionWorkflowMetricsIndexImpl
 		return "WorkflowMetricsTransitionType";
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=transition)")
+	@Reference
 	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

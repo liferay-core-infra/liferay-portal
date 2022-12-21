@@ -39,16 +39,12 @@ public class SPINodeResource<T> {
 
 	public SPINodeResource(
 		long companyId,
-		WorkflowMetricsIndexNameBuilder nodeWorkflowMetricsIndexNameBuilder,
-		WorkflowMetricsIndexNameBuilder processWorkflowMetricsIndexNameBuilder,
+		WorkflowMetricsIndexNameBuilder workflowMetricsIndexNameBuilder,
 		Queries queries, SearchRequestExecutor searchRequestExecutor,
 		UnsafeFunction<Document, T, SystemException> transformUnsafeFunction) {
 
 		_companyId = companyId;
-		_nodeWorkflowMetricsIndexNameBuilder =
-			nodeWorkflowMetricsIndexNameBuilder;
-		_processWorkflowMetricsIndexNameBuilder =
-			processWorkflowMetricsIndexNameBuilder;
+		_workflowMetricsIndexNameBuilder = workflowMetricsIndexNameBuilder;
 		_queries = queries;
 		_searchRequestExecutor = searchRequestExecutor;
 		_transformUnsafeFunction = transformUnsafeFunction;
@@ -58,7 +54,7 @@ public class SPINodeResource<T> {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(_companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(_companyId, "node"));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -93,7 +89,8 @@ public class SPINodeResource<T> {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(_companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				_companyId, "process"));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -123,13 +120,11 @@ public class SPINodeResource<T> {
 	}
 
 	private final long _companyId;
-	private final WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-	private final WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
 	private final Queries _queries;
 	private final SearchRequestExecutor _searchRequestExecutor;
 	private final UnsafeFunction<Document, T, SystemException>
 		_transformUnsafeFunction;
+	private final WorkflowMetricsIndexNameBuilder
+		_workflowMetricsIndexNameBuilder;
 
 }

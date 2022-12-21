@@ -14,18 +14,28 @@
 
 package com.liferay.portal.workflow.metrics.search.index.name;
 
-import java.util.Set;
-
 /**
- * @author Rafael Praxedes
+ * @author Jiaxu Wei
  */
-public interface WorkflowMetricsIndexNameBuilder {
+public enum WorkflowMetricsIndexEntityName {
 
-	public String getIndexName(
-		long companyId,
-		WorkflowMetricsIndexEntityName workflowMetricsIndexEntityName);
+	INSTANCE("instance"), NODE("node"), PROCESS("process"),
+	SLA_INSTANCE_RESULT("sla-instance-result"),
+	SLA_TASK_RESULT("sla-task-result"), TASK("task"), TRANSITION("transition");
 
-	public Set<WorkflowMetricsIndexEntityName>
-		getWorkflowMetricsIndexEntityNames();
+	public String getValue() {
+		return _value;
+	}
+
+	@Override
+	public String toString() {
+		return _value;
+	}
+
+	private WorkflowMetricsIndexEntityName(String value) {
+		_value = value;
+	}
+
+	private final String _value;
 
 }

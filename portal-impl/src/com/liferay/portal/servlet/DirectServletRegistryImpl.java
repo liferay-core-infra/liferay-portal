@@ -50,6 +50,10 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 
 	@Override
 	public Servlet getServlet(String path) {
+		if (path.startsWith(PathPrefixHolder._PATH_MODULE_PREFIX)) {
+			return null;
+		}
+
 		path = _trimContextPrefix(path);
 
 		ServletInfo servletInfo = _servletInfos.get(path);

@@ -40,6 +40,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * @author Tina Tian
  */
 @Component(
+	immediate = true,
 	property = {"osgi.command.function=check", "osgi.command.scope=system"},
 	service = SystemCheckOSGiCommands.class
 )

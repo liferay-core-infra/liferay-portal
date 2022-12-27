@@ -64,13 +64,12 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		AdaptiveMedia<AMImageProcessor> previousAdaptiveMedia = null;
 
 		for (AdaptiveMedia<AMImageProcessor> adaptiveMedia : adaptiveMedias) {
-			Optional<AdaptiveMedia<AMImageProcessor>> hdAdaptiveMediaOptional =
+			AdaptiveMedia<AMImageProcessor> hdAdaptiveMedia =
 				_getHDAdaptiveMedia(adaptiveMedia, adaptiveMedias);
 
 			mediaQueries.add(
 				_getMediaQuery(
-					adaptiveMedia, previousAdaptiveMedia,
-					hdAdaptiveMediaOptional));
+					adaptiveMedia, previousAdaptiveMedia, hdAdaptiveMedia));
 
 			previousAdaptiveMedia = adaptiveMedia;
 		}
@@ -200,7 +199,7 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		}
 	}
 
-	private Optional<AdaptiveMedia<AMImageProcessor>> _getHDAdaptiveMedia(
+	private AdaptiveMedia<AMImageProcessor> _getHDAdaptiveMedia(
 		AdaptiveMedia<AMImageProcessor> originalAdaptiveMedia,
 		Collection<AdaptiveMedia<AMImageProcessor>> adaptiveMedias) {
 
@@ -221,11 +220,11 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 				value -> value == _getHeight(adaptiveMedia));
 
 			if (widthMatch && heightMatch) {
-				return Optional.of(adaptiveMedia);
+				return adaptiveMedia;
 			}
 		}
 
-		return Optional.empty();
+		return null;
 	}
 
 	private Integer _getHeight(AdaptiveMedia<AMImageProcessor> adaptiveMedia) {
@@ -245,7 +244,7 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 	private MediaQuery _getMediaQuery(
 			AdaptiveMedia<AMImageProcessor> adaptiveMedia,
 			AdaptiveMedia<AMImageProcessor> previousAdaptiveMedia,
-			Optional<AdaptiveMedia<AMImageProcessor>> hdAdaptiveMediaOptional)
+			AdaptiveMedia<AMImageProcessor> hdAdaptiveMedia)
 		throws PortalException {
 
 		StringBundler sb = new StringBundler(4);
@@ -255,12 +254,11 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 
 		sb.append(adaptiveMedia.getURI());
 
-		hdAdaptiveMediaOptional.ifPresent(
-			hdAdaptiveMedia -> {
-				sb.append(", ");
-				sb.append(hdAdaptiveMedia.getURI());
-				sb.append(" 2x");
-			});
+		if (hdAdaptiveMedia != null) {
+			sb.append(", ");
+			sb.append(hdAdaptiveMedia.getURI());
+			sb.append(" 2x");
+		}
 
 		return new MediaQuery(conditions, sb.toString());
 	}

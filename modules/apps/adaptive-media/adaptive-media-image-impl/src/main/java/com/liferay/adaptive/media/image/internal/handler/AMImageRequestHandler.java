@@ -117,18 +117,18 @@ public class AMImageRequestHandler
 			AMImageConfigurationEntry amImageConfigurationEntry =
 				amImageConfigurationEntryOptional.get();
 
-			Optional<AdaptiveMedia<AMImageProcessor>> adaptiveMediaOptional =
+			AdaptiveMedia<AMImageProcessor> adaptiveMedia =
 				_findExactAdaptiveMedia(fileVersion, amImageConfigurationEntry);
 
-			if (adaptiveMediaOptional.isPresent()) {
-				return adaptiveMediaOptional.get();
+			if (adaptiveMedia != null) {
+				return adaptiveMedia;
 			}
 
-			adaptiveMediaOptional = _findClosestAdaptiveMedia(
+			adaptiveMedia = _findClosestAdaptiveMedia(
 				fileVersion, amImageConfigurationEntry);
 
-			if (adaptiveMediaOptional.isPresent()) {
-				return adaptiveMediaOptional.get();
+			if (adaptiveMedia != null) {
+				return adaptiveMedia;
 			}
 
 			return _createRawAdaptiveMedia(fileVersion);
@@ -138,7 +138,7 @@ public class AMImageRequestHandler
 		}
 	}
 
-	private Optional<AdaptiveMedia<AMImageProcessor>> _findClosestAdaptiveMedia(
+	private AdaptiveMedia<AMImageProcessor> _findClosestAdaptiveMedia(
 		FileVersion fileVersion,
 		AMImageConfigurationEntry amImageConfigurationEntry) {
 
@@ -165,20 +165,20 @@ public class AMImageRequestHandler
 					).done());
 
 			if (adaptiveMediaList.isEmpty()) {
-				return Optional.empty();
+				return null;
 			}
 
 			Collections.sort(
 				adaptiveMediaList, _getComparator(configurationWidth));
 
-			return Optional.of(adaptiveMediaList.get(0));
+			return adaptiveMediaList.get(0);
 		}
 		catch (PortalException portalException) {
 			throw new AMRuntimeException(portalException);
 		}
 	}
 
-	private Optional<AdaptiveMedia<AMImageProcessor>> _findExactAdaptiveMedia(
+	private AdaptiveMedia<AMImageProcessor> _findExactAdaptiveMedia(
 			FileVersion fileVersion,
 			AMImageConfigurationEntry amImageConfigurationEntry)
 		throws PortalException {
@@ -192,10 +192,10 @@ public class AMImageRequestHandler
 				).done());
 
 		if (adaptiveMediaList.isEmpty()) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.of(adaptiveMediaList.get(0));
+		return adaptiveMediaList.get(0);
 	}
 
 	private Comparator<AdaptiveMedia<AMImageProcessor>> _getComparator(

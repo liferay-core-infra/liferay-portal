@@ -26,13 +26,9 @@ import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.util.RangeParserUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
 import java.math.BigDecimal;
-
-import java.util.Optional;
 
 import javax.portlet.RenderRequest;
 
@@ -44,15 +40,13 @@ public class CPPriceRangeFacetsDisplayContext {
 	public CPPriceRangeFacetsDisplayContext(
 			CommercePriceFormatter commercePriceFormatter,
 			RenderRequest renderRequest, Facet facet,
-			String paginationStartParameterName,
-			PortletSharedSearchResponse portletSharedSearchResponse)
+			String paginationStartParameterName)
 		throws PortalException {
 
 		_commercePriceFormatter = commercePriceFormatter;
 		_renderRequest = renderRequest;
 		_facet = facet;
 		_paginationStartParameterName = paginationStartParameterName;
-		_portletSharedSearchResponse = portletSharedSearchResponse;
 
 		_themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -128,23 +122,6 @@ public class CPPriceRangeFacetsDisplayContext {
 		return false;
 	}
 
-	public boolean isCPPriceRangeValueSelected(
-			String fieldName, String fieldValue)
-		throws PortalException {
-
-		Optional<String[]> parameterValuesOptional =
-			_portletSharedSearchResponse.getParameterValues(
-				fieldName, _renderRequest);
-
-		if (parameterValuesOptional.isPresent()) {
-			String[] parameterValues = parameterValuesOptional.get();
-
-			return ArrayUtil.contains(parameterValues, fieldValue);
-		}
-
-		return false;
-	}
-
 	public boolean showInputRange() {
 		return _cpPriceRangeFacetsPortletInstanceConfiguration.showInputRange();
 	}
@@ -154,7 +131,6 @@ public class CPPriceRangeFacetsDisplayContext {
 		_cpPriceRangeFacetsPortletInstanceConfiguration;
 	private final Facet _facet;
 	private final String _paginationStartParameterName;
-	private final PortletSharedSearchResponse _portletSharedSearchResponse;
 	private final RenderRequest _renderRequest;
 	private final ThemeDisplay _themeDisplay;
 

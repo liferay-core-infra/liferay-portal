@@ -59,8 +59,7 @@ public class CPPriceRangeFacetsConfigurationAction
 					_commercePriceFormatter, cpRequestHelper.getRenderRequest(),
 					null,
 					_getPaginationStartParameterName(
-						portletSharedSearchResponse),
-					portletSharedSearchResponse);
+						portletSharedSearchResponse));
 
 			httpServletRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,

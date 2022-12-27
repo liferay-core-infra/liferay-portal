@@ -42,6 +42,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
@@ -212,9 +213,7 @@ public class CPOptionsSearchFacetDisplayContextBuilder implements Serializable {
 		getEmptyTermDisplayContexts() {
 
 		return TransformUtil.transform(
-			TransformUtil.transform(
-				_selectedCategoryIds, this::_getEmptyTermDisplayContext),
-			contextOptional -> contextOptional.orElse(null));
+			_selectedCategoryIds, this::_getEmptyTermDisplayContext);
 	}
 
 	protected double getPopularity(
@@ -254,14 +253,16 @@ public class CPOptionsSearchFacetDisplayContextBuilder implements Serializable {
 		}
 	}
 
-	private Optional<CPOptionsSearchFacetTermDisplayContext>
-		_getEmptyTermDisplayContext(long cpOptionId) {
+	private CPOptionsSearchFacetTermDisplayContext _getEmptyTermDisplayContext(
+		long cpOptionId) {
 
-		return Optional.ofNullable(
-			_cpOptionLocalService.fetchCPOption(cpOptionId)
-		).map(
-			cpOption -> buildTermDisplayContext(0, 1, true, StringPool.BLANK)
-		);
+		CPOption cpOption = _cpOptionLocalService.fetchCPOption(cpOptionId);
+
+		if (Objects.nonNull(cpOption)) {
+			return buildTermDisplayContext(0, 1, true, StringPool.BLANK);
+		}
+
+		return null;
 	}
 
 	private List<Facet> _getFacets() {

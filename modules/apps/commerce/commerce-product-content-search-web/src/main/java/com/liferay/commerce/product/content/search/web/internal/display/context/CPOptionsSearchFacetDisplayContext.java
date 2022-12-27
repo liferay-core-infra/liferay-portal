@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
@@ -33,7 +32,6 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import javax.portlet.RenderRequest;
 
@@ -127,24 +125,6 @@ public class CPOptionsSearchFacetDisplayContext implements Serializable {
 
 		if (commerceChannelId > 0) {
 			return true;
-		}
-
-		return false;
-	}
-
-	public boolean isCPOptionValueSelected(
-		long companyId, String fieldName, String fieldValue) {
-
-		CPOption cpOption = getCPOption(companyId, fieldName);
-
-		Optional<String[]> parameterValuesOptional =
-			_portletSharedSearchResponse.getParameterValues(
-				cpOption.getKey(), _renderRequest);
-
-		if (parameterValuesOptional.isPresent()) {
-			String[] parameterValues = parameterValuesOptional.get();
-
-			return ArrayUtil.contains(parameterValues, fieldValue);
 		}
 
 		return false;

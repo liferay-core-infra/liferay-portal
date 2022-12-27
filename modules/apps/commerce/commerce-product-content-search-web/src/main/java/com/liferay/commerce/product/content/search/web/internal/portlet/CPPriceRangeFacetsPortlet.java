@@ -81,8 +81,7 @@ public class CPPriceRangeFacetsPortlet extends MVCPortlet {
 					_commercePriceFormatter, renderRequest,
 					portletSharedSearchResponse.getFacet(CPField.BASE_PRICE),
 					getPaginationStartParameterName(
-						portletSharedSearchResponse),
-					portletSharedSearchResponse);
+						portletSharedSearchResponse));
 
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,

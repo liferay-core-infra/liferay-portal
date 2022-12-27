@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,11 +65,11 @@ public class AMImageHTMLTagFactoryImpl implements AMImageHTMLTagFactory {
 		return sb.toString();
 	}
 
-	private Optional<String> _getMediaQueryString(MediaQuery mediaQuery) {
+	private String _getMediaQueryString(MediaQuery mediaQuery) {
 		List<Condition> conditions = mediaQuery.getConditions();
 
 		if (conditions.isEmpty()) {
-			return Optional.empty();
+			return null;
 		}
 
 		String[] conditionStrings = new String[conditions.size()];
@@ -84,23 +83,21 @@ public class AMImageHTMLTagFactoryImpl implements AMImageHTMLTagFactory {
 				StringPool.CLOSE_PARENTHESIS);
 		}
 
-		return Optional.of(StringUtil.merge(conditionStrings, " and "));
+		return StringUtil.merge(conditionStrings, " and ");
 	}
 
 	private String _getSourceElement(MediaQuery mediaQuery) {
 		StringBundler sb = new StringBundler(5);
 
-		Optional<String> mediaQueryStringOptional = _getMediaQueryString(
-			mediaQuery);
+		String mediaQueryString = _getMediaQueryString(mediaQuery);
 
-		mediaQueryStringOptional.ifPresent(
-			mediaQueryString -> {
-				sb.append("<source media=\"");
-				sb.append(mediaQueryString);
-				sb.append("\" srcset=\"");
-				sb.append(mediaQuery.getSrc());
-				sb.append("\" />");
-			});
+		if (mediaQueryString != null) {
+			sb.append("<source media=\"");
+			sb.append(mediaQueryString);
+			sb.append("\" srcset=\"");
+			sb.append(mediaQuery.getSrc());
+			sb.append("\" />");
+		}
 
 		return sb.toString();
 	}

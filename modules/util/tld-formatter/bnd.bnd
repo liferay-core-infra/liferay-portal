@@ -1,6 +1,6 @@
 Bundle-Name: Liferay TLD Formatter
 Bundle-SymbolicName: com.liferay.tld.formatter
-Bundle-Version: 1.0.6
+Bundle-Version: 1.0.7
 Import-Package:\
 	!org.apache.maven.plugin.*,\
 	!org.apache.tools.ant.*,\
@@ -8,7 +8,6 @@ Import-Package:\
 	*
 Main-Class: com.liferay.tld.formatter.TLDFormatter
 -includeresource:\
-	@com.liferay.petra.xml-*.jar!/com/liferay/petra/xml/Dom4jUtil.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/tools/ArgumentsMap.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/tools/ArgumentsUtil.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/util/EntityResolver.class,\

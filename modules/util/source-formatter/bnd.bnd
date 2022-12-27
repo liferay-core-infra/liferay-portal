@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Source Formatter
 Bundle-SymbolicName: com.liferay.source.formatter
-Bundle-Version: 1.0.1273
+Bundle-Version: 1.0.1274
 Import-Package:\
 	!javax.portlet,\
 	\
@@ -24,7 +24,6 @@ Main-Class: com.liferay.source.formatter.SourceFormatter
 	@com.liferay.petra.memory-*.jar!/com/liferay/petra/memory/FinalizeManager.class,\
 	@com.liferay.petra.memory-*.jar!/com/liferay/petra/memory/FinalizeManager$*.class,\
 	@com.liferay.petra.reflect-*.jar!/com/liferay/petra/reflect/ReflectionUtil.class,\
-	@com.liferay.petra.xml-*.jar!/com/liferay/petra/xml/Dom4jUtil.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/deploy/dependencies/web.xml,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/json/JSONArrayImpl.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/json/JSONObjectImpl.class,\

@@ -65,22 +65,17 @@ public class AMImageRequestHandler
 			HttpServletRequest httpServletRequest)
 		throws IOException, ServletException {
 
-		Optional<Tuple<FileVersion, AMImageAttributeMapping>>
-			interpretedPathOptional = _interpretPath(
-				httpServletRequest.getPathInfo());
+		Tuple<FileVersion, AMImageAttributeMapping> interpretedPath =
+			_interpretPath(httpServletRequest.getPathInfo());
 
-		return interpretedPathOptional.flatMap(
-			tuple -> {
-				Optional<AdaptiveMedia<AMImageProcessor>>
-					adaptiveMediaOptional = _findAdaptiveMedia(
-						tuple.first, tuple.second);
+		Optional<AdaptiveMedia<AMImageProcessor>> adaptiveMediaOptional =
+			_findAdaptiveMedia(interpretedPath.first, interpretedPath.second);
 
-				adaptiveMediaOptional.ifPresent(
-					adaptiveMedia -> _processAMImage(
-						adaptiveMedia, tuple.first, tuple.second));
+		adaptiveMediaOptional.ifPresent(
+			adaptiveMedia -> _processAMImage(
+				adaptiveMedia, interpretedPath.first, interpretedPath.second));
 
-				return adaptiveMediaOptional;
-			});
+		return adaptiveMediaOptional;
 	}
 
 	private AdaptiveMedia<AMImageProcessor> _createRawAdaptiveMedia(
@@ -221,21 +216,21 @@ public class AMImageRequestHandler
 		return distanceOptional.orElse(Integer.MAX_VALUE);
 	}
 
-	private Optional<Tuple<FileVersion, AMImageAttributeMapping>>
-		_interpretPath(String pathInfo) {
+	private Tuple<FileVersion, AMImageAttributeMapping> _interpretPath(
+		String pathInfo) {
 
 		try {
 			Tuple<FileVersion, Map<String, String>> fileVersionMapTuple =
 				_pathInterpreter.interpretPath(pathInfo);
 
 			if (fileVersionMapTuple == null) {
-				return Optional.empty();
+				return null;
 			}
 
 			FileVersion fileVersion = fileVersionMapTuple.first;
 
 			if (fileVersion.getStatus() == WorkflowConstants.STATUS_IN_TRASH) {
-				return Optional.empty();
+				return null;
 			}
 
 			Map<String, String> properties = fileVersionMapTuple.second;
@@ -262,12 +257,12 @@ public class AMImageRequestHandler
 			AMImageAttributeMapping amImageAttributeMapping =
 				AMImageAttributeMapping.fromProperties(properties);
 
-			return Optional.of(Tuple.of(fileVersion, amImageAttributeMapping));
+			return Tuple.of(fileVersion, amImageAttributeMapping);
 		}
 		catch (AMRuntimeException | NumberFormatException exception) {
 			_log.error(exception);
 
-			return Optional.empty();
+			return null;
 		}
 	}
 

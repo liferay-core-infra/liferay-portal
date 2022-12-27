@@ -119,20 +119,10 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 
 		Map<String, String> properties = HashMapBuilder.put(
 			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH.getName(),
-			() -> {
-				Optional<Integer> widthOptional = _getWidth(
-					amImageConfigurationEntry);
-
-				return String.valueOf(widthOptional.orElse(0));
-			}
+			() -> String.valueOf(_getWidth(amImageConfigurationEntry))
 		).put(
 			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT.getName(),
-			() -> {
-				Optional<Integer> heightOptional = _getHeight(
-					amImageConfigurationEntry);
-
-				return String.valueOf(heightOptional.orElse(0));
-			}
+			() -> String.valueOf(_getHeight(amImageConfigurationEntry))
 		).build();
 
 		return new AMImage(
@@ -234,7 +224,7 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		return optional.orElse(0);
 	}
 
-	private Optional<Integer> _getHeight(
+	private Integer _getHeight(
 		AMImageConfigurationEntry originalAMImageConfigurationEntry) {
 
 		return _getPropertiesValue(
@@ -263,23 +253,21 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		return new MediaQuery(conditions, sb.toString());
 	}
 
-	private Optional<Integer> _getPropertiesValue(
+	private Integer _getPropertiesValue(
 		AMImageConfigurationEntry amImageConfigurationEntry, String name) {
 
 		try {
 			Map<String, String> properties =
 				amImageConfigurationEntry.getProperties();
 
-			Integer height = Integer.valueOf(properties.get(name));
-
-			return Optional.of(height);
+			return Integer.valueOf(properties.get(name));
 		}
 		catch (NumberFormatException numberFormatException) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(numberFormatException);
 			}
 
-			return Optional.empty();
+			return 0;
 		}
 	}
 
@@ -291,7 +279,7 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		return attributeValueOptional.orElse(0);
 	}
 
-	private Optional<Integer> _getWidth(
+	private Integer _getWidth(
 		AMImageConfigurationEntry amImageConfigurationEntry) {
 
 		return _getPropertiesValue(amImageConfigurationEntry, "max-width");

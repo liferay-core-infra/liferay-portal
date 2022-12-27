@@ -225,16 +225,12 @@ public class AMImageRequestHandler
 		_interpretPath(String pathInfo) {
 
 		try {
-			Optional<Tuple<FileVersion, Map<String, String>>>
-				fileVersionPropertiesTupleOptional =
-					_pathInterpreter.interpretPath(pathInfo);
+			Tuple<FileVersion, Map<String, String>> fileVersionMapTuple =
+				_pathInterpreter.interpretPath(pathInfo);
 
-			if (!fileVersionPropertiesTupleOptional.isPresent()) {
+			if (fileVersionMapTuple == null) {
 				return Optional.empty();
 			}
-
-			Tuple<FileVersion, Map<String, String>> fileVersionMapTuple =
-				fileVersionPropertiesTupleOptional.get();
 
 			FileVersion fileVersion = fileVersionMapTuple.first;
 

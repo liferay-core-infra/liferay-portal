@@ -182,7 +182,7 @@ public class AMImageRequestHandler
 		}
 	}
 
-	private Optional<AdaptiveMedia<AMImageProcessor>> _findExactAdaptiveMedia(
+	private AdaptiveMedia<AMImageProcessor> _findExactAdaptiveMedia(
 			FileVersion fileVersion,
 			AMImageConfigurationEntry amImageConfigurationEntry)
 		throws PortalException {
@@ -196,10 +196,10 @@ public class AMImageRequestHandler
 				).done());
 
 		if (adaptiveMediaList.isEmpty()) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.of(adaptiveMediaList.get(0));
+		return adaptiveMediaList.get(0);
 	}
 
 	private Comparator<AdaptiveMedia<AMImageProcessor>> _getComparator(

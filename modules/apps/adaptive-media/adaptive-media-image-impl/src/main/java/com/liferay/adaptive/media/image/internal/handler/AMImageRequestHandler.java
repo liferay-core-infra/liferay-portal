@@ -121,20 +121,18 @@ public class AMImageRequestHandler
 			AMImageConfigurationEntry amImageConfigurationEntry =
 				amImageConfigurationEntryOptional.get();
 
-			Optional<AdaptiveMedia<AMImageProcessor>> adaptiveMediaOptional =
-				Optional.ofNullable(
-					_findExactAdaptiveMedia(
-						fileVersion, amImageConfigurationEntry));
+			AdaptiveMedia<AMImageProcessor> adaptiveMedia =
+				_findExactAdaptiveMedia(fileVersion, amImageConfigurationEntry);
 
-			if (adaptiveMediaOptional.isPresent()) {
-				return adaptiveMediaOptional.get();
+			if (adaptiveMedia != null) {
+				return adaptiveMedia;
 			}
 
-			adaptiveMediaOptional = _findClosestAdaptiveMedia(
+			adaptiveMedia = _findClosestAdaptiveMedia(
 				fileVersion, amImageConfigurationEntry);
 
-			if (adaptiveMediaOptional.isPresent()) {
-				return adaptiveMediaOptional.get();
+			if (adaptiveMedia != null) {
+				return adaptiveMedia;
 			}
 
 			return _createRawAdaptiveMedia(fileVersion);

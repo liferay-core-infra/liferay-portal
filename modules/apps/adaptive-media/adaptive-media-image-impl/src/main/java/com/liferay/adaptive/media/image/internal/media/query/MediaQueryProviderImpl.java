@@ -78,7 +78,7 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		return mediaQueries;
 	}
 
-	private Optional<AdaptiveMedia<AMImageProcessor>> _findAdaptiveMedia(
+	private AdaptiveMedia<AMImageProcessor> _findAdaptiveMedia(
 		FileEntry fileEntry,
 		AMImageConfigurationEntry amImageConfigurationEntry) {
 
@@ -92,17 +92,17 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 					).done());
 
 			if (adaptiveMediaList.isEmpty()) {
-				return Optional.empty();
+				return null;
 			}
 
-			return Optional.of(adaptiveMediaList.get(0));
+			return adaptiveMediaList.get(0);
 		}
 		catch (PortalException portalException) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(portalException);
 			}
 
-			return Optional.empty();
+			return null;
 		}
 	}
 

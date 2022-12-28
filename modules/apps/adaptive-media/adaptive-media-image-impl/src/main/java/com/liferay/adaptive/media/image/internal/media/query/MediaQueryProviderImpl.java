@@ -111,11 +111,11 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 			FileEntry fileEntry,
 			AMImageConfigurationEntry amImageConfigurationEntry) {
 
-		Optional<AdaptiveMedia<AMImageProcessor>> adaptiveMediaOptional =
-			_findAdaptiveMedia(fileEntry, amImageConfigurationEntry);
+		AdaptiveMedia<AMImageProcessor> adaptiveMedia = _findAdaptiveMedia(
+			fileEntry, amImageConfigurationEntry);
 
-		if (adaptiveMediaOptional.isPresent()) {
-			return adaptiveMediaOptional.get();
+		if (adaptiveMedia != null) {
+			return adaptiveMedia;
 		}
 
 		Map<String, String> properties = HashMapBuilder.put(

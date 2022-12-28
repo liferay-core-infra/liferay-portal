@@ -321,20 +321,7 @@ public class ContentStructureField implements Serializable {
 		this.options = options;
 	}
 
-	@JsonIgnore
-	public void setOptions(
-		UnsafeSupplier<Option[], Exception> optionsUnsafeSupplier) {
 
-		try {
-			options = optionsUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 	@GraphQLField(description = "The list of different possible values.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)

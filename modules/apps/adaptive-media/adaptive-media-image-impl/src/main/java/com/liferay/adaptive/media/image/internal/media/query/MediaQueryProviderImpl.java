@@ -64,13 +64,12 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		AdaptiveMedia<AMImageProcessor> previousAdaptiveMedia = null;
 
 		for (AdaptiveMedia<AMImageProcessor> adaptiveMedia : adaptiveMedias) {
-			Optional<AdaptiveMedia<AMImageProcessor>> hdAdaptiveMediaOptional =
+			AdaptiveMedia<AMImageProcessor> hdAdaptiveMedia =
 				_getHDAdaptiveMedia(adaptiveMedia, adaptiveMedias);
 
 			mediaQueries.add(
 				_getMediaQuery(
-					adaptiveMedia, previousAdaptiveMedia,
-					hdAdaptiveMediaOptional));
+					adaptiveMedia, previousAdaptiveMedia, hdAdaptiveMedia));
 
 			previousAdaptiveMedia = adaptiveMedia;
 		}
@@ -245,7 +244,7 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 	private MediaQuery _getMediaQuery(
 			AdaptiveMedia<AMImageProcessor> adaptiveMedia,
 			AdaptiveMedia<AMImageProcessor> previousAdaptiveMedia,
-			Optional<AdaptiveMedia<AMImageProcessor>> hdAdaptiveMediaOptional)
+			AdaptiveMedia<AMImageProcessor> hdAdaptiveMedia)
 		throws PortalException {
 
 		StringBundler sb = new StringBundler(4);
@@ -255,12 +254,11 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 
 		sb.append(adaptiveMedia.getURI());
 
-		hdAdaptiveMediaOptional.ifPresent(
-			hdAdaptiveMedia -> {
-				sb.append(", ");
-				sb.append(hdAdaptiveMedia.getURI());
-				sb.append(" 2x");
-			});
+		if (hdAdaptiveMedia != null) {
+			sb.append(", ");
+			sb.append(hdAdaptiveMedia.getURI());
+			sb.append(" 2x");
+		}
 
 		return new MediaQuery(conditions, sb.toString());
 	}

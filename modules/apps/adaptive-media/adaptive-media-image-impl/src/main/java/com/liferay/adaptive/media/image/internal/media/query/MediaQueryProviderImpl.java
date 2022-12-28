@@ -263,23 +263,21 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		return new MediaQuery(conditions, sb.toString());
 	}
 
-	private Optional<Integer> _getPropertiesValue(
+	private Integer _getPropertiesValue(
 		AMImageConfigurationEntry amImageConfigurationEntry, String name) {
 
 		try {
 			Map<String, String> properties =
 				amImageConfigurationEntry.getProperties();
 
-			Integer height = Integer.valueOf(properties.get(name));
-
-			return Optional.of(height);
+			return Integer.valueOf(properties.get(name));
 		}
 		catch (NumberFormatException numberFormatException) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(numberFormatException);
 			}
 
-			return Optional.empty();
+			return 0;
 		}
 	}
 

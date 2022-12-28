@@ -22,6 +22,8 @@ import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
  */
 public interface ActionExecutor {
 
+	public boolean canEvaluate(String executorLanguage);
+
 	public void execute(
 			KaleoAction kaleoAction, ExecutionContext executionContext)
 		throws ActionExecutorException;

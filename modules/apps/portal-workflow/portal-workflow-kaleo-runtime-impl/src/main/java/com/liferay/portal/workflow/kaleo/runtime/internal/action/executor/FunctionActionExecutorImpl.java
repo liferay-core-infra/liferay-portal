@@ -52,6 +52,11 @@ import org.osgi.service.component.annotations.Reference;
 public class FunctionActionExecutorImpl implements ActionExecutor {
 
 	@Override
+	public boolean canEvaluate(String executorLanguage) {
+		return false;
+	}
+
+	@Override
 	public void execute(
 			KaleoAction kaleoAction, ExecutionContext executionContext)
 		throws ActionExecutorException {

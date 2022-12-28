@@ -30,6 +30,7 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,12 +38,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael C. Han
  */
-@Component(
-	enabled = false,
-	property = "com.liferay.portal.workflow.kaleo.runtime.action.executor.language=drl",
-	service = ActionExecutor.class
-)
+@Component(enabled = false, service = ActionExecutor.class)
 public class DRLActionExecutor implements ActionExecutor {
+
+	@Override
+	public boolean canEvaluate(String executorLanguage) {
+		return Objects.equals(executorLanguage, "drl");
+	}
 
 	@Override
 	public void execute(

@@ -200,7 +200,7 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		}
 	}
 
-	private Optional<AdaptiveMedia<AMImageProcessor>> _getHDAdaptiveMedia(
+	private AdaptiveMedia<AMImageProcessor> _getHDAdaptiveMedia(
 		AdaptiveMedia<AMImageProcessor> originalAdaptiveMedia,
 		Collection<AdaptiveMedia<AMImageProcessor>> adaptiveMedias) {
 
@@ -221,11 +221,11 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 				value -> value == _getHeight(adaptiveMedia));
 
 			if (widthMatch && heightMatch) {
-				return Optional.of(adaptiveMedia);
+				return adaptiveMedia;
 			}
 		}
 
-		return Optional.empty();
+		return null;
 	}
 
 	private Integer _getHeight(AdaptiveMedia<AMImageProcessor> adaptiveMedia) {

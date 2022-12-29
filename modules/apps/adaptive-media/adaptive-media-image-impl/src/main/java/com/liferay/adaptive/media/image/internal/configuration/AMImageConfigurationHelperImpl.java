@@ -293,7 +293,7 @@ public class AMImageConfigurationHelperImpl
 	}
 
 	@Override
-	public Optional<AMImageConfigurationEntry> getAMImageConfigurationEntry(
+	public AMImageConfigurationEntry getAMImageConfigurationEntry(
 		long companyId, String configurationEntryUUID) {
 
 		List<AMImageConfigurationEntry> amImageConfigurationEntryList =
@@ -305,10 +305,10 @@ public class AMImageConfigurationHelperImpl
 				amImageConfigurationEntry.getUUID()));
 
 		if (amImageConfigurationEntryList.isEmpty()) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.of(amImageConfigurationEntryList.get(0));
+		return amImageConfigurationEntryList.get(0);
 	}
 
 	@Override

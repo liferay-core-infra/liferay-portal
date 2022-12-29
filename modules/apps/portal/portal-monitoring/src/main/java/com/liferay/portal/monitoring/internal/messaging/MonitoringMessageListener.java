@@ -156,13 +156,6 @@ public class MonitoringMessageListener
 		dataSampleProcessors.add(dataSampleProcessor);
 	}
 
-	@Reference(
-		target = "(destination.name=" + DestinationNames.MONITORING + ")",
-		unbind = "-"
-	)
-	protected void setDestination(Destination destination) {
-	}
-
 	protected synchronized void unregisterDataSampleProcessor(
 		DataSampleProcessor<DataSample> dataSampleProcessor,
 		Map<String, Object> properties) {
@@ -192,6 +185,12 @@ public class MonitoringMessageListener
 
 	private final Map<String, List<DataSampleProcessor<DataSample>>>
 		_dataSampleProcessors = new ConcurrentHashMap<>();
+
+	@Reference(
+		target = "(destination.name=" + DestinationNames.MONITORING + ")"
+	)
+	private Destination _destination;
+
 	private final Map<String, Level> _levels = new ConcurrentHashMap<>();
 
 }

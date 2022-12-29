@@ -48,7 +48,7 @@ public interface AMFinder<B extends AMQueryBuilder<M, T>, M, T> {
 	 * @throws PortalException if an error occurred while calling any Liferay
 	 *         service
 	 */
-	public List<AdaptiveMedia<T>> getAdaptiveMediaStream(
+	public List<AdaptiveMedia<T>> getAdaptiveMediaList(
 			Function<B, AMQuery<M, T>> amQueryBuilderFunction)
 		throws PortalException;
 

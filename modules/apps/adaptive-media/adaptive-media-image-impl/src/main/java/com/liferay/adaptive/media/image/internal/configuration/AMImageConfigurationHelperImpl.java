@@ -492,12 +492,11 @@ public class AMImageConfigurationHelperImpl
 		}
 
 		try {
-			Settings settings = SettingsFactoryUtil.getSettings(
-				new CompanyServiceSettingsLocator(
-					companyId, AMImageCompanyConfiguration.class.getName()));
-
 			Optional<String[]> imageVariantsOptional = _getImageVariants(
-				settings);
+				SettingsFactoryUtil.getSettings(
+					new CompanyServiceSettingsLocator(
+						companyId,
+						AMImageCompanyConfiguration.class.getName())));
 
 			String[] imageVariants = imageVariantsOptional.get();
 

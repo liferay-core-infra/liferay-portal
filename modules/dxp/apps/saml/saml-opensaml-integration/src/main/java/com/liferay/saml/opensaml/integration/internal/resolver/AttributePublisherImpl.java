@@ -14,17 +14,15 @@
 
 package com.liferay.saml.opensaml.integration.internal.resolver;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.saml.opensaml.integration.internal.util.OpenSamlUtil;
 import com.liferay.saml.opensaml.integration.resolver.AttributeResolver;
 
 import java.net.URI;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.joda.time.DateTime;
 
@@ -99,16 +97,12 @@ public class AttributePublisherImpl
 
 		List<XMLObject> attributeXmlObjects = attribute.getAttributeValues();
 
-		Stream<AttributeValue> stream = Arrays.stream(attributeValues);
-
 		attributeXmlObjects.addAll(
-			stream.map(
-				AttributeValueWrapper.class::cast
-			).map(
-				AttributeValueWrapper::getXmlObject
-			).collect(
-				Collectors.toList()
-			));
+			TransformUtil.transformToList(
+				TransformUtil.transform(
+					attributeValues, AttributeValueWrapper.class::cast,
+					AttributeValueWrapper.class),
+				AttributeValueWrapper::getXmlObject));
 
 		_attributes.add(attribute);
 	}

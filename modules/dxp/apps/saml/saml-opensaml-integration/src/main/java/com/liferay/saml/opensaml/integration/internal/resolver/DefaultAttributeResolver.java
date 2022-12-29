@@ -15,6 +15,7 @@
 package com.liferay.saml.opensaml.integration.internal.resolver;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanProperties;
@@ -49,7 +50,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Attribute;
@@ -184,17 +184,12 @@ public class DefaultAttributeResolver implements AttributeResolver {
 				nameFormat = Attribute.UNSPECIFIED;
 			}
 
-			Stream<Group> groupsStream = groups.stream();
-
 			attributePublisher.publish(
 				name, nameFormat,
-				groupsStream.map(
-					Group::getName
-				).map(
-					attributePublisher::buildString
-				).toArray(
-					AttributePublisher.AttributeValue[]::new
-				));
+				TransformUtil.transformToArray(
+					groups,
+					group -> attributePublisher.buildString(group.getName()),
+					AttributePublisher.AttributeValue.class));
 		}
 		catch (Exception exception) {
 			String message = StringBundler.concat(
@@ -280,17 +275,12 @@ public class DefaultAttributeResolver implements AttributeResolver {
 
 				Set<Role> roles = entry.getValue();
 
-				Stream<Role> rolesStream = roles.stream();
-
 				attributePublisher.publish(
 					name, nameFormat,
-					rolesStream.map(
-						Role::getName
-					).map(
-						attributePublisher::buildString
-					).toArray(
-						AttributePublisher.AttributeValue[]::new
-					));
+					TransformUtil.transformToArray(
+						roles,
+						role -> attributePublisher.buildString(role.getName()),
+						AttributePublisher.AttributeValue.class));
 			}
 		}
 		catch (Exception exception) {
@@ -329,17 +319,13 @@ public class DefaultAttributeResolver implements AttributeResolver {
 				nameFormat = Attribute.UNSPECIFIED;
 			}
 
-			Stream<Organization> organizationsStream = organizations.stream();
-
 			publisher.publish(
 				name, nameFormat,
-				organizationsStream.map(
-					Organization::getName
-				).map(
-					publisher::buildString
-				).toArray(
-					AttributePublisher.AttributeValue[]::new
-				));
+				TransformUtil.transformToArray(
+					organizations,
+					organization -> publisher.buildString(
+						organization.getName()),
+					AttributePublisher.AttributeValue.class));
 		}
 		catch (Exception exception) {
 			String message = StringBundler.concat(
@@ -421,17 +407,13 @@ public class DefaultAttributeResolver implements AttributeResolver {
 				nameFormat = Attribute.UNSPECIFIED;
 			}
 
-			Stream<Role> uniqueRolesStream = uniqueRoles.stream();
-
 			attributePublisher.publish(
 				name, nameFormat,
-				uniqueRolesStream.map(
-					Role::getName
-				).map(
-					attributePublisher::buildString
-				).toArray(
-					AttributePublisher.AttributeValue[]::new
-				));
+				TransformUtil.transformToArray(
+					uniqueRoles,
+					uniqueRole -> attributePublisher.buildString(
+						uniqueRole.getName()),
+					AttributePublisher.AttributeValue.class));
 		}
 		catch (Exception exception) {
 			String message = StringBundler.concat(
@@ -547,17 +529,12 @@ public class DefaultAttributeResolver implements AttributeResolver {
 
 				Set<Role> roles = entry.getValue();
 
-				Stream<Role> rolesStream = roles.stream();
-
 				attributePublisher.publish(
 					name, nameFormat,
-					rolesStream.map(
-						Role::getName
-					).map(
-						attributePublisher::buildString
-					).toArray(
-						AttributePublisher.AttributeValue[]::new
-					));
+					TransformUtil.transformToArray(
+						roles,
+						role -> attributePublisher.buildString(role.getName()),
+						AttributePublisher.AttributeValue.class));
 			}
 		}
 		catch (Exception exception) {
@@ -651,17 +628,13 @@ public class DefaultAttributeResolver implements AttributeResolver {
 				nameFormat = Attribute.UNSPECIFIED;
 			}
 
-			Stream<UserGroup> userGroupsStream = userGroups.stream();
-
 			attributePublisher.publish(
 				name, nameFormat,
-				userGroupsStream.map(
-					UserGroup::getName
-				).map(
-					attributePublisher::buildString
-				).toArray(
-					AttributePublisher.AttributeValue[]::new
-				));
+				TransformUtil.transformToArray(
+					userGroups,
+					userGroup -> attributePublisher.buildString(
+						userGroup.getName()),
+					AttributePublisher.AttributeValue.class));
 		}
 		catch (Exception exception) {
 			String message = StringBundler.concat(

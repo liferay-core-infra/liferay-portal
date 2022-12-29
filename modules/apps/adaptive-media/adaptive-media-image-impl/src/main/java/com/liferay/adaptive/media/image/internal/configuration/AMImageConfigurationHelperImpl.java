@@ -118,15 +118,12 @@ public class AMImageConfigurationHelperImpl
 	public void deleteAMImageConfigurationEntry(long companyId, String uuid)
 		throws InvalidStateAMImageConfigurationException, IOException {
 
-		Optional<AMImageConfigurationEntry> amImageConfigurationEntryOptional =
+		AMImageConfigurationEntry amImageConfigurationEntry =
 			getAMImageConfigurationEntry(companyId, uuid);
 
-		if (!amImageConfigurationEntryOptional.isPresent()) {
+		if (amImageConfigurationEntry == null) {
 			return;
 		}
-
-		AMImageConfigurationEntry amImageConfigurationEntry =
-			amImageConfigurationEntryOptional.get();
 
 		if (amImageConfigurationEntry.isEnabled()) {
 			throw new InvalidStateAMImageConfigurationException();
@@ -139,17 +136,12 @@ public class AMImageConfigurationHelperImpl
 	public void disableAMImageConfigurationEntry(long companyId, String uuid)
 		throws IOException {
 
-		Optional<AMImageConfigurationEntry> amImageConfigurationEntryOptional =
+		AMImageConfigurationEntry amImageConfigurationEntry =
 			getAMImageConfigurationEntry(companyId, uuid);
 
-		if (!amImageConfigurationEntryOptional.isPresent()) {
-			return;
-		}
+		if ((amImageConfigurationEntry == null) ||
+			!amImageConfigurationEntry.isEnabled()) {
 
-		AMImageConfigurationEntry amImageConfigurationEntry =
-			amImageConfigurationEntryOptional.get();
-
-		if (!amImageConfigurationEntry.isEnabled()) {
 			return;
 		}
 
@@ -182,17 +174,12 @@ public class AMImageConfigurationHelperImpl
 	public void enableAMImageConfigurationEntry(long companyId, String uuid)
 		throws IOException {
 
-		Optional<AMImageConfigurationEntry> amImageConfigurationEntryOptional =
+		AMImageConfigurationEntry amImageConfigurationEntry =
 			getAMImageConfigurationEntry(companyId, uuid);
 
-		if (!amImageConfigurationEntryOptional.isPresent()) {
-			return;
-		}
+		if ((amImageConfigurationEntry == null) ||
+			amImageConfigurationEntry.isEnabled()) {
 
-		AMImageConfigurationEntry amImageConfigurationEntry =
-			amImageConfigurationEntryOptional.get();
-
-		if (amImageConfigurationEntry.isEnabled()) {
 			return;
 		}
 
@@ -226,15 +213,12 @@ public class AMImageConfigurationHelperImpl
 			long companyId, String uuid)
 		throws IOException {
 
-		Optional<AMImageConfigurationEntry> amImageConfigurationEntryOptional =
+		AMImageConfigurationEntry amImageConfigurationEntry =
 			getAMImageConfigurationEntry(companyId, uuid);
 
-		if (!amImageConfigurationEntryOptional.isPresent()) {
+		if (amImageConfigurationEntry == null) {
 			return;
 		}
-
-		AMImageConfigurationEntry amImageConfigurationEntry =
-			amImageConfigurationEntryOptional.get();
 
 		_amImageEntryLocalService.deleteAMImageEntries(
 			companyId, amImageConfigurationEntry);

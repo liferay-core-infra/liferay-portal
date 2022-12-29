@@ -496,10 +496,10 @@ public class AMImageConfigurationHelperImpl
 				new CompanyServiceSettingsLocator(
 					companyId, AMImageCompanyConfiguration.class.getName()));
 
-			Optional<String[]> nullableImageVariantsOptional =
-				_getImageVariants(settings);
+			Optional<String[]> imageVariantsOptional = _getImageVariants(
+				settings);
 
-			String[] imageVariants = nullableImageVariantsOptional.get();
+			String[] imageVariants = imageVariantsOptional.get();
 
 			amImageConfigurationEntries = Stream.of(
 				imageVariants

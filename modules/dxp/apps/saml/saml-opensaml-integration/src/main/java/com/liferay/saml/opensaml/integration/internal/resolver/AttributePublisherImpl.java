@@ -20,11 +20,8 @@ import com.liferay.saml.opensaml.integration.resolver.AttributeResolver;
 import java.net.URI;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.joda.time.DateTime;
 
@@ -99,16 +96,16 @@ public class AttributePublisherImpl
 
 		List<XMLObject> attributeXmlObjects = attribute.getAttributeValues();
 
-		Stream<AttributeValue> stream = Arrays.stream(attributeValues);
+		List<XMLObject> xmlObjects = new ArrayList<>();
 
-		attributeXmlObjects.addAll(
-			stream.map(
-				AttributeValueWrapper.class::cast
-			).map(
-				AttributeValueWrapper::getXmlObject
-			).collect(
-				Collectors.toList()
-			));
+		for (AttributeValue attributeValue : attributeValues) {
+			AttributeValueWrapper attributeValueWrapper =
+				(AttributeValueWrapper)attributeValue;
+
+			xmlObjects.add(attributeValueWrapper.getXmlObject());
+		}
+
+		attributeXmlObjects.addAll(xmlObjects);
 
 		_attributes.add(attribute);
 	}

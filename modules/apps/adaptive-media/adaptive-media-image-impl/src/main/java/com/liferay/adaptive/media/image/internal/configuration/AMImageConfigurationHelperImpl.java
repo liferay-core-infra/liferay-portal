@@ -498,10 +498,8 @@ public class AMImageConfigurationHelperImpl
 						companyId,
 						AMImageCompanyConfiguration.class.getName())));
 
-			String[] imageVariants = imageVariantsOptional.get();
-
 			amImageConfigurationEntries = Stream.of(
-				imageVariants
+				imageVariantsOptional.get()
 			).map(
 				_amImageConfigurationEntryParser::parse
 			).collect(

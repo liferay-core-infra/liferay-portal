@@ -110,6 +110,12 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 
 		String rootPath = servletContext.getRealPath(StringPool.BLANK);
 
+		int index = rootPath.indexOf(servletContext.getContextPath());
+
+		if (index > 0) {
+			rootPath = rootPath.substring(0, index);
+		}
+
 		File file = new File(rootPath, path);
 
 		if (file.exists()) {

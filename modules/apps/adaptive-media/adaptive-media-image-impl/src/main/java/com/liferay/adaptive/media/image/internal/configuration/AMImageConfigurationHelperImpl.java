@@ -517,7 +517,7 @@ public class AMImageConfigurationHelperImpl
 		}
 	}
 
-	private Optional<String[]> _getImageVariants(Settings settings) {
+	private String[] _getImageVariants(Settings settings) {
 		PortletPreferencesSettings portletPreferencesSettings =
 			(PortletPreferencesSettings)settings;
 
@@ -532,7 +532,7 @@ public class AMImageConfigurationHelperImpl
 			imageVariants = settings.getValues("imageVariants", new String[0]);
 		}
 
-		return Optional.of(imageVariants);
+		return imageVariants;
 	}
 
 	private final boolean _isPositiveNumber(String s) {

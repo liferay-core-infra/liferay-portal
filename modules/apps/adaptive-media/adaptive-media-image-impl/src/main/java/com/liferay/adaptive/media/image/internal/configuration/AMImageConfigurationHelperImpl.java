@@ -282,7 +282,8 @@ public class AMImageConfigurationHelperImpl
 			_getAMImageConfigurationEntries(companyId);
 
 		amImageConfigurationEntryList = ListUtil.filter(
-			amImageConfigurationEntryList, predicate);
+			amImageConfigurationEntryList,
+			(Predicate<AMImageConfigurationEntry>)predicate);
 
 		Collections.sort(
 			amImageConfigurationEntryList,

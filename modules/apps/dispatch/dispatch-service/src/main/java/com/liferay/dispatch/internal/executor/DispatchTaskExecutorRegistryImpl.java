@@ -77,7 +77,7 @@ public class DispatchTaskExecutorRegistryImpl
 			return dispatchTaskExecutor.isClusterModeSingle();
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class DispatchTaskExecutorRegistryImpl
 						_KEY_DISPATCH_TASK_FEATURE_FLAG);
 
 				if (Validator.isNull(dispatchTaskFeatureFlag) ||
-					!disabledFeatureFlags.contains(dispatchTaskFeatureFlag)) {
+					disabledFeatureFlags.contains(dispatchTaskFeatureFlag)) {
 
 					emitter.emit(
 						(String)serviceReference.getProperty(

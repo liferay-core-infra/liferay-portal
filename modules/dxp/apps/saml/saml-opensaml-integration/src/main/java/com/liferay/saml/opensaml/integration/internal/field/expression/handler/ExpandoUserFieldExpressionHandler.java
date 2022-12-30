@@ -23,6 +23,7 @@ import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -56,7 +57,6 @@ import com.liferay.saml.opensaml.integration.processor.context.ProcessorContext;
 import com.liferay.saml.opensaml.integration.processor.context.UserProcessorContext;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,7 +66,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import javax.naming.Binding;
 import javax.naming.NamingEnumeration;
@@ -223,16 +222,11 @@ public class ExpandoUserFieldExpressionHandler
 					"\" must match only 1 user, but it matched ", userIds));
 		}
 
-		Stream<ExpandoValue> stream = expandoValues.stream();
+		List<User> users = TransformUtil.transform(
+			TransformUtil.transform(expandoValues, ExpandoValue::getClassPK),
+			_userLocalService::fetchUserById);
 
-		return stream.map(
-			ExpandoValue::getClassPK
-		).map(
-			_userLocalService::fetchUserById
-		).findFirst(
-		).orElse(
-			null
-		);
+		return users.get(0);
 	}
 
 	@Override
@@ -560,11 +554,15 @@ public class ExpandoUserFieldExpressionHandler
 						return null;
 					}
 
-					Stream<String> stream = Arrays.stream(values);
+					int[] valuesIntArray = new int[values.length];
+					int count = 0;
 
-					return stream.mapToInt(
-						GetterUtil::getIntegerStrict
-					).toArray();
+					for (String str : values) {
+						valuesIntArray[count++] = GetterUtil.getIntegerStrict(
+							str);
+					}
+
+					return valuesIntArray;
 				},
 				ExpandoValue::setIntegerArray)
 		).put(
@@ -580,11 +578,15 @@ public class ExpandoUserFieldExpressionHandler
 						return null;
 					}
 
-					Stream<String> stream = Arrays.stream(values);
+					long[] valuesLongArray = new long[values.length];
+					int count = 0;
 
-					return stream.mapToLong(
-						GetterUtil::getLongStrict
-					).toArray();
+					for (String str : values) {
+						valuesLongArray[count++] = GetterUtil.getLongStrict(
+							str);
+					}
+
+					return valuesLongArray;
 				},
 				ExpandoValue::setLongArray)
 		).put(

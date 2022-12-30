@@ -19,9 +19,11 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizer
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.AbstractMap;
@@ -29,8 +31,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -77,22 +77,21 @@ public class OrderedServiceTrackerMapFactoryImpl
 		public List<Map.Entry<String, T>> getOrderedServices() {
 			Set<String> prefixes = _serviceTrackerMap.keySet();
 
-			Stream<String> stream = prefixes.stream();
+			return TransformUtil.transform(
+				ListUtil.sort(
+					ListUtil.filter(
+						TransformUtil.transform(
+							prefixes, _serviceTrackerMap::getService),
+						Validator::isNotNull),
+					Comparator.comparing(
+						serviceReferenceServiceTuple -> {
+							ServiceReference<?> serviceReference =
+								serviceReferenceServiceTuple.
+									getServiceReference();
 
-			return stream.map(
-				_serviceTrackerMap::getService
-			).filter(
-				Validator::isNotNull
-			).sorted(
-				Comparator.comparing(
-					serviceReferenceServiceTuple -> {
-						ServiceReference<?> serviceReference =
-							serviceReferenceServiceTuple.getServiceReference();
-
-						return GetterUtil.getInteger(
-							serviceReference.getProperty("display.index"));
-					})
-			).map(
+							return GetterUtil.getInteger(
+								serviceReference.getProperty("display.index"));
+						})),
 				serviceReferenceServiceTuple ->
 					new AbstractMap.SimpleEntry<String, T>(
 						(String)
@@ -100,32 +99,38 @@ public class OrderedServiceTrackerMapFactoryImpl
 							).getProperty(
 								_propertyKey
 							),
-						serviceReferenceServiceTuple.getService())
-			).collect(
-				Collectors.toList()
-			);
+						serviceReferenceServiceTuple.getService()));
 		}
 
 		@Override
 		public List<String> getOrderedServicesKeys() {
 			Set<String> prefixes = _serviceTrackerMap.keySet();
 
-			Stream<String> stream = prefixes.stream();
-
-			return stream.map(
-				_serviceTrackerMap::getService
-			).map(
-				ServiceReferenceServiceTuple::getServiceReference
-			).sorted(
+			TransformUtil.transform(prefixes, _serviceTrackerMap::getService);
+			TransformUtil.transform(
+				TransformUtil.transform(
+					prefixes, _serviceTrackerMap::getService),
+				ServiceReferenceServiceTuple::getServiceReference);
+			ListUtil.sort(
+				TransformUtil.transform(
+					TransformUtil.transform(
+						prefixes, _serviceTrackerMap::getService),
+					ServiceReferenceServiceTuple::getServiceReference),
 				Comparator.comparing(
 					serviceReference -> GetterUtil.getInteger(
-						serviceReference.getProperty("display.index")))
-			).map(
+						serviceReference.getProperty("display.index"))));
+
+			return TransformUtil.transform(
+				ListUtil.sort(
+					TransformUtil.transform(
+						TransformUtil.transform(
+							prefixes, _serviceTrackerMap::getService),
+						ServiceReferenceServiceTuple::getServiceReference),
+					Comparator.comparing(
+						serviceReference -> GetterUtil.getInteger(
+							serviceReference.getProperty("display.index")))),
 				serviceReference -> GetterUtil.getString(
-					serviceReference.getProperty(_propertyKey))
-			).collect(
-				Collectors.toList()
-			);
+					serviceReference.getProperty(_propertyKey)));
 		}
 
 		@Override

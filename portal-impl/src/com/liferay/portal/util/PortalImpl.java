@@ -6667,7 +6667,9 @@ public class PortalImpl implements Portal {
 
 			httpServletResponse.setStatus(status);
 
-			SessionErrors.add(httpSession, exception.getClass(), exception);
+			if (!(exception instanceof PrincipalException.MustHavePermission)) {
+				SessionErrors.add(httpSession, exception.getClass(), exception);
+			}
 
 			ServletContext servletContext = httpSession.getServletContext();
 

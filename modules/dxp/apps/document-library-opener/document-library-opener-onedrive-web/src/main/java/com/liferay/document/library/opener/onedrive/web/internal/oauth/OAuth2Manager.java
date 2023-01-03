@@ -71,7 +71,14 @@ public class OAuth2Manager {
 		}
 
 		if (!accessToken.isValid()) {
-			return _refreshOAuth2AccessToken(companyId, userId, accessToken);
+			accessToken = _refreshOAuth2AccessToken(
+				companyId, userId, accessToken);
+
+			if (accessToken == null) {
+				return Optional.empty();
+			}
+
+			return Optional.of(accessToken);
 		}
 
 		return Optional.of(accessToken);

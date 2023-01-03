@@ -21,6 +21,7 @@ import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.discount.CommerceDiscountCalculation;
 import com.liferay.commerce.discount.CommerceDiscountValue;
 import com.liferay.commerce.discount.application.strategy.CommerceDiscountApplicationStrategy;
+import com.liferay.commerce.discount.application.strategy.CommerceDiscountApplicationStrategyRegistry;
 import com.liferay.commerce.internal.util.CommercePriceConverterUtil;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.price.CommerceProductPrice;
@@ -394,17 +395,6 @@ public class CommerceProductPriceCalculationV2Impl
 			cpInstanceId, quantity, commerceContext);
 	}
 
-	public void unsetCommerceDiscountApplicationStrategy(
-		CommerceDiscountApplicationStrategy commerceDiscountApplicationStrategy,
-		Map<String, Object> properties) {
-
-		String commerceDiscountApplicationStrategyKey = GetterUtil.getString(
-			properties.get("commerce.discount.application.strategy.key"));
-
-		_commerceDiscountApplicationStrategyMap.remove(
-			commerceDiscountApplicationStrategyKey);
-	}
-
 	public void unsetCommercePriceListDiscovery(
 		CommercePriceListDiscovery commercePriceListDiscovery,
 		Map<String, Object> properties) {
@@ -413,23 +403,6 @@ public class CommerceProductPriceCalculationV2Impl
 			properties.get("commerce.price.list.discovery.key"));
 
 		_commercePriceListDiscoveryMap.remove(commercePriceListDiscoveryKey);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setCommerceDiscountApplicationStrategy(
-		CommerceDiscountApplicationStrategy commerceDiscountApplicationStrategy,
-		Map<String, Object> properties) {
-
-		String commerceDiscountApplicationStrategyKey = GetterUtil.getString(
-			properties.get("commerce.discount.application.strategy.key"));
-
-		_commerceDiscountApplicationStrategyMap.put(
-			commerceDiscountApplicationStrategyKey,
-			commerceDiscountApplicationStrategy);
 	}
 
 	@Reference(
@@ -553,23 +526,23 @@ public class CommerceProductPriceCalculationV2Impl
 			_configurationProvider.getSystemConfiguration(
 				CommercePricingConfiguration.class);
 
-		String commerceDiscountApplicationStrategy =
+		String commerceDiscountApplicationStrategyKey =
 			commercePricingConfiguration.commerceDiscountApplicationStrategy();
 
-		if (!_commerceDiscountApplicationStrategyMap.containsKey(
-				commerceDiscountApplicationStrategy)) {
+		CommerceDiscountApplicationStrategy
+			commerceDiscountApplicationStrategy =
+				_commerceDiscountApplicationStrategyRegistry.get(
+					commerceDiscountApplicationStrategyKey);
 
+		if (commerceDiscountApplicationStrategy == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"No commerce discount application strategy specified for " +
-						commerceDiscountApplicationStrategy);
+						commerceDiscountApplicationStrategyKey);
 			}
-
-			return null;
 		}
 
-		return _commerceDiscountApplicationStrategyMap.get(
-			commerceDiscountApplicationStrategy);
+		return commerceDiscountApplicationStrategy;
 	}
 
 	private CommerceDiscountValue _getCommerceDiscountValue(
@@ -1146,8 +1119,9 @@ public class CommerceProductPriceCalculationV2Impl
 	@Reference
 	private CommerceCurrencyLocalService _commerceCurrencyLocalService;
 
-	private final Map<String, CommerceDiscountApplicationStrategy>
-		_commerceDiscountApplicationStrategyMap = new HashMap<>();
+	@Reference
+	private CommerceDiscountApplicationStrategyRegistry
+		_commerceDiscountApplicationStrategyRegistry;
 
 	@Reference
 	private CommerceDiscountCalculation _commerceDiscountCalculation;

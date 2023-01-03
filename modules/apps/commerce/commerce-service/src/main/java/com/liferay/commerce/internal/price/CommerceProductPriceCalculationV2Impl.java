@@ -46,13 +46,14 @@ import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.model.CommerceChannelAccountEntryRel;
 import com.liferay.commerce.util.CommerceBigDecimalUtil;
 import com.liferay.commerce.util.CommerceUtil;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.math.BigDecimal;
@@ -60,15 +61,13 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Riccardo Alberti
@@ -395,30 +394,16 @@ public class CommerceProductPriceCalculationV2Impl
 			cpInstanceId, quantity, commerceContext);
 	}
 
-	public void unsetCommercePriceListDiscovery(
-		CommercePriceListDiscovery commercePriceListDiscovery,
-		Map<String, Object> properties) {
-
-		String commercePriceListDiscoveryKey = GetterUtil.getString(
-			properties.get("commerce.price.list.discovery.key"));
-
-		_commercePriceListDiscoveryMap.remove(commercePriceListDiscoveryKey);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, CommercePriceListDiscovery.class,
+			"commerce.price.list.discovery.key");
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setCommercePriceListDiscovery(
-		CommercePriceListDiscovery commercePriceListDiscovery,
-		Map<String, Object> properties) {
-
-		String commercePriceListDiscoveryKey = GetterUtil.getString(
-			properties.get("commerce.price.list.discovery.key"));
-
-		_commercePriceListDiscoveryMap.put(
-			commercePriceListDiscoveryKey, commercePriceListDiscovery);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	private CommerceDiscountValue _calculateCommerceDiscountValue(
@@ -862,17 +847,18 @@ public class CommerceProductPriceCalculationV2Impl
 				commercePricingConfiguration.commercePromotionDiscovery();
 		}
 
-		if (!_commercePriceListDiscoveryMap.containsKey(discoveryMethod)) {
+		CommercePriceListDiscovery commercePriceListDiscovery =
+			_serviceTrackerMap.getService(discoveryMethod);
+
+		if (commercePriceListDiscovery == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"No commerce price list discovery specified for " +
 						discoveryMethod);
 			}
-
-			return null;
 		}
 
-		return _commercePriceListDiscoveryMap.get(discoveryMethod);
+		return commercePriceListDiscovery;
 	}
 
 	private long _getCommercePriceListId(
@@ -1129,9 +1115,6 @@ public class CommerceProductPriceCalculationV2Impl
 	@Reference
 	private CommercePriceEntryLocalService _commercePriceEntryLocalService;
 
-	private final Map<String, CommercePriceListDiscovery>
-		_commercePriceListDiscoveryMap = new HashMap<>();
-
 	@Reference
 	private CommercePriceListLocalService _commercePriceListLocalService;
 
@@ -1144,5 +1127,8 @@ public class CommerceProductPriceCalculationV2Impl
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	private ServiceTrackerMap<String, CommercePriceListDiscovery>
+		_serviceTrackerMap;
 
 }

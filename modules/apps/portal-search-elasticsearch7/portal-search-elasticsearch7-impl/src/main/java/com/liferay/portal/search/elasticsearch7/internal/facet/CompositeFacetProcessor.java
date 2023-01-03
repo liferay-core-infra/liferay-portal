@@ -45,7 +45,7 @@ public class CompositeFacetProcessor
 			_serviceTrackerMap.getService(clazz.getName());
 
 		if (facetProcessor == null) {
-			facetProcessor = defaultFacetProcessor;
+			facetProcessor = _defaultFacetProcessor;
 		}
 
 		return facetProcessor.processFacet(facet);
@@ -69,7 +69,7 @@ public class CompositeFacetProcessor
 	}
 
 	@Reference
-	protected DefaultFacetProcessor defaultFacetProcessor;
+	private DefaultFacetProcessor _defaultFacetProcessor;
 
 	private ServiceTrackerMap<String, FacetProcessor<SearchRequestBuilder>>
 		_serviceTrackerMap;

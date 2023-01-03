@@ -39,7 +39,6 @@ import org.osgi.service.component.runtime.dto.ComponentDescriptionDTO;
  * @author Javier Gamarra
  */
 @Component(
-	immediate = true,
 	property = "model.class.name=com.liferay.portal.vulcan.internal.configuration.VulcanConfiguration",
 	service = ConfigurationModelListener.class
 )

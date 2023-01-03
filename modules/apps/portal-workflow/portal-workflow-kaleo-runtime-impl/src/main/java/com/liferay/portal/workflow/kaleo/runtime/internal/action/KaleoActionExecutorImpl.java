@@ -115,12 +115,6 @@ public class KaleoActionExecutorImpl implements KaleoActionExecutor {
 								ClassUtil.getClassName(actionExecutor)));
 					}
 				}
-				catch (KaleoDefinitionValidationException
-							kaleoDefinitionValidationException) {
-
-					throw new RuntimeException(
-						kaleoDefinitionValidationException);
-				}
 				finally {
 					bundleContext.ungetService(serviceReference);
 				}
@@ -152,10 +146,18 @@ public class KaleoActionExecutorImpl implements KaleoActionExecutor {
 	}
 
 	private String _getActionExecutorKey(
-			String language, String actionExecutorClassName)
-		throws KaleoDefinitionValidationException {
+		String language, String actionExecutorClassName) {
 
-		ScriptLanguage scriptLanguage = ScriptLanguage.parse(language);
+		ScriptLanguage scriptLanguage = null;
+
+		try {
+			scriptLanguage = ScriptLanguage.parse(language);
+		}
+		catch (KaleoDefinitionValidationException
+					kaleoDefinitionValidationException) {
+
+			throw new RuntimeException(kaleoDefinitionValidationException);
+		}
 
 		if (scriptLanguage.equals(ScriptLanguage.JAVA)) {
 			return language + StringPool.COLON + actionExecutorClassName;

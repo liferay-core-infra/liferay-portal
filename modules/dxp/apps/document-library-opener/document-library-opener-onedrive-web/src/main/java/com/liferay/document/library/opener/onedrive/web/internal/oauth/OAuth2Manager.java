@@ -156,12 +156,12 @@ public class OAuth2Manager {
 			"/document_library/onedrive/oauth2");
 	}
 
-	private Optional<AccessToken> _refreshOAuth2AccessToken(
+	private AccessToken _refreshOAuth2AccessToken(
 			long companyId, long userId, AccessToken accessToken)
 		throws PortalException {
 
 		if (accessToken.getRefreshToken() == null) {
-			return Optional.empty();
+			return null;
 		}
 
 		try (OAuth20Service oAuth20Service = _createOAuth20Service(
@@ -173,7 +173,7 @@ public class OAuth2Manager {
 
 			AccessTokenStoreUtil.add(companyId, userId, newAccessToken);
 
-			return Optional.of(newAccessToken);
+			return newAccessToken;
 		}
 		catch (ExecutionException | InterruptedException | IOException
 					exception) {

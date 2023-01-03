@@ -59,29 +59,21 @@ public class OAuth2Manager {
 		}
 	}
 
-	public Optional<AccessToken> getAccessTokenOptional(
-			long companyId, long userId)
+	public AccessToken getAccessToken(long companyId, long userId)
 		throws PortalException {
 
 		AccessToken accessToken = AccessTokenStoreUtil.getAccessToken(
 			companyId, userId);
 
 		if (accessToken == null) {
-			return Optional.empty();
+			return null;
 		}
 
 		if (!accessToken.isValid()) {
-			accessToken = _refreshOAuth2AccessToken(
-				companyId, userId, accessToken);
-
-			if (accessToken == null) {
-				return Optional.empty();
-			}
-
-			return Optional.of(accessToken);
+			return _refreshOAuth2AccessToken(companyId, userId, accessToken);
 		}
 
-		return Optional.of(accessToken);
+		return accessToken;
 	}
 
 	public String getAuthorizationURL(
@@ -101,7 +93,7 @@ public class OAuth2Manager {
 	public boolean hasAccessToken(long companyId, long userId)
 		throws PortalException {
 
-		Optional<AccessToken> accessTokenOptional = getAccessTokenOptional(
+		Optional<AccessToken> accessTokenOptional = getAccessToken(
 			companyId, userId);
 
 		return accessTokenOptional.isPresent();

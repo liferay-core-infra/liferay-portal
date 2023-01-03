@@ -29,7 +29,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
 
 /**
  * @author Michael C. Han
@@ -69,11 +68,8 @@ public class CompositeFacetProcessor
 		_serviceTrackerMap.close();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MANDATORY,
-		target = "(class.name=DEFAULT)"
-	)
-	protected FacetProcessor<SearchRequestBuilder> defaultFacetProcessor;
+	@Reference
+	protected DefaultFacetProcessor defaultFacetProcessor;
 
 	private ServiceTrackerMap<String, FacetProcessor<SearchRequestBuilder>>
 		_serviceTrackerMap;

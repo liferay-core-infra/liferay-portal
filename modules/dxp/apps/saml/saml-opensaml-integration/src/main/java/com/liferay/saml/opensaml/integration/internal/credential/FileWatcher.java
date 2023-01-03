@@ -14,6 +14,7 @@
 
 package com.liferay.saml.opensaml.integration.internal.credential;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -30,6 +31,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -40,7 +42,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 /**
  * @author Carlos Sierra Andrés
@@ -121,32 +122,30 @@ public class FileWatcher implements Closeable {
 
 				List<WatchEvent<?>> watchEvents = watchKey.pollEvents();
 
-				Stream<Path> pathsStream = _paths.stream();
-				Stream<WatchEvent<?>> watchEventsStream = watchEvents.stream();
+				List<WatchEvent<Path>> watchEventPaths = new ArrayList<>();
 
-				Stream<WatchEvent<Path>> watchEventsPathStream =
-					pathsStream.flatMap(
-						path -> watchEventsStream.map(
-							watchEvent -> (WatchEvent<Path>)watchEvent
-						).filter(
-							watchEvent -> {
-								Path contextPath = watchEvent.context();
+				for (Path path : _paths) {
+					for (WatchEvent<Path> watchEvent :
+							TransformUtil.transform(
+								watchEvents,
+								watchEvent -> (WatchEvent<Path>)watchEvent)) {
 
-								return contextPath.endsWith(path.getFileName());
-							}
-						));
+						Path contextPath = watchEvent.context();
+
+						if (contextPath.endsWith(path.getFileName())) {
+							watchEventPaths.add(watchEvent);
+						}
+					}
+				}
 
 				CompletableFuture<Void> completableFuture =
 					CompletableFuture.allOf(
-						watchEventsPathStream.map(
-							watchEvent -> (Runnable)() -> _consumer.accept(
-								watchEvent)
-						).map(
-							runnable -> CompletableFuture.runAsync(
-								runnable, notificationsExecutorService)
-						).toArray(
-							CompletableFuture[]::new
-						));
+						TransformUtil.transformToArray(
+							watchEventPaths,
+							watchEvent -> CompletableFuture.runAsync(
+								() -> _consumer.accept(watchEvent),
+								notificationsExecutorService),
+							CompletableFuture.class));
 
 				try {
 					completableFuture.get(

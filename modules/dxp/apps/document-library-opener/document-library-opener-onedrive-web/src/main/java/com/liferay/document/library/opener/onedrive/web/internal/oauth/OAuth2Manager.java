@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.Portal;
 
 import java.io.IOException;
 
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import org.osgi.service.component.annotations.Component;
@@ -93,10 +92,13 @@ public class OAuth2Manager {
 	public boolean hasAccessToken(long companyId, long userId)
 		throws PortalException {
 
-		Optional<AccessToken> accessTokenOptional = getAccessToken(
-			companyId, userId);
+		AccessToken accessToken = getAccessToken(companyId, userId);
 
-		return accessTokenOptional.isPresent();
+		if (accessToken == null) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public void revokeOAuth2AccessToken(long companyId, long userId) {

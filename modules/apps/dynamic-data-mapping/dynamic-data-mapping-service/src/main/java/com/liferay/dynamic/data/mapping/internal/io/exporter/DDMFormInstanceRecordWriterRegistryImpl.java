@@ -63,14 +63,15 @@ public class DDMFormInstanceRecordWriterRegistryImpl
 		String type = MapUtil.getString(
 			properties, "ddm.form.instance.record.writer.type");
 
-		String extension = MapUtil.getString(
-			properties, "ddm.form.instance.record.writer.extension");
+		Object extension = properties.get(
+			"ddm.form.instance.record.writer.extension");
 
 		if (Validator.isNull(extension)) {
-			extension = StringUtil.toUpperCase(type);
+			_ddmFormInstanceRecordWriterExtensions.put(
+				type, StringUtil.toUpperCase(type));
 		}
 
-		_ddmFormInstanceRecordWriterExtensions.put(type, extension);
+		_ddmFormInstanceRecordWriterExtensions.put(type, (String)extension);
 
 		_ddmFormInstanceRecordWriters.put(type, ddmFormInstanceRecordWriter);
 	}

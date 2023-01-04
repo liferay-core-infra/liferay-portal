@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author Javier de Arcos
@@ -169,8 +168,6 @@ public class OpenAPIUtil {
 			return false;
 		}
 
-		boolean hasOKResponse = false;
-
 		for (Map.Entry<ResponseCode, Response> entry : responses.entrySet()) {
 			if (!_isOKResponseCode(entry.getKey())) {
 				continue;
@@ -185,30 +182,20 @@ public class OpenAPIUtil {
 
 				Content content = contentEntry.getValue();
 
-				if (Optional.ofNullable(
-						content.getSchema()
-					).map(
-						Schema::getReference
-					).map(
-						reference -> StringUtil.equals(
-							name,
-							reference.substring(reference.lastIndexOf('/') + 1))
-					).orElse(
-						false
-					)) {
+				Schema schema = content.getSchema();
 
-					hasOKResponse = true;
+				String reference = schema.getReference();
 
-					break;
+				if (StringUtil.equals(
+						name,
+						reference.substring(reference.lastIndexOf('/') + 1))) {
+
+					return true;
 				}
-			}
-
-			if (hasOKResponse) {
-				break;
 			}
 		}
 
-		return hasOKResponse;
+		return false;
 	}
 
 	private static boolean _isOKResponseCode(ResponseCode responseCode) {

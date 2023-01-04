@@ -124,60 +124,53 @@ public class LayoutDisplayPageObjectProviderAnalyticsReportsInfoItemImpl
 		LayoutDisplayPageObjectProvider layoutDisplayPageObjectProvider,
 		Locale locale) {
 
-		Optional<ThemeDisplay> themeDisplayOptional =
-			_getThemeDisplayOptional();
+		ThemeDisplay themeDisplay = _getThemeDisplay();
 
-		return themeDisplayOptional.map(
-			themeDisplay -> {
-				Layout layout = _getLayout(layoutDisplayPageObjectProvider);
+		if (themeDisplay == null) {
+			return StringPool.BLANK;
+		}
 
-				if (layout == null) {
-					return StringPool.BLANK;
-				}
+		Layout layout = _getLayout(layoutDisplayPageObjectProvider);
 
-				HttpServletRequest httpServletRequest =
-					themeDisplay.getRequest();
+		if (layout == null) {
+			return StringPool.BLANK;
+		}
 
-				LayoutDisplayPageObjectProvider<?>
-					initialLayoutDisplayPageObjectProvider =
-						(LayoutDisplayPageObjectProvider<?>)
-							httpServletRequest.getAttribute(
-								LayoutDisplayPageWebKeys.
-									LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER);
+		HttpServletRequest httpServletRequest = themeDisplay.getRequest();
 
-				httpServletRequest.setAttribute(
-					LayoutDisplayPageWebKeys.
-						LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER,
-					layoutDisplayPageObjectProvider);
-
-				String completeURL = _portal.getCurrentCompleteURL(
-					httpServletRequest);
-
-				try {
-					String canonicalURL = _portal.getCanonicalURL(
-						completeURL, themeDisplay, layout, false, false);
-
-					LayoutSEOLink layoutSEOLink =
-						_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
-							layout, locale, canonicalURL, themeDisplay);
-
-					return layoutSEOLink.getHref();
-				}
-				catch (PortalException portalException) {
-					_log.error(portalException);
-
-					return StringPool.BLANK;
-				}
-				finally {
-					httpServletRequest.setAttribute(
+		LayoutDisplayPageObjectProvider<?>
+			initialLayoutDisplayPageObjectProvider =
+				(LayoutDisplayPageObjectProvider<?>)
+					httpServletRequest.getAttribute(
 						LayoutDisplayPageWebKeys.
-							LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER,
-						initialLayoutDisplayPageObjectProvider);
-				}
-			}
-		).orElse(
-			StringPool.BLANK
-		);
+							LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER);
+
+		httpServletRequest.setAttribute(
+			LayoutDisplayPageWebKeys.LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER,
+			layoutDisplayPageObjectProvider);
+
+		String completeURL = _portal.getCurrentCompleteURL(httpServletRequest);
+
+		try {
+			String canonicalURL = _portal.getCanonicalURL(
+				completeURL, themeDisplay, layout, false, false);
+
+			LayoutSEOLink layoutSEOLink =
+				_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
+					layout, locale, canonicalURL, themeDisplay);
+
+			return layoutSEOLink.getHref();
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
+
+			return StringPool.BLANK;
+		}
+		finally {
+			httpServletRequest.setAttribute(
+				LayoutDisplayPageWebKeys.LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER,
+				initialLayoutDisplayPageObjectProvider);
+		}
 	}
 
 	@Override

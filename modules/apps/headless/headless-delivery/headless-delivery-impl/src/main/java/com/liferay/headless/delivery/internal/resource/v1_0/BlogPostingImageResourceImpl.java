@@ -117,27 +117,24 @@ public class BlogPostingImageResourceImpl
 			throw new BadRequestException("No file found in body");
 		}
 
-		Optional<BlogPostingImage> blogPostingImageOptional =
-			multipartBody.getValueAsInstanceOptional(
+		BlogPostingImage blogPostingImage =
+			multipartBody.getValueAsNullableInstance(
 				"blogPostingImage", BlogPostingImage.class);
+
+		String title = binaryFile.getFileName();
+		String viewableBy = BlogPostingImage.ViewableBy.ANYONE.getValue();
+
+		if (blogPostingImage != null) {
+			title = blogPostingImage.getTitle();
+			viewableBy = blogPostingImage.getViewableByAsString();
+		}
 
 		FileEntry fileEntry = _dlAppService.addFileEntry(
 			null, siteId, folder.getFolderId(), binaryFile.getFileName(),
-			binaryFile.getContentType(),
-			blogPostingImageOptional.map(
-				BlogPostingImage::getTitle
-			).orElse(
-				binaryFile.getFileName()
-			),
-			null, null, null, binaryFile.getInputStream(), binaryFile.getSize(),
-			null, null,
+			binaryFile.getContentType(), title, null, null, null,
+			binaryFile.getInputStream(), binaryFile.getSize(), null, null,
 			ServiceContextRequestUtil.createServiceContext(
-				siteId, contextHttpServletRequest,
-				blogPostingImageOptional.map(
-					BlogPostingImage::getViewableByAsString
-				).orElse(
-					BlogPostingImage.ViewableBy.ANYONE.getValue()
-				)));
+				siteId, contextHttpServletRequest, viewableBy));
 
 		return _toBlogPostingImage(fileEntry);
 	}

@@ -99,8 +99,6 @@ import com.liferay.portal.vulcan.util.SearchUtil;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
 import com.liferay.ratings.kernel.service.RatingsEntryLocalService;
 
-import java.io.Serializable;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -348,31 +346,26 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 				existingFileEntry.getSize())
 		);
 
-		Optional<Document> documentOptional =
-			multipartBody.getValueAsInstanceOptional(
-				"document", Document.class);
+		Document document = multipartBody.getValueAsNullableInstance(
+			"document", Document.class);
 
 		existingFileEntry = _moveDocument(
-			documentId, documentOptional, existingFileEntry);
+			documentId, document, existingFileEntry);
+
+		String title = existingFileEntry.getTitle();
+		String description = existingFileEntry.getDescription();
+
+		if (document != null) {
+			title = document.getTitle();
+			description = document.getDescription();
+		}
 
 		return _toDocument(
 			_dlAppService.updateFileEntry(
 				documentId, binaryFile.getFileName(),
-				binaryFile.getContentType(),
-				documentOptional.map(
-					Document::getTitle
-				).orElse(
-					existingFileEntry.getTitle()
-				),
-				null,
-				documentOptional.map(
-					Document::getDescription
-				).orElse(
-					existingFileEntry.getDescription()
-				),
-				null, DLVersionNumberIncrease.AUTOMATIC,
-				binaryFile.getInputStream(), binaryFile.getSize(),
-				existingFileEntry.getExpirationDate(),
+				binaryFile.getContentType(), title, null, description, null,
+				DLVersionNumberIncrease.AUTOMATIC, binaryFile.getInputStream(),
+				binaryFile.getSize(), existingFileEntry.getExpirationDate(),
 				existingFileEntry.getReviewDate(),
 				_createServiceContext(
 					Constants.UPDATE,
@@ -381,7 +374,7 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 							DLFileEntry.class.getName(), documentId)),
 					() -> _assetTagLocalService.getTagNames(
 						DLFileEntry.class.getName(), documentId),
-					existingFileEntry.getFolderId(), documentOptional,
+					existingFileEntry.getFolderId(), document,
 					existingFileEntry.getGroupId())));
 	}
 
@@ -499,16 +492,11 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 			Long documentFolderId, MultipartBody multipartBody)
 		throws Exception {
 
-		Optional<Document> documentOptional =
-			multipartBody.getValueAsInstanceOptional(
-				"document", Document.class);
+		Document document = multipartBody.getValueAsNullableInstance(
+			"document", Document.class);
 
-		if (externalReferenceCode == null) {
-			externalReferenceCode = documentOptional.map(
-				Document::getExternalReferenceCode
-			).orElse(
-				null
-			);
+		if ((externalReferenceCode == null) && (document != null)) {
+			externalReferenceCode = document.getExternalReferenceCode();
 		}
 
 		if (documentFolderId == null) {
@@ -521,26 +509,23 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 			throw new BadRequestException("No file found in body");
 		}
 
+		String title = binaryFile.getFileName();
+		String description = null;
+
+		if (document != null) {
+			title = document.getTitle();
+			description = document.getDescription();
+		}
+
 		return _toDocument(
 			_dlAppService.addFileEntry(
 				externalReferenceCode, repositoryId, documentFolderId,
-				binaryFile.getFileName(), binaryFile.getContentType(),
-				documentOptional.map(
-					Document::getTitle
-				).orElse(
-					binaryFile.getFileName()
-				),
-				null,
-				documentOptional.map(
-					Document::getDescription
-				).orElse(
-					null
-				),
-				null, binaryFile.getInputStream(), binaryFile.getSize(), null,
-				null,
+				binaryFile.getFileName(), binaryFile.getContentType(), title,
+				null, description, null, binaryFile.getInputStream(),
+				binaryFile.getSize(), null, null,
 				_createServiceContext(
 					Constants.ADD, () -> new Long[0], () -> new String[0],
-					documentFolderId, documentOptional, groupId)));
+					documentFolderId, document, groupId)));
 	}
 
 	private UnsafeConsumer<BooleanQuery, Exception>
@@ -570,28 +555,28 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 	private ServiceContext _createServiceContext(
 			String command, Supplier<Long[]> defaultCategoriesSupplier,
 			Supplier<String[]> defaultKeywordsSupplier, Long documentFolderId,
-			Optional<Document> documentOptional, Long groupId)
+			Document document, Long groupId)
 		throws Exception {
+
+		Long[] assetCategoryIds = defaultCategoriesSupplier.get();
+		String[] assetTagNames = defaultKeywordsSupplier.get();
+		String viewableBy = Document.ViewableBy.OWNER.getValue();
+		CustomField[] customFields = null;
+
+		if (document != null) {
+			assetCategoryIds = document.getTaxonomyCategoryIds();
+			assetTagNames = document.getKeywords();
+			viewableBy = document.getViewableByAsString();
+			customFields = document.getCustomFields();
+		}
 
 		ServiceContext serviceContext =
 			ServiceContextRequestUtil.createServiceContext(
-				documentOptional.map(
-					Document::getTaxonomyCategoryIds
-				).orElseGet(
-					defaultCategoriesSupplier
-				),
-				documentOptional.map(
-					Document::getKeywords
-				).orElseGet(
-					defaultKeywordsSupplier
-				),
-				_getExpandoBridgeAttributes1(documentOptional), groupId,
-				contextHttpServletRequest,
-				documentOptional.map(
-					Document::getViewableByAsString
-				).orElse(
-					Document.ViewableBy.OWNER.getValue()
-				));
+				assetCategoryIds, assetTagNames,
+				CustomFieldsUtil.toMap(
+					DLFileEntry.class.getName(), contextCompany.getCompanyId(),
+					customFields, contextAcceptLanguage.getPreferredLocale()),
+				groupId, contextHttpServletRequest, viewableBy);
 
 		serviceContext.setCommand(command);
 		serviceContext.setCompanyId(contextCompany.getCompanyId());
@@ -606,16 +591,13 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 		}
 
 		Optional<DLFileEntryType> dlFileEntryTypeOptional =
-			_getDLFileEntryTypeOptional(
-				documentFolderId, documentOptional, groupId);
+			_getDLFileEntryTypeOptional(documentFolderId, document, groupId);
 
 		if (dlFileEntryTypeOptional.isPresent()) {
 			DLFileEntryType dlFileEntryType = dlFileEntryTypeOptional.get();
 
 			serviceContext.setAttribute(
 				"fileEntryTypeId", dlFileEntryType.getFileEntryTypeId());
-
-			Document document = documentOptional.get();
 
 			List<DDMStructure> ddmStructures =
 				dlFileEntryType.getDDMStructures();
@@ -676,40 +658,38 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 	}
 
 	private Optional<DLFileEntryType> _getDLFileEntryTypeOptional(
-		long documentFolderId, Optional<Document> documentOptional,
-		Long groupId) {
+		long documentFolderId, Document document, Long groupId) {
 
-		return documentOptional.map(
-			Document::getDocumentType
-		).map(
-			DocumentType::getName
-		).map(
-			name -> {
-				try {
-					for (DLFileEntryType dlFileEntryType :
-							_dlFileEntryTypeLocalService.
-								getFolderFileEntryTypes(
-									new long[] {groupId}, documentFolderId,
-									true)) {
+		Optional<DLFileEntryType> dlFileEntryTypeOptional = Optional.empty();
 
-						if (name.equals(
-								dlFileEntryType.getName(
-									contextAcceptLanguage.
-										getPreferredLocale()))) {
+		if (document != null) {
+			DocumentType documentType = document.getDocumentType();
 
-							return dlFileEntryType;
-						}
+			String name = documentType.getName();
+
+			try {
+				for (DLFileEntryType dlFileEntryType :
+						_dlFileEntryTypeLocalService.getFolderFileEntryTypes(
+							new long[] {groupId}, documentFolderId, true)) {
+
+					if (name.equals(
+							dlFileEntryType.getName(
+								contextAcceptLanguage.getPreferredLocale()))) {
+
+						dlFileEntryTypeOptional = Optional.of(dlFileEntryType);
+
+						break;
 					}
 				}
-				catch (Exception exception) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(exception);
-					}
-				}
-
-				return null;
 			}
-		);
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception);
+				}
+			}
+		}
+
+		return dlFileEntryTypeOptional;
 	}
 
 	private Page<Document> _getDocumentsPage(
@@ -744,25 +724,6 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 			document -> _toDocument(
 				_dlAppService.getFileEntry(
 					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))));
-	}
-
-	private CustomField[] _getExpandoBridgeAttributes(
-		Optional<Document> documentOptional) {
-
-		return documentOptional.map(
-			Document::getCustomFields
-		).orElse(
-			null
-		);
-	}
-
-	private Map<String, Serializable> _getExpandoBridgeAttributes1(
-		Optional<Document> documentOptional) {
-
-		return CustomFieldsUtil.toMap(
-			DLFileEntry.class.getName(), contextCompany.getCompanyId(),
-			_getExpandoBridgeAttributes(documentOptional),
-			contextAcceptLanguage.getPreferredLocale());
 	}
 
 	private SPIRatingResource<Rating> _getSPIRatingResource() {
@@ -827,19 +788,21 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 	}
 
 	private FileEntry _moveDocument(
-			Long documentId, Optional<Document> documentOptional,
-			FileEntry existingFileEntry)
+			Long documentId, Document document, FileEntry existingFileEntry)
 		throws Exception {
 
-		Optional<Long> folderIdOptional = documentOptional.map(
-			Document::getDocumentFolderId
-		).filter(
-			folderId -> folderId != existingFileEntry.getFolderId()
-		);
+		Long folderId = null;
 
-		if (folderIdOptional.isPresent()) {
+		if ((document != null) &&
+			(document.getDocumentFolderId() !=
+				existingFileEntry.getFileEntryId())) {
+
+			folderId = document.getDocumentFolderId();
+		}
+
+		if (folderId != null) {
 			return _dlAppService.moveFileEntry(
-				documentId, folderIdOptional.get(), new ServiceContext());
+				documentId, folderId, new ServiceContext());
 		}
 
 		return existingFileEntry;
@@ -892,11 +855,10 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 
 		BinaryFile binaryFile = multipartBody.getBinaryFile("file");
 
-		Optional<Document> documentOptional =
-			multipartBody.getValueAsInstanceOptional(
-				"document", Document.class);
+		Document document = multipartBody.getValueAsNullableInstance(
+			"document", Document.class);
 
-		if ((binaryFile == null) && !documentOptional.isPresent()) {
+		if ((binaryFile == null) && (document == null)) {
 			throw new BadRequestException(
 				"Document and file are not found in body");
 		}
@@ -908,29 +870,27 @@ public class DocumentResourceImpl extends BaseDocumentResourceImpl {
 		}
 
 		fileEntry = _moveDocument(
-			fileEntry.getFileEntryId(), documentOptional, fileEntry);
+			fileEntry.getFileEntryId(), document, fileEntry);
+
+		String title = fileEntry.getTitle();
+
+		String description = null;
+
+		if (document != null) {
+			title = document.getTitle();
+			description = document.getDescription();
+		}
 
 		return _toDocument(
 			_dlAppService.updateFileEntry(
 				fileEntry.getFileEntryId(), binaryFile.getFileName(),
-				binaryFile.getContentType(),
-				documentOptional.map(
-					Document::getTitle
-				).orElse(
-					fileEntry.getTitle()
-				),
-				null,
-				documentOptional.map(
-					Document::getDescription
-				).orElse(
-					null
-				),
-				null, DLVersionNumberIncrease.AUTOMATIC,
-				binaryFile.getInputStream(), binaryFile.getSize(),
-				fileEntry.getExpirationDate(), fileEntry.getReviewDate(),
+				binaryFile.getContentType(), title, null, description, null,
+				DLVersionNumberIncrease.AUTOMATIC, binaryFile.getInputStream(),
+				binaryFile.getSize(), fileEntry.getExpirationDate(),
+				fileEntry.getReviewDate(),
 				_createServiceContext(
 					Constants.UPDATE, () -> new Long[0], () -> new String[0],
-					fileEntry.getFolderId(), documentOptional,
+					fileEntry.getFolderId(), document,
 					fileEntry.getGroupId())));
 	}
 

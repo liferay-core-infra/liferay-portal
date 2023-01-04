@@ -27,7 +27,7 @@ Date date = new Date();
 		<liferay-ui:message key="subject-dn" />
 	</dt>
 	<dd>
-		<%= HtmlUtil.escape(String.valueOf(certificateTool.getSubjectName(x509Certificate))) %>
+		<%= HtmlUtil.escape(certificateTool.getSubjectName(x509Certificate)) %>
 	</dd>
 	<dt>
 		<liferay-ui:message key="serial-number" />

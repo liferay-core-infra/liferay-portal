@@ -14,8 +14,10 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.search;
 
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.query.QueryTranslator;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.search.elasticsearch7.internal.SearchHitDocumentTranslatorImpl;
 import com.liferay.portal.search.elasticsearch7.internal.aggregation.ElasticsearchAggregationVisitorFixture;
 import com.liferay.portal.search.elasticsearch7.internal.aggregation.pipeline.ElasticsearchPipelineAggregationVisitorFixture;
@@ -60,10 +62,10 @@ import com.liferay.portal.search.internal.stats.StatsResponseBuilderFactoryImpl;
 import com.liferay.portal.search.legacy.stats.StatsRequestBuilderFactory;
 import com.liferay.portal.search.query.Queries;
 
-import java.util.Collections;
-
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
+
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Michael C. Han
@@ -465,20 +467,34 @@ public class SearchRequestExecutorFixture {
 			return _facetProcessor;
 		}
 
-		return new CompositeFacetProcessor() {
-			{
-				defaultFacetProcessor = new DefaultFacetProcessor();
+		FacetProcessor<SearchRequestBuilder> facetProcessor =
+			new CompositeFacetProcessor();
 
-				setFacetProcessor(
-					new ModifiedFacetProcessor(),
-					Collections.singletonMap(
-						"class.name", ModifiedFacetImpl.class.getName()));
-				setFacetProcessor(
-					new NestedFacetProcessor(),
-					Collections.singletonMap(
-						"class.name", NestedFacetImpl.class.getName()));
-			}
-		};
+		ReflectionTestUtil.setFieldValue(
+			facetProcessor, "_defaultFacetProcessor",
+			new DefaultFacetProcessor());
+
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		bundleContext.registerService(
+			(Class<FacetProcessor<SearchRequestBuilder>>)
+				(Class<?>)FacetProcessor.class,
+			new ModifiedFacetProcessor(),
+			MapUtil.singletonDictionary(
+				"class.name", ModifiedFacetImpl.class.getName()));
+
+		bundleContext.registerService(
+			(Class<FacetProcessor<SearchRequestBuilder>>)
+				(Class<?>)FacetProcessor.class,
+			new NestedFacetProcessor(),
+			MapUtil.singletonDictionary(
+				"class.name", NestedFacetImpl.class.getName()));
+
+		ReflectionTestUtil.invoke(
+			facetProcessor, "activate", new Class<?>[] {BundleContext.class},
+			bundleContext);
+
+		return facetProcessor;
 	}
 
 	private ElasticsearchClientResolver _elasticsearchClientResolver;

@@ -27,15 +27,15 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessor;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
-import com.liferay.portal.tika.internal.util.TikaConfigUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.tika.internal.util.TikaConfigHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -86,10 +86,6 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 @Component(service = RawMetadataProcessor.class)
 public class TikaRawMetadataProcessor implements RawMetadataProcessor {
-
-	public TikaRawMetadataProcessor() throws Exception {
-		_parser = new AutoDetectParser(TikaConfigUtil.getTikaConfig());
-	}
 
 	@Override
 	public Map<String, Set<String>> getFieldNames() {
@@ -203,17 +199,9 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 	private Metadata _extractMetadata(
 		String mimeType, InputStream inputStream) {
 
-		boolean forkProcess = false;
+		Parser parser = new AutoDetectParser(_tikaConfigHelper.getTikaConfig());
 
-		if (PropsValues.TEXT_EXTRACTION_FORK_PROCESS_ENABLED &&
-			ArrayUtil.contains(
-				PropsValues.TEXT_EXTRACTION_FORK_PROCESS_MIME_TYPES,
-				mimeType)) {
-
-			forkProcess = true;
-		}
-
-		if (forkProcess) {
+		if (_tikaConfigHelper.isTextExtractionForkProcessEnabled(mimeType)) {
 			File file = FileUtil.createTempFile();
 
 			try {
@@ -224,7 +212,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 				}
 
 				ExtractMetadataProcessCallable extractMetadataProcessCallable =
-					new ExtractMetadataProcessCallable(file, _parser);
+					new ExtractMetadataProcessCallable(file, parser);
 
 				ProcessChannel<Metadata> processChannel =
 					_processExecutor.execute(
@@ -248,7 +236,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 			return _postProcessMetadata(
 				mimeType,
 				ExtractMetadataProcessCallable._extractMetadata(
-					inputStream, _parser));
+					inputStream, parser));
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
@@ -256,24 +244,27 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 	}
 
 	private Metadata _postProcessMetadata(String mimeType, Metadata metadata) {
-		if (!mimeType.equals(ContentTypes.IMAGE_SVG_XML) ||
-			(metadata == null)) {
+		if (mimeType.equals(ContentTypes.IMAGE_SVG_XML) && (metadata != null)) {
+			String contentType = metadata.get(HttpHeaders.CONTENT_TYPE);
 
-			return metadata;
+			if (contentType.startsWith(ContentTypes.TEXT_PLAIN)) {
+				metadata.set(
+					HttpHeaders.CONTENT_TYPE,
+					StringUtil.replace(
+						mimeType, ContentTypes.TEXT_PLAIN,
+						ContentTypes.IMAGE_SVG_XML));
+			}
 		}
 
-		String contentType = metadata.get("Content-Type");
-
-		if (contentType.startsWith(ContentTypes.TEXT_PLAIN)) {
-			metadata.set(
-				"Content-Type",
-				StringUtil.replace(
-					mimeType, ContentTypes.TEXT_PLAIN,
-					ContentTypes.IMAGE_SVG_XML));
+		if (_log.isDebugEnabled()) {
+			_log.debug("Extracted metadata: " + metadata);
 		}
 
 		return metadata;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		TikaRawMetadataProcessor.class);
 
 	private static final Map<String, String> _fields;
 
@@ -301,10 +292,11 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 		_fields = fields;
 	}
 
-	private final Parser _parser;
-
 	@Reference
 	private ProcessExecutor _processExecutor;
+
+	@Reference
+	private TikaConfigHelper _tikaConfigHelper;
 
 	private static class ExtractMetadataProcessCallable
 		implements ProcessCallable<Metadata> {

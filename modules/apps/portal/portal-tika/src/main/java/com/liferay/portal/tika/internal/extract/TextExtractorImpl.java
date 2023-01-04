@@ -28,8 +28,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.TextExtractor;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
-import com.liferay.portal.tika.internal.util.TikaConfigUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.tika.internal.util.TikaConfigHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +40,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.tika.Tika;
+import org.apache.tika.config.TikaConfig;
+import org.apache.tika.detect.Detector;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.extractor.EmbeddedDocumentExtractor;
 import org.apache.tika.extractor.ParsingEmbeddedDocumentExtractor;
@@ -72,35 +73,20 @@ public class TextExtractorImpl implements TextExtractor {
 		String text = null;
 
 		try {
-			Tika tika = new Tika(TikaConfigUtil.getTikaConfig());
-
-			tika.setMaxStringLength(maxStringLength);
-
-			boolean forkProcess = false;
-
 			if (!inputStream.markSupported()) {
 				inputStream = new UnsyncBufferedInputStream(inputStream);
 			}
 
-			if (PropsValues.TEXT_EXTRACTION_FORK_PROCESS_ENABLED) {
-				String mimeType = tika.detect(inputStream);
-
-				if (ArrayUtil.contains(
-						PropsValues.TEXT_EXTRACTION_FORK_PROCESS_MIME_TYPES,
-						mimeType)) {
-
-					forkProcess = true;
-				}
-			}
-
-			if (forkProcess) {
+			if (_isTextExtractionForkProcessEnabled(inputStream)) {
 				InputStream finalInputStream = inputStream;
 
 				ProcessChannel<String> processChannel =
 					_processExecutor.execute(
 						ProcessConfigUtil.getProcessConfig(),
 						new ExtractTextProcessCallable(
-							StreamUtil.toByteArray(finalInputStream)));
+							StreamUtil.toByteArray(finalInputStream),
+							StreamUtil.toString(
+								_tikaConfigHelper.getTikaConfigInputStream())));
 
 				Future<String> future =
 					processChannel.getProcessNoticeableFuture();
@@ -108,6 +94,10 @@ public class TextExtractorImpl implements TextExtractor {
 				text = future.get();
 			}
 			else {
+				Tika tika = new Tika(_tikaConfigHelper.getTikaConfig());
+
+				tika.setMaxStringLength(maxStringLength);
+
 				text = _parseToString(tika, inputStream);
 			}
 		}
@@ -115,6 +105,10 @@ public class TextExtractorImpl implements TextExtractor {
 			if (_log.isWarnEnabled()) {
 				_log.warn(exception);
 			}
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Extracted text: " + text);
 		}
 
 		return text;
@@ -203,11 +197,31 @@ public class TextExtractorImpl implements TextExtractor {
 		return writeOutContentHandler.toString();
 	}
 
+	private boolean _isTextExtractionForkProcessEnabled(InputStream inputStream)
+		throws IOException {
+
+		if (!_tikaConfigHelper.isTextExtractionForkProcessEnabled()) {
+			return false;
+		}
+
+		TikaConfig tikaConfig = _tikaConfigHelper.getTikaConfig();
+
+		Detector detector = tikaConfig.getDetector();
+
+		String mimeType = String.valueOf(
+			detector.detect(inputStream, new Metadata()));
+
+		return _tikaConfigHelper.isTextExtractionForkProcessEnabled(mimeType);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		TextExtractorImpl.class);
 
 	@Reference
 	private ProcessExecutor _processExecutor;
+
+	@Reference
+	private TikaConfigHelper _tikaConfigHelper;
 
 	private static class ExtractTextProcessCallable
 		implements ProcessCallable<String> {
@@ -227,9 +241,12 @@ public class TextExtractorImpl implements TextExtractor {
 
 			logger.setLevel(Level.SEVERE);
 
-			Tika tika = new Tika(TikaConfigUtil.getTikaConfig());
-
 			try {
+				Tika tika = new Tika(
+					new TikaConfig(
+						new UnsyncByteArrayInputStream(
+							_tikaConfig.getBytes())));
+
 				return _parseToString(
 					tika, new UnsyncByteArrayInputStream(_data));
 			}
@@ -238,13 +255,15 @@ public class TextExtractorImpl implements TextExtractor {
 			}
 		}
 
-		private ExtractTextProcessCallable(byte[] data) {
+		private ExtractTextProcessCallable(byte[] data, String tikaConfig) {
 			_data = data;
+			_tikaConfig = tikaConfig;
 		}
 
 		private static final long serialVersionUID = 1L;
 
 		private final byte[] _data;
+		private final String _tikaConfig;
 
 	}
 

@@ -1525,6 +1525,19 @@ public class VerifyProperties {
 			"com.liferay.asset.tags.compiler.web"
 		},
 
+		// Text Extraction
+
+		{
+			"text.extraction.fork.process.enabled",
+			"text-extraction-fork-process-enabled",
+			"com.liferay.portal.tika"
+		},
+		{
+			"text.extraction.fork.process.mime.types",
+			"text-extraction-fork-process-mime-types",
+			"com.liferay.portal.tika"
+		},
+
 		// Translator
 
 		{
@@ -1625,7 +1638,14 @@ public class VerifyProperties {
 		{
 			"ical4j.validation.relaxed", "ical4j.validation.relaxed",
 			"com.liferay.calendar.service"
+		},
+
+		// Tika config
+
+		{
+			"tika.config", "tika-config-xml", "com.liferay.portal.tika"
 		}
+
 	};
 
 	private static final String[] _OBSOLETE_PORTAL_KEYS = {

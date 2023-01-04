@@ -15,16 +15,28 @@
 package com.liferay.portal.tika.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.io.StreamUtil;
+import com.liferay.petra.io.unsync.UnsyncBufferedInputStream;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.servlet.ServletContextClassLoaderPool;
+import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.TextExtractor;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -32,6 +44,8 @@ import java.nio.charset.Charset;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -87,6 +101,48 @@ public class TextExtractorTest {
 	}
 
 	@Test
+	public void testCustomTikaConfigXml() throws Exception {
+		InputStream tikaCustomXmlInputStream = _getInputStream(
+			_TIKA_CUSTOM_XML);
+
+		File portalClassesTikaXml = new File(
+			_getPortalClassesPath(), _TIKA_CUSTOM_XML);
+
+		StreamUtil.transfer(
+			tikaCustomXmlInputStream,
+			new FileOutputStream(portalClassesTikaXml));
+
+		try {
+			_withTikaConfiguration(
+				true,
+				new String[] {
+					ContentTypes.TEXT_HTML, ContentTypes.APPLICATION_PDF
+				},
+				_TIKA_CUSTOM_XML,
+				() -> {
+					String text = extractText("test.html");
+
+					Assert.assertEquals("Extract test.", text);
+
+					text = extractText("test.odt");
+
+					Assert.assertEquals("", text);
+
+					text = extractText("test-2010.pdf");
+
+					Assert.assertEquals("", text);
+
+					text = extractText("test.txt");
+
+					Assert.assertEquals("Extract test.", text);
+				});
+		}
+		finally {
+			portalClassesTikaXml.delete();
+		}
+	}
+
+	@Test
 	public void testDoc() {
 		String text = extractText("test.doc");
 
@@ -113,10 +169,50 @@ public class TextExtractorTest {
 	}
 
 	@Test
+	public void testForkProcessEnabled() throws Exception {
+		_withTikaConfiguration(
+			true, new String[] {ContentTypes.APPLICATION_PDF}, null,
+			() -> {
+				String text = extractText("test-2010.pdf");
+
+				Assert.assertEquals("Extract test.", text);
+
+				text = extractText("test.pdf");
+
+				Assert.assertEquals("Extract test.", text);
+			});
+	}
+
+	@Test
 	public void testHtml() {
 		String text = extractText("test.html");
 
 		Assert.assertEquals("Extract test.", text);
+	}
+
+	@Test
+	public void testIsTextExtractionForkProcessEnabledMethod()
+		throws Exception {
+
+		_withTikaConfiguration(
+			true, new String[] {ContentTypes.APPLICATION_PDF}, null,
+			() -> {
+				InputStream inputStream = _getInputStream("test-2010.pdf");
+
+				Assert.assertTrue(
+					_isTextExtractionForkProcessEnabled(inputStream));
+
+				inputStream = _getInputStream("test.txt");
+
+				Assert.assertFalse(
+					_isTextExtractionForkProcessEnabled(inputStream));
+			});
+
+		_withTikaConfiguration(
+			false, null, null,
+			() -> Assert.assertFalse(
+				_isTextExtractionForkProcessEnabled(
+					_getInputStream("test-2010.pdf"))));
 	}
 
 	@Test
@@ -176,12 +272,26 @@ public class TextExtractorTest {
 	public void testTxtEncodedWithShift_JIS() throws IOException {
 		String expectedText = new String(
 			StreamUtil.toByteArray(
-				TextExtractorTest.class.getResourceAsStream(
-					"dependencies/test-encoding-Shift_JIS.txt")),
+				_getInputStream("test-encoding-Shift_JIS.txt")),
 			Charset.forName("Shift_JIS"));
 
 		Assert.assertEquals(
 			expectedText.trim(), extractText("test-encoding-Shift_JIS.txt"));
+	}
+
+	@Test(expected = SystemException.class)
+	public void testWrongTikaConfigXml() throws Exception {
+		Map<String, Object> properties =
+			new HashMapBuilder<>().<String, Object>put(
+				"tikaConfigXml", "wrong/tika.xml"
+			).build();
+
+		Object tikaConfigHelper = ReflectionTestUtil.getFieldValue(
+			_textExtractor, "_tikaConfigHelper");
+
+		ReflectionTestUtil.invoke(
+			tikaConfigHelper, "activate", new Class<?>[] {Map.class},
+			properties);
 	}
 
 	@Test
@@ -206,15 +316,73 @@ public class TextExtractorTest {
 	}
 
 	protected String extractText(String fileName) {
-		Class<?> clazz = getClass();
-
-		InputStream inputStream = clazz.getResourceAsStream(
-			"dependencies/" + fileName);
-
-		String text = _textExtractor.extractText(inputStream, -1);
+		String text = _textExtractor.extractText(_getInputStream(fileName), -1);
 
 		return text.trim();
 	}
+
+	private InputStream _getInputStream(String fileName) {
+		Class<?> clazz = getClass();
+
+		return clazz.getResourceAsStream("dependencies/" + fileName);
+	}
+
+	private File _getPortalClassesPath() {
+		ServletContext servletContext = ServletContextPool.get(
+			ServletContextClassLoaderPool.getServletContextName(
+				PortalClassLoaderUtil.getClassLoader()));
+
+		return new File(
+			servletContext.getRealPath(StringPool.SLASH), "WEB-INF/classes");
+	}
+
+	private boolean _isTextExtractionForkProcessEnabled(InputStream inputStream)
+		throws Exception {
+
+		if (!inputStream.markSupported()) {
+			inputStream = new UnsyncBufferedInputStream(inputStream);
+		}
+
+		return (boolean)ReflectionTestUtil.invoke(
+			_textExtractor, "_isTextExtractionForkProcessEnabled",
+			new Class<?>[] {InputStream.class}, inputStream);
+	}
+
+	private void _withTikaConfiguration(
+			boolean textExtractionForkProcessEnabled,
+			String[] textExtractionForkProcessMimeTypes, String tikaConfigXml,
+			UnsafeRunnable<Exception> unsafeRunnable)
+		throws Exception {
+
+		HashMapDictionaryBuilder.HashMapDictionaryWrapper<String, Object>
+			hashMapDictionaryWrapper =
+				new HashMapDictionaryBuilder.HashMapDictionaryWrapper<>();
+
+		if (textExtractionForkProcessEnabled) {
+			hashMapDictionaryWrapper.put(
+				"textExtractionForkProcessEnabled",
+				textExtractionForkProcessEnabled);
+			hashMapDictionaryWrapper.put(
+				"textExtractionForkProcessMimeTypes",
+				textExtractionForkProcessMimeTypes);
+		}
+
+		if (tikaConfigXml != null) {
+			hashMapDictionaryWrapper.put("tikaConfigXml", tikaConfigXml);
+		}
+
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+				new ConfigurationTemporarySwapper(
+					_TIKA_CONFIGURATION, hashMapDictionaryWrapper.build())) {
+
+			unsafeRunnable.run();
+		}
+	}
+
+	private static final String _TIKA_CONFIGURATION =
+		"com.liferay.portal.tika.internal.configuration.TikaConfiguration";
+
+	private static final String _TIKA_CUSTOM_XML = "tika-custom.xml";
 
 	private static Closeable _resetTikaConfigCloseable;
 

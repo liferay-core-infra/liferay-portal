@@ -36,12 +36,15 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 public class DataDefinitionContentTypeRegistry {
 
 	public Long getClassNameId(String contentType) {
-		return Optional.ofNullable(
-			_classNameIds.get(contentType)
-		).orElseThrow(
-			() -> new DataDefinitionValidationException.MustSetValidContentType(
-				contentType)
-		);
+		DataDefinitionContentType dataDefinitionContentType =
+			_dataDefinitionContentTypesByContentType.get(contentType);
+
+		if (dataDefinitionContentType != null) {
+			return dataDefinitionContentType.getClassNameId();
+		}
+
+		throw new DataDefinitionValidationException.MustSetValidContentType(
+			contentType);
 	}
 
 	public DataDefinitionContentType getDataDefinitionContentType(
@@ -76,9 +79,6 @@ public class DataDefinitionContentTypeRegistry {
 
 		String contentType = MapUtil.getString(properties, "content.type");
 
-		_classNameIds.put(
-			contentType, dataDefinitionContentType.getClassNameId());
-
 		_dataDefinitionContentTypesByClassNameId.put(
 			dataDefinitionContentType.getClassNameId(),
 			dataDefinitionContentType);
@@ -99,13 +99,11 @@ public class DataDefinitionContentTypeRegistry {
 		String contentType = MapUtil.getString(properties, "content.type");
 
 		_dataDefinitionContentTypesByClassNameId.remove(
-			_classNameIds.get(contentType));
+			dataDefinitionContentType.getClassNameId());
 
-		_classNameIds.remove(contentType);
 		_dataDefinitionContentTypesByContentType.remove(contentType);
 	}
 
-	private final Map<String, Long> _classNameIds = new TreeMap<>();
 	private final Map<Long, DataDefinitionContentType>
 		_dataDefinitionContentTypesByClassNameId = new TreeMap<>();
 	private final Map<String, DataDefinitionContentType>

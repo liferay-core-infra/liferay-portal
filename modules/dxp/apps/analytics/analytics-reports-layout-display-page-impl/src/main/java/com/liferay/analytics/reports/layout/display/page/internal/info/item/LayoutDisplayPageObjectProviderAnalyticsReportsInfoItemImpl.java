@@ -129,55 +129,51 @@ public class LayoutDisplayPageObjectProviderAnalyticsReportsInfoItemImpl
 
 		return themeDisplayOptional.map(
 			themeDisplay -> {
-				Optional<Layout> layoutOptional = _getLayoutOptional(
+				Layout layout = _getLayout(layoutDisplayPageObjectProvider);
+
+				if (layout == null) {
+					return StringPool.BLANK;
+				}
+
+				HttpServletRequest httpServletRequest =
+					themeDisplay.getRequest();
+
+				LayoutDisplayPageObjectProvider<?>
+					initialLayoutDisplayPageObjectProvider =
+						(LayoutDisplayPageObjectProvider<?>)
+							httpServletRequest.getAttribute(
+								LayoutDisplayPageWebKeys.
+									LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER);
+
+				httpServletRequest.setAttribute(
+					LayoutDisplayPageWebKeys.
+						LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER,
 					layoutDisplayPageObjectProvider);
 
-				return layoutOptional.map(
-					layout -> {
-						HttpServletRequest httpServletRequest =
-							themeDisplay.getRequest();
+				String completeURL = _portal.getCurrentCompleteURL(
+					httpServletRequest);
 
-						LayoutDisplayPageObjectProvider<?>
-							initialLayoutDisplayPageObjectProvider =
-								(LayoutDisplayPageObjectProvider<?>)
-									httpServletRequest.getAttribute(
-										LayoutDisplayPageWebKeys.
-											LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER);
+				try {
+					String canonicalURL = _portal.getCanonicalURL(
+						completeURL, themeDisplay, layout, false, false);
 
-						httpServletRequest.setAttribute(
-							LayoutDisplayPageWebKeys.
-								LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER,
-							layoutDisplayPageObjectProvider);
+					LayoutSEOLink layoutSEOLink =
+						_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
+							layout, locale, canonicalURL, themeDisplay);
 
-						String completeURL = _portal.getCurrentCompleteURL(
-							httpServletRequest);
+					return layoutSEOLink.getHref();
+				}
+				catch (PortalException portalException) {
+					_log.error(portalException);
 
-						try {
-							String canonicalURL = _portal.getCanonicalURL(
-								completeURL, themeDisplay, layout, false,
-								false);
-
-							LayoutSEOLink layoutSEOLink =
-								_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
-									layout, locale, canonicalURL, themeDisplay);
-
-							return layoutSEOLink.getHref();
-						}
-						catch (PortalException portalException) {
-							_log.error(portalException);
-
-							return StringPool.BLANK;
-						}
-						finally {
-							httpServletRequest.setAttribute(
-								LayoutDisplayPageWebKeys.
-									LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER,
-								initialLayoutDisplayPageObjectProvider);
-						}
-					}
-				).orElse(
-					StringPool.BLANK
-				);
+					return StringPool.BLANK;
+				}
+				finally {
+					httpServletRequest.setAttribute(
+						LayoutDisplayPageWebKeys.
+							LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER,
+						initialLayoutDisplayPageObjectProvider);
+				}
 			}
 		).orElse(
 			StringPool.BLANK
@@ -271,27 +267,28 @@ public class LayoutDisplayPageObjectProviderAnalyticsReportsInfoItemImpl
 	public boolean isShow(
 		LayoutDisplayPageObjectProvider layoutDisplayPageObjectProvider) {
 
-		Optional<Layout> layoutOptional = _getLayoutOptional(
-			layoutDisplayPageObjectProvider);
+		Layout layout = _getLayout(layoutDisplayPageObjectProvider);
 
-		return layoutOptional.filter(
-			Layout::isTypeAssetDisplay
-		).filter(
-			layout -> !layout.isEmbeddedPersonalApplication()
-		).filter(
-			layout -> {
-				try {
-					return _hasEditPermission(
-						layoutDisplayPageObjectProvider, layout,
-						PermissionThreadLocal.getPermissionChecker());
-				}
-				catch (PortalException portalException) {
-					_log.error(portalException);
+		if (layout == null) {
+			return false;
+		}
 
-					return false;
-				}
+		if (layout.isTypeAssetDisplay() &&
+			!layout.isEmbeddedPersonalApplication()) {
+
+			try {
+				return _hasEditPermission(
+					layoutDisplayPageObjectProvider, layout,
+					PermissionThreadLocal.getPermissionChecker());
 			}
-		).isPresent();
+			catch (PortalException portalException) {
+				_log.error(portalException);
+
+				return false;
+			}
+		}
+
+		return false;
 	}
 
 	private Layout _getLayout(

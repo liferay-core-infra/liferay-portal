@@ -15,6 +15,7 @@
 package com.liferay.data.engine.rest.internal.content.type;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
+import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -35,8 +36,10 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * @author Leonardo Barros
  */
 @Component(service = DataDefinitionContentTypeRegistry.class)
-public class DataDefinitionContentTypeRegistry {
+public class DataDefinitionContentTypeRegistryImpl
+	implements DataDefinitionContentTypeRegistry {
 
+	@Override
 	public Long getClassNameId(String contentType) {
 		DataDefinitionContentType dataDefinitionContentType =
 			_serviceTrackerMap.getService(contentType);
@@ -49,12 +52,14 @@ public class DataDefinitionContentTypeRegistry {
 			contentType);
 	}
 
+	@Override
 	public DataDefinitionContentType getDataDefinitionContentType(
 		long classNameId) {
 
 		return _dataDefinitionContentTypesByClassNameId.get(classNameId);
 	}
 
+	@Override
 	public DataDefinitionContentType getDataDefinitionContentType(
 		String contentType) {
 

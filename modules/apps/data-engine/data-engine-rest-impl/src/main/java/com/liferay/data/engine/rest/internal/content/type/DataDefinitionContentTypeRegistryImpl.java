@@ -22,7 +22,6 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
@@ -63,12 +62,15 @@ public class DataDefinitionContentTypeRegistryImpl
 	public DataDefinitionContentType getDataDefinitionContentType(
 		String contentType) {
 
-		return Optional.ofNullable(
-			_serviceTrackerMap.getService(contentType)
-		).orElseThrow(
-			() -> new DataDefinitionValidationException.MustSetValidContentType(
-				contentType)
-		);
+		DataDefinitionContentType dataDefinitionContentType =
+			_serviceTrackerMap.getService(contentType);
+
+		if (dataDefinitionContentType != null) {
+			return dataDefinitionContentType;
+		}
+
+		throw new DataDefinitionValidationException.MustSetValidContentType(
+			contentType);
 	}
 
 	@Activate

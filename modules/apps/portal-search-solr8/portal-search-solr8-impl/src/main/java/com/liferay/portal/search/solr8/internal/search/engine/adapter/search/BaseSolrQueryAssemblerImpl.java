@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.solr8.internal.search.engine.adapter.search;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -45,8 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.solr.client.solrj.SolrQuery;
 
@@ -111,17 +110,26 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 	protected String getFacetString(Map<String, JSONObject> jsonObjects) {
 		Set<Map.Entry<String, JSONObject>> entrySet = jsonObjects.entrySet();
 
-		Stream<Map.Entry<String, JSONObject>> stream = entrySet.stream();
+		StringBuilder sb = new StringBuilder();
 
-		return stream.map(
+		int count = 0;
+		List<String> facetStrings = TransformUtil.transform(
+			entrySet,
 			entry -> StringBundler.concat(
 				StringPool.QUOTE, entry.getKey(), StringPool.QUOTE,
-				StringPool.COLON, entry.getValue())
-		).collect(
-			Collectors.joining(
-				StringPool.COMMA, StringPool.OPEN_CURLY_BRACE,
-				StringPool.CLOSE_CURLY_BRACE)
-		);
+				StringPool.COLON, entry.getValue()));
+
+		for (String facetString : facetStrings) {
+			sb.append(StringPool.OPEN_CURLY_BRACE);
+			sb.append(facetString);
+			sb.append(StringPool.CLOSE_CURLY_BRACE);
+
+			if (count++ != (facetStrings.size() - 1)) {
+				sb.append(StringPool.COMMA);
+			}
+		}
+
+		return sb.toString();
 	}
 
 	protected String getQueryString(BaseSearchRequest baseSearchRequest) {

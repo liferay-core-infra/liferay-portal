@@ -5,6 +5,10 @@
 
 	<mkdir dir="log" />
 
+	<condition property="hypersonic.available">
+		<contains string="${database.types}" substring="hypersonic" />
+	</condition>
+
 	<target name="build-db">
 		<if>
 			<equals arg1="${build.profile}" arg2="dxp" />
@@ -109,7 +113,7 @@
 		</antcall>
 	</target>
 
-	<target name="rebuild-hypersonic">
+	<target if="${hypersonic.available}" name="rebuild-hypersonic">
 		<delete failonerror="false" file="${database.name}.lck" />
 		<delete failonerror="false" file="${database.name}.log" />
 		<delete failonerror="false" file="${database.name}.properties" />

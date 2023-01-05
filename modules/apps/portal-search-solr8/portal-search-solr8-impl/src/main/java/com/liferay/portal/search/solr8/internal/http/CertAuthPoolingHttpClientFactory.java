@@ -94,7 +94,7 @@ public class CertAuthPoolingHttpClientFactory
 	}
 
 	@Reference(
-		cardinality = ReferenceCardinality.AT_LEAST_ONE,
+		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)

@@ -318,7 +318,7 @@ public class SingleLogoutProfileImpl
 	}
 
 	@Reference(
-		cardinality = ReferenceCardinality.AT_LEAST_ONE,
+		cardinality = ReferenceCardinality.MULTIPLE,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	public void setSamlBinding(SamlBinding samlBinding) {

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.solr8.internal.search.response;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Document;
@@ -57,8 +58,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.solr.client.solrj.response.FieldStatsInfo;
 import org.apache.solr.client.solrj.response.Group;
@@ -291,14 +290,8 @@ public class DefaultSearchSearchResponseAssemblerHelperImpl
 		SearchHitsBuilder searchHitsBuilder =
 			_searchHitsBuilderFactory.getSearchHitsBuilder();
 
-		Stream<Document> stream = documents.stream();
-
 		return searchHitsBuilder.addSearchHits(
-			stream.map(
-				this::toSearchHit
-			).collect(
-				Collectors.toList()
-			)
+			TransformUtil.transform(documents, this::toSearchHit)
 		).totalHits(
 			documents.size()
 		).build();

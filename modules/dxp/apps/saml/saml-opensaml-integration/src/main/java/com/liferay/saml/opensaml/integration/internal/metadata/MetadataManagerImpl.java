@@ -468,7 +468,7 @@ public class MetadataManagerImpl
 	}
 
 	@Reference(
-		cardinality = ReferenceCardinality.AT_LEAST_ONE,
+		cardinality = ReferenceCardinality.MULTIPLE,
 		policyOption = ReferencePolicyOption.GREEDY,
 		scope = ReferenceScope.PROTOTYPE_REQUIRED
 	)

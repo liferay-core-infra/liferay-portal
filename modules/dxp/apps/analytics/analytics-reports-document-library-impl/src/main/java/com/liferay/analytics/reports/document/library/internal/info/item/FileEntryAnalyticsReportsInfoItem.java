@@ -77,13 +77,7 @@ public class FileEntryAnalyticsReportsInfoItem
 			return 0L;
 		}
 
-		long userId = user.getUserId();
-
-		if (userId == null) {
-			return 0L;
-		}
-
-		return userId;
+		return user.getUserId();
 	}
 
 	@Override

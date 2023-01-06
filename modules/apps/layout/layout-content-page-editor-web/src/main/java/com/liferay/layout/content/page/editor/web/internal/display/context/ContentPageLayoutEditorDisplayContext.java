@@ -217,18 +217,11 @@ public class ContentPageLayoutEditorDisplayContext
 					_segmentsExperienceId);
 
 			if (segmentsExperience != null) {
-				_segmentsExperienceId =
-					segmentsExperience.getSegmentsExperienceId();
+				return segmentsExperience.getSegmentsExperienceId();
 			}
-			else {
-				_segmentsExperienceId = super.getSegmentsExperienceId();
-			}
-		}
-		else {
-			_segmentsExperienceId = super.getSegmentsExperienceId();
 		}
 
-		return _segmentsExperienceId;
+		return super.getSegmentsExperienceId();
 	}
 
 	private AssetListEntry _getAssetListEntry(String collectionPK) {

@@ -75,8 +75,9 @@ public class ProcessResourceImpl extends BaseProcessResourceImpl {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS));
 		searchSearchRequest.setQuery(_createBooleanQuery(processId));
 
 		SearchSearchResponse searchSearchResponse =
@@ -103,8 +104,9 @@ public class ProcessResourceImpl extends BaseProcessResourceImpl {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS));
 		searchSearchRequest.setQuery(_createBooleanQuery(processId));
 		searchSearchRequest.setSelectedFieldNames(
 			"processId",
@@ -216,16 +218,13 @@ public class ProcessResourceImpl extends BaseProcessResourceImpl {
 	@Reference
 	private ProcessWorkflowMetricsIndexer _processWorkflowMetricsIndexer;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

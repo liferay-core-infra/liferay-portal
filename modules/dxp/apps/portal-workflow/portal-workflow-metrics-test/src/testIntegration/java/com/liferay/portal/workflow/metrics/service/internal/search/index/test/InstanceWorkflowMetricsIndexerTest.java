@@ -50,8 +50,9 @@ public class InstanceWorkflowMetricsIndexerTest
 		KaleoInstance kaleoInstance = addKaleoInstance();
 
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -65,8 +66,9 @@ public class InstanceWorkflowMetricsIndexerTest
 		KaleoInstance kaleoInstance = addKaleoInstance();
 
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -84,8 +86,9 @@ public class InstanceWorkflowMetricsIndexerTest
 			createDate.toInstant(), completionDate.toInstant());
 
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", true,
@@ -101,8 +104,9 @@ public class InstanceWorkflowMetricsIndexerTest
 		deleteKaleoInstance(kaleoInstance);
 
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -117,8 +121,9 @@ public class InstanceWorkflowMetricsIndexerTest
 
 		assertReindex(
 			new String[] {
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId())
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.INSTANCE)
 			},
 			new String[] {"WorkflowMetricsInstanceType"}, "companyId",
 			kaleoInstance.getCompanyId(), "instanceId",
@@ -136,8 +141,9 @@ public class InstanceWorkflowMetricsIndexerTest
 					"tasks",
 					queries.term("tasks.assigneeType", Role.class.getName()))),
 			1,
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -161,8 +167,9 @@ public class InstanceWorkflowMetricsIndexerTest
 					"tasks",
 					queries.term("tasks.assigneeName", user.getFullName()))),
 			1,
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -181,8 +188,9 @@ public class InstanceWorkflowMetricsIndexerTest
 					queries.term(
 						"tasks.assigneeName", updatedUser.getFullName()))),
 			1,
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 			"WorkflowMetricsInstanceType", "className",
 			kaleoInstance.getClassName(), "classPK", kaleoInstance.getClassPK(),
 			"companyId", kaleoInstance.getCompanyId(), "completed", false,
@@ -191,17 +199,14 @@ public class InstanceWorkflowMetricsIndexerTest
 			"version", "1.0");
 	}
 
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_instanceWorkflowMetricsIndexNameBuilder;
-
 	@Inject
 	private KaleoTaskInstanceTokenLocalService
 		_kaleoTaskInstanceTokenLocalService;
 
 	@Inject
 	private UserLocalService _userLocalService;
+
+	@Inject
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

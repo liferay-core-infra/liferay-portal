@@ -61,7 +61,8 @@ public class SLATaskResultWorkflowMetricsReindexer
 	private void _creatDefaultDocuments(long companyId) {
 		if (!_searchCapabilities.isWorkflowMetricsSupported() ||
 			!_hasIndex(
-				_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId))) {
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					companyId, WorkflowMetricsIndexEntityNameConstant.NODE))) {
 
 			return;
 		}
@@ -69,7 +70,8 @@ public class SLATaskResultWorkflowMetricsReindexer
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, WorkflowMetricsIndexEntityNameConstant.NODE));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -139,12 +141,6 @@ public class SLATaskResultWorkflowMetricsReindexer
 		return indicesExistsIndexResponse.isExists();
 	}
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -154,6 +150,9 @@ public class SLATaskResultWorkflowMetricsReindexer
 	@Reference
 	private SLATaskResultWorkflowMetricsIndexer
 		_slaTaskResultWorkflowMetricsIndexer;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsReindexStatusMessageSender

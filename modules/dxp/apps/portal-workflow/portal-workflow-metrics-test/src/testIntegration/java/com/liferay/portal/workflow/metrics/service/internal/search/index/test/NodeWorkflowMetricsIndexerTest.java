@@ -52,8 +52,9 @@ public class NodeWorkflowMetricsIndexerTest
 		KaleoNode kaleoNode = addKaleoNode(startState);
 
 		assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "initial",
 			true, "name", "start", "nodeId", kaleoNode.getKaleoNodeId(),
@@ -64,8 +65,9 @@ public class NodeWorkflowMetricsIndexerTest
 		kaleoNode = addKaleoNode(new State("end", StringPool.BLANK, false));
 
 		assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "initial",
 			false, "name", "end", "nodeId", kaleoNode.getKaleoNodeId(),
@@ -83,8 +85,9 @@ public class NodeWorkflowMetricsIndexerTest
 		KaleoTask kaleoTask = addKaleoTask(reviewTask);
 
 		assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "initial",
 			false, "name", "review", "nodeId", kaleoTask.getKaleoTaskId(),
@@ -92,16 +95,18 @@ public class NodeWorkflowMetricsIndexerTest
 			"terminal", false, "type", NodeType.TASK.toString(), "version",
 			"1.0");
 		assertCount(
-			_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.SLA_TASK_RESULT),
 			"WorkflowMetricsSLATaskResultType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "instanceId",
 			0, "processId", workflowDefinition.getWorkflowDefinitionId(),
 			"slaDefinitionId", 0, "nodeId", kaleoTask.getKaleoTaskId(),
 			"taskName", "review");
 		assertCount(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.TASK),
 			"WorkflowMetricsTaskType", "companyId",
 			workflowDefinition.getCompanyId(), "completed", false, "deleted",
 			false, "instanceId", 0, "processId",
@@ -116,8 +121,9 @@ public class NodeWorkflowMetricsIndexerTest
 			new State("end", StringPool.BLANK, false));
 
 		assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "initial",
 			false, "name", "end", "nodeId", kaleoNode.getKaleoNodeId(),
@@ -128,8 +134,9 @@ public class NodeWorkflowMetricsIndexerTest
 		deleteKaleoNode(kaleoNode);
 
 		assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", true, "initial",
 			false, "name", "end", "nodeId", kaleoNode.getKaleoNodeId(),
@@ -149,8 +156,9 @@ public class NodeWorkflowMetricsIndexerTest
 		deleteKaleoTask(kaleoTask);
 
 		assertCount(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", true, "initial",
 			false, "name", "review", "nodeId", kaleoTask.getKaleoTaskId(),
@@ -163,16 +171,19 @@ public class NodeWorkflowMetricsIndexerTest
 	public void testReindex() throws Exception {
 		assertReindex(
 			LinkedHashMapBuilder.put(
-				_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId()),
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.NODE),
 				4
 			).put(
-				_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId()),
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.SLA_TASK_RESULT),
 				2
 			).put(
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId()),
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.TASK),
 				2
 			).build(),
 			new String[] {
@@ -183,22 +194,7 @@ public class NodeWorkflowMetricsIndexerTest
 			workflowDefinition.getWorkflowDefinitionId());
 	}
 
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_TASK_RESULT + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_slaTaskResultWorkflowMetricsIndexNameBuilder;
-
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TASK + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_taskWorkflowMetricsIndexNameBuilder;
+	@Inject
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

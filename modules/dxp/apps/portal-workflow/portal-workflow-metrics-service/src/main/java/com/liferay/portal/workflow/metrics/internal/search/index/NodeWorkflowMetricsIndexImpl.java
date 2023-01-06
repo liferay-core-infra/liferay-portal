@@ -32,7 +32,8 @@ public class NodeWorkflowMetricsIndexImpl
 
 	@Override
 	public String getIndexName(long companyId) {
-		return _workflowMetricsIndexNameBuilder.getIndexName(companyId);
+		return _workflowMetricsIndexNameBuilder.getIndexName(
+			companyId, WorkflowMetricsIndexEntityNameConstant.NODE);
 	}
 
 	@Override
@@ -40,9 +41,7 @@ public class NodeWorkflowMetricsIndexImpl
 		return "WorkflowMetricsNodeType";
 	}
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ")"
-	)
+	@Reference
 	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

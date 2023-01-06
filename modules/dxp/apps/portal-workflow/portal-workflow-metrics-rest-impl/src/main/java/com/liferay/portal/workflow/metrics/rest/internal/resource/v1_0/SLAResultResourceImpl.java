@@ -53,8 +53,9 @@ public class SLAResultResourceImpl extends BaseSLAResultResourceImpl {
 		searchSearchRequest.addSorts(
 			_sorts.field("modifiedDate", SortOrder.DESC));
 		searchSearchRequest.setIndexNames(
-			_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -96,14 +97,11 @@ public class SLAResultResourceImpl extends BaseSLAResultResourceImpl {
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Sorts _sorts;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsSLADefinitionLocalService

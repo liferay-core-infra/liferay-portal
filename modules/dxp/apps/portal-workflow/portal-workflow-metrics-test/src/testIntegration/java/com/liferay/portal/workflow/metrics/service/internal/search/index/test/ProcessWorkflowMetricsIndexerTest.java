@@ -43,21 +43,24 @@ public class ProcessWorkflowMetricsIndexerTest
 	@Test
 	public void testAddProcess() throws Exception {
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "1.0",
 			"versions", "1.0");
 		assertCount(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 			"WorkflowMetricsInstanceType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "instanceId", 0);
 		assertCount(
-			_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT),
 			"WorkflowMetricsSLAInstanceResultType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "slaDefinitionId", 0);
@@ -72,7 +75,8 @@ public class ProcessWorkflowMetricsIndexerTest
 		undeployWorkflowDefinition();
 
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "companyId", companyId, "deleted",
 			true, "processId", workflowDefinitionId, "version", "1.0");
 	}
@@ -81,12 +85,15 @@ public class ProcessWorkflowMetricsIndexerTest
 	public void testReindex() throws Exception {
 		assertReindex(
 			new String[] {
-				_processWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId()),
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId()),
-				_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId())
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.PROCESS),
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.INSTANCE),
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT)
 			},
 			new String[] {
 				"WorkflowMetricsProcessType", "WorkflowMetricsInstanceType",
@@ -99,8 +106,9 @@ public class ProcessWorkflowMetricsIndexerTest
 	@Test
 	public void testUpdateProcess() throws Exception {
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "1.0");
@@ -116,29 +124,15 @@ public class ProcessWorkflowMetricsIndexerTest
 				booleanQuery.addMustQueryClauses(termsQuery);
 			},
 			1,
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "2.0");
 	}
 
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_instanceWorkflowMetricsIndexNameBuilder;
-
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
+	@Inject
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

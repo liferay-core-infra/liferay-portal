@@ -30,6 +30,7 @@ import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.workflow.metrics.internal.search.index.SLATaskResultWorkflowMetricsIndexer;
 import com.liferay.portal.workflow.metrics.search.background.task.WorkflowMetricsReindexStatusMessageSender;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexEntityName;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.search.index.reindexer.WorkflowMetricsReindexer;
 
@@ -61,7 +62,8 @@ public class SLATaskResultWorkflowMetricsReindexer
 	private void _creatDefaultDocuments(long companyId) {
 		if (!_searchCapabilities.isWorkflowMetricsSupported() ||
 			!_hasIndex(
-				_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId))) {
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					companyId, WorkflowMetricsIndexEntityName.NODE))) {
 
 			return;
 		}
@@ -69,7 +71,8 @@ public class SLATaskResultWorkflowMetricsReindexer
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, WorkflowMetricsIndexEntityName.NODE));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -147,10 +150,6 @@ public class SLATaskResultWorkflowMetricsReindexer
 		return indicesExistsIndexResponse.isExists();
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -160,6 +159,9 @@ public class SLATaskResultWorkflowMetricsReindexer
 	@Reference
 	private SLATaskResultWorkflowMetricsIndexer
 		_slaTaskResultWorkflowMetricsIndexer;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsReindexStatusMessageSender

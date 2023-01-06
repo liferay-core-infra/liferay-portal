@@ -63,6 +63,7 @@ import com.liferay.portal.workflow.metrics.rest.internal.resource.exception.NoSu
 import com.liferay.portal.workflow.metrics.rest.internal.resource.helper.ResourceHelper;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.TaskResource;
 import com.liferay.portal.workflow.metrics.search.index.TaskWorkflowMetricsIndexer;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexEntityName;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.sla.processor.WorkflowMetricsSLAStatus;
 
@@ -108,8 +109,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASK));
 		searchSearchRequest.setQuery(
 			_createTasksBooleanQuery(
 				processId, taskId,
@@ -366,8 +368,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		slaTaskResultsBooleanQuery.addFilterQueryClauses(
 			_queries.term(
 				"_index",
-				_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-					contextCompany.getCompanyId())));
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					contextCompany.getCompanyId(),
+					WorkflowMetricsIndexEntityName.SLA_TASK_RESULT)));
 		slaTaskResultsBooleanQuery.addMustQueryClauses(
 			_createSLATaskResultsBooleanQuery(instanceIds, processId));
 
@@ -376,8 +379,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		tasksBooleanQuery.addFilterQueryClauses(
 			_queries.term(
 				"_index",
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-					contextCompany.getCompanyId())));
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					contextCompany.getCompanyId(),
+					WorkflowMetricsIndexEntityName.TASK)));
 		tasksBooleanQuery.addMustQueryClauses(
 			_createTasksBooleanQuery(assigneeIds, instanceIds, processId));
 
@@ -551,10 +555,12 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 				ListUtil.fromArray(slaStatuses),
 				ListUtil.fromArray(taskNames)));
 		searchSearchRequest.setIndexNames(
-			_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()),
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityName.SLA_TASK_RESULT),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASK));
 		searchSearchRequest.setQuery(
 			_createBooleanQuery(assigneeIds, instanceIds, processId));
 
@@ -583,8 +589,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASK));
 		searchSearchRequest.setQuery(
 			_createTasksBooleanQuery(
 				processId,
@@ -630,8 +637,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 			"index",
 			_queries.term(
 				"_index",
-				_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-					contextCompany.getCompanyId())));
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					contextCompany.getCompanyId(),
+					WorkflowMetricsIndexEntityName.TASK)));
 
 		indexFilterAggregation.addChildAggregation(
 			_aggregations.topHits("topHits"));
@@ -653,10 +661,12 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_slaTaskResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()),
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityName.SLA_TASK_RESULT),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityName.TASK));
 
 		searchSearchRequest.setQuery(
 			_createBooleanQuery(assigneeIds, instanceIds, processId));
@@ -776,21 +786,16 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=sla-task-result)")
-	private WorkflowMetricsIndexNameBuilder
-		_slaTaskResultWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Sorts _sorts;
 
 	@Reference
 	private TaskWorkflowMetricsIndexer _taskWorkflowMetricsIndexer;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=task)")
-	private WorkflowMetricsIndexNameBuilder
-		_taskWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

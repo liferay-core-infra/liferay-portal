@@ -24,6 +24,7 @@ import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.workflow.metrics.rest.dto.v1_0.ProcessVersion;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.ProcessVersionResource;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexEntityName;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 
 import java.util.List;
@@ -50,8 +51,9 @@ public class ProcessVersionResourceImpl extends BaseProcessVersionResourceImpl {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityName.PROCESS));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -93,14 +95,13 @@ public class ProcessVersionResourceImpl extends BaseProcessVersionResourceImpl {
 			));
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

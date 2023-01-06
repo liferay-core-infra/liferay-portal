@@ -42,6 +42,7 @@ import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.workflow.metrics.internal.configuration.WorkflowMetricsConfiguration;
 import com.liferay.portal.workflow.metrics.internal.sla.transformer.WorkflowMetricsSLADefinitionTransformer;
+import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexEntityName;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 
 import java.util.List;
@@ -120,8 +121,8 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 
 		IndicesExistsIndexRequest indicesExistsIndexRequest =
 			new IndicesExistsIndexRequest(
-				_processWorkflowMetricsIndexNameBuilder.getIndexName(
-					companyId));
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					companyId, WorkflowMetricsIndexEntityName.PROCESS));
 
 		IndicesExistsIndexResponse indicesExistsIndexResponse =
 			_searchEngineAdapter.execute(indicesExistsIndexRequest);
@@ -137,7 +138,8 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, WorkflowMetricsIndexEntityName.PROCESS));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -180,10 +182,6 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -200,6 +198,9 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListener
 	private TriggerFactory _triggerFactory;
 
 	private volatile WorkflowMetricsConfiguration _workflowMetricsConfiguration;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsSLADefinitionTransformer

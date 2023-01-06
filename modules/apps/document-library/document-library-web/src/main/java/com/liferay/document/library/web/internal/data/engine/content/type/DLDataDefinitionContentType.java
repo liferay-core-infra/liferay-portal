@@ -35,10 +35,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alicia García
  */
-@Component(
-	property = "content.type=document-library",
-	service = DataDefinitionContentType.class
-)
+@Component(service = DataDefinitionContentType.class)
 public class DLDataDefinitionContentType implements DataDefinitionContentType {
 
 	@Override

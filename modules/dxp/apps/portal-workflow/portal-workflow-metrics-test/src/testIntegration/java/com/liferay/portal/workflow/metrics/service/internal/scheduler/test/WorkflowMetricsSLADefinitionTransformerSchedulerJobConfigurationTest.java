@@ -48,14 +48,16 @@ public class
 	public void testTransform1() throws Exception {
 		assertCount(
 			4,
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "1.0");
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "active", true, "companyId",
 			workflowDefinition.getCompanyId(), "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "1.0");
@@ -72,15 +74,17 @@ public class
 		updateWorkflowDefinition();
 
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "active", true, "companyId",
 			workflowDefinition.getCompanyId(), "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "2.0");
 		assertCount(
 			4,
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "2.0");
@@ -113,14 +117,16 @@ public class
 	public void testTransform2() throws Exception {
 		assertCount(
 			4,
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "1.0");
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "active", true, "companyId",
 			workflowDefinition.getCompanyId(), "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "1.0");
@@ -141,15 +147,17 @@ public class
 				"single-approver-updated-workflow-definition.xml"));
 
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "active", true, "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "2.0");
 		assertCount(
 			4,
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "deleted", false, "processId",
 			workflowDefinition.getWorkflowDefinitionId(), "version", "2.0");
@@ -179,21 +187,12 @@ public class
 	}
 
 	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
-	@Inject(
 		filter = "component.name=*.WorkflowMetricsSLADefinitionTransformerSchedulerJobConfiguration"
 	)
 	private SchedulerJobConfiguration _schedulerJobConfiguration;
+
+	@Inject
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Inject
 	private WorkflowMetricsSLADefinitionLocalService

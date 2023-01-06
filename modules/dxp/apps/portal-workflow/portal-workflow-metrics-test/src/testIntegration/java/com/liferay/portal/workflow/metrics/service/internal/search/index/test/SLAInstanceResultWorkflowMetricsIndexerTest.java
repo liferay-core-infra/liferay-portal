@@ -49,14 +49,16 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 	public void testReindex() throws Exception {
 		assertCount(
 			4,
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.NODE),
 			"WorkflowMetricsNodeType", "companyId",
 			workflowDefinition.getCompanyId(), "processId",
 			workflowDefinition.getWorkflowDefinitionId());
 		assertCount(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowDefinition.getCompanyId()),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowDefinition.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS),
 			"WorkflowMetricsProcessType", "companyId",
 			workflowDefinition.getCompanyId(), "processId",
 			workflowDefinition.getWorkflowDefinitionId());
@@ -111,8 +113,9 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 			completeKaleoInstance(kaleoInstance);
 
 			assertCount(
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					workflowDefinition.getCompanyId()),
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					workflowDefinition.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.INSTANCE),
 				"WorkflowMetricsInstanceType", "className",
 				kaleoInstance.getClassName(), "classPK",
 				kaleoInstance.getClassPK(), "companyId",
@@ -126,8 +129,10 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 
 			assertSLAReindex(
 				LinkedHashMapBuilder.put(
-					_slaInstanceResultWorkflowMetricsIndexNameBuilder.
-						getIndexName(workflowDefinition.getCompanyId()),
+					_workflowMetricsIndexNameBuilder.getIndexName(
+						workflowDefinition.getCompanyId(),
+						WorkflowMetricsIndexEntityNameConstant.
+							SLA_INSTANCE_RESULT),
 					2
 				).build(),
 				new String[] {"WorkflowMetricsSLAInstanceResultType"},
@@ -144,8 +149,10 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 
 				assertSLAReindex(
 					new String[] {
-						_slaInstanceResultWorkflowMetricsIndexNameBuilder.
-							getIndexName(workflowDefinition.getCompanyId())
+						_workflowMetricsIndexNameBuilder.getIndexName(
+							workflowDefinition.getCompanyId(),
+							WorkflowMetricsIndexEntityNameConstant.
+								SLA_INSTANCE_RESULT)
 					},
 					new String[] {"WorkflowMetricsSLAInstanceResultType"},
 					"companyId", workflowDefinition.getCompanyId(),
@@ -158,12 +165,6 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 		}
 	}
 
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_instanceWorkflowMetricsIndexNameBuilder;
-
 	@Inject
 	private JSONFactory _jsonFactory;
 
@@ -171,23 +172,8 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 	private KaleoDefinitionVersionLocalService
 		_kaleoDefinitionVersionLocalService;
 
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
-
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
-	@Inject(
-		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ""
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
+	@Inject
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Inject
 	private WorkflowMetricsSLADefinitionLocalService

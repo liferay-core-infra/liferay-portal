@@ -295,7 +295,8 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_nodeWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, WorkflowMetricsIndexEntityNameConstant.NODE));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -333,8 +334,9 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId,
+				WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -399,7 +401,8 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 
 		searchSearchRequest.addSorts(_sorts.field("instanceId", SortOrder.ASC));
 		searchSearchRequest.setIndexNames(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				companyId, WorkflowMetricsIndexEntityNameConstant.TASK));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -514,8 +517,9 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 
 		searchSearchRequest.addSorts(_sorts.field("instanceId", SortOrder.ASC));
 		searchSearchRequest.setIndexNames(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				workflowMetricsSLADefinitionVersion.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				workflowMetricsSLADefinitionVersion.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE));
 
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
@@ -702,8 +706,9 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 						"ctx._source['slaDefinitionIds'] = [];",
 						"ctx._source.slaDefinitionIds.add(", slaDefinitionId,
 						")")),
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					companyId));
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					companyId,
+					WorkflowMetricsIndexEntityNameConstant.INSTANCE));
 
 		if (PortalRunMode.isTestMode()) {
 			updateByQueryDocumentRequest.setRefresh(true);
@@ -721,20 +726,8 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 	@Reference(target = "(workflow.metrics.index.entity.name=instance)")
 	private WorkflowMetricsIndex _instanceWorkflowMetricsIndex;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_instanceWorkflowMetricsIndexNameBuilder;
-
 	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
-
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_nodeWorkflowMetricsIndexNameBuilder;
 
 	@Reference
 	private Queries _queries;
@@ -752,12 +745,6 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 	private SLAInstanceResultWorkflowMetricsIndexer
 		_slaInstanceResultWorkflowMetricsIndexer;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private SLATaskResultWorkflowMetricsIndexer
 		_slaTaskResultWorkflowMetricsIndexer;
@@ -765,11 +752,8 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 	@Reference
 	private Sorts _sorts;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TASK + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_taskWorkflowMetricsIndexNameBuilder;
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsSLADefinitionLocalService

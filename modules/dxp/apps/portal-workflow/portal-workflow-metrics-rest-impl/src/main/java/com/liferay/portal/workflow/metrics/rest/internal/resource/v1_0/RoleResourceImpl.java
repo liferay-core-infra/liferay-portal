@@ -89,8 +89,9 @@ public class RoleResourceImpl extends BaseRoleResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_taskWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.TASK));
 		searchSearchRequest.setQuery(
 			_createTasksBooleanQuery(completed, processId));
 
@@ -158,13 +159,10 @@ public class RoleResourceImpl extends BaseRoleResourceImpl {
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TASK + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_taskWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

@@ -21,14 +21,12 @@ import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskContextM
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.capabilities.SearchCapabilities;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.index.RefreshIndexRequest;
-import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.workflow.metrics.rest.dto.v1_0.Index;
 import com.liferay.portal.workflow.metrics.rest.internal.dto.v1_0.util.IndexUtil;
@@ -40,16 +38,11 @@ import com.liferay.portal.workflow.metrics.search.index.reindexer.WorkflowMetric
 
 import java.io.Serializable;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.component.annotations.ServiceScope;
 
 /**
@@ -93,14 +86,9 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 			new RefreshIndexRequest(
 				transform(
 					indexEntityNames,
-					indexEntityName -> {
-						IndexNameBuilder indexNameBuilder =
-							_workflowMetricsIndexNameBuilderMap.get(
-								indexEntityName);
-
-						return indexNameBuilder.getIndexName(
-							contextCompany.getCompanyId());
-					},
+					indexEntityName ->
+						_workflowMetricsIndexNameBuilder.getIndexName(
+							contextCompany.getCompanyId(), indexEntityName),
 					String.class)));
 	}
 
@@ -129,37 +117,6 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 				"workflow.metrics.index.key", index.getKey()
 			).build(),
 			new ServiceContext());
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addWorkflowMetricsIndexNameBuilder(
-		WorkflowMetricsIndexNameBuilder workflowMetricsIndexNameBuilder,
-		Map<String, Object> properties) {
-
-		String workflowMetricsIndexEntityName = GetterUtil.getString(
-			properties.get("workflow.metrics.index.entity.name"));
-
-		if (Validator.isNull(workflowMetricsIndexEntityName)) {
-			return;
-		}
-
-		_workflowMetricsIndexNameBuilderMap.put(
-			workflowMetricsIndexEntityName, workflowMetricsIndexNameBuilder);
-	}
-
-	protected void removeWorkflowMetricsIndexNameBuilder(
-		WorkflowMetricsIndexNameBuilder workflowMetricsIndexNameBuilder,
-		Map<String, Object> properties) {
-
-		String workflowMetricsIndexEntityName = GetterUtil.getString(
-			properties.get("workflow.metrics.index.entity.name"));
-
-		_workflowMetricsIndexNameBuilderMap.remove(
-			workflowMetricsIndexEntityName);
 	}
 
 	private String _getBackgroundTaskName(Index index) {
@@ -194,9 +151,6 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 		return new String[0];
 	}
 
-	private static final Map<String, WorkflowMetricsIndexNameBuilder>
-		_workflowMetricsIndexNameBuilderMap = new ConcurrentHashMap<>();
-
 	@Reference
 	private BackgroundTaskLocalService _backgroundTaskLocalService;
 
@@ -208,6 +162,9 @@ public class IndexResourceImpl extends BaseIndexResourceImpl {
 
 	@Reference
 	private SearchEngineAdapter _searchEngineAdapter;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 	@Reference
 	private WorkflowMetricsReindexerRegistry _workflowMetricsReindexerRegistry;

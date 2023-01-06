@@ -163,8 +163,9 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 		instancesBooleanQuery.addFilterQueryClauses(
 			_queries.term(
 				"_index",
-				_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-					contextCompany.getCompanyId())));
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					contextCompany.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.INSTANCE)));
 		instancesBooleanQuery.addMustNotQueryClauses(
 			_queries.term("instanceId", 0));
 		instancesBooleanQuery.addMustQueryClauses(
@@ -176,8 +177,10 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 		slaInstanceResultsBooleanQuery.addFilterQueryClauses(
 			_queries.term(
 				"_index",
-				_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-					contextCompany.getCompanyId())));
+				_workflowMetricsIndexNameBuilder.getIndexName(
+					contextCompany.getCompanyId(),
+					WorkflowMetricsIndexEntityNameConstant.
+						SLA_INSTANCE_RESULT)));
 		slaInstanceResultsBooleanQuery.addMustNotQueryClauses(
 			_queries.term("slaDefinitionId", 0));
 		slaInstanceResultsBooleanQuery.addMustQueryClauses(
@@ -352,8 +355,9 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE));
 		searchSearchRequest.setQuery(
 			_createInstanceBooleanQuery(completed, null, null, processIds));
 
@@ -398,10 +402,12 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_instanceWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()),
-			_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.INSTANCE),
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT));
 
 		searchSearchRequest.setQuery(
 			_createBooleanQuery(
@@ -501,8 +507,9 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(
-			_processWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.PROCESS));
 		searchSearchRequest.setQuery(
 			_createProcessBooleanQuery(processId, title));
 
@@ -557,8 +564,9 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 		searchSearchRequest.addAggregation(termsAggregation);
 
 		searchSearchRequest.setIndexNames(
-			_slaInstanceResultWorkflowMetricsIndexNameBuilder.getIndexName(
-				contextCompany.getCompanyId()));
+			_workflowMetricsIndexNameBuilder.getIndexName(
+				contextCompany.getCompanyId(),
+				WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT));
 		searchSearchRequest.setQuery(
 			_createSLAInstanceResultsBooleanQuery(
 				completed, null, null, processIds));
@@ -691,18 +699,6 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 	@Reference
 	private Aggregations _aggregations;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_instanceWorkflowMetricsIndexNameBuilder;
-
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_processWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Queries _queries;
 
@@ -715,13 +711,10 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
 
-	@Reference(
-		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ")"
-	)
-	private WorkflowMetricsIndexNameBuilder
-		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
-
 	@Reference
 	private Sorts _sorts;
+
+	@Reference
+	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

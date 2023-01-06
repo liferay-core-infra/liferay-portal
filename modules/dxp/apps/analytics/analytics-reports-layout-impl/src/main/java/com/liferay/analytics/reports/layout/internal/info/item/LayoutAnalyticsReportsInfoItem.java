@@ -86,31 +86,34 @@ public class LayoutAnalyticsReportsInfoItem
 
 	@Override
 	public String getCanonicalURL(Layout layout, Locale locale) {
-		Optional<ThemeDisplay> themeDisplayOptional =
-			_getThemeDisplayOptional();
+		ThemeDisplay themeDisplay = _getThemeDisplay();
 
-		return themeDisplayOptional.map(
-			themeDisplay -> {
-				try {
-					String canonicalURL = _portal.getCanonicalURL(
-						_getCompleteURL(themeDisplay), themeDisplay, layout,
-						false, false);
+		if (themeDisplay == null) {
+			return StringPool.BLANK;
+		}
 
-					LayoutSEOLink layoutSEOLink =
-						_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
-							layout, locale, canonicalURL, themeDisplay);
+		try {
+			String canonicalURL = _portal.getCanonicalURL(
+				_getCompleteURL(themeDisplay), themeDisplay, layout, false,
+				false);
 
-					return layoutSEOLink.getHref();
-				}
-				catch (PortalException portalException) {
-					_log.error(portalException);
+			LayoutSEOLink layoutSEOLink =
+				_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
+					layout, locale, canonicalURL, themeDisplay);
 
-					return StringPool.BLANK;
-				}
+			String href = layoutSEOLink.getHref();
+
+			if (href == null) {
+				return StringPool.BLANK;
 			}
-		).orElse(
-			StringPool.BLANK
-		);
+
+			return href;
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
+
+			return StringPool.BLANK;
+		}
 	}
 
 	@Override

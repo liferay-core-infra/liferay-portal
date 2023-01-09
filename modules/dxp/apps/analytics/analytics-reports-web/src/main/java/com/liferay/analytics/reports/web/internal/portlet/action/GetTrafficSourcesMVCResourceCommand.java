@@ -19,6 +19,7 @@ import com.liferay.analytics.reports.web.internal.data.provider.AnalyticsReports
 import com.liferay.analytics.reports.web.internal.model.TimeRange;
 import com.liferay.analytics.reports.web.internal.model.TimeSpan;
 import com.liferay.analytics.reports.web.internal.model.TrafficChannel;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -40,11 +41,11 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -193,19 +194,18 @@ public class GetTrafficSourcesMVCResourceCommand
 		List<TrafficChannel> trafficChannels = _getTrafficChannels(
 			analyticsReportsDataProvider, canonicalURL, companyId, timeRange);
 
-		Stream<TrafficChannel> stream = trafficChannels.stream();
-
 		Comparator<TrafficChannel> comparator = Comparator.comparing(
 			TrafficChannel::getTrafficShare);
 
+		Collections.sort(trafficChannels, comparator.reversed());
+
 		return JSONUtil.putAll(
-			stream.sorted(
-				comparator.reversed()
-			).map(
+			TransformUtil.transformToArray(
+				trafficChannels,
 				trafficChannel -> trafficChannel.toJSONObject(
 					liferayPortletRequest, liferayPortletResponse,
-					resourceBundle)
-			).toArray());
+					resourceBundle),
+				TrafficChannel.class));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

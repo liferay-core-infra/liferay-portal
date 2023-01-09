@@ -896,9 +896,11 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		dir = dir.getCanonicalFile();
 
-		for (File file :
-				dir.listFiles((folder, name) -> name.endsWith(".jar"))) {
+		File[] files = dir.listFiles((folder, name) -> name.endsWith(".jar"));
 
+		Arrays.sort(files);
+
+		for (File file : files) {
 			URI uri = file.toURI();
 
 			uri = uri.normalize();

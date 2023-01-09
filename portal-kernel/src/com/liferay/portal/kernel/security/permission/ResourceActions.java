@@ -118,4 +118,6 @@ public interface ResourceActions {
 			ClassLoader classLoader, String... sources)
 		throws ResourceActionsException;
 
+	public void removeModelResource(String name, String action);
+
 }

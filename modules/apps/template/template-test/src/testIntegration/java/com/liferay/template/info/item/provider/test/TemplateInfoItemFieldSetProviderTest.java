@@ -62,6 +62,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -174,13 +175,9 @@ public class TemplateInfoItemFieldSetProviderTest {
 				journalArticleTemplateEntry.getTemplateEntryId(),
 			infoField.getName());
 
-		Boolean value = (Boolean)infoField.getAttribute(TextInfoFieldType.HTML);
-
-		if (value == null) {
-			value = false;
-		}
-
-		Assert.assertTrue(value);
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				infoField.getAttribute(TextInfoFieldType.HTML)));
 	}
 
 	@Test
@@ -221,13 +218,9 @@ public class TemplateInfoItemFieldSetProviderTest {
 				categoryTemplateEntry.getTemplateEntryId(),
 			infoField.getName());
 
-		Boolean value = (Boolean)infoField.getAttribute(TextInfoFieldType.HTML);
-
-		if (value == null) {
-			value = false;
-		}
-
-		Assert.assertTrue(value);
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				infoField.getAttribute(TextInfoFieldType.HTML)));
 	}
 
 	@Test
@@ -290,13 +283,9 @@ public class TemplateInfoItemFieldSetProviderTest {
 				_portal.getSiteDefaultLocale(_group.getGroupId())),
 			infoFieldValue.getValue());
 
-		Boolean value = (Boolean)infoField.getAttribute(TextInfoFieldType.HTML);
-
-		if (value == null) {
-			value = false;
-		}
-
-		Assert.assertTrue(value);
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				infoField.getAttribute(TextInfoFieldType.HTML)));
 	}
 
 	@Test

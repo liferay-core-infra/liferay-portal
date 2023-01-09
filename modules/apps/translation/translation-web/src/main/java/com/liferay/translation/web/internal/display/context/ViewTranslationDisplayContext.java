@@ -60,13 +60,7 @@ public class ViewTranslationDisplayContext {
 		InfoField infoField,
 		InfoFieldType.Attribute<TextInfoFieldType, Boolean> attribute) {
 
-		Boolean value = (Boolean)infoField.getAttribute(attribute);
-
-		if (value == null) {
-			return false;
-		}
-
-		return value;
+		return GetterUtil.getBoolean(infoField.getAttribute(attribute));
 	}
 
 	public String getInfoFieldLabel(InfoField infoField) {

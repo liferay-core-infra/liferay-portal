@@ -280,14 +280,9 @@ public class InfoRequestFieldValuesProviderHelper {
 
 		Object objectValue = null;
 
-		Boolean decimal = (Boolean)infoField.getAttribute(
-			NumberInfoFieldType.DECIMAL);
+		if (GetterUtil.getBoolean(
+				infoField.getAttribute(NumberInfoFieldType.DECIMAL))) {
 
-		if (decimal == null) {
-			decimal = false;
-		}
-
-		if (decimal) {
 			objectValue = new BigDecimal(value);
 		}
 		else {

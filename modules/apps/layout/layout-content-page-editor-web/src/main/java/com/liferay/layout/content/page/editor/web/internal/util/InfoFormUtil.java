@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -160,16 +161,9 @@ public class InfoFormUtil {
 					"typeOptions",
 					JSONUtil.put(
 						"multiSelect",
-						() -> {
-							Boolean multiple = (Boolean)infoField.getAttribute(
-								SelectInfoFieldType.MULTIPLE);
-
-							if (multiple == null) {
-								return false;
-							}
-
-							return multiple;
-						}
+						() -> GetterUtil.getBoolean(
+							infoField.getAttribute(
+								SelectInfoFieldType.MULTIPLE))
 					).put(
 						"validValues",
 						JSONUtil.toJSONArray(

@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
@@ -151,13 +152,9 @@ public class JournalArticleInfoItemFieldValuesProviderTest {
 
 		InfoField infoField = ddmTemplateInfoFieldValue.getInfoField();
 
-		Boolean value = (Boolean)infoField.getAttribute(TextInfoFieldType.HTML);
-
-		if (value == null) {
-			value = false;
-		}
-
-		Assert.assertTrue(value);
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				infoField.getAttribute(TextInfoFieldType.HTML)));
 	}
 
 	@Test

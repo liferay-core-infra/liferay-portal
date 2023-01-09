@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.template.info.field.transformer.BaseTemplateNodeTransformer;
 import com.liferay.template.info.field.transformer.TemplateNodeTransformer;
@@ -54,12 +55,8 @@ public class SelectInfoFieldTypeTemplateNodeTransformer
 
 		String stringValue = StringPool.BLANK;
 
-		Boolean multiple = (Boolean)infoField.getAttribute(
-			SelectInfoFieldType.MULTIPLE);
-
-		if (multiple == null) {
-			multiple = false;
-		}
+		Boolean multiple = GetterUtil.getBoolean(
+			infoField.getAttribute(SelectInfoFieldType.MULTIPLE));
 
 		JSONArray selectedOptionValuesJSONArray =
 			_getSelectedOptionValuesJSONArray(

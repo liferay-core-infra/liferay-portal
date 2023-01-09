@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * @author Cistina González
@@ -89,12 +88,11 @@ public class HistoricalMetric {
 	}
 
 	public JSONObject toJSONObject() {
-		Stream<HistogramMetric> stream = _histogramMetrics.stream();
-
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		stream.forEach(
-			histogramMetric -> jsonArray.put(histogramMetric.toJSONObject()));
+		for (HistogramMetric histogramMetric : _histogramMetrics) {
+			jsonArray.put(histogramMetric.toJSONObject());
+		}
 
 		return JSONUtil.put(
 			"histogram", jsonArray

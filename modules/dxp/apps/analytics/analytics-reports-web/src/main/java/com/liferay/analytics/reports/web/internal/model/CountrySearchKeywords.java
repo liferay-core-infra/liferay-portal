@@ -16,16 +16,17 @@ package com.liferay.analytics.reports.web.internal.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * @author David Arques
@@ -108,14 +109,12 @@ public class CountrySearchKeywords {
 			return JSONFactoryUtil.createJSONArray();
 		}
 
-		Stream<SearchKeyword> stream = _searchKeywords.stream();
-
 		return JSONUtil.putAll(
-			stream.map(
-				SearchKeyword::toJSONObject
-			).limit(
-				5
-			).toArray());
+			Arrays.copyOfRange(
+				TransformUtil.transformToArray(
+					_searchKeywords, SearchKeyword::toJSONObject,
+					SearchKeyword.class),
+				0, 4));
 	}
 
 	private String _countryCode;

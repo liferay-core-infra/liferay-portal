@@ -95,59 +95,11 @@ public class InlineSQLHelperUtil {
 	}
 
 	public static String replacePermissionCheck(
-		String sql, String className, String classPKField, String userIdField) {
-
-		return _inlineSQLPermission.replacePermissionCheck(
-			sql, className, classPKField, userIdField);
-	}
-
-	public static String replacePermissionCheck(
-		String sql, String className, String classPKField, String userIdField,
-		long groupId) {
-
-		return _inlineSQLPermission.replacePermissionCheck(
-			sql, className, classPKField, userIdField, groupId);
-	}
-
-	public static String replacePermissionCheck(
-		String sql, String className, String classPKField, String userIdField,
-		long groupId, String bridgeJoin) {
-
-		return _inlineSQLPermission.replacePermissionCheck(
-			sql, className, classPKField, userIdField, groupId, bridgeJoin);
-	}
-
-	public static String replacePermissionCheck(
-		String sql, String className, String classPKField, String userIdField,
-		long[] groupIds) {
-
-		return _inlineSQLPermission.replacePermissionCheck(
-			sql, className, classPKField, userIdField, groupIds);
-	}
-
-	public static String replacePermissionCheck(
-		String sql, String className, String classPKField, String userIdField,
+		String sql, String className, String classPKField, String groupIdField,
 		long[] groupIds, String bridgeJoin) {
 
 		return _inlineSQLPermission.replacePermissionCheck(
-			sql, className, classPKField, userIdField, groupIds, bridgeJoin);
-	}
-
-	public static String replacePermissionCheck(
-		String sql, String className, String classPKField, String userIdField,
-		String bridgeJoin) {
-
-		return _inlineSQLPermission.replacePermissionCheck(
-			sql, className, classPKField, userIdField, bridgeJoin);
-	}
-
-	public static String replacePermissionCheck(
-		String sql, String className, String classPKField, String userIdField,
-		String groupIdField, long[] groupIds, String bridgeJoin) {
-
-		return _inlineSQLPermission.replacePermissionCheck(
-			sql, className, classPKField, userIdField, groupIdField, groupIds,
-			bridgeJoin);
+			sql, className, classPKField, groupIdField, groupIds, bridgeJoin);
 	}
 
 	private static volatile InlineSQLHelper _inlineSQLPermission =

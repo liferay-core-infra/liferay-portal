@@ -52,7 +52,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -210,10 +209,7 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 
 		String id = rankingStorageAdapter.create(rankingIndexName, ranking);
 
-		Optional<Ranking> optional = rankingIndexReader.fetchOptional(
-			rankingIndexName, id);
-
-		return optional.get();
+		return rankingIndexReader.fetchRanking(rankingIndexName, id);
 	}
 
 	private void _deactivate(
@@ -388,12 +384,10 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 		RankingIndexName rankingIndexName = getRankingIndexName();
 
 		for (String rankingDocumentId : rankingDocumentIds) {
-			Optional<Ranking> optional = rankingIndexReader.fetchOptional(
+			Ranking ranking = rankingIndexReader.fetchRanking(
 				rankingIndexName, rankingDocumentId);
 
-			if (optional.isPresent()) {
-				Ranking ranking = optional.get();
-
+			if (ranking != null) {
 				rankings.add(ranking);
 			}
 		}
@@ -532,16 +526,14 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 
 		String id = editRankingMVCActionRequest.getResultsRankingUid();
 
-		Optional<Ranking> optional = rankingIndexReader.fetchOptional(
+		Ranking ranking = rankingIndexReader.fetchRanking(
 			rankingIndexNameBuilder.getRankingIndexName(
 				portal.getCompanyId(actionRequest)),
 			id);
 
-		if (!optional.isPresent()) {
+		if (ranking == null) {
 			return;
 		}
-
-		Ranking ranking = optional.get();
 
 		_guardDuplicateQueryStrings(editRankingMVCActionRequest, ranking);
 

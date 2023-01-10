@@ -17,6 +17,8 @@ package com.liferay.portal.workflow.kaleo.runtime.action.executor;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 
+import java.util.Set;
+
 /**
  * @author Michael C. Han
  */
@@ -25,5 +27,7 @@ public interface ActionExecutor {
 	public void execute(
 			KaleoAction kaleoAction, ExecutionContext executionContext)
 		throws ActionExecutorException;
+
+	public Set<String> getActionExecutorLanguages();
 
 }

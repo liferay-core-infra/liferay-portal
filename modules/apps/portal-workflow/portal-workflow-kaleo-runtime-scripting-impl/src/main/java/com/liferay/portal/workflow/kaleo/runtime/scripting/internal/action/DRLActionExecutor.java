@@ -28,8 +28,10 @@ import com.liferay.portal.workflow.kaleo.runtime.util.WorkflowContextUtil;
 
 import java.io.Serializable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,11 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael C. Han
  */
-@Component(
-	enabled = false,
-	property = "com.liferay.portal.workflow.kaleo.runtime.action.executor.language=drl",
-	service = ActionExecutor.class
-)
+@Component(enabled = false, service = ActionExecutor.class)
 public class DRLActionExecutor implements ActionExecutor {
 
 	@Override
@@ -55,6 +53,11 @@ public class DRLActionExecutor implements ActionExecutor {
 		catch (Exception exception) {
 			throw new ActionExecutorException(exception);
 		}
+	}
+
+	@Override
+	public Set<String> getActionExecutorLanguages() {
+		return Collections.singleton("drl");
 	}
 
 	protected void doExecute(

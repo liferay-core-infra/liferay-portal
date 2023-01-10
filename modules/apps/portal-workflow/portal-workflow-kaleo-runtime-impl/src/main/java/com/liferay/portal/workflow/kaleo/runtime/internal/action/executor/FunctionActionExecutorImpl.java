@@ -33,9 +33,11 @@ import com.liferay.portal.workflow.kaleo.runtime.action.executor.ActionExecutorE
 import com.liferay.portal.workflow.kaleo.runtime.internal.configuration.FunctionActionExecutorImplConfiguration;
 import com.liferay.portal.workflow.kaleo.runtime.util.ScriptingContextBuilder;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -62,6 +64,11 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 		catch (Exception exception) {
 			throw new ActionExecutorException(exception);
 		}
+	}
+
+	@Override
+	public Set<String> getActionExecutorLanguages() {
+		return Collections.emptySet();
 	}
 
 	@Activate

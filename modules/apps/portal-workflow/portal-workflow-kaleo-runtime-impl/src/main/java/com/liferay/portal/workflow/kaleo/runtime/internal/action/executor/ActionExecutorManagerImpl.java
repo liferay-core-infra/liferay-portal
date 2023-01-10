@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.action.executor;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.function.transform.TransformUtil;
@@ -22,6 +23,8 @@ import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.action.ActionExecutorManager;
 import com.liferay.portal.workflow.kaleo.runtime.action.executor.ActionExecutor;
+
+import java.util.Set;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -69,9 +72,17 @@ public class ActionExecutorManagerImpl implements ActionExecutorManager {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, ActionExecutor.class,
-			"com.liferay.portal.workflow.kaleo.runtime.action.executor." +
-				"language");
+			bundleContext, ActionExecutor.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(actionExecutor, emitter) -> {
+					Set<String> actionExecutorLanguages =
+						actionExecutor.getActionExecutorLanguages();
+
+					actionExecutorLanguages.forEach(
+						actionExecutorLanguage -> emitter.emit(
+							actionExecutorLanguage));
+				}));
 	}
 
 	@Deactivate

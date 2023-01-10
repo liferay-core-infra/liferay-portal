@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.action.executor;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
@@ -49,6 +50,20 @@ public class ActionExecutorManagerImpl implements ActionExecutorManager {
 		}
 
 		actionExecutor.execute(kaleoAction, executionContext);
+	}
+
+	@Override
+	public String[] getFunctionActionExecutorKeys() {
+		return TransformUtil.transformToArray(
+			_serviceTrackerMap.keySet(),
+			key -> {
+				if (key.startsWith("function")) {
+					return key;
+				}
+
+				return null;
+			},
+			String.class);
 	}
 
 	@Activate

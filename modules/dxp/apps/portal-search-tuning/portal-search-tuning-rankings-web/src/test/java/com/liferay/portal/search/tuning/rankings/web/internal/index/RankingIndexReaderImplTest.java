@@ -54,6 +54,19 @@ public class RankingIndexReaderImplTest extends BaseRankingsIndexTestCase {
 	}
 
 	@Test
+	public void testFetch() {
+		setUpSearchEngineAdapter(
+			setUpGetDocumentResponseGetDocument(
+				setUpDocument(Arrays.asList("queryStrings")),
+				setUpGetDocumentResponse()));
+
+		Assert.assertEquals(
+			_setUpDocumentToRankingTranslator(),
+			_rankingIndexReaderImpl.fetchRanking(
+				Mockito.mock(RankingIndexName.class), "id"));
+	}
+
+	@Test
 	public void testFetchByQueryString() {
 		_setUpDocumentToRankingTranslator();
 
@@ -73,21 +86,9 @@ public class RankingIndexReaderImplTest extends BaseRankingsIndexTestCase {
 
 	@Test
 	public void testFetchByQueryStringBlankQueryString() {
-		Assert.assertNull(_rankingIndexReaderImpl.fetchByQueryString(
+		Assert.assertNull(
+			_rankingIndexReaderImpl.fetchByQueryString(
 				Mockito.mock(RankingIndexName.class), ""));
-	}
-
-	@Test
-	public void testFetch() {
-		setUpSearchEngineAdapter(
-			setUpGetDocumentResponseGetDocument(
-				setUpDocument(Arrays.asList("queryStrings")),
-				setUpGetDocumentResponse()));
-
-		Assert.assertEquals(
-			_setUpDocumentToRankingTranslator(),
-			_rankingIndexReaderImpl.fetchRanking(
-				Mockito.mock(RankingIndexName.class), "id"));
 	}
 
 	@Test

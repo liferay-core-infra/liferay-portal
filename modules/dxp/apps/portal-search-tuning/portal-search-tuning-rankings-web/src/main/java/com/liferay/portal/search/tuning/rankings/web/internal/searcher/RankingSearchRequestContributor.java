@@ -54,13 +54,13 @@ public class RankingSearchRequestContributor
 		Ranking ranking = rankingIndexReader.fetchByQueryString(
 			rankingIndexName, searchRequest.getQueryString());
 
-		SearchRequest searchRequestBuild = contribute(searchRequest, ranking);
+		SearchRequest buildSearchRequest = contribute(searchRequest, ranking);
 
-		if (searchRequestBuild == null) {
+		if (buildSearchRequest == null) {
 			return searchRequest;
 		}
 
-		return searchRequestBuild;
+		return buildSearchRequest;
 	}
 
 	protected SearchRequest contribute(

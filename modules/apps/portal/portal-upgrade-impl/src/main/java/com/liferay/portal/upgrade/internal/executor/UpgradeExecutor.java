@@ -31,8 +31,11 @@ import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.BaseUpgradeCallable;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
@@ -43,7 +46,6 @@ import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 import com.liferay.portal.upgrade.internal.registry.UpgradeStepRegistratorTracker;
 import com.liferay.portal.upgrade.internal.release.ReleaseManagerImpl;
 import com.liferay.portal.upgrade.internal.release.ReleasePublisher;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.verify.VerifyProperties;
 
 import java.io.OutputStream;
@@ -191,9 +193,17 @@ public class UpgradeExecutor {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		if (PropsValues.UPGRADE_LOG_CONTEXT_ENABLED) {
+		if (GetterUtil.getBoolean(
+				_props.get(PropsKeys.UPGRADE_LOG_CONTEXT_ENABLED))) {
+
+			String upgradeLogContextName = _props.get(
+				PropsKeys.UPGRADE_LOG_CONTEXT_NAME);
+
 			_serviceRegistration = bundleContext.registerService(
-				LogContext.class, new UpgradeLogContext(),
+				LogContext.class,
+				new UpgradeLogContext(
+					Collections.singletonMap(
+						upgradeLogContextName, upgradeLogContextName)),
 				new HashMapDictionary());
 		}
 
@@ -329,6 +339,9 @@ public class UpgradeExecutor {
 	private BundleContext _bundleContext;
 
 	@Reference
+	private Props _props;
+
+	@Reference
 	private ReleaseLocalService _releaseLocalService;
 
 	@Reference
@@ -351,6 +364,10 @@ public class UpgradeExecutor {
 		@Override
 		public String getName() {
 			return StringPool.BLANK;
+		}
+
+		private UpgradeLogContext(Map<String, String> context) {
+			_context = context;
 		}
 
 		private boolean _isUpgradeClass(String name) {
@@ -387,9 +404,7 @@ public class UpgradeExecutor {
 			DBUpgrader.class.getName(), ReleaseManagerImpl.class.getName(),
 			UpgradeStepRegistratorTracker.class.getName(),
 			VerifyProperties.class.getName());
-		private final Map<String, String> _context = Collections.singletonMap(
-			PropsValues.UPGRADE_LOG_CONTEXT_NAME,
-			PropsValues.UPGRADE_LOG_CONTEXT_NAME);
+		private final Map<String, String> _context;
 
 	}
 

@@ -985,11 +985,7 @@ public class UserAccountResourceImpl
 
 			calendar.setTime(date);
 
-			Integer value = calendar.get(calendarField);
-
-			if (value != null) {
-				return value;
-			}
+			return calendar.get(calendarField);
 		}
 
 		return defaultValue;

@@ -17,16 +17,16 @@ package com.liferay.portal.search.solr8.internal.http;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.search.solr8.internal.interceptor.PreemptiveAuthInterceptor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.pool.PoolStats;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author László Csontos
@@ -121,18 +121,8 @@ public abstract class BasePoolingHttpClientFactory
 		}
 	}
 
-	protected void addHttpRequestInterceptor(
-		HttpRequestInterceptor httpRequestInterceptor) {
-
-		_httpRequestInterceptors.add(httpRequestInterceptor);
-	}
-
 	protected void applyProperties(HttpClientBuilder httpClientBuilder) {
-		for (HttpRequestInterceptor httpRequestInterceptor :
-				_httpRequestInterceptors) {
-
-			httpClientBuilder.addInterceptorFirst(httpRequestInterceptor);
-		}
+		httpClientBuilder.addInterceptorFirst(_preemptiveAuthInterceptor);
 	}
 
 	protected void applyProperties(
@@ -155,19 +145,14 @@ public abstract class BasePoolingHttpClientFactory
 			createPoolingHttpClientConnectionManager()
 		throws Exception;
 
-	protected void removeHttpRequestInterceptor(
-		HttpRequestInterceptor httpRequestInterceptor) {
-
-		_httpRequestInterceptors.remove(httpRequestInterceptor);
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		BasePoolingHttpClientFactory.class);
 
 	private Integer _defaultMaxConnectionsPerRoute;
-	private final List<HttpRequestInterceptor> _httpRequestInterceptors =
-		new ArrayList<>();
 	private Integer _maxTotalConnections;
 	private PoolingHttpClientConnectionManager _poolingClientConnectionManager;
+
+	@Reference
+	private PreemptiveAuthInterceptor _preemptiveAuthInterceptor;
 
 }

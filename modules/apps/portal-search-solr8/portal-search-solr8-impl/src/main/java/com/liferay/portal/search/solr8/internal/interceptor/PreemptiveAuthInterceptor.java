@@ -30,7 +30,9 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Eric Min
  */
-@Component(service = HttpRequestInterceptor.class)
+@Component(
+	service = {HttpRequestInterceptor.class, PreemptiveAuthInterceptor.class}
+)
 public class PreemptiveAuthInterceptor implements HttpRequestInterceptor {
 
 	@Override

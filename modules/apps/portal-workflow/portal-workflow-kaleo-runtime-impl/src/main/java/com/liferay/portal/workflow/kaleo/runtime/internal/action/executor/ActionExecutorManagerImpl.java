@@ -14,22 +14,18 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.action.executor;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.action.ActionExecutorManager;
 import com.liferay.portal.workflow.kaleo.runtime.action.executor.ActionExecutor;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Leonardo Barros
@@ -44,7 +40,8 @@ public class ActionExecutorManagerImpl implements ActionExecutorManager {
 
 		String scriptLanguage = kaleoAction.getScriptLanguage();
 
-		ActionExecutor actionExecutor = _actionExecutors.get(scriptLanguage);
+		ActionExecutor actionExecutor = _serviceTrackerMap.getService(
+			scriptLanguage);
 
 		if (actionExecutor == null) {
 			throw new PortalException(
@@ -54,44 +51,19 @@ public class ActionExecutorManagerImpl implements ActionExecutorManager {
 		actionExecutor.execute(kaleoAction, executionContext);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected synchronized void registerActionExecutor(
-			ActionExecutor actionExecutor, Map<String, Object> properties)
-		throws KaleoDefinitionValidationException {
-
-		Object value = properties.get(
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, ActionExecutor.class,
 			"com.liferay.portal.workflow.kaleo.runtime.action.executor." +
 				"language");
-
-		String[] languages = GetterUtil.getStringValues(
-			value, new String[] {String.valueOf(value)});
-
-		for (String language : languages) {
-			_actionExecutors.put(language, actionExecutor);
-		}
 	}
 
-	protected synchronized void unregisterActionExecutor(
-			ActionExecutor actionExecutor, Map<String, Object> properties)
-		throws KaleoDefinitionValidationException {
-
-		Object value = properties.get(
-			"com.liferay.portal.workflow.kaleo.runtime.action.executor." +
-				"language");
-
-		String[] languages = GetterUtil.getStringValues(
-			value, new String[] {String.valueOf(value)});
-
-		for (String language : languages) {
-			_actionExecutors.remove(language);
-		}
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
-	private final Map<String, ActionExecutor> _actionExecutors =
-		new ConcurrentHashMap<>();
+	private ServiceTrackerMap<String, ActionExecutor> _serviceTrackerMap;
 
 }

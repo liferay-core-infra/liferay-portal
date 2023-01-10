@@ -17,28 +17,39 @@ package com.liferay.portal.upgrade.internal.executor;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.dao.db.BaseDB;
 import com.liferay.portal.db.index.IndexUpdaterUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
+import com.liferay.portal.kernel.dao.db.BaseDBProcess;
 import com.liferay.portal.kernel.dao.db.DBContext;
 import com.liferay.portal.kernel.dao.db.DBProcessContext;
 import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogContext;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
+import com.liferay.portal.kernel.upgrade.BaseUpgradeCallable;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
+import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.module.util.BundleUtil;
+import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 import com.liferay.portal.upgrade.internal.registry.UpgradeStepRegistratorTracker;
 import com.liferay.portal.upgrade.internal.release.ReleasePublisher;
+import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.verify.VerifyProperties;
 
 import java.io.OutputStream;
 
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.osgi.framework.Bundle;
@@ -177,6 +188,12 @@ public class UpgradeExecutor {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
+		if (PropsValues.UPGRADE_LOG_CONTEXT_ENABLED) {
+			_serviceRegistration = bundleContext.registerService(
+				LogContext.class, new UpgradeLogContext(),
+				new HashMapDictionary());
+		}
+
 		_upgradeStepRegistratorTracker = new UpgradeStepRegistratorTracker(
 			bundleContext, _releaseLocalService, this);
 
@@ -185,6 +202,10 @@ public class UpgradeExecutor {
 
 	@Deactivate
 	protected void deactivate() {
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
+		}
+
 		_upgradeStepRegistratorTracker.close();
 	}
 
@@ -310,6 +331,75 @@ public class UpgradeExecutor {
 	@Reference
 	private ReleasePublisher _releasePublisher;
 
+	private ServiceRegistration<LogContext> _serviceRegistration;
 	private UpgradeStepRegistratorTracker _upgradeStepRegistratorTracker;
+
+	private class UpgradeLogContext implements LogContext {
+
+		@Override
+		public Map<String, String> getContext(String logName) {
+			if (_isUpgradeClass(logName)) {
+				return _context;
+			}
+
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public String getName() {
+			return StringPool.BLANK;
+		}
+
+		private boolean _isUpgradeClass(String name) {
+			try {
+				for (String className : _classNamesUpgrade) {
+					if (name.equals(className)) {
+						return true;
+					}
+				}
+
+				Thread thread = Thread.currentThread();
+
+				Class<?> clazz = Class.forName(
+					name, true, thread.getContextClassLoader());
+
+				for (Class<?> baseClazz : _classesBaseUpgrade) {
+					if (baseClazz.isAssignableFrom(clazz)) {
+						return true;
+					}
+				}
+
+				for (Class<?> staticClazz : _classesStaticUpgrade) {
+					if (name.equals(staticClazz.getName())) {
+						return true;
+					}
+				}
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(classNotFoundException);
+				}
+			}
+
+			return false;
+		}
+
+		private final Class<?>[] _classesBaseUpgrade = {
+			BaseDB.class, BaseDBProcess.class, BaseUpgradeCallable.class,
+			LoggingTimer.class, UpgradeStep.class
+		};
+		private final Class<?>[] _classesStaticUpgrade = {
+			DBUpgrader.class, VerifyProperties.class
+		};
+		private final String[] _classNamesUpgrade = {
+			"com.liferay.portal.upgrade.internal.registry." +
+				"UpgradeStepRegistratorTracker",
+			"com.liferay.portal.upgrade.internal.release.ReleaseManagerImpl"
+		};
+		private final Map<String, String> _context = Collections.singletonMap(
+			PropsValues.UPGRADE_LOG_CONTEXT_NAME,
+			PropsValues.UPGRADE_LOG_CONTEXT_NAME);
+
+	}
 
 }

@@ -518,7 +518,7 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 				InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
-					sql, Role.class.getName(), "Role_.roleId", null, null,
+					sql, Role.class.getName(), "Role_.roleId", null,
 					new long[] {0}, null);
 			}
 
@@ -602,7 +602,7 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 				InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
-					sql, Role.class.getName(), "Role_.roleId", null, null,
+					sql, Role.class.getName(), "Role_.roleId", null,
 					new long[] {0}, null);
 			}
 
@@ -721,7 +721,7 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 				InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
-					sql, Role.class.getName(), "Role_.roleId", null, null,
+					sql, Role.class.getName(), "Role_.roleId", null,
 					new long[] {0}, null);
 			}
 
@@ -798,7 +798,7 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 				InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
-					sql, Role.class.getName(), "Role_.roleId", null, null,
+					sql, Role.class.getName(), "Role_.roleId", null,
 					new long[] {0}, null);
 			}
 

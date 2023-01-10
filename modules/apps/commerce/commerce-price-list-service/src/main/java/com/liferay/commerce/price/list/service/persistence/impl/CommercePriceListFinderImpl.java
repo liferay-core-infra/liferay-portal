@@ -116,7 +116,7 @@ public class CommercePriceListFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceList.commercePriceListId", null, null,
+					"CommercePriceList.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -188,7 +188,7 @@ public class CommercePriceListFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceEntry.commercePriceListId", null, null,
+					"CommercePriceEntry.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -241,7 +241,7 @@ public class CommercePriceListFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceEntry.commercePriceListId", null, null,
+					"CommercePriceEntry.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -418,7 +418,7 @@ public class CommercePriceListFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceList.commercePriceListId", null, null,
+					"CommercePriceList.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -482,7 +482,7 @@ public class CommercePriceListFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceEntry.commercePriceListId", null, null,
+					"CommercePriceEntry.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 

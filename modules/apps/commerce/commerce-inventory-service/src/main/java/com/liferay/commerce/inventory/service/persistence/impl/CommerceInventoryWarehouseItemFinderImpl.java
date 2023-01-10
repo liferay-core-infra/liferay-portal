@@ -146,8 +146,7 @@ public class CommerceInventoryWarehouseItemFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommerceInventoryWarehouse.class.getName(),
-					"CIWarehouse.ciwarehouseid", null, null, new long[] {0},
-					null);
+					"CIWarehouse.ciwarehouseid", null, new long[] {0}, null);
 			}
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
@@ -203,8 +202,7 @@ public class CommerceInventoryWarehouseItemFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommerceInventoryWarehouse.class.getName(),
-					"CIWarehouse.ciwarehouseid", null, null, new long[] {0},
-					null);
+					"CIWarehouse.ciwarehouseid", null, new long[] {0}, null);
 			}
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);

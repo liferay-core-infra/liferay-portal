@@ -68,7 +68,7 @@ public class CommercePricingClassFinderImpl
 			if (inlineSQLHelper) {
 				sql = _inlineSQLHelper.replacePermissionCheck(
 					sql, CommercePricingClass.class.getName(),
-					"CommercePricingClass.commercePricingClassId", null, null,
+					"CommercePricingClass.commercePricingClassId", null,
 					new long[] {0}, null);
 			}
 
@@ -143,7 +143,7 @@ public class CommercePricingClassFinderImpl
 			if (inlineSQLHelper) {
 				sql = _inlineSQLHelper.replacePermissionCheck(
 					sql, CommercePricingClass.class.getName(),
-					"CommercePricingClass.commercePricingClassId", null, null,
+					"CommercePricingClass.commercePricingClassId", null,
 					new long[] {0}, null);
 			}
 

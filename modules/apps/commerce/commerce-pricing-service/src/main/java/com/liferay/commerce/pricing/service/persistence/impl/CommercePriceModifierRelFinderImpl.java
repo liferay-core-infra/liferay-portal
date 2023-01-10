@@ -99,7 +99,7 @@ public class CommercePriceModifierRelFinderImpl
 			if (inlineSQLHelper) {
 				sql = _inlineSQLHelper.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceModifier.commercePriceListId", null, null,
+					"CommercePriceModifier.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -175,7 +175,7 @@ public class CommercePriceModifierRelFinderImpl
 			if (inlineSQLHelper) {
 				sql = _inlineSQLHelper.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceModifier.commercePriceListId", null, null,
+					"CommercePriceModifier.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -252,7 +252,7 @@ public class CommercePriceModifierRelFinderImpl
 			if (inlineSQLHelper) {
 				sql = _inlineSQLHelper.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceModifier.commercePriceListId", null, null,
+					"CommercePriceModifier.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -333,7 +333,7 @@ public class CommercePriceModifierRelFinderImpl
 			if (inlineSQLHelper) {
 				sql = _inlineSQLHelper.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceModifier.commercePriceListId", null, null,
+					"CommercePriceModifier.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -405,7 +405,7 @@ public class CommercePriceModifierRelFinderImpl
 			if (inlineSQLHelper) {
 				sql = _inlineSQLHelper.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceModifier.commercePriceListId", null, null,
+					"CommercePriceModifier.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -477,7 +477,7 @@ public class CommercePriceModifierRelFinderImpl
 			if (inlineSQLHelper) {
 				sql = _inlineSQLHelper.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceModifier.commercePriceListId", null, null,
+					"CommercePriceModifier.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 

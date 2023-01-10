@@ -369,12 +369,6 @@ public class UpgradeExecutor {
 						return true;
 					}
 				}
-
-				for (Class<?> staticClazz : _classesStaticUpgrade) {
-					if (name.equals(staticClazz.getName())) {
-						return true;
-					}
-				}
 			}
 			catch (ClassNotFoundException classNotFoundException) {
 				if (_log.isDebugEnabled()) {
@@ -389,12 +383,10 @@ public class UpgradeExecutor {
 			BaseDB.class, BaseDBProcess.class, BaseUpgradeCallable.class,
 			LoggingTimer.class, UpgradeStep.class
 		};
-		private final Class<?>[] _classesStaticUpgrade = {
-			DBUpgrader.class, VerifyProperties.class
-		};
 		private final String[] _classNamesUpgrade = {
+			DBUpgrader.class.getName(), ReleaseManagerImpl.class.getName(),
 			UpgradeStepRegistratorTracker.class.getName(),
-			ReleaseManagerImpl.class.getName()
+			VerifyProperties.class.getName()
 		};
 		private final Map<String, String> _context = Collections.singletonMap(
 			PropsValues.UPGRADE_LOG_CONTEXT_NAME,

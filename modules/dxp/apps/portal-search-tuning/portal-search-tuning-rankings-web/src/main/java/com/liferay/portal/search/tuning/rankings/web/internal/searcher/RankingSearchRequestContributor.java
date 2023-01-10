@@ -26,8 +26,6 @@ import com.liferay.portal.search.tuning.rankings.web.internal.index.name.Ranking
 import com.liferay.portal.search.tuning.rankings.web.internal.index.name.RankingIndexNameBuilder;
 import com.liferay.portal.search.tuning.rankings.web.internal.searcher.helper.RankingSearchRequestHelper;
 
-import java.util.Optional;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -53,15 +51,16 @@ public class RankingSearchRequestContributor
 			return searchRequest;
 		}
 
-		Optional<Ranking> optional =
-			rankingIndexReader.fetchByQueryStringOptional(
-				rankingIndexName, searchRequest.getQueryString());
+		Ranking ranking = rankingIndexReader.fetchByQueryString(
+			rankingIndexName, searchRequest.getQueryString());
 
-		return optional.map(
-			ranking -> contribute(searchRequest, ranking)
-		).orElse(
-			searchRequest
-		);
+		SearchRequest searchRequestBuild = contribute(searchRequest, ranking);
+
+		if (searchRequestBuild == null) {
+			return searchRequest;
+		}
+
+		return searchRequestBuild;
 	}
 
 	protected SearchRequest contribute(

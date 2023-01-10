@@ -63,10 +63,7 @@ public class RankingIndexReaderImpl implements RankingIndexReader {
 
 	@Override
 	public Ranking fetchRanking(RankingIndexName rankingIndexName, String id) {
-
-		Document document = _getDocument(rankingIndexName, id);
-
-		return translate(document, id);
+		return translate(_getDocument(rankingIndexName, id), id);
 	}
 
 	@Override

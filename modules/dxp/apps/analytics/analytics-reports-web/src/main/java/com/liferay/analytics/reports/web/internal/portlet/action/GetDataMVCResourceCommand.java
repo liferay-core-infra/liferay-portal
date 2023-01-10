@@ -26,6 +26,7 @@ import com.liferay.analytics.reports.web.internal.model.TimeSpan;
 import com.liferay.analytics.reports.web.internal.util.AnalyticsReportsUtil;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -73,7 +75,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
@@ -479,22 +480,22 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 	}
 
 	private JSONArray _getTimeSpansJSONArray(ResourceBundle resourceBundle) {
-		Stream<TimeSpan> stream = Arrays.stream(TimeSpan.values());
+		TimeSpan[] timeSpanArray = ArrayUtil.filter(
+			TimeSpan.values(), timeSpan -> timeSpan != TimeSpan.TODAY);
+
+		Arrays.sort(timeSpanArray, Comparator.comparingInt(TimeSpan::getDays));
 
 		return JSONUtil.putAll(
-			stream.filter(
-				timeSpan -> timeSpan != TimeSpan.TODAY
-			).sorted(
-				Comparator.comparingInt(TimeSpan::getDays)
-			).map(
+			TransformUtil.unsafeTransform(
+				timeSpanArray,
 				timeSpan -> JSONUtil.put(
 					"key", timeSpan.getKey()
 				).put(
 					"label",
 					ResourceBundleUtil.getString(
 						resourceBundle, timeSpan.getKey())
-				)
-			).toArray());
+				),
+				TimeSpan.class));
 	}
 
 	private JSONArray _getViewURLsJSONArray(
@@ -506,36 +507,32 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 		List<Locale> locales = analyticsReportsInfoItem.getAvailableLocales(
 			object);
 
-		Stream<Locale> stream = locales.stream();
+		Collections.sort(
+			locales,
+			(locale1, locale2) -> {
+				if (Objects.equals(
+						locale1,
+						analyticsReportsInfoItem.getDefaultLocale(object))) {
+
+					return -1;
+				}
+
+				if (Objects.equals(
+						locale2,
+						analyticsReportsInfoItem.getDefaultLocale(object))) {
+
+					return 1;
+				}
+
+				String displayLanguage1 = locale1.getDisplayLanguage(locale);
+				String displayLanguage2 = locale2.getDisplayLanguage(locale);
+
+				return displayLanguage1.compareToIgnoreCase(displayLanguage2);
+			});
 
 		return JSONUtil.putAll(
-			stream.sorted(
-				(locale1, locale2) -> {
-					if (Objects.equals(
-							locale1,
-							analyticsReportsInfoItem.getDefaultLocale(
-								object))) {
-
-						return -1;
-					}
-
-					if (Objects.equals(
-							locale2,
-							analyticsReportsInfoItem.getDefaultLocale(
-								object))) {
-
-						return 1;
-					}
-
-					String displayLanguage1 = locale1.getDisplayLanguage(
-						locale);
-					String displayLanguage2 = locale2.getDisplayLanguage(
-						locale);
-
-					return displayLanguage1.compareToIgnoreCase(
-						displayLanguage2);
-				}
-			).map(
+			TransformUtil.transformToArray(
+				locales,
 				currentLocale -> JSONUtil.put(
 					"default",
 					Objects.equals(
@@ -557,8 +554,8 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 					_getResourceURL(
 						infoItemReference, currentLocale, resourceRequest,
 						resourceResponse, "/analytics_reports/get_data")
-				)
-			).toArray());
+				),
+				Locale.class));
 	}
 
 	private String _toISODateFormat(LocalDate localDate) {

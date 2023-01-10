@@ -208,8 +208,8 @@ public class InlineSQLHelperImplTest {
 		_setPermissionChecker();
 
 		String sql = _inlineSQLHelper.replacePermissionCheck(
-			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
-			_GROUP_ID_FIELD, new long[] {_groupOne.getGroupId()}, null);
+			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _GROUP_ID_FIELD,
+			new long[] {_groupOne.getGroupId()}, null);
 
 		Assert.assertSame(_SQL_PLAIN, sql);
 
@@ -252,8 +252,7 @@ public class InlineSQLHelperImplTest {
 		_setPermissionChecker();
 
 		_inlineSQLHelper.replacePermissionCheck(
-			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
-			_GROUP_ID_FIELD,
+			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _GROUP_ID_FIELD,
 			new long[] {_groupOne.getGroupId(), _groupThree.getGroupId()},
 			null);
 	}
@@ -491,15 +490,14 @@ public class InlineSQLHelperImplTest {
 			sql,
 			sql.contains(
 				StringBundler.concat(
-					_USER_ID_FIELD, " = ", _user.getUserId())));
+					_RESOURCE_PERMISSION, ".ownerId = ", _user.getUserId())));
 
 		_assertValidSql(sql);
 	}
 
 	private String _replacePermissionCheckJoin(String sql, long... groupIds) {
 		return _inlineSQLHelper.replacePermissionCheck(
-			sql, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD, _GROUP_ID_FIELD,
-			groupIds, null);
+			sql, _CLASS_NAME, _CLASS_PK_FIELD, _GROUP_ID_FIELD, groupIds, null);
 	}
 
 	private void _setPermissionChecker() throws Exception {
@@ -530,9 +528,6 @@ public class InlineSQLHelperImplTest {
 
 	private static final String _SQL_WHERE =
 		" WHERE " + _CLASS_PK_FIELD + " != 0";
-
-	private static final String _USER_ID_FIELD =
-		_RESOURCE_PERMISSION + ".ownerId";
 
 	private static final String _WHERE_CLAUSE = " WHERE ";
 

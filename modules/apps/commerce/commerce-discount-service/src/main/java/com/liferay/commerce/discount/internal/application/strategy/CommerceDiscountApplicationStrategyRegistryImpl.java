@@ -16,6 +16,7 @@ package com.liferay.commerce.discount.internal.application.strategy;
 
 import com.liferay.commerce.discount.application.strategy.CommerceDiscountApplicationStrategy;
 import com.liferay.commerce.discount.application.strategy.CommerceDiscountApplicationStrategyRegistry;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
@@ -42,8 +43,12 @@ public class CommerceDiscountApplicationStrategyRegistryImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, CommerceDiscountApplicationStrategy.class,
-			"commerce.discount.application.strategy.key");
+			bundleContext, CommerceDiscountApplicationStrategy.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(commerceDiscountApplicationStrategy, emitter) -> emitter.emit(
+					commerceDiscountApplicationStrategy.
+						getCommerceDiscountApplicationStrategyKey())));
 	}
 
 	@Deactivate

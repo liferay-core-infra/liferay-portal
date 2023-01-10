@@ -306,7 +306,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			permissionChecker, className, userIdField, groupIds, bridgeJoin);
 
 		return _insertResourcePermissionSQL(
-			sql, className, classPKField, userIdField, groupIdField, groupIds,
+			sql, className, classPKField, groupIdField, groupIds,
 			resourcePermissionSQL);
 	}
 
@@ -333,8 +333,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 	private void _appendPermissionSQL(
 		StringBundler sb, String className, String classPKField,
-		String userIdField, String groupIdField, long[] groupIds,
-		String permissionSQL) {
+		String groupIdField, long[] groupIds, String permissionSQL) {
 
 		List<PermissionSQLContributor> permissionSQLContributors =
 			_serviceTrackerMap.getService(className);
@@ -352,8 +351,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 				String contributorPermissionSQL =
 					permissionSQLContributor.getPermissionSQL(
-						className, classPKField, userIdField, groupIdField,
-						groupIds);
+						className, classPKField, groupIdField, groupIds);
 
 				if (Validator.isNull(contributorPermissionSQL)) {
 					continue;
@@ -693,8 +691,8 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 	}
 
 	private String _insertResourcePermissionSQL(
-		String sql, String className, String classPKField, String userIdField,
-		String groupIdField, long[] groupIds, String permissionSQL) {
+		String sql, String className, String classPKField, String groupIdField,
+		long[] groupIds, String permissionSQL) {
 
 		StringBundler sb = new StringBundler(11);
 
@@ -717,8 +715,8 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			sb.append(_WHERE_CLAUSE);
 
 			_appendPermissionSQL(
-				sb, className, classPKField, userIdField, groupIdField,
-				groupIds, permissionSQL);
+				sb, className, classPKField, groupIdField, groupIds,
+				permissionSQL);
 
 			if (pos != -1) {
 				sb.append(sql.substring(pos));
@@ -730,8 +728,8 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			sb.append(sql.substring(0, pos));
 
 			_appendPermissionSQL(
-				sb, className, classPKField, userIdField, groupIdField,
-				groupIds, permissionSQL);
+				sb, className, classPKField, groupIdField, groupIds,
+				permissionSQL);
 
 			sb.append("AND ");
 

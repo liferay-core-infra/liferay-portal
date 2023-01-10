@@ -40,6 +40,7 @@ import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 import com.liferay.portal.upgrade.internal.registry.UpgradeStepRegistratorTracker;
+import com.liferay.portal.upgrade.internal.release.ReleaseManagerImpl;
 import com.liferay.portal.upgrade.internal.release.ReleasePublisher;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.verify.VerifyProperties;
@@ -392,9 +393,8 @@ public class UpgradeExecutor {
 			DBUpgrader.class, VerifyProperties.class
 		};
 		private final String[] _classNamesUpgrade = {
-			"com.liferay.portal.upgrade.internal.registry." +
-				"UpgradeStepRegistratorTracker",
-			"com.liferay.portal.upgrade.internal.release.ReleaseManagerImpl"
+			UpgradeStepRegistratorTracker.class.getName(),
+			ReleaseManagerImpl.class.getName()
 		};
 		private final Map<String, String> _context = Collections.singletonMap(
 			PropsValues.UPGRADE_LOG_CONTEXT_NAME,

@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.upgrade.BaseUpgradeCallable;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.module.util.BundleUtil;
@@ -52,6 +53,7 @@ import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -353,10 +355,8 @@ public class UpgradeExecutor {
 
 		private boolean _isUpgradeClass(String name) {
 			try {
-				for (String className : _classNamesUpgrade) {
-					if (name.equals(className)) {
-						return true;
-					}
+				if (_classNamesUpgrade.contains(name)) {
+					return true;
 				}
 
 				Thread thread = Thread.currentThread();
@@ -383,11 +383,10 @@ public class UpgradeExecutor {
 			BaseDB.class, BaseDBProcess.class, BaseUpgradeCallable.class,
 			LoggingTimer.class, UpgradeStep.class
 		};
-		private final String[] _classNamesUpgrade = {
+		private final Set<String> _classNamesUpgrade = SetUtil.fromArray(
 			DBUpgrader.class.getName(), ReleaseManagerImpl.class.getName(),
 			UpgradeStepRegistratorTracker.class.getName(),
-			VerifyProperties.class.getName()
-		};
+			VerifyProperties.class.getName());
 		private final Map<String, String> _context = Collections.singletonMap(
 			PropsValues.UPGRADE_LOG_CONTEXT_NAME,
 			PropsValues.UPGRADE_LOG_CONTEXT_NAME);

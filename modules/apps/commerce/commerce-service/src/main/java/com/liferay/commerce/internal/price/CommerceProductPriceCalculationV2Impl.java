@@ -46,6 +46,7 @@ import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.model.CommerceChannelAccountEntryRel;
 import com.liferay.commerce.util.CommerceBigDecimalUtil;
 import com.liferay.commerce.util.CommerceUtil;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -397,8 +398,12 @@ public class CommerceProductPriceCalculationV2Impl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, CommercePriceListDiscovery.class,
-			"commerce.price.list.discovery.key");
+			bundleContext, CommercePriceListDiscovery.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(commercePriceListDiscovery, emitter) -> emitter.emit(
+					commercePriceListDiscovery.
+						getCommercePriceListDiscoveryKey())));
 	}
 
 	@Deactivate

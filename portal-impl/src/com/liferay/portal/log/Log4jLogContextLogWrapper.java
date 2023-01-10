@@ -33,8 +33,10 @@ import org.apache.logging.log4j.ThreadContext;
  */
 public class Log4jLogContextLogWrapper extends LogWrapper {
 
-	public Log4jLogContextLogWrapper(Log log) {
+	public Log4jLogContextLogWrapper(String name, Log log) {
 		super(log);
+
+		_name = name;
 
 		setLogWrapperClassName(Log4jLogContextLogWrapper.class.getName());
 	}
@@ -213,7 +215,7 @@ public class Log4jLogContextLogWrapper extends LogWrapper {
 		}
 
 		for (LogContext logContext : serviceTrackerList) {
-			Map<String, String> context = logContext.getContext();
+			Map<String, String> context = logContext.getContext(_name);
 
 			for (Map.Entry<String, String> entry : context.entrySet()) {
 				ThreadContext.put(
@@ -250,5 +252,7 @@ public class Log4jLogContextLogWrapper extends LogWrapper {
 			},
 			PortalLifecycle.METHOD_ALL);
 	}
+
+	private final String _name;
 
 }

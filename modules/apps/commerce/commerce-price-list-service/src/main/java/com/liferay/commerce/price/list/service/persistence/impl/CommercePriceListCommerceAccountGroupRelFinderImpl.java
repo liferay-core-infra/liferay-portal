@@ -74,7 +74,7 @@ public class CommercePriceListCommerceAccountGroupRelFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceList.commercePriceListId", null, null,
+					"CommercePriceList.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 
@@ -153,7 +153,7 @@ public class CommercePriceListCommerceAccountGroupRelFinderImpl
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
 					sql, CommercePriceList.class.getName(),
-					"CommercePriceList.commercePriceListId", null, null,
+					"CommercePriceList.commercePriceListId", null,
 					new long[] {0}, null);
 			}
 

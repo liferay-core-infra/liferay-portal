@@ -398,10 +398,11 @@ public class UpgradeExecutor {
 
 		private final Class<?>[] _classesBaseUpgrade = {
 			BaseDB.class, BaseDBProcess.class, BaseUpgradeCallable.class,
-			LoggingTimer.class, UpgradeStep.class
+			UpgradeStep.class
 		};
 		private final Set<String> _classNamesUpgrade = SetUtil.fromArray(
-			DBUpgrader.class.getName(), ReleaseManagerImpl.class.getName(),
+			DBUpgrader.class.getName(), LoggingTimer.class.getName(),
+			ReleaseManagerImpl.class.getName(),
 			UpgradeStepRegistratorTracker.class.getName(),
 			VerifyProperties.class.getName());
 		private final Map<String, String> _context;

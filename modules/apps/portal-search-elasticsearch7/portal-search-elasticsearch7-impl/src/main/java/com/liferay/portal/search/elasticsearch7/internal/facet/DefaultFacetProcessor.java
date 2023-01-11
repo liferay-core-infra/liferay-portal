@@ -31,9 +31,14 @@ import org.osgi.service.component.annotations.Component;
  * @author Michael C. Han
  * @author Milen Dyankov
  */
-@Component(property = "class.name=DEFAULT", service = FacetProcessor.class)
+@Component(service = FacetProcessor.class)
 public class DefaultFacetProcessor
 	implements FacetProcessor<SearchRequestBuilder> {
+
+	@Override
+	public String getFacetClassName() {
+		return null;
+	}
 
 	@Override
 	public AggregationBuilder processFacet(Facet facet) {

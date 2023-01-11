@@ -25,6 +25,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
  */
 public interface FacetProcessor<T> {
 
+	public String getFacetClassName();
+
 	public Optional<AggregationBuilder> processFacet(Facet facet);
 
 }

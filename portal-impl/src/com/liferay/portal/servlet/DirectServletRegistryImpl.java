@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.DirectServletRegistry;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -108,13 +109,15 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 
 		ServletContext servletContext = servletConfig.getServletContext();
 
-		String rootPath = servletContext.getRealPath(StringPool.BLANK);
+		String servletContextPath = servletContext.getContextPath();
 
-		int index = rootPath.indexOf(servletContext.getContextPath());
+		if (!Validator.isBlank(servletContextPath) &&
+			path.startsWith(servletContextPath)) {
 
-		if (index > 0) {
-			rootPath = rootPath.substring(0, index);
+			path = path.substring(servletContextPath.length());
 		}
+
+		String rootPath = servletContext.getRealPath(StringPool.BLANK);
 
 		File file = new File(rootPath, path);
 

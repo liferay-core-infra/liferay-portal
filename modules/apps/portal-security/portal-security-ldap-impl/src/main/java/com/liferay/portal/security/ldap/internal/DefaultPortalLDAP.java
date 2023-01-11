@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.ldap.PortalLDAP;
 import com.liferay.portal.security.ldap.UserConverterKeys;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration;
 import com.liferay.portal.security.ldap.util.LDAPUtil;
@@ -989,6 +990,12 @@ public class DefaultPortalLDAP implements PortalLDAP {
 	protected void activate() {
 		_companySecurityAuthType = GetterUtil.getString(
 			_props.get(PropsKeys.COMPANY_SECURITY_AUTH_TYPE));
+		_ldapServerConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+		_systemLDAPConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				SystemLDAPConfiguration.class);
 	}
 
 	private Attributes _getAttributes(
@@ -1106,15 +1113,15 @@ public class DefaultPortalLDAP implements PortalLDAP {
 
 	private String _companySecurityAuthType;
 
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
+
 	@Reference(
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	private volatile LDAPFilterValidator _ldapFilterValidator;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
 
@@ -1124,9 +1131,6 @@ public class DefaultPortalLDAP implements PortalLDAP {
 	@Reference
 	private Props _props;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration)"
-	)
 	private ConfigurationProvider<SystemLDAPConfiguration>
 		_systemLDAPConfigurationProvider;
 

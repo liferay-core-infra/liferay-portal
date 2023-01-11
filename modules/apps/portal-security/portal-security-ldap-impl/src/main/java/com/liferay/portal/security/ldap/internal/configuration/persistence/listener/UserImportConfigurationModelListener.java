@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.exportimport.LDAPUserImporter;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration;
 import com.liferay.portal.security.ldap.internal.constants.LDAPDestinationNames;
@@ -70,6 +71,10 @@ public class UserImportConfigurationModelListener
 
 	@Activate
 	protected void activate() {
+		_ldapImportConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPImportConfiguration.class);
+
 		LDAPImportConfiguration ldapImportConfiguration =
 			_ldapImportConfigurationProvider.getConfiguration(0L);
 
@@ -168,14 +173,14 @@ public class UserImportConfigurationModelListener
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
+
 	@Reference(
 		target = "(destination.name=" + LDAPDestinationNames.SCHEDULED_USER_LDAP_IMPORT + ")"
 	)
 	private Destination _destination;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)"
-	)
 	private ConfigurationProvider<LDAPImportConfiguration>
 		_ldapImportConfigurationProvider;
 

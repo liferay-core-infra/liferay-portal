@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration;
 import com.liferay.portal.security.ldap.constants.LDAPConstants;
@@ -93,7 +94,11 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 					" with properties: ", dictionary));
 		}
 
-		_ldapAuthConfigurationProvider.updateProperties(companyId, dictionary);
+		ConfigurationProvider<LDAPAuthConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPAuthConfiguration.class);
+
+		configurationProvider.updateProperties(companyId, dictionary);
 	}
 
 	private void _verifyLDAPExportProperties(long companyId) {
@@ -116,8 +121,11 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 					" with properties: ", dictionary));
 		}
 
-		_ldapExportConfigurationProvider.updateProperties(
-			companyId, dictionary);
+		ConfigurationProvider<LDAPExportConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPExportConfiguration.class);
+
+		configurationProvider.updateProperties(companyId, dictionary);
 	}
 
 	private void _verifyLDAPImportProperties(long companyId) {
@@ -188,8 +196,11 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 					" with properties: ", dictionary));
 		}
 
-		_ldapImportConfigurationProvider.updateProperties(
-			companyId, dictionary);
+		ConfigurationProvider<LDAPImportConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPImportConfiguration.class);
+
+		configurationProvider.updateProperties(companyId, dictionary);
 	}
 
 	private void _verifyLDAPProperties() throws Exception {
@@ -385,7 +396,11 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 					dictionary));
 		}
 
-		_ldapServerConfigurationProvider.updateProperties(
+		ConfigurationProvider<LDAPServerConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+
+		configurationProvider.updateProperties(
 			companyId, ldapServerId, dictionary);
 	}
 
@@ -471,8 +486,11 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 					" with properties: ", dictionary));
 		}
 
-		_systemLDAPConfigurationProvider.updateProperties(
-			companyId, dictionary);
+		ConfigurationProvider<SystemLDAPConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				SystemLDAPConfiguration.class);
+
+		configurationProvider.updateProperties(companyId, dictionary);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -481,40 +499,13 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration)"
-	)
-	private ConfigurationProvider<LDAPAuthConfiguration>
-		_ldapAuthConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPExportConfiguration)"
-	)
-	private ConfigurationProvider<LDAPExportConfiguration>
-		_ldapExportConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)"
-	)
-	private ConfigurationProvider<LDAPImportConfiguration>
-		_ldapImportConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
-	private ConfigurationProvider<LDAPServerConfiguration>
-		_ldapServerConfigurationProvider;
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
 
 	@Reference
 	private LDAPSettings _ldapSettings;
 
 	@Reference
 	private PrefsProps _prefsProps;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration)"
-	)
-	private ConfigurationProvider<SystemLDAPConfiguration>
-		_systemLDAPConfigurationProvider;
 
 }

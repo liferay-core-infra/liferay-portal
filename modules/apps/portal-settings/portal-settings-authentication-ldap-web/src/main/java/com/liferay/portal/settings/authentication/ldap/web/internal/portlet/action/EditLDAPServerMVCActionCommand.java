@@ -133,52 +133,6 @@ public class EditLDAPServerMVCActionCommand extends BaseMVCActionCommand {
 			_portlet, _servletContext);
 	}
 
-	@Reference(unbind = "-")
-	protected void setCounterLocalService(
-		CounterLocalService counterLocalService) {
-
-		_counterLocalService = counterLocalService;
-	}
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)",
-		unbind = "-"
-	)
-	protected void setLDAPServerConfigurationProvider(
-		ConfigurationProvider<LDAPServerConfiguration>
-			ldapServerConfigurationProvider) {
-
-		_ldapServerConfigurationProvider = ldapServerConfigurationProvider;
-	}
-
-	@Reference(unbind = "-")
-	protected void setPortal(Portal portal) {
-		_portal = portal;
-	}
-
-	@Reference(
-		target = "(javax.portlet.name=" + ConfigurationAdminPortletKeys.INSTANCE_SETTINGS + ")",
-		unbind = "-"
-	)
-	protected void setPortlet(Portlet portlet) {
-		_portlet = portlet;
-	}
-
-	@Reference(unbind = "-")
-	protected void setPortletContextFactory(
-		PortletContextFactory portletContextFactory) {
-
-		_portletContextFactory = portletContextFactory;
-	}
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.portal.settings.authentication.ldap.web)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private void _deleteLDAPServer(ActionRequest actionRequest)
 		throws Exception {
 
@@ -302,18 +256,34 @@ public class EditLDAPServerMVCActionCommand extends BaseMVCActionCommand {
 		_ldapFilterValidator.validate(groupFilter, "importGroupSearchFilter");
 	}
 
-	private static ConfigurationProvider<LDAPServerConfiguration>
-		_ldapServerConfigurationProvider;
-
+	@Reference
 	private CounterLocalService _counterLocalService;
 
 	@Reference
 	private LDAPFilterValidator _ldapFilterValidator;
 
+	@Reference(
+		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
+	)
+	private ConfigurationProvider<LDAPServerConfiguration>
+		_ldapServerConfigurationProvider;
+
+	@Reference
 	private Portal _portal;
+
+	@Reference(
+		target = "(javax.portlet.name=" + ConfigurationAdminPortletKeys.INSTANCE_SETTINGS + ")"
+	)
 	private Portlet _portlet;
+
 	private PortletContext _portletContext;
+
+	@Reference
 	private PortletContextFactory _portletContextFactory;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.portal.settings.authentication.ldap.web)"
+	)
 	private ServletContext _servletContext;
 
 }

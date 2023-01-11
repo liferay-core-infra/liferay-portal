@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.ldap.DuplicateLDAPServerNameException;
 import com.liferay.portal.security.ldap.LDAPServerNameException;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.constants.LDAPConstants;
 import com.liferay.portal.security.ldap.validator.LDAPFilterException;
@@ -129,6 +130,9 @@ public class EditLDAPServerMVCActionCommand extends BaseMVCActionCommand {
 
 	@Activate
 	protected void activate() {
+		_ldapServerConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
 		_portletContext = _portletContextFactory.createUntrackedInstance(
 			_portlet, _servletContext);
 	}
@@ -257,14 +261,14 @@ public class EditLDAPServerMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
+
+	@Reference
 	private CounterLocalService _counterLocalService;
 
 	@Reference
 	private LDAPFilterValidator _ldapFilterValidator;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
 

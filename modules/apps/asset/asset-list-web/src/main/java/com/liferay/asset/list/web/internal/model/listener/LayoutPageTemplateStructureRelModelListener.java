@@ -35,8 +35,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.Portal;
 
-import java.util.Optional;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -80,11 +78,12 @@ public class LayoutPageTemplateStructureRelModelListener
 			return;
 		}
 
-		ServiceContext serviceContext = Optional.ofNullable(
-			ServiceContextThreadLocal.getServiceContext()
-		).orElse(
-			new ServiceContext()
-		);
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		if (serviceContext == null) {
+			serviceContext = new ServiceContext();
+		}
 
 		try {
 			_assetListEntryUsageLocalService.addAssetListEntryUsage(

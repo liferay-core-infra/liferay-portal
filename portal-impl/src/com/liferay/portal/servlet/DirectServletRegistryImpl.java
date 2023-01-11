@@ -105,21 +105,7 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 	}
 
 	protected long getFileLastModified(String path, Servlet servlet) {
-		ServletConfig servletConfig = servlet.getServletConfig();
-
-		ServletContext servletContext = servletConfig.getServletContext();
-
-		String servletContextPath = servletContext.getContextPath();
-
-		if (!Validator.isBlank(servletContextPath) &&
-			path.startsWith(servletContextPath)) {
-
-			path = path.substring(servletContextPath.length());
-		}
-
-		String rootPath = servletContext.getRealPath(StringPool.BLANK);
-
-		File file = new File(rootPath, path);
+		File file = _getFile(path, servlet);
 
 		if (file.exists()) {
 			return file.lastModified();
@@ -209,15 +195,27 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 	}
 
 	protected void updateFileLastModified(String path, Servlet servlet) {
+		File file = _getFile(path, servlet);
+
+		file.setLastModified(System.currentTimeMillis());
+	}
+
+	private File _getFile(String path, Servlet servlet) {
 		ServletConfig servletConfig = servlet.getServletConfig();
 
 		ServletContext servletContext = servletConfig.getServletContext();
 
+		String servletContextPath = servletContext.getContextPath();
+
+		if (!Validator.isBlank(servletContextPath) &&
+			path.startsWith(servletContextPath)) {
+
+			path = path.substring(servletContextPath.length());
+		}
+
 		String rootPath = servletContext.getRealPath(StringPool.BLANK);
 
-		File file = new File(rootPath, path);
-
-		file.setLastModified(System.currentTimeMillis());
+		return new File(rootPath, path);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

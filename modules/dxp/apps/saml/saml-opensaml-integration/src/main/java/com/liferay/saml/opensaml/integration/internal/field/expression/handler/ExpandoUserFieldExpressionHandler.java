@@ -46,6 +46,7 @@ import com.liferay.portal.security.ldap.SafeLdapFilterFactory;
 import com.liferay.portal.security.ldap.SafeLdapNameFactory;
 import com.liferay.portal.security.ldap.SafePortalLDAP;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.exportimport.LDAPUserImporter;
 import com.liferay.portal.security.ldap.util.LDAPUtil;
@@ -145,6 +146,10 @@ public class ExpandoUserFieldExpressionHandler
 
 		userIdentifier = _getNormalizedData(
 			companyId, userIdentifierExpression, userIdentifier);
+
+		_ldapServerConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
 
 		Collection<LDAPServerConfiguration> ldapServerConfigurations =
 			_ldapServerConfigurationProvider.getConfigurations(companyId);
@@ -618,6 +623,9 @@ public class ExpandoUserFieldExpressionHandler
 		).build();
 
 	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
+
+	@Reference
 	private ExpandoColumnLocalService _expandoColumnLocalService;
 
 	@Reference
@@ -629,9 +637,6 @@ public class ExpandoUserFieldExpressionHandler
 	@Reference
 	private LDAPFilterValidator _ldapFilterValidator;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
 

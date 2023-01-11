@@ -23,6 +23,10 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
  */
 public interface FacetProcessor<T> {
 
+	public static final String DEFAULT = "DEFAULT";
+
+	public String getFacetClassName();
+
 	public AggregationBuilder processFacet(Facet facet);
 
 }

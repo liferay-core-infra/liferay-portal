@@ -37,6 +37,11 @@ public class CompositeFacetProcessor
 	implements FacetProcessor<SearchRequestBuilder> {
 
 	@Override
+	public String getFacetClassName() {
+		return null;
+	}
+
+	@Override
 	public AggregationBuilder processFacet(Facet facet) {
 		Class<?> clazz = facet.getClass();
 

@@ -37,12 +37,14 @@ import org.osgi.service.component.annotations.Component;
  * @author Milen Dyankov
  * @author Tibor Lipusz
  */
-@Component(
-	property = "class.name=com.liferay.portal.kernel.search.facet.RangeFacet",
-	service = FacetProcessor.class
-)
+@Component(service = FacetProcessor.class)
 public class RangeFacetProcessor
 	implements FacetProcessor<SearchRequestBuilder> {
+
+	@Override
+	public String getFacetClassName() {
+		return "com.liferay.portal.kernel.search.facet.RangeFacet";
+	}
 
 	@Override
 	public AggregationBuilder processFacet(Facet facet) {

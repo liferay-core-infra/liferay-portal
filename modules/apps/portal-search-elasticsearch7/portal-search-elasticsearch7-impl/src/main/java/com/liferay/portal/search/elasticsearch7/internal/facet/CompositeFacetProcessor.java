@@ -15,7 +15,6 @@
 package com.liferay.portal.search.elasticsearch7.internal.facet;
 
 import com.liferay.portal.kernel.search.facet.Facet;
-import com.liferay.portal.kernel.util.MapUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,25 +58,26 @@ public class CompositeFacetProcessor
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(&(class.name=*)(!(class.name=DEFAULT)))"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void setFacetProcessor(
-		FacetProcessor<SearchRequestBuilder> facetProcessor,
-		Map<String, Object> properties) {
+		FacetProcessor<SearchRequestBuilder> facetProcessor) {
 
-		String className = MapUtil.getString(properties, "class.name");
+		String facetClassName = facetProcessor.getFacetClassName();
 
-		_facetProcessors.put(className, facetProcessor);
+		if (facetClassName != null) {
+			_facetProcessors.put(facetClassName, facetProcessor);
+		}
 	}
 
 	protected void unsetFacetProcessor(
-		FacetProcessor<SearchRequestBuilder> facetProcessor,
-		Map<String, Object> properties) {
+		FacetProcessor<SearchRequestBuilder> facetProcessor) {
 
-		String className = MapUtil.getString(properties, "class.name");
+		String facetClassName = facetProcessor.getFacetClassName();
 
-		_facetProcessors.remove(className);
+		if (facetClassName != null) {
+			_facetProcessors.remove(facetClassName, facetProcessor);
+		}
 	}
 
 	@Reference(service = DefaultFacetProcessor.class)

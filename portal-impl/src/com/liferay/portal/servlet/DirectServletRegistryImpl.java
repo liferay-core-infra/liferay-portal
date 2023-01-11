@@ -213,9 +213,7 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 			path = path.substring(servletContextPath.length());
 		}
 
-		String rootPath = servletContext.getRealPath(StringPool.BLANK);
-
-		return new File(rootPath, path);
+		return new File(servletContext.getRealPath(StringPool.BLANK), path);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -14,19 +14,18 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.facet;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.search.facet.Facet;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Michael C. Han
@@ -45,41 +44,40 @@ public class CompositeFacetProcessor
 		Class<?> clazz = facet.getClass();
 
 		FacetProcessor<SearchRequestBuilder> facetProcessor =
-			_facetProcessors.get(clazz.getName());
+			_serviceTrackerMap.getService(clazz.getName());
 
 		if (facetProcessor == null) {
-			facetProcessor = _facetProcessors.get(FacetProcessor.DEFAULT);
+			facetProcessor = _serviceTrackerMap.getService(
+				FacetProcessor.DEFAULT);
 		}
 
 		return facetProcessor.processFacet(facet);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setFacetProcessor(
-		FacetProcessor<SearchRequestBuilder> facetProcessor) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext,
+			(Class<FacetProcessor<SearchRequestBuilder>>)
+				(Class<?>)FacetProcessor.class,
+			null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(facetProcessor, emitter) -> {
+					String facetClassName = facetProcessor.getFacetClassName();
 
-		String facetClassName = facetProcessor.getFacetClassName();
-
-		if (facetClassName != null) {
-			_facetProcessors.put(facetClassName, facetProcessor);
-		}
+					if (facetClassName != null) {
+						emitter.emit(facetClassName);
+					}
+				}));
 	}
 
-	protected void unsetFacetProcessor(
-		FacetProcessor<SearchRequestBuilder> facetProcessor) {
-
-		String facetClassName = facetProcessor.getFacetClassName();
-
-		if (facetClassName != null) {
-			_facetProcessors.remove(facetClassName, facetProcessor);
-		}
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
-	private final Map<String, FacetProcessor<SearchRequestBuilder>>
-		_facetProcessors = new HashMap<>();
+	private ServiceTrackerMap<String, FacetProcessor<SearchRequestBuilder>>
+		_serviceTrackerMap;
 
 }

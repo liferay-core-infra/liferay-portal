@@ -36,7 +36,6 @@ import com.liferay.portal.search.tuning.rankings.web.internal.index.name.Ranking
 import com.liferay.portal.search.tuning.rankings.web.internal.util.RankingResultUtil;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -108,20 +107,16 @@ public class RankingGetHiddenResultsBuilder {
 	}
 
 	protected JSONArray buildDocuments(List<String> ids, Ranking ranking) {
-		Stream<String> stringStream = ids.stream();
-
-		Stream<JSONObject> jsonObjectStream = stringStream.map(
-			id -> _getDocument(
-				ranking.getIndexName(), id, LIFERAY_DOCUMENT_TYPE)
-		).filter(
-			document -> document != null
-		).map(
-			this::translate
-		);
-
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		jsonObjectStream.forEach(jsonArray::put);
+		for (String id : ids) {
+			Document document = _getDocument(
+				ranking.getIndexName(), id, LIFERAY_DOCUMENT_TYPE);
+
+			if (document != null) {
+				jsonArray.put(translate(document));
+			}
+		}
 
 		return jsonArray;
 	}

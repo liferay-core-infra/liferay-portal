@@ -53,11 +53,11 @@ public class XMLLog4jFileCheck extends BaseFileCheck {
 			fileName, rootElement, "category", null,
 			new ElementComparator(true));
 
-		for (Element loggerElement :
+		for (Element loggersElement :
 				(List<Element>)rootElement.elements("Loggers")) {
 
 			checkElementOrder(
-				fileName, loggerElement, "Logger", null,
+				fileName, loggersElement, "Logger", null,
 				new ElementComparator(true));
 		}
 	}

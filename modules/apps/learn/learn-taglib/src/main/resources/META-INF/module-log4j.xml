@@ -2,6 +2,6 @@
 
 <Configuration strict="true">
 	<Loggers>
-		<Logger level="ERROR" name="com.liferay.learn.taglib.internal.web.cache.JSONObjectWebCacheItem" />
+		<Logger level="ERROR" name="com.liferay.learn.LearnMessageUtil" />
 	</Loggers>
 </Configuration>

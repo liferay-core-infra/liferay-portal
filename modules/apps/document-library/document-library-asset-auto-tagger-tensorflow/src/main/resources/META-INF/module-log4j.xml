@@ -1,7 +1,4 @@
 <?xml version="1.0"?>
 
 <Configuration strict="true">
-	<Loggers>
-		<Logger level="INFO" name="com.liferay.document.library.asset.auto.tagger.tensorflow.internal.util.InceptionImageLabeler" />
-	</Loggers>
 </Configuration>

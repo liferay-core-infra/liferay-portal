@@ -2,6 +2,6 @@
 
 <Configuration strict="true">
 	<Loggers>
-		<Logger level="WARN" name="com.liferay.layout.page.template.internal.upgrade.v1_1_0.UpgradeLayoutPrototype" />
+		<Logger level="WARN" name="com.liferay.layout.page.template.internal.upgrade.v1_1_0.LayoutPrototypeUpgradeProcess" />
 	</Loggers>
 </Configuration>

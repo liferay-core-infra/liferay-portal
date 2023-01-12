@@ -2,6 +2,6 @@
 
 <Configuration strict="true">
 	<Loggers>
-		<Logger level="ERROR" name="com.liferay.wiki.web.wiki.portlet.action.ExportPageMVCActionCommand" />
+		<Logger level="ERROR" name="com.liferay.wiki.web.internal.portlet.action.ExportPageMVCActionCommand" />
 	</Loggers>
 </Configuration>

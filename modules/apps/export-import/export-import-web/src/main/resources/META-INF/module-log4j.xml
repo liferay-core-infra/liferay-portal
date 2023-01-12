@@ -2,8 +2,8 @@
 
 <Configuration strict="true">
 	<Loggers>
-		<Logger level="WARN" name="com.liferay.exportimport.web.messaging" />
-		<Logger level="ERROR" name="com.liferay.exportimport.web.portlet.action" />
-		<Logger level="ERROR" name="com.liferay.exportimport.web.upgrade" />
+		<Logger level="WARN" name="com.liferay.exportimport.web.internal.messaging" />
+		<Logger level="ERROR" name="com.liferay.exportimport.web.internal.portlet.action" />
+		<Logger level="ERROR" name="com.liferay.exportimport.web.internal.upgrade" />
 	</Loggers>
 </Configuration>

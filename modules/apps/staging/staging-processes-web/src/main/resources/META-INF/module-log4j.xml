@@ -2,6 +2,6 @@
 
 <Configuration strict="true">
 	<Loggers>
-		<Logger level="ERROR" name="com.liferay.staging.processes.web.portlet.action" />
+		<Logger level="ERROR" name="com.liferay.staging.processes.web.internal.portlet.action" />
 	</Loggers>
 </Configuration>

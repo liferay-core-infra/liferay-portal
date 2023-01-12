@@ -2,6 +2,6 @@
 
 <Configuration strict="true">
 	<Loggers>
-		<Logger level="WARN" name="com.liferay.dynamic.data.mapping.form.evaluator.internal.functions.CallFunction" />
+		<Logger level="WARN" name="com.liferay.dynamic.data.mapping.form.evaluator.internal.function.CallFunction" />
 	</Loggers>
 </Configuration>

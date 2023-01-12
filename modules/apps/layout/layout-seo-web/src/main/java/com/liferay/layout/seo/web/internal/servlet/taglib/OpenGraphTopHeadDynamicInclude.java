@@ -371,9 +371,7 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 			availableLocales.add(LocaleUtil.fromLanguageId(languageId));
 		}
 
-		if (!availableLocales.contains(siteDefaultLocale)) {
-			availableLocales.add(siteDefaultLocale);
-		}
+		availableLocales.add(siteDefaultLocale);
 
 		return availableLocales;
 	}

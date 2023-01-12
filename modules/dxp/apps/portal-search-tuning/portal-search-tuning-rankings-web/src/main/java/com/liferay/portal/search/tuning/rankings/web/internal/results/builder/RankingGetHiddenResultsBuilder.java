@@ -15,6 +15,7 @@
 package com.liferay.portal.search.tuning.rankings.web.internal.results.builder;
 
 import com.liferay.document.library.kernel.service.DLAppLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -36,8 +37,8 @@ import com.liferay.portal.search.tuning.rankings.web.internal.index.name.Ranking
 import com.liferay.portal.search.tuning.rankings.web.internal.util.RankingResultUtil;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -111,20 +112,19 @@ public class RankingGetHiddenResultsBuilder {
 	}
 
 	protected JSONArray buildDocuments(List<String> ids, Ranking ranking) {
-		Stream<String> stringStream = ids.stream();
-
-		Stream<JSONObject> jsonObjectStream = stringStream.map(
-			id -> _getDocument(
-				ranking.getIndexName(), id, LIFERAY_DOCUMENT_TYPE)
-		).filter(
-			document -> document != null
-		).map(
-			this::translate
-		);
-
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		jsonObjectStream.forEach(jsonArray::put);
+		List<Document> documents = TransformUtil.transform(
+			ids,
+			id -> _getDocument(
+				ranking.getIndexName(), id, LIFERAY_DOCUMENT_TYPE));
+
+		List<Document> isNotNullDocuments = ListUtil.filter(
+			documents, Objects::nonNull);
+
+		for (Document document : isNotNullDocuments) {
+			jsonArray.put(translate(document));
+		}
 
 		return jsonArray;
 	}

@@ -115,8 +115,26 @@ public class SearchRequestExecutorFixture {
 			_defaultFacetTranslator, "deactivate", new Class<?>[0]);
 	}
 
-	protected static CommonSearchSourceBuilderAssembler
-		createCommonSearchSourceBuilderAssembler(
+	protected static ComplexQueryBuilderFactory
+		createComplexQueryBuilderFactory(Queries queries) {
+
+		ComplexQueryBuilderFactoryImpl complexQueryBuilderFactoryImpl =
+			new ComplexQueryBuilderFactoryImpl();
+
+		ReflectionTestUtil.setFieldValue(
+			complexQueryBuilderFactoryImpl, "_queries", queries);
+
+		return complexQueryBuilderFactoryImpl;
+	}
+
+	protected void setElasticsearchClientResolver(
+		ElasticsearchClientResolver elasticsearchClientResolver) {
+
+		_elasticsearchClientResolver = elasticsearchClientResolver;
+	}
+
+	private CommonSearchSourceBuilderAssembler
+		_createCommonSearchSourceBuilderAssembler(
 			ElasticsearchQueryTranslator elasticsearchQueryTranslator,
 			StatsTranslator statsTranslator,
 			ComplexQueryBuilderFactory complexQueryBuilderFactory) {
@@ -182,25 +200,35 @@ public class SearchRequestExecutorFixture {
 		return commonSearchSourceBuilderAssembler;
 	}
 
-	protected static ComplexQueryBuilderFactory
-		createComplexQueryBuilderFactory(Queries queries) {
+	private CountSearchRequestExecutor _createCountSearchRequestExecutor(
+		ElasticsearchClientResolver elasticsearchClientResolver,
+		CommonSearchSourceBuilderAssembler commonSearchSourceBuilderAssembler,
+		StatsTranslator statsTranslator) {
 
-		ComplexQueryBuilderFactoryImpl complexQueryBuilderFactoryImpl =
-			new ComplexQueryBuilderFactoryImpl();
+		CountSearchRequestExecutor countSearchRequestExecutor =
+			new CountSearchRequestExecutorImpl();
+
+		CommonSearchResponseAssembler commonSearchResponseAssembler =
+			new CommonSearchResponseAssemblerImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			complexQueryBuilderFactoryImpl, "_queries", queries);
+			commonSearchResponseAssembler, "_statsTranslator", statsTranslator);
 
-		return complexQueryBuilderFactoryImpl;
+		ReflectionTestUtil.setFieldValue(
+			countSearchRequestExecutor, "_commonSearchResponseAssembler",
+			commonSearchResponseAssembler);
+
+		ReflectionTestUtil.setFieldValue(
+			countSearchRequestExecutor, "_commonSearchSourceBuilderAssembler",
+			commonSearchSourceBuilderAssembler);
+		ReflectionTestUtil.setFieldValue(
+			countSearchRequestExecutor, "_elasticsearchClientResolver",
+			elasticsearchClientResolver);
+
+		return countSearchRequestExecutor;
 	}
 
-	protected void setElasticsearchClientResolver(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
-
-		_elasticsearchClientResolver = elasticsearchClientResolver;
-	}
-
-	private static FacetTranslator _createFacetTranslator(
+	private FacetTranslator _createFacetTranslator(
 		QueryTranslator<QueryBuilder> queryTranslator) {
 
 		_defaultFacetTranslator = new DefaultFacetTranslator();
@@ -240,34 +268,6 @@ public class SearchRequestExecutorFixture {
 		return _defaultFacetTranslator;
 	}
 
-	private CountSearchRequestExecutor _createCountSearchRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver,
-		CommonSearchSourceBuilderAssembler commonSearchSourceBuilderAssembler,
-		StatsTranslator statsTranslator) {
-
-		CountSearchRequestExecutor countSearchRequestExecutor =
-			new CountSearchRequestExecutorImpl();
-
-		CommonSearchResponseAssembler commonSearchResponseAssembler =
-			new CommonSearchResponseAssemblerImpl();
-
-		ReflectionTestUtil.setFieldValue(
-			commonSearchResponseAssembler, "_statsTranslator", statsTranslator);
-
-		ReflectionTestUtil.setFieldValue(
-			countSearchRequestExecutor, "_commonSearchResponseAssembler",
-			commonSearchResponseAssembler);
-
-		ReflectionTestUtil.setFieldValue(
-			countSearchRequestExecutor, "_commonSearchSourceBuilderAssembler",
-			commonSearchSourceBuilderAssembler);
-		ReflectionTestUtil.setFieldValue(
-			countSearchRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
-
-		return countSearchRequestExecutor;
-	}
-
 	private MultisearchSearchRequestExecutor
 		_createMultisearchSearchRequestExecutor(
 			ElasticsearchClientResolver elasticsearchClientResolver,
@@ -299,7 +299,7 @@ public class SearchRequestExecutorFixture {
 		StatsTranslator statsTranslator) {
 
 		CommonSearchSourceBuilderAssembler commonSearchSourceBuilderAssembler =
-			createCommonSearchSourceBuilderAssembler(
+			_createCommonSearchSourceBuilderAssembler(
 				elasticsearchQueryTranslator, statsTranslator,
 				complexQueryBuilderFactory);
 
@@ -484,12 +484,12 @@ public class SearchRequestExecutorFixture {
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
-	private static DefaultFacetTranslator _defaultFacetTranslator;
-	private static final List
-		<ServiceRegistration<FacetProcessor<SearchRequestBuilder>>>
-			_serviceRegistrations = new ArrayList<>();
 
+	private DefaultFacetTranslator _defaultFacetTranslator;
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
 	private SearchRequestExecutor _searchRequestExecutor;
+	private final List
+		<ServiceRegistration<FacetProcessor<SearchRequestBuilder>>>
+			_serviceRegistrations = new ArrayList<>();
 
 }

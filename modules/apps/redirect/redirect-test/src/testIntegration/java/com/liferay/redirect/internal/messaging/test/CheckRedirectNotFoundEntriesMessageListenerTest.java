@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.SchedulerDispatchMessageListenerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.redirect.model.RedirectNotFoundEntry;
@@ -37,6 +38,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,6 +58,15 @@ public class CheckRedirectNotFoundEntriesMessageListenerTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() {
+		_checkRedirectNotFoundEntriesMessageListener =
+			SchedulerDispatchMessageListenerTestUtil.
+				getSchedulerDispatchMessageListener(
+					"com.liferay.redirect.internal.messaging." +
+						"CheckRedirectNotFoundEntriesMessageListener");
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -129,10 +140,7 @@ public class CheckRedirectNotFoundEntriesMessageListenerTest {
 			redirectNotFoundEntry);
 	}
 
-	@Inject(
-		filter = "component.name=*.CheckRedirectNotFoundEntriesMessageListener"
-	)
-	private MessageListener _checkRedirectNotFoundEntriesMessageListener;
+	private static MessageListener _checkRedirectNotFoundEntriesMessageListener;
 
 	@DeleteAfterTestRun
 	private Group _group;

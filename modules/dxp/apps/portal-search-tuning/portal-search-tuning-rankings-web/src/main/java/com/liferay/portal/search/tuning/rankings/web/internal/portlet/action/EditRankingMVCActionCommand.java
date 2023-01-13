@@ -52,9 +52,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -319,15 +316,7 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 		List<String> strings = new ArrayList<>(
 			editRankingMVCActionRequest.getAliases());
 
-		Stream<String> stream = strings.stream();
-
-		Predicate<String> predicate = this::_isUpdateSpecial;
-
-		return stream.filter(
-			predicate.negate()
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.filter(strings, string -> !_isUpdateSpecial(string));
 	}
 
 	private String _getCompanyIndexName() {
@@ -340,16 +329,13 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 
 		List<String> strings = editRankingMVCActionRequest.getAliases();
 
-		Stream<String> stream = strings.stream();
+		for (String string : strings) {
+			if (_isUpdateSpecial(string)) {
+				return _stripUpdateSpecial(string);
+			}
+		}
 
-		return stream.filter(
-			this::_isUpdateSpecial
-		).map(
-			this::_stripUpdateSpecial
-		).findAny(
-		).orElse(
-			oldName
-		);
+		return oldName;
 	}
 
 	private String[] _getRankingDocumentIds(
@@ -459,17 +445,17 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 		Collection<String> queryStrings = ranking.getQueryStrings();
 
 		if (editRankingMVCActionRequest.isCmd(Constants.UPDATE)) {
-			List<String> aliases = _getAliases(editRankingMVCActionRequest);
+			List<String> concatStrings = ListUtil.concat(
+				ListUtil.fromString(ranking.getQueryString()),
+				_getAliases(editRankingMVCActionRequest));
 
-			queryStrings = Stream.concat(
-				Stream.of(ranking.getQueryString()), aliases.stream()
-			).filter(
-				string -> !Validator.isBlank(string)
-			).distinct(
-			).sorted(
-			).collect(
-				Collectors.toList()
-			);
+			concatStrings = ListUtil.filter(
+				concatStrings,
+				concatString -> !Validator.isBlank(concatString));
+
+			ListUtil.distinct(concatStrings);
+
+			queryStrings = ListUtil.sort(concatStrings);
 		}
 
 		if (_detectedDuplicateQueryStrings(ranking, queryStrings)) {

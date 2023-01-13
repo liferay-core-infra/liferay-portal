@@ -428,13 +428,13 @@ public class SynchronousDestinationTestRule
 	}
 
 	private SyncHandler _createSyncHandler(Sync sync) {
-		SyncHandler syncHandler = new SyncHandler();
+		_syncHandler = new SyncHandler();
 
-		syncHandler.setSync(sync);
+		_syncHandler.setSync(sync);
 
-		syncHandler.enableSync();
+		_syncHandler.enableSync();
 
-		return syncHandler;
+		return _syncHandler;
 	}
 
 	private static final TransactionConfig _transactionConfig;
@@ -448,6 +448,8 @@ public class SynchronousDestinationTestRule
 
 		_transactionConfig = builder.build();
 	}
+
+	private SyncHandler _syncHandler;
 
 	private static class CleanTransactionSynchronousDestination
 		extends TestSynchronousDestination {

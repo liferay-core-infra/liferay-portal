@@ -14,21 +14,20 @@
 
 package com.liferay.portal.vulcan.internal.jaxrs;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory.ServiceWrapper;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.vulcan.jaxrs.JaxRsResourceRegistry;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Filter;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Carlos Correa
@@ -38,84 +37,44 @@ public class JaxRsResourceRegistryImpl implements JaxRsResourceRegistry {
 
 	@Override
 	public Object getPropertyValue(String className, String propertyName) {
-		Object object = null;
-
-		Map<String, Object> properties = _jaxRsResourceProperties.get(
+		ServiceWrapper<Object> serviceWrapper = _serviceTrackerMap.getService(
 			className);
 
-		if (properties != null) {
-			object = properties.get(propertyName);
+		if (serviceWrapper == null) {
+			return null;
 		}
 
-		return object;
+		Map<String, Object> properties = serviceWrapper.getProperties();
+
+		return properties.get(propertyName);
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext)
 		throws InvalidSyntaxException {
 
-		Filter filter = bundleContext.createFilter(
-			"(" + JaxrsWhiteboardConstants.JAX_RS_RESOURCE + "=true)");
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, null,
+			"(" + JaxrsWhiteboardConstants.JAX_RS_RESOURCE + "=true)",
+			(serviceReference, emitter) -> {
+				Object object = bundleContext.getService(serviceReference);
 
-		_serviceTracker = new ServiceTracker<>(
-			bundleContext, filter,
-			new JaxRsResourceTrackerCustomizer(bundleContext));
+				Class<?> clazz = object.getClass();
 
-		_serviceTracker.open();
+				emitter.emit(clazz.getName());
+
+				bundleContext.ungetService(serviceReference);
+			},
+			ServiceTrackerCustomizerFactory.<Object>serviceWrapper(
+				bundleContext));
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTracker.close();
+		_serviceTrackerMap.close();
 	}
 
-	private final Map<String, Map<String, Object>> _jaxRsResourceProperties =
-		new HashMap<>();
-	private ServiceTracker<?, ?> _serviceTracker;
-
-	private class JaxRsResourceTrackerCustomizer
-		implements ServiceTrackerCustomizer<Object, Object> {
-
-		@Override
-		public Object addingService(ServiceReference<Object> serviceReference) {
-			Object object = _bundleContext.getService(serviceReference);
-
-			Map<String, Object> properties = new HashMap<>();
-
-			for (String propertyKey : serviceReference.getPropertyKeys()) {
-				properties.put(
-					propertyKey, serviceReference.getProperty(propertyKey));
-			}
-
-			_jaxRsResourceProperties.put(_getClassName(object), properties);
-
-			return object;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<Object> serviceReference, Object object) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<Object> serviceReference, Object object) {
-
-			_jaxRsResourceProperties.remove(_getClassName(object));
-		}
-
-		private JaxRsResourceTrackerCustomizer(BundleContext bundleContext) {
-			_bundleContext = bundleContext;
-		}
-
-		private String _getClassName(Object object) {
-			Class<?> clazz = object.getClass();
-
-			return clazz.getName();
-		}
-
-		private final BundleContext _bundleContext;
-
-	}
+	private ServiceTrackerMap<String, ServiceWrapper<Object>>
+		_serviceTrackerMap;
 
 }

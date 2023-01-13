@@ -50,6 +50,7 @@ import com.liferay.calendar.util.RecurrenceUtil;
 import com.liferay.calendar.workflow.constants.CalendarBookingWorkflowConstants;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.message.boards.service.MBMessageLocalService;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
@@ -1697,7 +1698,11 @@ public class CalendarBookingLocalServiceImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, NotificationSender.class, "notification.type");
+			bundleContext, NotificationSender.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(notificationSender, emitter) -> emitter.emit(
+					notificationSender.getNotificationType())));
 	}
 
 	@Deactivate
@@ -1978,7 +1983,8 @@ public class CalendarBookingLocalServiceImpl
 		return notificationRecipients;
 	}
 
-	private NotificationSender _getNotificationSender(String notificationType)
+	private NotificationSender _getNotificationSender(
+			NotificationType notificationType)
 		throws Exception {
 
 		NotificationSender notificationSender = _serviceTrackerMap.getService(
@@ -2226,7 +2232,7 @@ public class CalendarBookingLocalServiceImpl
 		throws Exception {
 
 		NotificationSender notificationSender = _getNotificationSender(
-			notificationType.toString());
+			notificationType);
 
 		if (notificationTemplateType == NotificationTemplateType.DECLINE) {
 			User recipientUser = senderUser;
@@ -2315,7 +2321,7 @@ public class CalendarBookingLocalServiceImpl
 			User user = notificationRecipient.getUser();
 
 			NotificationSender notificationSender = _getNotificationSender(
-				notificationType.toString());
+				notificationType);
 
 			NotificationTemplateContext notificationTemplateContext =
 				NotificationTemplateContextFactory.getInstance(
@@ -2775,7 +2781,8 @@ public class CalendarBookingLocalServiceImpl
 	@Reference
 	private ResourceLocalService _resourceLocalService;
 
-	private ServiceTrackerMap<String, NotificationSender> _serviceTrackerMap;
+	private ServiceTrackerMap<NotificationType, NotificationSender>
+		_serviceTrackerMap;
 
 	@Reference
 	private SocialActivityCounterLocalService

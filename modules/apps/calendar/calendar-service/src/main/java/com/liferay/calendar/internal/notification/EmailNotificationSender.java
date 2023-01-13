@@ -22,6 +22,7 @@ import com.liferay.calendar.notification.NotificationRecipient;
 import com.liferay.calendar.notification.NotificationSender;
 import com.liferay.calendar.notification.NotificationSenderException;
 import com.liferay.calendar.notification.NotificationTemplateContext;
+import com.liferay.calendar.notification.NotificationType;
 import com.liferay.calendar.notification.NotificationUtil;
 import com.liferay.calendar.service.impl.CalendarBookingLocalServiceImpl;
 import com.liferay.portal.kernel.portlet.PortletProvider;
@@ -37,10 +38,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Eduardo Lundgren
  */
-@Component(
-	property = "notification.type=email", service = NotificationSender.class
-)
+@Component(service = NotificationSender.class)
 public class EmailNotificationSender implements NotificationSender {
+
+	@Override
+	public NotificationType getNotificationType() {
+		return NotificationType.EMAIL;
+	}
 
 	@Override
 	public void sendNotification(

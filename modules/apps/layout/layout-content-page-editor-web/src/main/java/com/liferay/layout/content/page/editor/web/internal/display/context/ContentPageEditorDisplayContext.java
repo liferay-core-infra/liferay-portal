@@ -859,12 +859,10 @@ public class ContentPageEditorDisplayContext {
 					_segmentsExperienceId);
 
 			if (segmentsExperience != null) {
-				_segmentsExperienceId =
-					segmentsExperience.getSegmentsExperienceId();
+				return segmentsExperience.getSegmentsExperienceId();
 			}
-			else {
-				_segmentsExperienceId = -1L;
-			}
+
+			_segmentsExperienceId = -1L;
 		}
 
 		if (_segmentsExperienceId == -1) {

@@ -58,7 +58,6 @@ import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.validator.WikiPageTitleValidator;
-import com.liferay.wiki.web.internal.translator.MediaWikiToCreoleTranslator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -179,8 +178,7 @@ public class MediaWikiImporter {
 
 	private void _importPage(
 			long userId, String author, WikiNode node, String title,
-			String content, String summary, Map<String, String> usersMap,
-			boolean strictImportMode)
+			String content, String summary, Map<String, String> usersMap)
 		throws PortalException {
 
 		try {
@@ -194,8 +192,6 @@ public class MediaWikiImporter {
 				content = _getCreoleRedirectContent(redirectTitle);
 			}
 			else {
-				content = _translateMediaWikiToCreole(
-					content, strictImportMode);
 				content = _translateMediaLinks(node, content);
 			}
 
@@ -446,8 +442,6 @@ public class MediaWikiImporter {
 
 		boolean importLatestVersion = MapUtil.getBoolean(
 			options, WikiWebKeys.OPTIONS_IMPORT_LATEST_VERSION);
-		boolean strictImportMode = MapUtil.getBoolean(
-			options, WikiWebKeys.OPTIONS_STRICT_IMPORT_MODE);
 
 		ProgressTracker progressTracker =
 			ProgressTrackerThreadLocal.getProgressTracker();
@@ -503,8 +497,8 @@ public class MediaWikiImporter {
 
 				try {
 					_importPage(
-						userId, author, node, title, content, summary, usersMap,
-						strictImportMode);
+						userId, author, node, title, content, summary,
+						usersMap);
 				}
 				catch (Exception exception) {
 					if (_log.isWarnEnabled()) {
@@ -763,14 +757,6 @@ public class MediaWikiImporter {
 		}
 	}
 
-	private String _translateMediaWikiToCreole(
-		String content, boolean strictImportMode) {
-
-		_translator.setStrictImportMode(strictImportMode);
-
-		return _translator.translate(content);
-	}
-
 	private static final String _WORK_IN_PROGRESS = "{{Work in progress}}";
 
 	private static final String _WORK_IN_PROGRESS_TAG = "work in progress";
@@ -797,9 +783,6 @@ public class MediaWikiImporter {
 
 	@Reference
 	private PortletFileRepository _portletFileRepository;
-
-	private final MediaWikiToCreoleTranslator _translator =
-		new MediaWikiToCreoleTranslator();
 
 	@Reference
 	private UserLocalService _userLocalService;

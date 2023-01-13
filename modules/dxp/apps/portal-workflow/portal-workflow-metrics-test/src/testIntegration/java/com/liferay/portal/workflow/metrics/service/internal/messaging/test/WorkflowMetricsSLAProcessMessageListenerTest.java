@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.test.rule.DataGuard;
+import com.liferay.portal.kernel.test.util.SchedulerDispatchMessageListenerTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
@@ -27,6 +28,7 @@ import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsInde
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionLocalService;
 import com.liferay.portal.workflow.metrics.service.util.BaseWorkflowMetricsIndexerTestCase;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -37,6 +39,18 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class WorkflowMetricsSLAProcessMessageListenerTest
 	extends BaseWorkflowMetricsIndexerTestCase {
+
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+
+		_workflowMetricsSLAProcessMessageListener =
+			SchedulerDispatchMessageListenerTestUtil.
+				getSchedulerDispatchMessageListener(
+					"com.liferay.portal.workflow.metrics.internal.messaging." +
+						"WorkflowMetricsSLAProcessMessageListener");
+	}
 
 	@Test
 	public void testProcess() throws Exception {
@@ -199,9 +213,6 @@ public class WorkflowMetricsSLAProcessMessageListenerTest
 	private WorkflowMetricsSLADefinitionLocalService
 		_workflowMetricsSLADefinitionLocalService;
 
-	@Inject(
-		filter = "(&(component.name=com.liferay.portal.workflow.metrics.internal.messaging.WorkflowMetricsSLAProcessMessageListener))"
-	)
 	private MessageListener _workflowMetricsSLAProcessMessageListener;
 
 }

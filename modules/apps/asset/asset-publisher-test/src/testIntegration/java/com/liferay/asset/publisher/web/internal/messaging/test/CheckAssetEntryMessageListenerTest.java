@@ -19,14 +19,15 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.SchedulerDispatchMessageListenerTestUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.Serializable;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -42,6 +43,15 @@ public class CheckAssetEntryMessageListenerTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
+
+	@BeforeClass
+	public static void setUpClass() {
+		_messageListener =
+			SchedulerDispatchMessageListenerTestUtil.
+				getSchedulerDispatchMessageListener(
+					"com.liferay.asset.publisher.web.internal.messaging." +
+						"CheckAssetEntryMessageListener");
+	}
 
 	@Test
 	public void testGetTriggerEmptyCronExpression() {
@@ -113,7 +123,6 @@ public class CheckAssetEntryMessageListenerTest {
 		Assert.assertEquals(cronExpression, actualCronExpression);
 	}
 
-	@Inject(filter = "component.name=*.CheckAssetEntryMessageListener")
-	private MessageListener _messageListener;
+	private static MessageListener _messageListener;
 
 }

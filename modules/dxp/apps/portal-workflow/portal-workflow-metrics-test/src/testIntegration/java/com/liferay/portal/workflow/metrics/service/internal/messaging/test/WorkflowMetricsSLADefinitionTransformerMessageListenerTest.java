@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.test.rule.DataGuard;
+import com.liferay.portal.kernel.test.util.SchedulerDispatchMessageListenerTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
@@ -31,6 +32,7 @@ import com.liferay.portal.workflow.metrics.service.util.BaseWorkflowMetricsTestC
 import com.liferay.portal.workflow.metrics.service.util.WorkflowDefinitionUtil;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,6 +43,16 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class WorkflowMetricsSLADefinitionTransformerMessageListenerTest
 	extends BaseWorkflowMetricsTestCase {
+
+	@BeforeClass
+	public static void setUpClass() {
+		_workflowMetricsSLADefinitionTransformerMessageListener =
+			SchedulerDispatchMessageListenerTestUtil.
+				getSchedulerDispatchMessageListener(
+					"com.liferay.portal.workflow.metrics.internal.messaging." +
+						"WorkflowMetricsSLADefinitionTransformerMessage" +
+							"Listener");
+	}
 
 	@Test
 	public void testTransform1() throws Exception {
@@ -172,6 +184,9 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListenerTest
 			workflowMetricsSLADefinitionVersion.getStatus());
 	}
 
+	private static MessageListener
+		_workflowMetricsSLADefinitionTransformerMessageListener;
+
 	@Inject(filter = "workflow.metrics.index.entity.name=node")
 	private WorkflowMetricsIndexNameBuilder
 		_nodeWorkflowMetricsIndexNameBuilder;
@@ -183,12 +198,6 @@ public class WorkflowMetricsSLADefinitionTransformerMessageListenerTest
 	@Inject
 	private WorkflowMetricsSLADefinitionLocalService
 		_workflowMetricsSLADefinitionLocalService;
-
-	@Inject(
-		filter = "(&(objectClass=com.liferay.portal.workflow.metrics.internal.messaging.WorkflowMetricsSLADefinitionTransformerMessageListener))"
-	)
-	private MessageListener
-		_workflowMetricsSLADefinitionTransformerMessageListener;
 
 	@Inject
 	private WorkflowMetricsSLADefinitionVersionLocalService

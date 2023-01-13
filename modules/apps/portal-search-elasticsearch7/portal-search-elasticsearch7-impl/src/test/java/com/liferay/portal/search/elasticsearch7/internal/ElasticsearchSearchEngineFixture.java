@@ -87,6 +87,7 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 	@Override
 	public void tearDown() throws Exception {
 		_elasticsearchConnectionFixture.destroyNode();
+		_elasticsearchEngineAdapterFixture.tearDown();
 	}
 
 	protected static ElasticsearchConfigurationWrapper
@@ -182,21 +183,23 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 	private SearchEngineAdapter _createSearchEngineAdapter(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
-		ElasticsearchEngineAdapterFixture elasticsearchEngineAdapterFixture =
+		_elasticsearchEngineAdapterFixture =
 			new ElasticsearchEngineAdapterFixture() {
 				{
 					setElasticsearchClientResolver(elasticsearchClientResolver);
 				}
 			};
 
-		elasticsearchEngineAdapterFixture.setUp();
+		_elasticsearchEngineAdapterFixture.setUp();
 
-		return elasticsearchEngineAdapterFixture.getSearchEngineAdapter();
+		return _elasticsearchEngineAdapterFixture.getSearchEngineAdapter();
 	}
 
 	private final ElasticsearchConnectionFixture
 		_elasticsearchConnectionFixture;
 	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
+	private ElasticsearchEngineAdapterFixture
+		_elasticsearchEngineAdapterFixture;
 	private ElasticsearchSearchEngine _elasticsearchSearchEngine;
 	private IndexNameBuilder _indexNameBuilder;
 

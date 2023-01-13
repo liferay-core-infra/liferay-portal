@@ -8,7 +8,7 @@ Import-Package:\
 	*
 Main-Class: com.liferay.tld.formatter.TLDFormatter
 -includeresource:\
-	@com.liferay.petra.xml-*.jar!/com/liferay/petra/xml/Dom4jUtil.class,\
+	@com.liferay.petra.string-*.jar!/com/liferay/petra/string/StringPool.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/tools/ArgumentsMap.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/tools/ArgumentsUtil.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/util/EntityResolver.class,\

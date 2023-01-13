@@ -14,9 +14,13 @@
 
 package com.liferay.tld.formatter;
 
-import com.liferay.petra.xml.Dom4jUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tools.ArgumentsUtil;
 import com.liferay.portal.xml.SAXReaderFactory;
 
@@ -38,7 +42,10 @@ import java.util.TreeMap;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 /**
  * @author Brian Wing Shun Chan
@@ -102,6 +109,41 @@ public class TLDFormatter {
 		return _modifiedFileNames;
 	}
 
+	private String _documentToString(Node node) throws Exception {
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		OutputFormat outputFormat = OutputFormat.createPrettyPrint();
+
+		outputFormat.setExpandEmptyElements(false);
+		outputFormat.setIndent(StringPool.TAB);
+		outputFormat.setLineSeparator(StringPool.NEW_LINE);
+		outputFormat.setTrimText(true);
+
+		XMLWriter xmlWriter = new XMLWriter(
+			unsyncByteArrayOutputStream, outputFormat);
+
+		xmlWriter.write(node);
+
+		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
+			new UnsyncStringReader(
+				unsyncByteArrayOutputStream.toString(StringPool.UTF8)));
+
+		StringBundler sb = new StringBundler();
+
+		String line = null;
+
+		while ((line = unsyncBufferedReader.readLine()) != null) {
+			line = StringUtil.trimTrailing(line);
+
+			sb.append(line);
+
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		return sb.toString();
+	}
+
 	private void _formatTLD(Path file) throws Exception {
 		String content = new String(
 			Files.readAllBytes(file), StandardCharsets.UTF_8);
@@ -129,7 +171,7 @@ public class TLDFormatter {
 			}
 		}
 
-		String newContent = Dom4jUtil.toString(document);
+		String newContent = _documentToString(document);
 
 		int x = newContent.indexOf("<tlib-version");
 		int y = newContent.indexOf("</taglib>");

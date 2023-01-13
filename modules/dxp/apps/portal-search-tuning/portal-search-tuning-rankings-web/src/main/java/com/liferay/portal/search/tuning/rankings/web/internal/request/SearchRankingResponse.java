@@ -31,8 +31,8 @@ public class SearchRankingResponse {
 		return _documents;
 	}
 
-	public Optional<String> getKeywordsOptional() {
-		return Optional.ofNullable(_keywords);
+	public String getKeywords() {
+		return _keywords;
 	}
 
 	public int getPaginationDelta() {

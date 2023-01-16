@@ -142,6 +142,27 @@ public class ListUtil {
 		return false;
 	}
 
+	public static <T> Collection<T> filter(
+		Collection<? extends T> inputCollection, List<T> outputList,
+		Predicate<T> predicate) {
+
+		for (T item : inputCollection) {
+			if (predicate.test(item)) {
+				outputList.add(item);
+			}
+		}
+
+		return outputList;
+	}
+
+	public static <T> Collection<T> filter(
+		Collection<? extends T> inputCollection, Predicate<T> predicate) {
+
+		return filter(
+			inputCollection, new ArrayList<T>(inputCollection.size()),
+			predicate);
+	}
+
 	public static <T> List<T> filter(
 		List<? extends T> inputList, List<T> outputList,
 		Predicate<T> predicate) {

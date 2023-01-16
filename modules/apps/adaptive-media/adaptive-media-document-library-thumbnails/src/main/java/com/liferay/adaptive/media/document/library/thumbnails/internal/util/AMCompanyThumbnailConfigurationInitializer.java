@@ -20,16 +20,16 @@ import com.liferay.adaptive.media.image.configuration.AMImageConfigurationHelper
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.PropsKeys;
 
 import java.io.IOException;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -142,18 +142,28 @@ public class AMCompanyThumbnailConfigurationInitializer {
 			_amImageConfigurationHelper.getAMImageConfigurationEntries(
 				companyId, amImageConfigurationEntry -> true);
 
-		Stream<AMImageConfigurationEntry> amImageConfigurationEntryStream =
-			amImageConfigurationEntries.stream();
+		Predicate<AMImageConfigurationEntry> predicate =
+			new Predicate<AMImageConfigurationEntry>() {
 
-		Optional<AMImageConfigurationEntry>
-			duplicateNameAMImageConfigurationEntryOptional =
-				amImageConfigurationEntryStream.filter(
-					amImageConfigurationEntry ->
-						name.equals(amImageConfigurationEntry.getName()) ||
-						uuid.equals(amImageConfigurationEntry.getUUID())
-				).findFirst();
+				@Override
+				public boolean test(
+					AMImageConfigurationEntry amImageConfigurationEntry) {
 
-		return duplicateNameAMImageConfigurationEntryOptional.isPresent();
+					if (name.equals(amImageConfigurationEntry.getName()) ||
+						uuid.equals(amImageConfigurationEntry.getUUID())) {
+
+						return true;
+					}
+
+					return false;
+				}
+
+			};
+
+		amImageConfigurationEntries = ListUtil.filter(
+			amImageConfigurationEntries, predicate);
+
+		return !amImageConfigurationEntries.isEmpty();
 	}
 
 	private String _normalize(String str) {

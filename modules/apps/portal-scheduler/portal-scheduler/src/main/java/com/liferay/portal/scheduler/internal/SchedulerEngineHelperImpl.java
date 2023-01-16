@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.scheduler.internal.configuration.SchedulerEngineHelperConfiguration;
 import com.liferay.portal.scheduler.internal.messaging.config.ScriptingMessageListener;
@@ -405,7 +406,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				schedulerEventMessageListenerWrapper, properties);
 
 		_serviceRegistrations.put(
-			schedulerEntry.getEventListenerClass(), serviceRegistration);
+			schedulerEventMessageListenerWrapper, serviceRegistration);
 	}
 
 	@Override
@@ -473,8 +474,15 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	public void unregister(MessageListener messageListener) {
 		Class<?> messageListenerClass = messageListener.getClass();
 
+		SchedulerEventMessageListener schedulerEventMessageListener =
+			_getSchedulerEventMessageListener(messageListenerClass.getName());
+
+		if (schedulerEventMessageListener == null) {
+			return;
+		}
+
 		ServiceRegistration<?> serviceRegistration =
-			_serviceRegistrations.remove(messageListenerClass.getName());
+			_serviceRegistrations.remove(schedulerEventMessageListener);
 
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();
@@ -483,7 +491,19 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 	@Override
 	public void unregister(String schedulerEntryEventListenerClass) {
-		
+		SchedulerEventMessageListener schedulerEventMessageListener =
+			_getSchedulerEventMessageListener(schedulerEntryEventListenerClass);
+
+		if (schedulerEventMessageListener == null) {
+			return;
+		}
+
+		ServiceRegistration<?> serviceRegistration =
+			_serviceRegistrations.remove(schedulerEventMessageListener);
+
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -632,6 +652,30 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				SchedulerEngineHelperConfiguration.class, properties);
 	}
 
+	private SchedulerEventMessageListener _getSchedulerEventMessageListener(
+		String className) {
+
+		for (Map.Entry
+				<SchedulerEventMessageListener,
+				 ServiceRegistration<SchedulerEventMessageListener>>
+					serviceRegistration : _serviceRegistrations.entrySet()) {
+
+			SchedulerEventMessageListener schedulerEventMessageListener =
+				serviceRegistration.getKey();
+
+			SchedulerEntry schedulerEntry =
+				schedulerEventMessageListener.getSchedulerEntry();
+
+			if (StringUtil.equals(
+					schedulerEntry.getEventListenerClass(), className)) {
+
+				return schedulerEventMessageListener;
+			}
+		}
+
+		return null;
+	}
+
 	private Destination _registerDestination(
 		BundleContext bundleContext, String destinationType,
 		String destinationName) {
@@ -692,7 +736,8 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	private volatile SchedulerEngineHelperConfiguration
 		_schedulerEngineHelperConfiguration;
 	private final Map
-		<String, ServiceRegistration<SchedulerEventMessageListener>>
+		<SchedulerEventMessageListener,
+		 ServiceRegistration<SchedulerEventMessageListener>>
 			_serviceRegistrations = new ConcurrentHashMap<>();
 	private volatile ServiceTracker
 		<SchedulerEventMessageListener, SchedulerEventMessageListener>

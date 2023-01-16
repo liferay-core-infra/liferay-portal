@@ -144,7 +144,7 @@ public class AMImageRequestHandlerTest {
 		AdaptiveMedia<AMImageProcessor> adaptiveMedia =
 			_amImageRequestHandler.handleRequest(httpServletRequest);
 
-		Assert.assertFalse(adaptiveMedia != null);
+		Assert.assertNull(adaptiveMedia);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -166,7 +166,7 @@ public class AMImageRequestHandlerTest {
 		AdaptiveMedia<AMImageProcessor> adaptiveMedia =
 			_amImageRequestHandler.handleRequest(httpServletRequest);
 
-		Assert.assertFalse(adaptiveMedia != null);
+		Assert.assertNull(adaptiveMedia);
 	}
 
 	@Test
@@ -268,7 +268,7 @@ public class AMImageRequestHandlerTest {
 		AdaptiveMedia<AMImageProcessor> adaptiveMedia =
 			_amImageRequestHandler.handleRequest(httpServletRequest);
 
-		Assert.assertTrue(adaptiveMedia != null);
+		Assert.assertNotNull(adaptiveMedia);
 
 		Assert.assertEquals(
 			_fileVersion.getContentStream(false),

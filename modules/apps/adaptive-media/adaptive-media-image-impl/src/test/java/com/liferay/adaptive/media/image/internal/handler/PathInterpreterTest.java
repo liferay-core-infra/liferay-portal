@@ -226,7 +226,7 @@ public class PathInterpreterTest {
 		Tuple<FileVersion, Map<String, String>> result =
 			_pathInterpreter.interpretPath("/" + RandomTestUtil.randomString());
 
-		Assert.assertFalse(result != null);
+		Assert.assertNull(result);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

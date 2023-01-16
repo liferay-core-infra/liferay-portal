@@ -53,7 +53,6 @@ import com.liferay.wiki.constants.WikiPageConstants;
 import com.liferay.wiki.constants.WikiWebKeys;
 import com.liferay.wiki.exception.ImportFilesException;
 import com.liferay.wiki.exception.NoSuchPageException;
-import com.liferay.wiki.importer.WikiImporter;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
@@ -79,10 +78,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alvaro del Castillo
  * @author Jorge Ferrer
  */
-@Component(
-	property = {"importer=MediaWiki", "page=/wiki/import/mediawiki.jsp"},
-	service = WikiImporter.class
-)
+@Component(service = MediaWikiImporter.class)
 public class MediaWikiImporter {
 
 	public static final String FORMAT_CREOLE = "creole";

@@ -15,8 +15,6 @@
 package com.liferay.wiki.service.impl;
 
 import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
@@ -57,7 +55,7 @@ import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
 import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.exception.DuplicateNodeNameException;
 import com.liferay.wiki.exception.NodeNameException;
-import com.liferay.wiki.importer.WikiImporter;
+import com.liferay.wiki.internal.importer.MediaWikiImporter;
 import com.liferay.wiki.internal.util.WikiCacheThreadLocal;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
@@ -391,17 +389,9 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 
 	@Override
 	public void importPages(
-			long userId, long nodeId, String importer,
-			InputStream[] inputStreams, Map<String, String[]> options)
+			long userId, long nodeId, InputStream[] inputStreams,
+			Map<String, String[]> options)
 		throws PortalException {
-
-		WikiImporter wikiImporter = _wikiImporterServiceTrackerMap.getService(
-			importer);
-
-		if (wikiImporter == null) {
-			throw new SystemException(
-				"Unable to instantiate wiki importer with name " + importer);
-		}
 
 		WikiNode node = getNode(nodeId);
 
@@ -412,7 +402,7 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 			NotificationThreadLocal.setEnabled(false);
 			WikiCacheThreadLocal.setClearCache(false);
 
-			wikiImporter.importPages(userId, node, inputStreams, options);
+			_mediaWikiImporter.importPages(userId, node, inputStreams, options);
 		}
 		finally {
 			NotificationThreadLocal.setEnabled(notificationsEnabled);
@@ -558,10 +548,6 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_wikiImporterServiceTrackerMap =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, WikiImporter.class, "importer");
-
 		_portalCache = _multiVMPool.getPortalCache(
 			WikiPageDisplay.class.getName());
 	}
@@ -657,6 +643,9 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 	private IndexerRegistry _indexerRegistry;
 
 	@Reference
+	private MediaWikiImporter _mediaWikiImporter;
+
+	@Reference
 	private MultiVMPool _multiVMPool;
 
 	private PortalCache<?, ?> _portalCache;
@@ -681,9 +670,6 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 
 	@Reference
 	private WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;
-
-	private ServiceTrackerMap<String, WikiImporter>
-		_wikiImporterServiceTrackerMap;
 
 	@Reference
 	private WikiPageLocalService _wikiPageLocalService;

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -40,7 +41,6 @@ import com.liferay.segments.service.SegmentsEntryLocalService;
 import com.liferay.segments.service.SegmentsEntryRelLocalService;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -70,11 +70,15 @@ public abstract class BaseSegmentsEntryProvider
 				segmentsEntryRelLocalService.getSegmentsEntryRels(
 					segmentsEntryId, start, end, null);
 
-			Stream<SegmentsEntryRel> stream = segmentsEntryRels.stream();
+			long[] segmentsEntryRelClassPK = new long[segmentsEntryRels.size()];
 
-			return stream.mapToLong(
-				SegmentsEntryRel::getClassPK
-			).toArray();
+			for (int i = 0; i < segmentsEntryRelClassPK.length; i++) {
+				SegmentsEntryRel segmentsEntryRel = segmentsEntryRels.get(i);
+
+				segmentsEntryRelClassPK[i] = segmentsEntryRel.getClassPK();
+			}
+
+			return segmentsEntryRelClassPK;
 		}
 
 		ODataRetriever<BaseModel<?>> oDataRetriever =
@@ -88,11 +92,15 @@ public abstract class BaseSegmentsEntryProvider
 			segmentsEntry.getCompanyId(), filterString, LocaleUtil.getDefault(),
 			start, end);
 
-		Stream<BaseModel<?>> stream = results.stream();
+		long[] primaryKeyObjs = new long[results.size()];
 
-		return stream.mapToLong(
-			baseModel -> (Long)baseModel.getPrimaryKeyObj()
-		).toArray();
+		for (int i = 0; i < primaryKeyObjs.length; i++) {
+			BaseModel<?> baseModel = results.get(i);
+
+			primaryKeyObjs[i] = (Long)baseModel.getPrimaryKeyObj();
+		}
+
+		return primaryKeyObjs;
 	}
 
 	@Override
@@ -149,19 +157,28 @@ public abstract class BaseSegmentsEntryProvider
 			return new long[0];
 		}
 
-		Stream<SegmentsEntry> stream = segmentsEntries.stream();
-
-		return stream.filter(
+		List<SegmentsEntry> segmentsEntriesAfterFilterList = ListUtil.filter(
+			segmentsEntries,
 			segmentsEntry ->
-				ArrayUtil.isEmpty(filterSegmentsEntryIds) ||
-				ArrayUtil.contains(
-					filterSegmentsEntryIds, segmentsEntry.getSegmentsEntryId())
-		).filter(
-			segmentsEntry -> isMember(
-				className, classPK, context, segmentsEntry, segmentsEntryIds)
-		).mapToLong(
-			SegmentsEntry::getSegmentsEntryId
-		).toArray();
+				(!ArrayUtil.isEmpty(filterSegmentsEntryIds) &&
+				 !ArrayUtil.contains(
+					 filterSegmentsEntryIds,
+					 segmentsEntry.getSegmentsEntryId())) ||
+				!isMember(
+					className, classPK, context, segmentsEntry,
+					segmentsEntryIds));
+
+		long[] segmentsEntryIdsAfterFilterArray =
+			new long[segmentsEntriesAfterFilterList.size()];
+
+		for (int i = 0; i < segmentsEntryIdsAfterFilterArray.length; i++) {
+			SegmentsEntry segmentsEntry = segmentsEntriesAfterFilterList.get(i);
+
+			segmentsEntryIdsAfterFilterArray[i] =
+				segmentsEntry.getSegmentsEntryId();
+		}
+
+		return segmentsEntryIdsAfterFilterArray;
 	}
 
 	protected Criteria.Conjunction getConjunction(

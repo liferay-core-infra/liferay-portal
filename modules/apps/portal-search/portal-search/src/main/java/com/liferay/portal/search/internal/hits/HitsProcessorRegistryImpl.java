@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.internal.hits;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -22,14 +24,13 @@ import com.liferay.portal.kernel.search.hits.HitsProcessor;
 import com.liferay.portal.kernel.search.hits.HitsProcessorRegistry;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.Comparator;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Michael C. Han
@@ -41,7 +42,7 @@ public class HitsProcessorRegistryImpl implements HitsProcessorRegistry {
 	public boolean process(SearchContext searchContext, Hits hits)
 		throws SearchException {
 
-		if (_hitsProcessors.isEmpty() ||
+		if ((_serviceTrackerList.size() == 0) ||
 			Validator.isNull(searchContext.getKeywords())) {
 
 			return false;
@@ -53,7 +54,7 @@ public class HitsProcessorRegistryImpl implements HitsProcessorRegistry {
 			return false;
 		}
 
-		for (HitsProcessor hitsProcessor : _hitsProcessors) {
+		for (HitsProcessor hitsProcessor : _serviceTrackerList) {
 			if (!hitsProcessor.process(searchContext, hits)) {
 				break;
 			}
@@ -62,36 +63,78 @@ public class HitsProcessorRegistryImpl implements HitsProcessorRegistry {
 		return true;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addHitsProcessor(HitsProcessor hitsProcessor) {
-		_hitsProcessors.add(hitsProcessor);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, HitsProcessor.class,
+			new HitsProcessorServiceReferenceComparator(bundleContext));
 	}
 
-	protected void removeHitsProcessor(HitsProcessor hitsProcessor) {
-		_hitsProcessors.remove(hitsProcessor);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerList.close();
 	}
 
-	private final Set<HitsProcessor> _hitsProcessors =
-		new ConcurrentSkipListSet<>(
-			(hitsProcessorA, hitsProcessorB) -> {
-				Integer sortOrderA = hitsProcessorA.getSortOrder();
-				Integer sortOrderB = hitsProcessorB.getSortOrder();
+	private ServiceTrackerList<HitsProcessor> _serviceTrackerList;
 
-				if ((sortOrderB == null) && (sortOrderA != null)) {
-					return 1;
-				}
-				else if ((sortOrderB != null) && (sortOrderA == null)) {
-					return -1;
-				}
-				else if ((sortOrderB == null) && (sortOrderA == null)) {
+	private class HitsProcessorServiceReferenceComparator
+		implements Comparator<ServiceReference<HitsProcessor>> {
+
+		public HitsProcessorServiceReferenceComparator(
+			BundleContext bundleContext) {
+
+			_bundleContext = bundleContext;
+		}
+
+		@Override
+		public int compare(
+			ServiceReference<HitsProcessor> serviceReference1,
+			ServiceReference<HitsProcessor> serviceReference2) {
+
+			if (serviceReference1 == null) {
+				if (serviceReference2 == null) {
 					return 0;
 				}
 
-				return sortOrderA.compareTo(sortOrderB);
-			});
+				return -1;
+			}
+			else if (serviceReference2 == null) {
+				return 1;
+			}
+
+			try {
+				HitsProcessor hitsProcessor1 = _bundleContext.getService(
+					serviceReference1);
+
+				HitsProcessor hitsProcessor2 = _bundleContext.getService(
+					serviceReference2);
+
+				Integer sortOrder1 = hitsProcessor1.getSortOrder();
+
+				Integer sortOrder2 = hitsProcessor2.getSortOrder();
+
+				if (sortOrder1 == null) {
+					if (sortOrder2 == null) {
+						return 0;
+					}
+
+					return -1;
+				}
+				else if (sortOrder2 == null) {
+					return 1;
+				}
+
+				return sortOrder1.compareTo(sortOrder2);
+			}
+			finally {
+				_bundleContext.ungetService(serviceReference1);
+
+				_bundleContext.ungetService(serviceReference2);
+			}
+		}
+
+		private final BundleContext _bundleContext;
+
+	}
 
 }

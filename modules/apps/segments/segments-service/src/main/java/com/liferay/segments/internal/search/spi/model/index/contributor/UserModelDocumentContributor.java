@@ -25,7 +25,6 @@ import com.liferay.segments.model.SegmentsEntryRel;
 import com.liferay.segments.service.SegmentsEntryRelLocalService;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -62,11 +61,15 @@ public class UserModelDocumentContributor
 			_segmentsEntryRelLocalService.getSegmentsEntryRels(
 				_portal.getClassNameId(User.class), user.getUserId());
 
-		Stream<SegmentsEntryRel> stream = segmentsEntryRels.stream();
+		long[] segmentsEntryIds = new long[segmentsEntryRels.size()];
 
-		return stream.mapToLong(
-			SegmentsEntryRel::getSegmentsEntryId
-		).toArray();
+		for (int i = 0; i < segmentsEntryIds.length; i++) {
+			SegmentsEntryRel segmentsEntryRel = segmentsEntryRels.get(i);
+
+			segmentsEntryIds[i] = segmentsEntryRel.getSegmentsEntryId();
+		}
+
+		return segmentsEntryIds;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

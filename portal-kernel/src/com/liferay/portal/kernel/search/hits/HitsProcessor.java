@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.search.SearchException;
  */
 public interface HitsProcessor {
 
+	public Integer getSortOrder();
+
 	public boolean process(SearchContext searchContext, Hits hits)
 		throws SearchException;
 

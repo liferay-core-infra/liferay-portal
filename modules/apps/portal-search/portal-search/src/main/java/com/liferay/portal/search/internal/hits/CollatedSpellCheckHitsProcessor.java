@@ -28,8 +28,13 @@ import org.osgi.service.component.annotations.Component;
  * @author Michael C. Han
  * @author Josef Sustacek
  */
-@Component(property = "sort.order=0", service = HitsProcessor.class)
+@Component(service = HitsProcessor.class)
 public class CollatedSpellCheckHitsProcessor implements HitsProcessor {
+
+	@Override
+	public Integer getSortOrder() {
+		return 0;
+	}
 
 	@Override
 	public boolean process(SearchContext searchContext, Hits hits)

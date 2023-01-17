@@ -146,6 +146,11 @@ public class HitsProcessorRegistryImpl implements HitsProcessorRegistry {
 		}
 
 		@Override
+		public Integer getSortOrder() {
+			return _sortOrder;
+		}
+
+		@Override
 		public int hashCode() {
 			return _hitsProcessor.hashCode();
 		}

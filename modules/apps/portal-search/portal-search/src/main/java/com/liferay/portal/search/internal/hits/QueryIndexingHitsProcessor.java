@@ -31,8 +31,13 @@ import org.osgi.service.component.annotations.Reference;
  * @author Michael C. Han
  * @author Josef Sustacek
  */
-@Component(property = "sort.order=2", service = HitsProcessor.class)
+@Component(service = HitsProcessor.class)
 public class QueryIndexingHitsProcessor implements HitsProcessor {
+
+	@Override
+	public Integer getSortOrder() {
+		return 2;
+	}
 
 	@Override
 	public boolean process(SearchContext searchContext, Hits hits)

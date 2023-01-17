@@ -20,9 +20,11 @@ import com.liferay.analytics.reports.web.internal.model.ReferringURL;
 import com.liferay.analytics.reports.web.internal.model.TimeRange;
 import com.liferay.analytics.reports.web.internal.model.TimeSpan;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,7 +41,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -163,16 +164,19 @@ public class GetReferralTrafficSourcesMVCResourceCommand
 			return _jsonFactory.createJSONArray();
 		}
 
-		Stream<ReferringURL> stream = referringURLS.stream();
+		int index = 10;
+
+		if (referringURLS.size() < index) {
+			index = referringURLS.size();
+		}
+
+		referringURLS = referringURLS.subList(0, index);
+
+		referringURLS.sort(_getReferringURLComparator());
 
 		return JSONUtil.putAll(
-			stream.limit(
-				10
-			).sorted(
-				_getReferringURLComparator()
-			).map(
-				ReferringURL::toJSONObject
-			).toArray());
+			TransformUtil.transformToArray(
+				referringURLS, ReferringURL::toJSONObject, JSONObject.class));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

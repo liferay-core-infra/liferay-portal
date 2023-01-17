@@ -15,6 +15,7 @@
 package com.liferay.calendar.internal.notification;
 
 import com.liferay.calendar.notification.NotificationSender;
+import com.liferay.calendar.notification.NotificationType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -38,7 +39,7 @@ public class NotificationSenderFactory {
 		throws PortalException {
 
 		NotificationSender notificationSender = _notificationSenders.get(
-			notificationType);
+			NotificationType.parse(notificationType));
 
 		if (notificationSender == null) {
 			throw new PortalException(
@@ -54,17 +55,11 @@ public class NotificationSenderFactory {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void setNotificationSender(
-		NotificationSender notificationSender, Map<String, Object> properties) {
-
-		String notificationType = (String)properties.get("notification.type");
-
-		if (notificationType == null) {
-			throw new IllegalArgumentException(
-				"The property \"notification.type\" is null");
-		}
+		NotificationSender notificationSender) {
 
 		NotificationSender previousNotificationSender =
-			_notificationSenders.put(notificationType, notificationSender);
+			_notificationSenders.put(
+				notificationSender.getNotificationType(), notificationSender);
 
 		if (_log.isWarnEnabled() && (previousNotificationSender != null)) {
 			Class<?> clazz = previousNotificationSender.getClass();
@@ -74,22 +69,15 @@ public class NotificationSenderFactory {
 	}
 
 	protected void unsetNotificationSender(
-		NotificationSender notificationSender, Map<String, Object> properties) {
+		NotificationSender notificationSender) {
 
-		String notificationType = (String)properties.get("notification.type");
-
-		if (notificationType == null) {
-			throw new IllegalArgumentException(
-				"The property \"notification.type\" is null");
-		}
-
-		_notificationSenders.remove(notificationType);
+		_notificationSenders.remove(notificationSender.getNotificationType());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		NotificationSenderFactory.class);
 
-	private final Map<String, NotificationSender> _notificationSenders =
-		new ConcurrentHashMap<>();
+	private final Map<NotificationType, NotificationSender>
+		_notificationSenders = new ConcurrentHashMap<>();
 
 }

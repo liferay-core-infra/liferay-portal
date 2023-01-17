@@ -20,10 +20,8 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.hits.HitsProcessor;
 import com.liferay.portal.kernel.search.hits.HitsProcessorRegistry;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -69,38 +67,16 @@ public class HitsProcessorRegistryImpl implements HitsProcessorRegistry {
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
-	protected void addHitsProcessor(
-		HitsProcessor hitsProcessor, Map<String, Object> properties) {
-
-		String sortOrderString = (String)properties.get("sort.order");
-
-		Integer sortOrder = null;
-
-		if (Validator.isNotNull(sortOrderString)) {
-			sortOrder = GetterUtil.getInteger(sortOrderString);
-		}
-
-		SortableHitsProcessor sortableHitsProcessor = new SortableHitsProcessor(
-			hitsProcessor, sortOrder);
-
-		_hitsProcessors.add(sortableHitsProcessor);
+	protected void addHitsProcessor(HitsProcessor hitsProcessor) {
+		_hitsProcessors.add(
+			new SortableHitsProcessor(
+				hitsProcessor, hitsProcessor.getSortOrder()));
 	}
 
-	protected void removeHitsProcessor(
-		HitsProcessor hitsProcessor, Map<String, Object> properties) {
-
-		String sortOrderString = (String)properties.get("sort.order");
-
-		Integer sortOrder = null;
-
-		if (Validator.isNotNull(sortOrderString)) {
-			sortOrder = GetterUtil.getInteger(sortOrderString);
-		}
-
-		SortableHitsProcessor sortableHitsProcessor = new SortableHitsProcessor(
-			hitsProcessor, sortOrder);
-
-		_hitsProcessors.remove(sortableHitsProcessor);
+	protected void removeHitsProcessor(HitsProcessor hitsProcessor) {
+		_hitsProcessors.remove(
+			new SortableHitsProcessor(
+				hitsProcessor, hitsProcessor.getSortOrder()));
 	}
 
 	private final Set<SortableHitsProcessor> _hitsProcessors =

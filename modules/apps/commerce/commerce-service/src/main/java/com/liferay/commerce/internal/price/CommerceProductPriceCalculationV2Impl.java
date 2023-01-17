@@ -517,7 +517,8 @@ public class CommerceProductPriceCalculationV2Impl
 				CommercePricingConfiguration.class);
 
 		String commerceDiscountApplicationStrategyKey =
-			commercePricingConfiguration.commerceDiscountApplicationStrategy();
+			commercePricingConfiguration.
+				commerceDiscountApplicationStrategyKey();
 
 		CommerceDiscountApplicationStrategy
 			commerceDiscountApplicationStrategy =

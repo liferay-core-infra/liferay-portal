@@ -68,79 +68,30 @@ public class HitsProcessorRegistryImpl implements HitsProcessorRegistry {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void addHitsProcessor(HitsProcessor hitsProcessor) {
-		_hitsProcessors.add(
-			new SortableHitsProcessor(
-				hitsProcessor, hitsProcessor.getSortOrder()));
+		_hitsProcessors.add(hitsProcessor);
 	}
 
 	protected void removeHitsProcessor(HitsProcessor hitsProcessor) {
-		_hitsProcessors.remove(
-			new SortableHitsProcessor(
-				hitsProcessor, hitsProcessor.getSortOrder()));
+		_hitsProcessors.remove(hitsProcessor);
 	}
 
-	private final Set<SortableHitsProcessor> _hitsProcessors =
-		new ConcurrentSkipListSet<>();
+	private final Set<HitsProcessor> _hitsProcessors =
+		new ConcurrentSkipListSet<>(
+			(hitsProcessorA, hitsProcessorB) -> {
+				Integer sortOrderA = hitsProcessorA.getSortOrder();
+				Integer sortOrderB = hitsProcessorB.getSortOrder();
 
-	private static class SortableHitsProcessor
-		implements Comparable<SortableHitsProcessor>, HitsProcessor {
+				if ((sortOrderB == null) && (sortOrderA != null)) {
+					return 1;
+				}
+				else if ((sortOrderB != null) && (sortOrderA == null)) {
+					return -1;
+				}
+				else if ((sortOrderB == null) && (sortOrderA == null)) {
+					return 0;
+				}
 
-		public SortableHitsProcessor(
-			HitsProcessor hitsProcessor, Integer sortOrder) {
-
-			_hitsProcessor = hitsProcessor;
-			_sortOrder = sortOrder;
-		}
-
-		@Override
-		public int compareTo(SortableHitsProcessor sortableHitsProcessor) {
-			if ((sortableHitsProcessor._sortOrder == null) &&
-				(_sortOrder != null)) {
-
-				return 1;
-			}
-			else if ((sortableHitsProcessor._sortOrder != null) &&
-					 (_sortOrder == null)) {
-
-				return -1;
-			}
-			else if ((sortableHitsProcessor._sortOrder == null) &&
-					 (_sortOrder == null)) {
-
-				return 0;
-			}
-
-			return _sortOrder.compareTo(sortableHitsProcessor._sortOrder);
-		}
-
-		@Override
-		public boolean equals(Object object) {
-			SortableHitsProcessor sortableHitsProcessor =
-				(SortableHitsProcessor)object;
-
-			return sortableHitsProcessor._hitsProcessor.equals(_hitsProcessor);
-		}
-
-		@Override
-		public Integer getSortOrder() {
-			return _sortOrder;
-		}
-
-		@Override
-		public int hashCode() {
-			return _hitsProcessor.hashCode();
-		}
-
-		@Override
-		public boolean process(SearchContext searchContext, Hits hits)
-			throws SearchException {
-
-			return _hitsProcessor.process(searchContext, hits);
-		}
-
-		private final HitsProcessor _hitsProcessor;
-		private Integer _sortOrder;
-
-	}
+				return sortOrderA.compareTo(sortOrderB);
+			});
 
 }

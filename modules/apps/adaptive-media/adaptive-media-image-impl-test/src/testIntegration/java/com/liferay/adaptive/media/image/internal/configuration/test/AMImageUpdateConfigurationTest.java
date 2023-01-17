@@ -144,7 +144,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry2 != null);
+		Assert.assertNotNull(amImageConfigurationEntry2);
 
 		Assert.assertEquals(
 			StringPool.BLANK, amImageConfigurationEntry2.getDescription());
@@ -174,7 +174,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -228,7 +228,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -357,7 +357,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Assert.assertEquals(
 			"desc:;desc", amImageConfigurationEntry.getDescription());
@@ -384,7 +384,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Assert.assertEquals("one:;one", amImageConfigurationEntry.getName());
 	}
@@ -411,7 +411,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -442,7 +442,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -591,7 +591,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -645,7 +645,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -750,11 +750,11 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1-bis");
 
-		Assert.assertTrue(amImageConfigurationEntry2 != null);
+		Assert.assertNotNull(amImageConfigurationEntry2);
 
 		assertDisabled(amImageConfigurationEntry2);
 
-		Assert.assertTrue(amImageConfigurationEntry2 != null);
+		Assert.assertNotNull(amImageConfigurationEntry2);
 
 		AMImageConfigurationEntry actualAMImageConfigurationEntry =
 			amImageConfigurationEntry2;
@@ -855,7 +855,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry1);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry1 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry1);
 
 		Assert.assertEquals(
 			"one-bis", actualAMImageConfigurationEntry1.getName());
@@ -876,7 +876,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry2);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry2 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry2);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry2.getName(),
@@ -932,7 +932,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry1);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry1 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry1);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry1.getName(),
@@ -955,7 +955,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry2);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry2 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry2);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry2.getName(),
@@ -1003,7 +1003,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertFalse(nonexistantAMImageConfigurationEntry1 != null);
+		Assert.assertNull(nonexistantAMImageConfigurationEntry1);
 
 		AMImageConfigurationEntry actualAMImageConfigurationEntry1 =
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
@@ -1011,7 +1011,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry1);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry1 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry1);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry1.getName(),
@@ -1034,7 +1034,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry2);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry2 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry2);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry2.getName(),
@@ -1100,7 +1100,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry2);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry2 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry2);
 
 		Assert.assertEquals(
 			"two-bis", actualAMImageConfigurationEntry2.getName());
@@ -1121,7 +1121,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry1);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry1 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry1);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry1.getName(),
@@ -1179,7 +1179,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry2);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry2 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry2);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry2.getName(),
@@ -1202,7 +1202,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry1);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry1 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry1);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry1.getName(),
@@ -1250,7 +1250,7 @@ public class AMImageUpdateConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "2");
 
-		Assert.assertFalse(nonexistantAMImageConfigurationEntry2 != null);
+		Assert.assertNull(nonexistantAMImageConfigurationEntry2);
 
 		AMImageConfigurationEntry actualAMImageConfigurationEntry2 =
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
@@ -1258,7 +1258,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry2);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry2 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry2);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry2.getName(),
@@ -1281,7 +1281,7 @@ public class AMImageUpdateConfigurationTest
 
 		assertEnabled(actualAMImageConfigurationEntry1);
 
-		Assert.assertTrue(actualAMImageConfigurationEntry1 != null);
+		Assert.assertNotNull(actualAMImageConfigurationEntry1);
 
 		Assert.assertEquals(
 			amImageConfigurationEntry1.getName(),

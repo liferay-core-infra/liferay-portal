@@ -65,11 +65,9 @@ public class AMImageConfigurationTest extends BaseAMImageConfigurationTestCase {
 				"max-width", "100"
 			).build());
 
-		AMImageConfigurationEntry amImageConfigurationEntry =
+		Assert.assertNotNull(
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
-				TestPropsValues.getCompanyId(), "1");
-
-		Assert.assertTrue(amImageConfigurationEntry != null);
+				TestPropsValues.getCompanyId(), "1"));
 	}
 
 	@Test
@@ -170,11 +168,9 @@ public class AMImageConfigurationTest extends BaseAMImageConfigurationTestCase {
 		_amImageConfigurationHelper.disableAMImageConfigurationEntry(
 			TestPropsValues.getCompanyId(), "1");
 
-		AMImageConfigurationEntry amImageConfigurationEntry =
+		Assert.assertNotNull(
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
-				TestPropsValues.getCompanyId(), "1");
-
-		Assert.assertTrue(amImageConfigurationEntry != null);
+				TestPropsValues.getCompanyId(), "1"));
 	}
 
 	@Test
@@ -206,11 +202,9 @@ public class AMImageConfigurationTest extends BaseAMImageConfigurationTestCase {
 				"max-width", "100"
 			).build());
 
-		AMImageConfigurationEntry amImageConfigurationEntry =
+		Assert.assertNull(
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
-				TestPropsValues.getCompanyId(), "0");
-
-		Assert.assertFalse(amImageConfigurationEntry != null);
+				TestPropsValues.getCompanyId(), "0"));
 	}
 
 	@Override

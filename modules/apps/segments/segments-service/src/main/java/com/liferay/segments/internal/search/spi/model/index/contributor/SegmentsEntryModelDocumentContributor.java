@@ -30,7 +30,6 @@ import com.liferay.segments.service.SegmentsEntryRoleLocalService;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -76,11 +75,15 @@ public class SegmentsEntryModelDocumentContributor
 			_segmentsEntryRoleLocalService.getSegmentsEntryRoles(
 				segmentsEntryId);
 
-		Stream<SegmentsEntryRole> stream = segmentsEntryRoles.stream();
+		long[] roleIds = new long[segmentsEntryRoles.size()];
 
-		return stream.mapToLong(
-			SegmentsEntryRole::getRoleId
-		).toArray();
+		for (int i = 0; i < roleIds.length; i++) {
+			SegmentsEntryRole segmentsEntryRole = segmentsEntryRoles.get(i);
+
+			roleIds[i] = segmentsEntryRole.getRoleId();
+		}
+
+		return roleIds;
 	}
 
 	private Locale _getSiteDefaultLocale(long groupId) {

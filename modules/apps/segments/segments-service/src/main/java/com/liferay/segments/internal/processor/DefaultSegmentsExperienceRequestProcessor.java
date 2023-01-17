@@ -15,13 +15,12 @@
 package com.liferay.segments.internal.processor;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.segments.model.SegmentsExperience;
-import com.liferay.segments.model.SegmentsExperienceModel;
 import com.liferay.segments.processor.SegmentsExperienceRequestProcessor;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,17 +45,24 @@ public class DefaultSegmentsExperienceRequestProcessor
 			long classNameId, long classPK, long[] segmentsExperienceIds)
 		throws PortalException {
 
-		List<SegmentsExperience> segmentsExperiences =
-			_segmentsExperienceLocalService.getSegmentsExperiences(
-				groupId, classNameId, classPK, true);
+		List<SegmentsExperience> segmentsExperienceAfterFilter =
+			ListUtil.filter(
+				_segmentsExperienceLocalService.getSegmentsExperiences(
+					groupId, classNameId, classPK, true),
+				segmentsExperience -> segmentsExperience.getPriority() >= 0);
 
-		Stream<SegmentsExperience> stream = segmentsExperiences.stream();
+		long[] segmentsExperienceIdAfterFilter =
+			new long[segmentsExperienceAfterFilter.size()];
 
-		return stream.filter(
-			segmentsExperience -> segmentsExperience.getPriority() >= 0
-		).mapToLong(
-			SegmentsExperienceModel::getSegmentsExperienceId
-		).toArray();
+		for (int i = 0; i < segmentsExperienceIdAfterFilter.length; i++) {
+			SegmentsExperience segmentsExperience =
+				segmentsExperienceAfterFilter.get(i);
+
+			segmentsExperienceIdAfterFilter[i] =
+				segmentsExperience.getSegmentsExperienceId();
+		}
+
+		return segmentsExperienceIdAfterFilter;
 	}
 
 	@Override
@@ -67,17 +73,24 @@ public class DefaultSegmentsExperienceRequestProcessor
 			long[] segmentsExperienceIds)
 		throws PortalException {
 
-		List<SegmentsExperience> segmentsExperiences =
-			_segmentsExperienceLocalService.getSegmentsExperiences(
-				groupId, segmentsEntryIds, classNameId, classPK, true);
+		List<SegmentsExperience> segmentsExperienceAfterFilter =
+			ListUtil.filter(
+				_segmentsExperienceLocalService.getSegmentsExperiences(
+					groupId, segmentsEntryIds, classNameId, classPK, true),
+				segmentsExperience -> segmentsExperience.getPriority() >= 0);
 
-		Stream<SegmentsExperience> stream = segmentsExperiences.stream();
+		long[] segmentsExperienceIdAfterFilter =
+			new long[segmentsExperienceAfterFilter.size()];
 
-		return stream.filter(
-			segmentsExperience -> segmentsExperience.getPriority() >= 0
-		).mapToLong(
-			SegmentsExperienceModel::getSegmentsExperienceId
-		).toArray();
+		for (int i = 0; i < segmentsExperienceIdAfterFilter.length; i++) {
+			SegmentsExperience segmentsExperience =
+				segmentsExperienceAfterFilter.get(i);
+
+			segmentsExperienceIdAfterFilter[i] =
+				segmentsExperience.getSegmentsExperienceId();
+		}
+
+		return segmentsExperienceIdAfterFilter;
 	}
 
 	@Reference

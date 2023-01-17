@@ -19,6 +19,8 @@ package com.liferay.calendar.notification;
  */
 public interface NotificationSender {
 
+	public NotificationType getNotificationType();
+
 	public void sendNotification(
 			String fromAddress, String fromName,
 			NotificationRecipient notificationRecipient,

@@ -68,6 +68,6 @@ public interface CommercePricingConfiguration {
 		deflt = "" + CommercePricingConstants.DISCOUNT_CHAIN_METHOD,
 		name = "discount-application-strategy", required = false
 	)
-	public String commerceDiscountApplicationStrategy();
+	public String commerceDiscountApplicationStrategyKey();
 
 }

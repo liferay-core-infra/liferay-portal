@@ -21,6 +21,7 @@ import com.liferay.portal.workflow.kaleo.runtime.action.executor.ActionExecutorE
 import com.liferay.portal.workflow.kaleo.runtime.scripting.internal.util.KaleoScriptingEvaluator;
 import com.liferay.portal.workflow.kaleo.runtime.util.WorkflowContextUtil;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,16 +31,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael C. Han
  */
-@Component(
-	property = {
-		"com.liferay.portal.workflow.kaleo.runtime.action.executor.language=beanshell",
-		"com.liferay.portal.workflow.kaleo.runtime.action.executor.language=groovy",
-		"com.liferay.portal.workflow.kaleo.runtime.action.executor.language=javascript",
-		"com.liferay.portal.workflow.kaleo.runtime.action.executor.language=python",
-		"com.liferay.portal.workflow.kaleo.runtime.action.executor.language=ruby"
-	},
-	service = ActionExecutor.class
-)
+@Component(service = ActionExecutor.class)
 public class ScriptActionExecutor implements ActionExecutor {
 
 	public ScriptActionExecutor() {
@@ -57,6 +49,13 @@ public class ScriptActionExecutor implements ActionExecutor {
 		catch (Exception exception) {
 			throw new ActionExecutorException(exception);
 		}
+	}
+
+	@Override
+	public Set<String> getActionExecutorLanguages() {
+		return new HashSet<>(
+			Arrays.asList(
+				"beanshell", "groovy", "javascript", "python", "ruby"));
 	}
 
 	public void setOutputObjects(Set<String> outputObjects) {

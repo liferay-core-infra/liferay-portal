@@ -1983,11 +1983,12 @@ public class CalendarBookingLocalServiceImpl
 		return notificationRecipients;
 	}
 
-	private NotificationSender _getNotificationSender(String notificationType)
+	private NotificationSender _getNotificationSender(
+			NotificationType notificationType)
 		throws Exception {
 
 		NotificationSender notificationSender = _serviceTrackerMap.getService(
-			NotificationType.parse(notificationType));
+			notificationType);
 
 		if (notificationSender == null) {
 			throw new Exception(
@@ -2231,7 +2232,7 @@ public class CalendarBookingLocalServiceImpl
 		throws Exception {
 
 		NotificationSender notificationSender = _getNotificationSender(
-			notificationType.toString());
+			notificationType);
 
 		if (notificationTemplateType == NotificationTemplateType.DECLINE) {
 			User recipientUser = senderUser;
@@ -2320,7 +2321,7 @@ public class CalendarBookingLocalServiceImpl
 			User user = notificationRecipient.getUser();
 
 			NotificationSender notificationSender = _getNotificationSender(
-				notificationType.toString());
+				notificationType);
 
 			NotificationTemplateContext notificationTemplateContext =
 				NotificationTemplateContextFactory.getInstance(

@@ -19,6 +19,7 @@ import com.liferay.analytics.reports.web.internal.data.provider.AnalyticsReports
 import com.liferay.analytics.reports.web.internal.model.ReferringSocialMedia;
 import com.liferay.analytics.reports.web.internal.model.TimeRange;
 import com.liferay.analytics.reports.web.internal.model.TimeSpan;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -39,7 +40,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -119,21 +119,22 @@ public class GetSocialTrafficSourcesMVCResourceCommand
 			return _jsonFactory.createJSONArray();
 		}
 
-		Stream<ReferringSocialMedia> stream = referringSocialMediaList.stream();
-
 		Comparator<ReferringSocialMedia> comparator = Comparator.comparingInt(
 			ReferringSocialMedia::getTrafficAmount);
 
+		referringSocialMediaList = ListUtil.filter(
+			referringSocialMediaList,
+			referringSocialMedia ->
+				referringSocialMedia.getTrafficAmount() > 0);
+
+		referringSocialMediaList.sort(comparator.reversed());
+
 		return JSONUtil.putAll(
-			stream.filter(
-				referringSocialMedia ->
-					referringSocialMedia.getTrafficAmount() > 0
-			).sorted(
-				comparator.reversed()
-			).map(
+			TransformUtil.transformToArray(
+				referringSocialMediaList,
 				referringSocialMedia -> referringSocialMedia.toJSONObject(
-					resourceBundle)
-			).toArray());
+					resourceBundle),
+				JSONObject.class));
 	}
 
 	private List<ReferringSocialMedia> _getReferringSocialMediaList(

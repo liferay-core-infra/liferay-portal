@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.CamelCaseUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.EntityModelRegistry;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,8 +61,10 @@ public class EntityFieldConfigurationFieldOptionsProvider
 	protected void activate() {
 		List<Option> options = new ArrayList<>();
 
+		EntityModel entityModel = _entityModelRegistry.get("Context");
+
 		Map<String, EntityField> entityFieldsMap =
-			_entityModel.getEntityFieldsMap();
+			entityModel.getEntityFieldsMap();
 
 		for (EntityField entityField : entityFieldsMap.values()) {
 			if (Objects.equals(
@@ -102,8 +105,8 @@ public class EntityFieldConfigurationFieldOptionsProvider
 		};
 	}
 
-	@Reference(target = "(entity.model.name=Context)")
-	private EntityModel _entityModel;
+	@Reference
+	private EntityModelRegistry _entityModelRegistry;
 
 	@Reference
 	private Language _language;

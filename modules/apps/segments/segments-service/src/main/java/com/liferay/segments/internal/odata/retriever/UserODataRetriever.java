@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.EntityModelRegistry;
 import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.segments.internal.odata.entity.UserEntityModel;
 import com.liferay.segments.odata.retriever.ODataRetriever;
@@ -55,7 +55,7 @@ public class UserODataRetriever implements ODataRetriever<User> {
 
 		Hits hits = _oDataSearchAdapter.search(
 			companyId, _filterParser, filterString, User.class.getName(),
-			_entityModel, locale, start, end);
+			_entityModelRegistry.get(UserEntityModel.NAME), locale, start, end);
 
 		return _getUsers(hits);
 	}
@@ -67,7 +67,7 @@ public class UserODataRetriever implements ODataRetriever<User> {
 
 		return _oDataSearchAdapter.searchCount(
 			companyId, _filterParser, filterString, User.class.getName(),
-			_entityModel, locale);
+			_entityModelRegistry.get(UserEntityModel.NAME), locale);
 	}
 
 	@Reference(
@@ -92,28 +92,6 @@ public class UserODataRetriever implements ODataRetriever<User> {
 		_filterParser = null;
 	}
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + UserEntityModel.NAME + ")",
-		unbind = "unbindEntityModel"
-	)
-	protected void setEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + entityModel);
-		}
-
-		_entityModel = entityModel;
-	}
-
-	protected void unbindEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + entityModel);
-		}
-
-		_entityModel = null;
-	}
-
 	private User _getUser(Document document) throws PortalException {
 		long userId = GetterUtil.getLong(document.get(Field.USER_ID));
 
@@ -135,7 +113,9 @@ public class UserODataRetriever implements ODataRetriever<User> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		UserODataRetriever.class);
 
-	private volatile EntityModel _entityModel;
+	@Reference
+	private EntityModelRegistry _entityModelRegistry;
+
 	private FilterParser _filterParser;
 
 	@Reference

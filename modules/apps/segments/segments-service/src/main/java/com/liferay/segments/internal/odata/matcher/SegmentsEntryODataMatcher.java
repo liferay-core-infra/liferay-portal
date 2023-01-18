@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.EntityModelRegistry;
 import com.liferay.portal.odata.filter.ExpressionConvert;
 import com.liferay.portal.odata.filter.Filter;
 import com.liferay.portal.odata.filter.FilterParser;
@@ -80,28 +80,6 @@ public class SegmentsEntryODataMatcher implements ODataMatcher<Map<?, ?>> {
 		_filterParser = null;
 	}
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + SegmentsEntryEntityModel.NAME + ")",
-		unbind = "unbindEntityModel"
-	)
-	protected void setEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + entityModel);
-		}
-
-		_entityModel = entityModel;
-	}
-
-	protected void unbindEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + entityModel);
-		}
-
-		_entityModel = null;
-	}
-
 	private Predicate<Map<?, ?>> _getPredicate(String filterString)
 		throws Exception {
 
@@ -109,7 +87,8 @@ public class SegmentsEntryODataMatcher implements ODataMatcher<Map<?, ?>> {
 
 		try {
 			return _expressionConvert.convert(
-				filter.getExpression(), LocaleUtil.getDefault(), _entityModel);
+				filter.getExpression(), LocaleUtil.getDefault(),
+				_entityModelRegistry.get(SegmentsEntryEntityModel.NAME));
 		}
 		catch (Exception exception) {
 			throw new InvalidFilterException(
@@ -120,7 +99,8 @@ public class SegmentsEntryODataMatcher implements ODataMatcher<Map<?, ?>> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SegmentsEntryODataMatcher.class);
 
-	private volatile EntityModel _entityModel;
+	@Reference
+	private EntityModelRegistry _entityModelRegistry;
 
 	@Reference(target = "(result.class.name=java.util.function.Predicate)")
 	private ExpressionConvert<Predicate<Map<?, ?>>> _expressionConvert;

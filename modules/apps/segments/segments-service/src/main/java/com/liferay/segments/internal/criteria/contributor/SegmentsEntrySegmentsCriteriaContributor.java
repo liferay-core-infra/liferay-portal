@@ -15,6 +15,7 @@
 package com.liferay.segments.internal.criteria.contributor;
 
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.EntityModelRegistry;
 import com.liferay.segments.criteria.Criteria;
 import com.liferay.segments.criteria.contributor.SegmentsCriteriaContributor;
 import com.liferay.segments.field.Field;
@@ -27,9 +28,6 @@ import javax.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Eduardo García
@@ -62,7 +60,7 @@ public class SegmentsEntrySegmentsCriteriaContributor
 
 	@Override
 	public EntityModel getEntityModel() {
-		return _entityModel;
+		return _entityModelRegistry.get(SegmentsEntryEntityModel.NAME);
 	}
 
 	@Override
@@ -72,7 +70,9 @@ public class SegmentsEntrySegmentsCriteriaContributor
 
 	@Override
 	public List<Field> getFields(PortletRequest portletRequest) {
-		return _entityModelFieldMapper.getFields(_entityModel, portletRequest);
+		return _entityModelFieldMapper.getFields(
+			_entityModelRegistry.get(SegmentsEntryEntityModel.NAME),
+			portletRequest);
 	}
 
 	@Override
@@ -85,15 +85,10 @@ public class SegmentsEntrySegmentsCriteriaContributor
 		return Criteria.Type.REFERRED;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MANDATORY,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + SegmentsEntryEntityModel.NAME + ")"
-	)
-	private volatile EntityModel _entityModel;
-
 	@Reference
 	private EntityModelFieldMapper _entityModelFieldMapper;
+
+	@Reference
+	private EntityModelRegistry _entityModelRegistry;
 
 }

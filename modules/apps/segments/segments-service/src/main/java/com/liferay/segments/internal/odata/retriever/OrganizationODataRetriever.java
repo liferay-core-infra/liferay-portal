@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.EntityModelRegistry;
 import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.segments.internal.odata.entity.OrganizationEntityModel;
 import com.liferay.segments.odata.retriever.ODataRetriever;
@@ -52,7 +52,9 @@ public class OrganizationODataRetriever
 
 		Hits hits = _oDataSearchAdapter.search(
 			companyId, _filterParser, filterString,
-			Organization.class.getName(), _entityModel, locale, start, end);
+			Organization.class.getName(),
+			_entityModelRegistry.get(OrganizationEntityModel.NAME), locale,
+			start, end);
 
 		return _getOrganizations(hits);
 	}
@@ -64,7 +66,8 @@ public class OrganizationODataRetriever
 
 		return _oDataSearchAdapter.searchCount(
 			companyId, _filterParser, filterString,
-			Organization.class.getName(), _entityModel, locale);
+			Organization.class.getName(),
+			_entityModelRegistry.get(OrganizationEntityModel.NAME), locale);
 	}
 
 	private Organization _getOrganization(Document document)
@@ -90,10 +93,8 @@ public class OrganizationODataRetriever
 		return organizations;
 	}
 
-	@Reference(
-		target = "(entity.model.name=" + OrganizationEntityModel.NAME + ")"
-	)
-	private EntityModel _entityModel;
+	@Reference
+	private EntityModelRegistry _entityModelRegistry;
 
 	@Reference(
 		target = "(entity.model.name=" + OrganizationEntityModel.NAME + ")"

@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -172,40 +170,33 @@ public class Page<T> {
 			}
 			else if (Objects.equals(jsonParserFieldName, "facets")) {
 				if (jsonParserFieldValue != null) {
-					page.setFacets(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							this::parseToMap
-						).map(
-							facets -> new Facet(
-								(String)facets.get("facetCriteria"),
-								Stream.of(
-									(Object[])facets.get("facetValues")
-								).map(
-									object -> (String)object
-								).map(
-									this::parseToMap
-								).map(
-									facetValues -> new Facet.FacetValue(Integer.valueOf((String)facetValues.get("numberOfOccurrences")), (String)facetValues.get("term"))
-								).collect(
-									Collectors.toList()
-								))
-						).collect(
-							Collectors.toList()
-						));
+					List<Facet> facets = new ArrayList<>();
+
+					for(String str : toStrings((Object[])jsonParserFieldValue)){
+						List<Facet.FacetValue> facetValues = new ArrayList<>();
+
+						for(Object obj : (Object[])parseToMap(str).get("facetValues")){
+							facetValues.add(
+								new Facet.FacetValue(
+									Integer.valueOf(
+										(String)parseToMap((String)obj).get(
+											"numberOfOccurrences")),
+									(String)parseToMap((String)obj).get("term")));
+						}
+						facets.add(new Facet((String)parseToMap(str).get("facetCriteria"),facetValues));
+					}
+					page.setFacets(facets);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "items")) {
 				if (jsonParserFieldValue != null) {
-					page.setItems(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							string -> _toDTOFunction.apply(string)
-						).collect(
-							Collectors.toList()
-						));
+					List<T> items = new ArrayList<>();
+
+					for(String str : toStrings((Object[])jsonParserFieldValue)){
+						items.add(_toDTOFunction.apply(str));
+					}
+
+					page.setItems(items);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "lastPage")) {

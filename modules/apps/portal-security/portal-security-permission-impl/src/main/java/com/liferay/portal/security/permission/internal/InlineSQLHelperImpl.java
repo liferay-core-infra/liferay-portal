@@ -134,6 +134,10 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			throw new IllegalStateException("Permission checker is null");
 		}
 
+		if (companyId == 0) {
+			companyId = permissionChecker.getCompanyId();
+		}
+
 		if (groupId > 0) {
 			if (permissionChecker.isGroupAdmin(groupId) ||
 				permissionChecker.isGroupOwner(groupId)) {

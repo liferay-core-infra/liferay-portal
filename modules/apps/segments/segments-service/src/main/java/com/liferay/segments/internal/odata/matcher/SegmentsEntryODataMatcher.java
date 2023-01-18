@@ -15,14 +15,13 @@
 package com.liferay.segments.internal.odata.matcher;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.odata.entity.EntityModelRegistry;
 import com.liferay.portal.odata.filter.ExpressionConvert;
 import com.liferay.portal.odata.filter.Filter;
 import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.portal.odata.filter.InvalidFilterException;
+import com.liferay.segments.internal.odata.FilterParserRegistry;
 import com.liferay.segments.internal.odata.entity.SegmentsEntryEntityModel;
 import com.liferay.segments.odata.matcher.ODataMatcher;
 
@@ -31,8 +30,6 @@ import java.util.function.Predicate;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Eduardo García
@@ -58,32 +55,13 @@ public class SegmentsEntryODataMatcher implements ODataMatcher<Map<?, ?>> {
 		}
 	}
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + SegmentsEntryEntityModel.NAME + ")",
-		unbind = "unbindFilterParser"
-	)
-	public void setFilterParser(FilterParser filterParser) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + filterParser);
-		}
-
-		_filterParser = filterParser;
-	}
-
-	public void unbindFilterParser(FilterParser filterParser) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + filterParser);
-		}
-
-		_filterParser = null;
-	}
-
 	private Predicate<Map<?, ?>> _getPredicate(String filterString)
 		throws Exception {
 
-		Filter filter = new Filter(_filterParser.parse(filterString));
+		FilterParser filterParser = _filterParserRegistry.get(
+			SegmentsEntryEntityModel.NAME);
+
+		Filter filter = new Filter(filterParser.parse(filterString));
 
 		try {
 			return _expressionConvert.convert(
@@ -96,15 +74,13 @@ public class SegmentsEntryODataMatcher implements ODataMatcher<Map<?, ?>> {
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		SegmentsEntryODataMatcher.class);
-
 	@Reference
 	private EntityModelRegistry _entityModelRegistry;
 
 	@Reference(target = "(result.class.name=java.util.function.Predicate)")
 	private ExpressionConvert<Predicate<Map<?, ?>>> _expressionConvert;
 
-	private FilterParser _filterParser;
+	@Reference
+	private FilterParserRegistry _filterParserRegistry;
 
 }

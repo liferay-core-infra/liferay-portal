@@ -15,8 +15,6 @@
 package com.liferay.segments.internal.odata.retriever;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
@@ -24,7 +22,7 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.odata.entity.EntityModelRegistry;
-import com.liferay.portal.odata.filter.FilterParser;
+import com.liferay.segments.internal.odata.FilterParserRegistry;
 import com.liferay.segments.internal.odata.entity.UserEntityModel;
 import com.liferay.segments.odata.retriever.ODataRetriever;
 import com.liferay.segments.odata.search.ODataSearchAdapter;
@@ -35,8 +33,6 @@ import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author David Arques
@@ -54,7 +50,8 @@ public class UserODataRetriever implements ODataRetriever<User> {
 		throws PortalException {
 
 		Hits hits = _oDataSearchAdapter.search(
-			companyId, _filterParser, filterString, User.class.getName(),
+			companyId, _filterParserRegistry.get(UserEntityModel.NAME),
+			filterString, User.class.getName(),
 			_entityModelRegistry.get(UserEntityModel.NAME), locale, start, end);
 
 		return _getUsers(hits);
@@ -66,30 +63,9 @@ public class UserODataRetriever implements ODataRetriever<User> {
 		throws PortalException {
 
 		return _oDataSearchAdapter.searchCount(
-			companyId, _filterParser, filterString, User.class.getName(),
+			companyId, _filterParserRegistry.get(UserEntityModel.NAME),
+			filterString, User.class.getName(),
 			_entityModelRegistry.get(UserEntityModel.NAME), locale);
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + UserEntityModel.NAME + ")",
-		unbind = "unbindFilterParser"
-	)
-	public void setFilterParser(FilterParser filterParser) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + filterParser);
-		}
-
-		_filterParser = filterParser;
-	}
-
-	public void unbindFilterParser(FilterParser filterParser) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + filterParser);
-		}
-
-		_filterParser = null;
 	}
 
 	private User _getUser(Document document) throws PortalException {
@@ -110,13 +86,11 @@ public class UserODataRetriever implements ODataRetriever<User> {
 		return users;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		UserODataRetriever.class);
-
 	@Reference
 	private EntityModelRegistry _entityModelRegistry;
 
-	private FilterParser _filterParser;
+	@Reference
+	private FilterParserRegistry _filterParserRegistry;
 
 	@Reference
 	private ODataSearchAdapter _oDataSearchAdapter;

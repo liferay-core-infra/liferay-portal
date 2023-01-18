@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.odata.entity.EntityModelRegistry;
-import com.liferay.portal.odata.filter.FilterParser;
+import com.liferay.segments.internal.odata.FilterParserRegistry;
 import com.liferay.segments.internal.odata.entity.OrganizationEntityModel;
 import com.liferay.segments.odata.retriever.ODataRetriever;
 import com.liferay.segments.odata.search.ODataSearchAdapter;
@@ -51,8 +51,8 @@ public class OrganizationODataRetriever
 		throws PortalException {
 
 		Hits hits = _oDataSearchAdapter.search(
-			companyId, _filterParser, filterString,
-			Organization.class.getName(),
+			companyId, _filterParserRegistry.get(OrganizationEntityModel.NAME),
+			filterString, Organization.class.getName(),
 			_entityModelRegistry.get(OrganizationEntityModel.NAME), locale,
 			start, end);
 
@@ -65,8 +65,8 @@ public class OrganizationODataRetriever
 		throws PortalException {
 
 		return _oDataSearchAdapter.searchCount(
-			companyId, _filterParser, filterString,
-			Organization.class.getName(),
+			companyId, _filterParserRegistry.get(OrganizationEntityModel.NAME),
+			filterString, Organization.class.getName(),
 			_entityModelRegistry.get(OrganizationEntityModel.NAME), locale);
 	}
 
@@ -96,10 +96,8 @@ public class OrganizationODataRetriever
 	@Reference
 	private EntityModelRegistry _entityModelRegistry;
 
-	@Reference(
-		target = "(entity.model.name=" + OrganizationEntityModel.NAME + ")"
-	)
-	private FilterParser _filterParser;
+	@Reference
+	private FilterParserRegistry _filterParserRegistry;
 
 	@Reference
 	private ODataSearchAdapter _oDataSearchAdapter;

@@ -260,61 +260,61 @@ public class ${schemaName}SerDes {
 						<#assign propertyType = properties[propertyName] />
 
 						<#if stringUtil.equals(propertyType, "BigDecimal")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								new BigDecimal((String)jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Date")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								toDate((String)jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Date[]")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								toDates((Object[])jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Double")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								Double.valueOf((String)jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Float")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								Float.valueOf((String)jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Integer")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								Integer.valueOf((String)jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Integer[]")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								toIntegers((Object[])jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Long")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								Long.valueOf((String)jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Long[]")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								toLongs((Object[])jsonParserFieldValue));
 						<#elseif stringUtil.startsWith(propertyType, "Map<")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								(Map)${schemaName}SerDes.toMap((String)jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Number")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								Integer.valueOf((String)jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "Number[]")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								toIntegers((Object[])jsonParserFieldValue));
 						<#elseif stringUtil.equals(propertyType, "String[]")>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								toStrings((Object[])jsonParserFieldValue));
 						<#elseif allExternalSchemas?keys?seq_contains(propertyType) || allSchemas?keys?seq_contains(propertyType)>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								${propertyType}SerDes.toDTO((String)jsonParserFieldValue));
 						<#elseif propertyType?ends_with("[]") && (allExternalSchemas?keys?seq_contains(propertyType?remove_ending("[]")) || allSchemas?keys?seq_contains(propertyType?remove_ending("[]")))>
 							String[] jsonParserFieldValues = toStrings((Object[])jsonParserFieldValue);
 
-                            ${propertyType?remove_ending("[]")}[] ${capitalizedPropertyName} = new ${propertyType?remove_ending("[]")}[jsonParserFieldValues.length];
+							${propertyType?remove_ending("[]")}[] ${capitalizedPropertyName} = new ${propertyType?remove_ending("[]")}[jsonParserFieldValues.length];
 
 							for(int i = 0; i < ${capitalizedPropertyName}.length; i++){
-                            	${capitalizedPropertyName}[i] = ${propertyType?remove_ending("[]")}SerDes.toDTO((String)jsonParserFieldValues[i]);
+								${capitalizedPropertyName}[i] = ${propertyType?remove_ending("[]")}SerDes.toDTO((String)jsonParserFieldValues[i]);
 							}
-                            ${schemaVarName}.set${capitalizedPropertyName}(${capitalizedPropertyName});
+							${schemaVarName}.set${capitalizedPropertyName}(${capitalizedPropertyName});
 						<#elseif enumSchemas?keys?seq_contains(properties[propertyName])>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								${schemaName}.${propertyType}.create((String)jsonParserFieldValue));
 						<#else>
-                            ${schemaVarName}.set${capitalizedPropertyName}(
+							${schemaVarName}.set${capitalizedPropertyName}(
 								(${propertyType})jsonParserFieldValue);
 						</#if>
 					}

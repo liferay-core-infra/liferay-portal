@@ -60,9 +60,12 @@ public class CustomFacetPortletSharedSearchContributor
 			return;
 		}
 
+		Optional<String> federatedSearchKeyOptional =
+			customFacetPortletPreferences.getFederatedSearchKeyOptional();
+
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				customFacetPortletPreferences.getFederatedSearchKeyOptional());
+				federatedSearchKeyOptional.orElse(null));
 
 		String fieldToAggregate = fieldToAggregateOptional.get();
 

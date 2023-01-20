@@ -59,10 +59,13 @@ public class LowLevelSearchOptionsPortletSharedSearchContributor
 		Optional<String> connectionIdOptional =
 			lowLevelSearchOptionsPortletPreferences.getConnectionIdOptional();
 
+		Optional<String> federatedSearchKeyOptional =
+			lowLevelSearchOptionsPortletPreferences.
+				getFederatedSearchKeyOptional();
+
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				lowLevelSearchOptionsPortletPreferences.
-					getFederatedSearchKeyOptional());
+				federatedSearchKeyOptional.orElse(null));
 
 		searchRequestBuilder.connectionId(
 			connectionIdOptional.orElse(null)

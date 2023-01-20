@@ -49,9 +49,12 @@ public class CustomFilterPortletSharedSearchContributor
 			new CustomFilterPortletPreferencesImpl(
 				portletSharedSearchSettings.getPortletPreferencesOptional());
 
+		Optional<String> federatedSearchKeyOptional =
+			customFilterPortletPreferences.getFederatedSearchKeyOptional();
+
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				customFilterPortletPreferences.getFederatedSearchKeyOptional());
+				federatedSearchKeyOptional.orElse(null));
 
 		searchRequestBuilder.addComplexQueryPart(
 			_complexQueryPartBuilderFactory.builder(

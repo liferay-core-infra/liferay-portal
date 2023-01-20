@@ -47,10 +47,12 @@ public class SearchResultsPortletSharedSearchContributor
 			new SearchResultsPortletPreferencesImpl(
 				portletSharedSearchSettings.getPortletPreferencesOptional());
 
+		Optional<String> federatedSearchKeyOptional =
+			searchResultsPortletPreferences.getFederatedSearchKeyOptional();
+
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				searchResultsPortletPreferences.
-					getFederatedSearchKeyOptional());
+				federatedSearchKeyOptional.orElse(null));
 
 		_paginate(
 			searchResultsPortletPreferences, portletSharedSearchSettings,

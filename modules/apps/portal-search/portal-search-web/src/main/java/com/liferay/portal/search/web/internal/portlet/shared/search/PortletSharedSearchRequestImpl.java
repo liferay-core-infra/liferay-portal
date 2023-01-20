@@ -120,27 +120,29 @@ public class PortletSharedSearchRequestImpl
 	private SearchContainer<Document> _buildSearchContainer(
 		SearchSettings searchSettings, RenderRequest renderRequest) {
 
-		Optional<String> paginationStartParameterNameOptional =
-			searchSettings.getPaginationStartParameterName();
-
-		Optional<Integer> paginationStartOptional =
-			searchSettings.getPaginationStart();
-
-		Optional<Integer> paginationDeltaOptional =
-			searchSettings.getPaginationDelta();
-
 		PortletRequest portletRequest = renderRequest;
 
 		DisplayTerms displayTerms = null;
 		DisplayTerms searchTerms = null;
 
-		String curParam = paginationStartParameterNameOptional.orElse(
-			SearchContainer.DEFAULT_CUR_PARAM);
+		String paginationStartParameterName =
+			searchSettings.getPaginationStartParameterName();
 
-		int cur = paginationStartOptional.orElse(0);
+		if (paginationStartParameterName == null) {
+			paginationStartParameterName = SearchContainer.DEFAULT_CUR_PARAM;
+		}
 
-		int delta = paginationDeltaOptional.orElse(
-			SearchContainer.DEFAULT_DELTA);
+		Integer paginationStart = searchSettings.getPaginationStart();
+
+		if (paginationStart == null) {
+			paginationStart = 0;
+		}
+
+		Integer paginationDelta = searchSettings.getPaginationDelta();
+
+		if (paginationDelta == null) {
+			paginationDelta = SearchContainer.DEFAULT_DELTA;
+		}
 
 		PortletURL portletURL = new NullPortletURL();
 
@@ -149,7 +151,8 @@ public class PortletSharedSearchRequestImpl
 		String cssClass = null;
 
 		return new SearchContainer<>(
-			portletRequest, displayTerms, searchTerms, curParam, cur, delta,
+			portletRequest, displayTerms, searchTerms,
+			paginationStartParameterName, paginationStart, paginationDelta,
 			portletURL, headerNames, emptyResultsMessage, cssClass);
 	}
 

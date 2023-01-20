@@ -70,11 +70,8 @@ public class CPSearchResultsPortletSharedSearchContributor
 			SearchRequestBuilder searchRequestBuilder =
 				portletSharedSearchSettings.getSearchRequestBuilder();
 
-			Optional<String> paginationStartParameterNameOptional =
-				portletSharedSearchSettings.getPaginationStartParameterName();
-
 			searchRequestBuilder.paginationStartParameterName(
-				paginationStartParameterNameOptional.get());
+				portletSharedSearchSettings.getPaginationStartParameterName());
 		}
 		catch (PortalException portalException) {
 			throw new SystemException(portalException);

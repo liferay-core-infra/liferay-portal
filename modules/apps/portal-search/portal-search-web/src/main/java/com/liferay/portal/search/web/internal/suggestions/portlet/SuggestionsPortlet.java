@@ -121,7 +121,7 @@ public class SuggestionsPortlet extends MVCPortlet {
 			suggestionsPortletDisplayContextBuilder =
 				new SuggestionsPortletDisplayContextBuilder(html);
 
-		_copy(
+		_copyFromOptional(
 			portletSharedSearchResponse::getKeywordsOptional,
 			suggestionsPortletDisplayContextBuilder::setKeywords);
 
@@ -141,7 +141,7 @@ public class SuggestionsPortlet extends MVCPortlet {
 		suggestionsPortletDisplayContextBuilder.setSearchURL(
 			portletSharedRequestHelper.getCompleteURL(renderRequest));
 
-		_copy(
+		_copyFromOptional(
 			portletSharedSearchResponse::getSpellCheckSuggestionOptional,
 			suggestionsPortletDisplayContextBuilder::setSpellCheckSuggestion);
 
@@ -151,7 +151,17 @@ public class SuggestionsPortlet extends MVCPortlet {
 		return suggestionsPortletDisplayContextBuilder.build();
 	}
 
-	private <T> void _copy(Supplier<Optional<T>> from, Consumer<T> to) {
+	private <T> void _copy(Supplier<T> from, Consumer<T> to) {
+		T value = from.get();
+
+		if (value != null) {
+			to.accept(value);
+		}
+	}
+
+	private <T> void _copyFromOptional(
+		Supplier<Optional<T>> from, Consumer<T> to) {
+
 		Optional<T> optional = from.get();
 
 		optional.ifPresent(to);

@@ -371,11 +371,15 @@ public class SearchBarPortletDisplayContextFactory {
 				SearchBarPortletDestinationUtil.isSameDestination(
 					headerPortletPreferencesOptional.get(), themeDisplay)) {
 
-				Optional<String> optional =
+				String keywordsParameterName =
 					searchSettings.getKeywordsParameterName();
 
-				return optional.orElse(
-					searchBarPortletPreferences.getKeywordsParameterName());
+				if (keywordsParameterName == null) {
+					keywordsParameterName =
+						searchBarPortletPreferences.getKeywordsParameterName();
+				}
+
+				return keywordsParameterName;
 			}
 		}
 

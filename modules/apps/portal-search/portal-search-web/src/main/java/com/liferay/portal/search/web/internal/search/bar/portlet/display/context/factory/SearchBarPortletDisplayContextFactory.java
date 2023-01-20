@@ -311,11 +311,11 @@ public class SearchBarPortletDisplayContextFactory {
 				SearchBarPortletDestinationUtil.isSameDestination(
 					headerPortletPreferencesOptional.get(), themeDisplay)) {
 
-				Optional<String> optional = searchSettings.getScope();
+				String scope = searchSettings.getScope();
 
-				if (optional.isPresent()) {
+				if (scope != null) {
 					return SearchScopePreference.getSearchScopePreference(
-						optional.get());
+						scope);
 				}
 			}
 		}
@@ -405,11 +405,15 @@ public class SearchBarPortletDisplayContextFactory {
 				SearchBarPortletDestinationUtil.isSameDestination(
 					headerPortletPreferencesOptional.get(), themeDisplay)) {
 
-				Optional<String> optional =
+				String scopeParameterName =
 					searchSettings.getScopeParameterName();
 
-				return optional.orElse(
-					searchBarPortletPreferences.getScopeParameterName());
+				if (scopeParameterName == null) {
+					scopeParameterName =
+						searchBarPortletPreferences.getScopeParameterName();
+				}
+
+				return scopeParameterName;
 			}
 		}
 

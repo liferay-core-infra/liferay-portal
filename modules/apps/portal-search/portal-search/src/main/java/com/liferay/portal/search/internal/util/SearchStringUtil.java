@@ -18,23 +18,23 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * @author André de Oliveira
  */
 public class SearchStringUtil {
 
-	public static Optional<String> maybe(String s) {
+	public static String maybe(String s) {
 		s = StringUtil.trim(s);
 
 		if (Validator.isBlank(s)) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.of(s);
+		return s;
 	}
 
 	public static String requireEquals(String expected, String actual) {
@@ -45,24 +45,24 @@ public class SearchStringUtil {
 		return actual;
 	}
 
-	public static String[] splitAndUnquote(Optional<String> optional) {
-		return optional.map(
-			SearchStringUtil::splitAndUnquote
-		).orElse(
-			new String[0]
-		);
-	}
-
 	public static String[] splitAndUnquote(String s) {
-		return Stream.of(
-			StringUtil.split(s.trim(), CharPool.COMMA)
-		).map(
-			String::trim
-		).map(
-			StringUtil::unquote
-		).toArray(
-			String[]::new
-		);
+		if (s == null) {
+			return new String[0];
+		}
+
+		List<String> finalStringsList = new ArrayList<>();
+
+		for (String splitString : StringUtil.split(s.trim(), CharPool.COMMA)) {
+			finalStringsList.add(StringUtil.unquote(splitString.trim()));
+		}
+
+		String[] finalStringsArray = new String[finalStringsList.size()];
+
+		for (int i = 0; i < finalStringsArray.length; i++) {
+			finalStringsArray[i] = finalStringsList.get(i);
+		}
+
+		return finalStringsArray;
 	}
 
 }

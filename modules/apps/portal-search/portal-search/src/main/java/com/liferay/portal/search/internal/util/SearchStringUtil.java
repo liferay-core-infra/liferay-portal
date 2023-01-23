@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -27,14 +26,14 @@ import java.util.stream.Stream;
  */
 public class SearchStringUtil {
 
-	public static Optional<String> maybe(String s) {
+	public static String maybe(String s) {
 		s = StringUtil.trim(s);
 
 		if (Validator.isBlank(s)) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.of(s);
+		return s;
 	}
 
 	public static String requireEquals(String expected, String actual) {
@@ -43,14 +42,6 @@ public class SearchStringUtil {
 		}
 
 		return actual;
-	}
-
-	public static String[] splitAndUnquote(Optional<String> optional) {
-		return optional.map(
-			SearchStringUtil::splitAndUnquote
-		).orElse(
-			new String[0]
-		);
 	}
 
 	public static String[] splitAndUnquote(String s) {

@@ -30,7 +30,6 @@ import com.liferay.portal.search.spi.model.query.contributor.helper.KeywordQuery
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -59,8 +58,7 @@ public class AddSearchKeywordsQueryContributorHelperImpl
 
 		return Arrays.asList(
 			SearchStringUtil.splitAndUnquote(
-				Optional.ofNullable(
-					(String)searchContext.getAttribute(string))));
+				(String)searchContext.getAttribute(string)));
 	}
 
 	@Reference

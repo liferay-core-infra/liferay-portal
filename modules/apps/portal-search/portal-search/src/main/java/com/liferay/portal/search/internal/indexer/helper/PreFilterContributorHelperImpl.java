@@ -38,7 +38,6 @@ import com.liferay.portal.search.spi.model.registrar.ModelSearchSettings;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.osgi.framework.BundleContext;
@@ -106,8 +105,7 @@ public class PreFilterContributorHelperImpl
 
 		return Arrays.asList(
 			SearchStringUtil.splitAndUnquote(
-				Optional.ofNullable(
-					(String)searchContext.getAttribute(string))));
+				(String)searchContext.getAttribute(string)));
 	}
 
 	@Reference

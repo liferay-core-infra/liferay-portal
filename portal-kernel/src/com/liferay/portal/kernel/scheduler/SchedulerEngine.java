@@ -115,9 +115,6 @@ public interface SchedulerEngine {
 			String jobName, String groupName, StorageType storageType)
 		throws SchedulerException;
 
-	public void update(Trigger trigger, StorageType storageType)
-		throws SchedulerException;
-
 	public void validateTrigger(Trigger trigger, StorageType storageType)
 		throws SchedulerException;
 

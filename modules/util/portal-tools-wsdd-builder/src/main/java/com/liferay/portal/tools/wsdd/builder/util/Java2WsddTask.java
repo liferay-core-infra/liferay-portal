@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.xml.SAXReaderFactory;
 
 import java.io.File;
 
@@ -85,8 +86,8 @@ public class Java2WsddTask {
 
 		String location = "http://localhost/services/" + serviceName;
 
-		String mappingPackage = packagePath.substring(
-			0, packagePath.lastIndexOf(".")) + ".ws";
+		String mappingPackage =
+			packagePath.substring(0, packagePath.lastIndexOf(".")) + ".ws";
 
 		Project project = AntUtil.getProject();
 
@@ -175,7 +176,7 @@ public class Java2WsddTask {
 	private static String _format(String content) throws Exception {
 		content = _stripComments(content);
 
-		SAXReader saxReader = new SAXReader();
+		SAXReader saxReader = SAXReaderFactory.getSAXReader(null, false, false);
 
 		Document document = saxReader.read(new UnsyncStringReader(content));
 
@@ -203,7 +204,8 @@ public class Java2WsddTask {
 
 				List<Element> parameters = element.elements("parameter");
 
-				StringBundler sb = new StringBundler(2 * parameters.size() + 2);
+				StringBundler sb = new StringBundler(
+					(2 * parameters.size()) + 2);
 
 				String name = element.attributeValue("name");
 
@@ -262,10 +264,7 @@ public class Java2WsddTask {
 		_addElements(serviceElement, operationElements);
 		_addElements(serviceElement, parameterElements);
 
-		content = StringUtil.replace(
-			_formattedString(document), "\"/>", "\" />");
-
-		return content;
+		return StringUtil.replace(_formattedString(document), "\"/>", "\" />");
 	}
 
 	private static String _formattedString(Node node) throws Exception {

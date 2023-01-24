@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -476,15 +475,19 @@ public class PageSectionDefinitionSerDes {
 						jsonParserFieldName, "customCSSViewports")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					CustomCSSViewport[] CustomCSSViewports =
+						new CustomCSSViewport[jsonParserFieldValues.length];
+
+					for (int i = 0; i < CustomCSSViewports.length; i++) {
+						CustomCSSViewports[i] = CustomCSSViewportSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
 					pageSectionDefinition.setCustomCSSViewports(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> CustomCSSViewportSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new CustomCSSViewport[size]
-						));
+						CustomCSSViewports);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "fragmentLink")) {
@@ -502,15 +505,19 @@ public class PageSectionDefinitionSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "fragmentViewports")) {
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					FragmentViewport[] FragmentViewports =
+						new FragmentViewport[jsonParserFieldValues.length];
+
+					for (int i = 0; i < FragmentViewports.length; i++) {
+						FragmentViewports[i] = FragmentViewportSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
 					pageSectionDefinition.setFragmentViewports(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> FragmentViewportSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new FragmentViewport[size]
-						));
+						FragmentViewports);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "htmlProperties")) {

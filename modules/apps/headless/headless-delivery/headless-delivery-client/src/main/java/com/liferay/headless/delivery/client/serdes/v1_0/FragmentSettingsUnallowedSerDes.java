@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -144,14 +143,19 @@ public class FragmentSettingsUnallowedSerDes {
 
 			if (Objects.equals(jsonParserFieldName, "unallowedFragments")) {
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					Fragment[] UnallowedFragments =
+						new Fragment[jsonParserFieldValues.length];
+
+					for (int i = 0; i < UnallowedFragments.length; i++) {
+						UnallowedFragments[i] = FragmentSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
 					fragmentSettingsUnallowed.setUnallowedFragments(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> FragmentSerDes.toDTO((String)object)
-						).toArray(
-							size -> new Fragment[size]
-						));
+						UnallowedFragments);
 				}
 			}
 		}

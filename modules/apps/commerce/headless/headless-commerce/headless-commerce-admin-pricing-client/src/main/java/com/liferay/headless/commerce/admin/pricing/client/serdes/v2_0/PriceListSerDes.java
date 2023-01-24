@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -813,97 +812,121 @@ public class PriceListSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "priceEntries")) {
 				if (jsonParserFieldValue != null) {
-					priceList.setPriceEntries(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceEntrySerDes.toDTO((String)object)
-						).toArray(
-							size -> new PriceEntry[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceEntry[] PriceEntries =
+						new PriceEntry[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceEntries.length; i++) {
+						PriceEntries[i] = PriceEntrySerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					priceList.setPriceEntries(PriceEntries);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "priceListAccountGroups")) {
 
 				if (jsonParserFieldValue != null) {
-					priceList.setPriceListAccountGroups(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceListAccountGroupSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListAccountGroup[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceListAccountGroup[] PriceListAccountGroups =
+						new PriceListAccountGroup[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceListAccountGroups.length; i++) {
+						PriceListAccountGroups[i] =
+							PriceListAccountGroupSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
+					priceList.setPriceListAccountGroups(PriceListAccountGroups);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priceListAccounts")) {
 				if (jsonParserFieldValue != null) {
-					priceList.setPriceListAccounts(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceListAccountSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListAccount[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceListAccount[] PriceListAccounts =
+						new PriceListAccount[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceListAccounts.length; i++) {
+						PriceListAccounts[i] = PriceListAccountSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					priceList.setPriceListAccounts(PriceListAccounts);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priceListChannels")) {
 				if (jsonParserFieldValue != null) {
-					priceList.setPriceListChannels(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceListChannelSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListChannel[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceListChannel[] PriceListChannels =
+						new PriceListChannel[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceListChannels.length; i++) {
+						PriceListChannels[i] = PriceListChannelSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					priceList.setPriceListChannels(PriceListChannels);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "priceListDiscounts")) {
 
 				if (jsonParserFieldValue != null) {
-					priceList.setPriceListDiscounts(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceListDiscountSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListDiscount[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceListDiscount[] PriceListDiscounts =
+						new PriceListDiscount[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceListDiscounts.length; i++) {
+						PriceListDiscounts[i] = PriceListDiscountSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					priceList.setPriceListDiscounts(PriceListDiscounts);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "priceListOrderTypes")) {
 
 				if (jsonParserFieldValue != null) {
-					priceList.setPriceListOrderTypes(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceListOrderTypeSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListOrderType[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceListOrderType[] PriceListOrderTypes =
+						new PriceListOrderType[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceListOrderTypes.length; i++) {
+						PriceListOrderTypes[i] = PriceListOrderTypeSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					priceList.setPriceListOrderTypes(PriceListOrderTypes);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priceModifiers")) {
 				if (jsonParserFieldValue != null) {
-					priceList.setPriceModifiers(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceModifierSerDes.toDTO((String)object)
-						).toArray(
-							size -> new PriceModifier[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceModifier[] PriceModifiers =
+						new PriceModifier[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceModifiers.length; i++) {
+						PriceModifiers[i] = PriceModifierSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					priceList.setPriceModifiers(PriceModifiers);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priority")) {

@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -386,14 +385,18 @@ public class AccountSerDes {
 
 			if (Objects.equals(jsonParserFieldName, "accountUserAccounts")) {
 				if (jsonParserFieldValue != null) {
-					account.setAccountUserAccounts(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> UserAccountSerDes.toDTO((String)object)
-						).toArray(
-							size -> new UserAccount[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					UserAccount[] AccountUserAccounts =
+						new UserAccount[jsonParserFieldValues.length];
+
+					for (int i = 0; i < AccountUserAccounts.length; i++) {
+						AccountUserAccounts[i] = UserAccountSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					account.setAccountUserAccounts(AccountUserAccounts);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "actions")) {
@@ -404,14 +407,18 @@ public class AccountSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "customFields")) {
 				if (jsonParserFieldValue != null) {
-					account.setCustomFields(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> CustomFieldSerDes.toDTO((String)object)
-						).toArray(
-							size -> new CustomField[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					CustomField[] CustomFields =
+						new CustomField[jsonParserFieldValues.length];
+
+					for (int i = 0; i < CustomFields.length; i++) {
+						CustomFields[i] = CustomFieldSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					account.setCustomFields(CustomFields);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "description")) {

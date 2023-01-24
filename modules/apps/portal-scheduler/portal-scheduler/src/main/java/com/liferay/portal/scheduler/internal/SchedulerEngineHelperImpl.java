@@ -461,16 +461,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	}
 
 	@Override
-	public void unschedule(
-			SchedulerEntry schedulerEntry, StorageType storageType)
-		throws SchedulerException {
-
-		Trigger trigger = schedulerEntry.getTrigger();
-
-		unschedule(trigger.getJobName(), trigger.getGroupName(), storageType);
-	}
-
-	@Override
 	public void unschedule(String groupName, StorageType storageType)
 		throws SchedulerException {
 

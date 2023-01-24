@@ -367,13 +367,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	}
 
 	@Override
-	public void pause(String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		_schedulerEngine.pause(groupName, storageType);
-	}
-
-	@Override
 	public void pause(String jobName, String groupName, StorageType storageType)
 		throws SchedulerException {
 
@@ -408,13 +401,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 		_serviceRegistrations.put(
 			messageListenerClass.getName(), serviceRegistration);
-	}
-
-	@Override
-	public void resume(String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		_schedulerEngine.resume(groupName, storageType);
 	}
 
 	@Override

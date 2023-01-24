@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -408,14 +407,18 @@ public class PlanSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "mappings")) {
 				if (jsonParserFieldValue != null) {
-					plan.setMappings(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> MappingSerDes.toDTO((String)object)
-						).toArray(
-							size -> new Mapping[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					Mapping[] Mappings =
+						new Mapping[jsonParserFieldValues.length];
+
+					for (int i = 0; i < Mappings.length; i++) {
+						Mappings[i] = MappingSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					plan.setMappings(Mappings);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "name")) {
@@ -425,14 +428,18 @@ public class PlanSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "policies")) {
 				if (jsonParserFieldValue != null) {
-					plan.setPolicies(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PolicySerDes.toDTO((String)object)
-						).toArray(
-							size -> new Policy[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					Policy[] Policies =
+						new Policy[jsonParserFieldValues.length];
+
+					for (int i = 0; i < Policies.length; i++) {
+						Policies[i] = PolicySerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					plan.setPolicies(Policies);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "size")) {

@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -366,26 +365,34 @@ public class DSEnvelopeSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "dsDocument")) {
 				if (jsonParserFieldValue != null) {
-					dsEnvelope.setDsDocument(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> DSDocumentSerDes.toDTO((String)object)
-						).toArray(
-							size -> new DSDocument[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					DSDocument[] DsDocument =
+						new DSDocument[jsonParserFieldValues.length];
+
+					for (int i = 0; i < DsDocument.length; i++) {
+						DsDocument[i] = DSDocumentSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					dsEnvelope.setDsDocument(DsDocument);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "dsRecipient")) {
 				if (jsonParserFieldValue != null) {
-					dsEnvelope.setDsRecipient(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> DSRecipientSerDes.toDTO((String)object)
-						).toArray(
-							size -> new DSRecipient[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					DSRecipient[] DsRecipient =
+						new DSRecipient[jsonParserFieldValues.length];
+
+					for (int i = 0; i < DsRecipient.length; i++) {
+						DsRecipient[i] = DSRecipientSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					dsEnvelope.setDsRecipient(DsRecipient);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "emailBlurb")) {

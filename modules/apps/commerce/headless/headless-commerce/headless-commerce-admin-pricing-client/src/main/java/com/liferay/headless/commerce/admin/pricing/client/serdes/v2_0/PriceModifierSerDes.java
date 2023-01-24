@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -573,45 +572,63 @@ public class PriceModifierSerDes {
 						jsonParserFieldName, "priceModifierCategories")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceModifierCategory[] PriceModifierCategories =
+						new PriceModifierCategory[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceModifierCategories.length; i++) {
+						PriceModifierCategories[i] =
+							PriceModifierCategorySerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
 					priceModifier.setPriceModifierCategories(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceModifierCategorySerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceModifierCategory[size]
-						));
+						PriceModifierCategories);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "priceModifierProductGroups")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceModifierProductGroup[] PriceModifierProductGroups =
+						new PriceModifierProductGroup
+							[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceModifierProductGroups.length;
+						 i++) {
+
+						PriceModifierProductGroups[i] =
+							PriceModifierProductGroupSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
 					priceModifier.setPriceModifierProductGroups(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceModifierProductGroupSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceModifierProductGroup[size]
-						));
+						PriceModifierProductGroups);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "priceModifierProducts")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PriceModifierProduct[] PriceModifierProducts =
+						new PriceModifierProduct[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PriceModifierProducts.length; i++) {
+						PriceModifierProducts[i] =
+							PriceModifierProductSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
 					priceModifier.setPriceModifierProducts(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceModifierProductSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceModifierProduct[size]
-						));
+						PriceModifierProducts);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priority")) {

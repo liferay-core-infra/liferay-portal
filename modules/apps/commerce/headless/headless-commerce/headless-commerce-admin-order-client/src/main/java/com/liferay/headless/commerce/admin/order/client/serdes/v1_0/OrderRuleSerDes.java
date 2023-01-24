@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -594,58 +593,71 @@ public class OrderRuleSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "orderRuleAccount")) {
 				if (jsonParserFieldValue != null) {
-					orderRule.setOrderRuleAccount(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> OrderRuleAccountSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new OrderRuleAccount[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					OrderRuleAccount[] OrderRuleAccount =
+						new OrderRuleAccount[jsonParserFieldValues.length];
+
+					for (int i = 0; i < OrderRuleAccount.length; i++) {
+						OrderRuleAccount[i] = OrderRuleAccountSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					orderRule.setOrderRuleAccount(OrderRuleAccount);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "orderRuleAccountGroup")) {
 
 				if (jsonParserFieldValue != null) {
-					orderRule.setOrderRuleAccountGroup(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> OrderRuleAccountGroupSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new OrderRuleAccountGroup[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					OrderRuleAccountGroup[] OrderRuleAccountGroup =
+						new OrderRuleAccountGroup[jsonParserFieldValues.length];
+
+					for (int i = 0; i < OrderRuleAccountGroup.length; i++) {
+						OrderRuleAccountGroup[i] =
+							OrderRuleAccountGroupSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
+					orderRule.setOrderRuleAccountGroup(OrderRuleAccountGroup);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "orderRuleChannel")) {
 				if (jsonParserFieldValue != null) {
-					orderRule.setOrderRuleChannel(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> OrderRuleChannelSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new OrderRuleChannel[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					OrderRuleChannel[] OrderRuleChannel =
+						new OrderRuleChannel[jsonParserFieldValues.length];
+
+					for (int i = 0; i < OrderRuleChannel.length; i++) {
+						OrderRuleChannel[i] = OrderRuleChannelSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					orderRule.setOrderRuleChannel(OrderRuleChannel);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "orderRuleOrderType")) {
 
 				if (jsonParserFieldValue != null) {
-					orderRule.setOrderRuleOrderType(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> OrderRuleOrderTypeSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new OrderRuleOrderType[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					OrderRuleOrderType[] OrderRuleOrderType =
+						new OrderRuleOrderType[jsonParserFieldValues.length];
+
+					for (int i = 0; i < OrderRuleOrderType.length; i++) {
+						OrderRuleOrderType[i] = OrderRuleOrderTypeSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					orderRule.setOrderRuleOrderType(OrderRuleOrderType);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priority")) {

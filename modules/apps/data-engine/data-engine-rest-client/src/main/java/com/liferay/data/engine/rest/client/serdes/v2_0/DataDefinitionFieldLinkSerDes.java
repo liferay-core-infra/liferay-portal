@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -199,26 +198,34 @@ public class DataDefinitionFieldLinkSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "dataLayouts")) {
 				if (jsonParserFieldValue != null) {
-					dataDefinitionFieldLink.setDataLayouts(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> DataLayoutSerDes.toDTO((String)object)
-						).toArray(
-							size -> new DataLayout[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					DataLayout[] DataLayouts =
+						new DataLayout[jsonParserFieldValues.length];
+
+					for (int i = 0; i < DataLayouts.length; i++) {
+						DataLayouts[i] = DataLayoutSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					dataDefinitionFieldLink.setDataLayouts(DataLayouts);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "dataListViews")) {
 				if (jsonParserFieldValue != null) {
-					dataDefinitionFieldLink.setDataListViews(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> DataListViewSerDes.toDTO((String)object)
-						).toArray(
-							size -> new DataListView[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					DataListView[] DataListViews =
+						new DataListView[jsonParserFieldValues.length];
+
+					for (int i = 0; i < DataListViews.length; i++) {
+						DataListViews[i] = DataListViewSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					dataDefinitionFieldLink.setDataListViews(DataListViews);
 				}
 			}
 		}

@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -199,14 +198,18 @@ public class ExperienceSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "segments")) {
 				if (jsonParserFieldValue != null) {
-					experience.setSegments(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> SegmentSerDes.toDTO((String)object)
-						).toArray(
-							size -> new Segment[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					Segment[] Segments =
+						new Segment[jsonParserFieldValues.length];
+
+					for (int i = 0; i < Segments.length; i++) {
+						Segments[i] = SegmentSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					experience.setSegments(Segments);
 				}
 			}
 		}

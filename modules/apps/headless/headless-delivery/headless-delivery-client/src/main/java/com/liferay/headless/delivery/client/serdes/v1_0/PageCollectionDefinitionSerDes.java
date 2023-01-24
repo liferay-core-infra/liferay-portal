@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -516,15 +515,19 @@ public class PageCollectionDefinitionSerDes {
 						jsonParserFieldName, "collectionViewports")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					CollectionViewport[] CollectionViewports =
+						new CollectionViewport[jsonParserFieldValues.length];
+
+					for (int i = 0; i < CollectionViewports.length; i++) {
+						CollectionViewports[i] = CollectionViewportSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
 					pageCollectionDefinition.setCollectionViewports(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> CollectionViewportSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new CollectionViewport[size]
-						));
+						CollectionViewports);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "displayAllItems")) {
@@ -557,15 +560,19 @@ public class PageCollectionDefinitionSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "fragmentViewports")) {
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					FragmentViewport[] FragmentViewports =
+						new FragmentViewport[jsonParserFieldValues.length];
+
+					for (int i = 0; i < FragmentViewports.length; i++) {
+						FragmentViewports[i] = FragmentViewportSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
 					pageCollectionDefinition.setFragmentViewports(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> FragmentViewportSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new FragmentViewport[size]
-						));
+						FragmentViewports);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "layout")) {

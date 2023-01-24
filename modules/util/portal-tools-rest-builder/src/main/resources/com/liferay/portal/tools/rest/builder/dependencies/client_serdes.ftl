@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -303,14 +302,15 @@ public class ${schemaName}SerDes {
 							${schemaVarName}.set${capitalizedPropertyName}(
 								${propertyType}SerDes.toDTO((String)jsonParserFieldValue));
 						<#elseif propertyType?ends_with("[]") && (allExternalSchemas?keys?seq_contains(propertyType?remove_ending("[]")) || allSchemas?keys?seq_contains(propertyType?remove_ending("[]")))>
-							${schemaVarName}.set${capitalizedPropertyName}(
-								Stream.of(
-									toStrings((Object[])jsonParserFieldValue)
-								).map(
-									object -> ${propertyType?remove_ending("[]")}SerDes.toDTO((String)object)
-								).toArray(
-									size -> new ${propertyType?remove_ending("[]")}[size]
-								));
+							String[] jsonParserFieldValues = toStrings((Object[])jsonParserFieldValue);
+
+							${propertyType?remove_ending("[]")}[] ${capitalizedPropertyName} = new ${propertyType?remove_ending("[]")}[jsonParserFieldValues.length];
+
+							for(int i = 0; i < ${capitalizedPropertyName}.length; i++){
+								${capitalizedPropertyName}[i] = ${propertyType?remove_ending("[]")}SerDes.toDTO((String)jsonParserFieldValues[i]);
+							}
+
+							${schemaVarName}.set${capitalizedPropertyName}(${capitalizedPropertyName});
 						<#elseif enumSchemas?keys?seq_contains(properties[propertyName])>
 							${schemaVarName}.set${capitalizedPropertyName}(
 								${schemaName}.${propertyType}.create((String)jsonParserFieldValue));

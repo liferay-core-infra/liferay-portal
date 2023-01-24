@@ -82,8 +82,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -1380,32 +1378,6 @@ public class ClusterSchedulerEngineTest {
 	private void _setUpSchedulerEngineHelperUtil() {
 		SchedulerEngineHelper schedulerEngineHelper = Mockito.mock(
 			SchedulerEngineHelper.class);
-
-		Mockito.when(
-			schedulerEngineHelper.getJobState(
-				Mockito.any(SchedulerResponse.class))
-		).then(
-			new Answer<TriggerState>() {
-
-				@Override
-				public TriggerState answer(InvocationOnMock invocationOnMock)
-					throws Throwable {
-
-					Object[] args = invocationOnMock.getArguments();
-
-					SchedulerResponse schedulerResponse =
-						(SchedulerResponse)args[0];
-
-					Message message = schedulerResponse.getMessage();
-
-					JobState jobState = (JobState)message.get(
-						SchedulerEngine.JOB_STATE);
-
-					return jobState.getTriggerState();
-				}
-
-			}
-		);
 
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 

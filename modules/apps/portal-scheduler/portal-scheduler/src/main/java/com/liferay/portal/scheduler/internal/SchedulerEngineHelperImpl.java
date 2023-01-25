@@ -128,15 +128,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	}
 
 	@Override
-	public void delete(SchedulerEntry schedulerEntry, StorageType storageType)
-		throws SchedulerException {
-
-		Trigger trigger = schedulerEntry.getTrigger();
-
-		delete(trigger.getJobName(), trigger.getGroupName(), storageType);
-	}
-
-	@Override
 	public void delete(String groupName, StorageType storageType)
 		throws SchedulerException {
 
@@ -169,74 +160,12 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	}
 
 	@Override
-	public Date getEndTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		SchedulerResponse schedulerResponse = getScheduledJob(
-			jobName, groupName, storageType);
-
-		if (schedulerResponse != null) {
-			return getEndTime(schedulerResponse);
-		}
-
-		return null;
-	}
-
-	@Override
-	public Date getFinalFireTime(SchedulerResponse schedulerResponse) {
-		Message message = schedulerResponse.getMessage();
-
-		JobState jobState = (JobState)message.get(SchedulerEngine.JOB_STATE);
-
-		TriggerState triggerState = jobState.getTriggerState();
-
-		if (triggerState.equals(TriggerState.NORMAL) ||
-			triggerState.equals(TriggerState.PAUSED)) {
-
-			return (Date)message.get(SchedulerEngine.FINAL_FIRE_TIME);
-		}
-
-		return jobState.getTriggerDate(SchedulerEngine.FINAL_FIRE_TIME);
-	}
-
-	@Override
-	public Date getFinalFireTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		SchedulerResponse schedulerResponse = getScheduledJob(
-			jobName, groupName, storageType);
-
-		if (schedulerResponse != null) {
-			return getFinalFireTime(schedulerResponse);
-		}
-
-		return null;
-	}
-
-	@Override
 	public TriggerState getJobState(SchedulerResponse schedulerResponse) {
 		Message message = schedulerResponse.getMessage();
 
 		JobState jobState = (JobState)message.get(SchedulerEngine.JOB_STATE);
 
 		return jobState.getTriggerState();
-	}
-
-	@Override
-	public TriggerState getJobState(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		SchedulerResponse schedulerResponse = getScheduledJob(
-			jobName, groupName, storageType);
-
-		if (schedulerResponse != null) {
-			return getJobState(schedulerResponse);
-		}
-
-		return null;
 	}
 
 	@Override
@@ -257,21 +186,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	}
 
 	@Override
-	public Date getNextFireTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		SchedulerResponse schedulerResponse = getScheduledJob(
-			jobName, groupName, storageType);
-
-		if (schedulerResponse != null) {
-			return getNextFireTime(schedulerResponse);
-		}
-
-		return null;
-	}
-
-	@Override
 	public Date getPreviousFireTime(SchedulerResponse schedulerResponse) {
 		Message message = schedulerResponse.getMessage();
 
@@ -286,21 +200,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		}
 
 		return jobState.getTriggerDate(SchedulerEngine.PREVIOUS_FIRE_TIME);
-	}
-
-	@Override
-	public Date getPreviousFireTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		SchedulerResponse schedulerResponse = getScheduledJob(
-			jobName, groupName, storageType);
-
-		if (schedulerResponse != null) {
-			return getPreviousFireTime(schedulerResponse);
-		}
-
-		return null;
 	}
 
 	@Override
@@ -352,28 +251,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	}
 
 	@Override
-	public Date getStartTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		SchedulerResponse schedulerResponse = getScheduledJob(
-			jobName, groupName, storageType);
-
-		if (schedulerResponse != null) {
-			return getStartTime(schedulerResponse);
-		}
-
-		return null;
-	}
-
-	@Override
-	public void pause(String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		_schedulerEngine.pause(groupName, storageType);
-	}
-
-	@Override
 	public void pause(String jobName, String groupName, StorageType storageType)
 		throws SchedulerException {
 
@@ -405,13 +282,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				schedulerEventMessageListenerWrapper, properties);
 
 		_serviceRegistrations.put(messageListener, serviceRegistration);
-	}
-
-	@Override
-	public void resume(String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		_schedulerEngine.resume(groupName, storageType);
 	}
 
 	@Override
@@ -459,16 +329,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	}
 
 	@Override
-	public void shutdown() throws SchedulerException {
-		_schedulerEngine.shutdown();
-	}
-
-	@Override
-	public void start() throws SchedulerException {
-		_schedulerEngine.start();
-	}
-
-	@Override
 	public void unregister(MessageListener messageListener) {
 		ServiceRegistration<?> serviceRegistration =
 			_serviceRegistrations.remove(messageListener);
@@ -480,55 +340,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 	@Override
 	public void unschedule(
-			SchedulerEntry schedulerEntry, StorageType storageType)
-		throws SchedulerException {
-
-		Trigger trigger = schedulerEntry.getTrigger();
-
-		unschedule(trigger.getJobName(), trigger.getGroupName(), storageType);
-	}
-
-	@Override
-	public void unschedule(String groupName, StorageType storageType)
-		throws SchedulerException {
-
-		_schedulerEngine.unschedule(groupName, storageType);
-	}
-
-	@Override
-	public void unschedule(
 			String jobName, String groupName, StorageType storageType)
 		throws SchedulerException {
 
 		_schedulerEngine.unschedule(jobName, groupName, storageType);
-	}
-
-	@Override
-	public void update(
-			String jobName, String groupName, StorageType storageType,
-			String description, String language, String script)
-		throws SchedulerException {
-
-		SchedulerResponse schedulerResponse = getScheduledJob(
-			jobName, groupName, storageType);
-
-		if (schedulerResponse == null) {
-			return;
-		}
-
-		Trigger trigger = schedulerResponse.getTrigger();
-
-		if (trigger == null) {
-			return;
-		}
-
-		Message message = schedulerResponse.getMessage();
-
-		if (message == null) {
-			return;
-		}
-
-		addScriptingJob(trigger, storageType, description, language, script);
 	}
 
 	@Override
@@ -572,7 +387,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 		DependencyManagerSyncUtil.registerSyncCallable(
 			() -> {
-				start();
+				_schedulerEngine.start();
 
 				return null;
 			});
@@ -589,7 +404,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		}
 
 		try {
-			shutdown();
+			_schedulerEngine.shutdown();
 		}
 		catch (SchedulerException schedulerException) {
 			if (_log.isWarnEnabled()) {
@@ -791,8 +606,11 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			ClusterableContextThreadLocal.putThreadLocalContext(
 				SchedulerEngine.SCHEDULER_CLUSTER_INVOKING, false);
 
+			Trigger trigger = schedulerEntry.getTrigger();
+
 			try {
-				delete(schedulerEntry, storageType);
+				delete(
+					trigger.getJobName(), trigger.getGroupName(), storageType);
 			}
 			catch (SchedulerException schedulerException) {
 				_log.error(schedulerException);

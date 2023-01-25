@@ -83,13 +83,7 @@ public interface SchedulerEngine {
 			String groupName, StorageType storageType)
 		throws SchedulerException;
 
-	public void pause(String groupName, StorageType storageType)
-		throws SchedulerException;
-
 	public void pause(String jobName, String groupName, StorageType storageType)
-		throws SchedulerException;
-
-	public void resume(String groupName, StorageType storageType)
 		throws SchedulerException;
 
 	public void resume(
@@ -107,9 +101,6 @@ public interface SchedulerEngine {
 	public void shutdown() throws SchedulerException;
 
 	public void start() throws SchedulerException;
-
-	public void unschedule(String groupName, StorageType storageType)
-		throws SchedulerException;
 
 	public void unschedule(
 			String jobName, String groupName, StorageType storageType)

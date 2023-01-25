@@ -34,9 +34,6 @@ public interface SchedulerEngineHelper {
 	public void auditSchedulerJobs(Message message, TriggerState triggerState)
 		throws SchedulerException;
 
-	public void delete(SchedulerEntry schedulerEntry, StorageType storageType)
-		throws SchedulerException;
-
 	public void delete(String groupName, StorageType storageType)
 		throws SchedulerException;
 
@@ -46,33 +43,11 @@ public interface SchedulerEngineHelper {
 
 	public Date getEndTime(SchedulerResponse schedulerResponse);
 
-	public Date getEndTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException;
-
-	public Date getFinalFireTime(SchedulerResponse schedulerResponse);
-
-	public Date getFinalFireTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException;
-
 	public TriggerState getJobState(SchedulerResponse schedulerResponse);
-
-	public TriggerState getJobState(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException;
 
 	public Date getNextFireTime(SchedulerResponse schedulerResponse);
 
-	public Date getNextFireTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException;
-
 	public Date getPreviousFireTime(SchedulerResponse schedulerResponse);
-
-	public Date getPreviousFireTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException;
 
 	public SchedulerResponse getScheduledJob(
 			String jobName, String groupName, StorageType storageType)
@@ -89,22 +64,12 @@ public interface SchedulerEngineHelper {
 
 	public Date getStartTime(SchedulerResponse schedulerResponse);
 
-	public Date getStartTime(
-			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException;
-
-	public void pause(String groupName, StorageType storageType)
-		throws SchedulerException;
-
 	public void pause(String jobName, String groupName, StorageType storageType)
 		throws SchedulerException;
 
 	public void register(
 		MessageListener messageListener, SchedulerEntry schedulerEntry,
 		String destinationName);
-
-	public void resume(String groupName, StorageType storageType)
-		throws SchedulerException;
 
 	public void resume(
 			String jobName, String groupName, StorageType storageType)
@@ -123,26 +88,10 @@ public interface SchedulerEngineHelper {
 			String destinationName, Object payload)
 		throws SchedulerException;
 
-	public void shutdown() throws SchedulerException;
-
-	public void start() throws SchedulerException;
-
 	public void unregister(MessageListener messageListener);
 
 	public void unschedule(
-			SchedulerEntry schedulerEntry, StorageType storageType)
-		throws SchedulerException;
-
-	public void unschedule(String groupName, StorageType storageType)
-		throws SchedulerException;
-
-	public void unschedule(
 			String jobName, String groupName, StorageType storageType)
-		throws SchedulerException;
-
-	public void update(
-			String jobName, String groupName, StorageType storageType,
-			String description, String language, String script)
 		throws SchedulerException;
 
 	public void update(Trigger trigger, StorageType storageType)

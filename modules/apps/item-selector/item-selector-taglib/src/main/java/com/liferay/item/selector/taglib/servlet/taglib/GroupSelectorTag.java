@@ -108,43 +108,39 @@ public class GroupSelectorTag extends IncludeTag {
 			_groups = new ArrayList<>();
 
 			_groups.add(group);
-		}
-		else {
-			GroupItemSelectorProvider groupItemSelectorProvider =
-				GroupItemSelectorProviderRegistryUtil.
-					getGroupItemSelectorProvider(groupType);
 
-			if (groupItemSelectorProvider == null) {
-				_groups = Collections.emptyList();
-			}
-			else {
-				String keywords = ParamUtil.getString(
-					httpServletRequest, "keywords");
-
-				int cur = ParamUtil.getInteger(
-					httpServletRequest, SearchContainer.DEFAULT_CUR_PARAM,
-					SearchContainer.DEFAULT_CUR);
-				int delta = ParamUtil.getInteger(
-					httpServletRequest, SearchContainer.DEFAULT_DELTA_PARAM,
-					SearchContainer.DEFAULT_DELTA);
-
-				int[] startAndEnd = SearchPaginationUtil.calculateStartAndEnd(
-					cur, delta);
-
-				List<Group> groups = groupItemSelectorProvider.getGroups(
-					group.getCompanyId(), group.getGroupId(), keywords,
-					startAndEnd[0], startAndEnd[1]);
-
-				if (groups == null) {
-					_groups = Collections.emptyList();
-				}
-				else {
-					_groups = groups;
-				}
-			}
+			return _groups;
 		}
 
-		return _groups;
+		GroupItemSelectorProvider groupItemSelectorProvider =
+			GroupItemSelectorProviderRegistryUtil.getGroupItemSelectorProvider(
+				groupType);
+
+		if (groupItemSelectorProvider == null) {
+			return Collections.emptyList();
+		}
+
+		String keywords = ParamUtil.getString(httpServletRequest, "keywords");
+
+		int cur = ParamUtil.getInteger(
+			httpServletRequest, SearchContainer.DEFAULT_CUR_PARAM,
+			SearchContainer.DEFAULT_CUR);
+		int delta = ParamUtil.getInteger(
+			httpServletRequest, SearchContainer.DEFAULT_DELTA_PARAM,
+			SearchContainer.DEFAULT_DELTA);
+
+		int[] startAndEnd = SearchPaginationUtil.calculateStartAndEnd(
+			cur, delta);
+
+		List<Group> groups = groupItemSelectorProvider.getGroups(
+			group.getCompanyId(), group.getGroupId(), keywords, startAndEnd[0],
+			startAndEnd[1]);
+
+		if (groups == null) {
+			return Collections.emptyList();
+		}
+
+		return groups;
 	}
 
 	private int _getGroupsCount(HttpServletRequest httpServletRequest) {
@@ -152,33 +148,27 @@ public class GroupSelectorTag extends IncludeTag {
 			httpServletRequest, "scopeGroupType");
 
 		if (Validator.isNotNull(scopeGroupType)) {
-			_groupsCount = 1;
-		}
-		else {
-			GroupItemSelectorProvider groupSelectorProvider =
-				GroupItemSelectorProviderRegistryUtil.
-					getGroupItemSelectorProvider(
-						_getGroupType(httpServletRequest));
-
-			if (groupSelectorProvider == null) {
-				_groupsCount = 0;
-			}
-			else {
-				ThemeDisplay themeDisplay =
-					(ThemeDisplay)httpServletRequest.getAttribute(
-						WebKeys.THEME_DISPLAY);
-
-				Group group = _getGroup(themeDisplay);
-
-				String keywords = ParamUtil.getString(
-					httpServletRequest, "keywords");
-
-				_groupsCount = groupSelectorProvider.getGroupsCount(
-					group.getCompanyId(), group.getGroupId(), keywords);
-			}
+			return 1;
 		}
 
-		return _groupsCount;
+		GroupItemSelectorProvider groupSelectorProvider =
+			GroupItemSelectorProviderRegistryUtil.getGroupItemSelectorProvider(
+				_getGroupType(httpServletRequest));
+
+		if (groupSelectorProvider == null) {
+			return 0;
+		}
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		Group group = _getGroup(themeDisplay);
+
+		String keywords = ParamUtil.getString(httpServletRequest, "keywords");
+
+		return groupSelectorProvider.getGroupsCount(
+			group.getCompanyId(), group.getGroupId(), keywords);
 	}
 
 	private String _getGroupType(HttpServletRequest httpServletRequest) {

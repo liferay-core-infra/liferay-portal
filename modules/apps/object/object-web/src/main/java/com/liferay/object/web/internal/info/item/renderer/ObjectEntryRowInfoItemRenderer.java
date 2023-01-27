@@ -119,11 +119,90 @@ public class ObjectEntryRowInfoItemRenderer
 		}
 	}
 
-	private Map<String, Serializable> _getValues(ObjectEntry objectEntry)
-		throws PortalException {
+	private Serializable _getEntryValue(
+		Map.Entry<String, Serializable> entry,
+		Map<String, ObjectField> objectFieldsMap,
+		Map<String, Serializable> values) {
+
+		if (entry.getValue() == null) {
+			return StringPool.BLANK;
+		}
+
+		ObjectField objectField = objectFieldsMap.get(entry.getKey());
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
+
+		if (objectField.getListTypeDefinitionId() != 0) {
+			ListTypeEntry listTypeEntry =
+				_listTypeEntryLocalService.fetchListTypeEntry(
+					objectField.getListTypeDefinitionId(),
+					(String)entry.getValue());
+
+			return listTypeEntry.getName(serviceContext.getLocale());
+		}
+		else if (Objects.equals(
+					objectField.getBusinessType(),
+					ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
+
+			long dlFileEntryId = GetterUtil.getLong(
+				values.get(objectField.getName()));
+
+			if (dlFileEntryId == GetterUtil.DEFAULT_LONG) {
+				return StringPool.BLANK;
+			}
+
+			DLFileEntry dlFileEntry = _dlFileEntryLocalService.fetchDLFileEntry(
+				dlFileEntryId);
+
+			if (dlFileEntry == null) {
+				return StringPool.BLANK;
+			}
+
+			return dlFileEntry.getFileName();
+		}
+		else if (Objects.equals(
+					objectField.getDBType(),
+					ObjectFieldConstants.DB_TYPE_DATE)) {
+
+			Format dateFormat = FastDateFormatFactoryUtil.getDate(
+				serviceContext.getLocale());
+
+			return dateFormat.format(entry.getValue());
+		}
+		else if (Validator.isNotNull(objectField.getRelationshipType())) {
+			Object value = values.get(objectField.getName());
+
+			if (GetterUtil.getLong(value) <= 0) {
+				return StringPool.BLANK;
+			}
+
+			try {
+				ObjectRelationship objectRelationship =
+					_objectRelationshipLocalService.
+						fetchObjectRelationshipByObjectFieldId2(
+							objectField.getObjectFieldId());
+
+				return _objectEntryLocalService.getTitleValue(
+					objectRelationship.getObjectDefinitionId1(),
+					(Long)values.get(objectField.getName()));
+			}
+			catch (PortalException portalException) {
+				throw new RuntimeException(portalException);
+			}
+		}
+
+		String value = (String)entry.getValue();
+
+		if (value == null) {
+			return StringPool.BLANK;
+		}
+
+		return value;
+	}
+
+	private Map<String, Serializable> _getValues(ObjectEntry objectEntry)
+		throws PortalException {
 
 		Map<String, Serializable> values = _objectEntryLocalService.getValues(
 			objectEntry);
@@ -153,86 +232,7 @@ public class ObjectEntryRowInfoItemRenderer
 		).collect(
 			Collectors.toMap(
 				Map.Entry::getKey,
-				entry -> {
-					if (entry.getValue() == null) {
-						return StringPool.BLANK;
-					}
-
-					ObjectField objectField = objectFieldsMap.get(
-						entry.getKey());
-
-					if (objectField.getListTypeDefinitionId() != 0) {
-						ListTypeEntry listTypeEntry =
-							_listTypeEntryLocalService.fetchListTypeEntry(
-								objectField.getListTypeDefinitionId(),
-								(String)entry.getValue());
-
-						return listTypeEntry.getName(
-							serviceContext.getLocale());
-					}
-					else if (Objects.equals(
-								objectField.getBusinessType(),
-								ObjectFieldConstants.
-									BUSINESS_TYPE_ATTACHMENT)) {
-
-						long dlFileEntryId = GetterUtil.getLong(
-							values.get(objectField.getName()));
-
-						if (dlFileEntryId == GetterUtil.DEFAULT_LONG) {
-							return StringPool.BLANK;
-						}
-
-						DLFileEntry dlFileEntry =
-							_dlFileEntryLocalService.fetchDLFileEntry(
-								dlFileEntryId);
-
-						if (dlFileEntry == null) {
-							return StringPool.BLANK;
-						}
-
-						return dlFileEntry.getFileName();
-					}
-					else if (Objects.equals(
-								objectField.getDBType(),
-								ObjectFieldConstants.DB_TYPE_DATE)) {
-
-						Format dateFormat = FastDateFormatFactoryUtil.getDate(
-							serviceContext.getLocale());
-
-						return dateFormat.format(entry.getValue());
-					}
-					else if (Validator.isNotNull(
-								objectField.getRelationshipType())) {
-
-						Object value = values.get(objectField.getName());
-
-						if (GetterUtil.getLong(value) <= 0) {
-							return StringPool.BLANK;
-						}
-
-						try {
-							ObjectRelationship objectRelationship =
-								_objectRelationshipLocalService.
-									fetchObjectRelationshipByObjectFieldId2(
-										objectField.getObjectFieldId());
-
-							return _objectEntryLocalService.getTitleValue(
-								objectRelationship.getObjectDefinitionId1(),
-								(Long)values.get(objectField.getName()));
-						}
-						catch (PortalException portalException) {
-							throw new RuntimeException(portalException);
-						}
-					}
-
-					String value = (String)entry.getValue();
-
-					if (value == null) {
-						return StringPool.BLANK;
-					}
-
-					return value;
-				},
+				entry -> _getEntryValue(entry, objectFieldsMap, values),
 				(oldValue, newValue) -> oldValue, LinkedHashMap::new)
 		);
 	}

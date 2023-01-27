@@ -273,7 +273,7 @@ public class DepotSearchBarPortletSharedSearchContributorTest {
 
 			@Override
 			public SearchRequestBuilder getFederatedSearchRequestBuilder(
-				Optional<String> federatedSearchKeyOptional) {
+				String federatedSearchKey) {
 
 				return _searchRequestBuilderFactory.builder();
 			}

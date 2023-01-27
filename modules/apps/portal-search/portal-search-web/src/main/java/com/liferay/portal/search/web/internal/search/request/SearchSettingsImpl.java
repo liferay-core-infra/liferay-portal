@@ -14,13 +14,13 @@
 
 package com.liferay.portal.search.web.internal.search.request;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.web.search.request.SearchSettings;
 
@@ -64,10 +64,10 @@ public class SearchSettingsImpl implements SearchSettings {
 
 	@Override
 	public SearchRequestBuilder getFederatedSearchRequestBuilder(
-		Optional<String> federatedSearchKeyOptional) {
+		String federatedSearchKey) {
 
 		return _searchRequestBuilder.getFederatedSearchRequestBuilder(
-			federatedSearchKeyOptional.orElse(StringPool.BLANK));
+			GetterUtil.getString(federatedSearchKey));
 	}
 
 	@Override

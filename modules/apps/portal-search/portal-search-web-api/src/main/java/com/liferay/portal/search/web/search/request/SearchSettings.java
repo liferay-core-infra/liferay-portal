@@ -36,7 +36,7 @@ public interface SearchSettings {
 	public void addFacet(Facet facet);
 
 	public SearchRequestBuilder getFederatedSearchRequestBuilder(
-		Optional<String> federatedSearchKeyOptional);
+		String federatedSearchKey);
 
 	public Optional<String> getKeywordsParameterName();
 

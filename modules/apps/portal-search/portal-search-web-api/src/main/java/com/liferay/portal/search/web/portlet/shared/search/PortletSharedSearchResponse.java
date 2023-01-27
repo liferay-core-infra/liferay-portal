@@ -38,8 +38,7 @@ public interface PortletSharedSearchResponse {
 
 	public Facet getFacet(String name);
 
-	public SearchResponse getFederatedSearchResponse(
-		Optional<String> federatedSearchKeyOptional);
+	public SearchResponse getFederatedSearchResponse(String federatedSearchKey);
 
 	public Optional<String> getKeywordsOptional();
 

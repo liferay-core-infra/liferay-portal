@@ -62,10 +62,10 @@ public class PortletSharedSearchResponseImpl
 
 	@Override
 	public SearchResponse getFederatedSearchResponse(
-		Optional<String> federatedSearchKeyOptional) {
+		String federatedSearchKey) {
 
 		return _searchResponseImpl.getFederatedSearchResponse(
-			federatedSearchKeyOptional);
+			federatedSearchKey);
 	}
 
 	@Override

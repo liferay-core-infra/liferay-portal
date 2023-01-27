@@ -202,10 +202,9 @@ public class ObjectEntryRowInfoItemRenderer
 	private Map<String, Serializable> _getValues(ObjectEntry objectEntry)
 		throws PortalException {
 
-		Map<String, Serializable> values = _objectEntryLocalService.getValues(
-			objectEntry);
-
 		Map<String, ObjectField> objectFieldsMap = new HashMap<>();
+
+		Map<String, Serializable> stringSerializableMap = new TreeMap<>();
 
 		List<ObjectField> objectFields =
 			_objectFieldLocalService.getObjectFields(
@@ -218,7 +217,8 @@ public class ObjectEntryRowInfoItemRenderer
 			objectFieldsMap.put(objectField.getName(), objectField);
 		}
 
-		Map<String, Serializable> stringSerializableMap = new TreeMap<>();
+		Map<String, Serializable> values = _objectEntryLocalService.getValues(
+			objectEntry);
 
 		for (Map.Entry<String, Serializable> entry :
 				TransformUtil.transform(

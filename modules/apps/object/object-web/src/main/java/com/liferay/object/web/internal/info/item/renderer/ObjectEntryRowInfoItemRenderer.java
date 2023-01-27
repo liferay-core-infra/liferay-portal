@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -45,11 +44,11 @@ import java.io.Serializable;
 import java.text.Format;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -219,21 +218,18 @@ public class ObjectEntryRowInfoItemRenderer
 			objectFieldsMap.put(objectField.getName(), objectField);
 		}
 
-		List<Map.Entry<String, Serializable>> entries = TransformUtil.transform(
-			values.entrySet(),
-			entry -> {
-				if (objectFieldsMap.containsKey(entry.getKey())) {
-					return entry;
-				}
-
-				return null;
-			});
-
-		Map<String, Serializable> stringSerializableMap = new LinkedHashMap<>(
-			entries.size());
+		Map<String, Serializable> stringSerializableMap = new TreeMap<>();
 
 		for (Map.Entry<String, Serializable> entry :
-				ListUtil.sort(entries, Map.Entry.comparingByKey())) {
+				TransformUtil.transform(
+					values.entrySet(),
+					entry -> {
+						if (objectFieldsMap.containsKey(entry.getKey())) {
+							return entry;
+						}
+
+						return null;
+					})) {
 
 			stringSerializableMap.put(
 				entry.getKey(), _getEntryValue(entry, objectFieldsMap, values));

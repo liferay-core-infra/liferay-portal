@@ -58,14 +58,13 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getFederatedSearchKeyOptional() {
-		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY);
-	}
-
-	@Override
 	public String getFederatedSearchKeyString() {
-		return getFederatedSearchKeyOptional().orElse(StringPool.BLANK);
+		Optional<String> federatedSearchKeyOptional =
+			_portletPreferencesHelper.getString(
+				CustomFilterPortletPreferences.
+					PREFERENCE_KEY_FEDERATED_SEARCH_KEY);
+
+		return federatedSearchKeyOptional.orElse(StringPool.BLANK);
 	}
 
 	@Override

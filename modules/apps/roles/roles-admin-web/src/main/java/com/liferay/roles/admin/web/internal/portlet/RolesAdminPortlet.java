@@ -71,6 +71,7 @@ import com.liferay.product.navigation.personal.menu.PersonalMenuEntry;
 import com.liferay.roles.admin.constants.RolesAdminPortletKeys;
 import com.liferay.roles.admin.constants.RolesAdminWebKeys;
 import com.liferay.roles.admin.panel.category.role.type.mapper.PanelCategoryRoleTypeMapper;
+import com.liferay.roles.admin.panel.category.role.type.mapper.PanelCategoryRoleTypeMapperRegistry;
 import com.liferay.roles.admin.role.type.contributor.RoleTypeContributor;
 import com.liferay.roles.admin.role.type.contributor.provider.RoleTypeContributorProvider;
 import com.liferay.segments.service.SegmentsEntryRoleLocalService;
@@ -511,10 +512,6 @@ public class RolesAdminPortlet extends MVCPortlet {
 			bundleContext, PersonalMenuEntry.class,
 			Collections.reverseOrder(
 				groupComparator.thenComparing(entryOrderComparator)));
-
-		_panelCategoryRoleTypeMapperServiceTrackerList =
-			ServiceTrackerListFactory.open(
-				bundleContext, PanelCategoryRoleTypeMapper.class);
 	}
 
 	@Override
@@ -540,7 +537,6 @@ public class RolesAdminPortlet extends MVCPortlet {
 	@Deactivate
 	protected void deactivate() {
 		_personalMenuEntryServiceTrackerList.close();
-		_panelCategoryRoleTypeMapperServiceTrackerList.close();
 	}
 
 	@Override
@@ -627,7 +623,8 @@ public class RolesAdminPortlet extends MVCPortlet {
 		Set<String> panelAppKeys = new HashSet<>();
 
 		for (PanelCategoryRoleTypeMapper panelCategoryRoleTypeMapper :
-				_panelCategoryRoleTypeMapperServiceTrackerList) {
+				_panelCategoryRoleTypeMapperRegistry.
+					getPanelCategoryRoleTypeMappers()) {
 
 			if (ArrayUtil.contains(
 					panelCategoryRoleTypeMapper.getRoleTypes(),
@@ -646,7 +643,8 @@ public class RolesAdminPortlet extends MVCPortlet {
 		Set<String> panelCategoryKeys = new HashSet<>();
 
 		for (PanelCategoryRoleTypeMapper panelCategoryRoleTypeMapper :
-				_panelCategoryRoleTypeMapperServiceTrackerList) {
+				_panelCategoryRoleTypeMapperRegistry.
+					getPanelCategoryRoleTypeMappers()) {
 
 			if (ArrayUtil.contains(
 					panelCategoryRoleTypeMapper.getRoleTypes(), type)) {
@@ -870,8 +868,10 @@ public class RolesAdminPortlet extends MVCPortlet {
 	@Reference
 	private PanelCategoryRegistry _panelCategoryRegistry;
 
-	private ServiceTrackerList<PanelCategoryRoleTypeMapper>
-		_panelCategoryRoleTypeMapperServiceTrackerList;
+	@Reference
+	private PanelCategoryRoleTypeMapperRegistry
+		_panelCategoryRoleTypeMapperRegistry;
+
 	private ServiceTrackerList<PersonalMenuEntry>
 		_personalMenuEntryServiceTrackerList;
 

@@ -21,6 +21,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.product.navigation.personal.menu.PersonalMenuEntry;
+import com.liferay.product.navigation.personal.menu.PersonalMenuEntryRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +37,10 @@ import org.osgi.service.component.annotations.Component;
  * @author Pei-Jung Lan
  */
 @Component(service = PersonalMenuEntryRegistry.class)
-public class PersonalMenuEntryRegistry {
+public class PersonalMenuEntryRegistryImpl
+	implements PersonalMenuEntryRegistry {
 
+	@Override
 	public List<List<PersonalMenuEntry>> getGroupedPersonalMenuEntries() {
 		SortedSet<String> personalMenuGroups = new TreeSet<>(
 			_serviceTrackerMap.keySet());
@@ -53,6 +56,22 @@ public class PersonalMenuEntryRegistry {
 		return groupedPersonalMenuEntries;
 	}
 
+	@Override
+	public List<PersonalMenuEntry> getPersonalMenuEntries() {
+		List<List<PersonalMenuEntry>> groupedPersonalMenuEntries =
+			getGroupedPersonalMenuEntries();
+
+		ArrayList<PersonalMenuEntry> personalMenuEntries = new ArrayList<>();
+
+		for (List<PersonalMenuEntry> groupedPersonalMenuEntry :
+				groupedPersonalMenuEntries) {
+
+			personalMenuEntries.addAll(groupedPersonalMenuEntry);
+		}
+
+		return personalMenuEntries;
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
@@ -64,7 +83,7 @@ public class PersonalMenuEntryRegistry {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PersonalMenuEntryRegistry.class);
+		PersonalMenuEntryRegistryImpl.class);
 
 	private ServiceTrackerMap<String, List<PersonalMenuEntry>>
 		_serviceTrackerMap;

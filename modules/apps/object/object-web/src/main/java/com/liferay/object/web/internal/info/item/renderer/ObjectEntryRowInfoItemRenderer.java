@@ -201,8 +201,7 @@ public class ObjectEntryRowInfoItemRenderer
 	private Map<String, Serializable> _getValues(ObjectEntry objectEntry)
 		throws PortalException {
 
-		Map<String, Serializable> values = _objectEntryLocalService.getValues(
-			objectEntry);
+		Map<String, Serializable> entriesMap = new TreeMap<>();
 
 		Map<String, ObjectField> objectFieldsMap = new HashMap<>();
 
@@ -217,18 +216,19 @@ public class ObjectEntryRowInfoItemRenderer
 			objectFieldsMap.put(objectField.getName(), objectField);
 		}
 
-		Map<String, Serializable> stringSerializableMap = new TreeMap<>();
+		Map<String, Serializable> values = _objectEntryLocalService.getValues(
+			objectEntry);
 
 		for (Map.Entry<String, Serializable> entry : values.entrySet()) {
 			if (!objectFieldsMap.containsKey(entry.getKey())) {
 				continue;
 			}
 
-			stringSerializableMap.put(
+			entriesMap.put(
 				entry.getKey(), _getEntryValue(entry, objectFieldsMap, values));
 		}
 
-		return stringSerializableMap;
+		return entriesMap;
 	}
 
 	private final AssetDisplayPageFriendlyURLProvider

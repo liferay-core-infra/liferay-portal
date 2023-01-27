@@ -29,6 +29,7 @@ import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.web.internal.constants.ObjectWebKeys;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -48,9 +50,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -207,11 +206,6 @@ public class ObjectEntryRowInfoItemRenderer
 		Map<String, Serializable> values = _objectEntryLocalService.getValues(
 			objectEntry);
 
-		Set<Map.Entry<String, Serializable>> entries = values.entrySet();
-
-		Stream<Map.Entry<String, Serializable>> entriesStream =
-			entries.stream();
-
 		Map<String, ObjectField> objectFieldsMap = new HashMap<>();
 
 		List<ObjectField> objectFields =
@@ -225,16 +219,27 @@ public class ObjectEntryRowInfoItemRenderer
 			objectFieldsMap.put(objectField.getName(), objectField);
 		}
 
-		return entriesStream.filter(
-			entry -> objectFieldsMap.containsKey(entry.getKey())
-		).sorted(
-			Map.Entry.comparingByKey()
-		).collect(
-			Collectors.toMap(
-				Map.Entry::getKey,
-				entry -> _getEntryValue(entry, objectFieldsMap, values),
-				(oldValue, newValue) -> oldValue, LinkedHashMap::new)
-		);
+		List<Map.Entry<String, Serializable>> entries = TransformUtil.transform(
+			values.entrySet(),
+			entry -> {
+				if (objectFieldsMap.containsKey(entry.getKey())) {
+					return entry;
+				}
+
+				return null;
+			});
+
+		Map<String, Serializable> stringSerializableMap = new LinkedHashMap<>(
+			entries.size());
+
+		for (Map.Entry<String, Serializable> entry :
+				ListUtil.sort(entries, Map.Entry.comparingByKey())) {
+
+			stringSerializableMap.put(
+				entry.getKey(), _getEntryValue(entry, objectFieldsMap, values));
+		}
+
+		return stringSerializableMap;
 	}
 
 	private final AssetDisplayPageFriendlyURLProvider

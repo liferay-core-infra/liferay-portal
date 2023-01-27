@@ -110,11 +110,66 @@ public class ObjectEntryRowInfoItemRenderer
 		}
 	}
 
-	private Map<String, Serializable> _getValues(ObjectEntry objectEntry)
-		throws PortalException {
+	private Serializable _getEntryValue(
+		Map.Entry<String, Serializable> entry,
+		Map<String, ObjectField> objectFieldsMap,
+		Map<String, Serializable> values) {
+
+		if (entry.getValue() == null) {
+			return StringPool.BLANK;
+		}
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
+
+		ObjectField objectField = objectFieldsMap.get(entry.getKey());
+
+		if (objectField.getListTypeDefinitionId() != 0) {
+			ListTypeEntry listTypeEntry =
+				_listTypeEntryLocalService.fetchListTypeEntry(
+					objectField.getListTypeDefinitionId(),
+					(String)entry.getValue());
+
+			return listTypeEntry.getName(serviceContext.getLocale());
+		}
+		else if (Validator.isNull(objectField.getRelationshipType())) {
+			if (Objects.equals(
+					objectField.getDBType(),
+					ObjectFieldConstants.DB_TYPE_DATE)) {
+
+				Format dateFormat = FastDateFormatFactoryUtil.getDate(
+					serviceContext.getLocale());
+
+				return dateFormat.format(entry.getValue());
+			}
+
+			String value = (String)entry.getValue();
+
+			if (value == null) {
+				return StringPool.BLANK;
+			}
+
+			return value;
+		}
+
+		ObjectEntry relatedObjectEntry =
+			_objectEntryLocalService.fetchObjectEntry(
+				(Long)values.get(objectField.getName()));
+
+		if (relatedObjectEntry == null) {
+			return StringPool.BLANK;
+		}
+
+		try {
+			return relatedObjectEntry.getTitleValue();
+		}
+		catch (PortalException portalException) {
+			throw new RuntimeException(portalException);
+		}
+	}
+
+	private Map<String, Serializable> _getValues(ObjectEntry objectEntry)
+		throws PortalException {
 
 		Map<String, Serializable> values = _objectEntryLocalService.getValues(
 			objectEntry);
@@ -144,61 +199,7 @@ public class ObjectEntryRowInfoItemRenderer
 		).collect(
 			Collectors.toMap(
 				Map.Entry::getKey,
-				entry -> {
-					if (entry.getValue() == null) {
-						return StringPool.BLANK;
-					}
-
-					ObjectField objectField = objectFieldsMap.get(
-						entry.getKey());
-
-					if (objectField.getListTypeDefinitionId() != 0) {
-						ListTypeEntry listTypeEntry =
-							_listTypeEntryLocalService.fetchListTypeEntry(
-								objectField.getListTypeDefinitionId(),
-								(String)entry.getValue());
-
-						return listTypeEntry.getName(
-							serviceContext.getLocale());
-					}
-					else if (Validator.isNull(
-								objectField.getRelationshipType())) {
-
-						if (Objects.equals(
-								objectField.getDBType(),
-								ObjectFieldConstants.DB_TYPE_DATE)) {
-
-							Format dateFormat =
-								FastDateFormatFactoryUtil.getDate(
-									serviceContext.getLocale());
-
-							return dateFormat.format(entry.getValue());
-						}
-
-						String value = (String)entry.getValue();
-
-						if (value == null) {
-							return StringPool.BLANK;
-						}
-
-						return value;
-					}
-
-					ObjectEntry relatedObjectEntry =
-						_objectEntryLocalService.fetchObjectEntry(
-							(Long)values.get(objectField.getName()));
-
-					if (relatedObjectEntry == null) {
-						return StringPool.BLANK;
-					}
-
-					try {
-						return relatedObjectEntry.getTitleValue();
-					}
-					catch (PortalException portalException) {
-						throw new RuntimeException(portalException);
-					}
-				},
+				entry -> _getEntryValue(entry, objectFieldsMap, values),
 				(oldValue, newValue) -> oldValue, LinkedHashMap::new)
 		);
 	}

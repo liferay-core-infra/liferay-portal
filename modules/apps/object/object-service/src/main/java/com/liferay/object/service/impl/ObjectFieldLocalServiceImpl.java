@@ -49,6 +49,7 @@ import com.liferay.object.service.persistence.ObjectEntryPersistence;
 import com.liferay.object.service.persistence.ObjectFieldSettingPersistence;
 import com.liferay.object.service.persistence.ObjectLayoutColumnPersistence;
 import com.liferay.object.service.persistence.ObjectRelationshipPersistence;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
@@ -83,9 +84,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -359,11 +358,13 @@ public class ObjectFieldLocalServiceImpl
 	@Override
 	public Column<?, ?> getColumn(long objectDefinitionId, String name) {
 		try {
-			ObjectField objectField = Optional.ofNullable(
-				fetchObjectField(objectDefinitionId, name)
-			).orElseGet(
-				() -> _getObjectRelationshipField(objectDefinitionId, name)
-			);
+			ObjectField objectField = fetchObjectField(
+				objectDefinitionId, name);
+
+			if (objectField == null) {
+				objectField = _getObjectRelationshipField(
+					objectDefinitionId, name);
+			}
 
 			if (objectField == null) {
 				throw new UnsupportedOperationException(
@@ -748,16 +749,21 @@ public class ObjectFieldLocalServiceImpl
 		for (ObjectFieldSetting oldObjectFieldSetting :
 				oldObjectFieldSettings) {
 
-			Stream<ObjectFieldSetting> stream = objectFieldSettings.stream();
+			List<ObjectFieldSetting> newObjectFieldSettings =
+				TransformUtil.transform(
+					objectFieldSettings,
+					newObjectFieldSetting -> {
+						if (Objects.equals(
+								newObjectFieldSetting.getName(),
+								oldObjectFieldSetting.getName())) {
 
-			Optional<ObjectFieldSetting> objectFieldSettingOptional =
-				stream.filter(
-					newObjectFieldSetting -> Objects.equals(
-						newObjectFieldSetting.getName(),
-						oldObjectFieldSetting.getName())
-				).findFirst();
+							return newObjectFieldSetting;
+						}
 
-			if (!objectFieldSettingOptional.isPresent()) {
+						return null;
+					});
+
+			if (newObjectFieldSettings.isEmpty()) {
 				_objectFieldSettingLocalService.deleteObjectFieldSetting(
 					oldObjectFieldSetting.getObjectFieldSettingId());
 			}

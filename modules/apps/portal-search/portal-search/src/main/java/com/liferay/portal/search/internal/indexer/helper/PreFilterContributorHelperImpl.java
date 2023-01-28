@@ -37,6 +37,7 @@ import com.liferay.portal.search.spi.model.registrar.ModelSearchSettings;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -151,8 +152,8 @@ public class PreFilterContributorHelperImpl
 		BooleanFilter booleanFilter, ModelSearchSettings modelSearchSettings,
 		SearchContext searchContext) {
 
-		Stream<ModelPreFilterContributor> stream =
-			modelPreFilterContributorsRegistry.stream(
+		List<ModelPreFilterContributor> modelPreFilterContributors =
+			modelPreFilterContributorsRegistry.filterModelPreFilterContributor(
 				modelSearchSettings.getClassName(),
 				getStrings(
 					"search.full.query.clause.contributors.excludes",
@@ -162,9 +163,12 @@ public class PreFilterContributorHelperImpl
 					searchContext),
 				IndexerProvidedClausesUtil.shouldSuppress(searchContext));
 
-		stream.forEach(
-			modelPreFilterContributor -> modelPreFilterContributor.contribute(
-				booleanFilter, modelSearchSettings, searchContext));
+		for (ModelPreFilterContributor modelPreFilterContributor :
+				modelPreFilterContributors) {
+
+			modelPreFilterContributor.contribute(
+				booleanFilter, modelSearchSettings, searchContext);
+		}
 	}
 
 	private void _addPermissionFilter(

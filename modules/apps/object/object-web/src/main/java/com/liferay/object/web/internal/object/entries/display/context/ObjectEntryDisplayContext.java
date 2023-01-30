@@ -116,8 +116,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
@@ -329,14 +327,15 @@ public class ObjectEntryDisplayContext {
 			return objectLayoutTabs.get(0);
 		}
 
-		Stream<ObjectLayoutTab> stream = objectLayoutTabs.stream();
+		for (ObjectLayoutTab objectLayoutTab : objectLayoutTabs) {
+			if (objectLayoutTab.getObjectLayoutTabId() != objectLayoutTabId) {
+				continue;
+			}
 
-		Optional<ObjectLayoutTab> optional = stream.filter(
-			objectLayoutTab ->
-				objectLayoutTab.getObjectLayoutTabId() == objectLayoutTabId
-		).findFirst();
+			return objectLayoutTab;
+		}
 
-		return optional.get();
+		return null;
 	}
 
 	public String getObjectRelationshipERCObjectFieldName() {
@@ -1056,17 +1055,21 @@ public class ObjectEntryDisplayContext {
 			for (ObjectLayoutColumn objectLayoutColumn :
 					objectLayoutRow.getObjectLayoutColumns()) {
 
-				Stream<ObjectField> stream = objectFields.stream();
+				ObjectField objectField = null;
 
-				Optional<ObjectField> objectFieldOptional = stream.filter(
-					objectField ->
-						objectField.getObjectFieldId() ==
-							objectLayoutColumn.getObjectFieldId()
-				).findFirst();
+				for (ObjectField curObjectField : objectFields) {
+					if (objectField.getObjectFieldId() !=
+							objectLayoutColumn.getObjectFieldId()) {
 
-				if (objectFieldOptional.isPresent()) {
-					ObjectField objectField = objectFieldOptional.get();
+						continue;
+					}
 
+					objectField = curObjectField;
+
+					break;
+				}
+
+				if (objectField != null) {
 					if (!_isActive(objectField)) {
 						continue;
 					}

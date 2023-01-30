@@ -172,60 +172,11 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 		_messageListenerServiceTracker = ServiceTrackerFactory.open(
 			bundleContext, MessageListener.class,
-			new ServiceTrackerCustomizer
-				<MessageListener, ObjectValuePair<String, MessageListener>>() {
-
-				@Override
-				public ObjectValuePair<String, MessageListener> addingService(
-					ServiceReference<MessageListener> serviceReference) {
-
-					String destinationName =
-						(String)serviceReference.getProperty(
-							"destination.name");
-
-					if (destinationName == null) {
-						return null;
-					}
-
-					MessageListener messageListener = bundleContext.getService(
-						serviceReference);
-
-					_registerMessageListener(destinationName, messageListener);
-
-					return new ObjectValuePair<>(
-						destinationName, messageListener);
-				}
-
-				@Override
-				public void modifiedService(
-					ServiceReference<MessageListener> serviceReference,
-					ObjectValuePair<String, MessageListener> objectValuePair) {
-
-					removedService(serviceReference, objectValuePair);
-
-					ObjectValuePair<String, MessageListener>
-						newObjectValuePair = addingService(serviceReference);
-
-					objectValuePair.setKey(newObjectValuePair.getKey());
-				}
-
-				@Override
-				public void removedService(
-					ServiceReference<MessageListener> serviceReference,
-					ObjectValuePair<String, MessageListener> objectValuePair) {
-
-					_unregisterMessageListener(
-						objectValuePair.getKey(), objectValuePair.getValue());
-
-					bundleContext.ungetService(serviceReference);
-				}
-
-			});
+			new MessageListenerServiceTrackerCustomizer());
 
 		_messageBusEventListenerServiceTrackerList =
 			ServiceTrackerListFactory.open(
 				bundleContext, MessageBusEventListener.class);
-
 		_messageBusInterceptorServiceTrackerList =
 			ServiceTrackerListFactory.open(
 				bundleContext, MessageBusInterceptor.class);
@@ -519,6 +470,55 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 			Destination destination) {
 
 			_removeDestination(destination.getName());
+
+			_bundleContext.ungetService(serviceReference);
+		}
+
+	}
+
+	private class MessageListenerServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer
+			<MessageListener, ObjectValuePair<String, MessageListener>> {
+
+		@Override
+		public ObjectValuePair<String, MessageListener> addingService(
+			ServiceReference<MessageListener> serviceReference) {
+
+			String destinationName = (String)serviceReference.getProperty(
+				"destination.name");
+
+			if (destinationName == null) {
+				return null;
+			}
+
+			MessageListener messageListener = _bundleContext.getService(
+				serviceReference);
+
+			_registerMessageListener(destinationName, messageListener);
+
+			return new ObjectValuePair<>(destinationName, messageListener);
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<MessageListener> serviceReference,
+			ObjectValuePair<String, MessageListener> objectValuePair) {
+
+			removedService(serviceReference, objectValuePair);
+
+			ObjectValuePair<String, MessageListener> newObjectValuePair =
+				addingService(serviceReference);
+
+			objectValuePair.setKey(newObjectValuePair.getKey());
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<MessageListener> serviceReference,
+			ObjectValuePair<String, MessageListener> objectValuePair) {
+
+			_unregisterMessageListener(
+				objectValuePair.getKey(), objectValuePair.getValue());
 
 			_bundleContext.ungetService(serviceReference);
 		}

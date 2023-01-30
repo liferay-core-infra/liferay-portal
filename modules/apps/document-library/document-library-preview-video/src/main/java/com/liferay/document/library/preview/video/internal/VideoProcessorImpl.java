@@ -12,11 +12,12 @@
  * details.
  */
 
-package com.liferay.portlet.documentlibrary.util;
+package com.liferay.document.library.preview.video.internal;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
+import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.kernel.util.VideoConverter;
 import com.liferay.document.library.kernel.util.VideoProcessor;
@@ -24,7 +25,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.image.ImageBag;
-import com.liferay.portal.kernel.image.ImageToolUtil;
+import com.liferay.portal.kernel.image.ImageTool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -48,7 +49,8 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.CancellationException;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Juan González
@@ -56,6 +58,10 @@ import org.apache.commons.lang.time.StopWatch;
  * @author Mika Koivisto
  * @author Ivica Cardic
  */
+@Component(
+	property = "type=" + DLProcessorConstants.VIDEO_PROCESSOR,
+	service = {DLProcessor.class, VideoProcessor.class}
+)
 public class VideoProcessorImpl
 	extends DLPreviewableProcessor implements VideoProcessor {
 
@@ -291,7 +297,7 @@ public class VideoProcessorImpl
 		if (isThumbnailEnabled(THUMBNAIL_INDEX_CUSTOM_1) ||
 			isThumbnailEnabled(THUMBNAIL_INDEX_CUSTOM_2)) {
 
-			ImageBag imageBag = ImageToolUtil.read(file);
+			ImageBag imageBag = _imageTool.read(file);
 
 			RenderedImage renderedImage = imageBag.getRenderedImage();
 
@@ -303,9 +309,7 @@ public class VideoProcessorImpl
 	}
 
 	private void _generateThumbnail(FileVersion fileVersion, File file) {
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
+		long start = System.currentTimeMillis();
 
 		File thumbnailTempFile = getThumbnailTempFile(
 			DLUtil.getTempFileId(
@@ -342,7 +346,7 @@ public class VideoProcessorImpl
 				_log.info(
 					StringBundler.concat(
 						"Generated a thumbnail for ", fileVersion.getTitle(),
-						" in ", stopWatch.getTime(), " ms"));
+						" in ", System.currentTimeMillis() - start, " ms"));
 			}
 		}
 		catch (Exception exception) {
@@ -362,9 +366,7 @@ public class VideoProcessorImpl
 			return;
 		}
 
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
+		long start = System.currentTimeMillis();
 
 		try {
 			FileUtil.write(
@@ -399,8 +401,8 @@ public class VideoProcessorImpl
 			_log.info(
 				StringBundler.concat(
 					"Generated a ", containerType, " preview video for ",
-					fileVersion.getTitle(), " in ", stopWatch.getTime(),
-					" ms"));
+					fileVersion.getTitle(), " in ",
+					System.currentTimeMillis() - start, " ms"));
 		}
 	}
 
@@ -561,6 +563,10 @@ public class VideoProcessorImpl
 			false);
 
 	private final List<Long> _fileVersionIds = new Vector<>();
+
+	@Reference
+	private ImageTool _imageTool;
+
 	private final Set<String> _videoMimeTypes = SetUtil.fromArray(
 		PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_MIME_TYPES);
 

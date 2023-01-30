@@ -17,6 +17,7 @@ package com.liferay.portal.instances.internal.configuration.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -27,6 +28,8 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 
+import java.util.concurrent.CountDownLatch;
+
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -34,10 +37,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Raymond Augé
@@ -56,16 +60,34 @@ public class PortalInstancesConfigurationFactoryTest {
 		Bundle bundle = FrameworkUtil.getBundle(
 			PortalInstancesConfigurationFactoryTest.class);
 
-		ServiceTracker<Object, Object> serviceTracker = new ServiceTracker<>(
-			bundle.getBundleContext(),
-			FrameworkUtil.createFilter(
-				"(component.name=com.liferay.portal.instances.internal." +
-					"configuration.PortalInstancesConfigurationFactory)"),
-			null);
+		BundleContext bundleContext = bundle.getBundleContext();
 
-		serviceTracker.open();
+		CountDownLatch countDownLatch = new CountDownLatch(1);
 
 		String webId = RandomTestUtil.randomString();
+
+		ServiceRegistration<PortalInstanceLifecycleListener>
+			portalInstanceLifecycleListenerServiceRegistration =
+				bundleContext.registerService(
+					PortalInstanceLifecycleListener.class,
+					new PortalInstanceLifecycleListener() {
+
+						@Override
+						public void portalInstanceRegistered(Company company)
+							throws Exception {
+
+							if (webId.equals(company.getWebId())) {
+								countDownLatch.countDown();
+							}
+						}
+
+						@Override
+						public void portalInstanceUnregistered(Company company)
+							throws Exception {
+						}
+
+					},
+					null);
 
 		Configuration configuration =
 			_configurationAdmin.getFactoryConfiguration(
@@ -83,7 +105,7 @@ public class PortalInstancesConfigurationFactoryTest {
 
 		// Wait for company to be created
 
-		Assert.assertNotNull(serviceTracker.waitForService(40000));
+		countDownLatch.await();
 
 		_company = _companyLocalService.getCompanyByWebId(webId);
 
@@ -91,7 +113,7 @@ public class PortalInstancesConfigurationFactoryTest {
 
 		ConfigurationTestUtil.deleteConfiguration(configuration);
 
-		serviceTracker.close();
+		portalInstanceLifecycleListenerServiceRegistration.unregister();
 	}
 
 	@DeleteAfterTestRun

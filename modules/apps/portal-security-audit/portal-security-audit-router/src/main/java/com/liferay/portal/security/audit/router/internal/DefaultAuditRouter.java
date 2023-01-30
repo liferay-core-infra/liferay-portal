@@ -21,18 +21,13 @@ import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.audit.AuditMessageProcessor;
 import com.liferay.portal.security.audit.configuration.AuditConfiguration;
-import com.liferay.portal.security.audit.router.internal.constants.AuditConstants;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -59,15 +54,21 @@ public class DefaultAuditRouter implements AuditRouter {
 
 	@Override
 	public boolean isDeployed() {
-		int auditMessageProcessorsCount = _auditMessageProcessors.size();
+		Set<AuditMessageProcessor> globalAuditMessageProcessors =
+			_auditMessageProcessors.get(_GLOBAL_AUDIT_MESSAGE_PROCESSORS_KEY);
 
-		if ((auditMessageProcessorsCount > 0) ||
-			!_globalAuditMessageProcessors.isEmpty()) {
+		if (globalAuditMessageProcessors == null) {
+			if (_auditMessageProcessors.isEmpty()) {
+				return false;
+			}
+		}
+		else if (globalAuditMessageProcessors.isEmpty() &&
+				 (_auditMessageProcessors.size() == 1)) {
 
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -81,10 +82,15 @@ public class DefaultAuditRouter implements AuditRouter {
 			return;
 		}
 
-		for (AuditMessageProcessor globalAuditMessageProcessor :
-				_globalAuditMessageProcessors) {
+		Set<AuditMessageProcessor> globalAuditMessageProcessors =
+			_auditMessageProcessors.get(_GLOBAL_AUDIT_MESSAGE_PROCESSORS_KEY);
 
-			globalAuditMessageProcessor.process(auditMessage);
+		if (globalAuditMessageProcessors != null) {
+			for (AuditMessageProcessor globalAuditMessageProcessor :
+					globalAuditMessageProcessors) {
+
+				globalAuditMessageProcessor.process(auditMessage);
+			}
 		}
 
 		Set<AuditMessageProcessor> auditMessageProcessors =
@@ -126,7 +132,19 @@ public class DefaultAuditRouter implements AuditRouter {
 		String[] eventTypes = auditMessageProcessor.getEventTypes();
 
 		if ((eventTypes.length == 1) && eventTypes[0].equals(StringPool.STAR)) {
-			_globalAuditMessageProcessors.add(auditMessageProcessor);
+			Set<AuditMessageProcessor> auditMessageProcessorsSet =
+				_auditMessageProcessors.get(
+					_GLOBAL_AUDIT_MESSAGE_PROCESSORS_KEY);
+
+			if (auditMessageProcessorsSet == null) {
+				auditMessageProcessorsSet = new HashSet<>();
+
+				_auditMessageProcessors.put(
+					_GLOBAL_AUDIT_MESSAGE_PROCESSORS_KEY,
+					auditMessageProcessorsSet);
+			}
+
+			auditMessageProcessorsSet.add(auditMessageProcessor);
 
 			return;
 		}
@@ -152,7 +170,15 @@ public class DefaultAuditRouter implements AuditRouter {
 		String[] eventTypes = auditMessageProcessor.getEventTypes();
 
 		if ((eventTypes.length == 1) && eventTypes[0].equals(StringPool.STAR)) {
-			_globalAuditMessageProcessors.remove(auditMessageProcessor);
+			Set<AuditMessageProcessor> auditMessageProcessorsSet =
+				_auditMessageProcessors.get(
+					_GLOBAL_AUDIT_MESSAGE_PROCESSORS_KEY);
+
+			if (auditMessageProcessorsSet == null) {
+				return;
+			}
+
+			auditMessageProcessorsSet.remove(auditMessageProcessor);
 
 			return;
 		}
@@ -169,13 +195,14 @@ public class DefaultAuditRouter implements AuditRouter {
 		}
 	}
 
+	private static final String _GLOBAL_AUDIT_MESSAGE_PROCESSORS_KEY =
+		"globalAuditMessageProcessors";
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultAuditRouter.class);
 
 	private volatile boolean _auditEnabled;
 	private final Map<String, Set<AuditMessageProcessor>>
 		_auditMessageProcessors = new ConcurrentHashMap<>();
-	private final List<AuditMessageProcessor> _globalAuditMessageProcessors =
-		new CopyOnWriteArrayList<>();
 
 }

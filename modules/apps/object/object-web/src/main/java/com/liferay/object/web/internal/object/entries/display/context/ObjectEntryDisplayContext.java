@@ -1069,27 +1069,25 @@ public class ObjectEntryDisplayContext {
 					break;
 				}
 
-				if (objectField != null) {
-					if (!_isActive(objectField)) {
-						continue;
-					}
+				if ((objectField == null) || !_isActive(objectField)) {
+					continue;
+				}
 
-					_objectFieldNames.put(
-						objectLayoutColumn.getObjectFieldId(),
-						objectField.getName());
+				_objectFieldNames.put(
+					objectLayoutColumn.getObjectFieldId(),
+					objectField.getName());
 
-					if (objectField.compareBusinessType(
-							ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION) ||
-						objectField.compareBusinessType(
-							ObjectFieldConstants.BUSINESS_TYPE_FORMULA)) {
+				if (objectField.compareBusinessType(
+						ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION) ||
+					objectField.compareBusinessType(
+						ObjectFieldConstants.BUSINESS_TYPE_FORMULA)) {
 
-						nestedDDMFormFields.add(
-							_getDDMFormField(objectField, true));
-					}
-					else {
-						nestedDDMFormFields.add(
-							_getDDMFormField(objectField, readOnly));
-					}
+					nestedDDMFormFields.add(
+						_getDDMFormField(objectField, true));
+				}
+				else {
+					nestedDDMFormFields.add(
+						_getDDMFormField(objectField, readOnly));
 				}
 			}
 		}

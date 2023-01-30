@@ -20,6 +20,7 @@ import com.liferay.portal.remote.soap.extender.SoapDescriptorBuilder;
 import com.liferay.portal.remote.soap.extender.internal.configuration.SoapExtenderConfiguration;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.ws.handler.Handler;
 
@@ -59,7 +60,8 @@ public class SoapExtender {
 
 		_dependencyManager = new DependencyManager(bundleContext);
 
-		_enableComponent();
+		_soapDescriptorBuilderComponentMap.put(
+			_soapDescriptorBuilder, _enableComponent());
 	}
 
 	@Deactivate
@@ -79,12 +81,24 @@ public class SoapExtender {
 		if (_dependencyManager != null) {
 			_dependencyManager.clear();
 
-			_enableComponent();
+			_soapDescriptorBuilderComponentMap.put(
+				soapDescriptorBuilder, _enableComponent());
 		}
 	}
 
 	protected void unsetSoapDescriptorBuilder(
 		SoapDescriptorBuilder soapDescriptorBuilder) {
+
+		if (_dependencyManager == null) {
+			return;
+		}
+
+		org.apache.felix.dm.Component component =
+			_soapDescriptorBuilderComponentMap.remove(soapDescriptorBuilder);
+
+		if (component != null) {
+			_dependencyManager.remove(component);
+		}
 	}
 
 	private void _addBusDependencies(org.apache.felix.dm.Component component) {
@@ -185,7 +199,7 @@ public class SoapExtender {
 		return serviceDependency;
 	}
 
-	private void _enableComponent() {
+	private org.apache.felix.dm.Component _enableComponent() {
 		org.apache.felix.dm.Component component =
 			_dependencyManager.createComponent();
 
@@ -203,10 +217,14 @@ public class SoapExtender {
 		_addSoapDescriptorBuilderServiceDependency(component);
 
 		_dependencyManager.add(component);
+
+		return component;
 	}
 
 	private DependencyManager _dependencyManager;
 	private SoapDescriptorBuilder _soapDescriptorBuilder;
+	private final Map<SoapDescriptorBuilder, org.apache.felix.dm.Component>
+		_soapDescriptorBuilderComponentMap = new ConcurrentHashMap<>();
 	private volatile SoapExtenderConfiguration _soapExtenderConfiguration;
 
 }

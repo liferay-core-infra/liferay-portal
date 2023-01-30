@@ -116,8 +116,6 @@ public class GroupSelectorTag extends IncludeTag {
 			return _groups;
 		}
 
-		String keywords = ParamUtil.getString(httpServletRequest, "keywords");
-
 		int cur = ParamUtil.getInteger(
 			httpServletRequest, SearchContainer.DEFAULT_CUR_PARAM,
 			SearchContainer.DEFAULT_CUR);
@@ -131,6 +129,8 @@ public class GroupSelectorTag extends IncludeTag {
 		if (groupItemSelectorProvider == null) {
 			return Collections.emptyList();
 		}
+
+		String keywords = ParamUtil.getString(httpServletRequest, "keywords");
 
 		List<Group> groups = groupItemSelectorProvider.getGroups(
 			group.getCompanyId(), group.getGroupId(), keywords, startAndEnd[0],
@@ -155,6 +155,10 @@ public class GroupSelectorTag extends IncludeTag {
 			GroupItemSelectorProviderRegistryUtil.getGroupItemSelectorProvider(
 				_getGroupType(httpServletRequest));
 
+		if (groupSelectorProvider == null) {
+			return 0;
+		}
+
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
@@ -162,10 +166,6 @@ public class GroupSelectorTag extends IncludeTag {
 		Group group = _getGroup(themeDisplay);
 
 		String keywords = ParamUtil.getString(httpServletRequest, "keywords");
-
-		if (groupSelectorProvider == null) {
-			return 0;
-		}
 
 		return groupSelectorProvider.getGroupsCount(
 			group.getCompanyId(), group.getGroupId(), keywords);

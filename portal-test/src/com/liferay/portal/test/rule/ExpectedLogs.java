@@ -14,6 +14,8 @@
 
 package com.liferay.portal.test.rule;
 
+import com.liferay.portal.kernel.util.JavaDetector;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -32,6 +34,8 @@ public @interface ExpectedLogs {
 
 	public String level();
 
-	public Class<?> loggerClass();
+	public Class<?> loggerClass() default Object.class;
+
+	public String loggerClassName() default "";
 
 }

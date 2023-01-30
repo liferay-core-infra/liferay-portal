@@ -121,10 +121,9 @@ public class DefaultAuditRouter implements AuditRouter {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void setAuditMessageProcessor(
-		AuditMessageProcessor auditMessageProcessor,
-		Map<String, Object> properties) {
+		AuditMessageProcessor auditMessageProcessor) {
 
-		String[] eventTypes = _getEventTypes(properties);
+		String[] eventTypes = auditMessageProcessor.getEventTypes();
 
 		if ((eventTypes.length == 1) && eventTypes[0].equals(StringPool.STAR)) {
 			_globalAuditMessageProcessors.add(auditMessageProcessor);
@@ -148,10 +147,9 @@ public class DefaultAuditRouter implements AuditRouter {
 	}
 
 	protected void unsetAuditMessageProcessor(
-		AuditMessageProcessor auditMessageProcessor,
-		Map<String, Object> properties) {
+		AuditMessageProcessor auditMessageProcessor) {
 
-		String[] eventTypes = _getEventTypes(properties);
+		String[] eventTypes = auditMessageProcessor.getEventTypes();
 
 		if ((eventTypes.length == 1) && eventTypes[0].equals(StringPool.STAR)) {
 			_globalAuditMessageProcessors.remove(auditMessageProcessor);
@@ -169,17 +167,6 @@ public class DefaultAuditRouter implements AuditRouter {
 
 			auditMessageProcessorsSet.remove(auditMessageProcessor);
 		}
-	}
-
-	private String[] _getEventTypes(Map<String, Object> properties) {
-		String eventTypes = (String)properties.get(AuditConstants.EVENT_TYPES);
-
-		if (Validator.isNull(eventTypes)) {
-			throw new IllegalArgumentException(
-				"The property \"" + AuditConstants.EVENT_TYPES + "\" is null");
-		}
-
-		return StringUtil.split(eventTypes);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

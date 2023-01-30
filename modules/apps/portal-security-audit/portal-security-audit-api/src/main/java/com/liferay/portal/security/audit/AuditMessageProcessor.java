@@ -25,6 +25,8 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface AuditMessageProcessor {
 
+	public String[] getEventTypes();
+
 	public void process(AuditMessage auditMessage) throws AuditException;
 
 }

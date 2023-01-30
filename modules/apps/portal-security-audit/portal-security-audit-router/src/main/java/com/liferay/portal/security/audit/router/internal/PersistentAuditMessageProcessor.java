@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.audit.router.internal;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.change.tracking.CTTransactionException;
@@ -36,9 +37,14 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.security.audit.router.configuration.PersistentAuditMessageProcessorConfiguration",
-	property = "eventTypes=*", service = AuditMessageProcessor.class
+	service = AuditMessageProcessor.class
 )
 public class PersistentAuditMessageProcessor implements AuditMessageProcessor {
+
+	@Override
+	public String[] getEventTypes() {
+		return new String[] {StringPool.STAR};
+	}
 
 	@Override
 	public void process(AuditMessage auditMessage) {

@@ -16,6 +16,7 @@ package com.liferay.portal.security.audit.router.internal;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.log.Log;
@@ -41,9 +42,14 @@ import org.osgi.service.component.annotations.Modified;
  */
 @Component(
 	configurationPid = "com.liferay.portal.security.audit.router.configuration.LoggingAuditMessageProcessorConfiguration",
-	property = "eventTypes=*", service = AuditMessageProcessor.class
+	service = AuditMessageProcessor.class
 )
 public class LoggingAuditMessageProcessor implements AuditMessageProcessor {
+
+	@Override
+	public String[] getEventTypes() {
+		return new String[] {StringPool.STAR};
+	}
 
 	@Override
 	public void process(AuditMessage auditMessage) {

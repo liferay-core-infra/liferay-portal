@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.xml.SAXReaderFactory;
 
 import java.io.File;
 
@@ -175,7 +176,7 @@ public class Java2WsddTask {
 	private static String _format(String content) throws Exception {
 		content = _stripComments(content);
 
-		SAXReader saxReader = new SAXReader();
+		SAXReader saxReader = SAXReaderFactory.getSAXReader(null, false, false);
 
 		Document document = saxReader.read(new UnsyncStringReader(content));
 

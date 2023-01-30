@@ -289,7 +289,7 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		if (destination == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Unable to unregister destination event listener for " +
+					"Unable to register destination event listener for " +
 						destinationName);
 			}
 

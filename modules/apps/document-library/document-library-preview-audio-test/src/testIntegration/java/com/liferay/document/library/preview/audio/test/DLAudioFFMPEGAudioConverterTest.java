@@ -86,7 +86,7 @@ public class DLAudioFFMPEGAudioConverterTest {
 			)
 		},
 		level = "ERROR",
-		loggerClassName = "com.liferay.portlet.documentlibrary.util.AudioProcessorImpl"
+		loggerClassName = "com.liferay.document.library.preview.audio.internal.AudioProcessorImpl"
 	)
 	@Test
 	public void testDoesNotGenerateAudioPreviewIfTheAudioIsCorrupt()

@@ -86,7 +86,7 @@ public class DLVideoFFMPEGVideoConverterTest {
 			)
 		},
 		level = "ERROR",
-		loggerClassName = "com.liferay.portlet.documentlibrary.util.VideoProcessorImpl"
+		loggerClassName = "com.liferay.document.library.preview.video.internal.VideoProcessorImpl"
 	)
 	@Test
 	public void testDoesNotGenerateVideoPreviewIfTheVideoIsCorrupt()

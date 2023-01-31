@@ -6,4 +6,8 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly project(":apps:document-library:document-library-api")
 	compileOnly project(":apps:document-library:document-library-preview-api")
+	compileOnly project(":core:petra:petra-concurrent")
+	compileOnly project(":core:petra:petra-function")
+	compileOnly project(":core:petra:petra-process")
+	compileOnly project(":core:petra:petra-string")
 }

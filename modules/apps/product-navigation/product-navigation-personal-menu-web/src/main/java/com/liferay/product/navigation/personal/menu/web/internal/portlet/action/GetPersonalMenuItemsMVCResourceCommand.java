@@ -36,9 +36,9 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.product.navigation.personal.menu.PersonalMenuEntry;
+import com.liferay.product.navigation.personal.menu.PersonalMenuEntryRegistry;
 import com.liferay.product.navigation.personal.menu.constants.PersonalMenuPortletKeys;
 import com.liferay.product.navigation.personal.menu.util.PersonalApplicationURLUtil;
-import com.liferay.product.navigation.personal.menu.web.internal.PersonalMenuEntryRegistry;
 
 import java.util.List;
 import java.util.Locale;

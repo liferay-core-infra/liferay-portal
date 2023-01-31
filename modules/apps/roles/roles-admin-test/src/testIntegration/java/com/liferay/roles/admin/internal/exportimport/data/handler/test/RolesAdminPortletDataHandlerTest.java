@@ -37,7 +37,6 @@ import com.liferay.roles.admin.role.type.contributor.provider.RoleTypeContributo
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -97,10 +96,13 @@ public class RolesAdminPortletDataHandlerTest
 		for (String manifestSummaryKey :
 				manifestSummary.getManifestSummaryKeys()) {
 
-			Stream<String> classNamesStream = classNames.stream();
+			for (String className : classNames) {
+				if (manifestSummaryKey.endsWith(className)) {
+					Assert.assertTrue(manifestSummaryKey.endsWith(className));
 
-			Assert.assertTrue(
-				classNamesStream.anyMatch(manifestSummaryKey::endsWith));
+					return;
+				}
+			}
 		}
 	}
 

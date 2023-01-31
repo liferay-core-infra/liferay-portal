@@ -114,7 +114,7 @@ public class SegmentsContextVocabularySegmentsFieldCustomizer
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
-						"No vocabulary was found with name ", assetVocabulary,
+						"No categories was found in ", assetVocabulary,
 						" in company ", companyId));
 			}
 

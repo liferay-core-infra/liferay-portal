@@ -22,7 +22,6 @@ import com.liferay.segments.context.Context;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -46,14 +45,22 @@ public class EntityFieldConfigurationFieldOptionsProviderTest {
 		List<ConfigurationFieldOptionsProvider.Option> options =
 			_configurationFieldOptionsProvider.getOptions();
 
-		Stream<ConfigurationFieldOptionsProvider.Option> stream =
-			options.stream();
+		ConfigurationFieldOptionsProvider.Option option = null;
 
-		Assert.assertFalse(
-			stream.anyMatch(
-				option -> Objects.equals(
-					option.getValue(),
-					Context.DEVICE_SCREEN_RESOLUTION_HEIGHT)));
+		for (ConfigurationFieldOptionsProvider.Option curOptional : options) {
+			if (!Objects.equals(
+					curOptional.getValue(),
+					Context.DEVICE_SCREEN_RESOLUTION_HEIGHT)) {
+
+				continue;
+			}
+
+			option = curOptional;
+
+			break;
+		}
+
+		Assert.assertNull(option);
 	}
 
 	@Test
@@ -61,12 +68,19 @@ public class EntityFieldConfigurationFieldOptionsProviderTest {
 		List<ConfigurationFieldOptionsProvider.Option> options =
 			_configurationFieldOptionsProvider.getOptions();
 
-		Stream<ConfigurationFieldOptionsProvider.Option> stream =
-			options.stream();
+		ConfigurationFieldOptionsProvider.Option option = null;
 
-		Assert.assertTrue(
-			stream.anyMatch(
-				option -> Objects.equals(option.getValue(), Context.BROWSER)));
+		for (ConfigurationFieldOptionsProvider.Option curOptional : options) {
+			if (!Objects.equals(curOptional.getValue(), Context.BROWSER)) {
+				continue;
+			}
+
+			option = curOptional;
+
+			break;
+		}
+
+		Assert.assertNotNull(option);
 	}
 
 	@Inject(

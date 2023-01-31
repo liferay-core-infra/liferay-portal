@@ -64,8 +64,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -271,39 +269,33 @@ public class RoleLocalServiceTest {
 			companyId, null, excludedRoleNames, roleTypes, 0, groupId,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		List<Role> expectedRoles = _roleLocalService.getRoles(companyId);
-
-		Stream<Role> expectedRolesStream = expectedRoles.stream();
-
-		expectedRoles = expectedRolesStream.filter(
-			role -> !excludedRoleNames.contains(role.getName())
-		).filter(
-			role -> role.getType() != RoleConstants.TYPE_ACCOUNT
-		).filter(
-			role -> role.getType() != RoleConstants.TYPE_DEPOT
-		).filter(
-			role -> role.getType() != RoleConstants.TYPE_SITE
-		).filter(
+		List<Role> expectedRoles = ListUtil.filter(
+			_roleLocalService.getRoles(companyId),
 			role -> {
-				if (role.getType() != RoleConstants.TYPE_PROVIDER) {
-					return true;
+				if (!excludedRoleNames.contains(role.getName()) &&
+					(role.getType() != RoleConstants.TYPE_ACCOUNT) &&
+					(role.getType() != RoleConstants.TYPE_DEPOT) &&
+					(role.getType() != RoleConstants.TYPE_SITE)) {
+
+					if (role.getType() != RoleConstants.TYPE_PROVIDER) {
+						return true;
+					}
+
+					if (!role.isTeam()) {
+						return false;
+					}
+
+					Team team = _teamLocalService.fetchTeam(role.getClassPK());
+
+					if (team == null) {
+						return false;
+					}
+
+					return team.getGroupId() == groupId;
 				}
 
-				if (!role.isTeam()) {
-					return false;
-				}
-
-				Team team = _teamLocalService.fetchTeam(role.getClassPK());
-
-				if (team == null) {
-					return false;
-				}
-
-				return team.getGroupId() == groupId;
-			}
-		).collect(
-			Collectors.toList()
-		);
+				return false;
+			});
 
 		Assert.assertEquals(
 			expectedRoles.size(),

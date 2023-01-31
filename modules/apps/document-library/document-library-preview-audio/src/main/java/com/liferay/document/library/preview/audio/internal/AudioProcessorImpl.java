@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.documentlibrary.util;
+package com.liferay.document.library.preview.audio.internal;
 
 import com.liferay.document.library.kernel.background.task.DLBackgroundTaskExecutorNames;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
@@ -11,10 +11,11 @@ import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.util.AudioConverter;
 import com.liferay.document.library.kernel.util.AudioProcessor;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
+import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
+import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskContextMapConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -25,14 +26,13 @@ import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.repository.event.FileVersionPreviewEventListener;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 
@@ -44,7 +44,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Juan González
@@ -52,6 +54,10 @@ import org.apache.commons.lang.time.StopWatch;
  * @author Mika Koivisto
  * @author Ivica Cardic
  */
+@Component(
+	property = "type=" + DLProcessorConstants.AUDIO_PROCESSOR,
+	service = {AudioProcessor.class, DLProcessor.class}
+)
 public class AudioProcessorImpl
 	extends DLPreviewableProcessor implements AudioProcessor {
 
@@ -95,13 +101,13 @@ public class AudioProcessorImpl
 
 	@Override
 	public void generatePreviews() {
-		CompanyLocalServiceUtil.forEachCompanyId(
+		_companyLocalService.forEachCompanyId(
 			companyId -> {
 				try {
 					String jobName = "generateAudioPreviews-".concat(
-						PortalUUIDUtil.generate());
+						_portalUUID.generate());
 
-					BackgroundTaskManagerUtil.addBackgroundTask(
+					_backgroundTaskManager.addBackgroundTask(
 						UserConstants.USER_ID_DEFAULT, CompanyConstants.SYSTEM,
 						jobName,
 						DLBackgroundTaskExecutorNames.
@@ -197,6 +203,11 @@ public class AudioProcessorImpl
 		_queueGeneration(sourceFileVersion, destinationFileVersion);
 	}
 
+	@Activate
+	protected void activate() {
+		afterPropertiesSet();
+	}
+
 	@Override
 	protected void doExportGeneratedFiles(
 			PortletDataContext portletDataContext, FileEntry fileEntry,
@@ -289,9 +300,7 @@ public class AudioProcessorImpl
 			return;
 		}
 
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
+		long start = System.currentTimeMillis();
 
 		try {
 			FileUtil.write(
@@ -314,8 +323,8 @@ public class AudioProcessorImpl
 			_log.info(
 				StringBundler.concat(
 					"Generated a ", containerType, " preview audio for ",
-					fileVersion.getFileVersionId(), " in ", stopWatch.getTime(),
-					"ms"));
+					fileVersion.getFileVersionId(), " in ",
+					System.currentTimeMillis() - start, "ms"));
 		}
 	}
 
@@ -446,18 +455,24 @@ public class AudioProcessorImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		AudioProcessorImpl.class);
 
-	private static volatile AudioConverter _audioConverter =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			AudioConverter.class, AudioProcessorImpl.class, "_audioConverter",
-			false);
-	private static volatile FileVersionPreviewEventListener
-		_fileVersionPreviewEventListener =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				FileVersionPreviewEventListener.class, AudioProcessorImpl.class,
-				"_fileVersionPreviewEventListener", false, false);
+	@Reference
+	private AudioConverter _audioConverter;
 
 	private final Set<String> _audioMimeTypes = SetUtil.fromArray(
 		PropsValues.DL_FILE_ENTRY_PREVIEW_AUDIO_MIME_TYPES);
+
+	@Reference
+	private BackgroundTaskManager _backgroundTaskManager;
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
+
 	private final List<Long> _fileVersionIds = new Vector<>();
+
+	@Reference
+	private FileVersionPreviewEventListener _fileVersionPreviewEventListener;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Accessor;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -87,7 +88,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang.ArrayUtils;
 
@@ -534,16 +534,29 @@ public class UserSXPParameterContributor implements SXPParameterContributor {
 			userId);
 
 		if (!userGroups.isEmpty()) {
-			Stream<UserGroup> stream = userGroups.stream();
-
 			sxpParameters.add(
 				new LongArraySXPParameter(
 					"user.user_group_ids", true,
-					stream.map(
-						UserGroup::getUserGroupId
-					).toArray(
-						Long[]::new
-					)));
+					ListUtil.toArray(
+						userGroups,
+						new Accessor<UserGroup, Long>() {
+
+							@Override
+							public Long get(UserGroup userGroup) {
+								return userGroup.getUserGroupId();
+							}
+
+							@Override
+							public Class<Long> getAttributeClass() {
+								return Long.class;
+							}
+
+							@Override
+							public Class<UserGroup> getTypeClass() {
+								return UserGroup.class;
+							}
+
+						})));
 		}
 
 		_addAssetCategories(sxpParameters, user);

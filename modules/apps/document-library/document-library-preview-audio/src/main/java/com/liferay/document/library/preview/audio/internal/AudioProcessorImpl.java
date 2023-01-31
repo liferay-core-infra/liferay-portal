@@ -19,6 +19,7 @@ import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.util.AudioConverter;
 import com.liferay.document.library.kernel.util.AudioProcessor;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
+import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.string.StringBundler;
@@ -42,7 +43,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Juan González
@@ -50,6 +51,10 @@ import org.apache.commons.lang.time.StopWatch;
  * @author Mika Koivisto
  * @author Ivica Cardic
  */
+@Component(
+	property = "type=" + DLProcessorConstants.AUDIO_PROCESSOR,
+	service = {AudioProcessor.class, DLProcessor.class}
+)
 public class AudioProcessorImpl
 	extends DLPreviewableProcessor implements AudioProcessor {
 
@@ -258,9 +263,7 @@ public class AudioProcessorImpl
 			return;
 		}
 
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
+		long start = System.currentTimeMillis();
 
 		try {
 			FileUtil.write(
@@ -283,8 +286,8 @@ public class AudioProcessorImpl
 			_log.info(
 				StringBundler.concat(
 					"Generated a ", containerType, " preview audio for ",
-					fileVersion.getFileVersionId(), " in ", stopWatch.getTime(),
-					"ms"));
+					fileVersion.getFileVersionId(), " in ",
+					System.currentTimeMillis() - start, "ms"));
 		}
 	}
 

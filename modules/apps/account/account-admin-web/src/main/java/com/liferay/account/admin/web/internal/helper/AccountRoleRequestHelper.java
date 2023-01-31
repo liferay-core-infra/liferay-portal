@@ -23,13 +23,10 @@ import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.product.navigation.personal.menu.PersonalMenuEntry;
+import com.liferay.product.navigation.personal.menu.PersonalMenuEntryRegistry;
 import com.liferay.roles.admin.constants.RolesAdminWebKeys;
 import com.liferay.roles.admin.panel.category.role.type.mapper.PanelCategoryRoleTypeMapperRegistry;
 import com.liferay.roles.admin.role.type.contributor.RoleTypeContributor;
-
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.portlet.PortletRequest;
 
@@ -37,9 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Pei-Jung Lan
@@ -58,7 +52,8 @@ public class AccountRoleRequestHelper {
 			_panelCategoryRegistry);
 		httpServletRequest.setAttribute(
 			ApplicationListWebKeys.PERSONAL_MENU_ENTRY_HELPER,
-			new PersonalMenuEntryHelper(_personalMenuEntries));
+			new PersonalMenuEntryHelper(
+				_personalMenuEntryRegistry.getPersonalMenuEntries()));
 		httpServletRequest.setAttribute(
 			RolesAdminWebKeys.CURRENT_ROLE_TYPE, _accountRoleTypeContributor);
 		httpServletRequest.setAttribute(
@@ -69,16 +64,6 @@ public class AccountRoleRequestHelper {
 
 	public void setRequestAttributes(PortletRequest portletRequest) {
 		setRequestAttributes(_portal.getHttpServletRequest(portletRequest));
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "_removePersonalMenuEntry"
-	)
-	private void _addPersonalMenuEntry(PersonalMenuEntry personalMenuEntry) {
-		_personalMenuEntries.add(personalMenuEntry);
 	}
 
 	private String[] _getPanelCategoryKeys() {
@@ -98,10 +83,6 @@ public class AccountRoleRequestHelper {
 			String.class);
 	}
 
-	private void _removePersonalMenuEntry(PersonalMenuEntry personalMenuEntry) {
-		_personalMenuEntries.remove(personalMenuEntry);
-	}
-
 	@Reference(target = "(component.name=*.AccountRoleTypeContributor)")
 	private RoleTypeContributor _accountRoleTypeContributor;
 
@@ -115,8 +96,8 @@ public class AccountRoleRequestHelper {
 	private PanelCategoryRoleTypeMapperRegistry
 		_panelCategoryRoleTypeMapperRegistry;
 
-	private final List<PersonalMenuEntry> _personalMenuEntries =
-		new CopyOnWriteArrayList<>();
+	@Reference
+	private PersonalMenuEntryRegistry _personalMenuEntryRegistry;
 
 	@Reference
 	private Portal _portal;

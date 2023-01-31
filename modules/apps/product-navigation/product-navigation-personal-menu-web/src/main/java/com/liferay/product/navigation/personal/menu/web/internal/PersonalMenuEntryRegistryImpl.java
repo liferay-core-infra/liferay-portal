@@ -32,6 +32,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Pei-Jung Lan
@@ -80,6 +81,11 @@ public class PersonalMenuEntryRegistryImpl
 			new PersonalMenuEntryServiceReferenceMapper(),
 			new PersonalMenuEntryOrderComparator(
 				"product.navigation.personal.menu.entry.order"));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

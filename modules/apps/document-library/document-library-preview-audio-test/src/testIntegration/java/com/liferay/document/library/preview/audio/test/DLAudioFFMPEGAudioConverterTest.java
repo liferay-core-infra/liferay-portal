@@ -77,7 +77,8 @@ public class DLAudioFFMPEGAudioConverterTest {
 		throws Exception {
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portlet.documentlibrary.util.AudioProcessorImpl",
+				"com.liferay.document.library.preview.audio.internal." +
+					"AudioProcessorImpl",
 				LoggerTestUtil.ERROR)) {
 
 			_withDLAudioFFMPEGAudioConverterConfiguration(

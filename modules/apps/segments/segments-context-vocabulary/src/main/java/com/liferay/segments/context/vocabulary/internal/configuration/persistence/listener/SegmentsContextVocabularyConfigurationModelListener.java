@@ -17,6 +17,7 @@ package com.liferay.segments.context.vocabulary.internal.configuration.persisten
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListener;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -25,9 +26,7 @@ import com.liferay.segments.context.vocabulary.internal.configuration.SegmentsCo
 import java.util.Dictionary;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
@@ -111,37 +110,45 @@ public class SegmentsContextVocabularyConfigurationModelListener
 		throws ConfigurationModelListenerException {
 
 		try {
-			Stream<Configuration> companyConfigurationsStream = Stream.of(
-				Optional.ofNullable(
-					_configurationAdmin.listConfigurations(
-						StringBundler.concat(
-							"(", ConfigurationAdmin.SERVICE_FACTORYPID, "=",
-							SegmentsContextVocabularyConfiguration.class.
-								getCanonicalName(),
-							")"))
-				).orElse(
-					new Configuration[0]
-				));
-			Stream<Configuration> configurationsStream = Stream.of(
-				Optional.ofNullable(
-					_configurationAdmin.listConfigurations(
-						StringBundler.concat(
-							"(", ConfigurationAdmin.SERVICE_FACTORYPID, "=",
-							SegmentsContextVocabularyConfiguration.class.
-								getCanonicalName(),
-							")"))
-				).orElse(
-					new Configuration[0]
-				));
+			Configuration[] companyConfigurations =
+				_configurationAdmin.listConfigurations(
+					StringBundler.concat(
+						"(", ConfigurationAdmin.SERVICE_FACTORYPID, "=",
+						SegmentsContextVocabularyConfiguration.class.
+							getCanonicalName(),
+						")"));
 
-			return Stream.concat(
-				companyConfigurationsStream, configurationsStream
-			).filter(
-				configuration -> _isDefined(
-					assetVocabularyName, companyId, configuration,
-					entityFieldName)
-			).findFirst(
-			).isPresent();
+			if (companyConfigurations == null) {
+				companyConfigurations = new Configuration[0];
+			}
+
+			Configuration[] configurations =
+				_configurationAdmin.listConfigurations(
+					StringBundler.concat(
+						"(", ConfigurationAdmin.SERVICE_FACTORYPID, "=",
+						SegmentsContextVocabularyConfiguration.class.
+							getCanonicalName(),
+						")"));
+
+			if (configurations == null) {
+				configurations = new Configuration[0];
+			}
+
+			Configuration[] newConfigurations = ArrayUtil.append(
+				companyConfigurations, configurations);
+
+			for (Configuration configuration : newConfigurations) {
+				if (!_isDefined(
+						assetVocabularyName, companyId, configuration,
+						entityFieldName)) {
+
+					continue;
+				}
+
+				return true;
+			}
+
+			return false;
 		}
 		catch (Exception exception) {
 			throw new ConfigurationModelListenerException(

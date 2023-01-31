@@ -14,6 +14,9 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.facet;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.facet.Facet;
@@ -35,8 +38,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 
 /**
  * @author Michael C. Han
@@ -82,8 +89,7 @@ public class DefaultFacetTranslator implements FacetTranslator {
 				}
 			}
 
-			AggregationBuilder aggregationBuilder =
-				_facetProcessor.processFacet(facet);
+			AggregationBuilder aggregationBuilder = _processFacet(facet);
 
 			if (aggregationBuilder != null) {
 				AggregationBuilder postProcessAggregationBuilder =
@@ -103,6 +109,29 @@ public class DefaultFacetTranslator implements FacetTranslator {
 		}
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext,
+			(Class<FacetProcessor<SearchRequestBuilder>>)
+				(Class<?>)FacetProcessor.class,
+			null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(facetProcessor, emitter) -> {
+					String facetClassName = facetProcessor.getFacetClassName();
+
+					if (facetClassName != null) {
+						emitter.emit(facetClassName);
+					}
+				}));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
+	}
+
 	protected AggregationBuilder postProcessAggregationBuilder(
 		AggregationBuilder aggregationBuilder,
 		FacetProcessorContext facetProcessorContext) {
@@ -114,6 +143,12 @@ public class DefaultFacetTranslator implements FacetTranslator {
 
 		return aggregationBuilder;
 	}
+
+	@Reference(
+		cardinality = ReferenceCardinality.MANDATORY,
+		target = "(component.name=com.liferay.portal.search.elasticsearch7.internal.facet.DefaultFacetProcessor)"
+	)
+	protected FacetProcessor<SearchRequestBuilder> defaultFacetProcessor;
 
 	private FacetProcessorContext _getFacetProcessorContext(
 		Collection<Facet> facets, boolean basicFacetSelection) {
@@ -139,6 +174,19 @@ public class DefaultFacetTranslator implements FacetTranslator {
 		return boolQueryBuilder;
 	}
 
+	private AggregationBuilder _processFacet(Facet facet) {
+		Class<?> clazz = facet.getClass();
+
+		FacetProcessor<SearchRequestBuilder> facetProcessor =
+			_serviceTrackerMap.getService(clazz.getName());
+
+		if (facetProcessor == null) {
+			facetProcessor = defaultFacetProcessor;
+		}
+
+		return facetProcessor.processFacet(facet);
+	}
+
 	private QueryBuilder _translateBooleanClause(
 		BooleanClause<Filter> booleanClause) {
 
@@ -150,10 +198,10 @@ public class DefaultFacetTranslator implements FacetTranslator {
 		return _filterTranslator.translate(booleanFilter, null);
 	}
 
-	@Reference(service = CompositeFacetProcessor.class)
-	private FacetProcessor<SearchRequestBuilder> _facetProcessor;
-
 	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private FilterTranslator<QueryBuilder> _filterTranslator;
+
+	private ServiceTrackerMap<String, FacetProcessor<SearchRequestBuilder>>
+		_serviceTrackerMap;
 
 }

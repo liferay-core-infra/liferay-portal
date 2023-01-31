@@ -31,7 +31,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -67,14 +66,24 @@ public class AssetVocabularyConfigurationOptionsProviderTest {
 			List<ConfigurationFieldOptionsProvider.Option> options =
 				_configurationFieldOptionsProvider.getOptions();
 
-			Stream<ConfigurationFieldOptionsProvider.Option> stream =
-				options.stream();
+			ConfigurationFieldOptionsProvider.Option option = null;
 
-			Assert.assertTrue(
-				stream.anyMatch(
-					option -> Objects.equals(
-						option.getLabel(LocaleUtil.getDefault()),
-						assetVocabulary.getTitle(LocaleUtil.getDefault()))));
+			for (ConfigurationFieldOptionsProvider.Option curOptional :
+					options) {
+
+				if (!Objects.equals(
+						curOptional.getLabel(LocaleUtil.getDefault()),
+						assetVocabulary.getTitle(LocaleUtil.getDefault()))) {
+
+					continue;
+				}
+
+				option = curOptional;
+
+				break;
+			}
+
+			Assert.assertNotNull(option);
 		}
 		finally {
 			_assetVocabularyLocalService.deleteVocabulary(

@@ -37,9 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -69,15 +66,17 @@ public class SamlSameSiteLaxCookiesFilterTest {
 			"SAMLResponse", "TEST_SAMLRESPONSE"
 		).build();
 
-		Set<Map.Entry<String, String>> entrySet = _paramsMap.entrySet();
+		StringBundler sb = new StringBundler();
 
-		Stream<Map.Entry<String, String>> stream = entrySet.stream();
+		for (Map.Entry<String, String> entry : _paramsMap.entrySet()) {
+			sb.append(
+				StringBundler.concat(
+					entry.getKey(), "=", entry.getValue(), "&"));
+		}
 
-		_postBody = stream.map(
-			entry -> StringBundler.concat(entry.getKey(), "=", entry.getValue())
-		).collect(
-			Collectors.joining("&")
-		);
+		String string = sb.toString();
+
+		_postBody = string.substring(0, string.length() - 1);
 	}
 
 	@Test

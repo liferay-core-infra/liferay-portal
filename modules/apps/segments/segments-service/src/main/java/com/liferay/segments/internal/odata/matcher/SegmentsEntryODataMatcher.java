@@ -15,8 +15,6 @@
 package com.liferay.segments.internal.odata.matcher;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.ExpressionConvert;
@@ -58,50 +56,6 @@ public class SegmentsEntryODataMatcher implements ODataMatcher<Map<?, ?>> {
 		}
 	}
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + SegmentsEntryEntityModel.NAME + ")",
-		unbind = "unbindFilterParser"
-	)
-	public void setFilterParser(FilterParser filterParser) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + filterParser);
-		}
-
-		_filterParser = filterParser;
-	}
-
-	public void unbindFilterParser(FilterParser filterParser) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + filterParser);
-		}
-
-		_filterParser = null;
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + SegmentsEntryEntityModel.NAME + ")",
-		unbind = "unbindEntityModel"
-	)
-	protected void setEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + entityModel);
-		}
-
-		_entityModel = entityModel;
-	}
-
-	protected void unbindEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + entityModel);
-		}
-
-		_entityModel = null;
-	}
-
 	private Predicate<Map<?, ?>> _getPredicate(String filterString)
 		throws Exception {
 
@@ -117,14 +71,21 @@ public class SegmentsEntryODataMatcher implements ODataMatcher<Map<?, ?>> {
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		SegmentsEntryODataMatcher.class);
-
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(entity.model.name=" + SegmentsEntryEntityModel.NAME + ")"
+	)
 	private volatile EntityModel _entityModel;
 
 	@Reference(target = "(result.class.name=java.util.function.Predicate)")
 	private ExpressionConvert<Predicate<Map<?, ?>>> _expressionConvert;
 
-	private FilterParser _filterParser;
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(entity.model.name=" + SegmentsEntryEntityModel.NAME + ")"
+	)
+	private volatile FilterParser _filterParser;
 
 }

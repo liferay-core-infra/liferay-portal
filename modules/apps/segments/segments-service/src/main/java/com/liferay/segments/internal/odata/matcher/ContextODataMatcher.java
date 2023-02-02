@@ -15,8 +15,6 @@
 package com.liferay.segments.internal.odata.matcher;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.ExpressionConvert;
@@ -59,28 +57,6 @@ public class ContextODataMatcher implements ODataMatcher<Context> {
 		}
 	}
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + ContextEntityModel.NAME + ")",
-		unbind = "unbindEntityModel"
-	)
-	protected void setEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + entityModel);
-		}
-
-		_entityModel = entityModel;
-	}
-
-	protected void unbindEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + entityModel);
-		}
-
-		_entityModel = null;
-	}
-
 	private Predicate<Context> _getPredicate(String filterString)
 		throws Exception {
 
@@ -98,9 +74,11 @@ public class ContextODataMatcher implements ODataMatcher<Context> {
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		ContextODataMatcher.class);
-
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(entity.model.name=" + ContextEntityModel.NAME + ")"
+	)
 	private volatile EntityModel _entityModel;
 
 	@Reference(target = "(result.class.name=java.util.function.Predicate)")

@@ -71,7 +71,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 import org.osgi.framework.Constants;
 import org.osgi.service.cm.Configuration;
@@ -129,18 +128,15 @@ public class AnalyticsConfigurationRegistryImpl
 			return null;
 		}
 
-		Set<Map.Entry<String, Long>> entries = _companyIds.entrySet();
+		String pid = null;
 
-		Stream<Map.Entry<String, Long>> stream = entries.stream();
+		for (Map.Entry<String, Long> entry : _companyIds.entrySet()) {
+			if (Objects.equals(entry.getValue(), companyId)) {
+				pid = entry.getKey();
 
-		String pid = stream.filter(
-			entry -> Objects.equals(entry.getValue(), companyId)
-		).map(
-			Map.Entry::getKey
-		).findFirst(
-		).orElse(
-			null
-		);
+				break;
+			}
+		}
 
 		if (pid == null) {
 			return null;

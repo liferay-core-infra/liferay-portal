@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author André de Oliveira
@@ -166,14 +164,15 @@ public class FieldValuesAssert {
 			return map;
 		}
 
-		Stream<Map.Entry<String, String>> stream = SearchStreamUtil.stream(
-			map.entrySet());
+		Map<String, String> filteredMap = new HashMap<>();
 
-		return stream.filter(
-			entry -> predicate.test(entry.getKey())
-		).collect(
-			Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
-		);
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			if (predicate.test(entry.getKey())) {
+				filteredMap.put(entry.getKey(), entry.getValue());
+			}
+		}
+
+		return filteredMap;
 	}
 
 	private static Map<String, Object> _getSourcesMap(
@@ -265,13 +264,14 @@ public class FieldValuesAssert {
 	private static <T> Map<String, String> _toStringValuesMap(
 		Map<String, T> map, Function<T, String> function) {
 
-		Stream<Map.Entry<String, T>> stream = SearchStreamUtil.stream(
-			map.entrySet());
+		Map<String, String> stringValueMap = new HashMap<>();
 
-		return stream.collect(
-			Collectors.toMap(
-				entry -> entry.getKey(),
-				entry -> function.apply(entry.getValue())));
+		for (Map.Entry<String, T> entry : map.entrySet()) {
+			stringValueMap.put(
+				entry.getKey(), function.apply(entry.getValue()));
+		}
+
+		return stringValueMap;
 	}
 
 }

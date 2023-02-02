@@ -30,12 +30,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.sharing.model.SharingEntry;
-import com.liferay.sharing.model.SharingEntryModel;
 import com.liferay.sharing.service.SharingEntryLocalServiceUtil;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * @author Alejandro Tardín
@@ -109,25 +104,19 @@ public class CollaboratorsUtil {
 	private static JSONArray _getSharingEntryToUsersJSONArray(
 		long classPK, long classNameId, ThemeDisplay themeDisplay) {
 
-		List<SharingEntry> sharingEntries =
-			SharingEntryLocalServiceUtil.getSharingEntries(
-				classNameId, classPK, 0, 4);
-
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		Stream<SharingEntry> stream = sharingEntries.stream();
+		for (SharingEntry sharingEntry :
+				SharingEntryLocalServiceUtil.getSharingEntries(
+					classNameId, classPK, 0, 4)) {
 
-		stream.map(
-			SharingEntryModel::getToUserId
-		).map(
-			UserLocalServiceUtil::fetchUserById
-		).filter(
-			Objects::nonNull
-		).map(
-			user -> _getUserJSONObject(user, themeDisplay)
-		).forEach(
-			jsonArray::put
-		);
+			User user = UserLocalServiceUtil.fetchUserById(
+				sharingEntry.getToUserId());
+
+			if (user != null) {
+				jsonArray.put(_getUserJSONObject(user, themeDisplay));
+			}
+		}
 
 		return jsonArray;
 	}

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.test.util.logging;
 
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.test.rule.MethodTestRule;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
@@ -24,8 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Factory;
@@ -162,13 +161,7 @@ public class ExpectedLogMethodTestRule extends MethodTestRule<Void> {
 		}
 
 		protected String toString(T logEntries) {
-			Stream<LogEntry> stream = logEntries.stream();
-
-			return stream.map(
-				LogEntry::getMessage
-			).collect(
-				Collectors.joining()
-			);
+			return StringUtil.merge(logEntries, LogEntry::getMessage, "");
 		}
 
 		protected final Matcher<String> matcher;

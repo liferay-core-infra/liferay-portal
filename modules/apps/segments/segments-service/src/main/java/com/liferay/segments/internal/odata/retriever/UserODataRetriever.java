@@ -15,8 +15,6 @@
 package com.liferay.segments.internal.odata.retriever;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
@@ -70,50 +68,6 @@ public class UserODataRetriever implements ODataRetriever<User> {
 			_entityModel, locale);
 	}
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + UserEntityModel.NAME + ")",
-		unbind = "unbindFilterParser"
-	)
-	public void setFilterParser(FilterParser filterParser) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + filterParser);
-		}
-
-		_filterParser = filterParser;
-	}
-
-	public void unbindFilterParser(FilterParser filterParser) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + filterParser);
-		}
-
-		_filterParser = null;
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(entity.model.name=" + UserEntityModel.NAME + ")",
-		unbind = "unbindEntityModel"
-	)
-	protected void setEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Binding " + entityModel);
-		}
-
-		_entityModel = entityModel;
-	}
-
-	protected void unbindEntityModel(EntityModel entityModel) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Unbinding " + entityModel);
-		}
-
-		_entityModel = null;
-	}
-
 	private User _getUser(Document document) throws PortalException {
 		long userId = GetterUtil.getLong(document.get(Field.USER_ID));
 
@@ -132,11 +86,19 @@ public class UserODataRetriever implements ODataRetriever<User> {
 		return users;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		UserODataRetriever.class);
-
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(entity.model.name=" + UserEntityModel.NAME + ")"
+	)
 	private volatile EntityModel _entityModel;
-	private FilterParser _filterParser;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(entity.model.name=" + UserEntityModel.NAME + ")"
+	)
+	private volatile FilterParser _filterParser;
 
 	@Reference
 	private ODataSearchAdapter _oDataSearchAdapter;

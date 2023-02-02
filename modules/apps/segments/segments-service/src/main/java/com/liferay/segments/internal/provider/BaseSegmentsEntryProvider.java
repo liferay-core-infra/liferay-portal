@@ -157,17 +157,16 @@ public abstract class BaseSegmentsEntryProvider
 			return new long[0];
 		}
 
-		if (!ArrayUtil.isEmpty(filterSegmentsEntryIds)) {
-			segmentsEntries = ListUtil.filter(
-				segmentsEntries,
-				segmentsEntry ->
-					ArrayUtil.contains(
-						filterSegmentsEntryIds,
-						segmentsEntry.getSegmentsEntryId()) &&
-					isMember(
-						className, classPK, context, segmentsEntry,
-						segmentsEntryIds));
-		}
+		segmentsEntries = ListUtil.filter(
+			segmentsEntries,
+			segmentsEntry ->
+				(ArrayUtil.isEmpty(filterSegmentsEntryIds) ||
+				 ArrayUtil.contains(
+					 filterSegmentsEntryIds,
+					 segmentsEntry.getSegmentsEntryId())) &&
+				isMember(
+					className, classPK, context, segmentsEntry,
+					segmentsEntryIds));
 
 		long[] segmentsEntryIdsAfterFilterArray =
 			new long[segmentsEntries.size()];

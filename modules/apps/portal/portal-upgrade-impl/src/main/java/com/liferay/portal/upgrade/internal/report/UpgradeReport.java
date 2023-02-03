@@ -54,15 +54,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.felix.cm.PersistenceManager;
@@ -163,11 +159,6 @@ public class UpgradeReport {
 			return "Unable to get database tables size";
 		}
 
-		Set<String> tableNames = new HashSet<>();
-
-		tableNames.addAll(_initialTableCounts.keySet());
-		tableNames.addAll(finalTableCounts.keySet());
-
 		StringBundler sb = new StringBundler(finalTableCounts.size() + 3);
 
 		String format = "%-30s %20s %20s\n";
@@ -178,46 +169,46 @@ public class UpgradeReport {
 				format, "Table name", "Rows (initial)", "Rows (final)"));
 		sb.append(String.format(format, _UNDERLINE, _UNDERLINE, _UNDERLINE));
 
-		Stream<String> stream = tableNames.stream();
+		List<String> tableNames = new ArrayList<>();
 
-		stream.filter(
-			tableName -> {
-				int initialCount = _initialTableCounts.getOrDefault(
-					tableName, 0);
-				int finalCount = finalTableCounts.getOrDefault(tableName, 0);
+		tableNames.addAll(_initialTableCounts.keySet());
+		tableNames.addAll(finalTableCounts.keySet());
 
-				return (initialCount > 0) || (finalCount > 0);
-			}
-		).sorted(
-			(a, b) -> {
-				int countA = _initialTableCounts.getOrDefault(a, 0);
-				int countB = _initialTableCounts.getOrDefault(b, 0);
+		ListUtil.distinct(
+			tableNames,
+			(tableNameA, tableNameB) -> {
+				int countA = _initialTableCounts.getOrDefault(tableNameA, 0);
+				int countB = _initialTableCounts.getOrDefault(tableNameB, 0);
 
 				if (countA == countB) {
-					return a.compareTo(b);
+					return tableNameA.compareTo(tableNameB);
 				}
 
 				return countB - countA;
-			}
-		).forEach(
-			tableName -> {
-				int initialCount = _initialTableCounts.getOrDefault(
+			});
+
+		for (String tableName : tableNames) {
+			int initialCount = _initialTableCounts.getOrDefault(tableName, 0);
+			int finalCount = finalTableCounts.getOrDefault(tableName, 0);
+
+			if ((initialCount > 0) || (finalCount > 0)) {
+				int initialCount1 = _initialTableCounts.getOrDefault(
 					tableName, -1);
 
 				String initialRows =
-					(initialCount >= 0) ? String.valueOf(initialCount) :
+					(initialCount1 >= 0) ? String.valueOf(initialCount1) :
 						StringPool.DASH;
 
-				int finalCount = finalTableCounts.getOrDefault(tableName, -1);
+				int finalCount1 = finalTableCounts.getOrDefault(tableName, -1);
 
 				String finalRows =
-					(finalCount >= 0) ? String.valueOf(finalCount) :
+					(finalCount1 >= 0) ? String.valueOf(finalCount1) :
 						StringPool.DASH;
 
 				sb.append(
 					String.format(format, tableName, initialRows, finalRows));
 			}
-		);
+		}
 
 		return sb.toString();
 	}
@@ -284,16 +275,17 @@ public class UpgradeReport {
 	}
 
 	private String _getLogEventsInfo(String type) {
-		Set<Map.Entry<String, Map<String, Integer>>> entrySet;
+		List<Map.Entry<String, Map<String, Integer>>> entrys =
+			new ArrayList<>();
 
 		if (type.equals("errors")) {
-			entrySet = _errorMessages.entrySet();
+			entrys.addAll(_errorMessages.entrySet());
 		}
 		else {
-			entrySet = _warningMessages.entrySet();
+			entrys.addAll(_warningMessages.entrySet());
 		}
 
-		if (entrySet.isEmpty()) {
+		if (entrys.isEmpty()) {
 			return StringBundler.concat("No ", type, " thrown during upgrade");
 		}
 
@@ -302,10 +294,7 @@ public class UpgradeReport {
 		sb.append(StringUtil.upperCaseFirstLetter(type));
 		sb.append(" thrown during upgrade process\n");
 
-		Stream<Map.Entry<String, Map<String, Integer>>> stream =
-			entrySet.stream();
-
-		Map<String, Map<String, Integer>> sortedErrors = stream.sorted(
+		entrys.sort(
 			Collections.reverseOrder(
 				Map.Entry.comparingByValue(
 					new Comparator<Map<String, Integer>>() {
@@ -319,12 +308,14 @@ public class UpgradeReport {
 								object1.size(), object2.size());
 						}
 
-					}))
-		).collect(
-			Collectors.toMap(
-				Map.Entry::getKey, Map.Entry::getValue,
-				(object1, object2) -> object2, LinkedHashMap::new)
-		);
+					})));
+
+		Map<String, Map<String, Integer>> sortedErrors = new LinkedHashMap<>(
+			entrys.size());
+
+		for (Map.Entry<String, Map<String, Integer>> entry : entrys) {
+			sortedErrors.put(entry.getKey(), entry.getValue());
+		}
 
 		for (Map.Entry<String, Map<String, Integer>> entry :
 				sortedErrors.entrySet()) {
@@ -619,11 +610,10 @@ public class UpgradeReport {
 	}
 
 	private Map<String, Integer> _sort(Map<String, Integer> map) {
-		Set<Map.Entry<String, Integer>> set = map.entrySet();
+		List<Map.Entry<String, Integer>> entries = new ArrayList<>(
+			map.entrySet());
 
-		Stream<Map.Entry<String, Integer>> stream = set.stream();
-
-		return stream.sorted(
+		entries.sort(
 			Collections.reverseOrder(
 				Map.Entry.comparingByValue(
 					new Comparator<Integer>() {
@@ -633,12 +623,16 @@ public class UpgradeReport {
 							return Integer.compare(object1, object2);
 						}
 
-					}))
-		).collect(
-			Collectors.toMap(
-				Map.Entry::getKey, Map.Entry::getValue,
-				(object1, object2) -> object2, LinkedHashMap::new)
-		);
+					})));
+
+		Map<String, Integer> linkedHashMap = new LinkedHashMap<>(
+			entries.size());
+
+		for (Map.Entry<String, Integer> entry : entries) {
+			linkedHashMap.put(entry.getKey(), entry.getValue());
+		}
+
+		return linkedHashMap;
 	}
 
 	private static final String _CONFIGURATION_PID_ADVANCED_FILE_SYSTEM_STORE =

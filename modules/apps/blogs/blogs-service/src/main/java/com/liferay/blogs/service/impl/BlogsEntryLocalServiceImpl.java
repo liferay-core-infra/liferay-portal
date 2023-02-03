@@ -130,7 +130,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import javax.portlet.PortletRequest;
 
@@ -1876,14 +1875,23 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		Set<String> extensions = MimeTypesUtil.getExtensions(
 			fileEntry.getMimeType());
 
-		if (Stream.of(
-				_blogsFileUploadsConfiguration.imageExtensions()
-			).anyMatch(
-				extension ->
-					extension.equals(StringPool.STAR) ||
-					extensions.contains(extension)
-			)) {
+		Boolean validImageMimeType = false;
 
+		for (String extension :
+				_blogsFileUploadsConfiguration.imageExtensions()) {
+
+			if (!(extension.equals(StringPool.STAR) ||
+				  extensions.contains(extension))) {
+
+				continue;
+			}
+
+			validImageMimeType = true;
+
+			break;
+		}
+
+		if (validImageMimeType) {
 			return true;
 		}
 

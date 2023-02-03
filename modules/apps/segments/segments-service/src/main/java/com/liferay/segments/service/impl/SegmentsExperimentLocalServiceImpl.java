@@ -14,6 +14,7 @@
 
 package com.liferay.segments.service.impl;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.BigDecimalUtil;
+import com.liferay.portal.kernel.util.MathUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -61,11 +63,9 @@ import com.liferay.segments.service.persistence.SegmentsExperiencePersistence;
 
 import java.math.RoundingMode;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -654,19 +654,14 @@ public class SegmentsExperimentLocalServiceImpl
 	private void _validateSplit(Map<Long, Double> segmentsExperienceIdSplitMap)
 		throws PortalException {
 
-		Collection<Double> segmentsExperienceIdSplitsValues =
-			segmentsExperienceIdSplitMap.values();
-
-		Stream<Double> segmentsExperienceIdSplitsStream =
-			segmentsExperienceIdSplitsValues.stream();
-
-		double segmentsExperienceIdSplitsSum =
-			segmentsExperienceIdSplitsStream.mapToDouble(
+		double sum = MathUtil.sum(
+			(Double[])TransformUtil.transformToArray(
+				segmentsExperienceIdSplitMap.values(),
 				segmentsExperienceIdSplit -> BigDecimalUtil.scale(
-					segmentsExperienceIdSplit, 2, RoundingMode.HALF_DOWN)
-			).sum();
+					segmentsExperienceIdSplit, 2, RoundingMode.HALF_DOWN),
+				Double.class));
 
-		if (segmentsExperienceIdSplitsSum != 1) {
+		if (sum != 1) {
 			throw new SegmentsExperimentRelSplitException(
 				"Segments experiment rel splits must add up to 1");
 		}

@@ -23,8 +23,6 @@ import com.liferay.portal.search.tuning.synonyms.index.name.SynonymSetIndexNameB
 import com.liferay.portal.search.tuning.synonyms.web.internal.index.SynonymSet;
 import com.liferay.portal.search.tuning.synonyms.web.internal.index.SynonymSetIndexReader;
 
-import java.util.Optional;
-
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -53,7 +51,7 @@ public class EditSynonymSetsDisplayBuilder {
 		EditSynonymSetsDisplayContext editSynonymSetsDisplayContext =
 			new EditSynonymSetsDisplayContext();
 
-		_synonymSetOptional = _getSynonymSetOptional(_getCompanyId());
+		_synonymSet = _getSynonymSet(_getCompanyId());
 
 		_setBackURL(editSynonymSetsDisplayContext);
 		_setData(editSynonymSetsDisplayContext);
@@ -86,23 +84,31 @@ public class EditSynonymSetsDisplayBuilder {
 		return ParamUtil.getString(_httpServletRequest, "redirect");
 	}
 
-	private Optional<SynonymSet> _getSynonymSetOptional(long companyId) {
+	private SynonymSet _getSynonymSet(long companyId) {
 		SynonymSetIndexName synonymSetIndexName =
 			_synonymSetIndexNameBuilder.getSynonymSetIndexName(companyId);
 
-		return Optional.ofNullable(
-			ParamUtil.getString(_renderRequest, "synonymSetId", null)
-		).flatMap(
-			id -> _synonymSetIndexReader.fetchOptional(synonymSetIndexName, id)
-		);
+		String id = ParamUtil.getString(_renderRequest, "synonymSetId", null);
+
+		if (id == null) {
+			return null;
+		}
+
+		return _synonymSetIndexReader.fetch(synonymSetIndexName, id);
 	}
 
 	private String _getSynonymSets() {
-		return _synonymSetOptional.map(
-			SynonymSet::getSynonyms
-		).orElse(
-			StringPool.BLANK
-		);
+		if (_synonymSet == null) {
+			return StringPool.BLANK;
+		}
+
+		String synonyms = _synonymSet.getSynonyms();
+
+		if (synonyms == null) {
+			return StringPool.BLANK;
+		}
+
+		return synonyms;
 	}
 
 	private void _setBackURL(
@@ -145,17 +151,18 @@ public class EditSynonymSetsDisplayBuilder {
 	private void _setSynonymSetId(
 		EditSynonymSetsDisplayContext editSynonymSetsDisplayContext) {
 
-		_synonymSetOptional.ifPresent(
-			synonymSet -> editSynonymSetsDisplayContext.setSynonymSetId(
-				synonymSet.getSynonymSetDocumentId()));
+		if (_synonymSet != null) {
+			editSynonymSetsDisplayContext.setSynonymSetId(
+				_synonymSet.getSynonymSetDocumentId());
+		}
 	}
 
 	private final HttpServletRequest _httpServletRequest;
 	private final Portal _portal;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
+	private SynonymSet _synonymSet;
 	private final SynonymSetIndexNameBuilder _synonymSetIndexNameBuilder;
 	private final SynonymSetIndexReader _synonymSetIndexReader;
-	private Optional<SynonymSet> _synonymSetOptional;
 
 }

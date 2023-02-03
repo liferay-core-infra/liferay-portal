@@ -1875,8 +1875,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		Set<String> extensions = MimeTypesUtil.getExtensions(
 			fileEntry.getMimeType());
 
-		Boolean validImageMimeType = false;
-
 		for (String extension :
 				_blogsFileUploadsConfiguration.imageExtensions()) {
 
@@ -1886,12 +1884,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 				continue;
 			}
 
-			validImageMimeType = true;
-
-			break;
-		}
-
-		if (validImageMimeType) {
 			return true;
 		}
 

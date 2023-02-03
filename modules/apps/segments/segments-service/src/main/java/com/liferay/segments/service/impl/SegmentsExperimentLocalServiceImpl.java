@@ -14,6 +14,7 @@
 
 package com.liferay.segments.service.impl;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -61,11 +62,9 @@ import com.liferay.segments.service.persistence.SegmentsExperiencePersistence;
 
 import java.math.RoundingMode;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -654,19 +653,13 @@ public class SegmentsExperimentLocalServiceImpl
 	private void _validateSplit(Map<Long, Double> segmentsExperienceIdSplitMap)
 		throws PortalException {
 
-		Collection<Double> segmentsExperienceIdSplitsValues =
-			segmentsExperienceIdSplitMap.values();
+		Double[] segmentsExperienceIdSplits = TransformUtil.transformToArray(
+			segmentsExperienceIdSplitMap.values(),
+			segmentsExperienceIdSplit -> BigDecimalUtil.scale(
+				segmentsExperienceIdSplit, 2, RoundingMode.HALF_DOWN),
+			Double.class);
 
-		Stream<Double> segmentsExperienceIdSplitsStream =
-			segmentsExperienceIdSplitsValues.stream();
-
-		double segmentsExperienceIdSplitsSum =
-			segmentsExperienceIdSplitsStream.mapToDouble(
-				segmentsExperienceIdSplit -> BigDecimalUtil.scale(
-					segmentsExperienceIdSplit, 2, RoundingMode.HALF_DOWN)
-			).sum();
-
-		if (segmentsExperienceIdSplitsSum != 1) {
+		if (segmentsExperienceIdSplits.length != 1) {
 			throw new SegmentsExperimentRelSplitException(
 				"Segments experiment rel splits must add up to 1");
 		}

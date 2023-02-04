@@ -32,13 +32,12 @@ import com.liferay.segments.model.SegmentsEntryRole;
 import com.liferay.segments.service.base.SegmentsEntryRoleLocalServiceBaseImpl;
 import com.liferay.segments.service.persistence.SegmentsEntryPersistence;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -210,19 +209,22 @@ public class SegmentsEntryRoleLocalServiceImpl
 		List<SegmentsEntryRole> segmentsEntryRoles = getSegmentsEntryRoles(
 			segmentsEntryId);
 
-		Stream<SegmentsEntryRole> segmentsEntryRolesStream =
-			segmentsEntryRoles.stream();
+		Set<Long> siteRoleIdsSet = new HashSet<>();
 
-		return segmentsEntryRolesStream.map(
-			segmentsEntryRole -> _roleLocalService.fetchRole(
-				segmentsEntryRole.getRoleId())
-		).filter(
-			role -> Objects.equals(role.getType(), RoleConstants.TYPE_SITE)
-		).map(
-			Role::getRoleId
-		).collect(
-			Collectors.toSet()
-		);
+		for (SegmentsEntryRole segmentsEntryRole : segmentsEntryRoles) {
+			Role role = _roleLocalService.fetchRole(
+				segmentsEntryRole.getRoleId());
+
+			if ((role == null) ||
+				!Objects.equals(role.getType(), RoleConstants.TYPE_SITE)) {
+
+				return Collections.emptySet();
+			}
+
+			siteRoleIdsSet.add(role.getRoleId());
+		}
+
+		return siteRoleIdsSet;
 	}
 
 	private void _reindex(long segmentsEntryId) throws PortalException {

@@ -188,21 +188,15 @@ public class UpgradeReport {
 			});
 
 		for (String tableName : tableNames) {
-			int initialCount = _initialTableCounts.getOrDefault(tableName, 0);
-			int finalCount = finalTableCounts.getOrDefault(tableName, 0);
+			int initialCount = _initialTableCounts.getOrDefault(tableName, -1);
+			int finalCount = finalTableCounts.getOrDefault(tableName, -1);
 
 			if ((initialCount > 0) || (finalCount > 0)) {
-				int initialCount1 = _initialTableCounts.getOrDefault(
-					tableName, -1);
-
 				String initialRows =
-					(initialCount1 >= 0) ? String.valueOf(initialCount1) :
+					(initialCount >= 0) ? String.valueOf(initialCount) :
 						StringPool.DASH;
-
-				int finalCount1 = finalTableCounts.getOrDefault(tableName, -1);
-
 				String finalRows =
-					(finalCount1 >= 0) ? String.valueOf(finalCount1) :
+					(finalCount >= 0) ? String.valueOf(finalCount) :
 						StringPool.DASH;
 
 				sb.append(

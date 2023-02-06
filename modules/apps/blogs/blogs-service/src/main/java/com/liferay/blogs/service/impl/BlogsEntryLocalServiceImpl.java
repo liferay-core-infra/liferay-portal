@@ -1878,13 +1878,11 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		for (String extension :
 				_blogsFileUploadsConfiguration.imageExtensions()) {
 
-			if (!(extension.equals(StringPool.STAR) ||
-				  extensions.contains(extension))) {
+			if (extension.equals(StringPool.STAR) ||
+				extensions.contains(extension)) {
 
-				continue;
+				return true;
 			}
-
-			return true;
 		}
 
 		return false;

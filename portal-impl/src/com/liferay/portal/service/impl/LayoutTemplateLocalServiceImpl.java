@@ -30,11 +30,13 @@ import com.liferay.portal.kernel.service.PluginSettingLocalService;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -520,6 +522,23 @@ public class LayoutTemplateLocalServiceImpl
 			return ListUtil.sort(processor.getColumns());
 		}
 		catch (Exception exception) {
+			String message = exception.getMessage();
+
+			if (message.equals("Unsupported template manager " + langType)) {
+				String templateManagerName = null;
+
+				if (langType.equals(TemplateConstants.LANG_TYPE_FTL)) {
+					templateManagerName = _freeMarkerManager.getName();
+				}
+				else {
+					templateManagerName = _velocityManager.getName();
+				}
+
+				if (templateManagerName != null) {
+					return _getColumns(templateId, templateContent, langType);
+				}
+			}
+
 			_log.error("Unable to get layout template columns", exception);
 
 			return new ArrayList<>();
@@ -607,12 +626,22 @@ public class LayoutTemplateLocalServiceImpl
 
 	private static final Map<String, Map<String, LayoutTemplate>>
 		_customThemes = new HashMap<>();
+	private static volatile TemplateManager _freeMarkerManager =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			TemplateManager.class, LayoutTemplateLocalServiceImpl.class,
+			"_freeMarkerManager",
+			"(language.type=" + TemplateConstants.LANG_TYPE_FTL + ")", true);
 	private static final Map<String, LayoutTemplate> _portalCustom =
 		new LinkedHashMap<>();
 	private static final Map<String, LayoutTemplate> _portalStandard =
 		new HashMap<>();
 	private static final Map<String, Map<String, LayoutTemplate>>
 		_standardThemes = new HashMap<>();
+	private static volatile TemplateManager _velocityManager =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			TemplateManager.class, LayoutTemplateLocalServiceImpl.class,
+			"_velocityManager",
+			"(language.type=" + TemplateConstants.LANG_TYPE_VM + ")", true);
 	private static final Map<String, LayoutTemplate> _warCustom =
 		new LinkedHashMap<>();
 	private static final Map<String, LayoutTemplate> _warStandard =

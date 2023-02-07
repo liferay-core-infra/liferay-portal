@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.metrics.internal.sla.calendar;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.workflow.metrics.internal.constants.WorkflowMetricsConstants;
 import com.liferay.portal.workflow.metrics.sla.calendar.WorkflowMetricsSLACalendar;
 import com.liferay.portal.workflow.metrics.sla.calendar.WorkflowMetricsSLACalendarRegistry;
 
@@ -51,7 +52,8 @@ public class WorkflowMetricsSLACalendarRegistryImpl
 			return workflowMetricsSLACalendar;
 		}
 
-		return _serviceTrackerMap.getService("default");
+		return _serviceTrackerMap.getService(
+			WorkflowMetricsConstants.SLA_CALENDAR_KEY_DEFAULT);
 	}
 
 	@Override

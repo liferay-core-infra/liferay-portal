@@ -15,6 +15,7 @@
 package com.liferay.portal.workflow.metrics.internal.sla.calendar;
 
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.workflow.metrics.internal.constants.WorkflowMetricsConstants;
 import com.liferay.portal.workflow.metrics.sla.calendar.WorkflowMetricsSLACalendar;
 
 import java.time.Duration;
@@ -30,7 +31,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Rafael Praxedes
  */
 @Component(
-	immediate = false, property = "sla.calendar.key=default",
+	immediate = false,
+	property = "sla.calendar.key=" + WorkflowMetricsConstants.SLA_CALENDAR_KEY_DEFAULT,
 	service = WorkflowMetricsSLACalendar.class
 )
 public class DefaultWorkflowMetricsSLACalendar

@@ -14,15 +14,19 @@
 
 package com.liferay.portal.workflow.metrics.internal.sla.processor;
 
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.document.DocumentBuilder;
 import com.liferay.portal.search.internal.document.DocumentBuilderImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.workflow.metrics.internal.constants.WorkflowMetricsConstants;
 import com.liferay.portal.workflow.metrics.internal.sla.calendar.DefaultWorkflowMetricsSLACalendar;
 import com.liferay.portal.workflow.metrics.internal.sla.calendar.WorkflowMetricsSLACalendarRegistryImpl;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinitionVersion;
+import com.liferay.portal.workflow.metrics.sla.calendar.WorkflowMetricsSLACalendar;
 import com.liferay.portal.workflow.metrics.sla.calendar.WorkflowMetricsSLACalendarRegistry;
 import com.liferay.portal.workflow.metrics.sla.processor.WorkflowMetricsSLAStatus;
 
@@ -34,11 +38,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Rafael Praxedes
@@ -48,6 +56,23 @@ public class WorkflowMetricsSLAProcessorTest {
 	@ClassRule
 	public static LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@After
+	public void tearDown() {
+		if (_workflowMetricsSLACalendarRegistry != null) {
+			ReflectionTestUtil.invoke(
+				_workflowMetricsSLACalendarRegistry, "deactivate",
+				new Class<?>[0]);
+
+			_workflowMetricsSLACalendarRegistry = null;
+
+			if (_serviceRegistration != null) {
+				_serviceRegistration.unregister();
+
+				_serviceRegistration = null;
+			}
+		}
+	}
 
 	@Test
 	public void testIsBreached() {
@@ -608,16 +633,21 @@ public class WorkflowMetricsSLAProcessorTest {
 			_mockWorkflowMetricsSLACalendarRegistry()
 		throws Exception {
 
-		WorkflowMetricsSLACalendarRegistryImpl
-			workflowMetricsSLACalendarRegistryImpl =
-				new WorkflowMetricsSLACalendarRegistryImpl();
+		_workflowMetricsSLACalendarRegistry =
+			new WorkflowMetricsSLACalendarRegistryImpl();
 
-		ReflectionTestUtil.setFieldValue(
-			workflowMetricsSLACalendarRegistryImpl,
-			"_defaultWorkflowMetricsSLACalendar",
-			new DefaultWorkflowMetricsSLACalendar());
+		_serviceRegistration = _bundleContext.registerService(
+			WorkflowMetricsSLACalendar.class,
+			new DefaultWorkflowMetricsSLACalendar(),
+			MapUtil.singletonDictionary(
+				"sla.calendar.key",
+				WorkflowMetricsConstants.SLA_CALENDAR_KEY_DEFAULT));
 
-		return workflowMetricsSLACalendarRegistryImpl;
+		ReflectionTestUtil.invoke(
+			_workflowMetricsSLACalendarRegistry, "activate",
+			new Class<?>[] {BundleContext.class}, _bundleContext);
+
+		return _workflowMetricsSLACalendarRegistry;
 	}
 
 	private void _test(
@@ -666,6 +696,12 @@ public class WorkflowMetricsSLAProcessorTest {
 			WorkflowMetricsSLAStatus workflowMetricsSLAStatus)
 		throws Exception {
 
+		Mockito.when(
+			workflowMetricsSLADefinitionVersion.getCalendarKey()
+		).thenReturn(
+			""
+		);
+
 		WorkflowMetricsSLAProcessor workflowMetricsSLAProcessor =
 			new WorkflowMetricsSLAProcessor();
 
@@ -691,7 +727,13 @@ public class WorkflowMetricsSLAProcessorTest {
 			onTime, workflowMetricsSLAInstanceResult.isOnTime());
 	}
 
+	private final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 	private final DateTimeFormatter _dateTimeFormatter =
 		DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+	private ServiceRegistration<WorkflowMetricsSLACalendar>
+		_serviceRegistration;
+	private WorkflowMetricsSLACalendarRegistry
+		_workflowMetricsSLACalendarRegistry;
 
 }

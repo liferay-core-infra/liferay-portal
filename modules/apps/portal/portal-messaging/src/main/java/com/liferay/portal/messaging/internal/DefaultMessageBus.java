@@ -170,7 +170,7 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_messageListenerServiceTracker = new ServiceTracker<>(
+		_messageListenerServiceTracker = ServiceTrackerFactory.open(
 			bundleContext, MessageListener.class,
 			new ServiceTrackerCustomizer
 				<MessageListener, ObjectValuePair<String, MessageListener>>() {
@@ -221,8 +221,6 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 				}
 
 			});
-
-		_messageListenerServiceTracker.open();
 
 		_messageBusEventListenerServiceTrackerList =
 			ServiceTrackerListFactory.open(

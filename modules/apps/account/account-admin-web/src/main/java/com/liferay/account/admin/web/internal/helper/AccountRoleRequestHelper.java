@@ -19,6 +19,8 @@ import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.constants.ApplicationListWebKeys;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.application.list.display.context.logic.PersonalMenuEntryHelper;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.product.navigation.personal.menu.PersonalMenuEntry;
@@ -26,18 +28,15 @@ import com.liferay.roles.admin.constants.RolesAdminWebKeys;
 import com.liferay.roles.admin.panel.category.role.type.mapper.PanelCategoryRoleTypeMapperRegistry;
 import com.liferay.roles.admin.role.type.contributor.RoleTypeContributor;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import javax.portlet.PortletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Pei-Jung Lan
@@ -56,7 +55,7 @@ public class AccountRoleRequestHelper {
 			_panelCategoryRegistry);
 		httpServletRequest.setAttribute(
 			ApplicationListWebKeys.PERSONAL_MENU_ENTRY_HELPER,
-			new PersonalMenuEntryHelper(_personalMenuEntries));
+			new PersonalMenuEntryHelper(_serviceTrackerList.toList()));
 		httpServletRequest.setAttribute(
 			RolesAdminWebKeys.CURRENT_ROLE_TYPE, _accountRoleTypeContributor);
 		httpServletRequest.setAttribute(
@@ -71,18 +70,15 @@ public class AccountRoleRequestHelper {
 		setRequestAttributes(_portal.getHttpServletRequest(portletRequest));
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "_removePersonalMenuEntry"
-	)
-	private void _addPersonalMenuEntry(PersonalMenuEntry personalMenuEntry) {
-		_personalMenuEntries.add(personalMenuEntry);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, PersonalMenuEntry.class);
 	}
 
-	private void _removePersonalMenuEntry(PersonalMenuEntry personalMenuEntry) {
-		_personalMenuEntries.remove(personalMenuEntry);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerList.close();
 	}
 
 	@Reference(target = "(component.name=*.AccountRoleTypeContributor)")
@@ -98,10 +94,9 @@ public class AccountRoleRequestHelper {
 	private PanelCategoryRoleTypeMapperRegistry
 		_panelCategoryRoleTypeMapperRegistry;
 
-	private final List<PersonalMenuEntry> _personalMenuEntries =
-		new CopyOnWriteArrayList<>();
-
 	@Reference
 	private Portal _portal;
+
+	private ServiceTrackerList<PersonalMenuEntry> _serviceTrackerList;
 
 }

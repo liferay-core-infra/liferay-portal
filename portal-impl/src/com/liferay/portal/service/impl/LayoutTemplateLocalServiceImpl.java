@@ -535,7 +535,15 @@ public class LayoutTemplateLocalServiceImpl
 				}
 
 				if (templateManagerName != null) {
-					return _getColumns(templateId, templateContent, langType);
+					try {
+						Thread.sleep(100);
+
+						return _getColumns(
+							templateId, templateContent, langType);
+					}
+					catch (InterruptedException interruptedException) {
+						_log.error(interruptedException);
+					}
 				}
 			}
 

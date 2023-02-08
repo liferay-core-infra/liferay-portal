@@ -27,6 +27,7 @@ import com.liferay.oauth2.provider.service.OAuth2ApplicationScopeAliasesLocalSer
 import com.liferay.oauth2.provider.service.OAuth2ApplicationService;
 import com.liferay.oauth2.provider.service.OAuth2ScopeGrantLocalService;
 import com.liferay.oauth2.provider.web.internal.AssignableScopes;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -50,9 +51,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.TreeSet;
 
 import javax.portlet.PortletRequest;
 
@@ -205,18 +204,12 @@ public class AssignScopesDisplayContext
 		String applicationName, AssignableScopes assignableScopes,
 		String delimiter) {
 
-		Set<String> applicationScopeDescription =
+		Set<String> applicationScopeDescription = new TreeSet<>(
 			assignableScopes.getApplicationScopeDescription(
-				_companyId, applicationName);
+				_companyId, applicationName));
 
-		Stream<String> stream = applicationScopeDescription.stream();
-
-		List<String> scopesList = stream.sorted(
-		).map(
-			HtmlUtil::escape
-		).collect(
-			Collectors.toList()
-		);
+		List<String> scopesList = TransformUtil.transform(
+			applicationScopeDescription, HtmlUtil::escape);
 
 		if (ListUtil.isEmpty(scopesList)) {
 			return StringPool.BLANK;
@@ -294,23 +287,22 @@ public class AssignScopesDisplayContext
 	public Map<AssignableScopes, Relations>
 		getGlobalAssignableScopesRelations() {
 
-		Collection<Set<AssignableScopes>> assignableScopesCollection =
-			_globalAssignableScopesByApplicationName.values();
+		Map<AssignableScopes, Relations> map = new HashMap<>();
 
-		Stream<Set<AssignableScopes>> stream =
-			assignableScopesCollection.stream();
+		for (Set<AssignableScopes> value :
+				_globalAssignableScopesByApplicationName.values()) {
 
-		return stream.flatMap(
-			Set::stream
-		).collect(
-			Collectors.toSet()
-		).stream(
-		).filter(
-			_assignableScopesRelations::containsKey
-		).collect(
-			Collectors.toMap(
-				Function.identity(), _assignableScopesRelations::get)
-		);
+			for (AssignableScopes assignableScopes : value) {
+				Relations relations = _assignableScopesRelations.get(
+					assignableScopes);
+
+				if (relations != null) {
+					map.put(assignableScopes, relations);
+				}
+			}
+		}
+
+		return map;
 	}
 
 	public List<Map.Entry<String, String>>
@@ -374,19 +366,16 @@ public class AssignScopesDisplayContext
 		}
 
 		public Set<String> getGlobalScopeAliases() {
-			Stream<AssignableScopes> stream = _globalAssignableScopes.stream();
+			Set<String> set = new HashSet<>(_globalAssignableScopes.size());
 
-			return stream.map(
-				_assignableScopesRelations::get
-			).flatMap(
-				relations -> {
-					Set<String> scopeAliases = relations.getScopeAliases();
+			for (AssignableScopes assignableScopes : _globalAssignableScopes) {
+				Relations relations = _assignableScopesRelations.get(
+					assignableScopes);
 
-					return scopeAliases.stream();
-				}
-			).collect(
-				Collectors.toSet()
-			);
+				set.addAll(relations.getScopeAliases());
+			}
+
+			return set;
 		}
 
 		public Set<String> getScopeAliases() {
@@ -415,15 +404,18 @@ public class AssignScopesDisplayContext
 	protected Map<AssignableScopes, Relations> getAssignableScopesRelations(
 		Set<AssignableScopes> assignableScopes) {
 
-		Stream<AssignableScopes> assignableScopesStream =
-			assignableScopes.stream();
+		Map<AssignableScopes, Relations> map = new HashMap<>();
 
-		return assignableScopesStream.filter(
-			_assignableScopesRelations::containsKey
-		).collect(
-			Collectors.toMap(
-				Function.identity(), _assignableScopesRelations::get)
-		);
+		for (AssignableScopes assignableScope : assignableScopes) {
+			Relations relations = _assignableScopesRelations.get(
+				assignableScope);
+
+			if (relations != null) {
+				map.put(assignableScope, relations);
+			}
+		}
+
+		return map;
 	}
 
 	private Map<String, AssignableScopes> _getAssignableScopesByScopeAlias(

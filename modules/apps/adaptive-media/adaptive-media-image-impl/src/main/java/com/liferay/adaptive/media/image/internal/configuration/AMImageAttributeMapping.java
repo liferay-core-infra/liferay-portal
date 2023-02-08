@@ -99,22 +99,21 @@ public class AMImageAttributeMapping {
 	}
 
 	/**
-	 * Returns an {@link Optional} instance that contains the value of the
-	 * attribute (if any) in this mapping.
+	 * Returns an instance that contains the value of the
+	 * attribute (if any) in this mapping or a null value.
 	 *
 	 * @param  amAttribute a non <code>null</code> attribute
-	 * @return a non-<code>null</code> optional that contains the
-	 *         (non-<code>null</code>) value (if any)
+	 * @return a non-<code>null</code> value (if any)
 	 */
-	public <V> Optional<V> getValueOptional(
-		AMAttribute<AMImageProcessor, V> amAttribute) {
-
+	public <V> V getValue(AMAttribute<AMImageProcessor, V> amAttribute) {
 		if (amAttribute == null) {
 			throw new IllegalArgumentException(
 				"Adaptive media attribute is null");
 		}
 
-		return (Optional<V>)_optionals.get(amAttribute);
+		Optional<V> optional = (Optional<V>)_optionals.get(amAttribute);
+
+		return optional.orElse(null);
 	}
 
 	protected AMImageAttributeMapping(

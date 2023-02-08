@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -163,16 +162,18 @@ public class GetReferralTrafficSourcesMVCResourceCommand
 			return _jsonFactory.createJSONArray();
 		}
 
-		Stream<ReferringURL> stream = referringURLS.stream();
+		int index = 10;
 
-		return JSONUtil.putAll(
-			stream.limit(
-				10
-			).sorted(
-				_getReferringURLComparator()
-			).map(
-				ReferringURL::toJSONObject
-			).toArray());
+		if (referringURLS.size() < index) {
+			index = referringURLS.size();
+		}
+
+		referringURLS = referringURLS.subList(0, index);
+
+		referringURLS.sort(_getReferringURLComparator());
+
+		return JSONUtil.toJSONArray(
+			referringURLS, ReferringURL::toJSONObject, _log);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

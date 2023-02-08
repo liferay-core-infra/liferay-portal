@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -164,12 +163,9 @@ public class AssetCategoriesNavigationDisplayContext {
 
 		Arrays.sort(assetVocabularyIds);
 
-		Set<Long> availableAssetVocabularyIdsSet = SetUtil.fromArray(
-			getAvailableAssetVocabularyIds());
-
 		return ListUtil.sort(
 			TransformUtil.transform(
-				availableAssetVocabularyIdsSet,
+				SetUtil.fromArray(getAvailableAssetVocabularyIds()),
 				assetVocabularyId -> {
 					int count = Arrays.binarySearch(
 						assetVocabularyIds, assetVocabularyId);

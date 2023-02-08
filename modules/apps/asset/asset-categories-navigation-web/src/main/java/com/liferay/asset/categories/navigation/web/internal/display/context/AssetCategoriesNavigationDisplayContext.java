@@ -20,6 +20,7 @@ import com.liferay.asset.kernel.model.AssetVocabularyConstants;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetVocabularyServiceUtil;
 import com.liferay.depot.util.SiteConnectedGroupGroupProviderUtil;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -28,20 +29,18 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.KeyValuePairComparator;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -118,23 +117,21 @@ public class AssetCategoriesNavigationDisplayContext {
 				allAssetVocabularies() &&
 			(assetVocabularyIdsArray != null)) {
 
-			String assetVocabularyIds = StringUtil.merge(
-				assetVocabularyIdsArray);
-
-			long[] configuredAssetVocabularyIds = StringUtil.split(
-				assetVocabularyIds, 0L);
-
-			LongStream longStream = Arrays.stream(configuredAssetVocabularyIds);
-
-			_assetVocabularyIds = longStream.filter(
+			long[] ids = TransformUtil.transformToLongArray(
+				Arrays.asList(assetVocabularyIdsArray),
 				assetVocabularyId -> {
 					AssetVocabulary assetVocabulary =
 						AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
-							assetVocabularyId);
+							GetterUtil.getLong(assetVocabularyId));
 
-					return assetVocabulary != null;
-				}
-			).toArray();
+					if (assetVocabulary == null) {
+						return null;
+					}
+
+					return GetterUtil.getLong(assetVocabularyId);
+				});
+
+			_assetVocabularyIds = ids;
 		}
 
 		return _assetVocabularyIds;
@@ -166,34 +163,30 @@ public class AssetCategoriesNavigationDisplayContext {
 		Set<Long> availableAssetVocabularyIdsSet = SetUtil.fromArray(
 			getAvailableAssetVocabularyIds());
 
-		Stream<Long> availableAssetVocabularyIdsStream =
-			availableAssetVocabularyIdsSet.stream();
+		return ListUtil.sort(
+			TransformUtil.transform(
+				availableAssetVocabularyIdsSet,
+				assetVocabularyId -> {
+					int count = Arrays.binarySearch(
+						assetVocabularyIds, assetVocabularyId);
 
-		return availableAssetVocabularyIdsStream.filter(
-			assetVocabularyId ->
-				Arrays.binarySearch(assetVocabularyIds, assetVocabularyId) < 0
-		).map(
-			AssetVocabularyLocalServiceUtil::fetchAssetVocabulary
-		).map(
-			this::_toKeyValuePair
-		).sorted(
-			new KeyValuePairComparator(false, true)
-		).collect(
-			Collectors.toList()
-		);
+					if (count >= 0) {
+						return null;
+					}
+
+					return _toKeyValuePair(
+						AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
+							assetVocabularyId));
+				}),
+			new KeyValuePairComparator(false, true));
 	}
 
 	public List<KeyValuePair> getCurrentVocabularyNames() {
-		LongStream longStream = Arrays.stream(getAssetVocabularyIds());
-
-		return longStream.boxed(
-		).map(
-			AssetVocabularyLocalServiceUtil::fetchAssetVocabulary
-		).map(
-			this::_toKeyValuePair
-		).collect(
-			Collectors.toList()
-		);
+		return TransformUtil.transformToList(
+			getAssetVocabularyIds(),
+			assetVocabularyId -> _toKeyValuePair(
+				AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
+					assetVocabularyId)));
 	}
 
 	public List<AssetVocabulary> getDDMTemplateAssetVocabularies()

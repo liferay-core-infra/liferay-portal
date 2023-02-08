@@ -255,12 +255,9 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 				continue;
 			}
 
-			List<String> portletIds =
-				_portletRegistry.getFragmentEntryLinkPortletIds(
-					fragmentEntryLink);
-
 			List<String> portletNames = TransformUtil.transform(
-				portletIds,
+				_portletRegistry.getFragmentEntryLinkPortletIds(
+					fragmentEntryLink),
 				portletId -> PortletIdCodec.decodePortletName(portletId));
 
 			ListUtil.distinct(portletNames);

@@ -16,13 +16,11 @@ package com.liferay.configuration.admin.web.internal.display;
 
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * @author Jorge Ferrer
@@ -35,11 +33,10 @@ public class ConfigurationCategoryMenuDisplay {
 
 		_configurationCategoryDisplay = configurationCategoryDisplay;
 
-		Stream<String> scopeStream = Arrays.stream(_UI_ORDERED_SCOPES);
-
-		scopeStream.forEach(
-			scopeKey -> _configurationScopeDisplays.put(
-				scopeKey, new ConfigurationScopeDisplay(scopeKey)));
+		for (String scopeKey : _UI_ORDERED_SCOPES) {
+			_configurationScopeDisplays.put(
+				scopeKey, new ConfigurationScopeDisplay(scopeKey));
+		}
 
 		for (ConfigurationEntry configurationEntry : configurationEntries) {
 			_addConfigurationEntry(configurationEntry);

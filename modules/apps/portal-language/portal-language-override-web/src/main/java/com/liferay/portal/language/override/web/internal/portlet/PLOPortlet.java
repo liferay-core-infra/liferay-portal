@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -39,10 +40,9 @@ import com.liferay.portal.language.override.web.internal.display.context.ViewDis
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -147,13 +147,19 @@ public class PLOPortlet extends MVCPortlet {
 		try {
 			ZipWriter zipWriter = _zipWriterFactory.getZipWriter();
 
-			List<PLOEntry> ploEntries = _ploEntryService.getPLOEntries(
-				_portal.getCompanyId(resourceRequest));
+			Map<String, List<PLOEntry>> map = new HashMap<>();
 
-			Stream<PLOEntry> stream = ploEntries.stream();
+			for (PLOEntry ploEntry :
+					_ploEntryService.getPLOEntries(
+						_portal.getCompanyId(resourceRequest))) {
 
-			Map<String, List<PLOEntry>> map = stream.collect(
-				Collectors.groupingBy(PLOEntry::getLanguageId));
+				List<PLOEntry> ploEntrysList = map.putIfAbsent(
+					ploEntry.getLanguageId(), ListUtil.fromArray(ploEntry));
+
+				if (ploEntrysList != null) {
+					ploEntrysList.add(ploEntry);
+				}
+			}
 
 			for (Map.Entry<String, List<PLOEntry>> entry : map.entrySet()) {
 				StringBundler sb = new StringBundler();

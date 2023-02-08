@@ -236,6 +236,8 @@ public class UpgradeExecutor {
 					release.setBuildNumber(buildNumber);
 				}
 
+				release.setVerified(_isInitialRelease(upgradeInfos));
+
 				release.setState(state);
 
 				_releaseLocalService.updateRelease(release);
@@ -262,11 +264,7 @@ public class UpgradeExecutor {
 
 		String fromSchemaVersion = upgradeInfo.getFromSchemaVersionString();
 
-		String upgradeStepName = String.valueOf(upgradeInfo.getUpgradeStep());
-
-		if (fromSchemaVersion.equals("0.0.0") &&
-			upgradeStepName.equals("Initial Database Creation")) {
-
+		if (fromSchemaVersion.equals("0.0.0")) {
 			return true;
 		}
 

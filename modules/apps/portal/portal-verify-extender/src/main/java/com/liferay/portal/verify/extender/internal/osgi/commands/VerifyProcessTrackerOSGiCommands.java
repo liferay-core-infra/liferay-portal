@@ -35,9 +35,7 @@ import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Dictionary;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.felix.service.command.Descriptor;
@@ -71,8 +69,11 @@ public class VerifyProcessTrackerOSGiCommands {
 
 	@Descriptor("List latest execution result for a specific verify process")
 	public void check(String verifyProcessName) {
+		VerifyProcess verifyProcess;
+
 		try {
-			_getVerifyProcesses(_serviceTrackerMap, verifyProcessName);
+			verifyProcess = _getVerifyProcess(
+				_serviceTrackerMap, verifyProcessName);
 		}
 		catch (IllegalArgumentException illegalArgumentException) {
 			if (_log.isDebugEnabled()) {
@@ -85,7 +86,7 @@ public class VerifyProcessTrackerOSGiCommands {
 			return;
 		}
 
-		Release release = _releaseLocalService.fetchRelease(verifyProcessName);
+		Release release = _fetchRelease(verifyProcess);
 
 		if ((release == null) ||
 			(!release.isVerified() &&
@@ -118,9 +119,14 @@ public class VerifyProcessTrackerOSGiCommands {
 	@Descriptor("Execute a specific verify process")
 	public void execute(String verifyProcessName) {
 		TeeLoggingUtil.runWithTeeLogging(
-			() -> _executeVerifyProcesses(
-				_getVerifyProcesses(_serviceTrackerMap, verifyProcessName),
-				verifyProcessName, true));
+			() -> {
+				VerifyProcess verifyProcess = _getVerifyProcess(
+					_serviceTrackerMap, verifyProcessName);
+
+				_executeVerifyProcess(
+					verifyProcess, verifyProcessName,
+					_fetchRelease(verifyProcess));
+			});
 	}
 
 	@Descriptor("Execute all verify processes")
@@ -128,10 +134,12 @@ public class VerifyProcessTrackerOSGiCommands {
 		TeeLoggingUtil.runWithTeeLogging(
 			() -> {
 				for (String verifyProcessName : _serviceTrackerMap.keySet()) {
-					_executeVerifyProcesses(
-						_getVerifyProcesses(
-							_serviceTrackerMap, verifyProcessName),
-						verifyProcessName, true);
+					VerifyProcess verifyProcess = _getVerifyProcess(
+						_serviceTrackerMap, verifyProcessName);
+
+					_executeVerifyProcess(
+						verifyProcess, verifyProcessName,
+						_fetchRelease(verifyProcess));
 				}
 			});
 	}
@@ -143,10 +151,10 @@ public class VerifyProcessTrackerOSGiCommands {
 		}
 	}
 
-	@Descriptor("Show all verify processes for a specific verify process name")
+	@Descriptor("Show the verify process name if the verify process exists")
 	public void show(String verifyProcessName) {
 		try {
-			_getVerifyProcesses(_serviceTrackerMap, verifyProcessName);
+			_getVerifyProcess(_serviceTrackerMap, verifyProcessName);
 		}
 		catch (IllegalArgumentException illegalArgumentException) {
 			if (_log.isDebugEnabled()) {
@@ -166,30 +174,52 @@ public class VerifyProcessTrackerOSGiCommands {
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
-		_bundleContext = bundleContext;
-
-		boolean upgrading = StartupHelperUtil.isUpgrading();
-
-		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
-			_bundleContext, VerifyProcess.class, "verify.process.name",
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, VerifyProcess.class, "verify.process.name",
 			new EagerServiceTrackerCustomizer<VerifyProcess, VerifyProcess>() {
 
 				@Override
 				public VerifyProcess addingService(
 					ServiceReference<VerifyProcess> serviceReference) {
 
-					VerifyProcess verifyProcess = _bundleContext.getService(
+					VerifyProcess verifyProcess = bundleContext.getService(
 						serviceReference);
 
-					if (upgrading ||
-						_isInitialDeployment(serviceReference, verifyProcess)) {
+					Release release = _fetchRelease(verifyProcess);
 
-						_executeVerifyProcesses(
-							Collections.singletonList(verifyProcess),
+					boolean initialDeployment = _isInitialDeployment(
+						bundleContext, release);
+
+					if ((!initialDeployment && !release.isVerified()) ||
+						(GetterUtil.getBoolean(
+							serviceReference.getProperty(
+								"initial.deployment")) &&
+						 initialDeployment) ||
+						(StartupHelperUtil.isUpgrading() &&
+						 GetterUtil.getBoolean(
+							 serviceReference.getProperty(
+								 "run.on.portal.upgrade")))) {
+
+						_executeVerifyProcess(
+							verifyProcess,
 							String.valueOf(
 								serviceReference.getProperty(
 									"verify.process.name")),
-							false);
+							release);
+					}
+					else if (release == null) {
+						release = _releaseLocalService.createRelease(
+							_counterLocalService.increment());
+
+						Bundle bundle = FrameworkUtil.getBundle(
+							verifyProcess.getClass());
+
+						release.setServletContextName(bundle.getSymbolicName());
+
+						release.setVerified(true);
+						release.setState(ReleaseConstants.STATE_GOOD);
+
+						_releaseLocalService.updateRelease(release);
 					}
 
 					return verifyProcess;
@@ -206,7 +236,7 @@ public class VerifyProcessTrackerOSGiCommands {
 					ServiceReference<VerifyProcess> serviceReference,
 					VerifyProcess verifyProcess) {
 
-					_bundleContext.ungetService(serviceReference);
+					bundleContext.ungetService(serviceReference);
 				}
 
 			});
@@ -222,7 +252,7 @@ public class VerifyProcessTrackerOSGiCommands {
 			}
 		}
 
-		_serviceRegistration = _bundleContext.registerService(
+		_serviceRegistration = bundleContext.registerService(
 			VerifyProcessTrackerOSGiCommands.class, this,
 			osgiCommandProperties);
 	}
@@ -234,22 +264,15 @@ public class VerifyProcessTrackerOSGiCommands {
 		_serviceTrackerMap.close();
 	}
 
-	private void _executeVerifyProcesses(
-		List<VerifyProcess> verifyProcesses, String verifyProcessName,
-		boolean force) {
+	private void _executeVerifyProcess(
+		VerifyProcess verifyProcess, String verifyProcessName,
+		Release release) {
 
 		NotificationThreadLocal.setEnabled(false);
 		StagingAdvicesThreadLocal.setEnabled(false);
 		WorkflowThreadLocal.setEnabled(false);
 
 		try {
-			Release release = _releaseLocalService.fetchRelease(
-				verifyProcessName);
-
-			if ((release != null) && !force && release.isVerified()) {
-				return;
-			}
-
 			if (release == null) {
 
 				// Verification state must be persisted even though not all
@@ -258,38 +281,31 @@ public class VerifyProcessTrackerOSGiCommands {
 				release = _releaseLocalService.createRelease(
 					_counterLocalService.increment());
 
-				release.setServletContextName(verifyProcessName);
+				Bundle bundle = FrameworkUtil.getBundle(
+					verifyProcess.getClass());
+
+				release.setServletContextName(bundle.getSymbolicName());
+
 				release.setVerified(false);
 			}
 
 			System.out.println(
-				"Executing verifiers registered for " + verifyProcessName);
+				"Executing verify process registered for " + verifyProcessName);
 
-			VerifyException verifyException1 = null;
+			try {
+				verifyProcess.verify();
 
-			for (VerifyProcess verifyProcess : verifyProcesses) {
-				try {
-					verifyProcess.verify();
-				}
-				catch (VerifyException verifyException2) {
-					_log.error(verifyException2);
-
-					verifyException1 = verifyException2;
-				}
-			}
-
-			if (verifyException1 == null) {
 				release.setVerified(true);
 				release.setState(ReleaseConstants.STATE_GOOD);
-
-				_releaseLocalService.updateRelease(release);
 			}
-			else {
+			catch (VerifyException verifyException) {
+				_log.error(verifyException);
+
 				release.setVerified(false);
 				release.setState(ReleaseConstants.STATE_VERIFY_FAILURE);
-
-				_releaseLocalService.updateRelease(release);
 			}
+
+			_releaseLocalService.updateRelease(release);
 		}
 		finally {
 			NotificationThreadLocal.setEnabled(true);
@@ -298,39 +314,41 @@ public class VerifyProcessTrackerOSGiCommands {
 		}
 	}
 
-	private List<VerifyProcess> _getVerifyProcesses(
-		ServiceTrackerMap<String, List<VerifyProcess>> verifyProcessTrackerMap,
+	private Release _fetchRelease(VerifyProcess verifyProcess) {
+		Bundle bundle = FrameworkUtil.getBundle(verifyProcess.getClass());
+
+		return _releaseLocalService.fetchRelease(bundle.getSymbolicName());
+	}
+
+	private VerifyProcess _getVerifyProcess(
+		ServiceTrackerMap<String, VerifyProcess> verifyProcessTrackerMap,
 		String verifyProcessName) {
 
-		List<VerifyProcess> verifyProcesses =
-			verifyProcessTrackerMap.getService(verifyProcessName);
+		VerifyProcess verifyProcess = verifyProcessTrackerMap.getService(
+			verifyProcessName);
 
-		if (verifyProcesses == null) {
+		if (verifyProcess == null) {
 			throw new IllegalArgumentException(
 				"No verify processes with name " + verifyProcessName);
 		}
 
-		return verifyProcesses;
+		return verifyProcess;
 	}
 
 	private boolean _isInitialDeployment(
-		ServiceReference<VerifyProcess> serviceReference,
-		VerifyProcess verifyProcess) {
+		BundleContext bundleContext, Release release) {
 
-		if (!GetterUtil.getBoolean(
-				serviceReference.getProperty("initial.deployment"))) {
-
-			return false;
+		if (release == null) {
+			return true;
 		}
-
-		Bundle bundle = FrameworkUtil.getBundle(verifyProcess.getClass());
 
 		try {
 			Collection<ServiceReference<Release>> releases =
-				_bundleContext.getServiceReferences(
+				bundleContext.getServiceReferences(
 					Release.class,
 					"(&(release.bundle.symbolic.name=" +
-						bundle.getSymbolicName() + ")(release.initial=true))");
+						release.getBundleSymbolicName() +
+							")(release.initial=true))");
 
 			if (!releases.isEmpty()) {
 				return true;
@@ -346,18 +364,16 @@ public class VerifyProcessTrackerOSGiCommands {
 	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyProcessTrackerOSGiCommands.class);
 
-	private BundleContext _bundleContext;
-
 	@Reference
 	private CounterLocalService _counterLocalService;
 
-	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
+	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
 	@Reference
 	private ReleaseLocalService _releaseLocalService;
 
 	private ServiceRegistration<?> _serviceRegistration;
-	private ServiceTrackerMap<String, List<VerifyProcess>> _serviceTrackerMap;
+	private ServiceTrackerMap<String, VerifyProcess> _serviceTrackerMap;
 
 }

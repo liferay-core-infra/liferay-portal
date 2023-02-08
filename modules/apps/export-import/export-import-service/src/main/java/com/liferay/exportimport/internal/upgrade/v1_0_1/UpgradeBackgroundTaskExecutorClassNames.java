@@ -18,7 +18,7 @@ import com.liferay.exportimport.internal.upgrade.BaseUpgradeBackgroundTaskExecut
 import com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames;
 
 /**
- * @author Jonathan McCann
+ * @author Tamas Molnar
  */
 public class UpgradeBackgroundTaskExecutorClassNames
 	extends BaseUpgradeBackgroundTaskExecutorClassNames {
@@ -31,6 +31,48 @@ public class UpgradeBackgroundTaskExecutorClassNames
 					"DDMStructureIndexerBackgroundTaskExecutor",
 				BackgroundTaskExecutorNames.
 					DDM_STRUCTURE_INDEXER_BACKGROUND_TASK_EXECUTOR
+			},
+			{
+				"com.liferay.exportimport.background.task." +
+					"LayoutExportBackgroundTaskExecutor",
+				BackgroundTaskExecutorNames.
+					LAYOUT_EXPORT_BACKGROUND_TASK_EXECUTOR
+			},
+			{
+				"com.liferay.exportimport.background.task." +
+					"LayoutImportBackgroundTaskExecutor",
+				BackgroundTaskExecutorNames.
+					LAYOUT_IMPORT_BACKGROUND_TASK_EXECUTOR
+			},
+			{
+				"com.liferay.exportimport.background.task." +
+					"LayoutRemoteStagingBackgroundTaskExecutor",
+				BackgroundTaskExecutorNames.
+					LAYOUT_REMOTE_STAGING_BACKGROUND_TASK_EXECUTOR
+			},
+			{
+				"com.liferay.exportimport.background.task." +
+					"LayoutStagingBackgroundTaskExecutor",
+				BackgroundTaskExecutorNames.
+					LAYOUT_STAGING_BACKGROUND_TASK_EXECUTOR
+			},
+			{
+				"com.liferay.exportimport.background.task." +
+					"PortletExportBackgroundTaskExecutor",
+				BackgroundTaskExecutorNames.
+					PORTLET_EXPORT_BACKGROUND_TASK_EXECUTOR
+			},
+			{
+				"com.liferay.exportimport.background.task." +
+					"PortletImportBackgroundTaskExecutor",
+				BackgroundTaskExecutorNames.
+					PORTLET_IMPORT_BACKGROUND_TASK_EXECUTOR
+			},
+			{
+				"com.liferay.exportimport.background.task." +
+					"PortletStagingBackgroundTaskExecutor",
+				BackgroundTaskExecutorNames.
+					PORTLET_STAGING_BACKGROUND_TASK_EXECUTOR
 			}
 		};
 	}

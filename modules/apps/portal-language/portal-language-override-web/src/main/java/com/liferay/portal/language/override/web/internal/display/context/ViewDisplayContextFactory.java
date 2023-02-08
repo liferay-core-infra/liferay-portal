@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -48,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -59,8 +61,6 @@ import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -206,12 +206,20 @@ public class ViewDisplayContextFactory {
 	}
 
 	private Map<String, List<PLOEntry>> _getKeyPLOEntriesMap(long companyId) {
-		List<PLOEntry> ploEntries = _ploEntryLocalService.getPLOEntries(
-			companyId);
+		Map<String, List<PLOEntry>> map = new HashMap<>();
 
-		Stream<PLOEntry> ploEntryStream = ploEntries.stream();
+		for (PLOEntry ploEntry :
+				_ploEntryLocalService.getPLOEntries(companyId)) {
 
-		return ploEntryStream.collect(Collectors.groupingBy(PLOEntry::getKey));
+			List<PLOEntry> ploEntriesList = map.putIfAbsent(
+				ploEntry.getKey(), ListUtil.fromArray(ploEntry));
+
+			if (ploEntriesList != null) {
+				ploEntriesList.add(ploEntry);
+			}
+		}
+
+		return map;
 	}
 
 	private String _getLanguageIdsString(

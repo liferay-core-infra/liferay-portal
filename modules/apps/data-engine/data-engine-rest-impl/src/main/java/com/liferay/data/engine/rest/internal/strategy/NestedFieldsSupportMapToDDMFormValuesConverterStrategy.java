@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDM;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -30,10 +31,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * @author Rafael Praxedes
@@ -76,13 +76,17 @@ public class NestedFieldsSupportMapToDDMFormValuesConverterStrategy
 		for (Map.Entry<String, DDMFormField> entry :
 				ddmFormFieldsMap.entrySet()) {
 
-			Set<String> keys = values.keySet();
+			List<String> keys = TransformUtil.transform(
+				values.keySet(),
+				key -> {
+					if (StringUtil.startsWith(key, entry.getKey())) {
+						return key;
+					}
 
-			Stream<String> stream = keys.stream();
+					return null;
+				});
 
-			if (stream.anyMatch(
-					key -> StringUtil.startsWith(key, entry.getKey()))) {
-
+			if (!keys.isEmpty()) {
 				continue;
 			}
 

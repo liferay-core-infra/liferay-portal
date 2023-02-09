@@ -967,11 +967,11 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 			return;
 		}
 
+		Set<String> excludePaths = new HashSet<>();
+
 		Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
 
 		List<? extends ZipEntry> zipEntries = Collections.list(enumeration);
-
-		Set<String> excludePaths = new HashSet<>();
 
 		for (ZipEntry zipEntry : zipEntries) {
 			String name = zipEntry.getName();

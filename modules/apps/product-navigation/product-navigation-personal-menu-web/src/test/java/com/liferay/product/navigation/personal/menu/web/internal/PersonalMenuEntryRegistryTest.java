@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.roles.admin.web.internal.portlet;
+package com.liferay.product.navigation.personal.menu.web.internal;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
@@ -37,7 +37,7 @@ import org.osgi.framework.ServiceRegistration;
 /**
  * @author Jiaxu Wei
  */
-public class RolesAdminPortletTest {
+public class PersonalMenuEntryRegistryTest {
 
 	@ClassRule
 	@Rule
@@ -46,14 +46,16 @@ public class RolesAdminPortletTest {
 
 	@Test
 	public void testPersonalMenuEntrysSequence() {
-		RolesAdminPortlet rolesAdminPortlet = new RolesAdminPortlet();
+		PersonalMenuEntryRegistryImpl personalMenuEntryRegistryImpl =
+			new PersonalMenuEntryRegistryImpl();
 
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
-		rolesAdminPortlet.activate(bundleContext);
+		personalMenuEntryRegistryImpl.activate(bundleContext);
 
 		Assert.assertTrue(
-			ListUtil.isEmpty(rolesAdminPortlet.getPersonalMenuEntries()));
+			ListUtil.isEmpty(
+				personalMenuEntryRegistryImpl.getPersonalMenuEntries()));
 
 		PersonalMenuEntry personalMenuEntry11 = new TestPersonalMenuEntry();
 		PersonalMenuEntry personalMenuEntry12 = new TestPersonalMenuEntry();
@@ -112,7 +114,7 @@ public class RolesAdminPortletTest {
 				).build());
 
 		List<PersonalMenuEntry> personalMenuEntries =
-			rolesAdminPortlet.getPersonalMenuEntries();
+			personalMenuEntryRegistryImpl.getPersonalMenuEntries();
 
 		PersonalMenuEntry[] actualSequence = personalMenuEntries.toArray(
 			new PersonalMenuEntry[0]);
@@ -131,7 +133,7 @@ public class RolesAdminPortletTest {
 		serviceRegistration31.unregister();
 		serviceRegistration32.unregister();
 
-		rolesAdminPortlet.deactivate();
+		personalMenuEntryRegistryImpl.deactivate();
 	}
 
 	private class TestPersonalMenuEntry implements PersonalMenuEntry {

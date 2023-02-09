@@ -72,6 +72,17 @@ public class TransformUtil {
 		}
 	}
 
+	public static <A, T, R, E extends Throwable> A transformToPrimitive(
+		T[] array, UnsafeFunction<T, R, E> unsafeFunction, Class<A> clazz) {
+
+		try {
+			return unsafeTransformToPrimitive(array, unsafeFunction, clazz);
+		}
+		catch (Throwable throwable) {
+			throw new RuntimeException(throwable);
+		}
+	}
+
 	public static <T, R, E extends Throwable> List<R> unsafeTransform(
 			Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction)
 		throws E {
@@ -131,6 +142,22 @@ public class TransformUtil {
 		}
 
 		return list;
+	}
+
+	public static <A, T, R, E extends Throwable> A unsafeTransformToPrimitive(
+			T[] array, UnsafeFunction<T, R, E> unsafeFunction, Class<A> clazz)
+		throws E {
+
+		List<R> list = unsafeTransformToList(array, unsafeFunction);
+
+		A newArr = clazz.cast(
+			Array.newInstance(clazz.getComponentType(), list.size()));
+
+		for (int i = 0; i < list.size(); i++) {
+			Array.set(newArr, i, list.get(i));
+		}
+
+		return newArr;
 	}
 
 }

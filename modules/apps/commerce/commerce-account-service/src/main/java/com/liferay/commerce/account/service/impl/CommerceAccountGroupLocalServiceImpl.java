@@ -56,9 +56,7 @@ import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -239,26 +237,14 @@ public class CommerceAccountGroupLocalServiceImpl
 		getCommerceAccountGroupsByCommerceAccountId(
 			long commerceAccountId, int start, int end) {
 
-		List<CommerceAccountGroupCommerceAccountRel>
-			commerceAccountGroupCommerceAccountRels =
-				_commerceAccountGroupCommerceAccountRelLocalService.
-					getCommerceAccountGroupCommerceAccountRelsByCommerceAccountId(
-						commerceAccountId, start, end);
-
-		if (commerceAccountGroupCommerceAccountRels.isEmpty()) {
-			return new ArrayList<>();
-		}
-
-		Stream<CommerceAccountGroupCommerceAccountRel> stream =
-			commerceAccountGroupCommerceAccountRels.stream();
-
-		long[] commerceAccountGroupIds = stream.mapToLong(
-			CommerceAccountGroupCommerceAccountRel::getCommerceAccountGroupId
-		).toArray();
-
 		return TransformUtil.transform(
 			_accountGroupLocalService.getAccountGroupsByAccountGroupId(
-				commerceAccountGroupIds),
+				TransformUtil.transformToLongArray(
+					_commerceAccountGroupCommerceAccountRelLocalService.
+						getCommerceAccountGroupCommerceAccountRelsByCommerceAccountId(
+							commerceAccountId, start, end),
+					CommerceAccountGroupCommerceAccountRel::
+						getCommerceAccountGroupId)),
 			CommerceAccountGroupImpl::fromAccountGroup);
 	}
 

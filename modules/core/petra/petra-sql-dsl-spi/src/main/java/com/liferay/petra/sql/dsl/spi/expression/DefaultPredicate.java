@@ -73,6 +73,16 @@ public class DefaultPredicate
 	}
 
 	@Override
+	public Predicate notOf(Expression<Boolean> expression) {
+		if (expression == null) {
+			return this;
+		}
+
+		return new DefaultPredicate(
+			new DoNothingExpression<>(), Operand.NOT, expression);
+	}
+
+	@Override
 	public Predicate or(Expression<Boolean> expression) {
 		if (expression == null) {
 			return this;

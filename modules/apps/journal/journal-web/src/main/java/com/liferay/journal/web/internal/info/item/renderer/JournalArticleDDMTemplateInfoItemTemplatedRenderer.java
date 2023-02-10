@@ -21,6 +21,7 @@ import com.liferay.info.item.renderer.InfoItemRenderer;
 import com.liferay.info.item.renderer.InfoItemTemplatedRenderer;
 import com.liferay.info.item.renderer.template.InfoItemRendererTemplate;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -35,8 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -94,20 +93,22 @@ public class JournalArticleDDMTemplateInfoItemTemplatedRenderer
 					GetterUtil.getLong(classTypeKey)));
 		}
 
-		Stream<DDMStructure> stream = ddmStructures.stream();
+		List<InfoItemRendererTemplate> infoItemRendererTemplates =
+			new ArrayList<>();
 
-		return stream.flatMap(
-			ddmStructure -> {
-				List<DDMTemplate> ddmTemplates = ddmStructure.getTemplates();
+		for (List<DDMTemplate> ddmTemplates :
+				TransformUtil.transform(
+					ddmStructures, DDMStructure::getTemplates)) {
 
-				return ddmTemplates.stream();
-			}
-		).map(
-			ddmTemplate -> new InfoItemRendererTemplate(
-				ddmTemplate.getName(locale), ddmTemplate.getTemplateKey())
-		).collect(
-			Collectors.toList()
-		);
+			infoItemRendererTemplates.addAll(
+				TransformUtil.transform(
+					ddmTemplates,
+					ddmTemplate -> new InfoItemRendererTemplate(
+						ddmTemplate.getName(locale),
+						ddmTemplate.getTemplateKey())));
+		}
+
+		return infoItemRendererTemplates;
 	}
 
 	@Override

@@ -14,13 +14,13 @@
 
 package com.liferay.data.engine.rest.internal.resource.v2_0;
 
+import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.model.DEDataDefinitionFieldLink;
 import com.liferay.data.engine.model.DEDataListView;
 import com.liferay.data.engine.rest.dto.v2_0.DataDefinitionFieldLink;
 import com.liferay.data.engine.rest.dto.v2_0.DataLayout;
 import com.liferay.data.engine.rest.dto.v2_0.DataListView;
-import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionFieldLinkResource;
 import com.liferay.data.engine.service.DEDataDefinitionFieldLinkLocalService;

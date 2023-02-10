@@ -27,8 +27,8 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DataDefinitionContentTypeRegistry.class)
-public class DataDefinitionContentTypeRegistry {
+@Component(service = DataDefinitionContentTypeRegistryImpl.class)
+public class DataDefinitionContentTypeRegistryImpl {
 
 	public Long getClassNameId(String contentType) throws Exception {
 		DataDefinitionContentType dataDefinitionContentType =

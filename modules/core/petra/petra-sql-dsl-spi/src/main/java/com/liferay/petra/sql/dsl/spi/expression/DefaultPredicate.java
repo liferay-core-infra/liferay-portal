@@ -16,8 +16,11 @@ package com.liferay.petra.sql.dsl.spi.expression;
 
 import com.liferay.petra.sql.dsl.ast.ASTNode;
 import com.liferay.petra.sql.dsl.ast.ASTNodeListener;
+import com.liferay.petra.sql.dsl.expression.Alias;
 import com.liferay.petra.sql.dsl.expression.Expression;
 import com.liferay.petra.sql.dsl.expression.Predicate;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
+import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
 import com.liferay.petra.sql.dsl.spi.ast.BaseASTNode;
 
 import java.util.Deque;
@@ -73,6 +76,16 @@ public class DefaultPredicate
 	}
 
 	@Override
+	public Predicate notOf(Expression<Boolean> expression) {
+		if (expression == null) {
+			return this;
+		}
+
+		return new DefaultPredicate(
+			new DoNothingExpression<>(), Operand.NOT, expression);
+	}
+
+	@Override
 	public Predicate or(Expression<Boolean> expression) {
 		if (expression == null) {
 			return this;
@@ -96,6 +109,140 @@ public class DefaultPredicate
 
 		return new DefaultPredicate(
 			_leftExpression, _operand, _rightExpression, true);
+	}
+
+	public static class DoNothingExpression<T> implements Expression<T> {
+
+		@Override
+		public Alias<T> as(String name) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public OrderByExpression ascending() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public OrderByExpression descending() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate eq(Expression<T> expression) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate eq(T value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate gt(Expression<T> expression) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate gt(Object value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate gte(Expression<T> expression) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate gte(Object value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate in(DSLQuery dslQuery) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate in(Object[] values) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate isNotNull() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate isNull() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate like(Expression<String> expression) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate like(String value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate lt(Expression<T> expression) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate lt(Object value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate lte(Expression<T> expression) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate lte(Object value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate neq(Expression<T> expression) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate neq(Object value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate notIn(DSLQuery dslQuery) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate notIn(Object[] values) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate notLike(Expression<String> expression) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Predicate notLike(String value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void toSQL(
+			Consumer<String> consumer, ASTNodeListener astNodeListener) {
+		}
+
 	}
 
 	@Override

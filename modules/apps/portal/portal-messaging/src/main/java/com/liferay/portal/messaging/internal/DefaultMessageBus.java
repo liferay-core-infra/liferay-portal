@@ -310,7 +310,7 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	protected synchronized void unregisterDestination(
 		Destination destination, Map<String, Object> properties) {
 
-		_removeDestination(destination.getName());
+		_removeDestination(destination);
 	}
 
 	protected synchronized void unregisterDestinationEventListener(
@@ -418,11 +418,9 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		return false;
 	}
 
-	private Destination _removeDestination(String destinationName) {
-		Destination destination = _destinations.remove(destinationName);
-
-		if (destination == null) {
-			return null;
+	private void _removeDestination(Destination destination) {
+		if (!_destinations.remove(destination.getName(), destination)) {
+			return;
 		}
 
 		destination.destroy();
@@ -432,8 +430,6 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 			messageBusEventListener.destinationRemoved(destination);
 		}
-
-		return destination;
 	}
 
 	private synchronized boolean _unregisterMessageListener(

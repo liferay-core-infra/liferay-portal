@@ -31,6 +31,7 @@ import com.liferay.commerce.account.service.CommerceAccountUserRelLocalService;
 import com.liferay.commerce.account.util.CommerceAccountHelper;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -47,9 +48,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
@@ -100,25 +99,11 @@ public class CommerceAccountHelperImpl implements CommerceAccountHelper {
 
 	@Override
 	public long[] getCommerceAccountGroupIds(long commerceAccountId) {
-		List<AccountGroupRel> accountGroupRels =
-			_accountGroupRelLocalService.getAccountGroupRels(
-				AccountEntry.class.getName(), commerceAccountId);
-
-		if (accountGroupRels.isEmpty()) {
-			return new long[0];
-		}
-
-		Stream<AccountGroupRel> stream = accountGroupRels.stream();
-
-		long[] accountGroupIds = stream.mapToLong(
-			AccountGroupRel::getAccountGroupId
-		).toArray();
-
-		accountGroupIds = ArrayUtil.unique(accountGroupIds);
-
-		Arrays.sort(accountGroupIds);
-
-		return accountGroupIds;
+		return ArrayUtil.sortedUnique(
+			TransformUtil.transformToLongArray(
+				_accountGroupRelLocalService.getAccountGroupRels(
+					AccountEntry.class.getName(), commerceAccountId),
+				AccountGroupRel::getAccountGroupId));
 	}
 
 	/**

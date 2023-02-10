@@ -447,6 +447,9 @@ public interface PropsKeys {
 
 	public static final String COMPANY_LOG_ENABLED = "company.log.enabled";
 
+	public static final String COMPANY_LOG_XML_ROUTING_APPENDER_ENABLED =
+		"company.log.xml.routing.appender.enabled";
+
 	public static final String COMPANY_LOGIN_PREPOPULATE_DOMAIN =
 		"company.login.prepopulate.domain";
 

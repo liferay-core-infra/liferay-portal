@@ -69,7 +69,10 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 
 	@Override
 	public void append(LogEvent logEvent) {
-		if (!_COMPANY_LOG_ENABLED) {
+		if (!_COMPANY_LOG_ENABLED ||
+			(!_COMPANY_LOG_XML_ROUTING_APPENDER_ENABLED &&
+			 _filePattern.endsWith(".xml"))) {
+
 			return;
 		}
 
@@ -271,6 +274,10 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 
 	private static final boolean _COMPANY_LOG_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.COMPANY_LOG_ENABLED));
+
+	private static final boolean _COMPANY_LOG_XML_ROUTING_APPENDER_ENABLED =
+		GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.COMPANY_LOG_XML_ROUTING_APPENDER_ENABLED));
 
 	private final boolean _advertise;
 	private final String _advertiseUri;

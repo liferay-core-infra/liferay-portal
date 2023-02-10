@@ -1014,6 +1014,8 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 
 		_layout = _layoutLocalService.updateLayout(_layout);
 
+		Set<Locale> locales = new HashSet<>();
+
 		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
@@ -1029,8 +1031,6 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		_assertAlternateLocalesTag(
 			document, _getAvailableLocalesLayoutTranslatedLanguages());
 		_assertMetaTag(document, "og:locale", _group.getDefaultLanguageId());
-
-		Set<Locale> locales = new HashSet<>();
 
 		for (String availableLanguageId : _layout.getAvailableLanguageIds()) {
 			locales.add(LocaleUtil.fromLanguageId(availableLanguageId));

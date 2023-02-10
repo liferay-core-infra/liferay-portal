@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -431,12 +432,18 @@ public class BatchEngineAutoDeployListener implements AutoDeployListener {
 	private static final Log _log = LogFactoryUtil.getLog(
 		BatchEngineAutoDeployListener.class);
 
-	@Reference
-	private BatchEngineImportTaskExecutor _batchEngineImportTaskExecutor;
-
-	@Reference
-	private BatchEngineImportTaskLocalService
-		_batchEngineImportTaskLocalService;
+	private static volatile BatchEngineImportTaskExecutor
+		_batchEngineImportTaskExecutor =
+			ServiceProxyFactory.newServiceTrackedInstance(
+				BatchEngineImportTaskExecutor.class,
+				BatchEngineAutoDeployListener.class,
+				"_batchEngineImportTaskExecutor", true);
+	private static volatile BatchEngineImportTaskLocalService
+		_batchEngineImportTaskLocalService =
+			ServiceProxyFactory.newServiceTrackedInstance(
+				BatchEngineImportTaskLocalService.class,
+				BatchEngineAutoDeployListener.class,
+				"_batchEngineImportTaskLocalService", true);
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

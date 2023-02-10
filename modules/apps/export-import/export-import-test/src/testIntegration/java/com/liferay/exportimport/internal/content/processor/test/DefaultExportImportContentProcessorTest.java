@@ -103,7 +103,6 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -877,13 +876,13 @@ public class DefaultExportImportContentProcessorTest {
 		Pattern pattern = Pattern.compile(
 			String.format("/%s/%d/\\d+\\.\\d+$", className, classPK));
 
-		Stream<String> entriesStream = entries.stream();
+		entries = ListUtil.filter(entries, pattern.asPredicate());
 
-		Assert.assertTrue(
+		Assert.assertFalse(
 			String.format(
 				"%s does not contain a binary entry for %s with primary key %s",
 				entries.toString(), className, classPK),
-			entriesStream.anyMatch(pattern.asPredicate()));
+			entries.isEmpty());
 	}
 
 	private void _assertContainsPathWithStopCharacters(
@@ -909,13 +908,13 @@ public class DefaultExportImportContentProcessorTest {
 
 		String expected = String.format("/%s/%d.xml", className, classPK);
 
-		Stream<String> entriesStream = entries.stream();
+		entries = ListUtil.filter(entries, entry -> entry.endsWith(expected));
 
-		Assert.assertTrue(
+		Assert.assertFalse(
 			String.format(
 				"%s does not contain an entry for %s with primary key %s",
 				entries.toString(), className, classPK),
-			entriesStream.anyMatch(entry -> entry.endsWith(expected)));
+			entries.isEmpty());
 	}
 
 	private void _assertLinksToLayouts(

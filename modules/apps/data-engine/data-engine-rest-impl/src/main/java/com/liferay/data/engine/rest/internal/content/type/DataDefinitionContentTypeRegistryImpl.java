@@ -30,8 +30,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DataDefinitionContentTypeRegistry.class)
-public class DataDefinitionContentTypeRegistry {
+@Component(service = DataDefinitionContentTypeRegistryImpl.class)
+public class DataDefinitionContentTypeRegistryImpl {
 
 	public Long getClassNameId(String contentType) throws Exception {
 		Long id = _classNameIds.get(contentType);

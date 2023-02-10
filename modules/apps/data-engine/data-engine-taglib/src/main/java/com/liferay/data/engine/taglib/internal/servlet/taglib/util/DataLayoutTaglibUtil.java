@@ -15,6 +15,7 @@
 package com.liferay.data.engine.taglib.internal.servlet.taglib.util;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
+import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.renderer.DataLayoutRenderer;
 import com.liferay.data.engine.renderer.DataLayoutRendererContext;
@@ -23,6 +24,7 @@ import com.liferay.data.engine.rest.dto.v2_0.DataLayout;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecord;
 import com.liferay.data.engine.rest.dto.v2_0.DataRule;
 import com.liferay.data.engine.rest.dto.v2_0.util.DataDefinitionDDMFormUtil;
+import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
 import com.liferay.data.engine.rest.resource.v2_0.DataRecordResource;
@@ -119,11 +121,11 @@ public class DataLayoutTaglibUtil {
 		String contentType) {
 
 		DataDefinitionContentType dataDefinitionContentType =
-			_dataDefinitionContentTypes.get(contentType);
+			_dataLayoutTaglibUtil._getDataDefinitionContentType(contentType);
 
 		if (dataDefinitionContentType == null) {
-			dataDefinitionContentType = _dataDefinitionContentTypes.get(
-				"default");
+			dataDefinitionContentType =
+				_dataLayoutTaglibUtil._getDataDefinitionContentType("default");
 		}
 
 		return JSONUtil.put(
@@ -263,19 +265,6 @@ public class DataLayoutTaglibUtil {
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY, target = "(content.type=*)"
 	)
-	protected void addDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType,
-		Map<String, Object> properties) {
-
-		_dataDefinitionContentTypes.put(
-			(String)properties.get("content.type"), dataDefinitionContentType);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(content.type=*)"
-	)
 	protected void addDataLayoutBuilderDefinition(
 		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
 		Map<String, Object> properties) {
@@ -288,14 +277,6 @@ public class DataLayoutTaglibUtil {
 	@Deactivate
 	protected void deactivate() {
 		_dataLayoutTaglibUtil = null;
-	}
-
-	protected void removeDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType,
-		Map<String, Object> properties) {
-
-		_dataDefinitionContentTypes.remove(
-			(String)properties.get("content.type"));
 	}
 
 	protected void removeDataLayoutBuilderDefinition(
@@ -376,6 +357,24 @@ public class DataLayoutTaglibUtil {
 			).build();
 
 		return dataDefinitionResource.getDataDefinition(dataDefinitionId);
+	}
+
+	private DataDefinitionContentType _getDataDefinitionContentType(
+		String contentType) {
+
+		try {
+			return _dataDefinitionContentTypeRegistry.
+				getDataDefinitionContentType(contentType);
+		}
+		catch (Exception exception) {
+			if (exception instanceof
+					DataDefinitionValidationException.MustSetValidContentType) {
+
+				return null;
+			}
+
+			throw new RuntimeException(exception);
+		}
 	}
 
 	private DataLayout _getDataLayout(
@@ -626,11 +625,13 @@ public class DataLayoutTaglibUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataLayoutTaglibUtil.class);
 
-	private static final Map<String, DataDefinitionContentType>
-		_dataDefinitionContentTypes = new ConcurrentHashMap<>();
 	private static final Map<String, DataLayoutBuilderDefinition>
 		_dataLayoutBuilderDefinitions = new ConcurrentHashMap<>();
 	private static DataLayoutTaglibUtil _dataLayoutTaglibUtil;
+
+	@Reference
+	private DataDefinitionContentTypeRegistry
+		_dataDefinitionContentTypeRegistry;
 
 	@Reference
 	private DataDefinitionResource.Factory _dataDefinitionResourceFactory;

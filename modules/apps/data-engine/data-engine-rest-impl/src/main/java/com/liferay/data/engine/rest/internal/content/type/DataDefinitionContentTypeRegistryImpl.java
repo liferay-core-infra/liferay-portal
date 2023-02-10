@@ -15,6 +15,7 @@
 package com.liferay.data.engine.rest.internal.content.type;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
+import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
 
 import java.util.Map;
@@ -31,8 +32,10 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Leonardo Barros
  */
 @Component(service = DataDefinitionContentTypeRegistry.class)
-public class DataDefinitionContentTypeRegistry {
+public class DataDefinitionContentTypeRegistryImpl
+	implements DataDefinitionContentTypeRegistry {
 
+	@Override
 	public Long getClassNameId(String contentType) {
 		Long id = _classNameIds.get(contentType);
 
@@ -44,12 +47,14 @@ public class DataDefinitionContentTypeRegistry {
 		return id;
 	}
 
+	@Override
 	public DataDefinitionContentType getDataDefinitionContentType(
 		long classNameId) {
 
 		return _dataDefinitionContentTypesByClassNameId.get(classNameId);
 	}
 
+	@Override
 	public DataDefinitionContentType getDataDefinitionContentType(
 		String contentType) {
 

@@ -52,11 +52,13 @@ public class LayoutReportsIssue {
 
 		_key = key;
 
-		Stream<Detail> stream = _details.stream();
+		long total = 0;
 
-		_total = stream.mapToLong(
-			Detail::getTotal
-		).sum();
+		for (LayoutReportsIssue.Detail detail : _details) {
+			total += detail.getTotal();
+		}
+
+		_total = total;
 	}
 
 	@Override

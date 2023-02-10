@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import com.liferay.data.engine.constants.DataActionKeys;
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
+import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.model.DEDataDefinitionFieldLink;
 import com.liferay.data.engine.model.DEDataListView;
@@ -30,7 +31,6 @@ import com.liferay.data.engine.rest.dto.v2_0.DataLayoutRow;
 import com.liferay.data.engine.rest.dto.v2_0.DataListView;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecordCollection;
 import com.liferay.data.engine.rest.dto.v2_0.util.DataDefinitionDDMFormUtil;
-import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataDefinitionEntityModel;

@@ -15,10 +15,10 @@
 package com.liferay.data.engine.rest.internal.dto.v2_0.util;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
+import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.rest.dto.v2_0.DataDefinition;
 import com.liferay.data.engine.rest.dto.v2_0.DataDefinitionField;
-import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesRegistry;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.dynamic.data.mapping.model.DDMForm;

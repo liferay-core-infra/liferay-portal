@@ -15,7 +15,7 @@
 package com.liferay.data.engine.rest.internal.security.permission.resource;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
-import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
+import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.exception.PortalException;

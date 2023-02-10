@@ -14,9 +14,9 @@
 
 package com.liferay.data.engine.rest.internal.storage;
 
+import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.dto.v2_0.DataDefinition;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecord;
-import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.storage.util.DataStorageUtil;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;

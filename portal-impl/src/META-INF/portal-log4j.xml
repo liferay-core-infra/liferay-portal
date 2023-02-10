@@ -29,6 +29,14 @@
 
 			<DirectWriteRolloverStrategy />
 		</Appender>
+
+		<Appender filePattern="@liferay.home@/logs/companies/@company.id@/liferay-@company.id@.%d{yyyy-MM-dd}.xml" ignoreExceptions="false" name="COMPANY_LOG_ROUTING_XML_FILE" type="CompanyLogRouting">
+			<Log4j1XmlLayout locationInfo="true" />
+
+			<TimeBasedTriggeringPolicy />
+
+			<DirectWriteRolloverStrategy />
+		</Appender>
 	</Appenders>
 
 	<Loggers>
@@ -236,6 +244,7 @@
 
 		<Root level="INFO">
 			<AppenderRef ref="COMPANY_LOG_ROUTING_TEXT_FILE" />
+			<AppenderRef ref="COMPANY_LOG_ROUTING_XML_FILE" />
 			<AppenderRef ref="CONSOLE" />
 			<AppenderRef ref="TEXT_FILE" />
 			<AppenderRef ref="XML_FILE" />

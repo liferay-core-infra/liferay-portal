@@ -29,7 +29,6 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -180,20 +179,16 @@ public class GroupSelectorTagTest {
 		try {
 			groupSelectorTag.doEndTag();
 
-			List<Group> groups =
+			int count = ListUtil.count(
 				(List<Group>)mockHttpServletRequest.getAttribute(
-					"liferay-item-selector:group-selector:groups");
-
-			Stream<Group> stream = groups.stream();
-
-			stream.filter(
+					"liferay-item-selector:group-selector:groups"),
 				currentGroup -> Objects.equals(
-					currentGroup.getGroupId(), group.getGroupId())
-			).findAny(
-			).orElseThrow(
-				() -> new AssertionError(
-					"Group " + group.getGroupId() + " was not found")
-			);
+					currentGroup.getGroupId(), group.getGroupId()));
+
+			if (count == 0) {
+				throw new AssertionError(
+					"Group " + group.getGroupId() + " was not found");
+			}
 		}
 		finally {
 			GroupTestUtil.deleteGroup(group);

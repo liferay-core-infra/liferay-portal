@@ -265,17 +265,11 @@ public class DataLayoutTaglibUtil {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void addDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType,
-		Map<String, Object> properties) {
+		DataDefinitionContentType dataDefinitionContentType) {
 
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataDefinitionContentTypes.put(contentType, dataDefinitionContentType);
+		_dataDefinitionContentTypes.put(
+			dataDefinitionContentType.getContentType(),
+			dataDefinitionContentType);
 	}
 
 	@Reference(
@@ -304,17 +298,10 @@ public class DataLayoutTaglibUtil {
 	}
 
 	protected void removeDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType,
-		Map<String, Object> properties) {
+		DataDefinitionContentType dataDefinitionContentType) {
 
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataDefinitionContentTypes.remove(contentType);
+		_dataDefinitionContentTypes.remove(
+			dataDefinitionContentType.getContentType());
 	}
 
 	protected void removeDataLayoutBuilderDefinition(

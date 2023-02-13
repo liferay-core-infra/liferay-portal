@@ -22,12 +22,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
+import com.liferay.data.engine.content.type.DataDefinitionContentType;
 import com.liferay.data.engine.rest.client.dto.v2_0.DataRecord;
 import com.liferay.data.engine.rest.client.http.HttpInvoker;
 import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
 import com.liferay.data.engine.rest.client.resource.v2_0.DataRecordResource;
 import com.liferay.data.engine.rest.client.serdes.v2_0.DataRecordSerDes;
+import com.liferay.data.engine.rest.resource.v2_0.test.util.content.type.TestDataDefinitionContentType;
 import com.liferay.petra.function.UnsafeTriConsumer;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
@@ -1555,5 +1557,10 @@ public abstract class BaseDataRecordResourceTestCase {
 	@Inject
 	private com.liferay.data.engine.rest.resource.v2_0.DataRecordResource
 		_dataRecordResource;
+
+	@Inject(
+		filter = "component.name=com.liferay.data.engine.rest.resource.v2_0.test.util.content.type.TestDataDefinitionContentType"
+	)
+	private DataDefinitionContentType _DataDefinitionContentType;
 
 }

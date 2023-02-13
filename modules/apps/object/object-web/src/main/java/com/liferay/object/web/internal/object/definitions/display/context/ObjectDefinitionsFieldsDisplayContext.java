@@ -19,7 +19,6 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.list.type.service.ListTypeDefinitionService;
 import com.liferay.object.admin.rest.dto.v1_0.util.ObjectFieldUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
-import com.liferay.object.field.business.type.ObjectFieldBusinessType;
 import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
@@ -44,8 +43,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -137,24 +134,22 @@ public class ObjectDefinitionsFieldsDisplayContext
 	public List<Map<String, String>> getObjectFieldBusinessTypeMaps(
 		boolean includeRelationshipObjectFieldBusinessType, Locale locale) {
 
-		List<ObjectFieldBusinessType> objectFieldBusinessTypes =
-			_objectFieldBusinessTypeRegistry.getObjectFieldBusinessTypes();
-
-		Stream<ObjectFieldBusinessType> stream =
-			objectFieldBusinessTypes.stream();
-
 		return ObjectFieldBusinessTypeUtil.getObjectFieldBusinessTypeMaps(
 			locale,
-			stream.filter(
-				objectFieldBusinessType ->
-					objectFieldBusinessType.isVisible() &&
-					(!StringUtil.equals(
-						objectFieldBusinessType.getName(),
-						ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP) ||
-					 includeRelationshipObjectFieldBusinessType)
-			).collect(
-				Collectors.toList()
-			));
+			ListUtil.filter(
+				_objectFieldBusinessTypeRegistry.getObjectFieldBusinessTypes(),
+				objectFieldBusinessType -> {
+					if (objectFieldBusinessType.isVisible() &&
+						(!StringUtil.equals(
+							objectFieldBusinessType.getName(),
+							ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP) ||
+						 includeRelationshipObjectFieldBusinessType)) {
+
+						return true;
+					}
+
+					return false;
+				}));
 	}
 
 	public List<Map<String, Object>> getObjectFieldCodeEditorElements() {

@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.internal.deploy.auto;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.importer.FragmentsImporter;
 import com.liferay.layout.importer.LayoutsImporter;
 import com.liferay.petra.string.CharPool;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -191,8 +193,10 @@ public class FragmentAutoDeployListener implements AutoDeployListener {
 			groupId = group.getGroupId();
 		}
 
-		_fragmentsImporter.importFragmentEntries(
-			user.getUserId(), groupId, 0, file, true);
+		if (_portlet.isActive()) {
+			_fragmentsImporter.importFragmentEntries(
+				user.getUserId(), groupId, 0, file, true);
+		}
 
 		if ((company != null) && (group != null) &&
 			(company.getGroupId() != group.getGroupId())) {
@@ -299,6 +303,10 @@ public class FragmentAutoDeployListener implements AutoDeployListener {
 		ServiceProxyFactory.newServiceTrackedInstance(
 			LayoutsImporter.class, FragmentAutoDeployListener.class,
 			"_layoutsImporter", true);
+	private static volatile Portlet _portlet =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			Portlet.class, FragmentAutoDeployListener.class, "_portlet",
+			"(javax.portlet.name=" + FragmentPortletKeys.FRAGMENT + ")", true);
 	private static volatile StagingGroupHelper _stagingGroupHelper =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			StagingGroupHelper.class, FragmentAutoDeployListener.class,

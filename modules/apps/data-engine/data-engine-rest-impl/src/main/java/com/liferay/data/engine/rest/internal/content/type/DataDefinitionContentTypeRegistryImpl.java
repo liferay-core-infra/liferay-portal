@@ -17,16 +17,14 @@ package com.liferay.data.engine.rest.internal.content.type;
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
 import com.liferay.data.engine.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
-import java.util.Map;
-import java.util.TreeMap;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Leonardo Barros
@@ -55,7 +53,7 @@ public class DataDefinitionContentTypeRegistryImpl
 		long classNameId) {
 
 		for (DataDefinitionContentType dataDefinitionContentType :
-				_dataDefinitionContentTypesByContentType.values()) {
+				_serviceTrackerMap.values()) {
 
 			if (dataDefinitionContentType.getClassNameId() == classNameId) {
 				return dataDefinitionContentType;
@@ -71,7 +69,7 @@ public class DataDefinitionContentTypeRegistryImpl
 		throws Exception {
 
 		DataDefinitionContentType dataDefinitionContentType =
-			_dataDefinitionContentTypesByContentType.get(contentType);
+			_serviceTrackerMap.getService(contentType);
 
 		if (dataDefinitionContentType == null) {
 			throw new DataDefinitionValidationException.MustSetValidContentType(
@@ -81,32 +79,22 @@ public class DataDefinitionContentTypeRegistryImpl
 		return dataDefinitionContentType;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType) {
-
-		_dataDefinitionContentTypesByContentType.put(
-			dataDefinitionContentType.getContentType(),
-			dataDefinitionContentType);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, DataDefinitionContentType.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(dataDefinitionContentType, emitter) -> emitter.emit(
+					dataDefinitionContentType.getContentType())));
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_dataDefinitionContentTypesByContentType.clear();
+		_serviceTrackerMap.close();
 	}
 
-	protected void removeDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType) {
-
-		_dataDefinitionContentTypesByContentType.remove(
-			dataDefinitionContentType.getContentType());
-	}
-
-	private final Map<String, DataDefinitionContentType>
-		_dataDefinitionContentTypesByContentType = new TreeMap<>();
+	private ServiceTrackerMap<String, DataDefinitionContentType>
+		_serviceTrackerMap;
 
 }

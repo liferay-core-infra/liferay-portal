@@ -213,13 +213,14 @@ public class AMImageRequestHandler
 	private Integer _getDistance(
 		int width, AdaptiveMedia<AMImageProcessor> adaptiveMedia) {
 
-		Optional<Integer> imageWidthOptional = adaptiveMedia.getValueOptional(
+		Integer imageWidth = adaptiveMedia.getValue(
 			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
-		Optional<Integer> distanceOptional = imageWidthOptional.map(
-			imageWidth -> Math.abs(imageWidth - width));
+		if (imageWidth == null) {
+			return Integer.MAX_VALUE;
+		}
 
-		return distanceOptional.orElse(Integer.MAX_VALUE);
+		return Math.abs(imageWidth - width);
 	}
 
 	private Tuple<FileVersion, AMImageAttributeMapping> _interpretPath(
@@ -276,22 +277,21 @@ public class AMImageRequestHandler
 		AdaptiveMedia<AMImageProcessor> adaptiveMedia, FileVersion fileVersion,
 		AMImageAttributeMapping amImageAttributeMapping) {
 
-		Optional<String> adaptiveMediaConfigurationUuidOptional =
-			adaptiveMedia.getValueOptional(
-				AMAttribute.getConfigurationUuidAMAttribute());
-
-		String adaptiveMediaConfigurationUuid = null;
-
-		if (adaptiveMediaConfigurationUuidOptional.isPresent()) {
-			adaptiveMediaConfigurationUuid =
-				adaptiveMediaConfigurationUuidOptional.get();
-		}
+		String adaptiveMediaConfigurationUuid = adaptiveMedia.getValue(
+			AMAttribute.getConfigurationUuidAMAttribute());
 
 		String attributeMappingConfigurationUuid =
 			amImageAttributeMapping.getValue(
 				AMAttribute.getConfigurationUuidAMAttribute());
 
-		if (adaptiveMediaConfigurationUuid.equals(
+		if ((adaptiveMediaConfigurationUuid == null) &&
+			(attributeMappingConfigurationUuid == null)) {
+
+			return;
+		}
+
+		if ((adaptiveMediaConfigurationUuid != null) &&
+			adaptiveMediaConfigurationUuid.equals(
 				attributeMappingConfigurationUuid)) {
 
 			return;

@@ -44,7 +44,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -667,10 +666,8 @@ public class MediaQueryProviderImplTest {
 				for (AdaptiveMedia<AMImageProcessor> adaptiveMedia :
 						adaptiveMedias) {
 
-					Optional<String> optional = adaptiveMedia.getValueOptional(
+					String configurationUuid = adaptiveMedia.getValue(
 						AMAttribute.getConfigurationUuidAMAttribute());
-
-					String configurationUuid = optional.get();
 
 					if (Objects.equals(
 							fileEntry.getFileVersion(),

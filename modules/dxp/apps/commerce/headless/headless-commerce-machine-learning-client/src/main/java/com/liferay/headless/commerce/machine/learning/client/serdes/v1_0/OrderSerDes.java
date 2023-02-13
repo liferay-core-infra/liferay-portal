@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -511,14 +510,18 @@ public class OrderSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "orderItems")) {
 				if (jsonParserFieldValue != null) {
-					order.setOrderItems(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> OrderItemSerDes.toDTO((String)object)
-						).toArray(
-							size -> new OrderItem[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					OrderItem[] OrderItems =
+						new OrderItem[jsonParserFieldValues.length];
+
+					for (int i = 0; i < OrderItems.length; i++) {
+						OrderItems[i] = OrderItemSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					order.setOrderItems(OrderItems);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "orderStatus")) {

@@ -63,8 +63,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -1048,14 +1046,25 @@ public abstract class BaseOrderNoteResourceTestCase {
 	protected java.lang.reflect.Field[] getDeclaredFields(Class clazz)
 		throws Exception {
 
-		Stream<java.lang.reflect.Field> stream = Stream.of(
-			ReflectionUtil.getDeclaredFields(clazz));
+		java.lang.reflect.Field[] tempField = ReflectionUtil.getDeclaredFields(
+			clazz);
 
-		return stream.filter(
-			field -> !field.isSynthetic()
-		).toArray(
-			java.lang.reflect.Field[]::new
-		);
+		List<java.lang.reflect.Field> fieldsList = new ArrayList<>();
+
+		for (int i = 0; i < tempField.length; i++) {
+			if (!tempField[i].isSynthetic()) {
+				fieldsList.add(tempField[i]);
+			}
+		}
+
+		java.lang.reflect.Field[] fields =
+			new java.lang.reflect.Field[fieldsList.size()];
+
+		for (int i = 0; i < fields.length; i++) {
+			fields[i] = fieldsList.get(i);
+		}
+
+		return fields;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1083,16 +1092,18 @@ public abstract class BaseOrderNoteResourceTestCase {
 
 		java.util.Collection<EntityField> entityFields = getEntityFields();
 
-		Stream<EntityField> stream = entityFields.stream();
+		List<EntityField> filteredEntityFields = new ArrayList<>();
 
-		return stream.filter(
-			entityField ->
-				Objects.equals(entityField.getType(), type) &&
+		for (EntityField entityField : entityFields) {
+			if (Objects.equals(entityField.getType(), type) &&
 				!ArrayUtil.contains(
-					getIgnoredEntityFieldNames(), entityField.getName())
-		).collect(
-			Collectors.toList()
-		);
+					getIgnoredEntityFieldNames(), entityField.getName())) {
+
+				filteredEntityFields.add(entityField);
+			}
+		}
+
+		return filteredEntityFields;
 	}
 
 	protected String getFilterString(

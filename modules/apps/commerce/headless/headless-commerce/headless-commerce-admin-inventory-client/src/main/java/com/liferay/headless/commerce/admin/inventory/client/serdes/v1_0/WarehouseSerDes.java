@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -523,14 +522,18 @@ public class WarehouseSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "warehouseItems")) {
 				if (jsonParserFieldValue != null) {
-					warehouse.setWarehouseItems(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> WarehouseItemSerDes.toDTO((String)object)
-						).toArray(
-							size -> new WarehouseItem[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					WarehouseItem[] WarehouseItems =
+						new WarehouseItem[jsonParserFieldValues.length];
+
+					for (int i = 0; i < WarehouseItems.length; i++) {
+						WarehouseItems[i] = WarehouseItemSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					warehouse.setWarehouseItems(WarehouseItems);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "zip")) {

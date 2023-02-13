@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -337,14 +336,17 @@ public class TypeOptionsSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "options")) {
 				if (jsonParserFieldValue != null) {
-					typeOptions.setOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> OptionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new Option[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					Option[] Options = new Option[jsonParserFieldValues.length];
+
+					for (int i = 0; i < Options.length; i++) {
+						Options[i] = OptionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					typeOptions.setOptions(Options);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "required")) {

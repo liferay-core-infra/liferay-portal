@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -401,15 +400,20 @@ public class ContentStructureSerDes {
 						jsonParserFieldName, "contentStructureFields")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ContentStructureField[] ContentStructureFields =
+						new ContentStructureField[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ContentStructureFields.length; i++) {
+						ContentStructureFields[i] =
+							ContentStructureFieldSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
 					contentStructure.setContentStructureFields(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ContentStructureFieldSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new ContentStructureField[size]
-						));
+						ContentStructureFields);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "creator")) {

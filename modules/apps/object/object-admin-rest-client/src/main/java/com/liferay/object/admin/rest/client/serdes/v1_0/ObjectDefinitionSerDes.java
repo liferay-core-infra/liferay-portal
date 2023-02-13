@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -885,65 +884,85 @@ public class ObjectDefinitionSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "objectActions")) {
 				if (jsonParserFieldValue != null) {
-					objectDefinition.setObjectActions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectActionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new ObjectAction[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectAction[] ObjectActions =
+						new ObjectAction[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectActions.length; i++) {
+						ObjectActions[i] = ObjectActionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					objectDefinition.setObjectActions(ObjectActions);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "objectFields")) {
 				if (jsonParserFieldValue != null) {
-					objectDefinition.setObjectFields(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectFieldSerDes.toDTO((String)object)
-						).toArray(
-							size -> new ObjectField[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectField[] ObjectFields =
+						new ObjectField[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectFields.length; i++) {
+						ObjectFields[i] = ObjectFieldSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					objectDefinition.setObjectFields(ObjectFields);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "objectLayouts")) {
 				if (jsonParserFieldValue != null) {
-					objectDefinition.setObjectLayouts(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectLayoutSerDes.toDTO((String)object)
-						).toArray(
-							size -> new ObjectLayout[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectLayout[] ObjectLayouts =
+						new ObjectLayout[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectLayouts.length; i++) {
+						ObjectLayouts[i] = ObjectLayoutSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					objectDefinition.setObjectLayouts(ObjectLayouts);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "objectRelationships")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectRelationship[] ObjectRelationships =
+						new ObjectRelationship[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectRelationships.length; i++) {
+						ObjectRelationships[i] = ObjectRelationshipSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
 					objectDefinition.setObjectRelationships(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectRelationshipSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new ObjectRelationship[size]
-						));
+						ObjectRelationships);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "objectViews")) {
 				if (jsonParserFieldValue != null) {
-					objectDefinition.setObjectViews(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectViewSerDes.toDTO((String)object)
-						).toArray(
-							size -> new ObjectView[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectView[] ObjectViews =
+						new ObjectView[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectViews.length; i++) {
+						ObjectViews[i] = ObjectViewSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					objectDefinition.setObjectViews(ObjectViews);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "panelAppOrder")) {

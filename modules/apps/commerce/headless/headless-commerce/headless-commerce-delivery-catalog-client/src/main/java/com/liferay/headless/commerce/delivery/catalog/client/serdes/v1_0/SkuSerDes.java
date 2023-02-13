@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -567,14 +566,18 @@ public class SkuSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "skuOptions")) {
 				if (jsonParserFieldValue != null) {
-					sku.setSkuOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> SkuOptionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new SkuOption[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					SkuOption[] SkuOptions =
+						new SkuOption[jsonParserFieldValues.length];
+
+					for (int i = 0; i < SkuOptions.length; i++) {
+						SkuOptions[i] = SkuOptionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					sku.setSkuOptions(SkuOptions);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "weight")) {

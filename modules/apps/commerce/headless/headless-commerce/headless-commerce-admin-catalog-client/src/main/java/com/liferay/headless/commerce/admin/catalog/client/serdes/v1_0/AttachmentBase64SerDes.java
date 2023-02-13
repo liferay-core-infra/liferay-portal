@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -397,14 +396,18 @@ public class AttachmentBase64SerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "customFields")) {
 				if (jsonParserFieldValue != null) {
-					attachmentBase64.setCustomFields(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> CustomFieldSerDes.toDTO((String)object)
-						).toArray(
-							size -> new CustomField[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					CustomField[] CustomFields =
+						new CustomField[jsonParserFieldValues.length];
+
+					for (int i = 0; i < CustomFields.length; i++) {
+						CustomFields[i] = CustomFieldSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					attachmentBase64.setCustomFields(CustomFields);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "displayDate")) {

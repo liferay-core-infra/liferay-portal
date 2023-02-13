@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -676,15 +675,18 @@ public class FormFieldSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "formFieldOptions")) {
 				if (jsonParserFieldValue != null) {
-					formField.setFormFieldOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> FormFieldOptionSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new FormFieldOption[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					FormFieldOption[] FormFieldOptions =
+						new FormFieldOption[jsonParserFieldValues.length];
+
+					for (int i = 0; i < FormFieldOptions.length; i++) {
+						FormFieldOptions[i] = FormFieldOptionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					formField.setFormFieldOptions(FormFieldOptions);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "grid")) {

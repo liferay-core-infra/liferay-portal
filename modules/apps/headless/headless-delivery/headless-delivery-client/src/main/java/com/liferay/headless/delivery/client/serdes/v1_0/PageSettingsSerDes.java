@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -184,14 +183,18 @@ public class PageSettingsSerDes {
 
 			if (Objects.equals(jsonParserFieldName, "customMetaTags")) {
 				if (jsonParserFieldValue != null) {
-					pageSettings.setCustomMetaTags(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> CustomMetaTagSerDes.toDTO((String)object)
-						).toArray(
-							size -> new CustomMetaTag[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					CustomMetaTag[] CustomMetaTags =
+						new CustomMetaTag[jsonParserFieldValues.length];
+
+					for (int i = 0; i < CustomMetaTags.length; i++) {
+						CustomMetaTags[i] = CustomMetaTagSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					pageSettings.setCustomMetaTags(CustomMetaTags);
 				}
 			}
 			else if (Objects.equals(

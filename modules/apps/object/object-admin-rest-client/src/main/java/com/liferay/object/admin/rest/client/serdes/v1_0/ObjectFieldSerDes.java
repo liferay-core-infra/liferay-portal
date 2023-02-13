@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -578,15 +577,18 @@ public class ObjectFieldSerDes {
 						jsonParserFieldName, "objectFieldSettings")) {
 
 				if (jsonParserFieldValue != null) {
-					objectField.setObjectFieldSettings(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectFieldSettingSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new ObjectFieldSetting[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectFieldSetting[] ObjectFieldSettings =
+						new ObjectFieldSetting[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectFieldSettings.length; i++) {
+						ObjectFieldSettings[i] = ObjectFieldSettingSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					objectField.setObjectFieldSettings(ObjectFieldSettings);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "relationshipType")) {

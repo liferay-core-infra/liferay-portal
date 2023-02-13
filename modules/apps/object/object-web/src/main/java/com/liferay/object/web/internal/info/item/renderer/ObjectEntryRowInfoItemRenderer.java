@@ -33,7 +33,6 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
-import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -155,19 +154,13 @@ public class ObjectEntryRowInfoItemRenderer
 			objectFieldsMap.put(objectField.getName(), objectField);
 		}
 
-		List<Map.Entry<String, Serializable>> entries = TransformUtil.transform(
-			values.entrySet(),
-			entry -> {
-				if (objectFieldsMap.containsKey(entry.getKey())) {
-					return entry;
-				}
-
-				return null;
-			});
-
 		Map<String, Serializable> stringSerializableMap = new TreeMap<>();
 
-		for (Map.Entry<String, Serializable> entry : entries) {
+		for (Map.Entry<String, Serializable> entry : values.entrySet()) {
+			if (!objectFieldsMap.containsKey(entry.getKey())) {
+				continue;
+			}
+
 			if (entry.getValue() == null) {
 				stringSerializableMap.put(entry.getKey(), StringPool.BLANK);
 

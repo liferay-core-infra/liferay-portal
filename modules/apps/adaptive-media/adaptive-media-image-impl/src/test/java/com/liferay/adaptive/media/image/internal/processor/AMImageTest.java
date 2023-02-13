@@ -54,7 +54,7 @@ public class AMImageTest {
 
 		Mockito.verify(
 			amImageAttributeMapping
-		).getValueOptional(
+		).getValue(
 			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT
 		);
 	}

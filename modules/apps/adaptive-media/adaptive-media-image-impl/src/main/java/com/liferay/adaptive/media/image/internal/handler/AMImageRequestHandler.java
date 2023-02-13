@@ -103,16 +103,17 @@ public class AMImageRequestHandler
 		AMImageAttributeMapping amImageAttributeMapping) {
 
 		try {
-			Optional<String> valueOptional =
-				amImageAttributeMapping.getValueOptional(
-					AMAttribute.getConfigurationUuidAMAttribute());
+			String configurationUuid = amImageAttributeMapping.getValue(
+				AMAttribute.getConfigurationUuidAMAttribute());
+
+			if (configurationUuid == null) {
+				return null;
+			}
 
 			Optional<AMImageConfigurationEntry>
-				amImageConfigurationEntryOptional = valueOptional.map(
-					configurationUuid ->
-						_amImageConfigurationHelper.
-							getAMImageConfigurationEntry(
-								fileVersion.getCompanyId(), configurationUuid));
+				amImageConfigurationEntryOptional = Optional.ofNullable(
+					_amImageConfigurationHelper.getAMImageConfigurationEntry(
+						fileVersion.getCompanyId(), configurationUuid));
 
 			if (!amImageConfigurationEntryOptional.isPresent()) {
 				return null;
@@ -279,12 +280,19 @@ public class AMImageRequestHandler
 			adaptiveMedia.getValueOptional(
 				AMAttribute.getConfigurationUuidAMAttribute());
 
-		Optional<String> attributeMappingConfigurationUuidOptional =
-			amImageAttributeMapping.getValueOptional(
+		String adaptiveMediaConfigurationUuid = null;
+
+		if (adaptiveMediaConfigurationUuidOptional.isPresent()) {
+			adaptiveMediaConfigurationUuid =
+				adaptiveMediaConfigurationUuidOptional.get();
+		}
+
+		String attributeMappingConfigurationUuid =
+			amImageAttributeMapping.getValue(
 				AMAttribute.getConfigurationUuidAMAttribute());
 
-		if (adaptiveMediaConfigurationUuidOptional.equals(
-				attributeMappingConfigurationUuidOptional)) {
+		if (adaptiveMediaConfigurationUuid.equals(
+				attributeMappingConfigurationUuid)) {
 
 			return;
 		}

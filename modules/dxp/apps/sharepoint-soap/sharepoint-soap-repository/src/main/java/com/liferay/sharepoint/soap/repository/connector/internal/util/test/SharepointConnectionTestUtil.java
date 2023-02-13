@@ -16,11 +16,13 @@ package com.liferay.sharepoint.soap.repository.connector.internal.util.test;
 
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.BufferedReader;
@@ -29,10 +31,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Adolfo Pérez
@@ -80,9 +82,13 @@ public class SharepointConnectionTestUtil {
 		try (BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(httpURLConnection.getInputStream()))) {
 
-			Stream<String> payloadStream = bufferedReader.lines();
+			List<String> data = new ArrayList<>();
 
-			String payload = payloadStream.collect(Collectors.joining());
+			while (bufferedReader.ready()) {
+				data.add(bufferedReader.readLine());
+			}
+
+			String payload = StringUtil.merge(data, StringPool.BLANK);
 
 			Matcher matcher = _pattern.matcher(payload);
 

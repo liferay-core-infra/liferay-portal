@@ -1036,12 +1036,12 @@ public class LiferayOAuthDataProvider
 	private Collection<LiferayOAuth2Scope> _getLiferayOAuth2Scopes(
 		long oAuth2ApplicationScopeAliasesId, List<String> scopeAliases) {
 
+		Collection<LiferayOAuth2Scope> liferayOAuth2Scopes = new ArrayList<>();
+
 		OAuth2ApplicationScopeAliases oAuth2ApplicationScopeAliases =
 			_oAuth2ApplicationScopeAliasesLocalService.
 				fetchOAuth2ApplicationScopeAliases(
 					oAuth2ApplicationScopeAliasesId);
-
-		Collection<LiferayOAuth2Scope> liferayOAuth2Scopes = new ArrayList<>();
 
 		if (oAuth2ApplicationScopeAliases != null) {
 			liferayOAuth2Scopes = _scopeLocator.getLiferayOAuth2Scopes(

@@ -25,6 +25,7 @@ import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.constants.ObjectWebKeys;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectView;
 import com.liferay.object.model.ObjectViewSortColumn;
 import com.liferay.object.scope.ObjectScopeProvider;
@@ -52,8 +53,10 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletException;
@@ -287,28 +290,29 @@ public class ViewObjectEntriesDisplayContext {
 	}
 
 	private String _getNestedFieldsQueryString() {
-		List<String> strings = TransformUtil.transform(
-			_objectFieldLocalService.getObjectFields(
-				_objectDefinition.getObjectDefinitionId()),
-			objectField -> {
-				if (!Objects.equals(
-						objectField.getRelationshipType(),
-						ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
+		Set<String> stringSet = new LinkedHashSet<>();
 
-					return null;
-				}
+		for (ObjectField objectField :
+				_objectFieldLocalService.getObjectFields(
+					_objectDefinition.getObjectDefinitionId())) {
 
-				String fieldName = objectField.getName();
+			if (!Objects.equals(
+					objectField.getRelationshipType(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
-				return StringUtil.replaceLast(
+				continue;
+			}
+
+			String fieldName = objectField.getName();
+
+			stringSet.add(
+				StringUtil.replaceLast(
 					fieldName.substring(
 						fieldName.lastIndexOf(StringPool.UNDERLINE) + 1),
-					"Id", "");
-			});
+					"Id", ""));
+		}
 
-		ListUtil.distinct(strings);
-
-		String queryString = StringUtil.merge(strings, StringPool.COMMA);
+		String queryString = StringUtil.merge(stringSet, StringPool.COMMA);
 
 		if (Validator.isNull(queryString)) {
 			return StringPool.BLANK;

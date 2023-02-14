@@ -21,7 +21,6 @@ import com.liferay.batch.engine.service.BatchEngineImportTaskLocalService;
 import com.liferay.petra.concurrent.NoticeableExecutorService;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.io.StreamUtil;
-import com.liferay.portal.kernel.deploy.auto.context.AutoDeploymentContext;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -377,19 +376,20 @@ public class BatchEngineFileInstallerTest {
 
 		// Without "companyId" and "userId" in batch-engine.json
 
-		AutoDeploymentContext autoDeploymentContext =
-			new AutoDeploymentContext();
+		file = _toZipFile("batch7");
 
-		autoDeploymentContext.setFile(_toZipFile("batch7"));
+		Assert.assertTrue(_batchEngineFileInstaller.canTransformURL(file));
+
+		Assert.assertNull(_batchEngineFileInstaller.transformURL(file));
 
 		Mockito.verify(
-			_noticeableExecutorService, Mockito.times(1)
+			_noticeableExecutorService, Mockito.times(2)
 		).submit(
 			Mockito.any(Runnable.class)
 		);
 
 		Assert.assertEquals(
-			_batchEngineImportTasks.toString(), 1,
+			_batchEngineImportTasks.toString(), 2,
 			_batchEngineImportTasks.size());
 	}
 

@@ -44,9 +44,7 @@ public class SharedSessionServletRequest extends HttpServletRequestWrapper {
 
 	@Override
 	public HttpSession getSession(boolean create) {
-		if (create) {
-			checkPortalSession();
-		}
+		checkPortalSession(create);
 
 		if (_shared) {
 			return _portalHttpSession;
@@ -69,6 +67,10 @@ public class SharedSessionServletRequest extends HttpServletRequestWrapper {
 	}
 
 	protected void checkPortalSession() {
+		checkPortalSession(true);
+	}
+
+	protected void checkPortalSession(boolean create) {
 		try {
 			_portalHttpSession.isNew();
 		}
@@ -77,7 +79,7 @@ public class SharedSessionServletRequest extends HttpServletRequestWrapper {
 				_log.debug(illegalStateException);
 			}
 
-			_portalHttpSession = super.getSession(true);
+			_portalHttpSession = super.getSession(create);
 		}
 	}
 

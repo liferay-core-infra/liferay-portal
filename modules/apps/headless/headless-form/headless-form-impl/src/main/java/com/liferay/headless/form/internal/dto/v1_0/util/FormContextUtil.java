@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Victor Oliveira
@@ -108,23 +106,22 @@ public class FormContextUtil {
 			{
 				enabled = _getBoolean(formPageContext, "enabled");
 
-				List<Map<String, Object>> maps = _getMaps(
-					formPageContext, "rows");
-
-				Stream<Map<String, Object>> stream = maps.stream();
-
 				formFieldContexts = TransformUtil.transformToArray(
-					stream.map(
-						row -> _getMaps(row, "columns")
-					).flatMap(
-						List::stream
-					).map(
-						column -> _getMaps(column, "fields")
-					).flatMap(
-						List::stream
-					).collect(
-						Collectors.toList()
-					),
+					TransformUtil.transform(
+						_getMaps(formPageContext, "rows"),
+						map -> {
+							for (Map<String, Object> columnsMap :
+									_getMaps(map, "columns")) {
+
+								for (Map<String, Object> fieldsMap :
+										_getMaps(columnsMap, "fields")) {
+
+									return fieldsMap;
+								}
+							}
+
+							return null;
+						}),
 					FormContextUtil::_toFormFieldContext,
 					FormFieldContext.class);
 

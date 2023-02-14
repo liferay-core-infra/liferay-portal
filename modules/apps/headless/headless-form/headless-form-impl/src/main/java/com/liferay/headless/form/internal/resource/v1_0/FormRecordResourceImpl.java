@@ -189,23 +189,21 @@ public class FormRecordResourceImpl extends BaseFormRecordResourceImpl {
 	private void _linkFileEntries(
 		DDMForm ddmForm, DDMFormValues ddmFormValues) {
 
-		List<List<DDMFormFieldValue>> ddmFormFieldValuesList = transform(
-			ddmForm.getDDMFormFields(),
-			ddmFormField -> {
-				if (!Objects.equals(
-						ddmFormField.getType(), "document_library")) {
-
-					return null;
-				}
-
-				return ListUtil.filter(
-					ddmFormValues.getDDMFormFieldValues(),
-					value -> Objects.equals(
-						ddmFormField.getName(), value.getName()));
-			});
-
 		for (List<DDMFormFieldValue> ddmFormFieldValues :
-				ddmFormFieldValuesList) {
+				transform(
+					ddmForm.getDDMFormFields(),
+					ddmFormField -> {
+						if (!Objects.equals(
+								ddmFormField.getType(), "document_library")) {
+
+							return null;
+						}
+
+						return ListUtil.filter(
+							ddmFormValues.getDDMFormFieldValues(),
+							value -> Objects.equals(
+								ddmFormField.getName(), value.getName()));
+					})) {
 
 			try {
 				for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {

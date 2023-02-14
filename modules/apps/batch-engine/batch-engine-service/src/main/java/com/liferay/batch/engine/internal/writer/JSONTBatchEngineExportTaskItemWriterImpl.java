@@ -16,7 +16,7 @@ package com.liferay.batch.engine.internal.writer;
 
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import com.liferay.batch.engine.internal.auto.deploy.BatchEngineAutoDeployListener;
+import com.liferay.batch.engine.internal.installer.BatchEngineFileInstaller;
 import com.liferay.petra.io.unsync.UnsyncPrintWriter;
 import com.liferay.petra.string.StringPool;
 
@@ -36,7 +36,7 @@ public class JSONTBatchEngineExportTaskItemWriterImpl
 
 	public JSONTBatchEngineExportTaskItemWriterImpl(
 			Set<String> allFieldNames,
-			BatchEngineAutoDeployListener.BatchEngineImportConfiguration
+			BatchEngineFileInstaller.BatchEngineImportConfiguration
 				batchEngineImportConfiguration,
 			List<String> includeFieldNames, OutputStream outputStream)
 		throws IOException {

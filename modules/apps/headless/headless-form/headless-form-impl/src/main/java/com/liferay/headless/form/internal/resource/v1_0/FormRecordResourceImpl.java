@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -49,8 +50,6 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.ws.rs.BadRequestException;
 
@@ -190,43 +189,35 @@ public class FormRecordResourceImpl extends BaseFormRecordResourceImpl {
 	private void _linkFileEntries(
 		DDMForm ddmForm, DDMFormValues ddmFormValues) {
 
-		List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
+		List<List<DDMFormFieldValue>> ddmFormFieldValuesList = transform(
+			ddmForm.getDDMFormFields(),
+			ddmFormField -> {
+				if (!Objects.equals(
+						ddmFormField.getType(), "document_library")) {
 
-		Stream<DDMFormField> ddmFormFieldsStream = ddmFormFields.stream();
-
-		ddmFormFieldsStream.filter(
-			ddmFormField -> Objects.equals(
-				ddmFormField.getType(), "document_library")
-		).map(
-			field -> {
-				List<DDMFormFieldValue> ddmFormFieldValues =
-					ddmFormValues.getDDMFormFieldValues();
-
-				Stream<DDMFormFieldValue> ddmFormFieldValuesStream =
-					ddmFormFieldValues.stream();
-
-				return ddmFormFieldValuesStream.filter(
-					value -> Objects.equals(field.getName(), value.getName())
-				).collect(
-					Collectors.toList()
-				);
-			}
-		).forEach(
-			ddmFormFieldValues -> {
-				try {
-					for (DDMFormFieldValue ddmFormFieldValue :
-							ddmFormFieldValues) {
-
-						_setValue(ddmFormFieldValue);
-					}
+					return null;
 				}
-				catch (Exception exception) {
-					_log.error(exception);
 
-					throw new BadRequestException(exception);
+				return ListUtil.filter(
+					ddmFormValues.getDDMFormFieldValues(),
+					value -> Objects.equals(
+						ddmFormField.getName(), value.getName()));
+			});
+
+		for (List<DDMFormFieldValue> ddmFormFieldValues :
+				ddmFormFieldValuesList) {
+
+			try {
+				for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {
+					_setValue(ddmFormFieldValue);
 				}
 			}
-		);
+			catch (Exception exception) {
+				_log.error(exception);
+
+				throw new BadRequestException(exception);
+			}
+		}
 	}
 
 	private void _setValue(DDMFormFieldValue ddmFormFieldValue)

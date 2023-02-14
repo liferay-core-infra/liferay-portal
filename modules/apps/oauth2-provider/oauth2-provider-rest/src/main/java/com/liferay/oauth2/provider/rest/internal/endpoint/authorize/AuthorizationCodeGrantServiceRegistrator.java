@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -311,16 +310,17 @@ public class AuthorizationCodeGrantServiceRegistrator {
 			HttpServletRequest httpServletRequest =
 				messageContext.getHttpServletRequest();
 
-			return Stream.of(
-				httpServletRequest.getCookies()
-			).filter(
-				cookie -> Objects.equals(cookie.getName(), cookieName)
-			).map(
-				Cookie::getValue
-			).findFirst(
-			).orElse(
-				null
-			);
+			Cookie[] cookies = httpServletRequest.getCookies();
+
+			for (Cookie cookie : cookies) {
+				if (!Objects.equals(cookie.getName(), cookieName)) {
+					continue;
+				}
+
+				return cookie.getValue();
+			}
+
+			return null;
 		}
 
 		@Context

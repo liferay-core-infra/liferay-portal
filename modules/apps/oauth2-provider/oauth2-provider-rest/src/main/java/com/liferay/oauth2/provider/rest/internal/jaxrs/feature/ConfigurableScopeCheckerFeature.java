@@ -84,6 +84,8 @@ public class ConfigurableScopeCheckerFeature implements Feature {
 			return false;
 		}
 
+		HashSet<String> scopes = new HashSet<>();
+
 		context.register(
 			new ConfigurableContainerScopeCheckerContainerRequestFilter(),
 			HashMapBuilder.<Class<?>, Integer>put(
@@ -91,8 +93,6 @@ public class ConfigurableScopeCheckerFeature implements Feature {
 			).build());
 
 		Configuration configuration = context.getConfiguration();
-
-		HashSet<String> scopes = new HashSet<>();
 
 		for (CheckPattern checkPattern : _checkPatterns) {
 			for (String scope : checkPattern.getScopes()) {

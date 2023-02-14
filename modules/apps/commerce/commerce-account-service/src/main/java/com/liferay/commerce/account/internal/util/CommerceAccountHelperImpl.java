@@ -99,11 +99,17 @@ public class CommerceAccountHelperImpl implements CommerceAccountHelper {
 
 	@Override
 	public long[] getCommerceAccountGroupIds(long commerceAccountId) {
+		List<AccountGroupRel> accountGroupRels =
+			_accountGroupRelLocalService.getAccountGroupRels(
+				AccountEntry.class.getName(), commerceAccountId);
+
+		if (accountGroupRels.isEmpty()) {
+			return new long[0];
+		}
+
 		return ArrayUtil.sortedUnique(
 			TransformUtil.transformToLongArray(
-				_accountGroupRelLocalService.getAccountGroupRels(
-					AccountEntry.class.getName(), commerceAccountId),
-				AccountGroupRel::getAccountGroupId));
+				accountGroupRels, AccountGroupRel::getAccountGroupId));
 	}
 
 	/**

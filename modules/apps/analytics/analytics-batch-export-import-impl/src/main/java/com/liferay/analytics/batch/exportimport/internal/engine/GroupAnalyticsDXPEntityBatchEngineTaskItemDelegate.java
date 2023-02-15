@@ -15,16 +15,17 @@
 package com.liferay.analytics.batch.exportimport.internal.engine;
 
 import com.liferay.analytics.dxp.entity.rest.dto.v1_0.DXPEntity;
-import com.liferay.analytics.dxp.entity.rest.dto.v1_0.converter.DXPEntityDTOConverter;
 import com.liferay.batch.engine.BatchEngineTaskItemDelegate;
 import com.liferay.batch.engine.pagination.Page;
 import com.liferay.batch.engine.pagination.Pagination;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 
 import java.io.Serializable;
 
@@ -74,8 +75,10 @@ public class GroupAnalyticsDXPEntityBatchEngineTaskItemDelegate
 			_groupLocalService.dynamicQueryCount(dynamicQuery));
 	}
 
-	@Reference
-	private DXPEntityDTOConverter _dxpEntityDTOConverter;
+	@Reference(
+		target = "(dto.class.name=com.liferay.analytics.dxp.entity.rest.dto.v1_0.DXPEntity)"
+	)
+	private DTOConverter<BaseModel<?>, DXPEntity> _dxpEntityDTOConverter;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

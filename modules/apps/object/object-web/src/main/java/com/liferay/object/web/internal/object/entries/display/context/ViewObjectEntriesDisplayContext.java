@@ -290,7 +290,7 @@ public class ViewObjectEntriesDisplayContext {
 	}
 
 	private String _getNestedFieldsQueryString() {
-		Set<String> stringSet = new LinkedHashSet<>();
+		Set<String> strings = new LinkedHashSet<>();
 
 		for (ObjectField objectField :
 				_objectFieldLocalService.getObjectFields(
@@ -305,14 +305,14 @@ public class ViewObjectEntriesDisplayContext {
 
 			String fieldName = objectField.getName();
 
-			stringSet.add(
+			strings.add(
 				StringUtil.replaceLast(
 					fieldName.substring(
 						fieldName.lastIndexOf(StringPool.UNDERLINE) + 1),
 					"Id", ""));
 		}
 
-		String queryString = StringUtil.merge(stringSet, StringPool.COMMA);
+		String queryString = StringUtil.merge(strings, StringPool.COMMA);
 
 		if (Validator.isNull(queryString)) {
 			return StringPool.BLANK;

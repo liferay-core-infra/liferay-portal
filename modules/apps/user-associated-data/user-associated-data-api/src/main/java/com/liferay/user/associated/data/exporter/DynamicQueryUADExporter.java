@@ -16,10 +16,8 @@ package com.liferay.user.associated.data.exporter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -30,7 +28,7 @@ import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
 import com.liferay.user.associated.data.util.UADDynamicQueryUtil;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 
 /**
  * Provides the base implementation of {@link UADExporter} for entities
@@ -53,15 +51,13 @@ public abstract class DynamicQueryUADExporter<T extends BaseModel>
 
 	@Override
 	public byte[] export(T baseModel) throws PortalException {
-		String xml = toXmlString(baseModel);
-
-		xml = formatXML(xml);
-
 		try {
+			String xml = toXmlString(baseModel);
+
 			return xml.getBytes(StringPool.UTF8);
 		}
-		catch (UnsupportedEncodingException unsupportedEncodingException) {
-			throw new PortalException(unsupportedEncodingException);
+		catch (IOException ioException) {
+			throw new PortalException(ioException);
 		}
 	}
 
@@ -116,15 +112,6 @@ public abstract class DynamicQueryUADExporter<T extends BaseModel>
 	 */
 	protected abstract String[] doGetUserIdFieldNames();
 
-	protected String formatXML(String xml) {
-		try {
-			return Dom4jUtil.toString(xml);
-		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
-		}
-	}
-
 	/**
 	 * Returns an {@code ActionableDynamicQuery} for type {@code T}. It should
 	 * be populated with criteria and ready for use by the service.
@@ -163,7 +150,7 @@ public abstract class DynamicQueryUADExporter<T extends BaseModel>
 	 * @param  baseModel the base model to be converted into an XML string
 	 * @return an XML string representation of the base model
 	 */
-	protected abstract String toXmlString(T baseModel);
+	protected abstract String toXmlString(T baseModel) throws IOException;
 
 	/**
 	 * Converts the type {@code T} base model to a byte array and writes it to

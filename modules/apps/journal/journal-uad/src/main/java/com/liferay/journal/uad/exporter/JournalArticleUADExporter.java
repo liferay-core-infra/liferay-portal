@@ -19,6 +19,8 @@ import com.liferay.journal.model.JournalArticleWrapper;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
+import java.io.IOException;
+
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -28,7 +30,9 @@ import org.osgi.service.component.annotations.Component;
 public class JournalArticleUADExporter extends BaseJournalArticleUADExporter {
 
 	@Override
-	protected String toXmlString(JournalArticle journalArticle) {
+	protected String toXmlString(JournalArticle journalArticle)
+		throws IOException {
+
 		return super.toXmlString(
 			new JournalArticleWrapper(journalArticle) {
 

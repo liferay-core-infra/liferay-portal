@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
+import java.io.IOException;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -45,7 +47,9 @@ public class DDMFormInstanceRecordUADExporter
 	extends BaseDDMFormInstanceRecordUADExporter {
 
 	@Override
-	protected String toXmlString(DDMFormInstanceRecord ddmFormInstanceRecord) {
+	protected String toXmlString(DDMFormInstanceRecord ddmFormInstanceRecord)
+		throws IOException {
+
 		return StringBundler.concat(
 			StringUtil.removeSubstring(
 				super.toXmlString(ddmFormInstanceRecord), "</model>"),

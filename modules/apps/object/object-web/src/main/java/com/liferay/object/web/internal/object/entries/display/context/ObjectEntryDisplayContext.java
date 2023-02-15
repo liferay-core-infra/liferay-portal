@@ -273,7 +273,7 @@ public class ObjectEntryDisplayContext {
 		}
 
 		for (ObjectLayoutTab objectLayoutTab : objectLayoutTabs) {
-			if (objectLayoutTab.getObjectLayoutTabId() == objectLayoutTabId) {
+			if (objectLayoutTabId == objectLayoutTab.getObjectLayoutTabId()) {
 				return objectLayoutTab;
 			}
 		}
@@ -977,8 +977,8 @@ public class ObjectEntryDisplayContext {
 				ObjectField objectField = null;
 
 				for (ObjectField curObjectField : objectFields) {
-					if (curObjectField.getObjectFieldId() ==
-							objectLayoutColumn.getObjectFieldId()) {
+					if (objectLayoutColumn.getObjectFieldId() ==
+							curObjectField.getObjectFieldId()) {
 
 						objectField = curObjectField;
 

@@ -583,6 +583,10 @@ public interface PropsKeys {
 	public static final String DEFAULT_ADMIN_SCREEN_NAME =
 		"default.admin.screen.name";
 
+	public static final String
+		DEFAULT_COMPANY_LOG_ROUTING_APPENDER_XML_OUTPUT_ENABLED =
+			"default.company.log.routing.appender.xml.output.enabled";
+
 	public static final String DEFAULT_GUEST_PUBLIC_LAYOUT_FRIENDLY_URL =
 		"default.guest.public.layout.friendly.url";
 

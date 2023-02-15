@@ -287,7 +287,9 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 			_createAppender(
 				getLayout(), filePattern, namePrefix + textAppenderName));
 
-		if (textAppenderName.equals("COMPANY_LOG_ROUTING_TEXT_FILE")) {
+		if (_DEFAULT_COMPANY_LOG_ROUTING_APPENDER_XML_OUTPUT_ENABLED &&
+			textAppenderName.equals("COMPANY_LOG_ROUTING_TEXT_FILE")) {
+
 			String filePatternPrefix = filePattern.substring(
 				0, filePattern.lastIndexOf(CharPool.PERIOD));
 
@@ -303,6 +305,13 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 
 	private static final boolean _COMPANY_LOG_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.COMPANY_LOG_ENABLED));
+
+	private static final boolean
+		_DEFAULT_COMPANY_LOG_ROUTING_APPENDER_XML_OUTPUT_ENABLED =
+			GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.
+						DEFAULT_COMPANY_LOG_ROUTING_APPENDER_XML_OUTPUT_ENABLED));
 
 	private final boolean _advertise;
 	private final String _advertiseUri;

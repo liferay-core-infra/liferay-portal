@@ -17,6 +17,7 @@ package com.liferay.analytics.settings.rest.internal.dto.v1_0.converter;
 import com.liferay.analytics.settings.rest.dto.v1_0.Channel;
 import com.liferay.analytics.settings.rest.dto.v1_0.DataSource;
 import com.liferay.analytics.settings.rest.internal.client.model.AnalyticsChannel;
+import com.liferay.analytics.settings.rest.internal.client.model.AnalyticsDataSource;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
@@ -63,7 +64,8 @@ public class ChannelDTOConverter
 		};
 	}
 
-	@Reference
-	private DataSourceDTOConverter _dataSourceDTOConverter;
+	@Reference(target = "(dto.class.name=AnalyticsDataSource)")
+	private DTOConverter<AnalyticsDataSource, DataSource>
+		_dataSourceDTOConverter;
 
 }

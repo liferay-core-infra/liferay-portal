@@ -281,17 +281,22 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		String filePattern = StringUtil.replace(
 			_filePattern, "@company.id@", String.valueOf(companyId));
 
-		appenders.add(
-			_createAppender(getLayout(), filePattern, namePrefix + getName()));
-
-		filePattern =
-			filePattern.substring(0, filePattern.lastIndexOf(CharPool.PERIOD)) +
-				".xml";
+		String textAppenderName = getName();
 
 		appenders.add(
 			_createAppender(
-				Log4j1XmlLayout.createLayout(true, false), filePattern,
-				namePrefix + "COMPANY_LOG_ROUTING_XML_FILE"));
+				getLayout(), filePattern, namePrefix + textAppenderName));
+
+		if (textAppenderName.equals("COMPANY_LOG_ROUTING_TEXT_FILE")) {
+			String filePatternPrefix = filePattern.substring(
+				0, filePattern.lastIndexOf(CharPool.PERIOD));
+
+			appenders.add(
+				_createAppender(
+					Log4j1XmlLayout.createLayout(true, false),
+					filePatternPrefix + ".xml",
+					namePrefix + "COMPANY_LOG_ROUTING_XML_FILE"));
+		}
 
 		return appenders;
 	}

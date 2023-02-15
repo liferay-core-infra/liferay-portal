@@ -17,7 +17,6 @@ package com.liferay.analytics.settings.rest.internal.resource.v1_0;
 import com.liferay.analytics.settings.rest.dto.v1_0.Site;
 import com.liferay.analytics.settings.rest.internal.client.AnalyticsCloudClient;
 import com.liferay.analytics.settings.rest.internal.client.model.AnalyticsChannel;
-import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.SiteDTOConverter;
 import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.SiteDTOConverterContext;
 import com.liferay.analytics.settings.rest.internal.util.SortUtil;
 import com.liferay.analytics.settings.rest.resource.v1_0.SiteResource;
@@ -27,6 +26,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -116,7 +116,9 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 	@Reference
 	private Portal _portal;
 
-	@Reference
-	private SiteDTOConverter _siteDTOConverter;
+	@Reference(
+		target = "(dto.class.name=com.liferay.portal.kernel.model.Group)"
+	)
+	private DTOConverter<Group, Site> _siteDTOConverter;
 
 }

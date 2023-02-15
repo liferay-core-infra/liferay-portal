@@ -25,10 +25,12 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.io.File;
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.log4j.layout.Log4j1XmlLayout;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Core;
@@ -73,24 +75,30 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 			return;
 		}
 
-		Appender appender = _appenders.computeIfAbsent(
-			CompanyThreadLocal.getCompanyId(), this::_createAppender);
+		List<Appender> appenders = _appenders.computeIfAbsent(
+			CompanyThreadLocal.getCompanyId(), this::_createAppenders);
 
-		appender.append(logEvent);
+		appenders.forEach(appender -> appender.append(logEvent));
 	}
 
 	public File getCompanyLogDirectory(long companyId) {
-		Appender appender = _appenders.get(companyId);
+		List<Appender> appenders = _appenders.get(companyId);
 
-		if (appender instanceof RollingFileAppender) {
-			RollingFileAppender rollingFileAppender =
-				(RollingFileAppender)appender;
+		if (appenders == null) {
+			return null;
+		}
 
-			String filePattern = rollingFileAppender.getFilePattern();
+		for (Appender appender : appenders) {
+			if (appender instanceof RollingFileAppender) {
+				RollingFileAppender rollingFileAppender =
+					(RollingFileAppender)appender;
 
-			return new File(
-				filePattern.substring(
-					0, filePattern.lastIndexOf(CharPool.SLASH)));
+				String filePattern = rollingFileAppender.getFilePattern();
+
+				return new File(
+					filePattern.substring(
+						0, filePattern.lastIndexOf(CharPool.SLASH)));
+			}
 		}
 
 		return null;
@@ -187,7 +195,9 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		_triggeringPolicy = triggeringPolicy;
 	}
 
-	private Appender _createAppender(long companyId) {
+	private Appender _createAppender(
+		Layout layout, String filePattern, String name) {
+
 		RollingFileAppender.Builder builder = RollingFileAppender.newBuilder();
 
 		LoggerContext loggerContext = (LoggerContext)LogManager.getContext();
@@ -195,12 +205,8 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		builder.setConfiguration(loggerContext.getConfiguration());
 
 		builder.setIgnoreExceptions(ignoreExceptions());
-		builder.setLayout(getLayout());
-
-		String name = companyId + StringPool.DASH + getName();
-
+		builder.setLayout(layout);
 		builder.setName(name);
-
 		builder.withAdvertise(_advertise);
 		builder.withAdvertiseUri(_advertiseUri);
 		builder.withAppend(_append);
@@ -210,9 +216,7 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		builder.withFileGroup(_fileGroup);
 		builder.withFileName(_fileName);
 		builder.withFileOwner(_fileOwner);
-		builder.withFilePattern(
-			StringUtil.replace(
-				_filePattern, "@company.id@", String.valueOf(companyId)));
+		builder.withFilePattern(filePattern);
 		builder.withFilePermissions(_filePermissions);
 		builder.withImmediateFlush(_immediateFlush);
 		builder.withLocking(_locking);
@@ -269,13 +273,37 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		return NullAppender.createAppender(name);
 	}
 
+	private List<Appender> _createAppenders(long companyId) {
+		List<Appender> appenders = new ArrayList<>();
+
+		String namePrefix = companyId + StringPool.DASH;
+
+		String filePattern = StringUtil.replace(
+			_filePattern, "@company.id@", String.valueOf(companyId));
+
+		appenders.add(
+			_createAppender(getLayout(), filePattern, namePrefix + getName()));
+
+		filePattern =
+			filePattern.substring(0, filePattern.lastIndexOf(CharPool.PERIOD)) +
+				".xml";
+
+		appenders.add(
+			_createAppender(
+				Log4j1XmlLayout.createLayout(true, false), filePattern,
+				namePrefix + "COMPANY_LOG_ROUTING_XML_FILE"));
+
+		return appenders;
+	}
+
 	private static final boolean _COMPANY_LOG_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.COMPANY_LOG_ENABLED));
 
 	private final boolean _advertise;
 	private final String _advertiseUri;
 	private final boolean _append;
-	private final Map<Long, Appender> _appenders = new ConcurrentHashMap<>();
+	private final Map<Long, List<Appender>> _appenders =
+		new ConcurrentHashMap<>();
 	private final boolean _bufferedIo;
 	private final int _bufferSize;
 	private final boolean _createOnDemand;

@@ -497,29 +497,10 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		_clusterChannel.sendMulticastMessage(clusterRequest);
 	}
 
-	@Reference(unbind = "-")
-	protected void setClusterChannelFactory(
-		ClusterChannelFactory clusterChannelFactory) {
-
-		_clusterChannelFactory = clusterChannelFactory;
-	}
-
 	protected void setClusterEventListeners(
 		List<ClusterEventListener> clusterEventListeners) {
 
 		_clusterEventListeners.addAllAbsent(clusterEventListeners);
-	}
-
-	@Reference(unbind = "-")
-	protected void setPortalExecutorManager(
-		PortalExecutorManager portalExecutorManager) {
-
-		_portalExecutorManager = portalExecutorManager;
-	}
-
-	@Reference(unbind = "-")
-	protected void setProps(Props props) {
-		_props = props;
 	}
 
 	protected volatile ClusterExecutorConfiguration
@@ -632,7 +613,10 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	private BundleContext _bundleContext;
 	private ClusterChannel _clusterChannel;
+
+	@Reference
 	private ClusterChannelFactory _clusterChannelFactory;
+
 	private final CopyOnWriteArrayList<ClusterEventListener>
 		_clusterEventListeners = new CopyOnWriteArrayList<>();
 	private ServiceRegistration<ClusterEventListener>
@@ -647,8 +631,13 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.WEAK_REFERENCE_FACTORY);
 	private ClusterNodeStatus _localClusterNodeStatus;
+
+	@Reference
 	private PortalExecutorManager _portalExecutorManager;
+
+	@Reference
 	private Props _props;
+
 	private ServiceRegistration<PortalInetSocketAddressEventListener>
 		_serviceRegistration;
 

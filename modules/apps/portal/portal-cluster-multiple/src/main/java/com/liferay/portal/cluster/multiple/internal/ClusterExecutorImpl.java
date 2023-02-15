@@ -92,18 +92,6 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Override
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	public void addClusterEventListener(
-		ClusterEventListener clusterEventListener) {
-
-		_clusterEventListeners.addIfAbsent(clusterEventListener);
-	}
-
-	@Override
 	public FutureClusterResponses execute(ClusterRequest clusterRequest) {
 		Set<String> clusterNodeIds = new HashSet<>();
 
@@ -207,13 +195,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		return _enabled;
 	}
 
-	@Override
-	public void removeClusterEventListener(
-		ClusterEventListener clusterEventListener) {
-
-		_clusterEventListeners.remove(clusterEventListener);
-	}
-
 	@Activate
 	protected void activate(ComponentContext componentContext) {
 		_enabled = true;
@@ -222,17 +203,28 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 			ClusterExecutorConfiguration.class,
 			componentContext.getProperties());
 
+		_bundleContext = componentContext.getBundleContext();
+
 		initialize(
 			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_LOGIC_NAME_CONTROL),
 			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL),
 			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_NAME_CONTROL));
 
-		BundleContext bundleContext = componentContext.getBundleContext();
-
-		_serviceRegistration = bundleContext.registerService(
+		_serviceRegistration = _bundleContext.registerService(
 			PortalInetSocketAddressEventListener.class,
 			new ClusterExecutorPortalInetSocketAddressEventListener(),
 			new HashMapDictionary<String, Object>());
+	}
+
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	protected void addClusterEventListener(
+		ClusterEventListener clusterEventListener) {
+
+		_clusterEventListeners.addIfAbsent(clusterEventListener);
 	}
 
 	@Deactivate
@@ -438,17 +430,17 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	protected void manageDebugClusterEventListener() {
 		if (clusterExecutorConfiguration.debugEnabled() &&
-			(_debugClusterEventListener == null)) {
+			(_clusterEventListenerServiceRegistration == null)) {
 
-			_debugClusterEventListener =
-				new DebuggingClusterEventListenerImpl();
-
-			addClusterEventListener(_debugClusterEventListener);
+			_clusterEventListenerServiceRegistration =
+				_bundleContext.registerService(
+					ClusterEventListener.class,
+					new DebuggingClusterEventListenerImpl(), null);
 		}
 		else if (!clusterExecutorConfiguration.debugEnabled() &&
-				 (_debugClusterEventListener != null)) {
+				 (_clusterEventListenerServiceRegistration != null)) {
 
-			removeClusterEventListener(_debugClusterEventListener);
+			_clusterEventListenerServiceRegistration.unregister();
 		}
 	}
 
@@ -490,6 +482,12 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 			ClusterExecutorConfiguration.class, properties);
 
 		manageDebugClusterEventListener();
+	}
+
+	protected void removeClusterEventListener(
+		ClusterEventListener clusterEventListener) {
+
+		_clusterEventListeners.remove(clusterEventListener);
 	}
 
 	protected void sendNotifyRequest() {
@@ -632,15 +630,17 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClusterExecutorImpl.class);
 
+	private BundleContext _bundleContext;
 	private ClusterChannel _clusterChannel;
 	private ClusterChannelFactory _clusterChannelFactory;
 	private final CopyOnWriteArrayList<ClusterEventListener>
 		_clusterEventListeners = new CopyOnWriteArrayList<>();
+	private ServiceRegistration<ClusterEventListener>
+		_clusterEventListenerServiceRegistration;
 	private final Map<Address, CompletableFuture<String>>
 		_clusterNodeIdCompletableFutures = new ConcurrentHashMap<>();
 	private final Map<String, ClusterNodeStatus> _clusterNodeStatuses =
 		new ConcurrentHashMap<>();
-	private ClusterEventListener _debugClusterEventListener;
 	private boolean _enabled;
 	private ExecutorService _executorService;
 	private final Map<String, FutureClusterResponses> _futureClusterResponses =

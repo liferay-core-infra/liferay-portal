@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.cluster;
 
+import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterNode;
@@ -28,6 +29,8 @@ import java.util.List;
 
 import org.elasticsearch.client.RestHighLevelClient;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -40,11 +43,12 @@ import org.osgi.service.component.annotations.Reference;
 public class ElasticsearchCluster {
 
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		_replicasClusterListener = new ReplicasClusterListener(
 			new ReplicasClusterContextImpl());
 
-		_clusterExecutor.addClusterEventListener(_replicasClusterListener);
+		_serviceRegistration = bundleContext.registerService(
+			ClusterEventListener.class, _replicasClusterListener, null);
 
 		_clusterMasterExecutor.addClusterMasterTokenTransitionListener(
 			_replicasClusterListener);
@@ -52,7 +56,7 @@ public class ElasticsearchCluster {
 
 	@Deactivate
 	protected void deactivate() {
-		_clusterExecutor.removeClusterEventListener(_replicasClusterListener);
+		_serviceRegistration.unregister();
 
 		_clusterMasterExecutor.removeClusterMasterTokenTransitionListener(
 			_replicasClusterListener);
@@ -132,5 +136,6 @@ public class ElasticsearchCluster {
 	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 	private ReplicasClusterListener _replicasClusterListener;
+	private ServiceRegistration<ClusterEventListener> _serviceRegistration;
 
 }

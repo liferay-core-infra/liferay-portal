@@ -25,7 +25,6 @@ import com.liferay.object.admin.rest.dto.v1_0.ObjectRelationship;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectView;
 import com.liferay.object.admin.rest.dto.v1_0.Status;
 import com.liferay.object.admin.rest.dto.v1_0.util.ObjectActionUtil;
-import com.liferay.object.admin.rest.internal.dto.v1_0.converter.ObjectFieldDTOConverter;
 import com.liferay.object.admin.rest.internal.dto.v1_0.converter.ObjectRelationshipDTOConverter;
 import com.liferay.object.admin.rest.internal.dto.v1_0.converter.ObjectViewDTOConverter;
 import com.liferay.object.admin.rest.internal.dto.v1_0.util.ObjectFieldSettingUtil;
@@ -71,6 +70,7 @@ import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -797,8 +797,11 @@ public class ObjectDefinitionResourceImpl
 	@Reference
 	private ObjectDefinitionService _objectDefinitionService;
 
-	@Reference
-	private ObjectFieldDTOConverter _objectFieldDTOConverter;
+	@Reference(
+		target = "(component.name=com.liferay.object.admin.rest.internal.dto.v1_0.converter.ObjectFieldDTOConverter)"
+	)
+	private DTOConverter<com.liferay.object.model.ObjectField, ObjectField>
+		_objectFieldDTOConverter;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

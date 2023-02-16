@@ -14,6 +14,7 @@
 
 package com.liferay.portal.cluster.multiple.internal;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.cluster.multiple.configuration.ClusterExecutorConfiguration;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -60,10 +62,14 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Matthew Tambara
@@ -76,27 +82,40 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		new AggregateTestRule(
 			CodeCoverageAssertor.INSTANCE, LiferayUnitTestRule.INSTANCE);
 
+	@Before
+	public void setUp() {
+		super.setUp();
+
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
+	}
+
+	@After
+	public void tearDown() {
+		super.tearDown();
+
+		_clusterMasterExecutorImpl.deactivate();
+	}
+
 	@Test
 	public void testClusterMasterTokenClusterEventListener() throws Exception {
 
 		// Test 1, test when coordiator is not changed
 
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
-		MockClusterExecutor mockClusterExecutor = new MockClusterExecutor(true);
+		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
 			mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
 		mockClusterExecutor.addClusterNode(
 			_TEST_ADDRESS,
 			new ClusterNode(_TEST_CLUSTER_NODE_ID, InetAddress.getLocalHost()));
 
-		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isMaster());
 
 		List<ClusterEventListener> clusterEventListeners =
 			mockClusterExecutor.getClusterEventListeners();
@@ -107,7 +126,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterEventListener.processClusterEvent(
 			new ClusterEvent(ClusterEventType.COORDINATOR_ADDRESS_UPDATE));
 
-		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isMaster());
 
 		// Test 2, test JOIN event when coordiator is changed
 
@@ -116,7 +135,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterEventListener.processClusterEvent(
 			new ClusterEvent(ClusterEventType.JOIN));
 
-		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isMaster());
 
 		// Test 3, test DEPART event when coordiator is changed
 
@@ -125,7 +144,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterEventListener.processClusterEvent(
 			new ClusterEvent(ClusterEventType.DEPART));
 
-		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isMaster());
 
 		// Test 4, test COORDINATOR_ADDRESS_UPDATE event when coordiator is
 		// changed
@@ -135,7 +154,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterEventListener.processClusterEvent(
 			new ClusterEvent(ClusterEventType.COORDINATOR_ADDRESS_UPDATE));
 
-		Assert.assertFalse(clusterMasterExecutorImpl.isMaster());
+		Assert.assertFalse(_clusterMasterExecutorImpl.isMaster());
 	}
 
 	@Test
@@ -143,21 +162,18 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 1, register cluster master token transition listener
 
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
-
-		MockClusterExecutor mockClusterExecutor = new MockClusterExecutor(true);
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			mockClusterExecutor);
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_getMockClusterExecutor(true));
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
 		Set<ClusterMasterTokenTransitionListener>
 			clusterMasterTokenTransitionListeners =
 				ReflectionTestUtil.getFieldValue(
-					clusterMasterExecutorImpl,
+					_clusterMasterExecutorImpl,
 					"_clusterMasterTokenTransitionListeners");
 
 		Assert.assertTrue(clusterMasterTokenTransitionListeners.isEmpty());
@@ -166,7 +182,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 			mockClusterMasterTokenTransitionListener =
 				new MockClusterMasterTokenTransitionListener();
 
-		clusterMasterExecutorImpl.addClusterMasterTokenTransitionListener(
+		_clusterMasterExecutorImpl.addClusterMasterTokenTransitionListener(
 			mockClusterMasterTokenTransitionListener);
 
 		Assert.assertEquals(
@@ -175,14 +191,14 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 2, unregister cluster master token transition listener
 
-		clusterMasterExecutorImpl.removeClusterMasterTokenTransitionListener(
+		_clusterMasterExecutorImpl.removeClusterMasterTokenTransitionListener(
 			mockClusterMasterTokenTransitionListener);
 
 		Assert.assertTrue(clusterMasterTokenTransitionListeners.isEmpty());
 
 		// Test 3, set cluster master token transition listeners
 
-		clusterMasterExecutorImpl.setClusterMasterTokenTransitionListeners(
+		_clusterMasterExecutorImpl.setClusterMasterTokenTransitionListeners(
 			Collections.singleton(mockClusterMasterTokenTransitionListener));
 
 		Assert.assertEquals(
@@ -195,16 +211,15 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 1, destroy when cluster link is enabled
 
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
-		MockClusterExecutor mockClusterExecutor = new MockClusterExecutor(true);
+		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
 			mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
 		List<ClusterEventListener> clusterEventListeners =
 			mockClusterExecutor.getClusterEventListeners();
@@ -212,22 +227,22 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		Assert.assertEquals(
 			clusterEventListeners.toString(), 1, clusterEventListeners.size());
 
-		clusterMasterExecutorImpl.deactivate();
+		_clusterMasterExecutorImpl.deactivate();
+
+		clusterEventListeners = mockClusterExecutor.getClusterEventListeners();
 
 		Assert.assertTrue(
 			clusterEventListeners.toString(), clusterEventListeners.isEmpty());
 
 		// Test 2, destory when cluster link is disabled
 
-		clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			new MockClusterExecutor(false));
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_getMockClusterExecutor(false));
 
-		clusterMasterExecutorImpl.activate();
-
-		clusterMasterExecutorImpl.deactivate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 	}
 
 	@Test
@@ -235,16 +250,15 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 1, execute without exception when log is eanbled
 
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			new MockClusterExecutor(false));
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_getMockClusterExecutor(false));
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
-		Assert.assertFalse(clusterMasterExecutorImpl.isEnabled());
+		Assert.assertFalse(_clusterMasterExecutorImpl.isEnabled());
 
 		String timeString = String.valueOf(System.currentTimeMillis());
 
@@ -255,7 +269,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 				ClusterMasterExecutorImpl.class.getName(), Level.WARNING)) {
 
 			NoticeableFuture<String> noticeableFuture =
-				clusterMasterExecutorImpl.executeOnMaster(methodHandler);
+				_clusterMasterExecutorImpl.executeOnMaster(methodHandler);
 
 			Assert.assertSame(timeString, noticeableFuture.get());
 
@@ -277,7 +291,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 				ClusterMasterExecutorImpl.class.getName(), Level.OFF)) {
 
 			NoticeableFuture<String> noticeableFuture =
-				clusterMasterExecutorImpl.executeOnMaster(methodHandler);
+				_clusterMasterExecutorImpl.executeOnMaster(methodHandler);
 
 			Assert.assertSame(timeString, noticeableFuture.get());
 
@@ -292,7 +306,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 				ClusterMasterExecutorImpl.class.getName(), Level.WARNING)) {
 
 			try {
-				clusterMasterExecutorImpl.executeOnMaster(null);
+				_clusterMasterExecutorImpl.executeOnMaster(null);
 
 				Assert.fail();
 			}
@@ -322,23 +336,22 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 1, execute without exception
 
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
-		MockClusterExecutor mockClusterExecutor = new MockClusterExecutor(true);
+		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
 			mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
-		Assert.assertTrue(clusterMasterExecutorImpl.isEnabled());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isEnabled());
 
 		String timeString = String.valueOf(System.currentTimeMillis());
 
 		NoticeableFuture<String> noticeableFuture =
-			clusterMasterExecutorImpl.executeOnMaster(
+			_clusterMasterExecutorImpl.executeOnMaster(
 				new MethodHandler(_TEST_METHOD, timeString));
 
 		Assert.assertSame(timeString, noticeableFuture.get());
@@ -346,7 +359,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		// Test 2, execute with exception
 
 		try {
-			clusterMasterExecutorImpl.executeOnMaster(_BAD_METHOD_HANDLER);
+			_clusterMasterExecutorImpl.executeOnMaster(_BAD_METHOD_HANDLER);
 
 			Assert.fail();
 		}
@@ -363,21 +376,20 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 1, master to slave
 
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
-		MockClusterExecutor mockClusterExecutor = new MockClusterExecutor(true);
+		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
 			mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
 		Assert.assertEquals(
 			mockClusterExecutor.getLocalClusterNodeId(),
-			clusterMasterExecutorImpl.getMasterClusterNodeId(true));
-		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
+			_clusterMasterExecutorImpl.getMasterClusterNodeId(true));
+		Assert.assertTrue(_clusterMasterExecutorImpl.isMaster());
 
 		mockClusterExecutor.addClusterNode(
 			_TEST_ADDRESS,
@@ -387,7 +399,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 			mockClusterMasterTokenTransitionListener =
 				new MockClusterMasterTokenTransitionListener();
 
-		clusterMasterExecutorImpl.addClusterMasterTokenTransitionListener(
+		_clusterMasterExecutorImpl.addClusterMasterTokenTransitionListener(
 			mockClusterMasterTokenTransitionListener);
 
 		Address oldCoordinatorAddress =
@@ -397,8 +409,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		Assert.assertEquals(
 			_TEST_CLUSTER_NODE_ID,
-			clusterMasterExecutorImpl.getMasterClusterNodeId(true));
-		Assert.assertFalse(clusterMasterExecutorImpl.isMaster());
+			_clusterMasterExecutorImpl.getMasterClusterNodeId(true));
+		Assert.assertFalse(_clusterMasterExecutorImpl.isMaster());
 		Assert.assertTrue(
 			mockClusterMasterTokenTransitionListener.
 				isMasterTokenReleasedNotified());
@@ -409,8 +421,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		Assert.assertEquals(
 			mockClusterExecutor.getLocalClusterNodeId(),
-			clusterMasterExecutorImpl.getMasterClusterNodeId(true));
-		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
+			_clusterMasterExecutorImpl.getMasterClusterNodeId(true));
+		Assert.assertTrue(_clusterMasterExecutorImpl.isMaster());
 		Assert.assertTrue(
 			mockClusterMasterTokenTransitionListener.
 				isMasterTokenAcquiredNotified());
@@ -423,16 +435,15 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 1, retry to get cluster node when log is enabled
 
-		final ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
-		MockClusterExecutor mockClusterExecutor = new MockClusterExecutor(true);
+		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
 			mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
 		mockClusterExecutor.setCoordinatorAddress(_TEST_ADDRESS);
 
@@ -448,7 +459,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 					Assert.assertEquals(
 						_TEST_CLUSTER_NODE_ID,
-						clusterMasterExecutorImpl.getMasterClusterNodeId(
+						_clusterMasterExecutorImpl.getMasterClusterNodeId(
 							false));
 
 					List<LogEntry> logEntries = logCapture.getLogEntries();
@@ -506,7 +517,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 					Assert.assertEquals(
 						_TEST_CLUSTER_NODE_ID,
-						clusterMasterExecutorImpl.getMasterClusterNodeId(
+						_clusterMasterExecutorImpl.getMasterClusterNodeId(
 							false));
 
 					List<LogEntry> logEntries = logCapture.getLogEntries();
@@ -543,35 +554,36 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 1, initialize when cluster link is disabled
 
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			new MockClusterExecutor(false));
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_getMockClusterExecutor(false));
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
-		Assert.assertFalse(clusterMasterExecutorImpl.isEnabled());
-		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
+		Assert.assertFalse(_clusterMasterExecutorImpl.isEnabled());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isMaster());
 
 		// Test 2, initialize when cluster link is enabled and master is exist
 
-		clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			new MockClusterExecutor(true));
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_getMockClusterExecutor(true));
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
-		Assert.assertTrue(clusterMasterExecutorImpl.isEnabled());
-		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isEnabled());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isMaster());
+
+		_clusterMasterExecutorImpl.deactivate();
 
 		// Test 3, initialize when cluster link is enabled and master is not
 		// exist
 
-		MockClusterExecutor mockClusterExecutor = new MockClusterExecutor(true);
+		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		mockClusterExecutor.addClusterNode(
 			_TEST_ADDRESS,
@@ -579,35 +591,34 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		mockClusterExecutor.setCoordinatorAddress(_TEST_ADDRESS);
 
-		clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
 			mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
-		Assert.assertTrue(clusterMasterExecutorImpl.isEnabled());
-		Assert.assertFalse(clusterMasterExecutorImpl.isMaster());
+		Assert.assertTrue(_clusterMasterExecutorImpl.isEnabled());
+		Assert.assertFalse(_clusterMasterExecutorImpl.isMaster());
 	}
 
 	@NewEnv(type = NewEnv.Type.CLASSLOADER)
 	@Test
 	public void testMisc() {
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			new MockClusterExecutor(false));
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_getMockClusterExecutor(false));
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			new MockClusterExecutor(true));
+			_clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			_getMockClusterExecutor(true));
 
-		clusterMasterExecutorImpl.activate();
+		_clusterMasterExecutorImpl.activate(_bundleContext);
 	}
 
 	@Test
@@ -615,17 +626,16 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 1, notify when master is required
 
-		ClusterMasterExecutorImpl clusterMasterExecutorImpl =
-			new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		MockClusterMasterTokenTransitionListener
 			mockClusterMasterTokenTransitionListener =
 				new MockClusterMasterTokenTransitionListener();
 
-		clusterMasterExecutorImpl.addClusterMasterTokenTransitionListener(
+		_clusterMasterExecutorImpl.addClusterMasterTokenTransitionListener(
 			mockClusterMasterTokenTransitionListener);
 
-		clusterMasterExecutorImpl.notifyMasterTokenTransitionListeners(true);
+		_clusterMasterExecutorImpl.notifyMasterTokenTransitionListeners(true);
 
 		Assert.assertTrue(
 			mockClusterMasterTokenTransitionListener.
@@ -636,15 +646,15 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		// Test 2, notify when master is released
 
-		clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
+		_clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		mockClusterMasterTokenTransitionListener =
 			new MockClusterMasterTokenTransitionListener();
 
-		clusterMasterExecutorImpl.addClusterMasterTokenTransitionListener(
+		_clusterMasterExecutorImpl.addClusterMasterTokenTransitionListener(
 			mockClusterMasterTokenTransitionListener);
 
-		clusterMasterExecutorImpl.notifyMasterTokenTransitionListeners(false);
+		_clusterMasterExecutorImpl.notifyMasterTokenTransitionListeners(false);
 
 		Assert.assertFalse(
 			mockClusterMasterTokenTransitionListener.
@@ -709,6 +719,63 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 	}
 
+	private MockClusterExecutor _getMockClusterExecutor(boolean enabled) {
+		MockClusterExecutor mockClusterExecutor = new MockClusterExecutor(
+			enabled);
+
+		ReflectionTestUtil.setFieldValue(
+			mockClusterExecutor, "_clusterChannelFactory",
+			new TestClusterChannelFactory());
+		ReflectionTestUtil.setFieldValue(
+			mockClusterExecutor, "_portalExecutorManager",
+			new MockPortalExecutorManager());
+		ReflectionTestUtil.setFieldValue(
+			mockClusterExecutor, "_props",
+			PropsTestUtil.setProps(Collections.emptyMap()));
+		ReflectionTestUtil.setFieldValue(
+			mockClusterExecutor, "_serviceTrackerList",
+			ServiceTrackerListFactory.open(
+				_bundleContext, ClusterEventListener.class));
+
+		mockClusterExecutor.clusterExecutorConfiguration =
+			new ClusterExecutorConfiguration() {
+
+				@Override
+				public long clusterNodeAddressTimeout() {
+					return 100;
+				}
+
+				@Override
+				public boolean debugEnabled() {
+					return false;
+				}
+
+				@Override
+				public String[] excludedPropertyKeys() {
+					return new String[] {
+						"access_key", "connection_password",
+						"connection_username", "secret_access_key"
+					};
+				}
+
+			};
+
+		if (enabled) {
+			mockClusterExecutor.initialize(
+				"test-channel-logic-name-mock", "test-channel-properties-mock",
+				"test-channel-name-mock");
+
+			ClusterChannel clusterChannel =
+				mockClusterExecutor.getClusterChannel();
+
+			mockClusterExecutor.addClusterNode(
+				clusterChannel.getLocalAddress(),
+				mockClusterExecutor.getLocalClusterNode());
+		}
+
+		return mockClusterExecutor;
+	}
+
 	private static final MethodHandler _BAD_METHOD_HANDLER = new MethodHandler(
 		new MethodKey());
 
@@ -718,6 +785,11 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 	private static final MethodKey _TEST_METHOD = new MethodKey(
 		TestBean.class, "testMethod1", String.class);
+
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
+
+	private ClusterMasterExecutorImpl _clusterMasterExecutorImpl;
 
 	private static class MockClusterExecutor extends ClusterExecutorImpl {
 
@@ -826,45 +898,6 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		private MockClusterExecutor(boolean enabled) {
 			_enabled = enabled;
-
-			setClusterChannelFactory(new TestClusterChannelFactory());
-
-			clusterExecutorConfiguration = new ClusterExecutorConfiguration() {
-
-				@Override
-				public long clusterNodeAddressTimeout() {
-					return 100;
-				}
-
-				@Override
-				public boolean debugEnabled() {
-					return false;
-				}
-
-				@Override
-				public String[] excludedPropertyKeys() {
-					return new String[] {
-						"access_key", "connection_password",
-						"connection_username", "secret_access_key"
-					};
-				}
-
-			};
-
-			setPortalExecutorManager(new MockPortalExecutorManager());
-
-			setProps(PropsTestUtil.setProps(Collections.emptyMap()));
-
-			if (enabled) {
-				initialize(
-					"test-channel-logic-name-mock",
-					"test-channel-properties-mock", "test-channel-name-mock");
-
-				ClusterChannel clusterChannel = getClusterChannel();
-
-				_clusterNodes.put(
-					clusterChannel.getLocalAddress(), getLocalClusterNode());
-			}
 		}
 
 		private final Map<Address, ClusterNode> _clusterNodes =

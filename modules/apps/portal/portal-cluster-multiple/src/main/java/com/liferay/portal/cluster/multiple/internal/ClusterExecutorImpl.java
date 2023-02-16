@@ -65,7 +65,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -88,13 +87,6 @@ import org.osgi.service.component.annotations.Reference;
 	service = {ClusterExecutor.class, ClusterExecutorImpl.class}
 )
 public class ClusterExecutorImpl implements ClusterExecutor {
-
-	@Override
-	public void addClusterEventListener(
-		ClusterEventListener clusterEventListener) {
-
-		_clusterEventListeners.addIfAbsent(clusterEventListener);
-	}
 
 	@Override
 	public FutureClusterResponses execute(ClusterRequest clusterRequest) {
@@ -200,13 +192,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		return _enabled;
 	}
 
-	@Override
-	public void removeClusterEventListener(
-		ClusterEventListener clusterEventListener) {
-
-		_clusterEventListeners.remove(clusterEventListener);
-	}
-
 	@Activate
 	protected void activate(ComponentContext componentContext) {
 		_enabled = true;
@@ -247,7 +232,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 		_serviceTrackerList.close();
 
-		_clusterEventListeners.clear();
 		_clusterNodeStatuses.clear();
 		_futureClusterResponses.clear();
 		_localClusterNodeStatus = null;
@@ -497,12 +481,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		_clusterChannel.sendMulticastMessage(clusterRequest);
 	}
 
-	protected void setClusterEventListeners(
-		List<ClusterEventListener> clusterEventListeners) {
-
-		_clusterEventListeners.addAllAbsent(clusterEventListeners);
-	}
-
 	protected volatile ClusterExecutorConfiguration
 		clusterExecutorConfiguration;
 
@@ -617,8 +595,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	@Reference
 	private ClusterChannelFactory _clusterChannelFactory;
 
-	private final CopyOnWriteArrayList<ClusterEventListener>
-		_clusterEventListeners = new CopyOnWriteArrayList<>();
 	private ServiceRegistration<ClusterEventListener>
 		_clusterEventListenerServiceRegistration;
 	private final Map<Address, CompletableFuture<String>>

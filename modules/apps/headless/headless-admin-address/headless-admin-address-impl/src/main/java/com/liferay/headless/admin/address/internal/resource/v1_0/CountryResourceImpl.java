@@ -15,7 +15,7 @@
 package com.liferay.headless.admin.address.internal.resource.v1_0;
 
 import com.liferay.headless.admin.address.dto.v1_0.Country;
-import com.liferay.headless.admin.address.internal.dto.v1_0.converter.CountryResourceDTOConverter;
+import com.liferay.headless.admin.address.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.admin.address.resource.v1_0.CountryResource;
 import com.liferay.portal.kernel.model.CountryTable;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.odata.entity.DoubleEntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.entity.StringEntityField;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -187,8 +188,9 @@ public class CountryResourceImpl extends BaseCountryResourceImpl {
 	@Reference
 	private CountryLocalService _countryLocalService;
 
-	@Reference
-	private CountryResourceDTOConverter _countryResourceDTOConverter;
+	@Reference(target = DTOConverterConstants.COUNTRY_RESOURCE_DTO_CONVERTER)
+	private DTOConverter<com.liferay.portal.kernel.model.Country, Country>
+		_countryResourceDTOConverter;
 
 	@Reference
 	private CountryService _countryService;

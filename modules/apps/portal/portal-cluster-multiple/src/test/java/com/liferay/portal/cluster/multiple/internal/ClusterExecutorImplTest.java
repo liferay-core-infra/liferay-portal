@@ -17,7 +17,6 @@ package com.liferay.portal.cluster.multiple.internal;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cluster.multiple.configuration.ClusterExecutorConfiguration;
 import com.liferay.portal.kernel.cluster.Address;
-import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterNode;
@@ -25,10 +24,11 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -39,7 +39,7 @@ import com.liferay.portal.util.PropsImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
@@ -49,6 +49,8 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Tina Tian
@@ -64,57 +66,6 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 	@BeforeClass
 	public static void setUpClass() {
 		PropsUtil.setProps(new PropsImpl());
-	}
-
-	@Test
-	public void testClusterEventListener() {
-
-		// Test 1, add cluster event listener
-
-		ClusterExecutorImpl clusterExecutorImpl = _getClusterExecutorImpl();
-
-		List<ClusterEventListener> clusterEventListeners =
-			clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 0, clusterEventListeners.size());
-
-		ClusterEventListener clusterEventListener = new ClusterEventListener() {
-
-			@Override
-			public void processClusterEvent(ClusterEvent clusterEvent) {
-			}
-
-		};
-
-		clusterExecutorImpl.addClusterEventListener(clusterEventListener);
-
-		clusterEventListeners = clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 1, clusterEventListeners.size());
-
-		// Test 2, remove cluster event listener
-
-		clusterExecutorImpl.removeClusterEventListener(clusterEventListener);
-
-		clusterEventListeners = clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 0, clusterEventListeners.size());
-
-		// Test 3, set cluster event listener
-
-		clusterEventListeners = new ArrayList<>();
-
-		clusterEventListeners.add(clusterEventListener);
-
-		clusterExecutorImpl.setClusterEventListeners(clusterEventListeners);
-
-		clusterEventListeners = clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 1, clusterEventListeners.size());
 	}
 
 	@Test
@@ -385,7 +336,14 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 	private ClusterExecutorImpl _getClusterExecutorImpl() {
 		ClusterExecutorImpl clusterExecutorImpl = new ClusterExecutorImpl();
 
-		clusterExecutorImpl.setProps(
+		ReflectionTestUtil.setFieldValue(
+			clusterExecutorImpl, "_clusterChannelFactory",
+			new TestClusterChannelFactory());
+		ReflectionTestUtil.setFieldValue(
+			clusterExecutorImpl, "_portalExecutorManager",
+			new MockPortalExecutorManager());
+		ReflectionTestUtil.setFieldValue(
+			clusterExecutorImpl, "_props",
 			PropsTestUtil.setProps(
 				HashMapBuilder.<String, Object>put(
 					PropsKeys.CLUSTER_LINK_CHANNEL_NAME_CONTROL,
@@ -397,16 +355,12 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 					"configuration.override.", new Properties()
 				).build()));
 
-		clusterExecutorImpl.setClusterChannelFactory(
-			new TestClusterChannelFactory());
-
-		clusterExecutorImpl.setPortalExecutorManager(
-			new MockPortalExecutorManager());
-
-		clusterExecutorImpl.activate(
-			new MockComponentContext(new HashMapDictionary<>()));
+		clusterExecutorImpl.activate(_bundleContext, Collections.emptyMap());
 
 		return clusterExecutorImpl;
 	}
+
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 
 }

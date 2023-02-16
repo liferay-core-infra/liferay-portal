@@ -14,6 +14,8 @@
 
 package com.liferay.portal.cluster.multiple.internal;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.lang.HashUtil;
@@ -54,7 +56,6 @@ import java.net.UnknownHostException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -76,9 +77,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Tina Tian
@@ -92,11 +90,6 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Override
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
 	public void addClusterEventListener(
 		ClusterEventListener clusterEventListener) {
 
@@ -176,7 +169,7 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Override
 	public List<ClusterEventListener> getClusterEventListeners() {
-		return Collections.unmodifiableList(_clusterEventListeners);
+		return _serviceTrackerList.toList();
 	}
 
 	@Override
@@ -222,12 +215,15 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 			ClusterExecutorConfiguration.class,
 			componentContext.getProperties());
 
+		BundleContext bundleContext = componentContext.getBundleContext();
+
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, ClusterEventListener.class);
+
 		initialize(
 			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_LOGIC_NAME_CONTROL),
 			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL),
 			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_NAME_CONTROL));
-
-		BundleContext bundleContext = componentContext.getBundleContext();
 
 		_serviceRegistration = bundleContext.registerService(
 			PortalInetSocketAddressEventListener.class,
@@ -248,6 +244,8 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		}
 
 		_executorService = null;
+
+		_serviceTrackerList.close();
 
 		_clusterEventListeners.clear();
 		_clusterNodeStatuses.clear();
@@ -304,7 +302,7 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	}
 
 	protected void fireClusterEvent(ClusterEvent clusterEvent) {
-		for (ClusterEventListener listener : _clusterEventListeners) {
+		for (ClusterEventListener listener : _serviceTrackerList) {
 			listener.processClusterEvent(clusterEvent);
 		}
 	}
@@ -640,6 +638,7 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	private ServiceRegistration<PortalInetSocketAddressEventListener>
 		_serviceRegistration;
+	private ServiceTrackerList<ClusterEventListener> _serviceTrackerList;
 
 	private static class ClusterNodeStatus implements Serializable {
 

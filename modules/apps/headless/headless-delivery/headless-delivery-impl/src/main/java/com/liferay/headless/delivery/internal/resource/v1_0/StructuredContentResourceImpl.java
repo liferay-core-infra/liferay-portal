@@ -47,7 +47,7 @@ import com.liferay.headless.delivery.dto.v1_0.util.DDMFormValuesUtil;
 import com.liferay.headless.delivery.dto.v1_0.util.DDMValueUtil;
 import com.liferay.headless.delivery.dto.v1_0.util.StructuredContentUtil;
 import com.liferay.headless.delivery.dynamic.data.mapping.DDMFormFieldUtil;
-import com.liferay.headless.delivery.internal.dto.v1_0.converter.StructuredContentDTOConverter;
+import com.liferay.headless.delivery.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.DisplayPageRendererUtil;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.RatingUtil;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.RenderedContentValueUtil;
@@ -107,6 +107,7 @@ import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -1395,8 +1396,9 @@ public class StructuredContentResourceImpl
 	@Reference
 	private Sorts _sorts;
 
-	@Reference
-	private StructuredContentDTOConverter _structuredContentDTOConverter;
+	@Reference(target = DTOConverterConstants.STRUCTURED_CONTENT_DTO_CONVERTER)
+	private DTOConverter<JournalArticle, StructuredContent>
+		_structuredContentDTOConverter;
 
 	@Reference
 	private UserLocalService _userLocalService;

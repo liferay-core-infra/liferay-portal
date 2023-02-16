@@ -16,8 +16,8 @@ package com.liferay.analytics.settings.rest.internal.resource.v1_0;
 
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.rest.dto.v1_0.ContactOrganization;
-import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.ContactOrganizationDTOConverter;
 import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.ContactOrganizationDTOConverterContext;
+import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.analytics.settings.rest.resource.v1_0.ContactOrganizationResource;
 import com.liferay.portal.kernel.model.Organization;
@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -79,8 +80,11 @@ public class ContactOrganizationResourceImpl
 	@Reference
 	private AnalyticsSettingsManager _analyticsSettingsManager;
 
-	@Reference
-	private ContactOrganizationDTOConverter _contactOrganizationDTOConverter;
+	@Reference(
+		target = DTOConverterConstants.CONTACT_ORGANIZATION_DTO_CONVERTER
+	)
+	private DTOConverter<Organization, ContactOrganization>
+		_contactOrganizationDTOConverter;
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;

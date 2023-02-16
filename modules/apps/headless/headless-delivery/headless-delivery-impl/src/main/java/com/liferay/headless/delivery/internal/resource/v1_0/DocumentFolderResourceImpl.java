@@ -25,7 +25,7 @@ import com.liferay.headless.common.spi.odata.entity.EntityFieldsUtil;
 import com.liferay.headless.common.spi.service.context.ServiceContextRequestUtil;
 import com.liferay.headless.delivery.dto.v1_0.DocumentFolder;
 import com.liferay.headless.delivery.dto.v1_0.util.CustomFieldsUtil;
-import com.liferay.headless.delivery.internal.dto.v1_0.converter.DocumentFolderDTOConverter;
+import com.liferay.headless.delivery.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.delivery.internal.odata.entity.v1_0.DocumentFolderEntityModel;
 import com.liferay.headless.delivery.resource.v1_0.DocumentFolderResource;
 import com.liferay.headless.delivery.search.aggregation.AggregationUtil;
@@ -51,6 +51,7 @@ import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -476,8 +477,8 @@ public class DocumentFolderResourceImpl extends BaseDocumentFolderResourceImpl {
 	@Reference
 	private DLAppService _dlAppService;
 
-	@Reference
-	private DocumentFolderDTOConverter _documentFolderDTOConverter;
+	@Reference(target = DTOConverterConstants.DOCUMENT_FOLDER_DTO_CONVERTER)
+	private DTOConverter<DLFolder, DocumentFolder> _documentFolderDTOConverter;
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;

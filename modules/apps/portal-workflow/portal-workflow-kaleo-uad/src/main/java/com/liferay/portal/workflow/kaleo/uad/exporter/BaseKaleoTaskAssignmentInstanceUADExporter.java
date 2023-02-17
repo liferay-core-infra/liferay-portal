@@ -14,12 +14,16 @@
 
 package com.liferay.portal.workflow.kaleo.uad.exporter;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignmentInstance;
 import com.liferay.portal.workflow.kaleo.service.KaleoTaskAssignmentInstanceLocalService;
 import com.liferay.portal.workflow.kaleo.uad.constants.KaleoUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -57,32 +61,41 @@ public abstract class BaseKaleoTaskAssignmentInstanceUADExporter
 
 	@Override
 	protected String toXmlString(
-		KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance) {
+			KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance)
+		throws IOException {
 
-		StringBundler sb = new StringBundler(13);
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append(
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
+
+		modelNameElement.addText(
 			"com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignmentInstance");
-		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>kaleoTaskAssignmentInstanceId</column-name><column-value><![CDATA[");
-		sb.append(
-			kaleoTaskAssignmentInstance.getKaleoTaskAssignmentInstanceId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(kaleoTaskAssignmentInstance.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(kaleoTaskAssignmentInstance.getUserName());
-		sb.append("]]></column-value></column>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		sb.append("</model>");
+		columnNameElement.addText("kaleoTaskAssignmentInstanceId");
+		columnValueElement.addText(
+			String.valueOf(
+				kaleoTaskAssignmentInstance.
+					getKaleoTaskAssignmentInstanceId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(kaleoTaskAssignmentInstance.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(kaleoTaskAssignmentInstance.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

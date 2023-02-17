@@ -17,9 +17,13 @@ package com.liferay.message.boards.uad.exporter;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,49 +58,67 @@ public abstract class BaseMBThreadUADExporter
 	}
 
 	@Override
-	protected String toXmlString(MBThread mbThread) {
-		StringBundler sb = new StringBundler(28);
+	protected String toXmlString(MBThread mbThread) throws IOException {
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.message.boards.model.MBThread");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>threadId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getThreadId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>rootMessageUserId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getRootMessageUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPostByUserId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getLastPostByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getTitle());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText("com.liferay.message.boards.model.MBThread");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("threadId");
+		columnValueElement.addText(String.valueOf(mbThread.getThreadId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("statusByUserId");
+		columnValueElement.addText(
+			String.valueOf(mbThread.getStatusByUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("statusByUserName");
+		columnValueElement.addCDATA(mbThread.getStatusByUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("rootMessageUserId");
+		columnValueElement.addText(
+			String.valueOf(mbThread.getRootMessageUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("lastPostByUserId");
+		columnValueElement.addText(
+			String.valueOf(mbThread.getLastPostByUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(mbThread.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(mbThread.getUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("title");
+		columnValueElement.addCDATA(mbThread.getTitle());
+
+		return document.formattedString();
 	}
 
 	@Reference

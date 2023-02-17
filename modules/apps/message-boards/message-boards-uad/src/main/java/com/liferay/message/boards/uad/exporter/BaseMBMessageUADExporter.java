@@ -17,9 +17,13 @@ package com.liferay.message.boards.uad.exporter;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,49 +58,65 @@ public abstract class BaseMBMessageUADExporter
 	}
 
 	@Override
-	protected String toXmlString(MBMessage mbMessage) {
-		StringBundler sb = new StringBundler(28);
+	protected String toXmlString(MBMessage mbMessage) throws IOException {
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.message.boards.model.MBMessage");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>messageId</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getMessageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>subject</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getSubject());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>urlSubject</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getUrlSubject());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>body</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getBody());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText("com.liferay.message.boards.model.MBMessage");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("messageId");
+		columnValueElement.addText(String.valueOf(mbMessage.getMessageId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("statusByUserId");
+		columnValueElement.addText(
+			String.valueOf(mbMessage.getStatusByUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("statusByUserName");
+		columnValueElement.addCDATA(mbMessage.getStatusByUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(mbMessage.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(mbMessage.getUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("subject");
+		columnValueElement.addCDATA(mbMessage.getSubject());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("urlSubject");
+		columnValueElement.addCDATA(mbMessage.getUrlSubject());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("body");
+		columnValueElement.addCDATA(mbMessage.getBody());
+
+		return document.formattedString();
 	}
 
 	@Reference

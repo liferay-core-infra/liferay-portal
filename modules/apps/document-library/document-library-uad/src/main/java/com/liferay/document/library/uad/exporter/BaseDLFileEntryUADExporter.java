@@ -17,9 +17,13 @@ package com.liferay.document.library.uad.exporter;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.document.library.uad.constants.DLUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,45 +58,60 @@ public abstract class BaseDLFileEntryUADExporter
 	}
 
 	@Override
-	protected String toXmlString(DLFileEntry dlFileEntry) {
-		StringBundler sb = new StringBundler(25);
+	protected String toXmlString(DLFileEntry dlFileEntry) throws IOException {
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.document.library.kernel.model.DLFileEntry");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>fileEntryId</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getFileEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>fileName</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getFileName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>extension</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getExtension());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getDescription());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText(
+			"com.liferay.document.library.kernel.model.DLFileEntry");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("fileEntryId");
+		columnValueElement.addText(
+			String.valueOf(dlFileEntry.getFileEntryId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(dlFileEntry.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(dlFileEntry.getUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("fileName");
+		columnValueElement.addCDATA(dlFileEntry.getFileName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("extension");
+		columnValueElement.addCDATA(dlFileEntry.getExtension());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("title");
+		columnValueElement.addCDATA(dlFileEntry.getTitle());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("description");
+		columnValueElement.addCDATA(dlFileEntry.getDescription());
+
+		return document.formattedString();
 	}
 
 	@Reference

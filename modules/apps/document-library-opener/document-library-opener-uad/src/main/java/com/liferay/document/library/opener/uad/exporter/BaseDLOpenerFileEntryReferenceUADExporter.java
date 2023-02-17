@@ -17,9 +17,13 @@ package com.liferay.document.library.opener.uad.exporter;
 import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
 import com.liferay.document.library.opener.uad.constants.DLOpenerUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -57,31 +61,40 @@ public abstract class BaseDLOpenerFileEntryReferenceUADExporter
 
 	@Override
 	protected String toXmlString(
-		DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+			DLOpenerFileEntryReference dlOpenerFileEntryReference)
+		throws IOException {
 
-		StringBundler sb = new StringBundler(13);
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append(
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
+
+		modelNameElement.addText(
 			"com.liferay.document.library.opener.model.DLOpenerFileEntryReference");
-		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>dlOpenerFileEntryReferenceId</column-name><column-value><![CDATA[");
-		sb.append(dlOpenerFileEntryReference.getDlOpenerFileEntryReferenceId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(dlOpenerFileEntryReference.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(dlOpenerFileEntryReference.getUserName());
-		sb.append("]]></column-value></column>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		sb.append("</model>");
+		columnNameElement.addText("dlOpenerFileEntryReferenceId");
+		columnValueElement.addText(
+			String.valueOf(
+				dlOpenerFileEntryReference.getDlOpenerFileEntryReferenceId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(dlOpenerFileEntryReference.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(dlOpenerFileEntryReference.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

@@ -14,12 +14,16 @@
 
 package com.liferay.portal.uad.exporter;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.uad.constants.PortalUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,29 +58,35 @@ public abstract class BaseSystemEventUADExporter
 	}
 
 	@Override
-	protected String toXmlString(SystemEvent systemEvent) {
-		StringBundler sb = new StringBundler(13);
+	protected String toXmlString(SystemEvent systemEvent) throws IOException {
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.SystemEvent");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>systemEventId</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getSystemEventId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getUserName());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText("com.liferay.portal.kernel.model.SystemEvent");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("systemEventId");
+		columnValueElement.addText(
+			String.valueOf(systemEvent.getSystemEventId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(systemEvent.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(systemEvent.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

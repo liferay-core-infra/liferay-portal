@@ -14,12 +14,16 @@
 
 package com.liferay.user.groups.admin.uad.exporter;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.groups.admin.uad.constants.UserGroupsAdminUADConstants;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,29 +58,34 @@ public abstract class BaseUserGroupUADExporter
 	}
 
 	@Override
-	protected String toXmlString(UserGroup userGroup) {
-		StringBundler sb = new StringBundler(13);
+	protected String toXmlString(UserGroup userGroup) throws IOException {
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.UserGroup");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>userGroupId</column-name><column-value><![CDATA[");
-		sb.append(userGroup.getUserGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userGroup.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(userGroup.getUserName());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText("com.liferay.portal.kernel.model.UserGroup");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("userGroupId");
+		columnValueElement.addText(String.valueOf(userGroup.getUserGroupId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(userGroup.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(userGroup.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

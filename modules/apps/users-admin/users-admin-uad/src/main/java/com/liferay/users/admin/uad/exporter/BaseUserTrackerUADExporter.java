@@ -14,12 +14,16 @@
 
 package com.liferay.users.admin.uad.exporter;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.UserTracker;
 import com.liferay.portal.kernel.service.UserTrackerLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.users.admin.uad.constants.UsersAdminUADConstants;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,25 +58,29 @@ public abstract class BaseUserTrackerUADExporter
 	}
 
 	@Override
-	protected String toXmlString(UserTracker userTracker) {
-		StringBundler sb = new StringBundler(10);
+	protected String toXmlString(UserTracker userTracker) throws IOException {
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.UserTracker");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>userTrackerId</column-name><column-value><![CDATA[");
-		sb.append(userTracker.getUserTrackerId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userTracker.getUserId());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText("com.liferay.portal.kernel.model.UserTracker");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("userTrackerId");
+		columnValueElement.addText(
+			String.valueOf(userTracker.getUserTrackerId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(userTracker.getUserId()));
+
+		return document.formattedString();
 	}
 
 	@Reference

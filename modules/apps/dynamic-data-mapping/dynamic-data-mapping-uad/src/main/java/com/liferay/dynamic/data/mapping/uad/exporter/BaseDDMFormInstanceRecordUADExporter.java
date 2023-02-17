@@ -17,9 +17,13 @@ package com.liferay.dynamic.data.mapping.uad.exporter;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalService;
 import com.liferay.dynamic.data.mapping.uad.constants.DDMUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,42 +58,58 @@ public abstract class BaseDDMFormInstanceRecordUADExporter
 	}
 
 	@Override
-	protected String toXmlString(DDMFormInstanceRecord ddmFormInstanceRecord) {
-		StringBundler sb = new StringBundler(22);
+	protected String toXmlString(DDMFormInstanceRecord ddmFormInstanceRecord)
+		throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append(
+		Document document = SAXReaderUtil.createDocument();
+
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
+
+		modelNameElement.addText(
 			"com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord");
-		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>formInstanceRecordId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstanceRecord.getFormInstanceRecordId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>versionUserId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstanceRecord.getVersionUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>versionUserName</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstanceRecord.getVersionUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstanceRecord.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstanceRecord.getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>version</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstanceRecord.getVersion());
-		sb.append("]]></column-value></column>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		sb.append("</model>");
+		columnNameElement.addText("formInstanceRecordId");
+		columnValueElement.addText(
+			String.valueOf(ddmFormInstanceRecord.getFormInstanceRecordId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("versionUserId");
+		columnValueElement.addText(
+			String.valueOf(ddmFormInstanceRecord.getVersionUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("versionUserName");
+		columnValueElement.addCDATA(ddmFormInstanceRecord.getVersionUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(ddmFormInstanceRecord.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(ddmFormInstanceRecord.getUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("version");
+		columnValueElement.addCDATA(ddmFormInstanceRecord.getVersion());
+
+		return document.formattedString();
 	}
 
 	@Reference

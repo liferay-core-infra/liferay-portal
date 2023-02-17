@@ -15,11 +15,15 @@
 package com.liferay.layout.uad.exporter;
 
 import com.liferay.layout.uad.constants.LayoutUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,29 +58,39 @@ public abstract class BaseLayoutFriendlyURLUADExporter
 	}
 
 	@Override
-	protected String toXmlString(LayoutFriendlyURL layoutFriendlyURL) {
-		StringBundler sb = new StringBundler(13);
+	protected String toXmlString(LayoutFriendlyURL layoutFriendlyURL)
+		throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.LayoutFriendlyURL");
-		sb.append("</model-name>");
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append(
-			"<column><column-name>layoutFriendlyURLId</column-name><column-value><![CDATA[");
-		sb.append(layoutFriendlyURL.getLayoutFriendlyURLId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(layoutFriendlyURL.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(layoutFriendlyURL.getUserName());
-		sb.append("]]></column-value></column>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append("</model>");
+		modelNameElement.addText(
+			"com.liferay.portal.kernel.model.LayoutFriendlyURL");
 
-		return sb.toString();
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("layoutFriendlyURLId");
+		columnValueElement.addText(
+			String.valueOf(layoutFriendlyURL.getLayoutFriendlyURLId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(layoutFriendlyURL.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(layoutFriendlyURL.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

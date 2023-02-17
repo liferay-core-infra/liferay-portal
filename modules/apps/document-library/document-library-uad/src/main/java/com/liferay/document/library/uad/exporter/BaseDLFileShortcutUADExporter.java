@@ -17,9 +17,13 @@ package com.liferay.document.library.uad.exporter;
 import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.document.library.kernel.service.DLFileShortcutLocalService;
 import com.liferay.document.library.uad.constants.DLUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,37 +58,51 @@ public abstract class BaseDLFileShortcutUADExporter
 	}
 
 	@Override
-	protected String toXmlString(DLFileShortcut dlFileShortcut) {
-		StringBundler sb = new StringBundler(19);
+	protected String toXmlString(DLFileShortcut dlFileShortcut)
+		throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.document.library.kernel.model.DLFileShortcut");
-		sb.append("</model-name>");
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append(
-			"<column><column-name>fileShortcutId</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getFileShortcutId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getUserName());
-		sb.append("]]></column-value></column>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append("</model>");
+		modelNameElement.addText(
+			"com.liferay.document.library.kernel.model.DLFileShortcut");
 
-		return sb.toString();
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("fileShortcutId");
+		columnValueElement.addText(
+			String.valueOf(dlFileShortcut.getFileShortcutId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("statusByUserId");
+		columnValueElement.addText(
+			String.valueOf(dlFileShortcut.getStatusByUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("statusByUserName");
+		columnValueElement.addCDATA(dlFileShortcut.getStatusByUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(dlFileShortcut.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(dlFileShortcut.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

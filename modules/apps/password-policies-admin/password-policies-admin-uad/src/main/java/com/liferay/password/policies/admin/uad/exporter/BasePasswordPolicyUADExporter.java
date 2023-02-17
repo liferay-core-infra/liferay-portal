@@ -15,11 +15,15 @@
 package com.liferay.password.policies.admin.uad.exporter;
 
 import com.liferay.password.policies.admin.uad.constants.PasswordPoliciesAdminUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.service.PasswordPolicyLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -55,29 +59,38 @@ public abstract class BasePasswordPolicyUADExporter
 	}
 
 	@Override
-	protected String toXmlString(PasswordPolicy passwordPolicy) {
-		StringBundler sb = new StringBundler(13);
+	protected String toXmlString(PasswordPolicy passwordPolicy)
+		throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.PasswordPolicy");
-		sb.append("</model-name>");
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append(
-			"<column><column-name>passwordPolicyId</column-name><column-value><![CDATA[");
-		sb.append(passwordPolicy.getPasswordPolicyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(passwordPolicy.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(passwordPolicy.getUserName());
-		sb.append("]]></column-value></column>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append("</model>");
+		modelNameElement.addText(
+			"com.liferay.portal.kernel.model.PasswordPolicy");
 
-		return sb.toString();
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("passwordPolicyId");
+		columnValueElement.addText(
+			String.valueOf(passwordPolicy.getPasswordPolicyId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(passwordPolicy.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(passwordPolicy.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

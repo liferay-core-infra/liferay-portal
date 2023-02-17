@@ -17,9 +17,13 @@ package com.liferay.document.library.uad.exporter;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.document.library.uad.constants.DLUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,29 +58,38 @@ public abstract class BaseDLFileEntryTypeUADExporter
 	}
 
 	@Override
-	protected String toXmlString(DLFileEntryType dlFileEntryType) {
-		StringBundler sb = new StringBundler(13);
+	protected String toXmlString(DLFileEntryType dlFileEntryType)
+		throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.document.library.kernel.model.DLFileEntryType");
-		sb.append("</model-name>");
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append(
-			"<column><column-name>fileEntryTypeId</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntryType.getFileEntryTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntryType.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntryType.getUserName());
-		sb.append("]]></column-value></column>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append("</model>");
+		modelNameElement.addText(
+			"com.liferay.document.library.kernel.model.DLFileEntryType");
 
-		return sb.toString();
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("fileEntryTypeId");
+		columnValueElement.addText(
+			String.valueOf(dlFileEntryType.getFileEntryTypeId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(dlFileEntryType.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(dlFileEntryType.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

@@ -14,12 +14,16 @@
 
 package com.liferay.portal.tools.service.builder.test.uad.exporter;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.tools.service.builder.test.model.UADPartialEntry;
 import com.liferay.portal.tools.service.builder.test.service.UADPartialEntryLocalService;
 import com.liferay.portal.tools.service.builder.test.uad.constants.SBTestUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,34 +58,44 @@ public abstract class BaseUADPartialEntryUADExporter
 	}
 
 	@Override
-	protected String toXmlString(UADPartialEntry uadPartialEntry) {
-		StringBundler sb = new StringBundler(16);
+	protected String toXmlString(UADPartialEntry uadPartialEntry)
+		throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append(
+		Document document = SAXReaderUtil.createDocument();
+
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
+
+		modelNameElement.addText(
 			"com.liferay.portal.tools.service.builder.test.model.UADPartialEntry");
-		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>uadPartialEntryId</column-name><column-value><![CDATA[");
-		sb.append(uadPartialEntry.getUadPartialEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(uadPartialEntry.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(uadPartialEntry.getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>message</column-name><column-value><![CDATA[");
-		sb.append(uadPartialEntry.getMessage());
-		sb.append("]]></column-value></column>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		sb.append("</model>");
+		columnNameElement.addText("uadPartialEntryId");
+		columnValueElement.addText(
+			String.valueOf(uadPartialEntry.getUadPartialEntryId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("userId");
+		columnValueElement.addText(String.valueOf(uadPartialEntry.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(uadPartialEntry.getUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("message");
+		columnValueElement.addCDATA(uadPartialEntry.getMessage());
+
+		return document.formattedString();
 	}
 
 	@Reference

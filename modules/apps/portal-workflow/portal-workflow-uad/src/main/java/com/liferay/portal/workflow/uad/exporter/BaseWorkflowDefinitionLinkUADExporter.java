@@ -14,12 +14,16 @@
 
 package com.liferay.portal.workflow.uad.exporter;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.workflow.uad.constants.PortalWorkflowUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -55,31 +59,40 @@ public abstract class BaseWorkflowDefinitionLinkUADExporter
 	}
 
 	@Override
-	protected String toXmlString(
-		WorkflowDefinitionLink workflowDefinitionLink) {
+	protected String toXmlString(WorkflowDefinitionLink workflowDefinitionLink)
+		throws IOException {
 
-		StringBundler sb = new StringBundler(13);
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.WorkflowDefinitionLink");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>workflowDefinitionLinkId</column-name><column-value><![CDATA[");
-		sb.append(workflowDefinitionLink.getWorkflowDefinitionLinkId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(workflowDefinitionLink.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(workflowDefinitionLink.getUserName());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText(
+			"com.liferay.portal.kernel.model.WorkflowDefinitionLink");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("workflowDefinitionLinkId");
+		columnValueElement.addText(
+			String.valueOf(
+				workflowDefinitionLink.getWorkflowDefinitionLinkId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(workflowDefinitionLink.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(workflowDefinitionLink.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

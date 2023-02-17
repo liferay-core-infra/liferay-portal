@@ -17,9 +17,13 @@ package com.liferay.client.extension.uad.exporter;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
 import com.liferay.client.extension.uad.constants.ClientExtensionUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -55,37 +59,52 @@ public abstract class BaseClientExtensionEntryUADExporter
 	}
 
 	@Override
-	protected String toXmlString(ClientExtensionEntry clientExtensionEntry) {
-		StringBundler sb = new StringBundler(19);
+	protected String toXmlString(ClientExtensionEntry clientExtensionEntry)
+		throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.client.extension.model.ClientExtensionEntry");
-		sb.append("</model-name>");
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append(
-			"<column><column-name>clientExtensionEntryId</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getClientExtensionEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getUserName());
-		sb.append("]]></column-value></column>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append("</model>");
+		modelNameElement.addText(
+			"com.liferay.client.extension.model.ClientExtensionEntry");
 
-		return sb.toString();
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("clientExtensionEntryId");
+		columnValueElement.addText(
+			String.valueOf(clientExtensionEntry.getClientExtensionEntryId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("statusByUserId");
+		columnValueElement.addText(
+			String.valueOf(clientExtensionEntry.getStatusByUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("statusByUserName");
+		columnValueElement.addCDATA(clientExtensionEntry.getStatusByUserName());
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(clientExtensionEntry.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(clientExtensionEntry.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

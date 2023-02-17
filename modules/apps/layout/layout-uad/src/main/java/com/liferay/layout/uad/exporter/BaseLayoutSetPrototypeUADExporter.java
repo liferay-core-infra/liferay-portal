@@ -15,11 +15,15 @@
 package com.liferay.layout.uad.exporter;
 
 import com.liferay.layout.uad.constants.LayoutUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -54,29 +58,39 @@ public abstract class BaseLayoutSetPrototypeUADExporter
 	}
 
 	@Override
-	protected String toXmlString(LayoutSetPrototype layoutSetPrototype) {
-		StringBundler sb = new StringBundler(13);
+	protected String toXmlString(LayoutSetPrototype layoutSetPrototype)
+		throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.LayoutSetPrototype");
-		sb.append("</model-name>");
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append(
-			"<column><column-name>layoutSetPrototypeId</column-name><column-value><![CDATA[");
-		sb.append(layoutSetPrototype.getLayoutSetPrototypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(layoutSetPrototype.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(layoutSetPrototype.getUserName());
-		sb.append("]]></column-value></column>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append("</model>");
+		modelNameElement.addText(
+			"com.liferay.portal.kernel.model.LayoutSetPrototype");
 
-		return sb.toString();
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("layoutSetPrototypeId");
+		columnValueElement.addText(
+			String.valueOf(layoutSetPrototype.getLayoutSetPrototypeId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(layoutSetPrototype.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(layoutSetPrototype.getUserName());
+
+		return document.formattedString();
 	}
 
 	@Reference

@@ -425,8 +425,10 @@ public class Log4jConfigUtilTest {
 	}
 
 	private String _generateCompanyLogRoutingAppenderConfigurationContent(
-		String appenderName, String dirPattern, String fileNamePattern,
-		String loggerName, String priority) {
+		String dirPattern, String fileNamePattern, String loggerName,
+		String priority) {
+
+		String appenderName = "COMPANY_LOG_ROUTING_TEXT_FILE";
 
 		StringBundler sb = new StringBundler(17);
 
@@ -590,7 +592,7 @@ public class Log4jConfigUtilTest {
 
 			Log4jConfigUtil.configureLog4J(
 				_generateCompanyLogRoutingAppenderConfigurationContent(
-					"COMPANY_LOG_ROUTING_TEXT_FILE", tempLogFileDirPathString,
+					tempLogFileDirPathString,
 					"liferay-@company.id@.%d{yyyy-MM-dd}.xml.log", loggerName,
 					_INFO));
 

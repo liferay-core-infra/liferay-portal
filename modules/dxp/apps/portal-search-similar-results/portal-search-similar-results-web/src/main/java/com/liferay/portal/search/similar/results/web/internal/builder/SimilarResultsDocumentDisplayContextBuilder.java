@@ -600,7 +600,7 @@ public class SimilarResultsDocumentDisplayContextBuilder {
 
 		SimilarResultsPortletPreferences similarResultsPortletPreferences =
 			new SimilarResultsPortletPreferencesImpl(
-				Optional.of(_renderRequest.getPreferences()));
+				_renderRequest.getPreferences());
 
 		if (Objects.equals(
 				similarResultsPortletPreferences.getLinkBehavior(),

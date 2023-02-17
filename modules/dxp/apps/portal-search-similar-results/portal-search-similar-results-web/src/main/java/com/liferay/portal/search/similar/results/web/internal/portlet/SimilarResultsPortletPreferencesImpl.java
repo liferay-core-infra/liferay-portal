@@ -29,9 +29,10 @@ public class SimilarResultsPortletPreferencesImpl
 	implements SimilarResultsPortletPreferences {
 
 	public SimilarResultsPortletPreferencesImpl(
-		Optional<PortletPreferences> optional) {
+		PortletPreferences portletPreferences) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(optional);
+		_portletPreferencesHelper = new PortletPreferencesHelper(
+			portletPreferences);
 	}
 
 	@Override

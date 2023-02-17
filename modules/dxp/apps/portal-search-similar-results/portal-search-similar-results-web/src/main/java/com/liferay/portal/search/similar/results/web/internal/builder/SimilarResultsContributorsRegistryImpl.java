@@ -46,11 +46,11 @@ public class SimilarResultsContributorsRegistryImpl
 		for (SimilarResultsContributor similarResultsContributor :
 				_serviceTrackerList) {
 
-			Optional<SimilarResultsRoute> similarResultsRouteOptional =
-				_detectRoute(similarResultsContributor, urlString);
+			SimilarResultsRoute similarResultsRoute = _detectRoute(
+				similarResultsContributor, urlString);
 
-			if (similarResultsRouteOptional.isPresent()) {
-				return similarResultsRouteOptional;
+			if (similarResultsRoute != null) {
+				return Optional.of(similarResultsRoute);
 			}
 		}
 

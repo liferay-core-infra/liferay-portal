@@ -79,6 +79,7 @@ import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldSupport;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.util.DTOConverterUtil;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.text.DateFormat;
@@ -114,8 +115,8 @@ public class OrganizationResourceImpl
 		throws Exception {
 
 		deleteAccountOrganization(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, externalReferenceCode),
 			organizationId);
 	}
 
@@ -139,12 +140,9 @@ public class OrganizationResourceImpl
 			String externalReferenceCode)
 		throws Exception {
 
-		com.liferay.portal.kernel.model.Organization organization =
-			_organizationService.getOrganizationByExternalReferenceCode(
-				contextCompany.getCompanyId(), externalReferenceCode);
-
 		_organizationService.deleteOrganization(
-			organization.getOrganizationId());
+			DTOConverterUtil.getModelPrimaryKey(
+				_organizationResourceDTOConverter, externalReferenceCode));
 	}
 
 	@Override
@@ -174,8 +172,8 @@ public class OrganizationResourceImpl
 		throws Exception {
 
 		return getAccountOrganizationsPage(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, externalReferenceCode),
 			search, filter, pagination, sorts);
 	}
 
@@ -304,8 +302,8 @@ public class OrganizationResourceImpl
 		throws Exception {
 
 		postAccountOrganization(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, externalReferenceCode),
 			organizationId);
 	}
 
@@ -766,15 +764,8 @@ public class OrganizationResourceImpl
 			return 0;
 		}
 
-		com.liferay.portal.kernel.model.Organization
-			serviceBuilderOrganization =
-				_organizationResourceDTOConverter.getObject(organizationId);
-
-		if (serviceBuilderOrganization == null) {
-			return GetterUtil.getLong(organizationId);
-		}
-
-		return serviceBuilderOrganization.getOrganizationId();
+		return DTOConverterUtil.getModelPrimaryKey(
+			_organizationResourceDTOConverter, organizationId);
 	}
 
 	private List<Website> _getWebsites(Organization organization) {

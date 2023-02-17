@@ -85,6 +85,7 @@ public class PageEntityExtensionWriterInterceptor implements WriterInterceptor {
 						item,
 						entityExtensionHandler.getExtendedProperties(
 							_company.getCompanyId(), item),
+						null,
 						entityExtensionHandler.getFilteredPropertyNames(
 							_company.getCompanyId(), item)));
 			}

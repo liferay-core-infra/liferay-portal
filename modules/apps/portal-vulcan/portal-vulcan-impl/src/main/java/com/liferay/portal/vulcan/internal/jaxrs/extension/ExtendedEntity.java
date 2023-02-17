@@ -41,7 +41,7 @@ public class ExtendedEntity {
 
 	public static ExtendedEntity extend(
 		Object entity, Map<String, Serializable> extendedProperties,
-		Set<String> filteredPropertyKeys) {
+		Set<String> fieldsQueryParam, Set<String> filteredPropertyKeys) {
 
 		if (extendedProperties == null) {
 			extendedProperties = Collections.emptyMap();
@@ -51,8 +51,12 @@ public class ExtendedEntity {
 			filteredPropertyKeys = Collections.emptySet();
 		}
 
+		if (fieldsQueryParam == null) {
+			fieldsQueryParam = Collections.emptySet();
+		}
+
 		return new ExtendedEntity(
-			entity, extendedProperties, filteredPropertyKeys);
+			entity, extendedProperties, fieldsQueryParam, filteredPropertyKeys);
 	}
 
 	@JsonUnwrapped
@@ -67,7 +71,7 @@ public class ExtendedEntity {
 
 	private ExtendedEntity(
 		Object entity, Map<String, Serializable> extendedProperties,
-		Set<String> filteredPropertyNames) {
+		Set<String> fieldsQueryParam, Set<String> filteredPropertyNames) {
 
 		_entity = entity;
 
@@ -79,18 +83,27 @@ public class ExtendedEntity {
 
 		for (String key : filteredPropertyNames) {
 			_extendedProperties.put(key, null);
+			fieldsQueryParam.remove(key);
 		}
 
 		for (Field field : _getAllFields()) {
-			if (_extendedProperties.containsKey(field.getName())) {
-				try {
+			try {
+				if (_extendedProperties.containsKey(field.getName())) {
 					field.setAccessible(true);
 					field.set(_entity, null);
 				}
-				catch (Exception exception) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(exception);
-					}
+				else if (fieldsQueryParam.contains(field.getName())) {
+					field.setAccessible(true);
+
+					_extendedProperties.put(
+						field.getName(), (Serializable)field.get(entity));
+
+					field.set(_entity, null);
+				}
+			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception);
 				}
 			}
 		}

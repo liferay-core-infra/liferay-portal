@@ -17,10 +17,17 @@ package com.liferay.portal.vulcan.internal.jaxrs.writer.interceptor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.fields.FieldsQueryParam;
+import com.liferay.portal.vulcan.fields.RestrictFieldsQueryParam;
 import com.liferay.portal.vulcan.internal.extension.EntityExtensionHandler;
 import com.liferay.portal.vulcan.internal.jaxrs.extension.ExtendedEntity;
 
 import java.io.IOException;
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -58,15 +65,26 @@ public class EntityExtensionWriterInterceptor implements WriterInterceptor {
 		throws IOException {
 
 		try {
+			Map<String, Serializable> extendedProperties =
+				entityExtensionHandler.getExtendedProperties(
+					_company.getCompanyId(),
+					writerInterceptorContext.getEntity());
+
+			Set<String> filteredPropertyNames =
+				entityExtensionHandler.getFilteredPropertyNames(
+					_company.getCompanyId(),
+					writerInterceptorContext.getEntity());
+
+			Optional.ofNullable(
+				_restrictFieldsQueryParam.getRestrictFieldNames()
+			).ifPresent(
+				filteredPropertyNames::addAll
+			);
+
 			writerInterceptorContext.setEntity(
 				ExtendedEntity.extend(
-					writerInterceptorContext.getEntity(),
-					entityExtensionHandler.getExtendedProperties(
-						_company.getCompanyId(),
-						writerInterceptorContext.getEntity()),
-					entityExtensionHandler.getFilteredPropertyNames(
-						_company.getCompanyId(),
-						writerInterceptorContext.getEntity())));
+					writerInterceptorContext.getEntity(), extendedProperties,
+					_fieldsQueryParam.getFieldNames(), filteredPropertyNames));
 
 			writerInterceptorContext.setGenericType(ExtendedEntity.class);
 		}
@@ -98,6 +116,12 @@ public class EntityExtensionWriterInterceptor implements WriterInterceptor {
 	private Company _company;
 
 	@Context
+	private FieldsQueryParam _fieldsQueryParam;
+
+	@Context
 	private Providers _providers;
+
+	@Context
+	private RestrictFieldsQueryParam _restrictFieldsQueryParam;
 
 }

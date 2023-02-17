@@ -67,17 +67,18 @@ public class SimilarResultsPortletSharedSearchContributor
 	public void contribute(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
-		Optional<SimilarResultsRoute> optional =
+		SimilarResultsRoute similarResultsRoute =
 			similarResultsContributorsRegistry.detectRoute(
 				_getURLString(portletSharedSearchSettings));
 
-		optional.flatMap(
-			similarResultsRoute -> _getSimilarResultsInputOptional(
-				getGroupId(portletSharedSearchSettings), similarResultsRoute)
-		).ifPresent(
-			similarResultsInput -> contribute(
-				similarResultsInput, portletSharedSearchSettings)
-		);
+		if (similarResultsRoute != null) {
+			_getSimilarResultsInputOptional(
+				getGroupId(portletSharedSearchSettings), similarResultsRoute
+			).ifPresent(
+				similarResultsInput -> contribute(
+					similarResultsInput, portletSharedSearchSettings)
+			);
+		}
 	}
 
 	protected void contribute(

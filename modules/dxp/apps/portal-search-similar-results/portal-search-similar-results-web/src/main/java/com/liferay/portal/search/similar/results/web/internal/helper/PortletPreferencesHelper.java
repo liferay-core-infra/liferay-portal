@@ -32,9 +32,13 @@ public class PortletPreferencesHelper {
 	}
 
 	public Optional<Boolean> getBoolean(String key) {
-		Optional<String> valueOptional = _getValue(key);
+		String value = _getValue(key);
 
-		return valueOptional.map(GetterUtil::getBoolean);
+		if (value == null) {
+			return Optional.empty();
+		}
+
+		return Optional.of(GetterUtil.getBoolean(value));
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
@@ -44,9 +48,13 @@ public class PortletPreferencesHelper {
 	}
 
 	public Optional<Integer> getInteger(String key) {
-		Optional<String> valueOptional = _getValue(key);
+		String value = _getValue(key);
 
-		return valueOptional.map(GetterUtil::getInteger);
+		if (value == null) {
+			return Optional.empty();
+		}
+
+		return Optional.of(GetterUtil.getInteger(value));
 	}
 
 	public int getInteger(String key, int defaultValue) {
@@ -56,7 +64,7 @@ public class PortletPreferencesHelper {
 	}
 
 	public Optional<String> getString(String key) {
-		return _getValue(key);
+		return Optional.ofNullable(_getValue(key));
 	}
 
 	public String getString(String key, String defaultValue) {
@@ -65,14 +73,13 @@ public class PortletPreferencesHelper {
 		return valueOptional.orElse(defaultValue);
 	}
 
-	private Optional<String> _getValue(String key) {
+	private String _getValue(String key) {
 		if (_portletPreferences == null) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.ofNullable(
-			SearchStringUtil.maybe(
-				_portletPreferences.getValue(key, StringPool.BLANK)));
+		return SearchStringUtil.maybe(
+			_portletPreferences.getValue(key, StringPool.BLANK));
 	}
 
 	private final PortletPreferences _portletPreferences;

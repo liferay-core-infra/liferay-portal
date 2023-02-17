@@ -978,6 +978,52 @@ public class SQLDSLTest {
 	}
 
 	@Test
+	public void testPredicateNotOf() {
+		Predicate leftPredicate = MainExampleTable.INSTANCE.nameColumn.eq(
+			"one");
+		Predicate rightPredicate = MainExampleTable.INSTANCE.nameColumn.eq(
+			"two");
+
+		DefaultPredicate defaultPredicate = new DefaultPredicate(
+			leftPredicate, Operand.OR, rightPredicate);
+
+		Predicate ltePredicate =
+			MainExampleTable.INSTANCE.mainExampleIdColumn.lte(3L);
+
+		Predicate notLtePredicate = Predicate.not(ltePredicate);
+
+		String informalQuery =
+			"MainExample.mainExampleId <= ? not (MainExample.mainExampleId " +
+				"<= ?) and MainExample.name = ? or MainExample.name = ?";
+
+		Assert.assertEquals(
+			informalQuery,
+			String.valueOf(notLtePredicate.and(defaultPredicate)));
+
+		Predicate notOfLtePredicate = Predicate.notOf(ltePredicate);
+
+		Assert.assertSame(
+			notOfLtePredicate,
+			notOfLtePredicate.notOf((Expression<Boolean>)null));
+
+		String formalQueryNotOfAnd =
+			" not (MainExample.mainExampleId <= ?) and MainExample.name = ? " +
+				"or MainExample.name = ?";
+
+		Assert.assertEquals(
+			formalQueryNotOfAnd,
+			String.valueOf(notOfLtePredicate.and(defaultPredicate)));
+
+		String formalQueryAndNotOf =
+			"MainExample.name = ? or MainExample.name = ? and  not " +
+				"(MainExample.mainExampleId <= ?)";
+
+		Assert.assertEquals(
+			formalQueryAndNotOf,
+			String.valueOf(defaultPredicate.and(notOfLtePredicate)));
+	}
+
+	@Test
 	public void testPredicateParentheses() {
 		Predicate leftPredicate =
 			MainExampleTable.INSTANCE.mainExampleIdColumn.gte(1L);

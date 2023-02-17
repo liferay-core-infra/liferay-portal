@@ -51,20 +51,24 @@ public class PortletPreferencesHelper {
 		return value;
 	}
 
-	public Optional<Integer> getInteger(String key) {
+	public Integer getInteger(String key) {
 		String value = _getValue(key);
 
 		if (value == null) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.of(GetterUtil.getInteger(value));
+		return GetterUtil.getInteger(value);
 	}
 
 	public int getInteger(String key, int defaultValue) {
-		Optional<Integer> valueOptional = getInteger(key);
+		Integer value = getInteger(key);
 
-		return valueOptional.orElse(defaultValue);
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
 	}
 
 	public Optional<String> getString(String key) {

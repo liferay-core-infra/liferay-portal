@@ -132,9 +132,7 @@ public class SimilarResultsPortletPreferencesImpl
 	}
 
 	private Integer _getIntegerNullable(String key) {
-		Optional<Integer> optional = _portletPreferencesHelper.getInteger(key);
-
-		return optional.orElse(null);
+		return _portletPreferencesHelper.getInteger(key);
 	}
 
 	private String _getStringNullable(String key) {

@@ -978,6 +978,37 @@ public class SQLDSLTest {
 	}
 
 	@Test
+	public void testPredicateNotOf() {
+		Predicate ltePredicate =
+			MainExampleTable.INSTANCE.mainExampleIdColumn.lte(3L);
+
+		Predicate notLtePredicate = Predicate.notOf(
+			ltePredicate
+		).notOf(
+			(Expression<Boolean>)null
+		);
+
+		Predicate leftPredicate = MainExampleTable.INSTANCE.nameColumn.eq(
+			"one");
+		Predicate rightPredicate = MainExampleTable.INSTANCE.nameColumn.eq(
+			"two");
+
+		DefaultPredicate defaultPredicate = new DefaultPredicate(
+			leftPredicate, Operand.OR, rightPredicate);
+
+		Assert.assertSame(leftPredicate, defaultPredicate.getLeftExpression());
+		Assert.assertSame(Operand.OR, defaultPredicate.getOperand());
+		Assert.assertSame(
+			rightPredicate, defaultPredicate.getRightExpression());
+
+		Assert.assertNotNull(defaultPredicate.not((Expression<Boolean>)null));
+		Assert.assertEquals(
+			" not (MainExample.mainExampleId <= ?) and MainExample.name = ? " +
+				"or MainExample.name = ?",
+			String.valueOf(notLtePredicate.and(defaultPredicate)));
+	}
+
+	@Test
 	public void testPredicateParentheses() {
 		Predicate leftPredicate =
 			MainExampleTable.INSTANCE.mainExampleIdColumn.gte(1L);

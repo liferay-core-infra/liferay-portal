@@ -510,8 +510,8 @@ public class AccountResourceImpl
 	@Reference
 	private AccountEntryService _accountEntryService;
 
-	@Reference
-	private AccountResourceDTOConverter _accountResourceDTOConverter;
+	@Reference(target = DTOConverterConstants.ACCOUNT_RESOURCE_DTO_CONVERTER)
+	private DTOConverter<AccountEntry, Account> _accountResourceDTOConverter;
 
 	private final EntityModel _entityModel = new AccountEntityModel();
 

@@ -58,10 +58,6 @@ public class SearchStringUtil {
 			return new String[0];
 		}
 
-		return _splitAndUnquote(s);
-	}
-
-	private static String[] _splitAndUnquote(String s) {
 		return TransformUtil.transform(
 			TransformUtil.transform(
 				StringUtil.split(s.trim(), CharPool.COMMA), String::trim,

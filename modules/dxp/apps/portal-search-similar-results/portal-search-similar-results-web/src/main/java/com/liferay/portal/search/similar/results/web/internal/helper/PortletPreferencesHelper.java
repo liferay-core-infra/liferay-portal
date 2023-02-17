@@ -31,20 +31,24 @@ public class PortletPreferencesHelper {
 		_portletPreferences = portletPreferences;
 	}
 
-	public Optional<Boolean> getBoolean(String key) {
+	public Boolean getBoolean(String key) {
 		String value = _getValue(key);
 
 		if (value == null) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.of(GetterUtil.getBoolean(value));
+		return GetterUtil.getBoolean(value);
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
-		Optional<Boolean> valueOptional = getBoolean(key);
+		Boolean value = getBoolean(key);
 
-		return valueOptional.orElse(defaultValue);
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
 	}
 
 	public Optional<Integer> getInteger(String key) {

@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
@@ -33,6 +34,7 @@ import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.PortalInetSocketAddressEventListener;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -49,6 +51,8 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.Mockito;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -91,10 +95,8 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		};
 
-		BundleContext bundleContext = _componentContext.getBundleContext();
-
 		ServiceRegistration<ClusterEventListener> serviceRegistration =
-			bundleContext.registerService(
+			_bundleContext.registerService(
 				ClusterEventListener.class, clusterEventListener,
 				new HashMapDictionary<>());
 
@@ -378,6 +380,15 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		Assert.assertTrue(ClusterInvokeThreadLocal.isEnabled());
 	}
 
+	@Test
+	public void testRegisterPortalInetSocketAddressEventListener() {
+		_getClusterExecutorImpl();
+
+		Assert.assertNotNull(
+			_bundleContext.getServiceReference(
+				PortalInetSocketAddressEventListener.class));
+	}
+
 	private ClusterExecutorImpl _getClusterExecutorImpl() {
 		ClusterExecutorImpl clusterExecutorImpl = new ClusterExecutorImpl();
 
@@ -400,12 +411,27 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 					"configuration.override.", new Properties()
 				).build()));
 
-		clusterExecutorImpl.activate(_componentContext);
+		ComponentContext componentContext = Mockito.mock(
+			ComponentContext.class);
+
+		Mockito.when(
+			componentContext.getBundleContext()
+		).thenReturn(
+			_bundleContext
+		);
+
+		Mockito.when(
+			componentContext.getProperties()
+		).thenReturn(
+			new HashMapDictionary<>()
+		);
+
+		clusterExecutorImpl.activate(componentContext);
 
 		return clusterExecutorImpl;
 	}
 
-	private static final ComponentContext _componentContext =
-		new MockComponentContext(new HashMapDictionary<>());
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 
 }

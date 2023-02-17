@@ -22,6 +22,7 @@ import com.liferay.account.service.AccountEntryService;
 import com.liferay.headless.admin.user.dto.v1_0.Account;
 import com.liferay.headless.admin.user.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.CustomFieldsUtil;
+import com.liferay.headless.admin.user.internal.dto.v1_0.util.DTOConverterUtil;
 import com.liferay.headless.admin.user.internal.odata.entity.v1_0.AccountEntityModel;
 import com.liferay.headless.admin.user.resource.v1_0.AccountResource;
 import com.liferay.headless.common.spi.service.context.ServiceContextRequestUtil;
@@ -86,8 +87,8 @@ public class AccountResourceImpl
 		throws Exception {
 
 		deleteAccount(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode));
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode));
 	}
 
 	@Override
@@ -109,8 +110,8 @@ public class AccountResourceImpl
 		for (String externalReferenceCode : externalReferenceCodes) {
 			_accountEntryOrganizationRelLocalService.
 				deleteAccountEntryOrganizationRel(
-					_accountResourceDTOConverter.getAccountEntryId(
-						externalReferenceCode),
+					DTOConverterUtil.getAccountEntryId(
+						_accountResourceDTOConverter, externalReferenceCode),
 					organizationId);
 		}
 	}
@@ -126,8 +127,8 @@ public class AccountResourceImpl
 		throws Exception {
 
 		return getAccount(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode));
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode));
 	}
 
 	@Override
@@ -268,8 +269,8 @@ public class AccountResourceImpl
 		for (String externalReferenceCode : externalReferenceCodes) {
 			_accountEntryOrganizationRelLocalService.
 				addAccountEntryOrganizationRel(
-					_accountResourceDTOConverter.getAccountEntryId(
-						externalReferenceCode),
+					DTOConverterUtil.getAccountEntryId(
+						_accountResourceDTOConverter, externalReferenceCode),
 					organizationId);
 		}
 	}

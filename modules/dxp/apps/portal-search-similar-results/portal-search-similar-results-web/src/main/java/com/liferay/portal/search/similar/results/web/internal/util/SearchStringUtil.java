@@ -53,12 +53,12 @@ public class SearchStringUtil {
 		return actual;
 	}
 
-	public static String[] splitAndUnquote(Optional<String> optional) {
-		return optional.map(
-			SearchStringUtil::_splitAndUnquote
-		).orElse(
-			new String[0]
-		);
+	public static String[] splitAndUnquote(String s) {
+		if (Validator.isNull(s)) {
+			return new String[0];
+		}
+
+		return _splitAndUnquote(s);
 	}
 
 	private static String[] _splitAndUnquote(String s) {

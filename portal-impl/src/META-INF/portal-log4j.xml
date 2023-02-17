@@ -22,12 +22,17 @@
 			<DirectWriteRolloverStrategy />
 		</Appender>
 
-		<Appender filePattern="@liferay.home@/logs/companies/@company.id@/liferay-@company.id@.%d{yyyy-MM-dd}.log" ignoreExceptions="false" name="COMPANY_LOG_ROUTING_TEXT_FILE" type="CompanyLogRouting">
+		<Appender dirPattern="@liferay.home@/logs/companies/@company.id@" ignoreExceptions="false" name="COMPANY_LOG_ROUTING_TEXT_FILE" type="CompanyLogRouting">
 			<Layout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t][%c{1}:%L] %m%n" type="PatternLayout" />
+
+			<Log4j1XmlLayout locationInfo="true" />
 
 			<TimeBasedTriggeringPolicy />
 
 			<DirectWriteRolloverStrategy />
+
+			<FilePattern fileNamePattern="liferay-@company.id@.%d{yyyy-MM-dd}.log" layoutType="PatternLayout" />
+			<FilePattern fileNamePattern="liferay-@company.id@.%d{yyyy-MM-dd}.xml" layoutType="Log4j1XmlLayout" />
 		</Appender>
 	</Appenders>
 

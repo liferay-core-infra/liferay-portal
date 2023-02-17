@@ -62,7 +62,6 @@ import com.liferay.wiki.service.WikiPageLocalService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -1013,9 +1012,7 @@ public class SimilarResultsUidsAndDestinationsTest {
 		similarResultsContributor.resolveCriteria(
 			criteriaBuilderImpl, inputHelper);
 
-		Optional<Criteria> optional = criteriaBuilderImpl.build();
-
-		return optional.get();
+		return criteriaBuilderImpl.build();
 	}
 
 	private String _resolveUID(SimilarResultsRoute similarResultsContributor) {

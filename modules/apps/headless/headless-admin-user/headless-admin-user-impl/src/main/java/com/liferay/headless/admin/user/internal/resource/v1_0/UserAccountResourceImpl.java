@@ -34,6 +34,7 @@ import com.liferay.headless.admin.user.internal.dto.v1_0.converter.AccountResour
 import com.liferay.headless.admin.user.internal.dto.v1_0.converter.OrganizationResourceDTOConverter;
 import com.liferay.headless.admin.user.internal.dto.v1_0.converter.UserResourceDTOConverter;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.CustomFieldsUtil;
+import com.liferay.headless.admin.user.internal.dto.v1_0.util.DTOConverterUtil;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.ServiceBuilderAddressUtil;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.ServiceBuilderEmailAddressUtil;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.ServiceBuilderListTypeUtil;
@@ -145,8 +146,8 @@ public class UserAccountResourceImpl
 			externalReferenceCode, contextCompany.getCompanyId());
 
 		_accountEntryUserRelService.deleteAccountEntryUserRelByEmailAddress(
-			_accountResourceDTOConverter.getAccountEntryId(
-				accountExternalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, accountExternalReferenceCode),
 			user.getEmailAddress());
 	}
 
@@ -165,8 +166,8 @@ public class UserAccountResourceImpl
 		throws Exception {
 
 		deleteAccountUserAccountByEmailAddress(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, externalReferenceCode),
 			emailAddress);
 	}
 
@@ -214,8 +215,8 @@ public class UserAccountResourceImpl
 		throws Exception {
 
 		return getAccountUserAccountsPage(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, externalReferenceCode),
 			search, filter, pagination, sorts);
 	}
 
@@ -395,8 +396,8 @@ public class UserAccountResourceImpl
 			externalReferenceCode, contextCompany.getCompanyId());
 
 		_accountEntryUserRelService.addAccountEntryUserRelByEmailAddress(
-			_accountResourceDTOConverter.getAccountEntryId(
-				accountExternalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, accountExternalReferenceCode),
 			user.getEmailAddress(), new long[0], null,
 			new ServiceContext() {
 				{
@@ -507,8 +508,8 @@ public class UserAccountResourceImpl
 		throws Exception {
 
 		return postAccountUserAccount(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, externalReferenceCode),
 			userAccount);
 	}
 
@@ -518,8 +519,8 @@ public class UserAccountResourceImpl
 		throws Exception {
 
 		postAccountUserAccountByEmailAddress(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getModelPrimaryKey(
+				_accountResourceDTOConverter, externalReferenceCode),
 			emailAddress);
 	}
 

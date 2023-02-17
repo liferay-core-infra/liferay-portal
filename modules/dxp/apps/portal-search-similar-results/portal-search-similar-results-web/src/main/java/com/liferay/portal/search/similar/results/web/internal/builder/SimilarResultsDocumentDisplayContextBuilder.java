@@ -352,15 +352,18 @@ public class SimilarResultsDocumentDisplayContextBuilder {
 		SimilarResultsDocumentDisplayContext
 			similarResultsDocumentDisplayContext) {
 
-		Optional<String> dateStringOptional = SearchStringUtil.maybe(
+		String dateString = SearchStringUtil.maybe(
 			_getFieldValueString(Field.CREATE_DATE));
 
-		Optional<Date> dateOptional = dateStringOptional.map(
-			this::_parseDateStringFieldValue);
-
-		dateOptional.ifPresent(
-			date -> similarResultsDocumentDisplayContext.setCreationDateString(
-				_formatCreationDate(date)));
+		if (Validator.isNotNull(dateString)) {
+			Optional.ofNullable(
+				_parseDateStringFieldValue(dateString)
+			).ifPresent(
+				date ->
+					similarResultsDocumentDisplayContext.setCreationDateString(
+						_formatCreationDate(date))
+			);
+		}
 	}
 
 	private void _buildCreatorUserName(

@@ -17,8 +17,6 @@ package com.liferay.portal.search.similar.results.web.internal.portlet;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.similar.results.web.internal.helper.PortletPreferencesHelper;
 
-import java.util.Optional;
-
 import javax.portlet.PortletPreferences;
 
 /**
@@ -121,14 +119,14 @@ public class SimilarResultsPortletPreferencesImpl
 
 	@Override
 	public Float getTermBoost() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
+		String stringValue = _portletPreferencesHelper.getString(
 			PREFERENCE_KEY_TERM_BOOST);
 
-		return optional.map(
-			GetterUtil::getFloat
-		).orElse(
-			null
-		);
+		if (stringValue == null) {
+			return null;
+		}
+
+		return GetterUtil.getFloat(stringValue);
 	}
 
 	private Integer _getIntegerNullable(String key) {

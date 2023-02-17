@@ -82,8 +82,8 @@ public class AccountRoleResourceImpl extends BaseAccountRoleResourceImpl {
 			contextCompany.getCompanyId(), emailAddress);
 
 		deleteAccountAccountRoleUserAccountAssociation(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode),
 			accountRoleId, user.getUserId());
 	}
 
@@ -95,10 +95,11 @@ public class AccountRoleResourceImpl extends BaseAccountRoleResourceImpl {
 		throws Exception {
 
 		deleteAccountAccountRoleUserAccountAssociation(
-			_accountResourceDTOConverter.getAccountEntryId(
-				accountExternalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, accountExternalReferenceCode),
 			accountRoleId,
-			_userResourceDTOConverter.getUserId(externalReferenceCode));
+			DTOConverterUtil.getUserId(
+				_userResourceDTOConverter, externalReferenceCode));
 	}
 
 	@Override
@@ -108,8 +109,8 @@ public class AccountRoleResourceImpl extends BaseAccountRoleResourceImpl {
 		throws Exception {
 
 		return getAccountAccountRolesPage(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode),
 			keywords, filter, pagination, sorts);
 	}
 
@@ -175,8 +176,8 @@ public class AccountRoleResourceImpl extends BaseAccountRoleResourceImpl {
 		return Page.of(
 			transform(
 				_accountRoleLocalService.getAccountRoles(
-					_accountResourceDTOConverter.getAccountEntryId(
-						externalReferenceCode),
+					DTOConverterUtil.getAccountEntryId(
+						_accountResourceDTOConverter, externalReferenceCode),
 					user.getUserId()),
 				accountRole -> _toAccountRole(accountRole)));
 	}
@@ -191,9 +192,11 @@ public class AccountRoleResourceImpl extends BaseAccountRoleResourceImpl {
 		return Page.of(
 			transform(
 				_accountRoleLocalService.getAccountRoles(
-					_accountResourceDTOConverter.getAccountEntryId(
+					DTOConverterUtil.getAccountEntryId(
+						_accountResourceDTOConverter,
 						accountExternalReferenceCode),
-					_userResourceDTOConverter.getUserId(externalReferenceCode)),
+					DTOConverterUtil.getUserId(
+						_userResourceDTOConverter, externalReferenceCode)),
 				accountRole -> _toAccountRole(accountRole)));
 	}
 
@@ -224,8 +227,8 @@ public class AccountRoleResourceImpl extends BaseAccountRoleResourceImpl {
 		throws Exception {
 
 		return postAccountAccountRole(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode),
 			accountRole);
 	}
 
@@ -249,8 +252,8 @@ public class AccountRoleResourceImpl extends BaseAccountRoleResourceImpl {
 			contextCompany.getCompanyId(), emailAddress);
 
 		postAccountAccountRoleUserAccountAssociation(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode),
 			accountRoleId, user.getUserId());
 	}
 
@@ -262,10 +265,11 @@ public class AccountRoleResourceImpl extends BaseAccountRoleResourceImpl {
 		throws Exception {
 
 		postAccountAccountRoleUserAccountAssociation(
-			_accountResourceDTOConverter.getAccountEntryId(
-				accountExternalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, accountExternalReferenceCode),
 			accountRoleId,
-			_userResourceDTOConverter.getUserId(externalReferenceCode));
+			DTOConverterUtil.getUserId(
+				_userResourceDTOConverter, externalReferenceCode));
 	}
 
 	private AccountRole _toAccountRole(

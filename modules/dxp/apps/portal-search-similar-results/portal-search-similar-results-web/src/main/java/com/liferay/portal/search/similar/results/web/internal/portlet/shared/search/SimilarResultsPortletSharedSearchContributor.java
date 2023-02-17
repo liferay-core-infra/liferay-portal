@@ -252,17 +252,20 @@ public class SimilarResultsPortletSharedSearchContributor
 		String fields = similarResultsPortletPreferences.getFields();
 
 		if (!Validator.isBlank(fields)) {
+			Optional<String> fieldOptional = SearchStringUtil.maybe(fields);
+
 			moreLikeThisQuery.addFields(
-				SearchStringUtil.splitAndUnquote(
-					SearchStringUtil.maybe(fields)));
+				SearchStringUtil.splitAndUnquote(fieldOptional.orElse(null)));
 		}
 
 		String stopWords = similarResultsPortletPreferences.getStopWords();
 
 		if (!Validator.isBlank(stopWords)) {
+			Optional<String> fieldOptional = SearchStringUtil.maybe(
+				StringUtil.toLowerCase(stopWords));
+
 			moreLikeThisQuery.addStopWords(
-				SearchStringUtil.splitAndUnquote(
-					SearchStringUtil.maybe(StringUtil.toLowerCase(stopWords))));
+				SearchStringUtil.splitAndUnquote(fieldOptional.orElse(null)));
 		}
 
 		moreLikeThisQuery.setAnalyzer(

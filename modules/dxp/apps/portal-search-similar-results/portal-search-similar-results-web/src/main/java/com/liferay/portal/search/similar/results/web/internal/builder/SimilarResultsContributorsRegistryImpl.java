@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.similar.results.web.spi.contributor.SimilarResultsContributor;
 import com.liferay.portal.search.similar.results.web.spi.contributor.helper.RouteHelper;
 
-import java.util.Optional;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -38,9 +36,9 @@ public class SimilarResultsContributorsRegistryImpl
 	implements SimilarResultsContributorsRegistry {
 
 	@Override
-	public Optional<SimilarResultsRoute> detectRoute(String urlString) {
+	public SimilarResultsRoute detectRoute(String urlString) {
 		if (Validator.isBlank(urlString)) {
-			return Optional.empty();
+			return null;
 		}
 
 		for (SimilarResultsContributor similarResultsContributor :
@@ -50,11 +48,11 @@ public class SimilarResultsContributorsRegistryImpl
 				similarResultsContributor, urlString);
 
 			if (similarResultsRoute != null) {
-				return Optional.of(similarResultsRoute);
+				return similarResultsRoute;
 			}
 		}
 
-		return Optional.empty();
+		return null;
 	}
 
 	@Activate

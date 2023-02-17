@@ -55,13 +55,13 @@ public class SearchStringUtil {
 
 	public static String[] splitAndUnquote(Optional<String> optional) {
 		return optional.map(
-			SearchStringUtil::splitAndUnquote
+			SearchStringUtil::_splitAndUnquote
 		).orElse(
 			new String[0]
 		);
 	}
 
-	public static String[] splitAndUnquote(String s) {
+	private static String[] _splitAndUnquote(String s) {
 		return TransformUtil.transform(
 			TransformUtil.transform(
 				StringUtil.split(s.trim(), CharPool.COMMA), String::trim,

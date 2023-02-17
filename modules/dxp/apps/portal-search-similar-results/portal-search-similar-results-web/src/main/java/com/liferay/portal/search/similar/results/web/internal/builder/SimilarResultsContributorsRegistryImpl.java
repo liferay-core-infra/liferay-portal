@@ -68,7 +68,7 @@ public class SimilarResultsContributorsRegistryImpl
 		_serviceTrackerList.close();
 	}
 
-	private Optional<SimilarResultsRoute> _detectRoute(
+	private SimilarResultsRoute _detectRoute(
 		SimilarResultsContributor similarResultsContributor, String urlString) {
 
 		RouteBuilderImpl routeBuilderImpl = new RouteBuilderImpl();
@@ -84,16 +84,16 @@ public class SimilarResultsContributorsRegistryImpl
 				_log.debug(runtimeException);
 			}
 
-			return Optional.empty();
+			return null;
 		}
 
 		if (routeBuilderImpl.hasNoAttributes()) {
-			return Optional.empty();
+			return null;
 		}
 
 		routeBuilderImpl.contributor(similarResultsContributor);
 
-		return Optional.of(routeBuilderImpl.build());
+		return routeBuilderImpl.build();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

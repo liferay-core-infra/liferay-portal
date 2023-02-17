@@ -61,7 +61,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -356,13 +355,12 @@ public class SimilarResultsDocumentDisplayContextBuilder {
 			_getFieldValueString(Field.CREATE_DATE));
 
 		if (Validator.isNotNull(dateString)) {
-			Optional.ofNullable(
-				_parseDateStringFieldValue(dateString)
-			).ifPresent(
-				date ->
-					similarResultsDocumentDisplayContext.setCreationDateString(
-						_formatCreationDate(date))
-			);
+			Date date = _parseDateStringFieldValue(dateString);
+
+			if (date != null) {
+				similarResultsDocumentDisplayContext.setCreationDateString(
+					_formatCreationDate(date));
+			}
 		}
 	}
 

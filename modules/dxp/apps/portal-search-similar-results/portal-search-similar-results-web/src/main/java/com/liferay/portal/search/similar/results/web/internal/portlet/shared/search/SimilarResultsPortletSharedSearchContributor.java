@@ -173,16 +173,12 @@ public class SimilarResultsPortletSharedSearchContributor
 			return;
 		}
 
-		Optional<String> classNameOptional = criteria.getTypeOptional();
+		String className = criteria.getType();
 
-		classNameOptional.ifPresent(
-			className -> {
-				if (!Validator.isBlank(className)) {
-					searchRequestBuilder.addComplexQueryPart(
-						_getComplexQueryPart(
-							_getEntryClassNameQuery(className)));
-				}
-			});
+		if ((className != null) && !Validator.isBlank(className)) {
+			searchRequestBuilder.addComplexQueryPart(
+				_getComplexQueryPart(_getEntryClassNameQuery(className)));
+		}
 	}
 
 	private void _filterByGroupId(

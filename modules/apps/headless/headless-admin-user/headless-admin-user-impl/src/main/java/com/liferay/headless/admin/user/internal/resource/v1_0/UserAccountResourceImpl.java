@@ -1248,8 +1248,8 @@ public class UserAccountResourceImpl
 	@Reference
 	private AccountEntryUserRelService _accountEntryUserRelService;
 
-	@Reference
-	private AccountResourceDTOConverter _accountResourceDTOConverter;
+	@Reference(target = DTOConverterConstants.ACCOUNT_RESOURCE_DTO_CONVERTER)
+	private DTOConverter<AccountEntry, Account> _accountResourceDTOConverter;
 
 	@Reference
 	private AccountRoleResource _accountRoleResource;

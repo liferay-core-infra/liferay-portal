@@ -27,10 +27,8 @@ import javax.portlet.PortletPreferences;
  */
 public class PortletPreferencesHelper {
 
-	public PortletPreferencesHelper(
-		Optional<PortletPreferences> portletPreferencesOptional) {
-
-		_portletPreferencesOptional = portletPreferencesOptional;
+	public PortletPreferencesHelper(PortletPreferences portletPreferences) {
+		_portletPreferences = portletPreferences;
 	}
 
 	public Optional<Boolean> getBoolean(String key) {
@@ -68,11 +66,15 @@ public class PortletPreferencesHelper {
 	}
 
 	private Optional<String> _getValue(String key) {
-		return _portletPreferencesOptional.map(
-			portletPreferences -> SearchStringUtil.maybe(
-				portletPreferences.getValue(key, StringPool.BLANK)));
+		if (_portletPreferences == null) {
+			return Optional.empty();
+		}
+
+		return Optional.ofNullable(
+			SearchStringUtil.maybe(
+				_portletPreferences.getValue(key, StringPool.BLANK)));
 	}
 
-	private final Optional<PortletPreferences> _portletPreferencesOptional;
+	private final PortletPreferences _portletPreferences;
 
 }

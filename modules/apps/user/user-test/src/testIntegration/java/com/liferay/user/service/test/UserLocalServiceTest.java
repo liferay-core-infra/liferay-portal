@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PasswordPolicy;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.Ticket;
 import com.liferay.portal.kernel.model.User;
@@ -36,11 +37,13 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.AuthException;
 import com.liferay.portal.kernel.security.auth.Authenticator;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptorUtil;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.PasswordPolicyLocalService;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
@@ -70,6 +73,7 @@ import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -101,6 +105,45 @@ public class UserLocalServiceTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
+
+	@Test
+	public void testAddUserWithRegularRoleAndCompanyMaxUsersLimit()
+		throws Exception {
+
+		String companyName = RandomTestUtil.randomString();
+
+		String virtualHostname =
+			companyName + "." + RandomTestUtil.randomString(3);
+
+		Company company = _companyLocalService.addCompany(
+			null, companyName, virtualHostname, virtualHostname, 100, true);
+
+		User companyAdmin = UserTestUtil.getAdminUser(company.getCompanyId());
+
+		Role role = _roleLocalService.addRole(
+			companyAdmin.getUserId(), null, 0, RandomTestUtil.randomString(),
+			null, null, RoleConstants.TYPE_REGULAR, null, null);
+
+		RoleTestUtil.addResourcePermission(
+			role, PortletKeys.PORTAL, ResourceConstants.SCOPE_COMPANY,
+			String.valueOf(company.getCompanyId()), ActionKeys.ADD_USER);
+
+		User user = UserTestUtil.addUser(company);
+
+		_roleLocalService.addUserRole(user.getUserId(), role);
+
+		UserTestUtil.setUser(user);
+
+		Assert.assertNotNull(
+			_userLocalService.addUserWithWorkflow(
+				user.getUserId(), company.getCompanyId(), true, null, null,
+				true, null, RandomTestUtil.randomString() + "@liferay.com",
+				LocaleThreadLocal.getDefaultLocale(),
+				RandomTestUtil.randomString(), StringPool.BLANK,
+				RandomTestUtil.randomString(), 0, 0, true, Calendar.JANUARY, 1,
+				1970, StringPool.BLANK, UserConstants.TYPE_REGULAR, null, null,
+				null, null, false, ServiceContextTestUtil.getServiceContext()));
+	}
 
 	@Test
 	public void testAuthenticateByEmailAddress() throws Exception {
@@ -835,6 +878,9 @@ public class UserLocalServiceTest {
 	@Inject
 	private AnnouncementsDeliveryLocalService
 		_announcementsDeliveryLocalService;
+
+	@Inject
+	private CompanyLocalService _companyLocalService;
 
 	@Inject
 	private GroupLocalService _groupLocalService;

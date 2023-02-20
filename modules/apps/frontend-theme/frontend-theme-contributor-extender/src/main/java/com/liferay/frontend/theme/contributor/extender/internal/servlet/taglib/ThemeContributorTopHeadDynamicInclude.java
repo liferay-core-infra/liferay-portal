@@ -15,6 +15,7 @@
 package com.liferay.frontend.theme.contributor.extender.internal.servlet.taglib;
 
 import com.liferay.frontend.theme.contributor.extender.internal.BundleWebResources;
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
@@ -38,9 +39,10 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Carlos Sierra Andrés
@@ -108,37 +110,54 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_rebuild();
+		_serviceTracker = ServiceTrackerFactory.open(
+			bundleContext, BundleWebResources.class,
+			new ServiceTrackerCustomizer
+				<BundleWebResources, BundleWebResources>() {
+
+				@Override
+				public BundleWebResources addingService(
+					ServiceReference<BundleWebResources> serviceReference) {
+
+					synchronized (_bundleWebResourcesServiceReferences) {
+						_bundleWebResourcesServiceReferences.add(
+							serviceReference);
+
+						_rebuild();
+					}
+
+					return bundleContext.getService(serviceReference);
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<BundleWebResources> serviceReference,
+					BundleWebResources bundleWebResources) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<BundleWebResources> serviceReference,
+					BundleWebResources bundleWebResources) {
+
+					bundleContext.ungetService(serviceReference);
+
+					synchronized (_bundleWebResourcesServiceReferences) {
+						_bundleWebResourcesServiceReferences.remove(
+							serviceReference);
+
+						_rebuild();
+					}
+				}
+
+			});
 
 		_comboContextPath = _portal.getPathContext() + "/combo";
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void addBundleWebResources(
-		ServiceReference<BundleWebResources>
-			bundleWebResourcesServiceReference) {
-
-		synchronized (_bundleWebResourcesServiceReferences) {
-			_bundleWebResourcesServiceReferences.add(
-				bundleWebResourcesServiceReference);
-
-			_rebuild();
-		}
-	}
-
-	protected void removeBundleWebResources(
-		ServiceReference<BundleWebResources>
-			bundleWebResourcesServiceReference) {
-
-		synchronized (_bundleWebResourcesServiceReferences) {
-			_bundleWebResourcesServiceReferences.remove(
-				bundleWebResourcesServiceReference);
-
-			_rebuild();
-		}
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	private void _rebuild() {
@@ -279,5 +298,8 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 
 	@Reference
 	private Portal _portal;
+
+	private ServiceTracker<BundleWebResources, BundleWebResources>
+		_serviceTracker;
 
 }

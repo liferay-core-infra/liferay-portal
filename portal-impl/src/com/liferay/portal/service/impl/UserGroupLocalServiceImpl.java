@@ -87,15 +87,14 @@ import java.io.File;
 import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.LongStream;
 
 /**
  * Provides the local service for accessing, adding, deleting, and updating user
@@ -1302,13 +1301,22 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 			TransactionCommitCallbackUtil.registerCallback(
 				() -> {
-					LongStream longStream = Arrays.stream(userGroupIds);
+					Set<Long> userIdSet = new HashSet<>();
 
-					long[] userIds = longStream.flatMap(
-						userGroupId -> Arrays.stream(
-							getUserPrimaryKeys(userGroupId))
-					).distinct(
-					).toArray();
+					for (long userGroupId : userGroupIds) {
+						for (long userId : getUserPrimaryKeys(userGroupId)) {
+							userIdSet.add(userId);
+						}
+					}
+
+					long[] userIds = new long[userIdSet.size()];
+
+					int i = 0;
+
+					for (long userId : userIdSet) {
+						userIds[i] = userId;
+						i++;
+					}
 
 					if (ArrayUtil.isNotEmpty(userIds)) {
 						reindex(companyId, userIds);

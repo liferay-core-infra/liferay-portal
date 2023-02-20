@@ -23,6 +23,7 @@ import com.liferay.exportimport.kernel.lar.UserIdStrategy;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
 import com.liferay.exportimport.kernel.service.ExportImportLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -94,9 +95,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 /**
  * Provides the local service for accessing, adding, deleting, and updating user
@@ -1286,21 +1285,20 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	protected void reindexUsers(List<UserGroup> userGroups)
 		throws PortalException {
 
-		Stream<UserGroup> stream1 = userGroups.stream();
+		Map<Long, List<UserGroup>> map = new HashMap<>();
 
-		Map<Long, List<UserGroup>> map = stream1.collect(
-			Collectors.groupingBy(UserGroup::getCompanyId));
+		for (UserGroup userGroup : userGroups) {
+			List<UserGroup> userGroupList = map.computeIfAbsent(
+				userGroup.getCompanyId(), key -> new ArrayList<>());
+
+			userGroupList.add(userGroup);
+		}
 
 		for (Map.Entry<Long, List<UserGroup>> entry : map.entrySet()) {
 			long companyId = entry.getKey();
 
-			List<UserGroup> list = entry.getValue();
-
-			Stream<UserGroup> stream2 = list.stream();
-
-			final long[] userGroupIds = stream2.mapToLong(
-				UserGroup::getUserGroupId
-			).toArray();
+			final long[] userGroupIds = TransformUtil.transformToLongArray(
+				entry.getValue(), UserGroup::getUserGroupId);
 
 			TransactionCommitCallbackUtil.registerCallback(
 				() -> {

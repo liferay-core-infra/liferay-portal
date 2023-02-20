@@ -108,8 +108,6 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
-
 		_serviceTracker = ServiceTrackerFactory.open(
 			bundleContext, BundleWebResources.class,
 			new ServiceTrackerCustomizer
@@ -123,7 +121,7 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 						_bundleWebResourcesServiceReferences.add(
 							serviceReference);
 
-						_rebuild();
+						_rebuild(bundleContext);
 					}
 
 					return bundleContext.getService(serviceReference);
@@ -146,7 +144,7 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 						_bundleWebResourcesServiceReferences.remove(
 							serviceReference);
 
-						_rebuild();
+						_rebuild(bundleContext);
 					}
 				}
 
@@ -160,7 +158,7 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 		_serviceTracker.close();
 	}
 
-	private void _rebuild() {
+	private void _rebuild(BundleContext bundleContext) {
 		Collection<String> cssResourceURLs = new ArrayList<>();
 		Collection<String> jsResourceURLs = new ArrayList<>();
 
@@ -168,7 +166,7 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 				bundleWebResourcesServiceReference :
 					_bundleWebResourcesServiceReferences) {
 
-			BundleWebResources bundleWebResources = _bundleContext.getService(
+			BundleWebResources bundleWebResources = bundleContext.getService(
 				bundleWebResourcesServiceReference);
 
 			try {
@@ -190,7 +188,7 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 				}
 			}
 			finally {
-				_bundleContext.ungetService(bundleWebResourcesServiceReference);
+				bundleContext.ungetService(bundleWebResourcesServiceReference);
 			}
 		}
 
@@ -283,7 +281,6 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 		}
 	}
 
-	private BundleContext _bundleContext;
 	private final Collection<ServiceReference<BundleWebResources>>
 		_bundleWebResourcesServiceReferences = new TreeSet<>();
 	private String _comboContextPath;

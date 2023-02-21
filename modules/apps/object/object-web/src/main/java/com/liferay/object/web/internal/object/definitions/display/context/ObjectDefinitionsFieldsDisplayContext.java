@@ -142,18 +142,12 @@ public class ObjectDefinitionsFieldsDisplayContext
 			locale,
 			ListUtil.filter(
 				_objectFieldBusinessTypeRegistry.getObjectFieldBusinessTypes(),
-				objectFieldBusinessType -> {
-					if (objectFieldBusinessType.isVisible() &&
-						(!StringUtil.equals(
-							objectFieldBusinessType.getName(),
-							ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP) ||
-						 includeRelationshipObjectFieldBusinessType)) {
-
-						return true;
-					}
-
-					return false;
-				}));
+				objectFieldBusinessType ->
+					objectFieldBusinessType.isVisible() &&
+					(!StringUtil.equals(
+						objectFieldBusinessType.getName(),
+						ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP) ||
+					 includeRelationshipObjectFieldBusinessType)));
 	}
 
 	public List<Map<String, Object>> getObjectFieldCodeEditorElements() {

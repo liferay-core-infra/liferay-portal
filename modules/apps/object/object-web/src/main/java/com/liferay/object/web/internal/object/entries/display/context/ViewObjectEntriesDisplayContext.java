@@ -291,19 +291,19 @@ public class ViewObjectEntriesDisplayContext {
 			_objectFieldLocalService.getObjectFields(
 				_objectDefinition.getObjectDefinitionId()),
 			objectField -> {
-				if (Objects.equals(
+				if (!Objects.equals(
 						objectField.getRelationshipType(),
 						ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
-					String fieldName = objectField.getName();
-
-					return StringUtil.replaceLast(
-						fieldName.substring(
-							fieldName.lastIndexOf(StringPool.UNDERLINE) + 1),
-						"Id", "");
+					return null;
 				}
 
-				return null;
+				String fieldName = objectField.getName();
+
+				return StringUtil.replaceLast(
+					fieldName.substring(
+						fieldName.lastIndexOf(StringPool.UNDERLINE) + 1),
+					"Id", "");
 			});
 
 		ListUtil.distinct(strings);

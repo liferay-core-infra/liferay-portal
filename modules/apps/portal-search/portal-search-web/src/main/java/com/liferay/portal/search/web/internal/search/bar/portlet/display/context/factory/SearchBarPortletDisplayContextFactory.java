@@ -303,25 +303,28 @@ public class SearchBarPortletDisplayContextFactory {
 		Portlet headerSearchBarPortlet =
 			searchBarPrecedenceHelper.findHeaderSearchBarPortlet(themeDisplay);
 
-		if (headerSearchBarPortlet != null) {
-			Optional<PortletPreferences> headerPortletPreferencesOptional =
-				portletPreferencesLookup.fetchPreferences(
-					headerSearchBarPortlet, themeDisplay);
-
-			if (headerPortletPreferencesOptional.isPresent() &&
-				SearchBarPortletDestinationUtil.isSameDestination(
-					headerPortletPreferencesOptional.get(), themeDisplay)) {
-
-				String scope = searchSettings.getScope();
-
-				if (scope != null) {
-					return SearchScopePreference.getSearchScopePreference(
-						scope);
-				}
-			}
+		if (headerSearchBarPortlet == null) {
+			return searchBarPortletPreferences.getSearchScopePreference();
 		}
 
-		return searchBarPortletPreferences.getSearchScopePreference();
+		Optional<PortletPreferences> headerPortletPreferencesOptional =
+			portletPreferencesLookup.fetchPreferences(
+				headerSearchBarPortlet, themeDisplay);
+
+		if (!headerPortletPreferencesOptional.isPresent() ||
+			!SearchBarPortletDestinationUtil.isSameDestination(
+				headerPortletPreferencesOptional.get(), themeDisplay)) {
+
+			return searchBarPortletPreferences.getSearchScopePreference();
+		}
+
+		String scope = searchSettings.getScope();
+
+		if (scope == null) {
+			return searchBarPortletPreferences.getSearchScopePreference();
+		}
+
+		return SearchScopePreference.getSearchScopePreference(scope);
 	}
 
 	protected SearchSuggestionsCompanyConfiguration

@@ -51,7 +51,7 @@ public class CustomFilterPortletSharedSearchContributor
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				customFilterPortletPreferences.getFederatedSearchKeyOptional());
+				customFilterPortletPreferences.getFederatedSearchKey());
 
 		searchRequestBuilder.addComplexQueryPart(
 			_complexQueryPartBuilderFactory.builder(

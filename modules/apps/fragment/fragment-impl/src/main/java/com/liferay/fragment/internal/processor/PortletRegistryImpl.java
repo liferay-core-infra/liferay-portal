@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -123,8 +124,8 @@ public class PortletRegistryImpl implements PortletRegistry {
 	}
 
 	@Override
-	public List<String> getPortletAliases() {
-		return new ArrayList<>(_serviceTrackerMap.keySet());
+	public Set<String> getPortletAliases() {
+		return _serviceTrackerMap.keySet();
 	}
 
 	@Override

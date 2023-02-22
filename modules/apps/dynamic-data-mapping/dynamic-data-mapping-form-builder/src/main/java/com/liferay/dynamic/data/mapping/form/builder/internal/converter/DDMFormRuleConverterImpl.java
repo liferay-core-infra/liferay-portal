@@ -32,7 +32,6 @@ import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
@@ -167,12 +166,14 @@ public class DDMFormRuleConverterImpl implements SPIDDMFormRuleConverter {
 	}
 
 	private String _convertOperand(SPIDDMFormRuleCondition.Operand operand) {
-		if (Objects.equals("field", operand.getType())) {
+		String operandType = operand.getType();
+
+		if (Objects.equals("field", operandType)) {
 			return String.format(
 				_FUNCTION_CALL_UNARY_EXPRESSION_FORMAT, "getValue",
 				StringUtil.quote(operand.getValue()));
 		}
-		else if (Objects.equals("json", operand.getType())) {
+		else if (Objects.equals("json", operandType)) {
 			return String.format(
 				_FUNCTION_CALL_UNARY_EXPRESSION_FORMAT, "getJSONValue",
 				StringUtil.quote(operand.getValue()));
@@ -180,15 +181,13 @@ public class DDMFormRuleConverterImpl implements SPIDDMFormRuleConverter {
 
 		String value = operand.getValue();
 
-		if (_isNumericConstant(operand.getType())) {
+		if (_isNumericConstant(operandType)) {
 			return value;
 		}
 
-		if (Objects.equals("string", operand.getType())) {
+		if (Objects.equals("string", operandType)) {
 			return StringUtil.quote(value);
 		}
-
-		String operandType = operand.getType();
 
 		String string = StringUtil.merge(
 			TransformUtil.transformToList(

@@ -48,6 +48,10 @@ public class IndexerPermissionPostFilterImpl
 		ModelResourcePermission<?> modelResourcePermission =
 			_modelResourcePermissionSupplier.get();
 
+		if (modelResourcePermission == null) {
+			return true;
+		}
+
 		return _containsView(
 			modelResourcePermission, permissionChecker, entryClassPK);
 	}
@@ -68,6 +72,10 @@ public class IndexerPermissionPostFilterImpl
 	public boolean isVisible(long classPK, int status) {
 		ModelVisibilityContributor modelVisibilityContributor =
 			_modelVisibilityContributorSupplier.get();
+
+		if (modelVisibilityContributor == null) {
+			return true;
+		}
 
 		return modelVisibilityContributor.isVisible(classPK, status);
 	}

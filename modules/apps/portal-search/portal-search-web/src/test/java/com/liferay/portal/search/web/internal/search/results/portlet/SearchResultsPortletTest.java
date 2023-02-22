@@ -17,6 +17,7 @@ package com.liferay.portal.search.web.internal.search.results.portlet;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.util.AssetRendererFactoryLookup;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
@@ -26,6 +27,7 @@ import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -57,6 +59,7 @@ import javax.portlet.RenderURL;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -87,6 +90,11 @@ public class SearchResultsPortletTest {
 		_renderRequest = _createRenderRequest();
 		_renderResponse = _createRenderResponse();
 		_searchResultsPortlet = _createSearchResultsPortlet();
+	}
+
+	@After
+	public void tearDown() {
+		_searchResultsPortlet.deactivate();
 	}
 
 	@Test
@@ -221,20 +229,6 @@ public class SearchResultsPortletTest {
 		throws Exception {
 
 		SearchResultsPortlet searchResultsPortlet = new SearchResultsPortlet() {
-			{
-				assetEntryLocalService = Mockito.mock(
-					AssetEntryLocalService.class);
-				assetRendererFactoryLookup = Mockito.mock(
-					AssetRendererFactoryLookup.class);
-				indexerRegistry = _indexerRegistry;
-				portletSharedRequestHelper = Mockito.mock(
-					PortletSharedRequestHelper.class);
-				portletSharedSearchRequest =
-					_createPortletSharedSearchRequest();
-				resourceActions = Mockito.mock(ResourceActions.class);
-				summaryBuilderFactory = _createSummaryBuilderFactory();
-				userLocalService = _userLocalService;
-			}
 
 			@Override
 			public void init() {
@@ -283,6 +277,31 @@ public class SearchResultsPortletTest {
 			}
 
 		};
+
+		ReflectionTestUtil.setFieldValue(
+			searchResultsPortlet, "_assetEntryLocalService",
+			Mockito.mock(AssetEntryLocalService.class));
+		ReflectionTestUtil.setFieldValue(
+			searchResultsPortlet, "_assetRendererFactoryLookup",
+			Mockito.mock(AssetRendererFactoryLookup.class));
+		ReflectionTestUtil.setFieldValue(
+			searchResultsPortlet, "_indexerRegistry", _indexerRegistry);
+		ReflectionTestUtil.setFieldValue(
+			searchResultsPortlet, "_portletSharedRequestHelper",
+			Mockito.mock(PortletSharedRequestHelper.class));
+		ReflectionTestUtil.setFieldValue(
+			searchResultsPortlet, "_portletSharedSearchRequest",
+			_createPortletSharedSearchRequest());
+		ReflectionTestUtil.setFieldValue(
+			searchResultsPortlet, "_resourceActions",
+			Mockito.mock(ResourceActions.class));
+		ReflectionTestUtil.setFieldValue(
+			searchResultsPortlet, "_summaryBuilderFactory",
+			_createSummaryBuilderFactory());
+		ReflectionTestUtil.setFieldValue(
+			searchResultsPortlet, "_userLocalService", _userLocalService);
+
+		searchResultsPortlet.activate(SystemBundleUtil.getBundleContext());
 
 		searchResultsPortlet.init(Mockito.mock(LiferayPortletConfig.class));
 

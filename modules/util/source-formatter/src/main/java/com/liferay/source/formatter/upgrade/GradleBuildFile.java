@@ -14,11 +14,13 @@
 
 package com.liferay.source.formatter.upgrade;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.util.ListUtil;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;
@@ -101,17 +103,10 @@ public class GradleBuildFile {
 	public List<GradleDependency> getGradleDependencies(String configuration) {
 		GradleBuildFileVisitor gradleBuildFileVisitor = _walkAST();
 
-		List<GradleDependency> gradleDependencies =
-			gradleBuildFileVisitor.getGradleDependencies();
-
-		Stream<GradleDependency> stream = gradleDependencies.stream();
-
-		return stream.filter(
+		return ListUtil.filter(
+			gradleBuildFileVisitor.getGradleDependencies(),
 			gradleDependency -> Objects.equals(
-				configuration, gradleDependency.getConfiguration())
-		).collect(
-			Collectors.toList()
-		);
+				configuration, gradleDependency.getConfiguration()));
 	}
 
 	public String getSource() {
@@ -119,11 +114,7 @@ public class GradleBuildFile {
 	}
 
 	public List<String> getSourceLines() {
-		return Stream.of(
-			_source.split(System.lineSeparator())
-		).collect(
-			Collectors.toList()
-		);
+		return Arrays.asList(_source.split(System.lineSeparator()));
 	}
 
 	public void insertGradleDependency(GradleDependency gradleDependency) {
@@ -171,9 +162,16 @@ public class GradleBuildFile {
 	}
 
 	private void _saveSource(List<String> lines) {
-		Stream<String> stream = lines.stream();
+		StringBundler sb = new StringBundler(2 * lines.size());
 
-		_source = stream.collect(Collectors.joining(System.lineSeparator()));
+		for (String line : lines) {
+			sb.append(line);
+			sb.append(System.lineSeparator());
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		_source = sb.toString();
 	}
 
 	private GradleBuildFileVisitor _walkAST() {

@@ -43,11 +43,11 @@ public class BatchIndexingHelperImpl implements BatchIndexingHelper {
 		for (String indexingBatchSize :
 				_reindexConfiguration.indexingBatchSizes()) {
 
-			String[] line = StringUtil.split(
+			String[] pair = StringUtil.split(
 				indexingBatchSize, StringPool.EQUAL);
 
-			if ((line.length == 2) && entryClassName.equals(line[0])) {
-				return GetterUtil.getInteger(line[1]);
+			if ((pair.length == 2) && entryClassName.equals(pair[0])) {
+				return GetterUtil.getInteger(pair[1]);
 			}
 		}
 

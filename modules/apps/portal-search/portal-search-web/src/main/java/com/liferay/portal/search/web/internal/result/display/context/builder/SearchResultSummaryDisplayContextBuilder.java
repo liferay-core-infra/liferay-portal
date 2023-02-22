@@ -67,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -272,12 +273,10 @@ public class SearchResultSummaryDisplayContextBuilder {
 	}
 
 	public SearchResultSummaryDisplayContextBuilder
-		setSearchResultImageContributorsStream(
-			Stream<SearchResultImageContributor>
-				searchResultImageContributorsStream) {
+		setSearchResultImageContributors(
+			List<SearchResultImageContributor> searchResultImageContributors) {
 
-		_searchResultImageContributorsStream =
-			searchResultImageContributorsStream;
+		_searchResultImageContributors = searchResultImageContributors;
 
 		return this;
 	}
@@ -795,7 +794,7 @@ public class SearchResultSummaryDisplayContextBuilder {
 
 		};
 
-		_searchResultImageContributorsStream.forEach(
+		_searchResultImageContributors.forEach(
 			searchResultImageContributor ->
 				searchResultImageContributor.contribute(searchResultImage));
 	}
@@ -1135,8 +1134,8 @@ public class SearchResultSummaryDisplayContextBuilder {
 	private RenderRequest _renderRequest;
 	private RenderResponse _renderResponse;
 	private ResourceActions _resourceActions;
-	private Stream<SearchResultImageContributor>
-		_searchResultImageContributorsStream = Stream.empty();
+	private List<SearchResultImageContributor> _searchResultImageContributors =
+		Collections.emptyList();
 	private SearchResultPreferences _searchResultPreferences;
 	private SearchResultViewURLSupplier _searchResultViewURLSupplier;
 	private SummaryBuilderFactory _summaryBuilderFactory;

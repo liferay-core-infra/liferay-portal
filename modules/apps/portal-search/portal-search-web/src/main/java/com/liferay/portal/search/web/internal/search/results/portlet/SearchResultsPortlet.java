@@ -365,9 +365,6 @@ public class SearchResultsPortlet extends MVCPortlet {
 			searchResultSummaryDisplayContextBuilder =
 				new SearchResultSummaryDisplayContextBuilder();
 
-		List<SearchResultImageContributor> searchResultImageContributors =
-			_serviceTrackerList.toList();
-
 		searchResultSummaryDisplayContextBuilder.setAssetEntryLocalService(
 			assetEntryLocalService
 		).setAssetRendererFactoryLookup(
@@ -404,8 +401,8 @@ public class SearchResultsPortlet extends MVCPortlet {
 			getHttpServletRequest(renderRequest)
 		).setResourceActions(
 			resourceActions
-		).setSearchResultImageContributorsStream(
-			searchResultImageContributors.stream()
+		).setSearchResultImageContributors(
+			_serviceTrackerList.toList()
 		).setSearchResultPreferences(
 			searchResultPreferences
 		).setSummaryBuilderFactory(

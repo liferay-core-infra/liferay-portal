@@ -21,7 +21,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormLayoutRow;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 /**
  * @author Rodrigo Paulino
@@ -33,11 +33,9 @@ public class DDMFormLayoutTestUtil {
 
 		DDMFormLayout ddmFormLayout = new DDMFormLayout();
 
-		Stream.of(
-			ddmFormLayoutPages
-		).forEach(
-			ddmFormLayout::addDDMFormLayoutPage
-		);
+		for (DDMFormLayoutPage ddmFormLayoutPage : ddmFormLayoutPages) {
+			ddmFormLayout.addDDMFormLayoutPage(ddmFormLayoutPage);
+		}
 
 		return ddmFormLayout;
 	}
@@ -49,11 +47,9 @@ public class DDMFormLayoutTestUtil {
 
 		ddmFormLayout.setPaginationMode(paginationMode);
 
-		Stream.of(
-			ddmFormLayoutPages
-		).forEach(
-			ddmFormLayout::addDDMFormLayoutPage
-		);
+		for (DDMFormLayoutPage ddmFormLayoutPage : ddmFormLayoutPages) {
+			ddmFormLayout.addDDMFormLayoutPage(ddmFormLayoutPage);
+		}
 
 		return ddmFormLayout;
 	}
@@ -85,23 +81,21 @@ public class DDMFormLayoutTestUtil {
 	public static DDMFormLayoutColumn[] createDDMFormLayoutColumns(
 		String... ddmFormFieldNames) {
 
-		return Stream.of(
-			ddmFormFieldNames
-		).map(
-			ddmFormFieldName -> {
-				DDMFormLayoutColumn ddmFormLayoutColumn =
-					new DDMFormLayoutColumn();
+		DDMFormLayoutColumn[] ddmFormLayoutColumns =
+			new DDMFormLayoutColumn[ddmFormFieldNames.length];
 
-				ddmFormLayoutColumn.setDDMFormFieldNames(
-					ListUtil.fromArray(ddmFormFieldNames));
-				ddmFormLayoutColumn.setSize(
-					DDMFormLayoutColumn.FULL / ddmFormFieldNames.length);
+		DDMFormLayoutColumn ddmFormLayoutColumn = new DDMFormLayoutColumn();
 
-				return ddmFormLayoutColumn;
-			}
-		).toArray(
-			DDMFormLayoutColumn[]::new
-		);
+		ddmFormLayoutColumn.setDDMFormFieldNames(
+			Arrays.asList(ddmFormFieldNames));
+		ddmFormLayoutColumn.setSize(
+			DDMFormLayoutColumn.FULL / ddmFormFieldNames.length);
+
+		for (int i = 0; i < ddmFormFieldNames.length; i++) {
+			ddmFormLayoutColumns[i] = ddmFormLayoutColumn;
+		}
+
+		return ddmFormLayoutColumns;
 	}
 
 	public static DDMFormLayoutPage createDDMFormLayoutPage(
@@ -138,11 +132,9 @@ public class DDMFormLayoutTestUtil {
 
 		DDMFormLayoutPage ddmFormLayoutPage = new DDMFormLayoutPage();
 
-		Stream.of(
-			ddmFormLayoutRows
-		).forEach(
-			ddmFormLayoutPage::addDDMFormLayoutRow
-		);
+		for (DDMFormLayoutRow ddmFormLayoutRow : ddmFormLayoutRows) {
+			ddmFormLayoutPage.addDDMFormLayoutRow(ddmFormLayoutRow);
+		}
 
 		ddmFormLayoutPage.setDescription(
 			DDMFormValuesTestUtil.createLocalizedValue(
@@ -165,11 +157,9 @@ public class DDMFormLayoutTestUtil {
 
 		DDMFormLayoutRow ddmFormLayoutRow = new DDMFormLayoutRow();
 
-		Stream.of(
-			ddmFormLayoutColumns
-		).forEach(
-			ddmFormLayoutRow::addDDMFormLayoutColumn
-		);
+		for (DDMFormLayoutColumn ddmFormLayoutColumn : ddmFormLayoutColumns) {
+			ddmFormLayoutRow.addDDMFormLayoutColumn(ddmFormLayoutColumn);
+		}
 
 		return ddmFormLayoutRow;
 	}

@@ -19,11 +19,15 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.vulcan.extension.EntityExtensionThreadLocal;
+import com.liferay.portal.vulcan.fields.FieldsQueryParam;
+import com.liferay.portal.vulcan.fields.RestrictFieldsQueryParam;
 import com.liferay.portal.vulcan.internal.extension.EntityExtensionHandler;
 import com.liferay.portal.vulcan.internal.jaxrs.context.resolver.EntityExtensionHandlerContextResolver;
 import com.liferay.portal.vulcan.internal.jaxrs.extension.ExtendedEntity;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.Providers;
@@ -53,7 +57,13 @@ public class EntityExtensionWriterInterceptorTest {
 		ReflectionTestUtil.setFieldValue(
 			_entityExtensionWriterInterceptor, "_company", _company);
 		ReflectionTestUtil.setFieldValue(
+			_entityExtensionWriterInterceptor, "_fieldsQueryParam",
+			_fieldsQueryParam);
+		ReflectionTestUtil.setFieldValue(
 			_entityExtensionWriterInterceptor, "_providers", _providers);
+		ReflectionTestUtil.setFieldValue(
+			_entityExtensionWriterInterceptor, "_restrictFieldsQueryParam",
+			_restrictFieldsQueryParam);
 	}
 
 	@Test
@@ -75,11 +85,23 @@ public class EntityExtensionWriterInterceptorTest {
 		);
 
 		Mockito.when(
+			_fieldsQueryParam.getFieldNames()
+		).thenReturn(
+			new HashSet<>(Arrays.asList("userName"))
+		);
+
+		Mockito.when(
 			_providers.getContextResolver(
 				Mockito.eq(EntityExtensionHandler.class),
 				Mockito.any(MediaType.class))
 		).thenReturn(
 			_entityExtensionHandlerContextResolver
+		);
+
+		Mockito.when(
+			_restrictFieldsQueryParam.getRestrictFieldNames()
+		).thenReturn(
+			new HashSet<>(Arrays.asList("userId"))
 		);
 
 		Mockito.when(
@@ -190,12 +212,25 @@ public class EntityExtensionWriterInterceptorTest {
 		);
 
 		Mockito.when(
+			_fieldsQueryParam.getFieldNames()
+		).thenReturn(
+			new HashSet<>(Arrays.asList("userName"))
+		);
+
+		Mockito.when(
 			_providers.getContextResolver(
 				Mockito.eq(EntityExtensionHandler.class),
 				Mockito.any(MediaType.class))
 		).thenReturn(
 			_entityExtensionHandlerContextResolver
 		);
+
+		Mockito.when(
+			_restrictFieldsQueryParam.getRestrictFieldNames()
+		).thenReturn(
+			new HashSet<>(Arrays.asList("userId"))
+		);
+
 		Mockito.when(
 			_writerInterceptorContext.getEntity()
 		).thenReturn(
@@ -272,7 +307,11 @@ public class EntityExtensionWriterInterceptorTest {
 	private final EntityExtensionWriterInterceptor
 		_entityExtensionWriterInterceptor =
 			new EntityExtensionWriterInterceptor();
+	private final FieldsQueryParam _fieldsQueryParam = Mockito.mock(
+		FieldsQueryParam.class);
 	private final Providers _providers = Mockito.mock(Providers.class);
+	private final RestrictFieldsQueryParam _restrictFieldsQueryParam =
+		Mockito.mock(RestrictFieldsQueryParam.class);
 	private final WriterInterceptorContext _writerInterceptorContext =
 		Mockito.mock(WriterInterceptorContext.class);
 

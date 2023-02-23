@@ -114,7 +114,8 @@ public class GradleBuildFile {
 	}
 
 	public List<String> getSourceLines() {
-		return Arrays.asList(_source.split(System.lineSeparator()));
+		return ListUtil.copy(
+			Arrays.asList(_source.split(System.lineSeparator())));
 	}
 
 	public void insertGradleDependency(GradleDependency gradleDependency) {

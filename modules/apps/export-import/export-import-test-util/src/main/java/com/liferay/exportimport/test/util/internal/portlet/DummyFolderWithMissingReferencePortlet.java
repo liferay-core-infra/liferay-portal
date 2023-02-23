@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.name=" + DummyFolderPortletKeys.DUMMY_FOLDER_WITH_MISSING_REFERENCE,
 		"javax.portlet.resource-bundle=content.Language"
 	},
-	service = {DummyFolderWithMissingReferencePortlet.class, Portlet.class}
+	service = Portlet.class
 )
 public class DummyFolderWithMissingReferencePortlet extends MVCPortlet {
 }

@@ -39,11 +39,13 @@ dependencies {
 	compile group: "org.sonatype.plexus", name: "plexus-build-api", transitive: false, version: "0.0.7"
 
 	compileInclude group: "com.beust", name: "jcommander", version: "1.72"
+	compileInclude group: "com.liferay", name: "com.liferay.petra.function", version: "default"
 	compileInclude group: "com.liferay", name: "com.liferay.petra.lang", version: "5.0.0"
 	compileInclude group: "com.liferay", name: "com.liferay.petra.string", version: "5.0.0"
 	compileInclude group: "com.liferay", name: "com.liferay.rtl.css", version: "1.0.5"
 	compileInclude group: "com.liferay", name: "com.liferay.sass.compiler.api", version: "2.0.1"
 	compileInclude group: "com.liferay", name: "com.liferay.sass.compiler.dart", version: "1.0.2"
+	compileInclude group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 
 	compileOnly group: "org.apache.ant", name: "ant", transitive: false, version: "1.10.11"
 	compileOnly group: "org.apache.maven", name: "maven-artifact", version: "3.2.5"

@@ -19,7 +19,9 @@ import com.beust.jcommander.ParameterException;
 
 import com.liferay.css.builder.internal.util.CSSBuilderUtil;
 import com.liferay.css.builder.internal.util.FileUtil;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.rtl.css.RTLCSSConverter;
 import com.liferay.sass.compiler.SassCompiler;
 import com.liferay.sass.compiler.dart.internal.DartSassCompiler;
@@ -39,7 +41,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -221,31 +222,37 @@ public class CSSBuilder implements AutoCloseable {
 	}
 
 	private long _getNewestModifiedTime(String baseDir, String[] fileNames) {
-		return Stream.of(
-			fileNames
-		).map(
-			fileName -> Paths.get(baseDir, fileName)
-		).map(
-			FileUtil::getLastModifiedTime
-		).max(
-			Comparator.naturalOrder()
-		).orElse(
-			Long.MIN_VALUE
-		);
+		List<Long> lastModifiedTimes = TransformUtil.transform(
+			TransformUtil.transformToList(
+				fileNames, fileName -> Paths.get(baseDir, fileName)),
+			FileUtil::getLastModifiedTime);
+
+		if (lastModifiedTimes.isEmpty()) {
+			return Long.MIN_VALUE;
+		}
+
+		Comparator<Long> comparator = Comparator.naturalOrder();
+
+		lastModifiedTimes = ListUtil.sort(
+			lastModifiedTimes, comparator.reversed());
+
+		return lastModifiedTimes.get(0);
 	}
 
 	private long _getOldestModifiedTime(String baseDir, String[] fileNames) {
-		return Stream.of(
-			fileNames
-		).map(
-			fileName -> Paths.get(baseDir, fileName)
-		).map(
-			FileUtil::getLastModifiedTime
-		).min(
-			Comparator.naturalOrder()
-		).orElse(
-			Long.MIN_VALUE
-		);
+		List<Long> lastModifiedTimes = TransformUtil.transform(
+			TransformUtil.transformToList(
+				fileNames, fileName -> Paths.get(baseDir, fileName)),
+			FileUtil::getLastModifiedTime);
+
+		if (lastModifiedTimes.isEmpty()) {
+			return Long.MIN_VALUE;
+		}
+
+		lastModifiedTimes = ListUtil.sort(
+			lastModifiedTimes, Comparator.naturalOrder());
+
+		return lastModifiedTimes.get(0);
 	}
 
 	private String _getRtlCss(String fileName, String css) {

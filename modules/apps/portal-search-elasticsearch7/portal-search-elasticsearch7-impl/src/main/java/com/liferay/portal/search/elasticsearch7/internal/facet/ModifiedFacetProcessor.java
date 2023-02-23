@@ -20,9 +20,12 @@ import org.osgi.service.component.annotations.Component;
  * @author Raymond Augé
  * @author Tibor Lipusz
  */
-@Component(
-	property = "class.name=com.liferay.portal.search.internal.facet.ModifiedFacetImpl",
-	service = FacetProcessor.class
-)
+@Component(service = FacetProcessor.class)
 public class ModifiedFacetProcessor extends RangeFacetProcessor {
+
+	@Override
+	public String getFacetClassName() {
+		return "com.liferay.portal.search.internal.facet.ModifiedFacetImpl";
+	}
+
 }

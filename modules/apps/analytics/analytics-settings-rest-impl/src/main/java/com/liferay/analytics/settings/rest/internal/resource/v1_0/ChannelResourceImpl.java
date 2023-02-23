@@ -20,8 +20,8 @@ import com.liferay.analytics.settings.rest.dto.v1_0.DataSource;
 import com.liferay.analytics.settings.rest.internal.client.AnalyticsCloudClient;
 import com.liferay.analytics.settings.rest.internal.client.model.AnalyticsChannel;
 import com.liferay.analytics.settings.rest.internal.client.model.AnalyticsDataSource;
-import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.ChannelDTOConverter;
 import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.ChannelDTOConverterContext;
+import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.analytics.settings.rest.resource.v1_0.ChannelResource;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -231,7 +232,7 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 	@Reference
 	private AnalyticsSettingsManager _analyticsSettingsManager;
 
-	@Reference
-	private ChannelDTOConverter _channelDTOConverter;
+	@Reference(target = DTOConverterConstants.CHANNEL_DTO_CONVERTER)
+	private DTOConverter<AnalyticsChannel, Channel> _channelDTOConverter;
 
 }

@@ -185,11 +185,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, javax.portlet.Portlet.class,
-			"(com.liferay.fragment.entry.processor.portlet.alias=*)",
-			(serviceReference, emitter) -> emitter.emit(
-				GetterUtil.getString(
-					serviceReference.getProperty(
-						"com.liferay.fragment.entry.processor.portlet.alias"))),
+			"com.liferay.fragment.entry.processor.portlet.alias",
 			new ServiceTrackerCustomizer<javax.portlet.Portlet, String>() {
 
 				@Override

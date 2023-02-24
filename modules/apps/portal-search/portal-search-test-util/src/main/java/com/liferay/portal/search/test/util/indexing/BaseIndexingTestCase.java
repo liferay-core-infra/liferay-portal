@@ -132,9 +132,18 @@ public abstract class BaseIndexingTestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		if ((_indexingFixture == null) ||
-			!_indexingFixture.isSearchEngineAvailable()) {
+		if (_indexingFixture == null) {
+			return;
+		}
 
+		boolean searchEngineAvailable =
+			_indexingFixture.isSearchEngineAvailable();
+
+		_indexingFixture.tearDown();
+
+		_indexingFixture = null;
+
+		if (!searchEngineAvailable) {
 			return;
 		}
 

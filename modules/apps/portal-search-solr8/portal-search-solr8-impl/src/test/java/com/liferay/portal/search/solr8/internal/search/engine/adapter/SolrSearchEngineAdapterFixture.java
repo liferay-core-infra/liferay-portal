@@ -55,6 +55,14 @@ public class SolrSearchEngineAdapterFixture {
 			_queryTranslator, _properties);
 	}
 
+	public void tearDown() {
+		if (_searchRequestExecutorFixture != null) {
+			_searchRequestExecutorFixture.tearDown();
+
+			_searchRequestExecutorFixture = null;
+		}
+	}
+
 	protected static SearchEngineAdapter createSearchEngineAdapter(
 		FacetProcessor<SolrQuery> facetProcessor,
 		SolrClientManager solrClientManager,
@@ -79,18 +87,17 @@ public class SolrSearchEngineAdapterFixture {
 				}
 			};
 
-		SearchRequestExecutorFixture searchRequestExecutorFixture =
-			new SearchRequestExecutorFixture() {
-				{
-					setFacetProcessor(facetProcessor);
-					setQueryTranslator(queryTranslator);
-					setSolrClientManager(solrClientManager);
-				}
-			};
+		_searchRequestExecutorFixture = new SearchRequestExecutorFixture() {
+			{
+				setFacetProcessor(facetProcessor);
+				setQueryTranslator(queryTranslator);
+				setSolrClientManager(solrClientManager);
+			}
+		};
 
 		documentRequestExecutorFixture.setUp();
 		indexRequestExecutorFixture.setUp();
-		searchRequestExecutorFixture.setUp();
+		_searchRequestExecutorFixture.setUp();
 
 		SolrSearchEngineAdapterImpl solrSearchEngineAdapterImpl =
 			new SolrSearchEngineAdapterImpl() {
@@ -107,7 +114,7 @@ public class SolrSearchEngineAdapterFixture {
 			indexRequestExecutorFixture.getIndexRequestExecutor());
 		ReflectionTestUtil.setFieldValue(
 			solrSearchEngineAdapterImpl, "_searchRequestExecutor",
-			searchRequestExecutorFixture.getSearchRequestExecutor());
+			_searchRequestExecutorFixture.getSearchRequestExecutor());
 
 		return solrSearchEngineAdapterImpl;
 	}
@@ -121,6 +128,8 @@ public class SolrSearchEngineAdapterFixture {
 
 		_solrDocumentFactory = solrDocumentFactory;
 	}
+
+	private static SearchRequestExecutorFixture _searchRequestExecutorFixture;
 
 	private FacetProcessor<SolrQuery> _facetProcessor;
 	private Map<String, Object> _properties;

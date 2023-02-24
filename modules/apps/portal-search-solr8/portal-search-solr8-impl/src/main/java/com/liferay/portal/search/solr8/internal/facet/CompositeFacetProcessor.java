@@ -14,22 +14,22 @@
 
 package com.liferay.portal.search.solr8.internal.facet;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.solr.client.solrj.SolrQuery;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -46,8 +46,8 @@ public class CompositeFacetProcessor implements FacetProcessor<SolrQuery> {
 	public Map<String, JSONObject> processFacet(Facet facet) {
 		Class<?> clazz = facet.getClass();
 
-		FacetProcessor<SolrQuery> facetProcessor = _facetProcessors.get(
-			clazz.getName());
+		FacetProcessor<SolrQuery> facetProcessor =
+			_serviceTrackerMap.getService(clazz.getName());
 
 		if (facetProcessor == null) {
 			facetProcessor = _defaultFacetProcessor;
@@ -56,27 +56,26 @@ public class CompositeFacetProcessor implements FacetProcessor<SolrQuery> {
 		return facetProcessor.processFacet(facet);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setFacetProcessor(FacetProcessor<SolrQuery> facetProcessor) {
-		String facetClassName = facetProcessor.getFacetClassName();
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext,
+			(Class<FacetProcessor<SolrQuery>>)(Class<?>)FacetProcessor.class,
+			null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(facetProcessor, emitter) -> {
+					String facetClassName = facetProcessor.getFacetClassName();
 
-		if (facetClassName != null) {
-			_facetProcessors.put(facetClassName, facetProcessor);
-		}
+					if (facetClassName != null) {
+						emitter.emit(facetClassName);
+					}
+				}));
 	}
 
-	protected void unsetFacetProcessor(
-		FacetProcessor<SolrQuery> facetProcessor) {
-
-		String facetClassName = facetProcessor.getFacetClassName();
-
-		if (facetClassName != null) {
-			_facetProcessors.remove(facetClassName, facetProcessor);
-		}
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	private final FacetProcessor<SolrQuery> _defaultFacetProcessor =
@@ -142,10 +141,10 @@ public class CompositeFacetProcessor implements FacetProcessor<SolrQuery> {
 
 		};
 
-	private final Map<String, FacetProcessor<SolrQuery>> _facetProcessors =
-		new HashMap<>();
-
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	private ServiceTrackerMap<String, FacetProcessor<SolrQuery>>
+		_serviceTrackerMap;
 
 }

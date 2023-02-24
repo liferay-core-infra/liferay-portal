@@ -132,14 +132,27 @@ public abstract class BaseIndexingTestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		if ((_indexingFixture == null) ||
-			!_indexingFixture.isSearchEngineAvailable()) {
+		if (_indexingFixture == null) {
+			return;
+		}
+
+		boolean searchEngineAvailable =
+			_indexingFixture.isSearchEngineAvailable();
+
+		if (!searchEngineAvailable) {
+			_indexingFixture.tearDown();
+
+			_indexingFixture = null;
 
 			return;
 		}
 
 		_indexWriter.deleteEntityDocuments(
 			createSearchContext(), _entryClassName);
+
+		_indexingFixture.tearDown();
+
+		_indexingFixture = null;
 	}
 
 	@Rule

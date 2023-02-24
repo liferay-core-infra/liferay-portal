@@ -36,11 +36,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -189,23 +187,22 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 
 	@Test
 	public void testGroupByDocsStart() throws Exception {
-		Map<String, Integer> map1 = HashMapBuilder.put(
+		Map<String, String> map1 = new HashMap<>();
+
+		Map<String, Integer> map2 = HashMapBuilder.put(
 			"one", 1
 		).put(
 			"two", 2
 		).build();
 
-		map1.forEach((key, value) -> indexDuplicates(key, value));
+		map2.forEach((key, value) -> indexDuplicates(key, value));
 
-		Set<Map.Entry<String, Integer>> entries = map1.entrySet();
-
-		Stream<Map.Entry<String, Integer>> stream = entries.stream();
-
-		Map<String, String> map2 = stream.collect(
-			Collectors.toMap(
-				Map.Entry::getKey,
-				entry -> getCountPairString(
-					entry.getValue(), entry.getValue() - 1)));
+		for (Map.Entry<String, Integer> entry : map2.entrySet()) {
+			map1.compute(
+				entry.getKey(),
+				(key, value) -> getCountPairString(
+					entry.getValue(), entry.getValue() - 1));
+		}
 
 		assertSearch(
 			indexingTestHelper -> {
@@ -221,7 +218,7 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 				indexingTestHelper.search();
 
 				indexingTestHelper.verify(
-					hits -> assertGroups(map2, hits, indexingTestHelper));
+					hits -> assertGroups(map1, hits, indexingTestHelper));
 			});
 	}
 
@@ -255,15 +252,14 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 
 		map1.remove("one", 1);
 
-		Set<Map.Entry<String, Integer>> entries = map1.entrySet();
+		Map<String, String> map2 = new HashMap<>();
 
-		Stream<Map.Entry<String, Integer>> stream = entries.stream();
-
-		Map<String, String> map2 = stream.collect(
-			Collectors.toMap(
-				Map.Entry::getKey,
-				entry -> getCountPairString(
-					entry.getValue(), entry.getValue())));
+		for (Map.Entry<String, Integer> entry : map1.entrySet()) {
+			map2.compute(
+				entry.getKey(),
+				(key, value) -> getCountPairString(
+					entry.getValue(), entry.getValue()));
+		}
 
 		assertSearch(
 			indexingTestHelper -> {
@@ -352,15 +348,13 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 
 		map1.forEach((key, value) -> indexDuplicates(key, value));
 
-		Set<Map.Entry<String, Integer>> entries = map1.entrySet();
+		Map<String, String> map2 = new HashMap<>();
 
-		Stream<Map.Entry<String, Integer>> stream = entries.stream();
-
-		Map<String, String> map2 = stream.collect(
-			Collectors.toMap(
-				Map.Entry::getKey,
-				entry -> getCountPairString(
-					entry.getValue(), entry.getValue())));
+		for (Map.Entry<String, Integer> entry : map1.entrySet()) {
+			map2.computeIfAbsent(
+				entry.getKey(),
+				key -> getCountPairString(entry.getValue(), entry.getValue()));
+		}
 
 		assertSearch(
 			indexingTestHelper -> {
@@ -509,16 +503,14 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 		Map<String, String> expectedCountsMap, Hits hits,
 		IndexingTestHelper indexingTestHelper) {
 
+		Map<String, String> actualCountsMap = new HashMap<>();
+
 		Map<String, Hits> hitsMap = hits.getGroupedHits();
 
-		Collection<Map.Entry<String, Hits>> entries = hitsMap.entrySet();
-
-		Stream<Map.Entry<String, Hits>> stream = entries.stream();
-
-		Map<String, String> actualCountsMap = stream.collect(
-			Collectors.toMap(
-				Map.Entry::getKey,
-				entry -> getCountPairString(entry.getValue())));
+		for (Map.Entry<String, Hits> entry : hitsMap.entrySet()) {
+			actualCountsMap.computeIfAbsent(
+				entry.getKey(), key -> getCountPairString(entry.getValue()));
+		}
 
 		AssertUtils.assertEquals(
 			indexingTestHelper.getRequestString(), expectedCountsMap,

@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
-import com.liferay.portal.kernel.util.MapUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,24 +59,24 @@ public class CompositeFacetProcessor implements FacetProcessor<SolrQuery> {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(class.name=*)"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
-	protected void setFacetProcessor(
-		FacetProcessor<SolrQuery> facetProcessor,
-		Map<String, Object> properties) {
+	protected void setFacetProcessor(FacetProcessor<SolrQuery> facetProcessor) {
+		String facetClassName = facetProcessor.getFacetClassName();
 
-		String className = MapUtil.getString(properties, "class.name");
-
-		_facetProcessors.put(className, facetProcessor);
+		if (facetClassName != null) {
+			_facetProcessors.put(facetClassName, facetProcessor);
+		}
 	}
 
 	protected void unsetFacetProcessor(
-		FacetProcessor<SolrQuery> facetProcessor,
-		Map<String, Object> properties) {
+		FacetProcessor<SolrQuery> facetProcessor) {
 
-		String className = MapUtil.getString(properties, "class.name");
+		String facetClassName = facetProcessor.getFacetClassName();
 
-		_facetProcessors.remove(className);
+		if (facetClassName != null) {
+			_facetProcessors.remove(facetClassName, facetProcessor);
+		}
 	}
 
 	private final FacetProcessor<SolrQuery> _defaultFacetProcessor =

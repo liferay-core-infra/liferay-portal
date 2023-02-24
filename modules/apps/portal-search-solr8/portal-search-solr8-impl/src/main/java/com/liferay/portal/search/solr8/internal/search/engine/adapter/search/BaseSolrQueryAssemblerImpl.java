@@ -14,22 +14,27 @@
 
 package com.liferay.portal.search.solr8.internal.search.engine.adapter.search;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.facet.Facet;
+import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.query.QueryTranslator;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.engine.adapter.search.BaseSearchRequest;
 import com.liferay.portal.search.solr8.internal.AggregationFilteringFacetProcessorContext;
 import com.liferay.portal.search.solr8.internal.FacetProcessorContext;
-import com.liferay.portal.search.solr8.internal.facet.CompositeFacetProcessor;
 import com.liferay.portal.search.solr8.internal.facet.FacetProcessor;
 import com.liferay.portal.search.solr8.internal.facet.FacetUtil;
 import com.liferay.portal.search.solr8.internal.filter.FilterTranslator;
@@ -47,7 +52,10 @@ import java.util.Set;
 
 import org.apache.solr.client.solrj.SolrQuery;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -67,6 +75,18 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 		setStatsRequests(solrQuery, baseSearchRequest);
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext,
+			(Class<FacetProcessor<SolrQuery>>)(Class<?>)FacetProcessor.class,
+			null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(facetProcessor, emitter) -> emitter.emit(
+					facetProcessor.getFacetClassName())));
+	}
+
 	protected void addFilterQuery(
 		List<String> filterQueries, Facet facet, String tag) {
 
@@ -82,6 +102,11 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 		filterQueries.add(
 			StringBundler.concat(
 				"{!tag=", tag, StringPool.CLOSE_CURLY_BRACE, filterString));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	protected void excludeTags(
@@ -102,10 +127,6 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 		}
 
 		return excludeTagsString;
-	}
-
-	protected Map<String, JSONObject> getFacetParameters(Facet facet) {
-		return _facetProcessor.processFacet(facet);
 	}
 
 	protected String getFacetString(Map<String, JSONObject> jsonObjects) {
@@ -177,7 +198,8 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 
 			addFilterQuery(postFilterQueries, facet, tag);
 
-			Map<String, JSONObject> facetParameters = getFacetParameters(facet);
+			Map<String, JSONObject> facetParameters = _getFacetParameters(
+				facet);
 
 			excludeTags(
 				facetParameters,
@@ -278,15 +300,93 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 		}
 	}
 
-	@Reference(service = CompositeFacetProcessor.class)
-	private FacetProcessor<SolrQuery> _facetProcessor;
+	private Map<String, JSONObject> _getFacetParameters(Facet facet) {
+		Class<?> clazz = facet.getClass();
+
+		FacetProcessor<SolrQuery> facetProcessor =
+			_serviceTrackerMap.getService(clazz.getName());
+
+		if (facetProcessor == null) {
+			facetProcessor = _defaultFacetProcessor;
+		}
+
+		return facetProcessor.processFacet(facet);
+	}
+
+	private final FacetProcessor<SolrQuery> _defaultFacetProcessor =
+		new FacetProcessor<SolrQuery>() {
+
+			@Override
+			public String getFacetClassName() {
+				return null;
+			}
+
+			@Override
+			public Map<String, JSONObject> processFacet(Facet facet) {
+				return LinkedHashMapBuilder.<String, JSONObject>put(
+					FacetUtil.getAggregationName(facet),
+					_getFacetParametersJSONObject(facet)
+				).build();
+			}
+
+			private JSONObject _getFacetParametersJSONObject(Facet facet) {
+				JSONObject jsonObject = _jsonFactory.createJSONObject();
+
+				jsonObject.put(
+					"field", facet.getFieldName()
+				).put(
+					"type", "terms"
+				);
+
+				FacetConfiguration facetConfiguration =
+					facet.getFacetConfiguration();
+
+				JSONObject dataJSONObject = facetConfiguration.getData();
+
+				int minCount = dataJSONObject.getInt("frequencyThreshold");
+
+				if (minCount > 0) {
+					jsonObject.put("mincount", minCount);
+				}
+
+				int limit = dataJSONObject.getInt("maxTerms");
+
+				if (limit > 0) {
+					jsonObject.put("limit", limit);
+				}
+
+				String sortParam = "count";
+				String sortValue = "desc";
+
+				String order = facetConfiguration.getOrder();
+
+				if (order.equals("OrderValueAsc")) {
+					sortParam = "index";
+					sortValue = "asc";
+				}
+
+				JSONObject sortJSONObject = _jsonFactory.createJSONObject();
+
+				sortJSONObject.put(sortParam, sortValue);
+
+				jsonObject.put("sort", sortJSONObject);
+
+				return jsonObject;
+			}
+
+		};
 
 	@Reference(target = "(search.engine.impl=Solr)")
 	private FilterTranslator<String> _filterTranslator;
 
+	@Reference
+	private JSONFactory _jsonFactory;
+
 	@Reference(target = "(search.engine.impl=Solr)")
 	private QueryTranslator<String> _queryTranslator;
 
+	private ServiceTrackerMap<String, FacetProcessor<SolrQuery>>
+		_serviceTrackerMap;
 	private final SolrQueryTranslator _solrQueryTranslator =
 		new SolrQueryTranslator();
 

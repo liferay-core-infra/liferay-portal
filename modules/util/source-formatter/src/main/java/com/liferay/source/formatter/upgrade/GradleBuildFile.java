@@ -161,7 +161,7 @@ public class GradleBuildFile {
 	}
 
 	private void _saveSource(List<String> lines) {
-		_source = StringUtil.merge(lines, System.lineSeparator());
+		_source = StringUtil.merge(lines, System.lineSeparator(), false);
 	}
 
 	private GradleBuildFileVisitor _walkAST() {

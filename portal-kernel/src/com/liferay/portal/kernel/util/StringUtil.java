@@ -1787,6 +1787,23 @@ public class StringUtil {
 	 *         collection is <code>null</code>
 	 */
 	public static String merge(Collection<?> col, String delimiter) {
+		return merge(col, delimiter, true);
+	}
+
+	/**
+	 * Merges the elements of the collection by returning a string representing
+	 * a delimited list of its values.
+	 *
+	 * @param  col the collection of objects
+	 * @param  delimiter the string whose last index in the string marks where
+	 *         to begin the substring
+	 * @param  trim whether any leading and trailing whitespace removed
+	 * @return the merged collection elements, or <code>null</code> if the
+	 *         collection is <code>null</code>
+	 */
+	public static String merge(
+		Collection<?> col, String delimiter, boolean trim) {
+
 		if (col == null) {
 			return null;
 		}
@@ -1800,7 +1817,11 @@ public class StringUtil {
 		for (Object object : col) {
 			String objectString = String.valueOf(object);
 
-			sb.append(objectString.trim());
+			if (trim) {
+				objectString = objectString.trim();
+			}
+
+			sb.append(objectString);
 
 			sb.append(delimiter);
 		}

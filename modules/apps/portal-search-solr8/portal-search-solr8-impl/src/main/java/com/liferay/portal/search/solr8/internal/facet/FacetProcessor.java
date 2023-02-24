@@ -24,6 +24,8 @@ import java.util.Map;
  */
 public interface FacetProcessor<T> {
 
+	public String getFacetClassName();
+
 	public Map<String, JSONObject> processFacet(Facet facet);
 
 }

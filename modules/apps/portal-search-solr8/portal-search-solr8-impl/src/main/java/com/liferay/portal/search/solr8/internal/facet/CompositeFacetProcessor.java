@@ -39,6 +39,11 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 public class CompositeFacetProcessor implements FacetProcessor<SolrQuery> {
 
 	@Override
+	public String getFacetClassName() {
+		return null;
+	}
+
+	@Override
 	public Map<String, JSONObject> processFacet(Facet facet) {
 		Class<?> clazz = facet.getClass();
 
@@ -77,6 +82,11 @@ public class CompositeFacetProcessor implements FacetProcessor<SolrQuery> {
 
 	private final FacetProcessor<SolrQuery> _defaultFacetProcessor =
 		new FacetProcessor<SolrQuery>() {
+
+			@Override
+			public String getFacetClassName() {
+				return null;
+			}
 
 			@Override
 			public Map<String, JSONObject> processFacet(Facet facet) {

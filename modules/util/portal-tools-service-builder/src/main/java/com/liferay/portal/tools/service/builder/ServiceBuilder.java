@@ -5895,14 +5895,25 @@ public class ServiceBuilder {
 			return false;
 		}
 
-		List<String> finderColumnNames = ListUtil.filter(
-			TransformUtil.transform(
-				finderColumnElements,
-				finderColumnElement -> finderColumnElement.attributeValue(
-					"name")),
-			finderColumnName ->
-				finderColumnName.endsWith("Id") ||
-				finderColumnName.endsWith("PK"));
+		List<String> finderColumnNames = TransformUtil.transform(
+			finderColumnElements,
+			finderColumnElement -> {
+				String finderColumnName = finderColumnElement.attributeValue(
+					"name");
+
+				if ((finderColumnName == null) ||
+					(!finderColumnName.endsWith("Id") &&
+					 !finderColumnName.endsWith("PK"))) {
+
+					return null;
+				}
+
+				if (finderColumnName.endsWith("Id") ||
+					finderColumnName.endsWith("PK")) {
+
+					return finderColumnName;
+				}
+			});
 
 		if (finderColumnNames.size() == 1) {
 			String finderColumnName = finderColumnNames.get(0);

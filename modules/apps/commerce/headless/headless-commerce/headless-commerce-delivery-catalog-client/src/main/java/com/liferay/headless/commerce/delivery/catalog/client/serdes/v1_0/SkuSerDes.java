@@ -17,6 +17,7 @@ package com.liferay.headless.commerce.delivery.catalog.client.serdes.v1_0;
 import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.Sku;
 import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.SkuOption;
 import com.liferay.headless.commerce.delivery.catalog.client.json.BaseJSONParser;
+import com.liferay.petra.function.transform.TransformUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,7 +27,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -568,13 +568,10 @@ public class SkuSerDes {
 			else if (Objects.equals(jsonParserFieldName, "skuOptions")) {
 				if (jsonParserFieldValue != null) {
 					sku.setSkuOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> SkuOptionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new SkuOption[size]
-						));
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
+							object -> SkuOptionSerDes.toDTO((String)object),
+							SkuOption.class));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "weight")) {

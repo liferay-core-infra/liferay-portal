@@ -17,13 +17,13 @@ package com.liferay.headless.commerce.admin.catalog.client.serdes.v1_0;
 import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.CustomField;
 import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.MappedProduct;
 import com.liferay.headless.commerce.admin.catalog.client.json.BaseJSONParser;
+import com.liferay.petra.function.transform.TransformUtil;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -349,13 +349,10 @@ public class MappedProductSerDes {
 			else if (Objects.equals(jsonParserFieldName, "customFields")) {
 				if (jsonParserFieldValue != null) {
 					mappedProduct.setCustomFields(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> CustomFieldSerDes.toDTO((String)object)
-						).toArray(
-							size -> new CustomField[size]
-						));
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
+							object -> CustomFieldSerDes.toDTO((String)object),
+							CustomField.class));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "id")) {

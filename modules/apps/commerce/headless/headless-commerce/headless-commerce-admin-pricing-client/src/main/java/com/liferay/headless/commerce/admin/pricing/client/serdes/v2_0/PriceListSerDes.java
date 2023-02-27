@@ -23,6 +23,7 @@ import com.liferay.headless.commerce.admin.pricing.client.dto.v2_0.PriceListDisc
 import com.liferay.headless.commerce.admin.pricing.client.dto.v2_0.PriceListOrderType;
 import com.liferay.headless.commerce.admin.pricing.client.dto.v2_0.PriceModifier;
 import com.liferay.headless.commerce.admin.pricing.client.json.BaseJSONParser;
+import com.liferay.petra.function.transform.TransformUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,7 +33,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -814,13 +814,10 @@ public class PriceListSerDes {
 			else if (Objects.equals(jsonParserFieldName, "priceEntries")) {
 				if (jsonParserFieldValue != null) {
 					priceList.setPriceEntries(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceEntrySerDes.toDTO((String)object)
-						).toArray(
-							size -> new PriceEntry[size]
-						));
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
+							object -> PriceEntrySerDes.toDTO((String)object),
+							PriceEntry.class));
 				}
 			}
 			else if (Objects.equals(
@@ -828,40 +825,31 @@ public class PriceListSerDes {
 
 				if (jsonParserFieldValue != null) {
 					priceList.setPriceListAccountGroups(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
 							object -> PriceListAccountGroupSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListAccountGroup[size]
-						));
+								(String)object),
+							PriceListAccountGroup.class));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priceListAccounts")) {
 				if (jsonParserFieldValue != null) {
 					priceList.setPriceListAccounts(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
 							object -> PriceListAccountSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListAccount[size]
-						));
+								(String)object),
+							PriceListAccount.class));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priceListChannels")) {
 				if (jsonParserFieldValue != null) {
 					priceList.setPriceListChannels(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
 							object -> PriceListChannelSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListChannel[size]
-						));
+								(String)object),
+							PriceListChannel.class));
 				}
 			}
 			else if (Objects.equals(
@@ -869,14 +857,11 @@ public class PriceListSerDes {
 
 				if (jsonParserFieldValue != null) {
 					priceList.setPriceListDiscounts(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
 							object -> PriceListDiscountSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListDiscount[size]
-						));
+								(String)object),
+							PriceListDiscount.class));
 				}
 			}
 			else if (Objects.equals(
@@ -884,26 +869,20 @@ public class PriceListSerDes {
 
 				if (jsonParserFieldValue != null) {
 					priceList.setPriceListOrderTypes(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
 							object -> PriceListOrderTypeSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new PriceListOrderType[size]
-						));
+								(String)object),
+							PriceListOrderType.class));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priceModifiers")) {
 				if (jsonParserFieldValue != null) {
 					priceList.setPriceModifiers(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PriceModifierSerDes.toDTO((String)object)
-						).toArray(
-							size -> new PriceModifier[size]
-						));
+						TransformUtil.transform(
+							toStrings((Object[])jsonParserFieldValue),
+							object -> PriceModifierSerDes.toDTO((String)object),
+							PriceModifier.class));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "priority")) {

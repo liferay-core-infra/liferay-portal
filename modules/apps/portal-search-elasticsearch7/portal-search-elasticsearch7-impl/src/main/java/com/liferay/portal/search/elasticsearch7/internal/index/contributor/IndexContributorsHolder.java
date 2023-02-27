@@ -14,16 +14,16 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.index.contributor;
 
+import com.liferay.osgi.service.tracker.collections.EagerServiceTrackerCustomizer;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.search.spi.model.index.contributor.IndexContributor;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Adam Brandizzi
@@ -31,55 +31,114 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 @Component(service = IndexContributorsHolder.class)
 public class IndexContributorsHolder {
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addIndexContributor(IndexContributor indexContributor) {
-		_indexContributors.add(indexContributor);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_indexContributorServiceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, IndexContributor.class, null,
+			new EagerServiceTrackerCustomizer
+				<IndexContributor, IndexContributor>() {
 
-		for (IndexContributorReceiver indexContributorReceiver :
-				_indexContributorReceivers) {
+				@Override
+				public IndexContributor addingService(
+					ServiceReference<IndexContributor> serviceReference) {
 
-			indexContributorReceiver.addIndexContributor(indexContributor);
-		}
+					IndexContributor indexContributor =
+						bundleContext.getService(serviceReference);
+
+					if (_indexContributorReceiverServiceTrackerList == null) {
+						return indexContributor;
+					}
+
+					for (IndexContributorReceiver indexContributorReceiver :
+							_indexContributorReceiverServiceTrackerList) {
+
+						indexContributorReceiver.addIndexContributor(
+							indexContributor);
+					}
+
+					return indexContributor;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<IndexContributor> serviceReference,
+					IndexContributor indexContributor) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<IndexContributor> serviceReference,
+					IndexContributor indexContributor) {
+
+					bundleContext.ungetService(serviceReference);
+
+					if (_indexContributorReceiverServiceTrackerList == null) {
+						return;
+					}
+
+					for (IndexContributorReceiver indexContributorReceiver :
+							_indexContributorReceiverServiceTrackerList) {
+
+						indexContributorReceiver.removeIndexContributor(
+							indexContributor);
+					}
+				}
+
+			});
+
+		_indexContributorReceiverServiceTrackerList =
+			ServiceTrackerListFactory.open(
+				bundleContext, IndexContributorReceiver.class, null,
+				new EagerServiceTrackerCustomizer
+					<IndexContributorReceiver, IndexContributorReceiver>() {
+
+					@Override
+					public IndexContributorReceiver addingService(
+						ServiceReference<IndexContributorReceiver>
+							serviceReference) {
+
+						IndexContributorReceiver indexContributorReceiver =
+							bundleContext.getService(serviceReference);
+
+						for (IndexContributor indexContributor :
+								_indexContributorServiceTrackerList) {
+
+							indexContributorReceiver.addIndexContributor(
+								indexContributor);
+						}
+
+						return indexContributorReceiver;
+					}
+
+					@Override
+					public void modifiedService(
+						ServiceReference<IndexContributorReceiver>
+							serviceReference,
+						IndexContributorReceiver indexContributorReceiver) {
+					}
+
+					@Override
+					public void removedService(
+						ServiceReference<IndexContributorReceiver>
+							serviceReference,
+						IndexContributorReceiver indexContributorReceiver) {
+
+						bundleContext.ungetService(serviceReference);
+					}
+
+				});
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addIndexContributorReceiver(
-		IndexContributorReceiver indexContributorReceiver) {
+	@Deactivate
+	protected void deactivate() {
+		_indexContributorReceiverServiceTrackerList.close();
 
-		_indexContributorReceivers.add(indexContributorReceiver);
-
-		for (IndexContributor indexContributor : _indexContributors) {
-			indexContributorReceiver.addIndexContributor(indexContributor);
-		}
+		_indexContributorServiceTrackerList.close();
 	}
 
-	protected void removeIndexContributor(IndexContributor indexContributor) {
-		_indexContributors.remove(indexContributor);
-
-		for (IndexContributorReceiver indexContributorReceiver :
-				_indexContributorReceivers) {
-
-			indexContributorReceiver.removeIndexContributor(indexContributor);
-		}
-	}
-
-	protected void removeIndexContributorReceiver(
-		IndexContributorReceiver indexContributorReceiver) {
-
-		_indexContributorReceivers.remove(indexContributorReceiver);
-	}
-
-	private final List<IndexContributorReceiver> _indexContributorReceivers =
-		new CopyOnWriteArrayList<>();
-	private final List<IndexContributor> _indexContributors =
-		new CopyOnWriteArrayList<>();
+	private ServiceTrackerList<IndexContributorReceiver>
+		_indexContributorReceiverServiceTrackerList;
+	private ServiceTrackerList<IndexContributor>
+		_indexContributorServiceTrackerList;
 
 }

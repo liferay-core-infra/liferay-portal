@@ -15,29 +15,19 @@
 package com.liferay.commerce.notification.internal.messaging;
 
 import com.liferay.commerce.notification.internal.configuration.CommerceNotificationQueueEntryConfiguration;
-import com.liferay.commerce.notification.internal.constants.CommerceNotificationQueueEntryConstants;
 import com.liferay.commerce.notification.service.CommerceNotificationQueueEntryLocalService;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.BaseMessageListener;
-import com.liferay.portal.kernel.messaging.DestinationNames;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
-import com.liferay.portal.kernel.scheduler.SchedulerEntry;
-import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
+import com.liferay.petra.function.UnsafeRunnable;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
-import com.liferay.portal.kernel.scheduler.Trigger;
-import com.liferay.portal.kernel.scheduler.TriggerFactory;
-import com.liferay.portal.kernel.settings.SystemSettingsLocator;
+import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
 import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -45,67 +35,46 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.commerce.notification.internal.configuration.CommerceNotificationQueueConfiguration",
-	service = {}
+	service = SchedulerJobConfiguration.class
 )
 public class CheckCommerceNotificationQueueEntryMessageListener
-	extends BaseMessageListener {
+	implements SchedulerJobConfiguration {
 
-	@Activate
-	protected void activate() {
-		Class<?> clazz = getClass();
+	@Override
+	public UnsafeRunnable<Exception> getJobExecutor() {
+		return () -> {
 
-		String className = clazz.getName();
+			// Check unsent commerce notification queue entries
 
-		try {
-			_commerceNotificationQueueEntryConfiguration =
-				_configurationProvider.getConfiguration(
-					CommerceNotificationQueueEntryConfiguration.class,
-					new SystemSettingsLocator(
-						CommerceNotificationQueueEntryConstants.SERVICE_NAME));
-		}
-		catch (ConfigurationException configurationException) {
-			_log.error(configurationException);
-		}
+			_commerceNotificationQueueEntryLocalService.
+				sendCommerceNotificationQueueEntries();
 
-		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, null, null,
-			_commerceNotificationQueueEntryConfiguration.checkInterval(),
-			TimeUnit.MINUTE);
+			// Delete old sent commerce notification queue entries
 
-		SchedulerEntry schedulerEntry = new SchedulerEntryImpl(
-			className, trigger);
+			int deleteInterval =
+				_commerceNotificationQueueEntryConfiguration.deleteInterval();
 
-		_schedulerEngineHelper.register(
-			this, schedulerEntry, DestinationNames.SCHEDULER_DISPATCH);
-	}
+			Date date = new Date(
+				System.currentTimeMillis() - (deleteInterval * Time.MINUTE));
 
-	@Deactivate
-	protected void deactivate() {
-		_schedulerEngineHelper.unregister(this);
+			_commerceNotificationQueueEntryLocalService.
+				deleteCommerceNotificationQueueEntries(date);
+		};
 	}
 
 	@Override
-	protected void doReceive(Message message) throws Exception {
-
-		// Check unsent commerce notification queue entries
-
-		_commerceNotificationQueueEntryLocalService.
-			sendCommerceNotificationQueueEntries();
-
-		// Delete old sent commerce notification queue entries
-
-		int deleteInterval =
-			_commerceNotificationQueueEntryConfiguration.deleteInterval();
-
-		Date date = new Date(
-			System.currentTimeMillis() - (deleteInterval * Time.MINUTE));
-
-		_commerceNotificationQueueEntryLocalService.
-			deleteCommerceNotificationQueueEntries(date);
+	public TriggerConfiguration getTriggerConfiguration() {
+		return TriggerConfiguration.createTriggerConfiguration(
+			_commerceNotificationQueueEntryConfiguration.checkInterval(),
+			TimeUnit.MINUTE);
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		CheckCommerceNotificationQueueEntryMessageListener.class);
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_commerceNotificationQueueEntryConfiguration =
+			ConfigurableUtil.createConfigurable(
+				CommerceNotificationQueueEntryConfiguration.class, properties);
+	}
 
 	private volatile CommerceNotificationQueueEntryConfiguration
 		_commerceNotificationQueueEntryConfiguration;
@@ -113,14 +82,5 @@ public class CheckCommerceNotificationQueueEntryMessageListener
 	@Reference
 	private CommerceNotificationQueueEntryLocalService
 		_commerceNotificationQueueEntryLocalService;
-
-	@Reference
-	private ConfigurationProvider _configurationProvider;
-
-	@Reference
-	private SchedulerEngineHelper _schedulerEngineHelper;
-
-	@Reference
-	private TriggerFactory _triggerFactory;
 
 }

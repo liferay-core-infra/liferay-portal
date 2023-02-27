@@ -30,7 +30,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface UserNotificationConfiguration {
 
 	@Meta.AD(
-		deflt = "-1",
+		deflt = "1",
 		description = "user-notification-event-check-interval-key-description",
 		name = "user-notification-event-check-interval", required = false
 	)

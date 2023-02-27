@@ -1284,16 +1284,16 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	protected void reindexUsers(List<UserGroup> userGroups)
 		throws PortalException {
 
-		Map<Long, List<Long>> map = new HashMap<>();
+		Map<Long, List<Long>> userGroupIdsMap = new HashMap<>();
 
 		for (UserGroup userGroup : userGroups) {
-			List<Long> userGroupIds = map.computeIfAbsent(
+			List<Long> userGroupIds = userGroupIdsMap.computeIfAbsent(
 				userGroup.getCompanyId(), key -> new ArrayList<>());
 
 			userGroupIds.add(userGroup.getUserGroupId());
 		}
 
-		for (Map.Entry<Long, List<Long>> entry : map.entrySet()) {
+		for (Map.Entry<Long, List<Long>> entry : userGroupIdsMap.entrySet()) {
 			long companyId = entry.getKey();
 
 			List<Long> userGroupIds = entry.getValue();

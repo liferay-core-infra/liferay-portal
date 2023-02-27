@@ -266,6 +266,11 @@ public class StringUtil_IW {
 		return StringUtil.merge(col, delimiter);
 	}
 
+	public java.lang.String merge(java.util.Collection<?> col,
+		java.lang.String delimiter, boolean trim) {
+		return StringUtil.merge(col, delimiter, trim);
+	}
+
 	public java.lang.String merge(double[] array) {
 		return StringUtil.merge(array);
 	}

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -34,8 +35,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Brian Wing Shun Chan
@@ -119,26 +118,28 @@ public class UpgradeOrganization extends UpgradeProcess {
 					continue;
 				}
 
-				List<String> treePaths = StringUtil.split(
-					organizationGroup._organizationTreePath, CharPool.SLASH);
+				List<String> treePaths = TransformUtil.transform(
+					StringUtil.split(
+						organizationGroup._organizationTreePath,
+						CharPool.SLASH),
+					organizationId -> {
+						if (organizationId.length() > 0) {
+							return String.valueOf(
+								OrganizationGroup.getGroupId(organizationId));
+						}
 
-				Stream<String> stream = treePaths.stream();
-
-				String groupTreePath = stream.filter(
-					organizationId -> organizationId.length() > 0
-				).map(
-					organizationId -> String.valueOf(
-						OrganizationGroup.getGroupId(organizationId))
-				).collect(
-					Collectors.joining(
-						StringPool.SLASH, StringPool.SLASH, StringPool.SLASH)
-				);
+						return null;
+					});
 
 				preparedStatement2.setLong(
 					1,
 					OrganizationGroup.getGroupId(
 						organizationGroup._parentOrganizationId));
-				preparedStatement2.setString(2, groupTreePath);
+				preparedStatement2.setString(
+					2,
+					StringPool.SLASH +
+						StringUtil.merge(treePaths, StringPool.SLASH) +
+							StringPool.SLASH);
 				preparedStatement2.setLong(3, organizationGroup._groupId);
 
 				preparedStatement2.addBatch();

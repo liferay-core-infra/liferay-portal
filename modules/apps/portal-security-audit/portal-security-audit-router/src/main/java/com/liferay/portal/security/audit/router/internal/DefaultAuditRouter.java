@@ -21,11 +21,8 @@ import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.audit.AuditMessageProcessor;
 import com.liferay.portal.security.audit.configuration.AuditConfiguration;
-import com.liferay.portal.security.audit.router.internal.constants.AuditConstants;
 
 import java.util.HashSet;
 import java.util.List;
@@ -119,10 +116,9 @@ public class DefaultAuditRouter implements AuditRouter {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void setAuditMessageProcessor(
-		AuditMessageProcessor auditMessageProcessor,
-		Map<String, Object> properties) {
+		AuditMessageProcessor auditMessageProcessor) {
 
-		String[] eventTypes = _getEventTypes(properties);
+		String[] eventTypes = auditMessageProcessor.getEventTypes();
 
 		if ((eventTypes.length == 1) && eventTypes[0].equals(StringPool.STAR)) {
 			_globalAuditMessageProcessors.add(auditMessageProcessor);
@@ -146,10 +142,9 @@ public class DefaultAuditRouter implements AuditRouter {
 	}
 
 	protected void unsetAuditMessageProcessor(
-		AuditMessageProcessor auditMessageProcessor,
-		Map<String, Object> properties) {
+		AuditMessageProcessor auditMessageProcessor) {
 
-		String[] eventTypes = _getEventTypes(properties);
+		String[] eventTypes = auditMessageProcessor.getEventTypes();
 
 		if ((eventTypes.length == 1) && eventTypes[0].equals(StringPool.STAR)) {
 			_globalAuditMessageProcessors.remove(auditMessageProcessor);
@@ -167,17 +162,6 @@ public class DefaultAuditRouter implements AuditRouter {
 
 			auditMessageProcessorsSet.remove(auditMessageProcessor);
 		}
-	}
-
-	private String[] _getEventTypes(Map<String, Object> properties) {
-		String eventTypes = (String)properties.get(AuditConstants.EVENT_TYPES);
-
-		if (Validator.isNull(eventTypes)) {
-			throw new IllegalArgumentException(
-				"The property \"" + AuditConstants.EVENT_TYPES + "\" is null");
-		}
-
-		return StringUtil.split(eventTypes);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

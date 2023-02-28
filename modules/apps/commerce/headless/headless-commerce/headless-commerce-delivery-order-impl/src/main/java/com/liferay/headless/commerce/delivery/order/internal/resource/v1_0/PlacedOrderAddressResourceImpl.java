@@ -21,8 +21,9 @@ import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrder;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderAddress;
-import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.PlacedOrderAddressDTOConverter;
+import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderAddressResource;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -104,7 +105,10 @@ public class PlacedOrderAddressResourceImpl
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
 
-	@Reference
-	private PlacedOrderAddressDTOConverter _placedOrderAddressDTOConverter;
+	@Reference(
+		target = DTOConverterConstants.PLACED_ORDER_ADDRESS_DTO_CONVERTER
+	)
+	private DTOConverter<CommerceAddress, PlacedOrderAddress>
+		_placedOrderAddressDTOConverter;
 
 }

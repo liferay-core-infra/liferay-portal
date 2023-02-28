@@ -123,8 +123,8 @@ public class PortletRegistryImpl implements PortletRegistry {
 	}
 
 	@Override
-	public List<String> getPortletAliases() {
-		return new ArrayList<>(_serviceTrackerMap.keySet());
+	public Set<String> getPortletAliases() {
+		return _serviceTrackerMap.keySet();
 	}
 
 	@Override

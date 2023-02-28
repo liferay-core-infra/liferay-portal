@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +35,7 @@ public interface PortletRegistry {
 		return Collections.emptyList();
 	}
 
-	public List<String> getPortletAliases();
+	public Set<String> getPortletAliases();
 
 	public String getPortletName(String alias);
 

@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -377,9 +376,7 @@ public class EditableFragmentEntryProcessor implements FragmentEntryProcessor {
 	}
 
 	private boolean _hasNestedWidget(Element element) {
-		List<String> portletAliases = _portletRegistry.getPortletAliases();
-
-		for (String portletAlias : portletAliases) {
+		for (String portletAlias : _portletRegistry.getPortletAliases()) {
 			Elements tagElements = element.select(
 				"> lfr-widget-" + portletAlias);
 

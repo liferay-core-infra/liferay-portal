@@ -126,7 +126,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -1434,11 +1433,13 @@ public class DDMFormAdminDisplayContext {
 
 		ThemeDisplay themeDisplay = ddmFormAdminRequestHelper.getThemeDisplay();
 
-		return Optional.ofNullable(
-			themeDisplay.getSiteDefaultLocale()
-		).orElse(
-			themeDisplay.getLocale()
-		);
+		Locale defaultLocale = themeDisplay.getSiteDefaultLocale();
+
+		if (defaultLocale == null) {
+			return themeDisplay.getLocale();
+		}
+
+		return defaultLocale;
 	}
 
 	protected String getDisplayStyle(

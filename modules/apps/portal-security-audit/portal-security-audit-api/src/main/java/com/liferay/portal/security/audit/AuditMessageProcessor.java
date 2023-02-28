@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.audit;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.audit.AuditException;
 import com.liferay.portal.kernel.audit.AuditMessage;
 
@@ -24,6 +25,10 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface AuditMessageProcessor {
+
+	public default String[] getEventTypes() {
+		return new String[] {StringPool.STAR};
+	}
 
 	public void process(AuditMessage auditMessage) throws AuditException;
 

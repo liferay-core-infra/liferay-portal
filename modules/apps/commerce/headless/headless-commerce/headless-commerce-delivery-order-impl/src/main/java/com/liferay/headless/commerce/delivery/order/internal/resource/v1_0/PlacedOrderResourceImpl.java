@@ -24,7 +24,7 @@ import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.commerce.util.CommerceCheckoutStep;
 import com.liferay.commerce.util.CommerceCheckoutStepRegistry;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrder;
-import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.PlacedOrderDTOConverter;
+import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderResource;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -229,8 +230,8 @@ public class PlacedOrderResourceImpl extends BasePlacedOrderResourceImpl {
 	@Reference
 	private Encryptor _encryptor;
 
-	@Reference
-	private PlacedOrderDTOConverter _placedOrderDTOConverter;
+	@Reference(target = DTOConverterConstants.PLACED_ORDER_DTO_CONVERTER)
+	private DTOConverter<CommerceOrder, PlacedOrder> _placedOrderDTOConverter;
 
 	@Reference
 	private Portal _portal;

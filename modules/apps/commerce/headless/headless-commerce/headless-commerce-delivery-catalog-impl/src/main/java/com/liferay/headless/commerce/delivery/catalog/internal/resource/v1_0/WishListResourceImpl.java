@@ -21,9 +21,10 @@ import com.liferay.commerce.wish.list.model.CommerceWishList;
 import com.liferay.commerce.wish.list.service.CommerceWishListService;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
 import com.liferay.headless.commerce.delivery.catalog.dto.v1_0.WishList;
-import com.liferay.headless.commerce.delivery.catalog.internal.dto.v1_0.converter.WishListDTOConverter;
+import com.liferay.headless.commerce.delivery.catalog.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.delivery.catalog.resource.v1_0.WishListResource;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -132,7 +133,7 @@ public class WishListResourceImpl extends BaseWishListResourceImpl {
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;
 
-	@Reference
-	private WishListDTOConverter _wishListDTOConverter;
+	@Reference(target = DTOConverterConstants.WISH_LIST_DTO_CONVERTER)
+	private DTOConverter<CommerceWishList, WishList> _wishListDTOConverter;
 
 }

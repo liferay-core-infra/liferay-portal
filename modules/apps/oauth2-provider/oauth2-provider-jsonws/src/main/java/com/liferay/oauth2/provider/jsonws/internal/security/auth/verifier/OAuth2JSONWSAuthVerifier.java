@@ -49,8 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -290,8 +289,8 @@ public class OAuth2JSONWSAuthVerifier implements AuthVerifier {
 	)
 	private volatile BearerTokenProviderAccessor _bearerTokenProviderAccessor;
 
-	private final Set<String> _jaxRsApplicationNames =
-		Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final List<String> _jaxRsApplicationNames =
+		new CopyOnWriteArrayList<>();
 
 	@Reference
 	private OAuth2ApplicationLocalService _oAuth2ApplicationLocalService;

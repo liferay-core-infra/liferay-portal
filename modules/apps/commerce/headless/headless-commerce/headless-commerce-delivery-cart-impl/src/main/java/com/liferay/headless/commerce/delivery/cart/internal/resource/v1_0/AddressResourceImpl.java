@@ -20,8 +20,9 @@ import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.headless.commerce.delivery.cart.dto.v1_0.Address;
 import com.liferay.headless.commerce.delivery.cart.dto.v1_0.Cart;
-import com.liferay.headless.commerce.delivery.cart.internal.dto.v1_0.AddressDTOConverter;
+import com.liferay.headless.commerce.delivery.cart.internal.dto.v1_0.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.delivery.cart.resource.v1_0.AddressResource;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
@@ -78,8 +79,8 @@ public class AddressResourceImpl
 				contextAcceptLanguage.getPreferredLocale()));
 	}
 
-	@Reference
-	private AddressDTOConverter _addressDTOConverter;
+	@Reference(target = DTOConverterConstants.ADDRESS_DTO_CONVERTER)
+	private DTOConverter<CommerceAddress, Address> _addressDTOConverter;
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;

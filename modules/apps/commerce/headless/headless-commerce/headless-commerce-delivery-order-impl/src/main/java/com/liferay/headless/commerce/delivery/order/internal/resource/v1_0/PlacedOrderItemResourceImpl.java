@@ -21,11 +21,12 @@ import com.liferay.commerce.service.CommerceOrderItemService;
 import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrder;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderItem;
-import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.PlacedOrderItemDTOConverter;
 import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.PlacedOrderItemDTOConverterContext;
+import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderItemResource;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
 import com.liferay.portal.vulcan.fields.NestedFieldSupport;
@@ -156,7 +157,8 @@ public class PlacedOrderItemResourceImpl
 	@Reference
 	private CommerceOrderService _commerceOrderService;
 
-	@Reference
-	private PlacedOrderItemDTOConverter _placedOrderItemDTOConverter;
+	@Reference(target = DTOConverterConstants.PLACED_ORDER_ITEM_DTO_CONVERTER)
+	private DTOConverter<CommerceOrderItem, PlacedOrderItem>
+		_placedOrderItemDTOConverter;
 
 }

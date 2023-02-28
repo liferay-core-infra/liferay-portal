@@ -79,48 +79,42 @@ public class DDMExpressionFunctionMetadataHelper {
 		for (Map.Entry<String, DDMExpressionFunction> entry :
 				customDDMExpressionFunctions.entrySet()) {
 
-			Method method = null;
-
 			DDMExpressionFunction ddmExpressionFunction = entry.getValue();
 
 			Class<?> clazz = ddmExpressionFunction.getClass();
 
-			for (Method curMethod : clazz.getMethods()) {
-				if (Objects.equals(curMethod.getName(), "apply") &&
-					Objects.equals(curMethod.getReturnType(), Boolean.class)) {
+			for (Method method : clazz.getMethods()) {
+				if (!Objects.equals(method.getName(), "apply") ||
+					!Objects.equals(method.getReturnType(), Boolean.class)) {
 
-					method = curMethod;
+					continue;
+				}
 
+				int parameterCount = method.getParameterCount();
+
+				if (parameterCount > 2) {
 					break;
 				}
+
+				String label = ddmExpressionFunction.getLabel(locale);
+
+				if (Validator.isNull(label)) {
+					label = entry.getKey();
+				}
+
+				_addDDMExpressionFunctionMetadata(
+					ddmExpressionFunctionMetadatasMap,
+					new DDMExpressionFunctionMetadata(
+						entry.getKey(), label, _TYPE_BOOLEAN,
+						_getParameterClassNames(parameterCount, _TYPE_NUMBER)));
+				_addDDMExpressionFunctionMetadata(
+					ddmExpressionFunctionMetadatasMap,
+					new DDMExpressionFunctionMetadata(
+						entry.getKey(), label, _TYPE_BOOLEAN,
+						_getParameterClassNames(parameterCount, _TYPE_TEXT)));
+
+				break;
 			}
-
-			if (method == null) {
-				continue;
-			}
-
-			int parameterCount = method.getParameterCount();
-
-			if (parameterCount > 2) {
-				continue;
-			}
-
-			String label = ddmExpressionFunction.getLabel(locale);
-
-			if (Validator.isNull(label)) {
-				label = entry.getKey();
-			}
-
-			_addDDMExpressionFunctionMetadata(
-				ddmExpressionFunctionMetadatasMap,
-				new DDMExpressionFunctionMetadata(
-					entry.getKey(), label, _TYPE_BOOLEAN,
-					_getParameterClassNames(parameterCount, _TYPE_NUMBER)));
-			_addDDMExpressionFunctionMetadata(
-				ddmExpressionFunctionMetadatasMap,
-				new DDMExpressionFunctionMetadata(
-					entry.getKey(), label, _TYPE_BOOLEAN,
-					_getParameterClassNames(parameterCount, _TYPE_TEXT)));
 		}
 	}
 

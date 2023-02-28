@@ -17,12 +17,14 @@ package com.liferay.headless.commerce.delivery.order.internal.resource.v1_0;
 import com.liferay.commerce.exception.NoSuchOrderException;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderItem;
+import com.liferay.commerce.model.CommerceShipment;
 import com.liferay.commerce.service.CommerceOrderItemService;
 import com.liferay.commerce.service.CommerceShipmentItemService;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderItem;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderItemShipment;
-import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.PlacedOrderItemShipmentDTOConverter;
+import com.liferay.headless.commerce.delivery.order.internal.dto.v1_0.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderItemShipmentResource;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -93,8 +95,10 @@ public class PlacedOrderItemShipmentResourceImpl
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
 
-	@Reference
-	private PlacedOrderItemShipmentDTOConverter
+	@Reference(
+		target = DTOConverterConstants.PLACED_ORDER_ITEM_SHIPMENT_DTO_CONVERTER
+	)
+	private DTOConverter<CommerceShipment, PlacedOrderItemShipment>
 		_placedOrderItemShipmentDTOConverter;
 
 }

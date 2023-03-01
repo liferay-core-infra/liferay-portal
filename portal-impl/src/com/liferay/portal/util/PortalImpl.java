@@ -1399,9 +1399,9 @@ public class PortalImpl implements Portal {
 
 						break;
 					}
-					catch (PortalException portalException) {
+					catch (Exception exception) {
 						if (_log.isDebugEnabled()) {
-							_log.debug(portalException);
+							_log.debug(exception);
 						}
 					}
 				}

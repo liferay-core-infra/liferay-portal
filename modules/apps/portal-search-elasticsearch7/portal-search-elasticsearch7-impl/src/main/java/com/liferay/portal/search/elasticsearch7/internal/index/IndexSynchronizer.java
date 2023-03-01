@@ -27,7 +27,6 @@ import com.liferay.portal.search.engine.adapter.index.CreateIndexResponse;
 import com.liferay.portal.search.spi.index.IndexDefinition;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.elasticsearch.ElasticsearchStatusException;
@@ -47,17 +46,17 @@ public class IndexSynchronizer {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(&(" + IndexDefinition.PROPERTY_KEY_INDEX_NAME + "=*)(" + IndexDefinition.PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME + "=*))"
 	)
 	protected void addIndexDefinition(
 		IndexDefinition indexDefinition, Map<String, Object> properties) {
 
 		_synchronizeIndexDefinition(
-			_getIndexName(
-				properties.get(IndexDefinition.PROPERTY_KEY_INDEX_NAME)),
-			_getSource(
-				indexDefinition,
-				properties.get(
+			(String)properties.get(IndexDefinition.PROPERTY_KEY_INDEX_NAME),
+			ResourceUtil.getResourceAsString(
+				indexDefinition.getClass(),
+				(String)properties.get(
 					IndexDefinition.
 						PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME)));
 	}
@@ -120,19 +119,6 @@ public class IndexSynchronizer {
 				throw elasticsearchStatusException;
 			}
 		}
-	}
-
-	private String _getIndexName(Object property) {
-		return String.valueOf(Objects.requireNonNull(property));
-	}
-
-	private String _getSource(
-		IndexDefinition indexDefinition, Object property) {
-
-		String resourceName = String.valueOf(Objects.requireNonNull(property));
-
-		return ResourceUtil.getResourceAsString(
-			indexDefinition.getClass(), resourceName);
 	}
 
 	private void _synchronizeIndexDefinition(String index, String source) {

@@ -155,10 +155,9 @@ public class CustomFacetDisplayContextBuilder {
 	}
 
 	public CustomFacetDisplayContextBuilder setParameterValues(
-		Optional<List<String>> parameterValuesOptional) {
+		List<String> parameterValues) {
 
-		parameterValuesOptional.ifPresent(
-			parameterValues -> _parameterValues = parameterValues);
+		_parameterValues = parameterValues;
 
 		return this;
 	}

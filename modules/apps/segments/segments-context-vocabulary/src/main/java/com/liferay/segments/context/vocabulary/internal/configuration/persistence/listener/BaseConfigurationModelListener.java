@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Dictionary;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -42,10 +41,14 @@ public class BaseConfigurationModelListener
 		String entityFieldName = String.valueOf(
 			properties.get("entityFieldName"));
 
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			"content.Language", LocaleThreadLocal.getThemeDisplayLocale(),
+			getClass());
+
 		if (Validator.isNull(entityFieldName)) {
 			throw new ConfigurationModelListenerException(
 				ResourceBundleUtil.getString(
-					_getResourceBundle(),
+					resourceBundle,
 					"please-enter-a-valid-session-property-name"),
 				_clazz, getClass(), properties);
 		}
@@ -56,7 +59,7 @@ public class BaseConfigurationModelListener
 
 			throw new DuplicatedSegmentsContextVocabularyConfigurationModelListenerException(
 				ResourceBundleUtil.getString(
-					_getResourceBundle(),
+					resourceBundle,
 					"this-field-is-already-linked-to-one-vocabulary"),
 				_clazz, getClass(), properties);
 		}
@@ -65,13 +68,6 @@ public class BaseConfigurationModelListener
 	protected void init(ConfigurationAdmin configurationAdmin, Class<?> clazz) {
 		_configurationAdmin = configurationAdmin;
 		_clazz = clazz;
-	}
-
-	private ResourceBundle _getResourceBundle() {
-		Locale locale = LocaleThreadLocal.getThemeDisplayLocale();
-
-		return ResourceBundleUtil.getBundle(
-			"content.Language", locale, getClass());
 	}
 
 	private boolean _isDefined(

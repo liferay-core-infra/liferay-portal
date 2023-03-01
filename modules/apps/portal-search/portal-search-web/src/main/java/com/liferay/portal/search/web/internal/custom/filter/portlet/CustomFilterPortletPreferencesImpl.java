@@ -83,14 +83,9 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getFilterValueOptional() {
+	public String getFilterValue() {
 		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE);
-	}
-
-	@Override
-	public String getFilterValueString() {
-		return _getString(getFilterValueOptional());
+			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE, null);
 	}
 
 	@Override

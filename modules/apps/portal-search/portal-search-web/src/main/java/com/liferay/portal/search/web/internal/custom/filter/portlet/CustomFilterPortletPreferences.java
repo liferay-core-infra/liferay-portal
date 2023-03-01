@@ -67,9 +67,7 @@ public interface CustomFilterPortletPreferences {
 
 	public String getFilterQueryType();
 
-	public Optional<String> getFilterValueOptional();
-
-	public String getFilterValueString();
+	public String getFilterValue();
 
 	public String getOccur();
 

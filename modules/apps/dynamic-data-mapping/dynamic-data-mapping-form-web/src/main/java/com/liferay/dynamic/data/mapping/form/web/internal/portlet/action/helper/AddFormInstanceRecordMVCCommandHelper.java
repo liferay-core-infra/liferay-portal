@@ -38,11 +38,11 @@ import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -269,26 +269,34 @@ public class AddFormInstanceRecordMVCCommandHelper {
 				ddmFormFieldValuesMap.get(nonevaluableFieldName));
 		}
 
-		ddmFormFieldValues = ListUtil.filter(
+		TransformUtil.transform(
 			ddmFormFieldValues,
-			ddmFormFieldValue -> ddmFormFieldValue.getValue() != null);
+			ddmFormFieldValue -> {
+				if (ddmFormFieldValue.getValue() != null) {
+					_removeDDMFormFieldValue(ddmFormFieldValue);
 
-		ddmFormFieldValues.forEach(this::_removeDDMFormFieldValue);
+					return ddmFormFieldValue;
+				}
+
+				return null;
+			});
 	}
 
 	private void _updateNonevaluableDDMFormFields(
 		Map<String, DDMFormField> ddmFormFieldsMap,
 		Set<String> nonevaluableFieldNames) {
 
-		List<DDMFormField> ddmFormFields = ListUtil.filter(
-			new ArrayList<>(ddmFormFieldsMap.values()),
-			ddmFormField -> nonevaluableFieldNames.contains(
-				ddmFormField.getName()));
-
-		ddmFormFields.forEach(
+		TransformUtil.transform(
+			ddmFormFieldsMap.values(),
 			ddmFormField -> {
-				ddmFormField.setDDMFormFieldValidation(null);
-				ddmFormField.setRequired(false);
+				if (nonevaluableFieldNames.contains(ddmFormField.getName())) {
+					ddmFormField.setDDMFormFieldValidation(null);
+					ddmFormField.setRequired(false);
+
+					return ddmFormField;
+				}
+
+				return null;
 			});
 	}
 

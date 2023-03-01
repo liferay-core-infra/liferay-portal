@@ -15,6 +15,7 @@
 package com.liferay.portlet.configuration.web.internal.display.context;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -89,10 +90,12 @@ import javax.servlet.http.HttpSession;
 public class PortletConfigurationPermissionsDisplayContext {
 
 	public PortletConfigurationPermissionsDisplayContext(
-			HttpServletRequest httpServletRequest, RenderRequest renderRequest,
+			CustomSQL customSQL, HttpServletRequest httpServletRequest,
+			RenderRequest renderRequest,
 			RoleTypeContributorProvider roleTypeContributorProvider)
 		throws PortalException {
 
+		_customSQL = customSQL;
 		_httpServletRequest = httpServletRequest;
 		_renderRequest = renderRequest;
 		_roleTypeContributorProvider = roleTypeContributorProvider;
@@ -525,6 +528,13 @@ public class PortletConfigurationPermissionsDisplayContext {
 					teamGroupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 			}
 
+			String[] keywords = _customSQL.keywords(
+				searchTerms.getKeywords(), true);
+
+			for (int i = 0; i < keywords.length; i++) {
+				keywords[i] = keywords[i].replaceAll("^%|%$", StringPool.BLANK);
+			}
+
 			roleSearchContainer.setResultsAndTotal(
 				ListUtil.filter(
 					roles,
@@ -534,10 +544,7 @@ public class PortletConfigurationPermissionsDisplayContext {
 							_themeDisplay.getLocale());
 
 						return (roleName != null) &&
-							   roleName.contains(
-								   StringUtil.toLowerCase(
-									   searchTerms.getKeywords(),
-									   _themeDisplay.getLocale()));
+							   (StringUtil.indexOfAny(roleName, keywords) > -1);
 					}));
 		}
 
@@ -750,6 +757,7 @@ public class PortletConfigurationPermissionsDisplayContext {
 	};
 
 	private List<String> _actions;
+	private final CustomSQL _customSQL;
 	private final Group _group;
 	private final long _groupId;
 	private List<String> _guestUnsupportedActions;

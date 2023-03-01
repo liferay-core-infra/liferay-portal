@@ -20,6 +20,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -80,6 +81,7 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil;
 import com.liferay.portlet.configuration.web.internal.constants.PortletConfigurationPortletKeys;
 import com.liferay.portlet.configuration.web.internal.constants.PortletConfigurationWebKeys;
+import com.liferay.portlet.configuration.web.internal.display.context.PortletConfigurationPermissionsDisplayContext;
 import com.liferay.portlet.configuration.web.internal.portlet.action.ActionUtil;
 import com.liferay.portlet.portletconfiguration.util.PublicRenderParameterConfiguration;
 import com.liferay.roles.admin.constants.RolesAdminWebKeys;
@@ -655,6 +657,17 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 					RolesAdminWebKeys.ROLE_TYPE_CONTRIBUTOR_PROVIDER,
 					_roleTypeContributorProvider);
 
+				PortletConfigurationPermissionsDisplayContext
+					portletConfigurationPermissionsDisplayContext =
+						new PortletConfigurationPermissionsDisplayContext(
+							_customSQL,
+							_portal.getHttpServletRequest(renderRequest),
+							renderRequest, _roleTypeContributorProvider);
+
+				renderRequest.setAttribute(
+					WebKeys.PORTLET_DISPLAY_CONTEXT,
+					portletConfigurationPermissionsDisplayContext);
+
 				super.doDispatch(renderRequest, renderResponse);
 
 				return;
@@ -1114,6 +1127,9 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletConfigurationPortlet.class);
+
+	@Reference
+	private CustomSQL _customSQL;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

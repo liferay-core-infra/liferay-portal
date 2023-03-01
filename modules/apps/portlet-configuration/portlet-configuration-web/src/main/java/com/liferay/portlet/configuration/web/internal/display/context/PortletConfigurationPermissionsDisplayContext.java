@@ -15,6 +15,7 @@
 package com.liferay.portlet.configuration.web.internal.display.context;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -66,6 +67,7 @@ import com.liferay.roles.admin.role.type.contributor.provider.RoleTypeContributo
 import com.liferay.sites.kernel.util.SitesUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,6 +75,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
@@ -89,10 +93,12 @@ import javax.servlet.http.HttpSession;
 public class PortletConfigurationPermissionsDisplayContext {
 
 	public PortletConfigurationPermissionsDisplayContext(
-			HttpServletRequest httpServletRequest, RenderRequest renderRequest,
+			CustomSQL customSQL, HttpServletRequest httpServletRequest,
+			RenderRequest renderRequest,
 			RoleTypeContributorProvider roleTypeContributorProvider)
 		throws PortalException {
 
+		_customSQL = customSQL;
 		_httpServletRequest = httpServletRequest;
 		_renderRequest = renderRequest;
 		_roleTypeContributorProvider = roleTypeContributorProvider;
@@ -525,6 +531,10 @@ public class PortletConfigurationPermissionsDisplayContext {
 					teamGroupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 			}
 
+			Supplier<Stream<String>> keywordsStreamSupplier =
+				() -> Arrays.stream(
+					_customSQL.keywords(searchTerms.getKeywords(), true));
+
 			roleSearchContainer.setResultsAndTotal(
 				ListUtil.filter(
 					roles,
@@ -533,11 +543,14 @@ public class PortletConfigurationPermissionsDisplayContext {
 							role.getTitle(_themeDisplay.getLocale()),
 							_themeDisplay.getLocale());
 
+						Stream<String> keywordsStream =
+							keywordsStreamSupplier.get();
+
 						return (roleName != null) &&
-							   roleName.contains(
-								   StringUtil.toLowerCase(
-									   searchTerms.getKeywords(),
-									   _themeDisplay.getLocale()));
+							   keywordsStream.anyMatch(
+								   keywords -> roleName.contains(
+									keywords.replaceAll(
+										"^%|%$", StringPool.BLANK)));
 					}));
 		}
 
@@ -750,6 +763,7 @@ public class PortletConfigurationPermissionsDisplayContext {
 	};
 
 	private List<String> _actions;
+	private final CustomSQL _customSQL;
 	private final Group _group;
 	private final long _groupId;
 	private List<String> _guestUnsupportedActions;

@@ -19,7 +19,7 @@
 <%
 RoleTypeContributorProvider roleTypeContributorProvider = (RoleTypeContributorProvider)request.getAttribute(RolesAdminWebKeys.ROLE_TYPE_CONTRIBUTOR_PROVIDER);
 
-PortletConfigurationPermissionsDisplayContext portletConfigurationPermissionsDisplayContext = new PortletConfigurationPermissionsDisplayContext(request, renderRequest, roleTypeContributorProvider);
+PortletConfigurationPermissionsDisplayContext portletConfigurationPermissionsDisplayContext = (PortletConfigurationPermissionsDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
 List<Resource> resources = portletConfigurationPermissionsDisplayContext.getResources();
 

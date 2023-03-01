@@ -18,21 +18,18 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
-import com.liferay.portal.search.elasticsearch7.internal.index.IndexDefinitionsRegistryImpl;
-import com.liferay.portal.search.elasticsearch7.internal.index.IndexSynchronizationPortalInitializedListener;
 import com.liferay.portal.search.elasticsearch7.internal.index.IndexSynchronizer;
-import com.liferay.portal.search.elasticsearch7.internal.index.IndexSynchronizerImpl;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.CreateIndexRequestExecutor;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.CreateIndexRequestExecutorImpl;
-import com.liferay.portal.search.elasticsearch7.internal.test.util.microcontainer.Microcontainer;
-import com.liferay.portal.search.elasticsearch7.internal.test.util.microcontainer.MicrocontainerImpl;
 import com.liferay.portal.search.elasticsearch7.spi.index.IndexRegistrar;
 import com.liferay.portal.search.spi.index.IndexDefinition;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
@@ -77,107 +74,93 @@ public class InstantIndexesTest {
 
 	@Before
 	public void setUp() throws Exception {
-		IndexDefinitionsRegistryImpl indexDefinitionsRegistryImpl =
-			new IndexDefinitionsRegistryImpl();
+		_indexSynchronizer = _createIndexSynchronizer(_elasticsearchFixture);
 
-		_indexSynchronizerImpl = _createIndexSynchronizer(
-			_elasticsearchFixture, indexDefinitionsRegistryImpl);
-
-		IndexSynchronizationPortalInitializedListener
-			indexSynchronizationPortalInitializedListener =
-				_createIndexSynchronizationPortalInitializedListener(
-					_indexSynchronizerImpl);
-
-		Microcontainer microcontainer = new MicrocontainerImpl();
-
-		microcontainer.wire(
-			IndexDefinition.class,
-			indexDefinitionsRegistryImpl::addIndexDefinition,
-			indexSynchronizationPortalInitializedListener::addIndexDefinition);
-
-		microcontainer.wire(
-			IndexRegistrar.class,
-			indexSynchronizationPortalInitializedListener::addIndexRegistrar);
-
-		_eventsIndexDefinition = new EventsIndexDefinition();
-		_indexSynchronizationPortalInitializedListener =
-			indexSynchronizationPortalInitializedListener;
-		_instancesAndProcessesIndexRegistrar =
-			new InstancesAndProcessesIndexRegistrar();
-		_microcontainer = microcontainer;
-		_serviceRegistration = _bundleContext.registerService(
-			IndexRegistrar.class, _instancesAndProcessesIndexRegistrar, null);
-		_tasksIndexDefinition = new TasksIndexDefinition();
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				IndexRegistrar.class, new InstancesAndProcessesIndexRegistrar(),
+				null));
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		ReflectionTestUtil.invoke(
-			_indexSynchronizerImpl, "deactivate", new Class<?>[0]);
+		if (_indexSynchronizer != null) {
+			_deactivateIndexSynchronizer();
 
-		_serviceRegistration.unregister();
+			_indexSynchronizer = null;
+		}
+
+		for (ServiceRegistration<?> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
+
+		_serviceRegistrations.clear();
 	}
 
 	@Test
 	public void testAutomaticIndexCreation() throws Exception {
-		_deployComponents(
-			_eventsIndexDefinition,
-			_indexSynchronizationPortalInitializedListener,
-			_instancesAndProcessesIndexRegistrar, _tasksIndexDefinition);
+		_registerEventsIndexDefinition();
+		_registerTasksIndexDefinition();
 
-		_startPortal();
+		_activateIndexSynchronizer();
 
 		_assertIndexesExist(
-			EventsIndexDefinition.INDEX_NAME_WORKFLOW_EVENTS,
+			_INDEX_NAME_WORKFLOW_EVENTS,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_INSTANCES,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_PROCESSES,
-			TasksIndexDefinition.INDEX_NAME_WORKFLOW_TASKS);
+			_INDEX_NAME_WORKFLOW_TASKS);
 	}
 
 	@Test
 	public void testRuntimeIndexCreation() throws Exception {
-		_deployComponents(
-			_indexSynchronizationPortalInitializedListener,
-			_instancesAndProcessesIndexRegistrar, _tasksIndexDefinition);
+		_registerTasksIndexDefinition();
 
-		_startPortal();
+		_activateIndexSynchronizer();
 
 		_assertIndexesExist(
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_INSTANCES,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_PROCESSES,
-			TasksIndexDefinition.INDEX_NAME_WORKFLOW_TASKS);
+			_INDEX_NAME_WORKFLOW_TASKS);
 
-		_deployComponents(_eventsIndexDefinition);
+		_registerEventsIndexDefinition();
 
 		_assertIndexesExist(
-			EventsIndexDefinition.INDEX_NAME_WORKFLOW_EVENTS,
+			_INDEX_NAME_WORKFLOW_EVENTS,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_INSTANCES,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_PROCESSES,
-			TasksIndexDefinition.INDEX_NAME_WORKFLOW_TASKS);
+			_INDEX_NAME_WORKFLOW_TASKS);
 	}
 
 	@Test
 	public void testStartTwiceIndexCreation() throws Exception {
-		_deployComponents(
-			_eventsIndexDefinition,
-			_indexSynchronizationPortalInitializedListener,
-			_instancesAndProcessesIndexRegistrar, _tasksIndexDefinition);
+		_registerEventsIndexDefinition();
+		_registerTasksIndexDefinition();
 
-		_startPortal();
+		_activateIndexSynchronizer();
 
 		_assertIndexesExist(
-			EventsIndexDefinition.INDEX_NAME_WORKFLOW_EVENTS,
+			_INDEX_NAME_WORKFLOW_EVENTS,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_INSTANCES,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_PROCESSES,
-			TasksIndexDefinition.INDEX_NAME_WORKFLOW_TASKS);
+			_INDEX_NAME_WORKFLOW_TASKS);
 
-		_startPortal();
+		_deactivateIndexSynchronizer();
+
+		_activateIndexSynchronizer();
 
 		_assertIndexesExist(
-			EventsIndexDefinition.INDEX_NAME_WORKFLOW_EVENTS,
+			_INDEX_NAME_WORKFLOW_EVENTS,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_INSTANCES,
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_PROCESSES,
-			TasksIndexDefinition.INDEX_NAME_WORKFLOW_TASKS);
+			_INDEX_NAME_WORKFLOW_TASKS);
+	}
+
+	private void _activateIndexSynchronizer() {
+		ReflectionTestUtil.invoke(
+			_indexSynchronizer, "activate",
+			new Class<?>[] {BundleContext.class}, _bundleContext);
 	}
 
 	private void _assertIndexesExist(String... expectedIndices) {
@@ -206,40 +189,21 @@ public class InstantIndexesTest {
 		return createIndexRequestExecutor;
 	}
 
-	private IndexSynchronizationPortalInitializedListener
-		_createIndexSynchronizationPortalInitializedListener(
-			IndexSynchronizer indexSynchronizer) {
+	private IndexSynchronizer _createIndexSynchronizer(
+		ElasticsearchFixture elasticsearchFixture) {
 
-		return new IndexSynchronizationPortalInitializedListener() {
-			{
-				setIndexSynchronizer(indexSynchronizer);
-			}
-		};
-	}
-
-	private IndexSynchronizerImpl _createIndexSynchronizer(
-		ElasticsearchFixture elasticsearchFixture,
-		IndexDefinitionsRegistryImpl indexDefinitionsRegistryImpl) {
-
-		IndexSynchronizerImpl indexSynchronizerImpl =
-			new IndexSynchronizerImpl();
+		IndexSynchronizer indexSynchronizer = new IndexSynchronizer();
 
 		ReflectionTestUtil.setFieldValue(
-			indexSynchronizerImpl, "_createIndexRequestExecutor",
+			indexSynchronizer, "_createIndexRequestExecutor",
 			_createCreateIndexRequestExecutor(elasticsearchFixture));
-		ReflectionTestUtil.setFieldValue(
-			indexSynchronizerImpl, "_indexDefinitionsRegistry",
-			indexDefinitionsRegistryImpl);
 
-		ReflectionTestUtil.invoke(
-			indexSynchronizerImpl, "activate",
-			new Class<?>[] {BundleContext.class}, _bundleContext);
-
-		return indexSynchronizerImpl;
+		return indexSynchronizer;
 	}
 
-	private void _deployComponents(Object... components) {
-		_microcontainer.deploy(components);
+	private void _deactivateIndexSynchronizer() {
+		ReflectionTestUtil.invoke(
+			_indexSynchronizer, "deactivate", new Class<?>[0]);
 	}
 
 	private GetIndexResponse _getIndexResponse(
@@ -258,21 +222,27 @@ public class InstantIndexesTest {
 		}
 	}
 
-	private void _startPortal() {
-		_microcontainer.start();
+	private void _registerEventsIndexDefinition() {
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				IndexDefinition.class, new EventsIndexDefinition(), null));
 	}
+
+	private void _registerTasksIndexDefinition() {
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				IndexDefinition.class, new TasksIndexDefinition(), null));
+	}
+
+	private static final String _INDEX_NAME_WORKFLOW_EVENTS = "workflow-events";
+
+	private static final String _INDEX_NAME_WORKFLOW_TASKS = "workflow-tasks";
 
 	private static BundleContext _bundleContext;
 	private static ElasticsearchFixture _elasticsearchFixture;
 
-	private EventsIndexDefinition _eventsIndexDefinition;
-	private IndexSynchronizationPortalInitializedListener
-		_indexSynchronizationPortalInitializedListener;
-	private IndexSynchronizerImpl _indexSynchronizerImpl;
-	private InstancesAndProcessesIndexRegistrar
-		_instancesAndProcessesIndexRegistrar;
-	private Microcontainer _microcontainer;
-	private ServiceRegistration<IndexRegistrar> _serviceRegistration;
-	private TasksIndexDefinition _tasksIndexDefinition;
+	private IndexSynchronizer _indexSynchronizer;
+	private final List<ServiceRegistration<?>> _serviceRegistrations =
+		new ArrayList<>();
 
 }

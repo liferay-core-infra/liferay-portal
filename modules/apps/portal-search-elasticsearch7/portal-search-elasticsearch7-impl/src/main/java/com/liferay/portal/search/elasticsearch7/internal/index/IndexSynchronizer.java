@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.CreateIndexRequestExecutor;
+import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.elasticsearch7.spi.index.IndexRegistrar;
 import com.liferay.portal.search.elasticsearch7.spi.index.helper.IndexSettingsDefinition;
 import com.liferay.portal.search.engine.adapter.index.CreateIndexRequest;
@@ -26,6 +27,7 @@ import com.liferay.portal.search.engine.adapter.index.CreateIndexResponse;
 import com.liferay.portal.search.spi.index.IndexDefinition;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.elasticsearch.ElasticsearchStatusException;
@@ -51,7 +53,13 @@ public class IndexSynchronizer {
 		IndexDefinition indexDefinition, Map<String, Object> properties) {
 
 		_synchronizeIndexDefinition(
-			new IndexDefinitionData(indexDefinition, properties));
+			_getIndexName(
+				properties.get(IndexDefinition.PROPERTY_KEY_INDEX_NAME)),
+			_getSource(
+				indexDefinition,
+				properties.get(
+					IndexDefinition.
+						PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME)));
 	}
 
 	@Reference(
@@ -114,11 +122,20 @@ public class IndexSynchronizer {
 		}
 	}
 
-	private void _synchronizeIndexDefinition(
-		IndexDefinitionData indexDefinitionData) {
+	private String _getIndexName(Object property) {
+		return String.valueOf(Objects.requireNonNull(property));
+	}
 
-		String index = indexDefinitionData.getIndex();
+	private String _getSource(
+		IndexDefinition indexDefinition, Object property) {
 
+		String resourceName = String.valueOf(Objects.requireNonNull(property));
+
+		return ResourceUtil.getResourceAsString(
+			indexDefinition.getClass(), resourceName);
+	}
+
+	private void _synchronizeIndexDefinition(String index, String source) {
 		_createIndex(
 			index,
 			createIndexRequest -> {
@@ -126,7 +143,7 @@ public class IndexSynchronizer {
 					_log.debug("Synchronizing index " + index);
 				}
 
-				createIndexRequest.setSource(indexDefinitionData.getSource());
+				createIndexRequest.setSource(source);
 			});
 	}
 

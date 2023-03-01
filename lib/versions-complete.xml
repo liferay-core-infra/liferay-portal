@@ -4484,7 +4484,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 20:54:32</current-version-publish-date>
-				<latest-version-publish-date>2023-02-27 22:23:06</latest-version-publish-date>
+				<latest-version-publish-date>2023-02-28 23:41:45</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-kms.jar</file-name>
@@ -4498,7 +4498,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 20:54:29</current-version-publish-date>
-				<latest-version-publish-date>2023-02-27 22:22:18</latest-version-publish-date>
+				<latest-version-publish-date>2023-02-28 23:41:07</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-s3.jar</file-name>
@@ -4512,7 +4512,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 20:53:45</current-version-publish-date>
-				<latest-version-publish-date>2023-02-27 22:23:03</latest-version-publish-date>
+				<latest-version-publish-date>2023-02-28 23:42:59</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!commons-logging.jar</file-name>

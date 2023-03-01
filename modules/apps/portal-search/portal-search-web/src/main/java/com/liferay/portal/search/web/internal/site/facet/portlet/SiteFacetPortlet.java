@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.searcher.SearchRequest;
@@ -36,7 +37,6 @@ import com.liferay.portal.search.web.search.request.SearchSettings;
 import java.io.IOException;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -156,10 +156,14 @@ public class SiteFacetPortlet extends MVCPortlet {
 
 		scopeSearchFacetDisplayContextBuilder.setParameterName(parameterName);
 
-		SearchOptionalUtil.copy(
-			() -> _getParameterValuesOptional(
-				parameterName, portletSharedSearchResponse, renderRequest),
-			scopeSearchFacetDisplayContextBuilder::setParameterValues);
+		String[] parameterValues =
+			portletSharedSearchResponse.getParameterValues(
+				parameterName, renderRequest);
+
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			scopeSearchFacetDisplayContextBuilder.setParameterValues(
+				Arrays.asList(parameterValues));
+		}
 
 		scopeSearchFacetDisplayContextBuilder.setRequest(
 			_getHttpServletRequest(renderRequest));
@@ -222,18 +226,6 @@ public class SiteFacetPortlet extends MVCPortlet {
 		SearchRequest searchRequest = searchResponse.getRequest();
 
 		return searchRequest.getPaginationStartParameterName();
-	}
-
-	private Optional<List<String>> _getParameterValuesOptional(
-		String parameterName,
-		PortletSharedSearchResponse portletSharedSearchResponse,
-		RenderRequest renderRequest) {
-
-		Optional<String[]> optional =
-			portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest);
-
-		return optional.map(Arrays::asList);
 	}
 
 }

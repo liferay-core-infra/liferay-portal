@@ -132,11 +132,13 @@ public class CPSpecificationOptionsFacetDisplayContextBuilder
 
 		_facet = facet;
 
-		Optional<String[]> parameterValuesOptional =
+		String[] parameterValues =
 			portletSharedSearchResponse.getParameterValues(
 				facet.getFieldName(), renderRequest);
 
-		parameterValuesOptional.ifPresent(this::parameterValues);
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			parameterValues(parameterValues);
+		}
 
 		return _buildCPSpecificationOptionsSearchFacetDisplayContext();
 	}
@@ -376,17 +378,10 @@ public class CPSpecificationOptionsFacetDisplayContextBuilder
 		CPSpecificationOption cpSpecificationOption = _getCPSpecificationOption(
 			fieldName);
 
-		Optional<String[]> parameterValuesOptional =
+		return ArrayUtil.contains(
 			_portletSharedSearchResponse.getParameterValues(
-				cpSpecificationOption.getKey(), _renderRequest);
-
-		if (parameterValuesOptional.isPresent()) {
-			String[] parameterValues = parameterValuesOptional.get();
-
-			return ArrayUtil.contains(parameterValues, fieldValue);
-		}
-
-		return false;
+				cpSpecificationOption.getKey(), _renderRequest),
+			fieldValue);
 	}
 
 	private CPSpecificationOptionLocalService

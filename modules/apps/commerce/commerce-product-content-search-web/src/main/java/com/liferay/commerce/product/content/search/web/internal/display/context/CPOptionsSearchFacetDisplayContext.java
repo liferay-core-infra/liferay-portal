@@ -33,7 +33,6 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import javax.portlet.RenderRequest;
 
@@ -137,17 +136,10 @@ public class CPOptionsSearchFacetDisplayContext implements Serializable {
 
 		CPOption cpOption = getCPOption(companyId, fieldName);
 
-		Optional<String[]> parameterValuesOptional =
+		return ArrayUtil.contains(
 			_portletSharedSearchResponse.getParameterValues(
-				cpOption.getKey(), _renderRequest);
-
-		if (parameterValuesOptional.isPresent()) {
-			String[] parameterValues = parameterValuesOptional.get();
-
-			return ArrayUtil.contains(parameterValues, fieldValue);
-		}
-
-		return false;
+				cpOption.getKey(), _renderRequest),
+			fieldValue);
 	}
 
 	public void setCPOptionLocalService(

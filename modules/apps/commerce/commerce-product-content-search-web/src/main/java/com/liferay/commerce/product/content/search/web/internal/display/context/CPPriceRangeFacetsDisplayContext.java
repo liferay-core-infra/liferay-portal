@@ -32,8 +32,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRe
 
 import java.math.BigDecimal;
 
-import java.util.Optional;
-
 import javax.portlet.RenderRequest;
 
 /**
@@ -132,17 +130,10 @@ public class CPPriceRangeFacetsDisplayContext {
 			String fieldName, String fieldValue)
 		throws PortalException {
 
-		Optional<String[]> parameterValuesOptional =
+		return ArrayUtil.contains(
 			_portletSharedSearchResponse.getParameterValues(
-				fieldName, _renderRequest);
-
-		if (parameterValuesOptional.isPresent()) {
-			String[] parameterValues = parameterValuesOptional.get();
-
-			return ArrayUtil.contains(parameterValues, fieldValue);
-		}
-
-		return false;
+				fieldName, _renderRequest),
+			fieldValue);
 	}
 
 	public boolean showInputRange() {

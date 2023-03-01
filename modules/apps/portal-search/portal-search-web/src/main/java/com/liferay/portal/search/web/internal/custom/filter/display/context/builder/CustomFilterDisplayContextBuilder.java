@@ -14,10 +14,10 @@
 
 package com.liferay.portal.search.web.internal.custom.filter.display.context.builder;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.search.web.internal.custom.filter.configuration.CustomFilterPortletInstanceConfiguration;
 import com.liferay.portal.search.web.internal.custom.filter.display.context.CustomFilterDisplayContext;
@@ -75,10 +75,8 @@ public class CustomFilterDisplayContextBuilder {
 		return this;
 	}
 
-	public CustomFilterDisplayContextBuilder filterValueOptional(
-		Optional<String> filterValueOptional) {
-
-		_filterValueOptional = filterValueOptional;
+	public CustomFilterDisplayContextBuilder filterValue(String filterValue) {
+		_filterValue = filterValue;
 
 		return this;
 	}
@@ -97,10 +95,10 @@ public class CustomFilterDisplayContextBuilder {
 		return this;
 	}
 
-	public CustomFilterDisplayContextBuilder parameterValueOptional(
-		Optional<String> parameterValueOptional) {
+	public CustomFilterDisplayContextBuilder parameterValue(
+		String parameterValue) {
 
-		_parameterValueOptional = parameterValueOptional;
+		_parameterValue = parameterValue;
 
 		return this;
 	}
@@ -156,13 +154,14 @@ public class CustomFilterDisplayContextBuilder {
 
 	protected String getFilterValue() {
 		if (_immutable) {
-			return SearchOptionalUtil.findFirstPresent(
-				Stream.of(_filterValueOptional), StringPool.BLANK);
+			return GetterUtil.getString(_filterValue);
 		}
 
-		return SearchOptionalUtil.findFirstPresent(
-			Stream.of(_parameterValueOptional, _filterValueOptional),
-			StringPool.BLANK);
+		if (_parameterValue != null) {
+			return _parameterValue;
+		}
+
+		return GetterUtil.getString(_filterValue);
 	}
 
 	protected String getHeading() {
@@ -188,10 +187,10 @@ public class CustomFilterDisplayContextBuilder {
 	private Optional<String> _customHeadingOptional = Optional.empty();
 	private boolean _disabled;
 	private Optional<String> _filterFieldOptional = Optional.empty();
-	private Optional<String> _filterValueOptional = Optional.empty();
+	private String _filterValue;
 	private boolean _immutable;
 	private String _parameterName;
-	private Optional<String> _parameterValueOptional = Optional.empty();
+	private String _parameterValue;
 	private Optional<String> _queryNameOptional = Optional.empty();
 	private boolean _renderNothing;
 	private ThemeDisplay _themeDisplay;

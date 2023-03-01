@@ -47,10 +47,10 @@ public class IndexSynchronizer {
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
-	public void addIndexDefinition(
+	protected void addIndexDefinition(
 		IndexDefinition indexDefinition, Map<String, Object> properties) {
 
-		synchronizeIndexDefinition(
+		_synchronizeIndexDefinition(
 			new IndexDefinitionData(indexDefinition, properties));
 	}
 
@@ -59,18 +59,18 @@ public class IndexSynchronizer {
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
-	public void addIndexRegistrar(IndexRegistrar indexRegistrar) {
-		synchronizeIndexRegistrar(indexRegistrar);
+	protected void addIndexRegistrar(IndexRegistrar indexRegistrar) {
+		_synchronizeIndexRegistrar(indexRegistrar);
 	}
 
-	public void removeIndexDefinition(IndexDefinition indexDefinition) {
+	protected void removeIndexDefinition(IndexDefinition indexDefinition) {
 	}
 
-	public void removeIndexRegistrar(IndexRegistrar indexRegistrar) {
+	protected void removeIndexRegistrar(IndexRegistrar indexRegistrar) {
 	}
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
-	public void setModuleServiceLifecycle(
+	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 
 		if (_log.isDebugEnabled()) {
@@ -79,48 +79,7 @@ public class IndexSynchronizer {
 		}
 	}
 
-	public void synchronizeIndexDefinition(
-		IndexDefinitionData indexDefinitionData) {
-
-		String index = indexDefinitionData.getIndex();
-
-		createIndex(
-			index,
-			createIndexRequest -> {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Synchronizing index " + index);
-				}
-
-				createIndexRequest.setSource(indexDefinitionData.getSource());
-			});
-	}
-
-	public void synchronizeIndexRegistrar(IndexRegistrar indexRegistrar) {
-		indexRegistrar.register(
-			(indexName, indexSettingsDefinitionConsumer) -> createIndex(
-				indexName,
-				createIndexRequest -> indexSettingsDefinitionConsumer.accept(
-					new IndexSettingsDefinition() {
-
-						@Override
-						public void setIndexSettingsResourceName(
-							String indexSettingsResourceName) {
-
-							createIndexRequest.setSource(
-								StringUtil.read(
-									indexSettingsDefinitionConsumer.getClass(),
-									indexSettingsResourceName));
-						}
-
-						@Override
-						public void setSource(String source) {
-							createIndexRequest.setSource(source);
-						}
-
-					})));
-	}
-
-	protected void createIndex(
+	private void _createIndex(
 		String index, Consumer<CreateIndexRequest> createIndexRequestConsumer) {
 
 		CreateIndexRequest createIndexRequest = new CreateIndexRequest(index);
@@ -153,6 +112,47 @@ public class IndexSynchronizer {
 				throw elasticsearchStatusException;
 			}
 		}
+	}
+
+	private void _synchronizeIndexDefinition(
+		IndexDefinitionData indexDefinitionData) {
+
+		String index = indexDefinitionData.getIndex();
+
+		_createIndex(
+			index,
+			createIndexRequest -> {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Synchronizing index " + index);
+				}
+
+				createIndexRequest.setSource(indexDefinitionData.getSource());
+			});
+	}
+
+	private void _synchronizeIndexRegistrar(IndexRegistrar indexRegistrar) {
+		indexRegistrar.register(
+			(indexName, indexSettingsDefinitionConsumer) -> _createIndex(
+				indexName,
+				createIndexRequest -> indexSettingsDefinitionConsumer.accept(
+					new IndexSettingsDefinition() {
+
+						@Override
+						public void setIndexSettingsResourceName(
+							String indexSettingsResourceName) {
+
+							createIndexRequest.setSource(
+								StringUtil.read(
+									indexSettingsDefinitionConsumer.getClass(),
+									indexSettingsResourceName));
+						}
+
+						@Override
+						public void setSource(String source) {
+							createIndexRequest.setSource(source);
+						}
+
+					})));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

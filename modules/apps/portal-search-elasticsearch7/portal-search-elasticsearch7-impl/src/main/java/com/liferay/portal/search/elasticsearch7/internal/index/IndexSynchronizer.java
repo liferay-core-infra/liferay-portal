@@ -14,16 +14,151 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.index;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.CreateIndexRequestExecutor;
 import com.liferay.portal.search.elasticsearch7.spi.index.IndexRegistrar;
+import com.liferay.portal.search.elasticsearch7.spi.index.helper.IndexSettingsDefinition;
+import com.liferay.portal.search.engine.adapter.index.CreateIndexRequest;
+import com.liferay.portal.search.engine.adapter.index.CreateIndexResponse;
+import com.liferay.portal.search.spi.index.IndexDefinition;
+
+import java.util.Map;
+import java.util.function.Consumer;
+
+import org.elasticsearch.ElasticsearchStatusException;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author André de Oliveira
  */
-public interface IndexSynchronizer {
+@Component(service = {})
+public class IndexSynchronizer {
+
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	public void addIndexDefinition(
+		IndexDefinition indexDefinition, Map<String, Object> properties) {
+
+		synchronizeIndexDefinition(
+			new IndexDefinitionData(indexDefinition, properties));
+	}
+
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	public void addIndexRegistrar(IndexRegistrar indexRegistrar) {
+		synchronizeIndexRegistrar(indexRegistrar);
+	}
+
+	public void removeIndexDefinition(IndexDefinition indexDefinition) {
+	}
+
+	public void removeIndexRegistrar(IndexRegistrar indexRegistrar) {
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	public void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Portal is initialized and indexes will be synchronized");
+		}
+	}
 
 	public void synchronizeIndexDefinition(
-		IndexDefinitionData indexDefinitionData);
+		IndexDefinitionData indexDefinitionData) {
 
-	public void synchronizeIndexRegistrar(IndexRegistrar indexRegistrar);
+		String index = indexDefinitionData.getIndex();
+
+		createIndex(
+			index,
+			createIndexRequest -> {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Synchronizing index " + index);
+				}
+
+				createIndexRequest.setSource(indexDefinitionData.getSource());
+			});
+	}
+
+	public void synchronizeIndexRegistrar(IndexRegistrar indexRegistrar) {
+		indexRegistrar.register(
+			(indexName, indexSettingsDefinitionConsumer) -> createIndex(
+				indexName,
+				createIndexRequest -> indexSettingsDefinitionConsumer.accept(
+					new IndexSettingsDefinition() {
+
+						@Override
+						public void setIndexSettingsResourceName(
+							String indexSettingsResourceName) {
+
+							createIndexRequest.setSource(
+								StringUtil.read(
+									indexSettingsDefinitionConsumer.getClass(),
+									indexSettingsResourceName));
+						}
+
+						@Override
+						public void setSource(String source) {
+							createIndexRequest.setSource(source);
+						}
+
+					})));
+	}
+
+	protected void createIndex(
+		String index, Consumer<CreateIndexRequest> createIndexRequestConsumer) {
+
+		CreateIndexRequest createIndexRequest = new CreateIndexRequest(index);
+
+		createIndexRequestConsumer.accept(createIndexRequest);
+
+		try {
+			CreateIndexResponse createIndexResponse =
+				_createIndexRequestExecutor.execute(createIndexRequest);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Index created: " + createIndexResponse.getIndexName());
+			}
+		}
+		catch (ElasticsearchStatusException elasticsearchStatusException) {
+			String message = elasticsearchStatusException.getMessage();
+
+			if ((message != null) &&
+				message.contains("resource_already_exists_exception")) {
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Skipping index creation because it already exists: " +
+							createIndexRequest.getIndexName(),
+						elasticsearchStatusException);
+				}
+			}
+			else {
+				throw elasticsearchStatusException;
+			}
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		IndexSynchronizer.class);
+
+	@Reference
+	private CreateIndexRequestExecutor _createIndexRequestExecutor;
 
 }

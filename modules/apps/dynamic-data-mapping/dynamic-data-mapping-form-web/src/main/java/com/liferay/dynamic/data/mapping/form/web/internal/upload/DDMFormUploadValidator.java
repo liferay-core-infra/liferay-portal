@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
 
-import java.util.Optional;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -58,23 +56,15 @@ public class DDMFormUploadValidator {
 	public void validateFileExtension(String fileName)
 		throws FileExtensionException {
 
-		Optional<String> guestUploadFileExtensionOptional = Optional.empty();
-
 		for (String guestUploadFileExtension : getGuestUploadFileExtensions()) {
 			if (StringUtil.equalsIgnoreCase(
 					FileUtil.getExtension(fileName),
-					StringUtil.trim(guestUploadFileExtension))) {
+					StringUtil.trim(guestUploadFileExtension)) &&
+				(guestUploadFileExtension == null)) {
 
-				guestUploadFileExtensionOptional = Optional.ofNullable(
-					guestUploadFileExtension);
-
-				break;
+				throw new FileExtensionException(
+					"Invalid file extension for " + fileName);
 			}
-		}
-
-		if (!guestUploadFileExtensionOptional.isPresent()) {
-			throw new FileExtensionException(
-				"Invalid file extension for " + fileName);
 		}
 	}
 

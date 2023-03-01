@@ -49,6 +49,11 @@ public class IndexSynchronizer {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Portal is initialized and indexes will be synchronized");
+		}
+
 		_indexDefinitionServiceTracker = ServiceTrackerFactory.open(
 			bundleContext,
 			StringBundler.concat(
@@ -129,16 +134,6 @@ public class IndexSynchronizer {
 	protected void deactivate() {
 		_indexDefinitionServiceTracker.close();
 		_indexRegistrarServiceTracker.close();
-	}
-
-	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Portal is initialized and indexes will be synchronized");
-		}
 	}
 
 	private void _createIndex(
@@ -223,5 +218,8 @@ public class IndexSynchronizer {
 		_indexDefinitionServiceTracker;
 	private ServiceTracker<IndexRegistrar, IndexRegistrar>
 		_indexRegistrarServiceTracker;
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
+	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
 }

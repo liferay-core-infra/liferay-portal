@@ -23,7 +23,7 @@ import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.service.CProductLocalService;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.Discount;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.DiscountProduct;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.DiscountProductDTOConverter;
+import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v2_0.DiscountProductUtil;
 import com.liferay.headless.commerce.admin.pricing.resource.v2_0.DiscountProductResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -219,8 +220,9 @@ public class DiscountProductResourceImpl
 	@Reference
 	private CProductLocalService _cProductLocalService;
 
-	@Reference
-	private DiscountProductDTOConverter _discountProductDTOConverter;
+	@Reference(target = DTOConverterConstants.DISCOUNT_PRODUCT_DTO_CONVERTER)
+	private DTOConverter<CommerceDiscountRel, DiscountProduct>
+		_discountProductDTOConverter;
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;

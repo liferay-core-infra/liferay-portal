@@ -239,8 +239,7 @@ public class PriceModifierProductGroupResourceImpl
 	@Reference(
 		target = DTOConverterConstants.PRICE_MODIFIER_PRODUCT_GROUP_DTO_CONVERTER
 	)
-	private DTOConverter
-		<CommercePriceModifierRel, PriceModifierProductGroup>
+	private DTOConverter<CommercePriceModifierRel, PriceModifierProductGroup>
 		_priceModifierProductGroupDTOConverter;
 
 	@Reference

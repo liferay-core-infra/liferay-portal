@@ -23,7 +23,6 @@ import com.liferay.commerce.pricing.service.CommercePriceModifierService;
 import com.liferay.commerce.pricing.service.CommercePricingClassService;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceModifier;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceModifierProductGroup;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v2_0.PriceModifierProductGroupUtil;
 import com.liferay.headless.commerce.admin.pricing.resource.v2_0.PriceModifierProductGroupResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
@@ -237,7 +236,7 @@ public class PriceModifierProductGroupResourceImpl
 	private DTOConverterRegistry _dtoConverterRegistry;
 
 	@Reference(
-		target = DTOConverterConstants.PRICE_MODIFIER_PRODUCT_GROUP_DTO_CONVERTER
+		target = "(component.name=com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.PriceModifierProductDTOConverter)"
 	)
 	private DTOConverter<CommercePriceModifierRel, PriceModifierProductGroup>
 		_priceModifierProductGroupDTOConverter;

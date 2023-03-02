@@ -22,8 +22,9 @@ import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.DiscountSku;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceEntry;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.Sku;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.SkuDTOConverter;
+import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.resource.v2_0.SkuResource;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldSupport;
@@ -75,7 +76,7 @@ public class SkuResourceImpl
 	@Reference
 	private CommercePriceEntryService _commercePriceEntryService;
 
-	@Reference
-	private SkuDTOConverter _skuDTOConverter;
+	@Reference(target = DTOConverterConstants.SKU_DTO_CONVERTER)
+	private DTOConverter<CPInstance, Sku> _skuDTOConverter;
 
 }

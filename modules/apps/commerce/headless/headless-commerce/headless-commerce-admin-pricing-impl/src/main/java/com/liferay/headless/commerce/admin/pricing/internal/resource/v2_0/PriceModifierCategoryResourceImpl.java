@@ -23,7 +23,7 @@ import com.liferay.commerce.pricing.service.CommercePriceModifierRelService;
 import com.liferay.commerce.pricing.service.CommercePriceModifierService;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceModifier;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceModifierCategory;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.PriceModifierCategoryDTOConverter;
+import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v2_0.PriceModifierCategoryUtil;
 import com.liferay.headless.commerce.admin.pricing.resource.v2_0.PriceModifierCategoryResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -229,8 +230,10 @@ public class PriceModifierCategoryResourceImpl
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
 
-	@Reference
-	private PriceModifierCategoryDTOConverter
+	@Reference(
+		target = DTOConverterConstants.PRICE_MODIFIER_CATEGORY_DTO_CONVERTER
+	)
+	private DTOConverter<CommercePriceModifierRel, PriceModifierCategory>
 		_priceModifierCategoryDTOConverter;
 
 	@Reference

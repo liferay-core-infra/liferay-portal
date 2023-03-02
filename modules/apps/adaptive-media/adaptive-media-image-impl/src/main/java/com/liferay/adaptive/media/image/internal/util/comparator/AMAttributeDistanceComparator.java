@@ -22,7 +22,6 @@ import com.liferay.adaptive.media.image.processor.AMImageProcessor;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author Sergio González
@@ -68,23 +67,23 @@ public class AMAttributeDistanceComparator
 			Object value1 = adaptiveMedia1.getValue(amAttribute);
 			Object value2 = adaptiveMedia2.getValue(amAttribute);
 
-			Optional<Long> valueOptional3;
+			Long value3;
 
 			if ((value1 == null) || (value2 == null)) {
-				valueOptional3 = Optional.empty();
+				value3 = null;
 			}
 			else {
-				valueOptional3 = Optional.of(
-					amAttribute.compare(value1, value2));
+				value3 = amAttribute.compare(value1, value2);
 			}
 
-			AMImageQueryBuilder.SortOrder sortOrder = sortCriterion.getValue();
+			long result = 0L;
 
-			long result = valueOptional3.map(
-				sortOrder::getSortValue
-			).orElse(
-				0L
-			);
+			if (value3 != null) {
+				AMImageQueryBuilder.SortOrder sortOrder =
+					sortCriterion.getValue();
+
+				result = sortOrder.getSortValue(value3);
+			}
 
 			if (result != 0) {
 				return result;

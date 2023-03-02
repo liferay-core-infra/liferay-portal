@@ -21,7 +21,6 @@ import com.liferay.commerce.discount.model.CommerceDiscountCommerceAccountGroupR
 import com.liferay.commerce.discount.service.CommerceDiscountCommerceAccountGroupRelService;
 import com.liferay.commerce.discount.service.CommerceDiscountService;
 import com.liferay.headless.commerce.admin.pricing.dto.v1_0.DiscountAccountGroup;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v1_0.DiscountAccountGroupUtil;
 import com.liferay.headless.commerce.admin.pricing.resource.v1_0.DiscountAccountGroupResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
@@ -206,7 +205,7 @@ public class DiscountAccountGroupResourceImpl
 	private CommerceDiscountService _commerceDiscountService;
 
 	@Reference(
-		target = DTOConverterConstants.DISCOUNT_ACCOUNT_GROUP_DTO_CONVERTER
+		target = "(component.name=com.liferay.headless.commerce.admin.pricing.internal.dto.v1_0.converter.DiscountAccountGroupDTOConverter)"
 	)
 	private DTOConverter
 		<CommerceDiscountCommerceAccountGroupRel, DiscountAccountGroup>

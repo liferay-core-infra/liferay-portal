@@ -61,7 +61,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 import org.junit.AfterClass;
@@ -236,12 +235,9 @@ public class UserSegmentsCriteriaContributorTest {
 				field.getName(),
 				Normalizer.normalizeIdentifier(expandoColumn.getName())));
 
-		Optional<Field> fieldOptional = Optional.ofNullable(
-			filteredFields.get(0));
+		Field field = filteredFields.get(0);
 
-		Assert.assertTrue(fieldOptional.isPresent());
-
-		Field field = fieldOptional.get();
+		Assert.assertTrue(field != null);
 
 		Assert.assertEquals(
 			Arrays.asList(defaultValue),
@@ -258,12 +254,9 @@ public class UserSegmentsCriteriaContributorTest {
 			segmentsCriteriaContributor.getFields(_getMockPortletRequest()),
 			field -> Objects.equals(field.getName(), "groupIds"));
 
-		Optional<Field> fieldOptional = Optional.ofNullable(
-			filteredFields.get(0));
+		Field field = filteredFields.get(0);
 
-		Assert.assertTrue(fieldOptional.isPresent());
-
-		Field field = fieldOptional.get();
+		Assert.assertTrue(field != null);
 
 		Assert.assertEquals("id", field.getType());
 

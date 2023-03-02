@@ -16,6 +16,7 @@ package com.liferay.portal.search.elasticsearch7.internal.index.instant;
 
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
@@ -44,7 +45,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import org.mockito.Mockito;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -115,6 +120,33 @@ public class InstantIndexesTest {
 	}
 
 	@Test
+	public void testMissingIndexSettingsResource() {
+		String resourceName = RandomTestUtil.randomString();
+
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage(
+			"Unable to load resource: " + resourceName);
+
+		_activateIndexSynchronizer();
+
+		ServiceRegistration<IndexDefinition> serviceRegistration =
+			_bundleContext.registerService(
+				IndexDefinition.class, Mockito.mock(IndexDefinition.class),
+				null);
+
+		_serviceRegistrations.add(serviceRegistration);
+
+		serviceRegistration.setProperties(
+			HashMapDictionaryBuilder.put(
+				IndexDefinition.PROPERTY_KEY_INDEX_NAME,
+				RandomTestUtil.randomString()
+			).put(
+				IndexDefinition.PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME,
+				resourceName
+			).build());
+	}
+
+	@Test
 	public void testRuntimeIndexCreation() throws Exception {
 		_registerTasksIndexDefinition();
 
@@ -157,6 +189,9 @@ public class InstantIndexesTest {
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_PROCESSES,
 			TasksIndexDefinition.INDEX_NAME_WORKFLOW_TASKS);
 	}
+
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
 
 	private void _activateIndexSynchronizer() {
 		ReflectionTestUtil.invoke(

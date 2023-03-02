@@ -31,6 +31,10 @@ public class DTOConverterConstants {
 		"(component.name=com.liferay.headless.commerce.admin.pricing." +
 			"internal.dto.v2_0.converter.CategoryDTOConverter)";
 
+	public static final String CHANNEL_DTO_CONVERTER =
+		"(component.name=com.liferay.headless.commerce.admin.pricing." +
+			"internal.dto.v2_0.converter.ChannelDTOConverter)";
+
 	public static final String DISCOUNT_ACCOUNT_DTO_CONVERTER =
 		"(component.name=com.liferay.headless.commerce.admin.pricing." +
 			"internal.dto.v2_0.converter.DiscountAccountDTOConverter)";

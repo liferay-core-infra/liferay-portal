@@ -16,13 +16,15 @@ package com.liferay.headless.commerce.admin.pricing.internal.resource.v2_0;
 
 import com.liferay.commerce.discount.model.CommerceDiscountOrderTypeRel;
 import com.liferay.commerce.discount.service.CommerceDiscountOrderTypeRelService;
+import com.liferay.commerce.model.CommerceOrderType;
 import com.liferay.commerce.price.list.model.CommercePriceListOrderTypeRel;
 import com.liferay.commerce.price.list.service.CommercePriceListOrderTypeRelService;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.DiscountOrderType;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.OrderType;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceListOrderType;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.OrderTypeDTOConverter;
+import com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.resource.v2_0.OrderTypeResource;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldSupport;
@@ -76,7 +78,7 @@ public class OrderTypeResourceImpl
 	private CommercePriceListOrderTypeRelService
 		_commercePriceListOrderTypeRelService;
 
-	@Reference
-	private OrderTypeDTOConverter _orderTypeDTOConverter;
+	@Reference(target = DTOConverterConstants.ORDER_TYPE_DTO_CONVERTER)
+	private DTOConverter<CommerceOrderType, OrderType> _orderTypeDTOConverter;
 
 }

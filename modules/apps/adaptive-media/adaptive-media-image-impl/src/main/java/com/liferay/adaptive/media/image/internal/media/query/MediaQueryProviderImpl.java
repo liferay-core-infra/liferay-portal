@@ -14,6 +14,7 @@
 
 package com.liferay.adaptive.media.image.internal.media.query;
 
+import com.liferay.adaptive.media.AMAttribute;
 import com.liferay.adaptive.media.AdaptiveMedia;
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationEntry;
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationHelper;
@@ -159,7 +160,10 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 				_getAdaptiveMediaFromConfigurationEntry(
 					fileEntry, amImageConfigurationEntry);
 
-			if (_getWidth(adaptiveMedia) > 0) {
+			int widthValue = _getValue(
+				adaptiveMedia, AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
+
+			if (widthValue > 0) {
 				adaptiveMedias.add(adaptiveMedia);
 			}
 		}
@@ -175,13 +179,17 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		conditions.add(
-			new Condition("max-width", _getWidth(adaptiveMedia) + "px"));
+		int widthValue = _getValue(
+			adaptiveMedia, AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
+
+		conditions.add(new Condition("max-width", widthValue + "px"));
 
 		if (previousAdaptiveMedia != null) {
-			conditions.add(
-				new Condition(
-					"min-width", _getWidth(previousAdaptiveMedia) + "px"));
+			widthValue = _getValue(
+				previousAdaptiveMedia,
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
+
+			conditions.add(new Condition("min-width", widthValue + "px"));
 		}
 
 		return conditions;
@@ -205,20 +213,35 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		Collection<AdaptiveMedia<AMImageProcessor>> adaptiveMedias) {
 
 		for (AdaptiveMedia<AMImageProcessor> adaptiveMedia : adaptiveMedias) {
-			int originalWidth = _getWidth(originalAdaptiveMedia) * 2;
-			int originalHeight = _getHeight(originalAdaptiveMedia) * 2;
+			int widthValue = _getValue(
+				originalAdaptiveMedia,
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
+
+			int originalWidth = widthValue * 2;
+
+			int heightValue = _getValue(
+				originalAdaptiveMedia,
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
+
+			int originalHeight = heightValue * 2;
 
 			IntStream widthIntStream = IntStream.range(
 				originalWidth - 1, originalWidth + 2);
 
 			boolean widthMatch = widthIntStream.anyMatch(
-				value -> value == _getWidth(adaptiveMedia));
+				value ->
+					value == _getValue(
+						adaptiveMedia,
+						AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH));
 
 			IntStream heightIntStream = IntStream.range(
 				originalHeight - 1, originalHeight + 2);
 
 			boolean heightMatch = heightIntStream.anyMatch(
-				value -> value == _getHeight(adaptiveMedia));
+				value ->
+					value == _getValue(
+						adaptiveMedia,
+						AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT));
 
 			if (widthMatch && heightMatch) {
 				return Optional.of(adaptiveMedia);
@@ -226,17 +249,6 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		}
 
 		return Optional.empty();
-	}
-
-	private Integer _getHeight(AdaptiveMedia<AMImageProcessor> adaptiveMedia) {
-		Integer height = adaptiveMedia.getValue(
-			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
-
-		if (height == null) {
-			return 0;
-		}
-
-		return height;
 	}
 
 	private Optional<Integer> _getHeight(
@@ -289,15 +301,17 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		}
 	}
 
-	private Integer _getWidth(AdaptiveMedia<AMImageProcessor> adaptiveMedia) {
-		Integer width = adaptiveMedia.getValue(
-			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
+	private Integer _getValue(
+		AdaptiveMedia<AMImageProcessor> adaptiveMedia,
+		AMAttribute<AMImageProcessor, Integer> amAttribute) {
 
-		if (width == null) {
+		Integer value = adaptiveMedia.getValue(amAttribute);
+
+		if (value == null) {
 			return 0;
 		}
 
-		return width;
+		return value;
 	}
 
 	private Optional<Integer> _getWidth(
@@ -319,6 +333,8 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 	private AMImageURLFactory _amImageURLFactory;
 
 	private final Comparator<AdaptiveMedia<AMImageProcessor>> _comparator =
-		Comparator.comparingInt(this::_getWidth);
+		Comparator.comparingInt(
+			adaptiveMedia -> _getValue(
+				adaptiveMedia, AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH));
 
 }

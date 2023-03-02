@@ -247,7 +247,7 @@ public class DiscountAccountGroupResourceImpl
 	)
 	private DTOConverter
 		<CommerceDiscountCommerceAccountGroupRel, DiscountAccountGroup>
-		_discountAccountGroupDTOConverter;
+			_discountAccountGroupDTOConverter;
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;

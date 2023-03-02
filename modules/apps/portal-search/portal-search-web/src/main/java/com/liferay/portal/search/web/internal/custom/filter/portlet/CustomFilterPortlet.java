@@ -127,11 +127,11 @@ public class CustomFilterPortlet extends MVCPortlet {
 			customFilterPortletPreferences.getFilterFieldOptional()
 		).immutable(
 			customFilterPortletPreferences.isImmutable()
-		).filterValueOptional(
-			customFilterPortletPreferences.getFilterValueOptional()
+		).filterValue(
+			customFilterPortletPreferences.getFilterValue()
 		).parameterName(
 			parameterName
-		).parameterValueOptional(
+		).parameterValue(
 			portletSharedSearchResponse.getParameter(
 				parameterName, renderRequest)
 		).queryNameOptional(

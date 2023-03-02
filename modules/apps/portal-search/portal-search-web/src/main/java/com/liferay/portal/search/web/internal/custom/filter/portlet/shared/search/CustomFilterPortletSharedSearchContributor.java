@@ -21,12 +21,10 @@ import com.liferay.portal.search.web.internal.custom.filter.constants.CustomFilt
 import com.liferay.portal.search.web.internal.custom.filter.portlet.CustomFilterPortletPreferences;
 import com.liferay.portal.search.web.internal.custom.filter.portlet.CustomFilterPortletPreferencesImpl;
 import com.liferay.portal.search.web.internal.custom.filter.portlet.CustomFilterPortletUtil;
-import com.liferay.portal.search.web.internal.util.SearchOptionalUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -92,31 +90,21 @@ public class CustomFilterPortletSharedSearchContributor
 		PortletSharedSearchSettings portletSharedSearchSettings,
 		CustomFilterPortletPreferences customFilterPortletPreferences) {
 
-		Optional<String> optional = _getFilterValueOptional(
-			customFilterPortletPreferences, portletSharedSearchSettings);
-
-		return optional.orElse(null);
-	}
-
-	private Optional<String> _getFilterValueOptional(
-		CustomFilterPortletPreferences customFilterPortletPreferences,
-		PortletSharedSearchSettings portletSharedSearchSettings) {
-
-		Optional<String> filterValueOptional =
-			customFilterPortletPreferences.getFilterValueOptional();
+		String filterValue = customFilterPortletPreferences.getFilterValue();
 
 		if (customFilterPortletPreferences.isImmutable()) {
-			return filterValueOptional;
+			return filterValue;
 		}
 
-		Optional<String> parameterValueOptional =
-			portletSharedSearchSettings.getParameterOptional(
-				CustomFilterPortletUtil.getParameterName(
-					customFilterPortletPreferences));
+		String parameterValue = portletSharedSearchSettings.getParameter(
+			CustomFilterPortletUtil.getParameterName(
+				customFilterPortletPreferences));
 
-		return Optional.ofNullable(
-			SearchOptionalUtil.findFirstPresent(
-				Stream.of(parameterValueOptional, filterValueOptional), null));
+		if (parameterValue != null) {
+			return parameterValue;
+		}
+
+		return filterValue;
 	}
 
 	@Reference

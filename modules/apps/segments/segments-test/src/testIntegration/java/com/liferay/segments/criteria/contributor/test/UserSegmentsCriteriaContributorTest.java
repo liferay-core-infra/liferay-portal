@@ -21,6 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.layout.test.util.LayoutTestUtil;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -34,6 +35,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -55,13 +57,12 @@ import com.liferay.segments.field.Field;
 import java.io.Serializable;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -194,15 +195,19 @@ public class UserSegmentsCriteriaContributorTest {
 		List<Field> fields = segmentsCriteriaContributor.getFields(
 			_getMockPortletRequest());
 
-		Stream<Field> stream = fields.stream();
+		Set<String> complexEntityFieldNames = new HashSet<>(
+			TransformUtil.transform(
+				fields,
+				field -> {
+					if (!StringUtil.startsWith(
+							field.getName(), "customField/")) {
 
-		Set<String> complexEntityFieldNames = stream.filter(
-			field -> StringUtil.startsWith(field.getName(), "customField/")
-		).map(
-			field -> StringUtil.removeSubstring(field.getName(), "customField/")
-		).collect(
-			Collectors.toSet()
-		);
+						return null;
+					}
+
+					return StringUtil.removeSubstring(
+						field.getName(), "customField/");
+				}));
 
 		Assert.assertFalse(complexEntityFieldNames.isEmpty());
 
@@ -225,32 +230,23 @@ public class UserSegmentsCriteriaContributorTest {
 		SegmentsCriteriaContributor segmentsCriteriaContributor =
 			_getSegmentsCriteriaContributor();
 
-		List<Field> fields = segmentsCriteriaContributor.getFields(
-			_getMockPortletRequest());
-
-		Stream<Field> fieldsStream = fields.stream();
-
-		Optional<Field> fieldOptional = fieldsStream.filter(
+		List<Field> filteredFields = ListUtil.filter(
+			segmentsCriteriaContributor.getFields(_getMockPortletRequest()),
 			field -> StringUtil.endsWith(
 				field.getName(),
-				Normalizer.normalizeIdentifier(expandoColumn.getName()))
-		).findFirst();
+				Normalizer.normalizeIdentifier(expandoColumn.getName())));
+
+		Optional<Field> fieldOptional = Optional.ofNullable(
+			filteredFields.get(0));
 
 		Assert.assertTrue(fieldOptional.isPresent());
 
 		Field field = fieldOptional.get();
 
-		List<Field.Option> options = field.getOptions();
-
-		Stream<Field.Option> optionsStream = options.stream();
-
 		Assert.assertEquals(
 			Arrays.asList(defaultValue),
-			optionsStream.map(
-				Field.Option::getValue
-			).collect(
-				Collectors.toList()
-			));
+			TransformUtil.transform(
+				field.getOptions(), Field.Option::getValue));
 	}
 
 	@Test
@@ -258,14 +254,12 @@ public class UserSegmentsCriteriaContributorTest {
 		SegmentsCriteriaContributor segmentsCriteriaContributor =
 			_getSegmentsCriteriaContributor();
 
-		List<Field> fields = segmentsCriteriaContributor.getFields(
-			_getMockPortletRequest());
+		List<Field> filteredFields = ListUtil.filter(
+			segmentsCriteriaContributor.getFields(_getMockPortletRequest()),
+			field -> Objects.equals(field.getName(), "groupIds"));
 
-		Stream<Field> fieldsStream = fields.stream();
-
-		Optional<Field> fieldOptional = fieldsStream.filter(
-			field -> Objects.equals(field.getName(), "groupIds")
-		).findFirst();
+		Optional<Field> fieldOptional = Optional.ofNullable(
+			filteredFields.get(0));
 
 		Assert.assertTrue(fieldOptional.isPresent());
 

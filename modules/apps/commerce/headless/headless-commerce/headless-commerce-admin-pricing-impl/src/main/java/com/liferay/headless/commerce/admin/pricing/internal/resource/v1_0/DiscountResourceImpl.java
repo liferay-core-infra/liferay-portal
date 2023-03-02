@@ -35,7 +35,7 @@ import com.liferay.headless.commerce.admin.pricing.dto.v1_0.DiscountAccountGroup
 import com.liferay.headless.commerce.admin.pricing.dto.v1_0.DiscountCategory;
 import com.liferay.headless.commerce.admin.pricing.dto.v1_0.DiscountProduct;
 import com.liferay.headless.commerce.admin.pricing.dto.v1_0.DiscountRule;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v1_0.converter.DiscountDTOConverter;
+import com.liferay.headless.commerce.admin.pricing.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v1_0.DiscountAccountGroupUtil;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v1_0.DiscountCategoryUtil;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v1_0.DiscountProductUtil;
@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -477,8 +478,8 @@ public class DiscountResourceImpl extends BaseDiscountResourceImpl {
 	@Reference
 	private CProductLocalService _cProductLocalService;
 
-	@Reference
-	private DiscountDTOConverter _discountDTOConverter;
+	@Reference(target = DTOConverterConstants.DISCOUNT_DTO_CONVERTER)
+	private DTOConverter<CommerceDiscount, Discount> _discountDTOConverter;
 
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;

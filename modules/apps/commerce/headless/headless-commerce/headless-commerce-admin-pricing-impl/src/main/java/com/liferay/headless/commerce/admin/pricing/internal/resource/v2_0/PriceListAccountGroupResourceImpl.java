@@ -263,7 +263,7 @@ public class PriceListAccountGroupResourceImpl
 	)
 	private DTOConverter
 		<CommercePriceListCommerceAccountGroupRel, PriceListAccountGroup>
-		_priceListAccountGroupDTOConverter;
+			_priceListAccountGroupDTOConverter;
 
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;

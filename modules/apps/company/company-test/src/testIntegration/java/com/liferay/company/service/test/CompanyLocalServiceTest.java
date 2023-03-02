@@ -68,6 +68,7 @@ import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.VirtualHostLocalServiceUtil;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
@@ -517,6 +518,56 @@ public class CompanyLocalServiceTest {
 				user.getUserId(), group.getGroupId(), role.getRoleId()));
 
 		Assert.assertNull(UserLocalServiceUtil.fetchUser(user.getUserId()));
+	}
+
+	@Test
+	public void testCheckCompanyDefaultUserLocaleAndTimeZoneDifferFromCompany()
+		throws Exception {
+
+		Company company = addCompany();
+
+		User defaultUser = company.getDefaultUser();
+
+		String expectedLanguageId = LocaleUtil.toLanguageId(
+			LocaleUtil.fromLanguageId(PropsValues.COMPANY_DEFAULT_LOCALE));
+		String expectedTimeZoneId = PropsValues.COMPANY_DEFAULT_TIME_ZONE;
+
+		Assert.assertEquals(
+			"The expected languageId is " + expectedLanguageId,
+			expectedLanguageId, defaultUser.getLanguageId());
+		Assert.assertEquals(
+			"The expected timeZoneId is " + expectedTimeZoneId,
+			expectedTimeZoneId, defaultUser.getTimeZoneId());
+
+		String langaugeId = "en_US";
+
+		if (langaugeId.equals(expectedLanguageId)) {
+			langaugeId = "fr_FR";
+		}
+
+		String timeZoneId = "UTC";
+
+		if (timeZoneId.equals(expectedTimeZoneId)) {
+			timeZoneId = "GMT";
+		}
+
+		defaultUser.setLanguageId(langaugeId);
+		defaultUser.setTimeZoneId(timeZoneId);
+
+		_userLocalService.updateUser(defaultUser);
+
+		CompanyLocalServiceUtil.checkCompany(company.getWebId());
+
+		defaultUser = company.getDefaultUser();
+
+		Assert.assertEquals(
+			"The expected languageId is " + expectedLanguageId,
+			expectedLanguageId, defaultUser.getLanguageId());
+		Assert.assertEquals(
+			"The expected timeZoneId is " + expectedTimeZoneId,
+			expectedTimeZoneId, defaultUser.getTimeZoneId());
+
+		CompanyLocalServiceUtil.deleteCompany(company);
 	}
 
 	@Test(expected = NoSuchPasswordPolicyException.class)
@@ -1154,5 +1205,8 @@ public class CompanyLocalServiceTest {
 
 	private final List<ServiceRegistration<?>> _serviceRegistrations =
 		new CopyOnWriteArrayList<>();
+
+	@Inject
+	private UserLocalService _userLocalService;
 
 }

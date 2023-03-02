@@ -32,7 +32,7 @@ import com.liferay.headless.commerce.admin.pricing.dto.v1_0.PriceEntry;
 import com.liferay.headless.commerce.admin.pricing.dto.v1_0.PriceList;
 import com.liferay.headless.commerce.admin.pricing.dto.v1_0.PriceListAccountGroup;
 import com.liferay.headless.commerce.admin.pricing.dto.v1_0.TierPrice;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v1_0.converter.PriceListDTOConverter;
+import com.liferay.headless.commerce.admin.pricing.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.internal.odata.entity.v1_0.PriceListEntityModel;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v1_0.PriceListAccountGroupUtil;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v1_0.TierPriceUtil;
@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -407,8 +408,8 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 	@Reference
 	private CommerceTierPriceEntryService _commerceTierPriceEntryService;
 
-	@Reference
-	private PriceListDTOConverter _priceListDTOConverter;
+	@Reference(target = DTOConverterConstants.PRICE_LIST_DTO_CONVERTER)
+	private DTOConverter<CommercePriceList, PriceList> _priceListDTOConverter;
 
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;

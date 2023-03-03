@@ -9061,7 +9061,7 @@ public class PortalImpl implements Portal {
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Add alway sallow do as user " +
+					"Add always allow do as user " +
 						ClassUtil.getClassName(alwaysAllowDoAsUser));
 			}
 
@@ -9070,7 +9070,7 @@ public class PortalImpl implements Portal {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"There are " + _alwaysAllowDoAsUsers.size() +
-						" alway sallow do as user instances");
+						" always allow do as user instances");
 			}
 
 			return alwaysAllowDoAsUser;
@@ -9091,7 +9091,7 @@ public class PortalImpl implements Portal {
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Delete alway sallow do as user " +
+					"Delete always allow do as user " +
 						ClassUtil.getClassName(alwaysAllowDoAsUser));
 			}
 
@@ -9100,7 +9100,7 @@ public class PortalImpl implements Portal {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"There are " + _alwaysAllowDoAsUsers.size() +
-						" alway sallow do as user instances");
+						" always allow do as user instances");
 			}
 		}
 

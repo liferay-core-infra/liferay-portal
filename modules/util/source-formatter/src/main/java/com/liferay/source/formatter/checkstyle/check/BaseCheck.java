@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 /**
  * @author Hugo Huijser
@@ -381,6 +382,13 @@ public abstract class BaseCheck extends AbstractCheck {
 
 			previousSiblingDetailAST = previousSiblingDetailAST.getLastChild();
 		}
+	}
+
+	protected List<DetailAST> getIdentDetailASTList(
+		DetailAST detailAST, Predicate<DetailAST> predicate) {
+
+		return ListUtil.filter(
+			getAllChildTokens(detailAST, true, TokenTypes.IDENT), predicate);
 	}
 
 	protected List<String> getImportNames(DetailAST detailAST) {

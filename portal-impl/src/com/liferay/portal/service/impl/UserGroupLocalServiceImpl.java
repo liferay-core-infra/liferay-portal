@@ -1343,6 +1343,8 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 			() -> {
 				long[] userIds = getUserPrimaryKeys(userGroupId);
 
+				userIds = _distinct(userIds);
+
 				if (ArrayUtil.isNotEmpty(userIds)) {
 					reindex(companyId, userIds);
 				}
@@ -1373,6 +1375,35 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 			throw new DuplicateUserGroupException("{name=" + name + "}");
 		}
+	}
+
+	private long[] _distinct(long[] array) {
+		long[] newArray = new long[array.length];
+
+		int index = 0;
+
+		List<Integer> indexList = new ArrayList<>();
+
+		for (int i = 0; i < array.length; i++) {
+			if (!indexList.contains(i)) {
+				newArray[index] = array[i];
+				index++;
+
+				for (int j = i + 1; j < array.length; j++) {
+					if (array[i] == array[j]) {
+						indexList.add(j);
+					}
+				}
+			}
+		}
+
+		int size = indexList.size();
+
+		if (size > 0) {
+			newArray = Arrays.copyOfRange(newArray, 0, newArray.length - size);
+		}
+
+		return newArray;
 	}
 
 	private void _validateExternalReferenceCode(

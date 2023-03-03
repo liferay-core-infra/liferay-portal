@@ -52,7 +52,7 @@ public class GradleBuildFile {
 			}
 		}
 
-		_saveSource(sourceLines);
+		_source = StringUtil.merge(sourceLines, System.lineSeparator());
 	}
 
 	public void deleteGradleDependency(String group, String name) {
@@ -90,7 +90,7 @@ public class GradleBuildFile {
 			}
 		}
 
-		_saveSource(sourceLines);
+		_source = StringUtil.merge(sourceLines, System.lineSeparator());
 	}
 
 	public List<GradleDependency> getGradleDependencies() {
@@ -144,7 +144,7 @@ public class GradleBuildFile {
 				"\t" + gradleDependency.toString());
 		}
 
-		_saveSource(sourceLines);
+		_source = StringUtil.merge(sourceLines, System.lineSeparator());
 	}
 
 	public void insertGradleDependency(
@@ -158,10 +158,6 @@ public class GradleBuildFile {
 
 		insertGradleDependency(
 			new GradleDependency(configuration, group, name, version));
-	}
-
-	private void _saveSource(List<String> lines) {
-		_source = StringUtil.merge(lines, System.lineSeparator());
 	}
 
 	private GradleBuildFileVisitor _walkAST() {

@@ -20,7 +20,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.check.util.JavaSourceUtil;
@@ -133,8 +132,9 @@ public class ChainingCheck extends BaseCheck {
 			return;
 		}
 
-		List<DetailAST> identDetailASTList = _getIdentDetailASTList(
-			parentDetailAST.getParent(), variableName);
+		List<DetailAST> identDetailASTList = getIdentDetailASTList(
+			parentDetailAST.getParent(),
+			detailAST -> StringUtil.equals(variableName, detailAST.getText()));
 
 		if ((identDetailASTList.size() == 2) &&
 			Objects.equals(
@@ -479,15 +479,6 @@ public class ChainingCheck extends BaseCheck {
 
 			parentDetailAST = parentDetailAST.getParent();
 		}
-	}
-
-	private List<DetailAST> _getIdentDetailASTList(
-		DetailAST detailAST, String name) {
-
-		return ListUtil.filter(
-			getAllChildTokens(detailAST, true, TokenTypes.IDENT),
-			identDetailAST -> StringUtil.equals(
-				name, identDetailAST.getText()));
 	}
 
 	private JavaClass _getJavaClass(String requiredChainingClassFileName) {

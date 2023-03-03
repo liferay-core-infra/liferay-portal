@@ -18,7 +18,6 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.util.FileUtil;
@@ -89,8 +88,9 @@ public class ListUtilCheck extends BaseCheck {
 			return;
 		}
 
-		List<DetailAST> identDetailASTList = _getIdentDetailASTList(
-			nextStatementDetailAST, variableName);
+		List<DetailAST> identDetailASTList = getIdentDetailASTList(
+			nextStatementDetailAST,
+			detailAST -> variableName.equals(detailAST.getText()));
 
 		if (identDetailASTList.size() != 1) {
 			return;
@@ -112,8 +112,9 @@ public class ListUtilCheck extends BaseCheck {
 				break;
 			}
 
-			identDetailASTList = _getIdentDetailASTList(
-				nextStatementDetailAST, variableName);
+			identDetailASTList = getIdentDetailASTList(
+				nextStatementDetailAST,
+				detailAST -> variableName.equals(detailAST.getText()));
 
 			if (!identDetailASTList.isEmpty()) {
 				return;
@@ -296,14 +297,6 @@ public class ListUtilCheck extends BaseCheck {
 			buildGradleLocation = StringUtil.replaceLast(
 				buildGradleLocation, CharPool.SLASH, StringPool.BLANK);
 		}
-	}
-
-	private List<DetailAST> _getIdentDetailASTList(
-		DetailAST detailAST, String name) {
-
-		return ListUtil.filter(
-			getAllChildTokens(detailAST, true, TokenTypes.IDENT),
-			childDetailAST -> name.equals(childDetailAST.getText()));
 	}
 
 	private DetailAST _getNextStatementDetailAST(DetailAST detailAST) {

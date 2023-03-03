@@ -94,9 +94,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 /**
  * Provides the local service for accessing, adding, deleting, and updating user
@@ -1286,38 +1283,8 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	protected void reindexUsers(List<UserGroup> userGroups)
 		throws PortalException {
 
-		Stream<UserGroup> stream1 = userGroups.stream();
-
-		Map<Long, List<UserGroup>> map = stream1.collect(
-			Collectors.groupingBy(UserGroup::getCompanyId));
-
-		for (Map.Entry<Long, List<UserGroup>> entry : map.entrySet()) {
-			long companyId = entry.getKey();
-
-			List<UserGroup> list = entry.getValue();
-
-			Stream<UserGroup> stream2 = list.stream();
-
-			final long[] userGroupIds = stream2.mapToLong(
-				UserGroup::getUserGroupId
-			).toArray();
-
-			TransactionCommitCallbackUtil.registerCallback(
-				() -> {
-					LongStream longStream = Arrays.stream(userGroupIds);
-
-					long[] userIds = longStream.flatMap(
-						userGroupId -> Arrays.stream(
-							getUserPrimaryKeys(userGroupId))
-					).distinct(
-					).toArray();
-
-					if (ArrayUtil.isNotEmpty(userIds)) {
-						reindex(companyId, userIds);
-					}
-
-					return null;
-				});
+		for (UserGroup userGroup : userGroups) {
+			reindexUsers(userGroup);
 		}
 	}
 

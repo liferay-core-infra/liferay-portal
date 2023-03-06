@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
-import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
@@ -181,12 +180,10 @@ public class CompanyLocalServiceTest {
 	public void testAddAndDeleteCompany() throws Exception {
 		Company company = addCompany();
 
-		String companyWebId = company.getWebId();
-
 		_companyLocalService.deleteCompany(company.getCompanyId());
 
 		for (String webId : PortalInstances.getWebIds()) {
-			Assert.assertNotEquals(companyWebId, webId);
+			Assert.assertNotEquals(company.getWebId(), webId);
 		}
 	}
 
@@ -212,26 +209,18 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company);
 
-		companyOrganization = _organizationLocalService.fetchOrganization(
-			companyOrganization.getOrganizationId());
-
 		Assert.assertNull(
 			"The company organization should delete with the company",
-			companyOrganization);
-
-		companyOrganizationGroup = _groupLocalService.fetchGroup(
-			companyOrganizationGroup.getGroupId());
-
+			_organizationLocalService.fetchOrganization(
+				companyOrganization.getOrganizationId()));
 		Assert.assertNull(
 			"The company organization group should delete with the company",
-			companyOrganizationGroup);
-
-		group = _groupLocalService.fetchGroup(group.getGroupId());
-
+			_groupLocalService.fetchGroup(
+				companyOrganizationGroup.getGroupId()));
 		Assert.assertNull(
 			"The company organization child group should delete with the " +
 				"company",
-			group);
+			_groupLocalService.fetchGroup(group.getGroupId()));
 	}
 
 	@Test
@@ -240,26 +229,20 @@ public class CompanyLocalServiceTest {
 
 		Company company = addCompany();
 
-		long userId = _userLocalService.getDefaultUserId(
-			company.getCompanyId());
-
 		Group companyGroup = company.getGroup();
 
 		_stagingLocalService.enableLocalStaging(
-			userId, companyGroup, false, false, new ServiceContext());
+			_userLocalService.getDefaultUserId(company.getCompanyId()),
+			companyGroup, false, false, new ServiceContext());
 
 		Group companyStagingGroup = companyGroup.getStagingGroup();
 
 		_companyLocalService.deleteCompany(company.getCompanyId());
 
-		companyGroup = _groupLocalService.fetchGroup(companyGroup.getGroupId());
-
-		Assert.assertNull(companyGroup);
-
-		companyStagingGroup = _groupLocalService.fetchGroup(
-			companyStagingGroup.getGroupId());
-
-		Assert.assertNull(companyStagingGroup);
+		Assert.assertNull(
+			_groupLocalService.fetchGroup(companyGroup.getGroupId()));
+		Assert.assertNull(
+			_groupLocalService.fetchGroup(companyStagingGroup.getGroupId()));
 	}
 
 	@Test
@@ -330,11 +313,9 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(companyId);
 
-		layoutSetPrototype =
+		Assert.assertNull(
 			_layoutSetPrototypeLocalService.fetchLayoutSetPrototype(
-				layoutSetPrototype.getLayoutSetPrototypeId());
-
-		Assert.assertNull(layoutSetPrototype);
+				layoutSetPrototype.getLayoutSetPrototypeId()));
 	}
 
 	@Test
@@ -396,13 +377,9 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company.getCompanyId());
 
-		parentGroup = _groupLocalService.fetchGroup(parentGroup.getGroupId());
-
-		Assert.assertNull(parentGroup);
-
-		group = _groupLocalService.fetchGroup(group.getGroupId());
-
-		Assert.assertNull(group);
+		Assert.assertNull(
+			_groupLocalService.fetchGroup(parentGroup.getGroupId()));
+		Assert.assertNull(_groupLocalService.fetchGroup(group.getGroupId()));
 	}
 
 	@Test
@@ -426,15 +403,12 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company);
 
-		companyOrganization = _organizationLocalService.fetchOrganization(
-			companyOrganization.getOrganizationId());
-
-		Assert.assertNull(companyOrganization);
-
-		companyOrganizationGroup = _groupLocalService.fetchGroup(
-			companyOrganizationGroup.getGroupId());
-
-		Assert.assertNull(companyOrganizationGroup);
+		Assert.assertNull(
+			_organizationLocalService.fetchOrganization(
+				companyOrganization.getOrganizationId()));
+		Assert.assertNull(
+			_groupLocalService.fetchGroup(
+				companyOrganizationGroup.getGroupId()));
 	}
 
 	@Test
@@ -459,14 +433,9 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company.getCompanyId());
 
-		userGroup = _userGroupLocalService.fetchUserGroup(
-			userGroup.getUserGroupId());
-
-		Assert.assertNull(userGroup);
-
-		user = _userLocalService.fetchUser(user.getUserId());
-
-		Assert.assertNull(user);
+		Assert.assertNull(
+			_userGroupLocalService.fetchUserGroup(userGroup.getUserGroupId()));
+		Assert.assertNull(_userLocalService.fetchUser(user.getUserId()));
 	}
 
 	@Test
@@ -508,11 +477,9 @@ public class CompanyLocalServiceTest {
 
 		Assert.assertNull(
 			_userGroupLocalService.fetchUserGroup(userGroup.getUserGroupId()));
-
 		Assert.assertNull(
 			_userGroupRoleLocalService.fetchUserGroupRole(
 				user.getUserId(), group.getGroupId(), role.getRoleId()));
-
 		Assert.assertNull(_userLocalService.fetchUser(user.getUserId()));
 	}
 
@@ -534,15 +501,16 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company);
 
-		int count = _groupLocalService.getGroupsCount(
-			company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID, true);
-
-		Assert.assertEquals(0, count);
-
-		count = _groupLocalService.getGroupsCount(
-			company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID, false);
-
-		Assert.assertEquals(0, count);
+		Assert.assertEquals(
+			0,
+			_groupLocalService.getGroupsCount(
+				company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID,
+				true));
+		Assert.assertEquals(
+			0,
+			_groupLocalService.getGroupsCount(
+				company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID,
+				false));
 	}
 
 	@Test
@@ -551,15 +519,14 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company);
 
-		int count = _layoutPrototypeLocalService.searchCount(
-			company.getCompanyId(), true);
-
-		Assert.assertEquals(0, count);
-
-		count = _layoutPrototypeLocalService.searchCount(
-			company.getCompanyId(), false);
-
-		Assert.assertEquals(0, count);
+		Assert.assertEquals(
+			0,
+			_layoutPrototypeLocalService.searchCount(
+				company.getCompanyId(), true));
+		Assert.assertEquals(
+			0,
+			_layoutPrototypeLocalService.searchCount(
+				company.getCompanyId(), false));
 	}
 
 	@Test
@@ -600,11 +567,11 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company);
 
-		int count = _organizationLocalService.getOrganizationsCount(
-			company.getCompanyId(),
-			OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID);
-
-		Assert.assertEquals(0, count);
+		Assert.assertEquals(
+			0,
+			_organizationLocalService.getOrganizationsCount(
+				company.getCompanyId(),
+				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID));
 	}
 
 	@Test
@@ -628,12 +595,10 @@ public class CompanyLocalServiceTest {
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
 			() -> {
-				PortalPreferences portalPreferences =
+				Assert.assertNull(
 					_portalPreferencesLocalService.fetchPortalPreferences(
 						company.getCompanyId(),
-						PortletKeys.PREFS_OWNER_TYPE_COMPANY);
-
-				Assert.assertNull(portalPreferences);
+						PortletKeys.PREFS_OWNER_TYPE_COMPANY));
 
 				return null;
 			});
@@ -648,10 +613,10 @@ public class CompanyLocalServiceTest {
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
 			() -> {
-				int count = _portletLocalService.getPortletsCount(
-					company.getCompanyId());
-
-				Assert.assertEquals(0, count);
+				Assert.assertEquals(
+					0,
+					_portletLocalService.getPortletsCount(
+						company.getCompanyId()));
 
 				return null;
 			});
@@ -852,10 +817,9 @@ public class CompanyLocalServiceTest {
 
 		long companyId = company.getCompanyId();
 
-		long userId = _userLocalService.getDefaultUserId(companyId);
-
 		Group group = GroupTestUtil.addGroup(
-			companyId, userId, GroupConstants.DEFAULT_PARENT_GROUP_ID);
+			companyId, _userLocalService.getDefaultUserId(companyId),
+			GroupConstants.DEFAULT_PARENT_GROUP_ID);
 
 		testUpdateCompanyNames(
 			company,

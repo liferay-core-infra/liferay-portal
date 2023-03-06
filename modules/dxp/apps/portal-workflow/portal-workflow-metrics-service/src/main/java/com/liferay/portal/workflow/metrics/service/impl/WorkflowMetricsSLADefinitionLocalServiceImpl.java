@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -34,6 +35,7 @@ import com.liferay.portal.search.aggregation.bucket.Bucket;
 import com.liferay.portal.search.aggregation.bucket.FilterAggregation;
 import com.liferay.portal.search.aggregation.bucket.FilterAggregationResult;
 import com.liferay.portal.search.aggregation.bucket.TermsAggregationResult;
+import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.engine.adapter.search.SearchRequestExecutor;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchResponse;
@@ -61,12 +63,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -412,22 +413,18 @@ public class WorkflowMetricsSLADefinitionLocalServiceImpl
 
 		searchSearchRequest.setSelectedFieldNames("version");
 
-		return Stream.of(
-			_searchRequestExecutor.executeSearchRequest(searchSearchRequest)
-		).map(
-			SearchSearchResponse::getSearchHits
-		).map(
-			SearchHits::getSearchHits
-		).flatMap(
-			List::parallelStream
-		).map(
-			SearchHit::getDocument
-		).findFirst(
-		).map(
-			document -> document.getString("version")
-		).orElseGet(
-			() -> StringPool.BLANK
-		);
+		SearchSearchResponse searchSearchResponse =
+			_searchRequestExecutor.executeSearchRequest(searchSearchRequest);
+
+		SearchHits searchHits = searchSearchResponse.getSearchHits();
+
+		for (SearchHit searchHit : searchHits.getSearchHits()) {
+			Document document = searchHit.getDocument();
+
+			return GetterUtil.getString(document.getString("version"));
+		}
+
+		return StringPool.BLANK;
 	}
 
 	private String _getNextVersion(String version) {
@@ -442,15 +439,13 @@ public class WorkflowMetricsSLADefinitionLocalServiceImpl
 			return Collections.emptySet();
 		}
 
-		return Stream.of(
-			nodeKeys
-		).map(
-			nodeKey -> StringUtil.split(nodeKey, CharPool.COLON)
-		).map(
-			nodeKeyParts -> nodeKeyParts[0]
-		).collect(
-			Collectors.toSet()
-		);
+		Set<String> nodeIds = new HashSet<>();
+
+		for (String nodeKey : nodeKeys) {
+			nodeIds.add(StringUtil.split(nodeKey, CharPool.COLON)[0]);
+		}
+
+		return nodeIds;
 	}
 
 	private long _getNodeIdsCount(

@@ -29,6 +29,7 @@ import com.liferay.data.engine.rest.client.pagination.Pagination;
 import com.liferay.data.engine.rest.client.permission.Permission;
 import com.liferay.data.engine.rest.client.resource.v2_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.client.serdes.v2_0.DataDefinitionSerDes;
+import com.liferay.data.engine.rest.resource.v2_0.test.util.content.type.ModelResourceActionTestUtil;
 import com.liferay.petra.function.UnsafeTriConsumer;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
@@ -40,7 +41,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
@@ -78,6 +81,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -99,8 +103,14 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		ModelResourceActionTestUtil.populateModelResourceAction(_resourceActions);
+
 		_dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+	}
+	@AfterClass
+	public static void tearDownClass() {
+		ModelResourceActionTestUtil.deleteModelResourceAction(_resourceActionLocalService, _resourceActions);
 	}
 
 	@Before
@@ -2281,5 +2291,11 @@ public abstract class BaseDataDefinitionResourceTestCase {
 	@Inject
 	private com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource
 		_dataDefinitionResource;
+
+	@Inject
+	private static ResourceActionLocalService _resourceActionLocalService;
+
+	@Inject
+	private static ResourceActions _resourceActions;
 
 }

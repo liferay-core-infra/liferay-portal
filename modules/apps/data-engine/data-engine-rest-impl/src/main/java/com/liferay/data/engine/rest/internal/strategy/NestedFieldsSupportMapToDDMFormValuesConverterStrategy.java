@@ -74,37 +74,31 @@ public class NestedFieldsSupportMapToDDMFormValuesConverterStrategy
 		for (Map.Entry<String, DDMFormField> entry :
 				ddmFormFieldsMap.entrySet()) {
 
-			Boolean anyMatch = false;
-
 			for (String key : values.keySet()) {
 				if (StringUtil.startsWith(key, entry.getKey())) {
-					anyMatch = true;
-
-					break;
+					continue;
 				}
+
+				Object value = StringPool.BLANK;
+
+				DDMFormField ddmFormField = entry.getValue();
+
+				if (ddmFormField.isLocalizable()) {
+					value = HashMapBuilder.<String, Object>put(
+						LocaleUtil.toLanguageId(locale), StringPool.BLANK
+					).build();
+				}
+
+				values.put(
+					StringBundler.concat(
+						entry.getKey(), DDM.INSTANCE_SEPARATOR,
+						StringUtil.randomString()),
+					HashMapBuilder.<String, Object>put(
+						"value", value
+					).build());
+
+				break;
 			}
-
-			if (anyMatch) {
-				continue;
-			}
-
-			Object value = StringPool.BLANK;
-
-			DDMFormField ddmFormField = entry.getValue();
-
-			if (ddmFormField.isLocalizable()) {
-				value = HashMapBuilder.<String, Object>put(
-					LocaleUtil.toLanguageId(locale), StringPool.BLANK
-				).build();
-			}
-
-			values.put(
-				StringBundler.concat(
-					entry.getKey(), DDM.INSTANCE_SEPARATOR,
-					StringUtil.randomString()),
-				HashMapBuilder.<String, Object>put(
-					"value", value
-				).build());
 		}
 	}
 

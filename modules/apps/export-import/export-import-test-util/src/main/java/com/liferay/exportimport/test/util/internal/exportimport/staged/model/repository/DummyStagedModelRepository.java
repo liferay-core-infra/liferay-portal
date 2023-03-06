@@ -119,13 +119,13 @@ public class DummyStagedModelRepository
 	}
 
 	public Dummy fetchDummyById(long id) {
-		List<Dummy> dummies = ListUtil.filter(_dummies, d -> d.getId() == id);
-
-		if (dummies.isEmpty()) {
-			return null;
+		for (Dummy dummy : _dummies) {
+			if (id == dummy.getId()) {
+				return dummy;
+			}
 		}
 
-		return dummies.get(0);
+		return null;
 	}
 
 	@Override
@@ -135,17 +135,15 @@ public class DummyStagedModelRepository
 
 	@Override
 	public Dummy fetchStagedModelByUuidAndGroupId(String uuid, long groupId) {
-		List<Dummy> dummies = ListUtil.filter(
-			_dummies,
-			dummy ->
-				Objects.equals(dummy.getUuid(), uuid) &&
-				(dummy.getGroupId() == groupId));
+		for (Dummy dummy : _dummies) {
+			if (Objects.equals(uuid, dummy.getUuid()) &&
+				(groupId == dummy.getGroupId())) {
 
-		if (dummies.isEmpty()) {
-			return null;
+				return dummy;
+			}
 		}
 
-		return dummies.get(0);
+		return null;
 	}
 
 	@Override
@@ -155,8 +153,8 @@ public class DummyStagedModelRepository
 		return ListUtil.filter(
 			_dummies,
 			dummy ->
-				Objects.equals(dummy.getUuid(), uuid) &&
-				(dummy.getCompanyId() == companyId));
+				Objects.equals(uuid, dummy.getUuid()) &&
+				(companyId == dummy.getCompanyId()));
 	}
 
 	@Override
@@ -337,8 +335,6 @@ public class DummyStagedModelRepository
 	public class DummyBaseLocalServiceImpl extends BaseLocalServiceImpl {
 
 		public List<Dummy> dynamicQuery(DynamicQuery dynamicQuery) {
-			List<Dummy> result = _dummies;
-
 			try {
 				Object detachedCriteria = ReflectionTestUtil.getFieldValue(
 					dynamicQuery, "_detachedCriteria");
@@ -350,8 +346,8 @@ public class DummyStagedModelRepository
 					criteriaImpl, "iterateExpressionEntries", new Class<?>[0]);
 
 				while (iterator.hasNext()) {
-					result = ListUtil.filter(
-						(List<Dummy>)result,
+					return ListUtil.filter(
+						_dummies,
 						getPredicate(String.valueOf(iterator.next())));
 				}
 			}
@@ -359,7 +355,7 @@ public class DummyStagedModelRepository
 				throw new RuntimeException(exception);
 			}
 
-			return result;
+			return _dummies;
 		}
 
 		public long dynamicQueryCount(

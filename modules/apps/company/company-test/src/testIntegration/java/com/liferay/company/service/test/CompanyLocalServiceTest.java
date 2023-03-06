@@ -16,6 +16,7 @@ package com.liferay.company.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.adapter.StagedAssetLink;
+import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.model.DLFileEntryTypeConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
@@ -54,6 +55,7 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.model.adapter.StagedTheme;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -265,7 +267,7 @@ public class CompanyLocalServiceTest {
 		deleteStagingClassNameEntries();
 	}
 
-	@Test
+	@Test(expected = NoSuchFileEntryException.class)
 	public void testAddAndDeleteCompanyWithDLFileEntryTypes() throws Exception {
 		Company company = addCompany();
 
@@ -287,12 +289,14 @@ public class CompanyLocalServiceTest {
 		serviceContext.setScopeGroupId(guestGroup.getGroupId());
 		serviceContext.setUserId(userId);
 
-		_dlAppLocalService.addFileEntry(
+		FileEntry fileEntry = _dlAppLocalService.addFileEntry(
 			null, userId, guestGroup.getGroupId(), 0, "test.xml", "text/xml",
 			"test.xml", "", "", "", "test".getBytes(), null, null,
 			serviceContext);
 
 		_companyLocalService.deleteCompany(companyId);
+
+		_dlAppLocalService.getFileEntry(fileEntry.getFileEntryId());
 	}
 
 	@Test
@@ -385,6 +389,12 @@ public class CompanyLocalServiceTest {
 
 			deleteStagingClassNameEntries();
 		}
+
+		Assert.assertNull(
+			_layoutSetPrototypeLocalService.fetchLayoutSetPrototype(
+				layoutSetPrototype.getLayoutSetPrototypeId()));
+		Assert.assertNull(
+			_userGroupLocalService.fetchUserGroup(userGroup.getUserGroupId()));
 	}
 
 	@Test

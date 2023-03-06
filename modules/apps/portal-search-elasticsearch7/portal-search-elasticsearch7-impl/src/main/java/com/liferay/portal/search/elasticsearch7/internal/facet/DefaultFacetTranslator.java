@@ -127,24 +127,19 @@ public class DefaultFacetTranslator implements FacetTranslator {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(class.name=*)"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void setFacetProcessor(
-		FacetProcessor<SearchRequestBuilder> facetProcessor,
-		Map<String, Object> properties) {
+		FacetProcessor<SearchRequestBuilder> facetProcessor) {
 
-		String className = MapUtil.getString(properties, "class.name");
-
-		_facetProcessors.put(className, facetProcessor);
+		_facetProcessors.put(
+			facetProcessor.getFacetClassName(), facetProcessor);
 	}
 
 	protected void unsetFacetProcessor(
-		FacetProcessor<SearchRequestBuilder> facetProcessor,
-		Map<String, Object> properties) {
+		FacetProcessor<SearchRequestBuilder> facetProcessor) {
 
-		String className = MapUtil.getString(properties, "class.name");
-
-		_facetProcessors.remove(className);
+		_facetProcessors.remove(facetProcessor.getFacetClassName());
 	}
 
 	private FacetProcessorContext _getFacetProcessorContext(

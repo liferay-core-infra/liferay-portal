@@ -20,6 +20,7 @@ import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.model.DLFileEntryTypeConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.service.StagingLocalServiceUtil;
 import com.liferay.layout.friendly.url.LayoutFriendlyURLEntryHelper;
 import com.liferay.layout.set.model.adapter.StagedLayoutSet;
@@ -316,14 +317,21 @@ public class CompanyLocalServiceTest {
 		long layoutSetPrototypeId =
 			layoutSetPrototype.getLayoutSetPrototypeId();
 
-		TransactionInvokerUtil.invoke(
-			_transactionConfig,
-			() -> {
-				SitesUtil.updateLayoutSetPrototypesLinks(
-					group, layoutSetPrototypeId, 0, true, false);
+		ExportImportThreadLocal.setLayoutImportInProcess(true);
 
-				return null;
-			});
+		try {
+			TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					SitesUtil.updateLayoutSetPrototypesLinks(
+						group, layoutSetPrototypeId, 0, true, false);
+
+					return null;
+				});
+		}
+		finally {
+			ExportImportThreadLocal.setLayoutImportInProcess(false);
+		}
 
 		addUser(
 			companyId, userId, group.getGroupId(),
@@ -359,20 +367,27 @@ public class CompanyLocalServiceTest {
 		LayoutSetPrototype layoutSetPrototype = addLayoutSetPrototype(
 			companyId, userId, RandomTestUtil.randomString());
 
-		TransactionInvokerUtil.invoke(
-			_transactionConfig,
-			() -> {
-				SitesUtil.updateLayoutSetPrototypesLinks(
-					userGroup.getGroup(),
-					layoutSetPrototype.getLayoutSetPrototypeId(), 0, true,
-					false);
+		ExportImportThreadLocal.setLayoutImportInProcess(true);
 
-				return null;
-			});
+		try {
+			TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					SitesUtil.updateLayoutSetPrototypesLinks(
+						userGroup.getGroup(),
+						layoutSetPrototype.getLayoutSetPrototypeId(), 0, true,
+						false);
 
-		CompanyLocalServiceUtil.deleteCompany(companyId);
+					return null;
+				});
+		}
+		finally {
+			ExportImportThreadLocal.setLayoutImportInProcess(false);
 
-		deleteStagingClassNameEntries();
+			CompanyLocalServiceUtil.deleteCompany(companyId);
+
+			deleteStagingClassNameEntries();
+		}
 	}
 
 	@Test

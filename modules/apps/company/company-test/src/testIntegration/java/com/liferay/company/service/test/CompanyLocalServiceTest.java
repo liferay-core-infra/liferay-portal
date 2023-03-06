@@ -569,15 +569,17 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company);
 
-		int count = _groupLocalService.getGroupsCount(
-			company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID, true);
+		Assert.assertEquals(
+			0,
+			_groupLocalService.getGroupsCount(
+				company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID,
+				true));
 
-		Assert.assertEquals(0, count);
-
-		count = _groupLocalService.getGroupsCount(
-			company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID, false);
-
-		Assert.assertEquals(0, count);
+		Assert.assertEquals(
+			0,
+			_groupLocalService.getGroupsCount(
+				company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID,
+				false));
 	}
 
 	@Test
@@ -586,15 +588,15 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company);
 
-		int count = _layoutPrototypeLocalService.searchCount(
-			company.getCompanyId(), true);
+		Assert.assertEquals(
+			0,
+			_layoutPrototypeLocalService.searchCount(
+				company.getCompanyId(), true));
 
-		Assert.assertEquals(0, count);
-
-		count = _layoutPrototypeLocalService.searchCount(
-			company.getCompanyId(), false);
-
-		Assert.assertEquals(0, count);
+		Assert.assertEquals(
+			0,
+			_layoutPrototypeLocalService.searchCount(
+				company.getCompanyId(), false));
 	}
 
 	@Test
@@ -635,11 +637,11 @@ public class CompanyLocalServiceTest {
 
 		_companyLocalService.deleteCompany(company);
 
-		int count = _organizationLocalService.getOrganizationsCount(
-			company.getCompanyId(),
-			OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID);
-
-		Assert.assertEquals(0, count);
+		Assert.assertEquals(
+			0,
+			_organizationLocalService.getOrganizationsCount(
+				company.getCompanyId(),
+				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID));
 	}
 
 	@Test
@@ -683,10 +685,10 @@ public class CompanyLocalServiceTest {
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
 			() -> {
-				int count = _portletLocalService.getPortletsCount(
-					company.getCompanyId());
-
-				Assert.assertEquals(0, count);
+				Assert.assertEquals(
+					0,
+					_portletLocalService.getPortletsCount(
+						company.getCompanyId()));
 
 				return null;
 			});
@@ -912,10 +914,9 @@ public class CompanyLocalServiceTest {
 		try {
 			long companyId = company.getCompanyId();
 
-			long userId = _userLocalService.getDefaultUserId(companyId);
-
 			Group group = GroupTestUtil.addGroup(
-				companyId, userId, GroupConstants.DEFAULT_PARENT_GROUP_ID);
+				companyId, _userLocalService.getDefaultUserId(companyId),
+				GroupConstants.DEFAULT_PARENT_GROUP_ID);
 
 			testUpdateCompanyNames(
 				company,

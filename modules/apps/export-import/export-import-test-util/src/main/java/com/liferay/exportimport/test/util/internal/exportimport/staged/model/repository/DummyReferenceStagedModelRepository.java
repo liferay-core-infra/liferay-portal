@@ -124,17 +124,15 @@ public class DummyReferenceStagedModelRepository
 	public DummyReference fetchStagedModelByUuidAndGroupId(
 		String uuid, long groupId) {
 
-		List<DummyReference> dummies = ListUtil.filter(
-			_dummyReferences,
-			dummyReference ->
-				Objects.equals(dummyReference.getUuid(), uuid) &&
-				(dummyReference.getGroupId() == groupId));
+		for (DummyReference dummyReference : _dummyReferences) {
+			if (Objects.equals(dummyReference.getUuid(), uuid) &&
+				(groupId == dummyReference.getGroupId())) {
 
-		if (dummies.isEmpty()) {
-			return null;
+				return dummyReference;
+			}
 		}
 
-		return dummies.get(0);
+		return null;
 	}
 
 	@Override
@@ -144,8 +142,8 @@ public class DummyReferenceStagedModelRepository
 		return ListUtil.filter(
 			_dummyReferences,
 			dummyReference ->
-				Objects.equals(dummyReference.getUuid(), uuid) &&
-				(dummyReference.getCompanyId() == companyId));
+				Objects.equals(uuid, dummyReference.getUuid()) &&
+				(companyId == dummyReference.getCompanyId()));
 	}
 
 	@Override
@@ -333,8 +331,6 @@ public class DummyReferenceStagedModelRepository
 		extends BaseLocalServiceImpl {
 
 		public List<DummyReference> dynamicQuery(DynamicQuery dynamicQuery) {
-			List<DummyReference> result = _dummyReferences;
-
 			try {
 				Object detachedCriteria = ReflectionTestUtil.getFieldValue(
 					dynamicQuery, "_detachedCriteria");
@@ -346,15 +342,16 @@ public class DummyReferenceStagedModelRepository
 					criteriaImpl, "iterateExpressionEntries", new Class<?>[0]);
 
 				while (iterator.hasNext()) {
-					result = ListUtil.filter(
-						result, getPredicate(String.valueOf(iterator.next())));
+					return ListUtil.filter(
+						_dummyReferences,
+						getPredicate(String.valueOf(iterator.next())));
 				}
 			}
 			catch (Exception exception) {
 				throw new RuntimeException(exception);
 			}
 
-			return result;
+			return _dummyReferences;
 		}
 
 		public long dynamicQueryCount(

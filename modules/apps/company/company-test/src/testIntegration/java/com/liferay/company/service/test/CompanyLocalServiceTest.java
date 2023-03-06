@@ -333,10 +333,6 @@ public class CompanyLocalServiceTest {
 
 					return null;
 				});
-
-			addUser(
-				companyId, userId, group.getGroupId(),
-				getServiceContext(companyId));
 		}
 		finally {
 			ExportImportThreadLocal.setLayoutImportInProcess(false);
@@ -418,10 +414,6 @@ public class CompanyLocalServiceTest {
 
 			group = GroupTestUtil.addGroup(
 				companyId, userId, parentGroup.getGroupId());
-
-			addUser(
-				companyId, userId, group.getGroupId(),
-				getServiceContext(companyId));
 		}
 		finally {
 			_companyLocalService.deleteCompany(company.getCompanyId());

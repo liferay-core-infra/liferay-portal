@@ -159,8 +159,6 @@ public class CompanyLocalServiceTest {
 	@Before
 	public void setUp() {
 		_companyId = CompanyThreadLocal.getCompanyId();
-
-		CompanyThreadLocal.setCompanyId(PortalInstances.getDefaultCompanyId());
 	}
 
 	@After

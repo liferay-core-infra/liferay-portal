@@ -22,10 +22,11 @@ import com.liferay.commerce.discount.model.CommerceDiscountRel;
 import com.liferay.commerce.discount.service.CommerceDiscountRelService;
 import com.liferay.commerce.discount.service.CommerceDiscountService;
 import com.liferay.headless.commerce.admin.pricing.dto.v1_0.DiscountCategory;
-import com.liferay.headless.commerce.admin.pricing.internal.dto.v1_0.converter.DiscountCategoryDTOConverter;
+import com.liferay.headless.commerce.admin.pricing.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v1_0.DiscountCategoryUtil;
 import com.liferay.headless.commerce.admin.pricing.resource.v1_0.DiscountCategoryResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -184,8 +185,9 @@ public class DiscountCategoryResourceImpl
 	@Reference
 	private CommerceDiscountService _commerceDiscountService;
 
-	@Reference
-	private DiscountCategoryDTOConverter _discountCategoryDTOConverter;
+	@Reference(target = DTOConverterConstants.DISCOUNT_CATEGORY_DTO_CONVERTER)
+	private DTOConverter<CommerceDiscountRel, DiscountCategory>
+		_discountCategoryDTOConverter;
 
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;

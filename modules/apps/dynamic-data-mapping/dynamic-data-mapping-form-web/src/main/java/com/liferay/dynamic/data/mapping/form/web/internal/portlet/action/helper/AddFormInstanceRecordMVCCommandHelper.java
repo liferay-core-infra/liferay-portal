@@ -272,13 +272,13 @@ public class AddFormInstanceRecordMVCCommandHelper {
 		TransformUtil.transform(
 			ddmFormFieldValues,
 			ddmFormFieldValue -> {
-				if (ddmFormFieldValue.getValue() != null) {
-					_removeDDMFormFieldValue(ddmFormFieldValue);
-
-					return ddmFormFieldValue;
+				if (ddmFormFieldValue.getValue() == null) {
+					return null;
 				}
 
-				return null;
+				_removeDDMFormFieldValue(ddmFormFieldValue);
+
+				return ddmFormFieldValue;
 			});
 	}
 
@@ -289,14 +289,14 @@ public class AddFormInstanceRecordMVCCommandHelper {
 		TransformUtil.transform(
 			ddmFormFieldsMap.values(),
 			ddmFormField -> {
-				if (nonevaluableFieldNames.contains(ddmFormField.getName())) {
-					ddmFormField.setDDMFormFieldValidation(null);
-					ddmFormField.setRequired(false);
-
-					return ddmFormField;
+				if (!nonevaluableFieldNames.contains(ddmFormField.getName())) {
+					return null;
 				}
 
-				return null;
+				ddmFormField.setDDMFormFieldValidation(null);
+				ddmFormField.setRequired(false);
+
+				return ddmFormField;
 			});
 	}
 

@@ -17,7 +17,7 @@ package com.liferay.portal.pop.notifications.internal.portal.profile;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.pop.notifications.internal.messaging.POPNotificationsMessageListener;
+import com.liferay.portal.pop.notifications.internal.scheduler.POPNotificationsSchedulerJobConfiguration;
 import com.liferay.portal.profile.BaseDSModulePortalProfile;
 import com.liferay.portal.profile.PortalProfile;
 
@@ -50,7 +50,7 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 
 		init(
 			componentContext, supportedPortalProfileNames,
-			POPNotificationsMessageListener.class.getName());
+			POPNotificationsSchedulerJobConfiguration.class.getName());
 	}
 
 	@Reference

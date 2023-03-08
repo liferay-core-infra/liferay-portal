@@ -24,12 +24,13 @@ import com.liferay.commerce.order.rule.service.COREntryRelService;
 import com.liferay.commerce.order.rule.service.COREntryService;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderRule;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderRuleAccountGroup;
-import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.OrderRuleAccountGroupDTOConverter;
+import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.order.resource.v1_0.OrderRuleAccountGroupResource;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -218,8 +219,10 @@ public class OrderRuleAccountGroupResourceImpl
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
 
-	@Reference
-	private OrderRuleAccountGroupDTOConverter
+	@Reference(
+		target = DTOConverterConstants.ORDER_RULE_ACCOUNT_GROUP_DTO_CONVERTER
+	)
+	private DTOConverter<COREntryRel, OrderRuleAccountGroup>
 		_orderRuleAccountGroupDTOConverter;
 
 }

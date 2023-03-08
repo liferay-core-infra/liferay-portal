@@ -27,16 +27,23 @@ import com.liferay.object.rest.internal.resource.v1_0.test.util.ObjectEntryTestU
 import com.liferay.object.rest.internal.resource.v1_0.test.util.ObjectRelationshipTestUtil;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.object.service.ObjectEntryLocalServiceUtil;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -49,6 +56,9 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.util.PropsUtil;
 
+import java.io.Serializable;
+
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.ws.rs.NotSupportedException;
@@ -64,6 +74,8 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.springframework.http.HttpStatus;
 
 /**
  * @author Luis Miguel Barcos
@@ -171,6 +183,80 @@ public class ObjectEntryResourceTest {
 			).build());
 
 		_testFilterObjectEntriesByRelatedObjectEntries();
+
+		PropsUtil.addProperties(
+			UnicodePropertiesBuilder.setProperty(
+				"feature.flag.LPS-154672", "false"
+			).build());
+	}
+
+	@Test
+	public void testFilterObjectEntriesWithPrecisionDecimalField()
+		throws Exception {
+
+		PropsUtil.addProperties(
+			UnicodePropertiesBuilder.setProperty(
+				"feature.flag.LPS-154672", "true"
+			).build());
+
+		ObjectDefinition objectDefinition1 =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Arrays.asList(
+					ObjectFieldUtil.createObjectField(
+						"Text", "String", true, true, null, "TestString",
+						"xtestname", false),
+					ObjectFieldUtil.createObjectField(
+						"PrecisionDecimal", "BigDecimal", true, true, null,
+						"TestPrecisionDecimal", "xtestnumber", false)));
+
+		ObjectEntryLocalServiceUtil.addObjectEntry(
+			TestPropsValues.getUserId(), 0,
+			objectDefinition1.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"xtestname", RandomTestUtil.randomString()
+			).put(
+				"xtestnumber", 123.45
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		String testName2 = RandomTestUtil.randomString();
+
+		ObjectEntryLocalServiceUtil.addObjectEntry(
+			TestPropsValues.getUserId(), 0,
+			objectDefinition1.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"xtestname", testName2
+			).put(
+				"xtestnumber", 234.56
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		Http.Options options = _createOptions(
+			StringBundler.concat(
+				objectDefinition1.getRESTContextPath(), "?filter=",
+				URLCodec.encodeURL(
+					"(not (xtestnumber lt 200.5)) or (xtestnumber lt 0)",
+					true)),
+			Http.Method.GET);
+
+		String responseString = HttpUtil.URLtoString(options);
+
+		Http.Response response = options.getResponse();
+
+		Assert.assertTrue(
+			"Unexpected result: " + responseString,
+			response.getResponseCode() == HttpStatus.OK.value());
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			responseString);
+
+		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
+
+		Assert.assertEquals(1, itemsJSONArray.length());
+
+		JSONObject itemJSONObject = itemsJSONArray.getJSONObject(0);
+
+		Assert.assertEquals(itemJSONObject.getString("xtestname"), testName2);
 
 		PropsUtil.addProperties(
 			UnicodePropertiesBuilder.setProperty(
@@ -928,6 +1014,22 @@ public class ObjectEntryResourceTest {
 		}
 
 		return jsonArray;
+	}
+
+	private Http.Options _createOptions(
+		String endpoint, Http.Method httpMethod) {
+
+		Http.Options options = new Http.Options();
+
+		options.addHeader(
+			HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON);
+		options.addHeader(
+			"Authorization",
+			"Basic " + Base64.encode("test@liferay.com:test".getBytes()));
+		options.setLocation("http://localhost:8080/o/" + endpoint);
+		options.setMethod(httpMethod);
+
+		return options;
 	}
 
 	private void _postObjectEntryWithKeywords(String... keywords)

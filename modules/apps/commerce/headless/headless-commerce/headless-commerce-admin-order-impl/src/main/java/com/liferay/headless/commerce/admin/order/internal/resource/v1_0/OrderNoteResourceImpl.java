@@ -21,10 +21,11 @@ import com.liferay.commerce.model.CommerceOrderNote;
 import com.liferay.commerce.service.CommerceOrderNoteService;
 import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderNote;
-import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.OrderNoteDTOConverter;
+import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.order.resource.v1_0.OrderNoteResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -258,8 +259,8 @@ public class OrderNoteResourceImpl extends BaseOrderNoteResourceImpl {
 	@Reference
 	private CommerceOrderService _commerceOrderService;
 
-	@Reference
-	private OrderNoteDTOConverter _orderNoteDTOConverter;
+	@Reference(target = DTOConverterConstants.ORDER_NOTE_DTO_CONVERTER)
+	private DTOConverter<CommerceOrderNote, OrderNote> _orderNoteDTOConverter;
 
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;

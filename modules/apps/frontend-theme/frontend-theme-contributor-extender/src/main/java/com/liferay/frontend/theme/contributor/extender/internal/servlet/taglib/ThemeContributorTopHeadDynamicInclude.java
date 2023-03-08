@@ -29,7 +29,7 @@ import java.io.PrintWriter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,6 +67,16 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 				themeDisplay.getCompanyId())) {
 
 			portalCDNURL = themeDisplay.getPortalURL();
+		}
+
+		if (_needsRebuild) {
+			synchronized (_needsRebuild) {
+				if (_needsRebuild) {
+					_rebuild();
+
+					_needsRebuild = false;
+				}
+			}
 		}
 
 		if (_cssResourceURLs.length > 0) {
@@ -108,8 +118,6 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_rebuild();
-
 		_comboContextPath = _portal.getPathContext() + "/combo";
 	}
 
@@ -121,11 +129,11 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 		ServiceReference<BundleWebResources>
 			bundleWebResourcesServiceReference) {
 
-		synchronized (_bundleWebResourcesServiceReferences) {
+		synchronized (_needsRebuild) {
+			_needsRebuild = true;
+
 			_bundleWebResourcesServiceReferences.add(
 				bundleWebResourcesServiceReference);
-
-			_rebuild();
 		}
 	}
 
@@ -133,11 +141,11 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 		ServiceReference<BundleWebResources>
 			bundleWebResourcesServiceReference) {
 
-		synchronized (_bundleWebResourcesServiceReferences) {
+		synchronized (_needsRebuild) {
+			_needsRebuild = true;
+
 			_bundleWebResourcesServiceReferences.remove(
 				bundleWebResourcesServiceReference);
-
-			_rebuild();
 		}
 	}
 
@@ -270,12 +278,13 @@ public class ThemeContributorTopHeadDynamicInclude implements DynamicInclude {
 
 	private BundleContext _bundleContext;
 	private final Collection<ServiceReference<BundleWebResources>>
-		_bundleWebResourcesServiceReferences = new TreeSet<>();
+		_bundleWebResourcesServiceReferences = new ConcurrentSkipListSet<>();
 	private String _comboContextPath;
 	private volatile String[] _cssResourceURLs = StringPool.EMPTY_ARRAY;
 	private volatile String[] _jsResourceURLs = StringPool.EMPTY_ARRAY;
 	private volatile String _mergedCSSResourceURLs;
 	private volatile String _mergedJSResourceURLs;
+	private volatile Boolean _needsRebuild = true;
 
 	@Reference
 	private Portal _portal;

@@ -109,6 +109,8 @@ public class FinderCacheImpl
 
 	@Override
 	public void clearDSLQueryCache(String tableName) {
+		clearLocalCache();
+
 		String modelImplClassName = _modelImplClassNames.get(tableName);
 
 		if (modelImplClassName != null) {

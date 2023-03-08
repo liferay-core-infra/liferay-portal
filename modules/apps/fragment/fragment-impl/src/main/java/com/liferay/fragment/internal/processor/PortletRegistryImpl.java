@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.internal.processor;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.contributor.PortletAliasRegistration;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.PortletRegistry;
@@ -127,12 +128,32 @@ public class PortletRegistryImpl implements PortletRegistry {
 
 	@Override
 	public List<String> getPortletAliases() {
-		return new ArrayList<>(_portletNames.keySet());
+		return new ArrayList<>(_aliasPortletNames.keySet());
 	}
 
 	@Override
 	public String getPortletName(String alias) {
-		return _portletNames.get(alias);
+		return _aliasPortletNames.get(alias);
+	}
+
+	@Override
+	public void registerAlias(Map<String, Object> properties) {
+		Object alias = properties.get(FragmentPortletKeys.ALIAS);
+		Object portletName = properties.get("javax.portlet.name");
+
+		if ((alias != null) && (portletName != null)) {
+			_aliasPortletNames.put((String)alias, (String)portletName);
+		}
+	}
+
+	@Override
+	public void unregisterAlias(Map<String, Object> properties) {
+		Object alias = properties.get(FragmentPortletKeys.ALIAS);
+		Object portletName = properties.get("javax.portlet.name");
+
+		if ((alias != null) && (portletName != null)) {
+			_aliasPortletNames.remove((String)alias, (String)portletName);
+		}
 	}
 
 	@Override
@@ -197,7 +218,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 		String portletName = MapUtil.getString(
 			properties, "javax.portlet.name");
 
-		_portletNames.put(alias, portletName);
+		_aliasPortletNames.put(alias, portletName);
 
 		Bundle bundle = FrameworkUtil.getBundle(jxPortlet.getClass());
 
@@ -222,7 +243,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 		String portletName = MapUtil.getString(
 			properties, "javax.portlet.name");
 
-		_portletNames.remove(alias, portletName);
+		_aliasPortletNames.remove(alias, portletName);
 
 		ServiceRegistration<PortletAliasRegistration> serviceRegistration =
 			_serviceRegistrations.remove(alias);
@@ -233,13 +254,15 @@ public class PortletRegistryImpl implements PortletRegistry {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletRegistryImpl.class);
 
+	private final Map<String, String> _aliasPortletNames =
+		new ConcurrentHashMap<>();
+
 	@Reference
 	private JSONFactory _jsonFactory;
 
 	@Reference
 	private PortletLocalService _portletLocalService;
 
-	private final Map<String, String> _portletNames = new ConcurrentHashMap<>();
 	private final Map<String, ServiceRegistration<PortletAliasRegistration>>
 		_serviceRegistrations = new ConcurrentHashMap<>();
 

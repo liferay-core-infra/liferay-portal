@@ -19,6 +19,9 @@ package com.liferay.fragment.constants;
  */
 public class FragmentPortletKeys {
 
+	public static final String ALIAS =
+		"com.liferay.fragment.entry.processor.portlet.alias";
+
 	public static final String FRAGMENT =
 		"com_liferay_fragment_web_portlet_FragmentPortlet";
 

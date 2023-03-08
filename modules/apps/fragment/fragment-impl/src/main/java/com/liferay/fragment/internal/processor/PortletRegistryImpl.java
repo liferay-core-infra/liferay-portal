@@ -127,12 +127,22 @@ public class PortletRegistryImpl implements PortletRegistry {
 
 	@Override
 	public List<String> getPortletAliases() {
-		return new ArrayList<>(_portletNames.keySet());
+		return new ArrayList<>(_aliasPortletNames.keySet());
 	}
 
 	@Override
 	public String getPortletName(String alias) {
-		return _portletNames.get(alias);
+		return _aliasPortletNames.get(alias);
+	}
+
+	@Override
+	public void registerAlias(String alias, String javaxPortletName) {
+		_aliasPortletNames.put(alias, javaxPortletName);
+	}
+
+	@Override
+	public void unRegisterAlias(String alias, String javaxPortletName) {
+		_aliasPortletNames.remove(alias, javaxPortletName);
 	}
 
 	@Override
@@ -197,7 +207,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 		String portletName = MapUtil.getString(
 			properties, "javax.portlet.name");
 
-		_portletNames.put(alias, portletName);
+		_aliasPortletNames.put(alias, portletName);
 
 		Bundle bundle = FrameworkUtil.getBundle(jxPortlet.getClass());
 
@@ -222,7 +232,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 		String portletName = MapUtil.getString(
 			properties, "javax.portlet.name");
 
-		_portletNames.remove(alias, portletName);
+		_aliasPortletNames.remove(alias, portletName);
 
 		ServiceRegistration<PortletAliasRegistration> serviceRegistration =
 			_serviceRegistrations.remove(alias);
@@ -233,13 +243,15 @@ public class PortletRegistryImpl implements PortletRegistry {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletRegistryImpl.class);
 
+	private final Map<String, String> _aliasPortletNames =
+		new ConcurrentHashMap<>();
+
 	@Reference
 	private JSONFactory _jsonFactory;
 
 	@Reference
 	private PortletLocalService _portletLocalService;
 
-	private final Map<String, String> _portletNames = new ConcurrentHashMap<>();
 	private final Map<String, ServiceRegistration<PortletAliasRegistration>>
 		_serviceRegistrations = new ConcurrentHashMap<>();
 

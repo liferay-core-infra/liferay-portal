@@ -28,8 +28,6 @@ import com.liferay.portal.vulcan.multipart.BinaryFile;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.pagination.Page;
 
-import java.util.Optional;
-
 import javax.ws.rs.BadRequestException;
 
 import org.osgi.service.component.annotations.Component;
@@ -115,7 +113,7 @@ public class KnowledgeBaseAttachmentResourceImpl
 					false);
 				contentValue = ContentValueUtil.toContentValue(
 					"contentValue", fileEntry::getContentStream,
-					Optional.of(contextUriInfo));
+					contextUriInfo);
 				encodingFormat = fileEntry.getMimeType();
 				fileExtension = fileEntry.getExtension();
 				id = fileEntry.getFileEntryId();

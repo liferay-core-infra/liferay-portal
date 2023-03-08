@@ -23,10 +23,11 @@ import com.liferay.commerce.term.service.CommerceTermEntryRelService;
 import com.liferay.commerce.term.service.CommerceTermEntryService;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.Term;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.TermOrderType;
-import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.TermOrderTypeDTOConverter;
+import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.order.resource.v1_0.TermOrderTypeResource;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -213,7 +214,8 @@ public class TermOrderTypeResourceImpl
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
 
-	@Reference
-	private TermOrderTypeDTOConverter _termOrderTypeDTOConverter;
+	@Reference(target = DTOConverterConstants.TERM_ORDER_TYPE_DTO_CONVERTER)
+	private DTOConverter<CommerceTermEntryRel, TermOrderType>
+		_termOrderTypeDTOConverter;
 
 }

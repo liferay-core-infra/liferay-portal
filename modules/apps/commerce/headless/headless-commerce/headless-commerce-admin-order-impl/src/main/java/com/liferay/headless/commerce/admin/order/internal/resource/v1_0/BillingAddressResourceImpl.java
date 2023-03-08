@@ -21,10 +21,11 @@ import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.BillingAddress;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.Order;
-import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.BillingAddressDTOConverter;
+import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.order.internal.util.v1_0.BillingAddressUtil;
 import com.liferay.headless.commerce.admin.order.resource.v1_0.BillingAddressResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldSupport;
@@ -130,8 +131,9 @@ public class BillingAddressResourceImpl
 		return responseBuilder.build();
 	}
 
-	@Reference
-	private BillingAddressDTOConverter _billingAddressDTOConverter;
+	@Reference(target = DTOConverterConstants.BILLING_ADDRESS_DTO_CONVERTER)
+	private DTOConverter<CommerceAddress, BillingAddress>
+		_billingAddressDTOConverter;
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;

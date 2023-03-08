@@ -58,10 +58,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.TimeZone;
 
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -114,14 +114,13 @@ public class ContentFieldUtil {
 						}
 
 						Map<String, ContentFieldValue> map = new HashMap<>();
+						Value value = ddmFormFieldValue.getValue();
 
-						Map<Locale, String> valueValues = Optional.ofNullable(
-							ddmFormFieldValue.getValue()
-						).map(
-							Value::getValues
-						).orElse(
-							Collections.emptyMap()
-						);
+						Map<Locale, String> valueValues = new HashMap<>();
+
+						if (value.getValues() != null) {
+							valueValues = value.getValues();
+						}
 
 						for (Map.Entry<Locale, String> entry :
 								valueValues.entrySet()) {
@@ -448,42 +447,36 @@ public class ContentFieldUtil {
 			long classPK, DTOConverterContext dtoConverterContext)
 		throws Exception {
 
-		Optional<UriInfo> uriInfoOptional =
-			dtoConverterContext.getUriInfoOptional();
+		UriInfo uriInfo = dtoConverterContext.getUriInfo();
 
-		if (uriInfoOptional.map(
-				UriInfo::getQueryParameters
-			).map(
-				queryParameters -> queryParameters.getFirst("nestedFields")
-			).map(
-				nestedFields -> nestedFields.contains(
-					"embeddedStructuredContent")
-			).orElse(
-				false
-			)) {
+		MultivaluedMap<String, String> queryParameters =
+			uriInfo.getQueryParameters();
 
-			DTOConverterRegistry dtoConverterRegistry =
-				dtoConverterContext.getDTOConverterRegistry();
+		String nestedFields = queryParameters.getFirst("nestedFields");
 
-			DTOConverter<?, ?> dtoConverter =
-				dtoConverterRegistry.getDTOConverter(
-					JournalArticle.class.getName());
+		if ((nestedFields == null) ||
+			!nestedFields.contains("embeddedStructuredContent")) {
 
-			if (dtoConverter == null) {
-				return null;
-			}
-
-			return (StructuredContent)dtoConverter.toDTO(
-				new DefaultDTOConverterContext(
-					dtoConverterContext.isAcceptAllLanguages(),
-					Collections.emptyMap(), dtoConverterRegistry,
-					dtoConverterContext.getHttpServletRequest(), classPK,
-					dtoConverterContext.getLocale(),
-					uriInfoOptional.orElse(null),
-					dtoConverterContext.getUser()));
+			return null;
 		}
 
-		return null;
+		DTOConverterRegistry dtoConverterRegistry =
+			dtoConverterContext.getDTOConverterRegistry();
+
+		DTOConverter<?, ?> dtoConverter = dtoConverterRegistry.getDTOConverter(
+			JournalArticle.class.getName());
+
+		if (dtoConverter == null) {
+			return null;
+		}
+
+		return (StructuredContent)dtoConverter.toDTO(
+			new DefaultDTOConverterContext(
+				dtoConverterContext.isAcceptAllLanguages(),
+				Collections.emptyMap(), dtoConverterRegistry,
+				dtoConverterContext.getHttpServletRequest(), classPK,
+				dtoConverterContext.getLocale(), uriInfo,
+				dtoConverterContext.getUser()));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

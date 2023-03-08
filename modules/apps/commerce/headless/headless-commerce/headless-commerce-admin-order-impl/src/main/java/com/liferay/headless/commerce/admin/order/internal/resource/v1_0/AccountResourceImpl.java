@@ -24,8 +24,9 @@ import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.Account;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.Order;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderRuleAccount;
-import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.AccountDTOConverter;
+import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.order.resource.v1_0.AccountResource;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldSupport;
@@ -89,8 +90,8 @@ public class AccountResourceImpl
 				accountEntryId, contextAcceptLanguage.getPreferredLocale()));
 	}
 
-	@Reference
-	private AccountDTOConverter _accountDTOConverter;
+	@Reference(target = DTOConverterConstants.ACCOUNT_DTO_CONVERTER)
+	private DTOConverter<AccountEntry, Account> _accountDTOConverter;
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;

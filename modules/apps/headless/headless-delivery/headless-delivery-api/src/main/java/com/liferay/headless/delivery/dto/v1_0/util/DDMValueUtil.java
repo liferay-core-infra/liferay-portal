@@ -52,12 +52,10 @@ import com.liferay.portal.kernel.util.Validator;
 import java.text.ParseException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.ws.rs.BadRequestException;
@@ -448,23 +446,21 @@ public class DDMValueUtil {
 			preferredLocale,
 			localizedValueBiFunction.apply(contentFieldValue, preferredLocale));
 
-		Optional.ofNullable(
-			localizedContentFieldValues
-		).orElse(
-			Collections.emptyMap()
-		).forEach(
-			(languageId, localizedContentFieldValue) -> {
+		if (localizedContentFieldValues != null) {
+			for (Map.Entry<String, ContentFieldValue> entry :
+					localizedContentFieldValues.entrySet()) {
+
 				Locale locale = LocaleUtil.fromLanguageId(
-					languageId, true, false);
+					entry.getKey(), true, false);
 
 				if (locale != null) {
 					localizedValue.addString(
 						locale,
 						localizedValueBiFunction.apply(
-							localizedContentFieldValue, locale));
+							entry.getValue(), locale));
 				}
 			}
-		);
+		}
 
 		return localizedValue;
 	}

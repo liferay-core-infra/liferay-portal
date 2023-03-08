@@ -19,6 +19,8 @@ package com.liferay.rss.constants;
  */
 public class RSSPortletKeys {
 
+	public static final String ALIAS_RSS = "rss";
+
 	public static final String RSS = "com_liferay_rss_web_portlet_RSSPortlet";
 
 }

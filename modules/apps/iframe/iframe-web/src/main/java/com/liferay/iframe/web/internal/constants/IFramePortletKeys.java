@@ -19,6 +19,8 @@ package com.liferay.iframe.web.internal.constants;
  */
 public class IFramePortletKeys {
 
+	public static final String ALIAS_IFRAME = "iframe";
+
 	public static final String IFRAME =
 		"com_liferay_iframe_web_portlet_IFramePortlet";
 

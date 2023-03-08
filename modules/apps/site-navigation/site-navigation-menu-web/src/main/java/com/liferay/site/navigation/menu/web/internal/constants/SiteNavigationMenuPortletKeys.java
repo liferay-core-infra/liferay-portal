@@ -19,6 +19,8 @@ package com.liferay.site.navigation.menu.web.internal.constants;
  */
 public class SiteNavigationMenuPortletKeys {
 
+	public static final String NAV = "nav";
+
 	public static final String SITE_NAVIGATION_MENU =
 		"com_liferay_site_navigation_menu_web_portlet_" +
 			"SiteNavigationMenuPortlet";

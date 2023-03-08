@@ -22,4 +22,6 @@ public class JournalContentPortletKeys {
 	public static final String JOURNAL_CONTENT =
 		"com_liferay_journal_content_web_portlet_JournalContentPortlet";
 
+	public static final String WEB_CONTENT = "web-content";
+
 }

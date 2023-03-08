@@ -21,6 +21,8 @@ package com.liferay.dynamic.data.lists.constants;
  */
 public class DDLPortletKeys {
 
+	public static final String DYNAMIC_DATA_LIST = "dynamic-data-list";
+
 	/**
 	 * {@value #DYNAMIC_DATA_LISTS} is the Portlet ID for the Dynamic Data Lists
 	 * administration portlet.

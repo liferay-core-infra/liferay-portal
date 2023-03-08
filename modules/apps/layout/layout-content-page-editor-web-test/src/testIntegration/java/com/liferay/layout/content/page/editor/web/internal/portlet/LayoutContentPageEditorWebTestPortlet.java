@@ -14,19 +14,23 @@
 
 package com.liferay.layout.content.page.editor.web.internal.portlet;
 
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.layout.content.page.editor.web.internal.portlet.constants.LayoutContentPageEditorWebPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import javax.portlet.Portlet;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Lourdes Fernández Besada
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=test",
+		"com.liferay.fragment.entry.processor.portlet.alias=" + LayoutContentPageEditorWebPortletKeys.TEST,
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.preferences-owned-by-group=true",
@@ -38,4 +42,24 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class LayoutContentPageEditorWebTestPortlet extends MVCPortlet {
+
+	@Activate
+	protected void activate() {
+		_portletRegistry.registerAlias(
+			LayoutContentPageEditorWebPortletKeys.TEST,
+			LayoutContentPageEditorWebPortletKeys.
+				LAYOUT_CONTENT_PAGE_EDITOR_WEB_TEST_PORTLET);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_portletRegistry.unRegisterAlias(
+			LayoutContentPageEditorWebPortletKeys.TEST,
+			LayoutContentPageEditorWebPortletKeys.
+				LAYOUT_CONTENT_PAGE_EDITOR_WEB_TEST_PORTLET);
+	}
+
+	@Reference
+	private PortletRegistry _portletRegistry;
+
 }

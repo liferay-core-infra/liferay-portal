@@ -23,4 +23,6 @@ public class AssetCategoriesNavigationPortletKeys {
 		"com_liferay_asset_categories_navigation_web_portlet_" +
 			"AssetCategoriesNavigationPortlet";
 
+	public static final String CATEGORIES_NAV = "categories-nav";
+
 }

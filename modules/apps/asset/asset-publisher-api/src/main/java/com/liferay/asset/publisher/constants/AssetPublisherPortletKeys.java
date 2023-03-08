@@ -22,6 +22,10 @@ package com.liferay.asset.publisher.constants;
  */
 public class AssetPublisherPortletKeys {
 
+	public static final String ALIAS_RELATED_ASSETS = "related-assets";
+
+	public static final String ASSET_LIST = "asset-list";
+
 	public static final String ASSET_PUBLISHER =
 		"com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet";
 

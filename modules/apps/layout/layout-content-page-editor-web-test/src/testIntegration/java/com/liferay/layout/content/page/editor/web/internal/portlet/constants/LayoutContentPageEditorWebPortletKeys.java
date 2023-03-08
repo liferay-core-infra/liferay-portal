@@ -23,4 +23,6 @@ public class LayoutContentPageEditorWebPortletKeys {
 		"com_liferay_layout_content_page_editor_web_internal_portlet_" +
 			"LayoutContentPageEditorWebTestPortlet";
 
+	public static final String TEST = "test";
+
 }

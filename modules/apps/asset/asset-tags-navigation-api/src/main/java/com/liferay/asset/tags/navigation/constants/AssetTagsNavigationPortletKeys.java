@@ -26,4 +26,8 @@ public class AssetTagsNavigationPortletKeys {
 		"com_liferay_asset_tags_navigation_web_portlet_" +
 			"AssetTagsNavigationPortlet";
 
+	public static final String TAG_CLOUD = "tag-cloud";
+
+	public static final String TAGS_NAV = "tags-nav";
+
 }

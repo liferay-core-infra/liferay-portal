@@ -25,6 +25,8 @@ public class DLPortletKeys {
 	public static final String DOCUMENT_LIBRARY_ADMIN =
 		"com_liferay_document_library_web_portlet_DLAdminPortlet";
 
+	public static final String MEDIA_GALLERY = "media-gallery";
+
 	public static final String MEDIA_GALLERY_DISPLAY =
 		"com_liferay_document_library_web_portlet_IGDisplayPortlet";
 

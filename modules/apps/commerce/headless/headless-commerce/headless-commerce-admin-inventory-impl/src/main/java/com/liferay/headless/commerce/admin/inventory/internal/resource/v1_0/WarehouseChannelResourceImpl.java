@@ -24,7 +24,7 @@ import com.liferay.commerce.product.service.CommerceChannelRelService;
 import com.liferay.commerce.product.service.CommerceChannelService;
 import com.liferay.headless.commerce.admin.inventory.dto.v1_0.Warehouse;
 import com.liferay.headless.commerce.admin.inventory.dto.v1_0.WarehouseChannel;
-import com.liferay.headless.commerce.admin.inventory.internal.dto.v1_0.WarehouseChannelDTOConverter;
+import com.liferay.headless.commerce.admin.inventory.internal.dto.v1_0.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.inventory.resource.v1_0.WarehouseChannelResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
 import com.liferay.portal.kernel.search.Sort;
@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -271,7 +272,8 @@ public class WarehouseChannelResourceImpl
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;
 
-	@Reference
-	private WarehouseChannelDTOConverter _warehouseChannelDTOConverter;
+	@Reference(target = DTOConverterConstants.WAREHOUSE_CHANNEL_DTO_CONVERTER)
+	private DTOConverter<CommerceChannelRel, WarehouseChannel>
+		_warehouseChannelDTOConverter;
 
 }

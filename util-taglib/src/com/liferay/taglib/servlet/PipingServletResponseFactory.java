@@ -40,7 +40,7 @@ public class PipingServletResponseFactory {
 
 		JspWriter jspWriter = pageContext.getOut();
 
-		if (ServerDetector.isWebLogic()) {
+		if (ServerDetector.isWebLogic() || ServerDetector.isWebSphere()) {
 
 			// This optimization cannot be applied to WebLogic because WebLogic
 			// relies on the WriterOutputStream bridging logic insde

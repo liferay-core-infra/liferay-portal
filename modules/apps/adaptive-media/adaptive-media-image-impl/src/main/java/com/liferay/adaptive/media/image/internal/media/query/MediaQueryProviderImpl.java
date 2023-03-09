@@ -218,30 +218,28 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 		AdaptiveMedia<AMImageProcessor> originalAdaptiveMedia,
 		Collection<AdaptiveMedia<AMImageProcessor>> adaptiveMedias) {
 
+		int widthValue = _getValue(
+			originalAdaptiveMedia, AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
+
+		int originalWidth = widthValue * 2;
+
+		int heightValue = _getValue(
+			originalAdaptiveMedia, AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
+
+		int originalHeight = heightValue * 2;
+
+		IntStream widthIntStream = IntStream.range(
+			originalWidth - 1, originalWidth + 2);
+
+		IntStream heightIntStream = IntStream.range(
+			originalHeight - 1, originalHeight + 2);
+
 		for (AdaptiveMedia<AMImageProcessor> adaptiveMedia : adaptiveMedias) {
-			int widthValue = _getValue(
-				originalAdaptiveMedia,
-				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
-
-			int originalWidth = widthValue * 2;
-
-			int heightValue = _getValue(
-				originalAdaptiveMedia,
-				AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
-
-			int originalHeight = heightValue * 2;
-
-			IntStream widthIntStream = IntStream.range(
-				originalWidth - 1, originalWidth + 2);
-
 			boolean widthMatch = widthIntStream.anyMatch(
 				value ->
 					value == _getValue(
 						adaptiveMedia,
 						AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH));
-
-			IntStream heightIntStream = IntStream.range(
-				originalHeight - 1, originalHeight + 2);
 
 			boolean heightMatch = heightIntStream.anyMatch(
 				value ->

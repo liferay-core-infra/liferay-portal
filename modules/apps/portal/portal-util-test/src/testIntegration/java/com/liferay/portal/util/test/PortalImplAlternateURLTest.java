@@ -255,6 +255,27 @@ public class PortalImplAlternateURLTest {
 	}
 
 	@Test
+	public void testAlternateURLWithNullSuffix() throws Exception {
+		_group = GroupTestUtil.addGroup();
+		_group.setFriendlyURL("/guest/p");
+
+		Layout layout = LayoutTestUtil.addTypeContentLayout(_group);
+
+		String canonicalURL = _generateURL(
+			"localhost", StringPool.BLANK, _group.getFriendlyURL(),
+			layout.getFriendlyURL());
+
+		try {
+			_portal.getAlternateURL(
+				canonicalURL, _getThemeDisplay(_group, layout),
+				LocaleUtil.SPAIN, layout);
+		}
+		catch (NullPointerException nullPointerException) {
+			Assert.fail();
+		}
+	}
+
+	@Test
 	public void testAlternativeVirtualHostDefaultPortalLocaleAlternateURL()
 		throws Exception {
 

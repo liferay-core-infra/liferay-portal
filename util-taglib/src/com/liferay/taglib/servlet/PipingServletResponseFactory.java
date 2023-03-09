@@ -42,14 +42,14 @@ public class PipingServletResponseFactory {
 
 		if (ServerDetector.isWebLogic() || ServerDetector.isWebSphere()) {
 
-			// This optimization cannot be applied to WebLogic because WebLogic
-			// relies on the WriterOutputStream bridging logic insde
-			// getOutputStream().
+			// This optimization cannot be applied to WebLogic or WebSphere
+			// because WebLogic and WebSphere both rely on the
+			// WriterOutputStream bridging logic inside getOutputStream().
 
-			// WebLogic's weblogic.servlet.internal.DelegateChunkWriter#
-			// getWriter() always builds its writer on top of
-			// HttpServletResponse#getOutputStream() rather than relying on
-			// the HttpServletResponse#getWriter().
+			// For example, WebLogic's
+			// weblogic.servlet.internal.DelegateChunkWriter#getWriter() always
+			// builds its writer on top of HttpServletResponse#getOutputStream()
+			// rather than relying on the HttpServletResponse#getWriter().
 
 			// In order to avoid the potential heavy
 			// BufferCacheServletResponse#getBufferSize() call, we

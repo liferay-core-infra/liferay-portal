@@ -26,10 +26,7 @@ import com.liferay.object.admin.rest.dto.v1_0.ObjectValidationRule;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectView;
 import com.liferay.object.admin.rest.dto.v1_0.Status;
 import com.liferay.object.admin.rest.dto.v1_0.util.ObjectActionUtil;
-import com.liferay.object.admin.rest.internal.dto.v1_0.converter.ObjectFieldDTOConverter;
-import com.liferay.object.admin.rest.internal.dto.v1_0.converter.ObjectRelationshipDTOConverter;
-import com.liferay.object.admin.rest.internal.dto.v1_0.converter.ObjectValidationRuleDTOConverter;
-import com.liferay.object.admin.rest.internal.dto.v1_0.converter.ObjectViewDTOConverter;
+import com.liferay.object.admin.rest.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.object.admin.rest.internal.dto.v1_0.util.ObjectFieldSettingUtil;
 import com.liferay.object.admin.rest.internal.dto.v1_0.util.ObjectFieldUtil;
 import com.liferay.object.admin.rest.internal.dto.v1_0.util.ObjectLayoutUtil;
@@ -79,6 +76,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -938,8 +936,9 @@ public class ObjectDefinitionResourceImpl
 	@Reference
 	private ObjectDefinitionService _objectDefinitionService;
 
-	@Reference
-	private ObjectFieldDTOConverter _objectFieldDTOConverter;
+	@Reference(target = DTOConverterConstants.OBJECT_FIELD_DTO_CONVERTER)
+	private DTOConverter<com.liferay.object.model.ObjectField, ObjectField>
+		_objectFieldDTOConverter;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;
@@ -956,8 +955,10 @@ public class ObjectDefinitionResourceImpl
 	@Reference
 	private ObjectLayoutResource.Factory _objectLayoutResourceFactory;
 
-	@Reference
-	private ObjectRelationshipDTOConverter _objectRelationshipDTOConverter;
+	@Reference(target = DTOConverterConstants.OBJECT_RELATIONSHIP_DTO_CONVERTER)
+	private DTOConverter
+		<com.liferay.object.model.ObjectRelationship, ObjectRelationship>
+			_objectRelationshipDTOConverter;
 
 	@Reference
 	private ObjectRelationshipLocalService _objectRelationshipLocalService;
@@ -966,8 +967,12 @@ public class ObjectDefinitionResourceImpl
 	private ObjectRelationshipResource.Factory
 		_objectRelationshipResourceFactory;
 
-	@Reference
-	private ObjectValidationRuleDTOConverter _objectValidationRuleDTOConverter;
+	@Reference(
+		target = DTOConverterConstants.OBJECT_VALIDATION_RULE_DTO_CONVERTER
+	)
+	private DTOConverter
+		<com.liferay.object.model.ObjectValidationRule, ObjectValidationRule>
+			_objectValidationRuleDTOConverter;
 
 	@Reference
 	private ObjectValidationRuleLocalService _objectValidationRuleLocalService;
@@ -976,8 +981,9 @@ public class ObjectDefinitionResourceImpl
 	private ObjectValidationRuleResource.Factory
 		_objectValidationRuleResourceFactory;
 
-	@Reference
-	private ObjectViewDTOConverter _objectViewDTOConverter;
+	@Reference(target = DTOConverterConstants.OBJECT_VIEW_DTO_CONVERTER)
+	private DTOConverter<com.liferay.object.model.ObjectView, ObjectView>
+		_objectViewDTOConverter;
 
 	@Reference
 	private ObjectViewLocalService _objectViewLocalService;

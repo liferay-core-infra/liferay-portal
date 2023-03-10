@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.internal.processor;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.petra.string.StringPool;
@@ -130,18 +131,14 @@ public class PortletRegistryImpl implements PortletRegistry {
 	@Override
 	public void registerAlias(Map<String, Object> properties) {
 		_aliasPortletNames.put(
-			MapUtil.getString(
-				properties,
-				"com.liferay.fragment.entry.processor.portlet.alias"),
+			MapUtil.getString(properties, FragmentPortletKeys.ALIAS),
 			MapUtil.getString(properties, "javax.portlet.name"));
 	}
 
 	@Override
 	public void unregisterAlias(Map<String, Object> properties) {
 		_aliasPortletNames.remove(
-			MapUtil.getString(
-				properties,
-				"com.liferay.fragment.entry.processor.portlet.alias"),
+			MapUtil.getString(properties, FragmentPortletKeys.ALIAS),
 			MapUtil.getString(properties, "javax.portlet.name"));
 	}
 

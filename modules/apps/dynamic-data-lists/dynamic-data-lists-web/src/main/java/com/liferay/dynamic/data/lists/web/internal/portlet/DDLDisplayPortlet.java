@@ -29,6 +29,7 @@ import com.liferay.dynamic.data.mapping.security.permission.DDMPermissionSupport
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.dynamic.data.mapping.util.DDMDisplayRegistry;
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.PortletPreferencesException;
@@ -65,7 +66,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=dynamic-data-list",
+		FragmentPortletKeys.ALIAS + "=dynamic-data-list",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-dynamic-data-lists-display",
 		"com.liferay.portlet.display-category=category.collaboration",

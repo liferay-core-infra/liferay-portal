@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.collection.contributor.navigation.bars;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.contributor.BaseFragmentCollectionContributor;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
 
@@ -44,9 +45,7 @@ public class NavigationBarsFragmentCollectionContributor
 		return _servletContext;
 	}
 
-	@Reference(
-		target = "(com.liferay.fragment.entry.processor.portlet.alias=nav)"
-	)
+	@Reference(target = "(" + FragmentPortletKeys.ALIAS + "=nav)")
 	private Portlet _portlet;
 
 	@Reference(

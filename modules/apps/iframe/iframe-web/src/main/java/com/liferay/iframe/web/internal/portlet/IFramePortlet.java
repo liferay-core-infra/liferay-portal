@@ -14,6 +14,7 @@
 
 package com.liferay.iframe.web.internal.portlet;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.iframe.web.internal.configuration.IFramePortletInstanceConfiguration;
 import com.liferay.iframe.web.internal.constants.IFramePortletKeys;
@@ -50,7 +51,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=iframe",
+		FragmentPortletKeys.ALIAS + "=iframe",
 		"com.liferay.portlet.css-class-wrapper=portlet-iframe",
 		"com.liferay.portlet.display-category=category.sample",
 		"com.liferay.portlet.instanceable=true",

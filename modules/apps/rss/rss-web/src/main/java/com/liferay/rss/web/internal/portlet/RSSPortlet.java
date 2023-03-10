@@ -14,6 +14,7 @@
 
 package com.liferay.rss.web.internal.portlet;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.model.Release;
@@ -42,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.rss.web.internal.configuration.RSSWebCacheConfiguration",
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=rss",
+		FragmentPortletKeys.ALIAS + "=rss",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.application-type=full-page-application",
 		"com.liferay.portlet.application-type=widget",

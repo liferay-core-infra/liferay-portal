@@ -15,6 +15,7 @@
 package com.liferay.document.library.web.internal.portlet;
 
 import com.liferay.document.library.constants.DLPortletKeys;
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.kernel.model.Release;
@@ -39,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=media-gallery",
+		FragmentPortletKeys.ALIAS + "=media-gallery",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.application-type=full-page-application",
 		"com.liferay.portlet.application-type=widget",

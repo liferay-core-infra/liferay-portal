@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.entry.processor.editable.test;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.entry.processor.editable.test.constants.FragmentEntryLinkPortletKeys;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -32,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=fragment-entry-link-noninstanceable",
+		FragmentPortletKeys.ALIAS + "=fragment-entry-link-noninstanceable",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.instanceable=false",
 		"com.liferay.portlet.preferences-owned-by-group=true",

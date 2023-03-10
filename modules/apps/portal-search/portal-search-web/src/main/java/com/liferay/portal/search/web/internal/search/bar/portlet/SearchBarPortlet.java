@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.search.bar.portlet;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -49,7 +50,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=search-bar",
+		FragmentPortletKeys.ALIAS + "=search-bar",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-search-bar",
 		"com.liferay.portlet.display-category=category.search",

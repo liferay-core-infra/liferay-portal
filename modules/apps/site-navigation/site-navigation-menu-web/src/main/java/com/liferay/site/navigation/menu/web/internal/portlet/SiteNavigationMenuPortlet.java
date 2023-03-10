@@ -14,6 +14,7 @@
 
 package com.liferay.site.navigation.menu.web.internal.portlet;
 
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -40,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=nav",
+		FragmentPortletKeys.ALIAS + "=nav",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-navigation",
 		"com.liferay.portlet.display-category=category.cms",

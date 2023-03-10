@@ -15,6 +15,7 @@
 package com.liferay.asset.publisher.web.internal.portlet;
 
 import com.liferay.asset.publisher.constants.AssetPublisherPortletKeys;
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.processor.PortletRegistry;
 
 import java.util.Map;
@@ -31,7 +32,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=related-assets",
+		FragmentPortletKeys.ALIAS + "=related-assets",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.ajaxable=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-asset-publisher",

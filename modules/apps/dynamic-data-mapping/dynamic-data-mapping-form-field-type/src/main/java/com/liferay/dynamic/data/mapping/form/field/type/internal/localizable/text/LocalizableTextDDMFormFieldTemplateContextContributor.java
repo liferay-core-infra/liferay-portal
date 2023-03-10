@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -64,7 +65,11 @@ public class LocalizableTextDDMFormFieldTemplateContextContributor
 		Map<String, Object> parameters = new HashMap<>();
 
 		if (ddmFormFieldRenderingContext.isReturnFullContext()) {
-			parameters.put("availableLocales", _getAvailableLocalesJSONArray());
+			parameters.put(
+				"availableLocales",
+				JSONUtil.toJSONArray(
+					_language.getAvailableLocales(), this::_getLocaleJSONObject,
+					_log));
 
 			DDMForm ddmForm = ddmFormField.getDDMForm();
 
@@ -111,16 +116,6 @@ public class LocalizableTextDDMFormFieldTemplateContextContributor
 
 	@Reference
 	protected Portal portal;
-
-	private JSONArray _getAvailableLocalesJSONArray() {
-		JSONArray jsonArray = jsonFactory.createJSONArray();
-
-		for (Locale locale : _language.getAvailableLocales()) {
-			jsonArray.put(_getLocaleJSONObject(locale));
-		}
-
-		return jsonArray;
-	}
 
 	private String _getDisplayStyle(DDMFormField ddmFormField) {
 		return GetterUtil.getString(

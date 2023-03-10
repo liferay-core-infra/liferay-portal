@@ -14,13 +14,18 @@
 
 package com.liferay.site.navigation.site.map.web.internal.portlet;
 
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.site.navigation.site.map.web.internal.constants.SiteNavigationSiteMapPortletKeys;
 
+import java.util.Map;
+
 import javax.portlet.Portlet;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -52,6 +57,19 @@ import org.osgi.service.component.annotations.Reference;
 	service = Portlet.class
 )
 public class SiteNavigationSiteMapPortlet extends MVCPortlet {
+
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_portletRegistry.registerAlias(properties);
+	}
+
+	@Deactivate
+	protected void deactivate(Map<String, Object> properties) {
+		_portletRegistry.unregisterAlias(properties);
+	}
+
+	@Reference
+	private PortletRegistry _portletRegistry;
 
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.site.navigation.site.map.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"

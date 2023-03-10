@@ -39,6 +39,7 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.storage.Field;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMUtil;
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -91,6 +92,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
@@ -370,6 +372,13 @@ public class AssetPublisherPortlet extends MVCPortlet {
 	protected void activate(Map<String, Object> properties) {
 		assetPublisherWebConfiguration = ConfigurableUtil.createConfigurable(
 			AssetPublisherWebConfiguration.class, properties);
+
+		portletRegistry.registerAlias(properties);
+	}
+
+	@Deactivate
+	protected void deactivate(Map<String, Object> properties) {
+		portletRegistry.unregisterAlias(properties);
 	}
 
 	@Override
@@ -484,6 +493,9 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 	@Reference
 	protected Portal portal;
+
+	@Reference
+	protected PortletRegistry portletRegistry;
 
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.asset.publisher.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"

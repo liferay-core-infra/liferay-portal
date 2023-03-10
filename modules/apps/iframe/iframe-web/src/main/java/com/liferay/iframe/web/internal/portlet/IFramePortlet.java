@@ -14,6 +14,7 @@
 
 package com.liferay.iframe.web.internal.portlet;
 
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.iframe.web.internal.configuration.IFramePortletInstanceConfiguration;
 import com.liferay.iframe.web.internal.constants.IFramePortletKeys;
 import com.liferay.iframe.web.internal.constants.IFrameWebKeys;
@@ -30,12 +31,16 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 
+import java.util.Map;
+
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -92,6 +97,16 @@ public class IFramePortlet extends MVCPortlet {
 		}
 	}
 
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_portletRegistry.registerAlias(properties);
+	}
+
+	@Deactivate
+	protected void deactivate(Map<String, Object> properties) {
+		_portletRegistry.unregisterAlias(properties);
+	}
+
 	private String _transformSrc(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortalException {
@@ -123,6 +138,9 @@ public class IFramePortlet extends MVCPortlet {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(IFramePortlet.class);
+
+	@Reference
+	private PortletRegistry _portletRegistry;
 
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.iframe.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"

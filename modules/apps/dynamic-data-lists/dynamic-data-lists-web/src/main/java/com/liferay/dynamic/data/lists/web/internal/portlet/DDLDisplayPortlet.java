@@ -29,6 +29,7 @@ import com.liferay.dynamic.data.mapping.security.permission.DDMPermissionSupport
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.dynamic.data.mapping.util.DDMDisplayRegistry;
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.PortletPreferencesException;
 import com.liferay.portal.kernel.log.Log;
@@ -44,12 +45,16 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
 
+import java.util.Map;
+
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
@@ -124,6 +129,16 @@ public class DDLDisplayPortlet extends MVCPortlet {
 		}
 
 		super.render(renderRequest, renderResponse);
+	}
+
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_portletRegistry.registerAlias(properties);
+	}
+
+	@Deactivate
+	protected void deactivate(Map<String, Object> properties) {
+		_portletRegistry.unregisterAlias(properties);
 	}
 
 	@Override
@@ -229,6 +244,9 @@ public class DDLDisplayPortlet extends MVCPortlet {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortletRegistry _portletRegistry;
 
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.dynamic.data.lists.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"

@@ -14,12 +14,18 @@
 
 package com.liferay.layout.content.page.editor.web.internal.portlet;
 
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.layout.content.page.editor.web.internal.portlet.constants.LayoutContentPageEditorWebPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
+import java.util.Map;
+
 import javax.portlet.Portlet;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Lourdes Fernández Besada
@@ -38,4 +44,18 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class LayoutContentPageEditorWebTestPortlet extends MVCPortlet {
+
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_portletRegistry.registerAlias(properties);
+	}
+
+	@Deactivate
+	protected void deactivate(Map<String, Object> properties) {
+		_portletRegistry.unregisterAlias(properties);
+	}
+
+	@Reference
+	private PortletRegistry _portletRegistry;
+
 }

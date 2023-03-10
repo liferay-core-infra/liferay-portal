@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.search.bar.portlet;
 
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
@@ -31,12 +32,16 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRe
 
 import java.io.IOException;
 
+import java.util.Map;
+
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -106,6 +111,16 @@ public class SearchBarPortlet extends MVCPortlet {
 		super.render(renderRequest, renderResponse);
 	}
 
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_portletRegistry.registerAlias(properties);
+	}
+
+	@Deactivate
+	protected void deactivate(Map<String, Object> properties) {
+		_portletRegistry.unregisterAlias(properties);
+	}
+
 	@Reference
 	protected LayoutLocalService layoutLocalService;
 
@@ -126,5 +141,8 @@ public class SearchBarPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchBarPortlet.class);
+
+	@Reference
+	private PortletRegistry _portletRegistry;
 
 }

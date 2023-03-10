@@ -113,11 +113,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Eduardo García
  */
-@Component(
-	service = {
-		JournalServiceUpgradeStepRegistrator.class, UpgradeStepRegistrator.class
-	}
-)
+@Component(service = UpgradeStepRegistrator.class)
 public class JournalServiceUpgradeStepRegistrator
 	implements UpgradeStepRegistrator {
 

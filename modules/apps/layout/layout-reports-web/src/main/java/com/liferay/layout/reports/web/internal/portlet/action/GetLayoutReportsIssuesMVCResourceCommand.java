@@ -19,7 +19,6 @@ import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.reports.web.internal.configuration.provider.LayoutReportsGooglePageSpeedConfigurationProvider;
 import com.liferay.layout.reports.web.internal.constants.LayoutReportsPortletKeys;
 import com.liferay.layout.reports.web.internal.data.provider.LayoutReportsDataProvider;
-import com.liferay.layout.reports.web.internal.model.LayoutReportsIssue;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
@@ -50,10 +49,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.text.Format;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
@@ -157,7 +154,7 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 	private JSONObject _fetchLayoutReportIssuesJSONObject(
 			Group group, ResourceBundle resourceBundle,
 			ThemeDisplay themeDisplay, String url)
-		throws PortalException {
+		throws Exception, PortalException {
 
 		LayoutReportsDataProvider layoutReportsDataProvider =
 			new LayoutReportsDataProvider(
@@ -166,22 +163,14 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 				_layoutReportsGooglePageSpeedConfigurationProvider.getStrategy(
 					group));
 
-		List<LayoutReportsIssue> layoutReportsIssues =
-			layoutReportsDataProvider.getLayoutReportsIssues(
-				resourceBundle.getLocale(), url);
-
-		Stream<LayoutReportsIssue> stream = layoutReportsIssues.stream();
-
 		return JSONUtil.put(
 			"issues",
-			JSONUtil.putAll(
-				stream.map(
-					layoutReportsIssue -> layoutReportsIssue.toJSONObject(
-						_getConfigureLayoutSeoURL(themeDisplay),
-						_getConfigurePagesSeoURL(themeDisplay), resourceBundle)
-				).toArray(
-					size -> new JSONObject[size]
-				))
+			JSONUtil.toJSONArray(
+				layoutReportsDataProvider.getLayoutReportsIssues(
+					resourceBundle.getLocale(), url),
+				layoutReportsIssue -> layoutReportsIssue.toJSONObject(
+					_getConfigureLayoutSeoURL(themeDisplay),
+					_getConfigurePagesSeoURL(themeDisplay), resourceBundle))
 		).put(
 			"timestamp", System.currentTimeMillis()
 		);
@@ -275,7 +264,7 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 	private JSONObject _getLayoutReportIssuesResponseJSONObject(
 			boolean refreshCache, Group group, ResourceBundle resourceBundle,
 			ThemeDisplay themeDisplay, String url)
-		throws PortalException {
+		throws Exception, PortalException {
 
 		String cacheKey = themeDisplay.getLocale() + "-" + url;
 

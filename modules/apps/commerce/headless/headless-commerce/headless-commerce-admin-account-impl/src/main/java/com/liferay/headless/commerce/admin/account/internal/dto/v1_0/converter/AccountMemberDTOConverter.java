@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "dto.class.name=com.liferay.commerce.account.model.CommerceAccountUserRel",
-	service = {AccountMemberDTOConverter.class, DTOConverter.class}
+	service = DTOConverter.class
 )
 public class AccountMemberDTOConverter
 	implements DTOConverter<CommerceAccountUserRel, AccountMember> {
@@ -91,8 +91,10 @@ public class AccountMemberDTOConverter
 		return stream.toArray(AccountRole[]::new);
 	}
 
-	@Reference
-	private AccountRoleDTOConverter _accountRoleDTOConverter;
+	@Reference(
+		target = "(component.name=com.liferay.headless.commerce.admin.account.internal.dto.v1_0.converter.AccountRoleDTOConverter)"
+	)
+	private DTOConverter<UserGroupRole, AccountRole> _accountRoleDTOConverter;
 
 	@Reference
 	private CommerceAccountUserRelService _commerceAccountUserRelService;

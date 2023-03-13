@@ -18,8 +18,12 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFa
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.ClassUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.kaleo.definition.ActionType;
+import com.liferay.portal.workflow.kaleo.definition.ScriptLanguage;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.action.ActionExecutorManager;
@@ -80,6 +84,15 @@ public class ActionExecutorManagerImpl implements ActionExecutorManager {
 					for (String actionExecutorKey :
 							actionExecutor.getActionExecutorKeys()) {
 
+						if (Objects.equals(
+								ScriptLanguage.JAVA.getValue(),
+								actionExecutorKey)) {
+
+							emitter.emit(
+								actionExecutorKey + StringPool.COLON +
+									ClassUtil.getClassName(actionExecutor));
+						}
+
 						emitter.emit(actionExecutorKey);
 					}
 				}));
@@ -97,7 +110,14 @@ public class ActionExecutorManagerImpl implements ActionExecutorManager {
 			return actionType.name();
 		}
 
-		return kaleoAction.getScriptLanguage();
+		String scriptLanguage = kaleoAction.getScriptLanguage();
+
+		if (Objects.equals(ScriptLanguage.JAVA.getValue(), scriptLanguage)) {
+			return scriptLanguage + StringPool.COLON +
+				StringUtil.trim(kaleoAction.getScript());
+		}
+
+		return scriptLanguage;
 	}
 
 	private ServiceTrackerMap<String, ActionExecutor> _serviceTrackerMap;

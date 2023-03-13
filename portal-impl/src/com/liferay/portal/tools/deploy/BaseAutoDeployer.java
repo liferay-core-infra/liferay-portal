@@ -891,6 +891,11 @@ public class BaseAutoDeployer implements AutoDeployer {
 		).put(
 			"plugin_name", _wrapCDATA(pluginPackage.getName())
 		).put(
+			"plugin_name_type",
+			_wrapCDATA(
+				pluginPackage.getName() + StringPool.BLANK +
+					TextFormatter.format(pluginType, TextFormatter.J))
+		).put(
 			"plugin_type", pluginType
 		).put(
 			"plugin_type_name",

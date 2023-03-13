@@ -99,6 +99,7 @@ import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
+import com.liferay.portal.servlet.filters.threadlocal.ThreadLocalFilterThreadLocal;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -1676,6 +1677,30 @@ public class ObjectEntryLocalServiceTest {
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 		Assert.assertEquals(valuesList.toString(), 0, valuesList.size());
+	}
+
+	@Test
+	public void testInsertSameObjectEntryTwoSameRecordsUsingLocalCache()
+		throws Throwable {
+
+		ThreadLocalFilterThreadLocal.setFilterInvoked();
+
+		HashMap<String, Serializable> values =
+			HashMapBuilder.<String, Serializable>put(
+				"emailAddressRequired", "peter@liferay.com"
+			).put(
+				"firstName", "Peter"
+			).put(
+				"listTypeEntryKeyRequired", "listTypeEntryKey1"
+			).put(
+				"state", "listTypeEntryKey3"
+			).build();
+
+		_objectEntryLocalService.insertIntoOrUpdateExtensionTable(
+			_objectDefinition.getObjectDefinitionId(), 0, values);
+
+		_objectEntryLocalService.insertIntoOrUpdateExtensionTable(
+			_objectDefinition.getObjectDefinitionId(), 0, values);
 	}
 
 	@Test

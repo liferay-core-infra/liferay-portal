@@ -87,8 +87,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -630,45 +628,40 @@ public class DataLayoutTaglibUtil {
 	private void _setFieldIndexTypeNone(JSONObject jsonObject) {
 		JSONArray pageJSONArray = jsonObject.getJSONArray("pages");
 
-		Stream<JSONObject> stream = StreamSupport.stream(
-			pageJSONArray.spliterator(), false);
+		for (int i = 0; i < pageJSONArray.length(); i++) {
+			JSONObject pageJSONObject = (JSONObject)pageJSONArray.get(i);
 
-		stream.flatMap(
-			pageJSONObject -> {
-				JSONArray rowJSONArray = jsonObject.getJSONArray("rows");
+			JSONArray rowJSONArray = pageJSONObject.getJSONArray("rows");
 
-				Stream<JSONObject> rowsStream = StreamSupport.stream(
-					rowJSONArray.spliterator(), false);
+			for (int j = 0; j < rowJSONArray.length(); j++) {
+				JSONObject rowJSONObject = (JSONObject)rowJSONArray.get(j);
 
-				return rowsStream.flatMap(
-					rowJSONObject -> {
-						JSONArray columnJSONArray = jsonObject.getJSONArray(
-							"columns");
+				JSONArray columnJSONArray = rowJSONObject.getJSONArray(
+					"columns");
 
-						Stream<JSONObject> columnsStream = StreamSupport.stream(
-							columnJSONArray.spliterator(), false);
+				for (int g = 0; g < columnJSONArray.length(); g++) {
+					JSONObject columnJSONObject =
+						(JSONObject)columnJSONArray.get(g);
 
-						return columnsStream.flatMap(
-							columnJSONObject -> {
-								JSONArray fieldJSONArray =
-									jsonObject.getJSONArray("fields");
+					JSONArray fieldJSONArray = columnJSONObject.getJSONArray(
+						"fields");
 
-								Stream<JSONObject> fieldsStream =
-									StreamSupport.stream(
-										fieldJSONArray.spliterator(), false);
+					for (int k = 0; k < fieldJSONArray.length(); k++) {
+						JSONObject fieldJSONObject =
+							(JSONObject)fieldJSONArray.get(k);
 
-								return fieldsStream.filter(
-									fieldJSONObject -> Objects.equals(
-										fieldJSONObject.getString("fieldName"),
-										"indexType")
-								).findFirst(
-								).ifPresent(
-									fieldJSONObject -> fieldJSONObject.put(
-										"value", "none")
-								);
-							});
-					});
-			});
+						if (Objects.equals(
+								fieldJSONObject.getString("fieldName"),
+								"indexType")) {
+
+							fieldJSONObject.put("value", "none");
+
+							return;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

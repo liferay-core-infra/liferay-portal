@@ -70,7 +70,6 @@ import com.liferay.staging.StagingGroupHelperUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import javax.portlet.PortletURL;
 
@@ -795,28 +794,32 @@ public class DLAdminManagementToolbarDisplayContext
 			AssetVocabularyServiceUtil.getGroupVocabularies(
 				PortalUtil.getCurrentAndAncestorSiteGroupIds(scopeGroupId));
 
-		Stream<AssetVocabulary> stream = assetVocabularies.stream();
+		if (assetVocabularies.isEmpty()) {
+			_hasValidAssetVocabularies = false;
 
-		_hasValidAssetVocabularies = stream.anyMatch(
-			assetVocabulary -> {
-				if (!assetVocabulary.isAssociatedToClassNameId(
-						ClassNameLocalServiceUtil.getClassNameId(
-							DLFileEntry.class.getName()))) {
+			return _hasValidAssetVocabularies;
+		}
 
-					return false;
-				}
+		for (AssetVocabulary assetVocabulary : assetVocabularies) {
+			if (!assetVocabulary.isAssociatedToClassNameId(
+					ClassNameLocalServiceUtil.getClassNameId(
+						DLFileEntry.class.getName()))) {
 
-				int count =
-					AssetCategoryServiceUtil.getVocabularyCategoriesCount(
-						assetVocabulary.getGroupId(),
-						assetVocabulary.getVocabularyId());
+				continue;
+			}
 
-				if (count > 0) {
-					return true;
-				}
+			int count = AssetCategoryServiceUtil.getVocabularyCategoriesCount(
+				assetVocabulary.getGroupId(),
+				assetVocabulary.getVocabularyId());
 
-				return false;
-			});
+			if (count > 0) {
+				_hasValidAssetVocabularies = true;
+
+				return _hasValidAssetVocabularies;
+			}
+		}
+
+		_hasValidAssetVocabularies = false;
 
 		return _hasValidAssetVocabularies;
 	}

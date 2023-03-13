@@ -85,7 +85,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -878,13 +877,12 @@ public class DataLayoutTaglibUtil {
 			if (Objects.equals(
 					ddmFormFieldTypeSetting.getDataType(), "ddm-options")) {
 
+				if (propertyValue == null) {
+					propertyValue = new DDMFormFieldOptions();
+				}
+
 				return _createDDMFormFieldValue(
-					availableLocales,
-					Optional.ofNullable(
-						(DDMFormFieldOptions)propertyValue
-					).orElse(
-						new DDMFormFieldOptions()
-					));
+					availableLocales, (DDMFormFieldOptions)propertyValue);
 			}
 
 			if (Objects.equals(

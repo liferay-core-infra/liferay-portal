@@ -255,6 +255,13 @@ public class PortalImplAlternateURLTest {
 	}
 
 	@Test
+	public void testAlternateURLWithRuntimeExceptionURL() throws Exception {
+		_testAlternateURLWithRuntimeExceptionURL("/guest/p");
+
+		_testAlternateURLWithRuntimeExceptionURL("/guest/b");
+	}
+
+	@Test
 	public void testAlternativeVirtualHostDefaultPortalLocaleAlternateURL()
 		throws Exception {
 
@@ -735,6 +742,31 @@ public class PortalImplAlternateURLTest {
 		finally {
 			preferences.reset(PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
 		}
+	}
+
+	private void _testAlternateURLWithRuntimeExceptionURL(
+			String runtimeExceptionURL)
+		throws Exception {
+
+		_group = GroupTestUtil.addGroup();
+
+		_group.setFriendlyURL(runtimeExceptionURL);
+
+		Layout layout = LayoutTestUtil.addTypeContentLayout(_group);
+
+		String canonicalURL = _generateURL(
+			"localhost", StringPool.BLANK, _group.getFriendlyURL(),
+			layout.getFriendlyURL());
+
+		String expectedAlternateURL = _generateURL(
+			"localhost", "/es", _group.getFriendlyURL(),
+			layout.getFriendlyURL());
+
+		Assert.assertEquals(
+			expectedAlternateURL,
+			_portal.getAlternateURL(
+				canonicalURL, _getThemeDisplay(_group, layout),
+				LocaleUtil.SPAIN, layout));
 	}
 
 	private void _testAlternateURLWithVirtualHosts(

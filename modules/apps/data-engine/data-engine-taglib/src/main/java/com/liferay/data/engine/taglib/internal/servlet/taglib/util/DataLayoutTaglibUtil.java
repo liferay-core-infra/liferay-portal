@@ -79,7 +79,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -1049,26 +1048,17 @@ public class DataLayoutTaglibUtil {
 			List<Map<String, Object>> nestedFields =
 				(List<Map<String, Object>>)field.get("nestedFields");
 
-			if (nestedFields != null) {
-				List<Map<String, Object>> nestedFieldsList = new ArrayList<>();
-
-				for (Map<String, Object> nestedField : nestedFields) {
-					nestedFieldsList.addAll(_getNestedFieldsList(nestedField));
-				}
-
-				return nestedFieldsList;
+			if (nestedFields == null) {
+				return new ArrayList<>();
 			}
 
-			return new ArrayList<>();
-		}
+			List<Map<String, Object>> nestedFieldsList = new ArrayList<>();
 
-		private List<Map<String, Object>> _getNestedFieldsList(
-			Map<String, Object> field) {
+			for (Map<String, Object> nestedField : nestedFields) {
+				Collections.addAll(nestedFieldsList, nestedField);
 
-			List<Map<String, Object>> nestedFieldsList = new ArrayList<>(
-				Arrays.asList(field));
-
-			nestedFieldsList.addAll(_getNestedFields(field));
+				nestedFieldsList.addAll(_getNestedFields(nestedField));
+			}
 
 			return nestedFieldsList;
 		}

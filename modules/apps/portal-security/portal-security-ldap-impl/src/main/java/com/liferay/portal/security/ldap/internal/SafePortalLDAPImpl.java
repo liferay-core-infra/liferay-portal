@@ -38,6 +38,7 @@ import com.liferay.portal.security.ldap.SafeLdapName;
 import com.liferay.portal.security.ldap.SafePortalLDAP;
 import com.liferay.portal.security.ldap.UserConverterKeys;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration;
 import com.liferay.portal.security.ldap.internal.validator.SafeLdapContextImpl;
@@ -961,6 +962,12 @@ public class SafePortalLDAPImpl implements SafePortalLDAP {
 	protected void activate() {
 		_companySecurityAuthType = GetterUtil.getString(
 			_props.get(PropsKeys.COMPANY_SECURITY_AUTH_TYPE));
+		_ldapServerConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+		_systemLDAPConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				SystemLDAPConfiguration.class);
 	}
 
 	private Attributes _getAttributes(
@@ -1073,15 +1080,15 @@ public class SafePortalLDAPImpl implements SafePortalLDAP {
 
 	private String _companySecurityAuthType;
 
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
+
 	@Reference(
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	private volatile LDAPFilterValidator _ldapFilterValidator;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
 
@@ -1091,9 +1098,6 @@ public class SafePortalLDAPImpl implements SafePortalLDAP {
 	@Reference
 	private Props _props;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration)"
-	)
 	private ConfigurationProvider<SystemLDAPConfiguration>
 		_systemLDAPConfigurationProvider;
 

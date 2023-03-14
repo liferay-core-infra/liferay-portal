@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.exportimport.LDAPUserImporter;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration;
 import com.liferay.portal.security.ldap.internal.constants.LDAPDestinationNames;
@@ -95,8 +96,12 @@ public class UserImportSchedulerJobConfiguration
 	}
 
 	private void _importUsers(long companyId, long time) throws Exception {
+		ConfigurationProvider<LDAPImportConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPImportConfiguration.class);
+
 		LDAPImportConfiguration ldapImportConfiguration =
-			_ldapImportConfigurationProvider.getConfiguration(companyId);
+			configurationProvider.getConfiguration(companyId);
 
 		if (!ldapImportConfiguration.importEnabled()) {
 			if (_log.isDebugEnabled()) {
@@ -139,13 +144,10 @@ public class UserImportSchedulerJobConfiguration
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	private LDAPImportConfiguration _ldapImportConfiguration;
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)"
-	)
-	private ConfigurationProvider<LDAPImportConfiguration>
-		_ldapImportConfigurationProvider;
+	private LDAPImportConfiguration _ldapImportConfiguration;
 
 	@Reference(
 		policy = ReferencePolicy.DYNAMIC,

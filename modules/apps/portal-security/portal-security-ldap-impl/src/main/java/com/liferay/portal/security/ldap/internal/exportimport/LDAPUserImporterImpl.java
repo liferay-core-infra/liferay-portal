@@ -73,6 +73,7 @@ import com.liferay.portal.security.ldap.SafeLdapNameFactory;
 import com.liferay.portal.security.ldap.SafePortalLDAP;
 import com.liferay.portal.security.ldap.UserConverterKeys;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.exportimport.LDAPGroup;
 import com.liferay.portal.security.ldap.exportimport.LDAPToPortalConverter;
@@ -629,6 +630,12 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			_props.get(PropsKeys.COMPANY_SECURITY_AUTH_TYPE));
 		_portalCache = (PortalCache<String, Long>)_singleVMPool.getPortalCache(
 			UserImporter.class.getName());
+		_ldapImportConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPImportConfiguration.class);
+		_ldapServerConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
 	}
 
 	protected User addUser(long companyId, LDAPUser ldapUser, String password)
@@ -1976,6 +1983,9 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	private String _companySecurityAuthType;
 
 	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
+
+	@Reference
 	private ExpandoValueLocalService _expandoValueLocalService;
 
 	@Reference
@@ -1986,15 +1996,8 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	@Reference
 	private LDAPFilterValidator _ldapFilterValidator;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)"
-	)
 	private ConfigurationProvider<LDAPImportConfiguration>
 		_ldapImportConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
 

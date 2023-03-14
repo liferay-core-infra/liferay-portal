@@ -45,6 +45,7 @@ import com.liferay.portal.security.ldap.SafePortalLDAP;
 import com.liferay.portal.security.ldap.UserConverterKeys;
 import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.exportimport.Modifications;
 import com.liferay.portal.security.ldap.exportimport.PortalToLDAPConverter;
@@ -180,8 +181,12 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 			Properties groupMappings, Properties userMappings)
 		throws Exception {
 
+		ConfigurationProvider<LDAPServerConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+
 		LDAPServerConfiguration ldapServerConfiguration =
-			_ldapServerConfigurationProvider.getConfiguration(
+			configurationProvider.getConfiguration(
 				userGroup.getCompanyId(), ldapServerId);
 
 		if (ldapServerConfiguration.ldapServerId() != ldapServerId) {
@@ -266,8 +271,12 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 	public Attributes getLDAPUserAttributes(
 		long ldapServerId, User user, Properties userMappings) {
 
+		ConfigurationProvider<LDAPServerConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+
 		LDAPServerConfiguration ldapServerConfiguration =
-			_ldapServerConfigurationProvider.getConfiguration(
+			configurationProvider.getConfiguration(
 				user.getCompanyId(), ldapServerId);
 
 		if (ldapServerConfiguration.ldapServerId() != ldapServerId) {
@@ -555,9 +564,12 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 			return password;
 		}
 
+		ConfigurationProvider<LDAPAuthConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPAuthConfiguration.class);
+
 		LDAPAuthConfiguration ldapAuthConfiguration =
-			_ldapAuthConfigurationProvider.getConfiguration(
-				user.getCompanyId());
+			configurationProvider.getConfiguration(user.getCompanyId());
 
 		String algorithm = ldapAuthConfiguration.passwordEncryptionAlgorithm();
 
@@ -709,19 +721,10 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 	private BeanProperties _beanProperties;
 
 	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
+
+	@Reference
 	private ImageLocalService _imageLocalService;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration)"
-	)
-	private ConfigurationProvider<LDAPAuthConfiguration>
-		_ldapAuthConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
-	private ConfigurationProvider<LDAPServerConfiguration>
-		_ldapServerConfigurationProvider;
 
 	@Reference
 	private LDAPSettings _ldapSettings;

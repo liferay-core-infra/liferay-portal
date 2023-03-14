@@ -74,10 +74,6 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 	}
 
 	@Override
-	public void synchronizeIndexes() {
-	}
-
-	@Override
 	public void synchronizeIndexRegistrar(IndexRegistrar indexRegistrar) {
 		indexRegistrar.register(
 			(indexName, indexSettingsDefinitionConsumer) -> createIndex(

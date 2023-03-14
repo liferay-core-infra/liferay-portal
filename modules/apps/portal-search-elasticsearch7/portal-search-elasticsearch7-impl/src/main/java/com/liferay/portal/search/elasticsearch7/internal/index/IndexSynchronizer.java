@@ -24,8 +24,6 @@ public interface IndexSynchronizer {
 	public void synchronizeIndexDefinition(
 		IndexDefinitionData indexDefinitionData);
 
-	public void synchronizeIndexes();
-
 	public void synchronizeIndexRegistrar(IndexRegistrar indexRegistrar);
 
 }

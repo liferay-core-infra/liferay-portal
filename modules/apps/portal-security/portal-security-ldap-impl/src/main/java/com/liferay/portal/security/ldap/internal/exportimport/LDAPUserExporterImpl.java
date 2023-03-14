@@ -33,6 +33,7 @@ import com.liferay.portal.security.ldap.SafeLdapNameFactory;
 import com.liferay.portal.security.ldap.SafePortalLDAP;
 import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.exportimport.Modifications;
 import com.liferay.portal.security.ldap.exportimport.PortalToLDAPConverter;
 import com.liferay.portal.security.ldap.internal.PortalLDAPContext;
@@ -378,8 +379,12 @@ public class LDAPUserExporterImpl implements UserExporter {
 			}
 		}
 		catch (NameNotFoundException nameNotFoundException) {
+			ConfigurationProvider<LDAPAuthConfiguration> configurationProvider =
+				_configurationProviderManager.getConfigurationProvider(
+					LDAPAuthConfiguration.class);
+
 			LDAPAuthConfiguration ldapAuthConfiguration =
-				_ldapAuthConfigurationProvider.getConfiguration(companyId);
+				configurationProvider.getConfiguration(companyId);
 
 			if (ldapAuthConfiguration.required()) {
 				throw nameNotFoundException;
@@ -483,11 +488,8 @@ public class LDAPUserExporterImpl implements UserExporter {
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration)"
-	)
-	private ConfigurationProvider<LDAPAuthConfiguration>
-		_ldapAuthConfigurationProvider;
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
 
 	@Reference
 	private LDAPSettings _ldapSettings;

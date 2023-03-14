@@ -17,7 +17,6 @@ package com.liferay.company.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.adapter.StagedAssetLink;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
-import com.liferay.document.library.kernel.model.DLFileEntryTypeConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.exportimport.kernel.service.StagingLocalService;
@@ -277,7 +276,7 @@ public class CompanyLocalServiceTest {
 
 		DLFileEntryType dlFileEntryType =
 			_dlFileEntryTypeLocalService.getFileEntryType(
-				DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT);
+				company.getGroupId(), "GOOGLE_DOCS");
 
 		ServiceContext serviceContext = getServiceContext(companyId);
 
@@ -292,6 +291,10 @@ public class CompanyLocalServiceTest {
 			serviceContext);
 
 		_companyLocalService.deleteCompany(companyId);
+
+		Assert.assertNull(
+			_dlFileEntryTypeLocalService.fetchDLFileEntryType(
+				dlFileEntryType.getFileEntryTypeId()));
 	}
 
 	@Test

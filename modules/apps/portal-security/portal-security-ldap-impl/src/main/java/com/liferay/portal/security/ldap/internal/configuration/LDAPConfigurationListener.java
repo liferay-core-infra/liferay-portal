@@ -16,28 +16,18 @@ package com.liferay.portal.security.ldap.internal.configuration;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 
 import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.cm.ConfigurationEvent;
 import org.osgi.service.cm.ConfigurationListener;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -59,7 +49,7 @@ public class LDAPConfigurationListener implements ConfigurationListener {
 		}
 
 		ConfigurationProvider<?> configurationProvider =
-			_configurationProviders.get(factoryPid);
+			_configurationProviderManager.getConfigurationProvider(factoryPid);
 
 		if (configurationProvider == null) {
 			return;
@@ -83,64 +73,10 @@ public class LDAPConfigurationListener implements ConfigurationListener {
 		}
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_configurationProviders.clear();
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected synchronized void setConfigurationProvider(
-		ConfigurationProvider<?> configurationProvider,
-		Map<String, Object> properties) {
-
-		String factoryPid = MapUtil.getString(properties, "factoryPid");
-
-		if (Validator.isNull(factoryPid)) {
-			throw new IllegalArgumentException(
-				"No factory PID specified for configuration provider " +
-					configurationProvider);
-		}
-
-		_configurationProviders.put(factoryPid, configurationProvider);
-
-		try {
-			Configuration[] configurations =
-				_configurationAdmin.listConfigurations(
-					"(service.factoryPid=" + factoryPid + "*)");
-
-			if (configurations != null) {
-				for (Configuration configuration : configurations) {
-					configurationProvider.registerConfiguration(configuration);
-				}
-			}
-		}
-		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to register configurations", exception);
-			}
-		}
-	}
-
-	protected synchronized void unsetConfigurationProvider(
-		ConfigurationProvider<?> configurationProvider,
-		Map<String, Object> properties) {
-
-		String factoryPid = MapUtil.getString(properties, "factoryPid");
-
-		_configurationProviders.remove(factoryPid);
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LDAPConfigurationListener.class);
-
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
 
-	private final Map<String, ConfigurationProvider<?>>
-		_configurationProviders = new HashMap<>();
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
 
 }

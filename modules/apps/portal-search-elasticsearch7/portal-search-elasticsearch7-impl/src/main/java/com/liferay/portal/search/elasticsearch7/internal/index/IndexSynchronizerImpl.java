@@ -48,7 +48,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author André de Oliveira
  */
-@Component(service = IndexSynchronizer.class)
+@Component(immediate = true, service = IndexSynchronizer.class)
 public class IndexSynchronizerImpl implements IndexSynchronizer {
 
 	@Reference(

@@ -43,7 +43,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 /**
  * @author André de Oliveira
  */
-@Component(immediate = true, service = IndexSynchronizer.class)
+@Component(service = {})
 public class IndexSynchronizer {
 
 	public void synchronizeIndexDefinition(

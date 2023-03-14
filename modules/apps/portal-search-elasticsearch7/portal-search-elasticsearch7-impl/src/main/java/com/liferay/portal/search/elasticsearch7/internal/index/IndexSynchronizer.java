@@ -18,15 +18,16 @@ import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.CreateIndexRequestExecutor;
+import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.elasticsearch7.spi.index.IndexRegistrar;
 import com.liferay.portal.search.elasticsearch7.spi.index.helper.IndexSettingsDefinition;
 import com.liferay.portal.search.engine.adapter.index.CreateIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.CreateIndexResponse;
 import com.liferay.portal.search.spi.index.IndexDefinition;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.elasticsearch.ElasticsearchStatusException;
@@ -46,10 +47,8 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(service = {})
 public class IndexSynchronizer {
 
-	public void synchronizeIndexDefinition(
-		IndexDefinitionData indexDefinitionData) {
-
-		String index = indexDefinitionData.getIndex();
+	public void synchronizeIndexDefinition(IndexDefinition indexDefinition) {
+		String index = Objects.requireNonNull(indexDefinition.getIndexName());
 
 		createIndex(
 			index,
@@ -58,7 +57,11 @@ public class IndexSynchronizer {
 					_log.debug("Synchronizing index " + index);
 				}
 
-				createIndexRequest.setSource(indexDefinitionData.getSource());
+				createIndexRequest.setSource(
+					ResourceUtil.getResourceAsString(
+						indexDefinition.getClass(),
+						Objects.requireNonNull(
+							indexDefinition.getIndexSettingsResourceName())));
 			});
 	}
 
@@ -105,20 +108,7 @@ public class IndexSynchronizer {
 					IndexDefinition indexDefinition = bundleContext.getService(
 						serviceReference);
 
-					synchronizeIndexDefinition(
-						new IndexDefinitionData(
-							indexDefinition,
-							HashMapBuilder.put(
-								IndexDefinition.PROPERTY_KEY_INDEX_NAME,
-								serviceReference.getProperty(
-									IndexDefinition.PROPERTY_KEY_INDEX_NAME)
-							).put(
-								IndexDefinition.
-									PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME,
-								serviceReference.getProperty(
-									IndexDefinition.
-										PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME)
-							).build()));
+					synchronizeIndexDefinition(indexDefinition);
 
 					return indexDefinition;
 				}

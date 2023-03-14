@@ -18,6 +18,7 @@ import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.CreateIndexRequestExecutor;
 import com.liferay.portal.search.elasticsearch7.spi.index.IndexRegistrar;
@@ -59,9 +60,38 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 		IndexDefinition indexDefinition, Map<String, Object> properties) {
 
 		_list.add(new IndexDefinitionData(indexDefinition, properties));
+
+		if (_activated) {
+			synchronizeIndexDefinition(
+				new IndexDefinitionData(indexDefinition, properties));
+		}
+	}
+
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	public void addIndexRegistrar(IndexRegistrar indexRegistrar) {
+		if (_activated) {
+			synchronizeIndexRegistrar(indexRegistrar);
+		}
 	}
 
 	public void removeIndexDefinition(IndexDefinition indexDefinition) {
+	}
+
+	public void removeIndexRegistrar(IndexRegistrar indexRegistrar) {
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	public void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Portal is initialized and indexes will be synchronized");
+		}
 	}
 
 	@Override
@@ -122,6 +152,10 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerList = ServiceTrackerListFactory.open(
 			bundleContext, IndexRegistrar.class);
+
+		synchronizeIndexes();
+
+		_activated = true;
 	}
 
 	protected void createIndex(
@@ -172,6 +206,8 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		IndexSynchronizerImpl.class);
+
+	private boolean _activated;
 
 	@Reference
 	private CreateIndexRequestExecutor _createIndexRequestExecutor;

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -30,15 +31,12 @@ import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.document.Field;
 import com.liferay.portal.workflow.metrics.rest.dto.v1_0.Task;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Rafael Praxedes
@@ -223,51 +221,51 @@ public class TaskUtil {
 	private static Map<String, String> _createMap(
 		Document document, String fieldName) {
 
-		return Stream.of(
-			document.getFields()
-		).map(
-			Map::entrySet
-		).flatMap(
-			Collection::stream
-		).filter(
-			entry ->
-				StringUtil.startsWith(
-					entry.getKey(), fieldName + StringPool.UNDERLINE) &&
-				!StringUtil.endsWith(entry.getKey(), "_sortable")
-		).collect(
-			Collectors.toMap(
-				entry -> _toLanguageTag(
-					StringUtil.removeSubstring(
-						entry.getKey(), fieldName + StringPool.UNDERLINE)),
-				entry -> {
-					Field field = entry.getValue();
+		Map<String, Field> fields = document.getFields();
 
-					return String.valueOf(field.getValue());
-				})
-		);
+		HashMapBuilder.HashMapWrapper<String, String> hashMapWrapper =
+			HashMapBuilder.create(fields.size());
+
+		for (Map.Entry<String, Field> entry : fields.entrySet()) {
+			if (StringUtil.startsWith(
+					entry.getKey(), fieldName + StringPool.UNDERLINE) &&
+				!StringUtil.endsWith(entry.getKey(), "_sortable")) {
+
+				hashMapWrapper.put(
+					_toLanguageTag(
+						StringUtil.removeSubstring(
+							entry.getKey(), fieldName + StringPool.UNDERLINE)),
+					() -> {
+						Field field = entry.getValue();
+
+						return String.valueOf(field.getValue());
+					});
+			}
+		}
+
+		return hashMapWrapper.build();
 	}
 
 	private static Map<String, String> _createMap(
 		Map<String, Object> sourcesMap, String fieldName) {
 
-		return Stream.of(
-			sourcesMap
-		).map(
-			Map::entrySet
-		).flatMap(
-			Collection::stream
-		).filter(
-			entry ->
-				StringUtil.startsWith(
+		HashMapBuilder.HashMapWrapper<String, String> hashMapWrapper =
+			HashMapBuilder.create(sourcesMap.size());
+
+		for (Map.Entry<String, Object> entry : sourcesMap.entrySet()) {
+			if (StringUtil.startsWith(
 					entry.getKey(), fieldName + StringPool.UNDERLINE) &&
-				!StringUtil.endsWith(entry.getKey(), "_sortable")
-		).collect(
-			Collectors.toMap(
-				entry -> _toLanguageTag(
-					StringUtil.removeSubstring(
-						entry.getKey(), fieldName + StringPool.UNDERLINE)),
-				entry -> GetterUtil.getString(entry.getValue()))
-		);
+				!StringUtil.endsWith(entry.getKey(), "_sortable")) {
+
+				hashMapWrapper.put(
+					_toLanguageTag(
+						StringUtil.removeSubstring(
+							entry.getKey(), fieldName + StringPool.UNDERLINE)),
+					GetterUtil.getString(entry.getValue()));
+			}
+		}
+
+		return hashMapWrapper.build();
 	}
 
 	private static Date _parseDate(String dateString) {

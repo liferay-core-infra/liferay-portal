@@ -14,8 +14,6 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.index;
 
-import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
-import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,9 +37,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -50,20 +45,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 @Component(immediate = true, service = IndexSynchronizer.class)
 public class IndexSynchronizerImpl implements IndexSynchronizer {
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	public void addIndexRegistrar(IndexRegistrar indexRegistrar) {
-		if (_activated) {
-			synchronizeIndexRegistrar(indexRegistrar);
-		}
-	}
-
-	public void removeIndexRegistrar(IndexRegistrar indexRegistrar) {
-	}
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
 	public void setModuleServiceLifecycle(
@@ -94,7 +75,6 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 
 	@Override
 	public void synchronizeIndexes() {
-		_serviceTrackerList.forEach(this::synchronizeIndexRegistrar);
 	}
 
 	@Override
@@ -125,9 +105,6 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_serviceTrackerList = ServiceTrackerListFactory.open(
-			bundleContext, IndexRegistrar.class);
-
 		_indexDefinitionServiceTracker = ServiceTrackerFactory.open(
 			bundleContext, IndexDefinition.class,
 			new ServiceTrackerCustomizer<IndexDefinition, IndexDefinition>() {
@@ -173,9 +150,37 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 
 			});
 
-		synchronizeIndexes();
+		_indexRegistrarServiceTracker = ServiceTrackerFactory.open(
+			bundleContext, IndexRegistrar.class,
+			new ServiceTrackerCustomizer<IndexRegistrar, IndexRegistrar>() {
 
-		_activated = true;
+				@Override
+				public IndexRegistrar addingService(
+					ServiceReference<IndexRegistrar> serviceReference) {
+
+					IndexRegistrar indexRegistrar = bundleContext.getService(
+						serviceReference);
+
+					synchronizeIndexRegistrar(indexRegistrar);
+
+					return indexRegistrar;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<IndexRegistrar> serviceReference,
+					IndexRegistrar indexRegistrar) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<IndexRegistrar> serviceReference,
+					IndexRegistrar indexRegistrar) {
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
 	}
 
 	protected void createIndex(
@@ -215,23 +220,24 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTrackerList.close();
-
 		if (_indexDefinitionServiceTracker != null) {
 			_indexDefinitionServiceTracker.close();
+		}
+
+		if (_indexRegistrarServiceTracker != null) {
+			_indexRegistrarServiceTracker.close();
 		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		IndexSynchronizerImpl.class);
 
-	private boolean _activated;
-
 	@Reference
 	private CreateIndexRequestExecutor _createIndexRequestExecutor;
 
 	private ServiceTracker<IndexDefinition, IndexDefinition>
 		_indexDefinitionServiceTracker;
-	private ServiceTrackerList<IndexRegistrar> _serviceTrackerList;
+	private ServiceTracker<IndexRegistrar, IndexRegistrar>
+		_indexRegistrarServiceTracker;
 
 }

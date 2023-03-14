@@ -16,6 +16,7 @@ package com.liferay.portal.search.elasticsearch7.internal.index.instant;
 
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.index.IndexSynchronizer;
@@ -43,7 +44,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import org.mockito.Mockito;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -114,6 +119,35 @@ public class InstantIndexesTest {
 	}
 
 	@Test
+	public void testMissingIndexSettingsResource() {
+		IndexDefinition indexDefinition = Mockito.mock(IndexDefinition.class);
+
+		Mockito.when(
+			indexDefinition.getIndexName()
+		).thenReturn(
+			RandomTestUtil.randomString()
+		);
+
+		String resourceName = RandomTestUtil.randomString();
+
+		Mockito.when(
+			indexDefinition.getIndexSettingsResourceName()
+		).thenReturn(
+			resourceName
+		);
+
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage(
+			"Unable to load resource: " + resourceName);
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				IndexDefinition.class, indexDefinition, null));
+
+		_activateIndexSynchronizer();
+	}
+
+	@Test
 	public void testRuntimeIndexCreation() throws Exception {
 		_registerTasksIndexDefinition();
 
@@ -156,6 +190,9 @@ public class InstantIndexesTest {
 			InstancesAndProcessesIndexRegistrar.INDEX_NAME_WORKFLOW_PROCESSES,
 			_INDEX_NAME_WORKFLOW_TASKS);
 	}
+
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
 
 	private void _activateIndexSynchronizer() {
 		ReflectionTestUtil.invoke(

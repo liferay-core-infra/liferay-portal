@@ -41,6 +41,7 @@ import com.liferay.portal.security.ldap.SafeLdapNameFactory;
 import com.liferay.portal.security.ldap.SafePortalLDAP;
 import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration;
 import com.liferay.portal.security.ldap.constants.LDAPConstants;
@@ -142,6 +143,18 @@ public class LDAPAuth implements Authenticator {
 	protected void activate(Map<String, Object> properties) {
 		_authPipelineEnableLiferayCheck = GetterUtil.getBoolean(
 			_props.get(PropsKeys.AUTH_PIPELINE_ENABLE_LIFERAY_CHECK));
+		_ldapAuthConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPAuthConfiguration.class);
+		_ldapImportConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPImportConfiguration.class);
+		_ldapServerConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+		_systemLDAPConfigurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				SystemLDAPConfiguration.class);
 	}
 
 	private LDAPAuthResult _authenticate(
@@ -757,13 +770,13 @@ public class LDAPAuth implements Authenticator {
 	private static final Log _log = LogFactoryUtil.getLog(LDAPAuth.class);
 
 	private boolean _authPipelineEnableLiferayCheck;
+
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
+
 	private final ThreadLocal<Map<String, LDAPAuthResult>>
 		_failedLDAPAuthResults = new CentralizedThreadLocal<>(
 			LDAPAuth.class + "._failedLDAPAuthResultCache", HashMap::new);
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration)"
-	)
 	private ConfigurationProvider<LDAPAuthConfiguration>
 		_ldapAuthConfigurationProvider;
 
@@ -773,15 +786,8 @@ public class LDAPAuth implements Authenticator {
 	)
 	private volatile LDAPFilterValidator _ldapFilterValidator;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)"
-	)
 	private ConfigurationProvider<LDAPImportConfiguration>
 		_ldapImportConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
 
@@ -809,9 +815,6 @@ public class LDAPAuth implements Authenticator {
 	@Reference
 	private Props _props;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration)"
-	)
 	private ConfigurationProvider<SystemLDAPConfiguration>
 		_systemLDAPConfigurationProvider;
 

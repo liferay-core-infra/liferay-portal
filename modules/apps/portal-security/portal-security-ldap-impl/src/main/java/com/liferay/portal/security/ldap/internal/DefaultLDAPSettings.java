@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPExportConfiguration;
@@ -49,9 +50,12 @@ public class DefaultLDAPSettings implements LDAPSettings {
 			long ldapServerId, long companyId)
 		throws Exception {
 
+		ConfigurationProvider<LDAPServerConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+
 		LDAPServerConfiguration ldapServerConfiguration =
-			_ldapServerConfigurationProvider.getConfiguration(
-				companyId, ldapServerId);
+			configurationProvider.getConfiguration(companyId, ldapServerId);
 
 		Properties contactExpandoMappings = _getProperties(
 			ldapServerConfiguration.contactCustomMappings());
@@ -65,9 +69,12 @@ public class DefaultLDAPSettings implements LDAPSettings {
 	public Properties getContactMappings(long ldapServerId, long companyId)
 		throws Exception {
 
+		ConfigurationProvider<LDAPServerConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+
 		LDAPServerConfiguration ldapServerConfiguration =
-			_ldapServerConfigurationProvider.getConfiguration(
-				companyId, ldapServerId);
+			configurationProvider.getConfiguration(companyId, ldapServerId);
 
 		Properties contactMappings = _getProperties(
 			ldapServerConfiguration.contactMappings());
@@ -79,8 +86,12 @@ public class DefaultLDAPSettings implements LDAPSettings {
 
 	@Override
 	public String[] getErrorPasswordHistoryKeywords(long companyId) {
+		ConfigurationProvider<SystemLDAPConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				SystemLDAPConfiguration.class);
+
 		SystemLDAPConfiguration systemLDAPConfiguration =
-			_systemLDAPConfigurationProvider.getConfiguration(companyId);
+			configurationProvider.getConfiguration(companyId);
 
 		return systemLDAPConfiguration.errorPasswordHistoryKeywords();
 	}
@@ -89,9 +100,12 @@ public class DefaultLDAPSettings implements LDAPSettings {
 	public Properties getGroupMappings(long ldapServerId, long companyId)
 		throws Exception {
 
+		ConfigurationProvider<LDAPServerConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+
 		LDAPServerConfiguration ldapServerConfiguration =
-			_ldapServerConfigurationProvider.getConfiguration(
-				companyId, ldapServerId);
+			configurationProvider.getConfiguration(companyId, ldapServerId);
 
 		Properties groupMappings = _getProperties(
 			ldapServerConfiguration.groupMappings());
@@ -122,9 +136,12 @@ public class DefaultLDAPSettings implements LDAPSettings {
 	public Properties getUserExpandoMappings(long ldapServerId, long companyId)
 		throws Exception {
 
+		ConfigurationProvider<LDAPServerConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+
 		LDAPServerConfiguration ldapServerConfiguration =
-			_ldapServerConfigurationProvider.getConfiguration(
-				companyId, ldapServerId);
+			configurationProvider.getConfiguration(companyId, ldapServerId);
 
 		Properties contactExpandoMappings = _getProperties(
 			ldapServerConfiguration.userCustomMappings());
@@ -138,9 +155,12 @@ public class DefaultLDAPSettings implements LDAPSettings {
 	public Properties getUserMappings(long ldapServerId, long companyId)
 		throws Exception {
 
+		ConfigurationProvider<LDAPServerConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPServerConfiguration.class);
+
 		LDAPServerConfiguration ldapServerConfiguration =
-			_ldapServerConfigurationProvider.getConfiguration(
-				companyId, ldapServerId);
+			configurationProvider.getConfiguration(companyId, ldapServerId);
 
 		Properties userMappings = _getProperties(
 			ldapServerConfiguration.userMappings());
@@ -152,8 +172,13 @@ public class DefaultLDAPSettings implements LDAPSettings {
 
 	@Override
 	public boolean isExportEnabled(long companyId) {
+		ConfigurationProvider<LDAPImportConfiguration>
+			ldapImportConfigurationProvider =
+				_configurationProviderManager.getConfigurationProvider(
+					LDAPImportConfiguration.class);
+
 		LDAPImportConfiguration ldapImportConfiguration =
-			_ldapImportConfigurationProvider.getConfiguration(companyId);
+			ldapImportConfigurationProvider.getConfiguration(companyId);
 
 		boolean defaultImportUserPasswordAutogenerated =
 			ldapImportConfiguration.importUserPasswordAutogenerated();
@@ -164,40 +189,61 @@ public class DefaultLDAPSettings implements LDAPSettings {
 			return false;
 		}
 
+		ConfigurationProvider<LDAPExportConfiguration>
+			ldapExportConfigurationProvider =
+				_configurationProviderManager.getConfigurationProvider(
+					LDAPExportConfiguration.class);
+
 		LDAPExportConfiguration ldapExportConfiguration =
-			_ldapExportConfigurationProvider.getConfiguration(companyId);
+			ldapExportConfigurationProvider.getConfiguration(companyId);
 
 		return ldapExportConfiguration.exportEnabled();
 	}
 
 	@Override
 	public boolean isExportGroupEnabled(long companyId) {
+		ConfigurationProvider<LDAPExportConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPExportConfiguration.class);
+
 		LDAPExportConfiguration ldapExportConfiguration =
-			_ldapExportConfigurationProvider.getConfiguration(companyId);
+			configurationProvider.getConfiguration(companyId);
 
 		return ldapExportConfiguration.exportGroupEnabled();
 	}
 
 	@Override
 	public boolean isImportEnabled(long companyId) {
+		ConfigurationProvider<LDAPImportConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPImportConfiguration.class);
+
 		LDAPImportConfiguration ldapImportConfiguration =
-			_ldapImportConfigurationProvider.getConfiguration(companyId);
+			configurationProvider.getConfiguration(companyId);
 
 		return ldapImportConfiguration.importEnabled();
 	}
 
 	@Override
 	public boolean isImportOnStartup(long companyId) {
+		ConfigurationProvider<LDAPImportConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPImportConfiguration.class);
+
 		LDAPImportConfiguration ldapImportConfiguration =
-			_ldapImportConfigurationProvider.getConfiguration(companyId);
+			configurationProvider.getConfiguration(companyId);
 
 		return ldapImportConfiguration.importOnStartup();
 	}
 
 	@Override
 	public boolean isPasswordPolicyEnabled(long companyId) {
+		ConfigurationProvider<LDAPAuthConfiguration> configurationProvider =
+			_configurationProviderManager.getConfigurationProvider(
+				LDAPAuthConfiguration.class);
+
 		LDAPAuthConfiguration ldapAuthConfiguration =
-			_ldapAuthConfigurationProvider.getConfiguration(companyId);
+			configurationProvider.getConfiguration(companyId);
 
 		return ldapAuthConfiguration.passwordPolicyEnabled();
 	}
@@ -227,35 +273,8 @@ public class DefaultLDAPSettings implements LDAPSettings {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultLDAPSettings.class);
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration)"
-	)
-	private ConfigurationProvider<LDAPAuthConfiguration>
-		_ldapAuthConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPExportConfiguration)"
-	)
-	private ConfigurationProvider<LDAPExportConfiguration>
-		_ldapExportConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)"
-	)
-	private ConfigurationProvider<LDAPImportConfiguration>
-		_ldapImportConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
-	private ConfigurationProvider<LDAPServerConfiguration>
-		_ldapServerConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration)"
-	)
-	private ConfigurationProvider<SystemLDAPConfiguration>
-		_systemLDAPConfigurationProvider;
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
 
 	@Reference
 	private UserLocalService _userLocalService;

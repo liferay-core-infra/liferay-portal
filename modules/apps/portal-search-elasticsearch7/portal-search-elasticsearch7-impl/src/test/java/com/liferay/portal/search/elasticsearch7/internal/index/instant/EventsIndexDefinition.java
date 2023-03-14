@@ -21,18 +21,17 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author André de Oliveira
  */
-@Component(
-	property = {
-		IndexDefinition.PROPERTY_KEY_INDEX_NAME + "=" + EventsIndexDefinition.INDEX_NAME_WORKFLOW_EVENTS,
-		IndexDefinition.PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME + "=" + EventsIndexDefinition.TYPE_MAPPING_FILE_NAME_WORKFLOW_EVENTS
-	},
-	service = IndexDefinition.class
-)
+@Component(service = IndexDefinition.class)
 public class EventsIndexDefinition implements IndexDefinition {
 
-	public static final String INDEX_NAME_WORKFLOW_EVENTS = "workflow-events";
+	@Override
+	public String getIndexName() {
+		return "workflow-events";
+	}
 
-	public static final String TYPE_MAPPING_FILE_NAME_WORKFLOW_EVENTS =
-		"workflow-events-type-mappings.json";
+	@Override
+	public String getIndexSettingsResourceName() {
+		return "workflow-events-type-mappings.json";
+	}
 
 }

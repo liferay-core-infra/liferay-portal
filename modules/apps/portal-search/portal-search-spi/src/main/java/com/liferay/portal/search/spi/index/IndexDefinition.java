@@ -19,9 +19,8 @@ package com.liferay.portal.search.spi.index;
  */
 public interface IndexDefinition {
 
-	public static final String PROPERTY_KEY_INDEX_NAME = "index.name";
+	public String getIndexName();
 
-	public static final String PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME =
-		"index.settings.resource.name";
+	public String getIndexSettingsResourceName();
 
 }

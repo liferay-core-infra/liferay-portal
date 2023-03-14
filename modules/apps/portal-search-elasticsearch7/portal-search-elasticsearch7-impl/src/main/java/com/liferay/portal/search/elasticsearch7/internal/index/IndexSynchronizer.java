@@ -47,49 +47,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(service = {})
 public class IndexSynchronizer {
 
-	public void synchronizeIndexDefinition(IndexDefinition indexDefinition) {
-		String index = Objects.requireNonNull(indexDefinition.getIndexName());
-
-		createIndex(
-			index,
-			createIndexRequest -> {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Synchronizing index " + index);
-				}
-
-				createIndexRequest.setSource(
-					ResourceUtil.getResourceAsString(
-						indexDefinition.getClass(),
-						Objects.requireNonNull(
-							indexDefinition.getIndexSettingsResourceName())));
-			});
-	}
-
-	public void synchronizeIndexRegistrar(IndexRegistrar indexRegistrar) {
-		indexRegistrar.register(
-			(indexName, indexSettingsDefinitionConsumer) -> createIndex(
-				indexName,
-				createIndexRequest -> indexSettingsDefinitionConsumer.accept(
-					new IndexSettingsDefinition() {
-
-						@Override
-						public void setIndexSettingsResourceName(
-							String indexSettingsResourceName) {
-
-							createIndexRequest.setSource(
-								StringUtil.read(
-									indexSettingsDefinitionConsumer.getClass(),
-									indexSettingsResourceName));
-						}
-
-						@Override
-						public void setSource(String source) {
-							createIndexRequest.setSource(source);
-						}
-
-					})));
-	}
-
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		if (_log.isDebugEnabled()) {
@@ -108,7 +65,7 @@ public class IndexSynchronizer {
 					IndexDefinition indexDefinition = bundleContext.getService(
 						serviceReference);
 
-					synchronizeIndexDefinition(indexDefinition);
+					_synchronizeIndexDefinition(indexDefinition);
 
 					return indexDefinition;
 				}
@@ -140,7 +97,7 @@ public class IndexSynchronizer {
 					IndexRegistrar indexRegistrar = bundleContext.getService(
 						serviceReference);
 
-					synchronizeIndexRegistrar(indexRegistrar);
+					_synchronizeIndexRegistrar(indexRegistrar);
 
 					return indexRegistrar;
 				}
@@ -162,7 +119,18 @@ public class IndexSynchronizer {
 			});
 	}
 
-	protected void createIndex(
+	@Deactivate
+	protected void deactivate() {
+		if (_indexDefinitionServiceTracker != null) {
+			_indexDefinitionServiceTracker.close();
+		}
+
+		if (_indexRegistrarServiceTracker != null) {
+			_indexRegistrarServiceTracker.close();
+		}
+	}
+
+	private void _createIndex(
 		String index, Consumer<CreateIndexRequest> createIndexRequestConsumer) {
 
 		CreateIndexRequest createIndexRequest = new CreateIndexRequest(index);
@@ -197,15 +165,47 @@ public class IndexSynchronizer {
 		}
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		if (_indexDefinitionServiceTracker != null) {
-			_indexDefinitionServiceTracker.close();
-		}
+	private void _synchronizeIndexDefinition(IndexDefinition indexDefinition) {
+		String index = Objects.requireNonNull(indexDefinition.getIndexName());
 
-		if (_indexRegistrarServiceTracker != null) {
-			_indexRegistrarServiceTracker.close();
-		}
+		_createIndex(
+			index,
+			createIndexRequest -> {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Synchronizing index " + index);
+				}
+
+				createIndexRequest.setSource(
+					ResourceUtil.getResourceAsString(
+						indexDefinition.getClass(),
+						Objects.requireNonNull(
+							indexDefinition.getIndexSettingsResourceName())));
+			});
+	}
+
+	private void _synchronizeIndexRegistrar(IndexRegistrar indexRegistrar) {
+		indexRegistrar.register(
+			(indexName, indexSettingsDefinitionConsumer) -> _createIndex(
+				indexName,
+				createIndexRequest -> indexSettingsDefinitionConsumer.accept(
+					new IndexSettingsDefinition() {
+
+						@Override
+						public void setIndexSettingsResourceName(
+							String indexSettingsResourceName) {
+
+							createIndexRequest.setSource(
+								StringUtil.read(
+									indexSettingsDefinitionConsumer.getClass(),
+									indexSettingsResourceName));
+						}
+
+						@Override
+						public void setSource(String source) {
+							createIndexRequest.setSource(source);
+						}
+
+					})));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

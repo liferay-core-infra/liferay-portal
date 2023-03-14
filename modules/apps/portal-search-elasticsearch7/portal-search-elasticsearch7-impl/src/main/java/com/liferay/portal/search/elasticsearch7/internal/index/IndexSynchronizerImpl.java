@@ -16,9 +16,11 @@ package com.liferay.portal.search.elasticsearch7.internal.index;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.CreateIndexRequestExecutor;
 import com.liferay.portal.search.elasticsearch7.spi.index.IndexRegistrar;
@@ -27,16 +29,12 @@ import com.liferay.portal.search.engine.adapter.index.CreateIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.CreateIndexResponse;
 import com.liferay.portal.search.spi.index.IndexDefinition;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 import org.elasticsearch.ElasticsearchStatusException;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -44,6 +42,8 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author André de Oliveira
@@ -56,29 +56,10 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
-	public void addIndexDefinition(
-		IndexDefinition indexDefinition, Map<String, Object> properties) {
-
-		_list.add(new IndexDefinitionData(indexDefinition, properties));
-
-		if (_activated) {
-			synchronizeIndexDefinition(
-				new IndexDefinitionData(indexDefinition, properties));
-		}
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
 	public void addIndexRegistrar(IndexRegistrar indexRegistrar) {
 		if (_activated) {
 			synchronizeIndexRegistrar(indexRegistrar);
 		}
-	}
-
-	public void removeIndexDefinition(IndexDefinition indexDefinition) {
 	}
 
 	public void removeIndexRegistrar(IndexRegistrar indexRegistrar) {
@@ -113,12 +94,6 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 
 	@Override
 	public void synchronizeIndexes() {
-		List<IndexDefinitionData> list = new ArrayList<>();
-
-		_drainTo(list);
-
-		list.forEach(this::synchronizeIndexDefinition);
-
 		_serviceTrackerList.forEach(this::synchronizeIndexRegistrar);
 	}
 
@@ -152,6 +127,51 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerList = ServiceTrackerListFactory.open(
 			bundleContext, IndexRegistrar.class);
+
+		_indexDefinitionServiceTracker = ServiceTrackerFactory.open(
+			bundleContext, IndexDefinition.class,
+			new ServiceTrackerCustomizer<IndexDefinition, IndexDefinition>() {
+
+				@Override
+				public IndexDefinition addingService(
+					ServiceReference<IndexDefinition> serviceReference) {
+
+					IndexDefinition indexDefinition = bundleContext.getService(
+						serviceReference);
+
+					synchronizeIndexDefinition(
+						new IndexDefinitionData(
+							indexDefinition,
+							HashMapBuilder.put(
+								IndexDefinition.PROPERTY_KEY_INDEX_NAME,
+								serviceReference.getProperty(
+									IndexDefinition.PROPERTY_KEY_INDEX_NAME)
+							).put(
+								IndexDefinition.
+									PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME,
+								serviceReference.getProperty(
+									IndexDefinition.
+										PROPERTY_KEY_INDEX_SETTINGS_RESOURCE_NAME)
+							).build()));
+
+					return indexDefinition;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<IndexDefinition> serviceReference,
+					IndexDefinition indexDefinition) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<IndexDefinition> serviceReference,
+					IndexDefinition indexDefinition) {
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
 
 		synchronizeIndexes();
 
@@ -196,12 +216,10 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 	@Deactivate
 	protected void deactivate() {
 		_serviceTrackerList.close();
-	}
 
-	private void _drainTo(Collection<IndexDefinitionData> collection) {
-		collection.addAll(_list);
-
-		_list.clear();
+		if (_indexDefinitionServiceTracker != null) {
+			_indexDefinitionServiceTracker.close();
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -212,8 +230,8 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 	@Reference
 	private CreateIndexRequestExecutor _createIndexRequestExecutor;
 
-	private final List<IndexDefinitionData> _list =
-		new CopyOnWriteArrayList<>();
+	private ServiceTracker<IndexDefinition, IndexDefinition>
+		_indexDefinitionServiceTracker;
 	private ServiceTrackerList<IndexRegistrar> _serviceTrackerList;
 
 }

@@ -24,9 +24,13 @@ import com.liferay.portal.search.elasticsearch7.spi.index.IndexRegistrar;
 import com.liferay.portal.search.elasticsearch7.spi.index.helper.IndexSettingsDefinition;
 import com.liferay.portal.search.engine.adapter.index.CreateIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.CreateIndexResponse;
+import com.liferay.portal.search.spi.index.IndexDefinition;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 import org.elasticsearch.ElasticsearchStatusException;
@@ -36,12 +40,29 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author André de Oliveira
  */
 @Component(service = IndexSynchronizer.class)
 public class IndexSynchronizerImpl implements IndexSynchronizer {
+
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	public void addIndexDefinition(
+		IndexDefinition indexDefinition, Map<String, Object> properties) {
+
+		_list.add(new IndexDefinitionData(indexDefinition, properties));
+	}
+
+	public void removeIndexDefinition(IndexDefinition indexDefinition) {
+	}
 
 	@Override
 	public void synchronizeIndexDefinition(
@@ -64,7 +85,7 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 	public void synchronizeIndexes() {
 		List<IndexDefinitionData> list = new ArrayList<>();
 
-		_indexDefinitionsRegistry.drainTo(list);
+		_drainTo(list);
 
 		list.forEach(this::synchronizeIndexDefinition);
 
@@ -143,15 +164,20 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 		_serviceTrackerList.close();
 	}
 
+	private void _drainTo(Collection<IndexDefinitionData> collection) {
+		collection.addAll(_list);
+
+		_list.clear();
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		IndexSynchronizerImpl.class);
 
 	@Reference
 	private CreateIndexRequestExecutor _createIndexRequestExecutor;
 
-	@Reference
-	private IndexDefinitionsRegistry _indexDefinitionsRegistry;
-
+	private final List<IndexDefinitionData> _list =
+		new CopyOnWriteArrayList<>();
 	private ServiceTrackerList<IndexRegistrar> _serviceTrackerList;
 
 }

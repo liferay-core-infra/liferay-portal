@@ -46,16 +46,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(immediate = true, service = IndexSynchronizer.class)
 public class IndexSynchronizerImpl implements IndexSynchronizer {
 
-	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
-	public void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Portal is initialized and indexes will be synchronized");
-		}
-	}
-
 	@Override
 	public void synchronizeIndexDefinition(
 		IndexDefinitionData indexDefinitionData) {
@@ -101,6 +91,11 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Portal is initialized and indexes will be synchronized");
+		}
+
 		_indexDefinitionServiceTracker = ServiceTrackerFactory.open(
 			bundleContext, IndexDefinition.class,
 			new ServiceTrackerCustomizer<IndexDefinition, IndexDefinition>() {
@@ -235,5 +230,8 @@ public class IndexSynchronizerImpl implements IndexSynchronizer {
 		_indexDefinitionServiceTracker;
 	private ServiceTracker<IndexRegistrar, IndexRegistrar>
 		_indexRegistrarServiceTracker;
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
+	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
 }

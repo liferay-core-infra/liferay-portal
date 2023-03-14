@@ -29,6 +29,7 @@ import com.liferay.headless.admin.user.dto.v1_0.Service;
 import com.liferay.headless.admin.user.dto.v1_0.UserAccount;
 import com.liferay.headless.admin.user.dto.v1_0.WebUrl;
 import com.liferay.headless.admin.user.internal.dto.v1_0.converter.constants.DTOConverterConstants;
+import com.liferay.headless.admin.user.internal.dto.v1_0.converter.util.DTOConverterUtil;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.CustomFieldsUtil;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.ServiceBuilderAddressUtil;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.ServiceBuilderCountryUtil;
@@ -115,8 +116,8 @@ public class OrganizationResourceImpl
 		throws Exception {
 
 		deleteAccountOrganization(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode),
 			organizationId);
 	}
 
@@ -175,8 +176,8 @@ public class OrganizationResourceImpl
 		throws Exception {
 
 		return getAccountOrganizationsPage(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode),
 			search, filter, pagination, sorts);
 	}
 
@@ -305,8 +306,8 @@ public class OrganizationResourceImpl
 		throws Exception {
 
 		postAccountOrganization(
-			_accountResourceDTOConverter.getAccountEntryId(
-				externalReferenceCode),
+			DTOConverterUtil.getAccountEntryId(
+				_accountResourceDTOConverter, externalReferenceCode),
 			organizationId);
 	}
 

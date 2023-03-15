@@ -394,6 +394,12 @@
 			<finder-column name="columnToRename" />
 		</finder>
 	</entity>
+	<entity local-service="true" name="SequenceEntry" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="sequenceEntryId" primary="true" type="long" id-type="sequence" id-param="id_sequence" />
+	</entity>
 	<entity local-service="true" name="UADPartialEntry" remote-service="false">
 
 		<!-- PK fields -->

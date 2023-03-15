@@ -246,6 +246,11 @@ create table RenameFinderColumnEntry (
 	columnToRename VARCHAR(75) null
 );
 
+create table SequenceEntry (
+	uuid_ VARCHAR(75) null,
+	sequenceEntryId LONG not null primary key
+);
+
 create table UADPartialEntry (
 	uadPartialEntryId LONG not null primary key,
 	userId LONG,

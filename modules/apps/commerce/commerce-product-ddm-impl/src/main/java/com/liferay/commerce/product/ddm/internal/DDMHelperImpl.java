@@ -234,27 +234,28 @@ public class DDMHelperImpl implements DDMHelper {
 
 		List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
 
-		StringBundler sb = new StringBundler((ddmFormFields.size() * 2) + 11);
+		StringBundler sb = new StringBundler((ddmFormFields.size() * 5) + 13);
 
-		sb.append(String.format("'companyId=%s'", companyId));
-		sb.append(", ';',");
-		sb.append(String.format("'cpDefinitionId=%s'", cpDefinitionId));
-		sb.append(", ';',");
-		sb.append(String.format("'groupId=%s'", groupId));
-		sb.append(", ';',");
-		sb.append(String.format("'commerceAccountId=%s'", commerceAccountId));
-		sb.append(", ';',");
-		sb.append(String.format("'userId=%s'", userId));
-		sb.append(", ';',");
-		sb.append(
-			String.format("'locale=%s'", LocaleUtil.toLanguageId(locale)));
+		sb.append("'companyId=");
+		sb.append(companyId);
+		sb.append("', ';','cpDefinitionId=");
+		sb.append(cpDefinitionId);
+		sb.append("', ';','groupId=");
+		sb.append(groupId);
+		sb.append("', ';','commerceAccountId=");
+		sb.append(commerceAccountId);
+		sb.append("', ';','userId=");
+		sb.append(userId);
+		sb.append("', ';','locale=");
+		sb.append(LocaleUtil.toLanguageId(locale));
+		sb.append("'");
 
 		for (DDMFormField ddmFormField : ddmFormFields) {
-			sb.append(", ';',");
-			sb.append(
-				String.format(
-					"'%s=', getValue('%s')", ddmFormField.getName(),
-					ddmFormField.getName()));
+			sb.append(", ';','");
+			sb.append(ddmFormField.getName());
+			sb.append("=', getValue('");
+			sb.append(ddmFormField.getName());
+			sb.append("')");
 		}
 
 		return sb.toString();

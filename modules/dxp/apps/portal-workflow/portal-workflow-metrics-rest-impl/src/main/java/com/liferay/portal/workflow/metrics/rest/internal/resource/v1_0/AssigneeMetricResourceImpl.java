@@ -64,6 +64,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -417,7 +418,7 @@ public class AssigneeMetricResourceImpl extends BaseAssigneeMetricResourceImpl {
 				completed, dateEnd, dateStart, instanceIds, processId,
 				taskNames, userIds));
 
-		return Stream.of(
+		return Optional.ofNullable(
 			_searchRequestExecutor.executeSearchRequest(searchSearchRequest)
 		).map(
 			SearchSearchResponse::getAggregationResultsMap
@@ -427,7 +428,6 @@ public class AssigneeMetricResourceImpl extends BaseAssigneeMetricResourceImpl {
 					"assigneeId")
 		).map(
 			CardinalityAggregationResult::getValue
-		).findFirst(
 		).orElseGet(
 			() -> 0L
 		);

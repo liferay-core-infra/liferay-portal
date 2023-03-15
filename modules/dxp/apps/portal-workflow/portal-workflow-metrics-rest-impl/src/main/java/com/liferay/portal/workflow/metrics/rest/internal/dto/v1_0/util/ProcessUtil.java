@@ -17,6 +17,7 @@ package com.liferay.portal.workflow.metrics.rest.internal.dto.v1_0.util;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -25,12 +26,9 @@ import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.document.Field;
 import com.liferay.portal.workflow.metrics.rest.dto.v1_0.Process;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Rafael Praxedes
@@ -68,26 +66,27 @@ public class ProcessUtil {
 	}
 
 	private static Map<String, String> _createTitleMap(Document document) {
-		return Stream.of(
-			document.getFields()
-		).map(
-			Map::entrySet
-		).flatMap(
-			Collection::stream
-		).filter(
-			entry ->
-				StringUtil.startsWith(entry.getKey(), "title_") &&
-				!StringUtil.endsWith(entry.getKey(), "_sortable")
-		).collect(
-			Collectors.toMap(
-				entry -> _toLanguageTag(
-					StringUtil.removeSubstring(entry.getKey(), "title_")),
-				entry -> {
-					Field field = entry.getValue();
+		Map<String, Field> fields = document.getFields();
 
-					return String.valueOf(field.getValue());
-				})
-		);
+		HashMapBuilder.HashMapWrapper<String, String> hashMapWrapper =
+			HashMapBuilder.create(fields.size());
+
+		for (Map.Entry<String, Field> entry : fields.entrySet()) {
+			if (StringUtil.startsWith(entry.getKey(), "title_") &&
+				!StringUtil.endsWith(entry.getKey(), "_sortable")) {
+
+				hashMapWrapper.put(
+					_toLanguageTag(
+						StringUtil.removeSubstring(entry.getKey(), "title_")),
+					() -> {
+						Field field = entry.getValue();
+
+						return String.valueOf(field.getValue());
+					});
+			}
+		}
+
+		return hashMapWrapper.build();
 	}
 
 	private static Date _parseDate(String dateString) {

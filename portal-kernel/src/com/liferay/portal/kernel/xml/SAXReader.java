@@ -92,6 +92,10 @@ public interface SAXReader {
 
 	public Document read(String xml, boolean validate) throws DocumentException;
 
+	public Document read(
+			String xml, boolean validate, boolean escapeCDATAClosingCharacters)
+		throws DocumentException;
+
 	public Document read(String xml, XMLSchema xmlSchema)
 		throws DocumentException;
 

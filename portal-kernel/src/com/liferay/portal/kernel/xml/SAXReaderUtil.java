@@ -167,6 +167,13 @@ public class SAXReaderUtil {
 		return getSAXReader().read(xml, validate);
 	}
 
+	public static Document read(
+			String xml, boolean validate, boolean escapeCDATAClosingCharacters)
+		throws DocumentException {
+
+		return getSAXReader().read(xml, validate, escapeCDATAClosingCharacters);
+	}
+
 	public static Document read(String xml, XMLSchema xmlSchema)
 		throws DocumentException {
 

@@ -428,6 +428,15 @@ public class SAXReaderImpl implements SAXReader {
 	}
 
 	@Override
+	public Document read(
+			String xml, boolean validate, boolean escapeCDATAClosingCharacters)
+		throws DocumentException {
+
+		return read(
+			new XMLSafeReader(xml, escapeCDATAClosingCharacters), validate);
+	}
+
+	@Override
 	public Document read(String xml, XMLSchema xmlSchema)
 		throws DocumentException {
 

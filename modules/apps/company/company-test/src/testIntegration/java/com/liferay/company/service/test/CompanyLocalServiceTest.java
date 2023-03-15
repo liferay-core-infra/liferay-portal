@@ -307,10 +307,6 @@ public class CompanyLocalServiceTest {
 				return null;
 			});
 
-		addUser(
-			companyId, userId, group.getGroupId(),
-			getServiceContext(companyId));
-
 		_companyLocalService.deleteCompany(companyId);
 
 		Assert.assertNull(
@@ -370,10 +366,6 @@ public class CompanyLocalServiceTest {
 
 		Group group = GroupTestUtil.addGroup(
 			companyId, userId, parentGroup.getGroupId());
-
-		addUser(
-			companyId, userId, group.getGroupId(),
-			getServiceContext(companyId));
 
 		_companyLocalService.deleteCompany(company.getCompanyId());
 

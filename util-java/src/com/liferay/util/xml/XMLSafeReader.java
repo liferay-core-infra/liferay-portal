@@ -16,6 +16,7 @@ package com.liferay.util.xml;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -24,6 +25,24 @@ public class XMLSafeReader extends UnsyncStringReader {
 
 	public XMLSafeReader(String xml) {
 		super(_fixProlog(xml));
+	}
+
+	public XMLSafeReader(String xml, boolean escapeCDATAClosingCharacters) {
+		super(_escapeCDATAClosingCharacters(_fixProlog(xml)));
+	}
+
+	private static String _escapeCDATAClosingCharacters(String xml) {
+
+		// If the closing token of a CDATA container is found inside the CDATA
+		// container, split the CDATA container into two separate CDATA
+		// containers. This is generally accepted method of "escaping" for this
+		// case since there is no real way to escape those characters. See
+		// LPS-85393 for more information.
+
+		xml = StringUtil.replace(xml, "]]><", "[$SPECIAL_CHARACTER$]");
+		xml = StringUtil.replace(xml, "]]>", "]]]]><![CDATA[>");
+
+		return StringUtil.replace(xml, "[$SPECIAL_CHARACTER$]", "]]><");
 	}
 
 	private static String _fixProlog(String xml) {

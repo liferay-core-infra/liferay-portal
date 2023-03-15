@@ -108,16 +108,6 @@ public class Dom4jUtil {
 	public static String toString(String xml, String indent)
 		throws DocumentException, IOException {
 
-		// If the closing token of a CDATA container is found inside the CDATA
-		// container, split the CDATA container into two separate CDATA
-		// containers. This is generally accepted method of "escaping" for this
-		// case since there is no real way to escape those characters. See
-		// LPS-85393 for more information.
-
-		xml = StringUtil.replace(xml, "]]><", "[$SPECIAL_CHARACTER$]");
-		xml = StringUtil.replace(xml, "]]>", "]]]]><![CDATA[>");
-		xml = StringUtil.replace(xml, "[$SPECIAL_CHARACTER$]", "]]><");
-
 		XMLReader xmlReader = null;
 
 		if (SecureXMLFactoryProviderUtil.getSecureXMLFactoryProvider() !=

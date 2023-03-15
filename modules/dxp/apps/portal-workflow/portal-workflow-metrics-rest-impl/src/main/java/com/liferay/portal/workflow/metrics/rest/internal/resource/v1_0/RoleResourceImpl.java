@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.search.aggregation.AggregationResult;
 import com.liferay.portal.search.aggregation.Aggregations;
 import com.liferay.portal.search.aggregation.bucket.Bucket;
 import com.liferay.portal.search.aggregation.bucket.TermsAggregation;
@@ -37,10 +38,10 @@ import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsInde
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -94,24 +95,39 @@ public class RoleResourceImpl extends BaseRoleResourceImpl {
 		searchSearchRequest.setQuery(
 			_createTasksBooleanQuery(completed, processId));
 
-		return Stream.of(
-			_searchRequestExecutor.executeSearchRequest(searchSearchRequest)
-		).map(
-			SearchSearchResponse::getAggregationResultsMap
-		).map(
-			aggregationResultsMap ->
-				(TermsAggregationResult)aggregationResultsMap.get("assigneeId")
-		).map(
-			TermsAggregationResult::getBuckets
-		).flatMap(
-			Collection::stream
-		).map(
-			Bucket::getKey
-		).map(
-			GetterUtil::getLong
-		).collect(
-			Collectors.toSet()
-		);
+		SearchSearchResponse searchSearchResponse =
+			_searchRequestExecutor.executeSearchRequest(searchSearchRequest);
+
+		Map<String, AggregationResult> aggregationResultsMap =
+			searchSearchResponse.getAggregationResultsMap();
+
+		TermsAggregationResult termsAggregationResult =
+			(TermsAggregationResult)aggregationResultsMap.get("assigneeId");
+
+		if (termsAggregationResult == null) {
+			return Collections.emptySet();
+		}
+
+		Collection<Bucket> buckets = termsAggregationResult.getBuckets();
+
+		if ((buckets == null) || buckets.isEmpty()) {
+			return Collections.emptySet();
+		}
+
+		return new HashSet<>(
+			transform(
+				termsAggregationResult.getBuckets(),
+				bucket -> {
+					if (bucket != null) {
+						String key = bucket.getKey();
+
+						if (key != null) {
+							return GetterUtil.getLong(key);
+						}
+					}
+
+					return null;
+				}));
 	}
 
 	private Set<Role> _getRoles(boolean completed, Long processId)

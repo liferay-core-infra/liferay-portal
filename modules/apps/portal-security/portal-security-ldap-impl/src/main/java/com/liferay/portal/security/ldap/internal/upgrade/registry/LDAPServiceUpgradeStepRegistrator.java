@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.security.ldap.LDAPSettings;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPExportConfiguration;
@@ -45,11 +46,18 @@ public class LDAPServiceUpgradeStepRegistrator
 		registry.register(
 			"0.0.1", "0.0.2",
 			new LDAPPropertiesUpgradeProcess(
-				_companyLocalService, _ldapAuthConfigurationProvider,
-				_ldapExportConfigurationProvider,
-				_ldapImportConfigurationProvider,
-				_ldapServerConfigurationProvider, _ldapSettings, _prefsProps,
-				_systemLDAPConfigurationProvider));
+				_companyLocalService,
+				_configurationProviderManager.getConfigurationProvider(
+					LDAPAuthConfiguration.class),
+				_configurationProviderManager.getConfigurationProvider(
+					LDAPExportConfiguration.class),
+				_configurationProviderManager.getConfigurationProvider(
+					LDAPImportConfiguration.class),
+				_configurationProviderManager.getConfigurationProvider(
+					LDAPServerConfiguration.class),
+				_ldapSettings, _prefsProps,
+				_configurationProviderManager.getConfigurationProvider(
+					SystemLDAPConfiguration.class)));
 
 		registry.register(
 			"0.0.2", "1.0.0",
@@ -66,40 +74,13 @@ public class LDAPServiceUpgradeStepRegistrator
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration)"
-	)
-	private com.liferay.portal.security.ldap.configuration.ConfigurationProvider
-		<LDAPAuthConfiguration> _ldapAuthConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPExportConfiguration)"
-	)
-	private com.liferay.portal.security.ldap.configuration.ConfigurationProvider
-		<LDAPExportConfiguration> _ldapExportConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)"
-	)
-	private com.liferay.portal.security.ldap.configuration.ConfigurationProvider
-		<LDAPImportConfiguration> _ldapImportConfigurationProvider;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
-	)
-	private com.liferay.portal.security.ldap.configuration.ConfigurationProvider
-		<LDAPServerConfiguration> _ldapServerConfigurationProvider;
+	@Reference
+	private ConfigurationProviderManager _configurationProviderManager;
 
 	@Reference
 	private LDAPSettings _ldapSettings;
 
 	@Reference
 	private PrefsProps _prefsProps;
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration)"
-	)
-	private com.liferay.portal.security.ldap.configuration.ConfigurationProvider
-		<SystemLDAPConfiguration> _systemLDAPConfigurationProvider;
 
 }

@@ -154,25 +154,7 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 			GetterUtil.getString(
 				serviceReference.getProperty("osgi.jaxrs.name")));
 
-		for (Map.Entry<Long, ServiceRegistration<ScopeDescriptor>> entry :
-				_scopeDescriptorServiceRegistrations.entrySet()) {
-
-			ServiceRegistration<ScopeDescriptor> serviceRegistration =
-				entry.getValue();
-
-			try {
-				serviceRegistration.setProperties(
-					_buildScopeDescriptorProperties(entry.getKey()));
-			}
-			catch (IllegalStateException illegalStateException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(illegalStateException);
-				}
-
-				// Concurrent unregistration from register(long)
-
-			}
-		}
+		_resetProperties();
 	}
 
 	@Deactivate
@@ -201,25 +183,7 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 			GetterUtil.getString(
 				serviceReference.getProperty("osgi.jaxrs.name")));
 
-		for (Map.Entry<Long, ServiceRegistration<ScopeDescriptor>> entry :
-				_scopeDescriptorServiceRegistrations.entrySet()) {
-
-			ServiceRegistration<ScopeDescriptor> serviceRegistration =
-				entry.getValue();
-
-			try {
-				serviceRegistration.setProperties(
-					_buildScopeDescriptorProperties(entry.getKey()));
-			}
-			catch (IllegalStateException illegalStateException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(illegalStateException);
-				}
-
-				// Concurrent unregistration from register(long)
-
-			}
-		}
+		_resetProperties();
 	}
 
 	private HashMapDictionary<String, Object> _buildScopeDescriptorProperties(
@@ -260,6 +224,28 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 		}
 
 		return sapEntryName.substring(_sapEntryOAuth2Prefix.length());
+	}
+
+	private void _resetProperties() {
+		for (Map.Entry<Long, ServiceRegistration<ScopeDescriptor>> entry :
+				_scopeDescriptorServiceRegistrations.entrySet()) {
+
+			ServiceRegistration<ScopeDescriptor> serviceRegistration =
+				entry.getValue();
+
+			try {
+				serviceRegistration.setProperties(
+					_buildScopeDescriptorProperties(entry.getKey()));
+			}
+			catch (IllegalStateException illegalStateException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(illegalStateException);
+				}
+
+				// Concurrent unregistration from register(long)
+
+			}
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

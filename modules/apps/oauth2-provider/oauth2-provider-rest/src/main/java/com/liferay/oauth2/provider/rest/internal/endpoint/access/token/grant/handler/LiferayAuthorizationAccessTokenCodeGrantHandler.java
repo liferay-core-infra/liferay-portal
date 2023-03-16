@@ -52,10 +52,7 @@ public class LiferayAuthorizationAccessTokenCodeGrantHandler
 
 	@Override
 	public List<String> getSupportedGrantTypes() {
-		AccessTokenGrantHandler accessTokenGrantHandler =
-			getAccessTokenGrantHandler();
-
-		return accessTokenGrantHandler.getSupportedGrantTypes();
+		return _authorizationCodeGrantHandler.getSupportedGrantTypes();
 	}
 
 	@Activate
@@ -78,15 +75,7 @@ public class LiferayAuthorizationAccessTokenCodeGrantHandler
 	protected ServerAccessToken doCreateAccessToken(
 		Client client, MultivaluedMap<String, String> params) {
 
-		AccessTokenGrantHandler accessTokenGrantHandler =
-			getAccessTokenGrantHandler();
-
-		return accessTokenGrantHandler.createAccessToken(client, params);
-	}
-
-	@Override
-	protected AccessTokenGrantHandler getAccessTokenGrantHandler() {
-		return _authorizationCodeGrantHandler;
+		return _authorizationCodeGrantHandler.createAccessToken(client, params);
 	}
 
 	@Override

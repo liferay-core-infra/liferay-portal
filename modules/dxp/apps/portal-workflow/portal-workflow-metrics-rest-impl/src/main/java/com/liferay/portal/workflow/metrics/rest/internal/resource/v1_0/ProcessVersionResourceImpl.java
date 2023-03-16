@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.metrics.rest.internal.resource.v1_0;
 
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.engine.adapter.search.SearchRequestExecutor;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchResponse;
@@ -26,9 +28,9 @@ import com.liferay.portal.workflow.metrics.rest.dto.v1_0.ProcessVersion;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.ProcessVersionResource;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -67,30 +69,39 @@ public class ProcessVersionResourceImpl extends BaseProcessVersionResourceImpl {
 		searchSearchRequest.setSelectedFieldNames("versions");
 		searchSearchRequest.setSize(1);
 
-		return Page.of(
-			Stream.of(
-				_searchRequestExecutor.executeSearchRequest(searchSearchRequest)
-			).map(
-				SearchSearchResponse::getSearchHits
-			).map(
-				SearchHits::getSearchHits
-			).flatMap(
-				List::stream
-			).map(
-				SearchHit::getDocument
-			).map(
-				document -> document.getStrings("versions")
-			).flatMap(
-				List::stream
-			).map(
-				version -> new ProcessVersion() {
-					{
-						name = version;
-					}
-				}
-			).collect(
-				Collectors.toList()
-			));
+		SearchSearchResponse searchSearchResponse =
+			_searchRequestExecutor.executeSearchRequest(searchSearchRequest);
+
+		SearchHits searchHits = searchSearchResponse.getSearchHits();
+
+		if (searchHits == null) {
+			return Page.of(Collections.emptyList());
+		}
+
+		List<SearchHit> searchHitList = searchHits.getSearchHits();
+
+		if (ListUtil.isEmpty(searchHitList)) {
+			return Page.of(Collections.emptyList());
+		}
+
+		List<ProcessVersion> processVersions = new ArrayList<>();
+
+		for (SearchHit searchHit : searchHitList) {
+			Document document = searchHit.getDocument();
+
+			if (document != null) {
+				processVersions.addAll(
+					transform(
+						document.getStrings("versions"),
+						version -> new ProcessVersion() {
+							{
+								name = version;
+							}
+						}));
+			}
+		}
+
+		return Page.of(processVersions);
 	}
 
 	@Reference(target = "(workflow.metrics.index.entity.name=process)")

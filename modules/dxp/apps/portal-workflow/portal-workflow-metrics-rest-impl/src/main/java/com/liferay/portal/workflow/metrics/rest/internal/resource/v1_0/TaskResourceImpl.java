@@ -34,6 +34,7 @@ import com.liferay.portal.search.aggregation.metrics.ScriptedMetricAggregationRe
 import com.liferay.portal.search.aggregation.metrics.TopHitsAggregationResult;
 import com.liferay.portal.search.aggregation.pipeline.BucketSelectorPipelineAggregation;
 import com.liferay.portal.search.aggregation.pipeline.BucketSortPipelineAggregation;
+import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.engine.adapter.search.SearchRequestExecutor;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchResponse;
@@ -67,13 +68,10 @@ import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsInde
 import com.liferay.portal.workflow.metrics.sla.processor.WorkflowMetricsSLAStatus;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -118,29 +116,44 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 
 		searchSearchRequest.setSize(1);
 
-		return Stream.of(
-			_searchRequestExecutor.executeSearchRequest(searchSearchRequest)
-		).map(
-			SearchSearchResponse::getSearchHits
-		).map(
-			SearchHits::getSearchHits
-		).flatMap(
-			List::parallelStream
-		).map(
-			SearchHit::getDocument
-		).findFirst(
-		).map(
-			document -> TaskUtil.toTask(
-				document, _language, contextAcceptLanguage.getPreferredLocale(),
-				_portal,
-				ResourceBundleUtil.getModuleAndPortalResourceBundle(
-					contextAcceptLanguage.getPreferredLocale(),
-					TaskResourceImpl.class),
-				_userLocalService::fetchUser)
-		).orElseThrow(
-			() -> new NoSuchTaskException(
-				"No task exists with the task ID " + taskId)
-		);
+		SearchSearchResponse searchSearchResponse =
+			_searchRequestExecutor.executeSearchRequest(searchSearchRequest);
+
+		SearchHits searchHits = searchSearchResponse.getSearchHits();
+
+		if (searchHits == null) {
+			throw new NoSuchTaskException(
+				"No task exists with the task ID " + taskId);
+		}
+
+		List<SearchHit> searchHitList = searchHits.getSearchHits();
+
+		if (ListUtil.isEmpty(searchHitList)) {
+			throw new NoSuchTaskException(
+				"No task exists with the task ID " + taskId);
+		}
+
+		SearchHit firstSearchHit = searchHitList.get(0);
+
+		if (firstSearchHit == null) {
+			throw new NoSuchTaskException(
+				"No task exists with the task ID " + taskId);
+		}
+
+		Document document = firstSearchHit.getDocument();
+
+		if (document == null) {
+			throw new NoSuchTaskException(
+				"No task exists with the task ID " + taskId);
+		}
+
+		return TaskUtil.toTask(
+			document, _language, contextAcceptLanguage.getPreferredLocale(),
+			_portal,
+			ResourceBundleUtil.getModuleAndPortalResourceBundle(
+				contextAcceptLanguage.getPreferredLocale(),
+				TaskResourceImpl.class),
+			_userLocalService::fetchUser);
 	}
 
 	@Override
@@ -246,26 +259,24 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 
 		if (taskCount > 0) {
 			if (pagination == null) {
+				Map<String, AggregationResult> aggregationResultsMap =
+					searchSearchResponse.getAggregationResultsMap();
+
+				TermsAggregationResult termsAggregationResult =
+					(TermsAggregationResult)aggregationResultsMap.get("name");
+
+				if (termsAggregationResult == null) {
+					return Page.of(Collections.emptyList());
+				}
+
 				return Page.of(
-					Stream.of(
-						searchSearchResponse.getAggregationResultsMap()
-					).map(
-						aggregationResultsMap ->
-							(TermsAggregationResult)aggregationResultsMap.get(
-								"name")
-					).map(
-						TermsAggregationResult::getBuckets
-					).flatMap(
-						Collection::stream
-					).map(
+					transform(
+						termsAggregationResult.getBuckets(),
 						bucket -> TaskUtil.toTask(
 							_language, bucket.getKey(),
 							ResourceBundleUtil.getModuleAndPortalResourceBundle(
 								contextAcceptLanguage.getPreferredLocale(),
-								TaskResourceImpl.class))
-					).collect(
-						Collectors.toList()
-					));
+								TaskResourceImpl.class))));
 			}
 
 			return Page.of(
@@ -292,14 +303,7 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 
 			TermsQuery termsQuery = _queries.terms("assigneeIds");
 
-			termsQuery.addValues(
-				Stream.of(
-					ArrayUtil.toArray(contextUser.getRoleIds())
-				).map(
-					String::valueOf
-				).toArray(
-					Object[]::new
-				));
+			termsQuery.addValues(ArrayUtil.toArray(contextUser.getRoleIds()));
 
 			shouldBooleanQuery.addMustQueryClauses(
 				termsQuery,
@@ -314,15 +318,7 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 			TermsQuery termsQuery = _queries.terms("assigneeIds");
 
 			termsQuery.addValues(
-				Stream.of(
-					assigneeIds
-				).filter(
-					assigneeId -> assigneeId > 0
-				).map(
-					String::valueOf
-				).toArray(
-					Object[]::new
-				));
+				ArrayUtil.filter(assigneeIds, assigneeId -> assigneeId > 0));
 
 			shouldBooleanQuery.addMustQueryClauses(
 				termsQuery,
@@ -435,14 +431,7 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 
 		TermsQuery termsQuery = _queries.terms("instanceId");
 
-		termsQuery.addValues(
-			Stream.of(
-				instanceIds
-			).map(
-				String::valueOf
-			).toArray(
-				Object[]::new
-			));
+		termsQuery.addValues(instanceIds);
 
 		return booleanQuery.addMustQueryClauses(termsQuery);
 	}
@@ -591,26 +580,26 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 				_resourceHelper.getLatestProcessVersion(
 					contextCompany.getCompanyId(), processId)));
 
-		return Stream.of(
-			_searchRequestExecutor.executeSearchRequest(searchSearchRequest)
-		).map(
-			SearchSearchResponse::getAggregationResultsMap
-		).map(
-			aggregationResultsMap ->
-				(TermsAggregationResult)aggregationResultsMap.get("name")
-		).map(
-			TermsAggregationResult::getBuckets
-		).flatMap(
-			Collection::stream
-		).map(
+		SearchSearchResponse searchSearchResponse =
+			_searchRequestExecutor.executeSearchRequest(searchSearchRequest);
+
+		Map<String, AggregationResult> aggregationResultsMap =
+			searchSearchResponse.getAggregationResultsMap();
+
+		TermsAggregationResult termsAggregationResult =
+			(TermsAggregationResult)aggregationResultsMap.get("name");
+
+		if (termsAggregationResult == null) {
+			return Collections.emptyList();
+		}
+
+		return transform(
+			termsAggregationResult.getBuckets(),
 			bucket -> TaskUtil.toTask(
 				_language, bucket.getKey(),
 				ResourceBundleUtil.getModuleAndPortalResourceBundle(
 					contextAcceptLanguage.getPreferredLocale(),
-					TaskResourceImpl.class))
-		).collect(
-			Collectors.toList()
-		);
+					TaskResourceImpl.class)));
 	}
 
 	private List<Task> _getTasks(
@@ -661,43 +650,64 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 		searchSearchRequest.setQuery(
 			_createBooleanQuery(assigneeIds, instanceIds, processId));
 
-		return Stream.of(
-			_searchRequestExecutor.executeSearchRequest(searchSearchRequest)
-		).map(
-			SearchSearchResponse::getAggregationResultsMap
-		).map(
-			aggregationResultsMap ->
-				(TermsAggregationResult)aggregationResultsMap.get(
-					"instanceIdTaskId")
-		).map(
-			TermsAggregationResult::getBuckets
-		).flatMap(
-			Collection::stream
-		).map(
-			bucket -> (FilterAggregationResult)bucket.getChildAggregationResult(
-				"index")
-		).map(
-			filterAggregationResult ->
-				(TopHitsAggregationResult)
-					filterAggregationResult.getChildAggregationResult("topHits")
-		).map(
-			TopHitsAggregationResult::getSearchHits
-		).map(
-			SearchHits::getSearchHits
-		).flatMap(
-			List::stream
-		).map(
-			SearchHit::getSourcesMap
-		).map(
-			sourcesMap -> TaskUtil.toTask(
-				_language, contextAcceptLanguage.getPreferredLocale(), _portal,
-				ResourceBundleUtil.getModuleAndPortalResourceBundle(
-					contextAcceptLanguage.getPreferredLocale(),
-					TaskResourceImpl.class),
-				sourcesMap, _userLocalService::fetchUser)
-		).collect(
-			Collectors.toCollection(LinkedList::new)
-		);
+		SearchSearchResponse searchSearchResponse =
+			_searchRequestExecutor.executeSearchRequest(searchSearchRequest);
+
+		Map<String, AggregationResult> aggregationResultsMap =
+			searchSearchResponse.getAggregationResultsMap();
+
+		TermsAggregationResult termsAggregationResult =
+			(TermsAggregationResult)aggregationResultsMap.get(
+				"instanceIdTaskId");
+
+		if (termsAggregationResult == null) {
+			return Collections.emptyList();
+		}
+
+		return new LinkedList<>(
+			transform(
+				termsAggregationResult.getBuckets(),
+				bucket -> {
+					FilterAggregationResult filterAggregationResult =
+						(FilterAggregationResult)
+							bucket.getChildAggregationResult("index");
+
+					if (filterAggregationResult != null) {
+						TopHitsAggregationResult topHitsAggregationResult =
+							(TopHitsAggregationResult)
+								filterAggregationResult.
+									getChildAggregationResult("topHits");
+
+						if (topHitsAggregationResult != null) {
+							SearchHits searchHits =
+								topHitsAggregationResult.getSearchHits();
+
+							if (searchHits != null) {
+								List<SearchHit> searchHitList =
+									searchHits.getSearchHits();
+
+								if (ListUtil.isNotEmpty(searchHitList)) {
+									for (SearchHit searchHit : searchHitList) {
+										return TaskUtil.toTask(
+											_language,
+											contextAcceptLanguage.
+												getPreferredLocale(),
+											_portal,
+											ResourceBundleUtil.
+												getModuleAndPortalResourceBundle(
+													contextAcceptLanguage.
+														getPreferredLocale(),
+													TaskResourceImpl.class),
+											searchHit.getSourcesMap(),
+											_userLocalService::fetchUser);
+									}
+								}
+							}
+						}
+					}
+
+					return null;
+				}));
 	}
 
 	private AddTaskRequest _toAddTaskRequest(Long processId, Task task) {

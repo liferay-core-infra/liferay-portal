@@ -21,8 +21,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 
-import java.util.Optional;
-
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -30,9 +29,7 @@ import javax.ws.rs.core.UriInfo;
  */
 public class CreatorUtil {
 
-	public static Creator toCreator(
-		Portal portal, Optional<UriInfo> uriInfoOptional, User user) {
-
+	public static Creator toCreator(Portal portal, UriInfo uriInfo, User user) {
 		if ((user == null) || user.isDefaultUser()) {
 			return null;
 		}
@@ -62,17 +59,7 @@ public class CreatorUtil {
 					});
 				setProfileURL(
 					() -> {
-						if (uriInfoOptional.map(
-								UriInfo::getQueryParameters
-							).map(
-								parameters -> parameters.getFirst(
-									"nestedFields")
-							).map(
-								fields -> fields.contains("profileURL")
-							).orElse(
-								false
-							)) {
-
+						if (_containProfileURL(uriInfo)) {
 							Group group = user.getGroup();
 
 							ThemeDisplay themeDisplay = new ThemeDisplay() {
@@ -89,6 +76,27 @@ public class CreatorUtil {
 					});
 			}
 		};
+	}
+
+	private static boolean _containProfileURL(UriInfo uriInfo) {
+		if (uriInfo == null) {
+			return false;
+		}
+
+		MultivaluedMap<String, String> parameters =
+			uriInfo.getQueryParameters();
+
+		if ((parameters == null) || parameters.isEmpty()) {
+			return false;
+		}
+
+		String fields = parameters.getFirst("nestedFields");
+
+		if (fields == null) {
+			return false;
+		}
+
+		return fields.contains("profileURL");
 	}
 
 }

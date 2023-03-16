@@ -345,50 +345,9 @@ public class DataGuardTestRuleUtil {
 			for (Map.Entry<String, List<BaseModel<?>>> entry :
 					dataMap.entrySet()) {
 
-				String className = entry.getKey();
-
-				PersistedModelLocalService persistedModelLocalService =
-					persistedModelLocalServices.get(className);
-
-				Class<?> persistedModelLocalServiceClass =
-					persistedModelLocalService.getClass();
-
-				ClassLoader classLoader =
-					persistedModelLocalServiceClass.getClassLoader();
-
-				Class<?> modelClass = classLoader.loadClass(
-					_sanitizeClassName(className));
-
-				List<BaseModel<?>> currentBaseModels = entry.getValue();
-
-				List<BaseModel<?>> previsoutBaseModels = previousDataMap.get(
-					className);
-
-				List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(
-					currentBaseModels);
-
-				if (previsoutBaseModels != null) {
-					leftoverBaseModels.removeAll(previsoutBaseModels);
-				}
-
-				for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {
-					if (className.equals(ResourcePermission.class.getName())) {
-						ResourcePermission resourcePermission =
-							(ResourcePermission)leftoverBaseModel;
-
-						if ((resourcePermission.getScope() ==
-								ResourceConstants.SCOPE_INDIVIDUAL) &&
-							(resourcePermission.getPrimKeyId() != 0) &&
-							persistedModelLocalServices.containsKey(
-								resourcePermission.getName())) {
-
-							continue;
-						}
-					}
-
-					smartDelete(
-						persistedModelLocalService, modelClass,
-						(PersistedModel)leftoverBaseModel);
+				if (_autoDeleteLeftovers(
+						entry.getKey(), entry.getValue(), previousDataMap,
+						persistedModelLocalServices)) {
 
 					deleted = true;
 				}
@@ -398,6 +357,60 @@ public class DataGuardTestRuleUtil {
 				break;
 			}
 		}
+	}
+
+	private static boolean _autoDeleteLeftovers(
+			String className, List<BaseModel<?>> currentBaseModels,
+			Map<String, List<BaseModel<?>>> previousDataMap,
+			Map<String, PersistedModelLocalService> persistedModelLocalServices)
+		throws Exception {
+
+		boolean deleted = false;
+
+		PersistedModelLocalService persistedModelLocalService =
+			persistedModelLocalServices.get(className);
+
+		Class<?> persistedModelLocalServiceClass =
+			persistedModelLocalService.getClass();
+
+		ClassLoader classLoader =
+			persistedModelLocalServiceClass.getClassLoader();
+
+		Class<?> modelClass = classLoader.loadClass(
+			_sanitizeClassName(className));
+
+		List<BaseModel<?>> previsoutBaseModels = previousDataMap.get(className);
+
+		List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(
+			currentBaseModels);
+
+		if (previsoutBaseModels != null) {
+			leftoverBaseModels.removeAll(previsoutBaseModels);
+		}
+
+		for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {
+			if (className.equals(ResourcePermission.class.getName())) {
+				ResourcePermission resourcePermission =
+					(ResourcePermission)leftoverBaseModel;
+
+				if ((resourcePermission.getScope() ==
+						ResourceConstants.SCOPE_INDIVIDUAL) &&
+					(resourcePermission.getPrimKeyId() != 0) &&
+					persistedModelLocalServices.containsKey(
+						resourcePermission.getName())) {
+
+					continue;
+				}
+			}
+
+			smartDelete(
+				persistedModelLocalService, modelClass,
+				(PersistedModel)leftoverBaseModel);
+
+			deleted = true;
+		}
+
+		return deleted;
 	}
 
 	private static Map<String, List<BaseModel<?>>> _captureDataMap() {

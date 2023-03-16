@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.metrics.rest.internal.resource.v1_0;
 
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.engine.adapter.search.SearchRequestExecutor;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchResponse;
@@ -31,7 +33,6 @@ import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsInde
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionLocalService;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -70,26 +71,48 @@ public class SLAResultResourceImpl extends BaseSLAResultResourceImpl {
 
 		searchSearchRequest.setSize(1);
 
-		return Stream.of(
-			_searchRequestExecutor.executeSearchRequest(searchSearchRequest)
-		).map(
-			SearchSearchResponse::getSearchHits
-		).map(
-			SearchHits::getSearchHits
-		).flatMap(
-			List::stream
-		).map(
-			SearchHit::getDocument
-		).findFirst(
-		).map(
-			document -> SLAResultUtil.toSLAResult(
-				document,
-				_workflowMetricsSLADefinitionLocalService::
-					fetchWorkflowMetricsSLADefinition)
-		).orElseThrow(
-			() -> new NoSuchSLAResultException(
-				"No SLA result exists with process ID " + processId)
-		);
+		SearchSearchResponse searchSearchResponses =
+			_searchRequestExecutor.executeSearchRequest(searchSearchRequest);
+
+		SearchHits searchHits = searchSearchResponses.getSearchHits();
+
+		if (searchHits == null) {
+			throw new NoSuchSLAResultException(
+				"No SLA result exists with process ID " + processId);
+		}
+
+		List<SearchHit> searchHitList = searchHits.getSearchHits();
+
+		if (ListUtil.isEmpty(searchHitList)) {
+			throw new NoSuchSLAResultException(
+				"No SLA result exists with process ID " + processId);
+		}
+
+		SearchHit firstSearchHit = searchHitList.get(0);
+
+		if (firstSearchHit == null) {
+			throw new NoSuchSLAResultException(
+				"No SLA result exists with process ID " + processId);
+		}
+
+		Document document = firstSearchHit.getDocument();
+
+		if (document == null) {
+			throw new NoSuchSLAResultException(
+				"No SLA result exists with process ID " + processId);
+		}
+
+		SLAResult slaResult = SLAResultUtil.toSLAResult(
+			document,
+			_workflowMetricsSLADefinitionLocalService::
+				fetchWorkflowMetricsSLADefinition);
+
+		if (slaResult == null) {
+			throw new NoSuchSLAResultException(
+				"No SLA result exists with process ID " + processId);
+		}
+
+		return slaResult;
 	}
 
 	@Reference

@@ -52,7 +52,7 @@ public class LiferayResourceOwnerAccessTokenGrantHandler
 	@Override
 	public List<String> getSupportedGrantTypes() {
 		AccessTokenGrantHandler accessTokenGrantHandler =
-			getAccessTokenGrantHandler();
+			_getAccessTokenGrantHandler();
 
 		return accessTokenGrantHandler.getSupportedGrantTypes();
 	}
@@ -68,20 +68,9 @@ public class LiferayResourceOwnerAccessTokenGrantHandler
 		Client client, MultivaluedMap<String, String> params) {
 
 		AccessTokenGrantHandler accessTokenGrantHandler =
-			getAccessTokenGrantHandler();
+			_getAccessTokenGrantHandler();
 
 		return accessTokenGrantHandler.createAccessToken(client, params);
-	}
-
-	@Override
-	protected AccessTokenGrantHandler getAccessTokenGrantHandler() {
-		ResourceOwnerGrantHandler resourceOwnerGrantHandler =
-			new ResourceOwnerGrantHandler();
-
-		resourceOwnerGrantHandler.setDataProvider(_liferayOAuthDataProvider);
-		resourceOwnerGrantHandler.setLoginHandler(_resourceOwnerLoginHandler);
-
-		return resourceOwnerGrantHandler;
 	}
 
 	@Override
@@ -122,6 +111,16 @@ public class LiferayResourceOwnerAccessTokenGrantHandler
 	protected boolean isGrantHandlerEnabled() {
 		return _oAuth2ProviderConfiguration.
 			allowResourceOwnerPasswordCredentialsGrant();
+	}
+
+	private AccessTokenGrantHandler _getAccessTokenGrantHandler() {
+		ResourceOwnerGrantHandler resourceOwnerGrantHandler =
+			new ResourceOwnerGrantHandler();
+
+		resourceOwnerGrantHandler.setDataProvider(_liferayOAuthDataProvider);
+		resourceOwnerGrantHandler.setLoginHandler(_resourceOwnerLoginHandler);
+
+		return resourceOwnerGrantHandler;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

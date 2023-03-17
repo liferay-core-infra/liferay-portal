@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.dao.orm.SessionWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.test.util.ResourcePermissionTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -337,10 +339,17 @@ public class DataGuardTestRuleUtil {
 		Map<String, PersistedModelLocalService> persistedModelLocalServices =
 			_getPersistedModelLocalServices();
 
+		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap(
+			Company.class.getName());
+
+		_autoDeleteLeftovers(
+			Company.class.getName(), dataMap.get(Company.class.getName()),
+			previousDataMap, persistedModelLocalServices);
+
 		while (true) {
 			boolean deleted = false;
 
-			Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
+			dataMap = _captureDataMap();
 
 			for (Map.Entry<String, List<BaseModel<?>>> entry :
 					dataMap.entrySet()) {
@@ -413,7 +422,9 @@ public class DataGuardTestRuleUtil {
 		return deleted;
 	}
 
-	private static Map<String, List<BaseModel<?>>> _captureDataMap() {
+	private static Map<String, List<BaseModel<?>>> _captureDataMap(
+		String... classNames) {
+
 		Map<String, PersistedModelLocalService> persistedModelLocalServices =
 			_getPersistedModelLocalServices();
 
@@ -421,6 +432,12 @@ public class DataGuardTestRuleUtil {
 
 		for (Map.Entry<String, PersistedModelLocalService> entry :
 				persistedModelLocalServices.entrySet()) {
+
+			if (ArrayUtil.isNotEmpty(classNames) &&
+				!ArrayUtil.contains(classNames, entry.getKey())) {
+
+				continue;
+			}
 
 			PersistedModelLocalService persistedModelLocalService =
 				entry.getValue();

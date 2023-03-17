@@ -88,12 +88,18 @@ public class IFrameConfigurationAction extends DefaultConfigurationAction {
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.iframe.web)", unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	@Override
@@ -119,5 +125,7 @@ public class IFrameConfigurationAction extends DefaultConfigurationAction {
 			}
 		}
 	}
+
+	private ServletContext _servletContext;
 
 }

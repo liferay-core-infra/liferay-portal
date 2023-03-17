@@ -63,13 +63,19 @@ public class IGDisplayConfigurationAction
 		super.include(portletConfig, httpServletRequest, httpServletResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.document.library.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	@Reference
@@ -83,6 +89,8 @@ public class IGDisplayConfigurationAction
 
 	@Reference
 	private RepositoryLocalService _repositoryLocalService;
+
+	private ServletContext _servletContext;
 
 	@Reference
 	private TrashHelper _trashHelper;

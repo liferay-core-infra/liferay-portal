@@ -38,13 +38,21 @@ public class DDMFormConfigurationAction extends DefaultConfigurationAction {
 		return "/display/configuration.jsp";
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.dynamic.data.mapping.form.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
 	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
+	}
+
+	private ServletContext _servletContext;
 
 }

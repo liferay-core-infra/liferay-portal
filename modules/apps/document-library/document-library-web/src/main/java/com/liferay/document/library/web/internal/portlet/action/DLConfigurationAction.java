@@ -65,13 +65,19 @@ public class DLConfigurationAction
 		super.include(portletConfig, httpServletRequest, httpServletResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.document.library.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	@Override
@@ -97,5 +103,7 @@ public class DLConfigurationAction
 
 	@Reference
 	private ItemSelector _itemSelector;
+
+	private ServletContext _servletContext;
 
 }

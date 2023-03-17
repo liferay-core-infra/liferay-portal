@@ -86,13 +86,19 @@ public class CommerceCartContentConfigurationAction
 		super.include(portletConfig, httpServletRequest, httpServletResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.commerce.cart.content.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -129,5 +135,7 @@ public class CommerceCartContentConfigurationAction
 
 	@Reference
 	private Portal _portal;
+
+	private ServletContext _servletContext;
 
 }

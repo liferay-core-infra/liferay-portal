@@ -63,13 +63,19 @@ public class AdminConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.knowledge.base.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	@Override
@@ -94,5 +100,7 @@ public class AdminConfigurationAction
 			SessionErrors.add(actionRequest, emailParam + "Body");
 		}
 	}
+
+	private ServletContext _servletContext;
 
 }

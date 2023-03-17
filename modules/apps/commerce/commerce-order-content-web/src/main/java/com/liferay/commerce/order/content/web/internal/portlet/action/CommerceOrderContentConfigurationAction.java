@@ -125,13 +125,19 @@ public class CommerceOrderContentConfigurationAction
 		}
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.commerce.order.content.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -199,5 +205,7 @@ public class CommerceOrderContentConfigurationAction
 		target = "(resource.name=" + CommerceOrderConstants.RESOURCE_NAME + ")"
 	)
 	private PortletResourcePermission _portletResourcePermission;
+
+	private ServletContext _servletContext;
 
 }

@@ -85,13 +85,19 @@ public class SampleDroolsConfigurationAction
 		}
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.portal.rules.engine.sample.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	private void _updatePreferences(
@@ -151,5 +157,7 @@ public class SampleDroolsConfigurationAction
 
 	@Reference
 	private RulesEngine _rulesEngine;
+
+	private ServletContext _servletContext;
 
 }

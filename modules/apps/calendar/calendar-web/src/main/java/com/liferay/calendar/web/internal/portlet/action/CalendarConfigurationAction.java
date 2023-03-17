@@ -59,13 +59,19 @@ public class CalendarConfigurationAction extends DefaultConfigurationAction {
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.calendar.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	private void _updateDisplaySettings(ActionRequest actionRequest)
@@ -146,5 +152,7 @@ public class CalendarConfigurationAction extends DefaultConfigurationAction {
 
 	@Reference
 	private Portal _portal;
+
+	private ServletContext _servletContext;
 
 }

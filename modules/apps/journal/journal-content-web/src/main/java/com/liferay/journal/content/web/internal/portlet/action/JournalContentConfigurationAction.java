@@ -143,13 +143,19 @@ public class JournalContentConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.journal.content.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	private void _addDDMTemplateLinks(ActionRequest actionRequest)
@@ -273,6 +279,8 @@ public class JournalContentConfigurationAction
 
 	@Reference
 	private Portal _portal;
+
+	private ServletContext _servletContext;
 
 	@Reference
 	private TrashHelper _trashHelper;

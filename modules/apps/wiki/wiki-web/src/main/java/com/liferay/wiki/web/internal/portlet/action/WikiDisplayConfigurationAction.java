@@ -39,12 +39,20 @@ public class WikiDisplayConfigurationAction
 		return "/wiki_display/configuration.jsp";
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.wiki.web)", unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
 	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
+	}
+
+	private ServletContext _servletContext;
 
 }

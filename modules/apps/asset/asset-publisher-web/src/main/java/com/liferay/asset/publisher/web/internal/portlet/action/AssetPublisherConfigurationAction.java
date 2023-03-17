@@ -322,13 +322,12 @@ public class AssetPublisherConfigurationAction
 		}
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.asset.publisher.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		this.servletContext = servletContext;
 	}
 
 	@Activate
@@ -341,6 +340,13 @@ public class AssetPublisherConfigurationAction
 	protected String getDefaultSelectionStyle() {
 		return AssetPublisherSelectionStyleConfigurationUtil.
 			defaultSelectionStyle();
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return servletContext;
 	}
 
 	@Reference
@@ -394,6 +400,8 @@ public class AssetPublisherConfigurationAction
 
 	@Reference
 	protected SegmentsEntryRetriever segmentsEntryRetriever;
+
+	protected ServletContext servletContext;
 
 	@Reference
 	protected Staging staging;

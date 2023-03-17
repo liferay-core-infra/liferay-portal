@@ -39,13 +39,21 @@ public class AssetCategoriesNavigationConfigurationAction
 		return "/configuration.jsp";
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.asset.categories.navigation.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
 	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
+	}
+
+	private ServletContext _servletContext;
 
 }

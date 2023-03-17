@@ -169,12 +169,11 @@ public class JournalConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.journal.web)", unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
 	}
 
 	@Activate
@@ -184,9 +183,18 @@ public class JournalConfigurationAction
 			JournalWebConfiguration.class, properties);
 	}
 
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
+	}
+
 	private volatile JournalWebConfiguration _journalWebConfiguration;
 
 	@Reference
 	private Portal _portal;
+
+	private ServletContext _servletContext;
 
 }

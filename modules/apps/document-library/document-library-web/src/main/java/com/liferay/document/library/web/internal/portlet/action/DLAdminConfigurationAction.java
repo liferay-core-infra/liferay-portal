@@ -76,13 +76,19 @@ public class DLAdminConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.document.library.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	private void _validate(ActionRequest actionRequest) {
@@ -93,5 +99,7 @@ public class DLAdminConfigurationAction
 
 	@Reference
 	private ItemSelector _itemSelector;
+
+	private ServletContext _servletContext;
 
 }

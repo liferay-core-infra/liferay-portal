@@ -87,13 +87,19 @@ public class NestedPortletsConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.nested.portlets.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+		_servletContext = servletContext;
+	}
+
+	@Override
+	protected ServletContext getServletContext(
+		HttpServletRequest httpServletRequest) {
+
+		return _servletContext;
 	}
 
 	@Reference(unbind = "-")
@@ -181,5 +187,7 @@ public class NestedPortletsConfigurationAction
 
 	@Reference
 	private Portal _portal;
+
+	private ServletContext _servletContext;
 
 }

@@ -388,13 +388,13 @@ public class DataGuardTestRuleUtil {
 		Class<?> modelClass = classLoader.loadClass(
 			_sanitizeClassName(className));
 
-		List<BaseModel<?>> previsoutBaseModels = previousDataMap.get(className);
+		List<BaseModel<?>> previousBaseModels = previousDataMap.get(className);
 
 		List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(
 			currentBaseModels);
 
-		if (previsoutBaseModels != null) {
-			leftoverBaseModels.removeAll(previsoutBaseModels);
+		if (previousBaseModels != null) {
+			leftoverBaseModels.removeAll(previousBaseModels);
 		}
 
 		for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {

@@ -39,14 +39,6 @@ public class SiteNavigationLanguageConfigurationAction
 		return "/configuration.jsp";
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.site.navigation.language.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -54,6 +46,9 @@ public class SiteNavigationLanguageConfigurationAction
 		return _servletContext;
 	}
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.site.navigation.language.web)"
+	)
 	private ServletContext _servletContext;
 
 }

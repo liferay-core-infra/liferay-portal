@@ -87,33 +87,11 @@ public class NestedPortletsConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.nested.portlets.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
 
 		return _servletContext;
-	}
-
-	@Reference(unbind = "-")
-	protected void setLayoutLocalService(
-		LayoutLocalService layoutLocalService) {
-
-		_layoutLocalService = layoutLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setLayoutTemplateLocalService(
-		LayoutTemplateLocalService layoutTemplateLocalService) {
-
-		_layoutTemplateLocalService = layoutTemplateLocalService;
 	}
 
 	private List<String> _getColumnNames(String content, String portletId) {
@@ -182,12 +160,18 @@ public class NestedPortletsConfigurationAction
 	private static final Pattern _pattern = Pattern.compile(
 		"processColumn[(]\"(.*?)\"(?:, *\"(?:.*?)\")?[)]", Pattern.DOTALL);
 
+	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
 	private LayoutTemplateLocalService _layoutTemplateLocalService;
 
 	@Reference
 	private Portal _portal;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.nested.portlets.web)"
+	)
 	private ServletContext _servletContext;
 
 }

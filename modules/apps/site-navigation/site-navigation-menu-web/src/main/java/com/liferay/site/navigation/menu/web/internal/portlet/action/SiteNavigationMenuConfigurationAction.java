@@ -94,14 +94,6 @@ public class SiteNavigationMenuConfigurationAction
 		}
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.site.navigation.menu.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected void doDispatch(
 			RenderRequest renderRequest, RenderResponse renderResponse)
@@ -120,17 +112,15 @@ public class SiteNavigationMenuConfigurationAction
 		return _servletContext;
 	}
 
-	@Reference(unbind = "-")
-	protected void setPortletDisplayTemplate(
-		PortletDisplayTemplate portletDisplayTemplate) {
-
-		_portletDisplayTemplate = portletDisplayTemplate;
-	}
-
 	@Reference
 	private ItemSelector _itemSelector;
 
+	@Reference
 	private PortletDisplayTemplate _portletDisplayTemplate;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.site.navigation.menu.web)"
+	)
 	private ServletContext _servletContext;
 
 	@Reference

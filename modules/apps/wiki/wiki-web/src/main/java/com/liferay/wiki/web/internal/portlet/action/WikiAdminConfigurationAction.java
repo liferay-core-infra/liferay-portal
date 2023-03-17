@@ -56,13 +56,6 @@ public class WikiAdminConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.wiki.web)", unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -70,6 +63,7 @@ public class WikiAdminConfigurationAction
 		return _servletContext;
 	}
 
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.wiki.web)")
 	private ServletContext _servletContext;
 
 }

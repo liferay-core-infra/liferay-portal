@@ -80,14 +80,6 @@ public class CommerceVirtualOrderItemContentConfigurationAction
 		super.include(portletConfig, httpServletRequest, httpServletResponse);
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.type.virtual.order.content.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -119,6 +111,9 @@ public class CommerceVirtualOrderItemContentConfigurationAction
 	@Reference
 	private CPInstanceHelper _cpInstanceHelper;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.product.type.virtual.order.content.web)"
+	)
 	private ServletContext _servletContext;
 
 }

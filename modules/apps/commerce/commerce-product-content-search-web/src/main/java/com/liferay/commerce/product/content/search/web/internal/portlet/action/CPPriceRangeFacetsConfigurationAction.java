@@ -73,14 +73,6 @@ public class CPPriceRangeFacetsConfigurationAction
 		return "/price_range_facets/configuration.jsp";
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.search.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -108,6 +100,9 @@ public class CPPriceRangeFacetsConfigurationAction
 	@Reference
 	private PortletSharedSearchRequest _portletSharedSearchRequest;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.search.web)"
+	)
 	private ServletContext _servletContext;
 
 }

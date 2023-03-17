@@ -322,14 +322,6 @@ public class AssetPublisherConfigurationAction
 		}
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.asset.publisher.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
-	}
-
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
@@ -401,6 +393,9 @@ public class AssetPublisherConfigurationAction
 	@Reference
 	protected SegmentsEntryRetriever segmentsEntryRetriever;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.asset.publisher.web)"
+	)
 	protected ServletContext servletContext;
 
 	@Reference

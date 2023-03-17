@@ -125,14 +125,6 @@ public class CommerceOrderContentConfigurationAction
 		}
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.order.content.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -206,6 +198,9 @@ public class CommerceOrderContentConfigurationAction
 	)
 	private PortletResourcePermission _portletResourcePermission;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.order.content.web)"
+	)
 	private ServletContext _servletContext;
 
 }

@@ -39,14 +39,6 @@ public class RecentBloggersConfigurationAction
 		return "/configuration.jsp";
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.blogs.recent.bloggers.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -54,6 +46,9 @@ public class RecentBloggersConfigurationAction
 		return _servletContext;
 	}
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.blogs.recent.bloggers.web)"
+	)
 	private ServletContext _servletContext;
 
 }

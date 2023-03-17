@@ -55,14 +55,6 @@ public class SectionConfigurationAction extends DefaultConfigurationAction {
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.knowledge.base.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -84,6 +76,9 @@ public class SectionConfigurationAction extends DefaultConfigurationAction {
 		}
 	}
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.knowledge.base.web)"
+	)
 	private ServletContext _servletContext;
 
 }

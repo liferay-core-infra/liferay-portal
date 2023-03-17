@@ -63,14 +63,6 @@ public class CPContentConfigurationAction extends DefaultConfigurationAction {
 		return "/product_detail/configuration.jsp";
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -84,6 +76,9 @@ public class CPContentConfigurationAction extends DefaultConfigurationAction {
 	@Reference
 	private CPContentHelper _cpContentHelper;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.web)"
+	)
 	private ServletContext _servletContext;
 
 }

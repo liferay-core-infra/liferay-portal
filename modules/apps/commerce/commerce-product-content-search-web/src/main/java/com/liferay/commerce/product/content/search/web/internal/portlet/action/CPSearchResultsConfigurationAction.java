@@ -72,14 +72,6 @@ public class CPSearchResultsConfigurationAction
 		return "/search_results/configuration.jsp";
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.search.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -106,6 +98,9 @@ public class CPSearchResultsConfigurationAction
 	@Reference
 	private PortletSharedSearchRequest _portletSharedSearchRequest;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.search.web)"
+	)
 	private ServletContext _servletContext;
 
 }

@@ -38,14 +38,6 @@ public class DDLDisplayConfigurationAction extends DefaultConfigurationAction {
 		return "/configuration.jsp";
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.dynamic.data.lists.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -53,6 +45,9 @@ public class DDLDisplayConfigurationAction extends DefaultConfigurationAction {
 		return _servletContext;
 	}
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.dynamic.data.lists.web)"
+	)
 	private ServletContext _servletContext;
 
 }

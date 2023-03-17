@@ -39,14 +39,6 @@ public class SitesDirectoryConfigurationAction
 		return "/configuration.jsp";
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.site.navigation.directory.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -54,6 +46,9 @@ public class SitesDirectoryConfigurationAction
 		return _servletContext;
 	}
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.site.navigation.directory.web)"
+	)
 	private ServletContext _servletContext;
 
 }

@@ -93,14 +93,6 @@ public class SearchConfigurationAction extends DefaultConfigurationAction {
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.portal.search.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -114,6 +106,7 @@ public class SearchConfigurationAction extends DefaultConfigurationAction {
 	@Reference
 	private JSONFactory _jsonFactory;
 
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.portal.search.web)")
 	private ServletContext _servletContext;
 
 }

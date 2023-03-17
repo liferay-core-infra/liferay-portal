@@ -58,24 +58,11 @@ public class WikiNavigationTreeMenuConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.wiki.navigation.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
 
 		return _servletContext;
-	}
-
-	@Reference(unbind = "-")
-	protected void setWikiNodeService(WikiNodeService wikiNodeService) {
-		_wikiNodeService = wikiNodeService;
 	}
 
 	protected void validateNode(ActionRequest actionRequest) throws Exception {
@@ -90,7 +77,12 @@ public class WikiNavigationTreeMenuConfigurationAction
 		}
 	}
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.wiki.navigation.web)"
+	)
 	private ServletContext _servletContext;
+
+	@Reference
 	private WikiNodeService _wikiNodeService;
 
 }

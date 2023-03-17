@@ -65,14 +65,6 @@ public class DLConfigurationAction
 		super.include(portletConfig, httpServletRequest, httpServletResponse);
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.document.library.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -104,6 +96,9 @@ public class DLConfigurationAction
 	@Reference
 	private ItemSelector _itemSelector;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.document.library.web)"
+	)
 	private ServletContext _servletContext;
 
 }

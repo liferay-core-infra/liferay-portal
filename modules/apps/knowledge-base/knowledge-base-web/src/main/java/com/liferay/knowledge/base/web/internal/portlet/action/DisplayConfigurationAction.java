@@ -38,14 +38,6 @@ public class DisplayConfigurationAction extends DefaultConfigurationAction {
 		return "/display/configuration.jsp";
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.knowledge.base.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Override
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
@@ -53,6 +45,9 @@ public class DisplayConfigurationAction extends DefaultConfigurationAction {
 		return _servletContext;
 	}
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.knowledge.base.web)"
+	)
 	private ServletContext _servletContext;
 
 }

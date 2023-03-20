@@ -57,6 +57,8 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
@@ -69,7 +71,6 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -89,18 +90,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Gabriel Albuquerque
@@ -256,57 +254,28 @@ public class DataLayoutTaglibUtil {
 	}
 
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		_dataLayoutTaglibUtil = this;
-	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addDataLayoutBuilderDefinition(
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataLayoutBuilderDefinitions.put(
-			contentType, dataLayoutBuilderDefinition);
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, DataLayoutBuilderDefinition.class, "content.type");
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_dataLayoutTaglibUtil = null;
-	}
 
-	protected void removeDataLayoutBuilderDefinition(
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataLayoutBuilderDefinitions.remove(contentType);
+		_serviceTrackerMap.close();
 	}
 
 	private static DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(
 		String contentType) {
 
 		DataLayoutBuilderDefinition dataLayoutBuilderDefinition =
-			_dataLayoutBuilderDefinitions.get(contentType);
+			_serviceTrackerMap.getService(contentType);
 
 		if (dataLayoutBuilderDefinition == null) {
-			return _dataLayoutBuilderDefinitions.get("default");
+			return _serviceTrackerMap.getService("default");
 		}
 
 		return dataLayoutBuilderDefinition;
@@ -631,9 +600,9 @@ public class DataLayoutTaglibUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataLayoutTaglibUtil.class);
 
-	private static final Map<String, DataLayoutBuilderDefinition>
-		_dataLayoutBuilderDefinitions = new ConcurrentHashMap<>();
 	private static DataLayoutTaglibUtil _dataLayoutTaglibUtil;
+	private static ServiceTrackerMap<String, DataLayoutBuilderDefinition>
+		_serviceTrackerMap;
 
 	@Reference
 	private DataDefinitionContentTypeRegistry

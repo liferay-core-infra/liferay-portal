@@ -61,14 +61,13 @@ public class FDSViewsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + FDSViewsPortletKeys.FDS_VIEWS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + FDSViewsPortletKeys.FDS_VIEWS + ")"
+	)
 	private Portlet _portlet;
 
 }

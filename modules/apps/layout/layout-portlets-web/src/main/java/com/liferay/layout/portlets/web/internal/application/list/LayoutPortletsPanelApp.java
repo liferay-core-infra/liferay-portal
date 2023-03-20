@@ -46,14 +46,13 @@ public class LayoutPortletsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + LayoutsPortletsPortletKeys.LAYOUT_PORTLETS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + LayoutsPortletsPortletKeys.LAYOUT_PORTLETS + ")"
+	)
 	private Portlet _portlet;
 
 }

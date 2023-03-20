@@ -46,14 +46,13 @@ public class JournalPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + JournalPortletKeys.JOURNAL + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + JournalPortletKeys.JOURNAL + ")"
+	)
 	private Portlet _portlet;
 
 }

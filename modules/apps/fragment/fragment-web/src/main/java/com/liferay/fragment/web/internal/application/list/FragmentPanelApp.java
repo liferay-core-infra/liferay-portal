@@ -63,14 +63,13 @@ public class FragmentPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + FragmentPortletKeys.FRAGMENT + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + FragmentPortletKeys.FRAGMENT + ")"
+	)
 	private Portlet _portlet;
 
 	@Reference

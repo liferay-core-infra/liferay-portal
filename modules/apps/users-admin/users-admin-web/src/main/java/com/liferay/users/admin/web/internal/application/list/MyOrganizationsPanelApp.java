@@ -46,14 +46,13 @@ public class MyOrganizationsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + UsersAdminPortletKeys.MY_ORGANIZATIONS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + UsersAdminPortletKeys.MY_ORGANIZATIONS + ")"
+	)
 	private Portlet _portlet;
 
 }

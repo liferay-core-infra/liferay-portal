@@ -62,10 +62,6 @@ public class SegmentsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SegmentsPortletKeys.SEGMENTS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -102,7 +98,11 @@ public class SegmentsPanelApp extends BasePanelApp {
 		_serviceRegistration.unregister();
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + SegmentsPortletKeys.SEGMENTS + ")"
+	)
 	private Portlet _portlet;
+
 	private volatile ServiceRegistration<PanelApp> _serviceRegistration;
 
 }

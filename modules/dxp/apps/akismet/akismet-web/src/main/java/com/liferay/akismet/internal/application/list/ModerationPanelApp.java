@@ -44,14 +44,13 @@ public class ModerationPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ModerationPortletKeys.MODERATION + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + ModerationPortletKeys.MODERATION + ")"
+	)
 	private Portlet _portlet;
 
 }

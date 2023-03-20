@@ -46,14 +46,13 @@ public class CommerceShipmentPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_SHIPMENT + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_SHIPMENT + ")"
+	)
 	private Portlet _portlet;
 
 }

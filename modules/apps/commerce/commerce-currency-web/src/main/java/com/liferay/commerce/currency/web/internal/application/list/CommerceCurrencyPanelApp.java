@@ -46,14 +46,13 @@ public class CommerceCurrencyPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CommerceCurrencyPortletKeys.COMMERCE_CURRENCY + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CommerceCurrencyPortletKeys.COMMERCE_CURRENCY + ")"
+	)
 	private Portlet _portlet;
 
 }

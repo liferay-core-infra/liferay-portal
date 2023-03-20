@@ -46,14 +46,13 @@ public class SearchAdminPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SearchAdminPortletKeys.SEARCH_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + SearchAdminPortletKeys.SEARCH_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

@@ -46,14 +46,13 @@ public class GogoShellPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + GogoShellPortletKeys.GOGO_SHELL + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + GogoShellPortletKeys.GOGO_SHELL + ")"
+	)
 	private Portlet _portlet;
 
 }

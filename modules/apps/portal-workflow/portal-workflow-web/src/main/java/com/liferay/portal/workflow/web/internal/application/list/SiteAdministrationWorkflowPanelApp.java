@@ -46,14 +46,13 @@ public class SiteAdministrationWorkflowPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + WorkflowPortletKeys.SITE_ADMINISTRATION_WORKFLOW + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + WorkflowPortletKeys.SITE_ADMINISTRATION_WORKFLOW + ")"
+	)
 	private Portlet _portlet;
 
 }

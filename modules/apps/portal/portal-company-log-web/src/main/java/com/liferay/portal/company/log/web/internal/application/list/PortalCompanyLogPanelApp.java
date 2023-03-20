@@ -67,14 +67,13 @@ public class PortalCompanyLogPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + PortalCompanyLogPortletKeys.PORTAL_COMPANY_LOG + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + PortalCompanyLogPortletKeys.PORTAL_COMPANY_LOG + ")"
+	)
 	private Portlet _portlet;
 
 }

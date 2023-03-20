@@ -50,14 +50,11 @@ public class TrashPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + TrashPortletKeys.TRASH + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(target = "(javax.portlet.name=" + TrashPortletKeys.TRASH + ")")
 	private Portlet _portlet;
 
 }

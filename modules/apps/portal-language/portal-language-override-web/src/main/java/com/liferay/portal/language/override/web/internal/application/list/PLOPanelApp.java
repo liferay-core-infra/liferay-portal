@@ -46,14 +46,13 @@ public class PLOPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + PLOPortletKeys.PORTAL_LANGUAGE_OVERRIDE + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + PLOPortletKeys.PORTAL_LANGUAGE_OVERRIDE + ")"
+	)
 	private Portlet _portlet;
 
 }

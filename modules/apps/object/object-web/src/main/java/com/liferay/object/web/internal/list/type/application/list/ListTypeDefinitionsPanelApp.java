@@ -46,14 +46,13 @@ public class ListTypeDefinitionsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ObjectPortletKeys.LIST_TYPE_DEFINITIONS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + ObjectPortletKeys.LIST_TYPE_DEFINITIONS + ")"
+	)
 	private Portlet _portlet;
 
 }

@@ -47,14 +47,13 @@ public class CommerceCatalogPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CPPortletKeys.COMMERCE_CATALOGS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CPPortletKeys.COMMERCE_CATALOGS + ")"
+	)
 	private Portlet _portlet;
 
 }

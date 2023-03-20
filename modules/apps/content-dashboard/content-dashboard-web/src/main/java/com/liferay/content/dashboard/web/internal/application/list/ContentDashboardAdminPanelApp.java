@@ -46,14 +46,13 @@ public class ContentDashboardAdminPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

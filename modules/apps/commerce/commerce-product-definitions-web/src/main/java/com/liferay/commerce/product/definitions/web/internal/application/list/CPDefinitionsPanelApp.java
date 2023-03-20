@@ -47,14 +47,13 @@ public class CPDefinitionsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CPPortletKeys.CP_DEFINITIONS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CPPortletKeys.CP_DEFINITIONS + ")"
+	)
 	private Portlet _portlet;
 
 }

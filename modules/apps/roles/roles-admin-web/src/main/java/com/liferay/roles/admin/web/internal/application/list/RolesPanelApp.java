@@ -46,14 +46,13 @@ public class RolesPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + RolesAdminPortletKeys.ROLES_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + RolesAdminPortletKeys.ROLES_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

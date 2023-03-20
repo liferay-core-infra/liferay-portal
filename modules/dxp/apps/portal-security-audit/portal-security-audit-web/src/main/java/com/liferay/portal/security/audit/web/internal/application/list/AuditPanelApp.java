@@ -46,14 +46,11 @@ public class AuditPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + AuditPortletKeys.AUDIT + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(target = "(javax.portlet.name=" + AuditPortletKeys.AUDIT + ")")
 	private Portlet _portlet;
 
 }

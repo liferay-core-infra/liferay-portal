@@ -78,14 +78,13 @@ public class ExportPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ExportImportPortletKeys.EXPORT + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + ExportImportPortletKeys.EXPORT + ")"
+	)
 	private Portlet _portlet;
 
 }

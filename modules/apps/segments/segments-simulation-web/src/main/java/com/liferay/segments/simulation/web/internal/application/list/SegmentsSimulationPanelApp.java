@@ -114,10 +114,6 @@ public class SegmentsSimulationPanelApp extends BaseJSPPanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SegmentsPortletKeys.SEGMENTS_SIMULATION + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -140,6 +136,9 @@ public class SegmentsSimulationPanelApp extends BaseJSPPanelApp {
 	@Reference
 	private Portal _portal;
 
+	@Reference(
+		target = "(javax.portlet.name=" + SegmentsPortletKeys.SEGMENTS_SIMULATION + ")"
+	)
 	private Portlet _portlet;
 
 	@Reference(

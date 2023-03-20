@@ -47,14 +47,13 @@ public class ReportsEngineConsolePanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ReportsEngineConsolePortletKeys.REPORTS_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + ReportsEngineConsolePortletKeys.REPORTS_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

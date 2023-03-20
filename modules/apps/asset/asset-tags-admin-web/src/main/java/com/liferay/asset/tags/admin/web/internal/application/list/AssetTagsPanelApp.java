@@ -46,14 +46,13 @@ public class AssetTagsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + AssetTagsAdminPortletKeys.ASSET_TAGS_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + AssetTagsAdminPortletKeys.ASSET_TAGS_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

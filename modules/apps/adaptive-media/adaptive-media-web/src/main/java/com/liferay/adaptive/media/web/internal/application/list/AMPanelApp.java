@@ -46,14 +46,13 @@ public class AMPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + AMPortletKeys.ADAPTIVE_MEDIA + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + AMPortletKeys.ADAPTIVE_MEDIA + ")"
+	)
 	private Portlet _portlet;
 
 }

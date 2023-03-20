@@ -46,14 +46,13 @@ public class SiteTeamsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SiteTeamsPortletKeys.SITE_TEAMS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + SiteTeamsPortletKeys.SITE_TEAMS + ")"
+	)
 	private Portlet _portlet;
 
 }

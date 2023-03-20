@@ -89,10 +89,6 @@ public class LayoutPageTemplatesPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -103,6 +99,9 @@ public class LayoutPageTemplatesPanelApp extends BasePanelApp {
 	@Reference
 	private Language _language;
 
+	@Reference(
+		target = "(javax.portlet.name=" + LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES + ")"
+	)
 	private Portlet _portlet;
 
 	@Reference

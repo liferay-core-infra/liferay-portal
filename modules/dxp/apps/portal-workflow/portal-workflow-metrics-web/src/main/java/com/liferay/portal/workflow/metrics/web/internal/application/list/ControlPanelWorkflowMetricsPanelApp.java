@@ -61,14 +61,13 @@ public class ControlPanelWorkflowMetricsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + WorkflowMetricsPortletKeys.WORKFLOW_METRICS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + WorkflowMetricsPortletKeys.WORKFLOW_METRICS + ")"
+	)
 	private Portlet _portlet;
 
 	@Reference

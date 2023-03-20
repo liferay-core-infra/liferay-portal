@@ -60,14 +60,13 @@ public class StyleBookPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + StyleBookPortletKeys.STYLE_BOOK + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + StyleBookPortletKeys.STYLE_BOOK + ")"
+	)
 	private Portlet _portlet;
 
 }

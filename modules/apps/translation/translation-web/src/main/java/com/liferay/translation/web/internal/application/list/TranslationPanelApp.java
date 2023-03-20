@@ -46,14 +46,13 @@ public class TranslationPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + TranslationPortletKeys.TRANSLATION + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + TranslationPortletKeys.TRANSLATION + ")"
+	)
 	private Portlet _portlet;
 
 }

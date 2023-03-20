@@ -80,10 +80,6 @@ public class DevicePreviewPanelApp extends BaseJSPPanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ProductNavigationSimulationPortletKeys.PRODUCT_NAVIGATION_SIMULATION + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -111,6 +107,9 @@ public class DevicePreviewPanelApp extends BaseJSPPanelApp {
 	@Reference
 	private Language _language;
 
+	@Reference(
+		target = "(javax.portlet.name=" + ProductNavigationSimulationPortletKeys.PRODUCT_NAVIGATION_SIMULATION + ")"
+	)
 	private Portlet _portlet;
 
 }

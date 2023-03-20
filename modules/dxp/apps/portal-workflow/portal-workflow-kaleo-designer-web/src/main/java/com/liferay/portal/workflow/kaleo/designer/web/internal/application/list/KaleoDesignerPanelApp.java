@@ -56,14 +56,13 @@ public class KaleoDesignerPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + KaleoDesignerPortletKeys.KALEO_DESIGNER + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + KaleoDesignerPortletKeys.KALEO_DESIGNER + ")"
+	)
 	private Portlet _portlet;
 
 }

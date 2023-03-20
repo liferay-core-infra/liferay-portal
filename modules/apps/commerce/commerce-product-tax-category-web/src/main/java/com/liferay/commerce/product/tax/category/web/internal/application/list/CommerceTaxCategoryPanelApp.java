@@ -46,14 +46,13 @@ public class CommerceTaxCategoryPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CPPortletKeys.CP_TAX_CATEGORY + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CPPortletKeys.CP_TAX_CATEGORY + ")"
+	)
 	private Portlet _portlet;
 
 }

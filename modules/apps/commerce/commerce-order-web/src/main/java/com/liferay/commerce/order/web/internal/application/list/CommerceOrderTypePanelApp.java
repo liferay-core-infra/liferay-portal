@@ -46,14 +46,13 @@ public class CommerceOrderTypePanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_ORDER_TYPE + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_ORDER_TYPE + ")"
+	)
 	private Portlet _portlet;
 
 }

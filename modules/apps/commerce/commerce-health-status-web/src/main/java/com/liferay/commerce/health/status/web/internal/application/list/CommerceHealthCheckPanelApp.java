@@ -46,14 +46,13 @@ public class CommerceHealthCheckPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_HEALTH_CHECK + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_HEALTH_CHECK + ")"
+	)
 	private Portlet _portlet;
 
 }

@@ -46,14 +46,13 @@ public class PushNotificationsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + PushNotificationsPortletKeys.PUSH_NOTIFICATIONS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + PushNotificationsPortletKeys.PUSH_NOTIFICATIONS + ")"
+	)
 	private Portlet _portlet;
 
 }

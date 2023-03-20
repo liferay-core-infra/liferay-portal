@@ -64,10 +64,6 @@ public class SXPBlueprintAdminPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SXPPortletKeys.SXP_BLUEPRINT_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -75,6 +71,9 @@ public class SXPBlueprintAdminPanelApp extends BasePanelApp {
 	@Reference
 	protected SearchEngineInformation searchEngineInformation;
 
+	@Reference(
+		target = "(javax.portlet.name=" + SXPPortletKeys.SXP_BLUEPRINT_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

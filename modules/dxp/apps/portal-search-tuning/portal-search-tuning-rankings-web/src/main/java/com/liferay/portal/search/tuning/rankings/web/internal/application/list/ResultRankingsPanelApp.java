@@ -63,10 +63,6 @@ public class ResultRankingsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ResultRankingsPortletKeys.RESULT_RANKINGS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -74,6 +70,9 @@ public class ResultRankingsPanelApp extends BasePanelApp {
 	@Reference
 	protected SearchEngineInformation searchEngineInformation;
 
+	@Reference(
+		target = "(javax.portlet.name=" + ResultRankingsPortletKeys.RESULT_RANKINGS + ")"
+	)
 	private Portlet _portlet;
 
 }

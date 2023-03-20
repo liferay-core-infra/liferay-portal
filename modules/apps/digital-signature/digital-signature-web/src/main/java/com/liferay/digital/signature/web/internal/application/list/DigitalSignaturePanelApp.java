@@ -66,14 +66,13 @@ public class DigitalSignaturePanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + DigitalSignaturePortletKeys.DIGITAL_SIGNATURE + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + DigitalSignaturePortletKeys.DIGITAL_SIGNATURE + ")"
+	)
 	private Portlet _portlet;
 
 }

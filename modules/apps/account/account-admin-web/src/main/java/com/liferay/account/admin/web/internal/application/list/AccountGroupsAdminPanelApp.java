@@ -46,14 +46,13 @@ public class AccountGroupsAdminPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + AccountPortletKeys.ACCOUNT_GROUPS_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + AccountPortletKeys.ACCOUNT_GROUPS_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

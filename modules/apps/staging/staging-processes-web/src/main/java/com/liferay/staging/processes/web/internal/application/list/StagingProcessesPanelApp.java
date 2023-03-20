@@ -75,10 +75,6 @@ public class StagingProcessesPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + StagingProcessesPortletKeys.STAGING_PROCESSES + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -116,6 +112,10 @@ public class StagingProcessesPanelApp extends BasePanelApp {
 	private ConfigurationProvider _configurationProvider;
 
 	private volatile CTSettingsConfiguration _defaultCTSettingsConfiguration;
+
+	@Reference(
+		target = "(javax.portlet.name=" + StagingProcessesPortletKeys.STAGING_PROCESSES + ")"
+	)
 	private Portlet _portlet;
 
 }

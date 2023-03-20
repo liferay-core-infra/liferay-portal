@@ -47,14 +47,13 @@ public class PortletDisplayTemplatePanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + PortletKeys.PORTLET_DISPLAY_TEMPLATE + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + PortletKeys.PORTLET_DISPLAY_TEMPLATE + ")"
+	)
 	private Portlet _portlet;
 
 }

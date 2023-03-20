@@ -47,14 +47,13 @@ public class CommerceChannelPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CPPortletKeys.COMMERCE_CHANNELS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CPPortletKeys.COMMERCE_CHANNELS + ")"
+	)
 	private Portlet _portlet;
 
 }

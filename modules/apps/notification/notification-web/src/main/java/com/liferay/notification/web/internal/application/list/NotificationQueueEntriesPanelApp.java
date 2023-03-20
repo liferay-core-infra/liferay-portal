@@ -56,14 +56,13 @@ public class NotificationQueueEntriesPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + NotificationPortletKeys.NOTIFICATION_QUEUE_ENTRIES + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + NotificationPortletKeys.NOTIFICATION_QUEUE_ENTRIES + ")"
+	)
 	private Portlet _portlet;
 
 }

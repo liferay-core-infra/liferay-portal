@@ -52,10 +52,6 @@ public class ObjectDefinitionsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ObjectPortletKeys.OBJECT_DEFINITIONS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -69,6 +65,9 @@ public class ObjectDefinitionsPanelApp extends BasePanelApp {
 		return themeDisplay.getControlPanelGroup();
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + ObjectPortletKeys.OBJECT_DEFINITIONS + ")"
+	)
 	private Portlet _portlet;
 
 }

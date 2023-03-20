@@ -46,14 +46,13 @@ public class SAPPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SAPPortletKeys.SERVICE_ACCESS_POLICY + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + SAPPortletKeys.SERVICE_ACCESS_POLICY + ")"
+	)
 	private Portlet _portlet;
 
 }

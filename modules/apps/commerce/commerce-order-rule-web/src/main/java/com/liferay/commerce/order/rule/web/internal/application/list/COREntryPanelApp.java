@@ -63,10 +63,6 @@ public class COREntryPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + COREntryPortletKeys.COR_ENTRY + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -79,6 +75,10 @@ public class COREntryPanelApp extends BasePanelApp {
 	}
 
 	private volatile COREntryConfiguration _corEntryConfiguration;
+
+	@Reference(
+		target = "(javax.portlet.name=" + COREntryPortletKeys.COR_ENTRY + ")"
+	)
 	private Portlet _portlet;
 
 }

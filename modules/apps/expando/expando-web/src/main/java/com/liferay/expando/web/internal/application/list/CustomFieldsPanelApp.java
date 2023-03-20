@@ -46,14 +46,13 @@ public class CustomFieldsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ExpandoPortletKeys.EXPANDO + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + ExpandoPortletKeys.EXPANDO + ")"
+	)
 	private Portlet _portlet;
 
 }

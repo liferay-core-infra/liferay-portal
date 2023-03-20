@@ -63,10 +63,6 @@ public class SynonymsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SynonymsPortletKeys.SYNONYMS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -74,6 +70,9 @@ public class SynonymsPanelApp extends BasePanelApp {
 	@Reference
 	protected SearchEngineInformation searchEngineInformation;
 
+	@Reference(
+		target = "(javax.portlet.name=" + SynonymsPortletKeys.SYNONYMS + ")"
+	)
 	private Portlet _portlet;
 
 }

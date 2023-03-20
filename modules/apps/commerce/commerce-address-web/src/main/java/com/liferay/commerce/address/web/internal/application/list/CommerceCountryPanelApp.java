@@ -46,14 +46,13 @@ public class CommerceCountryPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_COUNTRY + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_COUNTRY + ")"
+	)
 	private Portlet _portlet;
 
 }

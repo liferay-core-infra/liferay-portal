@@ -80,10 +80,6 @@ public class CommerceDiscountPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CommercePricingPortletKeys.COMMERCE_DISCOUNT + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -91,6 +87,9 @@ public class CommerceDiscountPanelApp extends BasePanelApp {
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
+	@Reference(
+		target = "(javax.portlet.name=" + CommercePricingPortletKeys.COMMERCE_DISCOUNT + ")"
+	)
 	private Portlet _portlet;
 
 	@Reference

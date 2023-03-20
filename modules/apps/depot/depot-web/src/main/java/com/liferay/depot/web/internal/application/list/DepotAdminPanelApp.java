@@ -62,10 +62,6 @@ public class DepotAdminPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + DepotPortletKeys.DEPOT_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -82,6 +78,9 @@ public class DepotAdminPanelApp extends BasePanelApp {
 	@Reference
 	private Portal _portal;
 
+	@Reference(
+		target = "(javax.portlet.name=" + DepotPortletKeys.DEPOT_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

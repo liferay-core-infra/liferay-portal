@@ -77,14 +77,13 @@ public class GroupPagesPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + LayoutAdminPortletKeys.GROUP_PAGES + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + LayoutAdminPortletKeys.GROUP_PAGES + ")"
+	)
 	private Portlet _portlet;
 
 }

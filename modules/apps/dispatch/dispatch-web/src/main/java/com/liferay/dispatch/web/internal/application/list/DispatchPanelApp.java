@@ -65,10 +65,6 @@ public class DispatchPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + DispatchPortletKeys.DISPATCH + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -78,6 +74,9 @@ public class DispatchPanelApp extends BasePanelApp {
 	@Reference
 	private Language _language;
 
+	@Reference(
+		target = "(javax.portlet.name=" + DispatchPortletKeys.DISPATCH + ")"
+	)
 	private Portlet _portlet;
 
 }

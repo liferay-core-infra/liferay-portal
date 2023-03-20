@@ -56,14 +56,13 @@ public class NotificationTemplatesPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + NotificationPortletKeys.NOTIFICATION_TEMPLATES + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + NotificationPortletKeys.NOTIFICATION_TEMPLATES + ")"
+	)
 	private Portlet _portlet;
 
 }

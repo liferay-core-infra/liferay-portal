@@ -46,14 +46,13 @@ public class SiteSettingsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + ConfigurationAdminPortletKeys.SITE_SETTINGS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + ConfigurationAdminPortletKeys.SITE_SETTINGS + ")"
+	)
 	private Portlet _portlet;
 
 }

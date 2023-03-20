@@ -46,14 +46,13 @@ public class CountriesManagementAdminPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + AddressPortletKeys.COUNTRIES_MANAGEMENT_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + AddressPortletKeys.COUNTRIES_MANAGEMENT_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

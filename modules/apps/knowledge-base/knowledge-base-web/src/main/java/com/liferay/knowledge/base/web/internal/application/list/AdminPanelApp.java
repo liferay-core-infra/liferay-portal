@@ -46,14 +46,13 @@ public class AdminPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

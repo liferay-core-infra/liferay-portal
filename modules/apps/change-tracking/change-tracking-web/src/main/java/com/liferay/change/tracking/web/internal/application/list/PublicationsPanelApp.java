@@ -96,10 +96,6 @@ public class PublicationsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CTPortletKeys.PUBLICATIONS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -107,6 +103,9 @@ public class PublicationsPanelApp extends BasePanelApp {
 	@Reference
 	private CTSettingsConfigurationHelper _ctSettingsConfigurationHelper;
 
+	@Reference(
+		target = "(javax.portlet.name=" + CTPortletKeys.PUBLICATIONS + ")"
+	)
 	private Portlet _portlet;
 
 	@Reference

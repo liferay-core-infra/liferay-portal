@@ -54,10 +54,6 @@ public class CPSpecificationOptionsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CPPortletKeys.CP_SPECIFICATION_OPTIONS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -65,6 +61,9 @@ public class CPSpecificationOptionsPanelApp extends BasePanelApp {
 	@Reference
 	private Language _language;
 
+	@Reference(
+		target = "(javax.portlet.name=" + CPPortletKeys.CP_SPECIFICATION_OPTIONS + ")"
+	)
 	private Portlet _portlet;
 
 }

@@ -46,14 +46,13 @@ public class OnDemandAdminPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + OnDemandAdminPortletKeys.ON_DEMAND_ADMIN + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + OnDemandAdminPortletKeys.ON_DEMAND_ADMIN + ")"
+	)
 	private Portlet _portlet;
 
 }

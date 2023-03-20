@@ -60,14 +60,13 @@ public class DepotSettingsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + DepotPortletKeys.DEPOT_SETTINGS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + DepotPortletKeys.DEPOT_SETTINGS + ")"
+	)
 	private Portlet _portlet;
 
 }

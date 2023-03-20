@@ -62,10 +62,6 @@ public class MarketplaceStorePanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + MarketplaceStorePortletKeys.MARKETPLACE_STORE + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
@@ -73,6 +69,9 @@ public class MarketplaceStorePanelApp extends BasePanelApp {
 	@Reference
 	private Portal _portal;
 
+	@Reference(
+		target = "(javax.portlet.name=" + MarketplaceStorePortletKeys.MARKETPLACE_STORE + ")"
+	)
 	private Portlet _portlet;
 
 }

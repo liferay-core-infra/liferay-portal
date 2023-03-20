@@ -46,14 +46,13 @@ public class CommerceMeasurementUnitPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CPPortletKeys.CP_MEASUREMENT_UNIT + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CPPortletKeys.CP_MEASUREMENT_UNIT + ")"
+	)
 	private Portlet _portlet;
 
 }

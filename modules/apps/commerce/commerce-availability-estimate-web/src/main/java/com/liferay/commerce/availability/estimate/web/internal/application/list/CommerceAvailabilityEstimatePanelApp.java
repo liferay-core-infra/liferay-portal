@@ -46,14 +46,13 @@ public class CommerceAvailabilityEstimatePanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_AVAILABILITY_ESTIMATE + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + CommercePortletKeys.COMMERCE_AVAILABILITY_ESTIMATE + ")"
+	)
 	private Portlet _portlet;
 
 }

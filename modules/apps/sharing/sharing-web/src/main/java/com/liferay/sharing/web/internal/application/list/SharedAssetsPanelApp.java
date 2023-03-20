@@ -66,14 +66,13 @@ public class SharedAssetsPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SharingPortletKeys.SHARED_ASSETS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + SharingPortletKeys.SHARED_ASSETS + ")"
+	)
 	private Portlet _portlet;
 
 	@Reference

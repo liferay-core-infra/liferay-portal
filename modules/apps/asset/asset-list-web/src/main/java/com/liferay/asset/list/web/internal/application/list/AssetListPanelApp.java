@@ -56,14 +56,13 @@ public class AssetListPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + AssetListPortletKeys.ASSET_LIST + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + AssetListPortletKeys.ASSET_LIST + ")"
+	)
 	private Portlet _portlet;
 
 }

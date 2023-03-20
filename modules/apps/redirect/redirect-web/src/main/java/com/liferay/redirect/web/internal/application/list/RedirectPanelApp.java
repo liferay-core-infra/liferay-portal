@@ -46,14 +46,13 @@ public class RedirectPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + RedirectPortletKeys.REDIRECT + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + RedirectPortletKeys.REDIRECT + ")"
+	)
 	private Portlet _portlet;
 
 }

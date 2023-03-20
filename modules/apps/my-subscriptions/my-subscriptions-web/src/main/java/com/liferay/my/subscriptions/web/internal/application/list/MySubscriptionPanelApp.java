@@ -47,14 +47,13 @@ public class MySubscriptionPanelApp extends BasePanelApp {
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + MySubscriptionsPortletKeys.MY_SUBSCRIPTIONS + ")",
-		unbind = "-"
-	)
 	public void setPortlet(Portlet portlet) {
 		_portlet = portlet;
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + MySubscriptionsPortletKeys.MY_SUBSCRIPTIONS + ")"
+	)
 	private Portlet _portlet;
 
 }

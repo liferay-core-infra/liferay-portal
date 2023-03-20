@@ -41,6 +41,11 @@ import org.osgi.service.component.annotations.Reference;
 public class DigitalSignaturePanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return DigitalSignaturePortletKeys.DIGITAL_SIGNATURE;
 	}
@@ -66,7 +71,9 @@ public class DigitalSignaturePanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 }

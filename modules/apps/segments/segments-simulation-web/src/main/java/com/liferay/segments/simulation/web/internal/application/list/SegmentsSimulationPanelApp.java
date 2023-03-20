@@ -71,6 +71,11 @@ public class SegmentsSimulationPanelApp extends BaseJSPPanelApp {
 	}
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return SegmentsPortletKeys.SEGMENTS_SIMULATION;
 	}
@@ -114,7 +119,7 @@ public class SegmentsSimulationPanelApp extends BaseJSPPanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Override
@@ -134,6 +139,8 @@ public class SegmentsSimulationPanelApp extends BaseJSPPanelApp {
 
 	@Reference
 	private Portal _portal;
+
+	private Portlet _portlet;
 
 	@Reference(
 		target = "(resource.name=" + SegmentsConstants.RESOURCE_NAME + ")"

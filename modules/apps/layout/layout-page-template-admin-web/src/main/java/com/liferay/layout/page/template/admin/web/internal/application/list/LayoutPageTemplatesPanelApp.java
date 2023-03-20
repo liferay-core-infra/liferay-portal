@@ -66,6 +66,11 @@ public class LayoutPageTemplatesPanelApp extends BasePanelApp {
 	}
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES;
 	}
@@ -89,7 +94,7 @@ public class LayoutPageTemplatesPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Reference
@@ -97,6 +102,8 @@ public class LayoutPageTemplatesPanelApp extends BasePanelApp {
 
 	@Reference
 	private Language _language;
+
+	private Portlet _portlet;
 
 	@Reference
 	private StagingGroupHelper _stagingGroupHelper;

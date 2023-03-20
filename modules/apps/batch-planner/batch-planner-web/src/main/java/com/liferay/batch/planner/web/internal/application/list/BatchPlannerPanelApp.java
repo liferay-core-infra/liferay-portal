@@ -40,6 +40,11 @@ import org.osgi.service.component.annotations.Reference;
 public class BatchPlannerPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return BatchPlannerPortletKeys.BATCH_PLANNER;
 	}
@@ -61,7 +66,9 @@ public class BatchPlannerPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 }

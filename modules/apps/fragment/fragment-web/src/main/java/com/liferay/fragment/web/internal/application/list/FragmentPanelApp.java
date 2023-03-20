@@ -40,6 +40,11 @@ import org.osgi.service.component.annotations.Reference;
 public class FragmentPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return FragmentPortletKeys.FRAGMENT;
 	}
@@ -63,8 +68,10 @@ public class FragmentPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 	@Reference
 	private StagingGroupHelper _stagingGroupHelper;

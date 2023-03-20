@@ -56,6 +56,11 @@ public class DevicePreviewPanelApp extends BaseJSPPanelApp {
 	}
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return ProductNavigationSimulationPortletKeys.
 			PRODUCT_NAVIGATION_SIMULATION;
@@ -80,7 +85,7 @@ public class DevicePreviewPanelApp extends BaseJSPPanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Override
@@ -105,5 +110,7 @@ public class DevicePreviewPanelApp extends BaseJSPPanelApp {
 
 	@Reference
 	private Language _language;
+
+	private Portlet _portlet;
 
 }

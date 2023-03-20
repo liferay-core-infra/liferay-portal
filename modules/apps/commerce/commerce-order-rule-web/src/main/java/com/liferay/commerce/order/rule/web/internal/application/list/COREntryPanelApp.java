@@ -46,6 +46,11 @@ import org.osgi.service.component.annotations.Reference;
 public class COREntryPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return COREntryPortletKeys.COR_ENTRY;
 	}
@@ -63,7 +68,7 @@ public class COREntryPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Activate
@@ -74,5 +79,6 @@ public class COREntryPanelApp extends BasePanelApp {
 	}
 
 	private volatile COREntryConfiguration _corEntryConfiguration;
+	private Portlet _portlet;
 
 }

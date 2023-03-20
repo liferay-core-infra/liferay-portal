@@ -44,6 +44,11 @@ public class CPSpecificationOptionsPanelApp extends BasePanelApp {
 	}
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return CPPortletKeys.CP_SPECIFICATION_OPTIONS;
 	}
@@ -54,10 +59,12 @@ public class CPSpecificationOptionsPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Reference
 	private Language _language;
+
+	private Portlet _portlet;
 
 }

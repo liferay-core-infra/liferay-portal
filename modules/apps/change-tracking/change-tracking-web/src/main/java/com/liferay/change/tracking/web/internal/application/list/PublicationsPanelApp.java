@@ -48,6 +48,11 @@ import org.osgi.service.component.annotations.Reference;
 public class PublicationsPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return CTPortletKeys.PUBLICATIONS;
 	}
@@ -96,11 +101,13 @@ public class PublicationsPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Reference
 	private CTSettingsConfigurationHelper _ctSettingsConfigurationHelper;
+
+	private Portlet _portlet;
 
 	@Reference
 	private PortletPermission _portletPermission;

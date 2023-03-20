@@ -36,6 +36,11 @@ import org.osgi.service.component.annotations.Reference;
 public class CommerceInventoryWarehousePanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return CPPortletKeys.COMMERCE_INVENTORY_WAREHOUSE;
 	}
@@ -46,7 +51,9 @@ public class CommerceInventoryWarehousePanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 }

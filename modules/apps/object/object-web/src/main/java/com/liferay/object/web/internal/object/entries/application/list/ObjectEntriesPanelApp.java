@@ -20,6 +20,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -54,6 +55,11 @@ public class ObjectEntriesPanelApp extends BasePanelApp {
 	}
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return _objectDefinition.getPortletId();
 	}
@@ -83,6 +89,11 @@ public class ObjectEntriesPanelApp extends BasePanelApp {
 	}
 
 	@Override
+	public void setPortlet(Portlet portlet) {
+		_portlet = portlet;
+	}
+
+	@Override
 	protected Group getGroup(HttpServletRequest httpServletRequest) {
 		if (StringUtil.equals(
 				_objectDefinition.getScope(),
@@ -99,5 +110,6 @@ public class ObjectEntriesPanelApp extends BasePanelApp {
 	}
 
 	private final ObjectDefinition _objectDefinition;
+	private Portlet _portlet;
 
 }

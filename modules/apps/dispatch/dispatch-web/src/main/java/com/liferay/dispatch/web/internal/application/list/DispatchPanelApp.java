@@ -55,6 +55,11 @@ public class DispatchPanelApp extends BasePanelApp {
 	}
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return DispatchPortletKeys.DISPATCH;
 	}
@@ -65,12 +70,14 @@ public class DispatchPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	private static final String _KEY = "dispatch";
 
 	@Reference
 	private Language _language;
+
+	private Portlet _portlet;
 
 }

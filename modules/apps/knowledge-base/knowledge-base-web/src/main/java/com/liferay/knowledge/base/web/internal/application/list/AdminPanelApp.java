@@ -36,6 +36,11 @@ import org.osgi.service.component.annotations.Reference;
 public class AdminPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return KBPortletKeys.KNOWLEDGE_BASE_ADMIN;
 	}
@@ -46,7 +51,9 @@ public class AdminPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 }

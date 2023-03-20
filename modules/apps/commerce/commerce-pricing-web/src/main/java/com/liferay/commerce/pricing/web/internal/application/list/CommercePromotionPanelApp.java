@@ -46,6 +46,11 @@ import org.osgi.service.component.annotations.Reference;
 public class CommercePromotionPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return CommercePricingPortletKeys.COMMERCE_PROMOTION;
 	}
@@ -81,11 +86,13 @@ public class CommercePromotionPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	private Portlet _portlet;
 
 	@Reference
 	private PortletPermission _portletPermission;

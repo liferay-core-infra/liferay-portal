@@ -36,6 +36,11 @@ import org.osgi.service.component.annotations.Reference;
 public class ApplicationsMenuTestPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return ApplicationsMenuTestPortletKeys.APPLICATIONS_MENU_TEST_PORTLET;
 	}
@@ -46,7 +51,9 @@ public class ApplicationsMenuTestPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 }

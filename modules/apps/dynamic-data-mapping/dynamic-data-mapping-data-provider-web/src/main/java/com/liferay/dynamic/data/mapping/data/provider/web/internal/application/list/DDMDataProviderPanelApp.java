@@ -39,6 +39,11 @@ import org.osgi.service.component.annotations.Reference;
 public class DDMDataProviderPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return DDMPortletKeys.DYNAMIC_DATA_MAPPING_DATA_PROVIDER;
 	}
@@ -56,7 +61,9 @@ public class DDMDataProviderPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 }

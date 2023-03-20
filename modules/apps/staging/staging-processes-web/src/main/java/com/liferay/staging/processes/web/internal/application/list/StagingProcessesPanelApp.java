@@ -51,6 +51,11 @@ import org.osgi.service.component.annotations.Reference;
 public class StagingProcessesPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return StagingProcessesPortletKeys.STAGING_PROCESSES;
 	}
@@ -75,7 +80,7 @@ public class StagingProcessesPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Activate
@@ -111,5 +116,6 @@ public class StagingProcessesPanelApp extends BasePanelApp {
 	private ConfigurationProvider _configurationProvider;
 
 	private volatile CTSettingsConfiguration _defaultCTSettingsConfiguration;
+	private Portlet _portlet;
 
 }

@@ -199,10 +199,23 @@ public class PanelAppMyAccountPermissionsTest {
 			_portletId = portletId;
 		}
 
+		@Override
+		public com.liferay.portal.kernel.model.Portlet getPortlet() {
+			return _portlet;
+		}
+
 		public String getPortletId() {
 			return _portletId;
 		}
 
+		@Override
+		public void setPortlet(
+			com.liferay.portal.kernel.model.Portlet portlet) {
+
+			_portlet = portlet;
+		}
+
+		private com.liferay.portal.kernel.model.Portlet _portlet;
 		private final String _portletId;
 
 	}

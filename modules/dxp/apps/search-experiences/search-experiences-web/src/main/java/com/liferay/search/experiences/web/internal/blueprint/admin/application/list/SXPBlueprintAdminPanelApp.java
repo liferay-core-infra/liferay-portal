@@ -43,6 +43,11 @@ import org.osgi.service.component.annotations.Reference;
 public class SXPBlueprintAdminPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return SXPPortletKeys.SXP_BLUEPRINT_ADMIN;
 	}
@@ -64,10 +69,12 @@ public class SXPBlueprintAdminPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Reference
 	protected SearchEngineInformation searchEngineInformation;
+
+	private Portlet _portlet;
 
 }

@@ -36,6 +36,11 @@ import org.osgi.service.component.annotations.Reference;
 public class ContentDashboardAdminPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN;
 	}
@@ -46,7 +51,9 @@ public class ContentDashboardAdminPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 }

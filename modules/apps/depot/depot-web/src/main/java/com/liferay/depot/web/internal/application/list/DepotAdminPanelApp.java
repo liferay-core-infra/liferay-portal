@@ -45,6 +45,11 @@ import org.osgi.service.component.annotations.Reference;
 public class DepotAdminPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return DepotPortletKeys.DEPOT_ADMIN;
 	}
@@ -62,7 +67,7 @@ public class DepotAdminPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Override
@@ -76,5 +81,7 @@ public class DepotAdminPanelApp extends BasePanelApp {
 
 	@Reference
 	private Portal _portal;
+
+	private Portlet _portlet;
 
 }

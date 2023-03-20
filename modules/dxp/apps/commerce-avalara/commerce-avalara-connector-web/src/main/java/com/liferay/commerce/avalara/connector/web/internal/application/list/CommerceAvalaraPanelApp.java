@@ -45,6 +45,11 @@ public class CommerceAvalaraPanelApp extends BasePanelApp {
 		return CommerceAvalaraPortletKeys.COMMERCE_AVALARA;
 	}
 
+	@Override
+	public void setPortlet(Portlet portlet) {
+		_portlet = portlet;
+	}
+
 	@Reference(
 		target = "(javax.portlet.name=" + CommerceAvalaraPortletKeys.COMMERCE_AVALARA + ")"
 	)

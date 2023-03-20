@@ -42,6 +42,11 @@ import org.osgi.service.component.annotations.Reference;
 public class SharedAssetsPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return SharingPortletKeys.SHARED_ASSETS;
 	}
@@ -66,8 +71,10 @@ public class SharedAssetsPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
+
+	private Portlet _portlet;
 
 	@Reference
 	private SharingConfigurationFactory _sharingConfigurationFactory;

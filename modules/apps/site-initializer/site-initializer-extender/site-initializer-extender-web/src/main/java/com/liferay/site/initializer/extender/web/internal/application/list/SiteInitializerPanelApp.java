@@ -79,6 +79,11 @@ public class SiteInitializerPanelApp extends BasePanelApp {
 		return super.isShow(permissionChecker, group);
 	}
 
+	@Override
+	public void setPortlet(Portlet portlet) {
+		_portlet = portlet;
+	}
+
 	@Reference(
 		target = "(javax.portlet.name=" + SiteInitializerExtenderPortletKeys.SITE_INITIALIZER + ")"
 	)

@@ -41,6 +41,11 @@ import org.osgi.service.component.annotations.Reference;
 public class MarketplaceAppManagerPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return MarketplaceAppManagerPortletKeys.MARKETPLACE_APP_MANAGER;
 	}
@@ -62,10 +67,12 @@ public class MarketplaceAppManagerPanelApp extends BasePanelApp {
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
+		_portlet = portlet;
 	}
 
 	@Reference
 	private Portal _portal;
+
+	private Portlet _portlet;
 
 }

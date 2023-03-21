@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
-import com.liferay.social.kernel.util.SocialInteractionsConfiguration;
 import com.liferay.social.kernel.util.SocialInteractionsConfigurationUtil;
 
 import java.util.List;
@@ -50,18 +49,14 @@ public class PageEditorCommentMentionsStrategy implements MentionsStrategy {
 			JSONObject jsonObject)
 		throws PortalException {
 
-		SocialInteractionsConfiguration socialInteractionsConfiguration =
-			SocialInteractionsConfigurationUtil.
-				getSocialInteractionsConfiguration(
-					companyId, MentionsPortletKeys.MENTIONS);
-
-		List<User> users = _mentionsUserFinder.getUsers(
-			companyId, groupId, userId, query, socialInteractionsConfiguration);
-
 		long plid = jsonObject.getLong("plid");
 
 		return TransformUtil.transform(
-			users,
+			_mentionsUserFinder.getUsers(
+				companyId, groupId, userId, query,
+				SocialInteractionsConfigurationUtil.
+					getSocialInteractionsConfiguration(
+						companyId, MentionsPortletKeys.MENTIONS)),
 			user -> {
 				try {
 					return _layoutPermission.contains(

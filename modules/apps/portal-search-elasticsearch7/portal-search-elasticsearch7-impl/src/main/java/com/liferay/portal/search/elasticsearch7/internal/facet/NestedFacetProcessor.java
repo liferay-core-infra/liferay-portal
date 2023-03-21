@@ -34,12 +34,14 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Jorge Díaz
  */
-@Component(
-	property = "class.name=com.liferay.portal.search.internal.facet.NestedFacetImpl",
-	service = FacetProcessor.class
-)
+@Component(service = FacetProcessor.class)
 public class NestedFacetProcessor
 	implements FacetProcessor<SearchRequestBuilder> {
+
+	@Override
+	public String getFacetClassName() {
+		return "com.liferay.portal.search.internal.facet.NestedFacetImpl";
+	}
 
 	@Override
 	public AggregationBuilder processFacet(Facet facet) {

@@ -15,26 +15,39 @@
 package com.liferay.address.web.internal.frontend.taglib.servlet.taglib;
 
 import com.liferay.address.web.internal.constants.CountryScreenNavigationConstants;
-import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
+import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
+import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.model.Country;
+
+import java.io.IOException;
 
 import java.util.Locale;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Pei-Jung Lan
+ * @author Joao Victor Alves
  */
 @Component(
-	property = "screen.navigation.category.order:Integer=10",
-	service = ScreenNavigationCategory.class
+	property = "screen.navigation.entry.order:Integer=10",
+	service = ScreenNavigationEntry.class
 )
-public class CountryDetailsScreenNavigationCategory
-	implements ScreenNavigationCategory {
+public class CountryDetailsScreenNavigationEntry
+	implements ScreenNavigationEntry<Country> {
 
 	@Override
 	public String getCategoryKey() {
+		return CountryScreenNavigationConstants.CATEGORY_KEY_DETAILS;
+	}
+
+	@Override
+	public String getEntryKey() {
 		return CountryScreenNavigationConstants.CATEGORY_KEY_DETAILS;
 	}
 
@@ -48,7 +61,24 @@ public class CountryDetailsScreenNavigationCategory
 		return CountryScreenNavigationConstants.SCREEN_NAVIGATION_KEY_COUNTRY;
 	}
 
+	@Override
+	public void render(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws IOException {
+
+		_jspRenderer.renderJSP(
+			_servletContext, httpServletRequest, httpServletResponse,
+			"/country/details.jsp");
+	}
+
+	@Reference
+	private JSPRenderer _jspRenderer;
+
 	@Reference
 	private Language _language;
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.address.web)")
+	private ServletContext _servletContext;
 
 }

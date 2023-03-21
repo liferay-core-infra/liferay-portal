@@ -129,19 +129,6 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 		return excludeTagsString;
 	}
 
-	protected Map<String, JSONObject> getFacetParameters(Facet facet) {
-		Class<?> clazz = facet.getClass();
-
-		FacetProcessor<SolrQuery> facetProcessor =
-			_serviceTrackerMap.getService(clazz.getName());
-
-		if (facetProcessor == null) {
-			facetProcessor = _defaultFacetProcessor;
-		}
-
-		return facetProcessor.processFacet(facet);
-	}
-
 	protected String getFacetString(Map<String, JSONObject> jsonObjects) {
 		Set<Map.Entry<String, JSONObject>> entrySet = jsonObjects.entrySet();
 
@@ -211,7 +198,8 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 
 			addFilterQuery(postFilterQueries, facet, tag);
 
-			Map<String, JSONObject> facetParameters = getFacetParameters(facet);
+			Map<String, JSONObject> facetParameters = _getFacetParameters(
+				facet);
 
 			excludeTags(
 				facetParameters,
@@ -310,6 +298,19 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 		if (!ArrayUtil.isEmpty(facetPostFilterQueries)) {
 			Collections.addAll(filterQueries, facetPostFilterQueries);
 		}
+	}
+
+	private Map<String, JSONObject> _getFacetParameters(Facet facet) {
+		Class<?> clazz = facet.getClass();
+
+		FacetProcessor<SolrQuery> facetProcessor =
+			_serviceTrackerMap.getService(clazz.getName());
+
+		if (facetProcessor == null) {
+			facetProcessor = _defaultFacetProcessor;
+		}
+
+		return facetProcessor.processFacet(facet);
 	}
 
 	private final FacetProcessor<SolrQuery> _defaultFacetProcessor =

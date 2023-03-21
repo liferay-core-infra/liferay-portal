@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.Facet;
+import com.liferay.portal.kernel.search.facet.RangeFacet;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -40,11 +41,13 @@ import org.osgi.service.component.annotations.Reference;
  * @author Michael C. Han
  * @author Tibor Lipusz
  */
-@Component(
-	property = "class.name=com.liferay.portal.kernel.search.facet.RangeFacet",
-	service = FacetProcessor.class
-)
+@Component(service = FacetProcessor.class)
 public class RangeFacetProcessor implements FacetProcessor<SolrQuery> {
+
+	@Override
+	public String getFacetClassName() {
+		return RangeFacet.class.getName();
+	}
 
 	@Override
 	public Map<String, JSONObject> processFacet(Facet facet) {

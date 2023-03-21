@@ -20,6 +20,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorCategoryUtil;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorEntry;
 import com.liferay.portal.kernel.util.Validator;
@@ -27,9 +28,6 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -124,15 +122,6 @@ public class FormNavigatorOSGiCommands {
 			return StringPool.BLANK;
 		}
 
-		Stream<FormNavigatorEntry<?>> formNavigatorEntriesStream =
-			formNavigatorEntries.stream();
-
-		Stream<String> formNavigatorKeysStream = formNavigatorEntriesStream.map(
-			FormNavigatorEntry::getKey);
-
-		String formNavigatorEntryKeysCSV = formNavigatorKeysStream.collect(
-			_collectorCSV);
-
 		StringBundler sb = new StringBundler(4);
 
 		if (Validator.isNotNull(formNavigatorCategoryKey)) {
@@ -140,7 +129,11 @@ public class FormNavigatorOSGiCommands {
 			sb.append(StringPool.EQUAL);
 		}
 
-		sb.append(formNavigatorEntryKeysCSV);
+		sb.append(
+			StringUtil.merge(
+				TransformUtil.transform(
+					formNavigatorEntries, FormNavigatorEntry::getKey),
+				StringPool.COMMA));
 		sb.append(StringPool.NEW_LINE);
 
 		return sb.toString();
@@ -152,8 +145,6 @@ public class FormNavigatorOSGiCommands {
 		return formNavigatorId + formNavigatorCategoryId;
 	}
 
-	private final Collector<CharSequence, ?, String> _collectorCSV =
-		Collectors.joining(StringPool.COMMA);
 	private ServiceTrackerList<FormNavigatorEntry<?>> _formNavigatorEntries;
 	private ServiceTrackerMap<String, List<FormNavigatorEntry<?>>>
 		_serviceTrackerMap;

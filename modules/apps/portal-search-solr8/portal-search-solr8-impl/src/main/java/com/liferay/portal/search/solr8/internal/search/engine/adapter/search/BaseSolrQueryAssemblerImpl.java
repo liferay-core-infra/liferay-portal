@@ -325,6 +325,11 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 		new FacetProcessor<SolrQuery>() {
 
 			@Override
+			public String getFacetClassName() {
+				return null;
+			}
+
+			@Override
 			public Map<String, JSONObject> processFacet(Facet facet) {
 				return LinkedHashMapBuilder.<String, JSONObject>put(
 					FacetUtil.getAggregationName(facet),

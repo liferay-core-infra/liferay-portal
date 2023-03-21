@@ -199,6 +199,11 @@ public class DefaultFacetTranslator implements FacetTranslator {
 		new FacetProcessor<SearchRequestBuilder>() {
 
 			@Override
+			public String getFacetClassName() {
+				return null;
+			}
+
+			@Override
 			public AggregationBuilder processFacet(Facet facet) {
 				TermsAggregationBuilder termsAggregationBuilder =
 					AggregationBuilders.terms(

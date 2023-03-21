@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.query.QueryTranslator;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.engine.adapter.search.BaseSearchRequest;
 import com.liferay.portal.search.solr8.internal.AggregationFilteringFacetProcessorContext;
@@ -165,15 +164,11 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(class.name=*)"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
-	protected void setFacetProcessor(
-		FacetProcessor<SolrQuery> facetProcessor,
-		Map<String, Object> properties) {
-
-		String className = MapUtil.getString(properties, "class.name");
-
-		_facetProcessors.put(className, facetProcessor);
+	protected void setFacetProcessor(FacetProcessor<SolrQuery> facetProcessor) {
+		_facetProcessors.put(
+			facetProcessor.getFacetClassName(), facetProcessor);
 	}
 
 	protected void setFacets(
@@ -272,12 +267,9 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 	}
 
 	protected void unsetFacetProcessor(
-		FacetProcessor<SolrQuery> facetProcessor,
-		Map<String, Object> properties) {
+		FacetProcessor<SolrQuery> facetProcessor) {
 
-		String className = MapUtil.getString(properties, "class.name");
-
-		_facetProcessors.remove(className);
+		_facetProcessors.remove(facetProcessor.getFacetClassName());
 	}
 
 	private void _add(

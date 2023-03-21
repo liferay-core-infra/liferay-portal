@@ -20,7 +20,6 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorCategoryUtil;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorEntry;
 import com.liferay.portal.kernel.util.Validator;
@@ -122,18 +121,20 @@ public class FormNavigatorOSGiCommands {
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(
+			(formNavigatorEntries.size() * 2) + 2);
 
 		if (Validator.isNotNull(formNavigatorCategoryKey)) {
 			sb.append(formNavigatorCategoryKey);
 			sb.append(StringPool.EQUAL);
 		}
 
-		sb.append(
-			StringUtil.merge(
-				TransformUtil.transform(
-					formNavigatorEntries, FormNavigatorEntry::getKey),
-				StringPool.COMMA));
+		for (FormNavigatorEntry<?> formNavigatorEntry : formNavigatorEntries) {
+			sb.append(formNavigatorEntry.getKey());
+			sb.append(StringPool.COMMA);
+		}
+
+		sb.setIndex(sb.length() - 1);
 		sb.append(StringPool.NEW_LINE);
 
 		return sb.toString();

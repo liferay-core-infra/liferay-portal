@@ -127,12 +127,30 @@ public class PortletRegistryImpl implements PortletRegistry {
 
 	@Override
 	public List<String> getPortletAliases() {
-		return new ArrayList<>(_portletNames.keySet());
+		return new ArrayList<>(_aliasPortletNames.keySet());
 	}
 
 	@Override
 	public String getPortletName(String alias) {
-		return _portletNames.get(alias);
+		return _aliasPortletNames.get(alias);
+	}
+
+	@Override
+	public void registerAlias(Map<String, Object> properties) {
+		_aliasPortletNames.put(
+			MapUtil.getString(
+				properties,
+				"com.liferay.fragment.entry.processor.portlet.alias"),
+			MapUtil.getString(properties, "javax.portlet.name"));
+	}
+
+	@Override
+	public void unregisterAlias(Map<String, Object> properties) {
+		_aliasPortletNames.remove(
+			MapUtil.getString(
+				properties,
+				"com.liferay.fragment.entry.processor.portlet.alias"),
+			MapUtil.getString(properties, "javax.portlet.name"));
 	}
 
 	@Override
@@ -232,6 +250,9 @@ public class PortletRegistryImpl implements PortletRegistry {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletRegistryImpl.class);
+
+	private final Map<String, String> _aliasPortletNames =
+		new ConcurrentHashMap<>();
 
 	@Reference
 	private JSONFactory _jsonFactory;

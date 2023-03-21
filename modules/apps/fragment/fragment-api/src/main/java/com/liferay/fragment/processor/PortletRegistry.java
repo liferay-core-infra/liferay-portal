@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,10 @@ public interface PortletRegistry {
 	public List<String> getPortletAliases();
 
 	public String getPortletName(String alias);
+
+	public void registerAlias(Map<String, Object> properties);
+
+	public void unregisterAlias(Map<String, Object> properties);
 
 	public void writePortletPaths(
 			FragmentEntryLink fragmentEntryLink,

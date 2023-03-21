@@ -17,6 +17,7 @@ package com.liferay.layout.content.page.editor.web.internal.mentions.strategy;
 import com.liferay.mentions.constants.MentionsPortletKeys;
 import com.liferay.mentions.strategy.MentionsStrategy;
 import com.liferay.mentions.util.MentionsUserFinder;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -30,8 +31,6 @@ import com.liferay.social.kernel.util.SocialInteractionsConfiguration;
 import com.liferay.social.kernel.util.SocialInteractionsConfigurationUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -61,9 +60,8 @@ public class PageEditorCommentMentionsStrategy implements MentionsStrategy {
 
 		long plid = jsonObject.getLong("plid");
 
-		Stream<User> stream = users.stream();
-
-		return stream.filter(
+		return TransformUtil.transform(
+			users,
 			user -> {
 				try {
 					return _layoutPermission.contains(
@@ -77,10 +75,7 @@ public class PageEditorCommentMentionsStrategy implements MentionsStrategy {
 
 					return false;
 				}
-			}
-		).collect(
-			Collectors.toList()
-		);
+			});
 	}
 
 	@Override

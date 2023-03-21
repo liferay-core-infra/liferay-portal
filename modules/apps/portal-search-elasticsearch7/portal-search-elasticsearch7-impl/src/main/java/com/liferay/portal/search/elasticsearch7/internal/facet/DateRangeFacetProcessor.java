@@ -18,6 +18,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.search.facet.DateRangeFacet;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -32,12 +33,14 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Michael C. Han
  */
-@Component(
-	property = "class.name=com.liferay.portal.kernel.search.facet.DateRangeFacet",
-	service = FacetProcessor.class
-)
+@Component(service = FacetProcessor.class)
 public class DateRangeFacetProcessor
 	implements FacetProcessor<SearchRequestBuilder> {
+
+	@Override
+	public String getFacetClassName() {
+		return DateRangeFacet.class.getName();
+	}
 
 	@Override
 	public AggregationBuilder processFacet(Facet facet) {

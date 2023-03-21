@@ -14,6 +14,7 @@
 
 package com.liferay.frontend.taglib.form.navigator.internal.osgi.commands;
 
+import com.liferay.frontend.taglib.form.navigator.FormNavigatorEntry;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -47,26 +48,23 @@ public class FormNavigatorOSGiCommands {
 
 	public void getPossibleConfigurations() {
 		for (String formNavigatorId : _getAllFormNavigatorIds()) {
-			String[] formNavigatorCategoryKeys =
-				FormNavigatorCategoryUtil.getKeys(formNavigatorId);
-
 			System.out.println(formNavigatorId);
 
-			for (String formNavigatorCategoryKey : formNavigatorCategoryKeys) {
-				String line = _getCategoryLine(
-					formNavigatorId, formNavigatorCategoryKey);
+			for (String formNavigatorCategoryKey :
+					FormNavigatorCategoryUtil.getKeys(formNavigatorId)) {
 
 				System.out.print(StringPool.TAB);
-				System.out.print(line);
+				System.out.print(
+					_getCategoryLine(
+						formNavigatorId, formNavigatorCategoryKey));
 			}
 		}
 	}
 
 	public void getPossibleConfigurations(String formNavigatorId) {
-		String[] formNavigatorCategoryKeys = FormNavigatorCategoryUtil.getKeys(
-			formNavigatorId);
+		for (String formNavigatorCategoryKey :
+				FormNavigatorCategoryUtil.getKeys(formNavigatorId)) {
 
-		for (String formNavigatorCategoryKey : formNavigatorCategoryKeys) {
 			System.out.print(
 				_getCategoryLine(formNavigatorId, formNavigatorCategoryKey));
 		}
@@ -76,11 +74,10 @@ public class FormNavigatorOSGiCommands {
 	protected void activate(BundleContext bundleContext) {
 		_formNavigatorEntries = ServiceTrackerListFactory.open(
 			bundleContext,
-			(Class<FormNavigatorEntry<?>>)(Class<?>)FormNavigatorEntry.class);
+			(Class<FormNavigatorEntry<?>>)FormNavigatorEntry.class);
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
 			bundleContext,
-			(Class<FormNavigatorEntry<?>>)(Class<?>)FormNavigatorEntry.class,
-			null,
+			(Class<FormNavigatorEntry<?>>)FormNavigatorEntry.class, null,
 			(serviceReference, emitter) -> {
 				FormNavigatorEntry<?> formNavigatorEntry =
 					bundleContext.getService(serviceReference);

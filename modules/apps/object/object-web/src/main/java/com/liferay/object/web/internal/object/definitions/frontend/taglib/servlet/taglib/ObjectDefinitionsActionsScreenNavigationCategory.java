@@ -27,8 +27,7 @@ import org.osgi.service.component.annotations.Component;
 	service = ScreenNavigationCategory.class
 )
 public class ObjectDefinitionsActionsScreenNavigationCategory
-	extends BaseObjectDefinitionsScreenNavigationCategory
-	implements ScreenNavigationCategory {
+	extends BaseObjectDefinitionsScreenNavigationCategory {
 
 	@Override
 	public String getCategoryKey() {

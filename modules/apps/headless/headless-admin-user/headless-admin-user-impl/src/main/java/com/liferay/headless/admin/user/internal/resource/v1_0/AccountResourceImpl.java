@@ -20,8 +20,7 @@ import com.liferay.account.model.AccountEntry;
 import com.liferay.account.service.AccountEntryOrganizationRelLocalService;
 import com.liferay.account.service.AccountEntryService;
 import com.liferay.headless.admin.user.dto.v1_0.Account;
-import com.liferay.headless.admin.user.internal.dto.v1_0.converter.AccountResourceDTOConverter;
-import com.liferay.headless.admin.user.internal.dto.v1_0.converter.OrganizationResourceDTOConverter;
+import com.liferay.headless.admin.user.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.CustomFieldsUtil;
 import com.liferay.headless.admin.user.internal.odata.entity.v1_0.AccountEntityModel;
 import com.liferay.headless.admin.user.resource.v1_0.AccountResource;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -515,7 +515,11 @@ public class AccountResourceImpl
 
 	private final EntityModel _entityModel = new AccountEntityModel();
 
-	@Reference
-	private OrganizationResourceDTOConverter _organizationResourceDTOConverter;
+	@Reference(
+		target = DTOConverterConstants.ORGANIZATION_RESOURCE_DTO_CONVERTER
+	)
+	private DTOConverter
+		<Organization, com.liferay.headless.admin.user.dto.v1_0.Organization>
+			_organizationResourceDTOConverter;
 
 }

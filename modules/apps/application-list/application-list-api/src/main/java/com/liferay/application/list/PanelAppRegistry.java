@@ -97,17 +97,6 @@ public class PanelAppRegistry {
 			panelApp -> {
 				Portlet portlet = panelApp.getPortlet();
 
-				if (portlet == null) {
-					portlet = _portletLocalService.getPortletById(
-						panelApp.getPortletId());
-
-					panelApp.setPortlet(portlet);
-				}
-
-				if (portlet == null) {
-					return false;
-				}
-
 				if (!Objects.equals(
 						parentPanelCategoryKey,
 						portlet.getControlPanelEntryCategory())) {

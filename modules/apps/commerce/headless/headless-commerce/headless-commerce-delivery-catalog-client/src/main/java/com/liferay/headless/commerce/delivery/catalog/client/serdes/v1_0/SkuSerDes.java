@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -550,14 +549,18 @@ public class SkuSerDes {
 
 			if (Objects.equals(jsonParserFieldName, "DDMOptions")) {
 				if (jsonParserFieldValue != null) {
-					sku.setDDMOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> DDMOptionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new DDMOption[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					DDMOption[] DDMOptions =
+						new DDMOption[jsonParserFieldValues.length];
+
+					for (int i = 0; i < DDMOptions.length; i++) {
+						DDMOptions[i] = DDMOptionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					sku.setDDMOptions(DDMOptions);
 				}
 			}
 			else if (Objects.equals(
@@ -665,14 +668,18 @@ public class SkuSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "skuOptions")) {
 				if (jsonParserFieldValue != null) {
-					sku.setSkuOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> SkuOptionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new SkuOption[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					SkuOption[] SkuOptions =
+						new SkuOption[jsonParserFieldValues.length];
+
+					for (int i = 0; i < SkuOptions.length; i++) {
+						SkuOptions[i] = SkuOptionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					sku.setSkuOptions(SkuOptions);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "weight")) {

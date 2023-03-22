@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -440,15 +439,18 @@ public class SXPBlueprintSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "elementInstances")) {
 				if (jsonParserFieldValue != null) {
-					sxpBlueprint.setElementInstances(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ElementInstanceSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new ElementInstance[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ElementInstance[] ElementInstances =
+						new ElementInstance[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ElementInstances.length; i++) {
+						ElementInstances[i] = ElementInstanceSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					sxpBlueprint.setElementInstances(ElementInstances);
 				}
 			}
 			else if (Objects.equals(

@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -417,45 +416,58 @@ public class ObjectViewSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "objectViewColumns")) {
 				if (jsonParserFieldValue != null) {
-					objectView.setObjectViewColumns(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectViewColumnSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new ObjectViewColumn[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectViewColumn[] ObjectViewColumns =
+						new ObjectViewColumn[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectViewColumns.length; i++) {
+						ObjectViewColumns[i] = ObjectViewColumnSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					objectView.setObjectViewColumns(ObjectViewColumns);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "objectViewFilterColumns")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectViewFilterColumn[] ObjectViewFilterColumns =
+						new ObjectViewFilterColumn
+							[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectViewFilterColumns.length; i++) {
+						ObjectViewFilterColumns[i] =
+							ObjectViewFilterColumnSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
 					objectView.setObjectViewFilterColumns(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectViewFilterColumnSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new ObjectViewFilterColumn[size]
-						));
+						ObjectViewFilterColumns);
 				}
 			}
 			else if (Objects.equals(
 						jsonParserFieldName, "objectViewSortColumns")) {
 
 				if (jsonParserFieldValue != null) {
-					objectView.setObjectViewSortColumns(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ObjectViewSortColumnSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new ObjectViewSortColumn[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ObjectViewSortColumn[] ObjectViewSortColumns =
+						new ObjectViewSortColumn[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ObjectViewSortColumns.length; i++) {
+						ObjectViewSortColumns[i] =
+							ObjectViewSortColumnSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
+					objectView.setObjectViewSortColumns(ObjectViewSortColumns);
 				}
 			}
 		}

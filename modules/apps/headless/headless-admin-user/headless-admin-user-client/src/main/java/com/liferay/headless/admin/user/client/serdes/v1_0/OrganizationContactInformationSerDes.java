@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -256,50 +255,67 @@ public class OrganizationContactInformationSerDes {
 
 			if (Objects.equals(jsonParserFieldName, "emailAddresses")) {
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					EmailAddress[] EmailAddresses =
+						new EmailAddress[jsonParserFieldValues.length];
+
+					for (int i = 0; i < EmailAddresses.length; i++) {
+						EmailAddresses[i] = EmailAddressSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
 					organizationContactInformation.setEmailAddresses(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> EmailAddressSerDes.toDTO((String)object)
-						).toArray(
-							size -> new EmailAddress[size]
-						));
+						EmailAddresses);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "postalAddresses")) {
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					PostalAddress[] PostalAddresses =
+						new PostalAddress[jsonParserFieldValues.length];
+
+					for (int i = 0; i < PostalAddresses.length; i++) {
+						PostalAddresses[i] = PostalAddressSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
 					organizationContactInformation.setPostalAddresses(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PostalAddressSerDes.toDTO((String)object)
-						).toArray(
-							size -> new PostalAddress[size]
-						));
+						PostalAddresses);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "telephones")) {
 				if (jsonParserFieldValue != null) {
-					organizationContactInformation.setTelephones(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> PhoneSerDes.toDTO((String)object)
-						).toArray(
-							size -> new Phone[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					Phone[] Telephones =
+						new Phone[jsonParserFieldValues.length];
+
+					for (int i = 0; i < Telephones.length; i++) {
+						Telephones[i] = PhoneSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					organizationContactInformation.setTelephones(Telephones);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "webUrls")) {
 				if (jsonParserFieldValue != null) {
-					organizationContactInformation.setWebUrls(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> WebUrlSerDes.toDTO((String)object)
-						).toArray(
-							size -> new WebUrl[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					WebUrl[] WebUrls = new WebUrl[jsonParserFieldValues.length];
+
+					for (int i = 0; i < WebUrls.length; i++) {
+						WebUrls[i] = WebUrlSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					organizationContactInformation.setWebUrls(WebUrls);
 				}
 			}
 		}

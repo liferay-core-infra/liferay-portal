@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -204,14 +203,18 @@ public class WorkflowTaskTransitionSerDes {
 
 			if (Objects.equals(jsonParserFieldName, "transitions")) {
 				if (jsonParserFieldValue != null) {
-					workflowTaskTransition.setTransitions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> TransitionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new Transition[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					Transition[] Transitions =
+						new Transition[jsonParserFieldValues.length];
+
+					for (int i = 0; i < Transitions.length; i++) {
+						Transitions[i] = TransitionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					workflowTaskTransition.setTransitions(Transitions);
 				}
 			}
 			else if (Objects.equals(

@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -722,14 +721,18 @@ public class DocumentSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "adaptedImages")) {
 				if (jsonParserFieldValue != null) {
-					document.setAdaptedImages(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> AdaptedImageSerDes.toDTO((String)object)
-						).toArray(
-							size -> new AdaptedImage[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					AdaptedImage[] AdaptedImages =
+						new AdaptedImage[jsonParserFieldValues.length];
+
+					for (int i = 0; i < AdaptedImages.length; i++) {
+						AdaptedImages[i] = AdaptedImageSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					document.setAdaptedImages(AdaptedImages);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "aggregateRating")) {
@@ -762,14 +765,18 @@ public class DocumentSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "customFields")) {
 				if (jsonParserFieldValue != null) {
-					document.setCustomFields(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> CustomFieldSerDes.toDTO((String)object)
-						).toArray(
-							size -> new CustomField[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					CustomField[] CustomFields =
+						new CustomField[jsonParserFieldValues.length];
+
+					for (int i = 0; i < CustomFields.length; i++) {
+						CustomFields[i] = CustomFieldSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					document.setCustomFields(CustomFields);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "dateCreated")) {
@@ -838,27 +845,34 @@ public class DocumentSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "relatedContents")) {
 				if (jsonParserFieldValue != null) {
-					document.setRelatedContents(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> RelatedContentSerDes.toDTO((String)object)
-						).toArray(
-							size -> new RelatedContent[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					RelatedContent[] RelatedContents =
+						new RelatedContent[jsonParserFieldValues.length];
+
+					for (int i = 0; i < RelatedContents.length; i++) {
+						RelatedContents[i] = RelatedContentSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					document.setRelatedContents(RelatedContents);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "renderedContents")) {
 				if (jsonParserFieldValue != null) {
-					document.setRenderedContents(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> RenderedContentSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new RenderedContent[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					RenderedContent[] RenderedContents =
+						new RenderedContent[jsonParserFieldValues.length];
+
+					for (int i = 0; i < RenderedContents.length; i++) {
+						RenderedContents[i] = RenderedContentSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					document.setRenderedContents(RenderedContents);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "siteId")) {
@@ -877,15 +891,19 @@ public class DocumentSerDes {
 						jsonParserFieldName, "taxonomyCategoryBriefs")) {
 
 				if (jsonParserFieldValue != null) {
-					document.setTaxonomyCategoryBriefs(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> TaxonomyCategoryBriefSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new TaxonomyCategoryBrief[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					TaxonomyCategoryBrief[] TaxonomyCategoryBriefs =
+						new TaxonomyCategoryBrief[jsonParserFieldValues.length];
+
+					for (int i = 0; i < TaxonomyCategoryBriefs.length; i++) {
+						TaxonomyCategoryBriefs[i] =
+							TaxonomyCategoryBriefSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
+					document.setTaxonomyCategoryBriefs(TaxonomyCategoryBriefs);
 				}
 			}
 			else if (Objects.equals(

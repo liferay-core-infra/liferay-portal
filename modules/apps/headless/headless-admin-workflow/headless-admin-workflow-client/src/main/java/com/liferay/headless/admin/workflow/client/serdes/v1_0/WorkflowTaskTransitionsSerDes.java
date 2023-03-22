@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -145,15 +144,21 @@ public class WorkflowTaskTransitionsSerDes {
 					jsonParserFieldName, "workflowTaskTransitions")) {
 
 				if (jsonParserFieldValue != null) {
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					WorkflowTaskTransition[] WorkflowTaskTransitions =
+						new WorkflowTaskTransition
+							[jsonParserFieldValues.length];
+
+					for (int i = 0; i < WorkflowTaskTransitions.length; i++) {
+						WorkflowTaskTransitions[i] =
+							WorkflowTaskTransitionSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
+					}
+
 					workflowTaskTransitions.setWorkflowTaskTransitions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> WorkflowTaskTransitionSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new WorkflowTaskTransition[size]
-						));
+						WorkflowTaskTransitions);
 				}
 			}
 		}

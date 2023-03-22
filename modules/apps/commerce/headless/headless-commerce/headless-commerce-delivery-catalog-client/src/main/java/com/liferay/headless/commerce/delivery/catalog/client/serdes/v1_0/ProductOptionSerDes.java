@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -330,15 +329,18 @@ public class ProductOptionSerDes {
 						jsonParserFieldName, "productOptionValues")) {
 
 				if (jsonParserFieldValue != null) {
-					productOption.setProductOptionValues(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ProductOptionValueSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new ProductOptionValue[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ProductOptionValue[] ProductOptionValues =
+						new ProductOptionValue[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ProductOptionValues.length; i++) {
+						ProductOptionValues[i] = ProductOptionValueSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					productOption.setProductOptionValues(ProductOptionValues);
 				}
 			}
 		}

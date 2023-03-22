@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -158,14 +157,18 @@ public class QueryConfigurationSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "queryEntries")) {
 				if (jsonParserFieldValue != null) {
-					queryConfiguration.setQueryEntries(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> QueryEntrySerDes.toDTO((String)object)
-						).toArray(
-							size -> new QueryEntry[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					QueryEntry[] QueryEntries =
+						new QueryEntry[jsonParserFieldValues.length];
+
+					for (int i = 0; i < QueryEntries.length; i++) {
+						QueryEntries[i] = QueryEntrySerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					queryConfiguration.setQueryEntries(QueryEntries);
 				}
 			}
 		}

@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -552,14 +551,18 @@ public class ShipmentSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "customFields")) {
 				if (jsonParserFieldValue != null) {
-					shipment.setCustomFields(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> CustomFieldSerDes.toDTO((String)object)
-						).toArray(
-							size -> new CustomField[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					CustomField[] CustomFields =
+						new CustomField[jsonParserFieldValues.length];
+
+					for (int i = 0; i < CustomFields.length; i++) {
+						CustomFields[i] = CustomFieldSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					shipment.setCustomFields(CustomFields);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "expectedDate")) {
@@ -595,14 +598,18 @@ public class ShipmentSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "shipmentItems")) {
 				if (jsonParserFieldValue != null) {
-					shipment.setShipmentItems(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ShipmentItemSerDes.toDTO((String)object)
-						).toArray(
-							size -> new ShipmentItem[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ShipmentItem[] ShipmentItems =
+						new ShipmentItem[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ShipmentItems.length; i++) {
+						ShipmentItems[i] = ShipmentItemSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					shipment.setShipmentItems(ShipmentItems);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "shippingAddress")) {

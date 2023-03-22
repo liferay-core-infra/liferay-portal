@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -611,14 +610,18 @@ public class MappedProductSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "productOptions")) {
 				if (jsonParserFieldValue != null) {
-					mappedProduct.setProductOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> ProductOptionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new ProductOption[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					ProductOption[] ProductOptions =
+						new ProductOption[jsonParserFieldValues.length];
+
+					for (int i = 0; i < ProductOptions.length; i++) {
+						ProductOptions[i] = ProductOptionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					mappedProduct.setProductOptions(ProductOptions);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "purchasable")) {
@@ -675,14 +678,18 @@ public class MappedProductSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "skuOptions")) {
 				if (jsonParserFieldValue != null) {
-					mappedProduct.setSkuOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> SkuOptionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new SkuOption[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					SkuOption[] SkuOptions =
+						new SkuOption[jsonParserFieldValues.length];
+
+					for (int i = 0; i < SkuOptions.length; i++) {
+						SkuOptions[i] = SkuOptionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					mappedProduct.setSkuOptions(SkuOptions);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "thumbnail")) {

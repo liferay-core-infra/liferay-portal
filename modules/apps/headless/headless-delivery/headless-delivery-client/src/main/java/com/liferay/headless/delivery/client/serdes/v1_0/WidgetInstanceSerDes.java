@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -213,15 +212,18 @@ public class WidgetInstanceSerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "widgetPermissions")) {
 				if (jsonParserFieldValue != null) {
-					widgetInstance.setWidgetPermissions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> WidgetPermissionSerDes.toDTO(
-								(String)object)
-						).toArray(
-							size -> new WidgetPermission[size]
-						));
+					String[] jsonParserFieldValues = toStrings(
+						(Object[])jsonParserFieldValue);
+
+					WidgetPermission[] WidgetPermissions =
+						new WidgetPermission[jsonParserFieldValues.length];
+
+					for (int i = 0; i < WidgetPermissions.length; i++) {
+						WidgetPermissions[i] = WidgetPermissionSerDes.toDTO(
+							(String)jsonParserFieldValues[i]);
+					}
+
+					widgetInstance.setWidgetPermissions(WidgetPermissions);
 				}
 			}
 		}

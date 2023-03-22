@@ -39,6 +39,11 @@ import org.osgi.service.component.annotations.Reference;
 public class SegmentsPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return SegmentsPortletKeys.SEGMENTS;
 	}
@@ -54,15 +59,6 @@ public class SegmentsPanelApp extends BasePanelApp {
 		}
 
 		return super.isShow(permissionChecker, group);
-	}
-
-	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + SegmentsPortletKeys.SEGMENTS + ")",
-		unbind = "-"
-	)
-	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
 	}
 
 	@Activate
@@ -96,6 +92,11 @@ public class SegmentsPanelApp extends BasePanelApp {
 
 		_serviceRegistration.unregister();
 	}
+
+	@Reference(
+		target = "(javax.portlet.name=" + SegmentsPortletKeys.SEGMENTS + ")"
+	)
+	private Portlet _portlet;
 
 	private volatile ServiceRegistration<PanelApp> _serviceRegistration;
 

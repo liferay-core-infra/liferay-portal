@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.template.ClassLoaderResourceParser;
+import com.liferay.portal.template.TemplateResourceParserRegistry;
 import com.liferay.portal.template.engine.TemplateContextHelper;
 import com.liferay.portal.template.velocity.configuration.VelocityEngineConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -51,6 +52,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+
+import org.mockito.Mockito;
 
 /**
  * @author Tina Tian
@@ -79,8 +82,19 @@ public class VelocityTemplateTest {
 			_velocityTemplateResourceLoader, "_velocityTemplateResourceCache",
 			_templateResourceCache);
 
-		_velocityTemplateResourceLoader.setTemplateResourceParser(
-			new ClassLoaderResourceParser());
+		TemplateResourceParserRegistry templateResourceParserRegistry =
+			Mockito.mock(TemplateResourceParserRegistry.class);
+
+		Mockito.when(
+			templateResourceParserRegistry.getTemplateResourceParsers(
+				Mockito.anyString())
+		).thenReturn(
+			Collections.singletonList(new ClassLoaderResourceParser())
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			_velocityTemplateResourceLoader, "_templateResourceParserRegistry",
+			templateResourceParserRegistry);
 
 		_velocityTemplateResourceLoader.activate(Collections.emptyMap());
 	}

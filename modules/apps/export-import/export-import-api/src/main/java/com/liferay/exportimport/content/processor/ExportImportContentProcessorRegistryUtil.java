@@ -16,9 +16,6 @@ package com.liferay.exportimport.content.processor;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.portal.kernel.util.ListUtil;
-
-import java.util.List;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
@@ -33,12 +30,6 @@ public class ExportImportContentProcessorRegistryUtil {
 		getExportImportContentProcessor(String className) {
 
 		return _serviceTrackerMap.getService(className);
-	}
-
-	public static List<ExportImportContentProcessor<String>>
-		getExportImportContentProcessors() {
-
-		return ListUtil.fromCollection(_serviceTrackerMap.values());
 	}
 
 	private static final ServiceTrackerMap

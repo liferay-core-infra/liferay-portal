@@ -28,8 +28,6 @@ import com.liferay.product.navigation.simulation.constants.ProductNavigationSimu
 
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -81,15 +79,6 @@ public class DevicePreviewPanelApp extends BaseJSPPanelApp {
 	)
 	public void setPortlet(Portlet portlet) {
 		super.setPortlet(portlet);
-	}
-
-	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.product.navigation.simulation.device)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
 	}
 
 	private boolean _hasPreviewInDevicePermission(

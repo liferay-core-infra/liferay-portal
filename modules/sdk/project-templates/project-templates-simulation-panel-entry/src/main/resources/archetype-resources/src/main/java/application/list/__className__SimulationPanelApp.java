@@ -70,13 +70,4 @@ public class ${className}SimulationPanelApp extends BaseJSPPanelApp {
 		super.setPortlet(portlet);
 	}
 
-	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=${artifactId})",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
-	}
-
 }

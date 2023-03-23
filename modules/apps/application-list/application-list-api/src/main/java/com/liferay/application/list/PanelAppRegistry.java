@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -96,15 +97,12 @@ public class PanelAppRegistry {
 			panelApp -> {
 				Portlet portlet = panelApp.getPortlet();
 
-				if (portlet == null) {
-					portlet = _portletLocalService.getPortletById(
-						panelApp.getPortletId());
+				if (!Objects.equals(
+						parentPanelCategoryKey,
+						portlet.getControlPanelEntryCategory())) {
 
-					panelApp.setPortlet(portlet);
-				}
-
-				if (portlet == null) {
-					return false;
+					portlet.setControlPanelEntryCategory(
+						parentPanelCategoryKey);
 				}
 
 				long portletCompanyId = portlet.getCompanyId();
@@ -181,22 +179,6 @@ public class PanelAppRegistry {
 						serviceReference);
 
 					panelApp.setGroupProvider(_groupProvider);
-
-					Portlet portlet = _portletLocalService.getPortletById(
-						panelApp.getPortletId());
-
-					if (portlet != null) {
-						portlet.setControlPanelEntryCategory(
-							String.valueOf(
-								serviceReference.getProperty(
-									"panel.category.key")));
-
-						panelApp.setPortlet(portlet);
-					}
-					else if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Unable to get portlet " + panelApp.getPortletId());
-					}
 
 					if (panelApp instanceof BasePanelApp) {
 						BasePanelApp basePanelApp = (BasePanelApp)panelApp;

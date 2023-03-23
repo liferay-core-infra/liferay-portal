@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.template.TemplateResourceParserRegistry;
 import com.liferay.portal.template.engine.TemplateContextHelper;
 import com.liferay.portal.template.freemarker.configuration.FreeMarkerEngineConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -57,6 +58,8 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import org.mockito.Mockito;
+
 /**
  * @author Tina Tian
  */
@@ -83,6 +86,20 @@ public class FreeMarkerTemplateTest {
 		ReflectionTestUtil.setFieldValue(
 			_freeMarkerTemplateResourceLoader,
 			"_freeMarkerTemplateResourceCache", _templateResourceCache);
+
+		TemplateResourceParserRegistry templateResourceParserRegistry =
+			Mockito.mock(TemplateResourceParserRegistry.class);
+
+		Mockito.when(
+			templateResourceParserRegistry.getTemplateResourceParsers(
+				Mockito.anyString())
+		).thenReturn(
+			Collections.emptyList()
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			_freeMarkerTemplateResourceLoader,
+			"_templateResourceParserRegistry", templateResourceParserRegistry);
 
 		_freeMarkerTemplateResourceLoader.activate(Collections.emptyMap());
 

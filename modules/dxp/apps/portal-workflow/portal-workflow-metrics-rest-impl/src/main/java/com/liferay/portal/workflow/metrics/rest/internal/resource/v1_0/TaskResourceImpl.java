@@ -147,20 +147,13 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 				"No task exists with the task ID " + taskId);
 		}
 
-		Task task = TaskUtil.toTask(
+		return TaskUtil.toTask(
 			document, _language, contextAcceptLanguage.getPreferredLocale(),
 			_portal,
 			ResourceBundleUtil.getModuleAndPortalResourceBundle(
 				contextAcceptLanguage.getPreferredLocale(),
 				TaskResourceImpl.class),
 			_userLocalService::fetchUser);
-
-		if (task == null) {
-			throw new NoSuchTaskException(
-				"No task exists with the task ID " + taskId);
-		}
-
-		return task;
 	}
 
 	@Override
@@ -284,17 +277,13 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 								String key = bucket.getKey();
 
 								if (key != null) {
-									Task task = TaskUtil.toTask(
+									return TaskUtil.toTask(
 										_language, bucket.getKey(),
 										ResourceBundleUtil.
 											getModuleAndPortalResourceBundle(
 												contextAcceptLanguage.
 													getPreferredLocale(),
 												TaskResourceImpl.class));
-
-									if (task != null) {
-										return task;
-									}
 								}
 							}
 
@@ -636,15 +625,11 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 					String key = bucket.getKey();
 
 					if (key != null) {
-						Task task = TaskUtil.toTask(
+						return TaskUtil.toTask(
 							_language, key,
 							ResourceBundleUtil.getModuleAndPortalResourceBundle(
 								contextAcceptLanguage.getPreferredLocale(),
 								TaskResourceImpl.class));
-
-						if (task != null) {
-							return task;
-						}
 					}
 				}
 
@@ -745,7 +730,7 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 												searchHit.getSourcesMap();
 
 											if (sourcesMap != null) {
-												Task task = TaskUtil.toTask(
+												return TaskUtil.toTask(
 													_language,
 													contextAcceptLanguage.
 														getPreferredLocale(),
@@ -759,10 +744,6 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 													sourcesMap,
 													_userLocalService::
 														fetchUser);
-
-												if (task != null) {
-													return task;
-												}
 											}
 										}
 									}

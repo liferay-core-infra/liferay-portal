@@ -16,6 +16,9 @@ package com.liferay.application.list;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletBag;
+import com.liferay.portal.kernel.portlet.PortletBagPool;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
@@ -65,8 +68,13 @@ public abstract class BaseJSPPanelApp extends BasePanelApp {
 			return false;
 		}
 
+		PortletBag portletBag = PortletBagPool.get(
+			PortletIdCodec.decodePortletName(getPortletId()));
+
+		ServletContext servletContext = portletBag.getServletContext();
+
 		RequestDispatcher requestDispatcher =
-			_servletContext.getRequestDispatcher(jspPath);
+			servletContext.getRequestDispatcher(jspPath);
 
 		try {
 			requestDispatcher.include(httpServletRequest, httpServletResponse);
@@ -80,13 +88,7 @@ public abstract class BaseJSPPanelApp extends BasePanelApp {
 		return true;
 	}
 
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseJSPPanelApp.class);
-
-	private ServletContext _servletContext;
 
 }

@@ -599,7 +599,7 @@ public class InstanceResourceImpl extends BaseInstanceResourceImpl {
 						String key = assignBucket.getKey();
 
 						if (key != null) {
-							Assignee assignee = AssigneeUtil.toAssignee(
+							return AssigneeUtil.toAssignee(
 								_language, _portal,
 								ResourceBundleUtil.
 									getModuleAndPortalResourceBundle(
@@ -608,10 +608,6 @@ public class InstanceResourceImpl extends BaseInstanceResourceImpl {
 										InstanceResourceImpl.class),
 								GetterUtil.getLong(key),
 								_userLocalService::fetchUser);
-
-							if (assignee != null) {
-								return assignee;
-							}
 						}
 					}
 

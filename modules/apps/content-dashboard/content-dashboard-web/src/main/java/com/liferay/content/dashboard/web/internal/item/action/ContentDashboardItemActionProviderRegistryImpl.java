@@ -20,14 +20,13 @@ import com.liferay.content.dashboard.item.action.provider.ContentDashboardItemAc
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.reflect.GenericUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -54,13 +53,18 @@ public class ContentDashboardItemActionProviderRegistryImpl
 			return Optional.empty();
 		}
 
-		Stream<ContentDashboardItemActionProvider> stream =
-			contentDashboardItemActionProviders.stream();
+		for (ContentDashboardItemActionProvider
+				contentDashboardItemActionProvider :
+					contentDashboardItemActionProviders) {
 
-		return stream.filter(
-			contentDashboardItemActionProvider -> Objects.equals(
-				type, contentDashboardItemActionProvider.getType())
-		).findFirst();
+			if (Objects.equals(
+					type, contentDashboardItemActionProvider.getType())) {
+
+				return Optional.of(contentDashboardItemActionProvider);
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	@Override
@@ -68,18 +72,15 @@ public class ContentDashboardItemActionProviderRegistryImpl
 		getContentDashboardItemActionProviders(
 			String className, ContentDashboardItemAction.Type... types) {
 
-		return Stream.of(
-			types
-		).map(
-			type -> getContentDashboardItemActionProviderOptional(
-				className, type)
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).collect(
-			Collectors.toList()
-		);
+		return TransformUtil.transformToList(
+			types,
+			type -> {
+				Optional<ContentDashboardItemActionProvider> optional =
+					getContentDashboardItemActionProviderOptional(
+						className, type);
+
+				return optional.orElse(null);
+			});
 	}
 
 	@Activate

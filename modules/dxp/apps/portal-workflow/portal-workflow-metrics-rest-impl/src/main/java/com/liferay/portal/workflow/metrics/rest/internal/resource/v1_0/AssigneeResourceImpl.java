@@ -94,17 +94,13 @@ public class AssigneeResourceImpl extends BaseAssigneeResourceImpl {
 			termsAggregationResult.getBuckets(),
 			bucket -> {
 				if (bucket != null) {
-					Assignee assignee = AssigneeUtil.toAssignee(
+					return AssigneeUtil.toAssignee(
 						_language, _portal,
 						ResourceBundleUtil.getModuleAndPortalResourceBundle(
 							contextAcceptLanguage.getPreferredLocale(),
 							AssigneeResourceImpl.class),
 						GetterUtil.getLong(bucket.getKey()),
 						_userLocalService::fetchUser);
-
-					if (assignee != null) {
-						return assignee;
-					}
 				}
 
 				return null;

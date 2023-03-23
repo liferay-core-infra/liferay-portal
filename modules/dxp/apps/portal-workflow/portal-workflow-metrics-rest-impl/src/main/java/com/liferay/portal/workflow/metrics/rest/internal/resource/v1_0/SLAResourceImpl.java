@@ -38,7 +38,6 @@ import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionL
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -184,26 +183,30 @@ public class SLAResourceImpl extends BaseSLAResourceImpl {
 	}
 
 	private NodeKey[] _toNodeKeys(String nodeKeysString) {
-		return Stream.of(
-			StringUtil.split(nodeKeysString)
-		).map(
-			nodeKey -> StringUtil.split(nodeKey, StringPool.COLON)
-		).map(
-			nodeKeyStringParts -> new NodeKey() {
-				{
-					id = nodeKeyStringParts[0];
+		return transform(
+			StringUtil.split(nodeKeysString),
+			nodeKey -> {
+				String[] nodeKeyStringParts = StringUtil.split(
+					nodeKey, StringPool.COLON);
 
-					if (nodeKeyStringParts.length == 1) {
-						executionType = StringPool.BLANK;
-					}
-					else {
-						executionType = nodeKeyStringParts[1];
-					}
+				if (!ArrayUtil.isEmpty(nodeKeyStringParts)) {
+					return new NodeKey() {
+						{
+							id = nodeKeyStringParts[0];
+
+							if (nodeKeyStringParts.length == 1) {
+								executionType = StringPool.BLANK;
+							}
+							else {
+								executionType = nodeKeyStringParts[1];
+							}
+						}
+					};
 				}
-			}
-		).toArray(
-			NodeKey[]::new
-		);
+
+				return null;
+			},
+			NodeKey.class);
 	}
 
 	private SLA _toSLA(
@@ -281,13 +284,8 @@ public class SLAResourceImpl extends BaseSLAResourceImpl {
 	}
 
 	private String[] _toStringArray(NodeKey[] nodeKeys) {
-		if (ArrayUtil.isEmpty(nodeKeys)) {
-			return new String[0];
-		}
-
-		return Stream.of(
-			nodeKeys
-		).map(
+		return transform(
+			nodeKeys,
 			nodeKey -> {
 				if (Validator.isNull(nodeKey.getExecutionType())) {
 					return nodeKey.getId();
@@ -296,10 +294,8 @@ public class SLAResourceImpl extends BaseSLAResourceImpl {
 				return StringBundler.concat(
 					nodeKey.getId(), CharPool.COLON,
 					nodeKey.getExecutionType());
-			}
-		).toArray(
-			String[]::new
-		);
+			},
+			String.class);
 	}
 
 	private String[] _toStringArray(PauseNodeKeys pauseNodeKeys) {

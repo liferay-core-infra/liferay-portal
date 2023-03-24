@@ -19,6 +19,7 @@ import com.liferay.commerce.price.list.service.CommercePriceEntryService;
 import com.liferay.commerce.pricing.web.internal.display.context.CPInstanceCommercePriceEntryDisplayContext;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.portlet.action.ActionHelper;
+import com.liferay.commerce.product.servlet.taglib.ui.constants.CPInstanceScreenNavigationConstants;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.item.selector.ItemSelector;
@@ -49,7 +50,7 @@ public class CPInstancePriceListsScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return "price-lists";
+		return CPInstanceScreenNavigationConstants.CATEGORY_KEY_PRICE_LISTS;
 	}
 
 	@Override

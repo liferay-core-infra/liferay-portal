@@ -14,6 +14,7 @@
 
 package com.liferay.rss.web.internal.portlet;
 
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -31,6 +32,7 @@ import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
@@ -40,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.rss.web.internal.configuration.RSSWebCacheConfiguration",
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=rss",
+		"com.liferay.fragment.entry.processor.portlet.alias=" + RSSPortlet.ALIAS,
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.application-type=full-page-application",
 		"com.liferay.portlet.application-type=widget",
@@ -65,6 +67,8 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class RSSPortlet extends MVCPortlet {
 
+	public static final String ALIAS = "rss";
+
 	@Override
 	public void doView(
 			RenderRequest renderRequest, RenderResponse renderResponse)
@@ -82,7 +86,17 @@ public class RSSPortlet extends MVCPortlet {
 	protected void activate(Map<String, Object> properties) {
 		_rssWebCacheConfiguration = ConfigurableUtil.createConfigurable(
 			RSSWebCacheConfiguration.class, properties);
+
+		_portletRegistry.registerAlias(ALIAS, RSSPortletKeys.RSS);
 	}
+
+	@Deactivate
+	protected void deactivate(Map<String, Object> properties) {
+		_portletRegistry.unregisterAlias(ALIAS, RSSPortletKeys.RSS);
+	}
+
+	@Reference
+	private PortletRegistry _portletRegistry;
 
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.rss.web)(&(release.schema.version>=3.0.0)(!(release.schema.version>=4.0.0))))"

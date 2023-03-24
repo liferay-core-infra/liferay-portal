@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.search.bar.portlet;
 
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
@@ -36,7 +37,9 @@ import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -44,7 +47,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=search-bar",
+		"com.liferay.fragment.entry.processor.portlet.alias=" + SearchBarPortlet.ALIAS,
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-search-bar",
 		"com.liferay.portlet.display-category=category.search",
@@ -69,6 +72,8 @@ import org.osgi.service.component.annotations.Reference;
 	service = Portlet.class
 )
 public class SearchBarPortlet extends MVCPortlet {
+
+	public static final String ALIAS = "search-bar";
 
 	@Override
 	public void render(
@@ -106,6 +111,17 @@ public class SearchBarPortlet extends MVCPortlet {
 		super.render(renderRequest, renderResponse);
 	}
 
+	@Activate
+	protected void activate() {
+		_portletRegistry.registerAlias(ALIAS, SearchBarPortletKeys.SEARCH_BAR);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_portletRegistry.unregisterAlias(
+			ALIAS, SearchBarPortletKeys.SEARCH_BAR);
+	}
+
 	@Reference
 	protected LayoutLocalService layoutLocalService;
 
@@ -126,5 +142,8 @@ public class SearchBarPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchBarPortlet.class);
+
+	@Reference
+	private PortletRegistry _portletRegistry;
 
 }

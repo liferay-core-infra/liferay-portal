@@ -15,17 +15,21 @@
 package com.liferay.asset.publisher.web.internal.portlet;
 
 import com.liferay.asset.publisher.constants.AssetPublisherPortletKeys;
+import com.liferay.fragment.processor.PortletRegistry;
 
 import javax.portlet.Portlet;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=related-assets",
+		"com.liferay.fragment.entry.processor.portlet.alias=" + RelatedAssetsPortlet.ALIAS,
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.ajaxable=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-asset-publisher",
@@ -52,4 +56,22 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class RelatedAssetsPortlet extends AssetPublisherPortlet {
+
+	public static final String ALIAS = "related-assets";
+
+	@Activate
+	protected void activate() {
+		_portletRegistry.registerAlias(
+			ALIAS, AssetPublisherPortletKeys.RELATED_ASSETS);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_portletRegistry.unregisterAlias(
+			ALIAS, AssetPublisherPortletKeys.RELATED_ASSETS);
+	}
+
+	@Reference
+	private PortletRegistry _portletRegistry;
+
 }

@@ -14,46 +14,48 @@
 
 package com.liferay.commerce.shipping.web.internal.frontend.taglib.servlet.taglib;
 
+import com.liferay.commerce.model.CommerceShippingMethod;
 import com.liferay.commerce.shipping.web.internal.constants.CommerceShippingScreenNavigationConstants;
-import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
-import com.liferay.portal.kernel.language.Language;
+import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
+import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 
-import java.util.Locale;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Alessio Antonio Rendina
+ * @author Joao Victor Alves
  */
 @Component(
-	property = "screen.navigation.category.order:Integer=10",
-	service = ScreenNavigationCategory.class
+	property = "screen.navigation.entry.order:Integer=10",
+	service = ScreenNavigationEntry.class
 )
-public class CommerceShippingMethodDetailsScreenNavigationCategory
-	implements ScreenNavigationCategory {
+public class CommerceShippingMethodDetailsScreenNavigationEntry
+	extends CommerceShippingMethodDetailsScreenNavigationCategory
+	implements ScreenNavigationEntry<CommerceShippingMethod> {
 
 	@Override
-	public String getCategoryKey() {
+	public String getEntryKey() {
 		return CommerceShippingScreenNavigationConstants.
-			CATEGORY_KEY_COMMERCE_SHIPPING_METHOD_DETAILS;
+			ENTRY_KEY_COMMERCE_SHIPPING_METHOD_DETAILS;
 	}
 
 	@Override
-	public String getLabel(Locale locale) {
-		return language.get(
-			locale,
-			CommerceShippingScreenNavigationConstants.
-				ENTRY_KEY_COMMERCE_SHIPPING_METHOD_DETAILS);
-	}
+	public void render(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws IOException {
 
-	@Override
-	public String getScreenNavigationKey() {
-		return CommerceShippingScreenNavigationConstants.
-			SCREEN_NAVIGATION_KEY_COMMERCE_SHIPPING_METHOD;
+		_jspRenderer.renderJSP(
+			httpServletRequest, httpServletResponse,
+			"/commerce_shipping_method/details.jsp");
 	}
 
 	@Reference
-	protected Language language;
+	private JSPRenderer _jspRenderer;
 
 }

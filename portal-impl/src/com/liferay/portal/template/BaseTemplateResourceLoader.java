@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Tina Tian
@@ -85,9 +85,11 @@ public abstract class BaseTemplateResourceLoader
 		return false;
 	}
 
+	protected abstract List<TemplateResourceParser>
+		getTemplateResourceParsers();
+
 	protected void init(
-		String name, Set<TemplateResourceParser> templateResourceParsers,
-		TemplateResourceCache templateResourceCache) {
+		String name, TemplateResourceCache templateResourceCache) {
 
 		if (Validator.isNull(name)) {
 			throw new IllegalArgumentException(
@@ -95,14 +97,12 @@ public abstract class BaseTemplateResourceLoader
 		}
 
 		_name = name;
-
-		_templateResourceParsers = templateResourceParsers;
 		_templateResourceCache = templateResourceCache;
 	}
 
 	private TemplateResource _loadFromParser(String templateId) {
 		for (TemplateResourceParser templateResourceParser :
-				_templateResourceParsers) {
+				getTemplateResourceParsers()) {
 
 			try {
 				if (!templateResourceParser.isTemplateResourceValid(
@@ -137,6 +137,5 @@ public abstract class BaseTemplateResourceLoader
 
 	private String _name;
 	private TemplateResourceCache _templateResourceCache;
-	private Set<TemplateResourceParser> _templateResourceParsers;
 
 }

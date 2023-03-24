@@ -80,7 +80,6 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=form",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.application-type=full-page-application",
 		"com.liferay.portlet.application-type=widget",

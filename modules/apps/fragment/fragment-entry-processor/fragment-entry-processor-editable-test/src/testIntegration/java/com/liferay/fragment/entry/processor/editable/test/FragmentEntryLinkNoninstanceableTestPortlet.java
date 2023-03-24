@@ -30,7 +30,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=fragment-entry-link-noninstanceable",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.instanceable=false",
 		"com.liferay.portlet.preferences-owned-by-group=true",

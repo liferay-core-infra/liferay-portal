@@ -102,7 +102,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.asset.publisher.web.internal.configuration.AssetPublisherWebConfiguration",
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=asset-list",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-asset-publisher",
 		"com.liferay.portlet.display-category=category.cms",

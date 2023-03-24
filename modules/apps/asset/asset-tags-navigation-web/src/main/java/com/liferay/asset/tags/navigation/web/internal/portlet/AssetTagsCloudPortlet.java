@@ -38,7 +38,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=tag-cloud",
 		"com.liferay.portlet.css-class-wrapper=portlet-asset-tags-navigation",
 		"com.liferay.portlet.display-category=category.cms",
 		"com.liferay.portlet.icon=/icons/asset_tags_cloud.png",

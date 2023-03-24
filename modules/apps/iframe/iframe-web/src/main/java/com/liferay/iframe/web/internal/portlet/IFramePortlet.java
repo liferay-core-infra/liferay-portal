@@ -48,7 +48,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=iframe",
 		"com.liferay.portlet.css-class-wrapper=portlet-iframe",
 		"com.liferay.portlet.display-category=category.sample",
 		"com.liferay.portlet.instanceable=true",

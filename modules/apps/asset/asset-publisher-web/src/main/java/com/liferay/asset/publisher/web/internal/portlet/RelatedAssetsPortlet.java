@@ -29,7 +29,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=related-assets",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.ajaxable=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-asset-publisher",

@@ -42,7 +42,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.rss.web.internal.configuration.RSSWebCacheConfiguration",
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=" + RSSPortlet.ALIAS,
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.application-type=full-page-application",
 		"com.liferay.portlet.application-type=widget",

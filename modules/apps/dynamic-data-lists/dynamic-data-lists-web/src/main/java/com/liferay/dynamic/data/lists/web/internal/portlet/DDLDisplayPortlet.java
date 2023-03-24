@@ -63,7 +63,6 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=" + DDLDisplayPortlet.ALIAS,
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-dynamic-data-lists-display",
 		"com.liferay.portlet.display-category=category.collaboration",

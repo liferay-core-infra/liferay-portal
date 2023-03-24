@@ -14,16 +14,25 @@
 
 package com.liferay.source.formatter.checkstyle.check;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.source.formatter.SourceFormatterExcludes;
+import com.liferay.source.formatter.check.util.JavaSourceUtil;
+import com.liferay.source.formatter.util.SourceFormatterUtil;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 
+import java.io.File;
+import java.io.IOException;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Simon Jiang
@@ -56,7 +65,55 @@ public class ComponentAnnotationCheck extends BaseCheck {
 		}
 
 		_checkConfigurationPolicy(detailAST, annotationDetailAST);
+		_checkConfigurationPid(annotationDetailAST, importNames);
 		_checkOSGiJaxrsName(annotationDetailAST, importNames);
+	}
+
+	private void _checkConfigurationPid(
+		DetailAST annotationDetailAST, List<String> importNames) {
+
+		DetailAST annotationMemberValuePairDetailAST =
+			getAnnotationMemberValuePairDetailAST(
+				annotationDetailAST, "configurationPid");
+
+		if (annotationMemberValuePairDetailAST == null) {
+			return;
+		}
+
+		Set<String> configurationClassNames = _getConfigurationClassNames();
+
+		for (DetailAST expressionDetailAST :
+				getAllChildTokens(
+					annotationMemberValuePairDetailAST, true,
+					TokenTypes.EXPR)) {
+
+			FullIdent expressionFullIdent = FullIdent.createFullIdentBelow(
+				expressionDetailAST);
+
+			String annotationMemberValue = StringUtil.unquote(
+				expressionFullIdent.getText());
+
+			if (!annotationMemberValue.startsWith("com.liferay")) {
+				continue;
+			}
+
+			int pos = annotationMemberValue.lastIndexOf(".scoped");
+
+			if (pos != -1) {
+				annotationMemberValue = annotationMemberValue.substring(
+					0, annotationMemberValue.lastIndexOf(CharPool.PERIOD));
+			}
+
+			if (importNames.contains(annotationMemberValue) ||
+				configurationClassNames.contains(annotationMemberValue)) {
+
+				continue;
+			}
+
+			log(
+				annotationMemberValuePairDetailAST,
+				_MSG_INCORRECT_CONFIGURATION_PID, annotationMemberValue);
+		}
 	}
 
 	private void _checkConfigurationPolicy(
@@ -157,6 +214,44 @@ public class ComponentAnnotationCheck extends BaseCheck {
 		}
 	}
 
+	private synchronized Set<String> _getConfigurationClassNames() {
+		if (_configurationClasses != null) {
+			return _configurationClasses;
+		}
+
+		_configurationClasses = new HashSet<>();
+
+		try {
+			List<String> configurationClasses =
+				SourceFormatterUtil.scanForFiles(
+					JavaSourceUtil.getRootDirName(getAbsolutePath()),
+					new String[0],
+					new String[] {
+						"**/com/liferay/**/*Configuration.java",
+						"**/com/liferay/**/configuration/*.java",
+						"**/com/liferay/**/configuration/**/*.java"
+					},
+					new SourceFormatterExcludes(), false);
+
+			for (String configurationClass : configurationClasses) {
+				configurationClass = configurationClass.substring(
+					0, configurationClass.lastIndexOf(CharPool.PERIOD));
+
+				configurationClass = StringUtil.replace(
+					configurationClass, File.separatorChar, CharPool.PERIOD);
+
+				_configurationClasses.add(
+					configurationClass.substring(
+						configurationClass.indexOf("com.liferay")));
+			}
+		}
+		catch (IOException ioException) {
+			return _configurationClasses;
+		}
+
+		return _configurationClasses;
+	}
+
 	private String _getOSGiJaxrsName(DetailAST annotationArrayInitDetailAST) {
 		List<DetailAST> expressionDetailASTList = getAllChildTokens(
 			annotationArrayInitDetailAST, false, TokenTypes.EXPR);
@@ -214,6 +309,9 @@ public class ComponentAnnotationCheck extends BaseCheck {
 		return true;
 	}
 
+	private static final String _MSG_INCORRECT_CONFIGURATION_PID =
+		"configuration.pid.incorrect";
+
 	private static final String _MSG_INCORRECT_CONFIGURATION_POLICY =
 		"configuration.policy.incorrect";
 
@@ -224,5 +322,7 @@ public class ComponentAnnotationCheck extends BaseCheck {
 		"configuration.policy.unnecessary";
 
 	private static final String _OSGI_SERVICE_NAME = "ExceptionMapper";
+
+	private static Set<String> _configurationClasses;
 
 }

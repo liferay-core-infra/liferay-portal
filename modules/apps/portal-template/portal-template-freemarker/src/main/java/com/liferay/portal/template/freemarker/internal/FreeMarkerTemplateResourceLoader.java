@@ -19,7 +19,9 @@ import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.BaseTemplateResourceLoader;
 import com.liferay.portal.template.TemplateResourceParser;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,14 +49,17 @@ public class FreeMarkerTemplateResourceLoader
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		init(
-			TemplateConstants.LANG_TYPE_FTL, _templateResourceParsers,
-			_freeMarkerTemplateResourceCache);
+		init(TemplateConstants.LANG_TYPE_FTL, _freeMarkerTemplateResourceCache);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		destroy();
+	}
+
+	@Override
+	protected List<TemplateResourceParser> getTemplateResourceParsers() {
+		return new ArrayList<>(_templateResourceParsers);
 	}
 
 	@Reference(

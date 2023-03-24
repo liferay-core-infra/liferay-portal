@@ -19,7 +19,9 @@ import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.BaseTemplateResourceLoader;
 import com.liferay.portal.template.TemplateResourceParser;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,14 +49,17 @@ public class VelocityTemplateResourceLoader extends BaseTemplateResourceLoader {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		init(
-			TemplateConstants.LANG_TYPE_VM, _templateResourceParsers,
-			_velocityTemplateResourceCache);
+		init(TemplateConstants.LANG_TYPE_VM, _velocityTemplateResourceCache);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		destroy();
+	}
+
+	@Override
+	protected List<TemplateResourceParser> getTemplateResourceParsers() {
+		return new ArrayList<>(_templateResourceParsers);
 	}
 
 	@Reference(

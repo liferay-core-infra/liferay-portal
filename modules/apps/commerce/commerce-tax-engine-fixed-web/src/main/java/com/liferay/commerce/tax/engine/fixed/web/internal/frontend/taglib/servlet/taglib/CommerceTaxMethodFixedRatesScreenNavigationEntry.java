@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.tax.engine.fixed.web.internal.frontend.taglib.servlet.taglib;
 
+import com.liferay.commerce.constants.CommerceTaxScreenNavigationConstants;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.percentage.PercentageFormatter;
 import com.liferay.commerce.product.model.CommerceChannel;
@@ -54,7 +55,8 @@ public class CommerceTaxMethodFixedRatesScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return ENTRY_KEY;
+		return CommerceTaxScreenNavigationConstants.
+			ENTRY_KEY_COMMERCE_TAX_RATES;
 	}
 
 	@Override

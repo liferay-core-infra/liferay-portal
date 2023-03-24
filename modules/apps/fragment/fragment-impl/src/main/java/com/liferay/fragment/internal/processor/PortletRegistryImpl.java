@@ -127,12 +127,22 @@ public class PortletRegistryImpl implements PortletRegistry {
 
 	@Override
 	public List<String> getPortletAliases() {
-		return new ArrayList<>(_portletNames.keySet());
+		return new ArrayList<>(_aliasPortletNames.keySet());
 	}
 
 	@Override
 	public String getPortletName(String alias) {
-		return _portletNames.get(alias);
+		return _aliasPortletNames.get(alias);
+	}
+
+	@Override
+	public void registerAlias(String alias, String portletName) {
+		_aliasPortletNames.put(alias, portletName);
+	}
+
+	@Override
+	public void unregisterAlias(String alias, String portletName) {
+		_aliasPortletNames.remove(alias, portletName);
 	}
 
 	@Override
@@ -232,6 +242,9 @@ public class PortletRegistryImpl implements PortletRegistry {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletRegistryImpl.class);
+
+	private final Map<String, String> _aliasPortletNames =
+		new ConcurrentHashMap<>();
 
 	@Reference
 	private JSONFactory _jsonFactory;

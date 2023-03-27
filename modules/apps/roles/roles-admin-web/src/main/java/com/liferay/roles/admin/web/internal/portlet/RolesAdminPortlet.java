@@ -67,6 +67,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.product.navigation.personal.menu.PersonalMenuEntryRegistry;
 import com.liferay.roles.admin.constants.RolesAdminPortletKeys;
 import com.liferay.roles.admin.constants.RolesAdminWebKeys;
+import com.liferay.roles.admin.group.type.contributor.GroupTypeContributorRegistry;
 import com.liferay.roles.admin.panel.category.role.type.mapper.PanelCategoryRoleTypeMapper;
 import com.liferay.roles.admin.panel.category.role.type.mapper.PanelCategoryRoleTypeMapperRegistry;
 import com.liferay.roles.admin.role.type.contributor.RoleTypeContributor;
@@ -643,6 +644,10 @@ public class RolesAdminPortlet extends MVCPortlet {
 			ApplicationListWebKeys.PERSONAL_MENU_ENTRY_HELPER,
 			personalMenuEntryHelper);
 
+		portletRequest.setAttribute(
+			ApplicationListWebKeys.GROUP_TYPE_CONTRIBUTOR_REGISTRY,
+			_groupTypeContributorRegistry);
+
 		long roleId = ParamUtil.getLong(portletRequest, "roleId");
 		int type = ParamUtil.getInteger(
 			portletRequest, "roleType", RoleConstants.TYPE_REGULAR);
@@ -806,6 +811,9 @@ public class RolesAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private GroupService _groupService;
+
+	@Reference
+	private GroupTypeContributorRegistry _groupTypeContributorRegistry;
 
 	@Reference
 	private ItemSelector _itemSelector;

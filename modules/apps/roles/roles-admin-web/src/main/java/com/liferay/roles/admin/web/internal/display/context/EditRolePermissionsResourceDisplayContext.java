@@ -47,7 +47,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.portlet.rolesadmin.search.ResourceActionRowChecker;
-import com.liferay.roles.admin.web.internal.group.type.contributor.util.GroupTypeContributorUtil;
+import com.liferay.roles.admin.group.type.contributor.GroupTypeContributorRegistry;
 import com.liferay.taglib.search.ResultRow;
 
 import java.util.ArrayList;
@@ -327,9 +327,15 @@ public class EditRolePermissionsResourceDisplayContext {
 					supportsFilterByGroup = true;
 				}
 
+				GroupTypeContributorRegistry groupTypeContributorRegistry =
+					(GroupTypeContributorRegistry)
+						_httpServletRequest.getAttribute(
+							ApplicationListWebKeys.
+								GROUP_TYPE_CONTRIBUTOR_REGISTRY);
+
 				groups = GroupLocalServiceUtil.search(
 					_themeDisplay.getCompanyId(),
-					GroupTypeContributorUtil.getClassNameIds(), null, null,
+					groupTypeContributorRegistry.getClassNameIds(), null, null,
 					LinkedHashMapBuilder.<String, Object>put(
 						"rolePermissions",
 						new RolePermissions(

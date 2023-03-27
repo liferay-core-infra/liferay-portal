@@ -14,6 +14,7 @@
 
 package com.liferay.roles.admin.web.internal.display.context;
 
+import com.liferay.application.list.constants.ApplicationListWebKeys;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -40,7 +41,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.rolesadmin.search.ResourceActionRowChecker;
-import com.liferay.roles.admin.web.internal.group.type.contributor.util.GroupTypeContributorUtil;
+import com.liferay.roles.admin.group.type.contributor.GroupTypeContributorRegistry;
 import com.liferay.roles.admin.web.internal.util.PortletDisplayTemplateUtil;
 import com.liferay.taglib.search.ResultRow;
 
@@ -167,9 +168,15 @@ public class EditRolePermissionsFormDisplayContext {
 			int scope = ResourceConstants.SCOPE_COMPANY;
 
 			if (_roleDisplayContext.isAllowGroupScope()) {
+				GroupTypeContributorRegistry groupTypeContributorRegistry =
+					(GroupTypeContributorRegistry)
+						_httpServletRequest.getAttribute(
+							ApplicationListWebKeys.
+								GROUP_TYPE_CONTRIBUTOR_REGISTRY);
+
 				groups = GroupLocalServiceUtil.search(
 					_themeDisplay.getCompanyId(),
-					GroupTypeContributorUtil.getClassNameIds(), null, null,
+					groupTypeContributorRegistry.getClassNameIds(), null, null,
 					LinkedHashMapBuilder.<String, Object>put(
 						"rolePermissions",
 						new RolePermissions(

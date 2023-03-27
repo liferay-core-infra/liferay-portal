@@ -16,6 +16,7 @@ package com.liferay.commerce.product.asset.categories.web.internal.frontend.tagl
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.commerce.product.asset.categories.web.internal.constants.CPAssetCategoriesScreenNavigationConstants;
 import com.liferay.commerce.product.url.CPFriendlyURL;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
@@ -50,7 +51,8 @@ public class CategoryCPFriendlyURLScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return "display.page";
+		return CPAssetCategoriesScreenNavigationConstants.
+			CATEGORY_KEY_COMMERCE_DISPLAY_PAGE;
 	}
 
 	@Override

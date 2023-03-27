@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.tax.engine.remote.internal.frontend.taglib.servlet.taglib;
 
+import com.liferay.commerce.constants.CommerceTaxScreenNavigationConstants;
 import com.liferay.commerce.tax.engine.remote.internal.RemoteCommerceTaxEngine;
 import com.liferay.commerce.tax.engine.remote.internal.configuration.RemoteCommerceTaxConfiguration;
 import com.liferay.commerce.tax.engine.remote.internal.constants.RemoteCommerceTaxEngineConstants;
@@ -51,7 +52,8 @@ public class RemoteCommerceTaxMethodConfigurationScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return ENTRY_KEY;
+		return CommerceTaxScreenNavigationConstants.
+			ENTRY_KEY_COMMERCE_REMOTE_CONFIGURATION;
 	}
 
 	@Override

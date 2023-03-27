@@ -16,6 +16,7 @@ package com.liferay.commerce.product.asset.categories.web.internal.frontend.tagl
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.commerce.product.asset.categories.web.internal.constants.CPAssetCategoriesScreenNavigationConstants;
 import com.liferay.commerce.product.service.CPAttachmentFileEntryService;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -47,7 +48,8 @@ public class CategoryCPAttachmentScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return "images";
+		return CPAssetCategoriesScreenNavigationConstants.
+			CATEGORY_KEY_COMMERCE_IMAGES;
 	}
 
 	@Override

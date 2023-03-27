@@ -18,6 +18,7 @@ import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemServ
 import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseService;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.service.CPInstanceService;
+import com.liferay.commerce.product.servlet.taglib.ui.constants.CPInstanceScreenNavigationConstants;
 import com.liferay.commerce.warehouse.web.internal.display.context.CommerceInventoryWarehouseItemsDisplayContext;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -49,7 +50,7 @@ public class CPInstanceWarehouseItemsScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return "inventory";
+		return CPInstanceScreenNavigationConstants.CATEGORY_KEY_INVENTORY;
 	}
 
 	@Override

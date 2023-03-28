@@ -19,6 +19,7 @@ import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CommerceChannelService;
 import com.liferay.commerce.shipping.engine.fedex.internal.FedExCommerceShippingEngine;
 import com.liferay.commerce.shipping.engine.fedex.internal.configuration.FedExCommerceShippingEngineGroupServiceConfiguration;
+import com.liferay.commerce.shipping.engine.fedex.internal.constants.CommerceShippingConfigurationScreenNavigationConstants;
 import com.liferay.commerce.shipping.engine.fedex.internal.constants.FedExCommerceShippingEngineConstants;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -52,7 +53,8 @@ public class CommerceShippingMethodFedExConfigurationScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return ENTRY_KEY;
+		return CommerceShippingConfigurationScreenNavigationConstants.
+			ENTRY_KEY_COMMERCE_FEDEX_CONFIGURATION;
 	}
 
 	@Override

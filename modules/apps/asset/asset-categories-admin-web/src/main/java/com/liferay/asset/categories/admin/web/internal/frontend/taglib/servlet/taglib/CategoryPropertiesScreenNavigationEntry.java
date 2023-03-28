@@ -14,6 +14,7 @@
 
 package com.liferay.asset.categories.admin.web.internal.frontend.taglib.servlet.taglib;
 
+import com.liferay.asset.categories.admin.web.internal.constants.AssetCategoriesConstants;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -40,7 +41,7 @@ public class CategoryPropertiesScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return "properties";
+		return AssetCategoriesConstants.CATEGORY_KEY_PROPERTIES;
 	}
 
 	@Override

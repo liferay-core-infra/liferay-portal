@@ -17,6 +17,7 @@ package com.liferay.commerce.product.type.virtual.web.internal.frontend.taglib.s
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.portlet.action.ActionHelper;
+import com.liferay.commerce.product.servlet.taglib.ui.constants.CPInstanceScreenNavigationConstants;
 import com.liferay.commerce.product.type.virtual.constants.VirtualCPTypeConstants;
 import com.liferay.commerce.product.type.virtual.web.internal.display.context.CPDefinitionVirtualSettingDisplayContext;
 import com.liferay.commerce.product.type.virtual.web.internal.portlet.action.helper.CPDefinitionVirtualSettingActionHelper;
@@ -53,7 +54,8 @@ public class CPInstanceVirtualSettingsScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return "virtual-settings";
+		return CPInstanceScreenNavigationConstants.
+			CATEGORY_KEY_VIRTUAL_SETTINGS;
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import com.liferay.commerce.avalara.connector.configuration.CommerceAvalaraConne
 import com.liferay.commerce.avalara.connector.configuration.CommerceAvalaraConnectorConfiguration;
 import com.liferay.commerce.avalara.connector.constants.CommerceAvalaraWebKeys;
 import com.liferay.commerce.avalara.connector.dispatch.CommerceAvalaraDispatchTrigger;
+import com.liferay.commerce.constants.CommerceTaxScreenNavigationConstants;
 import com.liferay.commerce.tax.model.CommerceTaxMethod;
 import com.liferay.commerce.tax.service.CommerceTaxMethodService;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
@@ -55,11 +56,10 @@ public class CommerceTaxMethodAvalaraScreenNavigationEntry
 	extends CommerceTaxMethodAvalaraScreenNavigationCategory
 	implements ScreenNavigationEntry<CommerceTaxMethod> {
 
-	public static final String ENTRY_KEY = "settings";
-
 	@Override
 	public String getEntryKey() {
-		return ENTRY_KEY;
+		return CommerceTaxScreenNavigationConstants.
+			ENTRY_KEY_COMMERCE_TAX_METHOD_AVALARA;
 	}
 
 	@Override

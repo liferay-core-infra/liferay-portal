@@ -17,6 +17,7 @@ package com.liferay.commerce.product.type.virtual.web.internal.frontend.taglib.s
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.portlet.action.ActionHelper;
 import com.liferay.commerce.product.type.virtual.constants.VirtualCPTypeConstants;
+import com.liferay.commerce.product.type.virtual.web.internal.constants.CPTypeVirtualScreenNavigationConstants;
 import com.liferay.commerce.product.type.virtual.web.internal.display.context.CPDefinitionVirtualSettingDisplayContext;
 import com.liferay.commerce.product.type.virtual.web.internal.portlet.action.helper.CPDefinitionVirtualSettingActionHelper;
 import com.liferay.document.library.kernel.service.DLAppService;
@@ -49,7 +50,8 @@ public class CPDefinitionCPTypeVirtualScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return VirtualCPTypeConstants.NAME;
+		return CPTypeVirtualScreenNavigationConstants.
+			CATEGORY_KEY_COMMERCE_VIRTUAL;
 	}
 
 	@Override

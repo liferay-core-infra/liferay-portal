@@ -562,6 +562,49 @@ public class CompanyLocalServiceTest {
 		Assert.assertNull(_userLocalService.fetchUser(user.getUserId()));
 	}
 
+	@Test
+	public void testCheckCompanyDefaultUserLocaleAndTimeZoneDifferFromCompany()
+		throws Exception {
+
+		Company company = addCompany();
+
+		try {
+			User defaultUser = company.getDefaultUser();
+
+			String expectedLanguageId = defaultUser.getLanguageId();
+			String expectedTimeZoneId = defaultUser.getTimeZoneId();
+
+			String langaugeId = "en_US";
+
+			if (langaugeId.equals(expectedLanguageId)) {
+				langaugeId = "fr_FR";
+			}
+
+			String timeZoneId = "UTC";
+
+			if (timeZoneId.equals(expectedTimeZoneId)) {
+				timeZoneId = "GMT";
+			}
+
+			defaultUser.setLanguageId(langaugeId);
+			defaultUser.setTimeZoneId(timeZoneId);
+
+			_userLocalService.updateUser(defaultUser);
+
+			_companyLocalService.checkCompany(company.getWebId());
+
+			defaultUser = company.getDefaultUser();
+
+			Assert.assertEquals(
+				expectedLanguageId, defaultUser.getLanguageId());
+			Assert.assertEquals(
+				expectedTimeZoneId, defaultUser.getTimeZoneId());
+		}
+		finally {
+			_companyLocalService.deleteCompany(company);
+		}
+	}
+
 	@Test(expected = NoSuchPasswordPolicyException.class)
 	public void testDeleteCompanyDeletesDefaultPasswordPolicy()
 		throws Exception {

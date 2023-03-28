@@ -17,6 +17,7 @@ package com.liferay.commerce.product.type.grouped.web.internal.frontend.taglib.s
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.portlet.action.ActionHelper;
 import com.liferay.commerce.product.type.grouped.service.CPDefinitionGroupedEntryService;
+import com.liferay.commerce.product.type.grouped.web.internal.constants.CPTypeGroupedScreenNavigationConstants;
 import com.liferay.commerce.product.type.grouped.web.internal.display.context.CPDefinitionGroupedEntriesDisplayContext;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -48,7 +49,8 @@ public class CPDefinitionCPTypeGroupedScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return "grouped";
+		return CPTypeGroupedScreenNavigationConstants.
+			CATEGORY_KEY_COMMERCE_GROUPED;
 	}
 
 	@Override

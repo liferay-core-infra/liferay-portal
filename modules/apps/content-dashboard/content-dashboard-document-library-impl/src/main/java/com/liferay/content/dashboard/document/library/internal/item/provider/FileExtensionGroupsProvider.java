@@ -206,21 +206,18 @@ public class FileExtensionGroupsProvider {
 		List<String> extensions = new ArrayList<>();
 
 		for (String mimeType : mimeTypes) {
-			Set<String> extensionsMimeTypes = _mimeTypes.getExtensions(
-				mimeType);
+			extensions.addAll(
+				TransformUtil.transform(
+					_mimeTypes.getExtensions(mimeType),
+					extension -> {
+						extension = extension.replaceAll(
+							"^\\.", StringPool.BLANK);
 
-			for (String extensionsMimeType : extensionsMimeTypes) {
-				_extensionMimeTypes.put(
-					extensionsMimeType.replaceAll("^\\.", StringPool.BLANK),
-					mimeType);
-			}
+						_extensionMimeTypes.put(extension, mimeType);
 
-			extensions.addAll(extensionsMimeTypes);
+						return extension;
+					}));
 		}
-
-		extensions = TransformUtil.transform(
-			extensions,
-			extension -> extension.replaceAll("^\\.", StringPool.BLANK));
 
 		extensions.sort(Comparator.naturalOrder());
 

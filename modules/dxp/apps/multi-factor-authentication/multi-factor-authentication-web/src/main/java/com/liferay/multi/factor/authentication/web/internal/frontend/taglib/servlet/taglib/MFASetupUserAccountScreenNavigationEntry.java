@@ -16,7 +16,6 @@ package com.liferay.multi.factor.authentication.web.internal.frontend.taglib.ser
 
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.multi.factor.authentication.spi.checker.setup.SetupMFAChecker;
-import com.liferay.multi.factor.authentication.web.internal.constants.MFASetupUserAccountScreenNavigationConstants;
 import com.liferay.multi.factor.authentication.web.internal.constants.MFAWebKeys;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
@@ -24,7 +23,6 @@ import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.users.admin.constants.UserScreenNavigationEntryConstants;
 
 import java.io.IOException;
 
@@ -43,6 +41,7 @@ import org.osgi.framework.ServiceReference;
  * @author Marta Medio
  */
 public class MFASetupUserAccountScreenNavigationEntry
+	extends MFASetupUserAccountScreenNavigationCategory
 	implements ScreenNavigationEntry<User> {
 
 	public MFASetupUserAccountScreenNavigationEntry(
@@ -60,11 +59,6 @@ public class MFASetupUserAccountScreenNavigationEntry
 		Class<? extends SetupMFAChecker> clazz = setupMFAChecker.getClass();
 
 		_resourceBundleKey = clazz.getName();
-	}
-
-	@Override
-	public String getCategoryKey() {
-		return MFASetupUserAccountScreenNavigationConstants.CATEGORY_KEY_MFA;
 	}
 
 	@Override
@@ -91,11 +85,6 @@ public class MFASetupUserAccountScreenNavigationEntry
 				resourceBundleLoader.loadResourceBundle(locale),
 				_resourceBundleKey),
 			_resourceBundleKey);
-	}
-
-	@Override
-	public String getScreenNavigationKey() {
-		return UserScreenNavigationEntryConstants.SCREEN_NAVIGATION_KEY_USERS;
 	}
 
 	@Override

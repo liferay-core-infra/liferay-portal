@@ -15,6 +15,7 @@
 package com.liferay.content.dashboard.document.library.internal.item.provider;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -22,7 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -60,18 +60,12 @@ public class FileExtensionGroupsProviderTest {
 		fileExtensionGroupsProvider.activate(new HashMap<>());
 
 		List<FileExtensionGroupsProvider.FileExtensionGroup>
-			fileExtensionGroups =
-				fileExtensionGroupsProvider.getFileExtensionGroups();
-
-		Stream<FileExtensionGroupsProvider.FileExtensionGroup> stream =
-			fileExtensionGroups.stream();
-
-		Assert.assertTrue(
-			stream.filter(
+			filteredFileExtensionGroups = ListUtil.filter(
+				fileExtensionGroupsProvider.getFileExtensionGroups(),
 				fileExtensionGroup -> Objects.equals(
-					fileExtensionGroup.getKey(), "image")
-			).findFirst(
-			).isPresent());
+					fileExtensionGroup.getKey(), "image"));
+
+		Assert.assertFalse(filteredFileExtensionGroups.isEmpty());
 	}
 
 	@Test

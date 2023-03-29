@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Locale;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -96,26 +95,33 @@ public class ViewFileEntryContentDashboardItemAction
 
 			clonedThemeDisplay.setScopeGroupId(_fileEntry.getGroupId());
 
-			return Optional.ofNullable(
+			String friendlyURL =
 				_assetDisplayPageFriendlyURLProvider.getFriendlyURL(
 					FileEntry.class.getName(), _fileEntry.getFileEntryId(),
-					locale, clonedThemeDisplay)
-			).map(
-				url -> {
-					String backURL = ParamUtil.getString(
-						_httpServletRequest, "backURL");
+					locale, clonedThemeDisplay);
 
-					if (Validator.isNotNull(backURL)) {
-						return HttpComponentsUtil.setParameter(
-							url, "p_l_back_url", backURL);
-					}
+			if (friendlyURL == null) {
+				return StringPool.BLANK;
+			}
 
-					return HttpComponentsUtil.setParameter(
-						url, "p_l_back_url", themeDisplay.getURLCurrent());
-				}
-			).orElse(
-				StringPool.BLANK
-			);
+			String url = null;
+
+			String backURL = ParamUtil.getString(
+				_httpServletRequest, "backURL");
+
+			if (Validator.isNotNull(backURL)) {
+				url = HttpComponentsUtil.setParameter(
+					friendlyURL, "p_l_back_url", backURL);
+			}
+
+			url = HttpComponentsUtil.setParameter(
+				friendlyURL, "p_l_back_url", themeDisplay.getURLCurrent());
+
+			if (url == null) {
+				return StringPool.BLANK;
+			}
+
+			return url;
 		}
 		catch (CloneNotSupportedException | PortalException exception) {
 			_log.error(exception);

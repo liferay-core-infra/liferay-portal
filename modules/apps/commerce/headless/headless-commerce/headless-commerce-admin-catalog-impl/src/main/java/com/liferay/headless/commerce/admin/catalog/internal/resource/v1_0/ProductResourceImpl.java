@@ -132,7 +132,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -468,11 +467,9 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 
 		serviceContext.setAssetTagNames(assetTagNames);
 
-		Map<String, Serializable> expandoBridgeAttributes =
-			_getExpandoBridgeAttributes(product);
-
-		if (expandoBridgeAttributes != null) {
-			serviceContext.setExpandoBridgeAttributes(expandoBridgeAttributes);
+		if (_getExpandoBridgeAttributes(product) != null) {
+			serviceContext.setExpandoBridgeAttributes(
+				_getExpandoBridgeAttributes(product));
 		}
 
 		DateConfig displayDateConfig = DateConfig.toDisplayDateConfig(
@@ -498,14 +495,7 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 		if (categories != null) {
 			serviceContext.setAssetCategoryIds(
 				transformToLongArray(
-					Arrays.asList(categories),
-					category -> {
-						if (category.getId() == null) {
-							return null;
-						}
-
-						return category.getId();
-					}));
+					Arrays.asList(categories), Category::getId));
 		}
 		else if (cpDefinition != null) {
 			serviceContext.setAssetCategoryIds(
@@ -670,14 +660,11 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 						CProductVersionConfiguration.class.getName()));
 
 			if (cProductVersionConfiguration.enabled()) {
-				List<CPDefinition> cProductCPDefinitions =
-					_cpDefinitionService.getCProductCPDefinitions(
-						cpDefinition.getCProductId(),
-						WorkflowConstants.STATUS_DRAFT, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS);
-
 				for (CPDefinition cProductCPDefinition :
-						cProductCPDefinitions) {
+						_cpDefinitionService.getCProductCPDefinitions(
+							cpDefinition.getCProductId(),
+							WorkflowConstants.STATUS_DRAFT, QueryUtil.ALL_POS,
+							QueryUtil.ALL_POS)) {
 
 					_cpDefinitionService.updateStatus(
 						cProductCPDefinition.getCPDefinitionId(),
@@ -911,12 +898,9 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 
 		if (images != null) {
 			for (Attachment attachment : images) {
-				Map<String, Serializable> expandoBridgeAttributes =
-					_getExpandoBridgeAttributes(attachment);
-
-				if (expandoBridgeAttributes != null) {
+				if (_getExpandoBridgeAttributes(attachment) != null) {
 					serviceContext.setExpandoBridgeAttributes(
-						expandoBridgeAttributes);
+						_getExpandoBridgeAttributes(attachment));
 				}
 
 				AttachmentUtil.addOrUpdateCPAttachmentFileEntry(
@@ -937,12 +921,9 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 
 		if (attachments != null) {
 			for (Attachment attachment : attachments) {
-				Map<String, Serializable> expandoBridgeAttributes =
-					_getExpandoBridgeAttributes(attachment);
-
-				if (expandoBridgeAttributes != null) {
+				if (_getExpandoBridgeAttributes(attachment) != null) {
 					serviceContext.setExpandoBridgeAttributes(
-						expandoBridgeAttributes);
+						_getExpandoBridgeAttributes(attachment));
 				}
 
 				AttachmentUtil.addOrUpdateCPAttachmentFileEntry(
@@ -1148,7 +1129,7 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 
 		String[] assetTags = product.getTags();
 
-		if (product.getTags() == null) {
+		if (assetTags == null) {
 			assetTags = transformToArray(
 				_assetTagService.getTags(
 					cpDefinition.getModelClassName(),
@@ -1158,11 +1139,9 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 
 		serviceContext.setAssetTagNames(assetTags);
 
-		Map<String, Serializable> expandoBridgeAttributes =
-			_getExpandoBridgeAttributes(product);
-
-		if (expandoBridgeAttributes != null) {
-			serviceContext.setExpandoBridgeAttributes(expandoBridgeAttributes);
+		if (_getExpandoBridgeAttributes(product) != null) {
+			serviceContext.setExpandoBridgeAttributes(
+				_getExpandoBridgeAttributes(product));
 		}
 
 		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
@@ -1188,14 +1167,7 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 		else {
 			serviceContext.setAssetCategoryIds(
 				transformToLongArray(
-					Arrays.asList(categories),
-					category -> {
-						if (category.getId() == null) {
-							return null;
-						}
-
-						return category.getId();
-					}));
+					Arrays.asList(categories), Category::getId));
 		}
 
 		Map<String, String> nameMap = product.getName();

@@ -561,6 +561,52 @@ public class CompanyLocalServiceTest {
 				user.getUserId(), group.getGroupId(), role.getRoleId()));
 	}
 
+	@Test
+	public void testCheckCompanyDefaultUserLocaleAndTimeZoneDifferFromCompany()
+		throws Exception {
+
+		String originalLanguageId = PropsValues.COMPANY_DEFAULT_LOCALE;
+		String originalTimeZoneId = PropsValues.COMPANY_DEFAULT_TIME_ZONE;
+
+		String expectedLanguageId = "en_US";
+		String expectedTimeZoneId = "UTC";
+
+		PropsValues.COMPANY_DEFAULT_LOCALE = expectedLanguageId;
+		PropsValues.COMPANY_DEFAULT_TIME_ZONE = expectedTimeZoneId;
+
+		Company company = addCompany();
+
+		try {
+			User defaultUser = company.getDefaultUser();
+
+			Assert.assertEquals(
+				expectedLanguageId, defaultUser.getLanguageId());
+			Assert.assertEquals(
+				expectedTimeZoneId, defaultUser.getTimeZoneId());
+
+			expectedLanguageId = "es_ES";
+			expectedTimeZoneId = "GMT";
+
+			PropsValues.COMPANY_DEFAULT_LOCALE = expectedLanguageId;
+			PropsValues.COMPANY_DEFAULT_TIME_ZONE = expectedTimeZoneId;
+
+			_companyLocalService.checkCompany(company.getWebId());
+
+			defaultUser = company.getDefaultUser();
+
+			Assert.assertEquals(
+				expectedLanguageId, defaultUser.getLanguageId());
+			Assert.assertEquals(
+				expectedTimeZoneId, defaultUser.getTimeZoneId());
+		}
+		finally {
+			PropsValues.COMPANY_DEFAULT_LOCALE = originalLanguageId;
+			PropsValues.COMPANY_DEFAULT_TIME_ZONE = originalTimeZoneId;
+
+			_companyLocalService.deleteCompany(company);
+		}
+	}
+
 	@Test(expected = NoSuchPasswordPolicyException.class)
 	public void testDeleteCompanyDeletesDefaultPasswordPolicy()
 		throws Exception {

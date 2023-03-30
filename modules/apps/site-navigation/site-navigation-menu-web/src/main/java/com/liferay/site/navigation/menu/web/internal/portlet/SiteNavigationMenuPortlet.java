@@ -67,13 +67,13 @@ public class SiteNavigationMenuPortlet extends MVCPortlet {
 	@Activate
 	protected void activate() {
 		_portletRegistry.registerAlias(
-			"nav", SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU);
+			_ALIAS, SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_portletRegistry.unregisterAlias(
-			"nav", SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU);
+			_ALIAS, SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU);
 	}
 
 	@Override
@@ -86,6 +86,8 @@ public class SiteNavigationMenuPortlet extends MVCPortlet {
 
 		super.doDispatch(renderRequest, renderResponse);
 	}
+
+	private static final String _ALIAS = "nav";
 
 	@Reference
 	private PortletDisplayTemplate _portletDisplayTemplate;

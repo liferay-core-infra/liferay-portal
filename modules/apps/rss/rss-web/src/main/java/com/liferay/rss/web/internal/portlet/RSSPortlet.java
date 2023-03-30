@@ -89,8 +89,10 @@ public class RSSPortlet extends MVCPortlet {
 
 	@Deactivate
 	protected void deactivate() {
-		_portletRegistry.unregisterAlias("rss", RSSPortletKeys.RSS);
+		_portletRegistry.unregisterAlias(_ALIAS, RSSPortletKeys.RSS);
 	}
+
+	private static final String _ALIAS = "rss";
 
 	@Reference
 	private PortletRegistry _portletRegistry;

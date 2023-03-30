@@ -209,13 +209,13 @@ public class DDMFormPortlet extends MVCPortlet {
 	@Activate
 	protected void activate() {
 		_portletRegistry.registerAlias(
-			"form", DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM);
+			_ALIAS, DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_portletRegistry.unregisterAlias(
-			"form", DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM);
+			_ALIAS, DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM);
 	}
 
 	@Override
@@ -276,6 +276,8 @@ public class DDMFormPortlet extends MVCPortlet {
 				DDMFormWebKeys.REFERER_GROUP_ID, ddmFormInstance.getGroupId());
 		}
 	}
+
+	private static final String _ALIAS = "form";
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMFormPortlet.class);
 

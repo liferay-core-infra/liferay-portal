@@ -110,14 +110,13 @@ public class SearchBarPortlet extends MVCPortlet {
 
 	@Activate
 	protected void activate() {
-		_portletRegistry.registerAlias(
-			"search-bar", SearchBarPortletKeys.SEARCH_BAR);
+		_portletRegistry.registerAlias(_ALIAS, SearchBarPortletKeys.SEARCH_BAR);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_portletRegistry.unregisterAlias(
-			"search-bar", SearchBarPortletKeys.SEARCH_BAR);
+			_ALIAS, SearchBarPortletKeys.SEARCH_BAR);
 	}
 
 	@Reference
@@ -137,6 +136,8 @@ public class SearchBarPortlet extends MVCPortlet {
 
 	@Reference
 	protected SearchCapabilities searchCapabilities;
+
+	private static final String _ALIAS = "search-bar";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchBarPortlet.class);

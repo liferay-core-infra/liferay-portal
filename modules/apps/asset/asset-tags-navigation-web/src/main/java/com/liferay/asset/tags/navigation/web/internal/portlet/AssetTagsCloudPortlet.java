@@ -78,14 +78,16 @@ public class AssetTagsCloudPortlet extends MVCPortlet {
 	@Activate
 	protected void activate() {
 		_portletRegistry.registerAlias(
-			"tag-cloud", AssetTagsNavigationPortletKeys.ASSET_TAGS_CLOUD);
+			_ALIAS, AssetTagsNavigationPortletKeys.ASSET_TAGS_CLOUD);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_portletRegistry.unregisterAlias(
-			"tag-cloud", AssetTagsNavigationPortletKeys.ASSET_TAGS_CLOUD);
+			_ALIAS, AssetTagsNavigationPortletKeys.ASSET_TAGS_CLOUD);
 	}
+
+	private static final String _ALIAS = "tag-cloud";
 
 	@Reference
 	private PortletRegistry _portletRegistry;

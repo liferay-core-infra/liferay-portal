@@ -78,14 +78,16 @@ public class AssetTagsNavigationPortlet extends MVCPortlet {
 	@Activate
 	protected void activate() {
 		_portletRegistry.registerAlias(
-			"tags-nav", AssetTagsNavigationPortletKeys.ASSET_TAGS_NAVIGATION);
+			_ALIAS, AssetTagsNavigationPortletKeys.ASSET_TAGS_NAVIGATION);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_portletRegistry.unregisterAlias(
-			"tags-nav", AssetTagsNavigationPortletKeys.ASSET_TAGS_NAVIGATION);
+			_ALIAS, AssetTagsNavigationPortletKeys.ASSET_TAGS_NAVIGATION);
 	}
+
+	private static final String _ALIAS = "tags-nav";
 
 	@Reference
 	private PortletRegistry _portletRegistry;

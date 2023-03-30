@@ -59,14 +59,16 @@ public class RelatedAssetsPortlet extends AssetPublisherPortlet {
 	@Activate
 	protected void activate() {
 		_portletRegistry.registerAlias(
-			"related-assets", AssetPublisherPortletKeys.RELATED_ASSETS);
+			_ALIAS, AssetPublisherPortletKeys.RELATED_ASSETS);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_portletRegistry.unregisterAlias(
-			"related-assets", AssetPublisherPortletKeys.RELATED_ASSETS);
+			_ALIAS, AssetPublisherPortletKeys.RELATED_ASSETS);
 	}
+
+	private static final String _ALIAS = "related-assets";
 
 	@Reference
 	private PortletRegistry _portletRegistry;

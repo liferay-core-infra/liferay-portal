@@ -58,16 +58,18 @@ public class SiteNavigationBreadcrumbPortlet extends MVCPortlet {
 	@Activate
 	protected void activate() {
 		_portletRegistry.registerAlias(
-			"breadcrumb",
+			_ALIAS,
 			SiteNavigationBreadcrumbPortletKeys.SITE_NAVIGATION_BREADCRUMB);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_portletRegistry.unregisterAlias(
-			"breadcrumb",
+			_ALIAS,
 			SiteNavigationBreadcrumbPortletKeys.SITE_NAVIGATION_BREADCRUMB);
 	}
+
+	private static final String _ALIAS = "breadcrumb";
 
 	@Reference
 	private PortletRegistry _portletRegistry;

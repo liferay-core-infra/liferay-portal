@@ -55,6 +55,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.uploader.UploaderPortal;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -89,7 +90,7 @@ public class ImportLayoutsMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		_checkExceededSizeLimit(uploadPortletRequest);
 
@@ -457,5 +458,8 @@ public class ImportLayoutsMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Staging _staging;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 }

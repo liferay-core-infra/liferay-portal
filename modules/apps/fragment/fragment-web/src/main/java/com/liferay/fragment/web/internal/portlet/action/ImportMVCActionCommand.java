@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.uploader.UploaderPortal;
 
 import java.io.File;
 
@@ -74,7 +75,7 @@ public class ImportMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "fragmentCollectionId");
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		File file = uploadPortletRequest.getFile("file");
 
@@ -110,5 +111,8 @@ public class ImportMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 }

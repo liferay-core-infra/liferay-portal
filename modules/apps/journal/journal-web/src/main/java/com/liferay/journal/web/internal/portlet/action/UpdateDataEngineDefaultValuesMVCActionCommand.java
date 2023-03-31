@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.uploader.UploaderPortal;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -98,7 +99,8 @@ public class UpdateDataEngineDefaultValuesMVCActionCommand
 		}
 
 		JournalArticle article = _addOrUpdateArticleDefaultValues(
-			actionRequest, _portal.getUploadPortletRequest(actionRequest));
+			actionRequest,
+			_uploaderPortal.getUploadPortletRequest(actionRequest));
 
 		_assetDisplayPageEntryFormProcessor.process(
 			JournalArticle.class.getName(), article.getResourcePrimKey(),
@@ -327,5 +329,8 @@ public class UpdateDataEngineDefaultValuesMVCActionCommand
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 }

@@ -30,6 +30,7 @@ import com.liferay.portal.reports.engine.console.exception.DefinitionFileExcepti
 import com.liferay.portal.reports.engine.console.model.Definition;
 import com.liferay.portal.reports.engine.console.service.DefinitionService;
 import com.liferay.portal.reports.engine.console.util.ReportsEngineConsoleUtil;
+import com.liferay.portal.uploader.UploaderPortal;
 
 import java.io.InputStream;
 
@@ -61,7 +62,7 @@ public class EditDefinitionMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -118,5 +119,8 @@ public class EditDefinitionMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 }

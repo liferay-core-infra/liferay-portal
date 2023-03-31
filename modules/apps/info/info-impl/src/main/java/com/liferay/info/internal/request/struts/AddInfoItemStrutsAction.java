@@ -65,6 +65,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.uploader.UploaderPortal;
 
 import java.text.SimpleDateFormat;
 
@@ -243,7 +244,8 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 						RelationshipInfoFieldType.INSTANCE) {
 
 					UploadServletRequest uploadServletRequest =
-						_portal.getUploadServletRequest(httpServletRequest);
+						_uploaderPortal.getUploadServletRequest(
+							httpServletRequest);
 
 					String labelParameterName = infoField.getName() + "-label";
 
@@ -543,5 +545,8 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 }

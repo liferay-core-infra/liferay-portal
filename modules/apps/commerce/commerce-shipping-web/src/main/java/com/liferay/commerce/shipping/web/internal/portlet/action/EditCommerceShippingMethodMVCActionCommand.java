@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.uploader.UploaderPortal;
 
 import java.io.File;
 
@@ -98,7 +98,7 @@ public class EditCommerceShippingMethodMVCActionCommand
 		throws PortalException {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		long commerceShippingMethodId = ParamUtil.getLong(
 			actionRequest, "commerceShippingMethodId");
@@ -150,6 +150,6 @@ public class EditCommerceShippingMethodMVCActionCommand
 	private Localization _localization;
 
 	@Reference
-	private Portal _portal;
+	private UploaderPortal _uploaderPortal;
 
 }

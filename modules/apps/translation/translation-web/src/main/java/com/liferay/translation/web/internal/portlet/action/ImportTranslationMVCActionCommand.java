@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactory;
+import com.liferay.portal.uploader.UploaderPortal;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.translation.constants.TranslationPortletKeys;
 import com.liferay.translation.exception.XLIFFFileException;
@@ -101,7 +102,7 @@ public class ImportTranslationMVCActionCommand extends BaseMVCActionCommand {
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			UploadPortletRequest uploadPortletRequest =
-				_portal.getUploadPortletRequest(actionRequest);
+				_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 			_checkExceededSizeLimit(uploadPortletRequest);
 
@@ -441,6 +442,9 @@ public class ImportTranslationMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private TranslationURLProvider _translationURLProvider;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 	@Reference
 	private WorkflowDefinitionLinkLocalService

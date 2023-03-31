@@ -111,6 +111,7 @@ import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.uploader.UploaderPortal;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.RepositoryUtil;
 import com.liferay.trash.service.TrashEntryService;
@@ -226,7 +227,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 					 cmd.equals(Constants.UPDATE_AND_CHECKIN)) {
 
 				UploadPortletRequest uploadPortletRequest =
-					_portal.getUploadPortletRequest(actionRequest);
+					_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 				String sourceFileName = uploadPortletRequest.getFileName(
 					"file");
@@ -378,7 +379,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 		_setUpDDMFormValues(serviceContext);
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		long repositoryId = ParamUtil.getLong(
 			uploadPortletRequest, "repositoryId");
@@ -511,7 +512,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 		throws IOException, PortalException {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -1466,6 +1467,9 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private TrashEntryService _trashEntryService;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 	@Reference
 	private UserLocalService _userLocalService;

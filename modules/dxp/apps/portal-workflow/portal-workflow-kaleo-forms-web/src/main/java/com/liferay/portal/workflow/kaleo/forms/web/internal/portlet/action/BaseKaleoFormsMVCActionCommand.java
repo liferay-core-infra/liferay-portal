@@ -39,10 +39,10 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.RequiredWorkflowDefinitionException;
 import com.liferay.portal.kernel.workflow.WorkflowException;
+import com.liferay.portal.uploader.UploaderPortal;
 import com.liferay.portal.workflow.kaleo.exception.DuplicateKaleoDefinitionNameException;
 import com.liferay.portal.workflow.kaleo.exception.KaleoDefinitionContentException;
 import com.liferay.portal.workflow.kaleo.exception.KaleoDefinitionNameException;
@@ -217,7 +217,7 @@ public abstract class BaseKaleoFormsMVCActionCommand
 	protected KaleoProcessService kaleoProcessService;
 
 	@Reference
-	protected Portal portal;
+	protected UploaderPortal uploaderPortal;
 
 	private DDMFormFieldValue _getNameAndInstanceIdDDMFormFieldValue(
 		List<DDMFormFieldValue> ddmFormFieldValues, String name,

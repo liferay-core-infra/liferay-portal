@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.uploader.UploaderPortal;
 
 import java.io.File;
 import java.io.IOException;
@@ -188,7 +189,7 @@ public class RepositoryBrowserServlet extends HttpServlet {
 			}
 
 			UploadServletRequest uploadServletRequest =
-				_portal.getUploadServletRequest(httpServletRequest);
+				_uploaderPortal.getUploadServletRequest(httpServletRequest);
 
 			File file = uploadServletRequest.getFile("file");
 
@@ -351,5 +352,8 @@ public class RepositoryBrowserServlet extends HttpServlet {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 }

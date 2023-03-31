@@ -27,6 +27,7 @@ dependencies {
 	compileOnly project(":apps:layout:layout-api")
 	compileOnly project(":apps:layout:layout-page-template-api")
 	compileOnly project(":apps:portal:portal-aop-api")
+	compileOnly project(":apps:portal:portal-uploader-api")
 	compileOnly project(":apps:product-navigation:product-navigation-control-menu-api")
 	compileOnly project(":apps:staging:staging-api")
 	compileOnly project(":apps:static:osgi:osgi-util")

@@ -36,9 +36,9 @@ import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.uploader.UploaderPortal;
 
 import java.io.InputStream;
 
@@ -68,7 +68,7 @@ public class ImportFileMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			UploadPortletRequest uploadPortletRequest =
-				_portal.getUploadPortletRequest(actionRequest);
+				_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 			_checkExceededSizeLimit(actionRequest);
 
@@ -151,6 +151,6 @@ public class ImportFileMVCActionCommand extends BaseMVCActionCommand {
 	private KBArticleService _kbArticleService;
 
 	@Reference
-	private Portal _portal;
+	private UploaderPortal _uploaderPortal;
 
 }

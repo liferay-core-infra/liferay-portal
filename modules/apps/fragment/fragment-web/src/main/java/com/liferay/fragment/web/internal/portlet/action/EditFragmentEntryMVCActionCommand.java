@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequest;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.uploader.UploaderPortal;
 
 import java.io.File;
 
@@ -87,7 +87,7 @@ public class EditFragmentEntryMVCActionCommand
 		}
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		String name = ParamUtil.getString(actionRequest, "name");
 		String css = _read("cssContent", uploadPortletRequest);
@@ -158,6 +158,6 @@ public class EditFragmentEntryMVCActionCommand
 	private JSONFactory _jsonFactory;
 
 	@Reference
-	private Portal _portal;
+	private UploaderPortal _uploaderPortal;
 
 }

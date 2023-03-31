@@ -31,7 +31,8 @@ import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.upload.UploadPortletRequestImpl;
+import com.liferay.portal.uploader.UploadPortletRequestFactory;
+import com.liferay.portal.uploader.UploaderPortal;
 import com.liferay.template.constants.TemplatePortletKeys;
 import com.liferay.template.model.TemplateEntry;
 import com.liferay.template.service.TemplateEntryLocalService;
@@ -144,8 +145,8 @@ public class UpdateTemplateEntryMVCActionCommand
 		LiferayPortletRequest liferayPortletRequest =
 			_portal.getLiferayPortletRequest(actionRequest);
 
-		return new UploadPortletRequestImpl(
-			_portal.getUploadServletRequest(
+		return _uploadPortletRequestFactory.create(
+			_uploaderPortal.getUploadServletRequest(
 				liferayPortletRequest.getHttpServletRequest()),
 			liferayPortletRequest,
 			_portal.getPortletNamespace(
@@ -163,5 +164,11 @@ public class UpdateTemplateEntryMVCActionCommand
 
 	@Reference
 	private TemplateEntryLocalService _templateEntryLocalService;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
+
+	@Reference
+	private UploadPortletRequestFactory _uploadPortletRequestFactory;
 
 }

@@ -58,7 +58,7 @@ public class UpdateRecordMVCActionCommand
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			DDLRecord.class.getName(),
-			portal.getUploadPortletRequest(actionRequest));
+			uploaderPortal.getUploadPortletRequest(actionRequest));
 
 		checkKaleoProcessPermission(
 			serviceContext, KaleoFormsActionKeys.COMPLETE_FORM);

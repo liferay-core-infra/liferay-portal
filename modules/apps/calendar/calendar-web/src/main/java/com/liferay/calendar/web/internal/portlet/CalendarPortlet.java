@@ -123,6 +123,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.util.comparator.UserFirstNameComparator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.uploader.UploaderPortal;
 import com.liferay.rss.util.RSSUtil;
 
 import java.io.IOException;
@@ -211,7 +212,7 @@ public class CalendarPortlet extends MVCPortlet {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -1877,6 +1878,9 @@ public class CalendarPortlet extends MVCPortlet {
 		target = "(&(release.bundle.symbolic.name=com.liferay.calendar.web)(&(release.schema.version>=1.1.0)(!(release.schema.version>=2.0.0))))"
 	)
 	private Release _release;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 	@Reference
 	private UserLocalService _userLocalService;

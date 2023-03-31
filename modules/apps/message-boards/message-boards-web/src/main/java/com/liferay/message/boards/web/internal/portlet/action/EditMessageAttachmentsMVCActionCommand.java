@@ -32,9 +32,9 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.uploader.UploaderPortal;
 import com.liferay.upload.UploadHandler;
 import com.liferay.upload.UploadResponseHandler;
 
@@ -130,7 +130,7 @@ public class EditMessageAttachmentsMVCActionCommand
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploaderPortal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -192,11 +192,11 @@ public class EditMessageAttachmentsMVCActionCommand
 	private UploadResponseHandler _multipleUploadResponseHandler;
 
 	@Reference
-	private Portal _portal;
-
-	@Reference
 	private TempAttachmentMBUploadFileEntryHandler
 		_tempAttachmentMBUploadFileEntryHandler;
+
+	@Reference
+	private UploaderPortal _uploaderPortal;
 
 	@Reference
 	private UploadHandler _uploadHandler;

@@ -561,6 +561,26 @@ public class CompanyLocalServiceTest {
 				user.getUserId(), group.getGroupId(), role.getRoleId()));
 	}
 
+	@Test
+	public void testAddCompanyWithChangeCompanyDefaultLocale()
+		throws Exception {
+
+		String originalLanguageId = PropsValues.COMPANY_DEFAULT_LOCALE;
+
+		PropsValues.COMPANY_DEFAULT_LOCALE = "es_ES";
+
+		Company company = null;
+
+		try {
+			company = addCompany();
+		}
+		finally {
+			PropsValues.COMPANY_DEFAULT_LOCALE = originalLanguageId;
+		}
+
+		_companyLocalService.deleteCompany(company);
+	}
+
 	@Test(expected = NoSuchPasswordPolicyException.class)
 	public void testDeleteCompanyDeletesDefaultPasswordPolicy()
 		throws Exception {

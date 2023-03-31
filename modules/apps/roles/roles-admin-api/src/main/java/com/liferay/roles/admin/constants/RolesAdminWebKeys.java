@@ -24,6 +24,9 @@ public class RolesAdminWebKeys {
 	public static final String EXCLUDED_PANEL_APP_KEYS =
 		"EXCLUDED_PANEL_APP_KEYS";
 
+	public static final String GROUP_TYPE_CONTRIBUTOR_CLASS_NAME_IDS =
+		"GROUP_TYPE_CONTRIBUTOR_CLASS_NAME_IDS";
+
 	public static final String ITEM_SELECTOR = "ITEM_SELECTOR";
 
 	public static final String MODAL_SEGMENT_STATE = "MODAL_SEGMENT_STATE";

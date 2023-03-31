@@ -212,10 +212,6 @@ public class WabGenerator
 		_serviceRegistration = null;
 	}
 
-	protected void unsetModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	private Set<String> _getRequiredForStartupContextPaths(Path path)
 		throws Exception {
 

@@ -16,9 +16,8 @@ package com.liferay.portal.search.web.internal.helper;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.search.web.internal.util.SearchStringUtil;
-
-import java.util.Optional;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.PortletPreferences;
 
@@ -27,52 +26,42 @@ import javax.portlet.PortletPreferences;
  */
 public class PortletPreferencesHelper {
 
-	public PortletPreferencesHelper(
-		Optional<PortletPreferences> portletPreferencesOptional) {
-
-		_portletPreferencesOptional = portletPreferencesOptional;
-	}
-
-	public Optional<Boolean> getBoolean(String key) {
-		Optional<String> valueOptional = _getValue(key);
-
-		return valueOptional.map(GetterUtil::getBoolean);
+	public PortletPreferencesHelper(PortletPreferences portletPreferences) {
+		_portletPreferences = portletPreferences;
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
-		Optional<Boolean> valueOptional = getBoolean(key);
-
-		return valueOptional.orElse(defaultValue);
-	}
-
-	public Optional<Integer> getInteger(String key) {
-		Optional<String> valueOptional = _getValue(key);
-
-		return valueOptional.map(GetterUtil::getInteger);
+		return GetterUtil.getBoolean(key, defaultValue);
 	}
 
 	public int getInteger(String key, int defaultValue) {
-		Optional<Integer> valueOptional = getInteger(key);
-
-		return valueOptional.orElse(defaultValue);
+		return GetterUtil.getInteger(_getValue(key), defaultValue);
 	}
 
-	public Optional<String> getString(String key) {
+	public String getString(String key) {
 		return _getValue(key);
 	}
 
 	public String getString(String key, String defaultValue) {
-		Optional<String> valueOptional = getString(key);
-
-		return valueOptional.orElse(defaultValue);
+		return GetterUtil.getString(getString(key), defaultValue);
 	}
 
-	private Optional<String> _getValue(String key) {
-		return _portletPreferencesOptional.flatMap(
-			portletPreferences -> SearchStringUtil.maybe(
-				portletPreferences.getValue(key, StringPool.BLANK)));
+	private String _getValue(String key) {
+		if (_portletPreferences == null) {
+			return null;
+		}
+
+		String value = _portletPreferences.getValue(key, StringPool.BLANK);
+
+		value = StringUtil.trim(value);
+
+		if (Validator.isBlank(value)) {
+			return null;
+		}
+
+		return value;
 	}
 
-	private final Optional<PortletPreferences> _portletPreferencesOptional;
+	private final PortletPreferences _portletPreferences;
 
 }

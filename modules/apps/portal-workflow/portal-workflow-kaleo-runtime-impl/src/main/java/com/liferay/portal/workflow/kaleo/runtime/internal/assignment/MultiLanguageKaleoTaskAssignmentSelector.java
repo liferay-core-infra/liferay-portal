@@ -27,6 +27,7 @@ import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.assignment.BaseKaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
+import com.liferay.portal.workflow.kaleo.runtime.assignment.ScriptingKaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalService;
 
 import java.util.Collection;
@@ -88,36 +89,40 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 		policyOption = ReferencePolicyOption.GREEDY,
 		target = "(scripting.language=*)"
 	)
-	protected void addKaleoTaskAssignmentSelector(
-			KaleoTaskAssignmentSelector kaleoTaskAssignmentSelector,
+	protected void addScriptingKaleoTaskAssignmentSelector(
+			ScriptingKaleoTaskAssignmentSelector
+				scriptingKaleoTaskAssignmentSelector,
 			Map<String, Object> properties)
 		throws KaleoDefinitionValidationException {
 
 		String[] scriptingLanguages = _getScriptingLanguages(
-			kaleoTaskAssignmentSelector, properties);
+			scriptingKaleoTaskAssignmentSelector, properties);
 
 		for (String scriptingLanguage : scriptingLanguages) {
 			_kaleoTaskAssignmentSelectors.put(
 				_getKaleoTaskAssignmentSelectKey(
 					scriptingLanguage,
-					ClassUtil.getClassName(kaleoTaskAssignmentSelector)),
-				kaleoTaskAssignmentSelector);
+					ClassUtil.getClassName(
+						scriptingKaleoTaskAssignmentSelector)),
+				scriptingKaleoTaskAssignmentSelector);
 		}
 	}
 
-	protected void removeKaleoTaskAssignmentSelector(
-			KaleoTaskAssignmentSelector kaleoTaskAssignmentSelector,
+	protected void removeScriptingKaleoTaskAssignmentSelector(
+			ScriptingKaleoTaskAssignmentSelector
+				scriptingKaleoTaskAssignmentSelector,
 			Map<String, Object> properties)
 		throws KaleoDefinitionValidationException {
 
 		String[] scriptingLanguages = _getScriptingLanguages(
-			kaleoTaskAssignmentSelector, properties);
+			scriptingKaleoTaskAssignmentSelector, properties);
 
 		for (String scriptingLanguage : scriptingLanguages) {
 			_kaleoTaskAssignmentSelectors.remove(
 				_getKaleoTaskAssignmentSelectKey(
 					scriptingLanguage,
-					ClassUtil.getClassName(kaleoTaskAssignmentSelector)));
+					ClassUtil.getClassName(
+						scriptingKaleoTaskAssignmentSelector)));
 		}
 	}
 

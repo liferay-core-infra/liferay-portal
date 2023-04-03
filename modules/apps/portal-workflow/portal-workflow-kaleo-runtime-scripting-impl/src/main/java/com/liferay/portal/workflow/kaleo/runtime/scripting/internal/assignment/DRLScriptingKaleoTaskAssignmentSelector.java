@@ -40,8 +40,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Michael C. Han
  */
 @Component(
-	enabled = false, property = "scripting.language=drl",
-	service = ScriptingKaleoTaskAssignmentSelector.class
+	enabled = false, service = ScriptingKaleoTaskAssignmentSelector.class
 )
 public class DRLScriptingKaleoTaskAssignmentSelector
 	extends BaseKaleoTaskAssignmentSelector
@@ -75,6 +74,13 @@ public class DRLScriptingKaleoTaskAssignmentSelector
 
 		return getKaleoTaskAssignments(results);
 	}
+
+	@Override
+	public String[] getScriptingLanguages() {
+		return _SCRIPTING_LANGUAGES;
+	}
+
+	private static final String[] _SCRIPTING_LANGUAGES = {"drl"};
 
 	@Reference
 	private RulesContextBuilder _rulesContextBuilder;

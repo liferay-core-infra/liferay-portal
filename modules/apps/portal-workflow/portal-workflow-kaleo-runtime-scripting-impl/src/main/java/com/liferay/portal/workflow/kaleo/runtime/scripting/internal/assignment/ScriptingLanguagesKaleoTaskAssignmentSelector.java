@@ -34,14 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael C. Han
  */
-@Component(
-	property = {
-		"scripting.language=beanshell", "scripting.language=groovy",
-		"scripting.language=javascript", "scripting.language=python",
-		"scripting.language=ruby"
-	},
-	service = ScriptingKaleoTaskAssignmentSelector.class
-)
+@Component(service = ScriptingKaleoTaskAssignmentSelector.class)
 public class ScriptingLanguagesKaleoTaskAssignmentSelector
 	extends BaseKaleoTaskAssignmentSelector
 	implements ScriptingKaleoTaskAssignmentSelector {
@@ -63,6 +56,15 @@ public class ScriptingLanguagesKaleoTaskAssignmentSelector
 
 		return getKaleoTaskAssignments(results);
 	}
+
+	@Override
+	public String[] getScriptingLanguages() {
+		return _SCRIPTING_LANGUAGES;
+	}
+
+	private static final String[] _SCRIPTING_LANGUAGES = {
+		"beanshell", "groovy", "javascript", "python", "ruby"
+	};
 
 	private static final Set<String> _outputNames = new HashSet<>(
 		Arrays.asList(

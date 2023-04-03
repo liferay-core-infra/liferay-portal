@@ -19,4 +19,7 @@ package com.liferay.portal.workflow.kaleo.runtime.assignment;
  */
 public interface ScriptingKaleoTaskAssignmentSelector
 	extends KaleoTaskAssignmentSelector {
+
+	public String[] getScriptingLanguages();
+
 }

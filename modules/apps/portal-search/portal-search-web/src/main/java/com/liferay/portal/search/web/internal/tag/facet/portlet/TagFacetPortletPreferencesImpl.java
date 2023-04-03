@@ -30,7 +30,7 @@ public class TagFacetPortletPreferencesImpl
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferencesOptional.orElse(null));
 	}
 
 	@Override

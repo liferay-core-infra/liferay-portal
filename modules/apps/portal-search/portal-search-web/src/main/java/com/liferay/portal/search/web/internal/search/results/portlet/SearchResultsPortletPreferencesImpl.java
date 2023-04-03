@@ -34,7 +34,7 @@ public class SearchResultsPortletPreferencesImpl
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferencesOptional.orElse(null));
 	}
 
 	@Override

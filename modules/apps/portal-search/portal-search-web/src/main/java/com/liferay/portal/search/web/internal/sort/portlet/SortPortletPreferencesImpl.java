@@ -37,7 +37,7 @@ public class SortPortletPreferencesImpl implements SortPortletPreferences {
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferencesOptional.orElse(null));
 	}
 
 	@Override

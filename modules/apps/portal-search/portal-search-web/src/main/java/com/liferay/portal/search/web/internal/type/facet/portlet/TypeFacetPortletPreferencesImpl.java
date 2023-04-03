@@ -46,7 +46,7 @@ public class TypeFacetPortletPreferencesImpl
 		_searchableAssetClassNamesProvider = searchableAssetClassNamesProvider;
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferencesOptional.orElse(null));
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class SearchBarPortletPreferencesImpl
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferencesOptional.orElse(null));
 	}
 
 	@Override

@@ -17,12 +17,10 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.assignment;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.kaleo.definition.ScriptLanguage;
-import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
@@ -134,28 +132,6 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 	@Deactivate
 	protected void deactivate() {
 		_serviceTrackerMap.close();
-	}
-
-	private String _getKaleoTaskAssignmentSelectKey(
-		String language, String kaleoTaskAssignmentSelectorClassName) {
-
-		ScriptLanguage scriptLanguage = null;
-
-		try {
-			scriptLanguage = ScriptLanguage.parse(language);
-		}
-		catch (KaleoDefinitionValidationException
-					kaleoDefinitionValidationException) {
-
-			throw new RuntimeException(kaleoDefinitionValidationException);
-		}
-
-		if (scriptLanguage.equals(ScriptLanguage.JAVA)) {
-			return language + StringPool.COLON +
-				kaleoTaskAssignmentSelectorClassName;
-		}
-
-		return language;
 	}
 
 	@Reference

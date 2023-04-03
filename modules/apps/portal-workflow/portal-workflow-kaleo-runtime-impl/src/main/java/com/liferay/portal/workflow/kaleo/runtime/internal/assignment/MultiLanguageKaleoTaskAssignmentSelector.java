@@ -17,7 +17,6 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.assignment;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ClassUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.kaleo.definition.ScriptLanguage;
 import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
@@ -132,13 +131,6 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 		}
 
 		return language;
-	}
-
-	private String[] _getScriptingLanguages(Map<String, Object> properties) {
-		Object value = properties.get("scripting.language");
-
-		return GetterUtil.getStringValues(
-			value, new String[] {String.valueOf(value)});
 	}
 
 	@Reference

@@ -85,18 +85,16 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(scripting.language=*)"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void addScriptingKaleoTaskAssignmentSelector(
 			ScriptingKaleoTaskAssignmentSelector
-				scriptingKaleoTaskAssignmentSelector,
-			Map<String, Object> properties)
+				scriptingKaleoTaskAssignmentSelector)
 		throws KaleoDefinitionValidationException {
 
-		String[] scriptingLanguages = _getScriptingLanguages(properties);
+		for (String scriptingLanguage :
+				scriptingKaleoTaskAssignmentSelector.getScriptingLanguages()) {
 
-		for (String scriptingLanguage : scriptingLanguages) {
 			_kaleoTaskAssignmentSelectors.put(
 				_getKaleoTaskAssignmentSelectKey(
 					scriptingLanguage,
@@ -108,13 +106,12 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 
 	protected void removeScriptingKaleoTaskAssignmentSelector(
 			ScriptingKaleoTaskAssignmentSelector
-				scriptingKaleoTaskAssignmentSelector,
-			Map<String, Object> properties)
+				scriptingKaleoTaskAssignmentSelector)
 		throws KaleoDefinitionValidationException {
 
-		String[] scriptingLanguages = _getScriptingLanguages(properties);
+		for (String scriptingLanguage :
+				scriptingKaleoTaskAssignmentSelector.getScriptingLanguages()) {
 
-		for (String scriptingLanguage : scriptingLanguages) {
 			_kaleoTaskAssignmentSelectors.remove(
 				_getKaleoTaskAssignmentSelectKey(
 					scriptingLanguage,

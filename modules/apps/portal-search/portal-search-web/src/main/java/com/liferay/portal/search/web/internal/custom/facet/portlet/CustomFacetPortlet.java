@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.custom.facet.portlet;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -25,6 +26,7 @@ import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.web.internal.custom.facet.constants.CustomFacetPortletKeys;
 import com.liferay.portal.search.web.internal.custom.facet.display.context.CustomFacetDisplayContext;
 import com.liferay.portal.search.web.internal.custom.facet.display.context.builder.CustomFacetDisplayContextBuilder;
+import com.liferay.portal.search.web.internal.util.SearchStringUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
@@ -33,7 +35,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -122,13 +123,13 @@ public class CustomFacetPortlet extends MVCPortlet {
 				parameterName, portletSharedSearchResponse, renderRequest);
 
 		return customFacetDisplayContextBuilder.setCustomDisplayCaption(
-			customFacetPortletPreferences.getCustomHeadingOptional()
+			customFacetPortletPreferences.getCustomHeading()
 		).setFacet(
 			_getFacet(
 				portletSharedSearchResponse, customFacetPortletPreferences,
 				renderRequest)
 		).setFieldToAggregate(
-			customFacetPortletPreferences.getAggregationFieldString()
+			customFacetPortletPreferences.getAggregationField(StringPool.BLANK)
 		).setFrequenciesVisible(
 			customFacetPortletPreferences.isFrequenciesVisible()
 		).setFrequencyThreshold(
@@ -196,16 +197,9 @@ public class CustomFacetPortlet extends MVCPortlet {
 	private String _getParameterName(
 		CustomFacetPortletPreferences customFacetPortletPreferences) {
 
-		Optional<String> optional = Stream.of(
-			customFacetPortletPreferences.getParameterNameOptional(),
-			customFacetPortletPreferences.getAggregationFieldOptional()
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).findFirst();
-
-		return optional.orElse("customfield");
+		return SearchStringUtil.getFirstNotNullValue(
+			customFacetPortletPreferences.getParameterName(),
+			customFacetPortletPreferences.getAggregationField(), "customfield");
 	}
 
 	private Optional<List<String>> _getParameterValuesOptional(

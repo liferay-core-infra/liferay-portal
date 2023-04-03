@@ -16,8 +16,6 @@ package com.liferay.portal.search.web.internal.low.level.search.options.portlet.
 
 import com.liferay.portal.kernel.json.JSONArray;
 
-import java.util.Optional;
-
 /**
  * @author Wade Cao
  */
@@ -45,26 +43,26 @@ public interface LowLevelSearchOptionsPortletPreferences {
 
 	public String getAttributesString();
 
-	public Optional<String> getConnectionIdOptional();
+	public String getConnectionId();
 
-	public String getConnectionIdString();
+	public String getConnectionId(String defaultValue);
 
-	public Optional<String> getContributorsToExcludeOptional();
+	public String getContributorsToExclude();
 
-	public String getContributorsToExcludeString();
+	public String getContributorsToExclude(String defaultValue);
 
-	public Optional<String> getContributorsToIncludeOptional();
+	public String getContributorsToInclude();
 
-	public String getContributorsToIncludeString();
+	public String getContributorsToInclude(String defaultValue);
 
 	public String getFederatedSearchKey();
 
-	public Optional<String> getFieldsToReturnOptional();
+	public String getFieldsToReturn();
 
-	public String getFieldsToReturnString();
+	public String getFieldsToReturn(String defaultValue);
 
-	public Optional<String> getIndexesOptional();
+	public String getIndexes();
 
-	public String getIndexesString();
+	public String getIndexes(String defaultValue);
 
 }

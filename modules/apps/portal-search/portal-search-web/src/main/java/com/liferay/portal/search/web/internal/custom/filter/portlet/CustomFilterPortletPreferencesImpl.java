@@ -36,25 +36,28 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getBoostOptional() {
+	public String getBoost() {
 		return _portletPreferencesHelper.getString(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_BOOST);
 	}
 
 	@Override
-	public String getBoostString() {
-		return _getString(getBoostOptional());
+	public String getBoost(String defaultValue) {
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_BOOST, defaultValue);
 	}
 
 	@Override
-	public Optional<String> getCustomHeadingOptional() {
+	public String getCustomHeading() {
 		return _portletPreferencesHelper.getString(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING);
 	}
 
 	@Override
-	public String getCustomHeadingString() {
-		return _getString(getCustomHeadingOptional());
+	public String getCustomHeading(String defaultValue) {
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING,
+			defaultValue);
 	}
 
 	@Override
@@ -65,14 +68,16 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getFilterFieldOptional() {
+	public String getFilterField() {
 		return _portletPreferencesHelper.getString(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_FIELD);
 	}
 
 	@Override
-	public String getFilterFieldString() {
-		return _getString(getFilterFieldOptional());
+	public String getFilterField(String defaultValue) {
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_FIELD,
+			defaultValue);
 	}
 
 	@Override
@@ -83,14 +88,16 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getFilterValueOptional() {
+	public String getFilterValue() {
 		return _portletPreferencesHelper.getString(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE);
 	}
 
 	@Override
-	public String getFilterValueString() {
-		return _getString(getFilterValueOptional());
+	public String getFilterValue(String defaultValue) {
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE,
+			defaultValue);
 	}
 
 	@Override
@@ -100,36 +107,42 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getParameterNameOptional() {
+	public String getParameterName() {
 		return _portletPreferencesHelper.getString(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME);
 	}
 
 	@Override
-	public String getParameterNameString() {
-		return _getString(getParameterNameOptional());
+	public String getParameterName(String defaultValue) {
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
+			defaultValue);
 	}
 
 	@Override
-	public Optional<String> getParentQueryNameOptional() {
+	public String getParentQueryName() {
 		return _portletPreferencesHelper.getString(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_PARENT_QUERY_NAME);
 	}
 
 	@Override
-	public String getParentQueryNameString() {
-		return _getString(getParentQueryNameOptional());
+	public String getParentQueryName(String defaultValue) {
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_PARENT_QUERY_NAME,
+			defaultValue);
 	}
 
 	@Override
-	public Optional<String> getQueryNameOptional() {
+	public String getQueryName() {
 		return _portletPreferencesHelper.getString(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_QUERY_NAME);
 	}
 
 	@Override
-	public String getQueryNameString() {
-		return _getString(getQueryNameOptional());
+	public String getQueryName(String defaultValue) {
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_QUERY_NAME,
+			defaultValue);
 	}
 
 	@Override
@@ -148,10 +161,6 @@ public class CustomFilterPortletPreferencesImpl
 	public boolean isInvisible() {
 		return _portletPreferencesHelper.getBoolean(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_INVISIBLE, false);
-	}
-
-	private String _getString(Optional<String> optional) {
-		return optional.orElse(StringPool.BLANK);
 	}
 
 	private final PortletPreferencesHelper _portletPreferencesHelper;

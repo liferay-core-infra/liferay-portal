@@ -14,10 +14,9 @@
 
 package com.liferay.portal.search.web.internal.util;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
-
-import java.util.stream.Stream;
 
 /**
  * @author André de Oliveira
@@ -35,15 +34,9 @@ public class SearchStringUtil {
 	}
 
 	public static String[] splitAndUnquote(String s) {
-		return Stream.of(
-			StringUtil.split(s.trim(), CharPool.COMMA)
-		).map(
-			String::trim
-		).map(
-			StringUtil::unquote
-		).toArray(
-			String[]::new
-		);
+		return TransformUtil.transform(
+			StringUtil.split(s.trim(), CharPool.COMMA),
+			part -> StringUtil.unquote(part.trim()), String.class);
 	}
 
 }

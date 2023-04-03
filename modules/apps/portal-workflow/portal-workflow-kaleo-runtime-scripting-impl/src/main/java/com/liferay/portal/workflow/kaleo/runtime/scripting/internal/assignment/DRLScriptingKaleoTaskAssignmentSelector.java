@@ -23,7 +23,7 @@ import com.liferay.portal.rules.engine.RulesResourceRetriever;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.assignment.BaseKaleoTaskAssignmentSelector;
-import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
+import com.liferay.portal.workflow.kaleo.runtime.assignment.ScriptingKaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.runtime.util.RulesContextBuilder;
 import com.liferay.portal.workflow.kaleo.runtime.util.WorkflowContextUtil;
 
@@ -41,10 +41,11 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	enabled = false, property = "scripting.language=drl",
-	service = KaleoTaskAssignmentSelector.class
+	service = ScriptingKaleoTaskAssignmentSelector.class
 )
 public class DRLScriptingKaleoTaskAssignmentSelector
-	extends BaseKaleoTaskAssignmentSelector {
+	extends BaseKaleoTaskAssignmentSelector
+	implements ScriptingKaleoTaskAssignmentSelector {
 
 	@Override
 	public Collection<KaleoTaskAssignment> getKaleoTaskAssignments(

@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.assignment.BaseKaleoTaskAssignmentSelector;
-import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
+import com.liferay.portal.workflow.kaleo.runtime.assignment.ScriptingKaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.runtime.scripting.internal.util.KaleoScriptingEvaluator;
 import com.liferay.portal.workflow.kaleo.runtime.util.WorkflowContextUtil;
 
@@ -40,10 +40,11 @@ import org.osgi.service.component.annotations.Reference;
 		"scripting.language=javascript", "scripting.language=python",
 		"scripting.language=ruby"
 	},
-	service = KaleoTaskAssignmentSelector.class
+	service = ScriptingKaleoTaskAssignmentSelector.class
 )
 public class ScriptingLanguagesKaleoTaskAssignmentSelector
-	extends BaseKaleoTaskAssignmentSelector {
+	extends BaseKaleoTaskAssignmentSelector
+	implements ScriptingKaleoTaskAssignmentSelector {
 
 	@Override
 	public Collection<KaleoTaskAssignment> getKaleoTaskAssignments(

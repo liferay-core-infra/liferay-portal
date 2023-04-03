@@ -28,6 +28,7 @@ import com.liferay.portal.search.web.internal.display.context.ThemeDisplaySuppli
 import com.liferay.portal.search.web.internal.search.bar.portlet.SearchBarPortletPreferences;
 import com.liferay.portal.search.web.internal.search.bar.portlet.SearchBarPortletPreferencesImpl;
 import com.liferay.portal.search.web.internal.suggestions.constants.SuggestionsPortletKeys;
+import com.liferay.portal.search.web.internal.util.SearchStringUtil;
 
 import java.util.Optional;
 
@@ -125,12 +126,10 @@ public class RedirectSuggestionsMVCActionCommand extends BaseMVCActionCommand {
 
 		String path = url.substring(0, url.indexOf(friendlyURL));
 
-		Optional<String> destinationOptional =
-			searchBarPortletPreferences.getDestinationOptional();
-
-		String destination = destinationOptional.orElse(friendlyURL);
-
-		return _getPath(path, destination);
+		return _getPath(
+			path,
+			SearchStringUtil.getFirstNotNullValue(
+				searchBarPortletPreferences.getDestination(), friendlyURL));
 	}
 
 	private ThemeDisplay _getThemeDisplay(ActionRequest actionRequest) {

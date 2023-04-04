@@ -31,7 +31,7 @@ public class PropertiesSettingsTest {
 	@Before
 	public void setUp() {
 		_propertiesSettings = new PropertiesSettings(
-			new LocationVariableResolver(null, (SettingsLocatorHelper)null),
+			new LocationVariableResolver(null, null),
 			new Properties() {
 				{
 					put(_MULTIPLE_KEY, _MULTIPLE_VALUES);
@@ -121,7 +121,7 @@ public class PropertiesSettingsTest {
 	private LocationVariableResolver _createLocationVariableResolver(
 		String resolveString, String expectedValue) {
 
-		return new LocationVariableResolver(null, (SettingsLocatorHelper)null) {
+		return new LocationVariableResolver(null, null) {
 
 			@Override
 			public boolean isLocationVariable(String value) {

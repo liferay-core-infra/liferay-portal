@@ -280,7 +280,7 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 			new LocationVariableResolver(
 				new ClassLoaderResourceManager(
 					configurationBeanClass.getClassLoader()),
-				SettingsLocatorHelperImpl.this);
+				serviceName -> getServerSettings(serviceName));
 
 		ConfigurationBeanManagedService configurationBeanManagedService =
 			new ConfigurationBeanManagedService(
@@ -497,7 +497,7 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 			new LocationVariableResolver(
 				new ClassLoaderResourceManager(
 					PortalClassLoaderUtil.getClassLoader()),
-				this),
+				serviceName -> getServerSettings(serviceName)),
 			props.getProperties());
 	}
 

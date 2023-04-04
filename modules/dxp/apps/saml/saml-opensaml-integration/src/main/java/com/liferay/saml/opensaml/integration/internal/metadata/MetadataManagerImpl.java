@@ -14,6 +14,8 @@
 
 package com.liferay.saml.opensaml.integration.internal.metadata;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -72,13 +74,11 @@ import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ChainingSignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
-import org.osgi.service.component.annotations.ReferenceScope;
 
 /**
  * @author Mika Koivisto
@@ -463,19 +463,6 @@ public class MetadataManagerImpl
 		return false;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.AT_LEAST_ONE,
-		policyOption = ReferencePolicyOption.GREEDY,
-		scope = ReferenceScope.PROTOTYPE_REQUIRED
-	)
-	public void setMetadataResolver(MetadataResolver metadataResolver) {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Adding metadata resolver " + metadataResolver);
-		}
-
-		_cachingChainingMetadataResolver.addMetadataResolver(metadataResolver);
-	}
-
 	public void unsetMetadataResolver(MetadataResolver metadataResolver) {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Removing metadata resolver " + metadataResolver);
@@ -486,7 +473,17 @@ public class MetadataManagerImpl
 	}
 
 	@Activate
-	protected void activate() throws ComponentInitializationException {
+	protected void activate(BundleContext bundleContext)
+		throws ComponentInitializationException {
+
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, MetadataResolver.class);
+
+		_serviceTrackerList.forEach(
+			metadataResolver ->
+				_cachingChainingMetadataResolver.addMetadataResolver(
+					metadataResolver));
+
 		_cachingChainingMetadataResolver.setId(
 			CachingChainingMetadataResolver.class.getName());
 		_cachingChainingMetadataResolver.setParserPool(_parserPool);
@@ -530,6 +527,8 @@ public class MetadataManagerImpl
 		_predicateRoleDescriptorResolver.destroy();
 
 		_cachingChainingMetadataResolver.destroy();
+
+		_serviceTrackerList.close();
 	}
 
 	private SamlProviderConfiguration _getSamlProviderConfiguration() {
@@ -590,5 +589,7 @@ public class MetadataManagerImpl
 
 	@Reference
 	private SamlSpIdpConnectionLocalService _samlSpIdpConnectionLocalService;
+
+	private ServiceTrackerList<MetadataResolver> _serviceTrackerList;
 
 }

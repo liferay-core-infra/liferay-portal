@@ -14,96 +14,62 @@
 
 package com.liferay.portal.settings.authentication.ldap.web.internal.portlet.util;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
+import com.liferay.portal.security.ldap.configuration.ConfigurationProviderManager;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPExportConfiguration;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Michael C. Han
  */
-@Component(service = {})
 public class ConfigurationProviderUtil {
 
 	public static ConfigurationProvider<LDAPAuthConfiguration>
 		getLDAPAuthConfigurationProvider() {
 
-		return _ldapAuthConfigurationProvider;
+		ConfigurationProviderManager configurationProviderManager =
+			_configurationProviderManagerSnapshot.get();
+
+		return configurationProviderManager.getConfigurationProvider(
+			LDAPAuthConfiguration.class);
 	}
 
 	public static ConfigurationProvider<LDAPExportConfiguration>
 		getLDAPExportConfigurationProvider() {
 
-		return _ldapExportConfigurationProvider;
+		ConfigurationProviderManager configurationProviderManager =
+			_configurationProviderManagerSnapshot.get();
+
+		return configurationProviderManager.getConfigurationProvider(
+			LDAPExportConfiguration.class);
 	}
 
 	public static ConfigurationProvider<LDAPImportConfiguration>
 		getLDAPImportConfigurationProvider() {
 
-		return _ldapImportConfigurationProvider;
+		ConfigurationProviderManager configurationProviderManager =
+			_configurationProviderManagerSnapshot.get();
+
+		return configurationProviderManager.getConfigurationProvider(
+			LDAPImportConfiguration.class);
 	}
 
 	public static ConfigurationProvider<LDAPServerConfiguration>
 		getLDAPServerConfigurationProvider() {
 
-		return _ldapServerConfigurationProvider;
+		ConfigurationProviderManager configurationProviderManager =
+			_configurationProviderManagerSnapshot.get();
+
+		return configurationProviderManager.getConfigurationProvider(
+			LDAPServerConfiguration.class);
 	}
 
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration)",
-		unbind = "-"
-	)
-	protected void setLDAPAuthConfigurationProvider(
-		ConfigurationProvider<LDAPAuthConfiguration>
-			ldapAuthConfigurationProvider) {
-
-		_ldapAuthConfigurationProvider = ldapAuthConfigurationProvider;
-	}
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPExportConfiguration)",
-		unbind = "-"
-	)
-	protected void setLDAPExportConfigurationProvider(
-		ConfigurationProvider<LDAPExportConfiguration>
-			ldapExportConfigurationProvider) {
-
-		_ldapExportConfigurationProvider = ldapExportConfigurationProvider;
-	}
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)",
-		unbind = "-"
-	)
-	protected void setLDAPImportConfigurationProvider(
-		ConfigurationProvider<LDAPImportConfiguration>
-			ldapImportConfigurationProvider) {
-
-		_ldapImportConfigurationProvider = ldapImportConfigurationProvider;
-	}
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)",
-		unbind = "-"
-	)
-	protected void setLDAPServerConfigurationProvider(
-		ConfigurationProvider<LDAPServerConfiguration>
-			ldapServerConfigurationProvider) {
-
-		_ldapServerConfigurationProvider = ldapServerConfigurationProvider;
-	}
-
-	private static ConfigurationProvider<LDAPAuthConfiguration>
-		_ldapAuthConfigurationProvider;
-	private static ConfigurationProvider<LDAPExportConfiguration>
-		_ldapExportConfigurationProvider;
-	private static ConfigurationProvider<LDAPImportConfiguration>
-		_ldapImportConfigurationProvider;
-	private static ConfigurationProvider<LDAPServerConfiguration>
-		_ldapServerConfigurationProvider;
+	private static final Snapshot<ConfigurationProviderManager>
+		_configurationProviderManagerSnapshot = new Snapshot<>(
+			ConfigurationProviderUtil.class,
+			ConfigurationProviderManager.class);
 
 }

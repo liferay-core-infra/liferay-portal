@@ -15,29 +15,24 @@
 package com.liferay.asset.list.internal.dynamic.data.mapping.util;
 
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
+import com.liferay.osgi.util.service.Snapshot;
 
 import java.util.Locale;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Pavel Savinov
  */
-@Component(service = {})
 public class DDMIndexerUtil {
 
 	public static String encodeName(
 		long ddmStructureId, String fieldReference, Locale locale) {
 
-		return _ddmIndexer.encodeName(ddmStructureId, fieldReference, locale);
+		DDMIndexer ddmIndexer = _ddmIndexerSnapshot.get();
+
+		return ddmIndexer.encodeName(ddmStructureId, fieldReference, locale);
 	}
 
-	@Reference(unbind = "-")
-	protected void se(DDMIndexer ddmIndexer) {
-		_ddmIndexer = ddmIndexer;
-	}
-
-	private static DDMIndexer _ddmIndexer;
+	private static final Snapshot<DDMIndexer> _ddmIndexerSnapshot =
+		new Snapshot<>(DDMIndexerUtil.class, DDMIndexer.class);
 
 }

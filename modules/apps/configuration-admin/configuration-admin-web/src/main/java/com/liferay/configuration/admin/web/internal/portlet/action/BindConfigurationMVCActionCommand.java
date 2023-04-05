@@ -324,7 +324,8 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 			new LocationVariableResolver(
 				new ClassLoaderResourceManager(
 					configurationModel.getClassLoader()),
-				_settingsLocatorHelper);
+				serviceName -> _settingsLocatorHelper.getServerSettings(
+					serviceName));
 
 		DDMFormValuesToPropertiesConverter ddmFormValuesToPropertiesConverter =
 			new DDMFormValuesToPropertiesConverter(

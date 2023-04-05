@@ -152,7 +152,8 @@ public class EditConfigurationMVCRenderCommand implements MVCRenderCommand {
 				new LocationVariableResolver(
 					new ClassLoaderResourceManager(
 						configurationModel.getClassLoader()),
-					_settingsLocatorHelper);
+					settingsId -> _settingsLocatorHelper.getServerSettings(
+						settingsId));
 
 			DDMFormRendererHelper ddmFormRendererHelper =
 				new DDMFormRendererHelper(

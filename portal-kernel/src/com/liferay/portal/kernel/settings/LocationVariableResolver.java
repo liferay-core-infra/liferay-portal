@@ -39,10 +39,10 @@ public class LocationVariableResolver {
 
 	public LocationVariableResolver(
 		ResourceManager resourceManager,
-		Function<String, Settings> serverSettingsFunction) {
+		Function<String, Settings> serverSettingsRetrieverFunction) {
 
 		_resourceManager = resourceManager;
-		_serverSettingsFunction = serverSettingsFunction;
+		_serverSettingsRetrieverFunction = serverSettingsRetrieverFunction;
 	}
 
 	public boolean isLocationVariable(String value) {
@@ -170,8 +170,7 @@ public class LocationVariableResolver {
 
 		String serviceName = location.substring(0, i);
 
-		Settings settings = _serverSettingsFunction.apply(
-			serviceName);
+		Settings settings = _serverSettingsRetrieverFunction.apply(serviceName);
 
 		String property = location.substring(i + 1);
 
@@ -185,6 +184,6 @@ public class LocationVariableResolver {
 	private static final String _LOCATION_VARIABLE_START = "${";
 
 	private final ResourceManager _resourceManager;
-	private Function<String, Settings> _serverSettingsFunction;
+	private final Function<String, Settings> _serverSettingsRetrieverFunction;
 
 }

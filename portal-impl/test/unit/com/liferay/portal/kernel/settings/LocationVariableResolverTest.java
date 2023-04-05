@@ -58,7 +58,9 @@ public class LocationVariableResolverTest {
 		_mockSettingsLocatorHelper = Mockito.mock(SettingsLocatorHelper.class);
 
 		_locationVariableResolver = new LocationVariableResolver(
-			_mockResourceManager, _mockSettingsLocatorHelper);
+			_mockResourceManager,
+			settingsId -> _mockSettingsLocatorHelper.getServerSettings(
+				settingsId));
 	}
 
 	@Test

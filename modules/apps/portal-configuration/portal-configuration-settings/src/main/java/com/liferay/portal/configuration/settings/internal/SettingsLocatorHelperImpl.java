@@ -43,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jorge Ferrer
  * @author Shuyang Zhou
  */
-@Component(immediate = true, service = SettingsLocatorHelper.class)
+@Component(service = SettingsLocatorHelper.class)
 public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 	@Override

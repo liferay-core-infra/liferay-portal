@@ -21,16 +21,18 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Eudaldo Alonso
  */
-@Component(
-	property = "content.type=document-library",
-	service = DataLayoutBuilderDefinition.class
-)
+@Component(service = DataLayoutBuilderDefinition.class)
 public class DocumentLibraryDataLayoutBuilderDefinition
 	implements DataLayoutBuilderDefinition {
 
 	@Override
 	public boolean allowMultiplePages() {
 		return false;
+	}
+
+	@Override
+	public String getContentType() {
+		return "document-library";
 	}
 
 	@Override

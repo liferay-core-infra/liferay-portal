@@ -21,10 +21,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Eudaldo Alonso
  */
-@Component(
-	property = "content.type=journal",
-	service = DataLayoutBuilderDefinition.class
-)
+@Component(service = DataLayoutBuilderDefinition.class)
 public class JournalDataLayoutBuilderDefinition
 	implements DataLayoutBuilderDefinition {
 
@@ -41,6 +38,11 @@ public class JournalDataLayoutBuilderDefinition
 	@Override
 	public boolean allowRules() {
 		return false;
+	}
+
+	@Override
+	public String getContentType() {
+		return "journal";
 	}
 
 	@Override

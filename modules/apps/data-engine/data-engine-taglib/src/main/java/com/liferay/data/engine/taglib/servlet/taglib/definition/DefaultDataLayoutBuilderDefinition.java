@@ -19,10 +19,13 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Eudaldo Alonso
  */
-@Component(
-	property = "content.type=default",
-	service = DataLayoutBuilderDefinition.class
-)
+@Component(service = DataLayoutBuilderDefinition.class)
 public class DefaultDataLayoutBuilderDefinition
 	implements DataLayoutBuilderDefinition {
+
+	@Override
+	public String getContentType() {
+		return "default";
+	}
+
 }

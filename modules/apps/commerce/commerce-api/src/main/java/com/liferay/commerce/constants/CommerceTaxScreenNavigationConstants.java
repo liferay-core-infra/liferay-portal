@@ -22,6 +22,10 @@ public class CommerceTaxScreenNavigationConstants {
 	public static final String CATEGORY_KEY_COMMERCE_REMOTE_CONFIGURATION =
 		"remote-configuration";
 
+	public static final String
+		CATEGORY_KEY_COMMERCE_TAX_METHOD_AVALARA_RATE_RELS =
+			"avalara-tax-rates";
+
 	public static final String CATEGORY_KEY_COMMERCE_TAX_METHOD_DETAIL =
 		"detail";
 
@@ -29,6 +33,11 @@ public class CommerceTaxScreenNavigationConstants {
 
 	public static final String CATEGORY_KEY_COMMERCE_TAX_RATING_SETTINGS =
 		"tax-rate-settings";
+
+	public static final String ENTRY_KEY_COMMERCE_TAX_METHOD_AVALARA_RATE_RELS =
+		"avalara-tax-rates";
+
+	public static final String ENTRY_KEY_COMMERCE_TAX_METHOD_DETAIL = "detail";
 
 	public static final String SCREEN_NAVIGATION_KEY_COMMERCE_TAX_METHOD =
 		"commerce.tax.method";

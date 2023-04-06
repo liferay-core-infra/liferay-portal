@@ -15,6 +15,7 @@
 package com.liferay.commerce.avalara.tax.engine.fixed.web.internal.frontend.taglib.servlet.taglib;
 
 import com.liferay.commerce.avalara.tax.engine.fixed.web.internal.display.context.CommerceAvalaraTaxRateRelsDisplayContext;
+import com.liferay.commerce.constants.CommerceTaxScreenNavigationConstants;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.percentage.PercentageFormatter;
 import com.liferay.commerce.product.model.CommerceChannel;
@@ -51,11 +52,10 @@ public class CommerceTaxMethodAvalaraRateRelsScreenNavigationEntry
 	extends CommerceTaxMethodAvalaraRateRelsScreenNavigationCategory
 	implements ScreenNavigationEntry<CommerceTaxMethod> {
 
-	public static final String ENTRY_KEY = "avalara-tax-rates";
-
 	@Override
 	public String getEntryKey() {
-		return ENTRY_KEY;
+		return CommerceTaxScreenNavigationConstants.
+			ENTRY_KEY_COMMERCE_TAX_METHOD_AVALARA_RATE_RELS;
 	}
 
 	@Override

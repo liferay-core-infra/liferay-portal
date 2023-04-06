@@ -294,7 +294,7 @@ public class DataLayoutTaglibUtil {
 			_dataLayoutBuilderDefinitions.get(contentType);
 
 		if (dataLayoutBuilderDefinition == null) {
-			return _dataLayoutBuilderDefinitions.get("default");
+			return _defaultDataLayoutBuilderDefinition;
 		}
 
 		return dataLayoutBuilderDefinition;
@@ -628,6 +628,10 @@ public class DataLayoutTaglibUtil {
 	private static final Map<String, DataLayoutBuilderDefinition>
 		_dataLayoutBuilderDefinitions = new ConcurrentHashMap<>();
 	private static DataLayoutTaglibUtil _dataLayoutTaglibUtil;
+	private static final DataLayoutBuilderDefinition
+		_defaultDataLayoutBuilderDefinition =
+			new DataLayoutBuilderDefinition() {
+			};
 
 	@Reference
 	private DataDefinitionContentTypeRegistry

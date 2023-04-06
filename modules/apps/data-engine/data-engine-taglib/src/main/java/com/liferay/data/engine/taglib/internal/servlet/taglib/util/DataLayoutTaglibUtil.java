@@ -69,7 +69,6 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -266,18 +265,11 @@ public class DataLayoutTaglibUtil {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void addDataLayoutBuilderDefinition(
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
+		DataLayoutBuilderDefinition dataLayoutBuilderDefinition) {
 
 		_dataLayoutBuilderDefinitions.put(
-			contentType, dataLayoutBuilderDefinition);
+			dataLayoutBuilderDefinition.getContentType(),
+			dataLayoutBuilderDefinition);
 	}
 
 	@Deactivate
@@ -286,17 +278,10 @@ public class DataLayoutTaglibUtil {
 	}
 
 	protected void removeDataLayoutBuilderDefinition(
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
-		Map<String, Object> properties) {
+		DataLayoutBuilderDefinition dataLayoutBuilderDefinition) {
 
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataLayoutBuilderDefinitions.remove(contentType);
+		_dataLayoutBuilderDefinitions.remove(
+			dataLayoutBuilderDefinition.getContentType());
 	}
 
 	private static DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(

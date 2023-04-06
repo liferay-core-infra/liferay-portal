@@ -18,8 +18,11 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -31,13 +34,18 @@ import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Marcela Cunha
@@ -49,20 +57,22 @@ public class DataLayoutTaglibUtilTest {
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
-	@Before
-	public void setUp() throws Exception {
-		ReflectionTestUtil.setFieldValue(
-			_dataLayoutTaglibUtil, "_dataDefinitionResourceFactory",
-			_dataDefinitionResourceFactory);
-		ReflectionTestUtil.setFieldValue(
-			_dataLayoutTaglibUtil, "_dataLayoutTaglibUtil",
-			_dataLayoutTaglibUtil);
-		ReflectionTestUtil.setFieldValue(
-			_dataLayoutTaglibUtil, "_jsonFactory", new JSONFactoryImpl());
-		ReflectionTestUtil.setFieldValue(
-			_dataLayoutTaglibUtil, "_portal", _portal);
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
-		_setUpDataDefinitionResource();
+		_frameworkUtilMockedStatic.when(
+			() -> FrameworkUtil.getBundle(DataLayoutTaglibUtil.class)
+		).thenReturn(
+			bundleContext.getBundle()
+		);
+
+		_setUp();
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		_frameworkUtilMockedStatic.close();
 	}
 
 	@Test
@@ -70,7 +80,7 @@ public class DataLayoutTaglibUtilTest {
 		throws Exception {
 
 		JSONArray actualResultJSONArray =
-			_dataLayoutTaglibUtil.getFieldTypesJSONArray(
+			DataLayoutTaglibUtil.getFieldTypesJSONArray(
 				_httpServletRequest, Collections.singleton("journal"), true);
 
 		Assert.assertEquals(
@@ -86,7 +96,7 @@ public class DataLayoutTaglibUtilTest {
 		throws Exception {
 
 		JSONArray actualResultJSONArray =
-			_dataLayoutTaglibUtil.getFieldTypesJSONArray(
+			DataLayoutTaglibUtil.getFieldTypesJSONArray(
 				_httpServletRequest, Collections.singleton("journal"), false);
 
 		Assert.assertEquals(
@@ -97,16 +107,15 @@ public class DataLayoutTaglibUtilTest {
 			_objectMapper.readTree(actualResultJSONArray.toString()));
 	}
 
-	private String _read(String fileName) throws Exception {
-		Class<?> clazz = getClass();
-
-		InputStream inputStream = clazz.getResourceAsStream(
-			"dependencies/" + fileName);
+	private static String _read(String fileName) throws Exception {
+		InputStream inputStream =
+			DataLayoutTaglibUtilTest.class.getResourceAsStream(
+				"dependencies/" + fileName);
 
 		return StringUtil.read(inputStream);
 	}
 
-	private void _setUpDataDefinitionResource() throws Exception {
+	private static void _setUp() throws Exception {
 		DataDefinitionResource dataDefinitionResource = Mockito.mock(
 			DataDefinitionResource.class);
 
@@ -117,48 +126,90 @@ public class DataLayoutTaglibUtilTest {
 			_read("data-definition-field-types.json")
 		);
 
+		DataDefinitionResource.Builder dataDefinitionResourceBuilder =
+			Mockito.mock(DataDefinitionResource.Builder.class);
+
+		_httpServletRequest = Mockito.mock(HttpServletRequest.class);
+
 		Mockito.when(
-			_dataDefinitionResourceBuilder.build()
+			dataDefinitionResourceBuilder.build()
 		).thenReturn(
 			dataDefinitionResource
 		);
 
 		Mockito.when(
-			_dataDefinitionResourceBuilder.httpServletRequest(
+			dataDefinitionResourceBuilder.httpServletRequest(
 				_httpServletRequest)
 		).thenReturn(
-			_dataDefinitionResourceBuilder
+			dataDefinitionResourceBuilder
 		);
 
-		Mockito.when(
-			_dataDefinitionResourceBuilder.user(
-				_portal.getUser(_httpServletRequest))
-		).thenReturn(
-			_dataDefinitionResourceBuilder
-		);
+		Portal portal = Mockito.mock(Portal.class);
 
 		Mockito.when(
-			_dataDefinitionResourceFactory.create()
+			dataDefinitionResourceBuilder.user(
+				portal.getUser(_httpServletRequest))
 		).thenReturn(
-			_dataDefinitionResourceBuilder
+			dataDefinitionResourceBuilder
 		);
+
+		DataDefinitionResource.Factory dataDefinitionResourceFactory =
+			Mockito.mock(DataDefinitionResource.Factory.class);
+
+		Mockito.when(
+			dataDefinitionResourceFactory.create()
+		).thenReturn(
+			dataDefinitionResourceBuilder
+		);
+
+		Snapshot<DataDefinitionResource.Factory>
+			dataDefinitionResourceFactorySnapshot = Mockito.mock(
+				(Class<Snapshot<DataDefinitionResource.Factory>>)
+					(Class<?>)Snapshot.class);
+
+		Mockito.when(
+			dataDefinitionResourceFactorySnapshot.get()
+		).thenReturn(
+			dataDefinitionResourceFactory
+		);
+
+		Snapshot<JSONFactory> jsonFactorySnapshot = Mockito.mock(
+			(Class<Snapshot<JSONFactory>>)(Class<?>)Snapshot.class);
+
+		Mockito.when(
+			jsonFactorySnapshot.get()
+		).thenReturn(
+			new JSONFactoryImpl()
+		);
+
+		Snapshot<Portal> portalSnapshot = Mockito.mock(
+			(Class<Snapshot<Portal>>)(Class<?>)Snapshot.class);
+
+		Mockito.when(
+			portalSnapshot.get()
+		).thenReturn(
+			portal
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			DataLayoutTaglibUtil.class,
+			"_dataDefinitionResourceFactorySnapshot",
+			dataDefinitionResourceFactorySnapshot);
+		ReflectionTestUtil.setFieldValue(
+			DataLayoutTaglibUtil.class, "_jsonFactorySnapshot",
+			jsonFactorySnapshot);
+		ReflectionTestUtil.setFieldValue(
+			DataLayoutTaglibUtil.class, "_portalSnapshot", portalSnapshot);
 	}
 
-	private final DataDefinitionResource.Builder
-		_dataDefinitionResourceBuilder = Mockito.mock(
-			DataDefinitionResource.Builder.class);
-	private final DataDefinitionResource.Factory
-		_dataDefinitionResourceFactory = Mockito.mock(
-			DataDefinitionResource.Factory.class);
-	private final DataLayoutTaglibUtil _dataLayoutTaglibUtil =
-		new DataLayoutTaglibUtil();
-	private final HttpServletRequest _httpServletRequest = Mockito.mock(
-		HttpServletRequest.class);
+	private static final MockedStatic<FrameworkUtil>
+		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
+	private static HttpServletRequest _httpServletRequest;
+
 	private final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
 			configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
 		}
 	};
-	private final Portal _portal = Mockito.mock(Portal.class);
 
 }

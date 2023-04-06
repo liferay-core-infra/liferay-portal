@@ -12,26 +12,29 @@
  * details.
  */
 
-package com.liferay.roles.admin.web.internal.group.type.contributor.util;
+package com.liferay.roles.admin.web.internal.group.type.contributor.internal.util;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.function.transform.TransformUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.roles.admin.group.type.contributor.GroupTypeContributor;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Alejandro Tardín
+ * @author Janis Zhang
  */
-@Component(service = {})
-public class GroupTypeContributorUtil {
+@Component(service = GroupTypeContributorRegistry.class)
+public class GroupTypeContributorRegistryImpl
+	implements GroupTypeContributorRegistry {
 
-	public static long[] getClassNameIds() {
+	@Override
+	public long[] getClassNameIds() {
 		return TransformUtil.transformToLongArray(
 			_serviceTrackerList,
 			groupTypeContributor -> {
@@ -39,7 +42,7 @@ public class GroupTypeContributorUtil {
 					return null;
 				}
 
-				return PortalUtil.getClassNameId(
+				return _portal.getClassNameId(
 					groupTypeContributor.getClassName());
 			});
 	}
@@ -55,6 +58,9 @@ public class GroupTypeContributorUtil {
 		_serviceTrackerList.close();
 	}
 
-	private static ServiceTrackerList<GroupTypeContributor> _serviceTrackerList;
+	@Reference
+	private Portal _portal;
+
+	private ServiceTrackerList<GroupTypeContributor> _serviceTrackerList;
 
 }

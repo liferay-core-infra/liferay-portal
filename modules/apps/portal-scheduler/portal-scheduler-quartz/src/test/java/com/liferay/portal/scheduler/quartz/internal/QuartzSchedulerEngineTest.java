@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -104,7 +105,7 @@ public class QuartzSchedulerEngineTest {
 
 		_quartzSchedulerEngine = new QuartzSchedulerEngine();
 
-		_quartzSchedulerEngine.setProps(_setUpPropsUtil());
+		_setProps(_setUpPropsUtil());
 
 		ReflectionTestUtil.setFieldValue(
 			_quartzSchedulerEngine, "_jsonFactory", _setUpJSONFactory());
@@ -211,7 +212,7 @@ public class QuartzSchedulerEngineTest {
 			_quartzSchedulerEngine.getDescriptionMaxLength() +
 				RandomTestUtil.randomInt();
 
-		_quartzSchedulerEngine.setProps(
+		_setProps(
 			PropsTestUtil.setProps(
 				PropsKeys.SCHEDULER_DESCRIPTION_MAX_LENGTH,
 				String.valueOf(descriptionMaxLength)));
@@ -225,8 +226,7 @@ public class QuartzSchedulerEngineTest {
 	public void testDisableScheduler() {
 		_quartzSchedulerEngine.deactivate();
 
-		_quartzSchedulerEngine.setProps(
-			PropsTestUtil.setProps(PropsKeys.SCHEDULER_ENABLED, "true"));
+		_setProps(PropsTestUtil.setProps(PropsKeys.SCHEDULER_ENABLED, "true"));
 
 		_quartzSchedulerEngine.activate();
 
@@ -237,8 +237,7 @@ public class QuartzSchedulerEngineTest {
 
 		_quartzSchedulerEngine.deactivate();
 
-		_quartzSchedulerEngine.setProps(
-			PropsTestUtil.setProps(PropsKeys.SCHEDULER_ENABLED, "false"));
+		_setProps(PropsTestUtil.setProps(PropsKeys.SCHEDULER_ENABLED, "false"));
 
 		_quartzSchedulerEngine.activate();
 
@@ -254,7 +253,7 @@ public class QuartzSchedulerEngineTest {
 			_quartzSchedulerEngine.getGroupNameMaxLength() +
 				RandomTestUtil.randomInt();
 
-		_quartzSchedulerEngine.setProps(
+		_setProps(
 			PropsTestUtil.setProps(
 				PropsKeys.SCHEDULER_GROUP_NAME_MAX_LENGTH,
 				String.valueOf(groupNameMaxLength)));
@@ -303,7 +302,7 @@ public class QuartzSchedulerEngineTest {
 			_quartzSchedulerEngine.getJobNameMaxLength() +
 				RandomTestUtil.randomInt();
 
-		_quartzSchedulerEngine.setProps(
+		_setProps(
 			PropsTestUtil.setProps(
 				PropsKeys.SCHEDULER_JOB_NAME_MAX_LENGTH,
 				String.valueOf(jobNameMaxLength)));
@@ -476,6 +475,23 @@ public class QuartzSchedulerEngineTest {
 		JobState jobState = (JobState)message.get(SchedulerEngine.JOB_STATE);
 
 		Assert.assertEquals(expectedTriggerState, jobState.getTriggerState());
+	}
+
+	private void _setProps(Props props) {
+		ReflectionTestUtil.setFieldValue(
+			_quartzSchedulerEngine, "_props", props);
+		ReflectionTestUtil.setFieldValue(
+			_quartzSchedulerEngine, "_descriptionMaxLength",
+			GetterUtil.getInteger(
+				props.get(PropsKeys.SCHEDULER_DESCRIPTION_MAX_LENGTH), 120));
+		ReflectionTestUtil.setFieldValue(
+			_quartzSchedulerEngine, "_groupNameMaxLength",
+			GetterUtil.getInteger(
+				props.get(PropsKeys.SCHEDULER_GROUP_NAME_MAX_LENGTH), 80));
+		ReflectionTestUtil.setFieldValue(
+			_quartzSchedulerEngine, "_jobNameMaxLength",
+			GetterUtil.getInteger(
+				props.get(PropsKeys.SCHEDULER_JOB_NAME_MAX_LENGTH), 80));
 	}
 
 	private JSONFactory _setUpJSONFactory() {

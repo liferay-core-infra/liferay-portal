@@ -278,7 +278,7 @@ public class DataLayoutTaglibUtil {
 			_serviceTrackerMap.getService(contentType);
 
 		if (dataLayoutBuilderDefinition == null) {
-			return _serviceTrackerMap.getService("default");
+			return _defaultDataLayoutBuilderDefinition;
 		}
 
 		return dataLayoutBuilderDefinition;
@@ -604,6 +604,18 @@ public class DataLayoutTaglibUtil {
 		DataLayoutTaglibUtil.class);
 
 	private static DataLayoutTaglibUtil _dataLayoutTaglibUtil;
+
+	private static final DataLayoutBuilderDefinition
+		_defaultDataLayoutBuilderDefinition =
+			new DataLayoutBuilderDefinition() {
+
+				@Override
+				public String getContentType() {
+					return "default";
+				}
+
+			};
+
 	private static ServiceTrackerMap<String, DataLayoutBuilderDefinition>
 		_serviceTrackerMap;
 

@@ -26,7 +26,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Rodrigo Paulino
  */
 @Component(
-	property = "content.type=test",
 	service = {
 		DataDefinitionContentType.class, TestDataDefinitionContentType.class
 	}

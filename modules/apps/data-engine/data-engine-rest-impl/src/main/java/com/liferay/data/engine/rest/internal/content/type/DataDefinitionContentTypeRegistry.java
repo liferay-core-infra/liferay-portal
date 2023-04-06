@@ -34,7 +34,10 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 public class DataDefinitionContentTypeRegistry {
 
 	public Long getClassNameId(String contentType) throws Exception {
-		Long id = _classNameIds.get(contentType);
+		DataDefinitionContentType dataDefinitionContentType =
+			getDataDefinitionContentType(contentType);
+
+		Long id = dataDefinitionContentType.getClassNameId();
 
 		if (id == null) {
 			throw new DataDefinitionValidationException.MustSetValidContentType(
@@ -47,7 +50,15 @@ public class DataDefinitionContentTypeRegistry {
 	public DataDefinitionContentType getDataDefinitionContentType(
 		long classNameId) {
 
-		return _dataDefinitionContentTypesByClassNameId.get(classNameId);
+		for (DataDefinitionContentType dataDefinitionContentType :
+				_dataDefinitionContentTypesByContentType.values()) {
+
+			if (dataDefinitionContentType.getClassNameId() == classNameId) {
+				return dataDefinitionContentType;
+			}
+		}
+
+		return null;
 	}
 
 	public DataDefinitionContentType getDataDefinitionContentType(
@@ -73,17 +84,9 @@ public class DataDefinitionContentTypeRegistry {
 	protected void addDataDefinitionContentType(
 		DataDefinitionContentType dataDefinitionContentType) {
 
-		String contentType = dataDefinitionContentType.getContentType();
-
-		_classNameIds.put(
-			contentType, dataDefinitionContentType.getClassNameId());
-
-		_dataDefinitionContentTypesByClassNameId.put(
-			dataDefinitionContentType.getClassNameId(),
-			dataDefinitionContentType);
-
 		_dataDefinitionContentTypesByContentType.put(
-			contentType, dataDefinitionContentType);
+			dataDefinitionContentType.getContentType(),
+			dataDefinitionContentType);
 	}
 
 	@Deactivate
@@ -94,18 +97,10 @@ public class DataDefinitionContentTypeRegistry {
 	protected void removeDataDefinitionContentType(
 		DataDefinitionContentType dataDefinitionContentType) {
 
-		String contentType = dataDefinitionContentType.getContentType();
-
-		_dataDefinitionContentTypesByClassNameId.remove(
-			_classNameIds.get(contentType));
-
-		_classNameIds.remove(contentType);
-		_dataDefinitionContentTypesByContentType.remove(contentType);
+		_dataDefinitionContentTypesByContentType.remove(
+			dataDefinitionContentType.getContentType());
 	}
 
-	private final Map<String, Long> _classNameIds = new TreeMap<>();
-	private final Map<Long, DataDefinitionContentType>
-		_dataDefinitionContentTypesByClassNameId = new TreeMap<>();
 	private final Map<String, DataDefinitionContentType>
 		_dataDefinitionContentTypesByContentType = new TreeMap<>();
 

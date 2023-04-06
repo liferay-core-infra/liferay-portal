@@ -16,27 +16,22 @@ package com.liferay.knowledge.base.internal.importer.util;
 
 import com.liferay.knowledge.base.markdown.converter.MarkdownConverter;
 import com.liferay.knowledge.base.markdown.converter.factory.MarkdownConverterFactory;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import com.liferay.osgi.util.service.Snapshot;
 
 /**
  * @author Matthew Tambara
  */
-@Component(service = {})
 public class MarkdownConverterFactoryUtil {
 
 	public static MarkdownConverter create() {
-		return _markdownConverterFactory.create();
+		MarkdownConverterFactory markdownConverterFactory =
+			_markdownConverterFactorySnapshot.get();
+
+		return markdownConverterFactory.create();
 	}
 
-	@Reference(unbind = "-")
-	protected void setMarkdownConverterFactory(
-		MarkdownConverterFactory markdownConverterFactory) {
-
-		_markdownConverterFactory = markdownConverterFactory;
-	}
-
-	private static MarkdownConverterFactory _markdownConverterFactory;
+	private static final Snapshot<MarkdownConverterFactory>
+		_markdownConverterFactorySnapshot = new Snapshot<>(
+			MarkdownConverterFactoryUtil.class, MarkdownConverterFactory.class);
 
 }

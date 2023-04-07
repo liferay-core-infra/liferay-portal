@@ -71,8 +71,6 @@ public class UserGroupRoleLocalServiceTest {
 		Assert.assertEquals(
 			userGroupRoles.toString(), 1, userGroupRoles.size());
 
-		_entityCache.clearLocalCache();
-
 		Assert.assertEquals(
 			userGroupRoles.get(0),
 			_userGroupRoleLocalService.fetchUserGroupRole(

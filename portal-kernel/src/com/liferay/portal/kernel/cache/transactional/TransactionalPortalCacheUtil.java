@@ -20,8 +20,6 @@ import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.SkipReplicationThreadLocal;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionDefinition;
@@ -124,9 +122,6 @@ public class TransactionalPortalCacheUtil {
 				}
 				else if (transactionStatus.isNewTransaction()) {
 					rollback();
-
-					EntityCacheUtil.clearLocalCache();
-					FinderCacheUtil.clearLocalCache();
 				}
 			}
 

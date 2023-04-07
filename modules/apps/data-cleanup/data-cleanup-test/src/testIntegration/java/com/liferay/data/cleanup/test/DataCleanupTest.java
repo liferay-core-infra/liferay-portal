@@ -26,8 +26,6 @@ import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Release;
@@ -468,8 +466,6 @@ public class DataCleanupTest {
 				new ConfigurationTemporarySwapper(
 					_CONFIGURATION_PID, properties)) {
 
-			FinderCacheUtil.clearLocalCache();
-
 			for (String currentServletContextName : _SERVLET_CONTEXT_NAMES) {
 				Release release = _releaseLocalService.fetchRelease(
 					currentServletContextName);
@@ -484,8 +480,6 @@ public class DataCleanupTest {
 		}
 
 		if (portletPreferencePortletId != null) {
-			EntityCacheUtil.clearLocalCache();
-
 			_layout = _layoutLocalService.getLayout(_layout.getPlid());
 
 			UnicodeProperties unicodeProperties =

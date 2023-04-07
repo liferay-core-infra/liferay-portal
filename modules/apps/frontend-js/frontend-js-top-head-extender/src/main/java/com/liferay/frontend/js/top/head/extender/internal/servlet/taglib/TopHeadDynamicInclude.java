@@ -186,12 +186,6 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 	}
 
 	private synchronized ResourceURLsBag _rebuild() {
-		if ((_bundleContext == null) || (_portal == null) ||
-			(_portalWebResources == null)) {
-
-			return null;
-		}
-
 		ResourceURLsBag resourceURLsBag = new ResourceURLsBag();
 
 		_addPortalBundles(

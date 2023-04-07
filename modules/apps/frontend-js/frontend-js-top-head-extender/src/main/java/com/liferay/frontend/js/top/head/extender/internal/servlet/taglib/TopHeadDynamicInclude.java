@@ -47,8 +47,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -143,43 +141,67 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 				}
 
 			});
-	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void addPortalWebResources(
-		PortalWebResources portalWebResources) {
+		_portalWebResourcesServiceTracker = ServiceTrackerFactory.open(
+			bundleContext, PortalWebResources.class,
+			new ServiceTrackerCustomizer
+				<PortalWebResources, PortalWebResources>() {
 
-		String resourceType = portalWebResources.getResourceType();
+				@Override
+				public PortalWebResources addingService(
+					ServiceReference<PortalWebResources> serviceReference) {
 
-		if (resourceType.equals(PortalWebResourceConstants.RESOURCE_TYPE_JS)) {
-			synchronized (_topHeadResourcesServiceReferences) {
-				_portalWebResources = portalWebResources;
+					PortalWebResources portalWebResources =
+						bundleContext.getService(serviceReference);
 
-				_resourceURLsBag = null;
-			}
-		}
+					String resourceType = portalWebResources.getResourceType();
+
+					if (resourceType.equals(
+							PortalWebResourceConstants.RESOURCE_TYPE_JS)) {
+
+						synchronized (_topHeadResourcesServiceReferences) {
+							_portalWebResources = portalWebResources;
+
+							_resourceURLsBag = null;
+						}
+					}
+
+					return portalWebResources;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<PortalWebResources> serviceReference,
+					PortalWebResources portalWebResources) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<PortalWebResources> serviceReference,
+					PortalWebResources portalWebResources) {
+
+					String resourceType = portalWebResources.getResourceType();
+
+					if (resourceType.equals(
+							PortalWebResourceConstants.RESOURCE_TYPE_JS)) {
+
+						synchronized (_topHeadResourcesServiceReferences) {
+							_portalWebResources = null;
+
+							_resourceURLsBag = null;
+						}
+					}
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_topHeadResourcesServiceTracker.close();
-	}
-
-	protected void removePortalWebResources(
-		PortalWebResources portalWebResources) {
-
-		String resourceType = portalWebResources.getResourceType();
-
-		if (resourceType.equals(PortalWebResourceConstants.RESOURCE_TYPE_JS)) {
-			synchronized (_topHeadResourcesServiceReferences) {
-				_portalWebResources = null;
-
-				_resourceURLsBag = null;
-			}
-		}
+		_portalWebResourcesServiceTracker.close();
 	}
 
 	private void _addPortalBundles(List<String> urls, String propsKey) {
@@ -336,6 +358,8 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 	private Portal _portal;
 
 	private PortalWebResources _portalWebResources;
+	private ServiceTracker<PortalWebResources, PortalWebResources>
+		_portalWebResourcesServiceTracker;
 	private volatile ResourceURLsBag _resourceURLsBag;
 	private final Collection<ServiceReference<TopHeadResources>>
 		_topHeadResourcesServiceReferences = new TreeSet<>();

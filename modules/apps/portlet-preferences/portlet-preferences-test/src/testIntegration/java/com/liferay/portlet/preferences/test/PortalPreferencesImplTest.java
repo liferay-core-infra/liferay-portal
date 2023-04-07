@@ -425,9 +425,6 @@ public class PortalPreferencesImplTest {
 		futureTask1.get();
 
 		futureTask2.get();
-
-		_entityCache.clearLocalCache();
-		_finderCache.clearLocalCache();
 	}
 
 	protected static class SynchronizedTransactionExecutor

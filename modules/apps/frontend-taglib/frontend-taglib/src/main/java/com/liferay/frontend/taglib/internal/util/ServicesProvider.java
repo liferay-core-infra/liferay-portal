@@ -45,23 +45,14 @@ public class ServicesProvider {
 	}
 
 	public static Map<String, Bundle> getBundleMap() {
-		return _bundleConcurrentMap;
-	}
+		if (_bundleTracker != null) {
+			return _bundleConcurrentMap;
+		}
 
-	public static JSModuleLauncher getJSModuleLauncher() {
-		return _jsModuleLauncherSnapshot.get();
-	}
-
-	public static JSModuleResolver getJSModuleResolver() {
-		return _jsModuleResolverSnapshot.get();
-	}
-
-	@Activate
-	protected void activate(BundleContext bundleContext) {
 		_bundleConcurrentMap = new ConcurrentHashMap<>();
 
 		_bundleTracker = new BundleTracker(
-			bundleContext, Bundle.ACTIVE,
+			_bundleContext, Bundle.ACTIVE,
 			new BundleTrackerCustomizer<String>() {
 
 				@Override
@@ -90,6 +81,21 @@ public class ServicesProvider {
 			});
 
 		_bundleTracker.open();
+
+		return _bundleConcurrentMap;
+	}
+
+	public static JSModuleLauncher getJSModuleLauncher() {
+		return _jsModuleLauncherSnapshot.get();
+	}
+
+	public static JSModuleResolver getJSModuleResolver() {
+		return _jsModuleResolverSnapshot.get();
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 	}
 
 	@Deactivate
@@ -105,6 +111,7 @@ public class ServicesProvider {
 		_absolutePortalURLBuilderFactorySnapshot = new Snapshot<>(
 			ServicesProvider.class, AbsolutePortalURLBuilderFactory.class);
 	private static ConcurrentMap<String, Bundle> _bundleConcurrentMap;
+	private static BundleContext _bundleContext;
 	private static BundleTracker<String> _bundleTracker;
 	private static final Snapshot<JSModuleLauncher> _jsModuleLauncherSnapshot =
 		new Snapshot<>(ServicesProvider.class, JSModuleLauncher.class);

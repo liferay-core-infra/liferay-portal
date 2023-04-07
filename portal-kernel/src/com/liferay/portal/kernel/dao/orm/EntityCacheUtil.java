@@ -33,10 +33,6 @@ public class EntityCacheUtil {
 		_entityCache.clearCache(clazz);
 	}
 
-	public static void clearLocalCache() {
-		_entityCache.clearLocalCache();
-	}
-
 	public static EntityCache getEntityCache() {
 		return _entityCache;
 	}

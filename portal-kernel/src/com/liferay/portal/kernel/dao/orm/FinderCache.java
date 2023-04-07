@@ -30,8 +30,6 @@ public interface FinderCache {
 
 	public void clearDSLQueryCache(String tableName);
 
-	public void clearLocalCache();
-
 	public Object getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistence<?> basePersistence);

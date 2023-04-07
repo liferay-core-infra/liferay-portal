@@ -31,8 +31,6 @@ public interface EntityCache {
 
 	public void clearCache(Class<?> clazz);
 
-	public void clearLocalCache();
-
 	public Serializable getLocalCacheResult(
 		Class<?> clazz, Serializable primaryKey);
 

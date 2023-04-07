@@ -125,13 +125,6 @@ public class FinderCacheImpl
 	}
 
 	@Override
-	public void clearLocalCache() {
-		if (_isLocalCacheEnabled()) {
-			_localCache.remove();
-		}
-	}
-
-	@Override
 	public void dispose() {
 		_portalCaches.clear();
 	}

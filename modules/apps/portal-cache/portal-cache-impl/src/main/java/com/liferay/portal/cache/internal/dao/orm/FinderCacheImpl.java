@@ -81,8 +81,6 @@ public class FinderCacheImpl
 	implements CacheRegistryItem, FinderCache, PortalCacheManagerListener {
 
 	public void clearByEntityCache(String className) {
-		clearLocalCache();
-
 		_clearCache(className);
 		_clearCache(_getCacheNameWithPagination(className));
 		_clearCache(_getCacheNameWithoutPagination(className));
@@ -92,8 +90,6 @@ public class FinderCacheImpl
 
 	@Override
 	public void clearCache() {
-		clearLocalCache();
-
 		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
 			portalCache.removeAll();
 		}
@@ -359,8 +355,6 @@ public class FinderCacheImpl
 			return;
 		}
 
-		clearLocalCache();
-
 		_clearCache(_getCacheNameWithPagination(className));
 		_clearCache(_getCacheNameWithoutPagination(className));
 
@@ -435,8 +429,6 @@ public class FinderCacheImpl
 
 			return;
 		}
-
-		clearLocalCache();
 
 		_clearCache(_getCacheNameWithPagination(className));
 
@@ -647,6 +639,11 @@ public class FinderCacheImpl
 		portalCache =
 			(PortalCache<Serializable, Serializable>)
 				_multiVMPool.getPortalCache(groupKey, false, sharded);
+
+		if (_localCache != null) {
+			portalCache.registerPortalCacheListener(
+				new ThreadLocalCachePortalCacheListener(_localCache));
+		}
 
 		PortalCache<Serializable, Serializable> previousPortalCache =
 			_portalCaches.putIfAbsent(className, portalCache);

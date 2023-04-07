@@ -65,8 +65,6 @@ public class EntityCacheImpl
 	public void clearCache() {
 		_notifyFinderCache(null, null, false);
 
-		clearLocalCache();
-
 		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
 			portalCache.removeAll();
 		}
@@ -75,8 +73,6 @@ public class EntityCacheImpl
 	@Override
 	public void clearCache(Class<?> clazz) {
 		_notifyFinderCache(clazz.getName(), null, false);
-
-		clearLocalCache();
 
 		PortalCache<?, ?> portalCache = getPortalCache(clazz);
 
@@ -145,6 +141,11 @@ public class EntityCacheImpl
 		portalCache =
 			(PortalCache<Serializable, Serializable>)
 				_multiVMPool.getPortalCache(groupKey, mvcc, sharded);
+
+		if (_localCache != null) {
+			portalCache.registerPortalCacheListener(
+				new ThreadLocalCachePortalCacheListener(_localCache));
+		}
 
 		PortalCache<Serializable, Serializable> previousPortalCache =
 			_portalCaches.putIfAbsent(className, portalCache);

@@ -74,11 +74,11 @@ public class CustomFacetDisplayContextBuilder {
 	}
 
 	public CustomFacetDisplayContextBuilder setCustomDisplayCaption(
-		Optional<String> customDisplayCaptionOptional) {
+		String customDisplayCaption) {
 
-		customDisplayCaptionOptional.ifPresent(
-			customDisplayCaption ->
-				_customDisplayCaption = customDisplayCaption);
+		if (customDisplayCaption != null) {
+			_customDisplayCaption = customDisplayCaption;
+		}
 
 		return this;
 	}

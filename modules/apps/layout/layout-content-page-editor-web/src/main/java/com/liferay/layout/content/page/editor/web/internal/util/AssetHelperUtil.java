@@ -22,6 +22,7 @@ import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.util.AssetHelper;
 import com.liferay.asset.util.AssetPublisherAddItemHolder;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletPreferencesIds;
@@ -59,13 +60,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Jürgen Kappler
  */
-@Component(service = {})
 public class AssetHelperUtil {
 
 	public static List<AssetPublisherAddItemHolder>
@@ -75,13 +72,24 @@ public class AssetHelperUtil {
 				HttpServletResponse httpServletResponse)
 		throws Exception {
 
+		SegmentsEntryRetriever segmentsEntryRetriever =
+			_segmentsEntryRetrieverSnapshot.get();
+
+		AssetListAssetEntryProvider assetListAssetEntryProvider =
+			_assetListAssetEntryProviderSnapshot.get();
+
+		Portal portal = _portalSnapshot.get();
+
+		RequestContextMapper requestContextMapper =
+			_requestContextMapperSnapshot.get();
+
 		AssetEntryQuery assetEntryQuery =
-			_assetListAssetEntryProvider.getAssetEntryQuery(
+			assetListAssetEntryProvider.getAssetEntryQuery(
 				assetListEntry,
-				_segmentsEntryRetriever.getSegmentsEntryIds(
-					_portal.getScopeGroupId(httpServletRequest),
-					_portal.getUserId(httpServletRequest),
-					_requestContextMapper.map(httpServletRequest)),
+				segmentsEntryRetriever.getSegmentsEntryIds(
+					portal.getScopeGroupId(httpServletRequest),
+					portal.getUserId(httpServletRequest),
+					requestContextMapper.map(httpServletRequest)),
 				StringPool.BLANK);
 
 		long[] allTagIds = assetEntryQuery.getAllTagIds();
@@ -91,7 +99,10 @@ public class AssetHelperUtil {
 		int index = 0;
 
 		for (long tagId : allTagIds) {
-			AssetTag assetTag = _assetTagLocalService.getAssetTag(tagId);
+			AssetTagLocalService assetTagLocalService =
+				_assetTagLocalServiceSnapshot.get();
+
+			AssetTag assetTag = assetTagLocalService.getAssetTag(tagId);
 
 			allTagNames[index++] = assetTag.getName();
 		}
@@ -104,13 +115,15 @@ public class AssetHelperUtil {
 				JavaConstants.JAVAX_PORTLET_RESPONSE);
 
 		LiferayPortletResponse liferayPortletResponse =
-			_portal.getLiferayPortletResponse(portletResponse);
+			portal.getLiferayPortletResponse(portletResponse);
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		return _assetHelper.getAssetPublisherAddItemHolders(
+		AssetHelper assetHelper = _assetHelperSnapshot.get();
+
+		return assetHelper.getAssetPublisherAddItemHolders(
 			liferayPortletRequest, liferayPortletResponse,
 			assetListEntry.getGroupId(), assetEntryQuery.getClassNameIds(),
 			assetEntryQuery.getClassTypeIds(),
@@ -120,65 +133,17 @@ public class AssetHelperUtil {
 				themeDisplay));
 	}
 
-	@Reference(unbind = "-")
-	protected void setAssetHelper(AssetHelper assetHelper) {
-		_assetHelper = assetHelper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setAssetListAssetEntryProvider(
-		AssetListAssetEntryProvider assetListAssetEntryProvider) {
-
-		_assetListAssetEntryProvider = assetListAssetEntryProvider;
-	}
-
-	@Reference(unbind = "-")
-	protected void setAssetTagLocalService(
-		AssetTagLocalService assetTagLocalService) {
-
-		_assetTagLocalService = assetTagLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setPortal(Portal portal) {
-		_portal = portal;
-	}
-
-	@Reference(unbind = "-")
-	protected void setPortletLocalService(
-		PortletLocalService portletLocalService) {
-
-		_portletLocalService = portletLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setPortletPreferencesLocalService(
-		PortletPreferencesLocalService portletPreferencesLocalService) {
-
-		_portletPreferencesLocalService = portletPreferencesLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setRequestContextMapper(
-		RequestContextMapper requestContextMapper) {
-
-		_requestContextMapper = requestContextMapper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSegmentsEntryRetriever(
-		SegmentsEntryRetriever segmentsEntryRetriever) {
-
-		_segmentsEntryRetriever = segmentsEntryRetriever;
-	}
-
 	private static LiferayRenderRequest _createRenderRequest(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws Exception {
 
-		Portlet portlet = _portletLocalService.getPortletById(
+		PortletLocalService portletLocalService =
+			_portletLocalServiceSnapshot.get();
+
+		Portlet portlet = portletLocalService.getPortletById(
 			ContentPageEditorPortletKeys.CONTENT_PAGE_EDITOR_PORTLET);
+
 		ServletContext servletContext =
 			(ServletContext)httpServletRequest.getAttribute(WebKeys.CTX);
 
@@ -193,12 +158,15 @@ public class AssetHelperUtil {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
+		PortletPreferencesLocalService portletPreferencesLocalService =
+			_portletPreferencesLocalServiceSnapshot.get();
+
 		LiferayRenderRequest liferayRenderRequest = RenderRequestFactory.create(
 			httpServletRequest, portlet,
 			PortletInstanceFactoryUtil.create(portlet, servletContext),
 			portletConfig.getPortletContext(), WindowState.NORMAL,
 			PortletMode.VIEW,
-			_portletPreferencesLocalService.getStrictPreferences(
+			portletPreferencesLocalService.getStrictPreferences(
 				portletPreferencesIds),
 			themeDisplay.getPlid());
 
@@ -218,9 +186,10 @@ public class AssetHelperUtil {
 			ThemeDisplay themeDisplay)
 		throws Exception {
 
+		Portal portal = _portalSnapshot.get();
+
 		String currentURL = HttpComponentsUtil.addParameter(
-			_portal.getLayoutRelativeURL(
-				themeDisplay.getLayout(), themeDisplay),
+			portal.getLayoutRelativeURL(themeDisplay.getLayout(), themeDisplay),
 			"p_l_mode", Constants.EDIT);
 
 		return HttpComponentsUtil.addParameter(
@@ -242,14 +211,27 @@ public class AssetHelperUtil {
 				PRODUCT_NAVIGATION_CONTROL_MENU);
 	}
 
-	private static AssetHelper _assetHelper;
-	private static AssetListAssetEntryProvider _assetListAssetEntryProvider;
-	private static AssetTagLocalService _assetTagLocalService;
-	private static Portal _portal;
-	private static PortletLocalService _portletLocalService;
-	private static PortletPreferencesLocalService
-		_portletPreferencesLocalService;
-	private static RequestContextMapper _requestContextMapper;
-	private static SegmentsEntryRetriever _segmentsEntryRetriever;
+	private static final Snapshot<AssetHelper> _assetHelperSnapshot =
+		new Snapshot<>(AssetHelperUtil.class, AssetHelper.class);
+	private static final Snapshot<AssetListAssetEntryProvider>
+		_assetListAssetEntryProviderSnapshot = new Snapshot<>(
+			AssetHelperUtil.class, AssetListAssetEntryProvider.class);
+	private static final Snapshot<AssetTagLocalService>
+		_assetTagLocalServiceSnapshot = new Snapshot<>(
+			AssetHelperUtil.class, AssetTagLocalService.class);
+	private static final Snapshot<Portal> _portalSnapshot = new Snapshot<>(
+		AssetHelperUtil.class, Portal.class);
+	private static final Snapshot<PortletLocalService>
+		_portletLocalServiceSnapshot = new Snapshot<>(
+			AssetHelperUtil.class, PortletLocalService.class);
+	private static final Snapshot<PortletPreferencesLocalService>
+		_portletPreferencesLocalServiceSnapshot = new Snapshot<>(
+			AssetHelperUtil.class, PortletPreferencesLocalService.class);
+	private static final Snapshot<RequestContextMapper>
+		_requestContextMapperSnapshot = new Snapshot<>(
+			AssetHelperUtil.class, RequestContextMapper.class);
+	private static final Snapshot<SegmentsEntryRetriever>
+		_segmentsEntryRetrieverSnapshot = new Snapshot<>(
+			AssetHelperUtil.class, SegmentsEntryRetriever.class);
 
 }

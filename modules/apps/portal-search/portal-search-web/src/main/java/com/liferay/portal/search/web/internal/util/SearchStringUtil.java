@@ -36,18 +36,6 @@ public class SearchStringUtil {
 		return Optional.of(s);
 	}
 
-	public static String[] splitAndUnquote(Optional<String> optional) {
-		return Optional.ofNullable(
-			optional
-		).orElse(
-			Optional.empty()
-		).map(
-			SearchStringUtil::splitAndUnquote
-		).orElse(
-			new String[0]
-		);
-	}
-
 	public static String[] splitAndUnquote(String s) {
 		if (s == null) {
 			return new String[0];

@@ -92,16 +92,6 @@ public class SolrClientManager {
 	}
 
 	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(type=CLOUD)"
-	)
-	protected void setCloudSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		setSolrClientFactory(solrClientFactory, properties);
-	}
-
-	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
@@ -120,21 +110,9 @@ public class SolrClientManager {
 	}
 
 	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(type=REPLICATED)"
-	)
-	protected void setReplicatedSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		setSolrClientFactory(solrClientFactory, properties);
-	}
-
-	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(&(!(type=CLOUD))(!(type=REPLICATED)))"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void setSolrClientFactory(
 		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
@@ -142,12 +120,6 @@ public class SolrClientManager {
 		String type = MapUtil.getString(properties, "type");
 
 		_solrClientFactories.put(type, solrClientFactory);
-	}
-
-	protected void unsetCloudSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		unsetSolrClientFactory(solrClientFactory, properties);
 	}
 
 	protected void unsetHttpClientFactory(
@@ -160,12 +132,6 @@ public class SolrClientManager {
 		}
 
 		_httpClientFactories.remove(type);
-	}
-
-	protected void unsetReplicatedSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		unsetSolrClientFactory(solrClientFactory, properties);
 	}
 
 	protected void unsetSolrClientFactory(

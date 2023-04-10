@@ -14,14 +14,9 @@
 
 package com.liferay.portal.configuration.settings.internal;
 
-import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
-import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeInformation;
-import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -34,26 +29,14 @@ import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsProps;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.portlet.PortletPreferences;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleEvent;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.BundleTracker;
-import org.osgi.util.tracker.BundleTrackerCustomizer;
 
 /**
  * @author Iván Zaera
@@ -202,114 +185,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		return getConfigurationBeanSettings(settingsId);
 	}
 
-	public class ConfigurationBeanClassBundleTrackerCustomizer
-		implements BundleTrackerCustomizer<List<SafeCloseable>> {
-
-		@Override
-		public List<SafeCloseable> addingBundle(
-			Bundle bundle, BundleEvent bundleEvent) {
-
-			String bundleSymbolicName = bundle.getSymbolicName();
-
-			if (bundleSymbolicName.endsWith(".test")) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Skipping bundle (do not check test modules): " +
-							bundleSymbolicName);
-				}
-
-				return null;
-			}
-
-			ExtendedMetaTypeInformation metaTypeInformation =
-				_extendedMetaTypeService.getMetaTypeInformation(bundle);
-
-			if (metaTypeInformation == null) {
-				return null;
-			}
-
-			List<SafeCloseable> autoCloseables = new ArrayList<>();
-
-			for (String pid :
-					ArrayUtil.append(
-						metaTypeInformation.getPids(),
-						metaTypeInformation.getFactoryPids())) {
-
-				Class<?> configurationBeanClass;
-
-				try {
-					configurationBeanClass = bundle.loadClass(pid);
-				}
-				catch (ClassNotFoundException classNotFoundException) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Class not found: " +
-								classNotFoundException.getMessage());
-					}
-
-					continue;
-				}
-
-				SafeCloseable safeCloseable =
-					_configurationBeanClassSettingsRegistry.
-						registerConfigurationBeanClass(configurationBeanClass);
-
-				if (safeCloseable != null) {
-					autoCloseables.add(safeCloseable);
-				}
-			}
-
-			if (ListUtil.isEmpty(autoCloseables)) {
-				return null;
-			}
-
-			return autoCloseables;
-		}
-
-		@Override
-		public void modifiedBundle(
-			Bundle bundle, BundleEvent bundleEvent,
-			List<SafeCloseable> autoCloseables) {
-		}
-
-		@Override
-		public void removedBundle(
-			Bundle bundle, BundleEvent bundleEvent,
-			List<SafeCloseable> safeCloseables) {
-
-			if (ListUtil.isEmpty(safeCloseables)) {
-				return;
-			}
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Un-registering configuration classes for bundle: " +
-						bundle.getSymbolicName());
-			}
-
-			for (SafeCloseable safeCloseable : safeCloseables) {
-				safeCloseable.close();
-			}
-		}
-
-	}
-
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_bundleTracker = new BundleTracker<>(
-			bundleContext, Bundle.ACTIVE,
-			new ConfigurationBeanClassBundleTrackerCustomizer());
-
-		_bundleTracker.open();
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_bundleTracker.close();
-
-		_bundleTracker = null;
-	}
-
 	@Reference(unbind = "-")
 	protected void setGroupLocalService(GroupLocalService groupLocalService) {
 		_groupLocalService = groupLocalService;
@@ -345,17 +220,9 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		_portletPreferencesLocalService = portletPreferencesLocalService;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		SettingsLocatorHelperImpl.class);
-
-	private BundleTracker<List<SafeCloseable>> _bundleTracker;
-
 	@Reference
 	private ConfigurationBeanClassSettingsRegistry
 		_configurationBeanClassSettingsRegistry;
-
-	@Reference
-	private ExtendedMetaTypeService _extendedMetaTypeService;
 
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.portlet.shared.task;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -26,13 +27,9 @@ import com.liferay.portal.kernel.util.Validator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Bryan Engler
  */
-@Component(service = {})
 public class SearchHttpUtil {
 
 	public static String getCompleteOriginalURL(
@@ -41,8 +38,10 @@ public class SearchHttpUtil {
 		String requestURL = null;
 		String queryString = null;
 
+		Portal portal = _portalSnapshot.get();
+
 		if (HttpComponentsUtil.isForwarded(httpServletRequest)) {
-			requestURL = _portal.getAbsoluteURL(
+			requestURL = portal.getAbsoluteURL(
 				httpServletRequest,
 				(String)httpServletRequest.getAttribute(
 					JavaConstants.JAVAX_SERVLET_FORWARD_REQUEST_URI));
@@ -51,7 +50,7 @@ public class SearchHttpUtil {
 				JavaConstants.JAVAX_SERVLET_FORWARD_QUERY_STRING);
 		}
 		else {
-			requestURL = _portal.getAbsoluteURL(
+			requestURL = portal.getAbsoluteURL(
 				httpServletRequest,
 				HttpComponentsUtil.getPath(
 					String.valueOf(httpServletRequest.getRequestURL())));
@@ -68,7 +67,7 @@ public class SearchHttpUtil {
 			sb.append(queryString);
 		}
 
-		String proxyPath = _portal.getPathProxy();
+		String proxyPath = portal.getPathProxy();
 
 		if (Validator.isNotNull(proxyPath)) {
 			int x =
@@ -87,7 +86,7 @@ public class SearchHttpUtil {
 
 			String sessionId = httpSession.getId();
 
-			completeURL = _portal.getURLWithSessionId(completeURL, sessionId);
+			completeURL = portal.getURLWithSessionId(completeURL, sessionId);
 		}
 
 		if (_log.isWarnEnabled() && completeURL.contains("?&")) {
@@ -97,13 +96,9 @@ public class SearchHttpUtil {
 		return completeURL;
 	}
 
-	@Reference(unbind = "-")
-	protected void setPortal(Portal portal) {
-		_portal = portal;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(SearchHttpUtil.class);
 
-	private static Portal _portal;
+	private static final Snapshot<Portal> _portalSnapshot = new Snapshot<>(
+		SearchHttpUtil.class, Portal.class);
 
 }

@@ -93,26 +93,6 @@ public class SolrClientManager {
 
 	@Reference(
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(type=BASIC)"
-	)
-	protected void setBasicHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		setHttpClientFactory(httpClientFactory, properties);
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(type=CERT)"
-	)
-	protected void setCertHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		setHttpClientFactory(httpClientFactory, properties);
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY, target = "(type=CLOUD)"
 	)
 	protected void setCloudSolrClientFactory(
@@ -124,8 +104,7 @@ public class SolrClientManager {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(&(!(type=BASIC))(!(type=CERT)))"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void setHttpClientFactory(
 		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
@@ -163,18 +142,6 @@ public class SolrClientManager {
 		String type = MapUtil.getString(properties, "type");
 
 		_solrClientFactories.put(type, solrClientFactory);
-	}
-
-	protected void unsetBasicHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		unsetHttpClientFactory(httpClientFactory, properties);
-	}
-
-	protected void unsetCertHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		unsetHttpClientFactory(httpClientFactory, properties);
 	}
 
 	protected void unsetCloudSolrClientFactory(

@@ -14,14 +14,10 @@
 
 package com.liferay.portal.configuration.settings.internal;
 
-import aQute.bnd.annotation.metatype.Meta;
-
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeInformation;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeService;
-import com.liferay.portal.configuration.settings.internal.scoped.configuration.admin.service.ScopedConfigurationManagedServiceFactory;
-import com.liferay.portal.configuration.settings.internal.util.ConfigurationPidUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -31,35 +27,21 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
-import com.liferay.portal.kernel.resource.manager.ClassLoaderResourceManager;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
-import com.liferay.portal.kernel.settings.ConfigurationBeanSettings;
-import com.liferay.portal.kernel.settings.LocationVariableResolver;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
-import com.liferay.portal.kernel.settings.PropertiesSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
-import com.liferay.portal.kernel.settings.definition.ConfigurationPidMapping;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsProps;
-import com.liferay.portal.kernel.util.Props;
-
-import java.io.Serializable;
-
-import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import javax.portlet.PortletPreferences;
 
@@ -70,8 +52,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.util.tracker.BundleTracker;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
 
@@ -87,9 +67,10 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	public Settings getCompanyConfigurationBeanSettings(
 		long companyId, String configurationPid, Settings parentSettings) {
 
-		return _getScopedConfigurationBeanSettings(
-			ExtendedObjectClassDefinition.Scope.COMPANY, companyId,
-			configurationPid, parentSettings);
+		return _configurationBeanClassSettingsRegistry.
+			getScopedConfigurationBeanSettings(
+				ExtendedObjectClassDefinition.Scope.COMPANY, companyId,
+				configurationPid, parentSettings);
 	}
 
 	public PortletPreferences getCompanyPortletPreferences(
@@ -111,26 +92,18 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 	@Override
 	public Settings getConfigurationBeanSettings(String configurationPid) {
-		configurationPid = _configurationPidMappings.getOrDefault(
-			configurationPid, configurationPid);
-
-		Settings configurationBeanSettings = _configurationBeanSettings.get(
-			configurationPid);
-
-		if (configurationBeanSettings == null) {
-			return _portalPropertiesSettings;
-		}
-
-		return configurationBeanSettings;
+		return _configurationBeanClassSettingsRegistry.
+			getConfigurationBeanSettings(configurationPid);
 	}
 
 	@Override
 	public Settings getGroupConfigurationBeanSettings(
 		long groupId, String configurationPid, Settings parentSettings) {
 
-		return _getScopedConfigurationBeanSettings(
-			ExtendedObjectClassDefinition.Scope.GROUP, groupId,
-			configurationPid, parentSettings);
+		return _configurationBeanClassSettingsRegistry.
+			getScopedConfigurationBeanSettings(
+				ExtendedObjectClassDefinition.Scope.GROUP, groupId,
+				configurationPid, parentSettings);
 	}
 
 	public PortletPreferences getGroupPortletPreferences(
@@ -168,9 +141,10 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	public Settings getPortletInstanceConfigurationBeanSettings(
 		String portletId, String configurationPid, Settings parentSettings) {
 
-		return _getScopedConfigurationBeanSettings(
-			ExtendedObjectClassDefinition.Scope.PORTLET_INSTANCE, portletId,
-			configurationPid, parentSettings);
+		return _configurationBeanClassSettingsRegistry.
+			getScopedConfigurationBeanSettings(
+				ExtendedObjectClassDefinition.Scope.PORTLET_INSTANCE, portletId,
+				configurationPid, parentSettings);
 	}
 
 	public PortletPreferences getPortletInstancePortletPreferences(
@@ -228,103 +202,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		return getConfigurationBeanSettings(settingsId);
 	}
 
-	public SafeCloseable registerConfigurationBeanClass(
-		Class<?> configurationBeanClass) {
-
-		if (configurationBeanClass.getAnnotation(Meta.OCD.class) == null) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Skipping registration for class because Meta.OCD is " +
-						"missing: " + configurationBeanClass.getName());
-			}
-
-			return null;
-		}
-
-		for (Method methods : configurationBeanClass.getMethods()) {
-			Meta.AD annotation = methods.getAnnotation(Meta.AD.class);
-
-			if (annotation == null) {
-				continue;
-			}
-
-			if (annotation.required()) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Skipping registration for class because Meta.AD is " +
-							"required: " + configurationBeanClass.getName());
-				}
-
-				return null;
-			}
-		}
-
-		String configurationPid = ConfigurationPidUtil.getConfigurationPid(
-			configurationBeanClass);
-
-		if (_configurationBeanSettings.containsKey(configurationPid)) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Skipping registration for class because it is already " +
-						"registered: " + configurationPid);
-			}
-
-			return null;
-		}
-
-		LocationVariableResolver locationVariableResolver =
-			new LocationVariableResolver(
-				new ClassLoaderResourceManager(
-					configurationBeanClass.getClassLoader()),
-				SettingsLocatorHelperImpl.this);
-
-		ConfigurationBeanManagedService configurationBeanManagedService =
-			new ConfigurationBeanManagedService(
-				_bundleContext, configurationBeanClass,
-				configurationBean -> _configurationBeanSettings.put(
-					configurationPid,
-					new ConfigurationBeanSettings(
-						locationVariableResolver, configurationBean,
-						_portalPropertiesSettings)));
-
-		configurationBeanManagedService.register();
-
-		ScopedConfigurationManagedServiceFactory
-			scopedConfigurationManagedServiceFactory =
-				new ScopedConfigurationManagedServiceFactory(
-					_bundleContext, configurationBeanClass,
-					locationVariableResolver);
-
-		scopedConfigurationManagedServiceFactory.register();
-
-		_scopedConfigurationManagedServiceFactories.put(
-			scopedConfigurationManagedServiceFactory.getName(),
-			scopedConfigurationManagedServiceFactory);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Registering configuration class: " +
-					configurationBeanClass.getName());
-		}
-
-		_settingsFactoryImpl.registerConfigurationBeanClass(
-			configurationBeanClass);
-
-		return () -> {
-			_settingsFactoryImpl.unregisterConfigurationBeanClass(
-				configurationBeanClass);
-
-			_configurationPidMappings.remove(configurationPid);
-
-			_scopedConfigurationManagedServiceFactories.remove(
-				configurationPid);
-			scopedConfigurationManagedServiceFactory.unregister();
-
-			_configurationBeanSettings.remove(configurationPid);
-			configurationBeanManagedService.unregister();
-		};
-	}
-
 	public class ConfigurationBeanClassBundleTrackerCustomizer
 		implements BundleTrackerCustomizer<List<SafeCloseable>> {
 
@@ -373,8 +250,9 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 					continue;
 				}
 
-				SafeCloseable safeCloseable = registerConfigurationBeanClass(
-					configurationBeanClass);
+				SafeCloseable safeCloseable =
+					_configurationBeanClassSettingsRegistry.
+						registerConfigurationBeanClass(configurationBeanClass);
 
 				if (safeCloseable != null) {
 					autoCloseables.add(safeCloseable);
@@ -418,8 +296,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
-
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE,
 			new ConfigurationBeanClassBundleTrackerCustomizer());
@@ -432,21 +308,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		_bundleTracker.close();
 
 		_bundleTracker = null;
-
-		_bundleContext = null;
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setConfigurationPidMapping(
-		ConfigurationPidMapping configurationPidMapping) {
-
-		_configurationPidMappings.put(
-			configurationPidMapping.getConfigurationPid(),
-			ConfigurationPidUtil.getConfigurationPid(
-				configurationPidMapping.getConfigurationBeanClass()));
 	}
 
 	@Reference(unbind = "-")
@@ -484,76 +345,24 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		_portletPreferencesLocalService = portletPreferencesLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setProps(Props props) {
-		_portalPropertiesSettings = new PropertiesSettings(
-			new LocationVariableResolver(
-				new ClassLoaderResourceManager(
-					PortalClassLoaderUtil.getClassLoader()),
-				this),
-			props.getProperties());
-	}
-
-	protected void unsetConfigurationPidMapping(
-		ConfigurationPidMapping configurationPidMapping) {
-
-		_configurationPidMappings.remove(
-			configurationPidMapping.getConfigurationPid());
-	}
-
-	private Settings _getScopedConfigurationBeanSettings(
-		ExtendedObjectClassDefinition.Scope scope, Serializable scopePK,
-		String configurationPid, Settings parentSettings) {
-
-		ScopedConfigurationManagedServiceFactory
-			scopedConfigurationManagedServiceFactory =
-				_scopedConfigurationManagedServiceFactories.get(
-					configurationPid);
-
-		if (scopedConfigurationManagedServiceFactory == null) {
-			return parentSettings;
-		}
-
-		Object configurationBean =
-			scopedConfigurationManagedServiceFactory.getConfiguration(
-				scope, scopePK);
-
-		if (configurationBean == null) {
-			return parentSettings;
-		}
-
-		return new ConfigurationBeanSettings(
-			scopedConfigurationManagedServiceFactory.
-				getLocationVariableResolver(),
-			configurationBean, parentSettings);
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		SettingsLocatorHelperImpl.class);
 
-	private BundleContext _bundleContext;
 	private BundleTracker<List<SafeCloseable>> _bundleTracker;
-	private final Map<String, Settings> _configurationBeanSettings =
-		new ConcurrentHashMap<>();
-	private final ConcurrentMap<String, String> _configurationPidMappings =
-		new ConcurrentHashMap<>();
+
+	@Reference
+	private ConfigurationBeanClassSettingsRegistry
+		_configurationBeanClassSettingsRegistry;
 
 	@Reference
 	private ExtendedMetaTypeService _extendedMetaTypeService;
 
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;
-	private Settings _portalPropertiesSettings;
 	private PortletPreferencesFactory _portletPreferencesFactory;
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
 
 	@Reference
 	private PrefsProps _prefsProps;
-
-	private final Map<String, ScopedConfigurationManagedServiceFactory>
-		_scopedConfigurationManagedServiceFactories = new ConcurrentHashMap<>();
-
-	@Reference
-	private SettingsFactoryImpl _settingsFactoryImpl;
 
 }

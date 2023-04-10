@@ -30,6 +30,7 @@ import java.io.IOException;
 
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * @author Iván Zaera
@@ -38,10 +39,20 @@ public class LocationVariableResolver {
 
 	public LocationVariableResolver(
 		ResourceManager resourceManager,
-		SettingsLocatorHelper settingsLocatorHelper) {
+		Function<String, Settings> serverSettingsRetrieverFunction) {
 
 		_resourceManager = resourceManager;
-		_settingsLocatorHelper = settingsLocatorHelper;
+		_serverSettingsRetrieverFunction = serverSettingsRetrieverFunction;
+	}
+
+	public LocationVariableResolver(
+		ResourceManager resourceManager,
+		SettingsLocatorHelper serviceLocatorHelper) {
+
+		_resourceManager = resourceManager;
+
+		_serverSettingsRetrieverFunction =
+			settingsId -> serviceLocatorHelper.getServerSettings(settingsId);
 	}
 
 	public boolean isLocationVariable(String value) {
@@ -169,8 +180,7 @@ public class LocationVariableResolver {
 
 		String serviceName = location.substring(0, i);
 
-		Settings settings = _settingsLocatorHelper.getServerSettings(
-			serviceName);
+		Settings settings = _serverSettingsRetrieverFunction.apply(serviceName);
 
 		String property = location.substring(i + 1);
 
@@ -184,6 +194,6 @@ public class LocationVariableResolver {
 	private static final String _LOCATION_VARIABLE_START = "${";
 
 	private final ResourceManager _resourceManager;
-	private final SettingsLocatorHelper _settingsLocatorHelper;
+	private final Function<String, Settings> _serverSettingsRetrieverFunction;
 
 }

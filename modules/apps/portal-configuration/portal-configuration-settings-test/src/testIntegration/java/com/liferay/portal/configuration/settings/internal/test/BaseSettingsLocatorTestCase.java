@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsLocator;
-import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -54,9 +53,12 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Drew Brokke
@@ -74,8 +76,20 @@ public abstract class BaseSettingsLocatorTestCase {
 		companyId = TestPropsValues.getCompanyId();
 		groupId = TestPropsValues.getGroupId();
 
+		Bundle bundle = FrameworkUtil.getBundle(
+			BaseSettingsLocatorTestCase.class);
+
+		_serviceTracker = new ServiceTracker<>(
+			bundle.getBundleContext(),
+			FrameworkUtil.createFilter(
+				"(component.name=com.liferay.portal.configuration.settings." +
+					"internal.ConfigurationBeanClassSettingsRegistry)"),
+			null);
+
+		_serviceTracker.open();
+
 		_safeCloseable = ReflectionTestUtil.invoke(
-			_settingsLocatorHelper, "registerConfigurationBeanClass",
+			_serviceTracker.getService(), "registerConfigurationBeanClass",
 			new Class<?>[] {Class.class}, TestConfiguration.class);
 	}
 
@@ -83,6 +97,10 @@ public abstract class BaseSettingsLocatorTestCase {
 	public static void tearDownClass() throws Exception {
 		if (_safeCloseable != null) {
 			_safeCloseable.close();
+		}
+
+		if (_serviceTracker != null) {
+			_serviceTracker.close();
 		}
 	}
 
@@ -276,9 +294,7 @@ public abstract class BaseSettingsLocatorTestCase {
 		_portletPreferencesLocalService;
 
 	private static SafeCloseable _safeCloseable;
-
-	@Inject
-	private static SettingsLocatorHelper _settingsLocatorHelper;
+	private static ServiceTracker<Object, Object> _serviceTracker;
 
 	@Inject
 	private ConfigurationAdmin _configurationAdmin;

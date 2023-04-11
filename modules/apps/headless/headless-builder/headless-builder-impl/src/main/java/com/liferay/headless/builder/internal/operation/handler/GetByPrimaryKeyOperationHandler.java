@@ -16,12 +16,12 @@ package com.liferay.headless.builder.internal.operation.handler;
 
 import com.liferay.headless.builder.internal.constants.HeadlessBuilderConstants;
 import com.liferay.headless.builder.internal.operation.Operation;
-import com.liferay.headless.builder.internal.util.HeadlessBuilderUtil;
 import com.liferay.headless.builder.internal.util.URLUtil;
 import com.liferay.info.exception.NoSuchInfoItemException;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.item.InfoItemFieldValues;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -36,6 +36,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Carlos Correa
@@ -55,9 +56,8 @@ public class GetByPrimaryKeyOperationHandler implements OperationHandler {
 			httpServletRequest.getHeader(HttpHeaders.ACCEPT),
 			Response.Status.OK.getStatusCode());
 
-		InfoItemObjectProvider<?> infoItemObjectProvider =
-			HeadlessBuilderUtil.getInfoItemService(
-				response.getEntityName(), InfoItemObjectProvider.class);
+		InfoItemObjectProvider<?> infoItemObjectProvider = _getInfoItemService(
+			response.getEntityName(), InfoItemObjectProvider.class);
 
 		try {
 			Map<String, String> pathParameters = URLUtil.getPathParameters(
@@ -68,7 +68,7 @@ public class GetByPrimaryKeyOperationHandler implements OperationHandler {
 				GetterUtil.getLong(pathParameters.get("id")));
 
 			InfoItemFieldValuesProvider infoItemFieldValuesProvider =
-				HeadlessBuilderUtil.getInfoItemService(
+				_getInfoItemService(
 					response.getEntityName(),
 					InfoItemFieldValuesProvider.class);
 
@@ -113,6 +113,21 @@ public class GetByPrimaryKeyOperationHandler implements OperationHandler {
 		return entity;
 	}
 
+	private <T> T _getInfoItemService(String className, Class<T> serviceClass)
+		throws Exception {
+
+		T infoItemService = _infoItemServiceRegistry.getFirstInfoItemService(
+			serviceClass, className);
+
+		if (infoItemService == null) {
+			throw new NoSuchInfoItemException(
+				serviceClass.getSimpleName() + " is not defined for " +
+					className);
+		}
+
+		return infoItemService;
+	}
+
 	private Object _getValue(
 		InfoItemFieldValues infoItemFieldValues, InfoField infoField) {
 
@@ -121,5 +136,8 @@ public class GetByPrimaryKeyOperationHandler implements OperationHandler {
 
 		return infoFieldValue.getValue();
 	}
+
+	@Reference
+	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 }

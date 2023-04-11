@@ -20,8 +20,8 @@ import com.liferay.headless.builder.internal.constants.HeadlessBuilderConstants;
 import com.liferay.headless.builder.internal.operation.Operation;
 import com.liferay.headless.builder.internal.operation.OperationRegistry;
 import com.liferay.headless.builder.internal.operation.handler.OperationHandler;
-import com.liferay.headless.builder.internal.util.HeadlessBuilderUtil;
 import com.liferay.headless.builder.internal.util.URLUtil;
+import com.liferay.info.exception.NoSuchInfoItemException;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.field.type.BooleanInfoFieldType;
 import com.liferay.info.field.type.DateInfoFieldType;
@@ -29,6 +29,7 @@ import com.liferay.info.field.type.InfoFieldType;
 import com.liferay.info.field.type.NumberInfoFieldType;
 import com.liferay.info.field.type.TextInfoFieldType;
 import com.liferay.info.form.InfoForm;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -124,9 +125,8 @@ public class HeadlessBuilderApplicationFactoryImpl
 
 		Map<String, InfoField> infoFields = new HashMap<>();
 
-		InfoItemFormProvider<?> infoItemFormProvider =
-			HeadlessBuilderUtil.getInfoItemService(
-				entityName, InfoItemFormProvider.class);
+		InfoItemFormProvider<?> infoItemFormProvider = _getInfoItemService(
+			entityName, InfoItemFormProvider.class);
 
 		InfoForm infoForm = infoItemFormProvider.getInfoForm();
 
@@ -190,6 +190,21 @@ public class HeadlessBuilderApplicationFactoryImpl
 		}
 
 		throw new UnsupportedOperationException("Schema type " + type);
+	}
+
+	private <T> T _getInfoItemService(String className, Class<T> serviceClass)
+		throws Exception {
+
+		T infoItemService = _infoItemServiceRegistry.getFirstInfoItemService(
+			serviceClass, className);
+
+		if (infoItemService == null) {
+			throw new NoSuchInfoItemException(
+				serviceClass.getSimpleName() + " is not defined for " +
+					className);
+		}
+
+		return infoItemService;
 	}
 
 	private List<Operation> _getOperations(
@@ -316,6 +331,9 @@ public class HeadlessBuilderApplicationFactoryImpl
 			throw new InvalidObjectException("No operation is defined");
 		}
 	}
+
+	@Reference
+	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 	@Reference
 	private OperationRegistry _operationRegistry;

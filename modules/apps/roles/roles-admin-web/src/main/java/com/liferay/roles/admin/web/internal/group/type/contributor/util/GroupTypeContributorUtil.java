@@ -16,13 +16,10 @@ package com.liferay.roles.admin.web.internal.group.type.contributor.util;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.roles.admin.group.type.contributor.GroupTypeContributor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Alejandro Tardín
@@ -30,18 +27,16 @@ import java.util.List;
 public class GroupTypeContributorUtil {
 
 	public static long[] getClassNameIds() {
-		List<Long> classNameIds = new ArrayList<>();
+		return TransformUtil.transformToLongArray(
+			_serviceTrackerList.toList(),
+			groupTypeContributor -> {
+				if (!groupTypeContributor.isEnabled()) {
+					return null;
+				}
 
-		for (GroupTypeContributor groupTypeContributor : _serviceTrackerList) {
-			if (!groupTypeContributor.isEnabled()) {
-				continue;
-			}
-
-			classNameIds.add(
-				PortalUtil.getClassNameId(groupTypeContributor.getClassName()));
-		}
-
-		return ListUtil.toLongArray(classNameIds, Long::valueOf);
+				return PortalUtil.getClassNameId(
+					groupTypeContributor.getClassName());
+			});
 	}
 
 	private static final ServiceTrackerList<GroupTypeContributor>

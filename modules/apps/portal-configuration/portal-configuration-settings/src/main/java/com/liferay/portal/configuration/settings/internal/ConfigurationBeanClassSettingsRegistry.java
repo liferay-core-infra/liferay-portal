@@ -16,6 +16,7 @@ package com.liferay.portal.configuration.settings.internal;
 
 import aQute.bnd.annotation.metatype.Meta;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.configuration.settings.internal.scoped.configuration.admin.service.ScopedConfigurationManagedServiceFactory;
@@ -40,12 +41,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Rafael Praxedes
@@ -194,41 +196,61 @@ public class ConfigurationBeanClassSettingsRegistry {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
-	}
 
-	@Deactivate
-	protected void deactivate() {
-		_bundleContext = null;
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setConfigurationPidMapping(
-		ConfigurationPidMapping configurationPidMapping) {
-
-		_configurationPidMappings.put(
-			configurationPidMapping.getConfigurationPid(),
-			ConfigurationPidUtil.getConfigurationPid(
-				configurationPidMapping.getConfigurationBeanClass()));
-	}
-
-	@Reference(unbind = "-")
-	protected void setProps(Props props) {
 		_portalPropertiesSettings = new PropertiesSettings(
 			new LocationVariableResolver(
 				new ClassLoaderResourceManager(
 					PortalClassLoaderUtil.getClassLoader()),
 				serviceName -> getConfigurationBeanSettings(serviceName)),
-			props.getProperties());
+			_props.getProperties());
+
+		_serviceTracker = ServiceTrackerFactory.open(
+			_bundleContext, ConfigurationPidMapping.class,
+			new ServiceTrackerCustomizer
+				<ConfigurationPidMapping, ConfigurationPidMapping>() {
+
+				@Override
+				public ConfigurationPidMapping addingService(
+					ServiceReference<ConfigurationPidMapping>
+						serviceReference) {
+
+					ConfigurationPidMapping configurationPidMapping =
+						_bundleContext.getService(serviceReference);
+
+					_configurationPidMappings.put(
+						configurationPidMapping.getConfigurationPid(),
+						ConfigurationPidUtil.getConfigurationPid(
+							configurationPidMapping.
+								getConfigurationBeanClass()));
+
+					return configurationPidMapping;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<ConfigurationPidMapping> serviceReference,
+					ConfigurationPidMapping configurationPidMapping) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<ConfigurationPidMapping> serviceReference,
+					ConfigurationPidMapping configurationPidMapping) {
+
+					_configurationPidMappings.remove(
+						configurationPidMapping.getConfigurationPid());
+
+					_bundleContext.ungetService(serviceReference);
+				}
+
+			});
 	}
 
-	protected void unsetConfigurationPidMapping(
-		ConfigurationPidMapping configurationPidMapping) {
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 
-		_configurationPidMappings.remove(
-			configurationPidMapping.getConfigurationPid());
+		_bundleContext = null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -240,8 +262,14 @@ public class ConfigurationBeanClassSettingsRegistry {
 	private final ConcurrentMap<String, String> _configurationPidMappings =
 		new ConcurrentHashMap<>();
 	private Settings _portalPropertiesSettings;
+
+	@Reference
+	private Props _props;
+
 	private final Map<String, ScopedConfigurationManagedServiceFactory>
 		_scopedConfigurationManagedServiceFactories = new ConcurrentHashMap<>();
+	private ServiceTracker<ConfigurationPidMapping, ConfigurationPidMapping>
+		_serviceTracker;
 
 	@Reference
 	private SettingsFactoryImpl _settingsFactoryImpl;

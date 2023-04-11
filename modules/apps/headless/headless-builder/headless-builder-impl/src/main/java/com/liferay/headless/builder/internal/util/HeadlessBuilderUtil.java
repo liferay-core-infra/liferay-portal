@@ -14,15 +14,8 @@
 
 package com.liferay.headless.builder.internal.util;
 
-import com.liferay.headless.builder.internal.operation.Operation;
 import com.liferay.info.exception.NoSuchInfoItemException;
-import com.liferay.info.field.InfoField;
-import com.liferay.info.field.InfoFieldValue;
-import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemServiceRegistry;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,22 +25,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = {})
 public class HeadlessBuilderUtil {
-
-	public static Map<String, Object> getEntity(
-		InfoItemFieldValues infoItemFieldValues, Operation.Response response) {
-
-		Map<String, Object> entity = new HashMap<>();
-
-		Map<String, InfoField> infoFields = response.getInfoFields();
-
-		for (Map.Entry<String, InfoField> entry : infoFields.entrySet()) {
-			entity.put(
-				entry.getKey(),
-				_getValue(infoItemFieldValues, entry.getValue()));
-		}
-
-		return entity;
-	}
 
 	public static <T> T getInfoItemService(
 			String className, Class<T> serviceClass)
@@ -70,15 +47,6 @@ public class HeadlessBuilderUtil {
 		InfoItemServiceRegistry infoItemServiceRegistry) {
 
 		_infoItemServiceRegistry = infoItemServiceRegistry;
-	}
-
-	private static Object _getValue(
-		InfoItemFieldValues infoItemFieldValues, InfoField infoField) {
-
-		InfoFieldValue<Object> infoFieldValue =
-			infoItemFieldValues.getInfoFieldValue(infoField.getName());
-
-		return infoFieldValue.getValue();
 	}
 
 	private static InfoItemServiceRegistry _infoItemServiceRegistry;

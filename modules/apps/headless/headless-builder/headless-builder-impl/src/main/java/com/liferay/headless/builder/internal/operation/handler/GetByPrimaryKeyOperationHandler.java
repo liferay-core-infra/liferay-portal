@@ -19,11 +19,15 @@ import com.liferay.headless.builder.internal.operation.Operation;
 import com.liferay.headless.builder.internal.util.HeadlessBuilderUtil;
 import com.liferay.headless.builder.internal.util.URLUtil;
 import com.liferay.info.exception.NoSuchInfoItemException;
+import com.liferay.info.field.InfoField;
+import com.liferay.info.field.InfoFieldValue;
+import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +75,7 @@ public class GetByPrimaryKeyOperationHandler implements OperationHandler {
 			return Response.status(
 				Response.Status.OK
 			).entity(
-				HeadlessBuilderUtil.getEntity(
+				_getEntity(
 					infoItemFieldValuesProvider.getInfoItemFieldValues(object),
 					response)
 			).build();
@@ -91,6 +95,31 @@ public class GetByPrimaryKeyOperationHandler implements OperationHandler {
 				new Problem(Response.Status.NOT_FOUND, message)
 			).build();
 		}
+	}
+
+	private Map<String, Object> _getEntity(
+		InfoItemFieldValues infoItemFieldValues, Operation.Response response) {
+
+		Map<String, Object> entity = new HashMap<>();
+
+		Map<String, InfoField> infoFields = response.getInfoFields();
+
+		for (Map.Entry<String, InfoField> entry : infoFields.entrySet()) {
+			entity.put(
+				entry.getKey(),
+				_getValue(infoItemFieldValues, entry.getValue()));
+		}
+
+		return entity;
+	}
+
+	private Object _getValue(
+		InfoItemFieldValues infoItemFieldValues, InfoField infoField) {
+
+		InfoFieldValue<Object> infoFieldValue =
+			infoItemFieldValues.getInfoFieldValue(infoField.getName());
+
+		return infoFieldValue.getValue();
 	}
 
 }

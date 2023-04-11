@@ -32,7 +32,6 @@ import com.liferay.portal.workflow.kaleo.runtime.assignment.ScriptingKaleoTaskAs
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalService;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -137,13 +136,6 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 		}
 
 		return language;
-	}
-
-	private String[] _getScriptingLanguages(Map<String, Object> properties) {
-		Object value = properties.get("scripting.language");
-
-		return GetterUtil.getStringValues(
-			value, new String[] {String.valueOf(value)});
 	}
 
 	@Reference

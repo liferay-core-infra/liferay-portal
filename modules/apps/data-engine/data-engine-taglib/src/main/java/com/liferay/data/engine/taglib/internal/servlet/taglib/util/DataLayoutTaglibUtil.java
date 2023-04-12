@@ -68,7 +68,6 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -262,40 +261,28 @@ public class DataLayoutTaglibUtil {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
+		policyOption = ReferencePolicyOption.GREEDY, target = "(content.type=*)"
 	)
 	protected void addDataDefinitionContentType(
 		DataDefinitionContentType dataDefinitionContentType,
 		Map<String, Object> properties) {
 
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataDefinitionContentTypes.put(contentType, dataDefinitionContentType);
+		_dataDefinitionContentTypes.put(
+			(String)properties.get("content.type"), dataDefinitionContentType);
 	}
 
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
+		policyOption = ReferencePolicyOption.GREEDY, target = "(content.type=*)"
 	)
 	protected void addDataLayoutBuilderDefinition(
 		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
 		Map<String, Object> properties) {
 
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
 		_dataLayoutBuilderDefinitions.put(
-			contentType, dataLayoutBuilderDefinition);
+			(String)properties.get("content.type"),
+			dataLayoutBuilderDefinition);
 	}
 
 	@Deactivate
@@ -307,28 +294,16 @@ public class DataLayoutTaglibUtil {
 		DataDefinitionContentType dataDefinitionContentType,
 		Map<String, Object> properties) {
 
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataDefinitionContentTypes.remove(contentType);
+		_dataDefinitionContentTypes.remove(
+			(String)properties.get("content.type"));
 	}
 
 	protected void removeDataLayoutBuilderDefinition(
 		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
 		Map<String, Object> properties) {
 
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataLayoutBuilderDefinitions.remove(contentType);
+		_dataLayoutBuilderDefinitions.remove(
+			(String)properties.get("content.type"));
 	}
 
 	private static DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(

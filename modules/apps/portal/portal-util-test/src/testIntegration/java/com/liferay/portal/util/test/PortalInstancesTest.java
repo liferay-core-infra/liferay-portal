@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.VirtualHostLocalService;
@@ -240,10 +239,6 @@ public class PortalInstancesTest {
 	}
 
 	private Company _company;
-
-	@Inject
-	private CompanyLocalService _companyLocalService;
-
 	private Layout _defaultGroupPublicLayout;
 
 	@Inject

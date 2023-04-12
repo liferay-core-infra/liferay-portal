@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -238,7 +239,9 @@ public class PortalInstancesTest {
 			).build());
 	}
 
+	@DeleteAfterTestRun
 	private Company _company;
+
 	private Layout _defaultGroupPublicLayout;
 
 	@Inject

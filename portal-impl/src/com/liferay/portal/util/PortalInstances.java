@@ -252,8 +252,8 @@ public class PortalInstances {
 	}
 
 	public static String[] getWebIds() {
-		if (_webIds != null) {
-			return _webIds;
+		if (!_webIds.isEmpty()) {
+			return ArrayUtil.toStringArray(_webIds);
 		}
 
 		if (Validator.isNull(PropsValues.COMPANY_DEFAULT_WEB_ID)) {
@@ -261,31 +261,27 @@ public class PortalInstances {
 		}
 
 		try {
-			List<String> webIdsList = new ArrayList<>();
-
 			CompanyLocalServiceUtil.forEachCompany(
 				company -> {
 					String webId = company.getWebId();
 
 					if (webId.equals(PropsValues.COMPANY_DEFAULT_WEB_ID)) {
-						webIdsList.add(0, webId);
+						_webIds.add(0, webId);
 					}
 					else {
-						webIdsList.add(webId);
+						_webIds.add(webId);
 					}
 				});
-
-			_webIds = webIdsList.toArray(new String[0]);
 		}
 		catch (Exception exception) {
 			_log.error(exception);
 		}
 
-		if (ArrayUtil.isEmpty(_webIds)) {
-			_webIds = new String[] {PropsValues.COMPANY_DEFAULT_WEB_ID};
+		if (_webIds.isEmpty()) {
+			_webIds.add(PropsValues.COMPANY_DEFAULT_WEB_ID);
 		}
 
-		return _webIds;
+		return ArrayUtil.toStringArray(_webIds);
 	}
 
 	public static long initCompany(String webId) {
@@ -401,6 +397,8 @@ public class PortalInstances {
 			}
 
 			addCompanyId(companyId);
+
+			_webIds.addIfAbsent(webId);
 		}
 		finally {
 			CompanyThreadLocal.setCompanyId(currentThreadCompanyId);
@@ -454,7 +452,7 @@ public class PortalInstances {
 
 	public static void reload() {
 		_companyIds.clear();
-		_webIds = null;
+		_webIds.clear();
 
 		String[] webIds = getWebIds();
 
@@ -475,7 +473,8 @@ public class PortalInstances {
 		}
 
 		_companyIds.remove(companyId);
-		_webIds = null;
+
+		_webIds.clear();
 
 		getWebIds();
 
@@ -617,7 +616,7 @@ public class PortalInstances {
 		new CopyOnWriteArrayList<>();
 	private static final Set<String> _virtualHostsIgnoreHosts;
 	private static final Set<String> _virtualHostsIgnorePaths;
-	private static String[] _webIds;
+	private static final CopyOnWriteArrayList<String> _webIds;
 
 	static {
 		_companyIds = new CopyOnWriteArrayList<>();
@@ -629,6 +628,7 @@ public class PortalInstances {
 			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_HOSTS));
 		_virtualHostsIgnorePaths = SetUtil.fromArray(
 			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_PATHS));
+		_webIds = new CopyOnWriteArrayList<>();
 	}
 
 }

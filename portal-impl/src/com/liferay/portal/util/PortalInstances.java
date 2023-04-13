@@ -53,10 +53,10 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -69,10 +69,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author Mika Koivisto
  */
 public class PortalInstances {
-
-	public static void addCompanyId(long companyId) {
-		_companyIds.addIfAbsent(companyId);
-	}
 
 	public static long getCompanyId(HttpServletRequest httpServletRequest) {
 		try {
@@ -192,7 +188,7 @@ public class PortalInstances {
 	}
 
 	public static long[] getCompanyIds() {
-		return ArrayUtil.toArray(_companyIds.toArray(new Long[0]));
+		return ArrayUtil.toLongArray(_webIds.keySet());
 	}
 
 	public static long[] getCompanyIdsBySQL() throws SQLException {
@@ -222,7 +218,7 @@ public class PortalInstances {
 	}
 
 	public static long getDefaultCompanyId() {
-		if (_companyIds.isEmpty()) {
+		if (_webIds.isEmpty()) {
 			try {
 				return getDefaultCompanyIdBySQL();
 			}
@@ -235,7 +231,7 @@ public class PortalInstances {
 			}
 		}
 
-		return _companyIds.get(0);
+		return _webIds.firstKey();
 	}
 
 	public static long getDefaultCompanyIdBySQL() throws SQLException {
@@ -359,7 +355,7 @@ public class PortalInstances {
 					portletCategory = new PortletCategory();
 				}
 
-				for (long currentCompanyId : _companyIds) {
+				for (long currentCompanyId : _webIds.keySet()) {
 					PortletCategory currentPortletCategory =
 						(PortletCategory)WebAppPool.get(
 							currentCompanyId, WebKeys.PORTLET_CATEGORY);
@@ -400,8 +396,6 @@ public class PortalInstances {
 						"End initializing company with web id ", webId,
 						" and company id ", companyId));
 			}
-
-			addCompanyId(companyId);
 
 			_webIds.put(companyId, webId);
 		}
@@ -456,7 +450,6 @@ public class PortalInstances {
 	}
 
 	public static void reload() {
-		_companyIds.clear();
 		_webIds.clear();
 
 		String[] webIds = getWebIds();
@@ -476,8 +469,6 @@ public class PortalInstances {
 		catch (Exception exception) {
 			_log.error(exception);
 		}
-
-		_companyIds.remove(companyId);
 
 		_webIds.remove(companyId);
 
@@ -614,16 +605,14 @@ public class PortalInstances {
 
 	private static final Set<String> _autoLoginIgnoreHosts;
 	private static final Set<String> _autoLoginIgnorePaths;
-	private static final CopyOnWriteArrayList<Long> _companyIds;
 	private static final List<Long> _companyIdsInDeletionProcess =
 		new CopyOnWriteArrayList<>();
 	private static final Set<String> _virtualHostsIgnoreHosts;
 	private static final Set<String> _virtualHostsIgnorePaths;
-	private static final Map<Long, String> _webIds =
+	private static final ConcurrentNavigableMap<Long, String> _webIds =
 		new ConcurrentSkipListMap<>();
 
 	static {
-		_companyIds = new CopyOnWriteArrayList<>();
 		_autoLoginIgnoreHosts = SetUtil.fromArray(
 			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_HOSTS));
 		_autoLoginIgnorePaths = SetUtil.fromArray(

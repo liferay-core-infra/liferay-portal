@@ -23,13 +23,6 @@ import com.liferay.portlet.display.template.PortletDisplayTemplate;
  */
 public class PortletDisplayTemplateUtil {
 
-	public static long getDDMTemplateGroupId(long groupId) {
-		PortletDisplayTemplate portletDisplayTemplate =
-			_portletDisplayTemplateSnapshot.get();
-
-		return portletDisplayTemplate.getDDMTemplateGroupId(groupId);
-	}
-
 	public static String getDisplayStyle(String ddmTemplateKey) {
 		PortletDisplayTemplate portletDisplayTemplate =
 			_portletDisplayTemplateSnapshot.get();

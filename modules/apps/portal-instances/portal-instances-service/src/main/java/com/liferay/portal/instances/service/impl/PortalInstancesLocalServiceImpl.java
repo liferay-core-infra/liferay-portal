@@ -94,11 +94,6 @@ public class PortalInstancesLocalServiceImpl
 	extends PortalInstancesLocalServiceBaseImpl {
 
 	@Override
-	public void addCompanyId(long companyId) {
-		PortalInstances.addCompanyId(companyId);
-	}
-
-	@Override
 	public long getCompanyId(HttpServletRequest httpServletRequest) {
 		return PortalInstances.getCompanyId(httpServletRequest);
 	}

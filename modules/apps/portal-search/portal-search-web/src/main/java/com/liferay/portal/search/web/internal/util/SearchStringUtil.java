@@ -14,12 +14,12 @@
 
 package com.liferay.portal.search.web.internal.util;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * @author André de Oliveira
@@ -36,28 +36,14 @@ public class SearchStringUtil {
 		return Optional.of(s);
 	}
 
-	public static String[] splitAndUnquote(Optional<String> optional) {
-		return Optional.ofNullable(
-			optional
-		).orElse(
-			Optional.empty()
-		).map(
-			SearchStringUtil::splitAndUnquote
-		).orElse(
-			new String[0]
-		);
-	}
-
 	public static String[] splitAndUnquote(String s) {
-		return Stream.of(
-			StringUtil.split(s.trim(), CharPool.COMMA)
-		).map(
-			String::trim
-		).map(
-			StringUtil::unquote
-		).toArray(
-			String[]::new
-		);
+		if (Validator.isBlank(s)) {
+			return new String[0];
+		}
+
+		return TransformUtil.transform(
+			StringUtil.split(s.trim(), CharPool.COMMA),
+			string -> StringUtil.unquote(string.trim()), String.class);
 	}
 
 }

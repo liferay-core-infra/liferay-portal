@@ -29,8 +29,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSe
 
 import java.io.Serializable;
 
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -56,31 +54,34 @@ public class LowLevelSearchOptionsPortletSharedSearchContributor
 					portletSharedSearchSettings.
 						getPortletPreferencesOptional());
 
-		Optional<String> connectionIdOptional =
-			lowLevelSearchOptionsPortletPreferences.getConnectionIdOptional();
-
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
 				lowLevelSearchOptionsPortletPreferences.
 					getFederatedSearchKey());
 
+		String connectionId =
+			lowLevelSearchOptionsPortletPreferences.getConnectionId();
+
+		if (Validator.isBlank(connectionId)) {
+			connectionId = null;
+		}
+
 		searchRequestBuilder.connectionId(
-			connectionIdOptional.orElse(null)
+			connectionId
 		).excludeContributors(
 			SearchStringUtil.splitAndUnquote(
 				lowLevelSearchOptionsPortletPreferences.
-					getContributorsToExcludeOptional())
+					getContributorsToExclude())
 		).fields(
 			SearchStringUtil.splitAndUnquote(
-				lowLevelSearchOptionsPortletPreferences.
-					getFieldsToReturnOptional())
+				lowLevelSearchOptionsPortletPreferences.getFieldsToReturn())
 		).includeContributors(
 			SearchStringUtil.splitAndUnquote(
 				lowLevelSearchOptionsPortletPreferences.
-					getContributorsToIncludeOptional())
+					getContributorsToInclude())
 		).indexes(
 			SearchStringUtil.splitAndUnquote(
-				lowLevelSearchOptionsPortletPreferences.getIndexesOptional())
+				lowLevelSearchOptionsPortletPreferences.getIndexes())
 		).withSearchContext(
 			searchContext -> {
 				if (Validator.isNull(

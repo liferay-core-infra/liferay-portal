@@ -38,11 +38,6 @@ public class PortalInstancesLocalServiceWrapper
 	}
 
 	@Override
-	public void addCompanyId(long companyId) {
-		_portalInstancesLocalService.addCompanyId(companyId);
-	}
-
-	@Override
 	public long getCompanyId(
 		javax.servlet.http.HttpServletRequest httpServletRequest) {
 

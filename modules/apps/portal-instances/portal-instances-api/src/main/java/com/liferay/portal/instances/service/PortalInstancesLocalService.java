@@ -50,8 +50,6 @@ public interface PortalInstancesLocalService extends BaseLocalService {
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the portal instances local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link PortalInstancesLocalServiceUtil} if injection and service tracking are not available.
 	 */
-	public void addCompanyId(long companyId);
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getCompanyId(HttpServletRequest httpServletRequest);
 

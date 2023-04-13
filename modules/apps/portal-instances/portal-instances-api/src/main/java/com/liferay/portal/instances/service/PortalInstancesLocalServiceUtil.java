@@ -35,10 +35,6 @@ public class PortalInstancesLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static void addCompanyId(long companyId) {
-		getService().addCompanyId(companyId);
-	}
-
 	public static long getCompanyId(
 		javax.servlet.http.HttpServletRequest httpServletRequest) {
 

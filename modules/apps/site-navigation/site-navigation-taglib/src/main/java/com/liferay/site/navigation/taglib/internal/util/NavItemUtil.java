@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.NavItem;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
@@ -334,8 +333,6 @@ public class NavItemUtil {
 	private static final Snapshot<LayoutLocalService>
 		_layoutLocalServiceSnapshot = new Snapshot<>(
 			NavItemUtil.class, LayoutLocalService.class);
-	private static final Snapshot<Portal> _portalSnapshot = new Snapshot<>(
-		NavItemUtil.class, Portal.class);
 	private static final Snapshot<SiteNavigationMenuItemLocalService>
 		_siteNavigationMenuItemLocalServiceSnapshot = new Snapshot<>(
 			NavItemUtil.class, SiteNavigationMenuItemLocalService.class);

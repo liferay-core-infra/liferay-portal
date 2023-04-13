@@ -24,12 +24,6 @@ import javax.servlet.ServletContext;
  */
 public class ServletContextUtil {
 
-	public static String getContextPath() {
-		ServletContext servletContext = _servletContextSnapshot.get();
-
-		return servletContext.getContextPath();
-	}
-
 	public static LayoutsTree getLayoutsTree() {
 		return _layoutsTreeSnapshot.get();
 	}

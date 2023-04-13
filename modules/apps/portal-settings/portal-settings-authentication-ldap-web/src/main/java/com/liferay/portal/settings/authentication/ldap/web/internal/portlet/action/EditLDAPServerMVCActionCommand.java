@@ -262,12 +262,12 @@ public class EditLDAPServerMVCActionCommand extends BaseMVCActionCommand {
 		_ldapFilterValidator.validate(groupFilter, "importGroupSearchFilter");
 	}
 
-	private static ConfigurationProvider<LDAPServerConfiguration>
-		_ldapServerConfigurationProvider;
-
 	private CounterLocalService _counterLocalService;
 
 	@Reference
 	private LDAPFilterValidator _ldapFilterValidator;
+
+	private ConfigurationProvider<LDAPServerConfiguration>
+		_ldapServerConfigurationProvider;
 
 }

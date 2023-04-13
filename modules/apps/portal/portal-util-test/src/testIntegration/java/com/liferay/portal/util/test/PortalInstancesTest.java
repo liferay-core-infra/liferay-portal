@@ -208,6 +208,22 @@ public class PortalInstancesTest {
 		_testGetWebIds();
 	}
 
+	@Test
+	public void testRemoveCompany() throws Exception {
+		String webId = PortalInstances.getWebIdByCompanyId(
+			_company.getCompanyId());
+
+		Assert.assertNotNull(webId);
+
+		_companyLocalService.deleteCompany(_company);
+
+		webId = PortalInstances.getWebIdByCompanyId(_company.getCompanyId());
+
+		_company = null;
+
+		Assert.assertNull(webId);
+	}
+
 	private void _testGetCompanyId(
 		String hostname, LayoutSet expectedLayoutSet) {
 

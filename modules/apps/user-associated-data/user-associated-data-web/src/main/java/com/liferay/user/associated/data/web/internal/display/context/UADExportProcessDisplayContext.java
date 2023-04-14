@@ -215,16 +215,12 @@ public class UADExportProcessDisplayContext {
 							themeDisplay.getScopeGroupId(),
 							selectedUser.getUserId(), status);
 
-					results = ListUtil.sort(
+					return ListUtil.sort(
 						results,
 						getComparator(
 							themeDisplay.getLocale(),
 							searchContainer.getOrderByCol(),
 							searchContainer.getOrderByType()));
-
-					return ListUtil.subList(
-						results, searchContainer.getStart(),
-						searchContainer.getDelta());
 				},
 				UADExportBackgroundTaskManagerUtil.getBackgroundTasksCount(
 					themeDisplay.getScopeGroupId(), selectedUser.getUserId(),
@@ -238,16 +234,12 @@ public class UADExportProcessDisplayContext {
 							themeDisplay.getScopeGroupId(),
 							selectedUser.getUserId());
 
-					results = ListUtil.sort(
+					return ListUtil.sort(
 						results,
 						getComparator(
 							themeDisplay.getLocale(),
 							searchContainer.getOrderByCol(),
 							searchContainer.getOrderByType()));
-
-					return ListUtil.subList(
-						results, searchContainer.getStart(),
-						searchContainer.getDelta());
 				},
 				UADExportBackgroundTaskManagerUtil.getBackgroundTasksCount(
 					themeDisplay.getScopeGroupId(), selectedUser.getUserId()));

@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "initial.deployment=true",
-	service = {CommercePriceListServiceVerifyProcess.class, VerifyProcess.class}
+	service = VerifyProcess.class
 )
 public class CommercePriceListServiceVerifyProcess extends VerifyProcess {
 

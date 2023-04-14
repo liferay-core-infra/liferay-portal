@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "initial.deployment=true",
-	service = {SAPServiceVerifyProcess.class, VerifyProcess.class}
+	service = VerifyProcess.class
 )
 @Deprecated
 public class SAPServiceVerifyProcess extends VerifyProcess {

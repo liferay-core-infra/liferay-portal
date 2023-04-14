@@ -17,26 +17,20 @@ package com.liferay.captcha.util;
 import com.liferay.captcha.configuration.CaptchaConfiguration;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.captcha.Captcha;
 import com.liferay.portal.kernel.captcha.CaptchaException;
 
 import java.io.IOException;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.Map;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -90,30 +84,6 @@ public class CaptchaUtil {
 		throws IOException {
 
 		getCaptcha().serveImage(httpServletRequest, httpServletResponse);
-	}
-
-	public static void serveImage(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException {
-
-		getCaptcha().serveImage(resourceRequest, resourceResponse);
-	}
-
-	public static void setCaptcha(Captcha captcha) throws Exception {
-		Configuration configuration = _configurationAdmin.getConfiguration(
-			CaptchaConfiguration.class.getName(), StringPool.QUESTION);
-
-		Dictionary<String, Object> properties = configuration.getProperties();
-
-		if (properties == null) {
-			properties = new Hashtable<>();
-		}
-
-		Class<?> clazz = captcha.getClass();
-
-		properties.put("captchaEngine", clazz.getName());
-
-		configuration.update(properties);
 	}
 
 	@Activate

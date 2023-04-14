@@ -36,7 +36,6 @@ import com.liferay.user.associated.data.web.internal.util.UADLanguageUtil;
 import java.io.Serializable;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -209,38 +208,28 @@ public class UADExportProcessDisplayContext {
 			int status = getBackgroundTaskStatus(navigation);
 
 			searchContainer.setResultsAndTotal(
-				() -> {
-					List<BackgroundTask> results =
-						UADExportBackgroundTaskManagerUtil.getBackgroundTasks(
-							themeDisplay.getScopeGroupId(),
-							selectedUser.getUserId(), status);
-
-					return ListUtil.sort(
-						results,
-						getComparator(
-							themeDisplay.getLocale(),
-							searchContainer.getOrderByCol(),
-							searchContainer.getOrderByType()));
-				},
+				() -> ListUtil.sort(
+					UADExportBackgroundTaskManagerUtil.getBackgroundTasks(
+						themeDisplay.getScopeGroupId(),
+						selectedUser.getUserId(), status),
+					getComparator(
+						themeDisplay.getLocale(),
+						searchContainer.getOrderByCol(),
+						searchContainer.getOrderByType())),
 				UADExportBackgroundTaskManagerUtil.getBackgroundTasksCount(
 					themeDisplay.getScopeGroupId(), selectedUser.getUserId(),
 					status));
 		}
 		else {
 			searchContainer.setResultsAndTotal(
-				() -> {
-					List<BackgroundTask> results =
-						UADExportBackgroundTaskManagerUtil.getBackgroundTasks(
-							themeDisplay.getScopeGroupId(),
-							selectedUser.getUserId());
-
-					return ListUtil.sort(
-						results,
-						getComparator(
-							themeDisplay.getLocale(),
-							searchContainer.getOrderByCol(),
-							searchContainer.getOrderByType()));
-				},
+				() -> ListUtil.sort(
+					UADExportBackgroundTaskManagerUtil.getBackgroundTasks(
+						themeDisplay.getScopeGroupId(),
+						selectedUser.getUserId()),
+					getComparator(
+						themeDisplay.getLocale(),
+						searchContainer.getOrderByCol(),
+						searchContainer.getOrderByType())),
 				UADExportBackgroundTaskManagerUtil.getBackgroundTasksCount(
 					themeDisplay.getScopeGroupId(), selectedUser.getUserId()));
 		}

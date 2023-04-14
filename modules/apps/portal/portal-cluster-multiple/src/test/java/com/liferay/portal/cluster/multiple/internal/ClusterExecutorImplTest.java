@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -49,6 +50,8 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.Mockito;
 
 /**
  * @author Tina Tian
@@ -380,6 +383,81 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		Assert.assertFalse((Boolean)clusterNodeResponse.getResult());
 
 		Assert.assertTrue(ClusterInvokeThreadLocal.isEnabled());
+	}
+
+	@Test
+	public void testManageDebugClusterEventListener() {
+		ClusterExecutorImpl clusterExecutorImpl = _getClusterExecutorImpl();
+
+		ClusterExecutorConfiguration clusterExecutorConfiguration =
+			Mockito.mock(ClusterExecutorConfiguration.class);
+
+		ReflectionTestUtil.setFieldValue(
+			clusterExecutorImpl, "clusterExecutorConfiguration",
+			clusterExecutorConfiguration);
+
+		Mockito.when(
+			clusterExecutorConfiguration.debugEnabled()
+		).thenReturn(
+			true
+		);
+
+		clusterExecutorImpl.manageDebugClusterEventListener();
+
+		List<ClusterEventListener> clusterEventListeners1 =
+			clusterExecutorImpl.getClusterEventListeners();
+
+		Assert.assertEquals(
+			clusterEventListeners1.toString(), 1,
+			clusterEventListeners1.size());
+
+		ClusterEventListener clusterEventListener1 = clusterEventListeners1.get(
+			0);
+
+		Class<?> clusterEventListenerClass1 = clusterEventListener1.getClass();
+
+		Assert.assertEquals(
+			DebuggingClusterEventListenerImpl.class.getName(),
+			clusterEventListenerClass1.getName());
+
+		Mockito.when(
+			clusterExecutorConfiguration.debugEnabled()
+		).thenReturn(
+			false
+		);
+
+		clusterExecutorImpl.manageDebugClusterEventListener();
+
+		List<ClusterEventListener> clusterEventListeners2 =
+			clusterExecutorImpl.getClusterEventListeners();
+
+		Assert.assertEquals(
+			clusterEventListeners2.toString(), 0,
+			clusterEventListeners2.size());
+
+		Mockito.when(
+			clusterExecutorConfiguration.debugEnabled()
+		).thenReturn(
+			true
+		);
+
+		clusterExecutorImpl.manageDebugClusterEventListener();
+
+		List<ClusterEventListener> clusterEventListeners3 =
+			clusterExecutorImpl.getClusterEventListeners();
+
+		Assert.assertEquals(
+			clusterEventListeners3.toString(), 1,
+			clusterEventListeners3.size());
+
+		ClusterEventListener clusterEventListener3 = clusterEventListeners3.get(
+			0);
+
+		Class<?> clusterEventListenerClass3 = clusterEventListener3.getClass();
+
+		Assert.assertEquals(
+			DebuggingClusterEventListenerImpl.class.getName(),
+			clusterEventListenerClass3.getName());
 	}
 
 	private ClusterExecutorImpl _getClusterExecutorImpl() {

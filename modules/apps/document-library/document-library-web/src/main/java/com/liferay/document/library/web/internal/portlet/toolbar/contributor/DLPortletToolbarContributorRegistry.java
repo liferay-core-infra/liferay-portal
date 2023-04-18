@@ -17,6 +17,7 @@ package com.liferay.document.library.web.internal.portlet.toolbar.contributor;
 import com.liferay.document.library.portlet.toolbar.contributor.DLPortletToolbarContributor;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.portal.kernel.portlet.toolbar.contributor.PortletToolbarContributor;
 import com.liferay.portal.kernel.servlet.taglib.ui.Menu;
 
 import java.util.ArrayList;
@@ -45,7 +46,10 @@ public class DLPortletToolbarContributorRegistry {
 		_dlPortletToolbarContributor =
 			new AggregateDLPortletToolbarContributor();
 		_serviceTrackerList = ServiceTrackerListFactory.open(
-			bundleContext, DLPortletToolbarContributor.class);
+			bundleContext, PortletToolbarContributor.class,
+			"(component.name=com.liferay.document.library.web.internal." +
+				"portlet.toolbar.contributor." +
+					"DefaultDLPortletToolbarContributor)");
 	}
 
 	@Deactivate
@@ -54,7 +58,7 @@ public class DLPortletToolbarContributorRegistry {
 	}
 
 	private DLPortletToolbarContributor _dlPortletToolbarContributor;
-	private ServiceTrackerList<DLPortletToolbarContributor> _serviceTrackerList;
+	private ServiceTrackerList<PortletToolbarContributor> _serviceTrackerList;
 
 	private class AggregateDLPortletToolbarContributor
 		implements DLPortletToolbarContributor {

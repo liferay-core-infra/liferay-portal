@@ -40,8 +40,7 @@ public class CommercePaymentMethodGroupRelDetailsScreenNavigationEntry
 
 	@Override
 	public String getEntryKey() {
-		return CommercePaymentScreenNavigationConstants.
-			ENTRY_KEY_COMMERCE_PAYMENT_METHOD_DETAILS;
+		return getCategoryKey();
 	}
 
 	@Override

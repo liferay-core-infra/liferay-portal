@@ -15,7 +15,8 @@
 package com.liferay.portal.search.web.internal.custom.filter.portlet;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Optional;
 
@@ -31,104 +32,171 @@ public class CustomFilterPortletPreferencesImpl
 	public CustomFilterPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElseThrow(
+			() -> new IllegalArgumentException(
+				"PortletPreferences is not present"));
 	}
 
 	@Override
 	public String getBoost() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_BOOST);
+		if (_portletPreferences == null) {
+			return StringPool.BLANK;
+		}
 
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_BOOST,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getCustomHeading() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING);
+		if (_portletPreferences == null) {
+			return StringPool.BLANK;
+		}
 
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getFederatedSearchKey() {
-		return _portletPreferencesHelper.getString(
+		if (_portletPreferences == null) {
+			return StringPool.BLANK;
+		}
+
+		return _portletPreferences.getValue(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
 			StringPool.BLANK);
 	}
 
 	@Override
 	public String getFilterField() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_FIELD);
+		if (_portletPreferences == null) {
+			return StringPool.BLANK;
+		}
 
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_FIELD,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getFilterQueryType() {
-		return _portletPreferencesHelper.getString(
+		if (_portletPreferences == null) {
+			return "match";
+		}
+
+		return _portletPreferences.getValue(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_QUERY_TYPE,
 			"match");
 	}
 
 	@Override
 	public String getFilterValue() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE);
+		if (_portletPreferences == null) {
+			return StringPool.BLANK;
+		}
 
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getOccur() {
-		return _portletPreferencesHelper.getString(
+		if (_portletPreferences == null) {
+			return "filter";
+		}
+
+		return _portletPreferences.getValue(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_OCCUR, "filter");
 	}
 
 	@Override
 	public String getParameterName() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME);
+		if (_portletPreferences == null) {
+			return StringPool.BLANK;
+		}
 
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getParentQueryName() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_PARENT_QUERY_NAME);
+		if (_portletPreferences == null) {
+			return StringPool.BLANK;
+		}
 
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_PARENT_QUERY_NAME,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getQueryName() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_QUERY_NAME);
+		if (_portletPreferences == null) {
+			return StringPool.BLANK;
+		}
 
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_QUERY_NAME,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public boolean isDisabled() {
-		return _portletPreferencesHelper.getBoolean(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_DISABLED, false);
+		if (_portletPreferences == null) {
+			return false;
+		}
+
+		String value = _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_DISABLED,
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return false;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
 	@Override
 	public boolean isImmutable() {
-		return _portletPreferencesHelper.getBoolean(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_IMMUTABLE, false);
+		if (_portletPreferences == null) {
+			return false;
+		}
+
+		String value = _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_IMMUTABLE,
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return false;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
 	@Override
 	public boolean isInvisible() {
-		return _portletPreferencesHelper.getBoolean(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_INVISIBLE, false);
+		if (_portletPreferences == null) {
+			return false;
+		}
+
+		String value = _portletPreferences.getValue(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_INVISIBLE,
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return false;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }

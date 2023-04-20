@@ -17,7 +17,7 @@ package com.liferay.portal.search.web.internal.search.results.portlet;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsUtil;
 
 import java.util.Optional;
@@ -33,37 +33,43 @@ public class SearchResultsPortletPreferencesImpl
 	public SearchResultsPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElseThrow(
+			() -> new IllegalArgumentException(
+				"PortletPreferences is not present"));
 	}
 
 	@Override
 	public String getFederatedSearchKey() {
-		return _portletPreferencesHelper.getString(
+		return _portletPreferences.getValue(
 			SearchResultsPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
 			StringPool.BLANK);
 	}
 
 	@Override
 	public String getFieldsToDisplay() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			SearchResultsPortletPreferences.PREFERENCE_KEY_FIELDS_TO_DISPLAY);
-
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			SearchResultsPortletPreferences.PREFERENCE_KEY_FIELDS_TO_DISPLAY,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public int getPaginationDelta() {
-		return _portletPreferencesHelper.getInteger(
+		String value = _portletPreferences.getValue(
 			SearchResultsPortletPreferences.PREFERENCE_KEY_PAGINATION_DELTA,
-			GetterUtil.getInteger(
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return GetterUtil.getInteger(
 				PropsUtil.get(PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA),
-				20));
+				20);
+		}
+
+		return GetterUtil.getInteger(value);
 	}
 
 	@Override
 	public String getPaginationDeltaParameterName() {
-		return _portletPreferencesHelper.getString(
+		return _portletPreferences.getValue(
 			SearchResultsPortletPreferences.
 				PREFERENCE_KEY_PAGINATION_DELTA_PARAMETER_NAME,
 			"delta");
@@ -71,7 +77,7 @@ public class SearchResultsPortletPreferencesImpl
 
 	@Override
 	public String getPaginationStartParameterName() {
-		return _portletPreferencesHelper.getString(
+		return _portletPreferences.getValue(
 			SearchResultsPortletPreferences.
 				PREFERENCE_KEY_PAGINATION_START_PARAMETER_NAME,
 			"start");
@@ -79,26 +85,44 @@ public class SearchResultsPortletPreferencesImpl
 
 	@Override
 	public boolean isDisplayInDocumentForm() {
-		return _portletPreferencesHelper.getBoolean(
+		String value = _portletPreferences.getValue(
 			SearchResultsPortletPreferences.
 				PREFERENCE_KEY_DISPLAY_IN_DOCUMENT_FORM,
-			false);
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return false;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
 	@Override
 	public boolean isHighlightEnabled() {
-		return _portletPreferencesHelper.getBoolean(
+		String value = _portletPreferences.getValue(
 			SearchResultsPortletPreferences.PREFERENCE_KEY_HIGHLIGHT_ENABLED,
-			true);
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return true;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
 	@Override
 	public boolean isViewInContext() {
-		return _portletPreferencesHelper.getBoolean(
+		String value = _portletPreferences.getValue(
 			SearchResultsPortletPreferences.PREFERENCE_KEY_VIEW_IN_CONTEXT,
-			true);
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return true;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }

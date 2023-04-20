@@ -25,15 +25,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.util.Collections;
 import java.util.List;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Rodolfo Roza Miranda
  */
-@Component(service = {})
 public class ClayTagContextContributorsProvider {
 
 	public static List<ClayTagContextContributor> getClayTagContextContributors(
@@ -59,30 +56,24 @@ public class ClayTagContextContributorsProvider {
 		_clayTagContextContributorsProvider = this;
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
-			bundleContext, ClayTagContextContributor.class,
-			"(clay.tag.context.contributor.key=*)",
-			new PropertyServiceReferenceMapper<>(
-				"clay.tag.context.contributor.key"),
-			new PropertyServiceReferenceComparator<>("service.ranking"));
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerMap.close();
-
-		_serviceTrackerMap = null;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClayTagContextContributorsProvider.class);
 
 	private static ClayTagContextContributorsProvider
 		_clayTagContextContributorsProvider;
+	private static final ServiceTrackerMap
+		<String, List<ClayTagContextContributor>> _serviceTrackerMap;
 
-	private ServiceTrackerMap<String, List<ClayTagContextContributor>>
-		_serviceTrackerMap;
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ClayTagContextContributorsProvider.class);
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
+			bundle.getBundleContext(), ClayTagContextContributor.class,
+			"(clay.tag.context.contributor.key=*)",
+			new PropertyServiceReferenceMapper<>(
+				"clay.tag.context.contributor.key"),
+			new PropertyServiceReferenceComparator<>("service.ranking"));
+	}
 
 }

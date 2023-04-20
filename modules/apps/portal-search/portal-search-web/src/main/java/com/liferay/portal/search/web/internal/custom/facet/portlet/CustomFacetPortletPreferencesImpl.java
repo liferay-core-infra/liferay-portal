@@ -15,7 +15,8 @@
 package com.liferay.portal.search.web.internal.custom.facet.portlet;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Optional;
 
@@ -30,68 +31,85 @@ public class CustomFacetPortletPreferencesImpl
 	public CustomFacetPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElseThrow(
+			() -> new IllegalArgumentException(
+				"PortletPreferences is not present"));
 	}
 
 	@Override
 	public String getAggregationField() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_AGGREGATION_FIELD);
-
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_AGGREGATION_FIELD,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getCustomHeading() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING);
-
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getFederatedSearchKey() {
-		return _portletPreferencesHelper.getString(
+		return _portletPreferences.getValue(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
 			StringPool.BLANK);
 	}
 
 	@Override
 	public int getFrequencyThreshold() {
-		return _portletPreferencesHelper.getInteger(
+		String value = _portletPreferences.getValue(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_FREQUENCY_THRESHOLD,
-			1);
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return 1;
+		}
+
+		return GetterUtil.getInteger(value);
 	}
 
 	@Override
 	public int getMaxTerms() {
-		return _portletPreferencesHelper.getInteger(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_MAX_TERMS, 10);
+		String value = _portletPreferences.getValue(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_MAX_TERMS,
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return 10;
+		}
+
+		return GetterUtil.getInteger(value);
 	}
 
 	@Override
 	public String getOrder() {
-		return _portletPreferencesHelper.getString(
+		return _portletPreferences.getValue(
 			CustomFacetPortletPreferencesImpl.PREFERENCE_KEY_ORDER,
 			"count:desc");
 	}
 
 	@Override
 	public String getParameterName() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME);
-
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public boolean isFrequenciesVisible() {
-		return _portletPreferencesHelper.getBoolean(
+		String value = _portletPreferences.getValue(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE,
-			true);
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return true;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }

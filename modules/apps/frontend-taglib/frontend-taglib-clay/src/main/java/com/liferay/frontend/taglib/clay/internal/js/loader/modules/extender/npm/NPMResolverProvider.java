@@ -15,14 +15,11 @@
 package com.liferay.frontend.taglib.clay.internal.js.loader.modules.extender.npm;
 
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import com.liferay.osgi.util.service.Snapshot;
 
 /**
  * @author Chema Balsas
  */
-@Component(service = {})
 public class NPMResolverProvider {
 
 	public static NPMResolver getNPMResolver() {
@@ -30,7 +27,7 @@ public class NPMResolverProvider {
 			return null;
 		}
 
-		return _npmResolverProvider._npmResolver;
+		return _npmResolverSnapshot.get();
 	}
 
 	public NPMResolverProvider() {
@@ -38,8 +35,7 @@ public class NPMResolverProvider {
 	}
 
 	private static NPMResolverProvider _npmResolverProvider;
-
-	@Reference
-	private NPMResolver _npmResolver;
+	private static final Snapshot<NPMResolver> _npmResolverSnapshot =
+		new Snapshot<>(NPMResolverProvider.class, NPMResolver.class);
 
 }

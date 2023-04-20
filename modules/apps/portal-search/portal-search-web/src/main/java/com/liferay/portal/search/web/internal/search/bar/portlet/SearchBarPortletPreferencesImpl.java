@@ -15,8 +15,9 @@
 package com.liferay.portal.search.web.internal.search.bar.portlet;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
 import java.util.Optional;
 
@@ -31,49 +32,50 @@ public class SearchBarPortletPreferencesImpl
 	public SearchBarPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElseThrow(
+			() -> new IllegalArgumentException(
+				"PortletPreferences is not present"));
 	}
 
 	@Override
 	public String getDestination() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION);
-
-		return optional.orElse(StringPool.BLANK);
+		return _portletPreferences.getValue(
+			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getFederatedSearchKey() {
-		return _portletPreferencesHelper.getString(
+		return _portletPreferences.getValue(
 			SearchBarPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
 			StringPool.BLANK);
 	}
 
 	@Override
 	public String getKeywordsParameterName() {
-		return _portletPreferencesHelper.getString(
+		return _portletPreferences.getValue(
 			SearchBarPortletPreferences.PREFERENCE_KEY_KEYWORDS_PARAMETER_NAME,
 			"q");
 	}
 
 	@Override
 	public String getScopeParameterName() {
-		return _portletPreferencesHelper.getString(
+		return _portletPreferences.getValue(
 			SearchBarPortletPreferences.PREFERENCE_KEY_SCOPE_PARAMETER_NAME,
 			"scope");
 	}
 
 	@Override
 	public SearchScopePreference getSearchScopePreference() {
-		Optional<String> valueOptional = _portletPreferencesHelper.getString(
-			SearchBarPortletPreferences.PREFERENCE_KEY_SEARCH_SCOPE);
+		String value = _portletPreferences.getValue(
+			SearchBarPortletPreferences.PREFERENCE_KEY_SEARCH_SCOPE,
+			StringPool.BLANK);
 
-		Optional<SearchScopePreference> searchScopePreferenceOptional =
-			valueOptional.map(SearchScopePreference::getSearchScopePreference);
+		if (Validator.isNull(value)) {
+			return SearchScopePreference.THIS_SITE;
+		}
 
-		return searchScopePreferenceOptional.orElse(
-			SearchScopePreference.THIS_SITE);
+		return SearchScopePreference.getSearchScopePreference(value);
 	}
 
 	@Override
@@ -86,32 +88,57 @@ public class SearchBarPortletPreferencesImpl
 
 	@Override
 	public boolean isInvisible() {
-		return _portletPreferencesHelper.getBoolean(
-			SearchBarPortletPreferences.PREFERENCE_KEY_INVISIBLE, false);
+		String value = _portletPreferences.getValue(
+			SearchBarPortletPreferences.PREFERENCE_KEY_INVISIBLE,
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return false;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
 	@Override
 	public boolean isShowStagedResults() {
-		return _portletPreferencesHelper.getBoolean(
+		String value = _portletPreferences.getValue(
 			SearchBarPortletPreferences.PREFERENCE_KEY_SHOW_STAGED_RESULTS,
-			false);
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return false;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
 	@Override
 	public boolean isSuggestionsEnabled() {
-		return _portletPreferencesHelper.getBoolean(
+		String value = _portletPreferences.getValue(
 			SearchBarPortletPreferences.PREFERENCE_KEY_SUGGESTIONS_ENABLED,
-			true);
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return true;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
 	@Override
 	public boolean isUseAdvancedSearchSyntax() {
-		return _portletPreferencesHelper.getBoolean(
+		String value = _portletPreferences.getValue(
 			SearchBarPortletPreferences.
 				PREFERENCE_KEY_USE_ADVANCED_SEARCH_SYNTAX,
-			false);
+			StringPool.BLANK);
+
+		if (Validator.isNull(value)) {
+			return false;
+		}
+
+		return GetterUtil.getBoolean(value);
 	}
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }

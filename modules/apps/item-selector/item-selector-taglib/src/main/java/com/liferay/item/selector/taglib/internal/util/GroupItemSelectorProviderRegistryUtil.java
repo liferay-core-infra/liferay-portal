@@ -18,27 +18,20 @@ import com.liferay.item.selector.provider.GroupItemSelectorProvider;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Cristina González
  */
-@Component(service = {})
 public class GroupItemSelectorProviderRegistryUtil {
 
 	public static GroupItemSelectorProvider getGroupItemSelectorProvider(
 		String groupType) {
-
-		if (_serviceTrackerMap == null) {
-			return null;
-		}
 
 		GroupItemSelectorProvider groupItemSelectorProvider =
 			_serviceTrackerMap.getService(groupType);
@@ -53,10 +46,6 @@ public class GroupItemSelectorProviderRegistryUtil {
 	}
 
 	public static Set<String> getGroupItemSelectorProviderTypes() {
-		if (_serviceTrackerMap == null) {
-			return Collections.emptySet();
-		}
-
 		Set<String> types = new HashSet<>();
 
 		for (GroupItemSelectorProvider groupItemSelectorProvider :
@@ -70,8 +59,15 @@ public class GroupItemSelectorProviderRegistryUtil {
 		return types;
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
+	private static final ServiceTrackerMap<String, GroupItemSelectorProvider>
+		_serviceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			GroupItemSelectorProviderRegistryUtil.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, GroupItemSelectorProvider.class, null,
 			(serviceReference, emitter) -> {
@@ -86,15 +82,5 @@ public class GroupItemSelectorProviderRegistryUtil {
 				}
 			});
 	}
-
-	@Deactivate
-	protected void deactivate() {
-		if (_serviceTrackerMap != null) {
-			_serviceTrackerMap.close();
-		}
-	}
-
-	private static ServiceTrackerMap<String, GroupItemSelectorProvider>
-		_serviceTrackerMap;
 
 }

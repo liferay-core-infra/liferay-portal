@@ -25,39 +25,24 @@ import java.util.List;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Alejandro Tardín
  */
-@Component(service = {})
 public class DLPortletToolbarContributorRegistryUtil {
 
 	public static DLPortletToolbarContributor getDLPortletToolbarContributor() {
 		return _dlPortletToolbarContributor;
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_dlPortletToolbarContributor =
-			new AggregateDLPortletToolbarContributor();
-		_serviceTrackerList = ServiceTrackerListFactory.open(
-			bundleContext, DLPortletToolbarContributor.class);
-	}
+	private static final DLPortletToolbarContributor
+		_dlPortletToolbarContributor;
+	private static final ServiceTrackerList<DLPortletToolbarContributor>
+		_serviceTrackerList;
 
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerList.close();
-	}
-
-	private static DLPortletToolbarContributor _dlPortletToolbarContributor;
-
-	private ServiceTrackerList<DLPortletToolbarContributor> _serviceTrackerList;
-
-	private class AggregateDLPortletToolbarContributor
+	private static class AggregateDLPortletToolbarContributor
 		implements DLPortletToolbarContributor {
 
 		@Override
@@ -74,6 +59,15 @@ public class DLPortletToolbarContributorRegistryUtil {
 			return menus;
 		}
 
+	}
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DLPortletToolbarContributorRegistryUtil.class);
+		_dlPortletToolbarContributor =
+			new AggregateDLPortletToolbarContributor();
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundle.getBundleContext(), DLPortletToolbarContributor.class);
 	}
 
 }

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
@@ -64,6 +65,8 @@ public class EditAccountUsersMVCActionCommand extends BaseMVCActionCommand {
 					WorkflowConstants.STATUS_INACTIVE);
 			}
 			else if (cmd.equals(Constants.RESTORE)) {
+				_userLocalService.validateCompanyMaxUsers();
+
 				_updateUsers(
 					actionRequest, accountUserIds,
 					WorkflowConstants.STATUS_APPROVED);
@@ -113,6 +116,9 @@ public class EditAccountUsersMVCActionCommand extends BaseMVCActionCommand {
 					User.class.getName(), actionRequest));
 		}
 	}
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 	@Reference
 	private UserService _userService;

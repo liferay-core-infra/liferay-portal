@@ -123,6 +123,8 @@ public class EditUserMVCActionCommand
 				WorkflowConstants.STATUS_INACTIVE);
 		}
 		else if (cmd.equals(Constants.RESTORE)) {
+			_userLocalService.validateCompanyMaxUsers();
+
 			_updateUsers(
 				actionRequest, deleteUserIds,
 				WorkflowConstants.STATUS_APPROVED);
@@ -591,6 +593,9 @@ public class EditUserMVCActionCommand
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 	@Reference
 	private UsersAdmin _usersAdmin;

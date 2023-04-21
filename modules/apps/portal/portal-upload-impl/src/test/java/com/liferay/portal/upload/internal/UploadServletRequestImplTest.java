@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.ToolDependencies;
-import com.liferay.portal.upload.UploadServletRequestImpl;
 
 import java.util.ArrayList;
 import java.util.List;

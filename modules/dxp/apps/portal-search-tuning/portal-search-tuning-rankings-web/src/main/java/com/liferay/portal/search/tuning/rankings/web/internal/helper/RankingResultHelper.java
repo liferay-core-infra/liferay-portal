@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.portal.search.tuning.rankings.web.internal.util;
+package com.liferay.portal.search.tuning.rankings.web.internal.helper;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
@@ -45,10 +45,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Wade Cao
  */
-@Component(service = {})
-public class RankingResultUtil {
+@Component(service = RankingResultHelper.class)
+public class RankingResultHelper {
 
-	public static AssetRenderer<?> getAssetRenderer(
+	public AssetRenderer<?> getAssetRenderer(
 		String entryClassName, long entryClassPK) {
 
 		Document document = _documentBuilderFactory.builder(
@@ -78,7 +78,7 @@ public class RankingResultUtil {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static String getRankingResultViewURL(
+	public String getRankingResultViewURL(
 		Document document, ResourceRequest resourceRequest,
 		ResourceResponse resourceResponse, boolean viewInContext) {
 
@@ -156,7 +156,7 @@ public class RankingResultUtil {
 		}
 	}
 
-	public static boolean isAssetDeleted(Document document) {
+	public boolean isAssetDeleted(Document document) {
 		SearchResultInterpreter searchResultInterpreter =
 			_getSearchResultInterpreter();
 
@@ -178,36 +178,21 @@ public class RankingResultUtil {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setPortal(Portal portal) {
-		_portal = portal;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSearchDocumentBuilderFactory(
-		DocumentBuilderFactory documentBuilderFactory) {
-
-		_documentBuilderFactory = documentBuilderFactory;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSearchResultInterpreterProvider(
-		SearchResultInterpreterProvider searchResultInterpreterProvider) {
-
-		_searchResultInterpreterProvider = searchResultInterpreterProvider;
-	}
-
-	private static SearchResultInterpreter _getSearchResultInterpreter() {
+	private SearchResultInterpreter _getSearchResultInterpreter() {
 		return _searchResultInterpreterProvider.getSearchResultInterpreter(
 			ResultRankingsPortletKeys.RESULT_RANKINGS);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RankingResultUtil.class);
+		RankingResultHelper.class);
 
-	private static DocumentBuilderFactory _documentBuilderFactory;
-	private static Portal _portal;
-	private static SearchResultInterpreterProvider
-		_searchResultInterpreterProvider;
+	@Reference
+	private DocumentBuilderFactory _documentBuilderFactory;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private SearchResultInterpreterProvider _searchResultInterpreterProvider;
 
 }

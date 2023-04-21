@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.document.Document;
@@ -114,8 +113,8 @@ public class RankingResultUtil {
 			}
 
 			String viewURL = searchResultInterpreter.getAssetURLViewInContext(
-				document, PortalUtil.getLiferayPortletRequest(resourceRequest),
-				PortalUtil.getLiferayPortletResponse(resourceResponse),
+				document, _portal.getLiferayPortletRequest(resourceRequest),
+				_portal.getLiferayPortletResponse(resourceResponse),
 				viewContentURL.toString());
 
 			if (Validator.isNull(viewURL)) {

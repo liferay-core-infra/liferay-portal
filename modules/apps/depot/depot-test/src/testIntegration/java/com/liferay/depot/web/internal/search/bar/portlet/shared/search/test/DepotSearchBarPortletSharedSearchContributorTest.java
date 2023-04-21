@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.web.constants.SearchBarPortletKeys;
@@ -330,14 +331,24 @@ public class DepotSearchBarPortletSharedSearchContributorTest {
 
 			@Override
 			public Optional<PortletPreferences> getPortletPreferences71() {
-				return Optional.empty();
+				return Optional.of(
+					(PortletPreferences)ProxyUtil.newProxyInstance(
+						DepotSearchBarPortletSharedSearchContributorTest.class.
+							getClassLoader(),
+						new Class<?>[] {PortletPreferences.class},
+						(proxy, method, args) -> null));
 			}
 
 			@Override
 			public Optional<PortletPreferences>
 				getPortletPreferencesOptional() {
 
-				return Optional.empty();
+				return Optional.of(
+					(PortletPreferences)ProxyUtil.newProxyInstance(
+						DepotSearchBarPortletSharedSearchContributorTest.class.
+							getClassLoader(),
+						new Class<?>[] {PortletPreferences.class},
+						(proxy, method, args) -> null));
 			}
 
 			@Override

@@ -16,7 +16,6 @@ package com.liferay.portal.search.web.internal.custom.facet.portlet;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Optional;
 
@@ -59,28 +58,18 @@ public class CustomFacetPortletPreferencesImpl
 
 	@Override
 	public int getFrequencyThreshold() {
-		String value = _portletPreferences.getValue(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_FREQUENCY_THRESHOLD,
-			StringPool.BLANK);
-
-		if (Validator.isNull(value)) {
-			return 1;
-		}
-
-		return GetterUtil.getInteger(value);
+		return GetterUtil.getInteger(
+			_portletPreferences.getValue(
+				CustomFacetPortletPreferences.
+					PREFERENCE_KEY_FREQUENCY_THRESHOLD,
+				"1"));
 	}
 
 	@Override
 	public int getMaxTerms() {
-		String value = _portletPreferences.getValue(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_MAX_TERMS,
-			StringPool.BLANK);
-
-		if (Validator.isNull(value)) {
-			return 10;
-		}
-
-		return GetterUtil.getInteger(value);
+		return GetterUtil.getInteger(
+			_portletPreferences.getValue(
+				CustomFacetPortletPreferences.PREFERENCE_KEY_MAX_TERMS, "10"));
 	}
 
 	@Override
@@ -99,15 +88,11 @@ public class CustomFacetPortletPreferencesImpl
 
 	@Override
 	public boolean isFrequenciesVisible() {
-		String value = _portletPreferences.getValue(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE,
-			StringPool.BLANK);
-
-		if (Validator.isNull(value)) {
-			return true;
-		}
-
-		return GetterUtil.getBoolean(value);
+		return GetterUtil.getBoolean(
+			_portletPreferences.getValue(
+				CustomFacetPortletPreferences.
+					PREFERENCE_KEY_FREQUENCIES_VISIBLE,
+				StringPool.TRUE));
 	}
 
 	private final PortletPreferences _portletPreferences;

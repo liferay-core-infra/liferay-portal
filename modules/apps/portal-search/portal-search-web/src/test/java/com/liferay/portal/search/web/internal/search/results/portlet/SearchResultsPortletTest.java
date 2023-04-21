@@ -16,6 +16,7 @@ package com.liferay.portal.search.web.internal.search.results.portlet;
 
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.util.AssetRendererFactoryLookup;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.search.Document;
@@ -50,6 +51,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -331,8 +333,19 @@ public class SearchResultsPortletTest {
 			_portletSharedSearchResponse
 		).getKeywords();
 
+		PortletPreferences mockPortletPreferences = Mockito.mock(
+			PortletPreferences.class);
+
 		Mockito.doReturn(
-			Optional.empty()
+			StringPool.BLANK
+		).when(
+			mockPortletPreferences
+		).getValue(
+			Mockito.any(), Mockito.any()
+		);
+
+		Mockito.doReturn(
+			Optional.of(mockPortletPreferences)
 		).when(
 			_portletSharedSearchResponse
 		).getPortletPreferences(

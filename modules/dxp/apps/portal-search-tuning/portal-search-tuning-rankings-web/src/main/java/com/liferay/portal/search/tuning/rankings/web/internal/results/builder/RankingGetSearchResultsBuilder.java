@@ -15,6 +15,7 @@
 package com.liferay.portal.search.tuning.rankings.web.internal.results.builder;
 
 import com.liferay.document.library.kernel.service.DLAppLocalService;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -28,7 +29,7 @@ import com.liferay.portal.search.searcher.SearchRequest;
 import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.searcher.Searcher;
-import com.liferay.portal.search.tuning.rankings.web.internal.util.RankingResultUtil;
+import com.liferay.portal.search.tuning.rankings.web.internal.helper.RankingResultHelper;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -129,16 +130,26 @@ public class RankingGetSearchResultsBuilder {
 	}
 
 	private String _getViewURL(Document document) {
-		return RankingResultUtil.getRankingResultViewURL(
+		RankingResultHelper rankingResultHelper =
+			_rankingResultHelperSnapshot.get();
+
+		return rankingResultHelper.getRankingResultViewURL(
 			document, _resourceRequest, _resourceResponse, true);
 	}
 
 	private boolean _isAssetDeleted(Document document) {
-		return RankingResultUtil.isAssetDeleted(document);
+		RankingResultHelper rankingResultHelper =
+			_rankingResultHelperSnapshot.get();
+
+		return rankingResultHelper.isAssetDeleted(document);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RankingGetSearchResultsBuilder.class.getName());
+
+	private static final Snapshot<RankingResultHelper>
+		_rankingResultHelperSnapshot = new Snapshot<>(
+			RankingGetSearchResultsBuilder.class, RankingResultHelper.class);
 
 	private long _companyId;
 	private final ComplexQueryPartBuilderFactory

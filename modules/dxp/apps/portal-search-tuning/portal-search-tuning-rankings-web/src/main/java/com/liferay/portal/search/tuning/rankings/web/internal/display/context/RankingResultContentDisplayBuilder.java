@@ -17,12 +17,13 @@ package com.liferay.portal.search.tuning.rankings.web.internal.display.context;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.search.tuning.rankings.web.internal.util.RankingResultUtil;
+import com.liferay.portal.search.tuning.rankings.web.internal.helper.RankingResultHelper;
 
 import java.util.Locale;
 
@@ -39,7 +40,10 @@ public class RankingResultContentDisplayBuilder {
 		RankingResultContentDisplayContext rankingResultContentDisplayContext =
 			new RankingResultContentDisplayContext();
 
-		AssetRenderer<?> assetRenderer = RankingResultUtil.getAssetRenderer(
+		RankingResultHelper rankingResultHelper =
+			_rankingResultHelperSnapshot.get();
+
+		AssetRenderer<?> assetRenderer = rankingResultHelper.getAssetRenderer(
 			_entryClassName, _entryClassPK);
 
 		if (assetRenderer == null) {
@@ -136,6 +140,11 @@ public class RankingResultContentDisplayBuilder {
 	public void setRenderResponse(RenderResponse renderResponse) {
 		_renderResponse = renderResponse;
 	}
+
+	private static final Snapshot<RankingResultHelper>
+		_rankingResultHelperSnapshot = new Snapshot<>(
+			RankingResultContentDisplayBuilder.class,
+			RankingResultHelper.class);
 
 	private long _assetEntryId;
 	private String _entryClassName;

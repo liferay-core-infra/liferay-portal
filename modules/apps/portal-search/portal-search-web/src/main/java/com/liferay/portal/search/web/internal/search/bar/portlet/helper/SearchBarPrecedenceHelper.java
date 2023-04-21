@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.portlet.PortletPreferences;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -106,7 +108,8 @@ public class SearchBarPrecedenceHelper {
 			_getSearchBarPortletPreferences(
 				headerSearchBarPortlet, themeDisplay);
 
-		if (!SearchBarPortletDestinationUtil.isSameDestination(
+		if ((searchBarPortletPreferences1 == null) ||
+			!SearchBarPortletDestinationUtil.isSameDestination(
 				searchBarPortletPreferences1, themeDisplay)) {
 
 			return false;
@@ -115,7 +118,8 @@ public class SearchBarPrecedenceHelper {
 		SearchBarPortletPreferences searchBarPortletPreferences2 =
 			_getSearchBarPortletPreferences(portletId, themeDisplay);
 
-		if (!Objects.equals(
+		if ((searchBarPortletPreferences2 == null) ||
+			!Objects.equals(
 				searchBarPortletPreferences1.getFederatedSearchKey(),
 				searchBarPortletPreferences2.getFederatedSearchKey())) {
 
@@ -138,13 +142,18 @@ public class SearchBarPrecedenceHelper {
 		Portlet portlet, ThemeDisplay themeDisplay) {
 
 		if (portlet == null) {
-			return new SearchBarPortletPreferencesImpl(Optional.empty());
+			return null;
+		}
+
+		PortletPreferences portletPreferences =
+			_portletPreferencesLookup.fetchPreferences(portlet, themeDisplay);
+
+		if (portletPreferences == null) {
+			return null;
 		}
 
 		return new SearchBarPortletPreferencesImpl(
-			Optional.ofNullable(
-				_portletPreferencesLookup.fetchPreferences(
-					portlet, themeDisplay)));
+			Optional.of(portletPreferences));
 	}
 
 	private SearchBarPortletPreferences _getSearchBarPortletPreferences(

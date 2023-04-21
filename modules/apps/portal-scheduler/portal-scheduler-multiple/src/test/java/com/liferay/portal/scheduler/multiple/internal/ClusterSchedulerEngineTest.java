@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.scheduler.Job;
 import com.liferay.portal.kernel.scheduler.JobState;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
@@ -1617,6 +1618,10 @@ public class ClusterSchedulerEngineTest {
 		public void run(
 			long companyId, String jobName, String groupName,
 			StorageType storageType) {
+		}
+
+		@Override
+		public void schedule(String name, Trigger trigger, Job job) {
 		}
 
 		@Override

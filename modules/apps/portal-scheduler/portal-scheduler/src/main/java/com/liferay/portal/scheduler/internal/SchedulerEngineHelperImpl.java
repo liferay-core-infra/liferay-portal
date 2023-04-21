@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.scheduler.Job;
 import com.liferay.portal.kernel.scheduler.JobState;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -324,10 +326,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 		_bundleContext = componentContext.getBundleContext();
 
-		_registerDestination(
-			_bundleContext, DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-			DestinationNames.SCHEDULER_DISPATCH);
-
 		Destination scriptingDestination = _registerDestination(
 			_bundleContext, DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
 			DestinationNames.SCHEDULER_SCRIPTING);
@@ -478,24 +476,62 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	@Reference
 	private TriggerFactory _triggerFactory;
 
+	private static class MemoryJob implements Job {
+
+		@Override
+		public void execute(Map<String, Object> jobContext)
+			throws SchedulerException {
+
+			try {
+				UnsafeConsumer<Message, Exception> unsafeConsumer =
+					_schedulerJobConfiguration.getJobExecutorUnsafeConsumer();
+
+				if (unsafeConsumer != null) {
+					Message message = new Message();
+
+					message.setValues(jobContext);
+
+					unsafeConsumer.accept(message);
+				}
+				else {
+					long companyId = GetterUtil.getLong(
+						jobContext.get("companyId"));
+
+					if (companyId == CompanyConstants.SYSTEM) {
+						UnsafeRunnable<Exception> jobExecutorUnsafeRunnable =
+							_schedulerJobConfiguration.
+								getJobExecutorUnsafeRunnable();
+
+						jobExecutorUnsafeRunnable.run();
+					}
+					else {
+						UnsafeConsumer<Long, Exception>
+							companyJobExecutorUnsafeConsumer =
+								_schedulerJobConfiguration.
+									getCompanyJobExecutorUnsafeConsumer();
+
+						companyJobExecutorUnsafeConsumer.accept(companyId);
+					}
+				}
+			}
+			catch (Exception exception) {
+				throw new SchedulerException(exception);
+			}
+		}
+
+		private MemoryJob(SchedulerJobConfiguration schedulerJobConfiguration) {
+			_schedulerJobConfiguration = schedulerJobConfiguration;
+		}
+
+		private final SchedulerJobConfiguration _schedulerJobConfiguration;
+
+	}
+
 	private class SchedulerJobConfigurationMessageListener
 		implements MessageListener {
 
 		@Override
 		public void receive(Message message) throws MessageListenerException {
-			if (Objects.equals(
-					DestinationNames.SCHEDULER_DISPATCH,
-					message.getString(SchedulerEngine.DESTINATION_NAME)) &&
-				(!Objects.equals(
-					_schedulerJobConfiguration.getName(),
-					message.getString(SchedulerEngine.GROUP_NAME)) ||
-				 !Objects.equals(
-					 _schedulerJobConfiguration.getName(),
-					 message.getString(SchedulerEngine.JOB_NAME)))) {
-
-				return;
-			}
-
 			try {
 				UnsafeConsumer<Message, Exception> unsafeConsumer =
 					_schedulerJobConfiguration.getJobExecutorUnsafeConsumer();
@@ -576,20 +612,30 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				SchedulerEngine.SCHEDULER_CLUSTER_INVOKING, false);
 
 			try {
-				schedule(
-					trigger, StorageType.MEMORY_CLUSTERED, null,
-					schedulerJobConfiguration.getDestinationName(), null);
+				if (Objects.equals(
+						DestinationNames.SCHEDULER_DISPATCH,
+						schedulerJobConfiguration.getDestinationName())) {
 
-				_messageListenerServiceRegistrations.put(
-					schedulerJobConfiguration.getName(),
-					_bundleContext.registerService(
-						MessageListener.class,
-						new SchedulerJobConfigurationMessageListener(
-							schedulerJobConfiguration),
-						HashMapDictionaryBuilder.<String, Object>put(
-							"destination.name",
-							schedulerJobConfiguration.getDestinationName()
-						).build()));
+					_schedulerEngine.schedule(
+						schedulerJobConfiguration.getName(), trigger,
+						new MemoryJob(schedulerJobConfiguration));
+				}
+				else {
+					schedule(
+						trigger, StorageType.MEMORY_CLUSTERED, null,
+						schedulerJobConfiguration.getDestinationName(), null);
+
+					_messageListenerServiceRegistrations.put(
+						schedulerJobConfiguration.getName(),
+						_bundleContext.registerService(
+							MessageListener.class,
+							new SchedulerJobConfigurationMessageListener(
+								schedulerJobConfiguration),
+							HashMapDictionaryBuilder.<String, Object>put(
+								"destination.name",
+								schedulerJobConfiguration.getDestinationName()
+							).build()));
+				}
 
 				return schedulerJobConfiguration;
 			}
@@ -639,7 +685,9 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 					_messageListenerServiceRegistrations.remove(
 						schedulerJobConfiguration.getName());
 
-			messageListenerServiceRegistration.unregister();
+			if (messageListenerServiceRegistration != null) {
+				messageListenerServiceRegistration.unregister();
+			}
 		}
 
 	}

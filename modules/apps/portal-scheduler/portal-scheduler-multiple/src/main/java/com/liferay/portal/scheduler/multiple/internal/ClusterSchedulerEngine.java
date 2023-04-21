@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
+import com.liferay.portal.kernel.scheduler.Job;
 import com.liferay.portal.kernel.scheduler.JobState;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
@@ -254,6 +255,13 @@ public class ClusterSchedulerEngine
 		throws SchedulerException {
 
 		_schedulerEngine.run(companyId, jobName, groupName, storageType);
+	}
+
+	@Override
+	public void schedule(String name, Trigger trigger, Job job)
+		throws SchedulerException {
+
+		_schedulerEngine.schedule(name, trigger, job);
 	}
 
 	@Clusterable(acceptor = SchedulerClusterInvokeAcceptor.class)

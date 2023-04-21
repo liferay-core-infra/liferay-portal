@@ -40,6 +40,8 @@ public interface SchedulerEngine {
 
 	public static final String GROUP_NAME = "GROUP_NAME";
 
+	public static final String JOB = "JOB";
+
 	public static final String JOB_NAME = "JOB_NAME";
 
 	public static final String JOB_STATE = "JOB_STATE";
@@ -93,6 +95,9 @@ public interface SchedulerEngine {
 	public void run(
 			long companyId, String jobName, String groupName,
 			StorageType storageType)
+		throws SchedulerException;
+
+	public void schedule(String name, Trigger trigger, Job job)
 		throws SchedulerException;
 
 	public void schedule(

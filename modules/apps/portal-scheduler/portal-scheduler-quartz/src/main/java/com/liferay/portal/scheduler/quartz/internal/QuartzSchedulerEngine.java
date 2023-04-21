@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.scheduler.Job;
 import com.liferay.portal.kernel.scheduler.JobState;
 import com.liferay.portal.kernel.scheduler.JobStateSerializeUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
@@ -61,6 +62,7 @@ import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
 import org.quartz.JobPersistenceException;
 import org.quartz.ListenerManager;
@@ -74,7 +76,9 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.jdbcjobstore.UpdateLockRowSemaphore;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.listeners.TriggerListenerSupport;
+import org.quartz.spi.JobFactory;
 import org.quartz.spi.OperableTrigger;
+import org.quartz.spi.TriggerFiredBundle;
 
 /**
  * @author Michael C. Han
@@ -318,6 +322,38 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 	@Override
 	public void schedule(
+			String name, com.liferay.portal.kernel.scheduler.Trigger trigger,
+			Job job)
+		throws SchedulerException {
+
+		Trigger quartzTrigger = (Trigger)trigger.getWrappedTrigger();
+
+		if (quartzTrigger == null) {
+			return;
+		}
+
+		JobBuilder jobBuilder = JobBuilder.newJob();
+
+		jobBuilder.withIdentity(quartzTrigger.getJobKey());
+
+		jobBuilder.storeDurably();
+
+		JobDetail jobDetail = jobBuilder.build();
+
+		JobDataMap jobDataMap = jobDetail.getJobDataMap();
+
+		jobDataMap.put(SchedulerEngine.JOB, job);
+
+		try {
+			_memoryScheduler.scheduleJob(jobDetail, quartzTrigger);
+		}
+		catch (org.quartz.SchedulerException schedulerException) {
+			throw new SchedulerException(schedulerException);
+		}
+	}
+
+	@Override
+	public void schedule(
 			com.liferay.portal.kernel.scheduler.Trigger trigger,
 			String description, String destination, Message message,
 			StorageType storageType)
@@ -489,6 +525,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				"persisted.scheduler.", true);
 
 			_memoryScheduler = _initializeScheduler("memory.scheduler.", false);
+
+			_memoryScheduler.setJobFactory(new MemoryJobFactory());
 		}
 		catch (Exception exception) {
 			_log.error("Unable to initialize engine", exception);
@@ -902,6 +940,51 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	private volatile SchedulerEngineHelper _schedulerEngineHelper;
+
+	private class MemoryJobFactory implements JobFactory {
+
+		@Override
+		public org.quartz.Job newJob(
+				TriggerFiredBundle triggerFiredBundle, Scheduler scheduler)
+			throws org.quartz.SchedulerException {
+
+			JobDetail jobDetail = triggerFiredBundle.getJobDetail();
+
+			JobDataMap jobDataMap = jobDetail.getJobDataMap();
+
+			Job job = (Job)jobDataMap.get(SchedulerEngine.JOB);
+
+			if (job == null) {
+				throw new org.quartz.SchedulerException(
+					"Unable to create job for " + jobDetail.getKey());
+			}
+
+			return new QuartzMemoryJob(job);
+		}
+
+	}
+
+	private class QuartzMemoryJob implements org.quartz.Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+			throws JobExecutionException {
+
+			try {
+				_job.execute(jobExecutionContext.getMergedJobDataMap());
+			}
+			catch (SchedulerException schedulerException) {
+				throw new JobExecutionException(schedulerException);
+			}
+		}
+
+		private QuartzMemoryJob(Job job) {
+			_job = job;
+		}
+
+		private final Job _job;
+
+	}
 
 	private class QuartzTriggerListener extends TriggerListenerSupport {
 

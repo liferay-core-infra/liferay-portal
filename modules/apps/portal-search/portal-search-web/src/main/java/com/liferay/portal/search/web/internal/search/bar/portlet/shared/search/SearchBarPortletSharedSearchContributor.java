@@ -121,16 +121,6 @@ public class SearchBarPortletSharedSearchContributor
 		}
 	}
 
-	private SearchScope _getDefaultSearchScope() {
-		SearchBarPortletPreferences searchBarPortletPreferences =
-			new SearchBarPortletPreferencesImpl(Optional.empty());
-
-		SearchScopePreference searchScopePreference =
-			searchBarPortletPreferences.getSearchScopePreference();
-
-		return searchScopePreference.getSearchScope();
-	}
-
 	private long[] _getGroupIds(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
@@ -180,8 +170,8 @@ public class SearchBarPortletSharedSearchContributor
 
 		return optional.map(
 			SearchScope::getSearchScope
-		).orElseGet(
-			this::_getDefaultSearchScope
+		).orElse(
+			SearchScope.THIS_SITE
 		);
 	}
 

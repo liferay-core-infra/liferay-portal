@@ -56,9 +56,9 @@ import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.searcher.Searcher;
+import com.liferay.portal.search.tuning.rankings.web.internal.helper.RankingResultHelper;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.name.RankingIndexName;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.name.RankingIndexNameBuilder;
-import com.liferay.portal.search.tuning.rankings.web.internal.util.RankingResultUtil;
 import com.liferay.portal.search.web.interpreter.SearchResultInterpreter;
 import com.liferay.portal.search.web.interpreter.SearchResultInterpreterProvider;
 
@@ -526,7 +526,7 @@ public abstract class BaseRankingsWebTestCase {
 		);
 	}
 
-	protected void setUpRankingResultUtil() {
+	protected void setUpRankingResultHelper() {
 		SearchResultInterpreterProvider searchResultInterpreterProvider =
 			Mockito.mock(SearchResultInterpreterProvider.class);
 
@@ -538,12 +538,12 @@ public abstract class BaseRankingsWebTestCase {
 			Mockito.nullable(String.class)
 		);
 
-		RankingResultUtil rankingResultUtil = new RankingResultUtil();
+		ReflectionTestUtil.setFieldValue(
+			rankingResultHelper, "_searchResultInterpreterProvider",
+			searchResultInterpreterProvider);
 
 		ReflectionTestUtil.setFieldValue(
-			rankingResultUtil, "_searchResultInterpreterProvider",
-			searchResultInterpreterProvider);
-		ReflectionTestUtil.setFieldValue(rankingResultUtil, "_portal", portal);
+			rankingResultHelper, "_portal", portal);
 	}
 
 	protected void setUpRenderResponse(MimeResponse mimeResponse) {
@@ -761,6 +761,8 @@ public abstract class BaseRankingsWebTestCase {
 	protected Queries queries = Mockito.mock(Queries.class);
 	protected RankingIndexNameBuilder rankingIndexNameBuilder = Mockito.mock(
 		RankingIndexNameBuilder.class);
+	protected RankingResultHelper rankingResultHelper =
+		new RankingResultHelper();
 	protected ResourceRequest resourceRequest = Mockito.mock(
 		ResourceRequest.class);
 	protected ResourceResponse resourceResponse = Mockito.mock(

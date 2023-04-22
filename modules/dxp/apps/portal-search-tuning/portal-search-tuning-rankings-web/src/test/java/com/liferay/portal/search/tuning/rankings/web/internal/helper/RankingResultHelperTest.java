@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.portal.search.tuning.rankings.web.internal.util;
+package com.liferay.portal.search.tuning.rankings.web.internal.helper;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
@@ -44,7 +44,7 @@ import org.mockito.Mockito;
 /**
  * @author Wade Cao
  */
-public class RankingResultUtilTest extends BaseRankingsWebTestCase {
+public class RankingResultHelperTest extends BaseRankingsWebTestCase {
 
 	@ClassRule
 	@Rule
@@ -54,11 +54,12 @@ public class RankingResultUtilTest extends BaseRankingsWebTestCase {
 	@Before
 	public void setUp() throws Exception {
 		ReflectionTestUtil.setFieldValue(
-			_rankingResultUtil, "_documentBuilderFactory",
+			_rankingResultHelper, "_documentBuilderFactory",
 			_documentBuilderFactory);
-		ReflectionTestUtil.setFieldValue(_rankingResultUtil, "_portal", portal);
 		ReflectionTestUtil.setFieldValue(
-			_rankingResultUtil, "_searchResultInterpreterProvider",
+			_rankingResultHelper, "_portal", portal);
+		ReflectionTestUtil.setFieldValue(
+			_rankingResultHelper, "_searchResultInterpreterProvider",
 			_searchResultInterpreterProvider);
 	}
 
@@ -89,7 +90,7 @@ public class RankingResultUtilTest extends BaseRankingsWebTestCase {
 
 		Assert.assertEquals(
 			assetRenderer,
-			RankingResultUtil.getAssetRenderer(
+			_rankingResultHelper.getAssetRenderer(
 				"entryClassName", Long.valueOf(1111)));
 	}
 
@@ -113,7 +114,7 @@ public class RankingResultUtilTest extends BaseRankingsWebTestCase {
 
 		Assert.assertEquals(
 			"444?inheritRedirect=true&redirect=myurl",
-			RankingResultUtil.getRankingResultViewURL(
+			_rankingResultHelper.getRankingResultViewURL(
 				document, resourceRequest, resourceResponse, true));
 	}
 
@@ -137,7 +138,7 @@ public class RankingResultUtilTest extends BaseRankingsWebTestCase {
 
 		Assert.assertEquals(
 			StringPool.BLANK,
-			RankingResultUtil.getRankingResultViewURL(
+			_rankingResultHelper.getRankingResultViewURL(
 				document, resourceRequest, resourceResponse, true));
 	}
 
@@ -342,8 +343,8 @@ public class RankingResultUtilTest extends BaseRankingsWebTestCase {
 
 	private final DocumentBuilderFactory _documentBuilderFactory = Mockito.mock(
 		DocumentBuilderFactory.class);
-	private final RankingResultUtil _rankingResultUtil =
-		new RankingResultUtil();
+	private final RankingResultHelper _rankingResultHelper =
+		new RankingResultHelper();
 	private final SearchResultInterpreterProvider
 		_searchResultInterpreterProvider = Mockito.mock(
 			SearchResultInterpreterProvider.class);

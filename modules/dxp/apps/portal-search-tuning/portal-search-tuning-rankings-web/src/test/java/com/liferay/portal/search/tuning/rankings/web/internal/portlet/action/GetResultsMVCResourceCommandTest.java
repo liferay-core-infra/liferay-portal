@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.portlet.action;
 
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Constants;
@@ -21,12 +22,18 @@ import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.tuning.rankings.web.internal.searcher.helper.RankingSearchRequestHelper;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Wade Cao
@@ -38,6 +45,22 @@ public class GetResultsMVCResourceCommandTest
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Mockito.when(
+			FrameworkUtil.getBundle(Mockito.any())
+		).thenReturn(
+			bundleContext.getBundle()
+		);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		_frameworkUtilMockedStatic.close();
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -84,7 +107,7 @@ public class GetResultsMVCResourceCommandTest
 		setUpPortletRequestParamValue(
 			resourceRequest, "getHiddenResultsJSONObject", Constants.CMD);
 		setUpRankingIndexReader();
-		setUpRankingResultUtil();
+		setUpRankingResultHelper();
 		setUpResourceRequest();
 		setUpResourceResponse();
 
@@ -138,7 +161,7 @@ public class GetResultsMVCResourceCommandTest
 		setUpFastDateFormatFactory();
 		setUpQuery();
 		setUpRankingIndexReader();
-		setUpRankingResultUtil();
+		setUpRankingResultHelper();
 		setUpResourceRequest();
 		setUpResourceResponse();
 		setUpSearcher(setUpSearchResponse(setUpDocumentWithGetString()));
@@ -147,6 +170,9 @@ public class GetResultsMVCResourceCommandTest
 
 		setUpSearchRequestBuilderFactory(searchRequestBuilder);
 	}
+
+	private static final MockedStatic<FrameworkUtil>
+		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
 
 	private GetResultsMVCResourceCommand _getResultsMVCResourceCommand;
 	private final RankingSearchRequestHelper _rankingSearchRequestHelper =

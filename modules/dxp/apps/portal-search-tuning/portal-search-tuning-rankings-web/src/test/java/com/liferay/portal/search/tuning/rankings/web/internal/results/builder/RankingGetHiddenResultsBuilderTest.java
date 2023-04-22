@@ -14,12 +14,10 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.results.builder;
 
-import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.search.tuning.rankings.web.internal.helper.RankingResultHelper;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.Ranking;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -84,7 +82,6 @@ public class RankingGetHiddenResultsBuilderTest
 	public void testBuild() throws Exception {
 		setUpDLAppLocalService();
 		setUpFastDateFormatFactory();
-		setUpRankingResultHelper();
 		setUpResourceRequest();
 
 		Ranking ranking = Mockito.mock(Ranking.class);
@@ -101,18 +98,9 @@ public class RankingGetHiddenResultsBuilderTest
 			setUpGetDocumentResponseGetDocument(
 				setUpDocumentWithGetString(), setUpGetDocumentResponse()));
 
-		Snapshot<RankingResultHelper> rankingResultHelperSnapshot =
-			Mockito.mock(Snapshot.class);
-
-		Mockito.doReturn(
-			rankingResultHelper
-		).when(
-			rankingResultHelperSnapshot
-		).get();
-
 		ReflectionTestUtil.getAndSetFieldValue(
 			_rankingGetHiddenResultsBuilder, "_rankingResultHelperSnapshot",
-			rankingResultHelperSnapshot);
+			setUpRankingResultHelperSnapshot(setUpRankingResultHelper()));
 
 		Assert.assertEquals(
 			mapper.readTree(_getExpectedDocumentsString()),

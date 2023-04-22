@@ -14,11 +14,9 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.results.builder;
 
-import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.search.tuning.rankings.web.internal.helper.RankingResultHelper;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.AfterClass;
@@ -75,24 +73,14 @@ public class RankingGetSearchResultsBuilderTest
 		setUpComplexQueryPartBuilderFactory(setUpComplexQueryPartBuilder());
 		setUpDLAppLocalService();
 		setUpFastDateFormatFactory();
-		setUpRankingResultHelper();
 		setUpQuery();
 		setUpResourceRequest();
 		setUpSearcher(setUpSearchResponse(setUpDocumentWithGetString()));
 		setUpSearchRequestBuilderFactory(setUpSearchRequestBuilder());
 
-		Snapshot<RankingResultHelper> rankingResultHelperSnapshot =
-			Mockito.mock(Snapshot.class);
-
-		Mockito.doReturn(
-			rankingResultHelper
-		).when(
-			rankingResultHelperSnapshot
-		).get();
-
 		ReflectionTestUtil.getAndSetFieldValue(
 			_rankingGetSearchResultsBuilder, "_rankingResultHelperSnapshot",
-			rankingResultHelperSnapshot);
+			setUpRankingResultHelperSnapshot(setUpRankingResultHelper()));
 
 		Assert.assertEquals(
 			mapper.readTree(_getExpectedDocumentsString()),

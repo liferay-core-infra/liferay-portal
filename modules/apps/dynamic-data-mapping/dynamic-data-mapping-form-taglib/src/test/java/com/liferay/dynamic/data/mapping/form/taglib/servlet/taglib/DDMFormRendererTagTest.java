@@ -15,7 +15,6 @@
 package com.liferay.dynamic.data.mapping.form.taglib.servlet.taglib;
 
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
-import com.liferay.dynamic.data.mapping.form.taglib.internal.servlet.taglib.util.DDMFormTaglibUtil;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
@@ -27,11 +26,16 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMFormInstanceRecordImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMFormInstanceRecordVersionImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMFormInstanceVersionImpl;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceLocalService;
+import com.liferay.dynamic.data.mapping.service.DDMFormInstanceLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalService;
+import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordVersionLocalService;
+import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordVersionLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalService;
+import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -304,14 +308,15 @@ public class DDMFormRendererTagTest {
 		_ddmFormInstance = new DDMFormInstanceImpl();
 
 		Field field = ReflectionUtil.getDeclaredField(
-			DDMFormTaglibUtil.class, "_ddmFormInstanceLocalService");
+			DDMFormInstanceLocalServiceUtil.class, "_service");
 
 		mockDDMFormInstance(1L);
 		mockDDMFormInstance(2L);
 		mockDDMFormInstance(3L);
 		mockDDMFormInstance(4L);
 
-		field.set(_ddmFormTaglibUtil, _ddmFormInstanceLocalService);
+		field.set(
+			_ddmFormInstanceLocalServiceUtil, _ddmFormInstanceLocalService);
 	}
 
 	protected void setUpDDMFormInstancePermission() throws PortalException {
@@ -344,7 +349,7 @@ public class DDMFormRendererTagTest {
 		_ddmFormInstanceRecord.setFormInstanceId(2L);
 
 		Field field = ReflectionUtil.getDeclaredField(
-			DDMFormTaglibUtil.class, "_ddmFormInstanceRecordLocalService");
+			DDMFormInstanceRecordLocalServiceUtil.class, "_service");
 
 		Mockito.when(
 			_ddmFormInstanceRecordLocalService.fetchDDMFormInstanceRecord(
@@ -353,7 +358,9 @@ public class DDMFormRendererTagTest {
 			_ddmFormInstanceRecord
 		);
 
-		field.set(_ddmFormTaglibUtil, _ddmFormInstanceRecordLocalService);
+		field.set(
+			_ddmFormInstanceRecordLocalServiceUtil,
+			_ddmFormInstanceRecordLocalService);
 	}
 
 	protected void setUpDDMFormInstanceRecordVersionLocalService()
@@ -364,8 +371,7 @@ public class DDMFormRendererTagTest {
 		_ddmFormInstanceRecordVersion.setFormInstanceId(3L);
 
 		Field field = ReflectionUtil.getDeclaredField(
-			DDMFormTaglibUtil.class,
-			"_ddmFormInstanceRecordVersionLocalService");
+			DDMFormInstanceRecordVersionLocalServiceUtil.class, "_service");
 
 		Mockito.when(
 			_ddmFormInstanceRecordVersionLocalService.
@@ -375,7 +381,8 @@ public class DDMFormRendererTagTest {
 		);
 
 		field.set(
-			_ddmFormTaglibUtil, _ddmFormInstanceRecordVersionLocalService);
+			_ddmFormInstanceRecordVersionLocalServiceUtil,
+			_ddmFormInstanceRecordVersionLocalService);
 	}
 
 	protected void setUpDDMFormInstanceVersionLocalService() throws Exception {
@@ -384,7 +391,7 @@ public class DDMFormRendererTagTest {
 		_ddmFormInstanceVersion.setFormInstanceId(4L);
 
 		Field field = ReflectionUtil.getDeclaredField(
-			DDMFormTaglibUtil.class, "_ddmFormInstanceVersionLocalService");
+			DDMFormInstanceVersionLocalServiceUtil.class, "_service");
 
 		Mockito.when(
 			_ddmFormInstanceVersionLocalService.fetchDDMFormInstanceVersion(
@@ -393,15 +400,23 @@ public class DDMFormRendererTagTest {
 			_ddmFormInstanceVersion
 		);
 
-		field.set(_ddmFormTaglibUtil, _ddmFormInstanceVersionLocalService);
+		field.set(
+			_ddmFormInstanceVersionLocalServiceUtil,
+			_ddmFormInstanceVersionLocalService);
 	}
 
 	protected void setUpDDMFormValuesFactory() throws Exception {
 		_ddmFormValues = DDMFormValuesTestUtil.createDDMFormValues(
 			new DDMForm());
 
-		Field field = ReflectionUtil.getDeclaredField(
-			DDMFormTaglibUtil.class, "_ddmFormValuesFactory");
+		Snapshot<DDMFormValuesFactory> ddmFormValuesFactorySnapshot =
+			Mockito.mock(Snapshot.class);
+
+		Mockito.doReturn(
+			_ddmFormValuesFactory
+		).when(
+			ddmFormValuesFactorySnapshot
+		).get();
 
 		Mockito.when(
 			_ddmFormValuesFactory.create(
@@ -411,7 +426,9 @@ public class DDMFormRendererTagTest {
 			_ddmFormValues
 		);
 
-		field.set(_ddmFormTaglibUtil, _ddmFormValuesFactory);
+		ReflectionTestUtil.getAndSetFieldValue(
+			_ddmFormRendererTag, "_ddmFormValuesFactorySnapshot",
+			ddmFormValuesFactorySnapshot);
 	}
 
 	protected void setUpHttpServletRequest() throws IllegalAccessException {
@@ -462,23 +479,33 @@ public class DDMFormRendererTagTest {
 	private DDMFormInstance _ddmFormInstance;
 	private final DDMFormInstanceLocalService _ddmFormInstanceLocalService =
 		Mockito.mock(DDMFormInstanceLocalService.class);
+	private final DDMFormInstanceLocalServiceUtil
+		_ddmFormInstanceLocalServiceUtil = Mockito.mock(
+			DDMFormInstanceLocalServiceUtil.class);
 	private DDMFormInstanceRecord _ddmFormInstanceRecord;
 	private final DDMFormInstanceRecordLocalService
 		_ddmFormInstanceRecordLocalService = Mockito.mock(
 			DDMFormInstanceRecordLocalService.class);
+	private final DDMFormInstanceRecordLocalServiceUtil
+		_ddmFormInstanceRecordLocalServiceUtil = Mockito.mock(
+			DDMFormInstanceRecordLocalServiceUtil.class);
 	private DDMFormInstanceRecordVersion _ddmFormInstanceRecordVersion =
 		Mockito.mock(DDMFormInstanceRecordVersion.class);
 	private final DDMFormInstanceRecordVersionLocalService
 		_ddmFormInstanceRecordVersionLocalService = Mockito.mock(
 			DDMFormInstanceRecordVersionLocalService.class);
+	private final DDMFormInstanceRecordVersionLocalServiceUtil
+		_ddmFormInstanceRecordVersionLocalServiceUtil = Mockito.mock(
+			DDMFormInstanceRecordVersionLocalServiceUtil.class);
 	private DDMFormInstanceVersion _ddmFormInstanceVersion;
 	private final DDMFormInstanceVersionLocalService
 		_ddmFormInstanceVersionLocalService = Mockito.mock(
 			DDMFormInstanceVersionLocalService.class);
+	private final DDMFormInstanceVersionLocalServiceUtil
+		_ddmFormInstanceVersionLocalServiceUtil = Mockito.mock(
+			DDMFormInstanceVersionLocalServiceUtil.class);
 	private final DDMFormRendererTag _ddmFormRendererTag =
 		new DDMFormRendererTag();
-	private final DDMFormTaglibUtil _ddmFormTaglibUtil = Mockito.mock(
-		DDMFormTaglibUtil.class);
 	private DDMFormValues _ddmFormValues;
 	private final DDMFormValuesFactory _ddmFormValuesFactory = Mockito.mock(
 		DDMFormValuesFactory.class);

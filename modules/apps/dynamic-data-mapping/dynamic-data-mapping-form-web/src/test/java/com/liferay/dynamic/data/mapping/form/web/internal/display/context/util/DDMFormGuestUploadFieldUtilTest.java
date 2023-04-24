@@ -75,7 +75,7 @@ public class DDMFormGuestUploadFieldUtilTest {
 			bundleContext.getBundle()
 		);
 
-		_setUpDDMForm();
+		_ddmForm = DDMFormTestUtil.createDDMForm();
 
 		_ddmFormInstanceRecordLocalServiceServiceRegistration =
 			bundleContext.registerService(
@@ -170,10 +170,6 @@ public class DDMFormGuestUploadFieldUtilTest {
 	}
 
 	protected static final JSONFactory jsonFactory = new JSONFactoryImpl();
-
-	private static void _setUpDDMForm() {
-		_ddmForm = DDMFormTestUtil.createDDMForm();
-	}
 
 	private void _addUploadField(boolean allowGuestUsers) {
 		DDMFormField ddmFormField = new DDMFormField(

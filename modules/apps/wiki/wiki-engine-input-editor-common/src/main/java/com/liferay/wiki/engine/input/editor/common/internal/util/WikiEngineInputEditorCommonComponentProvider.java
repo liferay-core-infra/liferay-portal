@@ -14,17 +14,13 @@
 
 package com.liferay.wiki.engine.input.editor.common.internal.util;
 
-import javax.servlet.ServletContext;
+import com.liferay.osgi.util.service.Snapshot;
 
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
+import javax.servlet.ServletContext;
 
 /**
  * @author Iván Zaera
  */
-@Component(service = {})
 public class WikiEngineInputEditorCommonComponentProvider {
 
 	public static WikiEngineInputEditorCommonComponentProvider
@@ -34,25 +30,14 @@ public class WikiEngineInputEditorCommonComponentProvider {
 	}
 
 	public ServletContext getServletContext() {
-		return _servletContext;
+		return _servletContextSnapshot.get();
 	}
 
-	@Activate
-	protected void activate() {
-		_wikiEngineInputEditorCommonComponentProvider = this;
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_wikiEngineInputEditorCommonComponentProvider = null;
-	}
-
+	private static final Snapshot<ServletContext> _servletContextSnapshot =
+		new Snapshot<>(
+			WikiEngineInputEditorCommonComponentProvider.class,
+			ServletContext.class);
 	private static WikiEngineInputEditorCommonComponentProvider
 		_wikiEngineInputEditorCommonComponentProvider;
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.wiki.engine.input.editor.common)"
-	)
-	private ServletContext _servletContext;
 
 }

@@ -17,6 +17,7 @@ package com.liferay.item.selector.taglib.internal.util;
 import com.liferay.item.selector.provider.GroupItemSelectorProvider;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -29,12 +30,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Cristina González
@@ -45,6 +52,22 @@ public class GroupItemSelectorProviderRegistryUtilTest {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Mockito.when(
+			FrameworkUtil.getBundle(Mockito.any())
+		).thenReturn(
+			bundleContext.getBundle()
+		);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		_frameworkUtilMockedStatic.close();
+	}
 
 	@Test
 	public void testGetGroupItemSelectorProviderOptionalWithoutRegisteredGroupItemSelectorProvider() {
@@ -119,6 +142,9 @@ public class GroupItemSelectorProviderRegistryUtilTest {
 			GroupItemSelectorProviderRegistryUtil.class, "_serviceTrackerMap",
 			null);
 	}
+
+	private static final MockedStatic<FrameworkUtil>
+		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
 
 	private static class MockGroupItemSelectorProvider
 		implements GroupItemSelectorProvider {

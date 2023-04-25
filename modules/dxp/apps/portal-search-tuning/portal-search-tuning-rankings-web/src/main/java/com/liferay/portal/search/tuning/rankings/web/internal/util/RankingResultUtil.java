@@ -40,12 +40,9 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.WindowState;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Wade Cao
  */
-@Component(service = {})
 public class RankingResultUtil {
 
 	public static AssetRenderer<?> getAssetRenderer(

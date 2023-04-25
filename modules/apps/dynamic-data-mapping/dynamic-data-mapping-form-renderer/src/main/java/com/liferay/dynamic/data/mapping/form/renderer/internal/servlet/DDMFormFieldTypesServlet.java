@@ -36,8 +36,6 @@ import java.io.IOException;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Stream;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -97,17 +95,13 @@ public class DDMFormFieldTypesServlet extends HttpServlet {
 
 		JSONArray fieldTypesJSONArray = _jsonFactory.createJSONArray();
 
-		Set<String> ddmFormFieldTypeNames =
-			_ddmFormFieldTypeServicesRegistry.getDDMFormFieldTypeNames();
+		for (String ddmFormFieldTypeName :
+				_ddmFormFieldTypeServicesRegistry.getDDMFormFieldTypeNames()) {
 
-		Stream<String> stream = ddmFormFieldTypeNames.stream();
-
-		stream.map(
-			ddmFormFieldTypeName -> _getFieldTypeMetadataJSONObject(
-				ddmFormFieldTypeName, Collections.emptyMap())
-		).forEach(
-			fieldTypesJSONArray::put
-		);
+			fieldTypesJSONArray.put(
+				_getFieldTypeMetadataJSONObject(
+					ddmFormFieldTypeName, Collections.emptyMap()));
+		}
 
 		httpServletResponse.setContentType(ContentTypes.APPLICATION_JSON);
 		httpServletResponse.setStatus(HttpServletResponse.SC_OK);

@@ -33,8 +33,8 @@ public class SearchResultPreferencesImpl implements SearchResultPreferences {
 	}
 
 	@Override
-	public Optional<String> getFieldsToDisplayOptional() {
-		return Optional.of(_searchResultsPortletPreferences.getFieldsToDisplay());
+	public String getFieldsToDisplay() {
+		return _searchResultsPortletPreferences.getFieldsToDisplay();
 	}
 
 	@Override

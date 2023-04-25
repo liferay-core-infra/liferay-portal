@@ -35,10 +35,7 @@ import com.liferay.portal.search.spi.model.registrar.ModelSearchSettings;
 
 import java.io.Serializable;
 
-import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -83,33 +80,22 @@ public class DDMFormInstanceRecordModelPreFilterContributor
 		if ((languageIds.length > 0) && (notEmptyFields.length > 0) &&
 			(structureId > 0)) {
 
-			List<Locale> locales = Stream.of(
-				languageIds
-			).map(
-				languageId -> LocaleUtil.fromLanguageId(languageId)
-			).collect(
-				Collectors.toList()
-			);
+			for (String notEmptyField : notEmptyFields) {
+				BooleanFilter notEmptyFieldBooleanFilter = new BooleanFilter();
 
-			Stream.of(
-				notEmptyFields
-			).forEach(
-				notEmptyField -> {
-					BooleanFilter notEmptyFieldBooleanFilter =
-						new BooleanFilter();
+				for (String languageId : languageIds) {
+					Locale locale = LocaleUtil.fromLanguageId(languageId);
 
-					locales.forEach(
-						locale -> notEmptyFieldBooleanFilter.add(
-							new ExistsFilter(
-								ddmIndexer.encodeName(
-									structureId, notEmptyField, locale)),
-							BooleanClauseOccur.MUST));
-
-					booleanFilter.add(
-						notEmptyFieldBooleanFilter,
-						BooleanClauseOccur.MUST_NOT);
+					notEmptyFieldBooleanFilter.add(
+						new ExistsFilter(
+							ddmIndexer.encodeName(
+								structureId, notEmptyField, locale)),
+						BooleanClauseOccur.MUST);
 				}
-			);
+
+				booleanFilter.add(
+					notEmptyFieldBooleanFilter, BooleanClauseOccur.MUST_NOT);
+			}
 		}
 
 		_addSearchClassTypeIds(booleanFilter, searchContext);

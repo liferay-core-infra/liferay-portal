@@ -135,9 +135,6 @@ public class DDMFormInstanceRecordExporterImpl
 		Map<String, List<DDMFormFieldValue>> ddmFormFieldValueMap,
 		Locale locale) {
 
-		List<DDMFormFieldValue> ddmFormFieldValues = ddmFormFieldValueMap.get(
-			ddmFormField.getFieldReference());
-
 		DDMFormFieldValueRenderer ddmFormFieldValueRenderer =
 			ddmFormFieldTypeServicesRegistry.getDDMFormFieldValueRenderer(
 				ddmFormField.getType());
@@ -145,7 +142,7 @@ public class DDMFormInstanceRecordExporterImpl
 		return _html.unescape(
 			StringUtil.merge(
 				TransformUtil.transform(
-					ddmFormFieldValues,
+					ddmFormFieldValueMap.get(ddmFormField.getFieldReference()),
 					ddmForFieldValue -> ddmFormFieldValueRenderer.render(
 						ddmForFieldValue, locale)),
 				StringPool.COMMA_AND_SPACE));
@@ -214,12 +211,11 @@ public class DDMFormInstanceRecordExporterImpl
 			long ddmFormInstanceId)
 		throws Exception {
 
-		List<DDMStructureVersion> ddmStructureVersions = getStructureVersions(
-			ddmFormInstanceId);
-
 		Map<String, DDMFormField> ddmFormFields = new LinkedHashMap<>();
 
-		for (DDMStructureVersion ddmStructureVersion : ddmStructureVersions) {
+		for (DDMStructureVersion ddmStructureVersion :
+				getStructureVersions(ddmFormInstanceId)) {
+
 			Map<String, DDMFormField> map =
 				getNontransientDDMFormFieldsReferencesMap(ddmStructureVersion);
 

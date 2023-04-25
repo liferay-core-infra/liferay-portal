@@ -27,6 +27,7 @@ import com.liferay.portal.search.asset.SearchableAssetClassNamesProvider;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -77,15 +78,13 @@ public class TypeFacetPortletPreferencesImpl
 
 		String[] assetTypes = getAssetTypesArray();
 
-		String[] allAssetTypes = getAllAssetTypes(companyId);
-
 		if (ArrayUtil.isEmpty(assetTypes)) {
-			assetTypes = allAssetTypes;
+			return Collections.emptyList();
 		}
 
 		List<KeyValuePair> availableAssetTypes = new ArrayList<>();
 
-		for (String className : allAssetTypes) {
+		for (String className : getAllAssetTypes(companyId)) {
 			if (!ArrayUtil.contains(assetTypes, className)) {
 				availableAssetTypes.add(_getKeyValuePair(locale, className));
 			}

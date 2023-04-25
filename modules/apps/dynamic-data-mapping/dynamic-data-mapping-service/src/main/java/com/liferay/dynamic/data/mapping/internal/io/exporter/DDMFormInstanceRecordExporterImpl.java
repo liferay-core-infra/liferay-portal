@@ -36,6 +36,7 @@ import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalServi
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.comparator.FormInstanceVersionVersionComparator;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -45,19 +46,15 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.text.Format;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -115,18 +112,13 @@ public class DDMFormInstanceRecordExporterImpl
 
 		Map<String, String> ddmFormFieldsLabel = new LinkedHashMap<>();
 
-		Collection<DDMFormField> ddmFormFields = ddmFormFieldMap.values();
+		for (DDMFormField ddmFormField : ddmFormFieldMap.values()) {
+			LocalizedValue localizedValue = ddmFormField.getLabel();
 
-		Stream<DDMFormField> stream = ddmFormFields.stream();
-
-		stream.forEach(
-			field -> {
-				LocalizedValue localizedValue = field.getLabel();
-
-				ddmFormFieldsLabel.put(
-					field.getFieldReference(),
-					localizedValue.getString(locale));
-			});
+			ddmFormFieldsLabel.put(
+				ddmFormField.getFieldReference(),
+				localizedValue.getString(locale));
+		}
 
 		ddmFormFieldsLabel.put(_KEY_AUTHOR, _language.get(locale, _KEY_AUTHOR));
 		ddmFormFieldsLabel.put(
@@ -150,18 +142,12 @@ public class DDMFormInstanceRecordExporterImpl
 			ddmFormFieldTypeServicesRegistry.getDDMFormFieldValueRenderer(
 				ddmFormField.getType());
 
-		Stream<DDMFormFieldValue> stream = ddmFormFieldValues.stream();
-
 		return _html.unescape(
 			StringUtil.merge(
-				stream.map(
+				TransformUtil.transform(
+					ddmFormFieldValues,
 					ddmForFieldValue -> ddmFormFieldValueRenderer.render(
-						ddmForFieldValue, locale)
-				).filter(
-					Validator::isNotNull
-				).collect(
-					Collectors.toList()
-				),
+						ddmForFieldValue, locale)),
 				StringPool.COMMA_AND_SPACE));
 	}
 
@@ -233,15 +219,14 @@ public class DDMFormInstanceRecordExporterImpl
 
 		Map<String, DDMFormField> ddmFormFields = new LinkedHashMap<>();
 
-		Stream<DDMStructureVersion> stream = ddmStructureVersions.stream();
+		for (DDMStructureVersion ddmStructureVersion : ddmStructureVersions) {
+			Map<String, DDMFormField> map =
+				getNontransientDDMFormFieldsReferencesMap(ddmStructureVersion);
 
-		stream.map(
-			this::getNontransientDDMFormFieldsReferencesMap
-		).forEach(
-			map -> map.forEach(
-				(key, ddmFormField) -> ddmFormFields.putIfAbsent(
-					key, ddmFormField))
-		);
+			for (Map.Entry<String, DDMFormField> entry : map.entrySet()) {
+				ddmFormFields.putIfAbsent(entry.getKey(), entry.getValue());
+			}
+		}
 
 		return ddmFormFields;
 	}

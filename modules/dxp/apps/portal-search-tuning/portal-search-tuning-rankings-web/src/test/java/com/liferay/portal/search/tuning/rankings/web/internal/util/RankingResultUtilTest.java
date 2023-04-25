@@ -16,10 +16,13 @@ package com.liferay.portal.search.tuning.rankings.web.internal.util;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.document.DocumentBuilder;
 import com.liferay.portal.search.document.DocumentBuilderFactory;
@@ -33,13 +36,19 @@ import javax.portlet.PortletURL;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Wade Cao
@@ -51,15 +60,55 @@ public class RankingResultUtilTest extends BaseRankingsWebTestCase {
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@BeforeClass
+	public static void setUpClass() {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Mockito.when(
+			FrameworkUtil.getBundle(Mockito.any())
+		).thenReturn(
+			bundleContext.getBundle()
+		);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		_frameworkUtilMockedStatic.close();
+	}
+
 	@Before
 	public void setUp() throws Exception {
+		RankingResultUtil rankingResultUtil = new RankingResultUtil();
+
+		Snapshot<DocumentBuilderFactory> documentBuilderFactorySnapshot =
+			Mockito.mock(Snapshot.class);
+
+		Mockito.doReturn(
+			_documentBuilderFactory
+		).when(
+			documentBuilderFactorySnapshot
+		).get();
+
 		ReflectionTestUtil.setFieldValue(
-			_rankingResultUtil, "_documentBuilderFactory",
-			_documentBuilderFactory);
-		ReflectionTestUtil.setFieldValue(_rankingResultUtil, "_portal", portal);
+			rankingResultUtil, "_documentBuilderFactorySnapshot",
+			documentBuilderFactorySnapshot);
+
 		ReflectionTestUtil.setFieldValue(
-			_rankingResultUtil, "_searchResultInterpreterProvider",
-			_searchResultInterpreterProvider);
+			Mockito.mock(PortalUtil.class), "_portal", portal);
+
+		Snapshot<DocumentBuilderFactory>
+			searchResultInterpreterProviderSnapshot = Mockito.mock(
+				Snapshot.class);
+
+		Mockito.doReturn(
+			_searchResultInterpreterProvider
+		).when(
+			searchResultInterpreterProviderSnapshot
+		).get();
+
+		ReflectionTestUtil.setFieldValue(
+			rankingResultUtil, "_searchResultInterpreterProviderSnapshot",
+			searchResultInterpreterProviderSnapshot);
 	}
 
 	@Test
@@ -340,10 +389,11 @@ public class RankingResultUtilTest extends BaseRankingsWebTestCase {
 		return resourceResponse;
 	}
 
+	private static final MockedStatic<FrameworkUtil>
+		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
+
 	private final DocumentBuilderFactory _documentBuilderFactory = Mockito.mock(
 		DocumentBuilderFactory.class);
-	private final RankingResultUtil _rankingResultUtil =
-		new RankingResultUtil();
 	private final SearchResultInterpreterProvider
 		_searchResultInterpreterProvider = Mockito.mock(
 			SearchResultInterpreterProvider.class);

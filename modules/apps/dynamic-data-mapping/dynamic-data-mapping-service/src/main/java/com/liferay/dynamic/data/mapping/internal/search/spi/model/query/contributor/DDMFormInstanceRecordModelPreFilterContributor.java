@@ -35,8 +35,6 @@ import com.liferay.portal.search.spi.model.registrar.ModelSearchSettings;
 
 import java.io.Serializable;
 
-import java.util.Locale;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -84,12 +82,11 @@ public class DDMFormInstanceRecordModelPreFilterContributor
 				BooleanFilter notEmptyFieldBooleanFilter = new BooleanFilter();
 
 				for (String languageId : languageIds) {
-					Locale locale = LocaleUtil.fromLanguageId(languageId);
-
 					notEmptyFieldBooleanFilter.add(
 						new ExistsFilter(
 							ddmIndexer.encodeName(
-								structureId, notEmptyField, locale)),
+								structureId, notEmptyField,
+								LocaleUtil.fromLanguageId(languageId))),
 						BooleanClauseOccur.MUST);
 				}
 

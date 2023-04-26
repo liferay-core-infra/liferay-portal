@@ -63,6 +63,8 @@ public interface SchedulerEngine {
 
 	public static final String STORAGE_TYPE = "STORAGE_TYPE";
 
+	public void auditEnabled(boolean auditEnabled);
+
 	public void delete(String groupName, StorageType storageType)
 		throws SchedulerException;
 

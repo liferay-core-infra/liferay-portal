@@ -15,6 +15,9 @@
 package com.liferay.portal.scheduler.quartz.internal;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.audit.AuditMessage;
+import com.liferay.portal.kernel.audit.AuditRouter;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
@@ -23,16 +26,18 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.scheduler.JobState;
 import com.liferay.portal.kernel.scheduler.JobStateSerializeUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
-import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.InetAddressUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -86,6 +91,11 @@ import org.quartz.spi.OperableTrigger;
  */
 @Component(enabled = false, service = SchedulerEngine.class)
 public class QuartzSchedulerEngine implements SchedulerEngine {
+
+	@Override
+	public void auditEnabled(boolean auditEnabled) {
+		_auditEnabled = auditEnabled;
+	}
 
 	@Override
 	public void delete(String groupName, StorageType storageType)
@@ -638,14 +648,11 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 					continue;
 				}
 
-				if (_schedulerEngineHelper != null) {
-					JobDetail jobDetail = _persistedScheduler.getJobDetail(
-						jobKey);
+				JobDetail jobDetail = _persistedScheduler.getJobDetail(jobKey);
 
-					_schedulerEngineHelper.auditSchedulerJobs(
-						getMessage(jobDetail.getJobDataMap()),
-						TriggerState.EXPIRED);
-				}
+				_auditSchedulerJobs(
+					getMessage(jobDetail.getJobDataMap()),
+					TriggerState.EXPIRED);
 
 				_persistedScheduler.deleteJob(jobKey);
 			}
@@ -779,6 +786,30 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 	}
 
+	private void _auditSchedulerJobs(Message message, TriggerState triggerState)
+		throws SchedulerException {
+
+		if (!_auditEnabled || (_auditRouter == null)) {
+			return;
+		}
+
+		try {
+			AuditMessage auditMessage = new AuditMessage(
+				SchedulerEngine.SCHEDULER, CompanyConstants.SYSTEM, 0,
+				StringPool.BLANK, SchedulerEngine.class.getName(), "0",
+				triggerState.toString(), new Date(),
+				_jsonFactory.createJSONObject(_jsonFactory.serialize(message)));
+
+			auditMessage.setServerName(InetAddressUtil.getLocalHostName());
+			auditMessage.setServerPort(_portal.getPortalLocalPort(false));
+
+			_auditRouter.route(auditMessage);
+		}
+		catch (Exception exception) {
+			throw new SchedulerException(exception);
+		}
+	}
+
 	private String _fixMaxLength(
 		String argument, int maxLength, StorageType storageType) {
 
@@ -893,6 +924,15 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	private static final Log _log = LogFactoryUtil.getLog(
 		QuartzSchedulerEngine.class);
 
+	private volatile boolean _auditEnabled;
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile AuditRouter _auditRouter;
+
 	private int _descriptionMaxLength;
 	private int _groupNameMaxLength;
 	private int _jobNameMaxLength;
@@ -909,6 +949,9 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	private Scheduler _persistedScheduler;
 
 	@Reference
+	private Portal _portal;
+
+	@Reference
 	private Props _props;
 
 	@Reference(
@@ -917,13 +960,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	private Release _release;
 
 	private volatile boolean _schedulerEngineEnabled;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile SchedulerEngineHelper _schedulerEngineHelper;
 
 	private class TriggerListenerSupportImpl extends TriggerListenerSupport {
 
@@ -973,8 +1009,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			message.setValues(new HashMap<>(jobDataMap.getWrappedMap()));
 
 			try {
-				_schedulerEngineHelper.auditSchedulerJobs(
-					message, TriggerState.NORMAL);
+				_auditSchedulerJobs(message, TriggerState.NORMAL);
 			}
 			catch (SchedulerException schedulerException) {
 				_log.error(

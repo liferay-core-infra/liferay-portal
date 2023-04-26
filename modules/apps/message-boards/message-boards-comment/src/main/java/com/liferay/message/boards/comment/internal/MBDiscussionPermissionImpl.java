@@ -15,7 +15,7 @@
 package com.liferay.message.boards.comment.internal;
 
 import com.liferay.message.boards.model.MBMessage;
-import com.liferay.message.boards.service.permission.MBDiscussionPermissionChecker;
+import com.liferay.message.boards.service.permission.MBDiscussionPermission;
 import com.liferay.portal.kernel.comment.BaseDiscussionPermission;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,7 +36,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 	public boolean hasAddPermission(
 		long companyId, long groupId, String className, long classPK) {
 
-		return MBDiscussionPermissionChecker.contains(
+		return MBDiscussionPermission.contains(
 			_permissionChecker, companyId, groupId, className, classPK,
 			ActionKeys.ADD_DISCUSSION);
 	}
@@ -50,11 +50,11 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 			MBMessage mbMessage = mbCommentImpl.getMessage();
 
-			return MBDiscussionPermissionChecker.contains(
+			return MBDiscussionPermission.contains(
 				_permissionChecker, mbMessage, actionId);
 		}
 
-		return MBDiscussionPermissionChecker.contains(
+		return MBDiscussionPermission.contains(
 			_permissionChecker, comment.getCommentId(), actionId);
 	}
 
@@ -62,7 +62,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 	public boolean hasPermission(long commentId, String actionId)
 		throws PortalException {
 
-		return MBDiscussionPermissionChecker.contains(
+		return MBDiscussionPermission.contains(
 			_permissionChecker, commentId, actionId);
 	}
 
@@ -78,7 +78,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 	public boolean hasViewPermission(
 		long companyId, long groupId, String className, long classPK) {
 
-		return MBDiscussionPermissionChecker.contains(
+		return MBDiscussionPermission.contains(
 			_permissionChecker, companyId, groupId, className, classPK,
 			ActionKeys.VIEW);
 	}

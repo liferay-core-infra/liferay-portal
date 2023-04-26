@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.portal.workflow.metrics.rest.internal.dto.v1_0.util;
+package com.liferay.portal.workflow.metrics.rest.dto.v1_0.util;
 
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;

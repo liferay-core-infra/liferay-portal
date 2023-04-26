@@ -33,7 +33,7 @@ import com.liferay.portal.osgi.web.portlet.container.test.util.PortletContainerT
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upload.LiferayServletRequest;
-import com.liferay.portal.upload.UploadServletRequestImpl;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
 
 import java.io.InputStream;
@@ -126,7 +126,7 @@ public class PortalImplTest {
 	@Test
 	public void testGetUploadPortletRequestWithInvalidHttpServletRequest() {
 		try {
-			_portal.getUploadPortletRequest(new MockPortletRequest());
+			_uploadPortal.getUploadPortletRequest(new MockPortletRequest());
 
 			Assert.fail();
 		}
@@ -143,9 +143,9 @@ public class PortalImplTest {
 	public void testGetUploadPortletRequestWithValidHttpServletRequest()
 		throws Exception {
 
-		Class<?> clazz = getClass();
+		Class<?> clazz1 = getClass();
 
-		try (InputStream inputStream = clazz.getResourceAsStream(
+		try (InputStream inputStream = clazz1.getResourceAsStream(
 				"/com/liferay/portal/util/test/dependencies/test.txt")) {
 
 			LiferayServletRequest liferayServletRequest =
@@ -153,11 +153,16 @@ public class PortalImplTest {
 					"fileParameterName", _file.getBytes(inputStream));
 
 			UploadServletRequest uploadServletRequest =
-				_portal.getUploadServletRequest(
+				_uploadPortal.getUploadServletRequest(
 					(HttpServletRequest)liferayServletRequest.getRequest());
 
-			Assert.assertTrue(
-				uploadServletRequest instanceof UploadServletRequestImpl);
+			Class<?> clazz2 = uploadServletRequest.getClass();
+
+			String className = clazz2.getName();
+
+			Assert.assertEquals(
+				"com.liferay.portal.upload.internal.UploadServletRequestImpl",
+				className);
 		}
 	}
 
@@ -228,5 +233,8 @@ public class PortalImplTest {
 
 	@Inject
 	private Portal _portal;
+
+	@Inject
+	private UploadPortal _uploadPortal;
 
 }

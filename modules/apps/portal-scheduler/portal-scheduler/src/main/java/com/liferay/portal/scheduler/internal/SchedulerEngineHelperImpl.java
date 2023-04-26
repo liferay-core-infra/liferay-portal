@@ -467,7 +467,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	@Reference
 	private Portal _portal;
 
-	@Reference(target = "(scheduler.engine.proxy=true)")
+	@Reference
 	private SchedulerEngine _schedulerEngine;
 
 	private volatile SchedulerEngineHelperConfiguration

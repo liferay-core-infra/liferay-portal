@@ -84,10 +84,7 @@ import org.quartz.spi.OperableTrigger;
  * @author Tina Tian
  * @author Edward C. Han
  */
-@Component(
-	enabled = false, property = "scheduler.engine.proxy=false",
-	service = SchedulerEngine.class
-)
+@Component(enabled = false, service = SchedulerEngine.class)
 public class QuartzSchedulerEngine implements SchedulerEngine {
 
 	@Override
@@ -187,6 +184,14 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			for (String groupName : groupNames) {
 				schedulerResponses.addAll(
 					getScheduledJobs(_persistedScheduler, groupName, null));
+			}
+
+			groupNames = _memoryClusteredScheduler.getJobGroupNames();
+
+			for (String groupName : groupNames) {
+				schedulerResponses.addAll(
+					getScheduledJobs(
+						_memoryClusteredScheduler, groupName, null));
 			}
 
 			groupNames = _memoryScheduler.getJobGroupNames();
@@ -381,6 +386,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				_persistedScheduler.standby();
 			}
 
+			if (!_memoryClusteredScheduler.isInStandbyMode()) {
+				_memoryClusteredScheduler.standby();
+			}
+
 			if (!_memoryScheduler.isInStandbyMode()) {
 				_memoryScheduler.standby();
 			}
@@ -397,6 +406,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			_persistedScheduler.start();
 
 			initJobState();
+
+			_memoryClusteredScheduler.start();
 
 			_memoryScheduler.start();
 		}
@@ -488,6 +499,9 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			_persistedScheduler = _initializeScheduler(
 				"persisted.scheduler.", true);
 
+			_memoryClusteredScheduler = _initializeScheduler(
+				"memory.scheduler.", true);
+
 			_memoryScheduler = _initializeScheduler("memory.scheduler.", false);
 		}
 		catch (Exception exception) {
@@ -504,6 +518,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			if (!_persistedScheduler.isShutdown()) {
 				_persistedScheduler.shutdown(false);
+			}
+
+			if (!_memoryClusteredScheduler.isShutdown()) {
+				_memoryClusteredScheduler.shutdown(false);
 			}
 
 			if (!_memoryScheduler.isShutdown()) {
@@ -786,6 +804,9 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		if (storageType == StorageType.PERSISTED) {
 			return _persistedScheduler;
 		}
+		else if (storageType == StorageType.MEMORY_CLUSTERED) {
+			return _memoryClusteredScheduler;
+		}
 
 		return _memoryScheduler;
 	}
@@ -879,6 +900,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	@Reference
 	private JSONFactory _jsonFactory;
 
+	private Scheduler _memoryClusteredScheduler;
 	private Scheduler _memoryScheduler;
 
 	@Reference

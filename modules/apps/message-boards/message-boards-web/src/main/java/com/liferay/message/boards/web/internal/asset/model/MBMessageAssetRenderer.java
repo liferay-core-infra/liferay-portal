@@ -19,7 +19,7 @@ import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.message.boards.constants.MBPortletKeys;
 import com.liferay.message.boards.model.MBMessage;
-import com.liferay.message.boards.service.permission.MBDiscussionPermissionChecker;
+import com.liferay.message.boards.service.permission.MBDiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -267,7 +267,7 @@ public class MBMessageAssetRenderer
 		throws PortalException {
 
 		if (_message.isDiscussion()) {
-			return MBDiscussionPermissionChecker.contains(
+			return MBDiscussionPermission.contains(
 				permissionChecker, _message, ActionKeys.UPDATE);
 		}
 
@@ -280,7 +280,7 @@ public class MBMessageAssetRenderer
 		throws PortalException {
 
 		if (_message.isDiscussion()) {
-			return MBDiscussionPermissionChecker.contains(
+			return MBDiscussionPermission.contains(
 				permissionChecker, _message, ActionKeys.VIEW);
 		}
 

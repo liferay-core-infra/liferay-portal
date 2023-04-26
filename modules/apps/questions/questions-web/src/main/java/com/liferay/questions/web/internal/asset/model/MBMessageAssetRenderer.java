@@ -17,7 +17,7 @@ package com.liferay.questions.web.internal.asset.model;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.message.boards.model.MBMessage;
-import com.liferay.message.boards.service.permission.MBDiscussionPermissionChecker;
+import com.liferay.message.boards.service.permission.MBDiscussionPermission;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -192,7 +192,7 @@ public class MBMessageAssetRenderer
 		throws PortalException {
 
 		if (_mbMessage.isDiscussion()) {
-			return MBDiscussionPermissionChecker.contains(
+			return MBDiscussionPermission.contains(
 				permissionChecker, _mbMessage, ActionKeys.UPDATE);
 		}
 
@@ -205,7 +205,7 @@ public class MBMessageAssetRenderer
 		throws PortalException {
 
 		if (_mbMessage.isDiscussion()) {
-			return MBDiscussionPermissionChecker.contains(
+			return MBDiscussionPermission.contains(
 				permissionChecker, _mbMessage, ActionKeys.VIEW);
 		}
 

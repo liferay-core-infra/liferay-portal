@@ -949,7 +949,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			JobDataMap jobDataMap = jobDetail.getJobDataMap();
 
 			try {
-				_schedulerEngineHelper.delete(
+				delete(
 					triggerKey.getName(), triggerKey.getGroup(),
 					StorageType.valueOf(
 						jobDataMap.getString(SchedulerEngine.STORAGE_TYPE)));

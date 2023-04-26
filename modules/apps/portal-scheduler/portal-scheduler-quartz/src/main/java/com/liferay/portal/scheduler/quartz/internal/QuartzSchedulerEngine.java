@@ -196,19 +196,23 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 					getScheduledJobs(_persistedScheduler, groupName, null));
 			}
 
-			groupNames = _memoryClusteredScheduler.getJobGroupNames();
+			if (_memoryClusteredScheduler != null) {
+				groupNames = _memoryClusteredScheduler.getJobGroupNames();
 
-			for (String groupName : groupNames) {
-				schedulerResponses.addAll(
-					getScheduledJobs(
-						_memoryClusteredScheduler, groupName, null));
+				for (String groupName : groupNames) {
+					schedulerResponses.addAll(
+						getScheduledJobs(
+							_memoryClusteredScheduler, groupName, null));
+				}
 			}
 
-			groupNames = _memoryScheduler.getJobGroupNames();
+			if (_memoryScheduler != null) {
+				groupNames = _memoryScheduler.getJobGroupNames();
 
-			for (String groupName : groupNames) {
-				schedulerResponses.addAll(
-					getScheduledJobs(_memoryScheduler, groupName, null));
+				for (String groupName : groupNames) {
+					schedulerResponses.addAll(
+						getScheduledJobs(_memoryScheduler, groupName, null));
+				}
 			}
 
 			return schedulerResponses;
@@ -396,11 +400,15 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				_persistedScheduler.standby();
 			}
 
-			if (!_memoryClusteredScheduler.isInStandbyMode()) {
+			if ((_memoryClusteredScheduler != null) &&
+				!_memoryClusteredScheduler.isInStandbyMode()) {
+
 				_memoryClusteredScheduler.standby();
 			}
 
-			if (!_memoryScheduler.isInStandbyMode()) {
+			if ((_memoryScheduler != null) &&
+				!_memoryScheduler.isInStandbyMode()) {
+
 				_memoryScheduler.standby();
 			}
 		}
@@ -416,10 +424,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			_persistedScheduler.start();
 
 			initJobState();
-
-			_memoryClusteredScheduler.start();
-
-			_memoryScheduler.start();
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -508,11 +512,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			_persistedScheduler = _initializeScheduler(
 				"persisted.scheduler.", true);
-
-			_memoryClusteredScheduler = _initializeScheduler(
-				"memory.scheduler.", true);
-
-			_memoryScheduler = _initializeScheduler("memory.scheduler.", false);
 		}
 		catch (Exception exception) {
 			_log.error("Unable to initialize engine", exception);
@@ -530,11 +529,13 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				_persistedScheduler.shutdown(false);
 			}
 
-			if (!_memoryClusteredScheduler.isShutdown()) {
+			if ((_memoryClusteredScheduler != null) &&
+				!_memoryClusteredScheduler.isShutdown()) {
+
 				_memoryClusteredScheduler.shutdown(false);
 			}
 
-			if (!_memoryScheduler.isShutdown()) {
+			if ((_memoryScheduler != null) && !_memoryScheduler.isShutdown()) {
 				_memoryScheduler.shutdown(false);
 			}
 		}
@@ -836,7 +837,42 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			return _persistedScheduler;
 		}
 		else if (storageType == StorageType.MEMORY_CLUSTERED) {
+			if (_memoryClusteredScheduler == null) {
+				synchronized (QuartzSchedulerEngine.class) {
+					if (_memoryClusteredScheduler == null)
+
+						try {
+								_memoryClusteredScheduler =
+									_initializeScheduler(
+										"memory.scheduler.", true);
+
+								_memoryClusteredScheduler.start();
+							}
+							catch (Exception exception) {
+								throw new RuntimeException(
+									"Unable to initialize engine", exception);
+							}
+				}
+			}
+
 			return _memoryClusteredScheduler;
+		}
+
+		if (_memoryScheduler == null) {
+			synchronized (QuartzSchedulerEngine.class) {
+				if (_memoryScheduler == null)
+
+					try {
+							_memoryScheduler = _initializeScheduler(
+								"memory.scheduler.", false);
+
+							_memoryScheduler.start();
+						}
+						catch (Exception exception) {
+							throw new RuntimeException(
+								"Unable to initialize engine", exception);
+						}
+			}
 		}
 
 		return _memoryScheduler;
@@ -940,8 +976,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	@Reference
 	private JSONFactory _jsonFactory;
 
-	private Scheduler _memoryClusteredScheduler;
-	private Scheduler _memoryScheduler;
+	private volatile Scheduler _memoryClusteredScheduler;
+	private volatile Scheduler _memoryScheduler;
 
 	@Reference
 	private MessageBus _messageBus;

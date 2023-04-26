@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProvider;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderException;
+import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderInputParametersSettings;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderInstanceSettings;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderOutputParametersSettings;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderRequest;
@@ -28,6 +29,7 @@ import com.liferay.dynamic.data.mapping.data.provider.configuration.DDMDataProvi
 import com.liferay.dynamic.data.mapping.data.provider.settings.DDMDataProviderSettingsProvider;
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -63,11 +65,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
@@ -283,23 +282,17 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 		Map<String, String> pathInputParametersMap,
 		Map<String, Object> requestInputParametersMap) {
 
-		Set<Map.Entry<String, Object>> set =
-			requestInputParametersMap.entrySet();
-
-		Stream<Map.Entry<String, Object>> stream = set.stream();
-
-		return stream.collect(
-			ArrayList::new,
-			(keyValuePairs, entry) -> {
+		return TransformUtil.transform(
+			requestInputParametersMap.entrySet(),
+			entry -> {
 				String key = entry.getKey();
 
-				if (!pathInputParametersMap.containsKey(key)) {
-					keyValuePairs.add(
-						new KeyValuePair(
-							key, String.valueOf(entry.getValue())));
+				if (pathInputParametersMap.containsKey(key)) {
+					return null;
 				}
-			},
-			ArrayList::addAll);
+
+				return new KeyValuePair(key, String.valueOf(entry.getValue()));
+			});
 	}
 
 	private DDMDataProviderResponse _getData(
@@ -484,18 +477,14 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 	}
 
 	private String[] _getParametersArray(List<KeyValuePair> keyValuePairs) {
-		Stream<KeyValuePair> stream = keyValuePairs.stream();
+		List<String> parameters = new ArrayList<>();
 
-		return stream.collect(
-			ArrayList<String>::new,
-			(parameters, keyValuePair) -> {
-				parameters.add(keyValuePair.getKey());
-				parameters.add(keyValuePair.getValue());
-			},
-			ArrayList::addAll
-		).toArray(
-			new String[0]
-		);
+		for (KeyValuePair keyValuePair : keyValuePairs) {
+			parameters.add(keyValuePair.getKey());
+			parameters.add(keyValuePair.getValue());
+		}
+
+		return ArrayUtil.toStringArray(parameters);
 	}
 
 	private Map<String, String> _getPathInputParametersMap(
@@ -523,18 +512,14 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 		String ddmDataProviderId, List<KeyValuePair> keyValuePairs,
 		String url) {
 
-		Stream<KeyValuePair> stream = keyValuePairs.stream();
-
 		return StringBundler.concat(
 			ddmDataProviderId, StringPool.AT, url, StringPool.QUESTION,
-			stream.sorted(
-			).map(
+			com.liferay.petra.string.StringUtil.merge(
+				ListUtil.sort(keyValuePairs),
 				keyValuePair -> StringBundler.concat(
 					keyValuePair.getKey(), StringPool.EQUAL,
-					keyValuePair.getValue())
-			).collect(
-				Collectors.joining(StringPool.AMPERSAND)
-			));
+					keyValuePair.getValue()),
+				StringPool.AMPERSAND));
 	}
 
 	private Map<String, Object> _getProxySettingsMap() {
@@ -566,48 +551,45 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 	}
 
 	private List<KeyValuePair> _getQueryParameters(String query) {
-		return Stream.of(
-			StringUtil.split(query, StringPool.AMPERSAND)
-		).collect(
-			ArrayList::new,
-			(keyValuePairs, queryParameter) -> {
+		return TransformUtil.transformToList(
+			StringUtil.split(query, StringPool.AMPERSAND),
+			queryParameter -> {
 				String[] queryParameterPartsMap = StringUtil.split(
 					queryParameter, StringPool.EQUAL);
 
 				if (queryParameterPartsMap.length > 1) {
-					keyValuePairs.add(
-						new KeyValuePair(
-							queryParameterPartsMap[0],
-							queryParameterPartsMap[1]));
+					return new KeyValuePair(
+						queryParameterPartsMap[0], queryParameterPartsMap[1]);
 				}
-				else {
-					keyValuePairs.add(
-						new KeyValuePair(
-							queryParameterPartsMap[0], StringPool.BLANK));
-				}
-			},
-			ArrayList::addAll
-		);
+
+				return new KeyValuePair(
+					queryParameterPartsMap[0], StringPool.BLANK);
+			});
 	}
 
 	private Map<String, Object> _getRequestInputParametersMap(
 		DDMDataProviderRequest ddmDataProviderRequest,
 		DDMRESTDataProviderSettings ddmRESTDataProviderSettings) {
 
+		Map<String, Object> requestInputParametersMap = new HashMap<>();
+
 		Map<String, Object> parameters = ddmDataProviderRequest.getParameters();
 
-		return Stream.of(
-			ddmRESTDataProviderSettings.inputParameters()
-		).filter(
-			inputParameter -> parameters.containsKey(
-				inputParameter.inputParameterName())
-		).collect(
-			HashMap::new,
-			(parametersMap, inputParameter) -> parametersMap.put(
-				inputParameter.inputParameterName(),
-				parameters.get(inputParameter.inputParameterName())),
-			HashMap::putAll
-		);
+		for (DDMDataProviderInputParametersSettings
+				ddmDataProviderInputParametersSettings :
+					ddmRESTDataProviderSettings.inputParameters()) {
+
+			String inputParameterName =
+				ddmDataProviderInputParametersSettings.inputParameterName();
+
+			Object value = parameters.get(inputParameterName);
+
+			if (value != null) {
+				requestInputParametersMap.put(inputParameterName, value);
+			}
+		}
+
+		return requestInputParametersMap;
 	}
 
 	private String _normalizePath(String path) {

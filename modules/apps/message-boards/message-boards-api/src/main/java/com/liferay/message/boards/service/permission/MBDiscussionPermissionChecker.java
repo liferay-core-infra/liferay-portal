@@ -46,7 +46,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = "model.class.name=com.liferay.message.boards.model.MBDiscussion",
 	service = BaseModelPermissionChecker.class
 )
-public class MBDiscussionPermission implements BaseModelPermissionChecker {
+public class MBDiscussionPermissionChecker
+	implements BaseModelPermissionChecker {
 
 	public static void check(
 			PermissionChecker permissionChecker, long companyId, long groupId,

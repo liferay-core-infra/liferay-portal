@@ -469,6 +469,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 	@Reference
 	private SchedulerEngine _schedulerEngine;
+
 	private volatile SchedulerEngineHelperConfiguration
 		_schedulerEngineHelperConfiguration;
 	private ServiceTracker<SchedulerJobConfiguration, SchedulerJobConfiguration>

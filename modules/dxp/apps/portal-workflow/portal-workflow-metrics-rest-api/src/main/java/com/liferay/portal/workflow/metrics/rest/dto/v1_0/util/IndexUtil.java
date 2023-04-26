@@ -26,6 +26,10 @@ import java.util.ResourceBundle;
  */
 public class IndexUtil {
 
+	public static String getLabel(String indexEntityName) {
+		return _labelMap.get(indexEntityName);
+	}
+
 	public static Index toIndex(
 		String indexEntityName, Language language,
 		ResourceBundle resourceBundle) {

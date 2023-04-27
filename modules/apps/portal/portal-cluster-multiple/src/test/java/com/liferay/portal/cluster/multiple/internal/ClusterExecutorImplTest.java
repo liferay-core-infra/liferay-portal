@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -49,6 +50,8 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.Mockito;
 
 /**
  * @author Tina Tian
@@ -382,6 +385,15 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		Assert.assertTrue(ClusterInvokeThreadLocal.isEnabled());
 	}
 
+	@Test
+	public void testManageDebugClusterEventListener() {
+		ClusterExecutorImpl clusterExecutorImpl = _getClusterExecutorImpl();
+
+		_testManageDebugClusterEventListener(clusterExecutorImpl, true);
+		_testManageDebugClusterEventListener(clusterExecutorImpl, false);
+		_testManageDebugClusterEventListener(clusterExecutorImpl, true);
+	}
+
 	private ClusterExecutorImpl _getClusterExecutorImpl() {
 		ClusterExecutorImpl clusterExecutorImpl = new ClusterExecutorImpl();
 
@@ -407,6 +419,44 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 			new MockComponentContext(new HashMapDictionary<>()));
 
 		return clusterExecutorImpl;
+	}
+
+	private void _testManageDebugClusterEventListener(
+		ClusterExecutorImpl clusterExecutorImpl, boolean enabled) {
+
+		ClusterExecutorConfiguration clusterExecutorConfiguration =
+			Mockito.mock(ClusterExecutorConfiguration.class);
+
+		ReflectionTestUtil.setFieldValue(
+			clusterExecutorImpl, "clusterExecutorConfiguration",
+			clusterExecutorConfiguration);
+
+		Mockito.when(
+			clusterExecutorConfiguration.debugEnabled()
+		).thenReturn(
+			enabled
+		);
+
+		clusterExecutorImpl.manageDebugClusterEventListener();
+
+		List<ClusterEventListener> clusterEventListeners =
+			clusterExecutorImpl.getClusterEventListeners();
+
+		if (enabled) {
+			Assert.assertEquals(
+				clusterEventListeners.toString(), 1,
+				clusterEventListeners.size());
+
+			ClusterEventListener clusterEventListener =
+				clusterEventListeners.get(0);
+
+			Assert.assertEquals(
+				DebuggingClusterEventListenerImpl.class,
+				clusterEventListener.getClass());
+		}
+		else {
+			Assert.assertTrue(clusterEventListeners.isEmpty());
+		}
 	}
 
 }

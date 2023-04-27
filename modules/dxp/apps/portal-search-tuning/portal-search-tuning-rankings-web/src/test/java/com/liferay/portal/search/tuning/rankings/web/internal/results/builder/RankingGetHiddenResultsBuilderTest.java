@@ -21,8 +21,10 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Arrays;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,6 +41,16 @@ public class RankingGetHiddenResultsBuilderTest
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		setUpServicesForRankingResultUtil();
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		tearDown();
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -58,7 +70,7 @@ public class RankingGetHiddenResultsBuilderTest
 	public void testBuild() throws Exception {
 		setUpDLAppLocalService();
 		setUpFastDateFormatFactory();
-		setUpRankingResultUtil();
+		setUpPortalUtil();
 		setUpResourceRequest();
 
 		Ranking ranking = Mockito.mock(Ranking.class);

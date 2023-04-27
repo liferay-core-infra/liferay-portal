@@ -21,7 +21,9 @@ import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.tuning.rankings.web.internal.searcher.helper.RankingSearchRequestHelper;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,6 +40,16 @@ public class GetResultsMVCResourceCommandTest
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		setUpServicesForRankingResultUtil();
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		tearDown();
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -84,7 +96,6 @@ public class GetResultsMVCResourceCommandTest
 		setUpPortletRequestParamValue(
 			resourceRequest, "getHiddenResultsJSONObject", Constants.CMD);
 		setUpRankingIndexReader();
-		setUpRankingResultUtil();
 		setUpResourceRequest();
 		setUpResourceResponse();
 
@@ -138,7 +149,6 @@ public class GetResultsMVCResourceCommandTest
 		setUpFastDateFormatFactory();
 		setUpQuery();
 		setUpRankingIndexReader();
-		setUpRankingResultUtil();
 		setUpResourceRequest();
 		setUpResourceResponse();
 		setUpSearcher(setUpSearchResponse(setUpDocumentWithGetString()));

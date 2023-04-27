@@ -17,8 +17,10 @@ package com.liferay.portal.search.tuning.rankings.web.internal.results.builder;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,6 +36,16 @@ public class RankingGetSearchResultsBuilderTest
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@BeforeClass
+	public static void setUpClass() {
+		setUpServicesForRankingResultUtil();
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		tearDown();
+	}
+
 	@Before
 	public void setUp() throws Exception {
 		_rankingGetSearchResultsBuilder = new RankingGetSearchResultsBuilder(
@@ -47,7 +59,7 @@ public class RankingGetSearchResultsBuilderTest
 		setUpComplexQueryPartBuilderFactory(setUpComplexQueryPartBuilder());
 		setUpDLAppLocalService();
 		setUpFastDateFormatFactory();
-		setUpRankingResultUtil();
+		setUpPortalUtil();
 		setUpQuery();
 		setUpResourceRequest();
 		setUpSearcher(setUpSearchResponse(setUpDocumentWithGetString()));

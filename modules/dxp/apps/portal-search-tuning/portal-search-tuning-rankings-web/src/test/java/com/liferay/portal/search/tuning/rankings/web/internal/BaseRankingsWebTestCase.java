@@ -20,13 +20,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.Portal;
@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.document.Document;
+import com.liferay.portal.search.document.DocumentBuilderFactory;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.document.DeleteDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.DocumentResponse;
@@ -58,8 +59,6 @@ import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.searcher.Searcher;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.name.RankingIndexName;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.name.RankingIndexNameBuilder;
-import com.liferay.portal.search.tuning.rankings.web.internal.util.RankingResultUtil;
-import com.liferay.portal.search.web.interpreter.SearchResultInterpreter;
 import com.liferay.portal.search.web.interpreter.SearchResultInterpreterProvider;
 
 import java.text.SimpleDateFormat;
@@ -80,7 +79,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mockito.AdditionalAnswers;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Wade Cao
@@ -89,6 +93,33 @@ public abstract class BaseRankingsWebTestCase {
 
 	public ComplexQueryPartBuilderFactory complexQueryPartBuilderFactory =
 		Mockito.mock(ComplexQueryPartBuilderFactory.class);
+
+	protected static void setUpServicesForRankingResultUtil() {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Mockito.when(
+			FrameworkUtil.getBundle(Mockito.any())
+		).thenReturn(
+			bundleContext.getBundle()
+		);
+
+		documentBuilderFactoryServiceRegistration =
+			bundleContext.registerService(
+				DocumentBuilderFactory.class, documentBuilderFactory, null);
+
+		searchResultInterpreterProviderServiceRegistration =
+			bundleContext.registerService(
+				SearchResultInterpreterProvider.class,
+				searchResultInterpreterProvider, null);
+	}
+
+	protected static void tearDown() {
+		frameworkUtilMockedStatic.close();
+
+		documentBuilderFactoryServiceRegistration.unregister();
+
+		searchResultInterpreterProviderServiceRegistration.unregister();
+	}
 
 	protected ComplexQueryPartBuilder setUpComplexQueryPartBuilder() {
 		ComplexQueryPartBuilder complexQueryPartBuilder = Mockito.mock(
@@ -526,26 +557,6 @@ public abstract class BaseRankingsWebTestCase {
 		);
 	}
 
-	protected void setUpRankingResultUtil() {
-		SearchResultInterpreterProvider searchResultInterpreterProvider =
-			Mockito.mock(SearchResultInterpreterProvider.class);
-
-		Mockito.doReturn(
-			Mockito.mock(SearchResultInterpreter.class)
-		).when(
-			searchResultInterpreterProvider
-		).getSearchResultInterpreter(
-			Mockito.nullable(String.class)
-		);
-
-		RankingResultUtil rankingResultUtil = new RankingResultUtil();
-
-		ReflectionTestUtil.setFieldValue(
-			rankingResultUtil, "_searchResultInterpreterProvider",
-			searchResultInterpreterProvider);
-		ReflectionTestUtil.setFieldValue(rankingResultUtil, "_portal", portal);
-	}
-
 	protected void setUpRenderResponse(MimeResponse mimeResponse) {
 		PortletURL portletURL = Mockito.mock(PortletURL.class);
 
@@ -751,6 +762,18 @@ public abstract class BaseRankingsWebTestCase {
 	protected SearchSearchResponse setUpSearchSearchResponse() {
 		return Mockito.mock(SearchSearchResponse.class);
 	}
+
+	protected static final DocumentBuilderFactory documentBuilderFactory =
+		Mockito.mock(DocumentBuilderFactory.class);
+	protected static ServiceRegistration<DocumentBuilderFactory>
+		documentBuilderFactoryServiceRegistration;
+	protected static final MockedStatic<FrameworkUtil>
+		frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
+	protected static final SearchResultInterpreterProvider
+		searchResultInterpreterProvider = Mockito.mock(
+			SearchResultInterpreterProvider.class);
+	protected static ServiceRegistration<SearchResultInterpreterProvider>
+		searchResultInterpreterProviderServiceRegistration;
 
 	protected DLAppLocalService dlAppLocalService = Mockito.mock(
 		DLAppLocalService.class);

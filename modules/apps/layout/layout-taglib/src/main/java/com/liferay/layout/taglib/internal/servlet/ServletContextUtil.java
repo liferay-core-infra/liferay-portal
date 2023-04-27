@@ -31,9 +31,9 @@ import com.liferay.layout.provider.LayoutStructureProvider;
 import com.liferay.layout.taglib.internal.helper.LayoutClassedModelUsagesHelper;
 import com.liferay.layout.util.LayoutClassedModelUsageRecorder;
 import com.liferay.layout.util.LayoutsTree;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.util.service.Snapshot;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.segments.SegmentsEntryRetriever;
 import com.liferay.segments.context.RequestContextMapper;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
@@ -43,11 +43,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Chema Balsas
@@ -159,40 +157,6 @@ public class ServletContextUtil {
 		return _servletContextSnapshot.get();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addLayoutClassedModelUsageRecorder(
-		LayoutClassedModelUsageRecorder layoutClassedModelUsageRecorder,
-		Map<String, Object> properties) {
-
-		String modelClassName = GetterUtil.getString(
-			properties.get("model.class.name"));
-
-		if (Validator.isNull(modelClassName)) {
-			return;
-		}
-
-		_layoutClassedModelUsageRecorders.put(
-			modelClassName, layoutClassedModelUsageRecorder);
-	}
-
-	protected void removeLayoutClassedModelUsageRecorder(
-		LayoutClassedModelUsageRecorder layoutClassedModelUsageRecorder,
-		Map<String, Object> properties) {
-
-		String modelClassName = GetterUtil.getString(
-			properties.get("model.class.name"));
-
-		if (Validator.isNull(modelClassName)) {
-			return;
-		}
-
-		_layoutClassedModelUsageRecorders.remove(modelClassName);
-	}
-
 	private static final Snapshot<CollectionPaginationHelper>
 		_collectionPaginationHelperSnapshot = new Snapshot<>(
 			ServletContextUtil.class, CollectionPaginationHelper.class);
@@ -252,9 +216,20 @@ public class ServletContextUtil {
 	private static final Snapshot<SegmentsExperienceLocalService>
 		_segmentsExperienceLocalServiceSnapshot = new Snapshot<>(
 			ServletContextUtil.class, SegmentsExperienceLocalService.class);
+	private static final ServiceTrackerMap
+		<String, LayoutClassedModelUsageRecorder> _serviceTrackerMap;
 	private static final Snapshot<ServletContext> _servletContextSnapshot =
 		new Snapshot<>(
 			ServletContextUtil.class, ServletContext.class,
 			"(osgi.web.symbolicname=com.liferay.layout.taglib)");
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutClassedModelUsageRecorder.class);
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundle.getBundleContext(), LayoutClassedModelUsageRecorder.class,
+			"model.class.name");
+	}
 
 }

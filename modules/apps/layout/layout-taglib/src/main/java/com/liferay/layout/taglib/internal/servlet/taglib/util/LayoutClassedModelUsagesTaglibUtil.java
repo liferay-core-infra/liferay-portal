@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.util.Map;
-
 /**
  * @author Eudaldo Alonso
  */
@@ -33,12 +31,9 @@ public class LayoutClassedModelUsagesTaglibUtil {
 		String className, long classPK) {
 
 		try {
-			Map<String, LayoutClassedModelUsageRecorder>
-				layoutClassedModelUsageRecorders =
-					ServletContextUtil.getLayoutClassedModelUsageRecorders();
-
 			LayoutClassedModelUsageRecorder layoutClassedModelUsageRecorder =
-				layoutClassedModelUsageRecorders.get(className);
+				ServletContextUtil.getLayoutClassedModelUsageRecorder(
+					className);
 
 			if (layoutClassedModelUsageRecorder != null) {
 				layoutClassedModelUsageRecorder.record(

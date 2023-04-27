@@ -38,9 +38,6 @@ import com.liferay.segments.SegmentsEntryRetriever;
 import com.liferay.segments.context.RequestContextMapper;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javax.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
@@ -97,10 +94,10 @@ public class ServletContextUtil {
 		return _layoutAdaptiveMediaProcessorSnapshot.get();
 	}
 
-	public static Map<String, LayoutClassedModelUsageRecorder>
-		getLayoutClassedModelUsageRecorders() {
+	public static LayoutClassedModelUsageRecorder
+		getLayoutClassedModelUsageRecorder(String className) {
 
-		return _layoutClassedModelUsageRecorders;
+		return _serviceTrackerMap.getService(className);
 	}
 
 	public static LayoutClassedModelUsagesHelper
@@ -184,8 +181,6 @@ public class ServletContextUtil {
 	private static final Snapshot<LayoutAdaptiveMediaProcessor>
 		_layoutAdaptiveMediaProcessorSnapshot = new Snapshot<>(
 			ServletContextUtil.class, LayoutAdaptiveMediaProcessor.class);
-	private static final Map<String, LayoutClassedModelUsageRecorder>
-		_layoutClassedModelUsageRecorders = new ConcurrentHashMap<>();
 	private static final Snapshot<LayoutClassedModelUsagesHelper>
 		_layoutClassedModelUsagesHelperSnapshot = new Snapshot<>(
 			ServletContextUtil.class, LayoutClassedModelUsagesHelper.class);

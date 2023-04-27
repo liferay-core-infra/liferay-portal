@@ -14,26 +14,27 @@
 
 package com.liferay.portal.workflow.metrics.internal.search.index.name;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.search.index.IndexNameBuilder;
+import com.liferay.portal.workflow.metrics.rest.dto.v1_0.util.IndexUtil;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Rafael Praxedes
+ * @author Jiaxu Wei
  */
-@Component(
-	property = "workflow.metrics.index.entity.name=transition",
-	service = WorkflowMetricsIndexNameBuilder.class
-)
-public class TransitionWorkflowMetricsIndexNameBuilder
+@Component(service = WorkflowMetricsIndexNameBuilder.class)
+public class WorkflowMetricsIndexNameBuilderImpl
 	implements WorkflowMetricsIndexNameBuilder {
 
 	@Override
-	public String getIndexName(long companyId) {
-		return indexNameBuilder.getIndexName(companyId) +
-			"-workflow-metrics-transitions";
+	public String getIndexName(
+		long companyId, String workflowMetricsIndexEntityName) {
+
+		return indexNameBuilder.getIndexName(companyId) + StringPool.DASH +
+			IndexUtil.getLabel(workflowMetricsIndexEntityName);
 	}
 
 	@Reference

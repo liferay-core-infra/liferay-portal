@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.search.query.TermsQuery;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.service.util.BaseWorkflowMetricsIndexerTestCase;
 
@@ -122,15 +123,21 @@ public class ProcessWorkflowMetricsIndexerTest
 			workflowDefinition.getWorkflowDefinitionId(), "version", "2.0");
 	}
 
-	@Inject(filter = "workflow.metrics.index.entity.name=instance")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_instanceWorkflowMetricsIndexNameBuilder;
 
-	@Inject(filter = "workflow.metrics.index.entity.name=process")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_processWorkflowMetricsIndexNameBuilder;
 
-	@Inject(filter = "workflow.metrics.index.entity.name=sla-instance-result")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
 

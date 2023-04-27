@@ -53,6 +53,7 @@ import com.liferay.portal.workflow.metrics.rest.internal.dto.v1_0.util.ProcessUt
 import com.liferay.portal.workflow.metrics.rest.internal.odata.entity.v1_0.ProcessMetricEntityModel;
 import com.liferay.portal.workflow.metrics.rest.internal.resource.helper.ResourceHelper;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.ProcessMetricResource;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 
 import java.util.Collection;
@@ -690,11 +691,15 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 	@Reference
 	private Aggregations _aggregations;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=instance)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_instanceWorkflowMetricsIndexNameBuilder;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_processWorkflowMetricsIndexNameBuilder;
 
@@ -711,7 +716,7 @@ public class ProcessMetricResourceImpl extends BaseProcessMetricResourceImpl {
 	private SearchRequestExecutor _searchRequestExecutor;
 
 	@Reference(
-		target = "(workflow.metrics.index.entity.name=sla-instance-result)"
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ")"
 	)
 	private WorkflowMetricsIndexNameBuilder
 		_slaInstanceResultWorkflowMetricsIndexNameBuilder;

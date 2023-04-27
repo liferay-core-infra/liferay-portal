@@ -26,6 +26,7 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionVersionLocalService;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionLocalService;
 import com.liferay.portal.workflow.metrics.service.util.BaseWorkflowMetricsIndexerTestCase;
@@ -157,7 +158,9 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 		}
 	}
 
-	@Inject(filter = "workflow.metrics.index.entity.name=instance")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_instanceWorkflowMetricsIndexNameBuilder;
 
@@ -168,15 +171,21 @@ public class SLAInstanceResultWorkflowMetricsIndexerTest
 	private KaleoDefinitionVersionLocalService
 		_kaleoDefinitionVersionLocalService;
 
-	@Inject(filter = "workflow.metrics.index.entity.name=node")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_nodeWorkflowMetricsIndexNameBuilder;
 
-	@Inject(filter = "workflow.metrics.index.entity.name=process")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_processWorkflowMetricsIndexNameBuilder;
 
-	@Inject(filter = "workflow.metrics.index.entity.name=sla-instance-result")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
 

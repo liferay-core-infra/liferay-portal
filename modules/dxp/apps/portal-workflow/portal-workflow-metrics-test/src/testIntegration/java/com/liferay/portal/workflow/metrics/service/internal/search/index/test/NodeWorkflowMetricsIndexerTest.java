@@ -24,6 +24,7 @@ import com.liferay.portal.workflow.kaleo.definition.Task;
 import com.liferay.portal.workflow.kaleo.definition.Transition;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
 import com.liferay.portal.workflow.kaleo.model.KaleoTask;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.service.util.BaseWorkflowMetricsIndexerTestCase;
 
@@ -182,15 +183,21 @@ public class NodeWorkflowMetricsIndexerTest
 			workflowDefinition.getWorkflowDefinitionId());
 	}
 
-	@Inject(filter = "workflow.metrics.index.entity.name=node")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_nodeWorkflowMetricsIndexNameBuilder;
 
-	@Inject(filter = "workflow.metrics.index.entity.name=sla-task-result")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_TASK_RESULT + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_slaTaskResultWorkflowMetricsIndexNameBuilder;
 
-	@Inject(filter = "workflow.metrics.index.entity.name=task")
+	@Inject(
+		filter = "workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TASK + ""
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_taskWorkflowMetricsIndexNameBuilder;
 

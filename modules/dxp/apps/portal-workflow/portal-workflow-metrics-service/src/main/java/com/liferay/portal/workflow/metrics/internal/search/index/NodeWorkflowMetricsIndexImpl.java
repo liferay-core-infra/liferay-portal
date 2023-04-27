@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.metrics.internal.search.index;
 
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 
 import org.osgi.service.component.annotations.Component;
@@ -39,7 +40,9 @@ public class NodeWorkflowMetricsIndexImpl
 		return "WorkflowMetricsNodeType";
 	}
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder _workflowMetricsIndexNameBuilder;
 
 }

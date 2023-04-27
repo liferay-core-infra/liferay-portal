@@ -59,6 +59,7 @@ import com.liferay.portal.workflow.metrics.internal.sla.processor.WorkflowMetric
 import com.liferay.portal.workflow.metrics.internal.sla.processor.WorkflowMetricsSLATaskResult;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinitionVersion;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionLocalService;
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionVersionLocalService;
@@ -720,14 +721,18 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 	@Reference(target = "(workflow.metrics.index.entity.name=instance)")
 	private WorkflowMetricsIndex _instanceWorkflowMetricsIndex;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=instance)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_instanceWorkflowMetricsIndexNameBuilder;
 
 	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_nodeWorkflowMetricsIndexNameBuilder;
 
@@ -748,7 +753,7 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 		_slaInstanceResultWorkflowMetricsIndexer;
 
 	@Reference(
-		target = "(workflow.metrics.index.entity.name=sla-instance-result)"
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ")"
 	)
 	private WorkflowMetricsIndexNameBuilder
 		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
@@ -760,7 +765,9 @@ public class WorkflowMetricsSLAProcessBackgroundTaskExecutor
 	@Reference
 	private Sorts _sorts;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=task)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TASK + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_taskWorkflowMetricsIndexNameBuilder;
 

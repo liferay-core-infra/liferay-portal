@@ -48,6 +48,7 @@ import com.liferay.portal.search.sort.FieldSort;
 import com.liferay.portal.search.sort.SortOrder;
 import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.sla.processor.WorkflowMetricsSLAStatus;
 
@@ -522,7 +523,9 @@ public class ResourceHelper {
 	@Reference
 	private Aggregations _aggregations;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_processWorkflowMetricsIndexNameBuilder;
 
@@ -538,7 +541,9 @@ public class ResourceHelper {
 	@Reference
 	private Sorts _sorts;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=task)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TASK + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_taskWorkflowMetricsIndexNameBuilder;
 

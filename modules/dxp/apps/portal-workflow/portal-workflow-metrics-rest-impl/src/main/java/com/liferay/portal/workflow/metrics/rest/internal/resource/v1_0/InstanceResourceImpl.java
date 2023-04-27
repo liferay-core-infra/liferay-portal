@@ -73,6 +73,7 @@ import com.liferay.portal.workflow.metrics.rest.internal.resource.exception.NoSu
 import com.liferay.portal.workflow.metrics.rest.internal.resource.helper.ResourceHelper;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.InstanceResource;
 import com.liferay.portal.workflow.metrics.search.index.InstanceWorkflowMetricsIndexer;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionLocalService;
 import com.liferay.portal.workflow.metrics.sla.processor.WorkflowMetricsSLAStatus;
@@ -1199,7 +1200,9 @@ public class InstanceResourceImpl extends BaseInstanceResourceImpl {
 	@Reference
 	private InstanceWorkflowMetricsIndexer _instanceWorkflowMetricsIndexer;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=instance)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.INSTANCE + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_instanceWorkflowMetricsIndexNameBuilder;
 
@@ -1222,7 +1225,7 @@ public class InstanceResourceImpl extends BaseInstanceResourceImpl {
 	private SearchRequestExecutor _searchRequestExecutor;
 
 	@Reference(
-		target = "(workflow.metrics.index.entity.name=sla-instance-result)"
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ")"
 	)
 	private WorkflowMetricsIndexNameBuilder
 		_slaInstanceResultWorkflowMetricsIndexNameBuilder;
@@ -1230,11 +1233,15 @@ public class InstanceResourceImpl extends BaseInstanceResourceImpl {
 	@Reference
 	private Sorts _sorts;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=task)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TASK + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_taskWorkflowMetricsIndexNameBuilder;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=transition)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TRANSITION + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_transitionWorkflowMetricsIndexNameBuilder;
 

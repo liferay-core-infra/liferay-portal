@@ -64,6 +64,7 @@ import com.liferay.portal.workflow.metrics.rest.internal.resource.exception.NoSu
 import com.liferay.portal.workflow.metrics.rest.internal.resource.helper.ResourceHelper;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.TaskResource;
 import com.liferay.portal.workflow.metrics.search.index.TaskWorkflowMetricsIndexer;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.sla.processor.WorkflowMetricsSLAStatus;
 
@@ -754,7 +755,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 	@Reference
 	private SearchRequestExecutor _searchRequestExecutor;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=sla-task-result)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_TASK_RESULT + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_slaTaskResultWorkflowMetricsIndexNameBuilder;
 
@@ -764,7 +767,9 @@ public class TaskResourceImpl extends BaseTaskResourceImpl {
 	@Reference
 	private TaskWorkflowMetricsIndexer _taskWorkflowMetricsIndexer;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=task)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.TASK + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_taskWorkflowMetricsIndexNameBuilder;
 

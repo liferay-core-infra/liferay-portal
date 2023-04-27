@@ -26,6 +26,7 @@ import com.liferay.portal.workflow.metrics.rest.dto.v1_0.util.NodeUtil;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.NodeResource;
 import com.liferay.portal.workflow.metrics.rest.spi.resource.SPINodeResource;
 import com.liferay.portal.workflow.metrics.search.index.NodeWorkflowMetricsIndexer;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 
 import org.osgi.service.component.annotations.Component;
@@ -113,11 +114,15 @@ public class NodeResourceImpl extends BaseNodeResourceImpl {
 	@Reference
 	private NodeWorkflowMetricsIndexer _nodeWorkflowMetricsIndexer;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=node)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.NODE + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_nodeWorkflowMetricsIndexNameBuilder;
 
-	@Reference(target = "(workflow.metrics.index.entity.name=process)")
+	@Reference(
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.PROCESS + ")"
+	)
 	private WorkflowMetricsIndexNameBuilder
 		_processWorkflowMetricsIndexNameBuilder;
 

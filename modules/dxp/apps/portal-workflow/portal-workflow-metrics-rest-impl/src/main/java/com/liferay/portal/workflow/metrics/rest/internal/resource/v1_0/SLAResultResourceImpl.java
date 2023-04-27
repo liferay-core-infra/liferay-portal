@@ -27,6 +27,7 @@ import com.liferay.portal.workflow.metrics.rest.dto.v1_0.SLAResult;
 import com.liferay.portal.workflow.metrics.rest.internal.dto.v1_0.util.SLAResultUtil;
 import com.liferay.portal.workflow.metrics.rest.internal.resource.exception.NoSuchSLAResultException;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.SLAResultResource;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 import com.liferay.portal.workflow.metrics.search.index.name.WorkflowMetricsIndexNameBuilder;
 import com.liferay.portal.workflow.metrics.service.WorkflowMetricsSLADefinitionLocalService;
 
@@ -96,7 +97,7 @@ public class SLAResultResourceImpl extends BaseSLAResultResourceImpl {
 	private SearchRequestExecutor _searchRequestExecutor;
 
 	@Reference(
-		target = "(workflow.metrics.index.entity.name=sla-instance-result)"
+		target = "(workflow.metrics.index.entity.name=" + WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT + ")"
 	)
 	private WorkflowMetricsIndexNameBuilder
 		_slaInstanceResultWorkflowMetricsIndexNameBuilder;

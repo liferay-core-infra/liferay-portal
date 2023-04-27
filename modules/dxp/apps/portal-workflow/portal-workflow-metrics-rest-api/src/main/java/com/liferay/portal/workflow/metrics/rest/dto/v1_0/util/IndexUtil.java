@@ -17,6 +17,7 @@ package com.liferay.portal.workflow.metrics.rest.dto.v1_0.util;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.workflow.metrics.rest.dto.v1_0.Index;
+import com.liferay.portal.workflow.metrics.search.index.WorkflowMetricsIndexEntityNameConstant;
 
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -54,19 +55,26 @@ public class IndexUtil {
 
 	private static final Map<String, String> _labelMap =
 		LinkedHashMapBuilder.put(
-			"instance", "workflow-metrics-instances"
+			WorkflowMetricsIndexEntityNameConstant.INSTANCE,
+			"workflow-metrics-instances"
 		).put(
-			"node", "workflow-metrics-nodes"
+			WorkflowMetricsIndexEntityNameConstant.NODE,
+			"workflow-metrics-nodes"
 		).put(
-			"process", "workflow-metrics-processes"
+			WorkflowMetricsIndexEntityNameConstant.PROCESS,
+			"workflow-metrics-processes"
 		).put(
-			"sla-instance-result", "workflow-sla-instance-results"
+			WorkflowMetricsIndexEntityNameConstant.SLA_INSTANCE_RESULT,
+			"workflow-sla-instance-results"
 		).put(
-			"sla-task-result", "workflow-sla-task-results"
+			WorkflowMetricsIndexEntityNameConstant.SLA_TASK_RESULT,
+			"workflow-sla-task-results"
 		).put(
-			"task", "workflow-metrics-tasks"
+			WorkflowMetricsIndexEntityNameConstant.TASK,
+			"workflow-metrics-tasks"
 		).put(
-			"transition", "workflow-metrics-transitions"
+			WorkflowMetricsIndexEntityNameConstant.TRANSITION,
+			"workflow-metrics-transitions"
 		).build();
 
 }

@@ -42,12 +42,10 @@ import javax.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Chema Balsas
  */
-@Component(service = {})
 public class ServletContextUtil {
 
 	public static CollectionPaginationHelper getCollectionPaginationHelper() {

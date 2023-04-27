@@ -658,7 +658,7 @@ ExpandoBridge expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(company.
 							<%
 							value = ParamUtil.getString(request, "ExpandoAttribute--" + name + "--", String.valueOf(value));
 
-							if (Validator.isNull(String.valueOf(value))) {
+							if ((value == null) || ((type != ExpandoColumnConstants.STRING) && Validator.isNull(value.toString()))) {
 								value = defaultValue;
 							}
 							%>

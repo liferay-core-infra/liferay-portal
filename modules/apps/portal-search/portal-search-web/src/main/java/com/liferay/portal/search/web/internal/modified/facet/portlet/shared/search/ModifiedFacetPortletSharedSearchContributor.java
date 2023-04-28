@@ -18,13 +18,13 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.DateFormatFactory;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.facet.modified.ModifiedFacetFactory;
 import com.liferay.portal.search.web.internal.modified.facet.builder.DateRangeFactory;
 import com.liferay.portal.search.web.internal.modified.facet.builder.ModifiedFacetBuilder;
 import com.liferay.portal.search.web.internal.modified.facet.constants.ModifiedFacetPortletKeys;
 import com.liferay.portal.search.web.internal.modified.facet.portlet.ModifiedFacetPortletPreferences;
 import com.liferay.portal.search.web.internal.modified.facet.portlet.ModifiedFacetPortletPreferencesImpl;
-import com.liferay.portal.search.web.internal.util.SearchOptionalUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
@@ -84,15 +84,19 @@ public class ModifiedFacetPortletSharedSearchContributor
 		modifiedFacetBuilder.setSelectedRanges(
 			portletSharedSearchSettings.getParameterValues(parameterName));
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchSettings.getParameterOptional(
-				parameterName + "From"),
-			modifiedFacetBuilder::setCustomRangeFrom);
+		String fromParameterValue = portletSharedSearchSettings.getParameter(
+			parameterName + "From");
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchSettings.getParameterOptional(
-				parameterName + "To"),
-			modifiedFacetBuilder::setCustomRangeTo);
+		if (Validator.isNotNull(fromParameterValue)) {
+			modifiedFacetBuilder.setCustomRangeFrom(fromParameterValue);
+		}
+
+		String toParameterValue = portletSharedSearchSettings.getParameter(
+			parameterName + "To");
+
+		if (Validator.isNotNull(toParameterValue)) {
+			modifiedFacetBuilder.setCustomRangeTo(toParameterValue);
+		}
 
 		return modifiedFacetBuilder.build();
 	}

@@ -16,19 +16,19 @@ package com.liferay.commerce.warehouse.web.internal.portlet;
 
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
+import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Marco Leo
+ * @author Joao Victor Alves
  */
 @Component(
 	property = "model.class.name=com.liferay.commerce.inventory.model.CommerceInventoryWarehouse",
-	service = EditPortletProvider.class
+	service = ViewPortletProvider.class
 )
-public class CommerceInventoryWarehousePortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
+public class CommerceInventoryWarehouseViewPortletProvider
+	extends BasePortletProvider implements ViewPortletProvider {
 
 	@Override
 	public String getPortletName() {

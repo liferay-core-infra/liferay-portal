@@ -27,7 +27,7 @@ import org.osgi.service.component.annotations.Component;
 	property = "model.class.name=com.liferay.commerce.discount.model.CommerceDiscount",
 	service = EditPortletProvider.class
 )
-public class CommerceDiscountPortletProvider
+public class CommerceDiscountEditPortletProvider
 	extends BasePortletProvider implements EditPortletProvider {
 
 	@Override

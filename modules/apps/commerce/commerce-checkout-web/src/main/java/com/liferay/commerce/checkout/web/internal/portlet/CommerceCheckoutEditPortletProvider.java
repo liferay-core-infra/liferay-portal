@@ -39,7 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "model.class.name=" + CommercePortletKeys.COMMERCE_CHECKOUT,
 	service = EditPortletProvider.class
 )
-public class CommerceCheckoutPortletProvider
+public class CommerceCheckoutEditPortletProvider
 	extends BasePortletProvider implements EditPortletProvider {
 
 	@Override

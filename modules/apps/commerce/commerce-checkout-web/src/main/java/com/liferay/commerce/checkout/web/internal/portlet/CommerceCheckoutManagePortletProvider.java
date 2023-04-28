@@ -18,7 +18,7 @@ import com.liferay.commerce.constants.CommercePortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
+import com.liferay.portal.kernel.portlet.ManagePortletProvider;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
@@ -33,14 +33,14 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Luca Pellizzon
+ * @author Joao Victor Alves
  */
 @Component(
 	property = "model.class.name=" + CommercePortletKeys.COMMERCE_CHECKOUT,
-	service = EditPortletProvider.class
+	service = ManagePortletProvider.class
 )
-public class CommerceCheckoutPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
+public class CommerceCheckoutManagePortletProvider
+	extends BasePortletProvider implements ManagePortletProvider {
 
 	@Override
 	public String getPortletName() {

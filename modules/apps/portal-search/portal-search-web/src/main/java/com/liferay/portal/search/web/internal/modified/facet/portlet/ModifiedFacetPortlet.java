@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.facet.modified.ModifiedFacetFactory;
 import com.liferay.portal.search.searcher.SearchRequest;
@@ -118,10 +119,13 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 		String parameterName =
 			modifiedFacetPortletPreferences.getParameterName();
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchResponse.getParameter(
-				parameterName + "From", renderRequest),
-			modifiedFacetDisplayContextBuilder::setFromParameterValue);
+		String fromParameterValue = portletSharedSearchResponse.getParameter(
+			parameterName + "From", renderRequest);
+
+		if (Validator.isNotNull(fromParameterValue)) {
+			modifiedFacetDisplayContextBuilder.setFromParameterValue(
+				fromParameterValue);
+		}
 
 		modifiedFacetDisplayContextBuilder.setFrequenciesVisible(
 			modifiedFacetPortletPreferences.isFrequenciesVisible());
@@ -146,10 +150,13 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 		modifiedFacetDisplayContextBuilder.setTimeZone(
 			themeDisplay.getTimeZone());
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchResponse.getParameter(
-				parameterName + "To", renderRequest),
-			modifiedFacetDisplayContextBuilder::setToParameterValue);
+		String toParameterValue = portletSharedSearchResponse.getParameter(
+			parameterName + "To", renderRequest);
+
+		if (Validator.isNotNull(toParameterValue)) {
+			modifiedFacetDisplayContextBuilder.setToParameterValue(
+				toParameterValue);
+		}
 
 		SearchResponse searchResponse =
 			portletSharedSearchResponse.getSearchResponse();

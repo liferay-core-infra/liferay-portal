@@ -19,6 +19,7 @@ import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.searcher.SearchRequest;
@@ -27,7 +28,6 @@ import com.liferay.portal.search.web.internal.category.facet.constants.CategoryF
 import com.liferay.portal.search.web.internal.facet.display.context.AssetCategoriesSearchFacetDisplayContext;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.AssetCategoriesSearchFacetDisplayContextBuilder;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.AssetCategoryPermissionCheckerImpl;
-import com.liferay.portal.search.web.internal.util.SearchOptionalUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
@@ -170,11 +170,14 @@ public class CategoryFacetPortlet extends MVCPortlet {
 		assetCategoriesSearchFacetDisplayContextBuilder.setParameterName(
 			parameterName);
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest),
-			assetCategoriesSearchFacetDisplayContextBuilder::
-				setParameterValues);
+		String[] parameterValues =
+			portletSharedSearchResponse.getParameterValues(
+				parameterName, renderRequest);
+
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			assetCategoriesSearchFacetDisplayContextBuilder.setParameterValues(
+				parameterValues);
+		}
 
 		assetCategoriesSearchFacetDisplayContextBuilder.setPortal(portal);
 

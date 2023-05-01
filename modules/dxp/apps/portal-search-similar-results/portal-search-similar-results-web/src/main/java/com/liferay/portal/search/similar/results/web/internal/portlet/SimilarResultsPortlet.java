@@ -45,7 +45,6 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -107,12 +106,11 @@ public class SimilarResultsPortlet extends MVCPortlet {
 		SimilarResultsDisplayContext similarResultsDisplayContext =
 			_createSimilarResultsDisplayContext(renderRequest);
 
-		Optional<PortletPreferences> portletPreferencesOptional =
+		PortletPreferences portletPreferences =
 			portletSharedSearchResponse.getPortletPreferences(renderRequest);
 
 		SimilarResultsPortletPreferences similarResultsPortletPreferences =
-			new SimilarResultsPortletPreferencesImpl(
-				portletPreferencesOptional.orElse(null));
+			new SimilarResultsPortletPreferencesImpl(portletPreferences);
 
 		SearchResponse searchResponse =
 			portletSharedSearchResponse.getFederatedSearchResponse(

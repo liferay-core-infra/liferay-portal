@@ -48,6 +48,8 @@ import com.liferay.upload.UploadFileEntryHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -145,7 +147,8 @@ public class DDMUserPersonalFolderUploadFileEntryHandler
 		}
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DLFileEntry.class.getName(), uploadPortletRequest);
+			DLFileEntry.class.getName(),
+			(HttpServletRequest)uploadPortletRequest);
 
 		if ((fileEntry != null) &&
 			(fileEntry.getModel() instanceof DLFileEntry)) {

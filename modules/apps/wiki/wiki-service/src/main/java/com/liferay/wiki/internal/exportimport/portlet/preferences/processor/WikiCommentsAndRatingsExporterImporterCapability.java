@@ -29,9 +29,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Cristina González
  */
 @Component(
-	service = {
-		Capability.class, WikiCommentsAndRatingsExporterImporterCapability.class
-	}
+	service = Capability.class
 )
 public class WikiCommentsAndRatingsExporterImporterCapability
 	implements Capability {

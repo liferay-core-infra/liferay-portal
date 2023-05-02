@@ -14,18 +14,18 @@
 
 package com.liferay.commerce.product.options.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.commerce.product.constants.CPPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
  * @author Joao Victor Alves
  */
-@Component(
-	property = "model.class.name=com.liferay.commerce.product.model.CPSpecificationOption",
-	service = ViewPortletProvider.class
-)
-public class CPSpecificationOptionsViewPortletProvider
-	extends BaseCPSpecificationOptionsPortletProvider
-	implements ViewPortletProvider {
+public abstract class BaseCPSpecificationOptionsPortletProvider
+	extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return CPPortletKeys.CP_SPECIFICATION_OPTIONS;
+	}
+
 }

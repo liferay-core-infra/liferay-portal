@@ -14,8 +14,6 @@
 
 package com.liferay.commerce.order.web.internal.portlet;
 
-import com.liferay.commerce.constants.CommercePortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.EditPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -28,11 +26,6 @@ import org.osgi.service.component.annotations.Component;
 	service = EditPortletProvider.class
 )
 public class CommerceOrderTypeEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return CommercePortletKeys.COMMERCE_ORDER_TYPE;
-	}
-
+	extends BaseCommerceOrderTypePortletProvider
+	implements EditPortletProvider {
 }

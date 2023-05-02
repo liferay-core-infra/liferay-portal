@@ -14,17 +14,17 @@
 
 package com.liferay.commerce.order.rule.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.commerce.order.rule.constants.COREntryPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
  * @author Joao Victor Alves
  */
-@Component(
-	property = "model.class.name=com.liferay.commerce.order.rule.model.COREntry",
-	service = ViewPortletProvider.class
-)
-public class COREntryPortletViewProvider
-	extends BaseCOREntryPortletProvider implements ViewPortletProvider {
+public abstract class BaseCOREntryPortletProvider extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return COREntryPortletKeys.COR_ENTRY;
+	}
+
 }

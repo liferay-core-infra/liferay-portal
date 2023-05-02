@@ -14,25 +14,18 @@
 
 package com.liferay.commerce.term.web.internal.portlet;
 
-import com.liferay.commerce.term.constants.CommerceTermEntryPortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ManagePortletProvider;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Alessio Antonio Rendina
+ * @author Joao Victor Alves
  */
 @Component(
 	property = "model.class.name=com.liferay.commerce.term.model.CommerceTermEntry",
 	service = ManagePortletProvider.class
 )
 public class CommerceTermEntryManagePortletProvider
-	extends BasePortletProvider implements ManagePortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return CommerceTermEntryPortletKeys.COMMERCE_TERM_ENTRY;
-	}
-
+	extends BaseCommerceTermEntryPortletProvider
+	implements ManagePortletProvider {
 }

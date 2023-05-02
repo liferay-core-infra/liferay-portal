@@ -14,8 +14,6 @@
 
 package com.liferay.commerce.inventory.web.internal.portlet;
 
-import com.liferay.commerce.product.constants.CPPortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -28,11 +26,6 @@ import org.osgi.service.component.annotations.Component;
 	service = ViewPortletProvider.class
 )
 public class CommerceInventoryViewPortletProvider
-	extends BasePortletProvider implements ViewPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return CPPortletKeys.COMMERCE_INVENTORY;
-	}
-
+	extends BaseCommerceInventoryPortletProvider
+	implements ViewPortletProvider {
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.commerce.subscription.web.internal.portlet;
 
-import com.liferay.commerce.product.constants.CPPortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.EditPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -28,11 +26,6 @@ import org.osgi.service.component.annotations.Component;
 	service = EditPortletProvider.class
 )
 public class CommerceSubscriptionEntryEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return CPPortletKeys.COMMERCE_SUBSCRIPTION_ENTRY;
-	}
-
+	extends BaseCommerceSubscriptionEntryPortletProvider
+	implements EditPortletProvider {
 }

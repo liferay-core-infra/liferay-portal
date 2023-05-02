@@ -14,18 +14,18 @@
 
 package com.liferay.commerce.subscription.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.commerce.product.constants.CPPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
  * @author Joao Victor Alves
  */
-@Component(
-	property = "model.class.name=com.liferay.commerce.model.CommerceSubscriptionEntry",
-	service = ViewPortletProvider.class
-)
-public class CommerceSubscriptionEntryViewPortletProvider
-	extends BaseCommerceSubscriptionEntryPortletProvider
-	implements ViewPortletProvider {
+public abstract class BaseCommerceSubscriptionEntryPortletProvider
+	extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return CPPortletKeys.COMMERCE_SUBSCRIPTION_ENTRY;
+	}
+
 }

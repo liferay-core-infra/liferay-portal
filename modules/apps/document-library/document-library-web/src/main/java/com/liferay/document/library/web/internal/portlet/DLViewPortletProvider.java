@@ -16,12 +16,12 @@ package com.liferay.document.library.web.internal.portlet;
 
 import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
+import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Sergio González
+ * @author Joao Victor Alves
  */
 @Component(
 	property = {
@@ -31,10 +31,10 @@ import org.osgi.service.component.annotations.Component;
 		"model.class.name=com.liferay.portal.kernel.repository.model.Folder",
 		"service.ranking:Integer=100"
 	},
-	service = EditPortletProvider.class
+	service = ViewPortletProvider.class
 )
-public class DLEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
+public class DLViewPortletProvider
+	extends BasePortletProvider implements ViewPortletProvider {
 
 	@Override
 	public String getPortletName() {

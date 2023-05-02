@@ -22,11 +22,4 @@ public interface BackgroundTaskExecutorRegistry {
 	public BackgroundTaskExecutor getBackgroundTaskExecutor(
 		String backgroundTaskExecutorClassName);
 
-	public void registerBackgroundTaskExecutor(
-		String backgroundTaskExecutorClassName,
-		BackgroundTaskExecutor backgroundTaskExecutor);
-
-	public void unregisterBackgroundTaskExecutor(
-		String backgroundTaskExecutorClassName);
-
 }

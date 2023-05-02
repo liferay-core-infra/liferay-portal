@@ -14,8 +14,6 @@
 
 package com.liferay.commerce.pricing.web.internal.portlet;
 
-import com.liferay.commerce.pricing.constants.CommercePricingPortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ManagePortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -28,11 +26,6 @@ import org.osgi.service.component.annotations.Component;
 	service = ManagePortletProvider.class
 )
 public class CommercePricingClassesManagePortletProvider
-	extends BasePortletProvider implements ManagePortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return CommercePricingPortletKeys.COMMERCE_PRICING_CLASSES;
-	}
-
+	extends BaseCommercePricingClassesPortletProvider
+	implements ManagePortletProvider {
 }

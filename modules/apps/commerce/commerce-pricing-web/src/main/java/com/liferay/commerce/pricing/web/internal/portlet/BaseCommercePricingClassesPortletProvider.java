@@ -14,18 +14,18 @@
 
 package com.liferay.commerce.pricing.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.commerce.pricing.constants.CommercePricingPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
- * @author Marco Leo
+ * @author Joao Victor Alves
  */
-@Component(
-	property = "model.class.name=com.liferay.commerce.pricing.model.CommercePricingClass",
-	service = EditPortletProvider.class
-)
-public class CommercePricingClassesEditPortletProvider
-	extends BaseCommercePricingClassesPortletProvider
-	implements EditPortletProvider {
+public abstract class BaseCommercePricingClassesPortletProvider
+	extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return CommercePricingPortletKeys.COMMERCE_PRICING_CLASSES;
+	}
+
 }

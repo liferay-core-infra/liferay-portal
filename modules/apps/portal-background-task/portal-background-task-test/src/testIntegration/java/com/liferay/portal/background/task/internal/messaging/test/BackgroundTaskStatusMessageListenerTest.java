@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -43,6 +44,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Dante Wang
@@ -87,8 +93,18 @@ public class BackgroundTaskStatusMessageListenerTest {
 		Class<?> backgroundTaskExecutorClass =
 			backgroundTaskExecutor.getClass();
 
-		_backgroundTaskExecutorRegistry.registerBackgroundTaskExecutor(
-			backgroundTaskExecutorClass.getName(), backgroundTaskExecutor);
+		Bundle bundle = FrameworkUtil.getBundle(
+			BackgroundTaskStatusMessageListenerTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServiceRegistration<BackgroundTaskExecutor> serviceRegistration =
+			bundleContext.registerService(
+				BackgroundTaskExecutor.class, backgroundTaskExecutor,
+				HashMapDictionaryBuilder.<String, Object>put(
+					"background.task.executor.class.name",
+					backgroundTaskExecutorClass.getName()
+				).build());
 
 		try {
 			_backgroundTaskManager.addBackgroundTask(
@@ -123,8 +139,7 @@ public class BackgroundTaskStatusMessageListenerTest {
 				jsonObject.getString("taskExecutorClassName"));
 		}
 		finally {
-			_backgroundTaskExecutorRegistry.unregisterBackgroundTaskExecutor(
-				backgroundTaskExecutorClass.getName());
+			serviceRegistration.unregister();
 		}
 	}
 

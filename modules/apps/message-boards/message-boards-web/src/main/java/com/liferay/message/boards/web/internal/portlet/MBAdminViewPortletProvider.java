@@ -16,12 +16,12 @@ package com.liferay.message.boards.web.internal.portlet;
 
 import com.liferay.message.boards.constants.MBPortletKeys;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
+import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Adolfo Pérez
+ * @author Joao Victor Alves
  */
 @Component(
 	property = {
@@ -30,10 +30,10 @@ import org.osgi.service.component.annotations.Component;
 		"model.class.name=com.liferay.message.boards.model.MBMessage",
 		"model.class.name=com.liferay.message.boards.model.MBThread"
 	},
-	service = EditPortletProvider.class
+	service = ViewPortletProvider.class
 )
-public class MBAdminEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
+public class MBAdminViewPortletProvider
+	extends BasePortletProvider implements ViewPortletProvider {
 
 	@Override
 	public String getPortletName() {

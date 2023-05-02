@@ -14,17 +14,18 @@
 
 package com.liferay.commerce.shipment.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.commerce.constants.CommercePortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
- * @author Alessio Antonio Rendina
+ * @author Joao Victor Alves
  */
-@Component(
-	property = "model.class.name=com.liferay.commerce.model.CommerceShipment",
-	service = EditPortletProvider.class
-)
-public class CommerceShipmentEditPortletProvider
-	extends BaseCommerceShipmentPortletProvider implements EditPortletProvider {
+public abstract class BaseCommerceShipmentPortletProvider
+	extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return CommercePortletKeys.COMMERCE_SHIPMENT;
+	}
+
 }

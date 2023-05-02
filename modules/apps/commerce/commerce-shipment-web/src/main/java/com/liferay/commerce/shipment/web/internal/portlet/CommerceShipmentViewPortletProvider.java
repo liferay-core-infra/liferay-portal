@@ -14,8 +14,6 @@
 
 package com.liferay.commerce.shipment.web.internal.portlet;
 
-import com.liferay.commerce.constants.CommercePortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -28,11 +26,5 @@ import org.osgi.service.component.annotations.Component;
 	service = ViewPortletProvider.class
 )
 public class CommerceShipmentViewPortletProvider
-	extends BasePortletProvider implements ViewPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return CommercePortletKeys.COMMERCE_SHIPMENT;
-	}
-
+	extends BaseCommerceShipmentPortletProvider implements ViewPortletProvider {
 }

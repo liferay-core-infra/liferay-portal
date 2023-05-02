@@ -89,7 +89,7 @@ public class AntivirusAsyncRetrySchedulerImpl
 		SchedulerResponse schedulerResponse =
 			_schedulerEngineHelper.getScheduledJob(
 				jobName, AntivirusAsyncConstants.SCHEDULER_GROUP_NAME_ANTIVIRUS,
-				StorageType.PERSISTED);
+				StorageType.MEMORY_CLUSTERED);
 
 		if (schedulerResponse != null) {
 			return;
@@ -115,7 +115,7 @@ public class AntivirusAsyncRetrySchedulerImpl
 		}
 
 		_schedulerEngineHelper.schedule(
-			trigger, StorageType.PERSISTED, trigger.getJobName(),
+			trigger, StorageType.MEMORY_CLUSTERED, trigger.getJobName(),
 			AntivirusAsyncDestinationNames.ANTIVIRUS, message);
 	}
 

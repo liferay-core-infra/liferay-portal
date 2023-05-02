@@ -16,19 +16,19 @@ package com.liferay.blogs.web.internal.portlet;
 
 import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
+import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Sergio González
+ * @author Joao Victor Alves
  */
 @Component(
 	property = "model.class.name=com.liferay.blogs.model.BlogsEntry",
-	service = EditPortletProvider.class
+	service = ViewPortletProvider.class
 )
-public class BlogsAdminEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
+public class BlogsAdminViewPortletProvider
+	extends BasePortletProvider implements ViewPortletProvider {
 
 	@Override
 	public String getPortletName() {

@@ -22,6 +22,7 @@ import com.liferay.data.engine.rest.dto.v2_0.util.DataDefinitionDDMFormUtil;
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
 import com.liferay.data.engine.taglib.servlet.taglib.definition.DataLayoutBuilderDefinition;
+import com.liferay.data.engine.taglib.servlet.taglib.definition.DataLayoutBuilderDefinitionRegistry;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesRegistry;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
@@ -61,7 +62,6 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -80,7 +80,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,9 +88,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Gabriel Albuquerque
@@ -206,53 +202,21 @@ public class DataLayoutTaglibUtil {
 		_dataLayoutTaglibUtil = this;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addDataLayoutBuilderDefinition(
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataLayoutBuilderDefinitions.put(
-			contentType, dataLayoutBuilderDefinition);
-	}
-
 	@Deactivate
 	protected void deactivate() {
 		_dataLayoutTaglibUtil = null;
-	}
-
-	protected void removeDataLayoutBuilderDefinition(
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataLayoutBuilderDefinitions.remove(contentType);
 	}
 
 	private static DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(
 		String contentType) {
 
 		DataLayoutBuilderDefinition dataLayoutBuilderDefinition =
-			_dataLayoutBuilderDefinitions.get(contentType);
+			_dataLayoutTaglibUtil._dataLayoutBuilderDefinitionRegistry.
+				getDataLayoutBuilderDefinition(contentType);
 
 		if (dataLayoutBuilderDefinition == null) {
-			return _dataLayoutBuilderDefinitions.get("default");
+			return _dataLayoutTaglibUtil._dataLayoutBuilderDefinitionRegistry.
+				getDefaultDataLayoutBuilderDefinition();
 		}
 
 		return dataLayoutBuilderDefinition;
@@ -507,12 +471,14 @@ public class DataLayoutTaglibUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataLayoutTaglibUtil.class);
 
-	private static final Map<String, DataLayoutBuilderDefinition>
-		_dataLayoutBuilderDefinitions = new ConcurrentHashMap<>();
 	private static DataLayoutTaglibUtil _dataLayoutTaglibUtil;
 
 	@Reference
 	private DataDefinitionResource.Factory _dataDefinitionResourceFactory;
+
+	@Reference
+	private DataLayoutBuilderDefinitionRegistry
+		_dataLayoutBuilderDefinitionRegistry;
 
 	@Reference
 	private DataLayoutResource.Factory _dataLayoutResourceFactory;

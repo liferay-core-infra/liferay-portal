@@ -14,22 +14,17 @@
 
 package com.liferay.message.boards.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.message.boards.constants.MBPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
  * @author Joao Victor Alves
  */
-@Component(
-	property = {
-		"model.class.name=com.liferay.message.boards.model.MBCategory",
-		"model.class.name=com.liferay.message.boards.model.MBDiscussion",
-		"model.class.name=com.liferay.message.boards.model.MBMessage",
-		"model.class.name=com.liferay.message.boards.model.MBThread"
-	},
-	service = ViewPortletProvider.class
-)
-public class MBAdminViewPortletProvider
-	extends BaseMBAdminPortletProvider implements ViewPortletProvider {
+public abstract class BaseMBAdminPortletProvider extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return MBPortletKeys.MESSAGE_BOARDS_ADMIN;
+	}
+
 }

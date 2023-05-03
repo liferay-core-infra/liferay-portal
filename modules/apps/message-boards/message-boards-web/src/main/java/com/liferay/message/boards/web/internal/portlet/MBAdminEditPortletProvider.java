@@ -14,8 +14,6 @@
 
 package com.liferay.message.boards.web.internal.portlet;
 
-import com.liferay.message.boards.constants.MBPortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.EditPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -33,11 +31,5 @@ import org.osgi.service.component.annotations.Component;
 	service = EditPortletProvider.class
 )
 public class MBAdminEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return MBPortletKeys.MESSAGE_BOARDS_ADMIN;
-	}
-
+	extends BaseMBAdminPortletProvider implements EditPortletProvider {
 }

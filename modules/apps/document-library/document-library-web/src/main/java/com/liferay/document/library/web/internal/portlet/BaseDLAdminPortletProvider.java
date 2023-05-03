@@ -14,22 +14,17 @@
 
 package com.liferay.document.library.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.document.library.constants.DLPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
- * @author Sergio González
+ * @author Joao Victor Alves
  */
-@Component(
-	property = {
-		"model.class.name=com.liferay.document.library.kernel.model.DLFileEntryType",
-		"model.class.name=com.liferay.portal.kernel.repository.model.FileEntry",
-		"model.class.name=com.liferay.portal.kernel.repository.model.FileShortcut",
-		"model.class.name=com.liferay.portal.kernel.repository.model.Folder"
-	},
-	service = EditPortletProvider.class
-)
-public class DLAdminEditPortletProvider
-	extends BaseDLAdminPortletProvider implements EditPortletProvider {
+public abstract class BaseDLAdminPortletProvider extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return DLPortletKeys.DOCUMENT_LIBRARY_ADMIN;
+	}
+
 }

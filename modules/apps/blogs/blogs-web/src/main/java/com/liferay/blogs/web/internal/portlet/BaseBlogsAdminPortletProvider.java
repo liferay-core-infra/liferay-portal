@@ -14,17 +14,18 @@
 
 package com.liferay.blogs.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.blogs.constants.BlogsPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
- * @author Sergio González
+ * @author Joao Victor Alves
  */
-@Component(
-	property = "model.class.name=com.liferay.blogs.model.BlogsEntry",
-	service = EditPortletProvider.class
-)
-public class BlogsAdminEditPortletProvider
-	extends BaseBlogsAdminPortletProvider implements EditPortletProvider {
+public abstract class BaseBlogsAdminPortletProvider
+	extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return BlogsPortletKeys.BLOGS_ADMIN;
+	}
+
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.blogs.web.internal.portlet;
 
-import com.liferay.blogs.constants.BlogsPortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ManagePortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -28,11 +26,5 @@ import org.osgi.service.component.annotations.Component;
 	service = ManagePortletProvider.class
 )
 public class BlogsAdminManagePortletProvider
-	extends BasePortletProvider implements ManagePortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return BlogsPortletKeys.BLOGS_ADMIN;
-	}
-
+	extends BaseBlogsAdminPortletProvider implements ManagePortletProvider {
 }

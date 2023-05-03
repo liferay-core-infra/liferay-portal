@@ -14,9 +14,7 @@
 
 package com.liferay.announcements.web.internal.portlet;
 
-import com.liferay.announcements.constants.AnnouncementsPortletKeys;
 import com.liferay.announcements.kernel.constants.AnnouncementsConstants;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ManagePortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -29,11 +27,5 @@ import org.osgi.service.component.annotations.Component;
 	service = ManagePortletProvider.class
 )
 public class AlertsManagePortletProvider
-	extends BasePortletProvider implements ManagePortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return AnnouncementsPortletKeys.ALERTS;
-	}
-
+	extends BaseAlertsPortletProvider implements ManagePortletProvider {
 }

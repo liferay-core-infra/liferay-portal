@@ -16,28 +16,18 @@ package com.liferay.asset.publisher.web.internal.portlet;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
-import com.liferay.asset.publisher.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.internal.constants.AssetPublisherSelectionStyleConstants;
 import com.liferay.asset.publisher.web.internal.helper.AssetPublisherWebHelper;
 import com.liferay.layout.model.LayoutClassedModelUsage;
 import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.AddPortletProvider;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
-import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -50,32 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = AddPortletProvider.class
 )
 public class AssetPublisherAddPortletProvider
-	extends BasePortletProvider implements AddPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return AssetPublisherPortletKeys.ASSET_PUBLISHER;
-	}
-
-	@Override
-	public PortletURL getPortletURL(HttpServletRequest httpServletRequest)
-		throws PortalException {
-
-		return PortletURLBuilder.create(
-			super.getPortletURL(httpServletRequest)
-		).setMVCPath(
-			"/view_content.jsp"
-		).buildPortletURL();
-	}
-
-	@Override
-	public PortletURL getPortletURL(
-			HttpServletRequest httpServletRequest, Group group)
-		throws PortalException {
-
-		return PortletURLFactoryUtil.create(
-			httpServletRequest, getPortletName(), PortletRequest.RENDER_PHASE);
-	}
+	extends BaseAssetPublisherPortletProvider implements AddPortletProvider {
 
 	@Override
 	public void updatePortletPreferences(

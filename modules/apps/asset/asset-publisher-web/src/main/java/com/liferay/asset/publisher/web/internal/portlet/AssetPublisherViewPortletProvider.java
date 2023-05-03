@@ -14,18 +14,7 @@
 
 package com.liferay.asset.publisher.web.internal.portlet;
 
-import com.liferay.asset.publisher.constants.AssetPublisherPortletKeys;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
-
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -37,31 +26,5 @@ import org.osgi.service.component.annotations.Component;
 	service = ViewPortletProvider.class
 )
 public class AssetPublisherViewPortletProvider
-	extends BasePortletProvider implements ViewPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return AssetPublisherPortletKeys.ASSET_PUBLISHER;
-	}
-
-	@Override
-	public PortletURL getPortletURL(HttpServletRequest httpServletRequest)
-		throws PortalException {
-
-		return PortletURLBuilder.create(
-			super.getPortletURL(httpServletRequest)
-		).setMVCPath(
-			"/view_content.jsp"
-		).buildPortletURL();
-	}
-
-	@Override
-	public PortletURL getPortletURL(
-			HttpServletRequest httpServletRequest, Group group)
-		throws PortalException {
-
-		return PortletURLFactoryUtil.create(
-			httpServletRequest, getPortletName(), PortletRequest.RENDER_PHASE);
-	}
-
+	extends BaseAssetPublisherPortletProvider implements ViewPortletProvider {
 }

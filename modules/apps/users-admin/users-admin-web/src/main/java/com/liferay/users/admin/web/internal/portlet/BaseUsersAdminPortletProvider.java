@@ -14,17 +14,18 @@
 
 package com.liferay.users.admin.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.ManagePortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
+import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 /**
  * @author Joao Victor Alves
  */
-@Component(
-	property = "model.class.name=com.liferay.portal.kernel.model.User",
-	service = ManagePortletProvider.class
-)
-public class UsersAdminManagePortletProvider
-	extends BaseUsersAdminPortletProvider implements ManagePortletProvider {
+public abstract class BaseUsersAdminPortletProvider
+	extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return UsersAdminPortletKeys.USERS_ADMIN;
+	}
+
 }

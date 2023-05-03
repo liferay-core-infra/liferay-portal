@@ -14,9 +14,7 @@
 
 package com.liferay.users.admin.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -28,11 +26,5 @@ import org.osgi.service.component.annotations.Component;
 	service = ViewPortletProvider.class
 )
 public class UsersAdminViewPortletProvider
-	extends BasePortletProvider implements ViewPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return UsersAdminPortletKeys.USERS_ADMIN;
-	}
-
+	extends BaseUsersAdminPortletProvider implements ViewPortletProvider {
 }

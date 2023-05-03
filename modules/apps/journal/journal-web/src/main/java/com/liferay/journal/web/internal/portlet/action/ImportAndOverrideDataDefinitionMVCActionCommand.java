@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.upload.UploadPortal;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -61,7 +62,7 @@ public class ImportAndOverrideDataDefinitionMVCActionCommand
 				actionRequest, "dataDefinitionId");
 
 			UploadPortletRequest uploadPortletRequest =
-				_portal.getUploadPortletRequest(actionRequest);
+				_uploadPortal.getUploadPortletRequest(actionRequest);
 
 			DataDefinition dataDefinition = DataDefinition.toDTO(
 				FileUtil.read(uploadPortletRequest.getFile("jsonFile")));
@@ -94,5 +95,8 @@ public class ImportAndOverrideDataDefinitionMVCActionCommand
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UploadPortal _uploadPortal;
 
 }

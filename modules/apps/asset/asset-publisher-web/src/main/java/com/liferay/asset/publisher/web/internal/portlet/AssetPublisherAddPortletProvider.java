@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.AddPortletProvider;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -48,11 +47,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "model.class.name=com.liferay.asset.kernel.model.AssetEntry",
-	service = {AddPortletProvider.class, ViewPortletProvider.class}
+	service = AddPortletProvider.class
 )
 public class AssetPublisherAddPortletProvider
-	extends BasePortletProvider
-	implements AddPortletProvider, ViewPortletProvider {
+	extends BasePortletProvider implements AddPortletProvider {
 
 	@Override
 	public String getPortletName() {

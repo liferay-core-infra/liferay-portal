@@ -22,6 +22,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.IconTag;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.layout.reports.web.internal.configuration.provider.LayoutReportsGooglePageSpeedConfigurationProvider;
 import com.liferay.layout.reports.web.internal.constants.LayoutReportsPortletKeys;
+import com.liferay.layout.reports.web.internal.util.LayoutReportsUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -48,7 +49,6 @@ import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.template.react.renderer.ComponentDescriptor;
@@ -64,7 +64,6 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javax.portlet.PortletRequest;
@@ -91,6 +90,7 @@ import org.osgi.service.component.annotations.Reference;
 		LayoutReportsProductNavigationControlMenuEntry.class,
 		ProductNavigationControlMenuEntry.class
 	}
+
 )
 public class LayoutReportsProductNavigationControlMenuEntry
 	extends BaseProductNavigationControlMenuEntry {
@@ -135,7 +135,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 
 		Map<String, String> values = new HashMap<>();
 
-		if (isPanelStateOpen(httpServletRequest)) {
+		if (LayoutReportsUtil.isPanelStateOpen(httpServletRequest)) {
 			values.put("cssClass", "active");
 		}
 		else {
@@ -170,17 +170,6 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		return true;
 	}
 
-	public boolean isPanelStateOpen(HttpServletRequest httpServletRequest) {
-		String layoutReportsPanelState = SessionClicks.get(
-			httpServletRequest, _SESSION_CLICKS_KEY, "closed");
-
-		if (Objects.equals(layoutReportsPanelState, "open")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	@Override
 	public boolean isShow(HttpServletRequest httpServletRequest)
 		throws PortalException {
@@ -203,12 +192,6 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		}
 
 		return super.isShow(httpServletRequest);
-	}
-
-	public void setPanelState(
-		HttpServletRequest httpServletRequest, String panelState) {
-
-		SessionClicks.put(httpServletRequest, _SESSION_CLICKS_KEY, panelState);
 	}
 
 	@Activate
@@ -336,7 +319,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 			sb.append(_language.get(resourceBundle, "page-audit"));
 			sb.append("\" class=\"");
 
-			if (isPanelStateOpen(httpServletRequest)) {
+			if (LayoutReportsUtil.isPanelStateOpen(httpServletRequest)) {
 				sb.append("lfr-has-layout-reports-panel open-admin-panel ");
 			}
 
@@ -381,7 +364,8 @@ public class LayoutReportsProductNavigationControlMenuEntry
 					_npmResolver.resolveModuleName("layout-reports-web") +
 						"/js/App"),
 				HashMapBuilder.<String, Object>put(
-					"isPanelStateOpen", isPanelStateOpen(httpServletRequest)
+					"isPanelStateOpen",
+					LayoutReportsUtil.isPanelStateOpen(httpServletRequest)
 				).put(
 					"layoutReportsDataURL",
 					_getLayoutReportsDataURL(httpServletRequest)
@@ -399,9 +383,6 @@ public class LayoutReportsProductNavigationControlMenuEntry
 
 	private static final String _ICON_TMPL_CONTENT = StringUtil.read(
 		LayoutReportsProductNavigationControlMenuEntry.class, "icon.tmpl");
-
-	private static final String _SESSION_CLICKS_KEY =
-		"com.liferay.layout.reports.web_layoutReportsPanelState";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutReportsProductNavigationControlMenuEntry.class);

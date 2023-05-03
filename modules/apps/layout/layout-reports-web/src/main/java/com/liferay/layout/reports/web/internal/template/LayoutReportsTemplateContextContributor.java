@@ -15,18 +15,17 @@
 package com.liferay.layout.reports.web.internal.template;
 
 import com.liferay.layout.reports.web.internal.product.navigation.control.menu.LayoutReportsProductNavigationControlMenuEntry;
+import com.liferay.layout.reports.web.internal.util.LayoutReportsUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.util.GetterUtil;
-
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Sandro Chinea
@@ -56,9 +55,7 @@ public class LayoutReportsTemplateContextContributor
 			return;
 		}
 
-		if (_layoutReportsProductNavigationControlMenuEntry.isPanelStateOpen(
-				httpServletRequest)) {
-
+		if (LayoutReportsUtil.isPanelStateOpen(httpServletRequest)) {
 			String cssClass = GetterUtil.getString(
 				contextObjects.get("bodyCssClass"));
 

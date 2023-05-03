@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.segments.experiment.web.internal.constants.SegmentsExperimentWebKeys;
-import com.liferay.segments.experiment.web.internal.product.navigation.control.menu.SegmentsExperimentProductNavigationControlMenuEntry;
 
 import java.util.Map;
 
@@ -75,8 +75,10 @@ public class SegmentsExperimentTemplateContextContributor
 	private static final Log _log = LogFactoryUtil.getLog(
 		SegmentsExperimentTemplateContextContributor.class);
 
-	@Reference
-	private SegmentsExperimentProductNavigationControlMenuEntry
+	@Reference(
+		target = "(component.name=com.liferay.segments.experiment.web.internal.product.navigation.control.menu.SegmentsExperimentProductNavigationControlMenuEntry)"
+	)
+	private ProductNavigationControlMenuEntry
 		_segmentsExperimentProductNavigationControlMenuEntry;
 
 }

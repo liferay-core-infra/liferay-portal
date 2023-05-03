@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.web.internal.portlet;
 
-import com.liferay.document.library.constants.DLPortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -34,11 +32,5 @@ import org.osgi.service.component.annotations.Component;
 	service = ViewPortletProvider.class
 )
 public class DLViewPortletProvider
-	extends BasePortletProvider implements ViewPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return DLPortletKeys.DOCUMENT_LIBRARY;
-	}
-
+	extends BaseDLPortletProvider implements ViewPortletProvider {
 }

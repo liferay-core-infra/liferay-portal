@@ -14,13 +14,13 @@
 
 package com.liferay.analytics.reports.web.internal.template;
 
-import com.liferay.analytics.reports.web.internal.product.navigation.control.menu.AnalyticsReportsProductNavigationControlMenuEntry;
 import com.liferay.analytics.reports.web.internal.util.AnalyticsReportsUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 
 import java.util.Map;
 
@@ -70,8 +70,10 @@ public class AnalyticsReportsTemplateContextContributor
 	private static final Log _log = LogFactoryUtil.getLog(
 		AnalyticsReportsTemplateContextContributor.class);
 
-	@Reference
-	private AnalyticsReportsProductNavigationControlMenuEntry
+	@Reference(
+		target = "(component.name=com.liferay.analytics.reports.web.internal.product.navigation.control.menu.AnalyticsReportsProductNavigationControlMenuEntry)"
+	)
+	private ProductNavigationControlMenuEntry
 		_analyticsReportsProductNavigationControlMenuEntry;
 
 }

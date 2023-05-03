@@ -21,10 +21,11 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.osgi.web.portlet.container.test.util.PortletContainerTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upload.LiferayServletRequest;
-import com.liferay.portal.upload.UploadPortletRequestImpl;
 import com.liferay.portal.upload.UploadServletRequestImpl;
+import com.liferay.portal.upload.factory.UploadPortletRequestFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -78,7 +79,7 @@ public class UploadPortletRequestWhenGettingParameterValuesTest {
 		mockHttpServletRequest.addParameter(parameter, parameter);
 
 		UploadPortletRequest uploadPortletRequest =
-			new UploadPortletRequestImpl(
+			_uploadPortletRequestFactory.create(
 				new UploadServletRequestImpl(
 					(HttpServletRequest)liferayServletRequest.getRequest(),
 					fileParameters, regularParameters),
@@ -116,5 +117,8 @@ public class UploadPortletRequestWhenGettingParameterValuesTest {
 		"Enterprise. Open Source. For Life.".getBytes();
 
 	private static String _portletNamespace;
+
+	@Inject
+	private UploadPortletRequestFactory _uploadPortletRequestFactory;
 
 }

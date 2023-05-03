@@ -16,6 +16,7 @@ dependencies {
 	testIntegrationCompile project(":apps:portal-configuration:portal-configuration-test-util")
 	testIntegrationCompile project(":apps:portal:portal-db-partition-test-util")
 	testIntegrationCompile project(":apps:portal:portal-props-test-util")
+	testIntegrationCompile project(":apps:portal:portal-upload-api")
 	testIntegrationCompile project(":apps:segments:segments-api")
 	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
 }

@@ -29,6 +29,9 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.SessionClicks;
+
+import java.util.Objects;
 
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
@@ -96,6 +99,19 @@ public class AnalyticsReportsUtil {
 		return portletURL.toString();
 	}
 
+	public static boolean isPanelStateOpen(
+		HttpServletRequest httpServletRequest) {
+
+		String analyticsReportsPanelState = SessionClicks.get(
+			httpServletRequest, _SESSION_CLICKS_KEY, "closed");
+
+		if (Objects.equals(analyticsReportsPanelState, "open")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public static boolean isShowAnalyticsReportsPanel(
 			AnalyticsSettingsManager analyticsSettingsManager, long companyId,
 			HttpServletRequest httpServletRequest)
@@ -128,5 +144,14 @@ public class AnalyticsReportsUtil {
 
 		return true;
 	}
+
+	public static void setPanelState(
+		HttpServletRequest httpServletRequest, String panelState) {
+
+		SessionClicks.put(httpServletRequest, _SESSION_CLICKS_KEY, panelState);
+	}
+
+	private static final String _SESSION_CLICKS_KEY =
+		"com.liferay.analytics.reports.web_panelState";
 
 }

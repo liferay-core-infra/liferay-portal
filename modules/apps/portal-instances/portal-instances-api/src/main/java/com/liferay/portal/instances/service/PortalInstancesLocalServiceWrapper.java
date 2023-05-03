@@ -37,6 +37,10 @@ public class PortalInstancesLocalServiceWrapper
 		_portalInstancesLocalService = portalInstancesLocalService;
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void addCompanyId(long companyId) {
 		_portalInstancesLocalService.addCompanyId(companyId);

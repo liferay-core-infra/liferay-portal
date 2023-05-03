@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -46,7 +45,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsValues;
 
-import java.util.List;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -76,6 +75,8 @@ public class PortalInstancesTest {
 			PropsValues.class, "VIRTUAL_HOSTS_DEFAULT_SITE_NAME", "Guest");
 
 		_company = CompanyTestUtil.addCompany();
+
+		PortalInstances.initCompany(_company.getWebId());
 
 		Group defaultGroup = _groupLocalService.getGroup(
 			_company.getCompanyId(), GroupConstants.GUEST);
@@ -139,6 +140,19 @@ public class PortalInstancesTest {
 	}
 
 	@Test
+	public void testGetCompanyIds() throws Exception {
+		_testGetCompanyIds(
+			TestPropsValues.getCompanyId(), _company.getCompanyId());
+	}
+
+	@Test
+	public void testGetDefaultCompanyId() throws Exception {
+		Assert.assertEquals(
+			TestPropsValues.getCompanyId(),
+			PortalInstances.getDefaultCompanyId());
+	}
+
+	@Test
 	public void testGetVirtualHostLanguageId() throws Exception {
 		Group group = GroupTestUtil.addGroupToCompany(_company.getCompanyId());
 
@@ -175,12 +189,34 @@ public class PortalInstancesTest {
 	}
 
 	@Test
-	public void testGetWebIdsAfterInitCompany() {
-		PortalInstances.initCompany(_company.getWebId());
+	public void testGetWebIds() throws Exception {
+		_testGetWebIds(_getDefaultCompanyWebId(), _company.getWebId());
+	}
 
-		List<String> webIds = ListUtil.fromArray(PortalInstances.getWebIds());
+	@Test
+	public void testReload() throws Exception {
+		PortalInstances.reload();
 
-		Assert.assertTrue(webIds.contains(_company.getWebId()));
+		_testGetCompanyIds(
+			TestPropsValues.getCompanyId(), _company.getCompanyId());
+
+		_testGetWebIds(_getDefaultCompanyWebId(), _company.getWebId());
+	}
+
+	@Test
+	public void testRemoveCompany() throws Exception {
+		PortalInstances.removeCompany(_company.getCompanyId());
+
+		_testGetCompanyIds(TestPropsValues.getCompanyId());
+
+		_testGetWebIds(_getDefaultCompanyWebId());
+	}
+
+	private String _getDefaultCompanyWebId() throws Exception {
+		Company defaultCompany = _companyLocalService.fetchCompany(
+			TestPropsValues.getCompanyId());
+
+		return defaultCompany.getWebId();
 	}
 
 	private void _testGetCompanyId(
@@ -203,6 +239,18 @@ public class PortalInstancesTest {
 				WebKeys.VIRTUAL_HOST_LAYOUT_SET));
 	}
 
+	private void _testGetCompanyIds(long... expectedCompanyIds) {
+		long[] actualCompanyIds = PortalInstances.getCompanyIds();
+
+		Assert.assertEquals(
+			Arrays.toString(actualCompanyIds), expectedCompanyIds.length,
+			actualCompanyIds.length);
+
+		for (int i = 0; i < actualCompanyIds.length; i++) {
+			Assert.assertEquals(expectedCompanyIds[i], actualCompanyIds[i]);
+		}
+	}
+
 	private void _testGetVirtualHostLanguageId(
 		String expectedLanguageId, String hostname) {
 
@@ -219,6 +267,18 @@ public class PortalInstancesTest {
 			expectedLanguageId,
 			mockHttpServletRequest.getAttribute(
 				WebKeys.VIRTUAL_HOST_LANGUAGE_ID));
+	}
+
+	private void _testGetWebIds(String... expectedWebIds) {
+		String[] actualWebIds = PortalInstances.getWebIds();
+
+		Assert.assertEquals(
+			Arrays.toString(actualWebIds), expectedWebIds.length,
+			actualWebIds.length);
+
+		for (int i = 0; i < actualWebIds.length; i++) {
+			Assert.assertEquals(expectedWebIds[i], actualWebIds[i]);
+		}
 	}
 
 	private void _updateLayoutSetVirtualHostname(

@@ -20,7 +20,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.segments.constants.SegmentsExperimentConstants;
@@ -28,6 +31,9 @@ import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.model.SegmentsExperimentRel;
 
 import java.util.Locale;
+import java.util.Objects;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author David Arques
@@ -36,6 +42,35 @@ public class SegmentsExperimentUtil {
 
 	public static final String ANALYTICS_CLOUD_TRIAL_URL =
 		"https://www.liferay.com/products/analytics-cloud/get-started";
+
+	public static boolean isPanelStateOpen(
+		HttpServletRequest httpServletRequest) {
+
+		String segmentsExperimentPanelState = SessionClicks.get(
+			httpServletRequest, _SESSION_CLICKS_KEY, "closed");
+
+		if (Objects.equals(segmentsExperimentPanelState, "open")) {
+			return true;
+		}
+
+		HttpServletRequest originalHttpServletRequest =
+			PortalUtil.getOriginalServletRequest(httpServletRequest);
+
+		String segmentsExperimentKey = ParamUtil.getString(
+			originalHttpServletRequest, "segmentsExperimentKey");
+
+		if (Validator.isNotNull(segmentsExperimentKey)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static void setPanelState(
+		HttpServletRequest httpServletRequest, String panelState) {
+
+		SessionClicks.put(httpServletRequest, _SESSION_CLICKS_KEY, panelState);
+	}
 
 	public static JSONObject toGoalJSONObject(
 		Locale locale, UnicodeProperties typeSettingsUnicodeProperties) {
@@ -167,5 +202,8 @@ public class SegmentsExperimentUtil {
 
 	private SegmentsExperimentUtil() {
 	}
+
+	private static final String _SESSION_CLICKS_KEY =
+		"com.liferay.segments.experiment.web_panelState";
 
 }

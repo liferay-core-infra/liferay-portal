@@ -42,9 +42,7 @@ import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.template.react.renderer.ComponentDescriptor;
 import com.liferay.portal.template.react.renderer.ReactRenderer;
@@ -53,6 +51,7 @@ import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuE
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 import com.liferay.segments.constants.SegmentsExperimentConstants;
 import com.liferay.segments.constants.SegmentsPortletKeys;
+import com.liferay.segments.experiment.web.internal.util.SegmentsExperimentUtil;
 import com.liferay.segments.manager.SegmentsExperienceManager;
 import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
@@ -65,7 +64,6 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javax.portlet.PortletRequest;
@@ -137,7 +135,7 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 
 		Map<String, String> values = new HashMap<>();
 
-		if (isPanelStateOpen(httpServletRequest)) {
+		if (SegmentsExperimentUtil.isPanelStateOpen(httpServletRequest)) {
 			values.put("cssClass", "active");
 		}
 		else {
@@ -171,27 +169,6 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 		writer.write(StringUtil.replace(_ICON_TMPL_CONTENT, "${", "}", values));
 
 		return true;
-	}
-
-	public boolean isPanelStateOpen(HttpServletRequest httpServletRequest) {
-		String segmentsExperimentPanelState = SessionClicks.get(
-			httpServletRequest, _SESSION_CLICKS_KEY, "closed");
-
-		if (Objects.equals(segmentsExperimentPanelState, "open")) {
-			return true;
-		}
-
-		HttpServletRequest originalHttpServletRequest =
-			_portal.getOriginalServletRequest(httpServletRequest);
-
-		String segmentsExperimentKey = ParamUtil.getString(
-			originalHttpServletRequest, "segmentsExperimentKey");
-
-		if (Validator.isNotNull(segmentsExperimentKey)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override
@@ -247,12 +224,6 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 		}
 
 		return super.isShow(httpServletRequest);
-	}
-
-	public void setPanelState(
-		HttpServletRequest httpServletRequest, String panelState) {
-
-		SessionClicks.put(httpServletRequest, _SESSION_CLICKS_KEY, panelState);
 	}
 
 	@Activate
@@ -411,7 +382,8 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 
 			sb.append("<div class=\"");
 
-			boolean panelStateOpen = isPanelStateOpen(httpServletRequest);
+			boolean panelStateOpen = SegmentsExperimentUtil.isPanelStateOpen(
+				httpServletRequest);
 
 			if (panelStateOpen) {
 				sb.append(
@@ -475,9 +447,6 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 
 	private static final String _ICON_TMPL_CONTENT = StringUtil.read(
 		SegmentsExperimentProductNavigationControlMenuEntry.class, "icon.tmpl");
-
-	private static final String _SESSION_CLICKS_KEY =
-		"com.liferay.segments.experiment.web_panelState";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SegmentsExperimentProductNavigationControlMenuEntry.class);

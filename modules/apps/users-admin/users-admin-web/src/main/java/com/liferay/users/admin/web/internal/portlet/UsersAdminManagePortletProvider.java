@@ -15,20 +15,20 @@
 package com.liferay.users.admin.web.internal.portlet;
 
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
+import com.liferay.portal.kernel.portlet.ManagePortletProvider;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Pei-Jung Lan
+ * @author Joao Victor Alves
  */
 @Component(
 	property = "model.class.name=com.liferay.portal.kernel.model.User",
-	service = EditPortletProvider.class
+	service = ManagePortletProvider.class
 )
-public class UsersAdminEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
+public class UsersAdminManagePortletProvider
+	extends BasePortletProvider implements ManagePortletProvider {
 
 	@Override
 	public String getPortletName() {

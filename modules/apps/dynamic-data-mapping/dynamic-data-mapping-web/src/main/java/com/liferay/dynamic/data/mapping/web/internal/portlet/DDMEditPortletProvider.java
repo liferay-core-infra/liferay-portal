@@ -14,8 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.web.internal.portlet;
 
-import com.liferay.dynamic.data.mapping.constants.DDMPortletKeys;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.EditPortletProvider;
 
 import org.osgi.service.component.annotations.Component;
@@ -31,11 +29,5 @@ import org.osgi.service.component.annotations.Component;
 	service = EditPortletProvider.class
 )
 public class DDMEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return DDMPortletKeys.DYNAMIC_DATA_MAPPING;
-	}
-
+	extends BaseDDMPortletProvider implements EditPortletProvider {
 }

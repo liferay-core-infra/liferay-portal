@@ -14,20 +14,17 @@
 
 package com.liferay.dynamic.data.mapping.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.dynamic.data.mapping.constants.DDMPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
  * @author Joao Victor Alves
  */
-@Component(
-	property = {
-		"model.class.name=com.liferay.dynamic.data.mapping.model.DDMStructure",
-		"model.class.name=com.liferay.dynamic.data.mapping.model.DDMTemplate"
-	},
-	service = ViewPortletProvider.class
-)
-public class DDMViewPortletProvider
-	extends BaseDDMPortletProvider implements ViewPortletProvider {
+public abstract class BaseDDMPortletProvider extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return DDMPortletKeys.DYNAMIC_DATA_MAPPING;
+	}
+
 }

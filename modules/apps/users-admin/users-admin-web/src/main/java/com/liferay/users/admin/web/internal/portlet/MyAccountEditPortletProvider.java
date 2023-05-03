@@ -15,9 +15,7 @@
 package com.liferay.users.admin.web.internal.portlet;
 
 import com.liferay.admin.kernel.util.PortalMyAccountApplicationType;
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.EditPortletProvider;
-import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -29,11 +27,5 @@ import org.osgi.service.component.annotations.Component;
 	service = EditPortletProvider.class
 )
 public class MyAccountEditPortletProvider
-	extends BasePortletProvider implements EditPortletProvider {
-
-	@Override
-	public String getPortletName() {
-		return UsersAdminPortletKeys.MY_ACCOUNT;
-	}
-
+	extends BaseMyAccountPortletProvider implements EditPortletProvider {
 }

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.template.constants.TemplatePortletKeys;
 import com.liferay.template.model.TemplateEntry;
 import com.liferay.template.service.TemplateEntryLocalService;
@@ -56,7 +57,7 @@ public class UpdateTemplateEntryMVCActionCommand
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploadPortal.getUploadPortletRequest(actionRequest);
 
 		long ddmTemplateId = ParamUtil.getLong(
 			uploadPortletRequest, "ddmTemplateId");
@@ -138,5 +139,8 @@ public class UpdateTemplateEntryMVCActionCommand
 
 	@Reference
 	private TemplateEntryLocalService _templateEntryLocalService;
+
+	@Reference
+	private UploadPortal _uploadPortal;
 
 }

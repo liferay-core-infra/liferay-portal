@@ -135,7 +135,6 @@ import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.HttpSessionWrapper;
-import com.liferay.portal.kernel.servlet.NonSerializableObjectRequestWrapper;
 import com.liferay.portal.kernel.servlet.PersistentHttpServletRequestWrapper;
 import com.liferay.portal.kernel.servlet.PortalSessionContext;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
@@ -147,8 +146,6 @@ import com.liferay.portal.kernel.servlet.filters.compoundsessionid.CompoundSessi
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -175,7 +172,6 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
@@ -196,8 +192,6 @@ import com.liferay.portal.servlet.I18nServlet;
 import com.liferay.portal.spring.context.PortalContextLoaderListener;
 import com.liferay.portal.struts.StrutsUtil;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
-import com.liferay.portal.upload.UploadPortletRequestImpl;
-import com.liferay.portal.upload.UploadServletRequestImpl;
 import com.liferay.portal.webserver.WebServerServlet;
 import com.liferay.portlet.LiferayPortletUtil;
 import com.liferay.portlet.PortletPreferencesWrapper;
@@ -5042,94 +5036,6 @@ public class PortalImpl implements Portal {
 
 		return getUniqueElementId(
 			getHttpServletRequest(request), namespace, elementId);
-	}
-
-	@Override
-	public UploadPortletRequest getUploadPortletRequest(
-		PortletRequest portletRequest) {
-
-		LiferayPortletRequest liferayPortletRequest =
-			LiferayPortletUtil.getLiferayPortletRequest(portletRequest);
-
-		DynamicServletRequest dynamicServletRequest =
-			(DynamicServletRequest)
-				liferayPortletRequest.getHttpServletRequest();
-
-		HttpServletRequestWrapper requestWrapper =
-			(HttpServletRequestWrapper)dynamicServletRequest.getRequest();
-
-		return new UploadPortletRequestImpl(
-			getUploadServletRequest(requestWrapper), liferayPortletRequest,
-			getPortletNamespace(liferayPortletRequest.getPortletName()));
-	}
-
-	@Override
-	public UploadServletRequest getUploadServletRequest(
-		HttpServletRequest httpServletRequest) {
-
-		return getUploadServletRequest(httpServletRequest, 0, null);
-	}
-
-	@Override
-	public UploadServletRequest getUploadServletRequest(
-		HttpServletRequest httpServletRequest, int fileSizeThreshold,
-		String location) {
-
-		List<PersistentHttpServletRequestWrapper>
-			persistentHttpServletRequestWrappers = new ArrayList<>();
-
-		HttpServletRequest currentHttpServletRequest = httpServletRequest;
-
-		while (currentHttpServletRequest instanceof HttpServletRequestWrapper) {
-			if (currentHttpServletRequest instanceof UploadServletRequest) {
-				return (UploadServletRequest)currentHttpServletRequest;
-			}
-
-			Class<?> currentRequestClass = currentHttpServletRequest.getClass();
-
-			String currentRequestClassName = currentRequestClass.getName();
-
-			if (!isUnwrapRequest(currentRequestClassName)) {
-				break;
-			}
-
-			if (currentHttpServletRequest instanceof
-					PersistentHttpServletRequestWrapper) {
-
-				PersistentHttpServletRequestWrapper
-					persistentHttpServletRequestWrapper =
-						(PersistentHttpServletRequestWrapper)
-							currentHttpServletRequest;
-
-				persistentHttpServletRequestWrappers.add(
-					persistentHttpServletRequestWrapper.clone());
-			}
-
-			HttpServletRequestWrapper httpServletRequestWrapper =
-				(HttpServletRequestWrapper)currentHttpServletRequest;
-
-			currentHttpServletRequest =
-				(HttpServletRequest)httpServletRequestWrapper.getRequest();
-		}
-
-		if (ServerDetector.isWebLogic()) {
-			currentHttpServletRequest = new NonSerializableObjectRequestWrapper(
-				currentHttpServletRequest);
-		}
-
-		for (int i = persistentHttpServletRequestWrappers.size() - 1; i >= 0;
-			 i--) {
-
-			HttpServletRequestWrapper httpServletRequestWrapper =
-				persistentHttpServletRequestWrappers.get(i);
-
-			httpServletRequestWrapper.setRequest(currentHttpServletRequest);
-
-			currentHttpServletRequest = httpServletRequestWrapper;
-		}
-
-		return new UploadServletRequestImpl(
-			currentHttpServletRequest, fileSizeThreshold, location);
 	}
 
 	@Override

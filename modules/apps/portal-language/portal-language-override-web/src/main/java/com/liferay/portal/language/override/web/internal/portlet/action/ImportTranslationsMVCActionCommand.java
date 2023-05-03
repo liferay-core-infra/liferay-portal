@@ -12,9 +12,9 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.language.override.service.PLOEntryService;
 import com.liferay.portal.language.override.web.internal.constants.PLOPortletKeys;
+import com.liferay.portal.upload.UploadPortal;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,7 +50,7 @@ public class ImportTranslationsMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploadPortal.getUploadPortletRequest(actionRequest);
 
 		_importTranslations(
 			actionRequest, uploadPortletRequest.getFile("file"),
@@ -116,6 +116,6 @@ public class ImportTranslationsMVCActionCommand extends BaseMVCActionCommand {
 	private PLOEntryService _ploEntryService;
 
 	@Reference
-	private Portal _portal;
+	private UploadPortal _uploadPortal;
 
 }

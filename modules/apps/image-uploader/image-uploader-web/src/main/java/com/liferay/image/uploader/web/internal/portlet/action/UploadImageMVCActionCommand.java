@@ -43,12 +43,12 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.portal.util.PropsValues;
 
 import java.awt.image.RenderedImage;
@@ -102,7 +102,7 @@ public class UploadImageMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			UploadPortletRequest uploadPortletRequest =
-				_portal.getUploadPortletRequest(actionRequest);
+				_uploadPortal.getUploadPortletRequest(actionRequest);
 
 			File file = uploadPortletRequest.getFile("fileName");
 
@@ -164,7 +164,7 @@ public class UploadImageMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(portletRequest);
+			_uploadPortal.getUploadPortletRequest(portletRequest);
 
 		File file = uploadPortletRequest.getFile("fileName");
 
@@ -402,7 +402,7 @@ public class UploadImageMVCActionCommand extends BaseMVCActionCommand {
 	private Language _language;
 
 	@Reference
-	private Portal _portal;
+	private UploadPortal _uploadPortal;
 
 	@Reference
 	private UploadServletRequestConfigurationProvider

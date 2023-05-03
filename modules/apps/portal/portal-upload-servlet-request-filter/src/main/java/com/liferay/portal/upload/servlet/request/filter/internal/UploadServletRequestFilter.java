@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
 import com.liferay.portal.upload.LiferayInputStream;
+import com.liferay.portal.upload.UploadPortal;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -96,7 +97,7 @@ public class UploadServletRequestFilter extends BasePortalFilter {
 		}
 
 		UploadServletRequest uploadServletRequest =
-			_portal.getUploadServletRequest(
+			_uploadPortal.getUploadServletRequest(
 				httpServletRequest, fileSizeThreshold, location);
 
 		try {
@@ -114,5 +115,8 @@ public class UploadServletRequestFilter extends BasePortalFilter {
 
 	@Reference
 	private PortletLocalService _portletLocalService;
+
+	@Reference
+	private UploadPortal _uploadPortal;
 
 }

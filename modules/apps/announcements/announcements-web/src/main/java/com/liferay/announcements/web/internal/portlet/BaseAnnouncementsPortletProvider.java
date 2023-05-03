@@ -14,17 +14,18 @@
 
 package com.liferay.announcements.web.internal.portlet;
 
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.announcements.constants.AnnouncementsPortletKeys;
+import com.liferay.portal.kernel.portlet.BasePortletProvider;
 
 /**
  * @author Joao Victor Alves
  */
-@Component(
-	property = "model.class.name=com.liferay.announcements.kernel.model.AnnouncementsEntry",
-	service = ViewPortletProvider.class
-)
-public class AnnouncementsViewPortletProvider
-	extends BaseAnnouncementsPortletProvider implements ViewPortletProvider {
+public abstract class BaseAnnouncementsPortletProvider
+	extends BasePortletProvider {
+
+	@Override
+	public String getPortletName() {
+		return AnnouncementsPortletKeys.ANNOUNCEMENTS;
+	}
+
 }

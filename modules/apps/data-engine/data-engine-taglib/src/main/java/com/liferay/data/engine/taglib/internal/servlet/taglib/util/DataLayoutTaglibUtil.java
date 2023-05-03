@@ -46,7 +46,6 @@ import com.liferay.dynamic.data.mapping.model.UnlocalizedValue;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
-import com.liferay.dynamic.data.mapping.spi.form.builder.settings.DDMFormBuilderSettingsRetrieverHelper;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
@@ -54,7 +53,6 @@ import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -112,64 +110,6 @@ public class DataLayoutTaglibUtil {
 			dataDefinitionId, httpServletRequest);
 	}
 
-	public static JSONObject getDataLayoutConfigJSONObject(
-		String contentType, Locale locale) {
-
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition =
-			_getDataLayoutBuilderDefinition(contentType);
-
-		JSONObject dataLayoutConfigJSONObject = JSONUtil.put(
-			"allowFieldSets", dataLayoutBuilderDefinition.allowFieldSets()
-		).put(
-			"allowMultiplePages",
-			dataLayoutBuilderDefinition.allowMultiplePages()
-		).put(
-			"allowNestedFields", dataLayoutBuilderDefinition.allowNestedFields()
-		).put(
-			"allowRules", dataLayoutBuilderDefinition.allowRules()
-		).put(
-			"allowSuccessPage", dataLayoutBuilderDefinition.allowSuccessPage()
-		).put(
-			"disabledProperties",
-			dataLayoutBuilderDefinition.getDisabledProperties()
-		).put(
-			"disabledTabs", dataLayoutBuilderDefinition.getDisabledTabs()
-		).put(
-			"visibleProperties",
-			dataLayoutBuilderDefinition.getVisibleProperties()
-		);
-
-		if (dataLayoutBuilderDefinition.allowRules()) {
-			try {
-				dataLayoutConfigJSONObject.put(
-					"ruleSettings",
-					JSONUtil.put(
-						"dataProviderInstanceParameterSettingsURL",
-						_dataLayoutTaglibUtil.
-							_getDDMDataProviderInstanceParameterSettingsURL()
-					).put(
-						"dataProviderInstancesURL",
-						_dataLayoutTaglibUtil._getDDMDataProviderInstancesURL()
-					).put(
-						"functionsMetadata",
-						_dataLayoutTaglibUtil._getFunctionsMetadataJSONObject(
-							locale)
-					).put(
-						"functionsURL", _dataLayoutTaglibUtil._getFunctionsURL()
-					));
-			}
-			catch (JSONException jsonException) {
-				_log.error(jsonException);
-			}
-		}
-
-		dataLayoutConfigJSONObject.put(
-			"unimplementedProperties",
-			dataLayoutBuilderDefinition.getUnimplementedProperties());
-
-		return dataLayoutConfigJSONObject;
-	}
-
 	public static JSONObject getDataLayoutJSONObject(
 		Set<Locale> availableLocales, String contentType, Long dataDefinitionId,
 		Long dataLayoutId, HttpServletRequest httpServletRequest,
@@ -205,21 +145,6 @@ public class DataLayoutTaglibUtil {
 	@Deactivate
 	protected void deactivate() {
 		_dataLayoutTaglibUtil = null;
-	}
-
-	private static DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(
-		String contentType) {
-
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition =
-			_dataLayoutTaglibUtil._dataLayoutBuilderDefinitionRegistry.
-				getDataLayoutBuilderDefinition(contentType);
-
-		if (dataLayoutBuilderDefinition == null) {
-			return _dataLayoutTaglibUtil._dataLayoutBuilderDefinitionRegistry.
-				getDefaultDataLayoutBuilderDefinition();
-		}
-
-		return dataLayoutBuilderDefinition;
 	}
 
 	private Set<Locale> _getAvailableLocales(
@@ -298,6 +223,21 @@ public class DataLayoutTaglibUtil {
 		return dataLayoutResource.getDataLayout(dataLayoutId);
 	}
 
+	private DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(
+		String contentType) {
+
+		DataLayoutBuilderDefinition dataLayoutBuilderDefinition =
+			_dataLayoutTaglibUtil._dataLayoutBuilderDefinitionRegistry.
+				getDataLayoutBuilderDefinition(contentType);
+
+		if (dataLayoutBuilderDefinition == null) {
+			return _dataLayoutTaglibUtil._dataLayoutBuilderDefinitionRegistry.
+				getDefaultDataLayoutBuilderDefinition();
+		}
+
+		return dataLayoutBuilderDefinition;
+	}
+
 	private JSONObject _getDataLayoutJSONObject(
 		Set<Locale> availableLocales, String contentType, Long dataDefinitionId,
 		Long dataLayoutId, HttpServletRequest httpServletRequest,
@@ -343,16 +283,6 @@ public class DataLayoutTaglibUtil {
 
 			return _jsonFactory.createJSONObject();
 		}
-	}
-
-	private String _getDDMDataProviderInstanceParameterSettingsURL() {
-		return _ddmFormBuilderSettingsRetrieverHelper.
-			getDDMDataProviderInstanceParameterSettingsURL();
-	}
-
-	private String _getDDMDataProviderInstancesURL() {
-		return _ddmFormBuilderSettingsRetrieverHelper.
-			getDDMDataProviderInstancesURL();
 	}
 
 	private Long _getDefaultDataLayoutId(
@@ -427,18 +357,6 @@ public class DataLayoutTaglibUtil {
 		}
 	}
 
-	private JSONObject _getFunctionsMetadataJSONObject(Locale locale)
-		throws JSONException {
-
-		return _jsonFactory.createJSONObject(
-			_ddmFormBuilderSettingsRetrieverHelper.
-				getSerializedDDMExpressionFunctionsMetadata(locale));
-	}
-
-	private String _getFunctionsURL() {
-		return _ddmFormBuilderSettingsRetrieverHelper.getDDMFunctionsURL();
-	}
-
 	private void _setFieldIndexTypeNone(JSONObject jsonObject) {
 		for (JSONObject pageJSONObject :
 				(Iterable<JSONObject>)jsonObject.getJSONArray("pages")) {
@@ -482,10 +400,6 @@ public class DataLayoutTaglibUtil {
 
 	@Reference
 	private DataLayoutResource.Factory _dataLayoutResourceFactory;
-
-	@Reference
-	private DDMFormBuilderSettingsRetrieverHelper
-		_ddmFormBuilderSettingsRetrieverHelper;
 
 	@Reference
 	private DDMFormFieldTypeServicesRegistry _ddmFormFieldTypeServicesRegistry;

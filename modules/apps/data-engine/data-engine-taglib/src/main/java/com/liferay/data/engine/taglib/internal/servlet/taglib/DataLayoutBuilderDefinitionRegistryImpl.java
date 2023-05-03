@@ -39,7 +39,7 @@ public class DataLayoutBuilderDefinitionRegistryImpl
 
 	@Override
 	public DataLayoutBuilderDefinition getDefaultDataLayoutBuilderDefinition() {
-		return _serviceTrackerMap.getService("default");
+		return _defaultDataLayoutBuilderDefinition;
 	}
 
 	@Activate
@@ -47,6 +47,11 @@ public class DataLayoutBuilderDefinitionRegistryImpl
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, DataLayoutBuilderDefinition.class, "content.type");
 	}
+
+	private static final DataLayoutBuilderDefinition
+		_defaultDataLayoutBuilderDefinition =
+			new DataLayoutBuilderDefinition() {
+			};
 
 	private ServiceTrackerMap<String, DataLayoutBuilderDefinition>
 		_serviceTrackerMap;

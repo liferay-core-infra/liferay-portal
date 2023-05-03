@@ -14,18 +14,20 @@
 
 package com.liferay.layout.reports.web.internal.template;
 
-import com.liferay.layout.reports.web.internal.product.navigation.control.menu.LayoutReportsProductNavigationControlMenuEntry;
 import com.liferay.layout.reports.web.internal.util.LayoutReportsUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.util.GetterUtil;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
+
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sandro Chinea
@@ -68,8 +70,10 @@ public class LayoutReportsTemplateContextContributor
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutReportsTemplateContextContributor.class);
 
-	@Reference
-	private LayoutReportsProductNavigationControlMenuEntry
+	@Reference(
+		target = "(component.name=com.liferay.layout.reports.web.internal.product.navigation.control.menu.LayoutReportsProductNavigationControlMenuEntry)"
+	)
+	private ProductNavigationControlMenuEntry
 		_layoutReportsProductNavigationControlMenuEntry;
 
 }

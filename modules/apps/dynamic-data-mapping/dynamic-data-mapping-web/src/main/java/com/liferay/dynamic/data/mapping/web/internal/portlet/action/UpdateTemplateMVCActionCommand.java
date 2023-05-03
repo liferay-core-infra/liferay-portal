@@ -57,7 +57,7 @@ public class UpdateTemplateMVCActionCommand
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			portal.getUploadPortletRequest(actionRequest);
+			uploadPortal.getUploadPortletRequest(actionRequest);
 
 		long templateId = ParamUtil.getLong(uploadPortletRequest, "templateId");
 

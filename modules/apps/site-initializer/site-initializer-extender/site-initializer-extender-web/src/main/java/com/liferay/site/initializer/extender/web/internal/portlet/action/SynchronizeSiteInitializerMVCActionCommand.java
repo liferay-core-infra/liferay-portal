@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.SiteInitializerFactory;
 import com.liferay.site.initializer.SiteInitializerRegistry;
@@ -113,7 +114,7 @@ public class SynchronizeSiteInitializerMVCActionCommand
 		}
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploadPortal.getUploadPortletRequest(actionRequest);
 
 		try (InputStream inputStream = uploadPortletRequest.getFileAsStream(
 				"siteInitializerFile")) {
@@ -156,6 +157,9 @@ public class SynchronizeSiteInitializerMVCActionCommand
 
 	@Reference
 	private SiteInitializerRegistry _siteInitializerRegistry;
+
+	@Reference
+	private UploadPortal _uploadPortal;
 
 	private class GroupCallable implements Callable<Group> {
 

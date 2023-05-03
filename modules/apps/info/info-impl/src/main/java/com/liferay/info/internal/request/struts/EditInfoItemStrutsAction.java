@@ -72,6 +72,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.upload.UploadPortal;
 
 import java.text.SimpleDateFormat;
 
@@ -383,7 +384,8 @@ public class EditInfoItemStrutsAction implements StrutsAction {
 						RelationshipInfoFieldType.INSTANCE) {
 
 					UploadServletRequest uploadServletRequest =
-						_portal.getUploadServletRequest(httpServletRequest);
+						_uploadPortal.getUploadServletRequest(
+							httpServletRequest);
 
 					String labelParameterName = infoField.getName() + "-label";
 
@@ -725,5 +727,8 @@ public class EditInfoItemStrutsAction implements StrutsAction {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UploadPortal _uploadPortal;
 
 }

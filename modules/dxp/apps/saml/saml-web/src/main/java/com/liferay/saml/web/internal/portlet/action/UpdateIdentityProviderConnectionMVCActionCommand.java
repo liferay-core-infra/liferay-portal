@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.saml.constants.SamlPortletKeys;
 import com.liferay.saml.opensaml.integration.field.expression.handler.registry.SamlSpIdpConnectionFieldExpressionHandlerRegistry;
 import com.liferay.saml.opensaml.integration.processor.SamlSpIdpConnectionProcessor;
@@ -49,7 +49,7 @@ public class UpdateIdentityProviderConnectionMVCActionCommand
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			_uploadPortal.getUploadPortletRequest(actionRequest);
 
 		long samlSpIdpConnectionId = ParamUtil.getLong(
 			uploadPortletRequest, "samlSpIdpConnectionId");
@@ -108,9 +108,6 @@ public class UpdateIdentityProviderConnectionMVCActionCommand
 	};
 
 	@Reference
-	private Portal _portal;
-
-	@Reference
 	private SamlSpIdpConnectionFieldExpressionHandlerRegistry
 		_samlSpIdpConnectionFieldExpressionHandlerRegistry;
 
@@ -120,5 +117,8 @@ public class UpdateIdentityProviderConnectionMVCActionCommand
 	@Reference
 	private SamlSpIdpConnectionProcessorFactory
 		_samlSpIdpConnectionProcessorFactory;
+
+	@Reference
+	private UploadPortal _uploadPortal;
 
 }

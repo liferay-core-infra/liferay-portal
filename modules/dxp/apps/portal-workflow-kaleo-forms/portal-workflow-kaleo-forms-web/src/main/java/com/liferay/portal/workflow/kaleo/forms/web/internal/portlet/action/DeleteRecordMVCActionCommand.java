@@ -68,7 +68,7 @@ public class DeleteRecordMVCActionCommand
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			DDLRecord.class.getName(),
-			portal.getUploadPortletRequest(actionRequest));
+			uploadPortal.getUploadPortletRequest(actionRequest));
 
 		checkKaleoProcessPermission(serviceContext, ActionKeys.DELETE);
 

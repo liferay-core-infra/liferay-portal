@@ -1,9 +1,9 @@
 dependencies {
 	compileInclude group: "com.liferay", name: "org.apache.velocity", version: "1.6.4.LIFERAY-PATCHED-2"
-	compileInclude group: "commons-collections", name: "commons-collections", version: "3.2.2"
 	compileInclude group: "commons-lang", name: "commons-lang", version: "2.6"
 	compileInclude group: "io.dropwizard.metrics", name: "metrics-core", version: "3.1.2"
 	compileInclude group: "net.shibboleth.utilities", name: "java-support", version: "7.3.0"
+	compileInclude group: "org.apache.commons", name: "commons-collections4", version: "4.4"
 	compileInclude group: "org.apache.httpcomponents", name: "httpclient-cache", version: "4.5.13"
 	compileInclude group: "org.bouncycastle", name: "bcpkix-jdk15on", version: "1.69"
 	compileInclude group: "org.bouncycastle", name: "bcprov-jdk15on", version: "1.69"

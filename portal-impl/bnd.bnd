@@ -24,7 +24,6 @@ Export-Package:\
 	com.liferay.portal.upgrade.v7_0_0,\
 	com.liferay.portal.upgrade.v7_0_5,\
 	com.liferay.portal.upgrade.v7_1_x,\
-	com.liferay.portal.upload,\
 	com.liferay.portal.util,\
 	com.liferay.portal.xml,\
 	com.liferay.portlet,\

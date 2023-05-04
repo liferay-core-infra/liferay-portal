@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Alejandro Tardín
  */
 @Component(
-	service = {BulkSelectionFactory.class, TestBulkSelectionFactory.class}
+	service = BulkSelectionFactory.class
 )
 public class TestBulkSelectionFactory implements BulkSelectionFactory<Integer> {
 

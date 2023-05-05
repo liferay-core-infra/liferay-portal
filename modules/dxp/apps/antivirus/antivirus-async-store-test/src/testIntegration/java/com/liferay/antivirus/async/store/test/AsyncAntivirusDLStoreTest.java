@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -171,7 +172,24 @@ public class AsyncAntivirusDLStoreTest {
 
 		_registerService(
 			AntivirusAsyncRetryScheduler.class,
-			message -> calledSchedule.set(true),
+			new AntivirusAsyncRetryScheduler() {
+
+				@Override
+				public int getPendingMessageCount() {
+					return 0;
+				}
+
+				@Override
+				public Message getScheduledMessage() {
+					return null;
+				}
+
+				@Override
+				public void schedule(Message message) {
+					calledSchedule.set(true);
+				}
+
+			},
 			MapUtil.singletonDictionary(Constants.SERVICE_RANKING, 100));
 		_registerService(
 			AntivirusScanner.class,
@@ -339,7 +357,24 @@ public class AsyncAntivirusDLStoreTest {
 
 		_registerService(
 			AntivirusAsyncRetryScheduler.class,
-			message -> calledSchedule.incrementAndGet(),
+			new AntivirusAsyncRetryScheduler() {
+
+				@Override
+				public int getPendingMessageCount() {
+					return 0;
+				}
+
+				@Override
+				public Message getScheduledMessage() {
+					return null;
+				}
+
+				@Override
+				public void schedule(Message message) {
+					calledSchedule.incrementAndGet();
+				}
+
+			},
 			MapUtil.singletonDictionary(Constants.SERVICE_RANKING, 100));
 		_registerService(
 			AntivirusScanner.class,
@@ -421,8 +456,7 @@ public class AsyncAntivirusDLStoreTest {
 			MapUtil.singletonDictionary(Constants.SERVICE_RANKING, -100));
 		_registerService(
 			AntivirusAsyncRetryScheduler.class,
-			message -> {
-			},
+			ProxyFactory.newDummyInstance(AntivirusAsyncRetryScheduler.class),
 			MapUtil.singletonDictionary(Constants.SERVICE_RANKING, 100));
 		_registerService(
 			AntivirusScanner.class,

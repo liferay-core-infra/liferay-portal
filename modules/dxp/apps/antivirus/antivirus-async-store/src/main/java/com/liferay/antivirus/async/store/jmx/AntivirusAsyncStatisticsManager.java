@@ -14,21 +14,14 @@
 
 package com.liferay.antivirus.async.store.jmx;
 
-import com.liferay.antivirus.async.store.constants.AntivirusAsyncConstants;
 import com.liferay.antivirus.async.store.constants.AntivirusAsyncDestinationNames;
 import com.liferay.antivirus.async.store.event.AntivirusAsyncEvent;
 import com.liferay.antivirus.async.store.event.AntivirusAsyncEventListener;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.antivirus.async.store.retry.AntivirusAsyncRetryScheduler;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationStatistics;
 import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
-import com.liferay.portal.kernel.scheduler.SchedulerException;
-import com.liferay.portal.kernel.scheduler.StorageType;
-import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.management.DynamicMBean;
@@ -91,22 +84,8 @@ public class AntivirusAsyncStatisticsManager
 			refresh();
 		}
 
-		long pendingScanCount = _destinationStatistics.getPendingMessageCount();
-
-		try {
-			List<SchedulerResponse> scheduledJobs =
-				_schedulerEngineHelper.getScheduledJobs(
-					AntivirusAsyncConstants.SCHEDULER_GROUP_NAME_ANTIVIRUS,
-					StorageType.MEMORY_CLUSTERED);
-
-			pendingScanCount += scheduledJobs.size();
-		}
-		catch (SchedulerException schedulerException) {
-			_log.error(
-				"Unable to get antivirus scheduled jobs", schedulerException);
-		}
-
-		return pendingScanCount;
+		return _destinationStatistics.getPendingMessageCount() +
+			_antivirusAsyncRetryScheduler.getPendingMessageCount();
 	}
 
 	@Override
@@ -171,18 +150,14 @@ public class AntivirusAsyncStatisticsManager
 		_autoRefresh = autoRefresh;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		AntivirusAsyncStatisticsManager.class);
+	@Reference
+	private AntivirusAsyncRetryScheduler _antivirusAsyncRetryScheduler;
 
 	private boolean _autoRefresh;
 	private final Destination _destination;
 	private DestinationStatistics _destinationStatistics;
 	private long _lastRefresh;
 	private final AtomicLong _processingErrorCounter = new AtomicLong();
-
-	@Reference
-	private SchedulerEngineHelper _schedulerEngineHelper;
-
 	private final AtomicLong _sizeExceededCounter = new AtomicLong();
 	private final AtomicLong _totalScannedCounter = new AtomicLong();
 	private final AtomicLong _virusFoundCounter = new AtomicLong();

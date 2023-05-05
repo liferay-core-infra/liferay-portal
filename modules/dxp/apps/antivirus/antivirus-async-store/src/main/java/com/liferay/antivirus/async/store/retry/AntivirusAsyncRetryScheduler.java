@@ -21,6 +21,10 @@ import com.liferay.portal.kernel.messaging.Message;
  */
 public interface AntivirusAsyncRetryScheduler {
 
+	public int getPendingMessageCount();
+
+	public Message getScheduledMessage();
+
 	public void schedule(Message message);
 
 }

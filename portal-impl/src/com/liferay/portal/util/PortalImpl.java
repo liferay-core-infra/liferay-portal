@@ -7911,7 +7911,16 @@ public class PortalImpl implements Portal {
 		}
 
 		sb.append(group.getFriendlyURL());
-		sb.append(themeDisplay.getLayoutFriendlyURL(layout));
+
+		if (layout.isDraftLayout()) {
+			Layout publishedLayout = LayoutLocalServiceUtil.getLayout(
+				layout.getClassPK());
+
+			sb.append(themeDisplay.getLayoutFriendlyURL(publishedLayout));
+		}
+		else {
+			sb.append(themeDisplay.getLayoutFriendlyURL(layout));
+		}
 
 		sb.append(FRIENDLY_URL_SEPARATOR);
 

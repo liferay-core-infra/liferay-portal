@@ -14,7 +14,6 @@
 
 package com.liferay.antivirus.async.store.internal.upgrade.v1_0_0;
 
-import com.liferay.antivirus.async.store.constants.AntivirusAsyncConstants;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -32,12 +31,8 @@ public class SchedulerJobUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		_schedulerEngineHelper.delete(
-			AntivirusAsyncConstants.SCHEDULER_GROUP_NAME_ANTIVIRUS_BATCH,
-			StorageType.PERSISTED);
-		_schedulerEngineHelper.delete(
-			AntivirusAsyncConstants.SCHEDULER_GROUP_NAME_ANTIVIRUS,
-			StorageType.PERSISTED);
+		_schedulerEngineHelper.delete("Antivirus Batch", StorageType.PERSISTED);
+		_schedulerEngineHelper.delete("Antivirus", StorageType.PERSISTED);
 	}
 
 	private final SchedulerEngineHelper _schedulerEngineHelper;

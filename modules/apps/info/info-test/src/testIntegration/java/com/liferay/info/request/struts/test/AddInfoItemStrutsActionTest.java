@@ -77,8 +77,8 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.upload.UploadServletRequestImpl;
 import com.liferay.portal.upload.factory.UploadPortletRequestFactory;
+import com.liferay.portal.upload.test.util.UploadTestUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
@@ -477,7 +477,7 @@ public class AddInfoItemStrutsActionTest {
 
 		UploadPortletRequest uploadPortletRequest =
 			_uploadPortletRequestFactory.create(
-				new UploadServletRequestImpl(
+				UploadTestUtil.createUploadServletRequest(
 					mockMultipartHttpServletRequest, fileParameters,
 					HashMapBuilder.put(
 						"classNameId", Collections.singletonList(_classNameId)

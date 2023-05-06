@@ -22,8 +22,8 @@ import com.liferay.portal.osgi.web.portlet.container.test.util.PortletContainerT
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upload.LiferayServletRequest;
-import com.liferay.portal.upload.UploadServletRequestImpl;
 import com.liferay.portal.upload.factory.UploadPortletRequestFactory;
+import com.liferay.portal.upload.test.util.UploadTestUtil;
 
 import java.io.InputStream;
 
@@ -70,7 +70,7 @@ public class UploadPortletRequestWhenGettingFilesAsStreamTest {
 
 		UploadPortletRequest uploadPortletRequest =
 			_uploadPortletRequestFactory.create(
-				new UploadServletRequestImpl(
+				UploadTestUtil.createUploadServletRequest(
 					(HttpServletRequest)liferayServletRequest.getRequest(),
 					new HashMap<String, FileItem[]>(),
 					new HashMap<String, List<String>>()),
@@ -94,7 +94,7 @@ public class UploadPortletRequestWhenGettingFilesAsStreamTest {
 
 		UploadPortletRequest uploadPortletRequest =
 			_uploadPortletRequestFactory.create(
-				new UploadServletRequestImpl(
+				UploadTestUtil.createUploadServletRequest(
 					(HttpServletRequest)liferayServletRequest.getRequest(),
 					fileParameters, new HashMap<String, List<String>>()),
 				null, _portletNamespace);
@@ -115,7 +115,7 @@ public class UploadPortletRequestWhenGettingFilesAsStreamTest {
 
 		UploadPortletRequest uploadPortletRequest =
 			_uploadPortletRequestFactory.create(
-				new UploadServletRequestImpl(
+				UploadTestUtil.createUploadServletRequest(
 					(HttpServletRequest)liferayServletRequest.getRequest(),
 					fileParameters, new HashMap<String, List<String>>()),
 				null, _portletNamespace);

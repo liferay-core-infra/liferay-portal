@@ -17,7 +17,7 @@ package com.liferay.document.library.taglib.servlet.taglib;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppServiceUtil;
 import com.liferay.document.library.taglib.internal.display.context.RepositoryBrowserTagDisplayContext;
-import com.liferay.document.library.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
@@ -40,6 +40,7 @@ import java.util.Set;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -77,7 +78,7 @@ public class RepositoryBrowserTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		setServletContext(_servletContextSnapshot.get());
 	}
 
 	public void setRepositoryId(long repositoryId) {
@@ -182,6 +183,10 @@ public class RepositoryBrowserTag extends IncludeTag {
 				ModelResourcePermission.class, RepositoryBrowserTag.class,
 				"_folderModelResourcePermission",
 				"(model.class.name=" + Folder.class.getName() + ")", false);
+	private static final Snapshot<ServletContext> _servletContextSnapshot =
+		new Snapshot<>(
+			RepositoryBrowserTag.class, ServletContext.class,
+			"(osgi.web.symbolicname=com.liferay.document.library.taglib)");
 
 	private String _actions = StringPool.BLANK;
 	private long _folderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;

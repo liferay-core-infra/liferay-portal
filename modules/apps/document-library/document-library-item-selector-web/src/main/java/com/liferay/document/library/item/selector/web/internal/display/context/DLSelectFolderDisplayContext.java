@@ -21,6 +21,7 @@ import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppService;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -32,6 +33,8 @@ import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -39,7 +42,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portlet.documentlibrary.service.permission.DLFolderPermission;
 
 import java.util.Collections;
 import java.util.List;
@@ -249,7 +251,8 @@ public class DLSelectFolderDisplayContext {
 
 	public boolean hasAddFolderPermission() throws PortalException {
 		if (_isAddFolderButtonVisible() &&
-			DLFolderPermission.contains(
+			ModelResourcePermissionUtil.contains(
+				_folderModelResourcePermissionSnapshot.get(),
 				_themeDisplay.getPermissionChecker(), getRepositoryId(),
 				getFolderId(), ActionKeys.ADD_FOLDER)) {
 
@@ -317,6 +320,12 @@ public class DLSelectFolderDisplayContext {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLSelectFolderDisplayContext.class);
+
+	private static final Snapshot<ModelResourcePermission<Folder>>
+		_folderModelResourcePermissionSnapshot = new Snapshot<>(
+			DLSelectFolderDisplayContext.class,
+			Snapshot.cast(ModelResourcePermission.class),
+			"(model.class.name=" + Folder.class.getName() + ")");
 
 	private final DLAppService _dlAppService;
 	private final Folder _folder;

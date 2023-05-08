@@ -19,7 +19,6 @@ import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.util.AssetHelper;
 import com.liferay.bulk.selection.BulkSelection;
-import com.liferay.bulk.selection.BulkSelectionAction;
 import com.liferay.document.library.bulk.selection.EditTagsBulkSelectionAction;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -43,12 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Adolfo Pérez
  */
-@Component(
-	service = {
-		BulkSelectionAction.class, EditTagsBulkSelectionAction.class,
-		EditTagsBulkSelectionActionImpl.class
-	}
-)
+@Component(service = EditTagsBulkSelectionAction.class)
 public class EditTagsBulkSelectionActionImpl
 	implements EditTagsBulkSelectionAction {
 

@@ -15,9 +15,9 @@
 package com.liferay.dynamic.data.mapping.taglib.servlet.taglib;
 
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
-import com.liferay.dynamic.data.mapping.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.dynamic.data.mapping.taglib.internal.util.PortletDisplayTemplateUtil;
 import com.liferay.dynamic.data.mapping.taglib.servlet.taglib.base.BaseTemplateSelectorTag;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -75,7 +76,7 @@ public class TemplateSelectorTag extends BaseTemplateSelectorTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		setServletContext(_servletContextSnapshot.get());
 	}
 
 	protected DDMTemplate getPortletDisplayDDMTemplate() {
@@ -112,5 +113,10 @@ public class TemplateSelectorTag extends BaseTemplateSelectorTag {
 		setNamespacedAttribute(
 			httpServletRequest, "resourceBundle", getResourceBundle());
 	}
+
+	private static final Snapshot<ServletContext> _servletContextSnapshot =
+		new Snapshot<>(
+			HTMLTag.class, ServletContext.class,
+			"(osgi.web.symbolicname=com.liferay.dynamic.data.mapping.taglib)");
 
 }

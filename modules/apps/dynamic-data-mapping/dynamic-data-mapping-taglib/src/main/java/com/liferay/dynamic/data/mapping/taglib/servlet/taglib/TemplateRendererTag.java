@@ -15,14 +15,15 @@
 package com.liferay.dynamic.data.mapping.taglib.servlet.taglib;
 
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
-import com.liferay.dynamic.data.mapping.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.dynamic.data.mapping.taglib.internal.util.PortletDisplayTemplateUtil;
 import com.liferay.dynamic.data.mapping.taglib.servlet.taglib.base.BaseTemplateRendererTag;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.servlet.FileAvailabilityUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -68,7 +69,7 @@ public class TemplateRendererTag extends BaseTemplateRendererTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		setServletContext(_servletContextSnapshot.get());
 	}
 
 	@Override
@@ -104,6 +105,11 @@ public class TemplateRendererTag extends BaseTemplateRendererTag {
 			httpServletRequest, "portletDisplayDDMTemplate",
 			_portletDisplayDDMTemplate);
 	}
+
+	private static final Snapshot<ServletContext> _servletContextSnapshot =
+		new Snapshot<>(
+			HTMLTag.class, ServletContext.class,
+			"(osgi.web.symbolicname=com.liferay.dynamic.data.mapping.taglib)");
 
 	private DDMTemplate _portletDisplayDDMTemplate;
 

@@ -14,9 +14,10 @@
 
 package com.liferay.dynamic.data.mapping.taglib.servlet.taglib;
 
-import com.liferay.dynamic.data.mapping.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.dynamic.data.mapping.taglib.servlet.taglib.base.BaseHTMLFieldTag;
+import com.liferay.osgi.util.service.Snapshot;
 
+import javax.servlet.ServletContext;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
@@ -29,7 +30,7 @@ public class HTMLFieldTag extends BaseHTMLFieldTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		setServletContext(_servletContextSnapshot.get());
 	}
 
 	@Override
@@ -40,5 +41,10 @@ public class HTMLFieldTag extends BaseHTMLFieldTag {
 
 		return EVAL_PAGE;
 	}
+
+	private static final Snapshot<ServletContext> _servletContextSnapshot =
+		new Snapshot<>(
+			HTMLFieldTag.class, ServletContext.class,
+			"(osgi.web.symbolicname=com.liferay.dynamic.data.mapping.taglib)");
 
 }

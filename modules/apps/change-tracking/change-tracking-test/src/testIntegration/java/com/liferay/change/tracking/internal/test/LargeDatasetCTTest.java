@@ -29,7 +29,9 @@ import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -42,6 +44,7 @@ import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -49,6 +52,9 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.Portal;
@@ -60,6 +66,7 @@ import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.SiteInitializerRegistry;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -75,6 +82,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * @author Preston Crary
  */
+@DataGuard(scope = DataGuard.Scope.NONE)
 @RunWith(Arquillian.class)
 public class LargeDatasetCTTest {
 
@@ -83,81 +91,86 @@ public class LargeDatasetCTTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() throws Exception {
-		_ctCollection = _ctCollectionLocalService.addCTCollection(
+	//@Test
+	public void generateData() throws Exception {
+		CTCollection ctCollection = _ctCollectionLocalService.addCTCollection(
 			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
 			LargeDatasetCTTest.class.getName(), null);
 
-		_group = GroupTestUtil.addGroup();
+		Group group = GroupTestUtil.addGroup();
 
 		ServiceContextThreadLocal.pushServiceContext(
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+			ServiceContextTestUtil.getServiceContext(group.getGroupId()));
 
-		_httpServletRequest = _getHttpServletRequest(TestPropsValues.getUser());
+		Locale locale = LocaleUtil.fromLanguageId(group.getDefaultLanguageId());
 
-		_themeDisplay = _getThemeDisplay(
-			_httpServletRequest, TestPropsValues.getUser());
+		DLFolder dlFolder = DLTestUtil.addDLFolder(group.getGroupId());
 
-		_dlFolder = DLTestUtil.addDLFolder(_group.getGroupId());
+		Layout layoutContent = null;
 
 		try (SafeCloseable safeCloseable1 =
-				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
-					_ctCollection.getCtCollectionId())) {
+				 CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
+					 ctCollection.getCtCollectionId())) {
 
 			if (_SITE_INITIALIZER) {
 				SiteInitializer siteInitializer =
 					_siteInitializerRegistry.getSiteInitializer(
 						"com.liferay.site.initializer.masterclass");
 
-				siteInitializer.initialize(_group.getGroupId());
+				siteInitializer.initialize(group.getGroupId());
 			}
 
 			for (int i = 0; i < _PAGE_CONTENT_TEST_SIZE; i++) {
-				_layoutContent = LayoutTestUtil.addTypeContentLayout(_group);
+				layoutContent = LayoutTestUtil.addTypeContentLayout(group);
 
-				_addFragmentEntryLink(_layoutContent.getPlid());
+				_addFragmentEntryLink(
+					group.getGroupId(), layoutContent.getPlid(), locale);
 			}
 
 			for (int i = 0; i < _PAGE_WIDGET_TEST_SIZE; i++) {
-				_layoutWidget = LayoutTestUtil.addTypePortletLayout(_group);
+				LayoutTestUtil.addTypePortletLayout(group);
 			}
 
 			for (int i = 0; i < _WEB_CONTENT_TEST_SIZE; i++) {
-				_journalArticle = JournalTestUtil.addArticle(
-					_group.getGroupId(), RandomTestUtil.randomString(),
+				JournalTestUtil.addArticle(
+					group.getGroupId(), RandomTestUtil.randomString(),
 					RandomTestUtil.randomString());
 			}
 
 			for (int i = 0; i < _DOCUMENT_TEST_SIZE; i++) {
-				_dlFileEntry = DLTestUtil.addDLFileEntry(
-					_dlFolder.getFolderId());
+				DLTestUtil.addDLFileEntry(dlFolder.getFolderId());
 			}
 		}
-	}
+		java.io.File file = new java.io.File("/home/me/generated.csv");
 
-	@After
-	public void tearDown() throws Exception {
-		ServiceContextThreadLocal.popServiceContext();
+		if (file.exists()) {
+			file.delete();
+		}
+
+		FileUtil.write(file, ctCollection.getCtCollectionId() + "," + layoutContent.getPrimaryKey());
 	}
 
 	@Test
 	public void testDiscardEntry() throws Exception {
+		java.io.File file = new java.io.File("/home/me/generated.csv");
+		
+		List<String> values = StringUtil.split(FileUtil.read(file));
+
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			_ctCollectionLocalService.discardCTEntry(
-				_ctCollection.getCtCollectionId(),
+				GetterUtil.getLong(values.get(0)),
 				_portal.getClassNameId(Layout.class.getName()),
-				_layoutContent.getPrimaryKey(), false);
+				GetterUtil.getLong(values.get(1)), false);
 		}
 	}
 
-	private void _addFragmentEntryLink(long plid) throws Exception {
+	private void _addFragmentEntryLink(long groupId, long plid, Locale locale) throws Exception {
 		Layout layout = _layoutLocalService.fetchLayout(plid);
 
 		Layout draftLayout = layout.fetchDraftLayout();
 
 		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+			ServiceContextTestUtil.getServiceContext(groupId);
 
 		FragmentCollectionContributor fragmentCollectionContributor =
 			_fragmentCollectionContributorRegistry.
@@ -165,7 +178,7 @@ public class LargeDatasetCTTest {
 
 		List<FragmentEntry> fragmentEntries =
 			fragmentCollectionContributor.getFragmentEntries(
-				_themeDisplay.getLocale());
+				locale);
 
 		long defaultSegmentsExperienceId =
 			SegmentsExperienceLocalServiceUtil.fetchDefaultSegmentsExperienceId(
@@ -183,66 +196,15 @@ public class LargeDatasetCTTest {
 		}
 	}
 
-	private HttpServletRequest _getHttpServletRequest(User user)
-		throws Exception {
+	private static final int _DOCUMENT_TEST_SIZE = 1000;
 
-		HttpServletRequest httpServletRequest = new MockHttpServletRequest();
+	private static final int _PAGE_CONTENT_TEST_SIZE = 800;
 
-		httpServletRequest.setAttribute(
-			WebKeys.CURRENT_URL, "http://localhost:8080/");
-
-		UserTestUtil.setUser(user);
-
-		httpServletRequest.setAttribute(
-			WebKeys.THEME_DISPLAY, _getThemeDisplay(httpServletRequest, user));
-
-		return httpServletRequest;
-	}
-
-	private ThemeDisplay _getThemeDisplay(
-			HttpServletRequest httpServletRequest, User user)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = new ThemeDisplay();
-
-		Company company = _companyLocalService.getCompany(
-			_group.getCompanyId());
-
-		themeDisplay.setCompany(company);
-
-		themeDisplay.setLanguageId(_group.getDefaultLanguageId());
-
-		LayoutSet layoutSet = _layoutSetLocalService.getLayoutSet(
-			_group.getGroupId(), false);
-
-		themeDisplay.setLayoutSet(layoutSet);
-
-		themeDisplay.setLocale(
-			LocaleUtil.fromLanguageId(_group.getDefaultLanguageId()));
-		themeDisplay.setLookAndFeel(layoutSet.getTheme(), null);
-		themeDisplay.setPermissionChecker(
-			PermissionCheckerFactoryUtil.create(user));
-		themeDisplay.setPortalDomain(company.getVirtualHostname());
-		themeDisplay.setPortalURL(company.getPortalURL(_group.getGroupId()));
-		themeDisplay.setRequest(httpServletRequest);
-		themeDisplay.setScopeGroupId(_group.getGroupId());
-		themeDisplay.setServerPort(8080);
-		themeDisplay.setSignedIn(true);
-		themeDisplay.setSiteGroupId(_group.getGroupId());
-		themeDisplay.setUser(user);
-
-		return themeDisplay;
-	}
-
-	private static final int _DOCUMENT_TEST_SIZE = 1;
-
-	private static final int _PAGE_CONTENT_TEST_SIZE = 1;
-
-	private static final int _PAGE_WIDGET_TEST_SIZE = 1;
+	private static final int _PAGE_WIDGET_TEST_SIZE = 200;
 
 	private static final boolean _SITE_INITIALIZER = false;
 
-	private static final int _WEB_CONTENT_TEST_SIZE = 1;
+	private static final int _WEB_CONTENT_TEST_SIZE = 1000;
 
 	@Inject
 	private static CTCollectionLocalService _ctCollectionLocalService;
@@ -256,39 +218,14 @@ public class LargeDatasetCTTest {
 	@Inject
 	private CompanyLocalService _companyLocalService;
 
-	@DeleteAfterTestRun
-	private CTCollection _ctCollection;
-
-	@DeleteAfterTestRun
-	private DLFileEntry _dlFileEntry;
-
-	@DeleteAfterTestRun
-	private DLFolder _dlFolder;
-
 	@Inject
 	private FragmentCollectionContributorRegistry
 		_fragmentCollectionContributorRegistry;
-
-	@DeleteAfterTestRun
-	private Group _group;
-
-	private HttpServletRequest _httpServletRequest;
-
-	@DeleteAfterTestRun
-	private JournalArticle _journalArticle;
-
-	@DeleteAfterTestRun
-	private Layout _layoutContent;
-
-	@DeleteAfterTestRun
-	private Layout _layoutWidget;
 
 	@Inject
 	private Portal _portal;
 
 	@Inject
 	private SiteInitializerRegistry _siteInitializerRegistry;
-
-	private ThemeDisplay _themeDisplay;
 
 }

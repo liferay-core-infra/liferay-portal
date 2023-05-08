@@ -25,6 +25,7 @@ import com.liferay.dynamic.data.mapping.util.DDMUtil;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.layout.item.selector.criterion.LayoutItemSelectorCriterion;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -202,7 +203,7 @@ public class HTMLTag extends BaseHTMLTag {
 			return layoutSelectorURL;
 		}
 
-		ItemSelector itemSelector = ServletContextUtil.getItemSelector();
+		ItemSelector itemSelector = _itemSelectorSnapshot.get();
 
 		LayoutItemSelectorCriterion layoutItemSelectorCriterion =
 			new LayoutItemSelectorCriterion();
@@ -220,5 +221,8 @@ public class HTMLTag extends BaseHTMLTag {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(HTMLTag.class);
+
+	private static final Snapshot<ItemSelector> _itemSelectorSnapshot =
+		new Snapshot<>(HTMLTag.class, ItemSelector.class);
 
 }

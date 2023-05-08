@@ -23,33 +23,24 @@ import com.liferay.document.library.test.util.DLTestUtil;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
 import com.liferay.fragment.contributor.FragmentCollectionContributorRegistry;
 import com.liferay.fragment.model.FragmentEntry;
-import com.liferay.fragment.service.FragmentCollectionService;
 import com.liferay.fragment.service.FragmentEntryLinkLocalServiceUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
-import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.petra.lang.SafeCloseable;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutSet;
-import com.liferay.portal.kernel.model.LayoutType;
-import com.liferay.portal.kernel.model.LayoutTypeController;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -58,16 +49,12 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.LayoutTypeControllerTracker;
 import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
 import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.SiteInitializerRegistry;
@@ -77,16 +64,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * @author Preston Crary
@@ -157,33 +141,6 @@ public class LargeDatasetCTTest {
 		ServiceContextThreadLocal.popServiceContext();
 	}
 
-	@Ignore
-	@Test
-	public void testBuildSiteMap() throws Exception {
-		try (LoggingTimer loggingTimer = new LoggingTimer("Build Site Map");
-			SafeCloseable safeCloseable1 =
-				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
-					_ctCollection.getCtCollectionId())) {
-
-			StringBundler sb = new StringBundler();
-
-			Layout layout = _layoutLocalService.fetchDefaultLayout(
-				_group.getGroupId(), false);
-
-			_themeDisplay.setLayout(layout);
-
-			_httpServletRequest.setAttribute(
-				WebKeys.THEME_DISPLAY, _themeDisplay);
-
-			_buildSiteMap(
-				layout,
-				_layoutLocalService.getLayouts(
-					layout.getGroupId(), layout.isPrivateLayout(),
-					LayoutConstants.DEFAULT_PARENT_LAYOUT_ID),
-				10, true, true, 1, _themeDisplay, sb);
-		}
-	}
-
 	@Test
 	public void testDiscardEntry() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
@@ -191,37 +148,6 @@ public class LargeDatasetCTTest {
 				_ctCollection.getCtCollectionId(),
 				_portal.getClassNameId(Layout.class.getName()),
 				_layoutContent.getPrimaryKey(), false);
-		}
-	}
-
-	@Ignore
-	@Test
-	public void testRenderContentPageBody() throws Exception {
-		try (LoggingTimer loggingTimer = new LoggingTimer();
-			SafeCloseable safeCloseable1 =
-				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
-					_ctCollection.getCtCollectionId())) {
-
-			Layout layout = _layoutLocalService.fetchDefaultLayout(
-				_group.getGroupId(), false);
-
-			_themeDisplay.setLayout(layout);
-
-			_httpServletRequest.setAttribute(
-				WebKeys.THEME_DISPLAY, _themeDisplay);
-
-			LayoutTypeController layoutTypeController =
-				LayoutTypeControllerTracker.getLayoutTypeController(
-					layout.getType());
-
-			layoutTypeController.includeLayoutContent(
-				_httpServletRequest, new MockHttpServletResponse(), layout);
-
-			StringBundler sb = (StringBundler)_httpServletRequest.getAttribute(
-				WebKeys.LAYOUT_CONTENT);
-
-			Assert.assertTrue(
-				sb.toString(), Validator.isNotNull(sb.toString()));
 		}
 	}
 
@@ -255,91 +181,6 @@ public class LargeDatasetCTTest {
 				StringPool.BLANK, StringPool.BLANK, 1, StringPool.BLANK,
 				fragmentEntry.getType(), serviceContext);
 		}
-	}
-
-	private void _buildLayoutView(
-			Layout layout, String cssClass, boolean useHtmlTitle,
-			ThemeDisplay themeDisplay, StringBundler sb)
-		throws Exception {
-
-		sb.append("<a");
-
-		LayoutType layoutType = layout.getLayoutType();
-
-		if (layoutType.isBrowsable()) {
-			sb.append(" href=\"");
-			sb.append(PortalUtil.getLayoutURL(layout, themeDisplay));
-			sb.append("\" ");
-			sb.append(PortalUtil.getLayoutTarget(layout));
-		}
-
-		if (Validator.isNotNull(cssClass)) {
-			sb.append(" class=\"");
-			sb.append(cssClass);
-			sb.append("\" ");
-		}
-
-		sb.append("> ");
-
-		String layoutName = HtmlUtil.escape(
-			layout.getName(themeDisplay.getLocale()));
-
-		if (useHtmlTitle) {
-			layoutName = HtmlUtil.escape(
-				layout.getHTMLTitle(themeDisplay.getLocale()));
-		}
-
-		sb.append(layoutName);
-		sb.append("</a>");
-	}
-
-	private void _buildSiteMap(
-			Layout layout, List<Layout> layouts, int displayDepth,
-			boolean useHtmlTitle, boolean showHiddenPages, int curDepth,
-			ThemeDisplay themeDisplay, StringBundler sb)
-		throws Exception {
-
-		sb.append("<ul>");
-
-		for (Layout curLayout : layouts) {
-			if ((showHiddenPages || !curLayout.isHidden()) &&
-				LayoutPermissionUtil.contains(
-					themeDisplay.getPermissionChecker(), curLayout,
-					ActionKeys.VIEW)) {
-
-				sb.append("<li>");
-
-				String cssClass = StringPool.BLANK;
-
-				if (curLayout.getPlid() == layout.getPlid()) {
-					cssClass = "current";
-				}
-
-				_buildLayoutView(
-					curLayout, cssClass, useHtmlTitle, themeDisplay, sb);
-
-				if ((displayDepth == 0) || (displayDepth > curDepth)) {
-					if (showHiddenPages) {
-						_buildSiteMap(
-							layout, curLayout.getChildren(), displayDepth,
-							useHtmlTitle, showHiddenPages, curDepth + 1,
-							themeDisplay, sb);
-					}
-					else {
-						_buildSiteMap(
-							layout,
-							curLayout.getChildren(
-								themeDisplay.getPermissionChecker()),
-							displayDepth, useHtmlTitle, showHiddenPages,
-							curDepth + 1, themeDisplay, sb);
-					}
-				}
-
-				sb.append("</li>");
-			}
-		}
-
-		sb.append("</ul>");
 	}
 
 	private HttpServletRequest _getHttpServletRequest(User user)
@@ -428,9 +269,6 @@ public class LargeDatasetCTTest {
 	private FragmentCollectionContributorRegistry
 		_fragmentCollectionContributorRegistry;
 
-	@Inject
-	private FragmentCollectionService _fragmentCollectionService;
-
 	@DeleteAfterTestRun
 	private Group _group;
 
@@ -442,16 +280,8 @@ public class LargeDatasetCTTest {
 	@DeleteAfterTestRun
 	private Layout _layoutContent;
 
-	@Inject
-	private LayoutCopyHelper _layoutCopyHelper;
-
 	@DeleteAfterTestRun
 	private Layout _layoutWidget;
-
-	@Inject(
-		filter = "mvc.command.name=/fragment/propagate_group_fragment_entry_changes"
-	)
-	private MVCActionCommand _mvcActionCommand;
 
 	@Inject
 	private Portal _portal;

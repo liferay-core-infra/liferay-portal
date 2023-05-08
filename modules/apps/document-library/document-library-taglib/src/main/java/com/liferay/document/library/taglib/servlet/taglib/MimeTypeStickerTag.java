@@ -15,10 +15,11 @@
 package com.liferay.document.library.taglib.servlet.taglib;
 
 import com.liferay.document.library.taglib.internal.display.context.DLViewFileVersionDisplayContextUtil;
-import com.liferay.document.library.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.taglib.util.IncludeTag;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
@@ -53,7 +54,7 @@ public class MimeTypeStickerTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
+		setServletContext(_servletContextSnapshot.get());
 	}
 
 	@Override
@@ -84,6 +85,11 @@ public class MimeTypeStickerTag extends IncludeTag {
 	}
 
 	private static final String _PAGE = "/mime_type_sticker/page.jsp";
+
+	private static final Snapshot<ServletContext> _servletContextSnapshot =
+		new Snapshot<>(
+			MimeTypeStickerTag.class, ServletContext.class,
+			"(osgi.web.symbolicname=com.liferay.document.library.taglib)");
 
 	private String _cssClass;
 	private FileVersion _fileVersion;

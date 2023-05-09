@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.field.type.internal.radio;
 
+import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueAccessor;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueRenderer;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.dynamic.data.mapping.form.field.type.internal.util.RadioDDMFormFieldValueUtil;
@@ -42,8 +43,10 @@ public class RadioDDMFormFieldValueRenderer
 				ddmFormFieldValue, locale));
 	}
 
-	@Reference
-	protected RadioDDMFormFieldValueAccessor radioDDMFormFieldValueAccessor;
+	@Reference(
+		target = "(component.name=com.liferay.dynamic.data.mapping.form.field.type.internal.radio.RadioDDMFormFieldValueAccessor)"
+	)
+	protected DDMFormFieldValueAccessor<String> radioDDMFormFieldValueAccessor;
 
 	@Reference
 	private Html _html;

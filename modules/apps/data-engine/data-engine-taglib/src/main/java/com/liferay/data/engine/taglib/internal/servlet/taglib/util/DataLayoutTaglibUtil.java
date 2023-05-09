@@ -56,6 +56,8 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.transform.TransformUtil;
@@ -69,7 +71,6 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -94,10 +95,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Gabriel Albuquerque
@@ -109,7 +108,7 @@ public class DataLayoutTaglibUtil {
 		Long dataDefinitionId, Long dataLayoutId,
 		HttpServletRequest httpServletRequest) {
 
-		return _dataLayoutTaglibUtil._getAvailableLocales(
+		return _getAvailableLocales(
 			dataDefinitionId, dataLayoutId, httpServletRequest);
 	}
 
@@ -137,8 +136,7 @@ public class DataLayoutTaglibUtil {
 			long dataDefinitionId, HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		return _dataLayoutTaglibUtil._getDataDefinition(
-			dataDefinitionId, httpServletRequest);
+		return _getDataDefinition(dataDefinitionId, httpServletRequest);
 	}
 
 	public static JSONObject getDataLayoutConfigJSONObject(
@@ -174,17 +172,15 @@ public class DataLayoutTaglibUtil {
 					"ruleSettings",
 					JSONUtil.put(
 						"dataProviderInstanceParameterSettingsURL",
-						_dataLayoutTaglibUtil.
-							_getDDMDataProviderInstanceParameterSettingsURL()
+						_getDDMDataProviderInstanceParameterSettingsURL()
 					).put(
 						"dataProviderInstancesURL",
-						_dataLayoutTaglibUtil._getDDMDataProviderInstancesURL()
+						_getDDMDataProviderInstancesURL()
 					).put(
 						"functionsMetadata",
-						_dataLayoutTaglibUtil._getFunctionsMetadataJSONObject(
-							locale)
+						_getFunctionsMetadataJSONObject(locale)
 					).put(
-						"functionsURL", _dataLayoutTaglibUtil._getFunctionsURL()
+						"functionsURL", _getFunctionsURL()
 					));
 			}
 			catch (JSONException jsonException) {
@@ -204,7 +200,7 @@ public class DataLayoutTaglibUtil {
 		Long dataLayoutId, HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse) {
 
-		return _dataLayoutTaglibUtil._getDataLayoutJSONObject(
+		return _getDataLayoutJSONObject(
 			availableLocales, contentType, dataDefinitionId, dataLayoutId,
 			httpServletRequest, httpServletResponse);
 	}
@@ -213,16 +209,14 @@ public class DataLayoutTaglibUtil {
 			Long dataRecordId, HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		return _dataLayoutTaglibUtil._getDataRecordValues(
-			dataRecordId, httpServletRequest);
+		return _getDataRecordValues(dataRecordId, httpServletRequest);
 	}
 
 	public static Long getDefaultDataLayoutId(
 			Long dataDefinitionId, HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		return _dataLayoutTaglibUtil._getDefaultDataLayoutId(
-			dataDefinitionId, httpServletRequest);
+		return _getDefaultDataLayoutId(dataDefinitionId, httpServletRequest);
 	}
 
 	public static JSONArray getFieldTypesJSONArray(
@@ -230,7 +224,7 @@ public class DataLayoutTaglibUtil {
 			boolean searchableFieldsDisabled)
 		throws Exception {
 
-		return _dataLayoutTaglibUtil._getFieldTypesJSONArray(
+		return _getFieldTypesJSONArray(
 			httpServletRequest, scopes, searchableFieldsDisabled);
 	}
 
@@ -247,7 +241,7 @@ public class DataLayoutTaglibUtil {
 	}
 
 	public static String resolveFieldTypesModules() {
-		return _dataLayoutTaglibUtil._resolveFieldTypesModules();
+		return _resolveFieldTypesModules();
 	}
 
 	public static String resolveModule(String moduleName) {
@@ -256,87 +250,7 @@ public class DataLayoutTaglibUtil {
 		return npmResolver.resolveModuleName(moduleName);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataDefinitionContentTypes.put(contentType, dataDefinitionContentType);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addDataLayoutBuilderDefinition(
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataLayoutBuilderDefinitions.put(
-			contentType, dataLayoutBuilderDefinition);
-	}
-
-	protected void removeDataDefinitionContentType(
-		DataDefinitionContentType dataDefinitionContentType,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataDefinitionContentTypes.remove(contentType);
-	}
-
-	protected void removeDataLayoutBuilderDefinition(
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition,
-		Map<String, Object> properties) {
-
-		String contentType = GetterUtil.getString(
-			properties.get("content.type"));
-
-		if (Validator.isNull(contentType)) {
-			return;
-		}
-
-		_dataLayoutBuilderDefinitions.remove(contentType);
-	}
-
-	private static DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(
-		String contentType) {
-
-		DataLayoutBuilderDefinition dataLayoutBuilderDefinition =
-			_dataLayoutBuilderDefinitions.get(contentType);
-
-		if (dataLayoutBuilderDefinition == null) {
-			return _dataLayoutBuilderDefinitions.get("default");
-		}
-
-		return dataLayoutBuilderDefinition;
-	}
-
-	private Set<Locale> _getAvailableLocales(
+	private static Set<Locale> _getAvailableLocales(
 		Long dataDefinitionId, Long dataLayoutId,
 		HttpServletRequest httpServletRequest) {
 
@@ -378,7 +292,7 @@ public class DataLayoutTaglibUtil {
 		return SetUtil.fromArray(LocaleThreadLocal.getSiteDefaultLocale());
 	}
 
-	private DataDefinition _getDataDefinition(
+	private static DataDefinition _getDataDefinition(
 			Long dataDefinitionId, HttpServletRequest httpServletRequest)
 		throws Exception {
 
@@ -400,7 +314,7 @@ public class DataLayoutTaglibUtil {
 		return dataDefinitionResource.getDataDefinition(dataDefinitionId);
 	}
 
-	private DataLayout _getDataLayout(
+	private static DataLayout _getDataLayout(
 			Long dataLayoutId, HttpServletRequest httpServletRequest)
 		throws Exception {
 
@@ -422,7 +336,20 @@ public class DataLayoutTaglibUtil {
 		return dataLayoutResource.getDataLayout(dataLayoutId);
 	}
 
-	private JSONObject _getDataLayoutJSONObject(
+	private static DataLayoutBuilderDefinition _getDataLayoutBuilderDefinition(
+		String contentType) {
+
+		DataLayoutBuilderDefinition dataLayoutBuilderDefinition =
+			_dataLayoutBuilderDefinitions.get(contentType);
+
+		if (dataLayoutBuilderDefinition == null) {
+			return _dataLayoutBuilderDefinitions.get("default");
+		}
+
+		return dataLayoutBuilderDefinition;
+	}
+
+	private static JSONObject _getDataLayoutJSONObject(
 		Set<Locale> availableLocales, String contentType, Long dataDefinitionId,
 		Long dataLayoutId, HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse) {
@@ -471,7 +398,7 @@ public class DataLayoutTaglibUtil {
 		}
 	}
 
-	private Map<String, Object> _getDataRecordValues(
+	private static Map<String, Object> _getDataRecordValues(
 			Long dataRecordId, HttpServletRequest httpServletRequest)
 		throws Exception {
 
@@ -496,7 +423,7 @@ public class DataLayoutTaglibUtil {
 		return dataRecord.getDataRecordValues();
 	}
 
-	private String _getDDMDataProviderInstanceParameterSettingsURL() {
+	private static String _getDDMDataProviderInstanceParameterSettingsURL() {
 		DDMFormBuilderSettingsRetrieverHelper
 			ddmFormBuilderSettingsRetrieverHelper =
 				_ddmFormBuilderSettingsRetrieverHelperSnapshot.get();
@@ -505,7 +432,7 @@ public class DataLayoutTaglibUtil {
 			getDDMDataProviderInstanceParameterSettingsURL();
 	}
 
-	private String _getDDMDataProviderInstancesURL() {
+	private static String _getDDMDataProviderInstancesURL() {
 		DDMFormBuilderSettingsRetrieverHelper
 			ddmFormBuilderSettingsRetrieverHelper =
 				_ddmFormBuilderSettingsRetrieverHelperSnapshot.get();
@@ -514,7 +441,7 @@ public class DataLayoutTaglibUtil {
 			getDDMDataProviderInstancesURL();
 	}
 
-	private Long _getDefaultDataLayoutId(
+	private static Long _getDefaultDataLayoutId(
 			Long dataDefinitionId, HttpServletRequest httpServletRequest)
 		throws Exception {
 
@@ -534,7 +461,7 @@ public class DataLayoutTaglibUtil {
 		return dataLayout.getId();
 	}
 
-	private JSONArray _getFieldTypesJSONArray(
+	private static JSONArray _getFieldTypesJSONArray(
 			HttpServletRequest httpServletRequest, Set<String> scopes,
 			boolean searchableFieldsDisabled)
 		throws Exception {
@@ -593,7 +520,7 @@ public class DataLayoutTaglibUtil {
 		}
 	}
 
-	private JSONObject _getFunctionsMetadataJSONObject(Locale locale)
+	private static JSONObject _getFunctionsMetadataJSONObject(Locale locale)
 		throws JSONException {
 
 		DDMFormBuilderSettingsRetrieverHelper
@@ -607,7 +534,7 @@ public class DataLayoutTaglibUtil {
 				getSerializedDDMExpressionFunctionsMetadata(locale));
 	}
 
-	private String _getFunctionsURL() {
+	private static String _getFunctionsURL() {
 		DDMFormBuilderSettingsRetrieverHelper
 			ddmFormBuilderSettingsRetrieverHelper =
 				_ddmFormBuilderSettingsRetrieverHelperSnapshot.get();
@@ -615,7 +542,7 @@ public class DataLayoutTaglibUtil {
 		return ddmFormBuilderSettingsRetrieverHelper.getDDMFunctionsURL();
 	}
 
-	private boolean _hasJavascriptModule(String name) {
+	private static boolean _hasJavascriptModule(String name) {
 		DDMFormFieldTypeServicesRegistry ddmFormFieldTypeServicesRegistry =
 			_ddmFormFieldTypeServicesRegistrySnapshot.get();
 
@@ -625,7 +552,7 @@ public class DataLayoutTaglibUtil {
 		return Validator.isNotNull(ddmFormFieldType.getModuleName());
 	}
 
-	private String _resolveFieldTypeModule(String name) {
+	private static String _resolveFieldTypeModule(String name) {
 		DDMFormFieldTypeServicesRegistry ddmFormFieldTypeServicesRegistry =
 			_ddmFormFieldTypeServicesRegistrySnapshot.get();
 
@@ -633,7 +560,7 @@ public class DataLayoutTaglibUtil {
 			ddmFormFieldTypeServicesRegistry.getDDMFormFieldType(name));
 	}
 
-	private String _resolveFieldTypesModules() {
+	private static String _resolveFieldTypesModules() {
 		DDMFormFieldTypeServicesRegistry ddmFormFieldTypeServicesRegistry =
 			_ddmFormFieldTypeServicesRegistrySnapshot.get();
 
@@ -641,16 +568,18 @@ public class DataLayoutTaglibUtil {
 			TransformUtil.transform(
 				ddmFormFieldTypeServicesRegistry.getDDMFormFieldTypeNames(),
 				name -> {
-					if (!_dataLayoutTaglibUtil._hasJavascriptModule(name)) {
+					if (!_hasJavascriptModule(name)) {
 						return null;
 					}
 
-					return _dataLayoutTaglibUtil._resolveFieldTypeModule(name);
+					return _resolveFieldTypeModule(name);
 				}),
 			StringPool.COMMA);
 	}
 
-	private String _resolveModuleName(DDMFormFieldType ddmFormFieldType) {
+	private static String _resolveModuleName(
+		DDMFormFieldType ddmFormFieldType) {
+
 		if (Validator.isNull(ddmFormFieldType.getModuleName())) {
 			return StringPool.BLANK;
 		}
@@ -664,7 +593,7 @@ public class DataLayoutTaglibUtil {
 		return npmResolver.resolveModuleName(ddmFormFieldType.getModuleName());
 	}
 
-	private void _setFieldIndexTypeNone(JSONObject jsonObject) {
+	private static void _setFieldIndexTypeNone(JSONObject jsonObject) {
 		for (JSONObject pageJSONObject :
 				(Iterable<JSONObject>)jsonObject.getJSONArray("pages")) {
 
@@ -698,18 +627,21 @@ public class DataLayoutTaglibUtil {
 
 	private static final Map<String, DataDefinitionContentType>
 		_dataDefinitionContentTypes = new ConcurrentHashMap<>();
+	private static final ServiceTrackerMap<String, DataDefinitionContentType>
+		_dataDefinitionContentTypesServiceTrackerMap;
 	private static final Snapshot<DataDefinitionResource.Factory>
 		_dataDefinitionResourceFactorySnapshot = new Snapshot<>(
 			DataLayoutTaglibUtil.class, DataDefinitionResource.Factory.class);
 	private static final Map<String, DataLayoutBuilderDefinition>
 		_dataLayoutBuilderDefinitions = new ConcurrentHashMap<>();
+	private static final ServiceTrackerMap<String, DataLayoutBuilderDefinition>
+		_dataLayoutBuilderDefinitionsServiceTrackerMap;
 	private static final Snapshot<DataLayoutRenderer>
 		_dataLayoutRendererSnapshot = new Snapshot<>(
 			DataLayoutTaglibUtil.class, DataLayoutRenderer.class);
 	private static final Snapshot<DataLayoutResource.Factory>
 		_dataLayoutResourceFactorySnapshot = new Snapshot<>(
 			DataLayoutTaglibUtil.class, DataLayoutResource.Factory.class);
-	private static DataLayoutTaglibUtil _dataLayoutTaglibUtil;
 	private static final Snapshot<DataRecordResource.Factory>
 		_dataRecordResourceFactorySnapshot = new Snapshot<>(
 			DataLayoutTaglibUtil.class, DataRecordResource.Factory.class);
@@ -742,7 +674,41 @@ public class DataLayoutTaglibUtil {
 	private static final Snapshot<Portal> _portalSnapshot = new Snapshot<>(
 		DataLayoutTaglibUtil.class, Portal.class);
 
-	private class DataLayoutDDMFormAdapter {
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(DataLayoutTaglibUtil.class);
+
+		_dataLayoutBuilderDefinitionsServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundle.getBundleContext(), DataLayoutBuilderDefinition.class,
+				null,
+				(serviceReference, emitter) -> {
+					String contentType = (String)serviceReference.getProperty(
+						"content.type");
+
+					if (Validator.isNull(contentType)) {
+						return;
+					}
+
+					emitter.emit(contentType);
+				});
+
+		_dataDefinitionContentTypesServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundle.getBundleContext(), DataDefinitionContentType.class,
+				null,
+				(serviceReference, emitter) -> {
+					String contentType = (String)serviceReference.getProperty(
+						"content.type");
+
+					if (Validator.isNull(contentType)) {
+						return;
+					}
+
+					emitter.emit(contentType);
+				});
+	}
+
+	private static class DataLayoutDDMFormAdapter {
 
 		public DataLayoutDDMFormAdapter(
 			Set<Locale> availableLocales, String contentType,

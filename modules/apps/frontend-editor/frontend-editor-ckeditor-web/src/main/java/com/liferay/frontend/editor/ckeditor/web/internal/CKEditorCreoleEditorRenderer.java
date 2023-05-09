@@ -14,28 +14,24 @@
 
 package com.liferay.frontend.editor.ckeditor.web.internal;
 
-import com.liferay.portal.kernel.editor.Editor;
+import com.liferay.frontend.editor.EditorRenderer;
 
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Raymond Augé
- * @author Roberto Díaz
+ * @author Joao Victor Alves
  */
-@Component(property = "name=ckeditor_creole", service = Editor.class)
-public class CKEditorCreoleEditor extends BaseCKEditor {
+@Component(property = "name=ckeditor_creole", service = EditorRenderer.class)
+public class CKEditorCreoleEditorRenderer extends BaseCKEditorRenderer {
 
 	@Override
 	public String getJspPath() {
 		return "/ckeditor.jsp";
 	}
 
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		setName((String)properties.get("name"));
+	@Override
+	public String getResourcesJspPath() {
+		return "/resources.jsp";
 	}
 
 }

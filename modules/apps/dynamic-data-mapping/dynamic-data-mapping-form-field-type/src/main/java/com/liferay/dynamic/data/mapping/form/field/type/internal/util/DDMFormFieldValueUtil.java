@@ -151,6 +151,7 @@ public class DDMFormFieldValueUtil {
 
 		return ddmFormField.getDDMFormFieldOptions();
 	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMFormFieldValueUtil.class);
 

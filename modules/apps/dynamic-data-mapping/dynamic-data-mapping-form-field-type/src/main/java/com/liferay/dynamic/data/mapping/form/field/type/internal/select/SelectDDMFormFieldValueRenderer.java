@@ -14,10 +14,12 @@
 
 package com.liferay.dynamic.data.mapping.form.field.type.internal.select;
 
+import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueAccessor;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueRenderer;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.dynamic.data.mapping.form.field.type.internal.util.SelectDDMFormFieldValueUtil;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.util.Html;
 
 import java.util.Locale;
@@ -42,8 +44,11 @@ public class SelectDDMFormFieldValueRenderer
 				ddmFormFieldValue, locale));
 	}
 
-	@Reference
-	protected SelectDDMFormFieldValueAccessor selectDDMFormFieldValueAccessor;
+	@Reference(
+		target = "(component.name=com.liferay.dynamic.data.mapping.form.field.type.internal.select.SelectDDMFormFieldValueAccessor)"
+	)
+	protected DDMFormFieldValueAccessor<JSONArray>
+		selectDDMFormFieldValueAccessor;
 
 	@Reference
 	private Html _html;

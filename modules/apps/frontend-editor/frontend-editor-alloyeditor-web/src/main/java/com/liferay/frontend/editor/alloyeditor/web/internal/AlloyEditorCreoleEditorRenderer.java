@@ -14,22 +14,13 @@
 
 package com.liferay.frontend.editor.alloyeditor.web.internal;
 
-import com.liferay.portal.kernel.editor.Editor;
+import com.liferay.frontend.editor.EditorRenderer;
 
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Sergio González
+ * @author Joao Victor Alves
  */
-@Component(property = "name=alloyeditor_creole", service = Editor.class)
-public class AlloyEditorCreoleEditor extends BaseAlloyEditor {
-
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		setName((String)properties.get("name"));
-	}
-
+@Component(property = "name=alloyeditor", service = EditorRenderer.class)
+public class AlloyEditorCreoleEditorRenderer extends BaseAlloyEditorRenderer {
 }

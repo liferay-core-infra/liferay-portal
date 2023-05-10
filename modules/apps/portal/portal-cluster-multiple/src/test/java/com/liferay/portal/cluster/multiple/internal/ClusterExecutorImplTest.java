@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
@@ -50,6 +51,10 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.ComponentContext;
 
 /**
  * @author Tina Tian
@@ -291,15 +296,32 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 	public void testManageDebugClusterEventListener() {
 		ClusterExecutorImpl clusterExecutorImpl = _getClusterExecutorImpl();
 
-		_testManageDebugClusterEventListener(clusterExecutorImpl, true);
-		_testManageDebugClusterEventListener(clusterExecutorImpl, false);
-		_testManageDebugClusterEventListener(clusterExecutorImpl, true);
+		ServiceRegistration<ClusterEventListener> serviceRegistration =
+			_bundleContext.registerService(
+				ClusterEventListener.class,
+				new DebuggingClusterEventListenerImpl(), null);
+
+		try {
+			_testManageDebugClusterEventListener(clusterExecutorImpl, true);
+			_testManageDebugClusterEventListener(clusterExecutorImpl, false);
+			_testManageDebugClusterEventListener(clusterExecutorImpl, true);
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
 	}
 
 	private ClusterExecutorImpl _getClusterExecutorImpl() {
 		ClusterExecutorImpl clusterExecutorImpl = new ClusterExecutorImpl();
 
-		clusterExecutorImpl.setProps(
+		ReflectionTestUtil.setFieldValue(
+			clusterExecutorImpl, "_clusterChannelFactory",
+			new TestClusterChannelFactory());
+		ReflectionTestUtil.setFieldValue(
+			clusterExecutorImpl, "_portalExecutorManager",
+			new MockPortalExecutorManager());
+		ReflectionTestUtil.setFieldValue(
+			clusterExecutorImpl, "_props",
 			PropsTestUtil.setProps(
 				HashMapBuilder.<String, Object>put(
 					PropsKeys.CLUSTER_LINK_CHANNEL_NAME_CONTROL,
@@ -311,14 +333,22 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 					"configuration.override.", new Properties()
 				).build()));
 
-		clusterExecutorImpl.setClusterChannelFactory(
-			new TestClusterChannelFactory());
+		ComponentContext componentContext = Mockito.mock(
+			ComponentContext.class);
 
-		clusterExecutorImpl.setPortalExecutorManager(
-			new MockPortalExecutorManager());
+		Mockito.when(
+			componentContext.getBundleContext()
+		).thenReturn(
+			_bundleContext
+		);
 
-		clusterExecutorImpl.activate(
-			new MockComponentContext(new HashMapDictionary<>()));
+		Mockito.when(
+			componentContext.getProperties()
+		).thenReturn(
+			new HashMapDictionary<>()
+		);
+
+		clusterExecutorImpl.activate(componentContext);
 
 		return clusterExecutorImpl;
 	}
@@ -339,7 +369,7 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 			enabled
 		);
 
-		clusterExecutorImpl.manageDebugClusterEventListener();
+		clusterExecutorImpl.getClusterEventListeners();
 
 		List<ClusterEventListener> clusterEventListeners =
 			clusterExecutorImpl.getClusterEventListeners();
@@ -360,5 +390,8 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 			Assert.assertTrue(clusterEventListeners.isEmpty());
 		}
 	}
+
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 
 }

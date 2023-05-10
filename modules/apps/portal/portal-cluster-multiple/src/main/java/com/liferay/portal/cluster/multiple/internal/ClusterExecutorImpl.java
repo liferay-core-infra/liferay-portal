@@ -430,26 +430,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		clusterReceiver.openLatch();
 
 		_configurePortalInstanceCommunications();
-
-		manageDebugClusterEventListener();
-	}
-
-	protected void manageDebugClusterEventListener() {
-		if (clusterExecutorConfiguration.debugEnabled() &&
-			(_debugClusterEventListener == null)) {
-
-			_debugClusterEventListener =
-				new DebuggingClusterEventListenerImpl();
-
-			addClusterEventListener(_debugClusterEventListener);
-		}
-		else if (!clusterExecutorConfiguration.debugEnabled() &&
-				 (_debugClusterEventListener != null)) {
-
-			removeClusterEventListener(_debugClusterEventListener);
-
-			_debugClusterEventListener = null;
-		}
 	}
 
 	protected void memberRemoved(List<Address> departAddresses) {
@@ -488,8 +468,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	protected synchronized void modified(Map<String, Object> properties) {
 		clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
 			ClusterExecutorConfiguration.class, properties);
-
-		manageDebugClusterEventListener();
 	}
 
 	protected void sendNotifyRequest() {
@@ -624,7 +602,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		_clusterNodeIdCompletableFutures = new ConcurrentHashMap<>();
 	private final Map<String, ClusterNodeStatus> _clusterNodeStatuses =
 		new ConcurrentHashMap<>();
-	private ClusterEventListener _debugClusterEventListener;
 	private boolean _enabled;
 	private ExecutorService _executorService;
 	private final Map<String, FutureClusterResponses> _futureClusterResponses =

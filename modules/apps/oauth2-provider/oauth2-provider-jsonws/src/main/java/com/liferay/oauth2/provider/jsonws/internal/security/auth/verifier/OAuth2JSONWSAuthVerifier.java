@@ -26,6 +26,8 @@ import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationScopeAliasesLocalService;
 import com.liferay.oauth2.provider.service.OAuth2AuthorizationLocalService;
 import com.liferay.oauth2.provider.service.OAuth2ScopeGrantLocalService;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -48,18 +50,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Tomas Polesovsky
@@ -126,12 +129,14 @@ public class OAuth2JSONWSAuthVerifier implements AuthVerifier {
 				return authVerifierResult;
 			}
 
+			List<String> jaxRsApplicationNames = _serviceTrackerList.toList();
+
 			List<String> scopes = TransformUtil.transform(
 				_oAuth2ScopeGrantLocalService.
 					getOAuth2AuthorizationOAuth2ScopeGrants(
 						oAuth2Authorization.getOAuth2AuthorizationId()),
 				oAuth2ScopeGrant -> {
-					if (!_jaxRsApplicationNames.contains(
+					if (!jaxRsApplicationNames.contains(
 							oAuth2ScopeGrant.getApplicationName())) {
 
 						return null;
@@ -171,26 +176,41 @@ public class OAuth2JSONWSAuthVerifier implements AuthVerifier {
 		}
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(&(osgi.jaxrs.name=*)(sap.scope.finder=true))"
-	)
-	protected void addJaxRsApplicationName(
-		ServiceReference<ScopeFinder> serviceReference) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, ScopeFinder.class,
+			"(&(osgi.jaxrs.name=*)(sap.scope.finder=true))",
+			new ServiceTrackerCustomizer<ScopeFinder, String>() {
 
-		_jaxRsApplicationNames.add(
-			GetterUtil.getString(
-				serviceReference.getProperty("osgi.jaxrs.name")));
+				@Override
+				public String addingService(
+					ServiceReference<ScopeFinder> serviceReference) {
+
+					return GetterUtil.getString(
+						serviceReference.getProperty("osgi.jaxrs.name"));
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<ScopeFinder> serviceReference,
+					String jaxRsApplicationName) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<ScopeFinder> serviceReference,
+					String jaxRsApplicationName) {
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
 	}
 
-	protected void removeJaxRsApplicationName(
-		ServiceReference<ScopeFinder> serviceReference) {
-
-		_jaxRsApplicationNames.remove(
-			GetterUtil.getString(
-				serviceReference.getProperty("osgi.jaxrs.name")));
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerList.close();
 	}
 
 	private BearerTokenProvider.AccessToken _getAccessToken(
@@ -279,9 +299,6 @@ public class OAuth2JSONWSAuthVerifier implements AuthVerifier {
 	)
 	private volatile BearerTokenProviderAccessor _bearerTokenProviderAccessor;
 
-	private final Set<String> _jaxRsApplicationNames =
-		Collections.newSetFromMap(new ConcurrentHashMap<>());
-
 	@Reference
 	private OAuth2ApplicationLocalService _oAuth2ApplicationLocalService;
 
@@ -298,5 +315,7 @@ public class OAuth2JSONWSAuthVerifier implements AuthVerifier {
 	@Reference
 	private SAPEntryScopeDescriptorFinderRegistrator
 		_sapEntryScopeDescriptorFinderRegistrator;
+
+	private ServiceTrackerList<String> _serviceTrackerList;
 
 }

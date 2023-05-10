@@ -49,7 +49,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.background.task.configuration.BackgroundTaskManagerConfiguration",
-	service = {}
+	service = BackgroundTaskMessagingConfigurator.class
 )
 public class BackgroundTaskMessagingConfigurator {
 

@@ -14,9 +14,9 @@
 
 package com.liferay.user.associated.data.web.internal.export.background.task;
 
+import com.liferay.portal.background.task.service.BackgroundTaskLocalService;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
-import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusMessageTranslator;
 import com.liferay.portal.kernel.backgroundtask.BaseBackgroundTaskExecutor;
@@ -58,7 +58,7 @@ public class UADExportBackgroundTaskExecutor
 		File file = _uadApplicationExportController.export(
 			applicationKey, Long.valueOf(backgroundTask.getName()));
 
-		_backgroundTaskManager.addBackgroundTaskAttachment(
+		_backgroundTaskLocalService.addBackgroundTaskAttachment(
 			backgroundTask.getUserId(), backgroundTask.getBackgroundTaskId(),
 			file.getName(), file);
 
@@ -85,7 +85,7 @@ public class UADExportBackgroundTaskExecutor
 	}
 
 	@Reference
-	private BackgroundTaskManager _backgroundTaskManager;
+	private BackgroundTaskLocalService _backgroundTaskLocalService;
 
 	private BackgroundTaskStatusMessageTranslator
 		_backgroundTaskStatusMessageTranslator;

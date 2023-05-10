@@ -16,9 +16,6 @@ package com.liferay.search.experiences.web.internal.blueprint.options.portlet.pr
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 
@@ -28,27 +25,10 @@ import javax.portlet.PortletPreferences;
 public class SXPBlueprintOptionsPortletPreferencesUtil {
 
 	public static String getValue(
-		Optional<PortletPreferences> portletPreferencesOptional, String key) {
-
-		if (!portletPreferencesOptional.isPresent()) {
-			return StringPool.BLANK;
-		}
-
-		return getValue(portletPreferencesOptional.get(), key);
-	}
-
-	public static String getValue(
 		PortletPreferences portletPreferences, String key) {
 
-		String value = portletPreferences.getValue(key, StringPool.BLANK);
-
-		value = StringUtil.trim(value);
-
-		if (Validator.isBlank(value)) {
-			return StringPool.BLANK;
-		}
-
-		return value;
+		return StringUtil.trim(
+			portletPreferences.getValue(key, StringPool.BLANK));
 	}
 
 }

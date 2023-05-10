@@ -17,7 +17,6 @@ package com.liferay.portal.cluster.multiple.internal;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cluster.multiple.configuration.ClusterExecutorConfiguration;
 import com.liferay.portal.kernel.cluster.Address;
-import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterNode;
@@ -40,7 +39,6 @@ import com.liferay.portal.util.PropsImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
@@ -70,57 +68,6 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 	}
 
 	@Test
-	public void testClusterEventListener() {
-
-		// Test 1, add cluster event listener
-
-		ClusterExecutorImpl clusterExecutorImpl = _getClusterExecutorImpl();
-
-		List<ClusterEventListener> clusterEventListeners =
-			clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 0, clusterEventListeners.size());
-
-		ClusterEventListener clusterEventListener = new ClusterEventListener() {
-
-			@Override
-			public void processClusterEvent(ClusterEvent clusterEvent) {
-			}
-
-		};
-
-		clusterExecutorImpl.addClusterEventListener(clusterEventListener);
-
-		clusterEventListeners = clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 1, clusterEventListeners.size());
-
-		// Test 2, remove cluster event listener
-
-		clusterExecutorImpl.removeClusterEventListener(clusterEventListener);
-
-		clusterEventListeners = clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 0, clusterEventListeners.size());
-
-		// Test 3, set cluster event listener
-
-		clusterEventListeners = new ArrayList<>();
-
-		clusterEventListeners.add(clusterEventListener);
-
-		clusterExecutorImpl.setClusterEventListeners(clusterEventListeners);
-
-		clusterEventListeners = clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 1, clusterEventListeners.size());
-	}
-
-	@Test
 	public void testDeactivate() {
 		ClusterExecutorImpl clusterExecutorImpl = _getClusterExecutorImpl();
 
@@ -143,51 +90,6 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		Assert.assertTrue(clusterChannel.isClosed());
 		Assert.assertTrue(executorService.isShutdown());
-	}
-
-	@Test
-	public void testDebugClusterEventListener() {
-		ClusterExecutorImpl clusterExecutorImpl = _getClusterExecutorImpl();
-
-		clusterExecutorImpl.clusterExecutorConfiguration =
-			new ClusterExecutorConfiguration() {
-
-				@Override
-				public long clusterNodeAddressTimeout() {
-					return 100;
-				}
-
-				@Override
-				public boolean debugEnabled() {
-					return true;
-				}
-
-				@Override
-				public String[] excludedPropertyKeys() {
-					return new String[] {
-						"access_key", "connection_password",
-						"connection_username", "secret_access_key"
-					};
-				}
-
-			};
-
-		clusterExecutorImpl.manageDebugClusterEventListener();
-
-		List<ClusterEventListener> clusterEventListeners =
-			clusterExecutorImpl.getClusterEventListeners();
-
-		Assert.assertEquals(
-			clusterEventListeners.toString(), 1, clusterEventListeners.size());
-
-		ClusterEventListener clusterEventListener = clusterEventListeners.get(
-			0);
-
-		Class<?> clusterEventListenerClass = clusterEventListener.getClass();
-
-		Assert.assertEquals(
-			DebuggingClusterEventListenerImpl.class.getName(),
-			clusterEventListenerClass.getName());
 	}
 
 	@Test

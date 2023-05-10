@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.PortalInetSocketAddressEventListener;
 import com.liferay.portal.kernel.util.Props;
@@ -169,7 +170,17 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Override
 	public List<ClusterEventListener> getClusterEventListeners() {
-		return _serviceTrackerList.toList();
+		return ListUtil.filter(
+			_serviceTrackerList.toList(),
+			clusterEventListener -> {
+				if (clusterEventListener instanceof
+						DebuggingClusterEventListenerImpl) {
+
+					return clusterExecutorConfiguration.debugEnabled();
+				}
+
+				return true;
+			});
 	}
 
 	@Override
@@ -303,6 +314,12 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	protected void fireClusterEvent(ClusterEvent clusterEvent) {
 		for (ClusterEventListener listener : _serviceTrackerList) {
+			if ((listener instanceof DebuggingClusterEventListenerImpl) &&
+				!clusterExecutorConfiguration.debugEnabled()) {
+
+				continue;
+			}
+
 			listener.processClusterEvent(clusterEvent);
 		}
 	}
@@ -430,26 +447,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		clusterReceiver.openLatch();
 
 		_configurePortalInstanceCommunications();
-
-		manageDebugClusterEventListener();
-	}
-
-	protected void manageDebugClusterEventListener() {
-		if (clusterExecutorConfiguration.debugEnabled() &&
-			(_debugClusterEventListener == null)) {
-
-			_debugClusterEventListener =
-				new DebuggingClusterEventListenerImpl();
-
-			addClusterEventListener(_debugClusterEventListener);
-		}
-		else if (!clusterExecutorConfiguration.debugEnabled() &&
-				 (_debugClusterEventListener != null)) {
-
-			removeClusterEventListener(_debugClusterEventListener);
-
-			_debugClusterEventListener = null;
-		}
 	}
 
 	protected void memberRemoved(List<Address> departAddresses) {
@@ -488,8 +485,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	protected synchronized void modified(Map<String, Object> properties) {
 		clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
 			ClusterExecutorConfiguration.class, properties);
-
-		manageDebugClusterEventListener();
 	}
 
 	protected void sendNotifyRequest() {
@@ -624,7 +619,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		_clusterNodeIdCompletableFutures = new ConcurrentHashMap<>();
 	private final Map<String, ClusterNodeStatus> _clusterNodeStatuses =
 		new ConcurrentHashMap<>();
-	private ClusterEventListener _debugClusterEventListener;
 	private boolean _enabled;
 	private ExecutorService _executorService;
 	private final Map<String, FutureClusterResponses> _futureClusterResponses =

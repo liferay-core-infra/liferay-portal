@@ -25,9 +25,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.List;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Tina Tian
  */
+@Component(service = ClusterEventListener.class)
 public class DebuggingClusterEventListenerImpl implements ClusterEventListener {
 
 	@Override

@@ -25,7 +25,7 @@ import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoTaskAssignmentImpl;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
-import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
+import com.liferay.portal.workflow.kaleo.runtime.assignment.ScriptingKaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalService;
 
 import java.util.Collection;
@@ -98,7 +98,7 @@ public class MultiLanguageKaleoTaskAssignmentSelectorTest {
 			"java"
 		);
 
-		Class<? extends KaleoTaskAssignmentSelector> clazz =
+		Class<? extends ScriptingKaleoTaskAssignmentSelector> clazz =
 			_testJavaScriptingKaleoTaskAssignmentSelector.getClass();
 
 		Mockito.when(

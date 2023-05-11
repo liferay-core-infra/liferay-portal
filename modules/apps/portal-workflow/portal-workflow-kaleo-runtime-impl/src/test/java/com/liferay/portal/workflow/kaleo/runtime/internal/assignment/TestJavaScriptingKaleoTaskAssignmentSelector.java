@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.workflow.kaleo.KaleoTaskAssignmentFactory;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
-import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
+import com.liferay.portal.workflow.kaleo.runtime.assignment.ScriptingKaleoTaskAssignmentSelector;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,10 +32,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "scripting.language=java",
-	service = KaleoTaskAssignmentSelector.class
+	service = ScriptingKaleoTaskAssignmentSelector.class
 )
 public class TestJavaScriptingKaleoTaskAssignmentSelector
-	implements KaleoTaskAssignmentSelector {
+	implements ScriptingKaleoTaskAssignmentSelector {
 
 	@Override
 	public Collection<KaleoTaskAssignment> getKaleoTaskAssignments(

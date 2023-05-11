@@ -35,21 +35,16 @@ import com.liferay.portal.search.elasticsearch7.internal.connection.Elasticsearc
 import com.liferay.portal.search.elasticsearch7.internal.helper.SearchLogHelperUtil;
 import com.liferay.portal.search.elasticsearch7.internal.settings.SettingsBuilder;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
-import com.liferay.portal.search.index.ConcurrentReindexManager;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.spi.model.index.contributor.IndexContributor;
 import com.liferay.portal.search.spi.settings.IndexSettingsContributor;
 
 import java.io.IOException;
 
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.elasticsearch.action.ActionResponse;
-import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.client.IndicesClient;
@@ -72,10 +67,9 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Michael C. Han
  */
-@Component(service = {ConcurrentReindexManager.class, IndexFactory.class})
+@Component(service = IndexFactory.class)
 public class CompanyIndexFactory
-	implements ConcurrentReindexManager, ElasticsearchConfigurationObserver,
-			   IndexFactory {
+	implements ElasticsearchConfigurationObserver, IndexFactory {
 
 	@Override
 	public int compareTo(
@@ -97,39 +91,11 @@ public class CompanyIndexFactory
 	}
 
 	@Override
-	public void createNextIndex(long companyId) throws Exception {
-		if (!FeatureFlagManagerUtil.isEnabled("LPS-177664") ||
-			(companyId == CompanyConstants.SYSTEM)) {
-
-			return;
-		}
-
-		String baseIndexName = _indexNameBuilder.getIndexName(companyId);
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
-		String timeStampSuffix = dateFormat.format(new Date());
-
-		String newIndexName = baseIndexName + "-" + timeStampSuffix;
-
-		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionManager.getRestHighLevelClient();
-
-		if (hasIndex(restHighLevelClient.indices(), newIndexName)) {
-			return;
-		}
-
-		createIndex(newIndexName, restHighLevelClient.indices());
-
-		_companyLocalService.updateIndexNameNext(companyId, newIndexName);
-	}
-
-	@Override
 	public void deleteIndices(IndicesClient indicesClient, long companyId) {
 		String indexName = getIndexName(companyId);
 
 		if (FeatureFlagManagerUtil.isEnabled("LPS-177664")) {
-			Company company = _companyLocalService.fetchCompany(companyId);
+			Company company = companyLocalService.fetchCompany(companyId);
 
 			if ((company != null) &&
 				!Validator.isBlank(company.getIndexNameCurrent())) {
@@ -144,30 +110,7 @@ public class CompanyIndexFactory
 
 		_executeIndexContributorsBeforeRemove(indexName);
 
-		_deleteIndex(indexName, indicesClient, companyId, true);
-	}
-
-	@Override
-	public void deleteNextIndex(long companyId) {
-		if (!FeatureFlagManagerUtil.isEnabled("LPS-177664")) {
-			return;
-		}
-
-		Company company = _companyLocalService.fetchCompany(companyId);
-
-		if (company == null) {
-			return;
-		}
-
-		String indexName = company.getIndexNameNext();
-
-		if (!Validator.isBlank(indexName)) {
-			RestHighLevelClient restHighLevelClient =
-				_elasticsearchConnectionManager.getRestHighLevelClient();
-
-			_deleteIndex(
-				indexName, restHighLevelClient.indices(), companyId, false);
-		}
+		deleteIndex(indexName, indicesClient, companyId, true);
 	}
 
 	@Override
@@ -183,66 +126,6 @@ public class CompanyIndexFactory
 	@Override
 	public synchronized void registerCompanyId(long companyId) {
 		_companyIds.add(companyId);
-	}
-
-	@Override
-	public void replaceCurrentIndexWithNextIndex(long companyId)
-		throws Exception {
-
-		if (!FeatureFlagManagerUtil.isEnabled("LPS-177664") ||
-			(companyId == CompanyConstants.SYSTEM)) {
-
-			return;
-		}
-
-		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionManager.getRestHighLevelClient();
-
-		IndicesAliasesRequest indicesAliasesRequest =
-			new IndicesAliasesRequest();
-
-		IndicesAliasesRequest.AliasActions addAliasActions =
-			IndicesAliasesRequest.AliasActions.add();
-
-		String baseIndexName = _indexNameBuilder.getIndexName(companyId);
-
-		addAliasActions.alias(baseIndexName);
-
-		Company company = _companyLocalService.getCompany(companyId);
-
-		String indexNameNext = company.getIndexNameNext();
-
-		addAliasActions.index(indexNameNext);
-
-		indicesAliasesRequest.addAliasAction(addAliasActions);
-
-		String removeIndex = baseIndexName;
-
-		if (!Validator.isBlank(company.getIndexNameCurrent())) {
-			removeIndex = company.getIndexNameCurrent();
-		}
-
-		IndicesAliasesRequest.AliasActions removeIndexAliasActions =
-			IndicesAliasesRequest.AliasActions.removeIndex();
-
-		removeIndexAliasActions.index(removeIndex);
-
-		indicesAliasesRequest.addAliasAction(removeIndexAliasActions);
-
-		IndicesClient indicesClient = restHighLevelClient.indices();
-
-		if (_crossClusterReplicationHelper != null) {
-			_crossClusterReplicationHelper.unfollow(removeIndex);
-		}
-
-		indicesClient.updateAliases(
-			indicesAliasesRequest, RequestOptions.DEFAULT);
-
-		_companyLocalService.updateIndexNames(companyId, indexNameNext, null);
-
-		if (_crossClusterReplicationHelper != null) {
-			_crossClusterReplicationHelper.follow(indexNameNext);
-		}
 	}
 
 	@Override
@@ -337,8 +220,37 @@ public class CompanyIndexFactory
 		_elasticsearchConfigurationWrapper.unregister(this);
 	}
 
+	protected void deleteIndex(
+		String indexName, IndicesClient indicesClient, long companyId,
+		boolean resetBothIndexNames) {
+
+		DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(
+			indexName);
+
+		try {
+			ActionResponse actionResponse = indicesClient.delete(
+				deleteIndexRequest, RequestOptions.DEFAULT);
+
+			SearchLogHelperUtil.logActionResponse(_log, actionResponse);
+
+			if (FeatureFlagManagerUtil.isEnabled("LPS-177664") &&
+				(companyId != CompanyConstants.SYSTEM)) {
+
+				if (resetBothIndexNames) {
+					companyLocalService.updateIndexNames(companyId, null, null);
+				}
+				else {
+					companyLocalService.updateIndexNameNext(companyId, null);
+				}
+			}
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
 	protected String getIndexName(long companyId) {
-		return _indexNameBuilder.getIndexName(companyId);
+		return indexNameBuilder.getIndexName(companyId);
 	}
 
 	protected boolean hasIndex(IndicesClient indicesClient, String indexName) {
@@ -368,6 +280,23 @@ public class CompanyIndexFactory
 			_elasticsearchConfigurationWrapper.additionalTypeMappings());
 	}
 
+	@Reference
+	protected CompanyLocalService companyLocalService;
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	protected volatile CrossClusterReplicationHelper
+		crossClusterReplicationHelper;
+
+	@Reference
+	protected ElasticsearchConnectionManager elasticsearchConnectionManager;
+
+	@Reference
+	protected IndexNameBuilder indexNameBuilder;
+
 	private void _addLiferayDocumentTypeMappings(
 		CreateIndexRequest createIndexRequest,
 		LiferayDocumentTypeFactory liferayDocumentTypeFactory) {
@@ -389,7 +318,7 @@ public class CompanyIndexFactory
 		for (Long companyId : _companyIds) {
 			try {
 				RestHighLevelClient restHighLevelClient =
-					_elasticsearchConnectionManager.getRestHighLevelClient();
+					elasticsearchConnectionManager.getRestHighLevelClient();
 
 				createIndices(restHighLevelClient.indices(), companyId);
 			}
@@ -400,36 +329,6 @@ public class CompanyIndexFactory
 						exception);
 				}
 			}
-		}
-	}
-
-	private void _deleteIndex(
-		String indexName, IndicesClient indicesClient, long companyId,
-		boolean resetBothIndexNames) {
-
-		DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(
-			indexName);
-
-		try {
-			ActionResponse actionResponse = indicesClient.delete(
-				deleteIndexRequest, RequestOptions.DEFAULT);
-
-			SearchLogHelperUtil.logActionResponse(_log, actionResponse);
-
-			if (FeatureFlagManagerUtil.isEnabled("LPS-177664") &&
-				(companyId != CompanyConstants.SYSTEM)) {
-
-				if (resetBothIndexNames) {
-					_companyLocalService.updateIndexNames(
-						companyId, null, null);
-				}
-				else {
-					_companyLocalService.updateIndexNameNext(companyId, null);
-				}
-			}
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
 		}
 	}
 
@@ -548,7 +447,7 @@ public class CompanyIndexFactory
 
 		try {
 			restHighLevelClient =
-				_elasticsearchConnectionManager.getRestHighLevelClient();
+				elasticsearchConnectionManager.getRestHighLevelClient();
 		}
 		catch (ElasticsearchConnectionNotInitializedException
 					elasticsearchConnectionNotInitializedException) {
@@ -620,29 +519,11 @@ public class CompanyIndexFactory
 	private final Set<Long> _companyIds = new HashSet<>();
 
 	@Reference
-	private CompanyLocalService _companyLocalService;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile CrossClusterReplicationHelper
-		_crossClusterReplicationHelper;
-
-	@Reference
 	private volatile ElasticsearchConfigurationWrapper
 		_elasticsearchConfigurationWrapper;
 
-	@Reference
-	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
-
 	private ServiceTrackerList<IndexContributor>
 		_indexContributorServiceTrackerList;
-
-	@Reference
-	private IndexNameBuilder _indexNameBuilder;
-
 	private ServiceTrackerList<IndexSettingsContributor>
 		_indexSettingsContributorServiceTrackerList;
 

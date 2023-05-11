@@ -151,7 +151,7 @@ public class SearchRequestExecutorFixture {
 		ReflectionTestUtil.setFieldValue(
 			commonSearchSourceBuilderAssembler, "_aggregationTranslator",
 			elasticsearchAggregationVisitorFixture.
-				getElasticsearchAggregationVisitor());
+				getElasticsearchAggregationTranslator());
 		ReflectionTestUtil.setFieldValue(
 			commonSearchSourceBuilderAssembler, "_complexQueryBuilderFactory",
 			complexQueryBuilderFactory);

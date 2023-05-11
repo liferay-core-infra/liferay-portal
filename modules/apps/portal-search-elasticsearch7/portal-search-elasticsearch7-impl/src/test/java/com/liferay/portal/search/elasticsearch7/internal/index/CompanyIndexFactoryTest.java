@@ -101,7 +101,7 @@ public class CompanyIndexFactoryTest {
 		Mockito.reset(_elasticsearchConfigurationWrapper);
 
 		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_elasticsearchConfigurationWrapper",
+			_companyIndexFactory, "elasticsearchConfigurationWrapper",
 			_elasticsearchConfigurationWrapper);
 
 		Mockito.when(

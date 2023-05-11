@@ -120,12 +120,12 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 		_companyIndexFactory = new CompanyIndexFactory();
 
 		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_elasticsearchConfigurationWrapper",
+			_companyIndexFactory, "elasticsearchConfigurationWrapper",
 			createElasticsearchConfigurationWrapper(properites));
 		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_indexNameBuilder", indexNameBuilder);
+			_companyIndexFactory, "indexNameBuilder", indexNameBuilder);
 		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_jsonFactory", new JSONFactoryImpl());
+			_companyIndexFactory, "jsonFactory", new JSONFactoryImpl());
 
 		ReflectionTestUtil.invoke(
 			_companyIndexFactory, "activate",

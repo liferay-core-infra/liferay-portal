@@ -157,13 +157,13 @@ public class CompanyIdIndexNameBuilderTest {
 		_companyIndexFactory = new CompanyIndexFactory();
 
 		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_elasticsearchConfigurationWrapper",
+			_companyIndexFactory, "elasticsearchConfigurationWrapper",
 			createElasticsearchConfigurationWrapper());
 		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_indexNameBuilder",
+			_companyIndexFactory, "indexNameBuilder",
 			companyIdIndexNameBuilder);
 		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_jsonFactory", new JSONFactoryImpl());
+			_companyIndexFactory, "jsonFactory", new JSONFactoryImpl());
 
 		ReflectionTestUtil.invoke(
 			_companyIndexFactory, "activate",

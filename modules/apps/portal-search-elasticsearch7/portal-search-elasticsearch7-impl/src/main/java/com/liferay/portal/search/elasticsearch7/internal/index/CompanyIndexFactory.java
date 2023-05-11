@@ -19,27 +19,18 @@ import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.ccr.CrossClusterReplicationHelper;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationObserver;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.index.util.IndexFactoryCompanyIdRegistryUtil;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.index.UpdateIndexSettingsIndexRequest;
-import com.liferay.portal.search.index.ConcurrentReindexManager;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.spi.model.index.contributor.IndexContributor;
 
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-
-import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
 import org.elasticsearch.client.IndicesClient;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import org.osgi.framework.BundleContext;
@@ -47,17 +38,13 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
  */
-@Component(service = {ConcurrentReindexManager.class, IndexFactory.class})
+@Component(service = IndexFactory.class)
 public class CompanyIndexFactory
-	implements ConcurrentReindexManager, ElasticsearchConfigurationObserver,
-			   IndexFactory {
+	implements ElasticsearchConfigurationObserver, IndexFactory {
 
 	@Override
 	public int compareTo(
@@ -76,37 +63,6 @@ public class CompanyIndexFactory
 		}
 
 		_companyIndexFactoryHelper.createIndex(indexName, indicesClient);
-	}
-
-	@Override
-	public void createNextIndex(long companyId) throws Exception {
-		if (!FeatureFlagManagerUtil.isEnabled("LPS-177664") ||
-			(companyId == CompanyConstants.SYSTEM)) {
-
-			return;
-		}
-
-		String baseIndexName = _indexNameBuilder.getIndexName(companyId);
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
-		String timeStampSuffix = dateFormat.format(new Date());
-
-		String newIndexName = baseIndexName + "-" + timeStampSuffix;
-
-		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionManager.getRestHighLevelClient();
-
-		if (_companyIndexFactoryHelper.hasIndex(
-				restHighLevelClient.indices(), newIndexName)) {
-
-			return;
-		}
-
-		_companyIndexFactoryHelper.createIndex(
-			newIndexName, restHighLevelClient.indices());
-
-		_companyLocalService.updateIndexNameNext(companyId, newIndexName);
 	}
 
 	@Override
@@ -134,29 +90,6 @@ public class CompanyIndexFactory
 	}
 
 	@Override
-	public void deleteNextIndex(long companyId) {
-		if (!FeatureFlagManagerUtil.isEnabled("LPS-177664")) {
-			return;
-		}
-
-		Company company = _companyLocalService.fetchCompany(companyId);
-
-		if (company == null) {
-			return;
-		}
-
-		String indexName = company.getIndexNameNext();
-
-		if (!Validator.isBlank(indexName)) {
-			RestHighLevelClient restHighLevelClient =
-				_elasticsearchConnectionManager.getRestHighLevelClient();
-
-			_companyIndexFactoryHelper.deleteIndex(
-				indexName, restHighLevelClient.indices(), companyId, false);
-		}
-	}
-
-	@Override
 	public int getPriority() {
 		return 3;
 	}
@@ -171,66 +104,6 @@ public class CompanyIndexFactory
 	@Override
 	public synchronized void registerCompanyId(long companyId) {
 		IndexFactoryCompanyIdRegistryUtil.registerCompanyId(companyId);
-	}
-
-	@Override
-	public void replaceCurrentIndexWithNextIndex(long companyId)
-		throws Exception {
-
-		if (!FeatureFlagManagerUtil.isEnabled("LPS-177664") ||
-			(companyId == CompanyConstants.SYSTEM)) {
-
-			return;
-		}
-
-		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionManager.getRestHighLevelClient();
-
-		IndicesAliasesRequest indicesAliasesRequest =
-			new IndicesAliasesRequest();
-
-		IndicesAliasesRequest.AliasActions addAliasActions =
-			IndicesAliasesRequest.AliasActions.add();
-
-		String baseIndexName = _indexNameBuilder.getIndexName(companyId);
-
-		addAliasActions.alias(baseIndexName);
-
-		Company company = _companyLocalService.getCompany(companyId);
-
-		String indexNameNext = company.getIndexNameNext();
-
-		addAliasActions.index(indexNameNext);
-
-		indicesAliasesRequest.addAliasAction(addAliasActions);
-
-		String removeIndex = baseIndexName;
-
-		if (!Validator.isBlank(company.getIndexNameCurrent())) {
-			removeIndex = company.getIndexNameCurrent();
-		}
-
-		IndicesAliasesRequest.AliasActions removeIndexAliasActions =
-			IndicesAliasesRequest.AliasActions.removeIndex();
-
-		removeIndexAliasActions.index(removeIndex);
-
-		indicesAliasesRequest.addAliasAction(removeIndexAliasActions);
-
-		IndicesClient indicesClient = restHighLevelClient.indices();
-
-		if (_crossClusterReplicationHelper != null) {
-			_crossClusterReplicationHelper.unfollow(removeIndex);
-		}
-
-		indicesClient.updateAliases(
-			indicesAliasesRequest, RequestOptions.DEFAULT);
-
-		_companyLocalService.updateIndexNames(companyId, indexNameNext, null);
-
-		if (_crossClusterReplicationHelper != null) {
-			_crossClusterReplicationHelper.follow(indexNameNext);
-		}
 	}
 
 	@Override
@@ -327,14 +200,6 @@ public class CompanyIndexFactory
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile CrossClusterReplicationHelper
-		_crossClusterReplicationHelper;
 
 	@Reference
 	private volatile ElasticsearchConfigurationWrapper

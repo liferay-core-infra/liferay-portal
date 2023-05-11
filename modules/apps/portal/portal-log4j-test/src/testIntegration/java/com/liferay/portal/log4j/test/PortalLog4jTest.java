@@ -156,6 +156,15 @@ public class PortalLog4jTest {
 	}
 
 	@Test
+	public void testLogOutputWithCompanyWebIdLogContext() {
+		String webId = "liferay.com";
+
+		_testLogOutputWithLogContext(
+			Collections.singletonMap("webId", webId), webId, "company",
+			"%X{company.webId}");
+	}
+
+	@Test
 	public void testLogOutputWithLogContext() {
 		String key1 = "test.key.1";
 		String key2 = "test.key.2";
@@ -175,7 +184,7 @@ public class PortalLog4jTest {
 				key1, StringPool.EQUAL, value1, ", ", logContextName,
 				StringPool.PERIOD, key2, StringPool.EQUAL, value2,
 				StringPool.CLOSE_CURLY_BRACE),
-			logContextName);
+			logContextName, "%X");
 	}
 
 	@Test
@@ -195,7 +204,7 @@ public class PortalLog4jTest {
 				StringPool.OPEN_CURLY_BRACE, key1, StringPool.EQUAL, value1,
 				", ", key2, StringPool.EQUAL, value2,
 				StringPool.CLOSE_CURLY_BRACE),
-			StringPool.BLANK);
+			StringPool.BLANK, "%X");
 	}
 
 	@Test
@@ -203,7 +212,7 @@ public class PortalLog4jTest {
 		_testLogOutputWithLogContext(
 			Collections.emptyMap(),
 			StringPool.OPEN_CURLY_BRACE + StringPool.CLOSE_CURLY_BRACE,
-			"TestLogContext");
+			"TestLogContext", "%X");
 	}
 
 	private static Path _initFileAppender(
@@ -564,7 +573,7 @@ public class PortalLog4jTest {
 
 	private void _testLogOutputWithLogContext(
 		Map<String, String> contexts, String logContextMessage,
-		String logContextName) {
+		String logContextName, String pattern) {
 
 		Bundle bundle = FrameworkUtil.getBundle(PortalLog4jTest.class);
 
@@ -590,7 +599,7 @@ public class PortalLog4jTest {
 
 		PatternLayout.Builder builder = PatternLayout.newBuilder();
 
-		builder.withPattern("%level - %m%n %X");
+		builder.withPattern("%level - %m%n " + pattern);
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 

@@ -14,7 +14,6 @@
 
 package com.liferay.portal.log4j.internal;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.LogContext;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -33,17 +32,16 @@ public class CompanyWebIdLogContext implements LogContext {
 	public Map<String, String> getContext(String logName) {
 		long companyId = CompanyThreadLocal.getCompanyId();
 
-		String webId = StringPool.BLANK;
+		if (companyId == 0) {
+			return Collections.emptyMap();
+		}
 
-		if (companyId > 0) {
-			webId = PortalInstances.getWebIdByCompanyId(companyId);
+		String webId = PortalInstances.getWebIdByCompanyId(companyId);
 
-			if (webId == null) {
-				Company company = CompanyLocalServiceUtil.fetchCompany(
-					companyId);
+		if (webId == null) {
+			Company company = CompanyLocalServiceUtil.fetchCompany(companyId);
 
-				webId = company.getWebId();
-			}
+			webId = company.getWebId();
 		}
 
 		return Collections.singletonMap("webId", webId);

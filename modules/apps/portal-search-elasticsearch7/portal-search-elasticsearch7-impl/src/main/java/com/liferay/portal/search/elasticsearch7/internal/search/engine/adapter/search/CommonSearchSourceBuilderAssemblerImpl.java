@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.search;
 
+import com.liferay.portal.kernel.search.filter.FilterTranslator;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -575,8 +576,8 @@ public class CommonSearchSourceBuilderAssemblerImpl
 	@Reference
 	private FacetTranslator _facetTranslator;
 
-	@Reference
-	private FilterToQueryBuilderTranslator _filterToQueryBuilderTranslator;
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
+	private FilterTranslator<QueryBuilder> _filterToQueryBuilderTranslator;
 
 	@Reference
 	private com.liferay.portal.search.elasticsearch7.internal.legacy.query.

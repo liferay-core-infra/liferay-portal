@@ -257,7 +257,7 @@ public class PortalInstances {
 		return 0;
 	}
 
-	public static String getWebIdByCompanyId(long companyId) {
+	public static String getWebId(long companyId) {
 		return _webIds.get(companyId);
 	}
 

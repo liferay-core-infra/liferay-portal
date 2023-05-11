@@ -36,7 +36,7 @@ public class CompanyWebIdLogContext implements LogContext {
 			return Collections.emptyMap();
 		}
 
-		String webId = PortalInstances.getWebIdByCompanyId(companyId);
+		String webId = PortalInstances.getWebId(companyId);
 
 		if (webId == null) {
 			Company company = CompanyLocalServiceUtil.fetchCompany(companyId);

@@ -90,7 +90,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "search.engine.impl=Elasticsearch",
-	service = {AggregationTranslator.class, AggregationVisitor.class}
+	service = AggregationTranslator.class
 )
 public class ElasticsearchAggregationVisitor
 	implements AggregationTranslator<AggregationBuilder>,

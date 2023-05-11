@@ -49,11 +49,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Michael C. Han
  */
-@Component(
-	service = {
-		ElasticsearchClientResolver.class, ElasticsearchConnectionManager.class
-	}
-)
+@Component(service = ElasticsearchConnectionManager.class)
 public class ElasticsearchConnectionManager
 	implements ElasticsearchClientResolver, ElasticsearchConfigurationObserver {
 

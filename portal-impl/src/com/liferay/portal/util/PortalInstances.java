@@ -257,6 +257,10 @@ public class PortalInstances {
 		return 0;
 	}
 
+	public static String getWebIdByCompanyId(long companyId) {
+		return _webIds.get(companyId);
+	}
+
 	public static String[] getWebIds() {
 		return ArrayUtil.toStringArray(_webIds.values());
 	}

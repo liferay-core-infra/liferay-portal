@@ -15,6 +15,8 @@
 package com.liferay.portal.log4j.internal;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.LogContext;
+import com.liferay.portal.kernel.log.LogContextRegistryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.apache.logging.log4j.LogManager;
@@ -152,6 +155,65 @@ public class Log4jConfigUtilTest {
 			_NULL);
 
 		_assertAppenders(logger, _CONSOLE, _NULL);
+	}
+
+	@Test
+	public void testConfigureLog4JWithCompanyWebIdLogContext() {
+		Set<LogContext> logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertTrue(logContexts.isEmpty());
+
+		Log4jConfigUtil.configureLog4J(
+			_generateCompanyWebIdLogContextConfigurationContent(
+				StringUtil.randomString(), _MESSAGE_LAYOUT, null));
+
+		logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertTrue(logContexts.isEmpty());
+
+		Log4jConfigUtil.configureLog4J(
+			_generateCompanyWebIdLogContextConfigurationContent(
+				_CONSOLE, _MESSAGE_LAYOUT, null));
+
+		logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertTrue(logContexts.isEmpty());
+
+		Log4jConfigUtil.configureLog4J(
+			_generateCompanyWebIdLogContextConfigurationContent(
+				_CONSOLE, _PATTERN_LAYOUT, "%m%n"));
+
+		logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertTrue(logContexts.isEmpty());
+
+		Log4jConfigUtil.configureLog4J(
+			_generateCompanyWebIdLogContextConfigurationContent(
+				_CONSOLE, _PATTERN_LAYOUT, null));
+
+		logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertTrue(logContexts.isEmpty());
+
+		Log4jConfigUtil.configureLog4J(
+			_generateCompanyWebIdLogContextConfigurationContent(
+				_CONSOLE, _PATTERN_LAYOUT, "%X{company.webId}"));
+
+		logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertEquals(logContexts.toString(), 1, logContexts.size());
+
+		Log4jConfigUtil.configureLog4J(
+			_generateCompanyWebIdLogContextConfigurationContent(
+				StringUtil.randomString(), _PATTERN_LAYOUT, null));
+
+		logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertEquals(logContexts.toString(), 1, logContexts.size());
+
+		for (LogContext logContext : logContexts) {
+			LogContextRegistryUtil.unregisterLogContext(logContext);
+		}
 	}
 
 	@Test
@@ -392,6 +454,31 @@ public class Log4jConfigUtilTest {
 		return sb.toString();
 	}
 
+	private String _generateCompanyWebIdLogContextConfigurationContent(
+		String appenderName, String layoutType, String pattern) {
+
+		StringBundler sb = new StringBundler(
+			(layoutType.equals(_PATTERN_LAYOUT) && (pattern != null)) ? 11 : 8);
+
+		sb.append("<?xml version=\"1.0\"?><Configuration strict=\"true\">");
+		sb.append("<Appenders><Appender name=\"");
+		sb.append(appenderName);
+		sb.append("\" type=\"Console\">");
+		sb.append("<Layout ");
+
+		if (layoutType.equals(_PATTERN_LAYOUT) && (pattern != null)) {
+			sb.append("pattern=\"");
+			sb.append(pattern);
+			sb.append("\" ");
+		}
+
+		sb.append("type=\"");
+		sb.append(layoutType);
+		sb.append("\" /></Appender></Appenders></Configuration>");
+
+		return sb.toString();
+	}
+
 	private String _generateLog4j1XMLConfigurationContent() {
 		StringBundler sb = new StringBundler(5);
 
@@ -540,9 +627,13 @@ public class Log4jConfigUtilTest {
 
 	private static final String _INFO = "INFO";
 
+	private static final String _MESSAGE_LAYOUT = "MessageLayout";
+
 	private static final String _NULL = "NULL";
 
 	private static final String _OFF = "OFF";
+
+	private static final String _PATTERN_LAYOUT = "PatternLayout";
 
 	private static final String _TRACE = "TRACE";
 

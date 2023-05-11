@@ -25,7 +25,6 @@ import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionVal
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
-import com.liferay.portal.workflow.kaleo.runtime.assignment.BaseKaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalService;
 
@@ -47,7 +46,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 	service = KaleoTaskAssignmentSelector.class
 )
 public class MultiLanguageKaleoTaskAssignmentSelector
-	extends BaseKaleoTaskAssignmentSelector {
+	implements KaleoTaskAssignmentSelector {
 
 	@Override
 	public Collection<KaleoTaskAssignment> getKaleoTaskAssignments(

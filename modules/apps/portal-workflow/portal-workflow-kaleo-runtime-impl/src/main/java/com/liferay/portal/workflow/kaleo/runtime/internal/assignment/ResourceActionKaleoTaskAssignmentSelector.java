@@ -21,9 +21,9 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.workflow.kaleo.KaleoTaskAssignmentFactory;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
-import com.liferay.portal.workflow.kaleo.runtime.assignment.BaseKaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
 
 import java.io.Serializable;
@@ -45,7 +45,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = KaleoTaskAssignmentSelector.class
 )
 public class ResourceActionKaleoTaskAssignmentSelector
-	extends BaseKaleoTaskAssignmentSelector {
+	implements KaleoTaskAssignmentSelector {
 
 	@Override
 	public Collection<KaleoTaskAssignment> getKaleoTaskAssignments(
@@ -111,9 +111,30 @@ public class ResourceActionKaleoTaskAssignmentSelector
 		List<KaleoTaskAssignment> kaleoTaskAssignments = new ArrayList<>(
 			roles.size());
 
-		getRoleKaleoTaskAssignments(roles, kaleoTaskAssignments);
+		_getRoleKaleoTaskAssignments(roles, kaleoTaskAssignments);
 
 		return kaleoTaskAssignments;
+	}
+
+	@Reference
+	protected KaleoTaskAssignmentFactory kaleoTaskAssignmentFactory;
+
+	private void _getRoleKaleoTaskAssignments(
+		List<Role> roles, List<KaleoTaskAssignment> kaleoTaskAssignments) {
+
+		if (roles == null) {
+			return;
+		}
+
+		for (Role role : roles) {
+			KaleoTaskAssignment kaleoTaskAssignment =
+				kaleoTaskAssignmentFactory.createKaleoTaskAssignment();
+
+			kaleoTaskAssignment.setAssigneeClassName(Role.class.getName());
+			kaleoTaskAssignment.setAssigneeClassPK(role.getRoleId());
+
+			kaleoTaskAssignments.add(kaleoTaskAssignment);
+		}
 	}
 
 	@Reference

@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogContextRegistryUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -74,6 +75,13 @@ public class Log4jConfigUtil {
 
 			for (Element element : rootElement.elements()) {
 				_removeAppender(element, removedAppenderNames);
+
+				if (_isEnabledCompanyWebIdLogContext(element)) {
+					_companyWebIdLogContext = new CompanyWebIdLogContext();
+
+					LogContextRegistryUtil.registerLogContext(
+						_companyWebIdLogContext);
+				}
 
 				for (Element childElement : element.elements("Logger")) {
 					priorities.put(
@@ -172,6 +180,33 @@ public class Log4jConfigUtil {
 		LogManager.shutdown();
 	}
 
+	private static boolean _isEnabledCompanyWebIdLogContext(
+		Element parentElement) {
+
+		if (_companyWebIdLogContext != null) {
+			return false;
+		}
+
+		for (Element element : parentElement.elements("Appender")) {
+			for (Element childElement : element.elements("Layout")) {
+				if (Objects.equals(element.attributeValue("name"), "CONSOLE") &&
+					Objects.equals(
+						childElement.attributeValue("type"), "PatternLayout")) {
+
+					String pattern = childElement.attributeValue("pattern");
+
+					if ((pattern != null) &&
+						pattern.contains("%X{company.webId}")) {
+
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
 	private static void _removeAppender(
 		Element parentElement, String... removedAppenderNames) {
 
@@ -204,6 +239,7 @@ public class Log4jConfigUtil {
 		Log4jConfigUtil.class);
 
 	private static final CentralizedConfiguration _centralizedConfiguration;
+	private static CompanyWebIdLogContext _companyWebIdLogContext;
 	private static final LoggerContext _loggerContext =
 		LoggerContext.getContext();
 

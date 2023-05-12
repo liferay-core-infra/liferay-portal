@@ -14,12 +14,13 @@
 
 package com.liferay.portal.search.solr8.internal.connection;
 
+import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.solr8.configuration.SolrConfiguration;
 import com.liferay.portal.search.solr8.internal.http.HttpClientFactory;
 
@@ -31,14 +32,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.solr.client.solrj.SolrClient;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -55,17 +53,33 @@ public class SolrClientManager {
 
 	@Activate
 	@Modified
-	protected synchronized void activate(Map<String, Object> properties)
+	protected synchronized void activate(
+			BundleContext bundleContext, Map<String, Object> properties)
 		throws Exception {
 
 		_httpClientFactories.put(
 			"BASIC", _basicAuthPoolingHttpClientFactorySnapshot.get());
 		_httpClientFactories.put(
 			"CERT", _certAuthPoolingHttpClientFactorySnapshot.get());
+
+		_httpClientFactoryServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundleContext, HttpClientFactory.class,
+				"(&(!(type=BASIC))(!(type=CERT)))",
+				new PropertyServiceReferenceMapper<String, HttpClientFactory>(
+					"type"));
+
 		_solrClientFactories.put(
 			"CLOUD", _cloudSolrClientFactorySnapshot.get());
 		_solrClientFactories.put(
 			"REPLICATED", _replicatedSolrClientFactorySnapshot.get());
+
+		_solrClientFactoryServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundleContext, SolrClientFactory.class,
+				"(&(!(type=CLOUD))(!(type=REPLICATED)))",
+				new PropertyServiceReferenceMapper<String, SolrClientFactory>(
+					"type"));
 
 		_close();
 
@@ -78,6 +92,11 @@ public class SolrClientManager {
 			clientType);
 
 		if (solrClientFactory == null) {
+			solrClientFactory = _solrClientFactoryServiceTrackerMap.getService(
+				clientType);
+		}
+
+		if (solrClientFactory == null) {
 			throw new IllegalStateException(
 				"Solr client factory not initialized: " + clientType);
 		}
@@ -86,6 +105,11 @@ public class SolrClientManager {
 
 		HttpClientFactory httpClientFactory = _httpClientFactories.get(
 			authMode);
+
+		if (httpClientFactory == null) {
+			httpClientFactory = _httpClientFactoryServiceTrackerMap.getService(
+				authMode);
+		}
 
 		if (httpClientFactory == null) {
 			throw new IllegalStateException(
@@ -101,61 +125,10 @@ public class SolrClientManager {
 		_close();
 		_httpClientFactories.remove("BASIC");
 		_httpClientFactories.remove("CERT");
+		_httpClientFactoryServiceTrackerMap.close();
 		_solrClientFactories.remove("CLOUD");
 		_solrClientFactories.remove("REPLICATED");
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(&(!(type=BASIC))(!(type=CERT)))"
-	)
-	protected void setHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		String type = MapUtil.getString(properties, "type");
-
-		if (Validator.isNull(type)) {
-			throw new IllegalArgumentException(
-				"Invalid authentication type " + type);
-		}
-
-		_httpClientFactories.put(type, httpClientFactory);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(&(!(type=CLOUD))(!(type=REPLICATED)))"
-	)
-	protected void setSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		String type = MapUtil.getString(properties, "type");
-
-		_solrClientFactories.put(type, solrClientFactory);
-	}
-
-	protected void unsetHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		String type = MapUtil.getString(properties, "type");
-
-		if (Validator.isNull(type)) {
-			return;
-		}
-
-		_httpClientFactories.remove(type);
-	}
-
-	protected void unsetSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		String type = MapUtil.getString(properties, "type");
-
-		_solrClientFactories.remove(type);
+		_solrClientFactoryServiceTrackerMap.close();
 	}
 
 	private void _close() {
@@ -193,9 +166,13 @@ public class SolrClientManager {
 
 	private final Map<String, HttpClientFactory> _httpClientFactories =
 		new HashMap<>();
+	private volatile ServiceTrackerMap<String, HttpClientFactory>
+		_httpClientFactoryServiceTrackerMap;
 	private volatile SolrClient _solrClient;
 	private final Map<String, SolrClientFactory> _solrClientFactories =
 		new ConcurrentHashMap<>();
+	private volatile ServiceTrackerMap<String, SolrClientFactory>
+		_solrClientFactoryServiceTrackerMap;
 	private volatile SolrConfiguration _solrConfiguration;
 
 }

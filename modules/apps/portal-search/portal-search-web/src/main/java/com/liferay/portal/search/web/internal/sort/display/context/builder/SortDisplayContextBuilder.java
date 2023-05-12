@@ -89,13 +89,9 @@ public class SortDisplayContextBuilder {
 	public SortDisplayContextBuilder parameterValues(
 		String... parameterValues) {
 
-		if (parameterValues == null) {
-			_selectedFields = Collections.emptyList();
-
-			return this;
+		if (parameterValues != null) {
+			_selectedFields = Arrays.asList(parameterValues);
 		}
-
-		_selectedFields = Arrays.asList(parameterValues);
 
 		return this;
 	}

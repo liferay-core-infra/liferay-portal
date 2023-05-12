@@ -125,8 +125,10 @@ public class UserSearchFacetDisplayContextBuilder {
 		_paramValues = Collections.singletonList(paramValue);
 	}
 
-	public void setParamValues(List<String> paramValues) {
-		_paramValues = paramValues;
+	public void setParamValues(String... paramValues) {
+		if (paramValues != null) {
+			_paramValues = Arrays.asList(paramValues);
+		}
 	}
 
 	protected BucketDisplayContext buildBucketDisplayContext(

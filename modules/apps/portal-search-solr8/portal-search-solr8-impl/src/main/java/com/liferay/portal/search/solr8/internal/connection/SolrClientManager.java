@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.solr8.internal.connection;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -57,6 +58,15 @@ public class SolrClientManager {
 	protected synchronized void activate(Map<String, Object> properties)
 		throws Exception {
 
+		_httpClientFactories.put(
+			"BASIC", _basicAuthPoolingHttpClientFactorySnapshot.get());
+		_httpClientFactories.put(
+			"CERT", _certAuthPoolingHttpClientFactorySnapshot.get());
+		_solrClientFactories.put(
+			"CLOUD", _cloudSolrClientFactorySnapshot.get());
+		_solrClientFactories.put(
+			"REPLICATED", _replicatedSolrClientFactorySnapshot.get());
+
 		_close();
 
 		_solrConfiguration = ConfigurableUtil.createConfigurable(
@@ -89,36 +99,10 @@ public class SolrClientManager {
 	@Deactivate
 	protected synchronized void deactivate(Map<String, Object> properties) {
 		_close();
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(type=BASIC)"
-	)
-	protected void setBasicHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		setHttpClientFactory(httpClientFactory, properties);
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(type=CERT)"
-	)
-	protected void setCertHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		setHttpClientFactory(httpClientFactory, properties);
-	}
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY, target = "(type=CLOUD)"
-	)
-	protected void setCloudSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		setSolrClientFactory(solrClientFactory, properties);
+		_httpClientFactories.remove("BASIC");
+		_httpClientFactories.remove("CERT");
+		_solrClientFactories.remove("CLOUD");
+		_solrClientFactories.remove("REPLICATED");
 	}
 
 	@Reference(
@@ -141,17 +125,6 @@ public class SolrClientManager {
 	}
 
 	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(type=REPLICATED)"
-	)
-	protected void setReplicatedSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		setSolrClientFactory(solrClientFactory, properties);
-	}
-
-	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY,
@@ -165,24 +138,6 @@ public class SolrClientManager {
 		_solrClientFactories.put(type, solrClientFactory);
 	}
 
-	protected void unsetBasicHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		unsetHttpClientFactory(httpClientFactory, properties);
-	}
-
-	protected void unsetCertHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		unsetHttpClientFactory(httpClientFactory, properties);
-	}
-
-	protected void unsetCloudSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		unsetSolrClientFactory(solrClientFactory, properties);
-	}
-
 	protected void unsetHttpClientFactory(
 		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
 
@@ -193,12 +148,6 @@ public class SolrClientManager {
 		}
 
 		_httpClientFactories.remove(type);
-	}
-
-	protected void unsetReplicatedSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		unsetSolrClientFactory(solrClientFactory, properties);
 	}
 
 	protected void unsetSolrClientFactory(
@@ -224,6 +173,23 @@ public class SolrClientManager {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SolrClientManager.class);
+
+	private static final Snapshot<HttpClientFactory>
+		_basicAuthPoolingHttpClientFactorySnapshot = new Snapshot<>(
+			SolrClientManager.class, HttpClientFactory.class, "(type=BASIC)",
+			true);
+	private static final Snapshot<HttpClientFactory>
+		_certAuthPoolingHttpClientFactorySnapshot = new Snapshot<>(
+			SolrClientManager.class, HttpClientFactory.class, "(type=CERT)",
+			true);
+	private static final Snapshot<SolrClientFactory>
+		_cloudSolrClientFactorySnapshot = new Snapshot<>(
+			SolrClientManager.class, SolrClientFactory.class, "(type=CLOUD)",
+			true);
+	private static final Snapshot<SolrClientFactory>
+		_replicatedSolrClientFactorySnapshot = new Snapshot<>(
+			SolrClientManager.class, SolrClientFactory.class,
+			"(type=REPLICATED)", true);
 
 	private final Map<String, HttpClientFactory> _httpClientFactories =
 		new HashMap<>();

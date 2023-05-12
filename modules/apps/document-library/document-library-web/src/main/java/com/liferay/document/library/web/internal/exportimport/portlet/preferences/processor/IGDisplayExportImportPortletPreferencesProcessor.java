@@ -79,8 +79,10 @@ public class IGDisplayExportImportPortletPreferencesProcessor
 				portletDataContext, portletPreferences);
 	}
 
-	@Reference
-	private DLExportImportPortletPreferencesProcessor
+	@Reference(
+		target = "(component.name=com.liferay.document.library.web.internal.exportimport.portlet.preferences.processor.DLExportImportPortletPreferencesProcessor)"
+	)
+	private ExportImportPortletPreferencesProcessor
 		_dlExportImportPortletPreferencesProcessor;
 
 	@Reference(target = "(name=IGDisplayExportCapability)")

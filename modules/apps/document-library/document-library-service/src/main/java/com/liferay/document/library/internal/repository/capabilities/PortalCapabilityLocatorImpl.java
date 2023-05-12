@@ -19,7 +19,6 @@ import com.liferay.document.library.kernel.service.DLFolderService;
 import com.liferay.document.library.security.io.InputStreamSanitizer;
 import com.liferay.document.library.service.DLFileVersionPreviewLocalService;
 import com.liferay.document.library.sync.service.DLSyncEventLocalService;
-import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.repository.DocumentRepository;
 import com.liferay.portal.kernel.repository.capabilities.BulkOperationCapability;
@@ -61,9 +60,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Adolfo Pérez
  */
-@Component(service = {CacheRegistryItem.class, PortalCapabilityLocator.class})
-public class PortalCapabilityLocatorImpl
-	implements CacheRegistryItem, PortalCapabilityLocator {
+@Component(service = PortalCapabilityLocator.class)
+public class PortalCapabilityLocatorImpl implements PortalCapabilityLocator {
 
 	@Override
 	public BulkOperationCapability getBulkOperationCapability(
@@ -120,13 +118,6 @@ public class PortalCapabilityLocatorImpl
 		}
 
 		return _reusingProcessorCapability;
-	}
-
-	@Override
-	public String getRegistryName() {
-		Class<?> clazz = getClass();
-
-		return clazz.getName();
 	}
 
 	@Override
@@ -202,11 +193,6 @@ public class PortalCapabilityLocatorImpl
 		return new LiferayWorkflowCapability(
 			DLFileEntryServiceAdapter.create(documentRepository),
 			DLFileVersionServiceAdapter.create(documentRepository));
-	}
-
-	@Override
-	public void invalidate() {
-		_clearLiferayDynamicCapabilities();
 	}
 
 	@Activate

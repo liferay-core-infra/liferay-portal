@@ -76,9 +76,7 @@ public class CPSpecificationOptionsFacetDisplayContextBuilder
 	}
 
 	public void parameterValues(String... parameterValues) {
-		if (parameterValues != null) {
-			_parameterValues = parameterValues;
-		}
+		_parameterValues = parameterValues;
 	}
 
 	public void portal(Portal portal) {

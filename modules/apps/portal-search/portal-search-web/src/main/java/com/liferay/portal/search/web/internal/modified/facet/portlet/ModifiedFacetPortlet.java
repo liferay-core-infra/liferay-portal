@@ -119,13 +119,9 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 		String parameterName =
 			modifiedFacetPortletPreferences.getParameterName();
 
-		String fromParameterValue = portletSharedSearchResponse.getParameter(
-			parameterName + "From", renderRequest);
-
-		if (Validator.isNotNull(fromParameterValue)) {
-			modifiedFacetDisplayContextBuilder.setFromParameterValue(
-				fromParameterValue);
-		}
+		modifiedFacetDisplayContextBuilder.setFromParameterValue(
+			portletSharedSearchResponse.getParameter(
+				parameterName + "From", renderRequest));
 
 		modifiedFacetDisplayContextBuilder.setFrequenciesVisible(
 			modifiedFacetPortletPreferences.isFrequenciesVisible());
@@ -154,13 +150,9 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 		modifiedFacetDisplayContextBuilder.setTimeZone(
 			themeDisplay.getTimeZone());
 
-		String toParameterValue = portletSharedSearchResponse.getParameter(
-			parameterName + "To", renderRequest);
-
-		if (Validator.isNotNull(toParameterValue)) {
-			modifiedFacetDisplayContextBuilder.setToParameterValue(
-				toParameterValue);
-		}
+		modifiedFacetDisplayContextBuilder.setToParameterValue(
+			portletSharedSearchResponse.getParameter(
+				parameterName + "To", renderRequest));
 
 		SearchResponse searchResponse =
 			portletSharedSearchResponse.getSearchResponse();

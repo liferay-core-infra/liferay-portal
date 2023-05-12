@@ -241,8 +241,10 @@ public class AssetEntriesSearchFacetDisplayContextBuilder
 		_parameterValues = Collections.singletonList(parameterValue);
 	}
 
-	public void setParameterValues(List<String> paramValues) {
-		_parameterValues = paramValues;
+	public void setParameterValues(String... paramValues) {
+		if (paramValues != null) {
+			_parameterValues = Arrays.asList(paramValues);
+		}
 	}
 
 	public void setTypeNames(Map<String, String> typeNames) {

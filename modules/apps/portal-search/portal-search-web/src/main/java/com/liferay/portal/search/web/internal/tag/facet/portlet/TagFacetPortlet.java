@@ -16,7 +16,6 @@ package com.liferay.portal.search.web.internal.tag.facet.portlet;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.searcher.SearchRequest;
@@ -132,14 +131,9 @@ public class TagFacetPortlet extends MVCPortlet {
 		assetTagsSearchFacetDisplayContextBuilder.setParameterName(
 			parameterName);
 
-		String[] parameterValues =
+		assetTagsSearchFacetDisplayContextBuilder.setParameterValues(
 			portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest);
-
-		if (ArrayUtil.isNotEmpty(parameterValues)) {
-			assetTagsSearchFacetDisplayContextBuilder.setParameterValues(
-				parameterValues);
-		}
+				parameterName, renderRequest));
 
 		return assetTagsSearchFacetDisplayContextBuilder.build();
 	}

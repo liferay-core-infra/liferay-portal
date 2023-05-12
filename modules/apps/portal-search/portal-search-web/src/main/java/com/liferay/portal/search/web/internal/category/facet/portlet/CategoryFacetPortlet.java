@@ -19,7 +19,6 @@ import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.searcher.SearchRequest;
@@ -170,14 +169,9 @@ public class CategoryFacetPortlet extends MVCPortlet {
 		assetCategoriesSearchFacetDisplayContextBuilder.setParameterName(
 			parameterName);
 
-		String[] parameterValues =
+		assetCategoriesSearchFacetDisplayContextBuilder.setParameterValues(
 			portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest);
-
-		if (ArrayUtil.isNotEmpty(parameterValues)) {
-			assetCategoriesSearchFacetDisplayContextBuilder.setParameterValues(
-				parameterValues);
-		}
+				parameterName, renderRequest));
 
 		assetCategoriesSearchFacetDisplayContextBuilder.setPortal(portal);
 

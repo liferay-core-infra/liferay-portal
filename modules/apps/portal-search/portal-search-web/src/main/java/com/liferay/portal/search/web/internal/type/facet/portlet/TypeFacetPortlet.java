@@ -18,7 +18,6 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.asset.SearchableAssetClassNamesProvider;
@@ -31,8 +30,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRe
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
 import java.io.IOException;
-
-import java.util.Arrays;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -152,14 +149,9 @@ public class TypeFacetPortlet extends MVCPortlet {
 		assetEntriesSearchFacetDisplayContextBuilder.setParameterName(
 			parameterName);
 
-		String[] parameterValues =
+		assetEntriesSearchFacetDisplayContextBuilder.setParameterValues(
 			portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest);
-
-		if (ArrayUtil.isNotEmpty(parameterValues)) {
-			assetEntriesSearchFacetDisplayContextBuilder.setParameterValues(
-				Arrays.asList(parameterValues));
-		}
+				parameterName, renderRequest));
 
 		return assetEntriesSearchFacetDisplayContextBuilder.build();
 	}

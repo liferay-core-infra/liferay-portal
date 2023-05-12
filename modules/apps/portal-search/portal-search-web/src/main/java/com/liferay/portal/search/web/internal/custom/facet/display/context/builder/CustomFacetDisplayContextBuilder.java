@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -142,18 +141,17 @@ public class CustomFacetDisplayContextBuilder {
 	public CustomFacetDisplayContextBuilder setParameterValue(
 		String parameterValue) {
 
-		parameterValue = StringUtil.trim(
-			Objects.requireNonNull(parameterValue));
+		parameterValue = StringUtil.trim(parameterValue);
 
-		if (!parameterValue.isEmpty()) {
-			_parameterValues = Collections.singletonList(parameterValue);
+		if (Validator.isNotNull(parameterValue)) {
+			setParameterValues(parameterValue);
 		}
 
 		return this;
 	}
 
 	public CustomFacetDisplayContextBuilder setParameterValues(
-		String[] parameterValues) {
+		String... parameterValues) {
 
 		if (parameterValues != null) {
 			_parameterValues = Arrays.asList(parameterValues);

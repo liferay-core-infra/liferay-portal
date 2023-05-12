@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.facet.display.context.BucketDisplayContext;
 import com.liferay.portal.search.web.internal.facet.display.context.UserSearchFacetDisplayContext;
@@ -30,9 +31,9 @@ import com.liferay.portal.search.web.internal.user.facet.configuration.UserFacet
 import com.liferay.portal.search.web.internal.util.comparator.BucketDisplayContextComparatorFactoryUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.portlet.RenderRequest;
 
@@ -116,13 +117,11 @@ public class UserSearchFacetDisplayContextBuilder {
 	}
 
 	public void setParamValue(String paramValue) {
-		paramValue = StringUtil.trim(Objects.requireNonNull(paramValue));
+		paramValue = StringUtil.trim(paramValue);
 
-		if (paramValue.isEmpty()) {
-			return;
+		if (Validator.isNotNull(paramValue)) {
+			setParamValues(paramValue);
 		}
-
-		_paramValues = Collections.singletonList(paramValue);
 	}
 
 	public void setParamValues(String... paramValues) {

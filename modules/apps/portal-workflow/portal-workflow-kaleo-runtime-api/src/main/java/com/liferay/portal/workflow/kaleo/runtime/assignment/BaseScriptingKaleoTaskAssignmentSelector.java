@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Michael C. Han
  */
 @ProviderType
-public abstract class BaseKaleoTaskAssignmentSelector
+public abstract class BaseScriptingKaleoTaskAssignmentSelector
 	implements ScriptingKaleoTaskAssignmentSelector {
 
 	@SuppressWarnings("unchecked")

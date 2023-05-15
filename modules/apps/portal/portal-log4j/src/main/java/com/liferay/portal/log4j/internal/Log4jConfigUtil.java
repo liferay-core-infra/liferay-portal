@@ -21,8 +21,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogContextRegistryUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
@@ -217,7 +218,9 @@ public class Log4jConfigUtil {
 
 		_loggerContext.setConfiguration(_centralizedConfiguration);
 
-		if (PropsValues.COMPANY_WEBID_LOG_CONTEXT_ENABLED) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.COMPANY_WEBID_LOG_CONTEXT_ENABLED))) {
+
 			LogContextRegistryUtil.registerLogContext(
 				new CompanyWebIdLogContext());
 		}

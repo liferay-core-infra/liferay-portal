@@ -24,16 +24,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.osgi.framework.BundleContext;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Alejandro Tardín
  */
-@Component(service = {})
 public class ConfigurationFieldOptionsProviderUtil {
 
 	public static ConfigurationFieldOptionsProvider
@@ -44,41 +41,12 @@ public class ConfigurationFieldOptionsProviderUtil {
 			_getKey(configurationPid, fieldName));
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_serviceTrackerMap =
-			(ServiceTrackerMap<String, ConfigurationFieldOptionsProvider>)
-				(ServiceTrackerMap)ServiceTrackerMapFactory.openSingleValueMap(
-					bundleContext, ConfigurationFieldOptionsProvider.class,
-					null,
-					(serviceReference, emitter) -> {
-						for (String configurationPid :
-								_getPropertyValues(
-									serviceReference, "configuration.pid")) {
-
-							for (String fieldName :
-									_getPropertyValues(
-										serviceReference,
-										"configuration.field.name")) {
-
-								emitter.emit(
-									_getKey(configurationPid, fieldName));
-							}
-						}
-					});
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerMap.close();
-	}
-
 	private static String _getKey(String configurationPid, String fieldName) {
 		return StringBundler.concat(
 			configurationPid, StringPool.POUND, fieldName);
 	}
 
-	private Collection<String> _getPropertyValues(
+	private static Collection<String> _getPropertyValues(
 		ServiceReference<?> serviceReference, String name) {
 
 		Object propertyValue = serviceReference.getProperty(name);
@@ -98,7 +66,33 @@ public class ConfigurationFieldOptionsProviderUtil {
 		return Arrays.asList((String)propertyValue);
 	}
 
-	private static ServiceTrackerMap<String, ConfigurationFieldOptionsProvider>
-		_serviceTrackerMap;
+	private static final ServiceTrackerMap
+		<String, ConfigurationFieldOptionsProvider> _serviceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ConfigurationFieldOptionsProviderUtil.class);
+
+		_serviceTrackerMap =
+			(ServiceTrackerMap<String, ConfigurationFieldOptionsProvider>)
+				(ServiceTrackerMap)ServiceTrackerMapFactory.openSingleValueMap(
+					bundle.getBundleContext(),
+					ConfigurationFieldOptionsProvider.class, null,
+					(serviceReference, emitter) -> {
+						for (String configurationPid :
+								_getPropertyValues(
+									serviceReference, "configuration.pid")) {
+
+							for (String fieldName :
+									_getPropertyValues(
+										serviceReference,
+										"configuration.field.name")) {
+
+								emitter.emit(
+									_getKey(configurationPid, fieldName));
+							}
+						}
+					});
+	}
 
 }

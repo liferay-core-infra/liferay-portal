@@ -23,4 +23,7 @@ public class AnalyticsReportsPortletKeys {
 		"com_liferay_analytics_reports_web_internal_portlet_" +
 			"AnalyticsReportsPortlet";
 
+	public static final String SESSION_CLICKS_KEY =
+		"com.liferay.analytics.reports.web_panelState";
+
 }

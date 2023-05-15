@@ -581,6 +581,17 @@ public class CompanyLocalServiceWrapper
 	}
 
 	/**
+	 * Returns the company with the primary key.
+	 *
+	 * @param companyId the primary key of the company
+	 * @return the company's webId
+	 */
+	@Override
+	public java.lang.String getWebId(long companyId) {
+		return _companyLocalService.getWebId(companyId);
+	}
+
+	/**
 	 * Removes the values that match the keys of the company's preferences.
 	 *
 	 * This method is called by {@link

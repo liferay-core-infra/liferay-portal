@@ -16,7 +16,7 @@ package com.liferay.portal.log4j.internal;
 
 import com.liferay.portal.kernel.log.LogContext;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.util.PortalInstances;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 
 import java.util.Collections;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class CompanyWebIdLogContext implements LogContext {
 			return Collections.emptyMap();
 		}
 
-		String webId = PortalInstances.getWebId(companyId);
+		String webId = CompanyLocalServiceUtil.getWebId(companyId);
 
 		if (webId == null) {
 			return Collections.emptyMap();

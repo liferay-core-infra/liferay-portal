@@ -36,17 +36,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Raymond Augé
  */
-@Component(
-	configurationPid = "com.liferay.antivirus.async.store.configuration.AntivirusAsyncConfiguration",
-	configurationPolicy = ConfigurationPolicy.REQUIRE,
-	property = "service.ranking:Integer=1000", service = DLStore.class
-)
+@Component(property = "service.ranking:Integer=1000", service = DLStore.class)
 public class AntivirusAsyncDLStore implements DLStore {
 
 	@Override

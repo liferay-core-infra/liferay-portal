@@ -20,17 +20,12 @@ import com.liferay.antivirus.async.store.retry.AntivirusAsyncRetryScheduler;
 import com.liferay.portal.kernel.messaging.Message;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Raymond Augé
  */
-@Component(
-	configurationPid = "com.liferay.antivirus.async.store.configuration.AntivirusAsyncConfiguration",
-	configurationPolicy = ConfigurationPolicy.REQUIRE,
-	service = AntivirusAsyncEventListener.class
-)
+@Component(service = AntivirusAsyncEventListener.class)
 public class AntivirusAsyncRetryEventListener
 	implements AntivirusAsyncEventListener {
 

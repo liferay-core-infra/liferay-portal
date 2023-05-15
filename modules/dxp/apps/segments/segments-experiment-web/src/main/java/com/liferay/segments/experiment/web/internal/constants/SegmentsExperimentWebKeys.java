@@ -30,4 +30,7 @@ public class SegmentsExperimentWebKeys {
 	public static final String SEGMENTS_EXPERIMENT_SEGMENTS_EXPERIENCE_KEY =
 		"SEGMENTS_EXPERIMENT_SEGMENTS_EXPERIENCE_KEY";
 
+	public static final String SESSION_CLICKS_KEY =
+		"com.liferay.segments.experiment.web_panelState";
+
 }

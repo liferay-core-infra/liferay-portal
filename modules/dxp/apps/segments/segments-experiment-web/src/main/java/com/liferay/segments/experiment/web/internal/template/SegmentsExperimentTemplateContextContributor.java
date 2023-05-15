@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.segments.experiment.web.internal.constants.SegmentsExperimentWebKeys;
 import com.liferay.segments.experiment.web.internal.product.navigation.control.menu.SegmentsExperimentProductNavigationControlMenuEntry;
 
 import java.util.Map;
@@ -57,7 +58,9 @@ public class SegmentsExperimentTemplateContextContributor
 		}
 
 		if (_segmentsExperimentProductNavigationControlMenuEntry.
-				isPanelStateOpen(httpServletRequest)) {
+				isPanelStateOpen(
+					httpServletRequest,
+					SegmentsExperimentWebKeys.SESSION_CLICKS_KEY)) {
 
 			String cssClass = GetterUtil.getString(
 				contextObjects.get("bodyCssClass"));

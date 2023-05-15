@@ -668,6 +668,18 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	}
 
 	/**
+	 * Returns the company with the primary key.
+	 *
+	 * @param  companyId the primary key of the company
+	 * @return the company's webId
+	 */
+	@Override
+	@Transactional(enabled = false)
+	public String getWebId(long companyId) {
+		return PortalInstances.getWebId(companyId);
+	}
+
+	/**
 	 * Removes the values that match the keys of the company's preferences.
 	 *
 	 * This method is called by {@link

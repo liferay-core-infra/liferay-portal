@@ -7,7 +7,7 @@
 		<suppress checks="ComponentExposureCheck" files="asset/asset-publisher-web/src/main/java/com/liferay/asset/publisher/web/internal/configuration/AssetPublisherSelectionStyleConfigurationUtil\.java" />
 		<suppress checks="ComponentExposureCheck" files="asset/asset-taglib/src/main/java/com/liferay/asset/taglib/internal/item/selector/ItemSelectorUtil\.java" />
 		<suppress checks="ComponentExposureCheck" files="captcha/captcha-api/src/main/java/com/liferay/captcha/util/CaptchaUtil\.java" />
-		<suppress checks="ComponentExposureCheck" files="change-tracking/change-tracking-web/src/main/java/com/liferay/change/tracking/web/internal/timeline/CTCollectionHistoryProviderRegistry\.java" />
+		<suppress checks="ComponentExposureCheck" files="change-tracking/change-tracking-web/src/main/java/com/liferay/change/tracking/web/internal/timeline/CTCollectionHistoryProviderRegistryUtil\.java" />
 		<suppress checks="ComponentExposureCheck" files="commerce/commerce-cart-taglib/src/main/java/com/liferay/commerce/cart/taglib/servlet/taglib/internal/servlet/ServletContextUtil\.java" />
 		<suppress checks="ComponentExposureCheck" files="commerce/commerce-frontend-taglib/src/main/java/com/liferay/commerce/frontend/taglib/internal/servlet/ServletContextUtil\.java" />
 		<suppress checks="ComponentExposureCheck" files="commerce/commerce-product-taglib/src/main/java/com/liferay/commerce/product/taglib/servlet/taglib/internal/servlet/ServletContextUtil\.java" />

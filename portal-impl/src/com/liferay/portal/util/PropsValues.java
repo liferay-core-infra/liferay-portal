@@ -429,10 +429,6 @@ public class PropsValues {
 	public static String[] COMPANY_SETTINGS_FORM_AUTHENTICATION =
 		PropsUtil.getArray(PropsKeys.COMPANY_SETTINGS_FORM_AUTHENTICATION);
 
-	public static final boolean COMPANY_WEBID_LOG_CONTEXT_ENABLED =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.COMPANY_WEBID_LOG_CONTEXT_ENABLED));
-
 	public static final String CONTROL_PANEL_LAYOUT_FRIENDLY_URL =
 		PropsUtil.get(PropsKeys.CONTROL_PANEL_LAYOUT_FRIENDLY_URL);
 

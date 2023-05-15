@@ -14,9 +14,6 @@
 
 package com.liferay.antivirus.async.store.internal;
 
-import com.liferay.antivirus.async.store.constants.AntivirusAsyncDestinationNames;
-import com.liferay.antivirus.async.store.internal.event.AntivirusAsyncEventListenerManager;
-import com.liferay.antivirus.async.store.util.AntivirusAsyncUtil;
 import com.liferay.document.library.kernel.exception.AccessDeniedException;
 import com.liferay.document.library.kernel.exception.DirectoryNameException;
 import com.liferay.document.library.kernel.store.DLStore;
@@ -29,12 +26,7 @@ import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
-import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GroupThreadLocal;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 
@@ -70,8 +62,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 				dlStoreRequest.getCompanyId(), dlStoreRequest.getRepositoryId(),
 				dlStoreRequest.getFileName(), dlStoreRequest.getVersionLabel(),
 				new UnsyncByteArrayInputStream(bytes));
-
-			_registerCallback(dlStoreRequest);
 		}
 		catch (AccessDeniedException accessDeniedException) {
 			throw new PrincipalException(accessDeniedException);
@@ -91,8 +81,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 				dlStoreRequest.getCompanyId(), dlStoreRequest.getRepositoryId(),
 				dlStoreRequest.getFileName(), dlStoreRequest.getVersionLabel(),
 				inputStream);
-
-			_registerCallback(dlStoreRequest);
 		}
 		catch (AccessDeniedException accessDeniedException) {
 			throw new PrincipalException(accessDeniedException);
@@ -133,8 +121,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 					dlStoreRequest.getFileName(),
 					dlStoreRequest.getVersionLabel(), inputStream2);
 			}
-
-			_registerCallback(dlStoreRequest);
 		}
 		catch (AccessDeniedException accessDeniedException) {
 			throw new PrincipalException(accessDeniedException);
@@ -303,8 +289,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 				dlStoreRequest.getCompanyId(), dlStoreRequest.getRepositoryId(),
 				dlStoreRequest.getFileName(), dlStoreRequest.getVersionLabel(),
 				inputStream);
-
-			_registerCallback(dlStoreRequest);
 		}
 		catch (AccessDeniedException accessDeniedException) {
 			throw new PrincipalException(accessDeniedException);
@@ -331,8 +315,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 				dlStoreRequest.getCompanyId(), dlStoreRequest.getRepositoryId(),
 				dlStoreRequest.getFileName(), dlStoreRequest.getVersionLabel(),
 				inputStream);
-
-			_registerCallback(dlStoreRequest);
 		}
 		catch (AccessDeniedException accessDeniedException) {
 			throw new PrincipalException(accessDeniedException);
@@ -471,84 +453,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 
 		_dlValidator.validateVersionLabel(versionLabel);
 	}
-
-	protected void validate(
-			String fileName, String fileExtension, String sourceFileName,
-			boolean validateFileExtension, File file, String versionLabel)
-		throws PortalException {
-
-		validate(
-			fileName, fileExtension, sourceFileName, validateFileExtension,
-			file);
-
-		_dlValidator.validateVersionLabel(versionLabel);
-	}
-
-	protected void validate(
-			String fileName, String fileExtension, String sourceFileName,
-			boolean validateFileExtension, InputStream inputStream,
-			String versionLabel)
-		throws PortalException {
-
-		validate(
-			fileName, fileExtension, sourceFileName, validateFileExtension,
-			inputStream);
-
-		_dlValidator.validateVersionLabel(versionLabel);
-	}
-
-	private void _registerCallback(DLStoreRequest dlStoreRequest)
-		throws PortalException {
-
-		Message message = new Message();
-
-		message.put("className", dlStoreRequest.getClassName());
-		message.put("classPK", dlStoreRequest.getClassPK());
-		message.put("companyId", dlStoreRequest.getCompanyId());
-		message.put("entryURL", dlStoreRequest.getEntryURL());
-		message.put("fileExtension", dlStoreRequest.getFileExtension());
-		message.put("fileName", dlStoreRequest.getFileName());
-		message.put(
-			"jobName",
-			AntivirusAsyncUtil.getJobName(
-				dlStoreRequest.getCompanyId(), dlStoreRequest.getRepositoryId(),
-				dlStoreRequest.getFileName(),
-				dlStoreRequest.getVersionLabel()));
-		message.put("repositoryId", dlStoreRequest.getRepositoryId());
-		message.put("size", dlStoreRequest.getSize());
-		message.put("sourceFileName", dlStoreRequest.getSourceFileName());
-
-		long userId = 0;
-
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
-
-		if (permissionChecker != null) {
-			userId = permissionChecker.getUserId();
-		}
-
-		message.put("userId", userId);
-
-		message.put("versionLabel", dlStoreRequest.getVersionLabel());
-
-		_antivirusAsyncEventListenerManager.onPrepare(message);
-
-		TransactionCommitCallbackUtil.registerCallback(
-			() -> {
-				_destination.send(message);
-
-				return null;
-			});
-	}
-
-	@Reference
-	private AntivirusAsyncEventListenerManager
-		_antivirusAsyncEventListenerManager;
-
-	@Reference(
-		target = "(destination.name=" + AntivirusAsyncDestinationNames.ANTIVIRUS + ")"
-	)
-	private Destination _destination;
 
 	@Reference
 	private DLValidator _dlValidator;

@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = ScriptingKaleoTaskAssignmentSelector.class
 )
-public class ScriptingLanguagesKaleoTaskAssignmentSelector
+public class ScriptingLanguagesScriptingKaleoTaskAssignmentSelector
 	implements ScriptingKaleoTaskAssignmentSelector {
 
 	@Override

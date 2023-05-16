@@ -14,10 +14,7 @@
 
 package com.liferay.frontend.editor.ckeditor.web.internal;
 
-import com.liferay.frontend.editor.EditorRenderer;
-import com.liferay.frontend.editor.ckeditor.web.internal.constants.CKEditorConstants;
 import com.liferay.portal.kernel.editor.Editor;
-import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
 
 import java.util.Map;
 
@@ -28,47 +25,17 @@ import org.osgi.service.component.annotations.Component;
  * @author Raymond Augé
  * @author Roberto Díaz
  */
-@Component(
-	property = "name=ckeditor_bbcode",
-	service = {Editor.class, EditorRenderer.class}
-)
-public class CKEditorBBCodeEditor implements Editor, EditorRenderer {
-
-	@Override
-	public String getAttributeNamespace() {
-		return CKEditorConstants.ATTRIBUTE_NAMESPACE;
-	}
-
-	@Override
-	public String[] getJavaScriptModules() {
-		return new String[0];
-	}
+@Component(property = "name=ckeditor_bbcode", service = Editor.class)
+public class CKEditorBBCodeEditor extends BaseCKEditor {
 
 	@Override
 	public String getJspPath() {
 		return "/ckeditor_classic.jsp";
 	}
 
-	@Override
-	public String getName() {
-		return _name;
-	}
-
-	@Override
-	public String getResourcesJspPath() {
-		return null;
-	}
-
-	@Override
-	public String getResourceType() {
-		return PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR;
-	}
-
 	@Activate
 	protected void activate(Map<String, Object> properties) {
-		_name = (String)properties.get("name");
+		setName((String)properties.get("name"));
 	}
-
-	private String _name;
 
 }

@@ -14,27 +14,19 @@
 
 package com.liferay.frontend.editor.ckeditor.web.internal;
 
-import com.liferay.portal.kernel.editor.Editor;
+import com.liferay.frontend.editor.EditorRenderer;
 
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Julien Castelain
+ * @author Joao Victor Alves
  */
-@Component(property = "name=ballooneditor", service = Editor.class)
-public class CKEditorBalloonEditor extends BaseCKEditor {
+@Component(property = "name=ckeditor_bbcode", service = EditorRenderer.class)
+public class CKEditorBBCodeEditorRenderer extends BaseCKEditorRenderer {
 
 	@Override
 	public String getJspPath() {
-		return "/ckeditor_balloon.jsp";
-	}
-
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		setName((String)properties.get("name"));
+		return "/ckeditor_classic.jsp";
 	}
 
 }

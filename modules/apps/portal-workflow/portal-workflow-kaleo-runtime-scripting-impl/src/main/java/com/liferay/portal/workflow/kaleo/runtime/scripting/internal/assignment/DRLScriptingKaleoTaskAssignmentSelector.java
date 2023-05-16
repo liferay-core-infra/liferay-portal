@@ -22,14 +22,12 @@ import com.liferay.portal.rules.engine.RulesEngine;
 import com.liferay.portal.rules.engine.RulesResourceRetriever;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
-import com.liferay.portal.workflow.kaleo.runtime.assignment.BaseKaleoTaskAssignmentSelector;
-import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
+import com.liferay.portal.workflow.kaleo.runtime.assignment.ScriptingKaleoTaskAssignmentSelector;
 import com.liferay.portal.workflow.kaleo.runtime.util.RulesContextBuilder;
 import com.liferay.portal.workflow.kaleo.runtime.util.WorkflowContextUtil;
 
 import java.io.Serializable;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -41,13 +39,13 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	enabled = false, property = "scripting.language=drl",
-	service = KaleoTaskAssignmentSelector.class
+	service = ScriptingKaleoTaskAssignmentSelector.class
 )
 public class DRLScriptingKaleoTaskAssignmentSelector
-	extends BaseKaleoTaskAssignmentSelector {
+	implements ScriptingKaleoTaskAssignmentSelector {
 
 	@Override
-	public Collection<KaleoTaskAssignment> getKaleoTaskAssignments(
+	public Map<String, ?> getKaleoTaskAssignments(
 			KaleoTaskAssignment kaleoTaskAssignment,
 			ExecutionContext executionContext)
 		throws PortalException {
@@ -72,7 +70,7 @@ public class DRLScriptingKaleoTaskAssignmentSelector
 		WorkflowContextUtil.mergeWorkflowContexts(
 			executionContext, resultsWorkflowContext);
 
-		return getKaleoTaskAssignments(results);
+		return results;
 	}
 
 	@Reference

@@ -16,16 +16,16 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.assignment;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.workflow.kaleo.KaleoTaskAssignmentFactory;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.assignment.KaleoTaskAssignmentSelector;
+import com.liferay.portal.workflow.kaleo.runtime.assignment.ScriptingKaleoTaskAssignmentSelector;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jiaxu Wei Selton Guedes
@@ -35,24 +35,26 @@ import org.osgi.service.component.annotations.Reference;
 	service = KaleoTaskAssignmentSelector.class
 )
 public class TestJavaScriptingKaleoTaskAssignmentSelector
-	implements KaleoTaskAssignmentSelector {
+	implements ScriptingKaleoTaskAssignmentSelector {
 
 	@Override
-	public Collection<KaleoTaskAssignment> getKaleoTaskAssignments(
+	public Map<String, ?> getKaleoTaskAssignments(
 			KaleoTaskAssignment kaleoTaskAssignment,
 			ExecutionContext executionContext)
 		throws PortalException {
 
-		KaleoTaskAssignment newKaleoTaskAssignment =
-			_kaleoTaskAssignmentFactory.createKaleoTaskAssignment();
-
-		newKaleoTaskAssignment.setAssigneeClassName(User.class.getName());
-		newKaleoTaskAssignment.setAssigneeClassPK(
-			kaleoTaskAssignment.getUserId());
-
 		_executed = true;
 
-		return Collections.singletonList(newKaleoTaskAssignment);
+		return HashMapBuilder.put(
+			USER_ASSIGNMENT,
+			() -> {
+				User user = new UserImpl();
+
+				user.setUserId(kaleoTaskAssignment.getUserId());
+
+				return user;
+			}
+		).build();
 	}
 
 	public boolean isExecuted() {
@@ -60,8 +62,5 @@ public class TestJavaScriptingKaleoTaskAssignmentSelector
 	}
 
 	private boolean _executed;
-
-	@Reference
-	private KaleoTaskAssignmentFactory _kaleoTaskAssignmentFactory;
 
 }

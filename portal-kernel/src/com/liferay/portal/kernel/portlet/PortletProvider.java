@@ -17,9 +17,6 @@ package com.liferay.portal.kernel.portlet;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,8 +35,8 @@ public interface PortletProvider {
 			HttpServletRequest httpServletRequest, Group group)
 		throws PortalException;
 
-	public default List<Action> getSupportedActions() {
-		return Collections.emptyList();
+	public default Action[] getSupportedActions() {
+		return new Action[0];
 	}
 
 	public enum Action {

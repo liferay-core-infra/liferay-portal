@@ -505,6 +505,9 @@ public interface PropsKeys {
 	public static final String COMPANY_SETTINGS_FORM_SOCIAL =
 		"company.settings.form.social";
 
+	public static final String COMPANY_WEBID_LOG_CONTEXT_ENABLED =
+		"company.webid.log.context.enabled";
+
 	public static final String CONTROL_PANEL_DEFAULT_ENTRY_CLASS =
 		"control.panel.default.entry.class";
 

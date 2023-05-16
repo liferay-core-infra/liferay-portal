@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -73,9 +72,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.name=" + ChangesetPortletKeys.CHANGESET,
 		"mvc.command.name=/export_import_changeset/export_import_changeset"
 	},
-	service = {
-		ExportImportChangesetMVCActionCommand.class, MVCActionCommand.class
-	}
+	service = ExportImportChangesetMVCActionCommand.class
 )
 public class ExportImportChangesetMVCActionCommandImpl
 	extends BaseMVCActionCommand

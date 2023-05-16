@@ -17,18 +17,27 @@ package com.liferay.portal.kernel.portlet;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Eudaldo Alonso
@@ -98,38 +107,13 @@ public class PortletProviderUtil {
 	protected static PortletProvider getPortletProvider(
 		String className, PortletProvider.Action action) {
 
-		if (action.equals(PortletProvider.Action.ADD)) {
-			return getPortletProvider(className, _addServiceTrackerMap);
-		}
-		else if (action.equals(PortletProvider.Action.BROWSE)) {
-			return getPortletProvider(className, _browseServiceTrackerMap);
-		}
-		else if (action.equals(PortletProvider.Action.EDIT)) {
-			return getPortletProvider(className, _editServiceTrackerMap);
-		}
-		else if (action.equals(PortletProvider.Action.MANAGE)) {
-			return getPortletProvider(className, _manageServiceTrackerMap);
-		}
-		else if (action.equals(PortletProvider.Action.PREVIEW)) {
-			return getPortletProvider(className, _previewServiceTrackerMap);
-		}
-		else if (action.equals(PortletProvider.Action.VIEW)) {
-			return getPortletProvider(className, _viewServiceTrackerMap);
-		}
+		Map<String, PortletProvider> portletProviderMap =
+			_portletProviderActionPortletProviderMap.get(action);
 
-		return null;
-	}
-
-	protected static PortletProvider getPortletProvider(
-		String className,
-		ServiceTrackerMap<String, ? extends PortletProvider>
-			serviceTrackerMap) {
-
-		PortletProvider portletProvider = serviceTrackerMap.getService(
-			className);
+		PortletProvider portletProvider = portletProviderMap.get(className);
 
 		if ((portletProvider == null) && isAssetObject(className)) {
-			portletProvider = serviceTrackerMap.getService(
+			portletProvider = portletProviderMap.get(
 				AssetEntry.class.getName());
 		}
 
@@ -148,29 +132,80 @@ public class PortletProviderUtil {
 		return false;
 	}
 
-	private static final ServiceTrackerMap<String, AddPortletProvider>
-		_addServiceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			SystemBundleUtil.getBundleContext(), AddPortletProvider.class,
-			"model.class.name");
-	private static final ServiceTrackerMap<String, BrowsePortletProvider>
-		_browseServiceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			SystemBundleUtil.getBundleContext(), BrowsePortletProvider.class,
-			"model.class.name");
-	private static final ServiceTrackerMap<String, EditPortletProvider>
-		_editServiceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			SystemBundleUtil.getBundleContext(), EditPortletProvider.class,
-			"model.class.name");
-	private static final ServiceTrackerMap<String, ManagePortletProvider>
-		_manageServiceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			SystemBundleUtil.getBundleContext(), ManagePortletProvider.class,
-			"model.class.name");
-	private static final ServiceTrackerMap<String, PreviewPortletProvider>
-		_previewServiceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			SystemBundleUtil.getBundleContext(), PreviewPortletProvider.class,
-			"model.class.name");
-	private static final ServiceTrackerMap<String, ViewPortletProvider>
-		_viewServiceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			SystemBundleUtil.getBundleContext(), ViewPortletProvider.class,
-			"model.class.name");
+	private static final Map
+		<PortletProvider.Action, Map<String, PortletProvider>>
+			_portletProviderActionPortletProviderMap =
+				new ConcurrentHashMap<>();
+	private static final ServiceTracker<PortletProvider, PortletProvider>
+		_portletProviderServiceTracker;
+
+	static {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		_portletProviderServiceTracker = new ServiceTracker<>(
+			bundleContext, PortletProvider.class,
+			new ServiceTrackerCustomizer<PortletProvider, PortletProvider>() {
+
+				@Override
+				public PortletProvider addingService(
+					ServiceReference<PortletProvider> serviceReference) {
+
+					List<String> modelClassNames = StringUtil.asList(
+						serviceReference.getProperty("model.class.name"));
+
+					PortletProvider portletProvider = bundleContext.getService(
+						serviceReference);
+
+					for (PortletProvider.Action portletProviderAction :
+							portletProvider.getSupportedActions()) {
+
+						Map<String, PortletProvider> portletProviderMap =
+							_portletProviderActionPortletProviderMap.
+								computeIfAbsent(
+									portletProviderAction,
+									key -> new HashMap<>());
+
+						for (String modelClassName : modelClassNames) {
+							portletProviderMap.put(
+								modelClassName, portletProvider);
+						}
+					}
+
+					return portletProvider;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<PortletProvider> serviceReference,
+					PortletProvider portletProvider) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<PortletProvider> serviceReference,
+					PortletProvider portletProvider) {
+
+					List<String> modelClassNames = StringUtil.asList(
+						serviceReference.getProperty("model.class.name"));
+
+					for (PortletProvider.Action portletProviderAction :
+							portletProvider.getSupportedActions()) {
+
+						Map<String, PortletProvider> portletProviderMap =
+							_portletProviderActionPortletProviderMap.get(
+								portletProviderAction);
+
+						for (String modelClassName : modelClassNames) {
+							portletProviderMap.remove(modelClassName);
+						}
+					}
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_portletProviderServiceTracker.open();
+	}
 
 }

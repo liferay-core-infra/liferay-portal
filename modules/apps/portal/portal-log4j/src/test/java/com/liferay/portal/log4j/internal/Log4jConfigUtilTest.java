@@ -15,6 +15,8 @@
 package com.liferay.portal.log4j.internal;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.LogContext;
+import com.liferay.portal.kernel.log.LogContextRegistryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.apache.logging.log4j.LogManager;
@@ -58,6 +61,41 @@ public class Log4jConfigUtilTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			CodeCoverageAssertor.INSTANCE, LiferayUnitTestRule.INSTANCE);
+
+	@NewEnv(type = NewEnv.Type.CLASSLOADER)
+	@Test
+	public void testCompanyWebIdLogContextDisabled() {
+		PropsTestUtil.setProps(
+			PropsKeys.COMPANY_WEBID_LOG_CONTEXT_ENABLED, "false");
+
+		Log4jConfigUtil.configureLog4J(
+			_generateXMLConfigurationContent(StringUtil.randomString(), _INFO));
+
+		Set<LogContext> logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertTrue(logContexts.isEmpty());
+	}
+
+	@NewEnv(type = NewEnv.Type.CLASSLOADER)
+	@Test
+	public void testCompanyWebIdLogContextEnabled() {
+		PropsTestUtil.setProps(
+			PropsKeys.COMPANY_WEBID_LOG_CONTEXT_ENABLED, "true");
+
+		Log4jConfigUtil.configureLog4J(
+			_generateXMLConfigurationContent(StringUtil.randomString(), _INFO));
+
+		Set<LogContext> logContexts = LogContextRegistryUtil.getLogContexts();
+
+		Assert.assertFalse(logContexts.isEmpty());
+
+		for (LogContext logContext : logContexts) {
+			LogContextRegistryUtil.unregisterLogContext(logContext);
+
+			Assert.assertTrue(logContext instanceof CompanyWebIdLogContext);
+			Assert.assertEquals("company", logContext.getName());
+		}
+	}
 
 	@Test
 	public void testConfigureLog4J() {

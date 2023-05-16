@@ -40,34 +40,31 @@ public abstract class BaseKaleoTaskAssignmentSelector
 
 		List<KaleoTaskAssignment> kaleoTaskAssignments = new ArrayList<>();
 
-		if (results.get(
-				ScriptingKaleoTaskAssignmentSelector.ROLES_ASSIGNMENT) !=
-					null) {
+		Object roles = results.get(
+			ScriptingKaleoTaskAssignmentSelector.ROLES_ASSIGNMENT);
 
+		if (roles != null) {
 			getRoleKaleoTaskAssignments(
-				(List<Role>)results.get(
-					ScriptingKaleoTaskAssignmentSelector.ROLES_ASSIGNMENT),
-				kaleoTaskAssignments);
+				(List<Role>)roles, kaleoTaskAssignments);
 
 			return kaleoTaskAssignments;
 		}
 
-		if (results.get(ScriptingKaleoTaskAssignmentSelector.USER_ASSIGNMENT) !=
-				null) {
+		Object user = results.get(
+			ScriptingKaleoTaskAssignmentSelector.USER_ASSIGNMENT);
 
-			kaleoTaskAssignments.add(
-				getUserKaleoTaskAssignment(
-					(User)results.get(
-						ScriptingKaleoTaskAssignmentSelector.USER_ASSIGNMENT)));
+		if (user != null) {
+			kaleoTaskAssignments.add(_getUserKaleoTaskAssignment((User)user));
 
 			return kaleoTaskAssignments;
 		}
 
-		for (User user :
-				(List<User>)results.get(
-					ScriptingKaleoTaskAssignmentSelector.USERS_ASSIGNMENT)) {
+		Object users = results.get(
+			ScriptingKaleoTaskAssignmentSelector.USERS_ASSIGNMENT);
 
-			kaleoTaskAssignments.add(getUserKaleoTaskAssignment(user));
+		if (users != null) {
+			_getUserKaleoTaskAssignments(
+				(List<User>)users, kaleoTaskAssignments);
 		}
 
 		return kaleoTaskAssignments;
@@ -91,7 +88,10 @@ public abstract class BaseKaleoTaskAssignmentSelector
 		}
 	}
 
-	protected KaleoTaskAssignment getUserKaleoTaskAssignment(User user) {
+	@Reference
+	protected KaleoTaskAssignmentFactory kaleoTaskAssignmentFactory;
+
+	private KaleoTaskAssignment _getUserKaleoTaskAssignment(User user) {
 		KaleoTaskAssignment kaleoTaskAssignment =
 			kaleoTaskAssignmentFactory.createKaleoTaskAssignment();
 
@@ -101,7 +101,12 @@ public abstract class BaseKaleoTaskAssignmentSelector
 		return kaleoTaskAssignment;
 	}
 
-	@Reference
-	protected KaleoTaskAssignmentFactory kaleoTaskAssignmentFactory;
+	private void _getUserKaleoTaskAssignments(
+		List<User> users, List<KaleoTaskAssignment> kaleoTaskAssignments) {
+
+		for (User user : users) {
+			kaleoTaskAssignments.add(_getUserKaleoTaskAssignment(user));
+		}
+	}
 
 }

@@ -18,9 +18,11 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogContextRegistryUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
@@ -214,6 +216,11 @@ public class Log4jConfigUtil {
 			_loggerContext);
 
 		_loggerContext.setConfiguration(_centralizedConfiguration);
+
+		if (PropsValues.COMPANY_WEBID_LOG_CONTEXT_ENABLED) {
+			LogContextRegistryUtil.registerLogContext(
+				new CompanyWebIdLogContext());
+		}
 	}
 
 }

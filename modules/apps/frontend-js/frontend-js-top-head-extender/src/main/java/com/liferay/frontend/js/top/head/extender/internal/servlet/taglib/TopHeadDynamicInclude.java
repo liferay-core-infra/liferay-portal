@@ -17,7 +17,6 @@ package com.liferay.frontend.js.top.head.extender.internal.servlet.taglib;
 import com.liferay.frontend.js.top.head.extender.TopHeadResources;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
 import com.liferay.portal.kernel.servlet.PortalWebResources;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -102,22 +101,6 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC
 	)
-	protected void addPortalWebResources(
-		PortalWebResources portalWebResources) {
-
-		String resourceType = portalWebResources.getResourceType();
-
-		if (resourceType.equals(PortalWebResourceConstants.RESOURCE_TYPE_JS)) {
-			_portalWebResources = portalWebResources;
-
-			_rebuild();
-		}
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
 	protected void addTopHeadResources(
 		ServiceReference<TopHeadResources> topHeadResourcesServiceReference) {
 
@@ -127,18 +110,6 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 		}
 
 		_rebuild();
-	}
-
-	protected void removePortalWebResources(
-		PortalWebResources portalWebResources) {
-
-		String resourceType = portalWebResources.getResourceType();
-
-		if (resourceType.equals(PortalWebResourceConstants.RESOURCE_TYPE_JS)) {
-			_portalWebResources = null;
-
-			_rebuild();
-		}
 	}
 
 	protected void removeTopHeadResources(
@@ -293,7 +264,11 @@ public class TopHeadDynamicInclude implements DynamicInclude {
 	@Reference
 	private Portal _portal;
 
+	@Reference(
+		target = "(component.name=com.liferay.frontend.js.web.internal.modules.extender.npm.NPMJavaScriptAwarePortalWebResources)"
+	)
 	private PortalWebResources _portalWebResources;
+
 	private final Collection<ServiceReference<TopHeadResources>>
 		_topHeadResourcesServiceReferences = new TreeSet<>();
 

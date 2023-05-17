@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -167,19 +168,68 @@ public class PortletProviderUtil {
 						PortletProvider portletProvider =
 							bundleContext.getService(serviceReference);
 
+						String modelClassName =
+							(String)serviceReference.getProperty(
+								"model.class.name");
+
+						List<PortletProvider.Action>
+							supportedPortletProviderActions =
+								portletProvider.getSupportedActions();
+
 						for (PortletProvider.Action portletProviderAction :
-								portletProvider.getSupportedActions()) {
+								supportedPortletProviderActions) {
 
-							Map<String, PortletProvider> portletProviderMap =
-								_portletProviderActionPortletProviderMap.
-									computeIfAbsent(
-										portletProviderAction,
-										key -> new HashMap<>());
+							_registerPortletProvider(
+								modelClassName, portletProvider,
+								portletProviderAction);
+						}
 
-							portletProviderMap.put(
-								(String)serviceReference.getProperty(
-									"model.class.name"),
-								portletProvider);
+						if (supportedPortletProviderActions.isEmpty()) {
+							if (portletProvider instanceof AddPortletProvider) {
+								_registerPortletProvider(
+									modelClassName, portletProvider,
+									PortletProvider.Action.ADD);
+							}
+
+							if (portletProvider instanceof
+									BrowsePortletProvider) {
+
+								_registerPortletProvider(
+									modelClassName, portletProvider,
+									PortletProvider.Action.BROWSE);
+							}
+
+							if (portletProvider instanceof
+									EditPortletProvider) {
+
+								_registerPortletProvider(
+									modelClassName, portletProvider,
+									PortletProvider.Action.EDIT);
+							}
+
+							if (portletProvider instanceof
+									ManagePortletProvider) {
+
+								_registerPortletProvider(
+									modelClassName, portletProvider,
+									PortletProvider.Action.MANAGE);
+							}
+
+							if (portletProvider instanceof
+									PreviewPortletProvider) {
+
+								_registerPortletProvider(
+									modelClassName, portletProvider,
+									PortletProvider.Action.PREVIEW);
+							}
+
+							if (portletProvider instanceof
+									ViewPortletProvider) {
+
+								_registerPortletProvider(
+									modelClassName, portletProvider,
+									PortletProvider.Action.VIEW);
+							}
 						}
 
 						return portletProvider;
@@ -196,19 +246,93 @@ public class PortletProviderUtil {
 						ServiceReference<PortletProvider> serviceReference,
 						PortletProvider portletProvider) {
 
+						String modelClassName =
+							(String)serviceReference.getProperty(
+								"model.class.name");
+
+						List<PortletProvider.Action>
+							supportedPortletProviderActions =
+								portletProvider.getSupportedActions();
+
 						for (PortletProvider.Action portletProviderAction :
-								portletProvider.getSupportedActions()) {
+								supportedPortletProviderActions) {
 
-							Map<String, PortletProvider> portletProviderMap =
-								_portletProviderActionPortletProviderMap.get(
-									portletProviderAction);
+							_unregisterPortletProvider(
+								modelClassName, portletProviderAction);
+						}
 
-							portletProviderMap.remove(
-								(String)serviceReference.getProperty(
-									"model.class.name"));
+						if (supportedPortletProviderActions.isEmpty()) {
+							if (portletProvider instanceof AddPortletProvider) {
+								_unregisterPortletProvider(
+									modelClassName, PortletProvider.Action.ADD);
+							}
+
+							if (portletProvider instanceof
+									BrowsePortletProvider) {
+
+								_unregisterPortletProvider(
+									modelClassName,
+									PortletProvider.Action.BROWSE);
+							}
+
+							if (portletProvider instanceof
+									EditPortletProvider) {
+
+								_unregisterPortletProvider(
+									modelClassName,
+									PortletProvider.Action.EDIT);
+							}
+
+							if (portletProvider instanceof
+									ManagePortletProvider) {
+
+								_unregisterPortletProvider(
+									modelClassName,
+									PortletProvider.Action.MANAGE);
+							}
+
+							if (portletProvider instanceof
+									PreviewPortletProvider) {
+
+								_unregisterPortletProvider(
+									modelClassName,
+									PortletProvider.Action.PREVIEW);
+							}
+
+							if (portletProvider instanceof
+									ViewPortletProvider) {
+
+								_unregisterPortletProvider(
+									modelClassName,
+									PortletProvider.Action.VIEW);
+							}
 						}
 
 						bundleContext.ungetService(serviceReference);
+					}
+
+					private void _registerPortletProvider(
+						String modelClassName, PortletProvider portletProvider,
+						PortletProvider.Action portletProviderAction) {
+
+						Map<String, PortletProvider> portletProviderMap =
+							_portletProviderActionPortletProviderMap.
+								computeIfAbsent(
+									portletProviderAction,
+									key -> new HashMap<>());
+
+						portletProviderMap.put(modelClassName, portletProvider);
+					}
+
+					private void _unregisterPortletProvider(
+						String modelClassName,
+						PortletProvider.Action portletProviderAction) {
+
+						Map<String, PortletProvider> portletProviderMap =
+							_portletProviderActionPortletProviderMap.get(
+								portletProviderAction);
+
+						portletProviderMap.remove(modelClassName);
 					}
 
 				});

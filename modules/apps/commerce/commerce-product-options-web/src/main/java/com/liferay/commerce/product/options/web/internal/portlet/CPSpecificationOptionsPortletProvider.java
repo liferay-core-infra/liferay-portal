@@ -16,9 +16,10 @@ package com.liferay.commerce.product.options.web.internal.portlet;
 
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.EditPortletProvider;
-import com.liferay.portal.kernel.portlet.ManagePortletProvider;
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
+import com.liferay.portal.kernel.portlet.PortletProvider;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -27,18 +28,18 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "model.class.name=com.liferay.commerce.product.model.CPSpecificationOption",
-	service = {
-		EditPortletProvider.class, ManagePortletProvider.class,
-		ViewPortletProvider.class
-	}
+	service = PortletProvider.class
 )
-public class CPSpecificationOptionsPortletProvider
-	extends BasePortletProvider
-	implements EditPortletProvider, ManagePortletProvider, ViewPortletProvider {
+public class CPSpecificationOptionsPortletProvider extends BasePortletProvider {
 
 	@Override
 	public String getPortletName() {
 		return CPPortletKeys.CP_SPECIFICATION_OPTIONS;
+	}
+
+	@Override
+	public List<Action> getSupportedActions() {
+		return Arrays.asList(Action.EDIT, Action.MANAGE, Action.VIEW);
 	}
 
 }

@@ -15,17 +15,11 @@
 package com.liferay.portal.workflow.kaleo.runtime.scripting.internal.notification.recipient.script;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.resource.StringResourceRetriever;
-import com.liferay.portal.rules.engine.Fact;
-import com.liferay.portal.rules.engine.Query;
-import com.liferay.portal.rules.engine.RulesEngine;
-import com.liferay.portal.rules.engine.RulesResourceRetriever;
 import com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.notification.recipient.script.NotificationRecipientEvaluator;
-import com.liferay.portal.workflow.kaleo.runtime.util.RulesContextBuilder;
+import com.liferay.portal.workflow.kaleo.runtime.scripting.internal.util.RulesEngineExecutor;
 
-import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -47,21 +41,11 @@ public class DRLNotificationRecipientEvaluator
 			ExecutionContext executionContext)
 		throws PortalException {
 
-		RulesResourceRetriever rulesResourceRetriever =
-			new RulesResourceRetriever(
-				new StringResourceRetriever(
-					kaleoNotificationRecipient.getRecipientScript()));
-		List<Fact<?>> facts = _rulesContextBuilder.buildRulesContext(
-			executionContext);
-		Query query = Query.createStandardQuery();
-
-		return _rulesEngine.execute(rulesResourceRetriever, facts, query);
+		return _rulesEngineExecutor.execute(
+			executionContext, kaleoNotificationRecipient.getRecipientScript());
 	}
 
 	@Reference
-	private RulesContextBuilder _rulesContextBuilder;
-
-	@Reference
-	private RulesEngine _rulesEngine;
+	private RulesEngineExecutor _rulesEngineExecutor;
 
 }

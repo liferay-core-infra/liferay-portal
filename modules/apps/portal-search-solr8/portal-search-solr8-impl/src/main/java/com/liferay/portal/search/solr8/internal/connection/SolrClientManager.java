@@ -52,7 +52,6 @@ public class SolrClientManager {
 	}
 
 	@Activate
-	@Modified
 	protected synchronized void activate(
 			BundleContext bundleContext, Map<String, Object> properties)
 		throws Exception {
@@ -68,6 +67,21 @@ public class SolrClientManager {
 				bundleContext, HttpClientFactory.class,
 				"(&(!(type=BASIC))(!(type=CERT)))",
 				new PropertyServiceReferenceMapper<>("type"));
+
+		modified(properties);
+	}
+
+	@Deactivate
+	protected synchronized void deactivate(Map<String, Object> properties) {
+		_close();
+		_httpClientFactoryServiceTrackerMap.close();
+		_solrClientFactoryServiceTrackerMap.close();
+	}
+
+	@Modified
+	protected synchronized void modified(Map<String, Object> properties)
+		throws Exception {
+
 		_close();
 
 		_solrConfiguration = ConfigurableUtil.createConfigurable(
@@ -111,13 +125,6 @@ public class SolrClientManager {
 
 		_solrClient = solrClientFactory.getSolrClient(
 			_solrConfiguration, httpClientFactory);
-	}
-
-	@Deactivate
-	protected synchronized void deactivate(Map<String, Object> properties) {
-		_close();
-		_httpClientFactoryServiceTrackerMap.close();
-		_solrClientFactoryServiceTrackerMap.close();
 	}
 
 	private void _close() {

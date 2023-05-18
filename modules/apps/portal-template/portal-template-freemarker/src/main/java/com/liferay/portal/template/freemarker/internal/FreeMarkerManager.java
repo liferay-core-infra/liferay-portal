@@ -260,8 +260,9 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 		_bundle = bundleContext.getBundle();
 
-		_freeMarkerBundleClassloader = new FreeMarkerBundleClassloader(
-			_bundle, FrameworkUtil.getBundle(TagSupport.class));
+		_bundles.add(_bundle);
+
+		_bundles.add(FrameworkUtil.getBundle(TagSupport.class));
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE, new TaglibBundleTrackerCustomizer());
@@ -565,10 +566,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			ProxyUtil.getProxyProviderFunction(ServletContext.class);
 
 	private Bundle _bundle;
+	private final Set<Bundle> _bundles = ConcurrentHashMap.newKeySet();
 	private BundleTracker<Set<String>> _bundleTracker;
 	private volatile Configuration _configuration;
 	private volatile BeansWrapper _defaultBeansWrapper;
-	private FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
 	private volatile FreeMarkerEngineConfiguration
 		_freeMarkerEngineConfiguration;
 
@@ -846,7 +847,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 					Map<String, String> map = PropertiesUtil.toMap(properties);
 
 					if (!map.isEmpty()) {
-						_freeMarkerBundleClassloader.addBundle(bundle);
+						_bundles.add(bundle);
 
 						_taglibMappings.putAll(map);
 					}
@@ -876,7 +877,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 			_templateModels.clear();
 
-			_freeMarkerBundleClassloader.removeBundle(bundle);
+			_bundles.remove(bundle);
 		}
 
 	}
@@ -885,6 +886,9 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 		public TaglibFactoryWrapper(
 			ServletContext servletContext, ObjectWrapper objectWrapper) {
+
+			_freeMarkerBundleClassloader = new FreeMarkerBundleClassloader(
+				_bundles);
 
 			_taglibFactory = new TaglibFactory(
 				_getServletContextWrapper(
@@ -924,6 +928,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			return false;
 		}
 
+		private final FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
 		private final TaglibFactory _taglibFactory;
 
 	}

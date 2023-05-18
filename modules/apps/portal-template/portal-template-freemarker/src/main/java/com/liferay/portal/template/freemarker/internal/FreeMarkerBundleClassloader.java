@@ -25,7 +25,6 @@ import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.Bundle;
 
@@ -35,18 +34,14 @@ import org.osgi.framework.Bundle;
  */
 public class FreeMarkerBundleClassloader extends URLClassLoader {
 
-	public FreeMarkerBundleClassloader(Bundle... bundles) {
+	public FreeMarkerBundleClassloader(Set<Bundle> bundles) {
 		super(new URL[0]);
 
-		if (bundles.length == 0) {
+		if (bundles.isEmpty()) {
 			throw new IllegalArgumentException("Bundles are empty");
 		}
 
-		Collections.addAll(_bundles, bundles);
-	}
-
-	public void addBundle(Bundle bundle) {
-		_bundles.add(bundle);
+		_bundles = bundles;
 	}
 
 	@Override
@@ -92,10 +87,6 @@ public class FreeMarkerBundleClassloader extends URLClassLoader {
 		return findResources(name);
 	}
 
-	public void removeBundle(Bundle bundle) {
-		_bundles.remove(bundle);
-	}
-
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		for (Bundle bundle : _bundles) {
@@ -128,6 +119,6 @@ public class FreeMarkerBundleClassloader extends URLClassLoader {
 	private static final Log _log = LogFactoryUtil.getLog(
 		FreeMarkerBundleClassloader.class);
 
-	private final Set<Bundle> _bundles = ConcurrentHashMap.newKeySet();
+	private final Set<Bundle> _bundles;
 
 }

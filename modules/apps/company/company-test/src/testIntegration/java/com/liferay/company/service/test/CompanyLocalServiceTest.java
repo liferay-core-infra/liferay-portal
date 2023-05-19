@@ -443,6 +443,26 @@ public class CompanyLocalServiceTest {
 	}
 
 	@Test
+	public void testAddAndDeleteCompanyWithPortalInstancesWebId()
+		throws Exception {
+
+		Company company = addCompany();
+
+		List<String> webIds = ListUtil.fromArray(PortalInstances.getWebIds());
+
+		try {
+			Assert.assertTrue(webIds.contains(company.getWebId()));
+		}
+		finally {
+			_companyLocalService.deleteCompany(company.getCompanyId());
+		}
+
+		webIds = ListUtil.fromArray(PortalInstances.getWebIds());
+
+		Assert.assertFalse(webIds.contains(company.getWebId()));
+	}
+
+	@Test
 	public void testAddAndDeleteCompanyWithStagedOrganizationSite()
 		throws Exception {
 
@@ -983,8 +1003,6 @@ public class CompanyLocalServiceTest {
 	protected Company addCompany(String webId) throws Exception {
 		Company company = _companyLocalService.addCompany(
 			null, webId, webId, "test.com", 0, true);
-
-		PortalInstances.initCompany(company);
 
 		CompanyThreadLocal.setCompanyId(company.getCompanyId());
 

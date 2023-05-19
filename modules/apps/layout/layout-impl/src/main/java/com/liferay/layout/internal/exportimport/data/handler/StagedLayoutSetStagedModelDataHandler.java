@@ -34,7 +34,8 @@ import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.exportimport.lar.ThemeExporter;
 import com.liferay.exportimport.lar.ThemeImporter;
-import com.liferay.layout.internal.exportimport.staged.model.repository.StagedLayoutSetStagedModelRepository;
+import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
+import com.liferay.layout.internal.exportimport.staged.model.repository.StagedLayoutSetStagedModelRepositoryHelper;
 import com.liferay.layout.set.model.adapter.StagedLayoutSet;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
@@ -190,7 +191,7 @@ public class StagedLayoutSetStagedModelDataHandler
 		LayoutSet layoutSet = stagedLayoutSet.getLayoutSet();
 
 		StagedLayoutSet existingStagedLayoutSet =
-			_stagedLayoutSetStagedModelRepository.fetchExistingLayoutSet(
+			_stagedLayoutSetStagedModelRepositoryHelper.fetchExistingLayoutSet(
 				portletDataContext.getScopeGroupId(),
 				layoutSet.isPrivateLayout());
 
@@ -482,8 +483,9 @@ public class StagedLayoutSetStagedModelDataHandler
 		}
 
 		for (StagedModel stagedModel :
-				_stagedLayoutSetStagedModelRepository.fetchChildrenStagedModels(
-					portletDataContext, stagedLayoutSet)) {
+				_stagedLayoutSetStagedModelRepositoryHelper.
+					fetchChildrenStagedModels(
+						portletDataContext, stagedLayoutSet)) {
 
 			Layout layout = (Layout)stagedModel;
 
@@ -1150,8 +1152,12 @@ public class StagedLayoutSetStagedModelDataHandler
 	private Sites _sites;
 
 	@Reference
-	private StagedLayoutSetStagedModelRepository
+	private StagedModelRepository<StagedLayoutSet>
 		_stagedLayoutSetStagedModelRepository;
+
+	@Reference
+	private StagedLayoutSetStagedModelRepositoryHelper
+		_stagedLayoutSetStagedModelRepositoryHelper;
 
 	@Reference
 	private ThemeExporter _themeExporter;

@@ -174,9 +174,7 @@ public class PortalInstancesTest {
 	}
 
 	@Test
-	public void testGetWebIdsAfterInitCompany() {
-		PortalInstances.initCompany(_company);
-
+	public void testGetWebIds() {
 		List<String> webIds = ListUtil.fromArray(PortalInstances.getWebIds());
 
 		Assert.assertTrue(webIds.contains(_company.getWebId()));

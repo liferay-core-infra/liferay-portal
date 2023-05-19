@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsUtil;
 
 import java.io.BufferedWriter;
@@ -156,8 +155,6 @@ public class CompanySampleDataGenerationTest {
 
 			Company company = _companyLocalService.addCompany(
 				null, webId, webId, webId, 0, true);
-
-			PortalInstances.initCompany(company);
 
 			// Add user
 

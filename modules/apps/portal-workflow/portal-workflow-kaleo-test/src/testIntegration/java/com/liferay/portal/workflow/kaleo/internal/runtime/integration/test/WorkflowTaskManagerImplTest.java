@@ -117,7 +117,6 @@ import com.liferay.portal.kernel.workflow.search.WorkflowModelSearchResult;
 import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.security.permission.SimplePermissionChecker;
 import com.liferay.portal.test.rule.Inject;
-import com.liferay.portal.util.PortalInstances;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -149,8 +148,6 @@ public class WorkflowTaskManagerImplTest extends BaseWorkflowManagerTestCase {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		_company = CompanyTestUtil.addCompany();
-
-		PortalInstances.initCompany(_company);
 
 		_companyAdminUser = UserTestUtil.addCompanyAdminUser(_company);
 

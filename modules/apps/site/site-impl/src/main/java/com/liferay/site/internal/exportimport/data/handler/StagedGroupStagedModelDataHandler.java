@@ -54,7 +54,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.site.internal.exportimport.staged.model.repository.StagedGroupStagedModelRepository;
+import com.liferay.site.internal.exportimport.staged.model.repository.StagedGroupStagedModelRepositoryHelper;
 import com.liferay.site.model.adapter.StagedGroup;
 import com.liferay.sites.kernel.util.Sites;
 
@@ -124,7 +124,7 @@ public class StagedGroupStagedModelDataHandler
 		}
 
 		Group existingGroup =
-			_stagedGroupStagedModelRepository.fetchExistingGroup(
+			_stagedGroupStagedModelRepositoryHelper.fetchExistingGroup(
 				portletDataContext, referenceElement);
 
 		if (existingGroup == null) {
@@ -182,7 +182,7 @@ public class StagedGroupStagedModelDataHandler
 		// Layout set with layouts
 
 		List<? extends StagedModel> childStagedModels =
-			_stagedGroupStagedModelRepository.fetchChildrenStagedModels(
+			_stagedGroupStagedModelRepositoryHelper.fetchChildrenStagedModels(
 				portletDataContext, stagedGroup);
 
 		for (StagedModel stagedModel : childStagedModels) {
@@ -217,7 +217,7 @@ public class StagedGroupStagedModelDataHandler
 		}
 
 		Group existingGroup =
-			_stagedGroupStagedModelRepository.fetchExistingGroup(
+			_stagedGroupStagedModelRepositoryHelper.fetchExistingGroup(
 				portletDataContext, referenceElement);
 
 		if (existingGroup == null) {
@@ -698,6 +698,11 @@ public class StagedGroupStagedModelDataHandler
 	private Sites _sites;
 
 	@Reference
-	private StagedGroupStagedModelRepository _stagedGroupStagedModelRepository;
+	private StagedModelRepository<StagedGroup>
+		_stagedGroupStagedModelRepository;
+
+	@Reference
+	private StagedGroupStagedModelRepositoryHelper
+		_stagedGroupStagedModelRepositoryHelper;
 
 }

@@ -276,9 +276,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			company = _checkCompany(company, mx);
 
+			Company finalCompany = company;
+
 			TransactionCommitCallbackUtil.registerCallback(
 				() -> {
 					safeCloseable.close();
+
+					PortalInstances.initCompany(finalCompany);
 
 					return null;
 				});

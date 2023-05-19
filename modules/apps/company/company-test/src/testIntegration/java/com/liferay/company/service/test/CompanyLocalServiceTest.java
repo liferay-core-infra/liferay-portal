@@ -440,18 +440,16 @@ public class CompanyLocalServiceTest {
 
 		Company company = _addCompany();
 
-		List<String> webIds = ListUtil.fromArray(PortalInstances.getWebIds());
-
 		try {
-			Assert.assertTrue(webIds.contains(company.getWebId()));
+			Assert.assertEquals(
+				company.getWebId(),
+				PortalInstances.getWebId(company.getCompanyId()));
 		}
 		finally {
 			_deleteCompany(company);
 		}
 
-		webIds = ListUtil.fromArray(PortalInstances.getWebIds());
-
-		Assert.assertFalse(webIds.contains(company.getWebId()));
+		Assert.assertNull(PortalInstances.getWebId(company.getCompanyId()));
 	}
 
 	@Test

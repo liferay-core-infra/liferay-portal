@@ -14,7 +14,7 @@
 
 package com.liferay.dynamic.data.lists.internal.exportimport.data.handler;
 
-import com.liferay.dynamic.data.lists.internal.exportimport.staged.model.repository.DDLRecordStagedModelRepository;
+import com.liferay.dynamic.data.lists.internal.exportimport.staged.model.repository.DDLRecordStagedModelRepositoryHelper;
 import com.liferay.dynamic.data.lists.model.DDLRecord;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
@@ -142,15 +142,17 @@ public class DDLRecordStagedModelDataHandler
 		if ((existingRecord == null) ||
 			!portletDataContext.isDataStrategyMirror()) {
 
-			importedRecord = _ddlRecordStagedModelRepository.addStagedModel(
-				portletDataContext, importedRecord, ddmFormValues);
+			importedRecord =
+				_ddlRecordStagedModelRepositoryHelper.addStagedModel(
+					portletDataContext, importedRecord, ddmFormValues);
 		}
 		else {
 			importedRecord.setMvccVersion(existingRecord.getMvccVersion());
 			importedRecord.setRecordId(existingRecord.getRecordId());
 
-			importedRecord = _ddlRecordStagedModelRepository.updateStagedModel(
-				portletDataContext, importedRecord, ddmFormValues);
+			importedRecord =
+				_ddlRecordStagedModelRepositoryHelper.updateStagedModel(
+					portletDataContext, importedRecord, ddmFormValues);
 		}
 
 		portletDataContext.importClassedModel(record, importedRecord);
@@ -256,7 +258,11 @@ public class DDLRecordStagedModelDataHandler
 	@Reference(
 		target = "(model.class.name=com.liferay.dynamic.data.lists.model.DDLRecord)"
 	)
-	private DDLRecordStagedModelRepository _ddlRecordStagedModelRepository;
+	private StagedModelRepository<DDLRecord> _ddlRecordStagedModelRepository;
+
+	@Reference
+	private DDLRecordStagedModelRepositoryHelper
+		_ddlRecordStagedModelRepositoryHelper;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.dynamic.data.mapping.storage.DDMFormValues)"

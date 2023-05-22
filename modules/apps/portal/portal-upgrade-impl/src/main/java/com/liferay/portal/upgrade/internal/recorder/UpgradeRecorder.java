@@ -14,6 +14,7 @@
 
 package com.liferay.portal.upgrade.internal.recorder;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
@@ -40,10 +41,6 @@ import javax.sql.DataSource;
 import org.apache.logging.log4j.ThreadContext;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Luis Ortiz
@@ -177,8 +174,10 @@ public class UpgradeRecorder {
 			return "failure";
 		}
 
+		ReleaseManager releaseManager = _releaseManagerSnapshot.get();
+
 		try {
-			if (!_releaseManager.isUpgraded()) {
+			if (!releaseManager.isUpgraded()) {
 				return "unresolved";
 			}
 		}
@@ -302,16 +301,11 @@ public class UpgradeRecorder {
 	private static final Log _log = LogFactoryUtil.getLog(
 		UpgradeRecorder.class);
 
+	private static final Snapshot<ReleaseManager> _releaseManagerSnapshot =
+		new Snapshot<>(UpgradeRecorder.class, ReleaseManager.class);
+
 	private final Map<String, Map<String, Integer>> _errorMessages =
 		new ConcurrentHashMap<>();
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile ReleaseManager _releaseManager;
-
 	private String _result =
 		PropsValues.UPGRADE_DATABASE_AUTO_RUN || DBUpgrader.isUpgradeClient() ?
 			"pending" : "not enabled";

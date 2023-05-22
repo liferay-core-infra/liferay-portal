@@ -41,9 +41,6 @@ import org.apache.logging.log4j.ThreadContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Luis Ortiz
@@ -305,12 +302,8 @@ public class UpgradeRecorder {
 	private final Map<String, Map<String, Integer>> _errorMessages =
 		new ConcurrentHashMap<>();
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile ReleaseManager _releaseManager;
+	@Reference
+	private ReleaseManager _releaseManager;
 
 	private String _result =
 		PropsValues.UPGRADE_DATABASE_AUTO_RUN || DBUpgrader.isUpgradeClient() ?

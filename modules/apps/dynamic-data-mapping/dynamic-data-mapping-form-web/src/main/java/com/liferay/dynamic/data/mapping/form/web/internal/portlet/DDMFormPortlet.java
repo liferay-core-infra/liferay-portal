@@ -37,6 +37,7 @@ import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
@@ -71,9 +72,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
@@ -226,13 +224,16 @@ public class DDMFormPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortalException {
 
+		DDMFormWebConfigurationActivator ddmFormWebConfigurationActivator =
+			_ddmFormWebConfigurationActivatorSnapshot.get();
+
 		DDMFormDisplayContext ddmFormDisplayContext = new DDMFormDisplayContext(
 			_ddmFormFieldTypeServicesRegistry, _ddmFormInstanceLocalService,
 			_ddmFormInstanceRecordService,
 			_ddmFormInstanceRecordVersionLocalService, _ddmFormInstanceService,
 			_ddmFormInstanceVersionLocalService, _ddmFormRenderer,
 			_ddmFormValuesFactory, _ddmFormValuesMerger,
-			_ddmFormWebConfigurationActivator.getDDMFormWebConfiguration(),
+			ddmFormWebConfigurationActivator.getDDMFormWebConfiguration(),
 			_ddmStorageAdapterRegistry, _groupLocalService, _jsonFactory,
 			_npmResolver, _objectFieldLocalService,
 			_objectFieldSettingLocalService, _objectRelationshipLocalService,
@@ -280,6 +281,11 @@ public class DDMFormPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMFormPortlet.class);
 
+	private static final Snapshot<DDMFormWebConfigurationActivator>
+		_ddmFormWebConfigurationActivatorSnapshot = new Snapshot<>(
+			DDMFormPortlet.class, DDMFormWebConfigurationActivator.class, null,
+			true);
+
 	@Reference
 	private AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
 		_addDefaultSharedFormLayoutPortalInstanceLifecycleListener;
@@ -312,15 +318,6 @@ public class DDMFormPortlet extends MVCPortlet {
 
 	@Reference
 	private DDMFormValuesMerger _ddmFormValuesMerger;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unsetDDMFormWebConfigurationActivator"
-	)
-	private volatile DDMFormWebConfigurationActivator
-		_ddmFormWebConfigurationActivator;
 
 	@Reference
 	private DDMStorageAdapterRegistry _ddmStorageAdapterRegistry;

@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.lists.service.DDLRecordSetService;
 import com.liferay.dynamic.data.lists.util.comparator.DDLRecordModifiedDateComparator;
 import com.liferay.dynamic.data.lists.web.internal.configuration.DDLWebConfiguration;
 import com.liferay.dynamic.data.lists.web.internal.configuration.activator.DDLWebConfigurationActivator;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
@@ -39,9 +40,6 @@ import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
@@ -64,8 +62,11 @@ public class ExportRecordSetMVCResourceCommand extends BaseMVCResourceCommand {
 		String fileExtension = ParamUtil.getString(
 			resourceRequest, "fileExtension");
 
+		DDLWebConfigurationActivator ddlWebConfigurationActivator =
+			_ddlWebConfigurationActivatorSnapshot.get();
+
 		DDLWebConfiguration ddlWebConfiguration =
-			_ddlWebConfigurationActivator.getDDLWebConfiguration();
+			ddlWebConfigurationActivator.getDDLWebConfiguration();
 
 		if (StringUtil.equals(fileExtension, "csv") &&
 			StringUtil.equals(ddlWebConfiguration.csvExport(), "disabled")) {
@@ -98,24 +99,15 @@ public class ExportRecordSetMVCResourceCommand extends BaseMVCResourceCommand {
 			MimeTypesUtil.getContentType(fileName));
 	}
 
-	protected void unsetDDLWebConfigurationActivator(
-		DDLWebConfigurationActivator ddlWebConfigurationActivator) {
-
-		_ddlWebConfigurationActivator = null;
-	}
+	private static final Snapshot<DDLWebConfigurationActivator>
+		_ddlWebConfigurationActivatorSnapshot = new Snapshot<>(
+			ExportRecordSetMVCResourceCommand.class,
+			DDLWebConfigurationActivator.class, null, true);
 
 	@Reference
 	private DDLExporterFactory _ddlExporterFactory;
 
 	@Reference
 	private DDLRecordSetService _ddlRecordSetService;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unsetDDLWebConfigurationActivator"
-	)
-	private volatile DDLWebConfigurationActivator _ddlWebConfigurationActivator;
 
 }

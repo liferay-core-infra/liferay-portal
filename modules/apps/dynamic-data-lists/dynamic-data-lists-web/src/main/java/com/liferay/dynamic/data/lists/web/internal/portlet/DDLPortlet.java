@@ -30,6 +30,7 @@ import com.liferay.dynamic.data.mapping.security.permission.DDMPermissionSupport
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.dynamic.data.mapping.util.DDMDisplayRegistry;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.PortletPreferencesException;
 import com.liferay.portal.kernel.log.Log;
@@ -54,9 +55,6 @@ import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
@@ -112,9 +110,12 @@ public class DDLPortlet extends MVCPortlet {
 
 			setDDLRecordSetRequestAttribute(renderRequest);
 
+			DDLWebConfigurationActivator ddlWebConfigurationActivator =
+				_ddlWebConfigurationActivatorSnapshot.get();
+
 			DDLDisplayContext ddlDisplayContext = new DDLDisplayContext(
 				renderRequest, renderResponse, _ddl, _ddlRecordSetLocalService,
-				_ddlWebConfigurationActivator.getDDLWebConfiguration(),
+				ddlWebConfigurationActivator.getDDLWebConfiguration(),
 				_ddmDisplayRegistry, _ddmPermissionSupport,
 				_ddmTemplateLocalService, _storageEngine);
 
@@ -196,12 +197,6 @@ public class DDLPortlet extends MVCPortlet {
 			DDLWebKeys.DYNAMIC_DATA_LISTS_RECORD_SET, recordSet);
 	}
 
-	protected void unsetDDLWebConfigurationActivator(
-		DDLWebConfigurationActivator ddlWebConfigurationActivator) {
-
-		_ddlWebConfigurationActivator = null;
-	}
-
 	private void _setCloseRedirect(ActionRequest actionRequest) {
 		String closeRedirect = ParamUtil.getString(
 			actionRequest, "closeRedirect");
@@ -219,6 +214,10 @@ public class DDLPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(DDLPortlet.class);
 
+	private static final Snapshot<DDLWebConfigurationActivator>
+		_ddlWebConfigurationActivatorSnapshot = new Snapshot<>(
+			DDLPortlet.class, DDLWebConfigurationActivator.class, null, true);
+
 	@Reference
 	private DDL _ddl;
 
@@ -230,14 +229,6 @@ public class DDLPortlet extends MVCPortlet {
 
 	@Reference
 	private DDLRecordSetService _ddlRecordSetService;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unsetDDLWebConfigurationActivator"
-	)
-	private volatile DDLWebConfigurationActivator _ddlWebConfigurationActivator;
 
 	@Reference
 	private DDMDisplayRegistry _ddmDisplayRegistry;

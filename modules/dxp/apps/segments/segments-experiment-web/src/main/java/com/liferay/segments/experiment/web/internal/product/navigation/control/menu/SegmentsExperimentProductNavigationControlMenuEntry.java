@@ -52,6 +52,7 @@ import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuE
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 import com.liferay.segments.constants.SegmentsExperimentConstants;
 import com.liferay.segments.constants.SegmentsPortletKeys;
+import com.liferay.segments.experiment.web.internal.constants.SegmentsExperimentProductNavigationConstants;
 import com.liferay.segments.manager.SegmentsExperienceManager;
 import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
@@ -136,7 +137,11 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 
 		Map<String, String> values = new HashMap<>();
 
-		if (isPanelStateOpen(httpServletRequest)) {
+		if (isPanelStateOpen(
+				httpServletRequest,
+				SegmentsExperimentProductNavigationConstants.
+					SESSION_CLICKS_KEY)) {
+
 			values.put("cssClass", "active");
 		}
 		else {
@@ -172,9 +177,14 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 		return true;
 	}
 
-	public boolean isPanelStateOpen(HttpServletRequest httpServletRequest) {
+	@Override
+	public boolean isPanelStateOpen(
+		HttpServletRequest httpServletRequest, String key) {
+
 		String segmentsExperimentPanelState = SessionClicks.get(
-			httpServletRequest, _SESSION_CLICKS_KEY, "closed");
+			httpServletRequest,
+			SegmentsExperimentProductNavigationConstants.SESSION_CLICKS_KEY,
+			"closed");
 
 		if (Objects.equals(segmentsExperimentPanelState, "open")) {
 			return true;
@@ -245,12 +255,6 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 		}
 
 		return super.isShow(httpServletRequest);
-	}
-
-	public void setPanelState(
-		HttpServletRequest httpServletRequest, String panelState) {
-
-		SessionClicks.put(httpServletRequest, _SESSION_CLICKS_KEY, panelState);
 	}
 
 	@Activate
@@ -409,7 +413,10 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 
 			sb.append("<div class=\"");
 
-			boolean panelStateOpen = isPanelStateOpen(httpServletRequest);
+			boolean panelStateOpen = isPanelStateOpen(
+				httpServletRequest,
+				SegmentsExperimentProductNavigationConstants.
+					SESSION_CLICKS_KEY);
 
 			if (panelStateOpen) {
 				sb.append(
@@ -473,9 +480,6 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 
 	private static final String _ICON_TMPL_CONTENT = StringUtil.read(
 		SegmentsExperimentProductNavigationControlMenuEntry.class, "icon.tmpl");
-
-	private static final String _SESSION_CLICKS_KEY =
-		"com.liferay.segments.experiment.web_panelState";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SegmentsExperimentProductNavigationControlMenuEntry.class);

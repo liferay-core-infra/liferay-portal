@@ -39,6 +39,7 @@ import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterRegistry;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -60,9 +61,6 @@ import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Bruno Basto
@@ -139,6 +137,9 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 		String currentTab = ParamUtil.getString(
 			renderRequest, "currentTab", "forms");
 
+		DDMFormWebConfigurationActivator ddmFormWebConfigurationActivator =
+			_ddmFormWebConfigurationActivatorSnapshot.get();
+
 		if (currentTab.equals("element-set")) {
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -156,7 +157,7 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 					_ddmFormInstanceVersionLocalService, _ddmFormRenderer,
 					_ddmFormTemplateContextFactory, _ddmFormValuesFactory,
 					_ddmFormValuesMerger,
-					_ddmFormWebConfigurationActivator.
+					ddmFormWebConfigurationActivator.
 						getDDMFormWebConfiguration(),
 					_ddmStorageAdapterRegistry, _ddmStructureLocalService,
 					_ddmStructureService, _jsonFactory, _npmResolver,
@@ -179,7 +180,7 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 					_ddmFormInstanceVersionLocalService, _ddmFormRenderer,
 					_ddmFormTemplateContextFactory, _ddmFormValuesFactory,
 					_ddmFormValuesMerger,
-					_ddmFormWebConfigurationActivator.
+					ddmFormWebConfigurationActivator.
 						getDDMFormWebConfiguration(),
 					_ddmStorageAdapterRegistry, _ddmStructureLocalService,
 					_ddmStructureService, _jsonFactory, _npmResolver,
@@ -187,14 +188,13 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 		}
 	}
 
-	protected void unsetDDMFormWebConfigurationActivator(
-		DDMFormWebConfigurationActivator ddmFormWebConfigurationActivator) {
-
-		_ddmFormWebConfigurationActivator = null;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMFormAdminPortlet.class);
+
+	private static final Snapshot<DDMFormWebConfigurationActivator>
+		_ddmFormWebConfigurationActivatorSnapshot = new Snapshot<>(
+			DDMFormAdminPortlet.class, DDMFormWebConfigurationActivator.class,
+			null, true);
 
 	@Reference
 	private AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
@@ -247,15 +247,6 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private DDMFormValuesMerger _ddmFormValuesMerger;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unsetDDMFormWebConfigurationActivator"
-	)
-	private volatile DDMFormWebConfigurationActivator
-		_ddmFormWebConfigurationActivator;
 
 	@Reference
 	private DDMStorageAdapterRegistry _ddmStorageAdapterRegistry;

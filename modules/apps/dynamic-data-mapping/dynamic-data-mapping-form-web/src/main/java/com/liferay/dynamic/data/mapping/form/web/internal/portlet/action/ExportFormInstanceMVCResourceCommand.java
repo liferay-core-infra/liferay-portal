@@ -25,6 +25,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
 import com.liferay.dynamic.data.mapping.util.comparator.DDMFormInstanceRecordIdComparator;
 import com.liferay.dynamic.data.mapping.util.comparator.DDMFormInstanceRecordModifiedDateComparator;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -45,9 +46,6 @@ import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
@@ -70,8 +68,11 @@ public class ExportFormInstanceMVCResourceCommand
 		String fileExtension = ParamUtil.getString(
 			resourceRequest, "fileExtension");
 
+		DDMFormWebConfigurationActivator ddmFormWebConfigurationActivator =
+			_ddmFormWebConfigurationActivatorSnapshot.get();
+
 		DDMFormWebConfiguration ddmFormWebConfiguration =
-			_ddmFormWebConfigurationActivator.getDDMFormWebConfiguration();
+			ddmFormWebConfigurationActivator.getDDMFormWebConfiguration();
 
 		if (StringUtil.equals(fileExtension, "csv") &&
 			StringUtil.equals(
@@ -127,12 +128,6 @@ public class ExportFormInstanceMVCResourceCommand
 			MimeTypesUtil.getContentType(fileName));
 	}
 
-	protected void unsetDDMFormWebConfigurationActivator(
-		DDMFormWebConfigurationActivator ddmFormWebConfigurationActivator) {
-
-		_ddmFormWebConfigurationActivator = null;
-	}
-
 	private OrderByComparator<DDMFormInstanceRecord> _getOrderByComparator(
 		ResourceRequest resourceRequest) {
 
@@ -160,19 +155,15 @@ public class ExportFormInstanceMVCResourceCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExportFormInstanceMVCResourceCommand.class);
 
+	private static final Snapshot<DDMFormWebConfigurationActivator>
+		_ddmFormWebConfigurationActivatorSnapshot = new Snapshot<>(
+			ExportFormInstanceMVCResourceCommand.class,
+			DDMFormWebConfigurationActivator.class);
+
 	@Reference
 	private DDMFormInstanceRecordExporter _ddmFormInstanceRecordExporter;
 
 	@Reference
 	private DDMFormInstanceService _ddmFormInstanceService;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unsetDDMFormWebConfigurationActivator"
-	)
-	private volatile DDMFormWebConfigurationActivator
-		_ddmFormWebConfigurationActivator;
 
 }

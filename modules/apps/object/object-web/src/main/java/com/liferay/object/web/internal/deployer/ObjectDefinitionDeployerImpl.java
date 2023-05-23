@@ -40,7 +40,6 @@ import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.ItemSelectorViewDescriptorRenderer;
 import com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
-import com.liferay.layout.page.template.info.item.capability.DisplayPageInfoItemCapability;
 import com.liferay.layout.page.template.info.item.capability.EditPageInfoItemCapability;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
@@ -454,7 +453,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private BundleContext _bundleContext;
 
 	@Reference(
-		target = "(component.name=com.liferay.layout.page.template.internal.info.item.capability.DisplayPageInfoItemCapabilityImpl)"
+		target = "(info.item.capabilty.key=" + EditPageInfoItemCapability.KEY + ")"
 	)
 	private InfoItemCapability _displayPageInfoItemCapability;
 
@@ -470,8 +469,10 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	@Reference
 	private DLURLHelper _dlURLHelper;
 
-	@Reference
-	private EditPageInfoItemCapability _editPageInfoItemCapability;
+	@Reference(
+		target = "(component.name=com.liferay.layout.page.template.internal.info.item.capability.EditPageInfoItemCapabilityImpl)"
+	)
+	private InfoItemCapability _editPageInfoItemCapability;
 
 	@Reference
 	private FDSTableSchemaBuilderFactory _fdsTableSchemaBuilderFactory;

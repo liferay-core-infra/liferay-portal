@@ -14,6 +14,7 @@
 
 package com.liferay.portal.monitoring.internal.servlet.filter;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -49,9 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Rajesh Thiagarajan
@@ -201,9 +199,12 @@ public class MonitoringFilter
 
 		long plid = ParamUtil.getLong(httpServletRequest, "p_l_id");
 
-		if ((plid > 0) && (_layoutLocalService != null)) {
+		LayoutLocalService layoutLocalService =
+			_layoutLocalServiceSnapshot.get();
+
+		if ((plid > 0) && (layoutLocalService != null)) {
 			try {
-				layout = _layoutLocalService.getLayout(plid);
+				layout = layoutLocalService.getLayout(plid);
 
 				groupId = layout.getGroupId();
 			}
@@ -227,6 +228,9 @@ public class MonitoringFilter
 	private static final Log _log = LogFactoryUtil.getLog(
 		MonitoringFilter.class);
 
+	private static final Snapshot<LayoutLocalService>
+		_layoutLocalServiceSnapshot = new Snapshot<>(
+			MonitoringFilter.class, LayoutLocalService.class, null, true);
 	private static final ThreadLocal<AtomicInteger> _processFilterCount =
 		new CentralizedThreadLocal<>(
 			MonitoringFilter.class + "._processFilterCount",
@@ -234,13 +238,6 @@ public class MonitoringFilter
 
 	@Reference
 	private DataSampleFactory _dataSampleFactory;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile LayoutLocalService _layoutLocalService;
 
 	@Reference
 	private MessageBus _messageBus;

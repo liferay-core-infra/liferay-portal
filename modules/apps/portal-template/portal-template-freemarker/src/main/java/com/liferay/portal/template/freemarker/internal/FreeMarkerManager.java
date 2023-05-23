@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -47,7 +48,6 @@ import com.liferay.portal.template.engine.BaseTemplateManager;
 import com.liferay.portal.template.engine.TemplateContextHelper;
 import com.liferay.portal.template.freemarker.configuration.FreeMarkerEngineConfiguration;
 import com.liferay.portal.template.freemarker.internal.helper.FreeMarkerTemplateContextHelper;
-import com.liferay.taglib.TagSupport;
 
 import freemarker.cache.TemplateCache;
 
@@ -104,8 +104,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -258,8 +258,11 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 		_bundle = bundleContext.getBundle();
 
+		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
+
 		_freeMarkerBundleClassloader = new FreeMarkerBundleClassloader(
-			_bundle, FrameworkUtil.getBundle(TagSupport.class));
+			bundleWiring.getClassLoader(),
+			PortalClassLoaderUtil.getClassLoader());
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE, new TaglibBundleTrackerCustomizer());
@@ -833,7 +836,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 					return null;
 				}
 
-				_freeMarkerBundleClassloader.addBundle(bundle);
+				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+				_freeMarkerBundleClassloader.addclassLoader(
+					bundleWiring.getClassLoader());
 
 				_taglibMappings.putAll(map);
 
@@ -861,7 +867,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 			_templateModels.clear();
 
-			_freeMarkerBundleClassloader.removeBundle(bundle);
+			BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+			_freeMarkerBundleClassloader.removeClassLoader(
+				bundleWiring.getClassLoader());
 		}
 
 	}

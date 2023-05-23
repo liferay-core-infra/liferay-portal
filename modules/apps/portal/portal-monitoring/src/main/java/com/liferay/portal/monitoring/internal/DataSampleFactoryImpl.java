@@ -14,6 +14,7 @@
 
 package com.liferay.portal.monitoring.internal;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.monitoring.DataSample;
 import com.liferay.portal.kernel.monitoring.DataSampleFactory;
 import com.liferay.portal.kernel.monitoring.MethodSignature;
@@ -27,10 +28,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -55,7 +52,8 @@ public class DataSampleFactoryImpl implements DataSampleFactory {
 		PortletResponse portletResponse) {
 
 		return new PortletRequestDataSample(
-			requestType, portletRequest, portletResponse, _portal);
+			requestType, portletRequest, portletResponse,
+			_portalSnapshot.get());
 	}
 
 	@Override
@@ -65,11 +63,7 @@ public class DataSampleFactoryImpl implements DataSampleFactory {
 		return new ServiceRequestDataSample(methodSignature);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile Portal _portal;
+	private static final Snapshot<Portal> _portalSnapshot = new Snapshot<>(
+		DataSampleFactoryImpl.class, Portal.class, null, true);
 
 }

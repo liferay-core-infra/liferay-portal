@@ -25,7 +25,6 @@ import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Miguel Pastor
@@ -33,18 +32,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class FreeMarkerBundleClassloader extends URLClassLoader {
 
-	public FreeMarkerBundleClassloader(ClassLoader... classLoaders) {
+	public FreeMarkerBundleClassloader(Set<ClassLoader> classLoaders) {
 		super(new URL[0]);
 
-		if (classLoaders.length == 0) {
+		if (classLoaders.isEmpty()) {
 			throw new IllegalArgumentException("Bundles are empty");
 		}
 
-		Collections.addAll(_classLoaders, classLoaders);
-	}
-
-	public void addclassLoader(ClassLoader classLoader) {
-		_classLoaders.add(classLoader);
+		_classLoaders = classLoaders;
 	}
 
 	@Override
@@ -90,10 +85,6 @@ public class FreeMarkerBundleClassloader extends URLClassLoader {
 		return findResources(name);
 	}
 
-	public void removeClassLoader(ClassLoader classLoader) {
-		_classLoaders.remove(classLoader);
-	}
-
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		for (ClassLoader classLoader : _classLoaders) {
@@ -126,7 +117,6 @@ public class FreeMarkerBundleClassloader extends URLClassLoader {
 	private static final Log _log = LogFactoryUtil.getLog(
 		FreeMarkerBundleClassloader.class);
 
-	private final Set<ClassLoader> _classLoaders =
-		ConcurrentHashMap.newKeySet();
+	private final Set<ClassLoader> _classLoaders;
 
 }

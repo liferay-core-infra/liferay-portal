@@ -260,9 +260,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
-		_freeMarkerBundleClassloader = new FreeMarkerBundleClassloader(
-			bundleWiring.getClassLoader(),
-			PortalClassLoaderUtil.getClassLoader());
+		_bundleClassLoader = bundleWiring.getClassLoader();
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE, new TaglibBundleTrackerCustomizer());
@@ -566,7 +564,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			ProxyUtil.getProxyProviderFunction(ServletContext.class);
 
 	private Bundle _bundle;
+	private ClassLoader _bundleClassLoader;
 	private BundleTracker<Set<String>> _bundleTracker;
+	private final Set<ClassLoader> _classLoaders =
+		ConcurrentHashMap.newKeySet();
 	private volatile Configuration _configuration;
 	private volatile BeansWrapper _defaultBeansWrapper;
 	private FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
@@ -838,10 +839,11 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
-				_freeMarkerBundleClassloader.addclassLoader(
-					bundleWiring.getClassLoader());
+				_classLoaders.add(bundleWiring.getClassLoader());
 
 				_taglibMappings.putAll(map);
+
+				_freeMarkerBundleClassloader = null;
 
 				return map.keySet();
 			}
@@ -869,8 +871,9 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 			BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
-			_freeMarkerBundleClassloader.removeClassLoader(
-				bundleWiring.getClassLoader());
+			_classLoaders.remove(bundleWiring.getClassLoader());
+
+			_freeMarkerBundleClassloader = null;
 		}
 
 	}
@@ -882,7 +885,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 			_taglibFactory = new TaglibFactory(
 				_getServletContextWrapper(
-					servletContext, _freeMarkerBundleClassloader));
+					servletContext, _getFreeMarkerBundleClassloader()));
 
 			_taglibFactory.setObjectWrapper(objectWrapper);
 		}
@@ -916,6 +919,20 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		@Override
 		public boolean isEmpty() {
 			return false;
+		}
+
+		private FreeMarkerBundleClassloader _getFreeMarkerBundleClassloader() {
+			if (_freeMarkerBundleClassloader != null) {
+				return _freeMarkerBundleClassloader;
+			}
+
+			_classLoaders.add(_bundleClassLoader);
+			_classLoaders.add(PortalClassLoaderUtil.getClassLoader());
+
+			_freeMarkerBundleClassloader = new FreeMarkerBundleClassloader(
+				_classLoaders);
+
+			return _freeMarkerBundleClassloader;
 		}
 
 		private final TaglibFactory _taglibFactory;

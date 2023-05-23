@@ -89,6 +89,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -566,8 +567,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	private Bundle _bundle;
 	private ClassLoader _bundleClassLoader;
 	private BundleTracker<Set<String>> _bundleTracker;
-	private final Set<ClassLoader> _classLoaders =
-		ConcurrentHashMap.newKeySet();
+	private final Set<ClassLoader> _classLoaders = new CopyOnWriteArraySet<>();
 	private volatile Configuration _configuration;
 	private volatile BeansWrapper _defaultBeansWrapper;
 	private FreeMarkerBundleClassloader _freeMarkerBundleClassloader;

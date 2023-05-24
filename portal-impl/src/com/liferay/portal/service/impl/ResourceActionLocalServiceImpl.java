@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.service.base.ResourceActionLocalServiceBaseImpl;
@@ -293,6 +294,15 @@ public class ResourceActionLocalServiceImpl
 								resourcePermission);
 						}
 					});
+
+				TransactionConfig.Builder builder =
+					new TransactionConfig.Builder();
+
+				builder.setPropagation(Propagation.REQUIRED);
+				builder.setRollbackForClasses(
+					PortalException.class, SystemException.class);
+
+				actionableDynamicQuery.setTransactionConfig(builder.build());
 
 				try {
 					actionableDynamicQuery.performActions();

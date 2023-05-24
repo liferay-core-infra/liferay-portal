@@ -18,7 +18,6 @@ import com.liferay.info.item.capability.InfoItemCapability;
 import com.liferay.info.item.provider.InfoItemCapabilitiesProvider;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.template.info.item.capability.TemplateInfoItemCapability;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class ObjectEntryInfoItemCapabilitiesProvider
 	public ObjectEntryInfoItemCapabilitiesProvider(
 		InfoItemCapability displayPageInfoItemCapability,
 		InfoItemCapability editPageInfoItemCapability,
-		TemplateInfoItemCapability templatePageInfoItemCapability) {
+		InfoItemCapability templatePageInfoItemCapability) {
 
 		_displayPageInfoItemCapability = displayPageInfoItemCapability;
 		_editPageInfoItemCapability = editPageInfoItemCapability;
@@ -47,6 +46,6 @@ public class ObjectEntryInfoItemCapabilitiesProvider
 
 	private final InfoItemCapability _displayPageInfoItemCapability;
 	private final InfoItemCapability _editPageInfoItemCapability;
-	private final TemplateInfoItemCapability _templatePageInfoItemCapability;
+	private final InfoItemCapability _templatePageInfoItemCapability;
 
 }

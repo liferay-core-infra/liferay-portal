@@ -559,8 +559,10 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	@Reference
 	private TemplateInfoItemFieldSetProvider _templateInfoItemFieldSetProvider;
 
-	@Reference
-	private TemplateInfoItemCapability _templatePageInfoItemCapability;
+	@Reference(
+		target = "(info.item.capabilty.key=" + TemplateInfoItemCapability.KEY + ")"
+	)
+	private InfoItemCapability _templatePageInfoItemCapability;
 
 	@Reference
 	private UploadHandler _uploadHandler;

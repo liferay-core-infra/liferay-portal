@@ -92,10 +92,12 @@ public class TemplateInfoItemCapabilitiesProviderTracker {
 	private TemplateEntryLocalService _templateEntryLocalService;
 
 	@Reference
-	private TemplateInfoItemCapability _templateInfoItemCapability;
-
-	@Reference
 	private TemplateNodeFactory _templateNodeFactory;
+
+	@Reference(
+		target = "(info.item.capabilty.key=" + TemplateInfoItemCapability.KEY + ")"
+	)
+	private InfoItemCapability _templatePageInfoItemCapability;
 
 	private class InfoItemCapabilitiesProviderServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
@@ -134,7 +136,9 @@ public class TemplateInfoItemCapabilitiesProviderTracker {
 			List<InfoItemCapability> infoItemCapabilities =
 				infoItemCapabilitiesProvider.getInfoItemCapabilities();
 
-			if (!infoItemCapabilities.contains(_templateInfoItemCapability)) {
+			if (!infoItemCapabilities.contains(
+					_templatePageInfoItemCapability)) {
+
 				return infoItemCapabilitiesProvider;
 			}
 

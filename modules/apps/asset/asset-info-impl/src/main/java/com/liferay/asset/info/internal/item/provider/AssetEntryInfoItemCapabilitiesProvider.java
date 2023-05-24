@@ -34,10 +34,12 @@ public class AssetEntryInfoItemCapabilitiesProvider
 
 	@Override
 	public List<InfoItemCapability> getInfoItemCapabilities() {
-		return ListUtil.fromArray(_templateInfoItemCapability);
+		return ListUtil.fromArray(_templatePageInfoItemCapability);
 	}
 
-	@Reference
-	private TemplateInfoItemCapability _templateInfoItemCapability;
+	@Reference(
+		target = "(info.item.capabilty.key=" + TemplateInfoItemCapability.KEY + ")"
+	)
+	private InfoItemCapability _templatePageInfoItemCapability;
 
 }

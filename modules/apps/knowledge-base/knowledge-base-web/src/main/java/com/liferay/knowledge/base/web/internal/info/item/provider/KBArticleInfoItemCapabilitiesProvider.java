@@ -44,7 +44,9 @@ public class KBArticleInfoItemCapabilitiesProvider
 	)
 	private InfoItemCapability _displayPageInfoItemCapability;
 
-	@Reference
-	private TemplateInfoItemCapability _templatePageInfoItemCapability;
+	@Reference(
+		target = "(info.item.capabilty.key=" + TemplateInfoItemCapability.KEY + ")"
+	)
+	private InfoItemCapability _templatePageInfoItemCapability;
 
 }

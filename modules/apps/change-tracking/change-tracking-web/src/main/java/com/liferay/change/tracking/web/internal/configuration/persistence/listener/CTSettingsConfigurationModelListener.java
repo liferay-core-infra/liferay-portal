@@ -22,6 +22,7 @@ import com.liferay.change.tracking.model.CTPreferencesTable;
 import com.liferay.change.tracking.service.CTCollectionLocalService;
 import com.liferay.change.tracking.service.CTPreferencesLocalService;
 import com.liferay.change.tracking.web.internal.scheduler.PublishScheduler;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListener;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
@@ -40,9 +41,6 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author David Truong
@@ -159,12 +157,19 @@ public class CTSettingsConfigurationModelListener
 					companyId, WorkflowConstants.STATUS_SCHEDULED,
 					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
+			PublishScheduler publishScheduler = _publishSchedulerSnapshot.get();
+
 			for (CTCollection ctCollection : ctCollections) {
-				_publishScheduler.unschedulePublish(
+				publishScheduler.unschedulePublish(
 					ctCollection.getCtCollectionId());
 			}
 		}
 	}
+
+	private static final Snapshot<PublishScheduler> _publishSchedulerSnapshot =
+		new Snapshot<>(
+			CTSettingsConfigurationModelListener.class, PublishScheduler.class,
+			"(default=true)");
 
 	@Reference
 	private CTCollectionLocalService _ctCollectionLocalService;
@@ -174,12 +179,5 @@ public class CTSettingsConfigurationModelListener
 
 	@Reference
 	private GroupLocalService _groupLocalService;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile PublishScheduler _publishScheduler;
 
 }

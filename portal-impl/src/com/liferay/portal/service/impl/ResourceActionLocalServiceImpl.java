@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchResourceActionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -296,6 +297,11 @@ public class ResourceActionLocalServiceImpl
 
 				try {
 					actionableDynamicQuery.performActions();
+
+					Session session =
+						_resourcePermissionPersistence.getCurrentSession();
+
+					session.flush();
 				}
 				catch (PortalException portalException) {
 					throw new SystemException(portalException);

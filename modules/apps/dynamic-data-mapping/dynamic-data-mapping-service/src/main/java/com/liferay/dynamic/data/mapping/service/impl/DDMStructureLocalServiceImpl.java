@@ -64,6 +64,7 @@ import com.liferay.dynamic.data.mapping.validator.DDMFormValidationException;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValidator;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
@@ -119,9 +120,6 @@ import java.util.regex.Pattern;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * Provides the local service for accessing, adding, deleting, and updating
@@ -1705,7 +1703,7 @@ public class DDMStructureLocalServiceImpl
 
 	private long[] _getAncestorSiteAndDepotGroupIds(long groupId) {
 		SiteConnectedGroupGroupProvider siteConnectedGroupGroupProvider =
-			_siteConnectedGroupGroupProvider;
+			_siteConnectedGroupGroupProviderSnapshot.get();
 
 		try {
 			if (siteConnectedGroupGroupProvider == null) {
@@ -2225,6 +2223,10 @@ public class DDMStructureLocalServiceImpl
 	private static final Pattern _callFunctionPattern = Pattern.compile(
 		"call\\(\\s*\'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-" +
 			"[0-9a-f]{12})\'\\s*,\\s*\'(.*)\'\\s*,\\s*\'(.*)\'\\s*\\)");
+	private static final Snapshot<SiteConnectedGroupGroupProvider>
+		_siteConnectedGroupGroupProviderSnapshot = new Snapshot<>(
+			DDMStructureLocalServiceImpl.class,
+			SiteConnectedGroupGroupProvider.class, null, true);
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
@@ -2300,14 +2302,6 @@ public class DDMStructureLocalServiceImpl
 
 	@Reference
 	private ResourceLocalService _resourceLocalService;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile SiteConnectedGroupGroupProvider
-		_siteConnectedGroupGroupProvider;
 
 	@Reference
 	private UserLocalService _userLocalService;

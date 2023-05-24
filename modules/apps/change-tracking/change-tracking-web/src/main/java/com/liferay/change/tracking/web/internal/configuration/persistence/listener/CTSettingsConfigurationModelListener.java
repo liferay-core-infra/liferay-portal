@@ -152,14 +152,13 @@ public class CTSettingsConfigurationModelListener
 		throws PortalException {
 
 		if (PropsValues.SCHEDULER_ENABLED) {
-			List<CTCollection> ctCollections =
-				_ctCollectionLocalService.getCTCollections(
-					companyId, WorkflowConstants.STATUS_SCHEDULED,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
 			PublishScheduler publishScheduler = _publishSchedulerSnapshot.get();
 
-			for (CTCollection ctCollection : ctCollections) {
+			for (CTCollection ctCollection :
+					_ctCollectionLocalService.getCTCollections(
+						companyId, WorkflowConstants.STATUS_SCHEDULED,
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
 				publishScheduler.unschedulePublish(
 					ctCollection.getCtCollectionId());
 			}

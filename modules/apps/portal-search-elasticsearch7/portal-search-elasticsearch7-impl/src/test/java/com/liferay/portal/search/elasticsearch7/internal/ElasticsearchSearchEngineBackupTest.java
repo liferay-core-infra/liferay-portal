@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal;
 
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
@@ -38,6 +39,12 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+
 /**
  * @author André de Oliveira
  */
@@ -49,6 +56,14 @@ public class ElasticsearchSearchEngineBackupTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Mockito.when(
+			FrameworkUtil.getBundle(Mockito.any())
+		).thenReturn(
+			bundleContext.getBundle()
+		);
+
 		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
 			ElasticsearchConnectionFixture.builder(
 			).clusterName(
@@ -69,6 +84,8 @@ public class ElasticsearchSearchEngineBackupTest {
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		_elasticsearchSearchEngineFixture.tearDown();
+
+		_frameworkUtilMockedStatic.close();
 	}
 
 	@Test
@@ -178,5 +195,7 @@ public class ElasticsearchSearchEngineBackupTest {
 		_elasticsearchConnectionFixture;
 	private static ElasticsearchSearchEngineFixture
 		_elasticsearchSearchEngineFixture;
+	private static final MockedStatic<FrameworkUtil>
+		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
 
 }

@@ -18,6 +18,7 @@ import com.liferay.oauth2.provider.model.OAuth2ScopeGrant;
 import com.liferay.oauth2.provider.scope.ScopeChecker;
 import com.liferay.oauth2.provider.scope.liferay.ScopeContext;
 import com.liferay.oauth2.provider.service.OAuth2ScopeGrantLocalService;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -26,10 +27,6 @@ import java.util.Collection;
 
 import org.osgi.framework.Bundle;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Carlos Sierra Andrés
@@ -163,6 +160,15 @@ public class ThreadLocalScopeContextScopeChecker
 		}
 	}
 
+	private static final OAuth2ScopeGrantLocalService
+		_oAuth2ScopeGrantLocalService =
+			ThreadLocalScopeContextScopeChecker.
+				_oAuth2ScopeGrantLocalServiceSnapshot.get();
+	private static final Snapshot<OAuth2ScopeGrantLocalService>
+		_oAuth2ScopeGrantLocalServiceSnapshot = new Snapshot<>(
+			ThreadLocalScopeContextScopeChecker.class,
+			OAuth2ScopeGrantLocalService.class, null, true);
+
 	private final ThreadLocal<String> _accessTokenThreadLocal =
 		ThreadLocal.withInitial(() -> StringPool.BLANK);
 	private final ThreadLocal<String> _applicationNameThreadLocal =
@@ -171,12 +177,5 @@ public class ThreadLocalScopeContextScopeChecker
 		ThreadLocal.withInitial(() -> StringPool.BLANK);
 	private final ThreadLocal<Long> _companyIdThreadLocal =
 		ThreadLocal.withInitial(() -> 0L);
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile OAuth2ScopeGrantLocalService _oAuth2ScopeGrantLocalService;
 
 }

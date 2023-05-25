@@ -44,10 +44,7 @@ public class ThreadLocalScopeContextScopeChecker
 		}
 
 		Collection<OAuth2ScopeGrant> oAuth2ScopeGrants = new ArrayList<>(
-			_oAuth2ScopeGrantLocalService.getOAuth2ScopeGrants(
-				_companyIdThreadLocal.get(), _applicationNameThreadLocal.get(),
-				_bundleSymbolicNameThreadLocal.get(),
-				_accessTokenThreadLocal.get()));
+			_getOAuth2ScopeGrants());
 
 		if (scopes.length > oAuth2ScopeGrants.size()) {
 			return false;
@@ -75,10 +72,7 @@ public class ThreadLocalScopeContextScopeChecker
 		}
 
 		Collection<OAuth2ScopeGrant> oAuth2ScopeGrants =
-			_oAuth2ScopeGrantLocalService.getOAuth2ScopeGrants(
-				_companyIdThreadLocal.get(), _applicationNameThreadLocal.get(),
-				_bundleSymbolicNameThreadLocal.get(),
-				_accessTokenThreadLocal.get());
+			_getOAuth2ScopeGrants();
 
 		for (String scope : scopes) {
 			if (Validator.isNull(scope)) {
@@ -104,10 +98,7 @@ public class ThreadLocalScopeContextScopeChecker
 		}
 
 		Collection<OAuth2ScopeGrant> oAuth2ScopeGrants =
-			_oAuth2ScopeGrantLocalService.getOAuth2ScopeGrants(
-				_companyIdThreadLocal.get(), _applicationNameThreadLocal.get(),
-				_bundleSymbolicNameThreadLocal.get(),
-				_accessTokenThreadLocal.get());
+			_getOAuth2ScopeGrants();
 
 		for (OAuth2ScopeGrant oAuth2ScopeGrant : oAuth2ScopeGrants) {
 			if (scope.equals(oAuth2ScopeGrant.getScope())) {
@@ -153,17 +144,23 @@ public class ThreadLocalScopeContextScopeChecker
 	}
 
 	private void _checkOAuth2ScopeGrantLocalService() {
-		if (_oAuth2ScopeGrantLocalService == null) {
+		if (_oAuth2ScopeGrantLocalServiceSnapshot.get() == null) {
 			throw new IllegalStateException(
 				"ScopeChecker dependency upon OAuth2ScopeGrantLocalService " +
 					"is not satisfied");
 		}
 	}
 
-	private static final OAuth2ScopeGrantLocalService
-		_oAuth2ScopeGrantLocalService =
-			ThreadLocalScopeContextScopeChecker.
-				_oAuth2ScopeGrantLocalServiceSnapshot.get();
+	private Collection<OAuth2ScopeGrant> _getOAuth2ScopeGrants() {
+		OAuth2ScopeGrantLocalService oAuth2ScopeGrantLocalService =
+			_oAuth2ScopeGrantLocalServiceSnapshot.get();
+
+		return oAuth2ScopeGrantLocalService.getOAuth2ScopeGrants(
+			_companyIdThreadLocal.get(), _applicationNameThreadLocal.get(),
+			_bundleSymbolicNameThreadLocal.get(),
+			_accessTokenThreadLocal.get());
+	}
+
 	private static final Snapshot<OAuth2ScopeGrantLocalService>
 		_oAuth2ScopeGrantLocalServiceSnapshot = new Snapshot<>(
 			ThreadLocalScopeContextScopeChecker.class,

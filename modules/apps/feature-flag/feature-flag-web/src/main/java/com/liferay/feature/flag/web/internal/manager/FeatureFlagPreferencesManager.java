@@ -22,6 +22,13 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.PortalPreferencesWrapper;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -30,6 +37,22 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = FeatureFlagPreferencesManager.class)
 public class FeatureFlagPreferencesManager {
+
+	public void addSubscriber(
+		long companyId, BiConsumer<String, Boolean> biConsumer) {
+
+		_subscribersMap.compute(
+			companyId,
+			(key, value) -> {
+				if (value == null) {
+					value = new ArrayList<>();
+				}
+
+				value.add(biConsumer);
+
+				return value;
+			});
+	}
 
 	public Boolean isEnabled(long companyId, String key) {
 		if (Validator.isNull(
@@ -51,6 +74,13 @@ public class FeatureFlagPreferencesManager {
 	}
 
 	public void setEnabled(long companyId, String key, boolean enabled) {
+		List<BiConsumer<String, Boolean>> biConsumers =
+			_subscribersMap.getOrDefault(companyId, Collections.emptyList());
+
+		for (BiConsumer<String, Boolean> biConsumer : biConsumers) {
+			biConsumer.accept(key, enabled);
+		}
+
 		PortalPreferences portalPreferences = _getPortalPreferences(companyId);
 
 		portalPreferences.setValue(_NAMESPACE, key, String.valueOf(enabled));
@@ -72,5 +102,8 @@ public class FeatureFlagPreferencesManager {
 
 	@Reference
 	private PortalPreferencesLocalService _portalPreferencesLocalService;
+
+	private final Map<Long, List<BiConsumer<String, Boolean>>> _subscribersMap =
+		new ConcurrentHashMap<>();
 
 }

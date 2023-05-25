@@ -123,8 +123,13 @@ public class CompanyFeatureFlagsFactory {
 				}
 			}
 
-			return new CompanyFeatureFlags(
+			CompanyFeatureFlags companyFeatureFlags = new CompanyFeatureFlags(
 				Collections.unmodifiableMap(featureFlagsMap));
+
+			_featureFlagPreferencesManager.addSubscriber(
+				companyId, (key, enabled) -> companyFeatureFlags.clearJSON());
+
+			return companyFeatureFlags;
 		}
 	}
 

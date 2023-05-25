@@ -48,6 +48,10 @@ public class CompanyFeatureFlags {
 		_featureFlagsMap = featureFlagsMap;
 	}
 
+	public void clearJSON() {
+		_json = null;
+	}
+
 	public List<FeatureFlag> getFeatureFlags(Predicate<FeatureFlag> predicate) {
 		List<FeatureFlag> featureFlags = new ArrayList<>();
 
@@ -71,13 +75,17 @@ public class CompanyFeatureFlags {
 			return PropsValues.FEATURE_FLAGS_JSON;
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		if (_json == null) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		for (FeatureFlag featureFlag : _featureFlagsMap.values()) {
-			jsonObject.put(featureFlag.getKey(), featureFlag.isEnabled());
+			for (FeatureFlag featureFlag : _featureFlagsMap.values()) {
+				jsonObject.put(featureFlag.getKey(), featureFlag.isEnabled());
+			}
+
+			_json = jsonObject.toString();
 		}
 
-		return jsonObject.toString();
+		return _json;
 	}
 
 	public boolean isEnabled(String key) {
@@ -92,5 +100,6 @@ public class CompanyFeatureFlags {
 	}
 
 	private final Map<String, FeatureFlag> _featureFlagsMap;
+	private String _json;
 
 }

@@ -17,6 +17,7 @@ package com.liferay.oauth2.provider.internal.configuration;
 import com.liferay.oauth2.provider.model.OAuth2Application;
 import com.liferay.oauth2.provider.scope.spi.scope.finder.ScopeFinder;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
@@ -36,7 +37,6 @@ import java.util.Map;
 import org.osgi.service.component.ComponentConstants;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -154,14 +154,18 @@ public abstract class BaseConfigurationFactory {
 	@Reference
 	protected OAuth2ApplicationLocalService oAuth2ApplicationLocalService;
 
-	@Reference(cardinality = ReferenceCardinality.OPTIONAL)
-	protected PortalK8sConfigMapModifier portalK8sConfigMapModifier;
+	protected PortalK8sConfigMapModifier portalK8sConfigMapModifier =
+		_portalK8sConfigMapModifierSnapshot.get();
 
 	@Reference(policyOption = ReferencePolicyOption.GREEDY)
 	protected Collection<ScopeFinder> scopeFinders;
 
 	@Reference
 	protected UserLocalService userLocalService;
+
+	private static final Snapshot<PortalK8sConfigMapModifier>
+		_portalK8sConfigMapModifierSnapshot = new Snapshot<>(
+			BaseConfigurationFactory.class, PortalK8sConfigMapModifier.class);
 
 	private volatile String _configMapName;
 	private volatile Map<String, String> _extensionProperties;

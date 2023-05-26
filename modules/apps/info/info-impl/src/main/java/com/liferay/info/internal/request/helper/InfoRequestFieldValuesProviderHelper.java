@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.FileItem;
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.upload.UploadPortal;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,7 +85,7 @@ public class InfoRequestFieldValuesProviderHelper {
 		Map<String, InfoFieldValue<Object>> infoFieldValues = new HashMap<>();
 
 		UploadServletRequest uploadServletRequest =
-			PortalUtil.getUploadServletRequest(httpServletRequest);
+			_uploadPortal.getUploadServletRequest(httpServletRequest);
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)uploadServletRequest.getAttribute(
@@ -359,6 +361,11 @@ public class InfoRequestFieldValuesProviderHelper {
 	private static final Log _log = LogFactoryUtil.getLog(
 		InfoRequestFieldValuesProviderHelper.class);
 
+	private static final Snapshot<UploadPortal> _uploadPortalSnapshot =
+		new Snapshot<>(
+			InfoRequestFieldValuesProviderHelper.class, UploadPortal.class);
+
 	private final InfoItemServiceRegistry _infoItemServiceRegistry;
+	private final UploadPortal _uploadPortal = _uploadPortalSnapshot.get();
 
 }

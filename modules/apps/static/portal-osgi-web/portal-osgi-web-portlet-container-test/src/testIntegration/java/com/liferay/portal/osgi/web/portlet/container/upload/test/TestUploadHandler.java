@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -26,8 +27,8 @@ import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.upload.UniqueFileNameProvider;
 
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class TestUploadHandler {
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(portletRequest);
+			_uploadPortal.getUploadPortletRequest(portletRequest);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -109,7 +110,7 @@ public class TestUploadHandler {
 		throws PortalException {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(portletRequest);
+			_uploadPortal.getUploadPortletRequest(portletRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -231,7 +232,11 @@ public class TestUploadHandler {
 		return true;
 	}
 
+	private static final Snapshot<UploadPortal> _uploadPortalSnapshot =
+		new Snapshot<>(TestUploadHandler.class, UploadPortal.class);
+
 	private final TestUploadPortlet _testUploadPortlet;
 	private final UniqueFileNameProvider _uniqueFileNameProvider;
+	private final UploadPortal _uploadPortal = _uploadPortalSnapshot.get();
 
 }

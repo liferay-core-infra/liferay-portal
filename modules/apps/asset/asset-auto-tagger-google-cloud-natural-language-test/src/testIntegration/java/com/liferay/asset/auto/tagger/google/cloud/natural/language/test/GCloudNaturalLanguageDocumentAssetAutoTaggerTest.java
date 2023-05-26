@@ -186,7 +186,7 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 					"GCloudNaturalLanguageAssetAutoTaggerCompanyConfiguration";
 
 	@Inject(
-		filter = "component.name=com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.GCloudNaturalLanguageDocumentAssetAutoTaggerImpl",
+		filter = "component.name=com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.GCloudNaturalLanguageDocumentAssetAutoTagger",
 		type = Inject.NoType.class
 	)
 	private Object _gCloudNaturalLanguageDocumentAssetAutoTagger;

@@ -33,6 +33,7 @@ import com.liferay.portal.search.elasticsearch7.internal.configuration.Elasticse
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionNotInitializedException;
 import com.liferay.portal.search.elasticsearch7.internal.helper.SearchLogHelperUtil;
+import com.liferay.portal.search.elasticsearch7.internal.index.util.IndexFactoryCompanyIdRegistryUtil;
 import com.liferay.portal.search.elasticsearch7.internal.settings.SettingsBuilder;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
@@ -47,8 +48,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.elasticsearch.action.ActionResponse;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
@@ -186,7 +185,7 @@ public class CompanyIndexFactory
 
 	@Override
 	public synchronized void registerCompanyId(long companyId) {
-		_companyIds.add(companyId);
+		IndexFactoryCompanyIdRegistryUtil.registerCompanyId(companyId);
 	}
 
 	@Override
@@ -251,7 +250,7 @@ public class CompanyIndexFactory
 
 	@Override
 	public synchronized void unregisterCompanyId(long companyId) {
-		_companyIds.remove(companyId);
+		IndexFactoryCompanyIdRegistryUtil.unregisterCompanyId(companyId);
 	}
 
 	@Activate
@@ -390,7 +389,9 @@ public class CompanyIndexFactory
 	}
 
 	private synchronized void _createCompanyIndexes() {
-		for (Long companyId : _companyIds) {
+		for (Long companyId :
+				IndexFactoryCompanyIdRegistryUtil.getCompanyIds()) {
+
 			try {
 				RestHighLevelClient restHighLevelClient =
 					_elasticsearchConnectionManager.getRestHighLevelClient();
@@ -572,7 +573,9 @@ public class CompanyIndexFactory
 			new LiferayDocumentTypeFactory(
 				restHighLevelClient.indices(), _jsonFactory);
 
-		for (Long companyId : _companyIds) {
+		for (Long companyId :
+				IndexFactoryCompanyIdRegistryUtil.getCompanyIds()) {
+
 			indexSettingsContributor.contribute(
 				getIndexName(companyId), liferayDocumentTypeFactory);
 		}
@@ -626,7 +629,9 @@ public class CompanyIndexFactory
 		int maxResultWindow =
 			_elasticsearchConfigurationWrapper.indexMaxResultWindow();
 
-		for (Long companyId : _companyIds) {
+		for (Long companyId :
+				IndexFactoryCompanyIdRegistryUtil.getCompanyIds()) {
+
 			String indexName = _indexNameBuilder.getIndexName(companyId);
 
 			UpdateIndexSettingsIndexRequest updateIndexSettingsIndexRequest =
@@ -648,8 +653,6 @@ public class CompanyIndexFactory
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyIndexFactory.class);
-
-	private final Set<Long> _companyIds = new HashSet<>();
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

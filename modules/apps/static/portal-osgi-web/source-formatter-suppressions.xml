@@ -2,6 +2,7 @@
 
 <suppressions>
 	<checkstyle>
+		<suppress checks="AssignAsUsedCheck" files="portal-osgi-web-http-servlet/src/main/java/com/liferay/portal/osgi/web/http/servlet/internal/context/ContextController\.java" />
 		<suppress checks="JavadocCheck" files="portal-osgi-web-http-servlet/src/main/java/.*\.java" />
 		<suppress checks="MethodNamingCheck" files="portal-osgi-web-http-servlet/src/main/java/com/liferay/portal/osgi/web/http/servlet/internal/servlet/ServletContextAdaptor\.java" />
 		<suppress checks="MissingDeprecatedCheck" files="portal-osgi-web-http-servlet/src/main/java/.*\.java" />

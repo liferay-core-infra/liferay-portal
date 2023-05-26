@@ -39,7 +39,10 @@ import com.liferay.portal.search.elasticsearch7.internal.sort.ElasticsearchSortF
 import com.liferay.portal.search.elasticsearch7.internal.sort.ElasticsearchSortFieldTranslatorFixture;
 import com.liferay.portal.search.elasticsearch7.internal.stats.DefaultStatsTranslator;
 import com.liferay.portal.search.elasticsearch7.internal.stats.StatsTranslator;
-import com.liferay.portal.search.elasticsearch7.internal.suggest.ElasticsearchSuggesterTranslatorFixture;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.CompletionSuggesterTranslatorImpl;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.ElasticsearchSuggesterTranslator;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.PhraseSuggesterTranslatorImpl;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.TermSuggesterTranslatorImpl;
 import com.liferay.portal.search.engine.adapter.search.SearchRequestExecutor;
 import com.liferay.portal.search.filter.ComplexQueryBuilderFactory;
 import com.liferay.portal.search.internal.aggregation.AggregationResultsImpl;
@@ -495,17 +498,25 @@ public class SearchRequestExecutorFixture {
 		SuggestSearchRequestExecutor suggestSearchRequestExecutor =
 			new SuggestSearchRequestExecutorImpl();
 
-		ElasticsearchSuggesterTranslatorFixture
-			elasticsearchSuggesterTranslatorFixture =
-				new ElasticsearchSuggesterTranslatorFixture();
+		ElasticsearchSuggesterTranslator elasticsearchSuggesterTranslator =
+			new ElasticsearchSuggesterTranslator();
+
+		ReflectionTestUtil.setFieldValue(
+			elasticsearchSuggesterTranslator, "_completionSuggesterTranslator",
+			new CompletionSuggesterTranslatorImpl());
+		ReflectionTestUtil.setFieldValue(
+			elasticsearchSuggesterTranslator, "_phraseSuggesterTranslator",
+			new PhraseSuggesterTranslatorImpl());
+		ReflectionTestUtil.setFieldValue(
+			elasticsearchSuggesterTranslator, "_termSuggesterTranslator",
+			new TermSuggesterTranslatorImpl());
 
 		ReflectionTestUtil.setFieldValue(
 			suggestSearchRequestExecutor, "_elasticsearchClientResolver",
 			elasticsearchClientResolver);
 		ReflectionTestUtil.setFieldValue(
 			suggestSearchRequestExecutor, "_suggesterTranslator",
-			elasticsearchSuggesterTranslatorFixture.
-				getElasticsearchSuggesterTranslator());
+			elasticsearchSuggesterTranslator);
 
 		return suggestSearchRequestExecutor;
 	}

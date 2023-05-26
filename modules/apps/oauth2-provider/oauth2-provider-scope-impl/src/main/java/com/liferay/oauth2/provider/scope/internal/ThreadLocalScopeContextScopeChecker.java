@@ -71,15 +71,12 @@ public class ThreadLocalScopeContextScopeChecker
 			throw new IllegalArgumentException("Scopes are null");
 		}
 
-		Collection<OAuth2ScopeGrant> oAuth2ScopeGrants =
-			_getOAuth2ScopeGrants();
-
 		for (String scope : scopes) {
 			if (Validator.isNull(scope)) {
 				throw new IllegalArgumentException("Scope is null");
 			}
 
-			for (OAuth2ScopeGrant oAuth2ScopeGrant : oAuth2ScopeGrants) {
+			for (OAuth2ScopeGrant oAuth2ScopeGrant : _getOAuth2ScopeGrants()) {
 				if (scope.equals(oAuth2ScopeGrant.getScope())) {
 					return true;
 				}
@@ -97,10 +94,7 @@ public class ThreadLocalScopeContextScopeChecker
 			throw new IllegalArgumentException("Scope is null");
 		}
 
-		Collection<OAuth2ScopeGrant> oAuth2ScopeGrants =
-			_getOAuth2ScopeGrants();
-
-		for (OAuth2ScopeGrant oAuth2ScopeGrant : oAuth2ScopeGrants) {
+		for (OAuth2ScopeGrant oAuth2ScopeGrant : _getOAuth2ScopeGrants()) {
 			if (scope.equals(oAuth2ScopeGrant.getScope())) {
 				return true;
 			}

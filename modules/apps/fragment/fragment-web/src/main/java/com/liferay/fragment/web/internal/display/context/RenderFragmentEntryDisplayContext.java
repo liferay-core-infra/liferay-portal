@@ -15,11 +15,12 @@ import com.liferay.fragment.service.FragmentCollectionLocalServiceUtil;
 import com.liferay.fragment.service.FragmentEntryLinkLocalServiceUtil;
 import com.liferay.fragment.service.FragmentEntryLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequest;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.upload.UploadPortal;
 
 import java.io.File;
 
@@ -129,10 +130,11 @@ public class RenderFragmentEntryDisplayContext {
 
 	private UploadRequest _getUploadRequest() {
 		if (_liferayPortletRequest != null) {
-			return PortalUtil.getUploadPortletRequest(_liferayPortletRequest);
+			return _uploadPortal.getUploadPortletRequest(
+				_liferayPortletRequest);
 		}
 
-		return PortalUtil.getUploadServletRequest(_httpServletRequest);
+		return _uploadPortal.getUploadServletRequest(_httpServletRequest);
 	}
 
 	private String _readParameter(
@@ -150,9 +152,14 @@ public class RenderFragmentEntryDisplayContext {
 			fragmentEntry, _httpServletRequest, parameterName);
 	}
 
+	private static final Snapshot<UploadPortal> _uploadPortalSnapshot =
+		new Snapshot<>(
+			RenderFragmentEntryDisplayContext.class, UploadPortal.class);
+
 	private final FragmentCollectionContributorRegistry
 		_fragmentCollectionContributorRegistry;
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletRequest _liferayPortletRequest;
+	private final UploadPortal _uploadPortal = _uploadPortalSnapshot.get();
 
 }

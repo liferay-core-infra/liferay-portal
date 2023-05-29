@@ -34,8 +34,13 @@ public class CompanyWebIdLogContext implements LogContext {
 			return Collections.emptyMap();
 		}
 
-		return Collections.singletonMap(
-			"webId", PortalInstances.getWebId(companyId));
+		String webId = PortalInstances.getWebId(companyId);
+
+		if (webId == null) {
+			return Collections.emptyMap();
+		}
+
+		return Collections.singletonMap("webId", webId);
 	}
 
 	@Override

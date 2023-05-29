@@ -24,6 +24,7 @@ import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.d
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.IndexRequestExecutorFixture;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.search.SearchRequestExecutorFixture;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.snapshot.SnapshotRequestExecutorFixture;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.PhraseSuggesterTranslator;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -38,9 +39,13 @@ public class ElasticsearchEngineAdapterFixture {
 	}
 
 	public void setUp() {
+		setUp(null);
+	}
+
+	public void setUp(PhraseSuggesterTranslator phraseSuggesterTranslator) {
 		_searchEngineAdapter = createSearchEngineAdapter(
 			_elasticsearchClientResolver, _getElasticsearchDocumentFactory(),
-			_facetProcessor);
+			_facetProcessor, phraseSuggesterTranslator);
 	}
 
 	public void tearDown() {
@@ -50,7 +55,8 @@ public class ElasticsearchEngineAdapterFixture {
 	protected static SearchEngineAdapter createSearchEngineAdapter(
 		ElasticsearchClientResolver elasticsearchClientResolver,
 		ElasticsearchDocumentFactory elasticsearchDocumentFactory,
-		FacetProcessor<?> facetProcessor) {
+		FacetProcessor<?> facetProcessor,
+		PhraseSuggesterTranslator phraseSuggesterTranslator) {
 
 		ClusterRequestExecutorFixture clusterRequestExecutorFixture =
 			new ClusterRequestExecutorFixture() {
@@ -92,7 +98,7 @@ public class ElasticsearchEngineAdapterFixture {
 		clusterRequestExecutorFixture.setUp();
 		documentRequestExecutorFixture.setUp();
 		indexRequestExecutorFixture.setUp();
-		_searchRequestExecutorFixture.setUp();
+		_searchRequestExecutorFixture.setUp(phraseSuggesterTranslator);
 		snapshotRequestExecutorFixture.setUp();
 
 		SearchEngineAdapter searchEngineAdapter =

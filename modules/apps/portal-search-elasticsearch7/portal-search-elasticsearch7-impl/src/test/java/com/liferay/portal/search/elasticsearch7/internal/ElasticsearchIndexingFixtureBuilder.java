@@ -17,6 +17,7 @@ package com.liferay.portal.search.elasticsearch7.internal;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.facet.FacetProcessor;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.PhraseSuggesterTranslator;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 
@@ -26,6 +27,12 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 public class ElasticsearchIndexingFixtureBuilder {
 
 	public ElasticsearchIndexingFixture build() {
+		return build(null);
+	}
+
+	public ElasticsearchIndexingFixture build(
+		PhraseSuggesterTranslator phraseSuggesterTranslator) {
+
 		ElasticsearchIndexingFixture elasticsearchIndexingFixture =
 			new ElasticsearchIndexingFixture();
 
@@ -34,6 +41,9 @@ public class ElasticsearchIndexingFixtureBuilder {
 		elasticsearchIndexingFixture.setFacetProcessor(_facetProcessor);
 		elasticsearchIndexingFixture.setLiferayMappingsAddedToIndex(
 			_liferayMappingsAddedToIndex);
+
+		elasticsearchIndexingFixture.setPhraseSuggesterTranslator(
+			phraseSuggesterTranslator);
 
 		return elasticsearchIndexingFixture;
 	}

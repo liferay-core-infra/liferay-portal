@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.elasticsearch7.internal;
 
+import com.liferay.portal.search.elasticsearch7.internal.suggest.PhraseSuggesterTranslator;
+
 /**
  * @author André de Oliveira
  */
@@ -30,14 +32,23 @@ public class LiferayElasticsearchIndexingFixtureFactory {
 		return _elasticsearchIndexingFixture;
 	}
 
-	private static ElasticsearchIndexingFixture _buildInstance() {
+	public static ElasticsearchIndexingFixture getInstance(
+		PhraseSuggesterTranslator phraseSuggesterTranslator) {
+
+		return _buildInstance(phraseSuggesterTranslator);
+	}
+
+	private static ElasticsearchIndexingFixture _buildInstance(
+		PhraseSuggesterTranslator phraseSuggesterTranslator) {
+
 		ElasticsearchIndexingFixtureBuilder
 			elasticsearchIndexingFixtureBuilder = builder();
 
-		return elasticsearchIndexingFixtureBuilder.build();
+		return elasticsearchIndexingFixtureBuilder.build(
+			phraseSuggesterTranslator);
 	}
 
 	private static final ElasticsearchIndexingFixture
-		_elasticsearchIndexingFixture = _buildInstance();
+		_elasticsearchIndexingFixture = _buildInstance(null);
 
 }

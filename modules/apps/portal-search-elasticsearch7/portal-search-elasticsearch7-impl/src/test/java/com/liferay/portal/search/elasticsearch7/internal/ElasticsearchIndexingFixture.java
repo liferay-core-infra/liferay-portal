@@ -32,6 +32,7 @@ import com.liferay.portal.search.elasticsearch7.internal.connection.IndexName;
 import com.liferay.portal.search.elasticsearch7.internal.connection.helper.IndexCreationHelper;
 import com.liferay.portal.search.elasticsearch7.internal.facet.FacetProcessor;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.ElasticsearchEngineAdapterFixture;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.PhraseSuggesterTranslator;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.internal.legacy.searcher.SearchRequestBuilderFactoryImpl;
@@ -90,6 +91,12 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 		_indexCreationHelper = indexCreationHelper;
 	}
 
+	public void setPhraseSuggesterTranslator(
+		PhraseSuggesterTranslator phraseSuggesterTranslator) {
+
+		_phraseSuggesterTranslator = phraseSuggesterTranslator;
+	}
+
 	@Override
 	public void setUp() throws Exception {
 		_elasticsearchFixture.setUp();
@@ -98,7 +105,7 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 			_createElasticsearchEngineAdapterFixture(
 				_elasticsearchFixture, _facetProcessor);
 
-		elasticsearchEngineAdapterFixture.setUp();
+		elasticsearchEngineAdapterFixture.setUp(_phraseSuggesterTranslator);
 
 		SearchEngineAdapter searchEngineAdapter =
 			elasticsearchEngineAdapterFixture.getSearchEngineAdapter();
@@ -310,6 +317,7 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 	private IndexSearcher _indexSearcher;
 	private IndexWriter _indexWriter;
 	private boolean _liferayMappingsAddedToIndex;
+	private PhraseSuggesterTranslator _phraseSuggesterTranslator;
 	private SearchEngineAdapter _searchEngineAdapter;
 
 }

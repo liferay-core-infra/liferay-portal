@@ -377,24 +377,43 @@ public class PortletTracker
 				(String)serviceReference.getProperty(
 					"javax.portlet.default-namespace"));
 
+			int currentSpecMajorVersion = portletApp.getSpecMajorVersion();
+			int currentSpecMinorVersion = portletApp.getSpecMinorVersion();
+
 			String jxPortletVersion = (String)serviceReference.getProperty(
 				"javax.portlet.version");
 
 			if (jxPortletVersion == null) {
-				portletApp.setSpecMajorVersion(2);
-				portletApp.setSpecMinorVersion(0);
+				int compare = _compareSpecVersions(
+					currentSpecMajorVersion, currentSpecMinorVersion, 2, 0);
+
+				if (compare < 0) {
+					portletApp.setSpecMajorVersion(2);
+					portletApp.setSpecMinorVersion(0);
+				}
 			}
 			else {
 				String[] jxPortletVersionParts = StringUtil.split(
 					jxPortletVersion, CharPool.PERIOD);
 
 				if (jxPortletVersionParts.length > 0) {
-					portletApp.setSpecMajorVersion(
-						GetterUtil.getInteger(jxPortletVersionParts[0], 2));
+					int specMajorVersion = GetterUtil.getInteger(
+						jxPortletVersionParts[0], 2);
+
+					int specMinorVersion = 0;
 
 					if (jxPortletVersionParts.length > 1) {
-						portletApp.setSpecMinorVersion(
-							GetterUtil.getInteger(jxPortletVersionParts[1]));
+						specMinorVersion = GetterUtil.getInteger(
+							jxPortletVersionParts[1]);
+					}
+
+					int compare = _compareSpecVersions(
+						currentSpecMajorVersion, currentSpecMinorVersion,
+						specMajorVersion, specMinorVersion);
+
+					if (compare < 0) {
+						portletApp.setSpecMajorVersion(specMajorVersion);
+						portletApp.setSpecMinorVersion(specMinorVersion);
 					}
 				}
 			}
@@ -1273,6 +1292,26 @@ public class PortletTracker
 		}
 
 		portletModel.setWindowStates(windowStates);
+	}
+
+	private int _compareSpecVersions(
+		int specMajorVersion1, int specMinorVersion1, int specMajorVersion2,
+		int specMinorVersion2) {
+
+		if (specMajorVersion1 < specMajorVersion2) {
+			return -1;
+		}
+		else if (specMajorVersion1 > specMajorVersion2) {
+			return +1;
+		}
+		else if (specMinorVersion1 < specMinorVersion2) {
+			return -1;
+		}
+		else if (specMinorVersion1 > specMinorVersion2) {
+			return +1;
+		}
+
+		return 0;
 	}
 
 	private PortletApp _createBundlePortletApp(

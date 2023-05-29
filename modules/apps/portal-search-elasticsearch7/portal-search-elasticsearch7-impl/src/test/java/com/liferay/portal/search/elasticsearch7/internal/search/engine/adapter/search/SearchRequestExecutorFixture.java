@@ -41,7 +41,7 @@ import com.liferay.portal.search.elasticsearch7.internal.stats.DefaultStatsTrans
 import com.liferay.portal.search.elasticsearch7.internal.stats.StatsTranslator;
 import com.liferay.portal.search.elasticsearch7.internal.suggest.CompletionSuggesterTranslatorImpl;
 import com.liferay.portal.search.elasticsearch7.internal.suggest.ElasticsearchSuggesterTranslator;
-import com.liferay.portal.search.elasticsearch7.internal.suggest.PhraseSuggesterTranslatorImpl;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.PhraseSuggesterTranslator;
 import com.liferay.portal.search.elasticsearch7.internal.suggest.TermSuggesterTranslatorImpl;
 import com.liferay.portal.search.engine.adapter.search.SearchRequestExecutor;
 import com.liferay.portal.search.filter.ComplexQueryBuilderFactory;
@@ -81,7 +81,7 @@ public class SearchRequestExecutorFixture {
 		return _searchRequestExecutor;
 	}
 
-	public void setUp() {
+	public void setUp(PhraseSuggesterTranslator phraseSuggesterTranslator) {
 		ElasticsearchQueryTranslatorFixture
 			elasticsearchQueryTranslatorFixture =
 				new ElasticsearchQueryTranslatorFixture();
@@ -107,7 +107,7 @@ public class SearchRequestExecutorFixture {
 			elasticsearchSortFieldTranslatorFixture.
 				getElasticsearchSortFieldTranslator(),
 			_facetProcessor, new StatsRequestBuilderFactoryImpl(),
-			statsTranslator);
+			statsTranslator, phraseSuggesterTranslator);
 	}
 
 	public void tearDown() {
@@ -324,7 +324,8 @@ public class SearchRequestExecutorFixture {
 		ElasticsearchSortFieldTranslator elasticsearchSortFieldTranslator,
 		FacetProcessor<?> facetProcessor,
 		StatsRequestBuilderFactory statsRequestBuilderFactory,
-		StatsTranslator statsTranslator) {
+		StatsTranslator statsTranslator,
+		PhraseSuggesterTranslator phraseSuggesterTranslator) {
 
 		CommonSearchSourceBuilderAssembler commonSearchSourceBuilderAssembler =
 			createCommonSearchSourceBuilderAssembler(
@@ -364,7 +365,8 @@ public class SearchRequestExecutorFixture {
 				searchSearchResponseAssembler));
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_suggestSearchRequestExecutor",
-			_createSuggestSearchRequestExecutor(elasticsearchClientResolver));
+			_createSuggestSearchRequestExecutor(
+				elasticsearchClientResolver, phraseSuggesterTranslator));
 
 		return searchRequestExecutor;
 	}
@@ -493,7 +495,8 @@ public class SearchRequestExecutorFixture {
 	}
 
 	private SuggestSearchRequestExecutor _createSuggestSearchRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchClientResolver elasticsearchClientResolver,
+		PhraseSuggesterTranslator phraseSuggesterTranslator) {
 
 		SuggestSearchRequestExecutor suggestSearchRequestExecutor =
 			new SuggestSearchRequestExecutorImpl();
@@ -506,7 +509,7 @@ public class SearchRequestExecutorFixture {
 			new CompletionSuggesterTranslatorImpl());
 		ReflectionTestUtil.setFieldValue(
 			elasticsearchSuggesterTranslator, "_phraseSuggesterTranslator",
-			new PhraseSuggesterTranslatorImpl());
+			phraseSuggesterTranslator);
 		ReflectionTestUtil.setFieldValue(
 			elasticsearchSuggesterTranslator, "_termSuggesterTranslator",
 			new TermSuggesterTranslatorImpl());

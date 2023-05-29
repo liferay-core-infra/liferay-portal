@@ -16,6 +16,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
@@ -33,6 +34,7 @@ import com.liferay.portal.search.elasticsearch7.internal.connection.Elasticsearc
 import com.liferay.portal.search.elasticsearch7.internal.document.DefaultElasticsearchDocumentFactory;
 import com.liferay.portal.search.elasticsearch7.internal.document.ElasticsearchDocumentFactory;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.search.SearchRequestExecutorFixture;
+import com.liferay.portal.search.elasticsearch7.internal.suggest.PhraseSuggesterTranslatorImpl;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.search.OpenPointInTimeRequest;
 import com.liferay.portal.search.engine.adapter.search.OpenPointInTimeResponse;
@@ -74,6 +76,12 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+
 /**
  * @author Michael C. Han
  */
@@ -85,6 +93,14 @@ public class ElasticsearchSearchEngineAdapterSearchRequestTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Mockito.when(
+			FrameworkUtil.getBundle(Mockito.any())
+		).thenReturn(
+			bundleContext.getBundle()
+		);
+
 		_elasticsearchFixture = new ElasticsearchFixture(
 			ElasticsearchSearchEngineAdapterSearchRequestTest.class);
 
@@ -94,6 +110,8 @@ public class ElasticsearchSearchEngineAdapterSearchRequestTest {
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		_elasticsearchFixture.tearDown();
+
+		_frameworkUtilMockedStatic.close();
 	}
 
 	@Before
@@ -415,7 +433,8 @@ public class ElasticsearchSearchEngineAdapterSearchRequestTest {
 			}
 		};
 
-		_searchRequestExecutorFixture.setUp();
+		_searchRequestExecutorFixture.setUp(
+			new PhraseSuggesterTranslatorImpl());
 
 		return _searchRequestExecutorFixture.getSearchRequestExecutor();
 	}
@@ -543,6 +562,8 @@ public class ElasticsearchSearchEngineAdapterSearchRequestTest {
 	private static final String _MAPPING_NAME = "test_mapping";
 
 	private static ElasticsearchFixture _elasticsearchFixture;
+	private static final MockedStatic<FrameworkUtil>
+		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
 
 	private final DocumentFixture _documentFixture = new DocumentFixture();
 	private IndicesClient _indicesClient;

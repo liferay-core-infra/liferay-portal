@@ -80,7 +80,7 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 				}
 			};
 
-		_elasticsearchEngineAdapterFixture.setUp();
+		_elasticsearchEngineAdapterFixture.setUp(null);
 
 		_waitForElasticsearchToStart(_elasticsearchConnectionFixture);
 

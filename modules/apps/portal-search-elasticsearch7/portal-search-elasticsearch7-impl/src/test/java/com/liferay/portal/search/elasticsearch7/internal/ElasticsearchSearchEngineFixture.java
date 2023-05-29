@@ -209,7 +209,7 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 				}
 			};
 
-		_elasticsearchEngineAdapterFixture.setUp();
+		_elasticsearchEngineAdapterFixture.setUp(null);
 
 		return _elasticsearchEngineAdapterFixture.getSearchEngineAdapter();
 	}

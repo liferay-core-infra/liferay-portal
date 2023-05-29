@@ -38,10 +38,6 @@ public class ElasticsearchEngineAdapterFixture {
 		return _searchEngineAdapter;
 	}
 
-	public void setUp() {
-		setUp(null);
-	}
-
 	public void setUp(PhraseSuggesterTranslator phraseSuggesterTranslator) {
 		_searchEngineAdapter = createSearchEngineAdapter(
 			_elasticsearchClientResolver, _getElasticsearchDocumentFactory(),

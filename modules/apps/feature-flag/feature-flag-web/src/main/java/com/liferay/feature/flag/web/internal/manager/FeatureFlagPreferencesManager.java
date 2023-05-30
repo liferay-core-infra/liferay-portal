@@ -15,9 +15,15 @@
 package com.liferay.feature.flag.web.internal.manager;
 
 import com.liferay.feature.flag.web.internal.constants.FeatureFlagConstants;
+import com.liferay.portal.kernel.cluster.ClusterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.PortalPreferencesWrapper;
@@ -35,8 +41,12 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Drew Brokke
  */
-@Component(service = FeatureFlagPreferencesManager.class)
-public class FeatureFlagPreferencesManager {
+@Component(
+	service = {
+		FeatureFlagPreferencesManager.class, IdentifiableOSGiService.class
+	}
+)
+public class FeatureFlagPreferencesManager implements IdentifiableOSGiService {
 
 	public void addSubscriber(
 		long companyId, BiConsumer<String, Boolean> biConsumer) {
@@ -52,6 +62,11 @@ public class FeatureFlagPreferencesManager {
 
 				return value;
 			});
+	}
+
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return FeatureFlagPreferencesManager.class.getName();
 	}
 
 	public Boolean isEnabled(long companyId, String key) {
@@ -74,19 +89,28 @@ public class FeatureFlagPreferencesManager {
 	}
 
 	public void setEnabled(long companyId, String key, boolean enabled) {
-		List<BiConsumer<String, Boolean>> biConsumers =
-			_subscribersMap.getOrDefault(companyId, Collections.emptyList());
-
-		for (BiConsumer<String, Boolean> biConsumer : biConsumers) {
-			biConsumer.accept(key, enabled);
-		}
-
 		PortalPreferences portalPreferences = _getPortalPreferences(companyId);
 
 		portalPreferences.setValue(_NAMESPACE, key, String.valueOf(enabled));
 
 		_portalPreferencesLocalService.updatePreferences(
 			companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY, portalPreferences);
+
+		_notifySubscribers(companyId, key, enabled);
+
+		_notifyCluster(companyId, key, enabled);
+	}
+
+	private static void _onNotify(
+		String osgiServiceIdentifier, long companyId, String key,
+		boolean enabled) {
+
+		FeatureFlagPreferencesManager ploEntryModelListener =
+			(FeatureFlagPreferencesManager)
+				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
+					osgiServiceIdentifier);
+
+		ploEntryModelListener._notifySubscribers(companyId, key, enabled);
 	}
 
 	private PortalPreferences _getPortalPreferences(long companyId) {
@@ -98,7 +122,42 @@ public class FeatureFlagPreferencesManager {
 		return portalPreferencesWrapper.getPortalPreferencesImpl();
 	}
 
+	private void _notifyCluster(long companyId, String key, boolean enabled) {
+		if (!_clusterExecutor.isEnabled()) {
+			return;
+		}
+
+		MethodHandler methodHandler = new MethodHandler(
+			_onNotifyMethodKey, getOSGiServiceIdentifier(), companyId, key,
+			enabled);
+
+		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
+			methodHandler, true);
+
+		clusterRequest.setFireAndForget(true);
+
+		_clusterExecutor.execute(clusterRequest);
+	}
+
+	private void _notifySubscribers(
+		long companyId, String key, boolean enabled) {
+
+		List<BiConsumer<String, Boolean>> biConsumers =
+			_subscribersMap.getOrDefault(companyId, Collections.emptyList());
+
+		for (BiConsumer<String, Boolean> biConsumer : biConsumers) {
+			biConsumer.accept(key, enabled);
+		}
+	}
+
 	private static final String _NAMESPACE = FeatureFlagConstants.FEATURE_FLAG;
+
+	private static final MethodKey _onNotifyMethodKey = new MethodKey(
+		FeatureFlagPreferencesManager.class, "_onNotify", String.class,
+		Long.class, String.class, Boolean.class);
+
+	@Reference
+	private ClusterExecutor _clusterExecutor;
 
 	@Reference
 	private PortalPreferencesLocalService _portalPreferencesLocalService;

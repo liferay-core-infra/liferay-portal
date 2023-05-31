@@ -62,10 +62,9 @@ import org.osgi.service.component.annotations.Reference;
 		"servlet-filter-name=Monitoring Filter", "url-pattern=/c/*",
 		"url-pattern=/group/*", "url-pattern=/user/*", "url-pattern=/web/*"
 	},
-	service = {Filter.class, PortalMonitoringControl.class}
+	service = Filter.class
 )
-public class MonitoringFilter
-	extends BaseFilter implements PortalMonitoringControl {
+public class MonitoringFilter extends BaseFilter {
 
 	@Override
 	public boolean isFilterEnabled() {
@@ -73,7 +72,7 @@ public class MonitoringFilter
 			return false;
 		}
 
-		if (!_monitorPortalRequest &&
+		if (!_portalMonitoringControl.isMonitorPortalRequest() &&
 			!_portletMonitoringControl.isMonitorPortletActionRequest() &&
 			!_portletMonitoringControl.isMonitorPortletEventRequest() &&
 			!_portletMonitoringControl.isMonitorPortletRenderRequest() &&
@@ -84,16 +83,6 @@ public class MonitoringFilter
 		}
 
 		return true;
-	}
-
-	@Override
-	public boolean isMonitorPortalRequest() {
-		return _monitorPortalRequest;
-	}
-
-	@Override
-	public void setMonitorPortalRequest(boolean monitorPortalRequest) {
-		_monitorPortalRequest = monitorPortalRequest;
 	}
 
 	@Override
@@ -111,7 +100,7 @@ public class MonitoringFilter
 
 		_incrementProcessFilterCount();
 
-		if (_monitorPortalRequest) {
+		if (_portalMonitoringControl.isMonitorPortalRequest()) {
 			portalRequestDataSample =
 				(PortalRequestDataSample)
 					_dataSampleFactory.createPortalRequestDataSample(
@@ -238,10 +227,11 @@ public class MonitoringFilter
 	@Reference
 	private MessageBus _messageBus;
 
-	private boolean _monitorPortalRequest;
-
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortalMonitoringControl _portalMonitoringControl;
 
 	@Reference
 	private PortletMonitoringControl _portletMonitoringControl;

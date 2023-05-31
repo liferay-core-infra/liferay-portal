@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.test.util;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.index.IndexStatusManager;
 
 import java.util.concurrent.TimeUnit;
@@ -40,11 +41,17 @@ public class SearchFixture {
 	}
 
 	public void setUp() {
-		retry(() -> _indexStatusManager.requireIndexReadWrite(true));
+		retry(
+			() ->
+				_originalIndexReadOnlyValue =
+					ReflectionTestUtil.getAndSetFieldValue(
+						_indexStatusManager, "_indexReadOnly", false));
 	}
 
 	public void tearDown() {
-		_indexStatusManager.requireIndexReadWrite(false);
+		ReflectionTestUtil.setFieldValue(
+			_indexStatusManager, "_indexReadOnly",
+			_originalIndexReadOnlyValue);
 	}
 
 	protected void retry(Runnable runnable) {
@@ -58,5 +65,6 @@ public class SearchFixture {
 	}
 
 	private final IndexStatusManager _indexStatusManager;
+	private Boolean _originalIndexReadOnlyValue;
 
 }

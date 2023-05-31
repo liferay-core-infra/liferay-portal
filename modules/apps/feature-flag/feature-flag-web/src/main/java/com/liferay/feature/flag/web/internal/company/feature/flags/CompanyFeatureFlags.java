@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 /**
@@ -49,7 +50,7 @@ public class CompanyFeatureFlags {
 	}
 
 	public void clearJSON() {
-		_json = null;
+		_jsonAtomicReference.set(null);
 	}
 
 	public List<FeatureFlag> getFeatureFlags(Predicate<FeatureFlag> predicate) {
@@ -75,17 +76,17 @@ public class CompanyFeatureFlags {
 			return PropsValues.FEATURE_FLAGS_JSON;
 		}
 
-		if (_json == null) {
+		if (_jsonAtomicReference.get() == null) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			for (FeatureFlag featureFlag : _featureFlagsMap.values()) {
 				jsonObject.put(featureFlag.getKey(), featureFlag.isEnabled());
 			}
 
-			_json = jsonObject.toString();
+			_jsonAtomicReference.set(jsonObject.toString());
 		}
 
-		return _json;
+		return _jsonAtomicReference.get();
 	}
 
 	public boolean isEnabled(String key) {
@@ -100,6 +101,7 @@ public class CompanyFeatureFlags {
 	}
 
 	private final Map<String, FeatureFlag> _featureFlagsMap;
-	private String _json;
+	private final AtomicReference<String> _jsonAtomicReference =
+		new AtomicReference<>();
 
 }

@@ -39,17 +39,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Miguel Angelo Caldas Gallindo
  */
 @Component(
-	property = "search.engine.impl=Solr",
-	service = {LuceneQueryConverter.class, QueryTranslator.class}
+	property = "search.engine.impl=Solr", service = QueryTranslator.class
 )
 public class SolrQueryTranslator
-	implements LuceneQueryConverter, QueryTranslator<String>,
+	implements QueryTranslator<String>,
 			   QueryVisitor<org.apache.lucene.search.Query> {
-
-	@Override
-	public org.apache.lucene.search.Query convert(Query query) {
-		return query.accept(this);
-	}
 
 	@Override
 	public String translate(Query query, SearchContext searchContext) {

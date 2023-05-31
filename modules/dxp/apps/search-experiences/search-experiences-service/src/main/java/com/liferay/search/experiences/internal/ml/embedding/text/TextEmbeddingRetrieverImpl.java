@@ -44,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	enabled = false,
-	service = {EmbeddingProviderInformation.class, TextEmbeddingRetriever.class}
+	service = TextEmbeddingRetriever.class
 )
 public class TextEmbeddingRetrieverImpl implements TextEmbeddingRetriever {
 

@@ -23,14 +23,10 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.monitoring.DataSample;
 import com.liferay.portal.kernel.monitoring.DataSampleProcessor;
 import com.liferay.portal.kernel.monitoring.Level;
-import com.liferay.portal.kernel.monitoring.MonitoringControl;
 import com.liferay.portal.kernel.monitoring.MonitoringException;
 import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -44,33 +40,16 @@ import org.osgi.service.component.annotations.Deactivate;
 @Component(
 	enabled = false,
 	property = "destination.name=" + DestinationNames.MONITORING,
-	service = {MessageListener.class, MonitoringControl.class}
+	service = MessageListener.class
 )
-public class MonitoringMessageListener
-	extends BaseMessageListener implements MonitoringControl {
-
-	@Override
-	public Level getLevel(String namespace) {
-		Level level = _levels.get(namespace);
-
-		if (level == null) {
-			return Level.OFF;
-		}
-
-		return level;
-	}
-
-	@Override
-	public Set<String> getNamespaces() {
-		return _levels.keySet();
-	}
+public class MonitoringMessageListener extends BaseMessageListener {
 
 	public void processDataSample(DataSample dataSample)
 		throws MonitoringException {
 
 		String namespace = dataSample.getNamespace();
 
-		Level level = _levels.get(namespace);
+		Level level = LevelsRegisterUtil.getLevel(namespace);
 
 		if ((level != null) && level.equals(Level.OFF)) {
 			return;
@@ -87,23 +66,6 @@ public class MonitoringMessageListener
 				dataSampleProcessors) {
 
 			dataSampleProcessor.processDataSample(dataSample);
-		}
-	}
-
-	@Override
-	public void setLevel(String namespace, Level level) {
-		_levels.put(namespace, level);
-	}
-
-	public void setLevels(Map<String, String> levels) {
-		for (Map.Entry<String, String> entry : levels.entrySet()) {
-			String namespace = entry.getKey();
-
-			String levelName = entry.getValue();
-
-			Level level = Level.valueOf(levelName);
-
-			_levels.put(namespace, level);
 		}
 	}
 
@@ -133,7 +95,6 @@ public class MonitoringMessageListener
 		}
 	}
 
-	private final Map<String, Level> _levels = new ConcurrentHashMap<>();
 	private ServiceTrackerMap<String, List<DataSampleProcessor<DataSample>>>
 		_serviceTrackerMap;
 

@@ -17,7 +17,6 @@ package com.liferay.portal.messaging.internal;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
@@ -31,11 +30,9 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.messaging.internal.configuration.DestinationWorkerConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +40,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
-import org.osgi.service.cm.ConfigurationException;
-import org.osgi.service.cm.ManagedServiceFactory;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -61,28 +55,12 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * @author Michael C. Han
  * @author Brian Wing Shun Chan
  */
-@Component(
-	property = Constants.SERVICE_PID + "=com.liferay.portal.messaging.internal.configuration.DestinationWorkerConfiguration",
-	service = {ManagedServiceFactory.class, MessageBus.class}
-)
-public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
-
-	@Override
-	public void deleted(String factoryPid) {
-		String destinationName = _factoryPidsToDestinationName.remove(
-			factoryPid);
-
-		_destinationWorkerConfigurations.remove(destinationName);
-	}
+@Component(service = MessageBus.class)
+public class DefaultMessageBus implements MessageBus {
 
 	@Override
 	public Destination getDestination(String destinationName) {
-		return _destinations.get(destinationName);
-	}
-
-	@Override
-	public String getName() {
-		return "Default Message Bus";
+		return DestinationRegisterUtil.getDestination(destinationName);
 	}
 
 	@Override
@@ -99,7 +77,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 			}
 		}
 
-		Destination destination = _destinations.get(destinationName);
+		Destination destination = DestinationRegisterUtil.getDestination(
+			destinationName);
 
 		if (destination == null) {
 			if (_log.isWarnEnabled()) {
@@ -145,30 +124,11 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 	@Override
 	public synchronized void shutdown(boolean force) {
-		for (Destination destination : _destinations.values()) {
+		for (Destination destination :
+				DestinationRegisterUtil.getDestinationsValues()) {
+
 			destination.close(force);
 		}
-	}
-
-	@Override
-	public void updated(String factoryPid, Dictionary<String, ?> dictionary)
-		throws ConfigurationException {
-
-		DestinationWorkerConfiguration destinationWorkerConfiguration =
-			ConfigurableUtil.createConfigurable(
-				DestinationWorkerConfiguration.class, dictionary);
-
-		_factoryPidsToDestinationName.put(
-			factoryPid, destinationWorkerConfiguration.destinationName());
-
-		_destinationWorkerConfigurations.put(
-			destinationWorkerConfiguration.destinationName(),
-			destinationWorkerConfiguration);
-
-		Destination destination = _destinations.get(
-			destinationWorkerConfiguration.destinationName());
-
-		_updateDestination(destination, destinationWorkerConfiguration);
 	}
 
 	@Activate
@@ -239,13 +199,15 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 		shutdown(true);
 
-		for (Destination destination : _destinations.values()) {
+		for (Destination destination :
+				DestinationRegisterUtil.getDestinationsValues()) {
+
 			destination.destroy();
 		}
 
 		_messageBusEventListeners.clear();
 
-		_destinations.clear();
+		DestinationRegisterUtil.clearDestinations();
 	}
 
 	@Reference(
@@ -262,10 +224,10 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 		_addDestination(destination);
 
-		DestinationWorkerConfiguration destinationWorkerConfiguration =
-			_destinationWorkerConfigurations.get(destinationName);
-
-		_updateDestination(destination, destinationWorkerConfiguration);
+		DestinationRegisterUtil.updateDestination(
+			destination,
+			DestinationRegisterUtil.getDestinationWorkerConfiguration(
+				destinationName));
 	}
 
 	@Reference(
@@ -281,7 +243,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		String destinationName = MapUtil.getString(
 			properties, "destination.name");
 
-		Destination destination = _destinations.get(destinationName);
+		Destination destination = DestinationRegisterUtil.getDestination(
+			destinationName);
 
 		if (destination == null) {
 			if (_log.isInfoEnabled()) {
@@ -320,7 +283,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		String destinationName = MapUtil.getString(
 			properties, "destination.name");
 
-		Destination destination = _destinations.get(destinationName);
+		Destination destination = DestinationRegisterUtil.getDestination(
+			destinationName);
 
 		if (destination == null) {
 			if (_log.isInfoEnabled()) {
@@ -342,7 +306,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	}
 
 	private void _addDestination(Destination destination) {
-		Destination oldDestination = _destinations.get(destination.getName());
+		Destination oldDestination = DestinationRegisterUtil.getDestination(
+			destination.getName());
 
 		if (oldDestination != null) {
 			oldDestination.copyDestinationEventListeners(destination);
@@ -369,7 +334,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 		destination.open();
 
-		_destinations.put(destination.getName(), destination);
+		DestinationRegisterUtil.putDestination(
+			destination.getName(), destination);
 
 		if (oldDestination != null) {
 			oldDestination.destroy();
@@ -391,7 +357,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	private synchronized boolean _registerMessageListener(
 		String destinationName, MessageListener messageListener) {
 
-		Destination destination = _destinations.get(destinationName);
+		Destination destination = DestinationRegisterUtil.getDestination(
+			destinationName);
 
 		if (destination != null) {
 			return destination.register(messageListener);
@@ -419,7 +386,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	}
 
 	private Destination _removeDestination(String destinationName) {
-		Destination destination = _destinations.remove(destinationName);
+		Destination destination = DestinationRegisterUtil.removeDestination(
+			destinationName);
 
 		if (destination == null) {
 			return null;
@@ -439,7 +407,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	private synchronized boolean _unregisterMessageListener(
 		String destinationName, MessageListener messageListener) {
 
-		Destination destination = _destinations.get(destinationName);
+		Destination destination = DestinationRegisterUtil.getDestination(
+			destinationName);
 
 		if (destination != null) {
 			return destination.unregister(messageListener);
@@ -455,35 +424,9 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		return queuedMessageListeners.remove(messageListener);
 	}
 
-	private void _updateDestination(
-		Destination destination,
-		DestinationWorkerConfiguration destinationWorkerConfiguration) {
-
-		if ((destination == null) || (destinationWorkerConfiguration == null)) {
-			return;
-		}
-
-		if (destination instanceof BaseAsyncDestination) {
-			BaseAsyncDestination baseAsyncDestination =
-				(BaseAsyncDestination)destination;
-
-			baseAsyncDestination.setMaximumQueueSize(
-				destinationWorkerConfiguration.maxQueueSize());
-			baseAsyncDestination.setWorkersSize(
-				destinationWorkerConfiguration.workerCoreSize(),
-				destinationWorkerConfiguration.workerMaxSize());
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultMessageBus.class);
 
-	private final Map<String, Destination> _destinations =
-		new ConcurrentHashMap<>();
-	private final Map<String, DestinationWorkerConfiguration>
-		_destinationWorkerConfigurations = new ConcurrentHashMap<>();
-	private final Map<String, String> _factoryPidsToDestinationName =
-		new ConcurrentHashMap<>();
 	private final Set<MessageBusEventListener> _messageBusEventListeners =
 		Collections.newSetFromMap(new ConcurrentHashMap<>());
 	private ServiceTracker

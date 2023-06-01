@@ -16,7 +16,6 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.assignment;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -94,8 +93,7 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 			Map<String, Object> properties)
 		throws KaleoDefinitionValidationException {
 
-		String[] scriptingLanguages = _getScriptingLanguages(
-			scriptingAssigneeSelector, properties);
+		String[] scriptingLanguages = _getScriptingLanguages(properties);
 
 		for (String scriptingLanguage : scriptingLanguages) {
 			_scriptingassigneeSelectors.put(
@@ -111,8 +109,7 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 			Map<String, Object> properties)
 		throws KaleoDefinitionValidationException {
 
-		String[] scriptingLanguages = _getScriptingLanguages(
-			scriptingAssigneeSelector, properties);
+		String[] scriptingLanguages = _getScriptingLanguages(properties);
 
 		for (String scriptingLanguage : scriptingLanguages) {
 			_scriptingassigneeSelectors.remove(
@@ -136,22 +133,11 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 		return language;
 	}
 
-	private String[] _getScriptingLanguages(
-		ScriptingAssigneeSelector scriptingAssigneeSelector,
-		Map<String, Object> properties) {
-
+	private String[] _getScriptingLanguages(Map<String, Object> properties) {
 		Object value = properties.get("scripting.language");
 
-		String[] scriptingLanguages = GetterUtil.getStringValues(
+		return GetterUtil.getStringValues(
 			value, new String[] {String.valueOf(value)});
-
-		if (ArrayUtil.isEmpty(scriptingLanguages)) {
-			throw new IllegalArgumentException(
-				"The property \"scripting.language\" is invalid for " +
-					ClassUtil.getClassName(scriptingAssigneeSelector));
-		}
-
-		return scriptingLanguages;
 	}
 
 	@Reference

@@ -156,14 +156,29 @@ public class CompanyIdIndexNameBuilderTest {
 
 		_companyIndexFactory = new CompanyIndexFactory();
 
+		CompanyIndexFactoryHelper companyIndexFactoryHelper =
+			new CompanyIndexFactoryHelper();
+
+		ReflectionTestUtil.setFieldValue(
+			companyIndexFactoryHelper, "_indexNameBuilder",
+			companyIdIndexNameBuilder);
+		ReflectionTestUtil.setFieldValue(
+			companyIndexFactoryHelper, "_elasticsearchConfigurationWrapper",
+			createElasticsearchConfigurationWrapper());
+		ReflectionTestUtil.setFieldValue(
+			companyIndexFactoryHelper, "_jsonFactory", new JSONFactoryImpl());
+		ReflectionTestUtil.invoke(
+			companyIndexFactoryHelper, "activate",
+			new Class<?>[] {BundleContext.class},
+			SystemBundleUtil.getBundleContext());
+
+		ReflectionTestUtil.setFieldValue(
+			_companyIndexFactory, "_companyIndexFactoryHelper",
+			companyIndexFactoryHelper);
+
 		ReflectionTestUtil.setFieldValue(
 			_companyIndexFactory, "_elasticsearchConfigurationWrapper",
 			createElasticsearchConfigurationWrapper());
-		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_indexNameBuilder",
-			companyIdIndexNameBuilder);
-		ReflectionTestUtil.setFieldValue(
-			_companyIndexFactory, "_jsonFactory", new JSONFactoryImpl());
 
 		ReflectionTestUtil.invoke(
 			_companyIndexFactory, "activate",

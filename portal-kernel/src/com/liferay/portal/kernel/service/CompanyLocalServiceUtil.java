@@ -509,6 +509,16 @@ public class CompanyLocalServiceUtil {
 	}
 
 	/**
+	 * Returns the company with the primary key.
+	 *
+	 * @param companyId the primary key of the company
+	 * @return the company's webId
+	 */
+	public static String getWebId(long companyId) {
+		return getService().getWebId(companyId);
+	}
+
+	/**
 	 * Removes the values that match the keys of the company's preferences.
 	 *
 	 * This method is called by {@link

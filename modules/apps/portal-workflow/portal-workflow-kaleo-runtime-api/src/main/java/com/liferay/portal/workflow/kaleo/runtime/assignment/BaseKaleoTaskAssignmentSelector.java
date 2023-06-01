@@ -41,24 +41,28 @@ public abstract class BaseKaleoTaskAssignmentSelector
 
 		List<KaleoTaskAssignment> kaleoTaskAssignments = new ArrayList<>();
 
-		if (results.get(AssigneeConstants.ROLES) != null) {
+		Object roles = results.get(AssigneeConstants.ROLES);
+
+		if (roles != null) {
 			getRoleKaleoTaskAssignments(
-				(List<Role>)results.get(AssigneeConstants.ROLES),
-				kaleoTaskAssignments);
+				(List<Role>)roles, kaleoTaskAssignments);
 
 			return kaleoTaskAssignments;
 		}
 
-		if (results.get(AssigneeConstants.USER) != null) {
-			kaleoTaskAssignments.add(
-				getUserKaleoTaskAssignment(
-					(User)results.get(AssigneeConstants.USER)));
+		Object user = results.get(AssigneeConstants.USER);
+
+		if (user != null) {
+			kaleoTaskAssignments.add(_getUserKaleoTaskAssignment((User)user));
 
 			return kaleoTaskAssignments;
 		}
 
-		for (User user : (List<User>)results.get(AssigneeConstants.USERS)) {
-			kaleoTaskAssignments.add(getUserKaleoTaskAssignment(user));
+		Object users = results.get(AssigneeConstants.USERS);
+
+		if (users != null) {
+			_getUserKaleoTaskAssignments(
+				(List<User>)users, kaleoTaskAssignments);
 		}
 
 		return kaleoTaskAssignments;
@@ -82,7 +86,10 @@ public abstract class BaseKaleoTaskAssignmentSelector
 		}
 	}
 
-	protected KaleoTaskAssignment getUserKaleoTaskAssignment(User user) {
+	@Reference
+	protected KaleoTaskAssignmentFactory kaleoTaskAssignmentFactory;
+
+	private KaleoTaskAssignment _getUserKaleoTaskAssignment(User user) {
 		KaleoTaskAssignment kaleoTaskAssignment =
 			kaleoTaskAssignmentFactory.createKaleoTaskAssignment();
 
@@ -92,7 +99,12 @@ public abstract class BaseKaleoTaskAssignmentSelector
 		return kaleoTaskAssignment;
 	}
 
-	@Reference
-	protected KaleoTaskAssignmentFactory kaleoTaskAssignmentFactory;
+	private void _getUserKaleoTaskAssignments(
+		List<User> users, List<KaleoTaskAssignment> kaleoTaskAssignments) {
+
+		for (User user : users) {
+			kaleoTaskAssignments.add(_getUserKaleoTaskAssignment(user));
+		}
+	}
 
 }

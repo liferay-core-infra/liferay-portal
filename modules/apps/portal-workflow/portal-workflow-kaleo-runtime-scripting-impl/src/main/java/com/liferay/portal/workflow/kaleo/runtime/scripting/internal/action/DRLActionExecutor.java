@@ -35,7 +35,8 @@ public class DRLActionExecutor implements ActionExecutor {
 		throws ActionExecutorException {
 
 		try {
-			doExecute(kaleoAction, executionContext);
+			_rulesEngineExecutor.executeAndMergeWorkflowContexts(
+				executionContext, kaleoAction.getScript());
 		}
 		catch (Exception exception) {
 			throw new ActionExecutorException(exception);
@@ -45,14 +46,6 @@ public class DRLActionExecutor implements ActionExecutor {
 	@Override
 	public String[] getActionExecutorKeys() {
 		return _ACTION_EXECUTOR_KEYS;
-	}
-
-	protected void doExecute(
-			KaleoAction kaleoAction, ExecutionContext executionContext)
-		throws Exception {
-
-		_rulesEngineExecutor.executeAndMergeWorkflowContexts(
-			executionContext, kaleoAction.getScript());
 	}
 
 	private static final String[] _ACTION_EXECUTOR_KEYS = {"drl"};

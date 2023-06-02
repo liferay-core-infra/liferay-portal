@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
@@ -38,13 +38,6 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.VirtualHostLocalServiceUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -157,13 +150,15 @@ public class PortalInstances {
 
 		CompanyThreadLocal.setCompanyId(companyId);
 
-		if (Validator.isNotNull(PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME) &&
+		if (Validator.isNotNull(
+				PropsUtil.get(PropsKeys.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) &&
 			(httpServletRequest.getAttribute(WebKeys.VIRTUAL_HOST_LAYOUT_SET) ==
 				null)) {
 
 			try {
 				Group group = GroupLocalServiceUtil.getGroup(
-					companyId, PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME);
+					companyId,
+					PropsUtil.get(PropsKeys.VIRTUAL_HOSTS_DEFAULT_SITE_NAME));
 
 				LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
 					group.getGroupId(), false);
@@ -233,7 +228,8 @@ public class PortalInstances {
 
 		for (Map.Entry<Long, String> entry : _webIds.entrySet()) {
 			if (Objects.equals(
-					PropsValues.COMPANY_DEFAULT_WEB_ID, entry.getValue())) {
+					PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID),
+					entry.getValue())) {
 
 				return entry.getKey();
 			}
@@ -246,7 +242,7 @@ public class PortalInstances {
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select companyId from Company where webId = '" +
-					PropsValues.COMPANY_DEFAULT_WEB_ID + "'");
+					PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID) + "'");
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			if (resultSet.next()) {
@@ -348,7 +344,7 @@ public class PortalInstances {
 			try {
 				EventsProcessorUtil.process(
 					PropsKeys.APPLICATION_STARTUP_EVENTS,
-					PropsValues.APPLICATION_STARTUP_EVENTS,
+					PropsUtil.getArray(PropsKeys.APPLICATION_STARTUP_EVENTS),
 					new String[] {String.valueOf(company.getCompanyId())});
 			}
 			catch (Exception exception) {
@@ -421,7 +417,7 @@ public class PortalInstances {
 		try {
 			EventsProcessorUtil.process(
 				PropsKeys.APPLICATION_SHUTDOWN_EVENTS,
-				PropsValues.APPLICATION_SHUTDOWN_EVENTS,
+				PropsUtil.getArray(PropsKeys.APPLICATION_SHUTDOWN_EVENTS),
 				new String[] {String.valueOf(companyId)});
 		}
 		catch (Exception exception) {

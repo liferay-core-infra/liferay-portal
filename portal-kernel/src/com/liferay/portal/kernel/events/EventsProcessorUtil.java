@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.events;
+package com.liferay.portal.kernel.events;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;

@@ -13,8 +13,8 @@
 		<suppress checks="CamelCaseNameCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/util/ListUtilTest\.java" />
 		<suppress checks="CompanyIterationCheck" files="portal-impl/src/com/liferay/portal/db/partition/DBPartitionUtil\.java" />
 		<suppress checks="CompanyIterationCheck" files="portal-impl/src/com/liferay/portal/service/impl/CompanyLocalServiceImpl\.java" />
-		<suppress checks="CompanyIterationCheck" files="portal-impl/src/com/liferay/portal/util/PortalInstances\.java" />
 		<suppress checks="CompanyIterationCheck" files="portal-kernel/src/com/liferay/portal/kernel/upgrade/BaseCompanyIdUpgradeProcess\.java" />
+		<suppress checks="CompanyIterationCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/PortalInstances\.java" />
 		<suppress checks="ConcatCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/util/StringBundlerTest\.java" />
 		<suppress checks="ConstantNameCheck" files="portal-test/src/com/liferay/portal/kernel/test/rule/CodeCoverageAssertor\.java" />
 		<suppress checks="FactoryCheck" files="portal-kernel/src/com/liferay/portal/kernel/service/ServiceContext\.java" />
@@ -37,8 +37,8 @@
 		<suppress checks="MapBuilderCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/util/LinkedHashMapBuilderTest\.java" />
 		<suppress checks="MapBuilderCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/util/TreeMapBuilderTest\.java" />
 		<suppress checks="MapBuilderCheck" files="portal-web/docroot/html/taglib/ui/input_move_boxes/page\.jsp" />
-		<suppress checks="MethodNameCheck" files="portal-impl/src/com/liferay/portal/events/EventsProcessorUtil\.java" />
 		<suppress checks="MethodNameCheck" files="portal-impl/src/com/liferay/portal/spring/transaction/TransactionStatusAdapter\.java" />
+		<suppress checks="MethodNameCheck" files="portal-kernel/src/com/liferay/portal/kernel/events/EventsProcessorUtil\.java" />
 		<suppress checks="MethodNameCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/Http\.java" />
 		<suppress checks="MethodNameCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/HttpUtil\.java" />
 		<suppress checks="MethodNamingCheck" files="portal-impl/src/com/liferay/portal/model/impl/CompanyImpl\.java" />

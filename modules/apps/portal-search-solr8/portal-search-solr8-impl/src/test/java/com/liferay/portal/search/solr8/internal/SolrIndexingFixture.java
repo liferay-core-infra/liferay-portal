@@ -257,7 +257,7 @@ public class SolrIndexingFixture implements IndexingFixture {
 			new NGramQueryBuilderImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			nGramQueryBuilderImpl, "_nGramHolderBuilder",
+			nGramQueryBuilderImpl, "_nGramHolderBuilderSnapshot",
 			new NGramHolderBuilderImpl());
 
 		return nGramQueryBuilderImpl;

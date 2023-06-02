@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
-import com.liferay.portal.util.PortalInstances;
+import com.liferay.portal.kernel.util.PortalInstances;
 
 import org.osgi.service.component.annotations.Component;
 

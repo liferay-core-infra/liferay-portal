@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.util.PortalInstances;
+import com.liferay.portal.kernel.util.PortalInstances;
 import com.liferay.portal.util.PropsValues;
 
 /**

@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalInstances;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.service.access.policy.configuration.SAPConfiguration;
@@ -44,7 +45,6 @@ import com.liferay.portal.security.service.access.policy.exception.SAPEntryNameE
 import com.liferay.portal.security.service.access.policy.exception.SAPEntryTitleException;
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 import com.liferay.portal.security.service.access.policy.service.base.SAPEntryLocalServiceBaseImpl;
-import com.liferay.portal.util.PortalInstances;
 
 import java.util.List;
 import java.util.Locale;

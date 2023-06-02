@@ -25,8 +25,8 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalInstances;
 import com.liferay.portal.service.base.CountryServiceBaseImpl;
-import com.liferay.portal.util.PortalInstances;
 
 import java.util.List;
 

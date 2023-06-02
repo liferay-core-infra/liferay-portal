@@ -16,8 +16,8 @@ package com.liferay.portal.upgrade.v7_4_x;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.upgrade.BaseCompanyIdUpgradeProcess;
+import com.liferay.portal.kernel.util.PortalInstances;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.util.PortalInstances;
 
 import java.io.IOException;
 

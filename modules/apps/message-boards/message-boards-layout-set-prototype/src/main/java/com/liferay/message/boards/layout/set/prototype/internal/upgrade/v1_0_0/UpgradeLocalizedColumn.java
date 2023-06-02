@@ -15,8 +15,8 @@
 package com.liferay.message.boards.layout.set.prototype.internal.upgrade.v1_0_0;
 
 import com.liferay.portal.kernel.upgrade.BaseLocalizedColumnUpgradeProcess;
+import com.liferay.portal.kernel.util.PortalInstances;
 import com.liferay.portal.language.LanguageResources;
-import com.liferay.portal.util.PortalInstances;
 
 /**
  * @author Leon Chi

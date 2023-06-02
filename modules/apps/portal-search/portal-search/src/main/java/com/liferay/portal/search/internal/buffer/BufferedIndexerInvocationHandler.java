@@ -23,9 +23,9 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.kernel.util.PortalInstances;
 import com.liferay.portal.search.configuration.IndexerRegistryConfiguration;
 import com.liferay.portal.search.index.IndexStatusManager;
-import com.liferay.portal.util.PortalInstances;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;

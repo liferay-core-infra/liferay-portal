@@ -40,8 +40,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalInstances;
 import com.liferay.portal.service.base.LayoutPrototypeLocalServiceBaseImpl;
-import com.liferay.portal.util.PortalInstances;
 
 import java.util.Date;
 import java.util.List;

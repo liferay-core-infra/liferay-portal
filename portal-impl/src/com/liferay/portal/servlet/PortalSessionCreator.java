@@ -14,8 +14,8 @@
 
 package com.liferay.portal.servlet;
 
-import com.liferay.portal.events.EventsProcessorUtil;
 import com.liferay.portal.kernel.events.ActionException;
+import com.liferay.portal.kernel.events.EventsProcessorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.PortalSessionContext;

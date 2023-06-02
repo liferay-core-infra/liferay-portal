@@ -14,7 +14,7 @@
 
 package com.liferay.frontend.taglib.clay.internal.container.request.filter;
 
-import com.liferay.portal.events.EventsProcessorUtil;
+import com.liferay.portal.kernel.events.EventsProcessorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsKeys;

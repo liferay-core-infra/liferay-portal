@@ -16,10 +16,13 @@ package com.liferay.portal.util;
 
 import com.liferay.portal.kernel.redirect.RedirectURLSettings;
 import com.liferay.portal.kernel.redirect.RedirectURLSettingsUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.PrefsProps;
+import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -32,6 +35,8 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.Mockito;
 
 /**
  * @author Tomas Polesovsky
@@ -59,6 +64,18 @@ public class PortalImplEscapeRedirectTest {
 		_originalRedirectURLSettings = ReflectionTestUtil.getAndSetFieldValue(
 			RedirectURLSettingsUtil.class, "_redirectURLSettings",
 			_redirectURLSettingsImpl);
+
+		PrefsPropsUtil prefsPropsUtil = new PrefsPropsUtil();
+		PrefsProps prefsProps = Mockito.mock(PrefsProps.class);
+
+		prefsPropsUtil.setPrefsProps(prefsProps);
+		Mockito.when(
+			prefsProps.getString(
+				CompanyThreadLocal.getCompanyId(), PropsKeys.CDN_HOST_HTTPS,
+				PropsValues.CDN_HOST_HTTPS)
+		).thenReturn(
+			PropsValues.CDN_HOST_HTTPS
+		);
 	}
 
 	@After

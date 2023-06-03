@@ -37,6 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  */
 @Component(
+	enabled = false,
 	property = "destination.name=" + AntivirusAsyncDestinationNames.ANTIVIRUS,
 	service = MessageListener.class
 )

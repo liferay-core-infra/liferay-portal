@@ -15,6 +15,7 @@
 package com.liferay.feature.flag.web.internal.model;
 
 import com.liferay.feature.flag.web.internal.manager.FeatureFlagPreferencesManager;
+import com.liferay.feature.flag.web.internal.manager.FeatureFlagPreferencesManagerImpl;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -114,6 +115,6 @@ public class PreferenceAwareFeatureFlagTest {
 
 	private FeatureFlag _featureFlag;
 	private final FeatureFlagPreferencesManager _featureFlagPreferencesManager =
-		Mockito.mock(FeatureFlagPreferencesManager.class);
+		Mockito.mock(FeatureFlagPreferencesManagerImpl.class);
 
 }

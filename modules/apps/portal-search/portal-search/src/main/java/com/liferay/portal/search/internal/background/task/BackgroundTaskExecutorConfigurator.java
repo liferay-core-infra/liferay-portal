@@ -83,9 +83,10 @@ public class BackgroundTaskExecutorConfigurator {
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
 
-	@Reference
-	private ReindexSingleIndexerBackgroundTaskExecutor
-		_reindexSingleIndexerBackgroundTaskExecutor;
+	@Reference(
+		target = "(background.task.executor.class.name=com.liferay.portal.search.internal.background.task.ReindexSingleIndexerBackgroundTaskExecutor)"
+	)
+	private BackgroundTaskExecutor _reindexSingleIndexerBackgroundTaskExecutor;
 
 	private final Set<ServiceRegistration<BackgroundTaskExecutor>>
 		_serviceRegistrations = new HashSet<>();

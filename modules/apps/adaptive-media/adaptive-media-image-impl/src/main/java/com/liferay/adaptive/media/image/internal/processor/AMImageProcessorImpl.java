@@ -44,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "model.class.name=com.liferay.portal.kernel.repository.model.FileVersion",
-	service = {AMImageProcessor.class, AMProcessor.class}
+	service = AMImageProcessor.class
 )
 public final class AMImageProcessorImpl implements AMImageProcessor {
 

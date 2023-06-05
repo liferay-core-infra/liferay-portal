@@ -39,7 +39,7 @@ import org.quartz.TriggerBuilder;
  */
 @Component(
 	enabled = false,
-	service = {QuartzTriggerFactory.class, TriggerFactory.class}
+	service = TriggerFactory.class
 )
 public class QuartzTriggerFactory implements TriggerFactory {
 

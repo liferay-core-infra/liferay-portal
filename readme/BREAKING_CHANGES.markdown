@@ -1380,3 +1380,26 @@ Replace `getParameter71()` with `getParameterOptional()`, `getParameterValues71(
 ### Why was this change made?
 
 These methods were added in 7.2 for forward compatibility: see [LPS-101007](https://issues.liferay.com/browse/LPS-101007). In 7.4 they are redundant to the `Optional` and `String[]` variations.
+
+---------------------------------------
+
+## Removed ScriptingExecutorExtender and ScriptBundleProvider
+
+- **Date:** 2023-June-5
+- **JIRA Ticket:** [LPS-169777](https://issues.liferay.com/browse/LPS-169777)
+
+### What changed?
+
+`ScriptingExecutorExtender` class and `ScriptBundleProvider` interface were removed.
+
+### Who is affected?
+
+This affects anyone implementing this interface: `ScriptBundleProvider`, and having some script files in this path: `/META-INF/resources/scripts/` in the same module.
+
+### How should I update my code?
+
+Delete implementations of `ScriptBundleProvider` and remove script files in `/META-INF/resources/scripts/`.
+
+### Why was this change made?
+
+`ScriptBundleProvider` is `ProviderType` but no one is implementing it in Liferay.

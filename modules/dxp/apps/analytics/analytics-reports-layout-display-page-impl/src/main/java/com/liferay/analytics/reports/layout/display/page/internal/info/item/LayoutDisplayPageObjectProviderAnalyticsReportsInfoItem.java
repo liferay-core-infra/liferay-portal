@@ -15,7 +15,6 @@
 package com.liferay.analytics.reports.layout.display.page.internal.info.item;
 
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItem;
-import com.liferay.analytics.reports.layout.display.page.info.item.LayoutDisplayPageObjectProviderAnalyticsReportsInfoItem;
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.asset.display.page.util.AssetDisplayPageUtil;
@@ -69,15 +68,9 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Cristina González
  */
-@Component(
-	service = {
-		AnalyticsReportsInfoItem.class,
-		LayoutDisplayPageObjectProviderAnalyticsReportsInfoItem.class
-	}
-)
-public class LayoutDisplayPageObjectProviderAnalyticsReportsInfoItemImpl
-	implements AnalyticsReportsInfoItem<LayoutDisplayPageObjectProvider>,
-			   LayoutDisplayPageObjectProviderAnalyticsReportsInfoItem {
+@Component(service = AnalyticsReportsInfoItem.class)
+public class LayoutDisplayPageObjectProviderAnalyticsReportsInfoItem
+	implements AnalyticsReportsInfoItem<LayoutDisplayPageObjectProvider> {
 
 	@Override
 	public String getAuthorName(
@@ -364,7 +357,7 @@ public class LayoutDisplayPageObjectProviderAnalyticsReportsInfoItemImpl
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LayoutDisplayPageObjectProviderAnalyticsReportsInfoItemImpl.class);
+		LayoutDisplayPageObjectProviderAnalyticsReportsInfoItem.class);
 
 	@Reference
 	private AssetDisplayPageEntryLocalService

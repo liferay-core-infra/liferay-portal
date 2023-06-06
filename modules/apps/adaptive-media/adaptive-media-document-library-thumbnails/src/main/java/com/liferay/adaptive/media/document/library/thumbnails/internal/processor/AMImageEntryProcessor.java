@@ -18,17 +18,13 @@ import com.liferay.adaptive.media.AMAttribute;
 import com.liferay.adaptive.media.AdaptiveMedia;
 import com.liferay.adaptive.media.document.library.thumbnails.internal.configuration.AMSystemImagesConfiguration;
 import com.liferay.adaptive.media.image.finder.AMImageFinder;
-import com.liferay.adaptive.media.image.mime.type.AMImageMimeTypeProvider;
 import com.liferay.adaptive.media.image.processor.AMImageAttribute;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
-import com.liferay.adaptive.media.image.validator.AMImageValidator;
 import com.liferay.adaptive.media.processor.AMAsyncProcessor;
 import com.liferay.adaptive.media.processor.AMAsyncProcessorLocator;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
-import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.ImageProcessor;
 import com.liferay.document.library.security.io.InputStreamSanitizer;
-import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -40,7 +36,6 @@ import com.liferay.portal.kernel.repository.model.FileVersionWrapper;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portlet.documentlibrary.util.ImageProcessorImpl;
 
 import java.io.ByteArrayInputStream;
@@ -62,36 +57,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Roberto Díaz
  */
 @Component(
-	configurationPid = "com.liferay.adaptive.media.document.library.thumbnails.internal.configuration.AMSystemImagesConfiguration",
 	property = "type=" + DLProcessorConstants.IMAGE_PROCESSOR,
-	service = {
-		AMImageEntryProcessor.class, DLProcessor.class, ImageProcessor.class
-	}
+	service = ImageProcessor.class
 )
-public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
-
-	@Override
-	public void afterPropertiesSet() {
-	}
-
-	@Override
-	public void cleanUp(FileEntry fileEntry) {
-	}
-
-	@Override
-	public void cleanUp(FileVersion fileVersion) {
-	}
-
-	@Override
-	public void copy(
-		FileVersion sourceFileVersion, FileVersion destinationFileVersion) {
-	}
-
-	@Override
-	public void exportGeneratedFiles(
-		PortletDataContext portletDataContext, FileEntry fileEntry,
-		Element fileEntryElement) {
-	}
+public class AMImageEntryProcessor
+	extends AMDLProcessor implements ImageProcessor {
 
 	@Override
 	public void generateImages(
@@ -101,7 +71,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	@Override
 	public Set<String> getImageMimeTypes() {
 		return new HashSet<>(
-			Arrays.asList(_amImageMimeTypeProvider.getSupportedMimeTypes()));
+			Arrays.asList(amImageMimeTypeProvider.getSupportedMimeTypes()));
 	}
 
 	@Override
@@ -197,11 +167,6 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	}
 
 	@Override
-	public String getType() {
-		return DLProcessorConstants.IMAGE_PROCESSOR;
-	}
-
-	@Override
 	public boolean hasImages(FileVersion fileVersion) {
 		try {
 			List<AdaptiveMedia<AMImageProcessor>> adaptiveMedias =
@@ -225,29 +190,13 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	}
 
 	@Override
-	public void importGeneratedFiles(
-		PortletDataContext portletDataContext, FileEntry fileEntry,
-		FileEntry importedFileEntry, Element fileEntryElement) {
-	}
-
-	@Override
 	public boolean isImageSupported(FileVersion fileVersion) {
-		return _amImageValidator.isValid(fileVersion);
+		return amImageValidator.isValid(fileVersion);
 	}
 
 	@Override
 	public boolean isImageSupported(String mimeType) {
-		return _isMimeTypeSupported(mimeType);
-	}
-
-	@Override
-	public boolean isSupported(FileVersion fileVersion) {
-		return _amImageValidator.isValid(fileVersion);
-	}
-
-	@Override
-	public boolean isSupported(String mimeType) {
-		return _isMimeTypeSupported(mimeType);
+		return isMimeTypeSupported(mimeType);
 	}
 
 	@Override
@@ -255,11 +204,6 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 		long companyId, long groupId, long fileEntryId, long fileVersionId,
 		long custom1ImageId, long custom2ImageId, InputStream inputStream,
 		String type) {
-	}
-
-	@Override
-	public void trigger(
-		FileVersion sourceFileVersion, FileVersion destinationFileVersion) {
 	}
 
 	@Activate
@@ -344,10 +288,6 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 		return value;
 	}
 
-	private boolean _isMimeTypeSupported(String mimeType) {
-		return _amImageMimeTypeProvider.isMimeTypeSupported(mimeType);
-	}
-
 	private boolean _isProcessingRequired(
 		List<AdaptiveMedia<AMImageProcessor>> adaptiveMedias,
 		FileVersion fileVersion) {
@@ -358,9 +298,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 		AdaptiveMedia<AMImageProcessor> adaptiveMedia = adaptiveMedias.get(0);
 
-		if (_amImageValidator.isProcessingRequired(
-				adaptiveMedia, fileVersion)) {
-
+		if (amImageValidator.isProcessingRequired(adaptiveMedia, fileVersion)) {
 			return true;
 		}
 
@@ -368,7 +306,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	}
 
 	private void _processAMImage(FileVersion fileVersion) {
-		if (!_amImageValidator.isValid(fileVersion)) {
+		if (!amImageValidator.isValid(fileVersion)) {
 			return;
 		}
 
@@ -400,12 +338,6 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 	@Reference
 	private AMImageFinder _amImageFinder;
-
-	@Reference
-	private AMImageMimeTypeProvider _amImageMimeTypeProvider;
-
-	@Reference
-	private AMImageValidator _amImageValidator;
 
 	private volatile AMSystemImagesConfiguration _amSystemImagesConfiguration;
 	private final ImageProcessor _imageProcessor = new ImageProcessorImpl();

@@ -59,6 +59,12 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 )
 public class SAPEntryScopeDescriptorFinderRegistrator {
 
+	public void addJaxRsApplicationNames(String jaxRsApplicationName) {
+		_jaxRsApplicationNames.add(jaxRsApplicationName);
+
+		_resetProperties();
+	}
+
 	public List<SAPEntryScope> getRegisteredSAPEntryScopes(long companyId) {
 		SAPEntryScopeDescriptorFinder sapEntryScopeDescriptorFinder =
 			_registeredSAPEntryScopeDescriptorFinders.get(companyId);
@@ -118,6 +124,12 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 					"company " + companyId,
 				exception);
 		}
+	}
+
+	public void removeJaxRsApplicationNames(String jaxRsApplicationName) {
+		_jaxRsApplicationNames.remove(jaxRsApplicationName);
+
+		_resetProperties();
 	}
 
 	@Activate

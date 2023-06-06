@@ -16,6 +16,7 @@ package com.liferay.feature.flag.web.internal.company.feature.flags;
 
 import com.liferay.feature.flag.web.internal.constants.FeatureFlagConstants;
 import com.liferay.feature.flag.web.internal.model.FeatureFlag;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -27,7 +28,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 /**
@@ -50,7 +50,7 @@ public class CompanyFeatureFlags {
 	}
 
 	public void clearJSON() {
-		_jsonAtomicReference.set(null);
+		_jsonDCLSingleton.destroy(null);
 	}
 
 	public List<FeatureFlag> getFeatureFlags(Predicate<FeatureFlag> predicate) {
@@ -76,17 +76,17 @@ public class CompanyFeatureFlags {
 			return PropsValues.FEATURE_FLAGS_JSON;
 		}
 
-		if (_jsonAtomicReference.get() == null) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		return _jsonDCLSingleton.getSingleton(
+			() -> {
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			for (FeatureFlag featureFlag : _featureFlagsMap.values()) {
-				jsonObject.put(featureFlag.getKey(), featureFlag.isEnabled());
-			}
+				for (FeatureFlag featureFlag : _featureFlagsMap.values()) {
+					jsonObject.put(
+						featureFlag.getKey(), featureFlag.isEnabled());
+				}
 
-			_jsonAtomicReference.set(jsonObject.toString());
-		}
-
-		return _jsonAtomicReference.get();
+				return jsonObject.toString();
+			});
 	}
 
 	public boolean isEnabled(String key) {
@@ -101,7 +101,6 @@ public class CompanyFeatureFlags {
 	}
 
 	private final Map<String, FeatureFlag> _featureFlagsMap;
-	private final AtomicReference<String> _jsonAtomicReference =
-		new AtomicReference<>();
+	private final DCLSingleton<String> _jsonDCLSingleton = new DCLSingleton<>();
 
 }

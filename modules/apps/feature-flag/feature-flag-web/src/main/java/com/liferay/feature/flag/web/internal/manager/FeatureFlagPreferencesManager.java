@@ -17,8 +17,6 @@ package com.liferay.feature.flag.web.internal.manager;
 import com.liferay.feature.flag.web.internal.constants.FeatureFlagConstants;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
-import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
-import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -41,12 +39,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Drew Brokke
  */
-@Component(
-	service = {
-		FeatureFlagPreferencesManager.class, IdentifiableOSGiService.class
-	}
-)
-public class FeatureFlagPreferencesManager implements IdentifiableOSGiService {
+@Component(service = FeatureFlagPreferencesManager.class)
+public class FeatureFlagPreferencesManager {
 
 	public void addSubscriber(
 		long companyId, BiConsumer<String, Boolean> biConsumer) {
@@ -62,11 +56,6 @@ public class FeatureFlagPreferencesManager implements IdentifiableOSGiService {
 
 				return value;
 			});
-	}
-
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return FeatureFlagPreferencesManager.class.getName();
 	}
 
 	public Boolean isEnabled(long companyId, String key) {
@@ -101,16 +90,15 @@ public class FeatureFlagPreferencesManager implements IdentifiableOSGiService {
 		_notifyCluster(companyId, key, enabled);
 	}
 
-	private static void _onNotify(
-		String osgiServiceIdentifier, long companyId, String key,
-		boolean enabled) {
+	private static void _notifySubscribers(
+		long companyId, String key, boolean enabled) {
 
-		FeatureFlagPreferencesManager ploEntryModelListener =
-			(FeatureFlagPreferencesManager)
-				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
-					osgiServiceIdentifier);
+		List<BiConsumer<String, Boolean>> biConsumers =
+			_subscribersMap.getOrDefault(companyId, Collections.emptyList());
 
-		ploEntryModelListener._notifySubscribers(companyId, key, enabled);
+		for (BiConsumer<String, Boolean> biConsumer : biConsumers) {
+			biConsumer.accept(key, enabled);
+		}
 	}
 
 	private PortalPreferences _getPortalPreferences(long companyId) {
@@ -128,8 +116,7 @@ public class FeatureFlagPreferencesManager implements IdentifiableOSGiService {
 		}
 
 		MethodHandler methodHandler = new MethodHandler(
-			_onNotifyMethodKey, getOSGiServiceIdentifier(), companyId, key,
-			enabled);
+			_onNotifyMethodKey, companyId, key, enabled);
 
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			methodHandler, true);
@@ -139,30 +126,18 @@ public class FeatureFlagPreferencesManager implements IdentifiableOSGiService {
 		_clusterExecutor.execute(clusterRequest);
 	}
 
-	private void _notifySubscribers(
-		long companyId, String key, boolean enabled) {
-
-		List<BiConsumer<String, Boolean>> biConsumers =
-			_subscribersMap.getOrDefault(companyId, Collections.emptyList());
-
-		for (BiConsumer<String, Boolean> biConsumer : biConsumers) {
-			biConsumer.accept(key, enabled);
-		}
-	}
-
 	private static final String _NAMESPACE = FeatureFlagConstants.FEATURE_FLAG;
 
 	private static final MethodKey _onNotifyMethodKey = new MethodKey(
-		FeatureFlagPreferencesManager.class, "_onNotify", String.class,
-		Long.class, String.class, Boolean.class);
+		FeatureFlagPreferencesManager.class, "_notifySubscribers", Long.class,
+		String.class, Boolean.class);
+	private static final Map<Long, List<BiConsumer<String, Boolean>>>
+		_subscribersMap = new ConcurrentHashMap<>();
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;
 
 	@Reference
 	private PortalPreferencesLocalService _portalPreferencesLocalService;
-
-	private final Map<Long, List<BiConsumer<String, Boolean>>> _subscribersMap =
-		new ConcurrentHashMap<>();
 
 }

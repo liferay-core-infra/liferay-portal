@@ -15,18 +15,12 @@
 package com.liferay.product.navigation.personal.menu.web.internal.configuration;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.product.navigation.personal.menu.configuration.PersonalMenuConfiguration;
 import com.liferay.product.navigation.personal.menu.configuration.PersonalMenuConfigurationRegistry;
+import com.liferay.product.navigation.personal.menu.web.internal.configuration.admin.util.PersonalMenuConfigurationRegistryUtil;
 
-import java.util.Dictionary;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-import org.osgi.framework.Constants;
-import org.osgi.service.cm.ConfigurationException;
-import org.osgi.service.cm.ManagedServiceFactory;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
@@ -36,52 +30,25 @@ import org.osgi.service.component.annotations.Modified;
  */
 @Component(
 	configurationPid = "com.liferay.product.navigation.personal.menu.configuration.PersonalMenuConfiguration",
-	property = Constants.SERVICE_PID + "=com.liferay.product.navigation.personal.menu.configuration.PersonalMenuConfiguration.scoped",
-	service = {
-		ManagedServiceFactory.class, PersonalMenuConfigurationRegistry.class
-	}
+	service = PersonalMenuConfigurationRegistry.class
 )
 public class PersonalMenuConfigurationRegistryImpl
-	implements ManagedServiceFactory, PersonalMenuConfigurationRegistry {
-
-	@Override
-	public void deleted(String pid) {
-		_unmapPid(pid);
-	}
+	implements PersonalMenuConfigurationRegistry {
 
 	@Override
 	public PersonalMenuConfiguration getCompanyPersonalMenuConfiguration(
 		long companyId) {
 
-		if (_companyConfigurationBeans.containsKey(companyId)) {
-			return _companyConfigurationBeans.get(companyId);
+		PersonalMenuConfiguration personalMenuConfiguration =
+			PersonalMenuConfigurationRegistryUtil.
+				getCompanyConfigurationBeansPersonalMenuConfiguration(
+					companyId);
+
+		if (personalMenuConfiguration != null) {
+			return personalMenuConfiguration;
 		}
 
 		return _systemPersonalMenuConfiguration;
-	}
-
-	@Override
-	public String getName() {
-		return "com.liferay.product.navigation.personal.menu.configuration." +
-			"PersonalMenuConfiguration.scoped";
-	}
-
-	@Override
-	public void updated(String pid, Dictionary dictionary)
-		throws ConfigurationException {
-
-		_unmapPid(pid);
-
-		long companyId = GetterUtil.getLong(
-			dictionary.get("companyId"), CompanyConstants.SYSTEM);
-
-		if (companyId != CompanyConstants.SYSTEM) {
-			_companyConfigurationBeans.put(
-				companyId,
-				ConfigurableUtil.createConfigurable(
-					PersonalMenuConfiguration.class, dictionary));
-			_companyIds.put(pid, companyId);
-		}
 	}
 
 	@Activate
@@ -91,17 +58,6 @@ public class PersonalMenuConfigurationRegistryImpl
 			PersonalMenuConfiguration.class, properties);
 	}
 
-	private void _unmapPid(String pid) {
-		if (_companyIds.containsKey(pid)) {
-			long companyId = _companyIds.remove(pid);
-
-			_companyConfigurationBeans.remove(companyId);
-		}
-	}
-
-	private final Map<Long, PersonalMenuConfiguration>
-		_companyConfigurationBeans = new ConcurrentHashMap<>();
-	private final Map<String, Long> _companyIds = new ConcurrentHashMap<>();
 	private volatile PersonalMenuConfiguration _systemPersonalMenuConfiguration;
 
 }

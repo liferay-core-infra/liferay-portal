@@ -58,13 +58,13 @@ public class AMImageEntryProcessorTest {
 		ReflectionTestUtil.setFieldValue(
 			_amImageEntryProcessor, "_amImageFinder", _amImageFinder);
 		ReflectionTestUtil.setFieldValue(
-			_amImageEntryProcessor, "_amImageMimeTypeProvider",
+			_amImageEntryProcessor, "amImageMimeTypeProvider",
 			_amImageMimeTypeProvider);
 		ReflectionTestUtil.setFieldValue(
 			_amImageEntryProcessor, "_amSystemImagesConfiguration",
 			_amSystemImagesConfiguration);
 		ReflectionTestUtil.setFieldValue(
-			_amImageEntryProcessor, "_amImageValidator", _amImageValidator);
+			_amImageEntryProcessor, "amImageValidator", _amImageValidator);
 		ReflectionTestUtil.setFieldValue(
 			_amImageEntryProcessor, "_amAsyncProcessorLocator",
 			_amAsyncProcessorLocator);

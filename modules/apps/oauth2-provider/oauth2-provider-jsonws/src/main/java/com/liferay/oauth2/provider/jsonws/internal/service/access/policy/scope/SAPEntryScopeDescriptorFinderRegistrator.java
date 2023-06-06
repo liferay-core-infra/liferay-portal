@@ -18,14 +18,12 @@ import com.liferay.oauth2.provider.jsonws.internal.configuration.OAuth2JSONWSCon
 import com.liferay.oauth2.provider.jsonws.internal.constants.OAuth2JSONWSConstants;
 import com.liferay.oauth2.provider.scope.spi.scope.descriptor.ScopeDescriptor;
 import com.liferay.oauth2.provider.scope.spi.scope.finder.ScopeFinder;
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -41,14 +39,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Tomas Polesovsky
@@ -138,47 +133,6 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 
 		_bundleContext = bundleContext;
 
-		_serviceTracker = ServiceTrackerFactory.open(
-			bundleContext,
-			"(&(osgi.jaxrs.name=*)(sap.scope.finder=true)(objectClass=" +
-				ScopeFinder.class.getName() + "))",
-			new ServiceTrackerCustomizer<ScopeFinder, ScopeFinder>() {
-
-				@Override
-				public ScopeFinder addingService(
-					ServiceReference<ScopeFinder> serviceReference) {
-
-					_jaxRsApplicationNames.add(
-						GetterUtil.getString(
-							serviceReference.getProperty("osgi.jaxrs.name")));
-
-					_resetProperties();
-
-					return bundleContext.getService(serviceReference);
-				}
-
-				@Override
-				public void modifiedService(
-					ServiceReference<ScopeFinder> serviceReference,
-					ScopeFinder scopeFinder) {
-				}
-
-				@Override
-				public void removedService(
-					ServiceReference<ScopeFinder> serviceReference,
-					ScopeFinder scopeFinder) {
-
-					bundleContext.ungetService(serviceReference);
-
-					_jaxRsApplicationNames.remove(
-						GetterUtil.getString(
-							serviceReference.getProperty("osgi.jaxrs.name")));
-
-					_resetProperties();
-				}
-
-			});
-
 		OAuth2JSONWSConfiguration oAuth2JSONWSConfiguration =
 			ConfigurableUtil.createConfigurable(
 				OAuth2JSONWSConfiguration.class, properties);
@@ -211,8 +165,6 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 		}
 
 		_scopeDescriptorServiceRegistrations.clear();
-
-		_serviceTracker.close();
 	}
 
 	private HashMapDictionary<String, Object> _buildScopeDescriptorProperties(
@@ -302,6 +254,5 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 		_scopeDescriptorServiceRegistrations = new ConcurrentHashMap<>();
 	private final Map<Long, ServiceRegistration<ScopeFinder>>
 		_scopeFinderServiceRegistrations = new ConcurrentHashMap<>();
-	private ServiceTracker<ScopeFinder, ScopeFinder> _serviceTracker;
 
 }

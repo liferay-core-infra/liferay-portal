@@ -16,7 +16,6 @@ package com.liferay.announcements.web.internal.scheduler;
 
 import com.liferay.announcements.kernel.service.AnnouncementsEntryLocalService;
 import com.liferay.petra.function.UnsafeRunnable;
-import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
 import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
@@ -32,19 +31,14 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  * @author Tina Tian
  */
-@Component(
-	service = {
-		ClusterMasterTokenTransitionListener.class,
-		SchedulerJobConfiguration.class
-	}
-)
+@Component(service = SchedulerJobConfiguration.class)
 public class CheckEntrySchedulerJobConfiguration
-	implements ClusterMasterTokenTransitionListener, SchedulerJobConfiguration {
+	implements SchedulerJobConfiguration {
 
 	@Override
 	public UnsafeRunnable<Exception> getJobExecutorUnsafeRunnable() {
 		return () -> {
-			Date startDate = _previousEndDate;
+			Date startDate = CheckEntryDateRegistryUtil.getPreviousEndDate();
 			Date endDate = new Date();
 
 			if (startDate == null) {
@@ -52,7 +46,7 @@ public class CheckEntrySchedulerJobConfiguration
 					endDate.getTime() - _ANNOUNCEMENTS_ENTRY_CHECK_INTERVAL);
 			}
 
-			_previousEndDate = endDate;
+			CheckEntryDateRegistryUtil.setPreviousEndDate(endDate);
 
 			_announcementsEntryLocalService.checkEntries(startDate, endDate);
 		};
@@ -64,21 +58,10 @@ public class CheckEntrySchedulerJobConfiguration
 			PropsValues.ANNOUNCEMENTS_ENTRY_CHECK_INTERVAL, TimeUnit.MINUTE);
 	}
 
-	@Override
-	public void masterTokenAcquired() {
-	}
-
-	@Override
-	public void masterTokenReleased() {
-		_previousEndDate = null;
-	}
-
 	private static final long _ANNOUNCEMENTS_ENTRY_CHECK_INTERVAL =
 		PropsValues.ANNOUNCEMENTS_ENTRY_CHECK_INTERVAL * Time.MINUTE;
 
 	@Reference
 	private AnnouncementsEntryLocalService _announcementsEntryLocalService;
-
-	private Date _previousEndDate;
 
 }

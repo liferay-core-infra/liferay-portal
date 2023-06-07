@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
@@ -254,7 +255,8 @@ public class SubscriptionDLAppHelperLocalServiceWrapper
 		}
 
 		SubscriptionSender subscriptionSender = new DLSubscriptionSender(
-			DLConstants.RESOURCE_NAME, folderId);
+			_dlFolderModelResourcePermission, DLConstants.RESOURCE_NAME,
+			folderId);
 
 		DLFileEntry dlFileEntry = (DLFileEntry)fileEntry.getModel();
 
@@ -363,6 +365,11 @@ public class SubscriptionDLAppHelperLocalServiceWrapper
 
 	@Reference
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.document.library.kernel.model.DLFolder)"
+	)
+	private ModelResourcePermission<DLFolder> _dlFolderModelResourcePermission;
 
 	@Reference
 	private Language _language;

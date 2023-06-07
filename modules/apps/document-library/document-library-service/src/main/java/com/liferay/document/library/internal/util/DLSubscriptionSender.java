@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author To Trinh
@@ -30,9 +29,13 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
 public class DLSubscriptionSender
 	extends GroupSubscriptionCheckSubscriptionSender {
 
-	public DLSubscriptionSender(String resourceName, long targetFolderId) {
+	public DLSubscriptionSender(
+		ModelResourcePermission<DLFolder> dlFolderModelResourcePermission,
+		String resourceName, long targetFolderId) {
+
 		super(resourceName);
 
+		_dlFolderModelResourcePermission = dlFolderModelResourcePermission;
 		_targetFolderId = targetFolderId;
 	}
 
@@ -52,13 +55,8 @@ public class DLSubscriptionSender
 		return super.hasSubscribePermission(permissionChecker, subscription);
 	}
 
-	private static volatile ModelResourcePermission<DLFolder>
-		_dlFolderModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, DLSubscriptionSender.class,
-				"_dlFolderModelResourcePermission",
-				"(model.class.name=" + DLFolder.class.getName() + ")", true);
-
-	private long _targetFolderId;
+	private final ModelResourcePermission<DLFolder>
+		_dlFolderModelResourcePermission;
+	private final long _targetFolderId;
 
 }

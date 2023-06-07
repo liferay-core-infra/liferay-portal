@@ -58,10 +58,6 @@ public class JournalSmallImageFormNavigatorEntry
 			HttpServletResponse httpServletResponse)
 		throws IOException {
 
-		httpServletRequest.setAttribute(
-			JournalFileUploadsConfiguration.class.getName(),
-			_journalFileUploadsConfiguration);
-
 		super.include(httpServletRequest, httpServletResponse);
 	}
 

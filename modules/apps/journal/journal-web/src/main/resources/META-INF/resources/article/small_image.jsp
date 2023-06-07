@@ -32,7 +32,14 @@ String smallImageSource = journalEditArticleDisplayContext.getSmallImageSource()
 <aui:model-context bean="<%= article %>" model="<%= JournalArticle.class %>" />
 
 <%
-JournalFileUploadsConfiguration journalFileUploadsConfiguration = (JournalFileUploadsConfiguration)request.getAttribute(JournalFileUploadsConfiguration.class.getName());
+JournalFileUploadsConfiguration journalFileUploadsConfiguration = null;
+
+try {
+	journalFileUploadsConfiguration = ConfigurationProviderUtil.getSystemConfiguration(JournalFileUploadsConfiguration.class);
+}
+catch (ConfigurationException configurationException) {
+	throw new RuntimeException(configurationException);
+}
 %>
 
 <liferay-ui:error exception="<%= ArticleSmallImageNameException.class %>">

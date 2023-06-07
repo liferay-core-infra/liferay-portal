@@ -29,7 +29,6 @@ import com.liferay.dynamic.data.mapping.util.DDMTemplateHelper;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.exportimport.kernel.exception.ExportImportContentValidationException;
 import com.liferay.item.selector.ItemSelector;
-import com.liferay.journal.configuration.JournalFileUploadsConfiguration;
 import com.liferay.journal.constants.JournalConstants;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.constants.JournalWebKeys;
@@ -114,7 +113,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = {
-		"com.liferay.journal.configuration.JournalFileUploadsConfiguration",
 		"com.liferay.journal.web.internal.configuration.FFJournalAutoSaveDraftConfiguration",
 		"com.liferay.journal.web.internal.configuration.JournalWebConfiguration"
 	},
@@ -184,9 +182,6 @@ public class JournalPortlet extends MVCPortlet {
 		renderRequest.setAttribute(
 			JournalHelper.class.getName(), _journalHelper);
 		renderRequest.setAttribute(
-			JournalFileUploadsConfiguration.class.getName(),
-			_journalFileUploadsConfiguration);
-		renderRequest.setAttribute(
 			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
 		renderRequest.setAttribute(
 			JournalWebKeys.JOURNAL_CONTENT, _journalContent);
@@ -234,8 +229,6 @@ public class JournalPortlet extends MVCPortlet {
 		_ffJournalAutoSaveDraftConfiguration =
 			ConfigurableUtil.createConfigurable(
 				FFJournalAutoSaveDraftConfiguration.class, properties);
-		_journalFileUploadsConfiguration = ConfigurableUtil.createConfigurable(
-			JournalFileUploadsConfiguration.class, properties);
 		_journalWebConfiguration = ConfigurableUtil.createConfigurable(
 			JournalWebConfiguration.class, properties);
 	}
@@ -390,9 +383,6 @@ public class JournalPortlet extends MVCPortlet {
 
 	@Reference
 	private JournalDDMTemplateHelper _journalDDMTemplateHelper;
-
-	private volatile JournalFileUploadsConfiguration
-		_journalFileUploadsConfiguration;
 
 	@Reference
 	private JournalFolderService _journalFolderService;

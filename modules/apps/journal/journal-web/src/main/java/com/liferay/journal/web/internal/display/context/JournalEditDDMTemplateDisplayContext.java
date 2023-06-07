@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -70,9 +72,14 @@ public class JournalEditDDMTemplateDisplayContext {
 		_ddmTemplateHelper = (DDMTemplateHelper)httpServletRequest.getAttribute(
 			DDMTemplateHelper.class.getName());
 
-		_journalFileUploadsConfiguration =
-			(JournalFileUploadsConfiguration)httpServletRequest.getAttribute(
-				JournalFileUploadsConfiguration.class.getName());
+		try {
+			_journalFileUploadsConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					JournalFileUploadsConfiguration.class);
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 
 		_journalWebConfiguration =
 			(JournalWebConfiguration)httpServletRequest.getAttribute(

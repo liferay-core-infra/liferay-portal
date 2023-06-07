@@ -15,7 +15,7 @@
 package com.liferay.journal.web.internal.portlet.action;
 
 import com.liferay.exportimport.changeset.Changeset;
-import com.liferay.exportimport.changeset.portlet.action.ExportImportChangesetMVCActionCommand;
+import com.liferay.exportimport.changeset.portlet.action.ExportImportChangesetMVCActionCommandContributor;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.journal.constants.JournalPortletKeys;
@@ -71,7 +71,7 @@ public class PublishFolderMVCActionCommand extends BaseMVCActionCommand {
 			journalFolder -> _getFoldersAndArticles(journalFolder)
 		).build();
 
-		_exportImportChangesetMVCActionCommand.processPublishAction(
+		_exportImportChangesetMVCActionCommand.publish(
 			actionRequest, actionResponse, changeset);
 	}
 
@@ -155,7 +155,7 @@ public class PublishFolderMVCActionCommand extends BaseMVCActionCommand {
 		PublishFolderMVCActionCommand.class);
 
 	@Reference
-	private ExportImportChangesetMVCActionCommand
+	private ExportImportChangesetMVCActionCommandContributor
 		_exportImportChangesetMVCActionCommand;
 
 	@Reference

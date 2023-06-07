@@ -26,15 +26,10 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Máté Thurzó
  */
 @ProviderType
-public interface ExportImportChangesetMVCActionCommand
+public interface ExportImportChangesetMVCActionCommandContributor
 	extends MVCActionCommand {
 
-	public void processExportAction(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			Changeset changeset)
-		throws Exception;
-
-	public void processPublishAction(
+	public void publish(
 			ActionRequest actionRequest, ActionResponse actionResponse,
 			Changeset changeset)
 		throws Exception;

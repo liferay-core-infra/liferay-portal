@@ -19,7 +19,7 @@ import com.liferay.exportimport.changeset.ChangesetManager;
 import com.liferay.exportimport.changeset.constants.ChangesetConstants;
 import com.liferay.exportimport.changeset.constants.ChangesetPortletKeys;
 import com.liferay.exportimport.changeset.exception.ExportImportEntityException;
-import com.liferay.exportimport.changeset.portlet.action.ExportImportChangesetMVCActionCommand;
+import com.liferay.exportimport.changeset.portlet.action.ExportImportChangesetMVCActionCommandContributor;
 import com.liferay.exportimport.constants.ExportImportPortletKeys;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationParameterMapFactory;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactory;
@@ -74,28 +74,15 @@ import org.osgi.service.component.annotations.Reference;
 		"mvc.command.name=/export_import_changeset/export_import_changeset"
 	},
 	service = {
-		ExportImportChangesetMVCActionCommand.class, MVCActionCommand.class
+		ExportImportChangesetMVCActionCommandContributor.class, MVCActionCommand.class
 	}
 )
-public class ExportImportChangesetMVCActionCommandImpl
+public class ExportImportChangesetMVCActionCommandContributorImpl
 	extends BaseMVCActionCommand
-	implements ExportImportChangesetMVCActionCommand {
+	implements ExportImportChangesetMVCActionCommandContributor {
 
 	@Override
-	public void processExportAction(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			Changeset changeset)
-		throws Exception {
-
-		_changesetManager.addChangeset(changeset);
-
-		_processExportAndPublishAction(
-			actionRequest, actionResponse, Constants.EXPORT,
-			changeset.getUuid());
-	}
-
-	@Override
-	public void processPublishAction(
+	public void publish(
 			ActionRequest actionRequest, ActionResponse actionResponse,
 			Changeset changeset)
 		throws Exception {

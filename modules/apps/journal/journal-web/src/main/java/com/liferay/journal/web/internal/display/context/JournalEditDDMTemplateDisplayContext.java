@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -69,10 +71,6 @@ public class JournalEditDDMTemplateDisplayContext {
 
 		_ddmTemplateHelper = (DDMTemplateHelper)httpServletRequest.getAttribute(
 			DDMTemplateHelper.class.getName());
-
-		_journalFileUploadsConfiguration =
-			(JournalFileUploadsConfiguration)httpServletRequest.getAttribute(
-				JournalFileUploadsConfiguration.class.getName());
 
 		_journalWebConfiguration =
 			(JournalWebConfiguration)httpServletRequest.getAttribute(
@@ -393,7 +391,16 @@ public class JournalEditDDMTemplateDisplayContext {
 	}
 
 	public String[] imageExtensions() {
-		return _journalFileUploadsConfiguration.imageExtensions();
+		try {
+			JournalFileUploadsConfiguration journalFileUploadsConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					JournalFileUploadsConfiguration.class);
+
+			return journalFileUploadsConfiguration.imageExtensions();
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 	}
 
 	public boolean isCacheable() {
@@ -419,7 +426,16 @@ public class JournalEditDDMTemplateDisplayContext {
 	}
 
 	public long smallImageMaxSize() {
-		return _journalFileUploadsConfiguration.smallImageMaxSize();
+		try {
+			JournalFileUploadsConfiguration journalFileUploadsConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					JournalFileUploadsConfiguration.class);
+
+			return journalFileUploadsConfiguration.smallImageMaxSize();
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 	}
 
 	private Boolean _cacheable;
@@ -430,8 +446,6 @@ public class JournalEditDDMTemplateDisplayContext {
 	private Long _ddmTemplateId;
 	private Long _groupId;
 	private final HttpServletRequest _httpServletRequest;
-	private final JournalFileUploadsConfiguration
-		_journalFileUploadsConfiguration;
 	private final JournalWebConfiguration _journalWebConfiguration;
 	private String _redirect;
 	private final RenderResponse _renderResponse;

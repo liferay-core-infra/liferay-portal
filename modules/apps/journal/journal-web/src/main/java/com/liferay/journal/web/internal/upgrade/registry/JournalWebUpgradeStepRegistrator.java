@@ -18,12 +18,14 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.web.internal.configuration.JournalWebConfiguration;
 import com.liferay.journal.web.internal.upgrade.v1_1_0.MenuFavItemPortalPreferenceValuesUpgradeProcess;
+import com.liferay.journal.web.internal.upgrade.v1_2_0.FFJournalAutoSaveDraftConfigurationRemovalUpgradeProcess;
 import com.liferay.portal.configuration.persistence.upgrade.ConfigurationUpgradeStepFactory;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.upgrade.BasePortletIdUpgradeProcess;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
+import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -59,10 +61,18 @@ public class JournalWebUpgradeStepRegistrator
 			"1.0.1", "1.1.0",
 			new MenuFavItemPortalPreferenceValuesUpgradeProcess(
 				_classNameLocalService, _ddmStructureLocalService, _portal));
+
+		registry.register(
+			"1.1.0", "1.2.0",
+			new FFJournalAutoSaveDraftConfigurationRemovalUpgradeProcess(
+				_configurationAdmin));
 	}
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private ConfigurationAdmin _configurationAdmin;
 
 	@Reference
 	private ConfigurationUpgradeStepFactory _configurationUpgradeStepFactory;

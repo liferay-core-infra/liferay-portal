@@ -32,6 +32,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -63,10 +65,6 @@ public class JournalDDMTemplateManagementToolbarDisplayContext
 		super(
 			httpServletRequest, liferayPortletRequest, liferayPortletResponse,
 			journalDDMTemplateDisplayContext.getDDMTemplateSearch());
-
-		_ddmWebConfiguration =
-			(DDMWebConfiguration)httpServletRequest.getAttribute(
-				DDMWebConfiguration.class.getName());
 
 		_journalDDMTemplateDisplayContext = journalDDMTemplateDisplayContext;
 	}
@@ -185,7 +183,11 @@ public class JournalDDMTemplateManagementToolbarDisplayContext
 		}
 
 		try {
-			if (_ddmWebConfiguration.enableTemplateCreation() &&
+			DDMWebConfiguration ddmWebConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					DDMWebConfiguration.class);
+
+			if (ddmWebConfiguration.enableTemplateCreation() &&
 				DDMTemplatePermission.containsAddTemplatePermission(
 					themeDisplay.getPermissionChecker(),
 					themeDisplay.getScopeGroupId(),
@@ -194,6 +196,9 @@ public class JournalDDMTemplateManagementToolbarDisplayContext
 
 				return true;
 			}
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -227,7 +232,6 @@ public class JournalDDMTemplateManagementToolbarDisplayContext
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalDDMTemplateManagementToolbarDisplayContext.class);
 
-	private final DDMWebConfiguration _ddmWebConfiguration;
 	private final JournalDDMTemplateDisplayContext
 		_journalDDMTemplateDisplayContext;
 

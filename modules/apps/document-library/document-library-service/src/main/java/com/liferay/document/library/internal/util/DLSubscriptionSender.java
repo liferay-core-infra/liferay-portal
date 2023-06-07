@@ -30,9 +30,6 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
 public class DLSubscriptionSender
 	extends GroupSubscriptionCheckSubscriptionSender {
 
-	public DLSubscriptionSender() {
-	}
-
 	public DLSubscriptionSender(String resourceName, long targetFolderId) {
 		super(resourceName);
 

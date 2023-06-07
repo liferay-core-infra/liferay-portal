@@ -30,7 +30,6 @@ import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.web.internal.asset.model.JournalArticleAssetRenderer;
-import com.liferay.journal.web.internal.configuration.FFJournalAutoSaveDraftConfiguration;
 import com.liferay.journal.web.internal.configuration.JournalWebConfiguration;
 import com.liferay.journal.web.internal.portlet.JournalPortlet;
 import com.liferay.journal.web.internal.security.permission.resource.JournalArticlePermission;
@@ -39,6 +38,7 @@ import com.liferay.journal.web.internal.util.JournalUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -97,10 +97,6 @@ public class JournalArticleActionDropdownItemsProvider {
 			assetDisplayPageFriendlyURLProvider;
 		_trashHelper = trashHelper;
 
-		_ffJournalAutoSaveDraftConfiguration =
-			(FFJournalAutoSaveDraftConfiguration)
-				liferayPortletRequest.getAttribute(
-					FFJournalAutoSaveDraftConfiguration.class.getName());
 		_journalWebConfiguration =
 			(JournalWebConfiguration)liferayPortletRequest.getAttribute(
 				JournalWebConfiguration.class.getName());
@@ -142,8 +138,7 @@ public class JournalArticleActionDropdownItemsProvider {
 						_getEditArticleActionUnsafeConsumer()
 					).add(
 						() ->
-							_ffJournalAutoSaveDraftConfiguration.
-								journalArticleAutoSaveDraftEnabled() &&
+							FeatureFlagManagerUtil.isEnabled("LPS-141394") &&
 							hasUpdatePermission && _article.isDraft() &&
 							_article.hasApprovedVersion(),
 						_getDiscardDraftActionUnsafeConsumer()
@@ -1065,8 +1060,6 @@ public class JournalArticleActionDropdownItemsProvider {
 	private final JournalArticle _article;
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
-	private final FFJournalAutoSaveDraftConfiguration
-		_ffJournalAutoSaveDraftConfiguration;
 	private final HttpServletRequest _httpServletRequest;
 	private final JournalWebConfiguration _journalWebConfiguration;
 	private final LiferayPortletRequest _liferayPortletRequest;

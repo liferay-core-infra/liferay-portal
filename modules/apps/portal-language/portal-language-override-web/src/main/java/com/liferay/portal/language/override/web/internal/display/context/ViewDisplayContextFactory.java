@@ -19,6 +19,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.dao.search.SearchPaginationUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -47,6 +48,7 @@ import com.liferay.portal.language.override.web.internal.display.LanguageItemDis
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -115,12 +117,37 @@ public class ViewDisplayContextFactory {
 		return viewDisplayContext;
 	}
 
+	private int _calculateCur(int cur, int delta, int total) {
+		if (total == 0) {
+			return 1;
+		}
+
+		if (((cur - 1) * delta) >= total) {
+			if ((total % delta) == 0) {
+				cur = total / delta;
+			}
+			else {
+				cur = (total / delta) + 1;
+			}
+		}
+
+		return cur;
+	}
+
 	private SearchContainer<LanguageItemDisplay> _createSearchContainer(
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		String selectedLanguageId) {
 
 		LiferayPortletRequest liferayPortletRequest =
 			_portal.getLiferayPortletRequest(renderRequest);
+
+		int cur = ParamUtil.getInteger(liferayPortletRequest, "cur", 1);
+
+		int delta = ParamUtil.getInteger(liferayPortletRequest, "delta", 20);
+
+		String orderByType = SearchOrderByUtil.getOrderByType(
+			liferayPortletRequest, PLOPortletKeys.PORTAL_LANGUAGE_OVERRIDE,
+			"asc");
 
 		SearchContainer<LanguageItemDisplay> searchContainer =
 			new SearchContainer<>(
@@ -136,22 +163,31 @@ public class ViewDisplayContextFactory {
 			SearchOrderByUtil.getOrderByCol(
 				liferayPortletRequest, PLOPortletKeys.PORTAL_LANGUAGE_OVERRIDE,
 				"name"));
-		searchContainer.setOrderByType(
-			SearchOrderByUtil.getOrderByType(
-				liferayPortletRequest, PLOPortletKeys.PORTAL_LANGUAGE_OVERRIDE,
-				"asc"));
+		searchContainer.setOrderByType(orderByType);
+
+		String filter = ParamUtil.getString(renderRequest, "navigation", "all");
 
 		List<LanguageItemDisplay> languageItemDisplays =
 			_getLanguageItemDisplays(
-				_portal.getCompanyId(renderRequest),
-				ParamUtil.getString(renderRequest, "navigation", "all"),
+				_portal.getCompanyId(renderRequest), filter,
 				ParamUtil.getString(renderRequest, "keywords"),
-				selectedLanguageId);
+				selectedLanguageId, cur, delta, orderByType);
 
 		_sortLanguageItemDisplays(
 			languageItemDisplays, searchContainer.getOrderByType());
 
-		searchContainer.setResultsAndTotal(languageItemDisplays);
+		if (filter.equals("all")) {
+			ResourceBundle resourceBundle = LanguageResources.getResourceBundle(
+				_toLocale(selectedLanguageId));
+
+			Set<String> keySet = resourceBundle.keySet();
+
+			searchContainer.setResultsAndTotal(
+				() -> new ArrayList<>(languageItemDisplays), keySet.size());
+		}
+		else {
+			searchContainer.setResultsAndTotal(languageItemDisplays);
+		}
 
 		return searchContainer;
 	}
@@ -159,14 +195,20 @@ public class ViewDisplayContextFactory {
 	private List<LanguageItemDisplay> _getAllLanguageItemDisplays(
 		Predicate<String> keyMatchPredicate,
 		Map<String, List<PLOEntry>> keyPLOEntriesMap, String selectedLanguageId,
-		Predicate<String> valueMatchPredicate) {
+		Predicate<String> valueMatchPredicate, int cur, int delta,
+		String orderByType) {
 
 		List<LanguageItemDisplay> languageItemDisplays = new ArrayList<>();
 
 		ResourceBundle resourceBundle = LanguageResources.getResourceBundle(
 			_toLocale(selectedLanguageId));
 
-		for (String key : resourceBundle.keySet()) {
+		Set<String> keySet = resourceBundle.keySet();
+
+		List<String> keyList = _getSortedSublist(
+			keySet, cur, delta, orderByType);
+
+		for (String key : keyList) {
 			String value = ResourceBundleUtil.getString(resourceBundle, key);
 
 			if (!keyMatchPredicate.test(key) &&
@@ -252,7 +294,7 @@ public class ViewDisplayContextFactory {
 
 	private List<LanguageItemDisplay> _getLanguageItemDisplays(
 		long companyId, String filter, String keywords,
-		String selectedLanguageId) {
+		String selectedLanguageId, int cur, int delta, String orderByType) {
 
 		Predicate<String> keyMatchPredicate = _getPredicate(
 			keywords, _keyMatchPatternFunction);
@@ -274,7 +316,7 @@ public class ViewDisplayContextFactory {
 
 		return _getAllLanguageItemDisplays(
 			keyMatchPredicate, keyPLOEntriesMap, selectedLanguageId,
-			valueMatchPredicate);
+			valueMatchPredicate, cur, delta, orderByType);
 	}
 
 	private List<LanguageItemDisplay> _getOverrideLanguageItemDisplays(
@@ -342,6 +384,38 @@ public class ViewDisplayContextFactory {
 		Pattern pattern = patternFunction.apply(keywords);
 
 		return pattern.asPredicate();
+	}
+
+	private List<String> _getSortedSublist(
+		Set<String> set, int cur, int delta, String orderByType) {
+
+		int total = set.size();
+
+		cur = _calculateCur(cur, delta, total);
+
+		int[] startAndEnd = SearchPaginationUtil.calculateStartAndEnd(
+			cur, delta);
+
+		int start = startAndEnd[0];
+
+		int end = startAndEnd[1];
+
+		int resultEnd = end;
+
+		if (resultEnd > total) {
+			resultEnd = total;
+		}
+
+		List<String> list = new ArrayList<>(set);
+
+		if (Objects.equals(orderByType, "desc")) {
+			Collections.sort(list, Collections.reverseOrder());
+		}
+		else {
+			Collections.sort(list);
+		}
+
+		return list.subList(start, resultEnd);
 	}
 
 	private List<DropdownItem> _getTranslationLanguageDropdownItems(

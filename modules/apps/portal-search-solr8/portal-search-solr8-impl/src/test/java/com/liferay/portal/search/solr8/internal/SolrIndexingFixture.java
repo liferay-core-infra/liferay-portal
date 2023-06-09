@@ -261,13 +261,6 @@ public class SolrIndexingFixture implements IndexingFixture {
 		return solrIndexWriter;
 	}
 
-	protected NGramQueryBuilderImpl createNGramQueryBuilder() {
-		_serviceRegistration = _bundleContext.registerService(
-			NGramHolderBuilderImpl.class, new NGramHolderBuilderImpl(), null);
-
-		return new NGramQueryBuilderImpl();
-	}
-
 	protected Props createProps() {
 		Props props = Mockito.mock(Props.class);
 
@@ -317,9 +310,12 @@ public class SolrIndexingFixture implements IndexingFixture {
 			}
 		};
 
+		_serviceRegistration = _bundleContext.registerService(
+			NGramHolderBuilderImpl.class, new NGramHolderBuilderImpl(), null);
+
 		ReflectionTestUtil.setFieldValue(
 			solrQuerySuggester, "_nGramQueryBuilder",
-			createNGramQueryBuilder());
+			new NGramQueryBuilderImpl());
 		ReflectionTestUtil.setFieldValue(
 			solrQuerySuggester, "_solrClientManager", solrClientManager);
 

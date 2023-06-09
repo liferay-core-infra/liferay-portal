@@ -44,11 +44,11 @@ public class DRLActionExecutor implements ActionExecutor {
 	}
 
 	@Override
-	public String[] getActionExecutorKeys() {
-		return _ACTION_EXECUTOR_KEYS;
+	public String getActionExecutorKey() {
+		return _ACTION_EXECUTOR_KEY;
 	}
 
-	private static final String[] _ACTION_EXECUTOR_KEYS = {"drl"};
+	private static final String _ACTION_EXECUTOR_KEY = "drl";
 
 	@Reference
 	private RulesEngineExecutor _rulesEngineExecutor;

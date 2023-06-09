@@ -83,18 +83,17 @@ public class MailOutlookMailAuthTokenProvider implements MailAuthTokenProvider {
 	@Override
 	public boolean isProtocolSupported(long companyId, String protocol) {
 		try {
-			MailOutlookAuthConnectorCompanyConfiguration
-				mailOutlookAuthConnectorCompanyConfiguration =
-					_configurationProvider.getCompanyConfiguration(
-						MailOutlookAuthConnectorCompanyConfiguration.class,
-						companyId);
-
 			if (Objects.equals(Account.PROTOCOL_POPS, protocol)) {
-				return mailOutlookAuthConnectorCompanyConfiguration.
-					pop3ConnectionEnabled();
+				return true;
 			}
 
 			if (Objects.equals(Account.PROTOCOL_SMTP, protocol)) {
+				MailOutlookAuthConnectorCompanyConfiguration
+					mailOutlookAuthConnectorCompanyConfiguration =
+						_configurationProvider.getCompanyConfiguration(
+							MailOutlookAuthConnectorCompanyConfiguration.class,
+							companyId);
+
 				return mailOutlookAuthConnectorCompanyConfiguration.
 					smtpConnectionEnabled();
 			}

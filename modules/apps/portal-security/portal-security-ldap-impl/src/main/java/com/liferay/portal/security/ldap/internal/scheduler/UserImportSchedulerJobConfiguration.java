@@ -17,7 +17,6 @@ package com.liferay.portal.security.ldap.internal.scheduler;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
@@ -29,8 +28,6 @@ import com.liferay.portal.security.ldap.exportimport.LDAPUserImporter;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration;
 import com.liferay.portal.security.ldap.internal.constants.LDAPDestinationNames;
 
-import java.util.Map;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,7 +38,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Shuyang Zhou
  */
 @Component(
-	configurationPid = "com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration",
+	property = "factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration",
 	service = SchedulerJobConfiguration.class
 )
 public class UserImportSchedulerJobConfiguration
@@ -76,9 +73,9 @@ public class UserImportSchedulerJobConfiguration
 	}
 
 	@Activate
-	protected void activate(Map<String, Object> properties) {
-		_ldapImportConfiguration = ConfigurableUtil.createConfigurable(
-			LDAPImportConfiguration.class, properties);
+	protected void activate() {
+		_ldapImportConfiguration =
+			_ldapImportConfigurationProvider.getConfiguration(0L);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(

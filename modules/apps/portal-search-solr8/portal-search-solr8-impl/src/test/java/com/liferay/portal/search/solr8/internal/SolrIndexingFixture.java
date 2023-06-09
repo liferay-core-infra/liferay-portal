@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.solr8.internal;
 
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.IndexSearcher;
 import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -57,6 +58,9 @@ import java.util.Map;
 import org.apache.solr.client.solrj.SolrQuery;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Miguel Angelo Caldas Gallindo
@@ -125,6 +129,11 @@ public class SolrIndexingFixture implements IndexingFixture {
 
 	@Override
 	public void tearDown() throws Exception {
+		if (_serviceRegistration == null) {
+			return;
+		}
+
+		_serviceRegistration.unregister();
 	}
 
 	protected static SolrQueryTranslator createSolrQueryTranslator() {
@@ -253,14 +262,10 @@ public class SolrIndexingFixture implements IndexingFixture {
 	}
 
 	protected NGramQueryBuilderImpl createNGramQueryBuilder() {
-		NGramQueryBuilderImpl nGramQueryBuilderImpl =
-			new NGramQueryBuilderImpl();
+		_serviceRegistration = _bundleContext.registerService(
+			NGramHolderBuilderImpl.class, new NGramHolderBuilderImpl(), null);
 
-		ReflectionTestUtil.setFieldValue(
-			nGramQueryBuilderImpl, "_nGramHolderBuilder",
-			new NGramHolderBuilderImpl());
-
-		return nGramQueryBuilderImpl;
+		return new NGramQueryBuilderImpl();
 	}
 
 	protected Props createProps() {
@@ -342,6 +347,11 @@ public class SolrIndexingFixture implements IndexingFixture {
 	}
 
 	private static final long _COMPANY_ID = RandomTestUtil.randomLong();
+
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
+	private static ServiceRegistration<NGramHolderBuilderImpl>
+		_serviceRegistration;
 
 	private FacetProcessor<SolrQuery> _facetProcessor;
 	private IndexSearcher _indexSearcher;

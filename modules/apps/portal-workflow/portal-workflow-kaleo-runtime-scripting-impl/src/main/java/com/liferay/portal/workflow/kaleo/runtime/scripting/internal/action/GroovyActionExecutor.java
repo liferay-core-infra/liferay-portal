@@ -51,8 +51,8 @@ public class GroovyActionExecutor implements ActionExecutor {
 	}
 
 	@Override
-	public String[] getActionExecutorKeys() {
-		return _ACTION_EXECUTOR_KEYS;
+	public String getActionExecutorKey() {
+		return _ACTION_EXECUTOR_KEY;
 	}
 
 	public void setOutputObjects(Set<String> outputObjects) {
@@ -68,7 +68,7 @@ public class GroovyActionExecutor implements ActionExecutor {
 			kaleoAction.getScript());
 	}
 
-	private static final String[] _ACTION_EXECUTOR_KEYS = {"groovy"};
+	private static final String _ACTION_EXECUTOR_KEY = "groovy";
 
 	@Reference
 	private KaleoScriptingEvaluator _kaleoScriptingEvaluator;

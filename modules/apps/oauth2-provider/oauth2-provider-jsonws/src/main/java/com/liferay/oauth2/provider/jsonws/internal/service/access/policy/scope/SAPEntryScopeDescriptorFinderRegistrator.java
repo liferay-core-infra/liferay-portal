@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -40,15 +39,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Tomas Polesovsky
@@ -58,6 +53,12 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 	service = SAPEntryScopeDescriptorFinderRegistrator.class
 )
 public class SAPEntryScopeDescriptorFinderRegistrator {
+
+	public void addJaxRsApplicationNames(String jaxRsApplicationName) {
+		_jaxRsApplicationNames.add(jaxRsApplicationName);
+
+		_resetProperties();
+	}
 
 	public List<SAPEntryScope> getRegisteredSAPEntryScopes(long companyId) {
 		SAPEntryScopeDescriptorFinder sapEntryScopeDescriptorFinder =
@@ -120,6 +121,12 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 		}
 	}
 
+	public void removeJaxRsApplicationNames(String jaxRsApplicationName) {
+		_jaxRsApplicationNames.remove(jaxRsApplicationName);
+
+		_resetProperties();
+	}
+
 	@Activate
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
@@ -141,40 +148,6 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 			ArrayUtil.toLongArray(_scopeFinderServiceRegistrations.keySet()));
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(&(osgi.jaxrs.name=*)(sap.scope.finder=true))"
-	)
-	protected void addJaxRsApplicationName(
-		ServiceReference<ScopeFinder> serviceReference) {
-
-		_jaxRsApplicationNames.add(
-			GetterUtil.getString(
-				serviceReference.getProperty("osgi.jaxrs.name")));
-
-		for (Map.Entry<Long, ServiceRegistration<ScopeDescriptor>> entry :
-				_scopeDescriptorServiceRegistrations.entrySet()) {
-
-			ServiceRegistration<ScopeDescriptor> serviceRegistration =
-				entry.getValue();
-
-			try {
-				serviceRegistration.setProperties(
-					_buildScopeDescriptorProperties(entry.getKey()));
-			}
-			catch (IllegalStateException illegalStateException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(illegalStateException);
-				}
-
-				// Concurrent unregistration from register(long)
-
-			}
-		}
-	}
-
 	@Deactivate
 	protected void deactivate() {
 		for (ServiceRegistration<ScopeFinder> serviceRegistration :
@@ -192,34 +165,6 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 		}
 
 		_scopeDescriptorServiceRegistrations.clear();
-	}
-
-	protected void removeJaxRsApplicationName(
-		ServiceReference<ScopeFinder> serviceReference) {
-
-		_jaxRsApplicationNames.remove(
-			GetterUtil.getString(
-				serviceReference.getProperty("osgi.jaxrs.name")));
-
-		for (Map.Entry<Long, ServiceRegistration<ScopeDescriptor>> entry :
-				_scopeDescriptorServiceRegistrations.entrySet()) {
-
-			ServiceRegistration<ScopeDescriptor> serviceRegistration =
-				entry.getValue();
-
-			try {
-				serviceRegistration.setProperties(
-					_buildScopeDescriptorProperties(entry.getKey()));
-			}
-			catch (IllegalStateException illegalStateException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(illegalStateException);
-				}
-
-				// Concurrent unregistration from register(long)
-
-			}
-		}
 	}
 
 	private HashMapDictionary<String, Object> _buildScopeDescriptorProperties(
@@ -260,6 +205,28 @@ public class SAPEntryScopeDescriptorFinderRegistrator {
 		}
 
 		return sapEntryName.substring(_sapEntryOAuth2Prefix.length());
+	}
+
+	private void _resetProperties() {
+		for (Map.Entry<Long, ServiceRegistration<ScopeDescriptor>> entry :
+				_scopeDescriptorServiceRegistrations.entrySet()) {
+
+			ServiceRegistration<ScopeDescriptor> serviceRegistration =
+				entry.getValue();
+
+			try {
+				serviceRegistration.setProperties(
+					_buildScopeDescriptorProperties(entry.getKey()));
+			}
+			catch (IllegalStateException illegalStateException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(illegalStateException);
+				}
+
+				// Concurrent unregistration from register(long)
+
+			}
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

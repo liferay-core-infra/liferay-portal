@@ -53,7 +53,7 @@ import org.junit.runner.RunWith;
  * @author Alejandro Tardín
  */
 @RunWith(Arquillian.class)
-public class DepotPanelAppControllerTest {
+public class DepotApplicationControllerTest {
 
 	@ClassRule
 	@Rule

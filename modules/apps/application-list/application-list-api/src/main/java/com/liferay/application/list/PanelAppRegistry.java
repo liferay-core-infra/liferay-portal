@@ -14,6 +14,7 @@
 
 package com.liferay.application.list;
 
+import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -52,6 +53,21 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 @Component(service = PanelAppRegistry.class)
 public class PanelAppRegistry {
+
+	public boolean containsPortlet(String portletId, String panelCategoryKey) {
+		for (PanelCategory curPanelCategory :
+				_panelCategoryRegistry.getChildPanelCategories(
+					panelCategoryKey)) {
+
+			if (hasPortlet(portletId, curPanelCategory.getKey()) ||
+				containsPortlet(portletId, curPanelCategory.getKey())) {
+
+				return true;
+			}
+		}
+
+		return hasPortlet(portletId, panelCategoryKey);
+	}
 
 	public PanelApp getFirstPanelApp(
 		String parentPanelCategoryKey, PermissionChecker permissionChecker,
@@ -158,6 +174,26 @@ public class PanelAppRegistry {
 		return count;
 	}
 
+	public boolean hasPortlet(String portletId, String panelCategoryKey) {
+		Iterable<PanelApp> panelApps = getPanelApps(panelCategoryKey);
+
+		for (PanelApp panelApp : panelApps) {
+			if (portletId.equals(panelApp.getPortletId())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isApplicationsMenuApp(String portletId) {
+		return containsPortlet(portletId, PanelCategoryKeys.APPLICATIONS_MENU);
+	}
+
+	public boolean isControlPanelApp(String portletId) {
+		return containsPortlet(portletId, PanelCategoryKeys.CONTROL_PANEL);
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
@@ -231,6 +267,9 @@ public class PanelAppRegistry {
 
 	@Reference
 	private GroupProvider _groupProvider;
+
+	@Reference
+	private PanelCategoryRegistry _panelCategoryRegistry;
 
 	@Reference
 	private PortletLocalService _portletLocalService;

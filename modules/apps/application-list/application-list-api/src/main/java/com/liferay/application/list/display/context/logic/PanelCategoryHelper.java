@@ -40,18 +40,7 @@ public class PanelCategoryHelper {
 	}
 
 	public boolean containsPortlet(String portletId, String panelCategoryKey) {
-		for (PanelCategory curPanelCategory :
-				_panelCategoryRegistry.getChildPanelCategories(
-					panelCategoryKey)) {
-
-			if (hasPortlet(portletId, curPanelCategory.getKey()) ||
-				containsPortlet(portletId, curPanelCategory.getKey())) {
-
-				return true;
-			}
-		}
-
-		return hasPortlet(portletId, panelCategoryKey);
+		return _panelAppRegistry.containsPortlet(portletId, panelCategoryKey);
 	}
 
 	public boolean containsPortlet(
@@ -148,24 +137,15 @@ public class PanelCategoryHelper {
 	}
 
 	public boolean isApplicationsMenuApp(String portletId) {
-		return containsPortlet(portletId, PanelCategoryKeys.APPLICATIONS_MENU);
+		return _panelAppRegistry.isApplicationsMenuApp(portletId);
 	}
 
 	public boolean isControlPanelApp(String portletId) {
-		return containsPortlet(portletId, PanelCategoryKeys.CONTROL_PANEL);
+		return _panelAppRegistry.isControlPanelApp(portletId);
 	}
 
 	protected boolean hasPortlet(String portletId, String panelCategoryKey) {
-		Iterable<PanelApp> panelApps = _panelAppRegistry.getPanelApps(
-			panelCategoryKey);
-
-		for (PanelApp panelApp : panelApps) {
-			if (portletId.equals(panelApp.getPortletId())) {
-				return true;
-			}
-		}
-
-		return false;
+		return _panelAppRegistry.hasPortlet(portletId, panelCategoryKey);
 	}
 
 	protected boolean hasPortlet(

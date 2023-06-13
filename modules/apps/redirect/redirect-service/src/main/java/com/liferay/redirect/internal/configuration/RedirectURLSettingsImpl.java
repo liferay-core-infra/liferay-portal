@@ -15,7 +15,7 @@
 package com.liferay.redirect.internal.configuration;
 
 import com.liferay.portal.kernel.redirect.RedirectURLSettings;
-import com.liferay.redirect.internal.configuration.admin.service.RedirectURLManagedServiceFactory;
+import com.liferay.redirect.internal.configuration.admin.service.util.RedirectURLManagedServiceFactoryHelper;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,7 +29,7 @@ public class RedirectURLSettingsImpl implements RedirectURLSettings {
 	@Override
 	public String[] getAllowedDomains(long companyId) {
 		RedirectURLConfiguration redirectURLConfiguration =
-			_redirectURLManagedServiceFactory.
+			_redirectURLManagedServiceFactoryHelper.
 				getCompanyRedirectURLConfiguration(companyId);
 
 		return redirectURLConfiguration.allowedDomains();
@@ -38,7 +38,7 @@ public class RedirectURLSettingsImpl implements RedirectURLSettings {
 	@Override
 	public String[] getAllowedIPs(long companyId) {
 		RedirectURLConfiguration redirectURLConfiguration =
-			_redirectURLManagedServiceFactory.
+			_redirectURLManagedServiceFactoryHelper.
 				getCompanyRedirectURLConfiguration(companyId);
 
 		return redirectURLConfiguration.allowedIPs();
@@ -47,13 +47,14 @@ public class RedirectURLSettingsImpl implements RedirectURLSettings {
 	@Override
 	public String getSecurityMode(long companyId) {
 		RedirectURLConfiguration redirectURLConfiguration =
-			_redirectURLManagedServiceFactory.
+			_redirectURLManagedServiceFactoryHelper.
 				getCompanyRedirectURLConfiguration(companyId);
 
 		return redirectURLConfiguration.securityMode();
 	}
 
 	@Reference
-	private RedirectURLManagedServiceFactory _redirectURLManagedServiceFactory;
+	private RedirectURLManagedServiceFactoryHelper
+		_redirectURLManagedServiceFactoryHelper;
 
 }

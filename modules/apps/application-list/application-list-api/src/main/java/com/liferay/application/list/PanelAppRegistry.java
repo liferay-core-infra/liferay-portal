@@ -15,6 +15,7 @@
 package com.liferay.application.list;
 
 import com.liferay.application.list.constants.PanelCategoryKeys;
+import com.liferay.depot.application.controller.DepotApplicationController;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -264,6 +265,9 @@ public class PanelAppRegistry {
 	private static final Snapshot<PanelAppShowFilter>
 		_panelAppShowFilterSnapshot = new Snapshot<>(
 			PanelAppRegistry.class, PanelAppShowFilter.class, null, true);
+
+	@Reference
+	private DepotApplicationController _depotApplicationController;
 
 	@Reference
 	private GroupProvider _groupProvider;

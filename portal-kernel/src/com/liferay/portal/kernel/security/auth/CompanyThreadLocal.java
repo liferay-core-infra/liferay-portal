@@ -17,13 +17,16 @@ package com.liferay.portal.kernel.security.auth;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.TimeZoneThreadLocal;
@@ -50,6 +53,16 @@ public class CompanyThreadLocal {
 		return companyId;
 	}
 
+	public static String getWebId() {
+		String webId = _webId.get();
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Get company WebID " + webId);
+		}
+
+		return webId;
+	}
+
 	public static boolean isInitializingPortalInstance() {
 		return _initializingPortalInstance.get();
 	}
@@ -73,8 +86,8 @@ public class CompanyThreadLocal {
 					currentCompanyId.longValue(), " are different"));
 		}
 
-		SafeCloseable safeCloseable = _companyId.setWithSafeCloseable(
-			companyId);
+		SafeCloseable safeCloseable = _setWithSafeCloseable(
+			companyId, _fetchWebId(companyId));
 
 		_locked.set(true);
 
@@ -95,10 +108,10 @@ public class CompanyThreadLocal {
 		long companyId) {
 
 		if (companyId > 0) {
-			return _companyId.setWithSafeCloseable(companyId);
+			return _setWithSafeCloseable(companyId, _fetchWebId(companyId));
 		}
 
-		return _companyId.setWithSafeCloseable(CompanyConstants.SYSTEM);
+		return _setWithSafeCloseable(CompanyConstants.SYSTEM, StringPool.BLANK);
 	}
 
 	public static SafeCloseable setInitializingPortalInstance(
@@ -117,6 +130,7 @@ public class CompanyThreadLocal {
 		Long companyId, Long ctCollectionId) {
 
 		long currentCompanyId = _companyId.get();
+		String currentWebId = _webId.get();
 		Locale defaultLocale = LocaleThreadLocal.getDefaultLocale();
 		TimeZone defaultTimeZone = TimeZoneThreadLocal.getDefaultTimeZone();
 
@@ -128,6 +142,7 @@ public class CompanyThreadLocal {
 
 		return () -> {
 			_companyId.set(currentCompanyId);
+			_webId.set(currentWebId);
 			LocaleThreadLocal.setDefaultLocale(defaultLocale);
 			TimeZoneThreadLocal.setDefaultTimeZone(defaultTimeZone);
 
@@ -175,6 +190,16 @@ public class CompanyThreadLocal {
 		return guestUser;
 	}
 
+	private static String _fetchWebId(Long companyId) {
+		Company company = CompanyLocalServiceUtil.fetchCompany(companyId);
+
+		if (company == null) {
+			return StringPool.BLANK;
+		}
+
+		return company.getWebId();
+	}
+
 	private static boolean _setCompanyId(Long companyId) {
 		if (companyId.equals(_companyId.get())) {
 			if (!isLocked()) {
@@ -201,11 +226,13 @@ public class CompanyThreadLocal {
 
 		if (companyId > 0) {
 			_companyId.set(companyId);
+			_webId.set(_fetchWebId(companyId));
 
 			_setUserThreadLocals(companyId);
 		}
 		else {
 			_companyId.set(CompanyConstants.SYSTEM);
+			_webId.set(StringPool.BLANK);
 
 			_setUserThreadLocals(null);
 		}
@@ -240,6 +267,20 @@ public class CompanyThreadLocal {
 		}
 	}
 
+	private static SafeCloseable _setWithSafeCloseable(
+		long companyId, String webId) {
+
+		SafeCloseable companyIdSafeCloseable = _companyId.setWithSafeCloseable(
+			companyId);
+		SafeCloseable companyWebIdSafeCloseable = _webId.setWithSafeCloseable(
+			webId);
+
+		return () -> {
+			companyIdSafeCloseable.close();
+			companyWebIdSafeCloseable.close();
+		};
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyThreadLocal.class);
 
@@ -254,5 +295,8 @@ public class CompanyThreadLocal {
 	private static final ThreadLocal<Boolean> _locked =
 		new CentralizedThreadLocal<>(
 			CompanyThreadLocal.class + "._locked", () -> Boolean.FALSE);
+	private static final CentralizedThreadLocal<String> _webId =
+		new CentralizedThreadLocal<>(
+			CompanyThreadLocal.class + "._webId", () -> StringPool.BLANK);
 
 }

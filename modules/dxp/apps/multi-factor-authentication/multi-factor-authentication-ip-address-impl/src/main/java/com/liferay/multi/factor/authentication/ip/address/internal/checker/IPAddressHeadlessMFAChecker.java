@@ -64,11 +64,13 @@ public class IPAddressHeadlessMFAChecker implements HeadlessMFAChecker {
 						userId);
 			}
 
-			_routeAuditMessage(
-				_mfaIPAddressAuditMessageBuilder.
-					buildNonexistentUserVerificationFailureAuditMessage(
-						CompanyThreadLocal.getCompanyId(), userId,
-						_getClassName()));
+			if (_mfaIPAddressAuditMessageBuilder != null) {
+				_routeAuditMessage(
+					_mfaIPAddressAuditMessageBuilder.
+						buildNonexistentUserVerificationFailureAuditMessage(
+							CompanyThreadLocal.getCompanyId(), userId,
+							_getClassName()));
+			}
 
 			return false;
 		}
@@ -76,18 +78,22 @@ public class IPAddressHeadlessMFAChecker implements HeadlessMFAChecker {
 		if (AccessControlUtil.isAccessAllowed(
 				httpServletRequest, _allowedIpAddressesAndNetmasks)) {
 
-			_routeAuditMessage(
-				_mfaIPAddressAuditMessageBuilder.
-					buildVerificationSuccessAuditMessage(
-						user, _getClassName()));
+			if (_mfaIPAddressAuditMessageBuilder != null) {
+				_routeAuditMessage(
+					_mfaIPAddressAuditMessageBuilder.
+						buildVerificationSuccessAuditMessage(
+							user, _getClassName()));
+			}
 
 			return true;
 		}
 
-		_routeAuditMessage(
-			_mfaIPAddressAuditMessageBuilder.
-				buildVerificationFailureAuditMessage(
-					user, _getClassName(), "IP is not allowed"));
+		if (_mfaIPAddressAuditMessageBuilder != null) {
+			_routeAuditMessage(
+				_mfaIPAddressAuditMessageBuilder.
+					buildVerificationFailureAuditMessage(
+						user, _getClassName(), "IP is not allowed"));
+		}
 
 		return false;
 	}
@@ -129,9 +135,7 @@ public class IPAddressHeadlessMFAChecker implements HeadlessMFAChecker {
 	}
 
 	private void _routeAuditMessage(AuditMessage auditMessage) {
-		if (_mfaIPAddressAuditMessageBuilder != null) {
-			_mfaIPAddressAuditMessageBuilder.routeAuditMessage(auditMessage);
-		}
+		_mfaIPAddressAuditMessageBuilder.routeAuditMessage(auditMessage);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

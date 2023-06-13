@@ -248,11 +248,13 @@ public class FIDO2BrowserSetupMFAChecker
 						userId);
 			}
 
-			_routeAuditMessage(
-				_mfaFIDO2AuditMessageBuilder.
-					buildNonexistentUserVerificationFailureAuditMessage(
-						CompanyThreadLocal.getCompanyId(), userId,
-						_getClassName()));
+			if (_mfaFIDO2AuditMessageBuilder != null) {
+				_routeAuditMessage(
+					_mfaFIDO2AuditMessageBuilder.
+						buildNonexistentUserVerificationFailureAuditMessage(
+							CompanyThreadLocal.getCompanyId(), userId,
+							_getClassName()));
+			}
 
 			return false;
 		}
@@ -264,11 +266,13 @@ public class FIDO2BrowserSetupMFAChecker
 						" with incomplete configuration");
 			}
 
-			_routeAuditMessage(
-				_mfaFIDO2AuditMessageBuilder.
-					buildUnconfiguredUserVerificationFailureAuditMessage(
-						CompanyThreadLocal.getCompanyId(), user,
-						_getClassName()));
+			if (_mfaFIDO2AuditMessageBuilder != null) {
+				_routeAuditMessage(
+					_mfaFIDO2AuditMessageBuilder.
+						buildUnconfiguredUserVerificationFailureAuditMessage(
+							CompanyThreadLocal.getCompanyId(), user,
+							_getClassName()));
+			}
 
 			return false;
 		}
@@ -283,11 +287,13 @@ public class FIDO2BrowserSetupMFAChecker
 				_mfaFIDO2CredentialEntryLocalService.updateAttempts(
 					userId, credentialIdByteArray.getBase64(), 0);
 
-				_routeAuditMessage(
-					_mfaFIDO2AuditMessageBuilder.
-						buildVerificationFailureAuditMessage(
-							user, _getClassName(),
-							"Incorrect FIDO2 verification"));
+				if (_mfaFIDO2AuditMessageBuilder != null) {
+					_routeAuditMessage(
+						_mfaFIDO2AuditMessageBuilder.
+							buildVerificationFailureAuditMessage(
+								user, _getClassName(),
+								"Incorrect FIDO2 verification"));
+				}
 
 				return false;
 			}
@@ -315,9 +321,11 @@ public class FIDO2BrowserSetupMFAChecker
 		httpSession.setAttribute(
 			MFAFIDO2WebKeys.MFA_FIDO2_VALIDATED_USER_ID, userId);
 
-		_routeAuditMessage(
-			_mfaFIDO2AuditMessageBuilder.buildVerifiedAuditMessage(
-				user, _getClassName()));
+		if (_mfaFIDO2AuditMessageBuilder != null) {
+			_routeAuditMessage(
+				_mfaFIDO2AuditMessageBuilder.buildVerifiedAuditMessage(
+					user, _getClassName()));
+		}
 
 		return true;
 	}
@@ -504,19 +512,23 @@ public class FIDO2BrowserSetupMFAChecker
 						userId);
 			}
 
-			_routeAuditMessage(
-				_mfaFIDO2AuditMessageBuilder.
-					buildNonexistentUserVerificationFailureAuditMessage(
-						CompanyThreadLocal.getCompanyId(), userId,
-						_getClassName()));
+			if (_mfaFIDO2AuditMessageBuilder != null) {
+				_routeAuditMessage(
+					_mfaFIDO2AuditMessageBuilder.
+						buildNonexistentUserVerificationFailureAuditMessage(
+							CompanyThreadLocal.getCompanyId(), userId,
+							_getClassName()));
+			}
 
 			return false;
 		}
 
 		if (httpSession == null) {
-			_routeAuditMessage(
-				_mfaFIDO2AuditMessageBuilder.buildNotVerifiedAuditMessage(
-					user, _getClassName(), "Empty session"));
+			if (_mfaFIDO2AuditMessageBuilder != null) {
+				_routeAuditMessage(
+					_mfaFIDO2AuditMessageBuilder.buildNotVerifiedAuditMessage(
+						user, _getClassName(), "Empty session"));
+			}
 
 			return false;
 		}
@@ -528,9 +540,7 @@ public class FIDO2BrowserSetupMFAChecker
 	}
 
 	private void _routeAuditMessage(AuditMessage auditMessage) {
-		if (_mfaFIDO2AuditMessageBuilder != null) {
-			_mfaFIDO2AuditMessageBuilder.routeAuditMessage(auditMessage);
-		}
+		_mfaFIDO2AuditMessageBuilder.routeAuditMessage(auditMessage);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

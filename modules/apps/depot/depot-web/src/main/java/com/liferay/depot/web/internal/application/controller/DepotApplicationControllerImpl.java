@@ -20,6 +20,7 @@ import com.liferay.depot.model.DepotAppCustomization;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotAppCustomizationLocalService;
 import com.liferay.depot.service.DepotEntryLocalService;
+import com.liferay.depot.web.internal.constants.DepotPortletKeys;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerVisibleFilter;
@@ -56,6 +57,17 @@ public class DepotApplicationControllerImpl
 		}
 
 		return depotApplications;
+	}
+
+	@Override
+	public boolean isAlwaysShow(String portletId) {
+		if (portletId.equals(DepotPortletKeys.DEPOT_ADMIN) ||
+			portletId.equals(DepotPortletKeys.DEPOT_SETTINGS)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

@@ -25,6 +25,8 @@ public interface DepotApplicationController {
 
 	public Collection<DepotApplication> getCustomizableDepotApplications();
 
+	public boolean isAlwaysShow(String portletId);
+
 	public boolean isClassNameEnabled(String className, long groupId);
 
 	public boolean isEnabled(String portletId);

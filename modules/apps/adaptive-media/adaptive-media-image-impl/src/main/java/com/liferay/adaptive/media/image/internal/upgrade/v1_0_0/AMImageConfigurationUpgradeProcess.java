@@ -16,10 +16,16 @@ package com.liferay.adaptive.media.image.internal.upgrade.v1_0_0;
 
 import com.liferay.adaptive.media.image.internal.configuration.AMImageConfiguration;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.util.PropsValues;
 
+import java.io.File;
 import java.io.IOException;
+
+import java.sql.SQLException;
 
 import java.util.Dictionary;
 
@@ -40,7 +46,9 @@ public class AMImageConfigurationUpgradeProcess extends UpgradeProcess {
 	}
 
 	@Override
-	protected void doUpgrade() throws InvalidSyntaxException, IOException {
+	protected void doUpgrade()
+		throws InvalidSyntaxException, IOException, SQLException {
+
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			StringBundler.concat(
 				"(", Constants.SERVICE_PID, "=",
@@ -50,7 +58,6 @@ public class AMImageConfigurationUpgradeProcess extends UpgradeProcess {
 			return;
 		}
 
-
 		for (Configuration configuration : configurations) {
 			Dictionary<String, Object> dictionary =
 				configuration.getProperties();
@@ -58,6 +65,20 @@ public class AMImageConfigurationUpgradeProcess extends UpgradeProcess {
 			dictionary.remove("imageMaxSize");
 
 			configuration.updateIfDifferent(dictionary);
+		}
+
+		File file = new File(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			AMImageConfiguration.class.getName() + ".config");
+
+		if (file.exists() && (file.length() == 0)) {
+			FileUtil.delete(file);
+
+			DB db = DBManagerUtil.getDB();
+
+			db.runSQL(
+				"delete from Configuration_ where configurationId like '" +
+					AMImageConfiguration.class.getName() + "%'");
 		}
 	}
 

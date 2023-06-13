@@ -15,7 +15,7 @@
 package com.liferay.oauth2.provider.rest.internal.endpoint.access.token.grant.handler;
 
 import com.liferay.oauth2.provider.configuration.OAuth2ProviderConfiguration;
-import com.liferay.oauth2.provider.rest.internal.configuration.admin.service.OAuth2InAssertionManagedServiceFactory;
+import com.liferay.oauth2.provider.rest.internal.configuration.admin.service.util.OAuth2InAssertionManagedServiceFactoryHelper;
 import com.liferay.oauth2.provider.rest.internal.endpoint.constants.OAuth2ProviderRESTEndpointConstants;
 import com.liferay.oauth2.provider.rest.internal.endpoint.liferay.LiferayOAuthDataProvider;
 import com.liferay.petra.string.StringPool;
@@ -116,8 +116,8 @@ public class LiferayJWTBearerGrantHandler extends BaseAccessTokenGrantHandler {
 	private LiferayOAuthDataProvider _liferayOAuthDataProvider;
 
 	@Reference
-	private OAuth2InAssertionManagedServiceFactory
-		_oAuth2InAssertionManagedServiceFactory;
+	private OAuth2InAssertionManagedServiceFactoryHelper
+		_oAuth2InAssertionManagedServiceFactoryHelper;
 
 	private OAuth2ProviderConfiguration _oAuth2ProviderConfiguration;
 
@@ -177,8 +177,8 @@ public class LiferayJWTBearerGrantHandler extends BaseAccessTokenGrantHandler {
 
 			try {
 				userAuthType =
-					_oAuth2InAssertionManagedServiceFactory.getUserAuthType(
-						companyId, issuer);
+					_oAuth2InAssertionManagedServiceFactoryHelper.
+						getUserAuthType(companyId, issuer);
 			}
 			catch (IllegalArgumentException illegalArgumentException) {
 				if (_log.isWarnEnabled()) {
@@ -216,7 +216,7 @@ public class LiferayJWTBearerGrantHandler extends BaseAccessTokenGrantHandler {
 
 			try {
 				jwsSignatureVerifier =
-					_oAuth2InAssertionManagedServiceFactory.
+					_oAuth2InAssertionManagedServiceFactoryHelper.
 						getJWSSignatureVerifier(
 							companyId, jwtClaims.getIssuer(),
 							jwsHeaders.getKeyId());

@@ -14,7 +14,7 @@
 
 package com.liferay.oauth2.provider.rest.internal.endpoint.access.token.authentication.handler;
 
-import com.liferay.oauth2.provider.rest.internal.configuration.admin.service.OAuth2InAssertionManagedServiceFactory;
+import com.liferay.oauth2.provider.rest.internal.configuration.admin.service.util.OAuth2InAssertionManagedServiceFactoryHelper;
 import com.liferay.oauth2.provider.rest.internal.endpoint.constants.OAuth2ProviderRESTEndpointConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -112,12 +112,12 @@ public class LiferayJWTBearerAuthenticationHandler
 		_clientRegistrationProvider = clientRegistrationProvider;
 	}
 
-	public void setOAuth2InAssertionManagedServiceFactory(
-		OAuth2InAssertionManagedServiceFactory
-			oAuth2InAssertionManagedServiceFactory) {
+	public void setOAuth2InAssertionManagedServiceFactoryHelper(
+		OAuth2InAssertionManagedServiceFactoryHelper
+			oAuth2InAssertionManagedServiceFactoryHelper) {
 
-		_oAuth2InAssertionManagedServiceFactory =
-			oAuth2InAssertionManagedServiceFactory;
+		_oAuth2InAssertionManagedServiceFactoryHelper =
+			oAuth2InAssertionManagedServiceFactoryHelper;
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class LiferayJWTBearerAuthenticationHandler
 		LiferayJWTBearerAuthenticationHandler.class);
 
 	private ClientRegistrationProvider _clientRegistrationProvider;
-	private OAuth2InAssertionManagedServiceFactory
-		_oAuth2InAssertionManagedServiceFactory;
+	private OAuth2InAssertionManagedServiceFactoryHelper
+		_oAuth2InAssertionManagedServiceFactoryHelper;
 
 }

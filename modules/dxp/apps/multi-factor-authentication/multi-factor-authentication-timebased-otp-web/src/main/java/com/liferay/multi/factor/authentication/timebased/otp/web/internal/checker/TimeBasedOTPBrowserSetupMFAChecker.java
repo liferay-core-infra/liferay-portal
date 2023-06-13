@@ -22,6 +22,7 @@ import com.liferay.multi.factor.authentication.timebased.otp.web.internal.audit.
 import com.liferay.multi.factor.authentication.timebased.otp.web.internal.configuration.MFATimeBasedOTPConfiguration;
 import com.liferay.multi.factor.authentication.timebased.otp.web.internal.constants.MFATimeBasedOTPWebKeys;
 import com.liferay.multi.factor.authentication.timebased.otp.web.internal.util.MFATimeBasedOTPUtil;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.audit.AuditMessage;
@@ -60,7 +61,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
 
 /**
  * @author Tomas Polesovsky
@@ -228,6 +228,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 
 		User user = _userLocalService.fetchUser(userId);
 
+		MFATimeBasedOTPAuditMessageBuilder mfaTimeBasedOTPAuditMessageBuilder =
+			_mfaTimeBasedOTPAuditMessageBuilderSnapshot.get();
+
 		if (user == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
@@ -235,9 +238,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 						"nonexistent user " + userId);
 			}
 
-			if (_mfaTimeBasedOTPAuditMessageBuilder != null) {
+			if (mfaTimeBasedOTPAuditMessageBuilder != null) {
 				_routeAuditMessage(
-					_mfaTimeBasedOTPAuditMessageBuilder.
+					mfaTimeBasedOTPAuditMessageBuilder.
 						buildNonexistentUserVerificationFailureAuditMessage(
 							CompanyThreadLocal.getCompanyId(), userId,
 							_getClassName()));
@@ -253,9 +256,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 						" with incomplete configuration");
 			}
 
-			if (_mfaTimeBasedOTPAuditMessageBuilder != null) {
+			if (mfaTimeBasedOTPAuditMessageBuilder != null) {
 				_routeAuditMessage(
-					_mfaTimeBasedOTPAuditMessageBuilder.
+					mfaTimeBasedOTPAuditMessageBuilder.
 						buildUnconfiguredUserVerificationFailureAuditMessage(
 							CompanyThreadLocal.getCompanyId(), user,
 							_getClassName()));
@@ -289,9 +292,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 			_mfaTimeBasedOTPEntryLocalService.updateAttempts(
 				userId, remoteAddress, true);
 
-			if (_mfaTimeBasedOTPAuditMessageBuilder != null) {
+			if (mfaTimeBasedOTPAuditMessageBuilder != null) {
 				_routeAuditMessage(
-					_mfaTimeBasedOTPAuditMessageBuilder.
+					mfaTimeBasedOTPAuditMessageBuilder.
 						buildVerificationSuccessAuditMessage(
 							user, _getClassName()));
 			}
@@ -302,9 +305,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 		_mfaTimeBasedOTPEntryLocalService.updateAttempts(
 			user.getUserId(), remoteAddress, false);
 
-		if (_mfaTimeBasedOTPAuditMessageBuilder != null) {
+		if (mfaTimeBasedOTPAuditMessageBuilder != null) {
 			_routeAuditMessage(
-				_mfaTimeBasedOTPAuditMessageBuilder.
+				mfaTimeBasedOTPAuditMessageBuilder.
 					buildVerificationFailureAuditMessage(
 						user, _getClassName(),
 						"Incorrect time-based one-time password"));
@@ -378,6 +381,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 	private boolean _isVerified(HttpSession httpSession, long userId) {
 		User user = _userLocalService.fetchUser(userId);
 
+		MFATimeBasedOTPAuditMessageBuilder mfaTimeBasedOTPAuditMessageBuilder =
+			_mfaTimeBasedOTPAuditMessageBuilderSnapshot.get();
+
 		if (user == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
@@ -385,9 +391,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 						"nonexistent user " + userId);
 			}
 
-			if (_mfaTimeBasedOTPAuditMessageBuilder != null) {
+			if (mfaTimeBasedOTPAuditMessageBuilder != null) {
 				_routeAuditMessage(
-					_mfaTimeBasedOTPAuditMessageBuilder.
+					mfaTimeBasedOTPAuditMessageBuilder.
 						buildNonexistentUserVerificationFailureAuditMessage(
 							CompanyThreadLocal.getCompanyId(), userId,
 							_getClassName()));
@@ -397,9 +403,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 		}
 
 		if (httpSession == null) {
-			if (_mfaTimeBasedOTPAuditMessageBuilder != null) {
+			if (mfaTimeBasedOTPAuditMessageBuilder != null) {
 				_routeAuditMessage(
-					_mfaTimeBasedOTPAuditMessageBuilder.
+					mfaTimeBasedOTPAuditMessageBuilder.
 						buildNotVerifiedAuditMessage(
 							user, _getClassName(), "Empty session"));
 			}
@@ -411,9 +417,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 			MFATimeBasedOTPWebKeys.MFA_TIME_BASED_OTP_VALIDATED_USER_ID);
 
 		if (mfaTimeBasedOTPValidatedUserId == null) {
-			if (_mfaTimeBasedOTPAuditMessageBuilder != null) {
+			if (mfaTimeBasedOTPAuditMessageBuilder != null) {
 				_routeAuditMessage(
-					_mfaTimeBasedOTPAuditMessageBuilder.
+					mfaTimeBasedOTPAuditMessageBuilder.
 						buildNotVerifiedAuditMessage(
 							user, _getClassName(), "Not verified yet"));
 			}
@@ -422,9 +428,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 		}
 
 		if (!Objects.equals(mfaTimeBasedOTPValidatedUserId, userId)) {
-			if (_mfaTimeBasedOTPAuditMessageBuilder != null) {
+			if (mfaTimeBasedOTPAuditMessageBuilder != null) {
 				_routeAuditMessage(
-					_mfaTimeBasedOTPAuditMessageBuilder.
+					mfaTimeBasedOTPAuditMessageBuilder.
 						buildNotVerifiedAuditMessage(
 							user, _getClassName(), "Not the same user"));
 			}
@@ -436,7 +442,10 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 	}
 
 	private void _routeAuditMessage(AuditMessage auditMessage) {
-		_mfaTimeBasedOTPAuditMessageBuilder.routeAuditMessage(auditMessage);
+		MFATimeBasedOTPAuditMessageBuilder mfaTimeBasedOTPAuditMessageBuilder =
+			_mfaTimeBasedOTPAuditMessageBuilderSnapshot.get();
+
+		mfaTimeBasedOTPAuditMessageBuilder.routeAuditMessage(auditMessage);
 	}
 
 	private boolean _verify(String timeBasedOtpValue, long userId) {
@@ -456,9 +465,10 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 	private static final Log _log = LogFactoryUtil.getLog(
 		TimeBasedOTPBrowserSetupMFAChecker.class);
 
-	@Reference(cardinality = ReferenceCardinality.OPTIONAL)
-	private MFATimeBasedOTPAuditMessageBuilder
-		_mfaTimeBasedOTPAuditMessageBuilder;
+	private static final Snapshot<MFATimeBasedOTPAuditMessageBuilder>
+		_mfaTimeBasedOTPAuditMessageBuilderSnapshot = new Snapshot<>(
+			TimeBasedOTPBrowserSetupMFAChecker.class,
+			MFATimeBasedOTPAuditMessageBuilder.class);
 
 	private MFATimeBasedOTPConfiguration _mfaTimeBasedOTPConfiguration;
 

@@ -17,8 +17,6 @@ package com.liferay.depot.web.internal.application.list;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.PanelAppRegistry;
 import com.liferay.application.list.PanelAppShowFilter;
-import com.liferay.application.list.PanelCategoryRegistry;
-import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.depot.application.controller.DepotApplicationController;
 
 import org.osgi.framework.BundleContext;
@@ -54,9 +52,6 @@ public class DepotPanelAppController {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_panelCategoryHelper = new PanelCategoryHelper(
-			_panelAppRegistry, _panelCategoryRegistry);
-
 		_serviceRegistration = bundleContext.registerService(
 			PanelAppShowFilter.class,
 			(panelApp, permissionChecker, group) -> {
@@ -82,11 +77,6 @@ public class DepotPanelAppController {
 
 	@Reference
 	private PanelAppRegistry _panelAppRegistry;
-
-	private PanelCategoryHelper _panelCategoryHelper;
-
-	@Reference
-	private PanelCategoryRegistry _panelCategoryRegistry;
 
 	private ServiceRegistration<?> _serviceRegistration;
 

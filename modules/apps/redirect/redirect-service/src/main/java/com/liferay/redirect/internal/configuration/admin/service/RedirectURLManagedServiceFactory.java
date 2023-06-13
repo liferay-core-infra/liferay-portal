@@ -18,6 +18,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.redirect.internal.configuration.RedirectURLConfiguration;
+import com.liferay.redirect.internal.configuration.admin.service.util.RedirectURLManagedServiceFactoryHelper;
 
 import java.util.Dictionary;
 import java.util.Map;
@@ -29,6 +30,7 @@ import org.osgi.service.cm.ManagedServiceFactory;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Pei-Jung Lan
@@ -36,25 +38,13 @@ import org.osgi.service.component.annotations.Modified;
 @Component(
 	configurationPid = "com.liferay.redirect.internal.configuration.RedirectURLConfiguration",
 	property = Constants.SERVICE_PID + "=com.liferay.redirect.internal.configuration.RedirectURLConfiguration.scoped",
-	service = {
-		ManagedServiceFactory.class, RedirectURLManagedServiceFactory.class
-	}
+	service = ManagedServiceFactory.class
 )
 public class RedirectURLManagedServiceFactory implements ManagedServiceFactory {
 
 	@Override
 	public void deleted(String pid) {
 		_unmapPid(pid);
-	}
-
-	public RedirectURLConfiguration getCompanyRedirectURLConfiguration(
-		long companyId) {
-
-		if (_companyConfigurationBeans.containsKey(companyId)) {
-			return _companyConfigurationBeans.get(companyId);
-		}
-
-		return _systemRedirectURLConfiguration;
 	}
 
 	@Override
@@ -73,10 +63,11 @@ public class RedirectURLManagedServiceFactory implements ManagedServiceFactory {
 			dictionary.get("companyId"), CompanyConstants.SYSTEM);
 
 		if (companyId != CompanyConstants.SYSTEM) {
-			_companyConfigurationBeans.put(
-				companyId,
-				ConfigurableUtil.createConfigurable(
-					RedirectURLConfiguration.class, dictionary));
+			_redirectURLManagedServiceFactoryHelper.
+				putCompanyConfigurationBeans(
+					companyId,
+					ConfigurableUtil.createConfigurable(
+						RedirectURLConfiguration.class, dictionary));
 			_companyIds.put(pid, companyId);
 		}
 	}
@@ -84,21 +75,25 @@ public class RedirectURLManagedServiceFactory implements ManagedServiceFactory {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_systemRedirectURLConfiguration = ConfigurableUtil.createConfigurable(
-			RedirectURLConfiguration.class, properties);
+		_redirectURLManagedServiceFactoryHelper.
+			setSystemRedirectURLConfiguration(
+				ConfigurableUtil.createConfigurable(
+					RedirectURLConfiguration.class, properties));
 	}
 
 	private void _unmapPid(String pid) {
-		if (_companyIds.containsKey(pid)) {
-			long companyId = _companyIds.remove(pid);
+		Long companyId = _companyIds.remove(pid);
 
-			_companyConfigurationBeans.remove(companyId);
+		if (companyId != null) {
+			_redirectURLManagedServiceFactoryHelper.
+				removeCompanyConfigurationBeans(companyId);
 		}
 	}
 
-	private final Map<Long, RedirectURLConfiguration>
-		_companyConfigurationBeans = new ConcurrentHashMap<>();
 	private final Map<String, Long> _companyIds = new ConcurrentHashMap<>();
-	private volatile RedirectURLConfiguration _systemRedirectURLConfiguration;
+
+	@Reference
+	private RedirectURLManagedServiceFactoryHelper
+		_redirectURLManagedServiceFactoryHelper;
 
 }

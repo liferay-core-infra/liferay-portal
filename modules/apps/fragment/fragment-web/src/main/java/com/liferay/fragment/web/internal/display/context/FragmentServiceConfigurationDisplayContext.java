@@ -14,7 +14,7 @@
 
 package com.liferay.fragment.web.internal.display.context;
 
-import com.liferay.fragment.web.internal.configuration.admin.service.FragmentServiceManagedServiceFactory;
+import com.liferay.fragment.web.internal.configuration.admin.service.util.FragmentServiceManagedServiceFactoryHelper;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -38,15 +38,14 @@ public class FragmentServiceConfigurationDisplayContext {
 
 	public FragmentServiceConfigurationDisplayContext(
 		HttpServletRequest httpServletRequest,
-		LiferayPortletResponse liferayPortletResponse,
-		FragmentServiceManagedServiceFactory
-			fragmentServiceManagedServiceFactory,
-		String scope) {
+		FragmentServiceManagedServiceFactoryHelper
+			fragmentServiceManagedServiceFactoryHelper,
+		LiferayPortletResponse liferayPortletResponse, String scope) {
 
 		_httpServletRequest = httpServletRequest;
+		_fragmentServiceManagedServiceFactoryHelper =
+			fragmentServiceManagedServiceFactoryHelper;
 		_liferayPortletResponse = liferayPortletResponse;
-		_fragmentServiceManagedServiceFactory =
-			fragmentServiceManagedServiceFactory;
 		_scope = scope;
 	}
 
@@ -94,12 +93,12 @@ public class FragmentServiceConfigurationDisplayContext {
 	}
 
 	public boolean isPropagateChangesEnabled() {
-		return _fragmentServiceManagedServiceFactory.isPropagateChanges(
+		return _fragmentServiceManagedServiceFactoryHelper.isPropagateChanges(
 			_scope, _getScopePk());
 	}
 
 	public boolean isPropagateContributedFragmentChangesEnabled() {
-		return _fragmentServiceManagedServiceFactory.
+		return _fragmentServiceManagedServiceFactoryHelper.
 			isPropagateContributedFragmentChanges(_scope, _getScopePk());
 	}
 
@@ -107,7 +106,7 @@ public class FragmentServiceConfigurationDisplayContext {
 		if (!Objects.equals(
 				_scope,
 				ExtendedObjectClassDefinition.Scope.COMPANY.getValue()) ||
-			_fragmentServiceManagedServiceFactory.hasScopedConfiguration(
+			_fragmentServiceManagedServiceFactoryHelper.hasScopedConfiguration(
 				_getScopePk())) {
 
 			return false;
@@ -137,8 +136,8 @@ public class FragmentServiceConfigurationDisplayContext {
 		throw new IllegalArgumentException("Unsupported scope: " + _scope);
 	}
 
-	private final FragmentServiceManagedServiceFactory
-		_fragmentServiceManagedServiceFactory;
+	private final FragmentServiceManagedServiceFactoryHelper
+		_fragmentServiceManagedServiceFactoryHelper;
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final String _scope;

@@ -15,7 +15,7 @@
 package com.liferay.fragment.web.internal.portlet.action;
 
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
-import com.liferay.fragment.web.internal.configuration.admin.service.FragmentServiceManagedServiceFactory;
+import com.liferay.fragment.web.internal.configuration.admin.service.util.FragmentServiceManagedServiceFactoryHelper;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -73,7 +73,7 @@ public class EditFragmentServiceConfigurationMVCActionCommand
 			boolean propagateContributedFragmentChanges = ParamUtil.getBoolean(
 				actionRequest, "propagateContributedFragmentChanges");
 
-			_fragmentServiceManagedServiceFactory.updatePropagateChanges(
+			_fragmentServiceManagedServiceFactoryHelper.updatePropagateChanges(
 				propagateChanges, propagateContributedFragmentChanges, scope,
 				scopePK);
 		}
@@ -90,8 +90,8 @@ public class EditFragmentServiceConfigurationMVCActionCommand
 	}
 
 	@Reference
-	private FragmentServiceManagedServiceFactory
-		_fragmentServiceManagedServiceFactory;
+	private FragmentServiceManagedServiceFactoryHelper
+		_fragmentServiceManagedServiceFactoryHelper;
 
 	@Reference
 	private Portal _portal;

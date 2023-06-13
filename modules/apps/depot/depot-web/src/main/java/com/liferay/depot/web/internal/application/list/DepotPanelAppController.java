@@ -19,7 +19,7 @@ import com.liferay.application.list.PanelAppRegistry;
 import com.liferay.application.list.PanelAppShowFilter;
 import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
-import com.liferay.depot.web.internal.application.controller.DepotApplicationController;
+import com.liferay.depot.application.controller.DepotApplicationController;
 import com.liferay.depot.web.internal.constants.DepotPortletKeys;
 
 import org.osgi.framework.BundleContext;

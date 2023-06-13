@@ -14,7 +14,7 @@
 
 package com.liferay.depot.web.internal.group.capability;
 
-import com.liferay.depot.web.internal.application.controller.DepotApplicationController;
+import com.liferay.depot.application.controller.DepotApplicationController;
 import com.liferay.portal.kernel.group.capability.GroupCapability;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;

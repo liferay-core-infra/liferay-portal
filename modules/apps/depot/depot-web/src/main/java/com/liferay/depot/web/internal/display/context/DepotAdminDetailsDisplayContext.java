@@ -15,9 +15,9 @@
 package com.liferay.depot.web.internal.display.context;
 
 import com.liferay.depot.application.DepotApplication;
+import com.liferay.depot.application.controller.DepotApplicationController;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryServiceUtil;
-import com.liferay.depot.web.internal.application.controller.DepotApplicationController;
 import com.liferay.depot.web.internal.constants.DepotAdminWebKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;

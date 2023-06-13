@@ -15,8 +15,8 @@
 package com.liferay.depot.web.internal.asset.model;
 
 import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.depot.application.controller.DepotApplicationController;
 import com.liferay.depot.service.DepotEntryLocalService;
-import com.liferay.depot.web.internal.application.controller.DepotApplicationController;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.HashMapDictionary;

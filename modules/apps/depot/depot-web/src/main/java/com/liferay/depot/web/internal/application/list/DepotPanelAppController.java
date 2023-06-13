@@ -14,7 +14,6 @@
 
 package com.liferay.depot.web.internal.application.list;
 
-import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.PanelAppRegistry;
 import com.liferay.application.list.PanelAppShowFilter;
 import com.liferay.depot.application.controller.DepotApplicationController;
@@ -31,16 +30,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = DepotPanelAppController.class)
 public class DepotPanelAppController {
-
-	public boolean isShow(PanelApp panelApp, long groupId) {
-		String portletId = panelApp.getPortletId();
-
-		if (_panelAppRegistry.isAlwaysShow(portletId)) {
-			return true;
-		}
-
-		return _depotApplicationController.isEnabled(portletId, groupId);
-	}
 
 	public boolean isShow(String portletId) {
 		if (_panelAppRegistry.isAlwaysShow(portletId)) {

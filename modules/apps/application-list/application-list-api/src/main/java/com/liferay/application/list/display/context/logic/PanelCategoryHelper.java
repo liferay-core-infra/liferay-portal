@@ -140,14 +140,6 @@ public class PanelCategoryHelper {
 		return _panelAppRegistry.isApplicationsMenuApp(portletId);
 	}
 
-	public boolean isControlPanelApp(String portletId) {
-		return _panelAppRegistry.isControlPanelApp(portletId);
-	}
-
-	protected boolean hasPortlet(String portletId, String panelCategoryKey) {
-		return _panelAppRegistry.hasPortlet(portletId, panelCategoryKey);
-	}
-
 	protected boolean hasPortlet(
 		String portletId, String panelCategoryKey,
 		PermissionChecker permissionChecker, Group group) {

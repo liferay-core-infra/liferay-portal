@@ -26,14 +26,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = DepotPanelAppController.class)
 public class DepotPanelAppController {
 
-	public boolean isShow(String portletId) {
-		if (_panelAppRegistry.isAlwaysShow(portletId)) {
-			return true;
-		}
-
-		return _depotApplicationController.isEnabled(portletId);
-	}
-
 	@Reference
 	private DepotApplicationController _depotApplicationController;
 

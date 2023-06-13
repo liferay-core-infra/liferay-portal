@@ -14,8 +14,8 @@
 
 package com.liferay.depot.web.internal.item.selector;
 
+import com.liferay.application.list.PanelAppRegistry;
 import com.liferay.depot.application.controller.DepotApplicationController;
-import com.liferay.depot.web.internal.application.list.DepotPanelAppController;
 import com.liferay.depot.web.internal.util.DepotAdminGroupSearchProvider;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorView;
@@ -95,11 +95,13 @@ public class DepotItemSelectorView
 
 		String portletId = groupItemSelectorCriterion.getPortletId();
 
-		if (Validator.isNull(portletId)) {
+		if (Validator.isNull(portletId) ||
+			_panelAppRegistry.isAlwaysShow(portletId)) {
+
 			return true;
 		}
 
-		return _depotPanelAppController.isShow(portletId);
+		return _depotApplicationController.isEnabled(portletId);
 	}
 
 	@Override
@@ -133,7 +135,7 @@ public class DepotItemSelectorView
 	private DepotApplicationController _depotApplicationController;
 
 	@Reference
-	private DepotPanelAppController _depotPanelAppController;
+	private PanelAppRegistry _panelAppRegistry;
 
 	@Reference
 	private SiteItemSelectorViewRenderer _siteItemSelectorViewRenderer;

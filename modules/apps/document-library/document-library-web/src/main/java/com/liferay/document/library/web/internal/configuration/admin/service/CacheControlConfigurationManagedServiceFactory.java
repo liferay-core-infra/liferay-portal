@@ -15,6 +15,7 @@
 package com.liferay.document.library.web.internal.configuration.admin.service;
 
 import com.liferay.document.library.web.internal.configuration.CacheControlConfiguration;
+import com.liferay.document.library.web.internal.configuration.admin.service.util.CacheControlConfigurationManagedServiceFactoryHelper;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -29,6 +30,7 @@ import org.osgi.service.cm.ManagedServiceFactory;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Adolfo Pérez
@@ -36,10 +38,7 @@ import org.osgi.service.component.annotations.Modified;
 @Component(
 	configurationPid = "com.liferay.document.library.web.internal.configuration.CacheControlConfiguration",
 	property = Constants.SERVICE_PID + "=com.liferay.document.library.web.internal.configuration.CacheControlConfiguration.scoped",
-	service = {
-		CacheControlConfigurationManagedServiceFactory.class,
-		ManagedServiceFactory.class
-	}
+	service = ManagedServiceFactory.class
 )
 public class CacheControlConfigurationManagedServiceFactory
 	implements ManagedServiceFactory {
@@ -47,16 +46,6 @@ public class CacheControlConfigurationManagedServiceFactory
 	@Override
 	public void deleted(String pid) {
 		_unmapPid(pid);
-	}
-
-	public CacheControlConfiguration getCompanyCacheControlConfiguration(
-		long companyId) {
-
-		if (_companyConfigurationBeans.containsKey(companyId)) {
-			return _companyConfigurationBeans.get(companyId);
-		}
-
-		return _systemCacheControlConfiguration;
 	}
 
 	@Override
@@ -75,10 +64,11 @@ public class CacheControlConfigurationManagedServiceFactory
 			dictionary.get("companyId"), CompanyConstants.SYSTEM);
 
 		if (companyId != CompanyConstants.SYSTEM) {
-			_companyConfigurationBeans.put(
-				companyId,
-				ConfigurableUtil.createConfigurable(
-					CacheControlConfiguration.class, dictionary));
+			_cacheControlConfigurationManagedServiceFactoryHelper.
+				putCompanyConfigurationBeans(
+					companyId,
+					ConfigurableUtil.createConfigurable(
+						CacheControlConfiguration.class, dictionary));
 			_companyIds.put(pid, companyId);
 		}
 	}
@@ -86,21 +76,25 @@ public class CacheControlConfigurationManagedServiceFactory
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_systemCacheControlConfiguration = ConfigurableUtil.createConfigurable(
-			CacheControlConfiguration.class, properties);
+		_cacheControlConfigurationManagedServiceFactoryHelper.
+			setSystemCacheControlConfiguration(
+				ConfigurableUtil.createConfigurable(
+					CacheControlConfiguration.class, properties));
 	}
 
 	private void _unmapPid(String pid) {
-		if (_companyIds.containsKey(pid)) {
-			long companyId = _companyIds.remove(pid);
+		Long companyId = _companyIds.remove(pid);
 
-			_companyConfigurationBeans.remove(companyId);
+		if (companyId != null) {
+			_cacheControlConfigurationManagedServiceFactoryHelper.
+				removeCompanyConfigurationBeans(companyId);
 		}
 	}
 
-	private final Map<Long, CacheControlConfiguration>
-		_companyConfigurationBeans = new ConcurrentHashMap<>();
+	@Reference
+	private CacheControlConfigurationManagedServiceFactoryHelper
+		_cacheControlConfigurationManagedServiceFactoryHelper;
+
 	private final Map<String, Long> _companyIds = new ConcurrentHashMap<>();
-	private volatile CacheControlConfiguration _systemCacheControlConfiguration;
 
 }

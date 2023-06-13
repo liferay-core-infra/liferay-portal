@@ -20,8 +20,6 @@ import com.liferay.application.list.PanelAppShowFilter;
 import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.depot.application.controller.DepotApplicationController;
-import com.liferay.depot.web.internal.constants.DepotPortletKeys;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
@@ -79,8 +77,7 @@ public class DepotPanelAppController {
 	}
 
 	private boolean _isAlwaysShow(String portletId) {
-		if (portletId.equals(DepotPortletKeys.DEPOT_ADMIN) ||
-			portletId.equals(DepotPortletKeys.DEPOT_SETTINGS) ||
+		if (_depotApplicationController.isAlwaysShow(portletId) ||
 			_panelCategoryHelper.isControlPanelApp(portletId) ||
 			_panelCategoryHelper.isApplicationsMenuApp(portletId)) {
 

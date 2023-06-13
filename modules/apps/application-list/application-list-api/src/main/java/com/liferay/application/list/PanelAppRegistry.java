@@ -187,6 +187,16 @@ public class PanelAppRegistry {
 		return false;
 	}
 
+	public boolean isAlwaysShow(String portletId) {
+		if (_depotApplicationController.isAlwaysShow(portletId) ||
+			isControlPanelApp(portletId) || isApplicationsMenuApp(portletId)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isApplicationsMenuApp(String portletId) {
 		return containsPortlet(portletId, PanelCategoryKeys.APPLICATIONS_MENU);
 	}

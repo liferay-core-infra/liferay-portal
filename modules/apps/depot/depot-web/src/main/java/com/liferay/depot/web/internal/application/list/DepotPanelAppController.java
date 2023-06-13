@@ -20,6 +20,7 @@ import com.liferay.application.list.PanelAppShowFilter;
 import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.depot.application.controller.DepotApplicationController;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
@@ -36,7 +37,7 @@ public class DepotPanelAppController {
 	public boolean isShow(PanelApp panelApp, long groupId) {
 		String portletId = panelApp.getPortletId();
 
-		if (_isAlwaysShow(portletId)) {
+		if (_panelAppRegistry.isAlwaysShow(portletId)) {
 			return true;
 		}
 
@@ -44,7 +45,7 @@ public class DepotPanelAppController {
 	}
 
 	public boolean isShow(String portletId) {
-		if (_isAlwaysShow(portletId)) {
+		if (_panelAppRegistry.isAlwaysShow(portletId)) {
 			return true;
 		}
 
@@ -74,17 +75,6 @@ public class DepotPanelAppController {
 	@Deactivate
 	protected void deactivate() {
 		_serviceRegistration.unregister();
-	}
-
-	private boolean _isAlwaysShow(String portletId) {
-		if (_depotApplicationController.isAlwaysShow(portletId) ||
-			_panelCategoryHelper.isControlPanelApp(portletId) ||
-			_panelCategoryHelper.isApplicationsMenuApp(portletId)) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	@Reference

@@ -1471,3 +1471,25 @@ This removal of the configuration has no replacement.
 ### Why was this change made?
 
 Liferay decided to not support this configuration.
+
+---------------------------------------
+
+## Replaced FFJournalAutoSaveDraftConfiguration with Portal Property feature.flag.LPS-141394
+- **Date:** 2023-June-26
+- **JIRA Ticket:** [LPS-185849](https://issues.liferay.com/browse/LPS-185849)
+
+### What changed?
+
+`FFJournalAutoSaveDraftConfiguration` configuration is replaced with portal property: `feature.flag.LPS-141394`
+
+### Who is affected?
+
+This affects anyone using the this configuration to enable `journalArticleAutoSaveDraftEnabled` property created in [LPS-141394](https://issues.liferay.com/browse/LPS-141394).
+
+### How should I update my code?
+
+If you are currently enabling this property in config file, please add `feature.flag.LPS-141394=true` to your portal-ext.properties file to enable it
+
+### Why was this change made?
+
+Feature flag should be set using portal properties, not configuration

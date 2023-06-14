@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.preview.pdf.internal.portlet.action;
 
-import com.liferay.document.library.preview.pdf.internal.configuration.admin.service.PDFPreviewManagedServiceFactory;
+import com.liferay.document.library.preview.pdf.internal.configuration.admin.service.util.PDFPreviewManagedServiceFactoryHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -33,12 +33,14 @@ public class PDFPreviewConfigurationDisplayContext {
 	public PDFPreviewConfigurationDisplayContext(
 		HttpServletRequest httpServletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		PDFPreviewManagedServiceFactory pdfPreviewManagedServiceFactory,
+		PDFPreviewManagedServiceFactoryHelper
+			pdfPreviewManagedServiceFactoryHelper,
 		String scope, long scopePK) {
 
 		_httpServletRequest = httpServletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
-		_pdfPreviewManagedServiceFactory = pdfPreviewManagedServiceFactory;
+		_pdfPreviewManagedServiceFactoryHelper =
+			pdfPreviewManagedServiceFactoryHelper;
 		_scope = scope;
 		_scopePK = scopePK;
 	}
@@ -58,12 +60,12 @@ public class PDFPreviewConfigurationDisplayContext {
 	}
 
 	public int getMaxLimitSize() throws PortalException {
-		return _pdfPreviewManagedServiceFactory.getMaxLimitOfPages(
+		return _pdfPreviewManagedServiceFactoryHelper.getMaxLimitOfPages(
 			_scope, _scopePK);
 	}
 
 	public int getMaxNumberOfPages() throws PortalException {
-		return _pdfPreviewManagedServiceFactory.getMaxNumberOfPages(
+		return _pdfPreviewManagedServiceFactoryHelper.getMaxNumberOfPages(
 			_scope, _scopePK);
 	}
 
@@ -84,8 +86,8 @@ public class PDFPreviewConfigurationDisplayContext {
 
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
-	private final PDFPreviewManagedServiceFactory
-		_pdfPreviewManagedServiceFactory;
+	private final PDFPreviewManagedServiceFactoryHelper
+		_pdfPreviewManagedServiceFactoryHelper;
 	private final String _scope;
 	private final long _scopePK;
 

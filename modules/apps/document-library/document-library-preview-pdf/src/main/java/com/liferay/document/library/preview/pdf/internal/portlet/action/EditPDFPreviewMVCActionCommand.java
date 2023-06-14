@@ -16,7 +16,7 @@ package com.liferay.document.library.preview.pdf.internal.portlet.action;
 
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.document.library.preview.pdf.exception.PDFPreviewException;
-import com.liferay.document.library.preview.pdf.internal.configuration.admin.service.PDFPreviewManagedServiceFactory;
+import com.liferay.document.library.preview.pdf.internal.configuration.admin.service.util.PDFPreviewManagedServiceFactoryHelper;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -77,7 +77,7 @@ public class EditPDFPreviewMVCActionCommand extends BaseMVCActionCommand {
 						"equal to 0 ");
 			}
 
-			_pdfPreviewManagedServiceFactory.updatePDFPreview(
+			_pdfPreviewManagedServiceFactoryHelper.updatePDFPreview(
 				maxNumberOfPages, scope, scopePK);
 		}
 		catch (ConfigurationModelListenerException | PDFPreviewException
@@ -91,6 +91,7 @@ public class EditPDFPreviewMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	@Reference
-	private PDFPreviewManagedServiceFactory _pdfPreviewManagedServiceFactory;
+	private PDFPreviewManagedServiceFactoryHelper
+		_pdfPreviewManagedServiceFactoryHelper;
 
 }

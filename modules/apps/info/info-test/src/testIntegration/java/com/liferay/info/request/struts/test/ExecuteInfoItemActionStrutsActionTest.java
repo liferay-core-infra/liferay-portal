@@ -51,7 +51,7 @@ import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upload.UploadPortletRequestImpl;
-import com.liferay.portal.upload.UploadServletRequestImpl;
+import com.liferay.portal.upload.test.util.UploadTestUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
@@ -217,7 +217,7 @@ public class ExecuteInfoItemActionStrutsActionTest {
 
 		UploadPortletRequest uploadPortletRequest =
 			new UploadPortletRequestImpl(
-				new UploadServletRequestImpl(
+				UploadTestUtil.createUploadServletRequest(
 					mockMultipartHttpServletRequest, null,
 					HashMapBuilder.put(
 						"classNameId", Collections.singletonList(_classNameId)

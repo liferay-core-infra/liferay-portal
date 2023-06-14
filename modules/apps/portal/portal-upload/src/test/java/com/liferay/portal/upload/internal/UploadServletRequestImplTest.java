@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.ToolDependencies;
-import com.liferay.portal.upload.UploadServletRequestImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class UploadServletRequestImplTest {
 	@Test
 	public void testSort() {
 		List<FileItem> sortedFileItems = ReflectionTestUtil.invoke(
-			new UploadServletRequestImpl(
+			UploadTestUtil.createUploadServletRequest(
 				ProxyFactory.newDummyInstance(HttpServletRequest.class), null,
 				null),
 			"_sort", new Class<?>[] {List.class}, _fileItems);
@@ -89,7 +88,7 @@ public class UploadServletRequestImplTest {
 	@Test
 	public void testSortKeepsOriginalOrderWithSameParameterName() {
 		List<FileItem> sortedFileItems = ReflectionTestUtil.invoke(
-			new UploadServletRequestImpl(
+			UploadTestUtil.createUploadServletRequest(
 				ProxyFactory.newDummyInstance(HttpServletRequest.class), null,
 				null),
 			"_sort", new Class<?>[] {List.class}, _fileItems);

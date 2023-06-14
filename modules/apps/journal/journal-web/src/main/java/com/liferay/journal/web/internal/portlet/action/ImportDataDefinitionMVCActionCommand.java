@@ -25,7 +25,6 @@ import com.liferay.dynamic.data.mapping.util.DDMFormFieldUtil;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -38,7 +37,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.upload.UploadPortletRequestImpl;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -73,7 +71,8 @@ public class ImportDataDefinitionMVCActionCommand extends BaseMVCActionCommand {
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			UploadPortletRequest uploadPortletRequest =
-				_getUploadPortletRequest(actionRequest);
+				_portal.getUploadPortletRequest(
+					_portal.getLiferayPortletRequest(actionRequest));
 
 			DataDefinition dataDefinition = DataDefinition.toDTO(
 				FileUtil.read(uploadPortletRequest.getFile("jsonFile")));
@@ -132,20 +131,6 @@ public class ImportDataDefinitionMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		return newFieldName;
-	}
-
-	private UploadPortletRequest _getUploadPortletRequest(
-		ActionRequest actionRequest) {
-
-		LiferayPortletRequest liferayPortletRequest =
-			_portal.getLiferayPortletRequest(actionRequest);
-
-		return new UploadPortletRequestImpl(
-			_portal.getUploadServletRequest(
-				liferayPortletRequest.getHttpServletRequest()),
-			liferayPortletRequest,
-			_portal.getPortletNamespace(
-				liferayPortletRequest.getPortletName()));
 	}
 
 	private void _populateFieldNameBlacklist(DataDefinition dataDefinition) {

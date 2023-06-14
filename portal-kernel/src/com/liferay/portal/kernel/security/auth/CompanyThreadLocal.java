@@ -191,13 +191,40 @@ public class CompanyThreadLocal {
 	}
 
 	private static String _fetchWebId(Long companyId) {
-		Company company = CompanyLocalServiceUtil.fetchCompany(companyId);
+		Company company = null;
 
-		if (company == null) {
-			return StringPool.BLANK;
+		try {
+			company = CompanyLocalServiceUtil.fetchCompany(companyId);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
 		}
 
-		return company.getWebId();
+		if (company != null) {
+			return company.getWebId();
+		}
+
+		try (Connection connection = DataAccess.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"select webId from Company where companyId = ?")) {
+
+			preparedStatement.setLong(1, companyId);
+
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					return resultSet.getString("webId");
+				}
+			}
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+		}
+
+		return StringPool.BLANK;
 	}
 
 	private static boolean _setCompanyId(Long companyId) {

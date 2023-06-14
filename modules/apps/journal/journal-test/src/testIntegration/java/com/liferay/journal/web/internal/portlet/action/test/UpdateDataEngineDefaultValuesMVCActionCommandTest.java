@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
-import com.liferay.portal.upload.UploadPortletRequestImpl;
 import com.liferay.portal.upload.test.util.UploadTestUtil;
 import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionRequest;
 
@@ -103,7 +102,7 @@ public class UpdateDataEngineDefaultValuesMVCActionCommandTest {
 		Calendar expireCalendar = calendar;
 
 		UploadPortletRequest uploadPortletRequest =
-			new UploadPortletRequestImpl(
+			UploadTestUtil.createUploadPortletRequest(
 				UploadTestUtil.createUploadServletRequest(
 					new MockHttpServletRequest(), new HashMap<>(),
 					HashMapBuilder.put(

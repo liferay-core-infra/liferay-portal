@@ -19,6 +19,7 @@ import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.model.GroupConstants;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -200,21 +201,28 @@ public class DLSizeLimitManagedServiceFactoryTest {
 		throws Exception {
 
 		Method method = ReflectionUtil.getDeclaredMethod(
-			_managedServiceFactory.getClass(), "getCompanyMimeTypeSizeLimit",
-			long.class, String.class);
+			_getDLSizeLimitManagedServiceFactoryHelper().getClass(),
+			"getCompanyMimeTypeSizeLimit", long.class, String.class);
 
 		return (long)method.invoke(
-			_managedServiceFactory, TestPropsValues.getCompanyId(), mimeType);
+			_getDLSizeLimitManagedServiceFactoryHelper(),
+			TestPropsValues.getCompanyId(), mimeType);
+	}
+
+	private Object _getDLSizeLimitManagedServiceFactoryHelper() {
+		return ReflectionTestUtil.getFieldValue(
+			_managedServiceFactory, "_dlSizeLimitManagedServiceFactoryHelper");
 	}
 
 	private long _getGroupMimeTypeSizeLimit(long groupId, String mimeType)
 		throws Exception {
 
 		Method method = ReflectionUtil.getDeclaredMethod(
-			_managedServiceFactory.getClass(), "getGroupMimeTypeSizeLimit",
-			long.class, String.class);
+			_getDLSizeLimitManagedServiceFactoryHelper().getClass(),
+			"getGroupMimeTypeSizeLimit", long.class, String.class);
 
-		return (long)method.invoke(_managedServiceFactory, groupId, mimeType);
+		return (long)method.invoke(
+			_getDLSizeLimitManagedServiceFactoryHelper(), groupId, mimeType);
 	}
 
 	private long _getGroupMimeTypeSizeLimit(String mimeType) throws Exception {

@@ -15,7 +15,7 @@
 package com.liferay.document.library.internal.configuration;
 
 import com.liferay.document.library.configuration.DLSizeLimitConfigurationProvider;
-import com.liferay.document.library.internal.configuration.admin.service.DLSizeLimitManagedServiceFactory;
+import com.liferay.document.library.internal.configuration.admin.service.util.DLSizeLimitManagedServiceFactoryHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.util.HashMapDictionary;
@@ -38,35 +38,37 @@ public class DLSizeLimitConfigurationProviderImpl
 
 	@Override
 	public long getCompanyFileMaxSize(long companyId) {
-		return _dlSizeLimitManagedServiceFactory.getCompanyFileMaxSize(
+		return _dlSizeLimitManagedServiceFactoryHelper.getCompanyFileMaxSize(
 			companyId);
 	}
 
 	@Override
 	public Map<String, Long> getCompanyMimeTypeSizeLimit(long companyId) {
-		return _dlSizeLimitManagedServiceFactory.getCompanyMimeTypeSizeLimit(
-			companyId);
+		return _dlSizeLimitManagedServiceFactoryHelper.
+			getCompanyMimeTypeSizeLimit(companyId);
 	}
 
 	@Override
 	public long getGroupFileMaxSize(long groupId) {
-		return _dlSizeLimitManagedServiceFactory.getGroupFileMaxSize(groupId);
-	}
-
-	@Override
-	public Map<String, Long> getGroupMimeTypeSizeLimit(long groupId) {
-		return _dlSizeLimitManagedServiceFactory.getGroupMimeTypeSizeLimit(
+		return _dlSizeLimitManagedServiceFactoryHelper.getGroupFileMaxSize(
 			groupId);
 	}
 
 	@Override
+	public Map<String, Long> getGroupMimeTypeSizeLimit(long groupId) {
+		return _dlSizeLimitManagedServiceFactoryHelper.
+			getGroupMimeTypeSizeLimit(groupId);
+	}
+
+	@Override
 	public long getSystemFileMaxSize() {
-		return _dlSizeLimitManagedServiceFactory.getSystemFileMaxSize();
+		return _dlSizeLimitManagedServiceFactoryHelper.getSystemFileMaxSize();
 	}
 
 	@Override
 	public Map<String, Long> getSystemMimeTypeSizeLimit() {
-		return _dlSizeLimitManagedServiceFactory.getSystemMimeTypeSizeLimit();
+		return _dlSizeLimitManagedServiceFactoryHelper.
+			getSystemMimeTypeSizeLimit();
 	}
 
 	@Override
@@ -198,6 +200,7 @@ public class DLSizeLimitConfigurationProviderImpl
 	private ConfigurationAdmin _configurationAdmin;
 
 	@Reference
-	private DLSizeLimitManagedServiceFactory _dlSizeLimitManagedServiceFactory;
+	private DLSizeLimitManagedServiceFactoryHelper
+		_dlSizeLimitManagedServiceFactoryHelper;
 
 }

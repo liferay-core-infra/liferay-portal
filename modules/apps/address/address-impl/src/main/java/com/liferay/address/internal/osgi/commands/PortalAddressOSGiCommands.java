@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.service.CountryLocalService;
 import com.liferay.portal.kernel.service.RegionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -86,15 +87,13 @@ public class PortalAddressOSGiCommands {
 		JSONArray countriesJSONArray = _getJSONArray(
 			"com/liferay/address/dependencies/countries.json");
 
-		for (int i = 0; i < countriesJSONArray.length(); i++) {
-			JSONObject countryJSONObject = countriesJSONArray.getJSONObject(i);
+		_processCountryList(company, countriesJSONArray);
 
-			try {
-				_addCountry(company, countryJSONObject);
-			}
-			catch (Exception exception) {
-				_log.error(exception);
-			}
+		if (PropsValues.ISO_COUNTRIES_ENABLED) {
+			JSONArray additionalCountriesJSONArray = _getJSONArray(
+				"com/liferay/address/dependencies/additional-countries.json");
+
+			_processCountryList(company, additionalCountriesJSONArray);
 		}
 	}
 
@@ -116,6 +115,18 @@ public class PortalAddressOSGiCommands {
 
 		JSONArray countriesJSONArray = _getJSONArray(
 			"com/liferay/address/dependencies/countries.json");
+
+		if (PropsValues.ISO_COUNTRIES_ENABLED) {
+			JSONArray additionalCountriesJSONArray = _getJSONArray(
+				"com/liferay/address/dependencies/additional-countries.json");
+
+			for (int i = 0; i < additionalCountriesJSONArray.length(); i++) {
+				JSONObject countryJSONObject =
+					additionalCountriesJSONArray.getJSONObject(i);
+
+				countriesJSONArray.put(countryJSONObject);
+			}
+		}
 
 		for (int i = 0; i < countriesJSONArray.length(); i++) {
 			JSONObject countryJSONObject = countriesJSONArray.getJSONObject(i);
@@ -197,14 +208,11 @@ public class PortalAddressOSGiCommands {
 			StringUtil.read(_getClassLoader(), path, false));
 	}
 
-	private void _processAdditionalCountries(Company company) throws Exception {
+	private void _processCountryList(Company company, JSONArray jsonArray)
+		throws Exception {
 
-		JSONArray additionalCountriesJSONArray = _getJSONArray(
-			"com/liferay/address/dependencies/additional-countries.json");
-
-		for (int i = 0; i < additionalCountriesJSONArray.length(); i++) {
-			JSONObject countryJSONObject =
-				additionalCountriesJSONArray.getJSONObject(i);
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject countryJSONObject = jsonArray.getJSONObject(i);
 
 			try {
 				_addCountry(company, countryJSONObject);

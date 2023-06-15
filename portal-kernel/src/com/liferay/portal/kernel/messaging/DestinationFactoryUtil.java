@@ -39,6 +39,6 @@ public class DestinationFactoryUtil {
 	private static volatile DestinationFactory _destinationFactory =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			DestinationFactory.class, DestinationFactoryUtil.class,
-			"_destinationFactory", true);
+			"_destinationFactory", false, true);
 
 }

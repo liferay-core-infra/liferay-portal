@@ -52,6 +52,6 @@ public class MessageBusUtil {
 
 	private static volatile MessageBus _messageBus =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			MessageBus.class, MessageBusUtil.class, "_messageBus", true);
+			MessageBus.class, MessageBusUtil.class, "_messageBus", false, true);
 
 }

@@ -183,10 +183,13 @@ public class SetupWizardUtil {
 		_updateCompany(
 			httpServletRequest, httpServletResponse, unicodeProperties);
 
+		String originalCompanyDefaultWebId = PropsValues.COMPANY_DEFAULT_WEB_ID;
+
 		_updateAdminUser(
 			httpServletRequest, httpServletResponse, unicodeProperties);
 
-		_updateCompanyWebId(httpServletRequest, unicodeProperties);
+		_updateCompanyWebId(
+			httpServletRequest, originalCompanyDefaultWebId, unicodeProperties);
 
 		HttpSession httpSession = httpServletRequest.getSession();
 
@@ -448,22 +451,21 @@ public class SetupWizardUtil {
 
 	private static void _updateCompanyWebId(
 			HttpServletRequest httpServletRequest,
+			String originalCompanyDefaultWebId,
 			UnicodeProperties unicodeProperties)
 		throws Exception {
 
 		String companyDefaultWebId = unicodeProperties.get(
 			PropsKeys.COMPANY_DEFAULT_WEB_ID);
 
-		if (Validator.isNull(companyDefaultWebId)) {
+		if (Validator.isNull(companyDefaultWebId) ||
+			Objects.equals(companyDefaultWebId, originalCompanyDefaultWebId)) {
+
 			return;
 		}
 
-		Company company = CompanyLocalServiceUtil.getCompanyById(
-			PortalInstances.getDefaultCompanyId());
-
-		if (Objects.equals(companyDefaultWebId, company.getWebId())) {
-			return;
-		}
+		Company company = CompanyLocalServiceUtil.getCompanyByWebId(
+			originalCompanyDefaultWebId);
 
 		company.setWebId(companyDefaultWebId);
 		company.setMx(companyDefaultWebId);
@@ -473,6 +475,8 @@ public class SetupWizardUtil {
 				WebKeys.THEME_DISPLAY);
 
 		themeDisplay.setCompany(CompanyLocalServiceUtil.updateCompany(company));
+
+		PortalInstances.initCompany(company);
 	}
 
 	private static void _updateLanguage(

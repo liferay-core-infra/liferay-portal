@@ -197,6 +197,24 @@ public class PortalAddressOSGiCommands {
 			StringUtil.read(_getClassLoader(), path, false));
 	}
 
+	private void _processAdditionalCountries(Company company) throws Exception {
+
+		JSONArray additionalCountriesJSONArray = _getJSONArray(
+			"com/liferay/address/dependencies/additional-countries.json");
+
+		for (int i = 0; i < additionalCountriesJSONArray.length(); i++) {
+			JSONObject countryJSONObject =
+				additionalCountriesJSONArray.getJSONObject(i);
+
+			try {
+				_addCountry(company, countryJSONObject);
+			}
+			catch (Exception exception) {
+				_log.error(exception);
+			}
+		}
+	}
+
 	private void _processCountryRegions(Country country) {
 		String a2 = country.getA2();
 

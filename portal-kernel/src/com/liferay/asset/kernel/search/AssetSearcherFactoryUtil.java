@@ -32,6 +32,6 @@ public class AssetSearcherFactoryUtil {
 	private static volatile AssetSearcherFactory _assetSearcherFactory =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			AssetSearcherFactory.class, AssetSearcherFactoryUtil.class,
-			"_assetSearcherFactory", true);
+			"_assetSearcherFactory", false);
 
 }

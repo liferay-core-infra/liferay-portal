@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,6 +45,15 @@ public class PortalInstancePool {
 
 				return entry.getKey();
 			}
+		}
+
+		if (!_portalInstances.isEmpty()) {
+			long[] companyIds = ArrayUtil.toLongArray(
+				_portalInstances.keySet());
+
+			Arrays.sort(companyIds);
+
+			return companyIds[0];
 		}
 
 		throw new IllegalStateException("Unable to get default company ID");

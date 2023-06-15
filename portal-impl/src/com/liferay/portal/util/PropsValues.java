@@ -971,6 +971,9 @@ public class PropsValues {
 			PropsUtil.get(
 				PropsKeys.INDEX_SEARCH_QUERY_SUGGESTION_SCORES_THRESHOLD));
 
+	public static final boolean ISO_COUNTRIES_ENABLED = GetterUtil.getBoolean(
+		PropsUtil.get(PropsKeys.ISO_COUNTRIES_ENABLED));
+
 	public static final boolean JAVASCRIPT_BAREBONE_ENABLED =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.JAVASCRIPT_BAREBONE_ENABLED));

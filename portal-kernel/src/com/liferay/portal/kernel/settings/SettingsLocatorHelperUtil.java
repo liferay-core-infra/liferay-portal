@@ -91,6 +91,6 @@ public class SettingsLocatorHelperUtil {
 	private static volatile SettingsLocatorHelper _settingsLocatorHelper =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			SettingsLocatorHelper.class, SettingsLocatorHelperUtil.class,
-			"_settingsLocatorHelper", true);
+			"_settingsLocatorHelper", false);
 
 }

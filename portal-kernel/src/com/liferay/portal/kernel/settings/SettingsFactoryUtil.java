@@ -52,6 +52,6 @@ public class SettingsFactoryUtil {
 	private static volatile SettingsFactory _settingsFactory =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			SettingsFactory.class, SettingsFactoryUtil.class,
-			"_settingsFactory", true);
+			"_settingsFactory", false);
 
 }

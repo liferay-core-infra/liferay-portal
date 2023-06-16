@@ -871,11 +871,9 @@ public class ObjectRelationshipLocalServiceImpl
 		objectRelationship.setType(type);
 
 		ObjectDefinition objectDefinition1 =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectDefinitionId1);
+			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId1);
 		ObjectDefinition objectDefinition2 =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectDefinitionId2);
+			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId2);
 
 		if (Objects.equals(type, ObjectRelationshipConstants.TYPE_ONE_TO_ONE) ||
 			Objects.equals(

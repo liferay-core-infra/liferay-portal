@@ -51,6 +51,6 @@ public class WordsUtil {
 
 	private static volatile Words _words =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			Words.class, WordsUtil.class, "_words", true);
+			Words.class, WordsUtil.class, "_words", false);
 
 }

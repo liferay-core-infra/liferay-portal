@@ -398,7 +398,7 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 	private static volatile PortalExecutorManager _portalExecutorManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			PortalExecutorManager.class, DefaultActionableDynamicQuery.class,
-			"_portalExecutorManager", true);
+			"_portalExecutorManager", false);
 
 	private AddCriteriaMethod _addCriteriaMethod;
 	private AddOrderCriteriaMethod _addOrderCriteriaMethod;

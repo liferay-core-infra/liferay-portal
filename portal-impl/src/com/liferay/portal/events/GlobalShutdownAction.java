@@ -198,6 +198,6 @@ public class GlobalShutdownAction extends SimpleAction {
 	private static volatile PortalExecutorManager _portalExecutorManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			PortalExecutorManager.class, GlobalShutdownAction.class,
-			"_portalExecutorManager", true);
+			"_portalExecutorManager", false);
 
 }

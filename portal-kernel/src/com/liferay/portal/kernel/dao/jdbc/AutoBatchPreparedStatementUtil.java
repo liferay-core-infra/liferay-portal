@@ -91,7 +91,7 @@ public class AutoBatchPreparedStatementUtil {
 	private static volatile PortalExecutorManager _portalExecutorManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			PortalExecutorManager.class, AutoBatchPreparedStatementUtil.class,
-			"_portalExecutorManager", true);
+			"_portalExecutorManager", false);
 
 	static {
 		try {

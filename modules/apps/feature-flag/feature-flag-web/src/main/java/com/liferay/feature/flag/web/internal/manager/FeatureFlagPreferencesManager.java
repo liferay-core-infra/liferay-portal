@@ -129,8 +129,8 @@ public class FeatureFlagPreferencesManager {
 	private static final String _NAMESPACE = FeatureFlagConstants.FEATURE_FLAG;
 
 	private static final MethodKey _onNotifyMethodKey = new MethodKey(
-		FeatureFlagPreferencesManager.class, "_notifySubscribers", Long.class,
-		String.class, Boolean.class);
+		FeatureFlagPreferencesManager.class, "_notifySubscribers", long.class,
+		String.class, boolean.class);
 	private static final Map<Long, List<BiConsumer<String, Boolean>>>
 		_subscribersMap = new ConcurrentHashMap<>();
 

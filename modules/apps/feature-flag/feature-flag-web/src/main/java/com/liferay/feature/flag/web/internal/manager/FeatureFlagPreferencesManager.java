@@ -116,7 +116,7 @@ public class FeatureFlagPreferencesManager {
 		}
 
 		MethodHandler methodHandler = new MethodHandler(
-			_onNotifyMethodKey, companyId, key, enabled);
+			_notifySubscribersMethodKey, companyId, key, enabled);
 
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			methodHandler, true);
@@ -128,7 +128,7 @@ public class FeatureFlagPreferencesManager {
 
 	private static final String _NAMESPACE = FeatureFlagConstants.FEATURE_FLAG;
 
-	private static final MethodKey _onNotifyMethodKey = new MethodKey(
+	private static final MethodKey _notifySubscribersMethodKey = new MethodKey(
 		FeatureFlagPreferencesManager.class, "_notifySubscribers", long.class,
 		String.class, boolean.class);
 	private static final Map<Long, List<BiConsumer<String, Boolean>>>

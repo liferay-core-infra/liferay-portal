@@ -304,6 +304,6 @@ public class WorkflowTaskManagerUtil {
 	private static volatile WorkflowTaskManager _workflowTaskManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			WorkflowTaskManager.class, WorkflowTaskManagerUtil.class,
-			"_workflowTaskManager", true);
+			"_workflowTaskManager", false);
 
 }

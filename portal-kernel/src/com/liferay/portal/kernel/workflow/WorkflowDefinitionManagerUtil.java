@@ -162,6 +162,6 @@ public class WorkflowDefinitionManagerUtil {
 			ServiceProxyFactory.newServiceTrackedInstance(
 				WorkflowDefinitionManager.class,
 				WorkflowDefinitionManagerUtil.class,
-				"_workflowDefinitionManager", true);
+				"_workflowDefinitionManager", false);
 
 }

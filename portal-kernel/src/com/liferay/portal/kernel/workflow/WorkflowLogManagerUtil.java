@@ -67,6 +67,6 @@ public class WorkflowLogManagerUtil {
 	private static volatile WorkflowLogManager _workflowLogManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			WorkflowLogManager.class, WorkflowLogManagerUtil.class,
-			"_workflowLogManager", true);
+			"_workflowLogManager", false);
 
 }

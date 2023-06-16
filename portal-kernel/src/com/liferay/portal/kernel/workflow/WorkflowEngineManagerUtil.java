@@ -47,6 +47,6 @@ public class WorkflowEngineManagerUtil {
 	private static volatile WorkflowEngineManager _workflowEngineManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			WorkflowEngineManager.class, WorkflowEngineManagerUtil.class,
-			"_workflowEngineManager", true);
+			"_workflowEngineManager", false);
 
 }

@@ -192,6 +192,6 @@ public class WorkflowComparatorFactoryUtil {
 			ServiceProxyFactory.newServiceTrackedInstance(
 				WorkflowComparatorFactory.class,
 				WorkflowComparatorFactoryUtil.class,
-				"_workflowComparatorFactory", true);
+				"_workflowComparatorFactory", false);
 
 }

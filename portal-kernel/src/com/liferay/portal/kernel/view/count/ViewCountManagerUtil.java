@@ -58,6 +58,6 @@ public class ViewCountManagerUtil {
 	private static volatile ViewCountManager _viewCountManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			ViewCountManager.class, ViewCountManagerUtil.class,
-			"_viewCountManager", true);
+			"_viewCountManager", false);
 
 }

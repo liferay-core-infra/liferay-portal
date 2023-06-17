@@ -433,18 +433,25 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 			Class<?> driverClass = driver.getClass();
 
-			if (PortalClassLoaderUtil.isPortalClassLoader(
-					driverClass.getClassLoader())) {
+			try {
+				Class.forName(driverClass.getName());
 
-				try {
-					DriverManager.deregisterDriver(driver);
+				DriverManager.deregisterDriver(driver);
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						StringBundler.concat(
+							"Driver ", driver, " cannot be unregistered from ",
+							"portal context. It must be explicitely ",
+							"unregistered."),
+						classNotFoundException);
 				}
-				catch (SQLException sqlException) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							"Unable to deregister driver " + driver,
-							sqlException);
-					}
+			}
+			catch (SQLException sqlException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to deregister driver " + driver, sqlException);
 				}
 			}
 		}

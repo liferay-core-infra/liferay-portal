@@ -16,9 +16,11 @@ package com.liferay.portal.language;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
@@ -190,21 +192,33 @@ public class LanguageResources {
 		String country = locale.getCountry();
 
 		if (country.length() > 0) {
-			Locale priorityLocale = LanguageUtil.getLocale(
-				locale.getLanguage());
+			long companyThreadLocalCompanyId =
+				CompanyThreadLocal.getCompanyId();
 
-			if (priorityLocale != null) {
-				variant = priorityLocale.getVariant();
+			try {
+				CompanyThreadLocal.setCompanyId(CompanyConstants.SYSTEM);
+
+				Locale priorityLocale = LanguageUtil.getLocale(
+					locale.getLanguage());
+
+				if (priorityLocale != null) {
+					variant = priorityLocale.getVariant();
+				}
+
+				if ((priorityLocale != null) &&
+					!locale.equals(priorityLocale) && (variant.length() <= 0)) {
+
+					return new Locale(
+						priorityLocale.getLanguage(),
+						priorityLocale.getCountry());
+				}
+
+				return LocaleUtil.fromLanguageId(
+					locale.getLanguage(), false, true);
 			}
-
-			if ((priorityLocale != null) && !locale.equals(priorityLocale) &&
-				(variant.length() <= 0)) {
-
-				return new Locale(
-					priorityLocale.getLanguage(), priorityLocale.getCountry());
+			finally {
+				CompanyThreadLocal.setCompanyId(companyThreadLocalCompanyId);
 			}
-
-			return LocaleUtil.fromLanguageId(locale.getLanguage(), false, true);
 		}
 
 		String language = locale.getLanguage();

@@ -25,7 +25,7 @@ import java.io.InputStream;
 /**
  * @author Sergio González
  */
-public interface PDFProcessor {
+public interface PDFProcessor extends DLProcessor {
 
 	public static final String PREVIEW_TYPE = ImageTool.TYPE_PNG;
 

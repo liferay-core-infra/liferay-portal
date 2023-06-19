@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * @author Sergio González
  */
-public interface ImageProcessor {
+public interface ImageProcessor extends DLProcessor {
 
 	public void cleanUp(FileEntry fileEntry);
 

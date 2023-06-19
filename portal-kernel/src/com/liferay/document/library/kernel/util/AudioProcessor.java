@@ -29,7 +29,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Sergio González
  */
 @ProviderType
-public interface AudioProcessor {
+public interface AudioProcessor extends DLProcessor {
 
 	public static final String PREVIEW_TYPE = "mp3";
 

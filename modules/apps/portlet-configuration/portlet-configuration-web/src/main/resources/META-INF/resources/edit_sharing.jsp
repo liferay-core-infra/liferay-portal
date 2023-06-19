@@ -22,6 +22,16 @@ String returnToFullPageURL = ParamUtil.getString(request, "returnToFullPageURL")
 Portlet portlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(), portletResource);
 
 String widgetURL = PortalUtil.getWidgetURL(portlet, themeDisplay);
+
+boolean showSharingSnippet = true;
+
+if (layout.isDraftLayout()) {
+	Layout publishedLayout = LayoutLocalServiceUtil.getLayout(layout.getClassPK());
+
+	LayoutTypePortlet publishedLayoutTypePortlet = (LayoutTypePortlet)publishedLayout.getLayoutType();
+
+	showSharingSnippet = publishedLayoutTypePortlet.hasPortletId(portletResource);
+}
 %>
 
 <portlet:actionURL name="editSharing" var="editSharingURL">
@@ -45,27 +55,29 @@ String widgetURL = PortalUtil.getWidgetURL(portlet, themeDisplay);
 		<aui:input name="portletResource" type="hidden" value="<%= portletResource %>" />
 
 		<liferay-frontend:edit-form-body>
-			<liferay-frontend:fieldset
-				collapsed="<%= false %>"
-				collapsible="<%= true %>"
-				label="any-website"
-			>
-				<div class="alert alert-info">
-					<liferay-ui:message key="share-this-application-on-any-website" />
-				</div>
-
-				<liferay-util:buffer
-					var="textAreaContent"
+			<c:if test="<%= showSharingSnippet %>">
+				<liferay-frontend:fieldset
+					collapsed="<%= false %>"
+					collapsible="<%= true %>"
+					label="any-website"
 				>
-					<iframe frameborder="0" height="100%" src="<%= HtmlUtil.escapeAttribute(widgetURL) %>" width="100%"></iframe>
-				</liferay-util:buffer>
+					<div class="alert alert-info">
+						<liferay-ui:message key="share-this-application-on-any-website" />
+					</div>
 
-				<aui:field-wrapper label="code">
-					<textarea aria-label="<%= LanguageUtil.get(request, "code") %>" class="field form-control lfr-textarea" id="<portlet:namespace />widgetScript" onClick="this.select();" readonly="true"><%= HtmlUtil.escape(textAreaContent) %></textarea>
-				</aui:field-wrapper>
+					<liferay-util:buffer
+						var="textAreaContent"
+					>
+						<iframe frameborder="0" height="100%" src="<%= HtmlUtil.escapeAttribute(widgetURL) %>" width="100%"></iframe>
+					</liferay-util:buffer>
 
-				<aui:input inlineLabel="right" label='<%= LanguageUtil.format(request, "allow-users-to-add-x-to-any-website", HtmlUtil.escape(portletDisplay.getTitle()), false) %>' labelCssClass="simple-toggle-switch" name="widgetShowAddAppLink" type="toggle-switch" value='<%= GetterUtil.getBoolean(portletPreferences.getValue("lfrWidgetShowAddAppLink", null), PropsValues.THEME_PORTLET_SHARING_DEFAULT) %>' />
-			</liferay-frontend:fieldset>
+					<aui:field-wrapper label="code">
+						<textarea aria-label="<%= LanguageUtil.get(request, "code") %>" class="field form-control lfr-textarea" id="<portlet:namespace />widgetScript" onClick="this.select();" readonly="true"><%= HtmlUtil.escape(textAreaContent) %></textarea>
+					</aui:field-wrapper>
+
+					<aui:input inlineLabel="right" label='<%= LanguageUtil.format(request, "allow-users-to-add-x-to-any-website", HtmlUtil.escape(portletDisplay.getTitle()), false) %>' labelCssClass="simple-toggle-switch" name="widgetShowAddAppLink" type="toggle-switch" value='<%= GetterUtil.getBoolean(portletPreferences.getValue("lfrWidgetShowAddAppLink", null), PropsValues.THEME_PORTLET_SHARING_DEFAULT) %>' />
+				</liferay-frontend:fieldset>
+			</c:if>
 
 			<liferay-frontend:fieldset
 				collapsed="<%= true %>"

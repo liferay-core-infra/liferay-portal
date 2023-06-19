@@ -24,6 +24,7 @@ import com.liferay.object.exception.ObjectRelationshipNameException;
 import com.liferay.object.exception.ObjectRelationshipParameterObjectFieldIdException;
 import com.liferay.object.exception.ObjectRelationshipReverseException;
 import com.liferay.object.exception.ObjectRelationshipTypeException;
+import com.liferay.object.internal.helper.ObjectDefinitionDeployerHelper;
 import com.liferay.object.internal.info.collection.provider.RelatedInfoCollectionProviderFactory;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
@@ -87,9 +88,6 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marco Leo
@@ -829,10 +827,8 @@ public class ObjectRelationshipLocalServiceImpl
 
 		runSQL(indexMetadata.getCreateSQL(null));
 
-		if (_objectDefinitionLocalService != null) {
-			_objectDefinitionLocalService.deployObjectDefinition(
-				objectDefinition2);
-		}
+		_objectDefinitionDeployerHelper.deployObjectDefinition(
+			objectDefinition2);
 
 		return objectField;
 	}
@@ -1190,12 +1186,8 @@ public class ObjectRelationshipLocalServiceImpl
 
 	private BundleContext _bundleContext;
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile ObjectDefinitionLocalService _objectDefinitionLocalService;
+	@Reference
+	private ObjectDefinitionDeployerHelper _objectDefinitionDeployerHelper;
 
 	@Reference
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;

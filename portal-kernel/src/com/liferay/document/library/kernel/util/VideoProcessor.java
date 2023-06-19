@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * @author Sergio González
  */
-public interface VideoProcessor {
+public interface VideoProcessor extends DLProcessor {
 
 	public static final String THUMBNAIL_TYPE = "jpg";
 

@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.repository.model.FileVersion;
  * @author Mika Koivisto
  * @author Miguel Pastor
  */
-public interface RawMetadataProcessor {
+public interface RawMetadataProcessor extends DLProcessor {
 
 	public void cleanUp(FileEntry fileEntry);
 

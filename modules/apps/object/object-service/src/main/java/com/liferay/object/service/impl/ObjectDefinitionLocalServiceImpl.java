@@ -20,9 +20,6 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
-import com.liferay.fragment.model.FragmentEntryLink;
-import com.liferay.layout.model.LayoutClassedModelUsage;
-import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
@@ -48,6 +45,7 @@ import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.field.setting.util.ObjectFieldSettingUtil;
 import com.liferay.object.internal.definition.util.ObjectDefinitionUtil;
 import com.liferay.object.internal.deployer.ObjectDefinitionDeployerImpl;
+import com.liferay.object.internal.helper.ObjectDefinitionDeployerHelper;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionLocalizationTableFactory;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
@@ -80,8 +78,6 @@ import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
-import com.liferay.portal.kernel.cache.MultiVMPool;
-import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
@@ -104,8 +100,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
-import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ListTypeLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -138,15 +132,11 @@ import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -473,27 +463,8 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Override
 	public void deployObjectDefinition(ObjectDefinition objectDefinition) {
-		undeployObjectDefinition(objectDefinition);
-
-		for (Map.Entry
-				<ObjectDefinitionDeployer,
-				 Map<Long, List<ServiceRegistration<?>>>> entry :
-					_serviceRegistrationsMaps.entrySet()) {
-
-			ObjectDefinitionDeployer objectDefinitionDeployer = entry.getKey();
-			Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
-				entry.getValue();
-
-			try (SafeCloseable safeCloseable =
-					CompanyThreadLocal.setWithSafeCloseable(
-						objectDefinition.getCompanyId())) {
-
-				serviceRegistrationsMap.computeIfAbsent(
-					objectDefinition.getObjectDefinitionId(),
-					objectDefinitionId -> objectDefinitionDeployer.deploy(
-						objectDefinition));
-			}
-		}
+		_objectDefinitionDeployerHelper.deployObjectDefinition(
+			objectDefinition);
 	}
 
 	@Override
@@ -648,7 +619,7 @@ public class ObjectDefinitionLocalServiceImpl
 	public void setAopProxy(Object aopProxy) {
 		super.setAopProxy(aopProxy);
 
-		_addingObjectDefinitionDeployer(
+		_objectDefinitionDeployerHelper.addingObjectDefinitionDeployer(
 			new ObjectDefinitionDeployerImpl(
 				_accountEntryLocalService,
 				_accountEntryOrganizationRelLocalService,
@@ -667,7 +638,8 @@ public class ObjectDefinitionLocalServiceImpl
 				_resourceActions, _userLocalService,
 				_resourcePermissionLocalService,
 				_workflowStatusModelPreFilterContributor,
-				_userGroupRoleLocalService));
+				_userGroupRoleLocalService),
+			objectDefinitionLocalService);
 
 		_objectDefinitionDeployerServiceTracker = new ServiceTracker<>(
 			_bundleContext, ObjectDefinitionDeployer.class,
@@ -679,8 +651,10 @@ public class ObjectDefinitionLocalServiceImpl
 					ServiceReference<ObjectDefinitionDeployer>
 						serviceReference) {
 
-					return _addingObjectDefinitionDeployer(
-						_bundleContext.getService(serviceReference));
+					return _objectDefinitionDeployerHelper.
+						addingObjectDefinitionDeployer(
+							_bundleContext.getService(serviceReference),
+							objectDefinitionLocalService);
 				}
 
 				@Override
@@ -695,14 +669,23 @@ public class ObjectDefinitionLocalServiceImpl
 					ObjectDefinitionDeployer objectDefinitionDeployer) {
 
 					for (ObjectDefinition objectDefinition :
-							_getObjectDefinitions()) {
+							_objectDefinitionDeployerHelper.
+								getObjectDefinitions(
+									objectDefinitionLocalService)) {
 
 						objectDefinitionDeployer.undeploy(objectDefinition);
 					}
 
+					Map
+						<ObjectDefinitionDeployer,
+						 Map<Long, List<ServiceRegistration<?>>>>
+							serviceRegistrationsMaps =
+								_objectDefinitionDeployerHelper.
+									getServiceRegistrationsMaps();
+
 					Map<Long, List<ServiceRegistration<?>>>
 						serviceRegistrationsMap =
-							_serviceRegistrationsMaps.remove(
+							serviceRegistrationsMaps.remove(
 								objectDefinitionDeployer);
 
 					for (List<ServiceRegistration<?>> serviceRegistrations :
@@ -730,36 +713,8 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Override
 	public void undeployObjectDefinition(ObjectDefinition objectDefinition) {
-		if (objectDefinition.isUnmodifiableSystemObject()) {
-			return;
-		}
-
-		for (Map.Entry
-				<ObjectDefinitionDeployer,
-				 Map<Long, List<ServiceRegistration<?>>>> entry :
-					_serviceRegistrationsMaps.entrySet()) {
-
-			ObjectDefinitionDeployer objectDefinitionDeployer = entry.getKey();
-
-			objectDefinitionDeployer.undeploy(objectDefinition);
-
-			Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
-				entry.getValue();
-
-			List<ServiceRegistration<?>> serviceRegistrations =
-				serviceRegistrationsMap.remove(
-					objectDefinition.getObjectDefinitionId());
-
-			if (serviceRegistrations != null) {
-				for (ServiceRegistration<?> serviceRegistration :
-						serviceRegistrations) {
-
-					serviceRegistration.unregister();
-				}
-			}
-		}
-
-		_invalidatePortalCache(objectDefinition);
+		_objectDefinitionDeployerHelper.undeployObjectDefinition(
+			objectDefinition);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -853,29 +808,6 @@ public class ObjectDefinitionLocalServiceImpl
 		if (_objectDefinitionDeployerServiceTracker != null) {
 			_objectDefinitionDeployerServiceTracker.close();
 		}
-	}
-
-	private ObjectDefinitionDeployer _addingObjectDefinitionDeployer(
-		ObjectDefinitionDeployer objectDefinitionDeployer) {
-
-		Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
-			new ConcurrentHashMap<>();
-
-		for (ObjectDefinition objectDefinition : _getObjectDefinitions()) {
-			try (SafeCloseable safeCloseable =
-					CompanyThreadLocal.setWithSafeCloseable(
-						objectDefinition.getCompanyId())) {
-
-				serviceRegistrationsMap.put(
-					objectDefinition.getObjectDefinitionId(),
-					objectDefinitionDeployer.deploy(objectDefinition));
-			}
-		}
-
-		_serviceRegistrationsMaps.put(
-			objectDefinitionDeployer, serviceRegistrationsMap);
-
-		return objectDefinitionDeployer;
 	}
 
 	private ObjectDefinition _addObjectDefinition(
@@ -1193,17 +1125,6 @@ public class ObjectDefinitionLocalServiceImpl
 		return name;
 	}
 
-	private List<ObjectDefinition> _getObjectDefinitions() {
-		List<ObjectDefinition> objectDefinitions = new ArrayList<>();
-
-		_companyLocalService.forEachCompanyId(
-			companyId -> objectDefinitions.addAll(
-				objectDefinitionLocalService.getObjectDefinitions(
-					companyId, true, WorkflowConstants.STATUS_APPROVED)));
-
-		return objectDefinitions;
-	}
-
 	private String _getPKObjectFieldDBColumnName(
 		String pkObjectFieldDBColumnName, String pkObjectFieldName,
 		boolean modifiable, boolean system) {
@@ -1249,33 +1170,6 @@ public class ObjectDefinitionLocalServiceImpl
 		}
 
 		return false;
-	}
-
-	private void _invalidatePortalCache(ObjectDefinition objectDefinition) {
-		PortalCache<String, String> portalCache =
-			(PortalCache<String, String>)_multiVMPool.getPortalCache(
-				FragmentEntryLink.class.getName());
-
-		List<LayoutClassedModelUsage> layoutClassedModelUsages =
-			_layoutClassedModelUsageLocalService.getLayoutClassedModelUsages(
-				objectDefinition.getCompanyId(),
-				_classNameLocalService.getClassNameId(
-					objectDefinition.getClassName()),
-				_portal.getClassNameId(FragmentEntryLink.class));
-
-		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				layoutClassedModelUsages) {
-
-			Set<Locale> availableLocales = _language.getAvailableLocales(
-				layoutClassedModelUsage.getGroupId());
-
-			for (Locale locale : availableLocales) {
-				portalCache.remove(
-					StringBundler.concat(
-						layoutClassedModelUsage.getContainerKey(),
-						StringPool.DASH, locale, StringPool.DASH, 0));
-			}
-		}
 	}
 
 	private boolean _isUnmodifiableSystemObject(
@@ -1841,13 +1735,6 @@ public class ObjectDefinitionLocalServiceImpl
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 	private BundleContext _bundleContext;
-
-	@Reference
-	private ClassNameLocalService _classNameLocalService;
-
-	@Reference
-	private CompanyLocalService _companyLocalService;
-
 	private final Set<String> _defaultSystemObjectFieldNames =
 		SetUtil.fromArray(
 			new String[] {
@@ -1866,10 +1753,6 @@ public class ObjectDefinitionLocalServiceImpl
 	private Language _language;
 
 	@Reference
-	private LayoutClassedModelUsageLocalService
-		_layoutClassedModelUsageLocalService;
-
-	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
 
 	@Reference
@@ -1879,10 +1762,10 @@ public class ObjectDefinitionLocalServiceImpl
 	private ModelSearchRegistrarHelper _modelSearchRegistrarHelper;
 
 	@Reference
-	private MultiVMPool _multiVMPool;
+	private ObjectActionLocalService _objectActionLocalService;
 
 	@Reference
-	private ObjectActionLocalService _objectActionLocalService;
+	private ObjectDefinitionDeployerHelper _objectDefinitionDeployerHelper;
 
 	private ServiceTracker<ObjectDefinitionDeployer, ObjectDefinitionDeployer>
 		_objectDefinitionDeployerServiceTracker;
@@ -1953,11 +1836,6 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
-
-	private final Map
-		<ObjectDefinitionDeployer, Map<Long, List<ServiceRegistration<?>>>>
-			_serviceRegistrationsMaps = Collections.synchronizedMap(
-				new LinkedHashMap<>());
 
 	@Reference
 	private UserGroupRoleLocalService _userGroupRoleLocalService;

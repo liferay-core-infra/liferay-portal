@@ -19,9 +19,8 @@ import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
 import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.document.library.kernel.util.DLProcessor;
+import com.liferay.document.library.kernel.util.PDFProcessor;
 import com.liferay.document.library.kernel.util.PDFProcessorUtil;
-import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
@@ -32,7 +31,6 @@ import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -41,8 +39,8 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -54,6 +52,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 
 import java.util.Dictionary;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -112,8 +111,8 @@ public class PDFProcessorTest {
 		dlFileEntryPreviewForkProcessEnabledField.set(
 			null, _dlFileEntryPreviewForkProcessEnabled);
 
-		if (_dlProcessorServiceRegistration != null) {
-			_dlProcessorServiceRegistration.unregister();
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
 		}
 	}
 
@@ -519,77 +518,34 @@ public class PDFProcessorTest {
 	}
 
 	protected AtomicBoolean registerCleanUpDLProcessor() {
-		final AtomicBoolean cleanUp = new AtomicBoolean(false);
-
-		DLProcessor cleanUpDLProcessor = new DLProcessor() {
-
-			@Override
-			public void afterPropertiesSet() throws Exception {
-			}
-
-			@Override
-			public void cleanUp(FileEntry fileEntry) {
-				cleanUp.set(true);
-			}
-
-			@Override
-			public void cleanUp(FileVersion fileVersion) {
-				cleanUp.set(true);
-			}
-
-			@Override
-			public void copy(
-				FileVersion sourceFileVersion,
-				FileVersion destinationFileVersion) {
-			}
-
-			@Override
-			public void exportGeneratedFiles(
-					PortletDataContext portletDataContext, FileEntry fileEntry,
-					Element fileEntryElement)
-				throws Exception {
-			}
-
-			@Override
-			public String getType() {
-				return DLProcessorConstants.PDF_PROCESSOR;
-			}
-
-			@Override
-			public void importGeneratedFiles(
-					PortletDataContext portletDataContext, FileEntry fileEntry,
-					FileEntry importedFileEntry, Element fileEntryElement)
-				throws Exception {
-			}
-
-			@Override
-			public boolean isSupported(FileVersion fileVersion) {
-				return true;
-			}
-
-			@Override
-			public boolean isSupported(String mimeType) {
-				return true;
-			}
-
-			@Override
-			public void trigger(
-				FileVersion sourceFileVersion,
-				FileVersion destinationFileVersion) {
-			}
-
-		};
+		AtomicBoolean cleanUp = new AtomicBoolean(false);
 
 		Bundle bundle = FrameworkUtil.getBundle(PDFProcessorTest.class);
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		_dlProcessorServiceRegistration = bundleContext.registerService(
-			DLProcessor.class, cleanUpDLProcessor,
+		_serviceRegistration = bundleContext.registerService(
+			PDFProcessor.class.getName(),
+			(PDFProcessor)ProxyUtil.newProxyInstance(
+				PDFProcessor.class.getClassLoader(),
+				new Class<?>[] {PDFProcessor.class},
+				(proxy, method, args) -> {
+					if (Objects.equals(method.getName(), "cleanUp")) {
+						cleanUp.set(true);
+					}
+					else if (Objects.equals(method.getName(), "getType")) {
+						return DLProcessorConstants.PDF_PROCESSOR;
+					}
+					else if (Objects.equals(method.getName(), "isSupported")) {
+						return true;
+					}
+
+					return method.getDefaultValue();
+				}),
 			HashMapDictionaryBuilder.<String, Object>put(
-				"service.ranking", 1000
-			).put(
 				"dl.processor.type", DLProcessorConstants.PDF_PROCESSOR
+			).put(
+				"service.ranking", 1000
 			).build());
 
 		return cleanUp;
@@ -670,7 +626,6 @@ public class PDFProcessorTest {
 	private DLAppService _dlAppService;
 
 	private Object _dlFileEntryPreviewForkProcessEnabled;
-	private ServiceRegistration<DLProcessor> _dlProcessorServiceRegistration;
 
 	@DeleteAfterTestRun
 	private Group _group;
@@ -679,5 +634,6 @@ public class PDFProcessorTest {
 	private MessageBus _messageBus;
 
 	private ServiceContext _serviceContext;
+	private ServiceRegistration<?> _serviceRegistration;
 
 }

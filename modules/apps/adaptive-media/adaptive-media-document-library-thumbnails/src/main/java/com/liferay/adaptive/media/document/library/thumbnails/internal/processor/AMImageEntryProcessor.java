@@ -25,7 +25,6 @@ import com.liferay.adaptive.media.image.validator.AMImageValidator;
 import com.liferay.adaptive.media.processor.AMAsyncProcessor;
 import com.liferay.adaptive.media.processor.AMAsyncProcessorLocator;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
-import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.ImageProcessor;
 import com.liferay.document.library.security.io.InputStreamSanitizer;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -64,11 +63,9 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.adaptive.media.document.library.thumbnails.internal.configuration.AMSystemImagesConfiguration",
 	property = "dl.processor.type=" + DLProcessorConstants.IMAGE_PROCESSOR,
-	service = {
-		AMImageEntryProcessor.class, DLProcessor.class, ImageProcessor.class
-	}
+	service = ImageProcessor.class
 )
-public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
+public class AMImageEntryProcessor implements ImageProcessor {
 
 	@Override
 	public void afterPropertiesSet() {

@@ -19,7 +19,6 @@ import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
-import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.kernel.util.PDFProcessor;
 import com.liferay.document.library.preview.pdf.internal.configuration.admin.service.PDFPreviewManagedServiceFactory;
@@ -89,7 +88,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "dl.processor.type=" + DLProcessorConstants.PDF_PROCESSOR,
-	service = {DLProcessor.class, PDFProcessor.class}
+	service = PDFProcessor.class
 )
 public class PDFProcessorImpl
 	extends DLPreviewableProcessor implements PDFProcessor {

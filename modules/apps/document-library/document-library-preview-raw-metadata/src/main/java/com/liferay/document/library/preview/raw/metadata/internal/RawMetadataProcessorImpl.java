@@ -18,7 +18,6 @@ import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalService;
-import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.RawMetadataProcessor;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
@@ -59,10 +58,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "dl.processor.type=" + DLProcessorConstants.RAW_METADATA_PROCESSOR,
-	service = DLProcessor.class
+	service = RawMetadataProcessor.class
 )
-public class RawMetadataProcessorImpl
-	implements DLProcessor, RawMetadataProcessor {
+public class RawMetadataProcessorImpl implements RawMetadataProcessor {
 
 	@Override
 	public void afterPropertiesSet() {

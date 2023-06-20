@@ -17,7 +17,6 @@ package com.liferay.document.library.preview.video.internal;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
-import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.kernel.util.VideoConverter;
 import com.liferay.document.library.kernel.util.VideoProcessor;
@@ -60,7 +59,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "dl.processor.type=" + DLProcessorConstants.VIDEO_PROCESSOR,
-	service = {DLProcessor.class, VideoProcessor.class}
+	service = VideoProcessor.class
 )
 public class VideoProcessorImpl
 	extends DLPreviewableProcessor implements VideoProcessor {

@@ -227,7 +227,7 @@ public class AMThumbnailsOSGiCommandsTest {
 	}
 
 	private static void _disableAMThumbnails() throws Exception {
-		Class<?> clazz = _dlProcessor.getClass();
+		Class<?> clazz = _imageProcessor.getClass();
 
 		ComponentDescriptionDTO componentDescriptionDTO =
 			_serviceComponentRuntime.getComponentDescriptionDTO(
@@ -276,7 +276,7 @@ public class AMThumbnailsOSGiCommandsTest {
 	private static void _enableAMThumbnails() throws Exception {
 		_serviceRegistration.unregister();
 
-		Class<?> clazz = _dlProcessor.getClass();
+		Class<?> clazz = _imageProcessor.getClass();
 
 		ComponentDescriptionDTO componentDescriptionDTO =
 			_serviceComponentRuntime.getComponentDescriptionDTO(
@@ -396,8 +396,8 @@ public class AMThumbnailsOSGiCommandsTest {
 	)
 	private static Object _amThumbnailsOSGiCommands;
 
-	@Inject(filter = "dl.processor.type=" + DLProcessorConstants.IMAGE_PROCESSOR)
-	private static DLProcessor _dlProcessor;
+	@Inject
+	private static ImageProcessor _imageProcessor;
 
 	@Inject
 	private static ServiceComponentRuntime _serviceComponentRuntime;

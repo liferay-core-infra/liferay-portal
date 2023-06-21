@@ -88,6 +88,6 @@ public class PasswordEncryptorUtil {
 	private static volatile PasswordEncryptor _passwordEncryptor =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			PasswordEncryptor.class, PasswordEncryptorUtil.class,
-			"_passwordEncryptor", "(composite=true)", true);
+			"_passwordEncryptor", "(composite=true)", false);
 
 }

@@ -60,7 +60,7 @@ public class DLSubscriptionSender
 			ServiceProxyFactory.newServiceTrackedInstance(
 				ModelResourcePermission.class, DLSubscriptionSender.class,
 				"_dlFolderModelResourcePermission",
-				"(model.class.name=" + DLFolder.class.getName() + ")", true);
+				"(model.class.name=" + DLFolder.class.getName() + ")", false);
 
 	private long _targetFolderId;
 

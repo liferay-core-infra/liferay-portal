@@ -55,7 +55,6 @@ import com.liferay.saml.persistence.service.SamlPeerBindingLocalService;
 import com.liferay.saml.persistence.service.SamlPeerBindingLocalServiceUtil;
 import com.liferay.saml.runtime.configuration.SamlProviderConfiguration;
 import com.liferay.saml.runtime.configuration.SamlProviderConfigurationHelper;
-import com.liferay.saml.runtime.metadata.LocalEntityManager;
 import com.liferay.saml.util.PortletPropsKeys;
 
 import java.io.UnsupportedEncodingException;
@@ -328,7 +327,8 @@ public abstract class BaseSamlTestCase {
 	protected IdentifierGenerationStrategyFactory
 		identifierGenerationStrategyFactory;
 	protected List<String> identifiers = new ArrayList<>();
-	protected LocalEntityManager localEntityManager;
+	protected KeyStoreCredentialResolver.KeyStoreLocalEntityManager
+		localEntityManager;
 	protected MetadataManagerImpl metadataManagerImpl;
 	protected ParserPool parserPool;
 	protected Portal portal;
@@ -639,8 +639,11 @@ public abstract class BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_credentialResolver", credentialResolver);
 
+		localEntityManager =
+			credentialResolver.new KeyStoreLocalEntityManager();
+
 		ReflectionTestUtil.setFieldValue(
-			metadataManagerImpl, "_localEntityManager", credentialResolver);
+			metadataManagerImpl, "_localEntityManager", localEntityManager);
 
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_portal", portal);

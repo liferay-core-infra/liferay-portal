@@ -44,6 +44,8 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 
 	@Test
 	public void testGetRequestPath() {
+		samlHttpRequestUtilImpl = new SamlHttpRequestUtilImpl();
+
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest(
 				HttpMethods.GET,
@@ -51,11 +53,13 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 
 		Assert.assertEquals(
 			"/c/portal/login",
-			metadataManagerImpl.getRequestPath(mockHttpServletRequest));
+			samlHttpRequestUtilImpl.getRequestPath(mockHttpServletRequest));
 	}
 
 	@Test
 	public void testGetRequestPathWithContext() {
+		samlHttpRequestUtilImpl = new SamlHttpRequestUtilImpl();
+
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest(
 				HttpMethods.GET,
@@ -65,17 +69,21 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 
 		Assert.assertEquals(
 			"/c/portal/login",
-			metadataManagerImpl.getRequestPath(mockHttpServletRequest));
+			samlHttpRequestUtilImpl.getRequestPath(mockHttpServletRequest));
 	}
 
 	@Test
 	public void testGetRequestPathWithoutJsessionId() {
+		samlHttpRequestUtilImpl = new SamlHttpRequestUtilImpl();
+
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest(HttpMethods.GET, "/c/portal/login");
 
 		Assert.assertEquals(
 			"/c/portal/login",
-			metadataManagerImpl.getRequestPath(mockHttpServletRequest));
+			samlHttpRequestUtilImpl.getRequestPath(mockHttpServletRequest));
 	}
+
+	protected SamlHttpRequestUtilImpl samlHttpRequestUtilImpl;
 
 }

@@ -126,6 +126,6 @@ public class ConfigurationProviderUtil {
 	private static volatile ConfigurationProvider _configurationProvider =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			ConfigurationProvider.class, ConfigurationProviderUtil.class,
-			"_configurationProvider", true);
+			"_configurationProvider", false);
 
 }

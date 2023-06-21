@@ -52,20 +52,15 @@ import org.jgroups.conf.ConfiguratorFactory;
 import org.jgroups.conf.ProtocolStackConfigurator;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Modified;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tina Tian
  */
-@Component(
-	configurationPid = "com.liferay.portal.cluster.multiple.configuration.ClusterExecutorConfiguration",
-	enabled = false, service = ClusterChannelFactory.class
-)
 public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
+
+	public JGroupsClusterChannelFactory(Props props) {
+		_props = props;
+	}
 
 	@Override
 	public ClusterChannel createClusterChannel(
@@ -96,9 +91,7 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 		return _bindNetworkInterface;
 	}
 
-	@Activate
-	@Modified
-	protected synchronized void activate(
+	public synchronized void start(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
 		_clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
@@ -112,8 +105,7 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 				_props.get(PropsKeys.CLUSTER_LINK_AUTODETECT_ADDRESS)));
 	}
 
-	@Deactivate
-	protected synchronized void deactivate() {
+	public synchronized void stop() {
 		_classLoaders.clear();
 	}
 
@@ -306,8 +298,6 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 		new ConcurrentReferenceKeyHashMap<>(
 			FinalizeManager.WEAK_REFERENCE_FACTORY);
 	private volatile ClusterExecutorConfiguration _clusterExecutorConfiguration;
-
-	@Reference
-	private Props _props;
+	private final Props _props;
 
 }

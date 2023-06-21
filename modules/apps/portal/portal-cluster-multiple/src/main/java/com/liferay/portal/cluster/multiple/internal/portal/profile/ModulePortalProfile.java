@@ -14,12 +14,9 @@
 
 package com.liferay.portal.cluster.multiple.internal.portal.profile;
 
-import com.liferay.portal.cluster.multiple.internal.ClusterExecutorImpl;
 import com.liferay.portal.cluster.multiple.internal.ClusterMasterExecutorImpl;
 import com.liferay.portal.cluster.multiple.internal.ClusterMasterTokenTransitionListenerTracker;
 import com.liferay.portal.cluster.multiple.internal.DebuggingClusterEventListener;
-import com.liferay.portal.cluster.multiple.internal.jgroups.JGroupsClusterChannelFactory;
-import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
@@ -28,7 +25,6 @@ import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.profile.BaseDSModulePortalProfile;
 import com.liferay.portal.profile.PortalProfile;
 
@@ -64,11 +60,6 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 			supportedPortalProfileNames = Collections.emptyList();
 
 			BundleContext bundleContext = componentContext.getBundleContext();
-
-			bundleContext.registerService(
-				ClusterExecutor.class,
-				ProxyFactory.newDummyInstance(ClusterExecutor.class),
-				new HashMapDictionary<>());
 
 			bundleContext.registerService(
 				ClusterMasterExecutor.class,
@@ -109,8 +100,6 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 
 		init(
 			componentContext, supportedPortalProfileNames,
-			JGroupsClusterChannelFactory.class.getName(),
-			ClusterExecutorImpl.class.getName(),
 			ClusterMasterExecutorImpl.class.getName(),
 			ClusterMasterTokenTransitionListenerTracker.class.getName(),
 			DebuggingClusterEventListener.class.getName());

@@ -70,23 +70,21 @@ import java.util.concurrent.TimeUnit;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Modified;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tina Tian
  * @author Shuyang Zhou
  */
-@Component(
-	configurationPid = "com.liferay.portal.cluster.multiple.configuration.ClusterExecutorConfiguration",
-	enabled = false,
-	service = {ClusterExecutor.class, ClusterExecutorImpl.class}
-)
 public class ClusterExecutorImpl implements ClusterExecutor {
+
+	public ClusterExecutorImpl(
+		ClusterChannelFactory clusterChannelFactory,
+		PortalExecutorManager portalExecutorManager, Props props) {
+
+		_clusterChannelFactory = clusterChannelFactory;
+		_portalExecutorManager = portalExecutorManager;
+		_props = props;
+	}
 
 	@Override
 	public FutureClusterResponses execute(ClusterRequest clusterRequest) {
@@ -190,55 +188,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	@Override
 	public boolean isEnabled() {
 		return _enabled;
-	}
-
-	@Activate
-	protected void activate(ComponentContext componentContext) {
-		_enabled = true;
-
-		clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
-			ClusterExecutorConfiguration.class,
-			componentContext.getProperties());
-
-		BundleContext bundleContext = componentContext.getBundleContext();
-
-		_serviceTrackerList = ServiceTrackerListFactory.open(
-			bundleContext, ClusterEventListener.class);
-
-		initialize(
-			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_LOGIC_NAME_CONTROL),
-			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL),
-			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_NAME_CONTROL));
-
-		_serviceRegistration = bundleContext.registerService(
-			PortalInetSocketAddressEventListener.class,
-			new ClusterExecutorPortalInetSocketAddressEventListener(),
-			new HashMapDictionary<String, Object>());
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		if (_clusterChannel != null) {
-			_clusterChannel.close();
-		}
-
-		_clusterChannel = null;
-
-		if (_executorService != null) {
-			_executorService.shutdownNow();
-		}
-
-		_executorService = null;
-
-		_serviceTrackerList.close();
-
-		_clusterNodeStatuses.clear();
-		_futureClusterResponses.clear();
-		_localClusterNodeStatus = null;
-
-		if (_serviceRegistration != null) {
-			_serviceRegistration.unregister();
-		}
 	}
 
 	protected ClusterNodeResponse executeClusterRequest(
@@ -448,17 +397,60 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		fireClusterEvent(clusterEvent);
 	}
 
-	@Modified
-	protected synchronized void modified(Map<String, Object> properties) {
-		clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
-			ClusterExecutorConfiguration.class, properties);
-	}
-
 	protected void sendNotifyRequest() {
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			_localClusterNodeStatus, true);
 
 		_clusterChannel.sendMulticastMessage(clusterRequest);
+	}
+
+	protected void start(
+		BundleContext bundleContext, Map<String, Object> properties) {
+
+		clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
+			ClusterExecutorConfiguration.class, properties);
+
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, ClusterEventListener.class);
+
+		initialize(
+			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_LOGIC_NAME_CONTROL),
+			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL),
+			_props.get(PropsKeys.CLUSTER_LINK_CHANNEL_NAME_CONTROL));
+
+		_serviceRegistration = bundleContext.registerService(
+			PortalInetSocketAddressEventListener.class,
+			new ClusterExecutorPortalInetSocketAddressEventListener(),
+			new HashMapDictionary<String, Object>());
+	}
+
+	protected void stop() {
+		if (_clusterChannel != null) {
+			_clusterChannel.close();
+		}
+
+		_clusterChannel = null;
+
+		if (_executorService != null) {
+			_executorService.shutdownNow();
+		}
+
+		_executorService = null;
+
+		_serviceTrackerList.close();
+
+		_clusterNodeStatuses.clear();
+		_futureClusterResponses.clear();
+		_localClusterNodeStatus = null;
+
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
+		}
+	}
+
+	protected synchronized void update(Map<String, Object> properties) {
+		clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
+			ClusterExecutorConfiguration.class, properties);
 	}
 
 	protected volatile ClusterExecutorConfiguration
@@ -570,10 +562,7 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		ClusterExecutorImpl.class);
 
 	private ClusterChannel _clusterChannel;
-
-	@Reference
-	private ClusterChannelFactory _clusterChannelFactory;
-
+	private final ClusterChannelFactory _clusterChannelFactory;
 	private final Map<Address, CompletableFuture<String>>
 		_clusterNodeIdCompletableFutures = new ConcurrentHashMap<>();
 	private final Map<String, ClusterNodeStatus> _clusterNodeStatuses =
@@ -584,13 +573,8 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.WEAK_REFERENCE_FACTORY);
 	private ClusterNodeStatus _localClusterNodeStatus;
-
-	@Reference
-	private PortalExecutorManager _portalExecutorManager;
-
-	@Reference
-	private Props _props;
-
+	private final PortalExecutorManager _portalExecutorManager;
+	private final Props _props;
 	private ServiceRegistration<PortalInetSocketAddressEventListener>
 		_serviceRegistration;
 	private ServiceTrackerList<ClusterEventListener> _serviceTrackerList;

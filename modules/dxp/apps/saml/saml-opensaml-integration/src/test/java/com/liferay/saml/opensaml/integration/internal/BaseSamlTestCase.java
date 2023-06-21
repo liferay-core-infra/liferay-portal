@@ -45,6 +45,7 @@ import com.liferay.saml.opensaml.integration.internal.credential.KeyStoreCredent
 import com.liferay.saml.opensaml.integration.internal.identifier.SamlIdentifierGeneratorStrategyFactory;
 import com.liferay.saml.opensaml.integration.internal.metadata.MetadataGeneratorUtil;
 import com.liferay.saml.opensaml.integration.internal.metadata.MetadataManagerImpl;
+import com.liferay.saml.opensaml.integration.internal.metadata.SamlHttpRequestUtilImpl;
 import com.liferay.saml.opensaml.integration.internal.provider.CachingChainingMetadataResolver;
 import com.liferay.saml.opensaml.integration.internal.servlet.profile.IdentifierGenerationStrategyFactory;
 import com.liferay.saml.opensaml.integration.internal.transport.HttpClientFactory;
@@ -55,7 +56,6 @@ import com.liferay.saml.persistence.service.SamlPeerBindingLocalService;
 import com.liferay.saml.persistence.service.SamlPeerBindingLocalServiceUtil;
 import com.liferay.saml.runtime.configuration.SamlProviderConfiguration;
 import com.liferay.saml.runtime.configuration.SamlProviderConfigurationHelper;
-import com.liferay.saml.runtime.metadata.LocalEntityManager;
 import com.liferay.saml.util.PortletPropsKeys;
 
 import java.io.UnsupportedEncodingException;
@@ -328,11 +328,13 @@ public abstract class BaseSamlTestCase {
 	protected IdentifierGenerationStrategyFactory
 		identifierGenerationStrategyFactory;
 	protected List<String> identifiers = new ArrayList<>();
-	protected LocalEntityManager localEntityManager;
+	protected KeyStoreCredentialResolver.KeyStoreLocalEntityManager
+		localEntityManager;
 	protected MetadataManagerImpl metadataManagerImpl;
 	protected ParserPool parserPool;
 	protected Portal portal;
 	protected SamlBindingProvider samlBindingProvider;
+	protected SamlHttpRequestUtilImpl samlHttpRequestUtilImpl;
 	protected IdentifierGenerationStrategy samlIdentifierGenerator;
 	protected SamlPeerBindingLocalService samlPeerBindingLocalService;
 	protected SamlProviderConfiguration samlProviderConfiguration;
@@ -618,6 +620,8 @@ public abstract class BaseSamlTestCase {
 
 		fileSystemKeyStoreManagerImpl = new FileSystemKeyStoreManagerImpl();
 
+		samlHttpRequestUtilImpl = new SamlHttpRequestUtilImpl();
+
 		ReflectionTestUtil.invoke(
 			fileSystemKeyStoreManagerImpl, "activate",
 			new Class<?>[] {Map.class},
@@ -628,6 +632,9 @@ public abstract class BaseSamlTestCase {
 			).build());
 
 		credentialResolver = new KeyStoreCredentialResolver();
+
+		localEntityManager =
+			credentialResolver.new KeyStoreLocalEntityManager();
 
 		ReflectionTestUtil.setFieldValue(
 			credentialResolver, "_keyStoreManager",
@@ -640,7 +647,7 @@ public abstract class BaseSamlTestCase {
 			metadataManagerImpl, "_credentialResolver", credentialResolver);
 
 		ReflectionTestUtil.setFieldValue(
-			metadataManagerImpl, "_localEntityManager", credentialResolver);
+			metadataManagerImpl, "_localEntityManager", localEntityManager);
 
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_portal", portal);

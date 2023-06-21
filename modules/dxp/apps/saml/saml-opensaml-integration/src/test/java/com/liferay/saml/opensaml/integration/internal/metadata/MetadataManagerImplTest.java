@@ -51,7 +51,7 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 
 		Assert.assertEquals(
 			"/c/portal/login",
-			metadataManagerImpl.getRequestPath(mockHttpServletRequest));
+			samlHttpRequestUtilImpl.getRequestPath(mockHttpServletRequest));
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 
 		Assert.assertEquals(
 			"/c/portal/login",
-			metadataManagerImpl.getRequestPath(mockHttpServletRequest));
+			samlHttpRequestUtilImpl.getRequestPath(mockHttpServletRequest));
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 
 		Assert.assertEquals(
 			"/c/portal/login",
-			metadataManagerImpl.getRequestPath(mockHttpServletRequest));
+			samlHttpRequestUtilImpl.getRequestPath(mockHttpServletRequest));
 	}
 
 }

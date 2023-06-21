@@ -71,6 +71,11 @@ public class ClusterExecutorConfigurator {
 					ClusterExecutorImpl.class, _clusterExecutorImpl, null);
 		}
 		else {
+			_clusterChannelFactoryServiceRegistration =
+				bundleContext.registerService(
+					ClusterChannelFactory.class,
+					ProxyFactory.newDummyInstance(ClusterChannelFactory.class),
+					null);
 			_clusterExecutorServiceRegistration = bundleContext.registerService(
 				ClusterExecutor.class,
 				ProxyFactory.newDummyInstance(ClusterExecutor.class), null);
@@ -87,9 +92,9 @@ public class ClusterExecutorConfigurator {
 			_clusterExecutorImpl.stop();
 		}
 
-		if (_jGroupsClusterChannelFactory != null) {
-			_clusterChannelFactoryServiceRegistration.unregister();
+		_clusterChannelFactoryServiceRegistration.unregister();
 
+		if (_jGroupsClusterChannelFactory != null) {
 			_jGroupsClusterChannelFactory.stop();
 		}
 	}

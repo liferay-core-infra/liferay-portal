@@ -55,131 +55,19 @@ import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Mika Koivisto
  * @author Stian Sigvartsen
  */
-@Component(
-	service = {CredentialResolver.class, LocalEntityManager.class}
-)
-public class KeyStoreCredentialResolver
-	extends AbstractCredentialResolver implements LocalEntityManager {
-
-	public void authenticateLocalEntityCertificate(
-			String certificateKeyPassword, CertificateUsage certificateUsage,
-			String entityId)
-		throws CredentialAuthException, CredentialException {
-
-		KeyStore.Entry entry = null;
-
-		if (certificateUsage == CertificateUsage.ENCRYPTION) {
-			entry = _getKeyStoreEntry(
-				_getAlias(entityId, UsageType.ENCRYPTION),
-				certificateKeyPassword);
-		}
-		else {
-			entry = _getKeyStoreEntry(
-				_getAlias(entityId, UsageType.SIGNING), certificateKeyPassword);
-		}
-
-		if (entry == null) {
-			throw new CredentialException("Certificate not found");
-		}
-	}
-
-	@Override
-	public void deleteLocalEntityCertificate(CertificateUsage certificateUsage)
-		throws KeyStoreException {
-
-		KeyStore keyStore = _keyStoreManager.getKeyStore();
-
-		keyStore.deleteEntry(
-			_getAlias(getLocalEntityId(), _getUsageType(certificateUsage)));
-
-		try {
-			_keyStoreManager.saveKeyStore(keyStore);
-		}
-		catch (Exception exception) {
-			throw new KeyStoreException(exception);
-		}
-	}
-
-	@Override
-	public String getEncodedLocalEntityCertificate(
-			CertificateUsage certificateUsage)
-		throws SamlException {
-
-		try {
-			X509Certificate x509Certificate = getLocalEntityCertificate(
-				certificateUsage);
-
-			if (x509Certificate == null) {
-				return null;
-			}
-
-			return Base64.encode(x509Certificate.getEncoded(), 76);
-		}
-		catch (CertificateEncodingException certificateEncodingException) {
-			throw new SamlException(certificateEncodingException);
-		}
-	}
-
-	@Override
-	public X509Certificate getLocalEntityCertificate(
-			CertificateUsage certificateUsage)
-		throws SamlException {
-
-		UsageType usageType = _getUsageType(certificateUsage);
-
-		if (usageType == null) {
-			return null;
-		}
-
-		String entityId = getLocalEntityId();
-
-		if (Validator.isBlank(entityId)) {
-			throw new SamlException(
-				new EntityIdException("An Entity ID must be configured"));
-		}
-
-		UsageCriterion usageCriterion = new UsageCriterion(usageType);
-
-		try {
-			X509Credential x509Credential = (X509Credential)resolveSingle(
-				new CriteriaSet(
-					new EntityIdCriterion(entityId), usageCriterion));
-
-			if (x509Credential == null) {
-				return null;
-			}
-
-			return x509Credential.getEntityCertificate();
-		}
-		catch (ResolverException resolverException) {
-			throw new SamlException(resolverException);
-		}
-	}
-
-	@Override
-	public String getLocalEntityId() {
-		return _getSamlProviderConfiguration().entityId();
-	}
-
-	@Override
-	public boolean hasDefaultIdpRole() {
-		List<SamlSpIdpConnection> samlSpIdpConnections =
-			_samlSpIdpConnectionLocalService.getSamlSpIdpConnections(
-				CompanyThreadLocal.getCompanyId());
-
-		if (samlSpIdpConnections.isEmpty()) {
-			return false;
-		}
-
-		return true;
-	}
+@Component(service = CredentialResolver.class)
+public class KeyStoreCredentialResolver extends AbstractCredentialResolver {
 
 	@Override
 	public Iterable<Credential> resolve(CriteriaSet criteriaSet)
@@ -229,22 +117,166 @@ public class KeyStoreCredentialResolver
 		return Collections.singleton(credential);
 	}
 
-	@Override
-	public void storeLocalEntityCertificate(
-			PrivateKey privateKey, String certificateKeyPassword,
-			X509Certificate x509Certificate, CertificateUsage certificateUsage)
-		throws Exception {
+	public class KeyStoreLocalEntityManager implements LocalEntityManager {
 
-		KeyStore keyStore = _keyStoreManager.getKeyStore();
+		public void authenticateLocalEntityCertificate(
+				String certificateKeyPassword,
+				CertificateUsage certificateUsage, String entityId)
+			throws CredentialAuthException, CredentialException {
 
-		keyStore.setEntry(
-			_getAlias(getLocalEntityId(), _getUsageType(certificateUsage)),
-			new KeyStore.PrivateKeyEntry(
-				privateKey, new Certificate[] {x509Certificate}),
-			new KeyStore.PasswordProtection(
-				certificateKeyPassword.toCharArray()));
+			KeyStore.Entry entry = null;
 
-		_keyStoreManager.saveKeyStore(keyStore);
+			if (certificateUsage == CertificateUsage.ENCRYPTION) {
+				entry = _getKeyStoreEntry(
+					_getAlias(entityId, UsageType.ENCRYPTION),
+					certificateKeyPassword);
+			}
+			else {
+				entry = _getKeyStoreEntry(
+					_getAlias(entityId, UsageType.SIGNING),
+					certificateKeyPassword);
+			}
+
+			if (entry == null) {
+				throw new CredentialException("Certificate not found");
+			}
+		}
+
+		@Override
+		public void deleteLocalEntityCertificate(
+				CertificateUsage certificateUsage)
+			throws KeyStoreException {
+
+			KeyStore keyStore = _keyStoreManager.getKeyStore();
+
+			keyStore.deleteEntry(
+				_getAlias(getLocalEntityId(), _getUsageType(certificateUsage)));
+
+			try {
+				_keyStoreManager.saveKeyStore(keyStore);
+			}
+			catch (Exception exception) {
+				throw new KeyStoreException(exception);
+			}
+		}
+
+		@Override
+		public String getEncodedLocalEntityCertificate(
+				CertificateUsage certificateUsage)
+			throws SamlException {
+
+			try {
+				X509Certificate x509Certificate = getLocalEntityCertificate(
+					certificateUsage);
+
+				if (x509Certificate == null) {
+					return null;
+				}
+
+				return Base64.encode(x509Certificate.getEncoded(), 76);
+			}
+			catch (CertificateEncodingException certificateEncodingException) {
+				throw new SamlException(certificateEncodingException);
+			}
+		}
+
+		@Override
+		public X509Certificate getLocalEntityCertificate(
+				CertificateUsage certificateUsage)
+			throws SamlException {
+
+			UsageType usageType = _getUsageType(certificateUsage);
+
+			if (usageType == null) {
+				return null;
+			}
+
+			String entityId = getLocalEntityId();
+
+			if (Validator.isBlank(entityId)) {
+				throw new SamlException(
+					new EntityIdException("An Entity ID must be configured"));
+			}
+
+			UsageCriterion usageCriterion = new UsageCriterion(usageType);
+
+			try {
+				X509Credential x509Credential = (X509Credential)resolveSingle(
+					new CriteriaSet(
+						new EntityIdCriterion(entityId), usageCriterion));
+
+				if (x509Credential == null) {
+					return null;
+				}
+
+				return x509Credential.getEntityCertificate();
+			}
+			catch (ResolverException resolverException) {
+				throw new SamlException(resolverException);
+			}
+		}
+
+		@Override
+		public String getLocalEntityId() {
+			return _getSamlProviderConfiguration().entityId();
+		}
+
+		@Override
+		public boolean hasDefaultIdpRole() {
+			List<SamlSpIdpConnection> samlSpIdpConnections =
+				_samlSpIdpConnectionLocalService.getSamlSpIdpConnections(
+					CompanyThreadLocal.getCompanyId());
+
+			if (samlSpIdpConnections.isEmpty()) {
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		public void storeLocalEntityCertificate(
+				PrivateKey privateKey, String certificateKeyPassword,
+				X509Certificate x509Certificate,
+				CertificateUsage certificateUsage)
+			throws Exception {
+
+			KeyStore keyStore = _keyStoreManager.getKeyStore();
+
+			keyStore.setEntry(
+				_getAlias(getLocalEntityId(), _getUsageType(certificateUsage)),
+				new KeyStore.PrivateKeyEntry(
+					privateKey, new Certificate[] {x509Certificate}),
+				new KeyStore.PasswordProtection(
+					certificateKeyPassword.toCharArray()));
+
+			_keyStoreManager.saveKeyStore(keyStore);
+		}
+
+		private UsageType _getUsageType(CertificateUsage certificateUsage) {
+			UsageType usageType = null;
+
+			if (certificateUsage == CertificateUsage.ENCRYPTION) {
+				usageType = UsageType.ENCRYPTION;
+			}
+			else if (certificateUsage == CertificateUsage.SIGNING) {
+				usageType = UsageType.SIGNING;
+			}
+
+			return usageType;
+		}
+
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceRegistration = bundleContext.registerService(
+			LocalEntityManager.class, new KeyStoreLocalEntityManager(), null);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
 	}
 
 	private Credential _buildCredential(
@@ -373,19 +405,6 @@ public class KeyStoreCredentialResolver
 		return _samlProviderConfigurationHelper.getSamlProviderConfiguration();
 	}
 
-	private UsageType _getUsageType(CertificateUsage certificateUsage) {
-		UsageType usageType = null;
-
-		if (certificateUsage == CertificateUsage.ENCRYPTION) {
-			usageType = UsageType.ENCRYPTION;
-		}
-		else if (certificateUsage == CertificateUsage.SIGNING) {
-			usageType = UsageType.SIGNING;
-		}
-
-		return usageType;
-	}
-
 	private Credential _processPrivateKeyEntry(
 		KeyStore.PrivateKeyEntry privateKeyEntry, String entityId,
 		UsageType usageType) {
@@ -443,5 +462,7 @@ public class KeyStoreCredentialResolver
 
 	@Reference
 	private SamlSpIdpConnectionLocalService _samlSpIdpConnectionLocalService;
+
+	private ServiceRegistration<LocalEntityManager> _serviceRegistration;
 
 }

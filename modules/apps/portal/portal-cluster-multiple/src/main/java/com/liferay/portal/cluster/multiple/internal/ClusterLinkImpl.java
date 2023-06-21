@@ -36,16 +36,20 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Shuyang Zhou
  */
-@Component(enabled = false, service = ClusterLink.class)
 public class ClusterLinkImpl implements ClusterLink {
+
+	public ClusterLinkImpl(
+		ClusterChannelFactory clusterChannelFactory, MessageBus messageBus,
+		PortalExecutorManager portalExecutorManager, Props props) {
+
+		_clusterChannelFactory = clusterChannelFactory;
+		_messageBus = messageBus;
+		_portalExecutorManager = portalExecutorManager;
+		_props = props;
+	}
 
 	@Override
 	public boolean isEnabled() {
@@ -72,37 +76,6 @@ public class ClusterLinkImpl implements ClusterLink {
 		ClusterChannel clusterChannel = getChannel(priority);
 
 		clusterChannel.sendUnicastMessage(message, address);
-	}
-
-	@Activate
-	protected void activate() {
-		_enabled = true;
-
-		initialize(
-			_getChannelSettings(
-				PropsKeys.CLUSTER_LINK_CHANNEL_LOGIC_NAME_TRANSPORT),
-			_getChannelSettings(
-				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_TRANSPORT),
-			_getChannelSettings(PropsKeys.CLUSTER_LINK_CHANNEL_NAME_TRANSPORT));
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		if (_clusterChannels != null) {
-			for (ClusterChannel clusterChannel : _clusterChannels) {
-				clusterChannel.close();
-			}
-		}
-
-		_localAddresses = null;
-		_clusterChannels = null;
-		_clusterReceivers = null;
-
-		if (_executorService != null) {
-			_executorService.shutdownNow();
-		}
-
-		_executorService = null;
 	}
 
 	protected ClusterChannel getChannel(Priority priority) {
@@ -176,6 +149,35 @@ public class ClusterLinkImpl implements ClusterLink {
 		}
 	}
 
+	protected void start() {
+		_enabled = true;
+
+		initialize(
+			_getChannelSettings(
+				PropsKeys.CLUSTER_LINK_CHANNEL_LOGIC_NAME_TRANSPORT),
+			_getChannelSettings(
+				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_TRANSPORT),
+			_getChannelSettings(PropsKeys.CLUSTER_LINK_CHANNEL_NAME_TRANSPORT));
+	}
+
+	protected void stop() {
+		if (_clusterChannels != null) {
+			for (ClusterChannel clusterChannel : _clusterChannels) {
+				clusterChannel.close();
+			}
+		}
+
+		_localAddresses = null;
+		_clusterChannels = null;
+		_clusterReceivers = null;
+
+		if (_executorService != null) {
+			_executorService.shutdownNow();
+		}
+
+		_executorService = null;
+	}
+
 	private Map<String, String> _getChannelSettings(String propertyPrefix) {
 		Map<String, String> channelSettings = new HashMap<>();
 
@@ -242,23 +244,14 @@ public class ClusterLinkImpl implements ClusterLink {
 		ClusterLinkImpl.class);
 
 	private int _channelCount;
-
-	@Reference
-	private ClusterChannelFactory _clusterChannelFactory;
-
+	private final ClusterChannelFactory _clusterChannelFactory;
 	private List<ClusterChannel> _clusterChannels;
 	private List<ClusterReceiver> _clusterReceivers;
 	private boolean _enabled;
 	private ExecutorService _executorService;
 	private List<Address> _localAddresses;
-
-	@Reference
-	private MessageBus _messageBus;
-
-	@Reference
-	private PortalExecutorManager _portalExecutorManager;
-
-	@Reference
-	private Props _props;
+	private final MessageBus _messageBus;
+	private final PortalExecutorManager _portalExecutorManager;
+	private final Props _props;
 
 }

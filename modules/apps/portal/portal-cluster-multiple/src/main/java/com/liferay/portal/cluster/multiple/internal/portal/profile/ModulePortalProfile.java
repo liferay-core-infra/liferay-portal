@@ -15,13 +15,11 @@
 package com.liferay.portal.cluster.multiple.internal.portal.profile;
 
 import com.liferay.portal.cluster.multiple.internal.ClusterExecutorImpl;
-import com.liferay.portal.cluster.multiple.internal.ClusterLinkImpl;
 import com.liferay.portal.cluster.multiple.internal.ClusterMasterExecutorImpl;
 import com.liferay.portal.cluster.multiple.internal.ClusterMasterTokenTransitionListenerTracker;
 import com.liferay.portal.cluster.multiple.internal.DebuggingClusterEventListener;
 import com.liferay.portal.cluster.multiple.internal.jgroups.JGroupsClusterChannelFactory;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
-import com.liferay.portal.kernel.cluster.ClusterLink;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
@@ -66,11 +64,6 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 			supportedPortalProfileNames = Collections.emptyList();
 
 			BundleContext bundleContext = componentContext.getBundleContext();
-
-			bundleContext.registerService(
-				ClusterLink.class,
-				ProxyFactory.newDummyInstance(ClusterLink.class),
-				new HashMapDictionary<>());
 
 			bundleContext.registerService(
 				ClusterExecutor.class,
@@ -118,7 +111,6 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 			componentContext, supportedPortalProfileNames,
 			JGroupsClusterChannelFactory.class.getName(),
 			ClusterExecutorImpl.class.getName(),
-			ClusterLinkImpl.class.getName(),
 			ClusterMasterExecutorImpl.class.getName(),
 			ClusterMasterTokenTransitionListenerTracker.class.getName(),
 			DebuggingClusterEventListener.class.getName());

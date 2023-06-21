@@ -639,8 +639,11 @@ public abstract class BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_credentialResolver", credentialResolver);
 
+		localEntityManager =
+			credentialResolver.new KeyStoreLocalEntityManager();
+
 		ReflectionTestUtil.setFieldValue(
-			metadataManagerImpl, "_localEntityManager", credentialResolver);
+			metadataManagerImpl, "_localEntityManager", localEntityManager);
 
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_portal", portal);

@@ -11,6 +11,7 @@
 	</checkstyle>
 	<source-check>
 		<suppress checks="BNDDefinitionKeysCheck" files="portal-tika/bnd\.bnd" />
+		<suppress checks="JavaComponentAnnotationsCheck" files="portal-upgrade-impl/src/main/java/com/liferay/portal/upgrade/internal/release/ReleaseManagerImpl\.java" />
 		<suppress checks="JavaUpgradeVersionCheck" files="portal-messaging/src/main/java/com/liferay/portal/messaging/internal/upgrade/registry/PortalMessagingUpgradeStepRegistrator\.java" />
 		<suppress checks="JavaUpgradeVersionCheck" files="portal-monitoring/src/main/java/com/liferay/portal/monitoring/internal/upgrade/registry/PortalMonitoringUpgradeStepRegistrator\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files="portal-log4j/src/main/java/com/liferay/portal/log4j/internal/Log4jConfigUtil\.java" />

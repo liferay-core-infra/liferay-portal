@@ -24,6 +24,7 @@ import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.model.DLFileVersionPreview;
 import com.liferay.document.library.service.DLFileVersionPreviewLocalService;
+import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.exception.ModelListenerException;
@@ -114,7 +115,8 @@ public class DLFileVersionModelListener
 	protected void activate(BundleContext bundleContext) {
 		_dlProcessorServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, DLProcessor.class, "dl.processor.type");
+				bundleContext, null, "(dl.processor.type=*)",
+				new PropertyServiceReferenceMapper<>("dl.processor.type"));
 	}
 
 	private void _cleanUpFileVersion(long fileVersionId)

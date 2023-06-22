@@ -589,7 +589,7 @@ public class PDFProcessorTest {
 			HashMapDictionaryBuilder.<String, Object>put(
 				"service.ranking", 1000
 			).put(
-				"type", DLProcessorConstants.PDF_PROCESSOR
+				"dl.processor.type", DLProcessorConstants.PDF_PROCESSOR
 			).build());
 
 		return cleanUp;

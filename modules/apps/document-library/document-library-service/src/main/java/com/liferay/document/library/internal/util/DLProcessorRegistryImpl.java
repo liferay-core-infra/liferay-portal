@@ -172,7 +172,8 @@ public class DLProcessorRegistryImpl implements DLProcessorRegistry {
 		ServiceRegistration<?> serviceRegistration =
 			_bundleContext.registerService(
 				classNames, dlProcessor,
-				MapUtil.singletonDictionary("type", dlProcessor.getType()));
+				MapUtil.singletonDictionary(
+					"dl.processor.type", dlProcessor.getType()));
 
 		ServiceRegistration<?> previousServiceRegistration =
 			_serviceRegistrations.put(dlProcessor, serviceRegistration);
@@ -231,7 +232,7 @@ public class DLProcessorRegistryImpl implements DLProcessorRegistry {
 
 		_dlProcessorServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, DLProcessor.class, "type");
+				bundleContext, DLProcessor.class, "dl.processor.type");
 
 		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
 

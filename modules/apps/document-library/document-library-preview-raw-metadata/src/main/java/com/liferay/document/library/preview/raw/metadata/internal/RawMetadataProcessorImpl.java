@@ -58,7 +58,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Miguel Pastor
  */
 @Component(
-	property = "type=" + DLProcessorConstants.RAW_METADATA_PROCESSOR,
+	property = "dl.processor.type=" + DLProcessorConstants.RAW_METADATA_PROCESSOR,
 	service = DLProcessor.class
 )
 public class RawMetadataProcessorImpl

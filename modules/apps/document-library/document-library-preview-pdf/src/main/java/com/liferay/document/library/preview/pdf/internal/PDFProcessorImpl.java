@@ -88,7 +88,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  */
 @Component(
-	property = "type=" + DLProcessorConstants.PDF_PROCESSOR,
+	property = "dl.processor.type=" + DLProcessorConstants.PDF_PROCESSOR,
 	service = {DLProcessor.class, PDFProcessor.class}
 )
 public class PDFProcessorImpl

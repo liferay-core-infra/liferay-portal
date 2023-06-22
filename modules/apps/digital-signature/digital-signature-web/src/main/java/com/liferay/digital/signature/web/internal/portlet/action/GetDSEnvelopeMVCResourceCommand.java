@@ -133,7 +133,7 @@ public class GetDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference(
 		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(type=" + DLProcessorConstants.IMAGE_PROCESSOR + ")"
+		target = "(dl.processor.type=" + DLProcessorConstants.IMAGE_PROCESSOR + ")"
 	)
 	private ImageProcessor _imageProcessor;
 

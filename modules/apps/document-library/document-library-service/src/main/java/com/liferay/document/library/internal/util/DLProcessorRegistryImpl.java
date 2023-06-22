@@ -21,6 +21,7 @@ import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.DLProcessorRegistry;
 import com.liferay.document.library.kernel.util.DLProcessorThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.function.UnsafeConsumer;
@@ -232,7 +233,8 @@ public class DLProcessorRegistryImpl implements DLProcessorRegistry {
 
 		_dlProcessorServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, DLProcessor.class, "dl.processor.type");
+				bundleContext, null, "(dl.processor.type=*)",
+				new PropertyServiceReferenceMapper<>("dl.processor.type"));
 
 		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
 

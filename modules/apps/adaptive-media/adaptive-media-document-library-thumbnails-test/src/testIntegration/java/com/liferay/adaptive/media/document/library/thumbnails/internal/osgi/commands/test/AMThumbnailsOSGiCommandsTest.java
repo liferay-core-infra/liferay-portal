@@ -253,7 +253,7 @@ public class AMThumbnailsOSGiCommandsTest {
 			},
 			new ImageProcessorImpl(),
 			MapUtil.singletonDictionary(
-				"type", DLProcessorConstants.IMAGE_PROCESSOR));
+				"dl.processor.type", DLProcessorConstants.IMAGE_PROCESSOR));
 	}
 
 	private static void _disableDocumentLibraryAM() throws Exception {
@@ -396,7 +396,7 @@ public class AMThumbnailsOSGiCommandsTest {
 	)
 	private static Object _amThumbnailsOSGiCommands;
 
-	@Inject(filter = "type=" + DLProcessorConstants.IMAGE_PROCESSOR)
+	@Inject(filter = "dl.processor.type=" + DLProcessorConstants.IMAGE_PROCESSOR)
 	private static DLProcessor _dlProcessor;
 
 	@Inject

@@ -59,7 +59,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  */
 @Component(
-	property = "type=" + DLProcessorConstants.VIDEO_PROCESSOR,
+	property = "dl.processor.type=" + DLProcessorConstants.VIDEO_PROCESSOR,
 	service = {DLProcessor.class, VideoProcessor.class}
 )
 public class VideoProcessorImpl

@@ -52,7 +52,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Ivica Cardic
  */
 @Component(
-	property = "type=" + DLProcessorConstants.AUDIO_PROCESSOR,
+	property = "dl.processor.type=" + DLProcessorConstants.AUDIO_PROCESSOR,
 	service = {AudioProcessor.class, DLProcessor.class}
 )
 public class AudioProcessorImpl

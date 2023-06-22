@@ -114,7 +114,7 @@ public class DLFileVersionModelListener
 	protected void activate(BundleContext bundleContext) {
 		_dlProcessorServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, DLProcessor.class, "type");
+				bundleContext, DLProcessor.class, "dl.processor.type");
 	}
 
 	private void _cleanUpFileVersion(long fileVersionId)

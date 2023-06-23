@@ -32,14 +32,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Drew Brokke
  */
-@Component(service = {ModelListener.class, IdentifiableOSGiService.class})
-public class PLOEntryModelListener
-	extends BaseModelListener<PLOEntry> implements IdentifiableOSGiService {
-
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return PLOEntryModelListener.class.getName();
-	}
+@Component(service = ModelListener.class)
+public class PLOEntryModelListener extends BaseModelListener<PLOEntry> {
 
 	@Override
 	public void onAfterCreate(PLOEntry ploEntry) {
@@ -82,7 +76,8 @@ public class PLOEntryModelListener
 
 		try {
 			MethodHandler methodHandler = new MethodHandler(
-				_onNotifyMethodKey, methodType, getOSGiServiceIdentifier(),
+				_onNotifyMethodKey, methodType,
+				_ploEntryIdentifiableOSGiService.getOSGiServiceIdentifier(),
 				ploEntry);
 
 			ClusterRequest clusterRequest =
@@ -120,6 +115,11 @@ public class PLOEntryModelListener
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;
+
+	@Reference(
+		target = "(component.name=com.liferay.portal.language.override.internal.PLOEntryIdentifiableOSGiService)"
+	)
+	private IdentifiableOSGiService _ploEntryIdentifiableOSGiService;
 
 	@Reference
 	private PLOLanguageOverrideProvider _ploLanguageOverrideProvider;

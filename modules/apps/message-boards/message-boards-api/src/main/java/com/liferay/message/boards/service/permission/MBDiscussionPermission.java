@@ -5,15 +5,12 @@
 
 package com.liferay.message.boards.service.permission;
 
-import com.liferay.message.boards.model.MBDiscussion;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.service.MBBanLocalService;
-import com.liferay.message.boards.service.MBDiscussionLocalService;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
@@ -32,11 +29,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Roberto Díaz
  * @author Sergio González
  */
-@Component(
-	property = "model.class.name=com.liferay.message.boards.model.MBDiscussion",
-	service = BaseModelPermissionChecker.class
-)
-public class MBDiscussionPermission implements BaseModelPermissionChecker {
+@Component(service = {})
+public class MBDiscussionPermission {
 
 	public static void check(
 			PermissionChecker permissionChecker, long companyId, long groupId,
@@ -136,30 +130,9 @@ public class MBDiscussionPermission implements BaseModelPermissionChecker {
 			className, message.getClassPK(), actionId);
 	}
 
-	@Override
-	public void checkBaseModel(
-			PermissionChecker permissionChecker, long groupId, long primaryKey,
-			String actionId)
-		throws PortalException {
-
-		MBDiscussion mbDiscussion = _mbDiscussionLocalService.getMBDiscussion(
-			primaryKey);
-
-		check(
-			permissionChecker, mbDiscussion.getCompanyId(), groupId,
-			mbDiscussion.getClassName(), mbDiscussion.getClassPK(), actionId);
-	}
-
 	@Reference(unbind = "-")
 	protected void setMBBanLocalService(MBBanLocalService mbBanLocalService) {
 		_mbBanLocalService = mbBanLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setMBDiscussionLocalService(
-		MBDiscussionLocalService mbDiscussionLocalService) {
-
-		_mbDiscussionLocalService = mbDiscussionLocalService;
 	}
 
 	@Reference(unbind = "-")
@@ -177,7 +150,6 @@ public class MBDiscussionPermission implements BaseModelPermissionChecker {
 	}
 
 	private static MBBanLocalService _mbBanLocalService;
-	private static MBDiscussionLocalService _mbDiscussionLocalService;
 	private static MBMessageLocalService _mbMessageLocalService;
 	private static WorkflowPermission _workflowPermission;
 

@@ -14,6 +14,8 @@
 
 package com.liferay.search.experiences.service;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
@@ -92,6 +94,11 @@ public class SXPElementLocalServiceWrapper
 		long sxpElementId) {
 
 		return _sxpElementLocalService.createSXPElement(sxpElementId);
+	}
+
+	@Override
+	public void importSXPElements(Company company) throws PortalException {
+		_sxpElementLocalService.importSXPElements(company);
 	}
 
 	@Override

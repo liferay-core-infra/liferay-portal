@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -366,6 +367,22 @@ public class LiferayOAuthDataProvider
 			getServerAuthorizationCodeGrants(client, subject);
 	}
 
+	@Override
+	public long getGrantLifetime() {
+		try {
+			OAuth2AuthorizationFlowConfiguration
+				oAuth2AuthorizationFlowConfiguration =
+					_configurationProvider.getSystemConfiguration(
+						OAuth2AuthorizationFlowConfiguration.class);
+
+			return oAuth2AuthorizationFlowConfiguration.
+				authorizationCodeGrantTTL();
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
+	}
+
 	public String getIssuer() {
 		try {
 			MessageContext messageContext = getMessageContext();
@@ -536,6 +553,21 @@ public class LiferayOAuthDataProvider
 
 		return _populateUserSubject(
 			user.getCompanyId(), userId, user.getScreenName());
+	}
+
+	@Override
+	public boolean isUseJwtFormatForAccessTokens() {
+		try {
+			OAuth2AuthorizationServerConfiguration
+				oAuth2AuthorizationServerConfiguration =
+					_configurationProvider.getSystemConfiguration(
+						OAuth2AuthorizationServerConfiguration.class);
+
+			return oAuth2AuthorizationServerConfiguration.issueJWTAccessToken();
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 	}
 
 	@Override
@@ -1129,14 +1161,6 @@ public class LiferayOAuthDataProvider
 
 		return _userLocalService.getUser(
 			GetterUtil.getLong(userSubject.getId()));
-	}
-
-	private void _init() {
-		setGrantLifetime(
-			_oAuth2AuthorizationFlowConfiguration.authorizationCodeGrantTTL());
-
-		setUseJwtFormatForAccessTokens(
-			_oAuth2AuthorizationServerConfiguration.issueJWTAccessToken());
 	}
 
 	private void _invokeTransactionally(Runnable runnable) throws Throwable {

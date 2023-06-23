@@ -32,6 +32,6 @@ public class UserBagFactoryUtil {
 	private static volatile UserBagFactory _userBagFactory =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			UserBagFactory.class, UserBagFactoryUtil.class, "_userBagFactory",
-			true);
+			false);
 
 }

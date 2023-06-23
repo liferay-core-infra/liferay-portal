@@ -111,6 +111,6 @@ public class HttpUtil {
 
 	private static volatile Http _http =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			Http.class, HttpUtil.class, "_http", true);
+			Http.class, HttpUtil.class, "_http", false);
 
 }

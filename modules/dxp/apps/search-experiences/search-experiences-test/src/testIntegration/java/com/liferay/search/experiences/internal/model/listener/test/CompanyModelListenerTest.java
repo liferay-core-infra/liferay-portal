@@ -43,8 +43,11 @@ public class CompanyModelListenerTest {
 
 	@Test
 	public void testSXPElements() throws Exception {
-		List<SXPElement> sxpElements = ReflectionTestUtil.getFieldValue(
-			_modelListener, "_sxpElements");
+		Object companyModelListenerHelper = ReflectionTestUtil.getFieldValue(
+			_modelListener, "_companyModelListenerHelper");
+
+		List<SXPElement> sxpElements = ReflectionTestUtil.invoke(
+			companyModelListenerHelper, "_getSXPElements", new Class<?>[0]);
 
 		Assert.assertNotEquals(0, sxpElements.size());
 

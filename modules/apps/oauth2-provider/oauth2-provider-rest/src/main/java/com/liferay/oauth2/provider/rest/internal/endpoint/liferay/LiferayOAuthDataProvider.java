@@ -108,11 +108,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Tomas Polesovsky
  */
 @Component(
-	configurationPid = {
-		"com.liferay.oauth2.provider.configuration.OAuth2ProviderConfiguration",
-		"com.liferay.oauth2.provider.rest.internal.configuration.OAuth2AuthorizationServerConfiguration",
-		"com.liferay.oauth2.provider.rest.internal.endpoint.authorize.configuration.OAuth2AuthorizationFlowConfiguration"
-	},
+	configurationPid = "com.liferay.oauth2.provider.configuration.OAuth2ProviderConfiguration",
 	service = LiferayOAuthDataProvider.class
 )
 public class LiferayOAuthDataProvider
@@ -729,16 +725,8 @@ public class LiferayOAuthDataProvider
 				OAuthConstants.CLIENT_CREDENTIALS_GRANT,
 				StandardCharsets.UTF_8.name()));
 
-		_oAuth2AuthorizationFlowConfiguration =
-			ConfigurableUtil.createConfigurable(
-				OAuth2AuthorizationFlowConfiguration.class, properties);
-		_oAuth2AuthorizationServerConfiguration =
-			ConfigurableUtil.createConfigurable(
-				OAuth2AuthorizationServerConfiguration.class, properties);
 		_oAuth2ProviderConfiguration = ConfigurableUtil.createConfigurable(
 			OAuth2ProviderConfiguration.class, properties);
-
-		_init();
 	}
 
 	@Override
@@ -1488,14 +1476,9 @@ public class LiferayOAuthDataProvider
 	private OAuth2ApplicationScopeAliasesLocalService
 		_oAuth2ApplicationScopeAliasesLocalService;
 
-	private OAuth2AuthorizationFlowConfiguration
-		_oAuth2AuthorizationFlowConfiguration;
-
 	@Reference
 	private OAuth2AuthorizationLocalService _oAuth2AuthorizationLocalService;
 
-	private OAuth2AuthorizationServerConfiguration
-		_oAuth2AuthorizationServerConfiguration;
 	private OAuth2ProviderConfiguration _oAuth2ProviderConfiguration;
 
 	@Reference

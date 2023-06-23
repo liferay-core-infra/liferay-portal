@@ -999,13 +999,23 @@ public class LiferayOAuthDataProvider
 	private OAuthJoseJwtProducer _createJwtAccessTokenProducer() {
 		OAuthJoseJwtProducer oAuthJoseJwtProducer = new OAuthJoseJwtProducer();
 
-		oAuthJoseJwtProducer.setSignatureProvider(
-			JwsUtils.getSignatureProvider(
-				JwkUtils.readJwkKey(
-					_oAuth2AuthorizationServerConfiguration.
-						jwtAccessTokenSigningJSONWebKey())));
+		try {
+			OAuth2AuthorizationServerConfiguration
+				oAuth2AuthorizationServerConfiguration =
+					_configurationProvider.getSystemConfiguration(
+						OAuth2AuthorizationServerConfiguration.class);
 
-		return oAuthJoseJwtProducer;
+			oAuthJoseJwtProducer.setSignatureProvider(
+				JwsUtils.getSignatureProvider(
+					JwkUtils.readJwkKey(
+						oAuth2AuthorizationServerConfiguration.
+							jwtAccessTokenSigningJSONWebKey())));
+
+			return oAuthJoseJwtProducer;
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 	}
 
 	private ServerAccessToken _createOpaqueServerAccessToken(

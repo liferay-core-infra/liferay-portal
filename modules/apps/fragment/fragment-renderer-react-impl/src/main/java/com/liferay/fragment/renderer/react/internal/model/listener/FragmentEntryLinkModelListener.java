@@ -45,15 +45,9 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Iván Zaera Avellón
  */
-@Component(service = {IdentifiableOSGiService.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class FragmentEntryLinkModelListener
-	extends BaseModelListener<FragmentEntryLink>
-	implements IdentifiableOSGiService {
-
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return FragmentEntryLinkModelListener.class.getName();
-	}
+	extends BaseModelListener<FragmentEntryLink> {
 
 	@Override
 	public void onAfterCreate(FragmentEntryLink fragmentEntryLink) {
@@ -149,7 +143,9 @@ public class FragmentEntryLinkModelListener
 
 		try {
 			MethodHandler methodHandler = new MethodHandler(
-				_onNotifyMethodKey, methodType, getOSGiServiceIdentifier(),
+				_onNotifyMethodKey, methodType,
+				_fragmentEntryLinkIdentifiableOSGiService.
+					getOSGiServiceIdentifier(),
 				oldFragmentEntryLink, newFragmentEntryLink);
 
 			ClusterRequest clusterRequest =
@@ -206,6 +202,11 @@ public class FragmentEntryLinkModelListener
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;
+
+	@Reference(
+		target = "(component.name=com.liferay.fragment.renderer.react.internal.model.listener.FragmentEntryLinkIdentifiableOSGiService)"
+	)
+	private IdentifiableOSGiService _fragmentEntryLinkIdentifiableOSGiService;
 
 	@Reference
 	private FragmentEntryLinkJSModuleInitializerHelper

@@ -14,12 +14,11 @@
 
 package com.liferay.translation.internal.importer;
 
-import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemReference;
-import com.liferay.translation.exception.XLIFFFileException;
-import com.liferay.translation.importer.TranslationInfoItemFieldValuesImporter;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.translation.internal.util.XLIFFTranslationImporterUtil;
 import com.liferay.translation.snapshot.TranslationSnapshot;
+import com.liferay.translation.snapshot.TranslationSnapshotProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,26 +26,20 @@ import java.io.InputStream;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Alejandro Tardín
+ * @author Valmir Junior
  */
-@Component(
-	property = "content.type=application/xliff+xml",
-	service = TranslationInfoItemFieldValuesImporter.class
-)
-public class XLIFFInfoFormTranslationImporter
-	implements TranslationInfoItemFieldValuesImporter {
+@Component(service = TranslationSnapshotProvider.class)
+public class XLIFFTranslationSnapshotProvider
+	implements TranslationSnapshotProvider {
 
 	@Override
-	public InfoItemFieldValues importInfoItemFieldValues(
+	public TranslationSnapshot getTranslationSnapshot(
 			long groupId, InfoItemReference infoItemReference,
 			InputStream inputStream)
-		throws IOException, XLIFFFileException {
+		throws IOException, PortalException {
 
-		TranslationSnapshot translationSnapshot =
-			XLIFFTranslationImporterUtil.getTranslationSnapshot(
-				groupId, infoItemReference, inputStream, false);
-
-		return translationSnapshot.getInfoItemFieldValues();
+		return XLIFFTranslationImporterUtil.getTranslationSnapshot(
+			groupId, infoItemReference, inputStream, true);
 	}
 
 }

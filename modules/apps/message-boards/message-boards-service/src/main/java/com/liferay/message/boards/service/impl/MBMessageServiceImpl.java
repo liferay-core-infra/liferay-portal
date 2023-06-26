@@ -26,7 +26,6 @@ import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.service.MBCategoryLocalService;
 import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.message.boards.service.base.MBMessageServiceBaseImpl;
-import com.liferay.message.boards.service.permission.MBDiscussionPermission;
 import com.liferay.message.boards.util.comparator.MessageCreateDateComparator;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -327,8 +326,10 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 
 	@Override
 	public void deleteDiscussionMessage(long messageId) throws PortalException {
-		MBDiscussionPermission.check(
-			getPermissionChecker(), messageId, ActionKeys.DELETE_DISCUSSION);
+		DiscussionPermission discussionPermission =
+			_commentManager.getDiscussionPermission(getPermissionChecker());
+
+		discussionPermission.checkDeletePermission(messageId);
 
 		mbMessageLocalService.deleteDiscussionMessage(messageId);
 	}
@@ -862,8 +863,10 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 			String body, ServiceContext serviceContext)
 		throws PortalException {
 
-		MBDiscussionPermission.check(
-			getPermissionChecker(), messageId, ActionKeys.UPDATE_DISCUSSION);
+		DiscussionPermission discussionPermission =
+			_commentManager.getDiscussionPermission(getPermissionChecker());
+
+		discussionPermission.checkUpdatePermission(messageId);
 
 		return mbMessageLocalService.updateDiscussionMessage(
 			getUserId(), messageId, className, classPK, subject, body,

@@ -15,6 +15,7 @@
 package com.liferay.portal.security.sso.openid.connect.internal.util;
 
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
 
 import com.nimbusds.oauth2.sdk.ParseException;
 import com.nimbusds.oauth2.sdk.ResponseType;
@@ -23,6 +24,8 @@ import com.nimbusds.oauth2.sdk.util.JSONObjectUtils;
 
 import java.net.URI;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 import net.minidev.json.JSONObject;
@@ -55,6 +58,30 @@ public class OpenIdConnectRequestParametersUtil {
 		}
 	}
 
+	public static long getOAuthClientEntryId(
+		long companyId, String providerName) {
+
+		Map<String, Long> oAuthClientEntryIds = _oAuthClientEntryIds.get(
+			companyId);
+
+		if (oAuthClientEntryIds == null) {
+			oAuthClientEntryIds = _oAuthClientEntryIds.get(
+				CompanyConstants.SYSTEM);
+		}
+
+		if (oAuthClientEntryIds == null) {
+			return 0;
+		}
+
+		Long oAuthClientEntryId = oAuthClientEntryIds.get(providerName);
+
+		if (oAuthClientEntryId == null) {
+			return 0;
+		}
+
+		return oAuthClientEntryId;
+	}
+
 	public static URI[] getResourceURIs(JSONObject requestParametersJSONObject)
 		throws ParseException {
 
@@ -83,5 +110,8 @@ public class OpenIdConnectRequestParametersUtil {
 		return Scope.parse(
 			JSONObjectUtils.getString(requestParametersJSONObject, "scope"));
 	}
+
+	private static final Map<Long, Map<String, Long>> _oAuthClientEntryIds =
+		new ConcurrentHashMap<>();
 
 }

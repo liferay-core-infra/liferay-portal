@@ -252,7 +252,7 @@ public class OpenIdConnectAuthenticationHandlerImpl
 		throws PortalException {
 
 		requestAuthentication(
-			_openIdConnectProviderEveryNodeEveryStartup.getOAuthClientEntryId(
+			OpenIdConnectRequestParametersUtil.getOAuthClientEntryId(
 				_portal.getCompanyId(httpServletRequest),
 				openIdConnectProviderName),
 			httpServletRequest, httpServletResponse);

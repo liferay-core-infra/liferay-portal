@@ -72,37 +72,12 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration",
-	service = {
-		OpenIdConnectProviderEveryNodeEveryStartup.class,
-		PortalInstanceLifecycleListener.class
-	}
+	service = PortalInstanceLifecycleListener.class
 )
 @Deprecated
 public class OpenIdConnectProviderEveryNodeEveryStartup
 	extends BasePortalInstanceLifecycleListener
 	implements EveryNodeEveryStartup {
-
-	public long getOAuthClientEntryId(long companyId, String providerName) {
-		Map<String, Long> oAuthClientEntryIds = _oAuthClientEntryIds.get(
-			companyId);
-
-		if (oAuthClientEntryIds == null) {
-			oAuthClientEntryIds = _oAuthClientEntryIds.get(
-				CompanyConstants.SYSTEM);
-		}
-
-		if (oAuthClientEntryIds == null) {
-			return 0;
-		}
-
-		Long oAuthClientEntryId = oAuthClientEntryIds.get(providerName);
-
-		if (oAuthClientEntryId == null) {
-			return 0;
-		}
-
-		return oAuthClientEntryId;
-	}
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {

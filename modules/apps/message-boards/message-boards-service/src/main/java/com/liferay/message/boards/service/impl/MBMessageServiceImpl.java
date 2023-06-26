@@ -31,6 +31,8 @@ import com.liferay.message.boards.util.comparator.MessageCreateDateComparator;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.comment.CommentManager;
+import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
@@ -101,10 +103,12 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 
 		User user = getGuestOrUser();
 
-		MBDiscussionPermission.check(
-			getPermissionChecker(), user.getCompanyId(),
-			serviceContext.getScopeGroupId(), className, classPK,
-			ActionKeys.ADD_DISCUSSION);
+		DiscussionPermission discussionPermission =
+			_commentManager.getDiscussionPermission(getPermissionChecker());
+
+		discussionPermission.checkAddPermission(
+			user.getCompanyId(), serviceContext.getScopeGroupId(), className,
+			classPK);
 
 		return mbMessageLocalService.addDiscussionMessage(
 			null, user.getUserId(), null, groupId, className, classPK, threadId,
@@ -1044,6 +1048,9 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 	)
 	private ModelResourcePermission<MBCategory>
 		_categoryModelResourcePermission;
+
+	@Reference
+	private CommentManager _commentManager;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

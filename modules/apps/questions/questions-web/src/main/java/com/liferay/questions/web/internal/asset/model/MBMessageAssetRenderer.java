@@ -17,8 +17,9 @@ package com.liferay.questions.web.internal.asset.model;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.message.boards.model.MBMessage;
-import com.liferay.message.boards.service.permission.MBDiscussionPermission;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.comment.CommentManager;
+import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -49,9 +50,11 @@ public class MBMessageAssetRenderer
 	extends BaseJSPAssetRenderer<MBMessage> implements TrashRenderer {
 
 	public MBMessageAssetRenderer(
-		Company company, String historyRouterPath, MBMessage mbMessage,
+		CommentManager commentManager, Company company,
+		String historyRouterPath, MBMessage mbMessage,
 		ModelResourcePermission<MBMessage> mbMessageModelResourcePermission) {
 
+		_commentManager = commentManager;
 		_company = company;
 		_historyRouterPath = historyRouterPath;
 		_mbMessage = mbMessage;
@@ -192,8 +195,11 @@ public class MBMessageAssetRenderer
 		throws PortalException {
 
 		if (_mbMessage.isDiscussion()) {
-			return MBDiscussionPermission.contains(
-				permissionChecker, _mbMessage, ActionKeys.UPDATE);
+			DiscussionPermission discussionPermission =
+				_commentManager.getDiscussionPermission(permissionChecker);
+
+			return discussionPermission.hasPermission(
+				_mbMessage.getMessageId(), ActionKeys.UPDATE);
 		}
 
 		return _mbMessageModelResourcePermission.contains(
@@ -205,8 +211,11 @@ public class MBMessageAssetRenderer
 		throws PortalException {
 
 		if (_mbMessage.isDiscussion()) {
-			return MBDiscussionPermission.contains(
-				permissionChecker, _mbMessage, ActionKeys.VIEW);
+			DiscussionPermission discussionPermission =
+				_commentManager.getDiscussionPermission(permissionChecker);
+
+			return discussionPermission.hasPermission(
+				_mbMessage.getMessageId(), ActionKeys.VIEW);
 		}
 
 		return _mbMessageModelResourcePermission.contains(
@@ -236,6 +245,7 @@ public class MBMessageAssetRenderer
 			_mbMessage.getMessageId());
 	}
 
+	private final CommentManager _commentManager;
 	private final Company _company;
 	private final String _historyRouterPath;
 	private final MBMessage _mbMessage;

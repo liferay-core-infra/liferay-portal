@@ -21,6 +21,7 @@ import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
 import com.liferay.message.boards.constants.MBPortletKeys;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.service.MBMessageLocalService;
+import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -65,7 +66,8 @@ public class MBMessageAssetRendererFactory
 
 		MBMessageAssetRenderer mbMessageAssetRenderer =
 			new MBMessageAssetRenderer(
-				_htmlParser, _mbMessageLocalService.getMessage(classPK),
+				_discussionPermission, _htmlParser,
+				_mbMessageLocalService.getMessage(classPK),
 				_messageModelResourcePermission);
 
 		mbMessageAssetRenderer.setAssetDisplayPageFriendlyURLProvider(
@@ -126,6 +128,9 @@ public class MBMessageAssetRendererFactory
 	@Reference
 	private AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+
+	@Reference
+	private DiscussionPermission _discussionPermission;
 
 	@Reference
 	private HtmlParser _htmlParser;

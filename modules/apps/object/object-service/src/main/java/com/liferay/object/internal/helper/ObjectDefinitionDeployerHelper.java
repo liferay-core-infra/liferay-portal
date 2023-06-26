@@ -25,6 +25,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -41,9 +42,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Lily Chi
@@ -75,6 +80,12 @@ public class ObjectDefinitionDeployerHelper {
 			objectDefinitionDeployer, serviceRegistrationsMap);
 
 		return objectDefinitionDeployer;
+	}
+
+	public void closeObjectDefinitionDeployerServiceTracker() {
+		if (_objectDefinitionDeployerServiceTracker != null) {
+			_objectDefinitionDeployerServiceTracker.close();
+		}
 	}
 
 	public void deployObjectDefinition(ObjectDefinition objectDefinition) {
@@ -119,6 +130,77 @@ public class ObjectDefinitionDeployerHelper {
 			getServiceRegistrationsMaps() {
 
 		return _serviceRegistrationsMaps;
+	}
+
+	public void openObjectDefinitionDeployerServiceTracker(
+		BundleContext bundleContext,
+		ObjectDefinitionLocalService objectDefinitionLocalService) {
+
+		_objectDefinitionDeployerServiceTracker = new ServiceTracker<>(
+			bundleContext, ObjectDefinitionDeployer.class,
+			new ServiceTrackerCustomizer
+				<ObjectDefinitionDeployer, ObjectDefinitionDeployer>() {
+
+				@Override
+				public ObjectDefinitionDeployer addingService(
+					ServiceReference<ObjectDefinitionDeployer>
+						serviceReference) {
+
+					return addingObjectDefinitionDeployer(
+						bundleContext.getService(serviceReference),
+						objectDefinitionLocalService);
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<ObjectDefinitionDeployer> serviceReference,
+					ObjectDefinitionDeployer objectDefinitionDeployer) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<ObjectDefinitionDeployer> serviceReference,
+					ObjectDefinitionDeployer objectDefinitionDeployer) {
+
+					for (ObjectDefinition objectDefinition :
+							getObjectDefinitions(
+								objectDefinitionLocalService)) {
+
+						objectDefinitionDeployer.undeploy(objectDefinition);
+					}
+
+					Map
+						<ObjectDefinitionDeployer,
+						 Map<Long, List<ServiceRegistration<?>>>>
+							serviceRegistrationsMaps =
+								getServiceRegistrationsMaps();
+
+					Map<Long, List<ServiceRegistration<?>>>
+						serviceRegistrationsMap =
+							serviceRegistrationsMaps.remove(
+								objectDefinitionDeployer);
+
+					for (List<ServiceRegistration<?>> serviceRegistrations :
+							serviceRegistrationsMap.values()) {
+
+						for (ServiceRegistration<?> serviceRegistration :
+								serviceRegistrations) {
+
+							serviceRegistration.unregister();
+						}
+					}
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		DependencyManagerSyncUtil.registerSyncCallable(
+			() -> {
+				_objectDefinitionDeployerServiceTracker.open();
+
+				return null;
+			});
 	}
 
 	public void undeployObjectDefinition(ObjectDefinition objectDefinition) {
@@ -196,6 +278,9 @@ public class ObjectDefinitionDeployerHelper {
 
 	@Reference
 	private MultiVMPool _multiVMPool;
+
+	private ServiceTracker<ObjectDefinitionDeployer, ObjectDefinitionDeployer>
+		_objectDefinitionDeployerServiceTracker;
 
 	@Reference
 	private Portal _portal;

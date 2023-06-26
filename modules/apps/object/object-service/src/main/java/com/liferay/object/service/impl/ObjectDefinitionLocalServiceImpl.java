@@ -25,7 +25,6 @@ import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
-import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.exception.NoSuchObjectFieldException;
 import com.liferay.object.exception.ObjectDefinitionAccountEntryRestrictedException;
 import com.liferay.object.exception.ObjectDefinitionAccountEntryRestrictedObjectFieldIdException;
@@ -85,7 +84,6 @@ import com.liferay.portal.kernel.dao.db.IndexMetadataFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -139,14 +137,10 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Marco Leo
@@ -642,74 +636,9 @@ public class ObjectDefinitionLocalServiceImpl
 				_userGroupRoleLocalService),
 			objectDefinitionLocalService);
 
-		_objectDefinitionDeployerServiceTracker = new ServiceTracker<>(
-			_bundleContext, ObjectDefinitionDeployer.class,
-			new ServiceTrackerCustomizer
-				<ObjectDefinitionDeployer, ObjectDefinitionDeployer>() {
-
-				@Override
-				public ObjectDefinitionDeployer addingService(
-					ServiceReference<ObjectDefinitionDeployer>
-						serviceReference) {
-
-					return _objectDefinitionDeployerHelper.
-						addingObjectDefinitionDeployer(
-							_bundleContext.getService(serviceReference),
-							objectDefinitionLocalService);
-				}
-
-				@Override
-				public void modifiedService(
-					ServiceReference<ObjectDefinitionDeployer> serviceReference,
-					ObjectDefinitionDeployer objectDefinitionDeployer) {
-				}
-
-				@Override
-				public void removedService(
-					ServiceReference<ObjectDefinitionDeployer> serviceReference,
-					ObjectDefinitionDeployer objectDefinitionDeployer) {
-
-					for (ObjectDefinition objectDefinition :
-							_objectDefinitionDeployerHelper.
-								getObjectDefinitions(
-									objectDefinitionLocalService)) {
-
-						objectDefinitionDeployer.undeploy(objectDefinition);
-					}
-
-					Map
-						<ObjectDefinitionDeployer,
-						 Map<Long, List<ServiceRegistration<?>>>>
-							serviceRegistrationsMaps =
-								_objectDefinitionDeployerHelper.
-									getServiceRegistrationsMaps();
-
-					Map<Long, List<ServiceRegistration<?>>>
-						serviceRegistrationsMap =
-							serviceRegistrationsMaps.remove(
-								objectDefinitionDeployer);
-
-					for (List<ServiceRegistration<?>> serviceRegistrations :
-							serviceRegistrationsMap.values()) {
-
-						for (ServiceRegistration<?> serviceRegistration :
-								serviceRegistrations) {
-
-							serviceRegistration.unregister();
-						}
-					}
-
-					_bundleContext.ungetService(serviceReference);
-				}
-
-			});
-
-		DependencyManagerSyncUtil.registerSyncCallable(
-			() -> {
-				_objectDefinitionDeployerServiceTracker.open();
-
-				return null;
-			});
+		_objectDefinitionDeployerHelper.
+			openObjectDefinitionDeployerServiceTracker(
+				_bundleContext, objectDefinitionLocalService);
 	}
 
 	@Override
@@ -806,9 +735,8 @@ public class ObjectDefinitionLocalServiceImpl
 	protected void deactivate() {
 		super.deactivate();
 
-		if (_objectDefinitionDeployerServiceTracker != null) {
-			_objectDefinitionDeployerServiceTracker.close();
-		}
+		_objectDefinitionDeployerHelper.
+			closeObjectDefinitionDeployerServiceTracker();
 	}
 
 	private ObjectDefinition _addObjectDefinition(
@@ -1768,9 +1696,6 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Reference
 	private ObjectDefinitionDeployerHelper _objectDefinitionDeployerHelper;
-
-	private ServiceTracker<ObjectDefinitionDeployer, ObjectDefinitionDeployer>
-		_objectDefinitionDeployerServiceTracker;
 
 	@Reference
 	private ObjectEntryLocalService _objectEntryLocalService;

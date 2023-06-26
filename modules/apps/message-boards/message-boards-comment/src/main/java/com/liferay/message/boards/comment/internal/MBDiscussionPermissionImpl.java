@@ -36,9 +36,8 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 	public boolean hasAddPermission(
 		long companyId, long groupId, String className, long classPK) {
 
-		return MBDiscussionPermission.contains(
-			_permissionChecker, companyId, groupId, className, classPK,
-			ActionKeys.ADD_DISCUSSION);
+		return hasPermission(
+			ActionKeys.ADD_DISCUSSION, className, classPK, companyId, groupId);
 	}
 
 	@Override
@@ -54,8 +53,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 				_permissionChecker, mbMessage, actionId);
 		}
 
-		return MBDiscussionPermission.contains(
-			_permissionChecker, comment.getCommentId(), actionId);
+		return hasPermission(comment.getCommentId(), actionId);
 	}
 
 	@Override
@@ -88,9 +86,8 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 	public boolean hasViewPermission(
 		long companyId, long groupId, String className, long classPK) {
 
-		return MBDiscussionPermission.contains(
-			_permissionChecker, companyId, groupId, className, classPK,
-			ActionKeys.VIEW);
+		return hasPermission(
+			ActionKeys.VIEW, className, classPK, companyId, groupId);
 	}
 
 	private final PermissionChecker _permissionChecker;

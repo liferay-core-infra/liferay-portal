@@ -31,7 +31,7 @@ import com.liferay.portal.security.sso.openid.connect.OpenIdConnectAuthenticatio
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnectServiceException;
 import com.liferay.portal.security.sso.openid.connect.constants.OpenIdConnectConstants;
 import com.liferay.portal.security.sso.openid.connect.constants.OpenIdConnectWebKeys;
-import com.liferay.portal.security.sso.openid.connect.internal.configuration.admin.service.OpenIdConnectProviderManagedServiceFactory;
+import com.liferay.portal.security.sso.openid.connect.internal.configuration.admin.service.OpenIdConnectProviderEveryNodeEveryStartup;
 import com.liferay.portal.security.sso.openid.connect.internal.session.manager.OfflineOpenIdConnectSessionManager;
 import com.liferay.portal.security.sso.openid.connect.internal.util.OpenIdConnectRequestParametersUtil;
 import com.liferay.portal.security.sso.openid.connect.internal.util.OpenIdConnectTokenRequestUtil;
@@ -252,7 +252,7 @@ public class OpenIdConnectAuthenticationHandlerImpl
 		throws PortalException {
 
 		requestAuthentication(
-			_openIdConnectProviderManagedServiceFactory.getOAuthClientEntryId(
+			_openIdConnectProviderEveryNodeEveryStartup.getOAuthClientEntryId(
 				_portal.getCompanyId(httpServletRequest),
 				openIdConnectProviderName),
 			httpServletRequest, httpServletResponse);
@@ -476,8 +476,8 @@ public class OpenIdConnectAuthenticationHandlerImpl
 	private OIDCUserInfoProcessor _oidcUserInfoProcessor;
 
 	@Reference
-	private OpenIdConnectProviderManagedServiceFactory
-		_openIdConnectProviderManagedServiceFactory;
+	private OpenIdConnectProviderEveryNodeEveryStartup
+		_openIdConnectProviderEveryNodeEveryStartup;
 
 	@Reference
 	private Portal _portal;

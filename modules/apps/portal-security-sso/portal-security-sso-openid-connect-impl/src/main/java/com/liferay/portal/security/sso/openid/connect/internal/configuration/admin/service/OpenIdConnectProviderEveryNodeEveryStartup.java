@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.net.URI;
@@ -51,9 +52,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ManagedServiceFactory;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -66,43 +71,16 @@ import org.osgi.service.component.annotations.Reference;
  * @review
  */
 @Component(
-	property = Constants.SERVICE_PID + "=com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration",
+	configurationPid = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration",
 	service = {
-		ManagedServiceFactory.class,
-		OpenIdConnectProviderManagedServiceFactory.class,
+		OpenIdConnectProviderEveryNodeEveryStartup.class,
 		PortalInstanceLifecycleListener.class
 	}
 )
 @Deprecated
-public class OpenIdConnectProviderManagedServiceFactory
+public class OpenIdConnectProviderEveryNodeEveryStartup
 	extends BasePortalInstanceLifecycleListener
-	implements EveryNodeEveryStartup, ManagedServiceFactory {
-
-	@Override
-	public void deleted(String pid) {
-		Dictionary<String, ?> properties = _properties.remove(pid);
-
-		long companyId = GetterUtil.getLong(properties.get("companyId"));
-
-		if (companyId == CompanyConstants.SYSTEM) {
-			_deleteOAuthClientEntries(
-				_getPropertyAsString("providerName", properties), properties);
-		}
-		else {
-			try (SafeCloseable safeCloseable =
-					CompanyThreadLocal.setWithSafeCloseable(companyId)) {
-
-				_deleteOAuthClientEntry(
-					companyId, _getPropertyAsString("providerName", properties),
-					properties);
-			}
-		}
-	}
-
-	@Override
-	public String getName() {
-		return "OpenId Connect Provider Managed Service Factory";
-	}
+	implements EveryNodeEveryStartup {
 
 	public long getOAuthClientEntryId(long companyId, String providerName) {
 		Map<String, Long> oAuthClientEntryIds = _oAuthClientEntryIds.get(
@@ -171,37 +149,23 @@ public class OpenIdConnectProviderManagedServiceFactory
 		}
 	}
 
-	@Override
-	public void updated(String pid, Dictionary<String, ?> properties) {
-		long companyId = GetterUtil.getLong(properties.get("companyId"));
+	@Activate
+	protected void activate(
+		BundleContext bundleContext, Map<String, Object> properties) {
 
-		Dictionary<String, ?> oldProperties = _properties.put(pid, properties);
+		_serviceRegistration = bundleContext.registerService(
+			ManagedServiceFactory.class,
+			new OpenIdConnectProviderManagedServiceFactory(),
+			HashMapDictionaryBuilder.put(
+				Constants.SERVICE_PID,
+				"com.liferay.portal.security.sso.openid.connect.internal." +
+					"configuration.OpenIdConnectProviderConfiguration"
+			).build());
+	}
 
-		String oldProviderName = (oldProperties != null) ?
-			_getPropertyAsString("providerName", oldProperties) : "";
-
-		if (companyId == CompanyConstants.SYSTEM) {
-			try {
-				_companyLocalService.forEachCompanyId(
-					curCompanyId -> _updateOAuthClientEntry(
-						curCompanyId, oldProperties, oldProviderName,
-						properties));
-			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception);
-				}
-			}
-
-			return;
-		}
-
-		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setWithSafeCloseable(companyId)) {
-
-			_updateOAuthClientEntry(
-				companyId, oldProperties, oldProviderName, properties);
-		}
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
 	}
 
 	private OAuthClientEntry _addOAuthClientEntry(
@@ -593,7 +557,7 @@ public class OpenIdConnectProviderManagedServiceFactory
 	private static final String _CLIENT_TO = "Client to ";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OpenIdConnectProviderManagedServiceFactory.class);
+		OpenIdConnectProviderEveryNodeEveryStartup.class);
 
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;
@@ -616,8 +580,76 @@ public class OpenIdConnectProviderManagedServiceFactory
 
 	private final Map<String, Dictionary<String, ?>> _properties =
 		new ConcurrentHashMap<>();
+	private ServiceRegistration<ManagedServiceFactory> _serviceRegistration;
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	private class OpenIdConnectProviderManagedServiceFactory
+		implements ManagedServiceFactory {
+
+		@Override
+		public void deleted(String pid) {
+			Dictionary<String, ?> properties = _properties.remove(pid);
+
+			long companyId = GetterUtil.getLong(properties.get("companyId"));
+
+			if (companyId == CompanyConstants.SYSTEM) {
+				_deleteOAuthClientEntries(
+					_getPropertyAsString("providerName", properties),
+					properties);
+			}
+			else {
+				try (SafeCloseable safeCloseable =
+						CompanyThreadLocal.setWithSafeCloseable(companyId)) {
+
+					_deleteOAuthClientEntry(
+						companyId,
+						_getPropertyAsString("providerName", properties),
+						properties);
+				}
+			}
+		}
+
+		@Override
+		public String getName() {
+			return "OpenId Connect Provider Managed Service Factory";
+		}
+
+		@Override
+		public void updated(String pid, Dictionary<String, ?> properties) {
+			long companyId = GetterUtil.getLong(properties.get("companyId"));
+
+			Dictionary<String, ?> oldProperties = _properties.put(
+				pid, properties);
+
+			String oldProviderName = (oldProperties != null) ?
+				_getPropertyAsString("providerName", oldProperties) : "";
+
+			if (companyId == CompanyConstants.SYSTEM) {
+				try {
+					_companyLocalService.forEachCompanyId(
+						curCompanyId -> _updateOAuthClientEntry(
+							curCompanyId, oldProperties, oldProviderName,
+							properties));
+				}
+				catch (Exception exception) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(exception);
+					}
+				}
+
+				return;
+			}
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(companyId)) {
+
+				_updateOAuthClientEntry(
+					companyId, oldProperties, oldProviderName, properties);
+			}
+		}
+
+	}
 
 }

@@ -17,8 +17,8 @@ package com.liferay.questions.web.internal.asset.model;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.message.boards.model.MBMessage;
-import com.liferay.message.boards.service.permission.MBDiscussionPermission;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -49,10 +49,12 @@ public class MBMessageAssetRenderer
 	extends BaseJSPAssetRenderer<MBMessage> implements TrashRenderer {
 
 	public MBMessageAssetRenderer(
-		Company company, String historyRouterPath, MBMessage mbMessage,
+		Company company, DiscussionPermission discussionPermission,
+		String historyRouterPath, MBMessage mbMessage,
 		ModelResourcePermission<MBMessage> mbMessageModelResourcePermission) {
 
 		_company = company;
+		_discussionPermission = discussionPermission;
 		_historyRouterPath = historyRouterPath;
 		_mbMessage = mbMessage;
 		_mbMessageModelResourcePermission = mbMessageModelResourcePermission;
@@ -192,8 +194,9 @@ public class MBMessageAssetRenderer
 		throws PortalException {
 
 		if (_mbMessage.isDiscussion()) {
-			return MBDiscussionPermission.contains(
-				permissionChecker, _mbMessage, ActionKeys.UPDATE);
+			return _discussionPermission.hasPermission(
+				permissionChecker, _mbMessage.getMessageId(),
+				ActionKeys.UPDATE);
 		}
 
 		return _mbMessageModelResourcePermission.contains(
@@ -205,8 +208,8 @@ public class MBMessageAssetRenderer
 		throws PortalException {
 
 		if (_mbMessage.isDiscussion()) {
-			return MBDiscussionPermission.contains(
-				permissionChecker, _mbMessage, ActionKeys.VIEW);
+			return _discussionPermission.hasPermission(
+				permissionChecker, _mbMessage.getMessageId(), ActionKeys.VIEW);
 		}
 
 		return _mbMessageModelResourcePermission.contains(
@@ -237,6 +240,7 @@ public class MBMessageAssetRenderer
 	}
 
 	private final Company _company;
+	private final DiscussionPermission _discussionPermission;
 	private final String _historyRouterPath;
 	private final MBMessage _mbMessage;
 	private final ModelResourcePermission<MBMessage>

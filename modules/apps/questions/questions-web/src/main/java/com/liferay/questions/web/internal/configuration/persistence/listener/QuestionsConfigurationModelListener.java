@@ -21,6 +21,7 @@ import com.liferay.message.boards.service.MBCategoryLocalService;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListener;
+import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -123,8 +124,8 @@ public class QuestionsConfigurationModelListener
 				_bundleContext.registerService(
 					AssetRendererFactory.class,
 					new MBMessageAssetRendererFactory(
-						_companyLocalService, historyRouterBasePath,
-						_mbMessageLocalService,
+						_companyLocalService, _discussionPermission,
+						historyRouterBasePath, _mbMessageLocalService,
 						_mbMessageModelResourcePermission),
 					assetRendererFactoryProperties));
 		}
@@ -204,6 +205,9 @@ public class QuestionsConfigurationModelListener
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private DiscussionPermission _discussionPermission;
 
 	@Reference
 	private MBCategoryLocalService _mbCategoryLocalService;

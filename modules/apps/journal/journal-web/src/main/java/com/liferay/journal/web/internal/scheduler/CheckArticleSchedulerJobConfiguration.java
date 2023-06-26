@@ -18,7 +18,6 @@ import com.liferay.journal.configuration.JournalServiceConfiguration;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
@@ -36,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Tina Tian
  */
 @Component(
-	configurationPid = "com.liferay.journal.configuration.JournalServiceConfiguration",
+	factory = "com.liferay.journal.web.internal.scheduler.CheckArticleSchedulerJobConfiguration",
 	service = SchedulerJobConfiguration.class
 )
 public class CheckArticleSchedulerJobConfiguration
@@ -64,8 +63,8 @@ public class CheckArticleSchedulerJobConfiguration
 
 	@Activate
 	protected void activate(Map<String, Object> properties) {
-		_journalServiceConfiguration = ConfigurableUtil.createConfigurable(
-			JournalServiceConfiguration.class, properties);
+		_journalServiceConfiguration =
+			(JournalServiceConfiguration)properties.get("configuration");
 	}
 
 	@Reference

@@ -150,14 +150,6 @@ public class DocumentImpl implements Document {
 	}
 
 	@Override
-	public void addFile(
-		String name, InputStream inputStream, String fileExt,
-		int maxStringLength) {
-
-		addText(name, FileUtil.extractText(inputStream, maxStringLength));
-	}
-
-	@Override
 	public void addGeoLocation(double latitude, double longitude) {
 		addGeoLocation(Field.GEO_LOCATION, latitude, longitude);
 	}

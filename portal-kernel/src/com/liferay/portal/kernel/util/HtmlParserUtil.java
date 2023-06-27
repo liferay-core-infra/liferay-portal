@@ -78,6 +78,6 @@ public class HtmlParserUtil {
 
 	private static volatile HtmlParser _htmlParser =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			HtmlParser.class, HtmlParserUtil.class, "_htmlParser", true);
+			HtmlParser.class, HtmlParserUtil.class, "_htmlParser", false);
 
 }

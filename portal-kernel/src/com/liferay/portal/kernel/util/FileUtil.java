@@ -147,12 +147,6 @@ public class FileUtil {
 		return _file.extractText(inputStream);
 	}
 
-	public static String extractText(
-		InputStream inputStream, int maxStringLength) {
-
-		return _file.extractText(inputStream, maxStringLength);
-	}
-
 	public static String getAbsolutePath(File file) {
 		return _file.getAbsolutePath(file);
 	}

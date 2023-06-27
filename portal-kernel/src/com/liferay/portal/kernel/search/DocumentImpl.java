@@ -20,15 +20,12 @@ import com.liferay.portal.kernel.search.geolocation.GeoLocationPoint;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.io.InputStream;
 
 import java.math.BigDecimal;
 
@@ -122,11 +119,6 @@ public class DocumentImpl implements Document {
 		createSortableNumericField(name, true, datesTime);
 
 		addKeyword(name, datesString);
-	}
-
-	@Override
-	public void addFile(String name, InputStream inputStream, String fileExt) {
-		addText(name, FileUtil.extractText(inputStream));
 	}
 
 	@Override

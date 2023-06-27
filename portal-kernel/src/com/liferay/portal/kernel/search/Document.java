@@ -14,9 +14,6 @@
 
 package com.liferay.portal.kernel.search;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 
 import java.math.BigDecimal;
@@ -45,20 +42,6 @@ public interface Document extends Cloneable, Serializable {
 	public void addDateSortable(String name, Date value);
 
 	public void addDateSortable(String name, Date[] values);
-
-	public void addFile(String name, byte[] bytes, String fileExt)
-		throws IOException;
-
-	public void addFile(String name, File file, String fileExt)
-		throws IOException;
-
-	public void addFile(String name, InputStream inputStream, String fileExt)
-		throws IOException;
-
-	public void addFile(
-			String name, InputStream inputStream, String fileExt,
-			int maxStringLength)
-		throws IOException;
 
 	public void addGeoLocation(double latitude, double longitude);
 

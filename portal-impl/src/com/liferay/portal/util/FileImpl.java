@@ -329,7 +329,7 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 
 	@Override
 	public String extractText(InputStream inputStream) {
-		return extractText(inputStream, -1);
+		return TextExtractorHolder._textExtractor.extractText(inputStream, -1);
 	}
 
 	@Override

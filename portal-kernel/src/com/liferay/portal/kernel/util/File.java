@@ -78,8 +78,6 @@ public interface File {
 
 	public boolean exists(String fileName);
 
-	public String extractText(InputStream inputStream);
-
 	public String getAbsolutePath(java.io.File file);
 
 	public byte[] getBytes(Class<?> clazz, String fileName) throws IOException;

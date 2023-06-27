@@ -144,11 +144,6 @@ public class MockFile implements com.liferay.portal.kernel.util.File {
 	}
 
 	@Override
-	public String extractText(InputStream inputStream, int maxStringLength) {
-		return null;
-	}
-
-	@Override
 	public String getAbsolutePath(File file) {
 		return null;
 	}

@@ -80,8 +80,6 @@ public interface File {
 
 	public String extractText(InputStream inputStream);
 
-	public String extractText(InputStream inputStream, int maxStringLength);
-
 	public String getAbsolutePath(java.io.File file);
 
 	public byte[] getBytes(Class<?> clazz, String fileName) throws IOException;

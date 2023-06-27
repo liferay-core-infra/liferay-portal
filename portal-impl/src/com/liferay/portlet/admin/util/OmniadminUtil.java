@@ -44,6 +44,6 @@ public class OmniadminUtil {
 
 	private static volatile Omniadmin _omniadmin =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			Omniadmin.class, OmniadminUtil.class, "_omniadmin", true);
+			Omniadmin.class, OmniadminUtil.class, "_omniadmin", false);
 
 }

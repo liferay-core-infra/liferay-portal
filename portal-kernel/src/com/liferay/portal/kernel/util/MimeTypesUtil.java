@@ -112,6 +112,6 @@ public class MimeTypesUtil {
 
 	private static volatile MimeTypes _mimeTypes =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			MimeTypes.class, MimeTypesUtil.class, "_mimeTypes", true);
+			MimeTypes.class, MimeTypesUtil.class, "_mimeTypes", false);
 
 }

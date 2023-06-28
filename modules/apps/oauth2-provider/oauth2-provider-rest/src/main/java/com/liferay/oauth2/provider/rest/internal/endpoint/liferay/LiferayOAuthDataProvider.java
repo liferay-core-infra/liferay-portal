@@ -555,6 +555,21 @@ public class LiferayOAuthDataProvider
 	}
 
 	@Override
+	public boolean isUseJwtFormatForAccessTokens() {
+		try {
+			OAuth2AuthorizationServerConfiguration
+				oAuth2AuthorizationServerConfiguration =
+					_configurationProvider.getSystemConfiguration(
+						OAuth2AuthorizationServerConfiguration.class);
+
+			return oAuth2AuthorizationServerConfiguration.issueJWTAccessToken();
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
+	}
+
+	@Override
 	public ServerAccessToken refreshAccessToken(
 			Client client, String refreshTokenKey,
 			List<String> restrictedScopes)
@@ -718,8 +733,6 @@ public class LiferayOAuthDataProvider
 				OAuth2AuthorizationServerConfiguration.class, properties);
 		_oAuth2ProviderConfiguration = ConfigurableUtil.createConfigurable(
 			OAuth2ProviderConfiguration.class, properties);
-
-		_init();
 	}
 
 	@Override
@@ -1142,11 +1155,6 @@ public class LiferayOAuthDataProvider
 
 		return _userLocalService.getUser(
 			GetterUtil.getLong(userSubject.getId()));
-	}
-
-	private void _init() {
-		setUseJwtFormatForAccessTokens(
-			_oAuth2AuthorizationServerConfiguration.issueJWTAccessToken());
 	}
 
 	private void _invokeTransactionally(Runnable runnable) throws Throwable {

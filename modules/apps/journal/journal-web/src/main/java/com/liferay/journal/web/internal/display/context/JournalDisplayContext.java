@@ -71,6 +71,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -1105,9 +1106,16 @@ public class JournalDisplayContext {
 			ItemSelector.class.getName());
 		_journalHelper = (JournalHelper)httpServletRequest.getAttribute(
 			JournalHelper.class.getName());
-		_journalWebConfiguration =
-			(JournalWebConfiguration)httpServletRequest.getAttribute(
-				JournalWebConfiguration.class.getName());
+
+		try {
+			_journalWebConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					JournalWebConfiguration.class);
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
+
 		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
 			httpServletRequest);
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(

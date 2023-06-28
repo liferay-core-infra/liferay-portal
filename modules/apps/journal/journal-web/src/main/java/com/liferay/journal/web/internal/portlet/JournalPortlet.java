@@ -61,10 +61,8 @@ import com.liferay.journal.service.JournalFolderService;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.journal.util.JournalHelper;
-import com.liferay.journal.web.internal.configuration.JournalWebConfiguration;
 import com.liferay.journal.web.internal.helper.JournalDDMTemplateHelper;
 import com.liferay.journal.web.internal.portlet.action.ActionUtil;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -88,7 +86,6 @@ import com.liferay.trash.util.TrashWebKeys;
 
 import java.io.IOException;
 
-import java.util.Map;
 import java.util.Objects;
 
 import javax.persistence.PersistenceException;
@@ -102,16 +99,13 @@ import javax.portlet.ResourceResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eduardo García
  */
 @Component(
-	configurationPid = "com.liferay.journal.web.internal.configuration.JournalWebConfiguration",
 	property = {
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-journal",
@@ -175,8 +169,6 @@ public class JournalPortlet extends MVCPortlet {
 		renderRequest.setAttribute(
 			JournalHelper.class.getName(), _journalHelper);
 		renderRequest.setAttribute(
-			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
-		renderRequest.setAttribute(
 			JournalWebKeys.JOURNAL_CONTENT, _journalContent);
 		renderRequest.setAttribute(
 			JournalWebKeys.JOURNAL_CONVERTER, _journalConverter);
@@ -203,21 +195,12 @@ public class JournalPortlet extends MVCPortlet {
 		resourceRequest.setAttribute(
 			JournalHelper.class.getName(), _journalHelper);
 		resourceRequest.setAttribute(
-			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
-		resourceRequest.setAttribute(
 			TranslationPermission.class.getName(), _translationPermission);
 		resourceRequest.setAttribute(
 			TranslationURLProvider.class.getName(), _translationURLProvider);
 		resourceRequest.setAttribute(TrashWebKeys.TRASH_HELPER, _trashHelper);
 
 		super.serveResource(resourceRequest, resourceResponse);
-	}
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_journalWebConfiguration = ConfigurableUtil.createConfigurable(
-			JournalWebConfiguration.class, properties);
 	}
 
 	@Override
@@ -373,8 +356,6 @@ public class JournalPortlet extends MVCPortlet {
 
 	@Reference
 	private JournalHelper _journalHelper;
-
-	private volatile JournalWebConfiguration _journalWebConfiguration;
 
 	@Reference
 	private Portal _portal;

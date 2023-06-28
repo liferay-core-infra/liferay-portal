@@ -64,9 +64,6 @@ public class JournalConfigurationAction
 			HttpServletResponse httpServletResponse)
 		throws Exception {
 
-		httpServletRequest.setAttribute(
-			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
-
 		super.include(portletConfig, httpServletRequest, httpServletResponse);
 	}
 

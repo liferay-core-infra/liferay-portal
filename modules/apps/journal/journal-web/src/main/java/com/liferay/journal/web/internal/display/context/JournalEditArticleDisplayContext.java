@@ -64,6 +64,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
@@ -119,10 +121,15 @@ public class JournalEditArticleDisplayContext {
 		_liferayPortletResponse = liferayPortletResponse;
 		_article = article;
 
-		_ffJournalAutoSaveDraftConfiguration =
-			(FFJournalAutoSaveDraftConfiguration)
-				httpServletRequest.getAttribute(
-					FFJournalAutoSaveDraftConfiguration.class.getName());
+		try {
+			_ffJournalAutoSaveDraftConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					FFJournalAutoSaveDraftConfiguration.class);
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
+
 		_itemSelector = (ItemSelector)httpServletRequest.getAttribute(
 			ItemSelector.class.getName());
 

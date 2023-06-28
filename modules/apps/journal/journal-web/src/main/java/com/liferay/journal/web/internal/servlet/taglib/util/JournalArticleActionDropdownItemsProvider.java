@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -104,9 +105,6 @@ public class JournalArticleActionDropdownItemsProvider {
 			assetDisplayPageFriendlyURLProvider;
 		_trashHelper = trashHelper;
 
-		_journalWebConfiguration =
-			(JournalWebConfiguration)liferayPortletRequest.getAttribute(
-				JournalWebConfiguration.class.getName());
 		_httpServletRequest = PortalUtil.getHttpServletRequest(
 			liferayPortletRequest);
 		_themeDisplay = (ThemeDisplay)liferayPortletRequest.getAttribute(
@@ -412,30 +410,39 @@ public class JournalArticleActionDropdownItemsProvider {
 	private UnsafeConsumer<DropdownItem, Exception>
 		_getCopyArticleActionUnsafeConsumer() {
 
-		if (_journalWebConfiguration.journalArticleForceAutogenerateId()) {
-			return dropdownItem -> {
-				dropdownItem.putData("action", "copyArticle");
-				dropdownItem.putData(
-					"copyArticleURL",
-					PortletURLBuilder.createActionURL(
-						_liferayPortletResponse
-					).setActionName(
-						"/journal/copy_article"
-					).setRedirect(
-						_getRedirect()
-					).setParameter(
-						"autoArticleId", true
-					).setParameter(
-						"groupId", _article.getGroupId()
-					).setParameter(
-						"oldArticleId", _article.getArticleId()
-					).setParameter(
-						"version", _article.getVersion()
-					).buildString());
-				dropdownItem.setIcon("copy");
-				dropdownItem.setLabel(
-					LanguageUtil.get(_httpServletRequest, "copy"));
-			};
+		try {
+			JournalWebConfiguration journalWebConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					JournalWebConfiguration.class);
+
+			if (journalWebConfiguration.journalArticleForceAutogenerateId()) {
+				return dropdownItem -> {
+					dropdownItem.putData("action", "copyArticle");
+					dropdownItem.putData(
+						"copyArticleURL",
+						PortletURLBuilder.createActionURL(
+							_liferayPortletResponse
+						).setActionName(
+							"/journal/copy_article"
+						).setRedirect(
+							_getRedirect()
+						).setParameter(
+							"autoArticleId", true
+						).setParameter(
+							"groupId", _article.getGroupId()
+						).setParameter(
+							"oldArticleId", _article.getArticleId()
+						).setParameter(
+							"version", _article.getVersion()
+						).buildString());
+					dropdownItem.setIcon("copy");
+					dropdownItem.setLabel(
+						LanguageUtil.get(_httpServletRequest, "copy"));
+				};
+			}
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
 		}
 
 		return _getAutoCopyArticleActionUnsafeConsumer();
@@ -1092,7 +1099,6 @@ public class JournalArticleActionDropdownItemsProvider {
 		_assetDisplayPageFriendlyURLProvider;
 	private final HttpServletRequest _httpServletRequest;
 	private final ItemSelector _itemSelector;
-	private final JournalWebConfiguration _journalWebConfiguration;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private String _redirect;

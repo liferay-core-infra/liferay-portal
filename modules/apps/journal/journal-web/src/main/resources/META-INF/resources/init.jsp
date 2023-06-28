@@ -230,7 +230,14 @@ page import="javax.portlet.WindowState" %>
 <%
 AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider = (AssetDisplayPageFriendlyURLProvider)request.getAttribute(AssetDisplayPageFriendlyURLProvider.class.getName());
 
-JournalWebConfiguration journalWebConfiguration = (JournalWebConfiguration)request.getAttribute(JournalWebConfiguration.class.getName());
+JournalWebConfiguration journalWebConfiguration = null;
+
+try {
+	journalWebConfiguration = ConfigurationProviderUtil.getSystemConfiguration(JournalWebConfiguration.class);
+}
+catch (ConfigurationException configurationException) {
+	throw new RuntimeException(configurationException);
+}
 
 JournalDisplayContext journalDisplayContext = JournalDisplayContext.create(request, liferayPortletRequest, liferayPortletResponse, assetDisplayPageFriendlyURLProvider, trashHelper);
 

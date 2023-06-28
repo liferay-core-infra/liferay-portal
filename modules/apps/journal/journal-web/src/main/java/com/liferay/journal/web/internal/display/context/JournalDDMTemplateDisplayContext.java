@@ -30,6 +30,8 @@ import com.liferay.journal.web.internal.servlet.taglib.util.JournalDDMTemplateAc
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
@@ -65,10 +67,6 @@ public class JournalDDMTemplateDisplayContext {
 		_renderResponse = renderResponse;
 
 		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
-
-		_journalWebConfiguration =
-			(JournalWebConfiguration)_httpServletRequest.getAttribute(
-				JournalWebConfiguration.class.getName());
 
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -129,11 +127,20 @@ public class JournalDDMTemplateDisplayContext {
 
 		long[] groupIds = {_themeDisplay.getScopeGroupId()};
 
-		if (_journalWebConfiguration.showAncestorScopesByDefault()) {
-			groupIds =
-				SiteConnectedGroupGroupProviderUtil.
-					getCurrentAndAncestorSiteAndDepotGroupIds(
-						_themeDisplay.getScopeGroupId(), true);
+		try {
+			JournalWebConfiguration journalWebConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					JournalWebConfiguration.class);
+
+			if (journalWebConfiguration.showAncestorScopesByDefault()) {
+				groupIds =
+					SiteConnectedGroupGroupProviderUtil.
+						getCurrentAndAncestorSiteAndDepotGroupIds(
+							_themeDisplay.getScopeGroupId(), true);
+			}
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
 		}
 
 		long[] templateGroupIds = groupIds;
@@ -364,7 +371,6 @@ public class JournalDDMTemplateDisplayContext {
 	private SearchContainer<DDMTemplate> _ddmTemplateSearch;
 	private String _displayStyle;
 	private final HttpServletRequest _httpServletRequest;
-	private final JournalWebConfiguration _journalWebConfiguration;
 	private String _keywords;
 	private String _orderByCol;
 	private String _orderByType;

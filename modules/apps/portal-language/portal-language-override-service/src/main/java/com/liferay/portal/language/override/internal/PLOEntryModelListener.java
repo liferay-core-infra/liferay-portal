@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.language.override.internal.util.PLOLanguageOverrideProviderUtil;
 import com.liferay.portal.language.override.model.PLOEntry;
 
 import org.osgi.service.component.annotations.Component;
@@ -101,13 +102,13 @@ public class PLOEntryModelListener
 		MethodType methodType, PLOEntry ploEntry) {
 
 		if (methodType == MethodType.ADD) {
-			_ploLanguageOverrideProvider.add(ploEntry);
+			PLOLanguageOverrideProviderUtil.add(ploEntry);
 		}
 		else if (methodType == MethodType.REMOVE) {
-			_ploLanguageOverrideProvider.remove(ploEntry);
+			PLOLanguageOverrideProviderUtil.remove(ploEntry);
 		}
 		else if (methodType == MethodType.UPDATE) {
-			_ploLanguageOverrideProvider.update(ploEntry);
+			PLOLanguageOverrideProviderUtil.update(ploEntry);
 		}
 	}
 
@@ -120,9 +121,6 @@ public class PLOEntryModelListener
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;
-
-	@Reference
-	private PLOLanguageOverrideProvider _ploLanguageOverrideProvider;
 
 	private enum MethodType {
 

@@ -108,10 +108,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Tomas Polesovsky
  */
 @Component(
-	configurationPid = {
-		"com.liferay.oauth2.provider.configuration.OAuth2ProviderConfiguration",
-		"com.liferay.oauth2.provider.rest.internal.configuration.OAuth2AuthorizationServerConfiguration",
-	},
+	configurationPid = "com.liferay.oauth2.provider.configuration.OAuth2ProviderConfiguration",
 	service = LiferayOAuthDataProvider.class
 )
 public class LiferayOAuthDataProvider
@@ -728,9 +725,6 @@ public class LiferayOAuthDataProvider
 				OAuthConstants.CLIENT_CREDENTIALS_GRANT,
 				StandardCharsets.UTF_8.name()));
 
-		_oAuth2AuthorizationServerConfiguration =
-			ConfigurableUtil.createConfigurable(
-				OAuth2AuthorizationServerConfiguration.class, properties);
 		_oAuth2ProviderConfiguration = ConfigurableUtil.createConfigurable(
 			OAuth2ProviderConfiguration.class, properties);
 	}
@@ -993,13 +987,23 @@ public class LiferayOAuthDataProvider
 	private OAuthJoseJwtProducer _createJwtAccessTokenProducer() {
 		OAuthJoseJwtProducer oAuthJoseJwtProducer = new OAuthJoseJwtProducer();
 
-		oAuthJoseJwtProducer.setSignatureProvider(
-			JwsUtils.getSignatureProvider(
-				JwkUtils.readJwkKey(
-					_oAuth2AuthorizationServerConfiguration.
-						jwtAccessTokenSigningJSONWebKey())));
+		try {
+			OAuth2AuthorizationServerConfiguration
+				oAuth2AuthorizationServerConfiguration =
+					_configurationProvider.getSystemConfiguration(
+						OAuth2AuthorizationServerConfiguration.class);
 
-		return oAuthJoseJwtProducer;
+			oAuthJoseJwtProducer.setSignatureProvider(
+				JwsUtils.getSignatureProvider(
+					JwkUtils.readJwkKey(
+						oAuth2AuthorizationServerConfiguration.
+							jwtAccessTokenSigningJSONWebKey())));
+
+			return oAuthJoseJwtProducer;
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 	}
 
 	private ServerAccessToken _createOpaqueServerAccessToken(
@@ -1475,8 +1479,6 @@ public class LiferayOAuthDataProvider
 	@Reference
 	private OAuth2AuthorizationLocalService _oAuth2AuthorizationLocalService;
 
-	private OAuth2AuthorizationServerConfiguration
-		_oAuth2AuthorizationServerConfiguration;
 	private OAuth2ProviderConfiguration _oAuth2ProviderConfiguration;
 
 	@Reference

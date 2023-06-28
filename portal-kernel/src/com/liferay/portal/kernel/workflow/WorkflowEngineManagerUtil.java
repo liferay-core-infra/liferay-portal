@@ -14,8 +14,7 @@
 
 package com.liferay.portal.kernel.workflow;
 
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
-
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -25,28 +24,32 @@ import java.util.Map;
 public class WorkflowEngineManagerUtil {
 
 	public static String getKey() {
-		return _workflowEngineManager.getKey();
+		return _KEY;
 	}
 
 	public static String getName() {
-		return _workflowEngineManager.getName();
+		return _NAME;
 	}
 
 	public static Map<String, Object> getOptionalAttributes() {
-		return _workflowEngineManager.getOptionalAttributes();
+		return _optionalAttributes;
 	}
 
 	public static String getVersion() {
-		return _workflowEngineManager.getVersion();
+		return _VERSION;
 	}
 
 	public static boolean isDeployed() {
-		return _workflowEngineManager.isDeployed();
+		return true;
 	}
 
-	private static volatile WorkflowEngineManager _workflowEngineManager =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			WorkflowEngineManager.class, WorkflowEngineManagerUtil.class,
-			"_workflowEngineManager", true);
+	private static final String _KEY = "liferay";
+
+	private static final String _NAME = "Liferay Kaleo Workflow Engine";
+
+	private static final String _VERSION = "6.0.0";
+
+	private static final Map<String, Object> _optionalAttributes =
+		Collections.emptyMap();
 
 }

@@ -64,6 +64,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
@@ -119,10 +121,6 @@ public class JournalEditArticleDisplayContext {
 		_liferayPortletResponse = liferayPortletResponse;
 		_article = article;
 
-		_ffJournalAutoSaveDraftConfiguration =
-			(FFJournalAutoSaveDraftConfiguration)
-				httpServletRequest.getAttribute(
-					FFJournalAutoSaveDraftConfiguration.class.getName());
 		_itemSelector = (ItemSelector)httpServletRequest.getAttribute(
 			ItemSelector.class.getName());
 
@@ -388,8 +386,15 @@ public class JournalEditArticleDisplayContext {
 			"articleId", getArticleId()
 		).put(
 			"autoSaveDraftEnabled",
-			_ffJournalAutoSaveDraftConfiguration.
-				journalArticleAutoSaveDraftEnabled()
+			() -> {
+				FFJournalAutoSaveDraftConfiguration
+					ffJournalAutoSaveDraftConfiguration =
+						ConfigurationProviderUtil.getSystemConfiguration(
+							FFJournalAutoSaveDraftConfiguration.class);
+
+				return ffJournalAutoSaveDraftConfiguration.
+					journalArticleAutoSaveDraftEnabled();
+			}
 		).put(
 			"availableLocales", _getAvailableLanguageIds()
 		).put(
@@ -1099,8 +1104,18 @@ public class JournalEditArticleDisplayContext {
 	}
 
 	public boolean isJournalArticleAutoSaveDraftEnabled() {
-		return _ffJournalAutoSaveDraftConfiguration.
-			journalArticleAutoSaveDraftEnabled();
+		try {
+			FFJournalAutoSaveDraftConfiguration
+				ffJournalAutoSaveDraftConfiguration =
+					ConfigurationProviderUtil.getSystemConfiguration(
+						FFJournalAutoSaveDraftConfiguration.class);
+
+			return ffJournalAutoSaveDraftConfiguration.
+				journalArticleAutoSaveDraftEnabled();
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 	}
 
 	public boolean isNeverExpire() {
@@ -1531,8 +1546,6 @@ public class JournalEditArticleDisplayContext {
 	private String _defaultLanguageId;
 	private LayoutPageTemplateEntry _defaultLayoutPageTemplateEntry;
 	private Integer _displayPageType;
-	private final FFJournalAutoSaveDraftConfiguration
-		_ffJournalAutoSaveDraftConfiguration;
 	private Long _folderId;
 	private String _folderName;
 	private String _friendlyURLDuplicatedWarningMessage;

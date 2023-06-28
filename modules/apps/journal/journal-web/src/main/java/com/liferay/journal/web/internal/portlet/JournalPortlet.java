@@ -61,7 +61,6 @@ import com.liferay.journal.service.JournalFolderService;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.journal.util.JournalHelper;
-import com.liferay.journal.web.internal.configuration.FFJournalAutoSaveDraftConfiguration;
 import com.liferay.journal.web.internal.configuration.JournalWebConfiguration;
 import com.liferay.journal.web.internal.helper.JournalDDMTemplateHelper;
 import com.liferay.journal.web.internal.portlet.action.ActionUtil;
@@ -112,10 +111,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Eduardo García
  */
 @Component(
-	configurationPid = {
-		"com.liferay.journal.web.internal.configuration.FFJournalAutoSaveDraftConfiguration",
-		"com.liferay.journal.web.internal.configuration.JournalWebConfiguration"
-	},
+	configurationPid = "com.liferay.journal.web.internal.configuration.JournalWebConfiguration",
 	property = {
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-journal",
@@ -173,9 +169,6 @@ public class JournalPortlet extends MVCPortlet {
 			DDMFormValuesToMapConverter.class.getName(),
 			_ddmFormValuesToMapConverter);
 		renderRequest.setAttribute(
-			FFJournalAutoSaveDraftConfiguration.class.getName(),
-			_ffJournalAutoSaveDraftConfiguration);
-		renderRequest.setAttribute(
 			FieldsToDDMFormValuesConverter.class.getName(),
 			_fieldsToDDMFormValuesConverter);
 		renderRequest.setAttribute(ItemSelector.class.getName(), _itemSelector);
@@ -206,9 +199,6 @@ public class JournalPortlet extends MVCPortlet {
 		resourceRequest.setAttribute(
 			DDMTemplateHelper.class.getName(), _ddmTemplateHelper);
 		resourceRequest.setAttribute(
-			FFJournalAutoSaveDraftConfiguration.class.getName(),
-			_ffJournalAutoSaveDraftConfiguration);
-		resourceRequest.setAttribute(
 			ItemSelector.class.getName(), _itemSelector);
 		resourceRequest.setAttribute(
 			JournalHelper.class.getName(), _journalHelper);
@@ -226,9 +216,6 @@ public class JournalPortlet extends MVCPortlet {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_ffJournalAutoSaveDraftConfiguration =
-			ConfigurableUtil.createConfigurable(
-				FFJournalAutoSaveDraftConfiguration.class, properties);
 		_journalWebConfiguration = ConfigurableUtil.createConfigurable(
 			JournalWebConfiguration.class, properties);
 	}
@@ -365,9 +352,6 @@ public class JournalPortlet extends MVCPortlet {
 
 	@Reference
 	private DDMTemplateHelper _ddmTemplateHelper;
-
-	private volatile FFJournalAutoSaveDraftConfiguration
-		_ffJournalAutoSaveDraftConfiguration;
 
 	@Reference
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;

@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -101,10 +102,6 @@ public class JournalArticleActionDropdownItemsProvider {
 			assetDisplayPageFriendlyURLProvider;
 		_trashHelper = trashHelper;
 
-		_ffJournalAutoSaveDraftConfiguration =
-			(FFJournalAutoSaveDraftConfiguration)
-				liferayPortletRequest.getAttribute(
-					FFJournalAutoSaveDraftConfiguration.class.getName());
 		_journalWebConfiguration =
 			(JournalWebConfiguration)liferayPortletRequest.getAttribute(
 				JournalWebConfiguration.class.getName());
@@ -147,11 +144,19 @@ public class JournalArticleActionDropdownItemsProvider {
 						() -> hasUpdatePermission,
 						_getEditArticleActionUnsafeConsumer()
 					).add(
-						() ->
-							_ffJournalAutoSaveDraftConfiguration.
+						() -> {
+							FFJournalAutoSaveDraftConfiguration
+								ffJournalAutoSaveDraftConfiguration =
+									ConfigurationProviderUtil.
+										getSystemConfiguration(
+											FFJournalAutoSaveDraftConfiguration.
+												class);
+
+							return ffJournalAutoSaveDraftConfiguration.
 								journalArticleAutoSaveDraftEnabled() &&
-							hasUpdatePermission && _article.isDraft() &&
-							_article.hasApprovedVersion(),
+								   hasUpdatePermission && _article.isDraft() &&
+								   _article.hasApprovedVersion();
+						},
 						_getDiscardDraftActionUnsafeConsumer()
 					).add(
 						() ->
@@ -1081,8 +1086,6 @@ public class JournalArticleActionDropdownItemsProvider {
 	private final JournalArticle _article;
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
-	private final FFJournalAutoSaveDraftConfiguration
-		_ffJournalAutoSaveDraftConfiguration;
 	private final HttpServletRequest _httpServletRequest;
 	private final ItemSelector _itemSelector;
 	private final JournalWebConfiguration _journalWebConfiguration;

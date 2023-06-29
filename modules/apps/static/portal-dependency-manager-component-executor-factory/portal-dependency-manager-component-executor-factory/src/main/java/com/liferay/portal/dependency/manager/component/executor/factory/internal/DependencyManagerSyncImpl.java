@@ -23,12 +23,17 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.ComponentContext;
 
 /**
  * @author Shuyang Zhou
@@ -37,10 +42,12 @@ public class DependencyManagerSyncImpl implements DependencyManagerSync {
 
 	public DependencyManagerSyncImpl(
 		BlockingQueue<Future<Void>> blockingQueue,
+		ComponentContext componentContext,
 		ServiceRegistration<?> componentExecutorFactoryServiceRegistration,
 		long syncTimeout) {
 
 		_blockingQueue = blockingQueue;
+		_componentContext = componentContext;
 		_componentExecutorFactoryServiceRegistration =
 			componentExecutorFactoryServiceRegistration;
 		_syncTimeout = syncTimeout;
@@ -87,6 +94,8 @@ public class DependencyManagerSyncImpl implements DependencyManagerSync {
 
 	@Override
 	public void sync() {
+		_registerDependencyManagerSyncGatekeeperCallable();
+
 		if (_syncDefaultNoticeableFuture.isDone()) {
 			return;
 		}
@@ -135,10 +144,48 @@ public class DependencyManagerSyncImpl implements DependencyManagerSync {
 			});
 	}
 
+	private void _registerDependencyManagerSyncGatekeeperCallable() {
+		registerSyncCallable(
+			() -> {
+				String componentName =
+					DependencyManagerSyncGatekeeper.class.getName();
+
+				CountDownLatch countDownLatch = new CountDownLatch(1);
+
+				BundleContext bundleContext =
+					_componentContext.getBundleContext();
+
+				ServiceListener serviceListener = serviceEvent -> {
+					if (serviceEvent.getType() != ServiceEvent.REGISTERED) {
+						return;
+					}
+
+					bundleContext.getService(
+						serviceEvent.getServiceReference());
+
+					countDownLatch.countDown();
+				};
+
+				bundleContext.addServiceListener(
+					serviceListener, "(&(objectClass=" + componentName + "))");
+
+				_componentContext.enableComponent(componentName);
+
+				countDownLatch.await();
+
+				_componentContext.disableComponent(componentName);
+
+				bundleContext.removeServiceListener(serviceListener);
+
+				return null;
+			});
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DependencyManagerSyncImpl.class);
 
 	private final BlockingQueue<Future<Void>> _blockingQueue;
+	private final ComponentContext _componentContext;
 	private final ServiceRegistration<?>
 		_componentExecutorFactoryServiceRegistration;
 	private final DefaultNoticeableFuture<Void> _syncDefaultNoticeableFuture =

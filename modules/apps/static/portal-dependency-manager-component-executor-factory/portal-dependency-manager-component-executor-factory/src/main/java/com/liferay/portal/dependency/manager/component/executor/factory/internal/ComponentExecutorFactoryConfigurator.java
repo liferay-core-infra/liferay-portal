@@ -80,7 +80,8 @@ public class ComponentExecutorFactoryConfigurator {
 			bundleContext.registerService(
 				DependencyManagerSync.class,
 				new DependencyManagerSyncImpl(
-					blockingQueue, _serviceRegistration, syncTimeout),
+					blockingQueue, componentContext, _serviceRegistration,
+					syncTimeout),
 				null);
 	}
 

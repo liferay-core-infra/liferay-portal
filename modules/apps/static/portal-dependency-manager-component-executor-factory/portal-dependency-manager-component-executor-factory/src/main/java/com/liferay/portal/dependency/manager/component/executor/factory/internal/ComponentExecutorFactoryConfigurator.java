@@ -12,17 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.dependency.manager.component.executor.factory.internal.activator;
+package com.liferay.portal.dependency.manager.component.executor.factory.internal;
 
-import com.liferay.portal.dependency.manager.component.executor.factory.internal.ComponentExecutorFactoryImpl;
-import com.liferay.portal.dependency.manager.component.executor.factory.internal.DependencyManagerSyncImpl;
 import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSync;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.concurrent.BlockingQueue;
@@ -33,22 +31,28 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.felix.dm.ComponentExecutorFactory;
 
-import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
  */
-public class ComponentExecutorFactoryBundleActivator
-	implements BundleActivator {
+@Component(service = {})
+public class ComponentExecutorFactoryConfigurator {
 
-	@Override
-	public void start(BundleContext bundleContext) {
+	@Activate
+	protected void activate(ComponentContext componentContext) {
+		BundleContext bundleContext = componentContext.getBundleContext();
+
 		BlockingQueue<Future<Void>> blockingQueue = new LinkedBlockingQueue<>();
 
 		if (GetterUtil.getBoolean(
-				PropsUtil.get(PropsKeys.DEPENDENCY_MANAGER_THREAD_POOL_ENABLED),
+				_props.get(PropsKeys.DEPENDENCY_MANAGER_THREAD_POOL_ENABLED),
 				true) &&
 			!PropsValues.UPGRADE_DATABASE_AUTO_RUN) {
 
@@ -70,7 +74,7 @@ public class ComponentExecutorFactoryBundleActivator
 		}
 
 		long syncTimeout = GetterUtil.getInteger(
-			PropsUtil.get(PropsKeys.DEPENDENCY_MANAGER_SYNC_TIMEOUT), 60);
+			_props.get(PropsKeys.DEPENDENCY_MANAGER_SYNC_TIMEOUT), 60);
 
 		_dependencyManagerSyncServiceRegistration =
 			bundleContext.registerService(
@@ -80,8 +84,8 @@ public class ComponentExecutorFactoryBundleActivator
 				null);
 	}
 
-	@Override
-	public void stop(BundleContext bundleContext) {
+	@Deactivate
+	protected void deactivate() {
 		_dependencyManagerSyncServiceRegistration.unregister();
 
 		if (_serviceRegistration != null) {
@@ -100,10 +104,14 @@ public class ComponentExecutorFactoryBundleActivator
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ComponentExecutorFactoryBundleActivator.class);
+		ComponentExecutorFactoryConfigurator.class);
 
 	private ServiceRegistration<DependencyManagerSync>
 		_dependencyManagerSyncServiceRegistration;
+
+	@Reference
+	private Props _props;
+
 	private ServiceRegistration<ComponentExecutorFactory> _serviceRegistration;
 
 }

@@ -6,7 +6,7 @@
 package com.liferay.document.library.internal.util;
 
 import com.liferay.document.library.configuration.DLConfiguration;
-import com.liferay.document.library.internal.configuration.admin.service.DLSizeLimitManagedServiceFactory;
+import com.liferay.document.library.internal.configuration.admin.service.DLSizeLimitConfigurationHelper;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -38,11 +38,11 @@ public class DLValidatorImplTest {
 
 		dlValidatorImpl.setDLConfiguration(_dlConfiguration);
 
-		_dlSizeLimitManagedServiceFactory = Mockito.mock(
-			DLSizeLimitManagedServiceFactory.class);
+		_dlSizeLimitConfigurationHelper = Mockito.mock(
+			DLSizeLimitConfigurationHelper.class);
 
 		dlValidatorImpl.setDLSizeLimitManagedServiceFactory(
-			_dlSizeLimitManagedServiceFactory);
+			_dlSizeLimitConfigurationHelper);
 
 		_groupLocalService = Mockito.mock(GroupLocalService.class);
 
@@ -62,14 +62,14 @@ public class DLValidatorImplTest {
 		throws Exception {
 
 		Mockito.when(
-			_dlSizeLimitManagedServiceFactory.getCompanyMimeTypeSizeLimit(
+			_dlSizeLimitConfigurationHelper.getCompanyMimeTypeSizeLimit(
 				Mockito.anyLong(), Mockito.anyString())
 		).thenReturn(
 			10L
 		);
 
 		Mockito.when(
-			_dlSizeLimitManagedServiceFactory.getGroupMimeTypeSizeLimit(
+			_dlSizeLimitConfigurationHelper.getGroupMimeTypeSizeLimit(
 				Mockito.anyLong(), Mockito.anyString())
 		).thenReturn(
 			15L
@@ -91,14 +91,14 @@ public class DLValidatorImplTest {
 		throws Exception {
 
 		Mockito.when(
-			_dlSizeLimitManagedServiceFactory.getCompanyFileMaxSize(
+			_dlSizeLimitConfigurationHelper.getCompanyFileMaxSize(
 				Mockito.anyLong())
 		).thenReturn(
 			10L
 		);
 
 		Mockito.when(
-			_dlSizeLimitManagedServiceFactory.getCompanyMimeTypeSizeLimit(
+			_dlSizeLimitConfigurationHelper.getCompanyMimeTypeSizeLimit(
 				Mockito.anyLong(), Mockito.anyString())
 		).thenReturn(
 			15L
@@ -119,14 +119,14 @@ public class DLValidatorImplTest {
 		);
 
 		Mockito.when(
-			_dlSizeLimitManagedServiceFactory.getCompanyFileMaxSize(
+			_dlSizeLimitConfigurationHelper.getCompanyFileMaxSize(
 				Mockito.anyLong())
 		).thenReturn(
 			10L
 		);
 
 		Mockito.when(
-			_dlSizeLimitManagedServiceFactory.getCompanyMimeTypeSizeLimit(
+			_dlSizeLimitConfigurationHelper.getCompanyMimeTypeSizeLimit(
 				Mockito.anyLong(), Mockito.anyString())
 		).thenReturn(
 			5L
@@ -149,7 +149,7 @@ public class DLValidatorImplTest {
 		);
 
 		Mockito.when(
-			_dlSizeLimitManagedServiceFactory.getCompanyFileMaxSize(
+			_dlSizeLimitConfigurationHelper.getCompanyFileMaxSize(
 				Mockito.anyLong())
 		).thenReturn(
 			15L
@@ -195,7 +195,7 @@ public class DLValidatorImplTest {
 	}
 
 	private DLConfiguration _dlConfiguration;
-	private DLSizeLimitManagedServiceFactory _dlSizeLimitManagedServiceFactory;
+	private DLSizeLimitConfigurationHelper _dlSizeLimitConfigurationHelper;
 	private DLValidator _dlValidator;
 	private GroupLocalService _groupLocalService;
 	private UploadServletRequestConfigurationProvider

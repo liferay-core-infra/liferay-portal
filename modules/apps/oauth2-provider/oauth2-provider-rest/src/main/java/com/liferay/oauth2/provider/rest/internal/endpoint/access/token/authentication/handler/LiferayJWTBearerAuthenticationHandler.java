@@ -5,7 +5,7 @@
 
 package com.liferay.oauth2.provider.rest.internal.endpoint.access.token.authentication.handler;
 
-import com.liferay.oauth2.provider.rest.internal.configuration.admin.service.OAuth2InAssertionManagedServiceFactory;
+import com.liferay.oauth2.provider.rest.internal.endpoint.access.token.grant.handler.LiferayJWTBearerGrantHandler;
 import com.liferay.oauth2.provider.rest.internal.endpoint.constants.OAuth2ProviderRESTEndpointConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -103,12 +103,10 @@ public class LiferayJWTBearerAuthenticationHandler
 		_clientRegistrationProvider = clientRegistrationProvider;
 	}
 
-	public void setOAuth2InAssertionManagedServiceFactory(
-		OAuth2InAssertionManagedServiceFactory
-			oAuth2InAssertionManagedServiceFactory) {
+	public void setLiferayJWTBearerGrantHandler(
+		LiferayJWTBearerGrantHandler liferayJWTBearerGrantHandler) {
 
-		_oAuth2InAssertionManagedServiceFactory =
-			oAuth2InAssertionManagedServiceFactory;
+		_liferayJWTBearerGrantHandler = liferayJWTBearerGrantHandler;
 	}
 
 	@Override
@@ -175,7 +173,6 @@ public class LiferayJWTBearerAuthenticationHandler
 		LiferayJWTBearerAuthenticationHandler.class);
 
 	private ClientRegistrationProvider _clientRegistrationProvider;
-	private OAuth2InAssertionManagedServiceFactory
-		_oAuth2InAssertionManagedServiceFactory;
+	private LiferayJWTBearerGrantHandler _liferayJWTBearerGrantHandler;
 
 }

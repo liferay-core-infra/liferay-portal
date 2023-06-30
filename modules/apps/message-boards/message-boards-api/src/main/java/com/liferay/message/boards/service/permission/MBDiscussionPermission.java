@@ -61,18 +61,6 @@ public class MBDiscussionPermission implements BaseModelPermissionChecker {
 		}
 	}
 
-	public static void check(
-			PermissionChecker permissionChecker, long messageId,
-			String actionId)
-		throws PortalException {
-
-		if (!contains(permissionChecker, messageId, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, MBMessage.class.getName(), messageId,
-				actionId);
-		}
-	}
-
 	public static boolean contains(
 		PermissionChecker permissionChecker, long companyId, long groupId,
 		String className, long classPK, String actionId) {

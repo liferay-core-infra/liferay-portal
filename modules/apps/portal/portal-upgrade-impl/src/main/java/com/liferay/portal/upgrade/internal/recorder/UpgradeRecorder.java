@@ -30,11 +30,10 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.ThreadContext;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Luis Ortiz
@@ -114,6 +113,7 @@ public class UpgradeRecorder {
 	}
 
 	public void start() {
+		_serviceTracker.open();
 		_errorMessages.clear();
 		_result = "running";
 		_schemaVersionsMap.clear();
@@ -161,6 +161,8 @@ public class UpgradeRecorder {
 		if (PropsValues.UPGRADE_LOG_CONTEXT_ENABLED) {
 			ThreadContext.clearMap();
 		}
+
+		_serviceTracker.close();
 	}
 
 	private String _calculateResult() {
@@ -169,7 +171,9 @@ public class UpgradeRecorder {
 		}
 
 		try {
-			if (!_releaseManager.isUpgraded()) {
+			ReleaseManager releaseManager = _serviceTracker.getService();
+
+			if (!releaseManager.isUpgraded()) {
 				return "unresolved";
 			}
 		}
@@ -298,6 +302,8 @@ public class UpgradeRecorder {
 	private static String _result;
 	private static final Map<String, SchemaVersions> _schemaVersionsMap =
 		new ConcurrentHashMap<>();
+	private static final ServiceTracker<ReleaseManager, ReleaseManager>
+		_serviceTracker;
 	private static String _type;
 	private static final Map<String, ArrayList<String>>
 		_upgradeProcessMessages = new ConcurrentHashMap<>();
@@ -305,6 +311,11 @@ public class UpgradeRecorder {
 		new ConcurrentHashMap<>();
 
 	static {
+		Bundle bundle = FrameworkUtil.getBundle(UpgradeRecorder.class);
+
+		_serviceTracker = new ServiceTracker<>(
+			bundle.getBundleContext(), ReleaseManager.class, null);
+
 		if (DBUpgrader.isUpgradeDatabaseAutoRunEnabled() ||
 			DBUpgrader.isUpgradeClient()) {
 
@@ -316,13 +327,6 @@ public class UpgradeRecorder {
 			_type = "not enabled";
 		}
 	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile ReleaseManager _releaseManager;
 
 	private class SchemaVersions {
 

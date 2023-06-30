@@ -66,6 +66,16 @@ public class SolrClientManager {
 			clientType);
 
 		if (solrClientFactory == null) {
+			if (clientType.equals("CLOUD")) {
+				solrClientFactory = _cloudSolrClientFactory;
+			}
+
+			if (clientType.equals("REPLICATED")) {
+				solrClientFactory = _replicatedSolrClientFactory;
+			}
+		}
+
+		if (solrClientFactory == null) {
 			throw new IllegalStateException(
 				"Solr client factory not initialized: " + clientType);
 		}
@@ -74,6 +84,16 @@ public class SolrClientManager {
 
 		HttpClientFactory httpClientFactory = _httpClientFactories.get(
 			authMode);
+
+		if (httpClientFactory == null) {
+			if (authMode.equals("BASIC")) {
+				httpClientFactory = _basicAuthPoolingHttpClientFactory;
+			}
+
+			if (authMode.equals("CERT")) {
+				httpClientFactory = _certAuthPoolingHttpClientFactory;
+			}
+		}
 
 		if (httpClientFactory == null) {
 			throw new IllegalStateException(
@@ -87,27 +107,6 @@ public class SolrClientManager {
 	@Deactivate
 	protected synchronized void deactivate(Map<String, Object> properties) {
 		_close();
-	}
-
-	@Reference(target = "(type=BASIC)")
-	protected void setBasicHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		setHttpClientFactory(httpClientFactory, properties);
-	}
-
-	@Reference(target = "(type=CERT)")
-	protected void setCertHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		setHttpClientFactory(httpClientFactory, properties);
-	}
-
-	@Reference(target = "(type=CLOUD)")
-	protected void setCloudSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		setSolrClientFactory(solrClientFactory, properties);
 	}
 
 	@Reference(
@@ -127,13 +126,6 @@ public class SolrClientManager {
 		_httpClientFactories.put(type, httpClientFactory);
 	}
 
-	@Reference(target = "(type=REPLICATED)")
-	protected void setReplicatedSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		setSolrClientFactory(solrClientFactory, properties);
-	}
-
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		target = "(&(!(type=CLOUD))(!(type=REPLICATED)))"
@@ -146,24 +138,6 @@ public class SolrClientManager {
 		_solrClientFactories.put(type, solrClientFactory);
 	}
 
-	protected void unsetBasicHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		unsetHttpClientFactory(httpClientFactory, properties);
-	}
-
-	protected void unsetCertHttpClientFactory(
-		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
-
-		unsetHttpClientFactory(httpClientFactory, properties);
-	}
-
-	protected void unsetCloudSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		unsetSolrClientFactory(solrClientFactory, properties);
-	}
-
 	protected void unsetHttpClientFactory(
 		HttpClientFactory httpClientFactory, Map<String, Object> properties) {
 
@@ -174,12 +148,6 @@ public class SolrClientManager {
 		}
 
 		_httpClientFactories.remove(type);
-	}
-
-	protected void unsetReplicatedSolrClientFactory(
-		SolrClientFactory solrClientFactory, Map<String, Object> properties) {
-
-		unsetSolrClientFactory(solrClientFactory, properties);
 	}
 
 	protected void unsetSolrClientFactory(
@@ -206,8 +174,21 @@ public class SolrClientManager {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SolrClientManager.class);
 
+	@Reference(target = "(type=BASIC)")
+	private HttpClientFactory _basicAuthPoolingHttpClientFactory;
+
+	@Reference(target = "(type=CERT)")
+	private HttpClientFactory _certAuthPoolingHttpClientFactory;
+
+	@Reference(target = "(type=CLOUD)")
+	private SolrClientFactory _cloudSolrClientFactory;
+
 	private final Map<String, HttpClientFactory> _httpClientFactories =
 		new HashMap<>();
+
+	@Reference(target = "(type=REPLICATED)")
+	private SolrClientFactory _replicatedSolrClientFactory;
+
 	private volatile SolrClient _solrClient;
 	private final Map<String, SolrClientFactory> _solrClientFactories =
 		new ConcurrentHashMap<>();

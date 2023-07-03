@@ -25,7 +25,6 @@ import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.service.MBDiscussionLocalServiceUtil;
 import com.liferay.message.boards.service.MBMessageLocalServiceUtil;
 import com.liferay.message.boards.test.util.MBTestUtil;
-import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -94,15 +93,12 @@ public class CommentsSubscriptionTest {
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(blogsEntry.getEntryId()), ActionKeys.VIEW);
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(
-				PermissionCheckerFactoryUtil.create(
-					UserLocalServiceUtil.getGuestUser(_group.getCompanyId())));
-
 		Assert.assertFalse(
-			discussionPermission.hasSubscribePermission(
+			_discussionPermission.hasSubscribePermission(
 				TestPropsValues.getCompanyId(), _group.getGroupId(),
-				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
+				BlogsEntry.class.getName(), blogsEntry.getEntryId(),
+				PermissionCheckerFactoryUtil.create(
+					UserLocalServiceUtil.getGuestUser(_group.getCompanyId()))));
 	}
 
 	@Test
@@ -115,14 +111,11 @@ public class CommentsSubscriptionTest {
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), _creatorUser.getUserId()));
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(
-				PermissionCheckerFactoryUtil.create(_user));
-
 		Assert.assertTrue(
-			discussionPermission.hasSubscribePermission(
+			_discussionPermission.hasSubscribePermission(
 				_group.getCompanyId(), _group.getGroupId(),
-				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
+				BlogsEntry.class.getName(), blogsEntry.getEntryId(),
+				PermissionCheckerFactoryUtil.create(_user)));
 	}
 
 	@Test
@@ -266,11 +259,11 @@ public class CommentsSubscriptionTest {
 			serviceContext);
 	}
 
-	@Inject
-	private CommentManager _commentManager;
-
 	@DeleteAfterTestRun
 	private User _creatorUser;
+
+	@Inject
+	private DiscussionPermission _discussionPermission;
 
 	@DeleteAfterTestRun
 	private Group _group;

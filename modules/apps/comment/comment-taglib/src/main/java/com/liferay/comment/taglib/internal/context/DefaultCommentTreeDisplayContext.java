@@ -87,7 +87,8 @@ public class DefaultCommentTreeDisplayContext
 		}
 
 		return _discussionPermission.hasPermission(
-			_discussionComment, ActionKeys.DELETE_DISCUSSION);
+			_discussionComment, ActionKeys.DELETE_DISCUSSION,
+			_discussionRequestHelper.getPermissionChecker());
 	}
 
 	@Override
@@ -140,7 +141,8 @@ public class DefaultCommentTreeDisplayContext
 			_discussionRequestHelper.getCompanyId(),
 			_discussionRequestHelper.getScopeGroupId(),
 			_discussionTaglibHelper.getClassName(),
-			_discussionTaglibHelper.getClassPK());
+			_discussionTaglibHelper.getClassPK(),
+			_discussionRequestHelper.getPermissionChecker());
 	}
 
 	@Override
@@ -166,7 +168,8 @@ public class DefaultCommentTreeDisplayContext
 			_discussionRequestHelper.getCompanyId(),
 			_discussionRequestHelper.getScopeGroupId(),
 			_discussionTaglibHelper.getClassName(),
-			_discussionTaglibHelper.getClassPK());
+			_discussionTaglibHelper.getClassPK(),
+			_discussionRequestHelper.getPermissionChecker());
 	}
 
 	private User _getUser() {
@@ -182,7 +185,8 @@ public class DefaultCommentTreeDisplayContext
 
 		if (_hasUpdatePermission == null) {
 			_hasUpdatePermission = _discussionPermission.hasPermission(
-				_discussionComment, ActionKeys.UPDATE_DISCUSSION);
+				_discussionComment, ActionKeys.UPDATE_DISCUSSION,
+				_discussionRequestHelper.getPermissionChecker());
 		}
 
 		return _hasUpdatePermission;

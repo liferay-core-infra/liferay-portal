@@ -196,10 +196,11 @@ public class MBMessageAssetRenderer
 
 		if (_mbMessage.isDiscussion()) {
 			DiscussionPermission discussionPermission =
-				_commentManager.getDiscussionPermission(permissionChecker);
+				_commentManager.getDiscussionPermission();
 
 			return discussionPermission.hasPermission(
-				_mbMessage.getMessageId(), ActionKeys.UPDATE);
+				_mbMessage.getMessageId(), ActionKeys.UPDATE,
+				permissionChecker);
 		}
 
 		return _mbMessageModelResourcePermission.contains(
@@ -212,10 +213,10 @@ public class MBMessageAssetRenderer
 
 		if (_mbMessage.isDiscussion()) {
 			DiscussionPermission discussionPermission =
-				_commentManager.getDiscussionPermission(permissionChecker);
+				_commentManager.getDiscussionPermission();
 
 			return discussionPermission.hasPermission(
-				_mbMessage.getMessageId(), ActionKeys.VIEW);
+				_mbMessage.getMessageId(), ActionKeys.VIEW, permissionChecker);
 		}
 
 		return _mbMessageModelResourcePermission.contains(

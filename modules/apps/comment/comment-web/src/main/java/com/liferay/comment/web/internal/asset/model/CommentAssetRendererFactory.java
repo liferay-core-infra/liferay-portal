@@ -118,10 +118,8 @@ public class CommentAssetRendererFactory
 			PermissionChecker permissionChecker, long classPK, String actionId)
 		throws Exception {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(permissionChecker);
-
-		return discussionPermission.hasPermission(classPK, actionId);
+		return _discussionPermission.hasPermission(
+			classPK, actionId, permissionChecker);
 	}
 
 	@Override
@@ -136,6 +134,9 @@ public class CommentAssetRendererFactory
 
 	@Reference
 	private CommentManager _commentManager;
+
+	@Reference
+	private DiscussionPermission _discussionPermission;
 
 	@Reference
 	private HtmlParser _htmlParser;

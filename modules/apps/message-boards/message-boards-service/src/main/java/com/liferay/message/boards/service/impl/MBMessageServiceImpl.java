@@ -102,12 +102,9 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 
 		User user = getGuestOrUser();
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkAddPermission(
+		_discussionPermission.checkAddPermission(
 			user.getCompanyId(), serviceContext.getScopeGroupId(), className,
-			classPK);
+			classPK, getPermissionChecker());
 
 		return mbMessageLocalService.addDiscussionMessage(
 			null, user.getUserId(), null, groupId, className, classPK, threadId,
@@ -326,10 +323,8 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 
 	@Override
 	public void deleteDiscussionMessage(long messageId) throws PortalException {
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkDeletePermission(messageId);
+		_discussionPermission.checkDeletePermission(
+			messageId, getPermissionChecker());
 
 		mbMessageLocalService.deleteDiscussionMessage(messageId);
 	}
@@ -863,10 +858,8 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 			String body, ServiceContext serviceContext)
 		throws PortalException {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkUpdatePermission(messageId);
+		_discussionPermission.checkUpdatePermission(
+			messageId, getPermissionChecker());
 
 		return mbMessageLocalService.updateDiscussionMessage(
 			getUserId(), messageId, className, classPK, subject, body,
@@ -1057,6 +1050,9 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private DiscussionPermission _discussionPermission;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

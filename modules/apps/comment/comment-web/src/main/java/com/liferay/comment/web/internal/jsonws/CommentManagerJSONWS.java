@@ -58,13 +58,10 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 			long groupId, String className, long classPK, String body)
 		throws PortalException {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
 		long companyId = _getCompanyId(groupId);
 
-		discussionPermission.checkAddPermission(
-			companyId, groupId, className, classPK);
+		_discussionPermission.checkAddPermission(
+			companyId, groupId, className, classPK, getPermissionChecker());
 
 		return _commentManager.addComment(
 			getUserId(), groupId, className, classPK, body,
@@ -72,10 +69,8 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 	}
 
 	public void deleteComment(long commentId) throws PortalException {
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkDeletePermission(commentId);
+		_discussionPermission.checkDeletePermission(
+			commentId, getPermissionChecker());
 
 		_commentManager.deleteComment(commentId);
 	}
@@ -86,13 +81,10 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 		DiscussionComment discussionComment =
 			_commentManager.fetchDiscussionComment(getUserId(), commentId);
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkViewPermission(
+		_discussionPermission.checkViewPermission(
 			_getCompanyId(discussionComment.getGroupId()),
 			discussionComment.getGroupId(), discussionComment.getClassName(),
-			discussionComment.getClassPK());
+			discussionComment.getClassPK(), getPermissionChecker());
 
 		return getComments(discussionComment, start, end);
 	}
@@ -101,11 +93,9 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 			long groupId, String className, long classPK, int start, int end)
 		throws PortalException {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkViewPermission(
-			_getCompanyId(groupId), groupId, className, classPK);
+		_discussionPermission.checkViewPermission(
+			_getCompanyId(groupId), groupId, className, classPK,
+			getPermissionChecker());
 
 		Discussion discussion = _commentManager.getDiscussion(
 			getUserId(), groupId, className, classPK,
@@ -117,11 +107,9 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 	public int getCommentsCount(long groupId, String className, long classPK)
 		throws PortalException {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkViewPermission(
-			_getCompanyId(groupId), groupId, className, classPK);
+		_discussionPermission.checkViewPermission(
+			_getCompanyId(groupId), groupId, className, classPK,
+			getPermissionChecker());
 
 		return _commentManager.getCommentsCount(className, classPK);
 	}
@@ -140,11 +128,9 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 			long groupId, String className, long classPK)
 		throws PortalException {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkSubscribePermission(
-			_getCompanyId(groupId), groupId, className, classPK);
+		_discussionPermission.checkSubscribePermission(
+			_getCompanyId(groupId), groupId, className, classPK,
+			getPermissionChecker());
 
 		_commentManager.subscribeDiscussion(
 			getUserId(), groupId, className, classPK);
@@ -154,11 +140,9 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 			long groupId, String className, long classPK)
 		throws PortalException {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkSubscribePermission(
-			_getCompanyId(groupId), groupId, className, classPK);
+		_discussionPermission.checkSubscribePermission(
+			_getCompanyId(groupId), groupId, className, classPK,
+			getPermissionChecker());
 
 		_commentManager.unsubscribeDiscussion(getUserId(), className, classPK);
 	}
@@ -168,10 +152,8 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 			String body)
 		throws PortalException {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(getPermissionChecker());
-
-		discussionPermission.checkUpdatePermission(commentId);
+		_discussionPermission.checkUpdatePermission(
+			commentId, getPermissionChecker());
 
 		return _commentManager.updateComment(
 			getUserId(), className, classPK, commentId, subject, body,
@@ -288,6 +270,9 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 
 	@Reference
 	private CommentManager _commentManager;
+
+	@Reference
+	private DiscussionPermission _discussionPermission;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

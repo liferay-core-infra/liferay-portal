@@ -17,7 +17,6 @@ package com.liferay.message.boards.comment.internal.security.permission.resource
 import com.liferay.message.boards.constants.MBConstants;
 import com.liferay.message.boards.model.MBDiscussion;
 import com.liferay.message.boards.service.MBDiscussionLocalService;
-import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -79,12 +78,10 @@ public class MBDiscussionModelResourcePermission
 			String actionId)
 		throws PortalException {
 
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(permissionChecker);
-
-		return discussionPermission.hasPermission(
+		return _discussionPermission.hasPermission(
 			actionId, mbDiscussion.getClassName(), mbDiscussion.getClassPK(),
-			mbDiscussion.getCompanyId(), mbDiscussion.getGroupId());
+			mbDiscussion.getCompanyId(), mbDiscussion.getGroupId(),
+			permissionChecker);
 	}
 
 	@Override
@@ -98,7 +95,7 @@ public class MBDiscussionModelResourcePermission
 	}
 
 	@Reference
-	private CommentManager _commentManager;
+	private DiscussionPermission _discussionPermission;
 
 	@Reference
 	private MBDiscussionLocalService _mbDiscussionLocalService;

@@ -86,35 +86,6 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 		String actionId, String className, long classPK, long companyId,
 		long groupId, PermissionChecker permissionChecker) {
 
-		return _contains(
-			permissionChecker, companyId, groupId, className, classPK,
-			actionId);
-	}
-
-	@Override
-	public boolean hasSubscribePermission(
-			long companyId, long groupId, String className, long classPK,
-			PermissionChecker permissionChecker)
-		throws PortalException {
-
-		return hasViewPermission(
-			companyId, groupId, className, classPK, permissionChecker);
-	}
-
-	@Override
-	public boolean hasViewPermission(
-		long companyId, long groupId, String className, long classPK,
-		PermissionChecker permissionChecker) {
-
-		return hasPermission(
-			ActionKeys.VIEW, className, classPK, companyId, groupId,
-			permissionChecker);
-	}
-
-	private boolean _contains(
-		PermissionChecker permissionChecker, long companyId, long groupId,
-		String className, long classPK, String actionId) {
-
 		if (_mbBanLocalService.hasBan(groupId, permissionChecker.getUserId())) {
 			return false;
 		}
@@ -136,6 +107,26 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 		return permissionChecker.hasPermission(
 			groupId, className, classPK, actionId);
+	}
+
+	@Override
+	public boolean hasSubscribePermission(
+			long companyId, long groupId, String className, long classPK,
+			PermissionChecker permissionChecker)
+		throws PortalException {
+
+		return hasViewPermission(
+			companyId, groupId, className, classPK, permissionChecker);
+	}
+
+	@Override
+	public boolean hasViewPermission(
+		long companyId, long groupId, String className, long classPK,
+		PermissionChecker permissionChecker) {
+
+		return hasPermission(
+			ActionKeys.VIEW, className, classPK, companyId, groupId,
+			permissionChecker);
 	}
 
 	private boolean _contains(
@@ -168,9 +159,9 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			}
 		}
 
-		return _contains(
-			permissionChecker, message.getCompanyId(), message.getGroupId(),
-			className, message.getClassPK(), actionId);
+		return hasPermission(
+			actionId, className, message.getClassPK(), message.getCompanyId(),
+			message.getGroupId(), permissionChecker);
 	}
 
 	@Reference

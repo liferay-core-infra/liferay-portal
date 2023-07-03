@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.comment;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 /**
  * @author Adolfo Pérez
@@ -26,18 +27,24 @@ public abstract class BaseDiscussionPermission implements DiscussionPermission {
 
 	@Override
 	public void checkAddPermission(
-			long companyId, long groupId, String className, long classPK)
+			long companyId, long groupId, String className, long classPK,
+			PermissionChecker permissionChecker)
 		throws PortalException {
 
-		if (!hasAddPermission(companyId, groupId, className, classPK)) {
+		if (!hasAddPermission(
+				companyId, groupId, className, classPK, permissionChecker)) {
+
 			throw new PrincipalException.MustHavePermission(
 				0, className, classPK, ActionKeys.ADD_DISCUSSION);
 		}
 	}
 
 	@Override
-	public void checkDeletePermission(long commentId) throws PortalException {
-		if (!hasDeletePermission(commentId)) {
+	public void checkDeletePermission(
+			long commentId, PermissionChecker permissionChecker)
+		throws PortalException {
+
+		if (!hasDeletePermission(commentId, permissionChecker)) {
 			throw new PrincipalException.MustHavePermission(
 				0, ActionKeys.DELETE_DISCUSSION);
 		}
@@ -45,17 +52,23 @@ public abstract class BaseDiscussionPermission implements DiscussionPermission {
 
 	@Override
 	public void checkSubscribePermission(
-			long companyId, long groupId, String className, long classPK)
+			long companyId, long groupId, String className, long classPK,
+			PermissionChecker permissionChecker)
 		throws PortalException {
 
-		if (!hasSubscribePermission(companyId, groupId, className, classPK)) {
+		if (!hasSubscribePermission(
+				companyId, groupId, className, classPK, permissionChecker)) {
+
 			throw new PrincipalException();
 		}
 	}
 
 	@Override
-	public void checkUpdatePermission(long commentId) throws PortalException {
-		if (!hasUpdatePermission(commentId)) {
+	public void checkUpdatePermission(
+			long commentId, PermissionChecker permissionChecker)
+		throws PortalException {
+
+		if (!hasUpdatePermission(commentId, permissionChecker)) {
 			throw new PrincipalException.MustHavePermission(
 				0, ActionKeys.UPDATE_DISCUSSION);
 		}
@@ -63,23 +76,34 @@ public abstract class BaseDiscussionPermission implements DiscussionPermission {
 
 	@Override
 	public void checkViewPermission(
-			long companyId, long groupId, String className, long classPK)
+			long companyId, long groupId, String className, long classPK,
+			PermissionChecker permissionChecker)
 		throws PortalException {
 
-		if (!hasViewPermission(companyId, groupId, className, classPK)) {
+		if (!hasViewPermission(
+				companyId, groupId, className, classPK, permissionChecker)) {
+
 			throw new PrincipalException.MustHavePermission(
 				0, className, classPK, ActionKeys.VIEW);
 		}
 	}
 
 	@Override
-	public boolean hasDeletePermission(long commentId) throws PortalException {
-		return hasPermission(commentId, ActionKeys.DELETE_DISCUSSION);
+	public boolean hasDeletePermission(
+			long commentId, PermissionChecker permissionChecker)
+		throws PortalException {
+
+		return hasPermission(
+			commentId, ActionKeys.DELETE_DISCUSSION, permissionChecker);
 	}
 
 	@Override
-	public boolean hasUpdatePermission(long commentId) throws PortalException {
-		return hasPermission(commentId, ActionKeys.UPDATE_DISCUSSION);
+	public boolean hasUpdatePermission(
+			long commentId, PermissionChecker permissionChecker)
+		throws PortalException {
+
+		return hasPermission(
+			commentId, ActionKeys.UPDATE_DISCUSSION, permissionChecker);
 	}
 
 }

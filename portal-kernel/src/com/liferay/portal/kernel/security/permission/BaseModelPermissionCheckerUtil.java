@@ -14,12 +14,9 @@
 
 package com.liferay.portal.kernel.security.permission;
 
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
@@ -61,35 +58,10 @@ public class BaseModelPermissionCheckerUtil {
 			}
 		}
 
-		BaseModelPermissionChecker baseModelPermissionChecker =
-			_baseModelPermissionCheckers.getService(className);
-
-		if (baseModelPermissionChecker == null) {
-			return null;
-		}
-
-		try {
-			baseModelPermissionChecker.checkBaseModel(
-				permissionChecker, groupId, classPK, actionId);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
-
-			return false;
-		}
-
-		return true;
+		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseModelPermissionCheckerUtil.class);
-
-	private static final ServiceTrackerMap<String, BaseModelPermissionChecker>
-		_baseModelPermissionCheckers =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				SystemBundleUtil.getBundleContext(),
-				BaseModelPermissionChecker.class, "model.class.name");
 
 }

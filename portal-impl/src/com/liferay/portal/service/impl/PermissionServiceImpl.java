@@ -16,9 +16,6 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
-import com.liferay.osgi.service.tracker.collections.EagerServiceTrackerCustomizer;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -31,10 +28,8 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.Team;
-import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -52,9 +47,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.service.base.PermissionServiceBaseImpl;
 
 import java.util.List;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service for checking permissions.
@@ -131,16 +123,6 @@ public class PermissionServiceImpl extends PermissionServiceBaseImpl {
 			ModelResourcePermissionUtil.check(
 				modelResourcePermission, permissionChecker, groupId, classPK,
 				actionId);
-
-			return true;
-		}
-
-		BaseModelPermissionChecker baseModelPermissionChecker =
-			_baseModelPermissionCheckers.getService(className);
-
-		if (baseModelPermissionChecker != null) {
-			baseModelPermissionChecker.checkBaseModel(
-				permissionChecker, groupId, classPK, actionId);
 
 			return true;
 		}
@@ -244,46 +226,6 @@ public class PermissionServiceImpl extends PermissionServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PermissionServiceImpl.class);
-
-	private static final ServiceTrackerMap<String, BaseModelPermissionChecker>
-		_baseModelPermissionCheckers =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				SystemBundleUtil.getBundleContext(),
-				BaseModelPermissionChecker.class, "model.class.name",
-				new EagerServiceTrackerCustomizer
-					<BaseModelPermissionChecker, BaseModelPermissionChecker>() {
-
-					@Override
-					public BaseModelPermissionChecker addingService(
-						ServiceReference<BaseModelPermissionChecker>
-							serviceReference) {
-
-						BundleContext bundleContext =
-							SystemBundleUtil.getBundleContext();
-
-						return bundleContext.getService(serviceReference);
-					}
-
-					@Override
-					public void modifiedService(
-						ServiceReference<BaseModelPermissionChecker>
-							serviceReference,
-						BaseModelPermissionChecker baseModelPermissionChecker) {
-					}
-
-					@Override
-					public void removedService(
-						ServiceReference<BaseModelPermissionChecker>
-							serviceReference,
-						BaseModelPermissionChecker baseModelPermissionChecker) {
-
-						BundleContext bundleContext =
-							SystemBundleUtil.getBundleContext();
-
-						bundleContext.ungetService(serviceReference);
-					}
-
-				});
 
 	@BeanReference(type = ResourcePermissionLocalService.class)
 	private ResourcePermissionLocalService _resourcePermissionLocalService;

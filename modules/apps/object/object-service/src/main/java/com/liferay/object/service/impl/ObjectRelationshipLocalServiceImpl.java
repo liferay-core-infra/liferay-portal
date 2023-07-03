@@ -14,7 +14,10 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.info.collection.provider.RelatedInfoItemCollectionProvider;
+import com.liferay.layout.model.LayoutClassedModelUsage;
+import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
@@ -51,11 +54,14 @@ import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
 import com.liferay.portal.kernel.dao.db.IndexMetadataFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -65,6 +71,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -74,6 +81,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -474,6 +482,31 @@ public class ObjectRelationshipLocalServiceImpl
 	}
 
 	@Override
+	public void deployObjectDefinition(ObjectDefinition objectDefinition) {
+		undeployObjectDefinition(objectDefinition);
+
+		for (Map.Entry
+				<ObjectDefinitionDeployer,
+				 Map<Long, List<ServiceRegistration<?>>>> entry :
+					_serviceRegistrationsMaps.entrySet()) {
+
+			ObjectDefinitionDeployer objectDefinitionDeployer = entry.getKey();
+			Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
+				entry.getValue();
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(
+						objectDefinition.getCompanyId())) {
+
+				serviceRegistrationsMap.computeIfAbsent(
+					objectDefinition.getObjectDefinitionId(),
+					objectDefinitionId -> objectDefinitionDeployer.deploy(
+						objectDefinition));
+			}
+		}
+	}
+
+	@Override
 	public ObjectRelationship fetchObjectRelationshipByObjectDefinitionId(
 		long objectDefinitionId, String name) {
 
@@ -662,6 +695,34 @@ public class ObjectRelationshipLocalServiceImpl
 	}
 
 	@Override
+	public void invalidatePortalCache(ObjectDefinition objectDefinition) {
+		PortalCache<String, String> portalCache =
+			(PortalCache<String, String>)_multiVMPool.getPortalCache(
+				FragmentEntryLink.class.getName());
+
+		List<LayoutClassedModelUsage> layoutClassedModelUsages =
+			_layoutClassedModelUsageLocalService.getLayoutClassedModelUsages(
+				objectDefinition.getCompanyId(),
+				_classNameLocalService.getClassNameId(
+					objectDefinition.getClassName()),
+				_portal.getClassNameId(FragmentEntryLink.class));
+
+		for (LayoutClassedModelUsage layoutClassedModelUsage :
+				layoutClassedModelUsages) {
+
+			Set<Locale> availableLocales = _language.getAvailableLocales(
+				layoutClassedModelUsage.getGroupId());
+
+			for (Locale locale : availableLocales) {
+				portalCache.remove(
+					StringBundler.concat(
+						layoutClassedModelUsage.getContainerKey(),
+						StringPool.DASH, locale, StringPool.DASH, 0));
+			}
+		}
+	}
+
+	@Override
 	public void registerObjectRelationshipsRelatedInfoCollectionProviders(
 		ObjectDefinition objectDefinition1,
 		ObjectDefinitionLocalService objectDefinitionLocalService) {
@@ -767,6 +828,40 @@ public class ObjectRelationshipLocalServiceImpl
 
 				return null;
 			});
+	}
+
+	@Override
+	public void undeployObjectDefinition(ObjectDefinition objectDefinition) {
+		if (objectDefinition.isUnmodifiableSystemObject()) {
+			return;
+		}
+
+		for (Map.Entry
+				<ObjectDefinitionDeployer,
+				 Map<Long, List<ServiceRegistration<?>>>> entry :
+					_serviceRegistrationsMaps.entrySet()) {
+
+			ObjectDefinitionDeployer objectDefinitionDeployer = entry.getKey();
+
+			objectDefinitionDeployer.undeploy(objectDefinition);
+
+			Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
+				entry.getValue();
+
+			List<ServiceRegistration<?>> serviceRegistrations =
+				serviceRegistrationsMap.remove(
+					objectDefinition.getObjectDefinitionId());
+
+			if (serviceRegistrations != null) {
+				for (ServiceRegistration<?> serviceRegistration :
+						serviceRegistrations) {
+
+					serviceRegistration.unregister();
+				}
+			}
+		}
+
+		invalidatePortalCache(objectDefinition);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -1314,7 +1409,20 @@ public class ObjectRelationshipLocalServiceImpl
 	private BundleContext _bundleContext;
 
 	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private Language _language;
+
+	@Reference
+	private LayoutClassedModelUsageLocalService
+		_layoutClassedModelUsageLocalService;
+
+	@Reference
+	private MultiVMPool _multiVMPool;
 
 	private ServiceTracker<ObjectDefinitionDeployer, ObjectDefinitionDeployer>
 		_objectDefinitionDeployerServiceTracker;
@@ -1343,6 +1451,9 @@ public class ObjectRelationshipLocalServiceImpl
 
 	@Reference
 	private ObjectLayoutTabPersistence _objectLayoutTabPersistence;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private RelatedInfoCollectionProviderFactory

@@ -136,8 +136,6 @@ import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -485,27 +483,7 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Override
 	public void deployObjectDefinition(ObjectDefinition objectDefinition) {
-		undeployObjectDefinition(objectDefinition);
-
-		for (Map.Entry
-				<ObjectDefinitionDeployer,
-				 Map<Long, List<ServiceRegistration<?>>>> entry :
-					_serviceRegistrationsMaps.entrySet()) {
-
-			ObjectDefinitionDeployer objectDefinitionDeployer = entry.getKey();
-			Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
-				entry.getValue();
-
-			try (SafeCloseable safeCloseable =
-					CompanyThreadLocal.setWithSafeCloseable(
-						objectDefinition.getCompanyId())) {
-
-				serviceRegistrationsMap.computeIfAbsent(
-					objectDefinition.getObjectDefinitionId(),
-					objectDefinitionId -> objectDefinitionDeployer.deploy(
-						objectDefinition));
-			}
-		}
+		_deployObjectDefinitionWithDefaultObjectDeployer(objectDefinition);
 	}
 
 	@Override
@@ -660,57 +638,37 @@ public class ObjectDefinitionLocalServiceImpl
 	public void setAopProxy(Object aopProxy) {
 		super.setAopProxy(aopProxy);
 
-		_addingObjectDefinitionDeployer(
-			new ObjectDefinitionDeployerImpl(
-				_accountEntryLocalService,
-				_accountEntryOrganizationRelLocalService,
-				_assetEntryLocalService, _bundleContext,
-				_dynamicQueryBatchIndexingActionableFactory, _groupLocalService,
-				_listTypeLocalService, _modelSearchRegistrarHelper,
-				_objectActionLocalService, this, _objectEntryLocalService,
-				_objectEntryService, _objectFieldLocalService,
-				_objectLayoutLocalService, _objectLayoutTabLocalService,
-				_objectRelationshipLocalService, _objectScopeProviderRegistry,
-				_objectViewLocalService, _organizationLocalService,
-				_persistedModelLocalServiceRegistry, _ploEntryLocalService,
-				_portal, _portletLocalService, _resourceActions,
-				_userLocalService, _resourcePermissionLocalService,
-				_workflowStatusModelPreFilterContributor,
-				_userGroupRoleLocalService));
+		_defaultObjectDefinitionDeployer = new ObjectDefinitionDeployerImpl(
+			_accountEntryLocalService, _accountEntryOrganizationRelLocalService,
+			_assetEntryLocalService, _bundleContext,
+			_dynamicQueryBatchIndexingActionableFactory, _groupLocalService,
+			_listTypeLocalService, _modelSearchRegistrarHelper,
+			_objectActionLocalService, this, _objectEntryLocalService,
+			_objectEntryService, _objectFieldLocalService,
+			_objectLayoutLocalService, _objectLayoutTabLocalService,
+			_objectRelationshipLocalService, _objectScopeProviderRegistry,
+			_objectViewLocalService, _organizationLocalService,
+			_persistedModelLocalServiceRegistry, _ploEntryLocalService, _portal,
+			_portletLocalService, _resourceActions, _userLocalService,
+			_resourcePermissionLocalService,
+			_workflowStatusModelPreFilterContributor,
+			_userGroupRoleLocalService);
+
+		for (ObjectDefinition objectDefinition : _getObjectDefinitions()) {
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(
+						objectDefinition.getCompanyId())) {
+
+				_defaultServiceRegistrationsMap.put(
+					objectDefinition.getObjectDefinitionId(),
+					_defaultObjectDefinitionDeployer.deploy(objectDefinition));
+			}
+		}
 	}
 
 	@Override
 	public void undeployObjectDefinition(ObjectDefinition objectDefinition) {
-		if (objectDefinition.isUnmodifiableSystemObject()) {
-			return;
-		}
-
-		for (Map.Entry
-				<ObjectDefinitionDeployer,
-				 Map<Long, List<ServiceRegistration<?>>>> entry :
-					_serviceRegistrationsMaps.entrySet()) {
-
-			ObjectDefinitionDeployer objectDefinitionDeployer = entry.getKey();
-
-			objectDefinitionDeployer.undeploy(objectDefinition);
-
-			Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
-				entry.getValue();
-
-			List<ServiceRegistration<?>> serviceRegistrations =
-				serviceRegistrationsMap.remove(
-					objectDefinition.getObjectDefinitionId());
-
-			if (serviceRegistrations != null) {
-				for (ServiceRegistration<?> serviceRegistration :
-						serviceRegistrations) {
-
-					serviceRegistration.unregister();
-				}
-			}
-		}
-
-		_invalidatePortalCache(objectDefinition);
+		_undeployObjectDefinitionWithDefaultObjectDeployer(objectDefinition);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -797,29 +755,6 @@ public class ObjectDefinitionLocalServiceImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
-	}
-
-	private ObjectDefinitionDeployer _addingObjectDefinitionDeployer(
-		ObjectDefinitionDeployer objectDefinitionDeployer) {
-
-		Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
-			new ConcurrentHashMap<>();
-
-		for (ObjectDefinition objectDefinition : _getObjectDefinitions()) {
-			try (SafeCloseable safeCloseable =
-					CompanyThreadLocal.setWithSafeCloseable(
-						objectDefinition.getCompanyId())) {
-
-				serviceRegistrationsMap.put(
-					objectDefinition.getObjectDefinitionId(),
-					objectDefinitionDeployer.deploy(objectDefinition));
-			}
-		}
-
-		_serviceRegistrationsMaps.put(
-			objectDefinitionDeployer, serviceRegistrationsMap);
-
-		return objectDefinitionDeployer;
 	}
 
 	private ObjectDefinition _addObjectDefinition(
@@ -1105,6 +1040,22 @@ public class ObjectDefinitionLocalServiceImpl
 		}
 	}
 
+	private void _deployObjectDefinitionWithDefaultObjectDeployer(
+		ObjectDefinition objectDefinition) {
+
+		_undeployObjectDefinitionWithDefaultObjectDeployer(objectDefinition);
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setWithSafeCloseable(
+					objectDefinition.getCompanyId())) {
+
+			_defaultServiceRegistrationsMap.computeIfAbsent(
+				objectDefinition.getObjectDefinitionId(),
+				objectDefinitionId -> _defaultObjectDefinitionDeployer.deploy(
+					objectDefinition));
+		}
+	}
+
 	private void _dropTable(String dbTableName) {
 		String sql = "drop table " + dbTableName;
 
@@ -1316,6 +1267,30 @@ public class ObjectDefinitionLocalServiceImpl
 					return null;
 				});
 		}
+	}
+
+	private void _undeployObjectDefinitionWithDefaultObjectDeployer(
+		ObjectDefinition objectDefinition) {
+
+		if (objectDefinition.isUnmodifiableSystemObject()) {
+			return;
+		}
+
+		_defaultObjectDefinitionDeployer.undeploy(objectDefinition);
+
+		List<ServiceRegistration<?>> serviceRegistrations =
+			_defaultServiceRegistrationsMap.remove(
+				objectDefinition.getObjectDefinitionId());
+
+		if (serviceRegistrations != null) {
+			for (ServiceRegistration<?> serviceRegistration :
+					serviceRegistrations) {
+
+				serviceRegistration.unregister();
+			}
+		}
+
+		_invalidatePortalCache(objectDefinition);
 	}
 
 	private ObjectDefinition _updateObjectDefinition(
@@ -1832,6 +1807,9 @@ public class ObjectDefinitionLocalServiceImpl
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
+	private ObjectDefinitionDeployer _defaultObjectDefinitionDeployer;
+	private final Map<Long, List<ServiceRegistration<?>>>
+		_defaultServiceRegistrationsMap = new ConcurrentHashMap<>();
 	private final Set<String> _defaultSystemObjectFieldNames =
 		SetUtil.fromArray(
 			new String[] {
@@ -1928,11 +1906,6 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
-
-	private final Map
-		<ObjectDefinitionDeployer, Map<Long, List<ServiceRegistration<?>>>>
-			_serviceRegistrationsMaps = Collections.synchronizedMap(
-				new LinkedHashMap<>());
 
 	@Reference
 	private UserGroupRoleLocalService _userGroupRoleLocalService;

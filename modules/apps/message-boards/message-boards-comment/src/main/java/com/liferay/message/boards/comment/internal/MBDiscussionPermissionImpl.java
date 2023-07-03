@@ -15,15 +15,25 @@
 package com.liferay.message.boards.comment.internal;
 
 import com.liferay.message.boards.model.MBMessage;
-import com.liferay.message.boards.service.permission.MBDiscussionPermission;
+import com.liferay.message.boards.service.MBBanLocalService;
+import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.portal.kernel.comment.BaseDiscussionPermission;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.workflow.WorkflowInstance;
+import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
+import com.liferay.portal.util.PropsValues;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Adolfo Pérez
@@ -53,8 +63,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 			MBMessage mbMessage = mbCommentImpl.getMessage();
 
-			return MBDiscussionPermission.contains(
-				permissionChecker, mbMessage, actionId);
+			return _contains(permissionChecker, mbMessage, actionId);
 		}
 
 		return hasPermission(
@@ -67,8 +76,9 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			PermissionChecker permissionChecker)
 		throws PortalException {
 
-		return MBDiscussionPermission.contains(
-			permissionChecker, commentId, actionId);
+		return _contains(
+			permissionChecker, _mbMessageLocalService.getMessage(commentId),
+			actionId);
 	}
 
 	@Override
@@ -76,7 +86,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 		String actionId, String className, long classPK, long companyId,
 		long groupId, PermissionChecker permissionChecker) {
 
-		return MBDiscussionPermission.contains(
+		return _contains(
 			permissionChecker, companyId, groupId, className, classPK,
 			actionId);
 	}
@@ -100,5 +110,76 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			ActionKeys.VIEW, className, classPK, companyId, groupId,
 			permissionChecker);
 	}
+
+	private boolean _contains(
+		PermissionChecker permissionChecker, long companyId, long groupId,
+		String className, long classPK, String actionId) {
+
+		if (_mbBanLocalService.hasBan(groupId, permissionChecker.getUserId())) {
+			return false;
+		}
+
+		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
+			className);
+
+		if (!resourceActions.contains(actionId)) {
+			return true;
+		}
+
+		Boolean hasPermission =
+			BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+				permissionChecker, groupId, className, classPK, actionId);
+
+		if (hasPermission != null) {
+			return hasPermission.booleanValue();
+		}
+
+		return permissionChecker.hasPermission(
+			groupId, className, classPK, actionId);
+	}
+
+	private boolean _contains(
+			PermissionChecker permissionChecker, MBMessage message,
+			String actionId)
+		throws PortalException {
+
+		String className = message.getClassName();
+
+		if (className.equals(WorkflowInstance.class.getName())) {
+			return permissionChecker.hasPermission(
+				message.getGroupId(), PortletKeys.WORKFLOW_DEFINITION,
+				message.getGroupId(), ActionKeys.VIEW);
+		}
+
+		if (PropsValues.DISCUSSION_COMMENTS_ALWAYS_EDITABLE_BY_OWNER &&
+			(permissionChecker.getUserId() == message.getUserId())) {
+
+			return true;
+		}
+
+		if (message.isPending()) {
+			Boolean hasPermission = _workflowPermission.hasPermission(
+				permissionChecker, message.getGroupId(),
+				message.getWorkflowClassName(), message.getMessageId(),
+				actionId);
+
+			if (hasPermission != null) {
+				return hasPermission.booleanValue();
+			}
+		}
+
+		return _contains(
+			permissionChecker, message.getCompanyId(), message.getGroupId(),
+			className, message.getClassPK(), actionId);
+	}
+
+	@Reference
+	private MBBanLocalService _mbBanLocalService;
+
+	@Reference
+	private MBMessageLocalService _mbMessageLocalService;
+
+	@Reference
+	private WorkflowPermission _workflowPermission;
 
 }

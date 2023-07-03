@@ -40,6 +40,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Mariano Álvaro Sáiz
  */
 @Component(
+	enabled = true,
 	property = "model.class.name=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration",
 	service = ConfigurationModelListener.class
 )

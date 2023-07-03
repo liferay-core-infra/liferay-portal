@@ -106,9 +106,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -1072,11 +1069,9 @@ public class ObjectRelationshipLocalServiceImpl
 		objectRelationship.setType(type);
 
 		ObjectDefinition objectDefinition1 =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectDefinitionId1);
+			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId1);
 		ObjectDefinition objectDefinition2 =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectDefinitionId2);
+			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId2);
 
 		if (Objects.equals(type, ObjectRelationshipConstants.TYPE_ONE_TO_ONE) ||
 			Objects.equals(
@@ -1423,13 +1418,6 @@ public class ObjectRelationshipLocalServiceImpl
 
 	private ServiceTracker<ObjectDefinitionDeployer, ObjectDefinitionDeployer>
 		_objectDefinitionDeployerServiceTracker;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;

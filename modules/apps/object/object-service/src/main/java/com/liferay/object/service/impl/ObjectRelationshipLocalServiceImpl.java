@@ -1033,10 +1033,7 @@ public class ObjectRelationshipLocalServiceImpl
 
 		runSQL(indexMetadata.getCreateSQL(null));
 
-		if (_objectDefinitionLocalService != null) {
-			_objectDefinitionLocalService.deployObjectDefinition(
-				objectDefinition2);
-		}
+		deployObjectDefinition(objectDefinition2);
 
 		return objectField;
 	}

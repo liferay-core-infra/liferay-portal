@@ -484,6 +484,8 @@ public class ObjectDefinitionLocalServiceImpl
 	@Override
 	public void deployObjectDefinition(ObjectDefinition objectDefinition) {
 		_deployObjectDefinitionWithDefaultObjectDeployer(objectDefinition);
+		_objectRelationshipLocalService.deployObjectDefinition(
+			objectDefinition);
 	}
 
 	@Override
@@ -669,6 +671,8 @@ public class ObjectDefinitionLocalServiceImpl
 	@Override
 	public void undeployObjectDefinition(ObjectDefinition objectDefinition) {
 		_undeployObjectDefinitionWithDefaultObjectDeployer(objectDefinition);
+		_objectRelationshipLocalService.undeployObjectDefinition(
+			objectDefinition);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -1289,8 +1293,6 @@ public class ObjectDefinitionLocalServiceImpl
 				serviceRegistration.unregister();
 			}
 		}
-
-		_invalidatePortalCache(objectDefinition);
 	}
 
 	private ObjectDefinition _updateObjectDefinition(

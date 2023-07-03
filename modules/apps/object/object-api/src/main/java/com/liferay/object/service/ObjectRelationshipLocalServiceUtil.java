@@ -188,6 +188,12 @@ public class ObjectRelationshipLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
+	public static void deployObjectDefinition(
+		com.liferay.object.model.ObjectDefinition objectDefinition) {
+
+		getService().deployObjectDefinition(objectDefinition);
+	}
+
 	public static <T> T dslQuery(DSLQuery dslQuery) {
 		return getService().dslQuery(dslQuery);
 	}
@@ -479,6 +485,12 @@ public class ObjectRelationshipLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static void invalidatePortalCache(
+		com.liferay.object.model.ObjectDefinition objectDefinition) {
+
+		getService().invalidatePortalCache(objectDefinition);
+	}
+
 	public static void
 		registerObjectRelationshipsRelatedInfoCollectionProviders(
 			com.liferay.object.model.ObjectDefinition objectDefinition1,
@@ -486,6 +498,12 @@ public class ObjectRelationshipLocalServiceUtil {
 
 		getService().registerObjectRelationshipsRelatedInfoCollectionProviders(
 			objectDefinition1, objectDefinitionLocalService);
+	}
+
+	public static void undeployObjectDefinition(
+		com.liferay.object.model.ObjectDefinition objectDefinition) {
+
+		getService().undeployObjectDefinition(objectDefinition);
 	}
 
 	public static ObjectRelationship updateObjectRelationship(

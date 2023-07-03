@@ -171,6 +171,8 @@ public interface ObjectRelationshipLocalService
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
+	public void deployObjectDefinition(ObjectDefinition objectDefinition);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> T dslQuery(DSLQuery dslQuery);
 
@@ -383,9 +385,13 @@ public interface ObjectRelationshipLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	public void invalidatePortalCache(ObjectDefinition objectDefinition);
+
 	public void registerObjectRelationshipsRelatedInfoCollectionProviders(
 		ObjectDefinition objectDefinition1,
 		ObjectDefinitionLocalService objectDefinitionLocalService);
+
+	public void undeployObjectDefinition(ObjectDefinition objectDefinition);
 
 	@Indexable(type = IndexableType.REINDEX)
 	public ObjectRelationship updateObjectRelationship(

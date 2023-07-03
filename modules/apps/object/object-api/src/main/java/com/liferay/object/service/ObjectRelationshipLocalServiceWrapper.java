@@ -208,6 +208,14 @@ public class ObjectRelationshipLocalServiceWrapper
 	}
 
 	@Override
+	public void deployObjectDefinition(
+		com.liferay.object.model.ObjectDefinition objectDefinition) {
+
+		_objectRelationshipLocalService.deployObjectDefinition(
+			objectDefinition);
+	}
+
+	@Override
 	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
 		return _objectRelationshipLocalService.dslQuery(dslQuery);
 	}
@@ -557,6 +565,13 @@ public class ObjectRelationshipLocalServiceWrapper
 	}
 
 	@Override
+	public void invalidatePortalCache(
+		com.liferay.object.model.ObjectDefinition objectDefinition) {
+
+		_objectRelationshipLocalService.invalidatePortalCache(objectDefinition);
+	}
+
+	@Override
 	public void registerObjectRelationshipsRelatedInfoCollectionProviders(
 		com.liferay.object.model.ObjectDefinition objectDefinition1,
 		ObjectDefinitionLocalService objectDefinitionLocalService) {
@@ -564,6 +579,14 @@ public class ObjectRelationshipLocalServiceWrapper
 		_objectRelationshipLocalService.
 			registerObjectRelationshipsRelatedInfoCollectionProviders(
 				objectDefinition1, objectDefinitionLocalService);
+	}
+
+	@Override
+	public void undeployObjectDefinition(
+		com.liferay.object.model.ObjectDefinition objectDefinition) {
+
+		_objectRelationshipLocalService.undeployObjectDefinition(
+			objectDefinition);
 	}
 
 	@Override

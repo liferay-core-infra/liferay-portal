@@ -18,6 +18,7 @@ import com.liferay.info.collection.provider.RelatedInfoItemCollectionProvider;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
+import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.exception.DuplicateObjectRelationshipException;
 import com.liferay.object.exception.NoSuchObjectRelationshipException;
 import com.liferay.object.exception.ObjectRelationshipNameException;
@@ -43,6 +44,7 @@ import com.liferay.object.service.persistence.ObjectLayoutTabPersistence;
 import com.liferay.object.system.JaxRsApplicationDescriptor;
 import com.liferay.object.system.SystemObjectDefinitionManager;
 import com.liferay.object.system.SystemObjectDefinitionManagerRegistry;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.expression.Predicate;
@@ -52,6 +54,7 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
 import com.liferay.portal.kernel.dao.db.IndexMetadataFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -61,6 +64,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
@@ -72,9 +77,13 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -83,13 +92,17 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Marco Leo
@@ -693,6 +706,69 @@ public class ObjectRelationshipLocalServiceImpl
 		}
 	}
 
+	@Override
+	public void setAopProxy(Object aopProxy) {
+		super.setAopProxy(aopProxy);
+
+		_objectDefinitionDeployerServiceTracker = new ServiceTracker<>(
+			_bundleContext, ObjectDefinitionDeployer.class,
+			new ServiceTrackerCustomizer
+				<ObjectDefinitionDeployer, ObjectDefinitionDeployer>() {
+
+				@Override
+				public ObjectDefinitionDeployer addingService(
+					ServiceReference<ObjectDefinitionDeployer>
+						serviceReference) {
+
+					return _addingObjectDefinitionDeployer(
+						_bundleContext.getService(serviceReference));
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<ObjectDefinitionDeployer> serviceReference,
+					ObjectDefinitionDeployer objectDefinitionDeployer) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<ObjectDefinitionDeployer> serviceReference,
+					ObjectDefinitionDeployer objectDefinitionDeployer) {
+
+					for (ObjectDefinition objectDefinition :
+							_getObjectDefinitions()) {
+
+						objectDefinitionDeployer.undeploy(objectDefinition);
+					}
+
+					Map<Long, List<ServiceRegistration<?>>>
+						serviceRegistrationsMap =
+							_serviceRegistrationsMaps.remove(
+								objectDefinitionDeployer);
+
+					for (List<ServiceRegistration<?>> serviceRegistrations :
+							serviceRegistrationsMap.values()) {
+
+						for (ServiceRegistration<?> serviceRegistration :
+								serviceRegistrations) {
+
+							serviceRegistration.unregister();
+						}
+					}
+
+					_bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		DependencyManagerSyncUtil.registerSyncCallable(
+			() -> {
+				_objectDefinitionDeployerServiceTracker.open();
+
+				return null;
+			});
+	}
+
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public ObjectRelationship updateObjectRelationship(
@@ -754,6 +830,39 @@ public class ObjectRelationshipLocalServiceImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
+	}
+
+	@Deactivate
+	@Override
+	protected void deactivate() {
+		super.deactivate();
+
+		if (_objectDefinitionDeployerServiceTracker != null) {
+			_objectDefinitionDeployerServiceTracker.close();
+		}
+	}
+
+	private ObjectDefinitionDeployer _addingObjectDefinitionDeployer(
+		ObjectDefinitionDeployer objectDefinitionDeployer) {
+
+		Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
+			new ConcurrentHashMap<>();
+
+		for (ObjectDefinition objectDefinition : _getObjectDefinitions()) {
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(
+						objectDefinition.getCompanyId())) {
+
+				serviceRegistrationsMap.put(
+					objectDefinition.getObjectDefinitionId(),
+					objectDefinitionDeployer.deploy(objectDefinition));
+			}
+		}
+
+		_serviceRegistrationsMaps.put(
+			objectDefinitionDeployer, serviceRegistrationsMap);
+
+		return objectDefinitionDeployer;
 	}
 
 	private ObjectField _addObjectField(
@@ -910,6 +1019,17 @@ public class ObjectRelationshipLocalServiceImpl
 
 		return objectRelationshipLocalService.updateObjectRelationship(
 			objectRelationship);
+	}
+
+	private List<ObjectDefinition> _getObjectDefinitions() {
+		List<ObjectDefinition> objectDefinitions = new ArrayList<>();
+
+		_companyLocalService.forEachCompanyId(
+			companyId -> objectDefinitions.addAll(
+				_objectDefinitionPersistence.findByC_A_S(
+					companyId, true, WorkflowConstants.STATUS_APPROVED)));
+
+		return objectDefinitions;
 	}
 
 	private String _getServiceRegistrationKey(
@@ -1193,6 +1313,12 @@ public class ObjectRelationshipLocalServiceImpl
 
 	private BundleContext _bundleContext;
 
+	@Reference
+	private CompanyLocalService _companyLocalService;
+
+	private ServiceTracker<ObjectDefinitionDeployer, ObjectDefinitionDeployer>
+		_objectDefinitionDeployerServiceTracker;
+
 	@Reference(
 		cardinality = ReferenceCardinality.OPTIONAL,
 		policy = ReferencePolicy.DYNAMIC,
@@ -1224,6 +1350,10 @@ public class ObjectRelationshipLocalServiceImpl
 
 	private final Map<String, ServiceRegistration<?>> _serviceRegistrations =
 		new ConcurrentHashMap<>();
+	private final Map
+		<ObjectDefinitionDeployer, Map<Long, List<ServiceRegistration<?>>>>
+			_serviceRegistrationsMaps = Collections.synchronizedMap(
+				new LinkedHashMap<>());
 
 	@Reference
 	private SystemObjectDefinitionManagerRegistry

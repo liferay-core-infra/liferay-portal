@@ -87,7 +87,6 @@ import com.liferay.portal.kernel.dao.db.IndexMetadataFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -147,14 +146,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Marco Leo
@@ -682,64 +677,6 @@ public class ObjectDefinitionLocalServiceImpl
 				_userLocalService, _resourcePermissionLocalService,
 				_workflowStatusModelPreFilterContributor,
 				_userGroupRoleLocalService));
-
-		_objectDefinitionDeployerServiceTracker = new ServiceTracker<>(
-			_bundleContext, ObjectDefinitionDeployer.class,
-			new ServiceTrackerCustomizer
-				<ObjectDefinitionDeployer, ObjectDefinitionDeployer>() {
-
-				@Override
-				public ObjectDefinitionDeployer addingService(
-					ServiceReference<ObjectDefinitionDeployer>
-						serviceReference) {
-
-					return _addingObjectDefinitionDeployer(
-						_bundleContext.getService(serviceReference));
-				}
-
-				@Override
-				public void modifiedService(
-					ServiceReference<ObjectDefinitionDeployer> serviceReference,
-					ObjectDefinitionDeployer objectDefinitionDeployer) {
-				}
-
-				@Override
-				public void removedService(
-					ServiceReference<ObjectDefinitionDeployer> serviceReference,
-					ObjectDefinitionDeployer objectDefinitionDeployer) {
-
-					for (ObjectDefinition objectDefinition :
-							_getObjectDefinitions()) {
-
-						objectDefinitionDeployer.undeploy(objectDefinition);
-					}
-
-					Map<Long, List<ServiceRegistration<?>>>
-						serviceRegistrationsMap =
-							_serviceRegistrationsMaps.remove(
-								objectDefinitionDeployer);
-
-					for (List<ServiceRegistration<?>> serviceRegistrations :
-							serviceRegistrationsMap.values()) {
-
-						for (ServiceRegistration<?> serviceRegistration :
-								serviceRegistrations) {
-
-							serviceRegistration.unregister();
-						}
-					}
-
-					_bundleContext.ungetService(serviceReference);
-				}
-
-			});
-
-		DependencyManagerSyncUtil.registerSyncCallable(
-			() -> {
-				_objectDefinitionDeployerServiceTracker.open();
-
-				return null;
-			});
 	}
 
 	@Override
@@ -860,16 +797,6 @@ public class ObjectDefinitionLocalServiceImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
-	}
-
-	@Deactivate
-	@Override
-	protected void deactivate() {
-		super.deactivate();
-
-		if (_objectDefinitionDeployerServiceTracker != null) {
-			_objectDefinitionDeployerServiceTracker.close();
-		}
 	}
 
 	private ObjectDefinitionDeployer _addingObjectDefinitionDeployer(
@@ -1937,9 +1864,6 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Reference
 	private ObjectActionLocalService _objectActionLocalService;
-
-	private ServiceTracker<ObjectDefinitionDeployer, ObjectDefinitionDeployer>
-		_objectDefinitionDeployerServiceTracker;
 
 	@Reference
 	private ObjectEntryLocalService _objectEntryLocalService;

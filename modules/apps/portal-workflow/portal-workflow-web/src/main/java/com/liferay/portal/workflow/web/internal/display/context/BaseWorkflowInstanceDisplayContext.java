@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowNode;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowNode;
+import com.liferay.portal.kernel.workflow.comparator.WorkflowComparatorFactory;
 import com.liferay.portal.workflow.web.internal.display.context.helper.WorkflowInstanceRequestHelper;
 
 import java.text.Format;
@@ -90,11 +91,18 @@ public abstract class BaseWorkflowInstanceDisplayContext {
 		return sb.toString();
 	}
 
+	public void setWorkflowComparatorFactory(
+		WorkflowComparatorFactory workflowComparatorFactory) {
+
+		this.workflowComparatorFactory = workflowComparatorFactory;
+	}
+
 	protected final Format dateFormatDateTime;
 	protected final HttpServletRequest httpServletRequest;
 	protected final LiferayPortletRequest liferayPortletRequest;
 	protected final LiferayPortletResponse liferayPortletResponse;
 	protected final PortalPreferences portalPreferences;
+	protected WorkflowComparatorFactory workflowComparatorFactory;
 	protected final WorkflowInstanceRequestHelper workflowInstanceRequestHelper;
 
 }

@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowLog;
 import com.liferay.portal.kernel.workflow.WorkflowLogManagerUtil;
-import com.liferay.portal.kernel.workflow.comparator.WorkflowComparatorFactoryUtil;
 import com.liferay.portal.kernel.workflow.search.WorkflowModelSearchResult;
 import com.liferay.portal.workflow.constants.WorkflowPortletKeys;
 import com.liferay.portal.workflow.constants.WorkflowWebKeys;
@@ -532,7 +531,7 @@ public class WorkflowInstanceViewDisplayContext
 			WorkflowLogManagerUtil.getWorkflowLogsByWorkflowInstance(
 				workflowInstanceRequestHelper.getCompanyId(),
 				workflowInstance.getWorkflowInstanceId(), null, 0, 1,
-				WorkflowComparatorFactoryUtil.getLogCreateDateComparator());
+				workflowComparatorFactory.getLogCreateDateComparator(false));
 
 		if (workflowLogs.isEmpty()) {
 			return null;

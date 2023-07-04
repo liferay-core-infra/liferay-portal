@@ -32,6 +32,7 @@ page import="com.liferay.portal.kernel.workflow.WorkflowHandler" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowInstance" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowLog" %><%@
+page import="com.liferay.portal.kernel.workflow.comparator.WorkflowComparatorFactory" %><%@
 page import="com.liferay.portal.workflow.web.internal.dao.search.WorkflowInstanceResultRowSplitter" %><%@
 page import="com.liferay.portal.workflow.web.internal.display.context.MyWorkflowInstanceEditDisplayContext" %><%@
 page import="com.liferay.portal.workflow.web.internal.display.context.WorkflowInstanceEditDisplayContext" %><%@
@@ -44,7 +45,11 @@ page import="com.liferay.taglib.search.ResultRow" %>
 <liferay-frontend:defineObjects />
 
 <%
+WorkflowComparatorFactory workflowComparatorFactory = (WorkflowComparatorFactory)renderRequest.getAttribute(WorkflowWebKeys.WORKFLOW_COMPARATOR_FACTORY);
+
 WorkflowInstanceViewDisplayContext workflowInstanceViewDisplayContext = (WorkflowInstanceViewDisplayContext)renderRequest.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+
+workflowInstanceViewDisplayContext.setWorkflowComparatorFactory(workflowComparatorFactory);
 %>
 
 <%@ include file="/instance/init-ext.jsp" %>

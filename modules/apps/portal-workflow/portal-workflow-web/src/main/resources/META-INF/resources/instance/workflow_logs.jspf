@@ -30,6 +30,8 @@
 		<tbody>
 
 			<%
+			workflowInstanceEditDisplayContext.setWorkflowComparatorFactory(workflowComparatorFactory);
+
 			for (WorkflowLog workflowLog : workflowInstanceEditDisplayContext.getWorkflowLogs()) {
 			%>
 

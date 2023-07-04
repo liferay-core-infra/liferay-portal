@@ -124,7 +124,11 @@ import java.util.function.BiPredicate;
 
 import org.apache.commons.lang.time.StopWatch;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -138,10 +142,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Douglas Wong
  * @author Máté Thurzó
  */
-@Component(
-	property = "model.class.name=com.liferay.portal.kernel.model.Portlet",
-	service = {ExportImportController.class, PortletImportController.class}
-)
+@Component(service = PortletImportController.class)
 public class PortletImportControllerImpl implements PortletImportController {
 
 	@Override
@@ -863,6 +864,19 @@ public class PortletImportControllerImpl implements PortletImportController {
 		}
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceRegistration = bundleContext.registerService(
+			ExportImportController.class, new PortletImportControllerImpl(),
+			MapUtil.singletonDictionary(
+				"model.class.name", "com.liferay.portal.kernel.model.Portlet"));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
+	}
+
 	protected String deletePortletData(
 			PortletDataContext portletDataContext,
 			javax.portlet.PortletPreferences portletPreferences)
@@ -1558,6 +1572,8 @@ public class PortletImportControllerImpl implements PortletImportController {
 
 	@Reference
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
+
+	private ServiceRegistration<ExportImportController> _serviceRegistration;
 
 	@Reference
 	private Staging _staging;

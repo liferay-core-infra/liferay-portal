@@ -107,7 +107,11 @@ import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.time.StopWatch;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -121,10 +125,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Douglas Wong
  * @author Máté Thurzó
  */
-@Component(
-	property = "model.class.name=com.liferay.portal.kernel.model.Portlet",
-	service = {ExportImportController.class, PortletExportController.class}
-)
+@Component(service = PortletExportController.class)
 public class PortletExportControllerImpl implements PortletExportController {
 
 	@Override
@@ -731,6 +732,19 @@ public class PortletExportControllerImpl implements PortletExportController {
 				portletDataContext, portletDataContext.getScopeGroupId(),
 				PortletKeys.PREFS_OWNER_TYPE_GROUP, serviceName, rootElement);
 		}
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceRegistration = bundleContext.registerService(
+			ExportImportController.class, new PortletExportControllerImpl(),
+			MapUtil.singletonDictionary(
+				"model.class.name", "com.liferay.portal.kernel.model.Portlet"));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
 	}
 
 	protected File doExport(PortletDataContext portletDataContext)
@@ -1368,6 +1382,8 @@ public class PortletExportControllerImpl implements PortletExportController {
 	@Reference
 	private PortletPreferenceValueLocalService
 		_portletPreferenceValueLocalService;
+
+	private ServiceRegistration<ExportImportController> _serviceRegistration;
 
 	@Reference
 	private UserLocalService _userLocalService;

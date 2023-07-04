@@ -268,7 +268,8 @@ public class WorkflowInstanceViewDisplayContext
 		_searchContainer = new WorkflowInstanceSearch(
 			liferayPortletRequest,
 			PortletURLUtil.getCurrent(
-				liferayPortletRequest, liferayPortletResponse));
+				liferayPortletRequest, liferayPortletResponse),
+			workflowComparatorFactory);
 
 		WorkflowModelSearchResult<WorkflowInstance> workflowModelSearchResult =
 			getWorkflowModelSearchResult(

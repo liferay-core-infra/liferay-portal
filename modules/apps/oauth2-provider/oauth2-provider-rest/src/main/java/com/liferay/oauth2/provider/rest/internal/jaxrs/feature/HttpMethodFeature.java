@@ -14,7 +14,8 @@
 
 package com.liferay.oauth2.provider.rest.internal.jaxrs.feature;
 
-import com.liferay.oauth2.provider.rest.internal.scope.logic.HttpMethodScopeLogic;
+import com.liferay.oauth2.provider.rest.internal.scope.logic.ScopeLogic;
+import com.liferay.oauth2.provider.rest.internal.scope.util.HttpMethodScopeLogicUtil;
 import com.liferay.oauth2.provider.rest.spi.scope.checker.container.request.filter.BaseScopeCheckerContainerRequestFilter;
 import com.liferay.oauth2.provider.scope.ScopeChecker;
 import com.liferay.oauth2.provider.scope.spi.scope.finder.ScopeFinder;
@@ -158,7 +159,7 @@ public class HttpMethodFeature implements Feature {
 	private BundleContext _bundleContext;
 
 	@Reference(target = "(oauth2.scope.checker.type=http.method)")
-	private HttpMethodScopeLogic _httpMethodScopeLogic;
+	private ScopeLogic _httpMethodScopeLogic;
 
 	private Function<String, Object> _propertyAccessorFunction;
 
@@ -176,7 +177,7 @@ public class HttpMethodFeature implements Feature {
 
 			Request request = containerRequestContext.getRequest();
 
-			return _httpMethodScopeLogic.check(
+			return HttpMethodScopeLogicUtil.check(
 				_propertyAccessorFunction, request.getMethod(), _scopeChecker);
 		}
 

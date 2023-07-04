@@ -14,20 +14,16 @@
 
 package com.liferay.oauth2.provider.rest.internal.scope.logic;
 
+import com.liferay.oauth2.provider.rest.internal.scope.util.HttpMethodScopeLogicUtil;
 import com.liferay.oauth2.provider.scope.ScopeChecker;
-import com.liferay.oauth2.provider.scope.spi.scope.finder.ScopeFinder;
 import com.liferay.osgi.util.StringPlus;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -35,7 +31,6 @@ import java.util.function.Function;
 import javax.ws.rs.HttpMethod;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
@@ -48,7 +43,7 @@ import org.osgi.service.component.annotations.Component;
 		"ignore.missing.scopes=HEAD", "ignore.missing.scopes=OPTIONS",
 		"oauth2.scope.checker.type=http.method"
 	},
-	service = {HttpMethodScopeLogic.class, ScopeLogic.class}
+	service = ScopeLogic.class
 )
 public class HttpMethodScopeLogic implements ScopeLogic {
 
@@ -58,48 +53,9 @@ public class HttpMethodScopeLogic implements ScopeLogic {
 		Class<?> resourceClass, Method resourceMethod,
 		ScopeChecker scopeChecker) {
 
-		return check(
+		return HttpMethodScopeLogicUtil.check(
 			propertyAccessorFunction, _getHttpMethod(resourceMethod),
 			scopeChecker);
-	}
-
-	public boolean check(
-		Function<String, Object> propertyAccessorFunction, String requestMethod,
-		ScopeChecker scopeChecker) {
-
-		try {
-			String applicationName = GetterUtil.getString(
-				propertyAccessorFunction.apply("osgi.jaxrs.name"));
-
-			Object ignoreMissingScopesObject = propertyAccessorFunction.apply(
-				"ignore.missing.scopes");
-
-			Set<String> ignoreMissingScopes = _ignoreMissingScopes;
-
-			if (ignoreMissingScopesObject != null) {
-				ignoreMissingScopes = new HashSet<>(
-					StringPlus.asList(ignoreMissingScopesObject));
-			}
-
-			ScopeFinder scopeFinder = _bundleContext.getService(
-				_getServiceReference(applicationName, ScopeFinder.class));
-
-			Collection<String> scopes = scopeFinder.findScopes();
-
-			if ((!scopes.contains(requestMethod) &&
-				 ignoreMissingScopes.contains(requestMethod)) ||
-				scopeChecker.checkScope(requestMethod)) {
-
-				return true;
-			}
-		}
-		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(exception);
-			}
-		}
-
-		return false;
 	}
 
 	@Activate
@@ -132,22 +88,6 @@ public class HttpMethodScopeLogic implements ScopeLogic {
 		}
 
 		throw new UnsupportedOperationException();
-	}
-
-	private <T> ServiceReference<? extends T> _getServiceReference(
-			String applicationName, Class<? extends T> clazz)
-		throws Exception {
-
-		List<ServiceReference<T>> serviceReferences =
-			(List<ServiceReference<T>>)_bundleContext.<T>getServiceReferences(
-				(Class<T>)clazz, "(osgi.jaxrs.name=" + applicationName + ")");
-
-		if (ListUtil.isNotEmpty(serviceReferences)) {
-			return serviceReferences.get(0);
-		}
-
-		throw new UnsupportedOperationException(
-			"Invalid JAX-RS application " + applicationName);
 	}
 
 	private Method _getSuperMethod(Method method) {

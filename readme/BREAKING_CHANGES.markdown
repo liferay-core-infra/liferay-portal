@@ -1471,3 +1471,25 @@ This removal of the configuration has no replacement.
 ### Why was this change made?
 
 Liferay decided to not support this configuration.
+
+---------------------------------------
+
+## Removed extension points in SolrClientManager
+- **Date:** 2023-July-4
+- **JIRA Ticket:** [LPS-180691](https://liferay.atlassian.net/browse/LPS-180691)
+
+### What changed?
+
+These extension points in `SolrClientManager` for the `SolrClientFactory` with type `CLOUD` or `REPLICATED` and `HttpClientFactory` with type `BASIC` or `CERT` are being removed.
+
+### Who is affected?
+
+This affects anyone who is overriding the `SolrClientFactory` and `HttpClientFactory` with the types liferay provided.
+
+### How should I update my code?
+
+Register `SolrClientFactory` and `HttpClientFactory` with custom types, and update the configurations.
+
+### Why was this change made?
+
+Liferay decided to not support these extension points.

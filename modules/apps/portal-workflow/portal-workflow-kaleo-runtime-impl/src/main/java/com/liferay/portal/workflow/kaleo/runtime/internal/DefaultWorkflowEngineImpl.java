@@ -56,7 +56,7 @@ import com.liferay.portal.workflow.kaleo.model.KaleoTransition;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.KaleoSignaler;
 import com.liferay.portal.workflow.kaleo.runtime.WorkflowEngine;
-import com.liferay.portal.workflow.kaleo.runtime.internal.node.TaskNodeExecutor;
+import com.liferay.portal.workflow.kaleo.runtime.internal.node.TaskNodeExecutorUtil;
 import com.liferay.portal.workflow.kaleo.runtime.util.WorkflowContextUtil;
 import com.liferay.portal.workflow.kaleo.runtime.util.comparator.KaleoInstanceOrderByComparator;
 
@@ -199,7 +199,7 @@ public class DefaultWorkflowEngineImpl
 			executionContext.setKaleoTaskInstanceToken(
 				kaleoTimerInstanceToken.getKaleoTaskInstanceToken());
 
-			_taskNodeExecutor.executeTimer(executionContext);
+			TaskNodeExecutorUtil.executeTimer(executionContext);
 
 			kaleoTimerInstanceToken =
 				kaleoTimerInstanceTokenLocalService.getKaleoTimerInstanceToken(
@@ -889,9 +889,6 @@ public class DefaultWorkflowEngineImpl
 
 	@Reference
 	private KaleoWorkflowModelConverter _kaleoWorkflowModelConverter;
-
-	@Reference
-	private TaskNodeExecutor _taskNodeExecutor;
 
 	@Reference
 	private WorkflowDeployer _workflowDeployer;

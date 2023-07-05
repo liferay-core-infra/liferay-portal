@@ -280,8 +280,14 @@ public class TaskNodeExecutorTest {
 			KaleoTimerInstanceToken kaleoTimerInstanceToken)
 		throws Exception {
 
+		Bundle bundle = FrameworkUtil.getBundle(_nodeExecutor.getClass());
+
+		Class<?> clazz = bundle.loadClass(
+			"com.liferay.portal.workflow.kaleo.runtime.internal.node." +
+				"TaskNodeExecutorUtil");
+
 		Method executeTimerMethod = ReflectionUtil.getDeclaredMethod(
-			_nodeExecutor.getClass(), "executeTimer", ExecutionContext.class);
+			clazz, "executeTimer", ExecutionContext.class);
 
 		executeTimerMethod.invoke(
 			_nodeExecutor,

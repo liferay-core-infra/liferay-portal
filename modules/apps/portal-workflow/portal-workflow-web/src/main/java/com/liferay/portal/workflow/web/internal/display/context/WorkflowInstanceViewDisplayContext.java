@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowLog;
+import com.liferay.portal.kernel.workflow.WorkflowLogManager;
 import com.liferay.portal.kernel.workflow.search.WorkflowModelSearchResult;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
 import com.liferay.portal.workflow.constants.WorkflowPortletKeys;
@@ -64,7 +65,8 @@ public class WorkflowInstanceViewDisplayContext
 	public WorkflowInstanceViewDisplayContext(
 			LiferayPortletRequest liferayPortletRequest,
 			LiferayPortletResponse liferayPortletResponse,
-			WorkflowComparatorFactory workflowComparatorFactory)
+			WorkflowComparatorFactory workflowComparatorFactory,
+			WorkflowLogManager workflowLogManager)
 		throws PortalException {
 
 		super(liferayPortletRequest, liferayPortletResponse);
@@ -72,6 +74,7 @@ public class WorkflowInstanceViewDisplayContext
 		_liferayPortletRequest = liferayPortletRequest;
 
 		_workflowComparatorFactory = workflowComparatorFactory;
+		_workflowLogManager = workflowLogManager;
 	}
 
 	public String getAssetIconCssClass(WorkflowInstance workflowInstance) {
@@ -521,7 +524,7 @@ public class WorkflowInstanceViewDisplayContext
 		throws PortalException {
 
 		List<WorkflowLog> workflowLogs =
-			WorkflowLogManagerUtil.getWorkflowLogsByWorkflowInstance(
+			_workflowLogManager.getWorkflowLogsByWorkflowInstance(
 				workflowInstanceRequestHelper.getCompanyId(),
 				workflowInstance.getWorkflowInstanceId(), null, 0, 1,
 				_workflowComparatorFactory.getLogCreateDateComparator(false));
@@ -555,5 +558,6 @@ public class WorkflowInstanceViewDisplayContext
 	private WorkflowInstanceSearch _searchContainer;
 	private Boolean _showExtraInfo;
 	private final WorkflowComparatorFactory _workflowComparatorFactory;
+	private final WorkflowLogManager _workflowLogManager;
 
 }

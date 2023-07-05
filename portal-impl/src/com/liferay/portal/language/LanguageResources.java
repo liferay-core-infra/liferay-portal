@@ -19,11 +19,9 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
-import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
-import com.liferay.portal.kernel.util.SetUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -76,17 +74,8 @@ public class LanguageResources {
 	}
 
 	public static ResourceBundle getResourceBundle(Locale locale) {
-		ResourceBundle resourceBundle = new LanguageResourcesBundle(locale);
-
-		ResourceBundle overrideResourceBundle = _getOverrideResourceBundle(
-			locale);
-
-		if (overrideResourceBundle != null) {
-			resourceBundle = new AggregateResourceBundle(
-				overrideResourceBundle, resourceBundle);
-		}
-
-		return resourceBundle;
+		return _getOverrideResourceBundle(
+			new LanguageResourcesBundle(locale), locale);
 	}
 
 	public static Locale getSuperLocale(Locale locale) {
@@ -144,33 +133,18 @@ public class LanguageResources {
 		return mapHolder;
 	}
 
-	private static ResourceBundle _getOverrideResourceBundle(Locale locale) {
+	private static ResourceBundle _getOverrideResourceBundle(
+		ResourceBundle resourceBundle, Locale locale) {
+
 		LanguageOverrideProvider languageOverrideProvider =
 			_languageOverrideProvider;
 
 		if (languageOverrideProvider == null) {
-			return null;
+			return resourceBundle;
 		}
 
-		Set<String> overrideKeySet = languageOverrideProvider.keySet(locale);
-
-		if (SetUtil.isEmpty(overrideKeySet)) {
-			return null;
-		}
-
-		return new ResourceBundle() {
-
-			@Override
-			public Enumeration<String> getKeys() {
-				return Collections.enumeration(overrideKeySet);
-			}
-
-			@Override
-			protected Object handleGetObject(String key) {
-				return languageOverrideProvider.get(key, locale);
-			}
-
-		};
+		return languageOverrideProvider.getOverrideResourceBundle(
+			resourceBundle, locale);
 	}
 
 	private static Locale _getSuperLocale(Locale locale) {
@@ -268,18 +242,9 @@ public class LanguageResources {
 			Locale superLocale = getSuperLocale(locale);
 
 			if (superLocale != null) {
-				ResourceBundle superResourceBundle =
-					new LanguageResourcesBundle(superLocale);
-
-				ResourceBundle superLocaleOverrideResourceBundle =
-					_getOverrideResourceBundle(superLocale);
-
-				if (superLocaleOverrideResourceBundle != null) {
-					superResourceBundle = new AggregateResourceBundle(
-						superLocaleOverrideResourceBundle, superResourceBundle);
-				}
-
-				setParent(superResourceBundle);
+				setParent(
+					_getOverrideResourceBundle(
+						new LanguageResourcesBundle(superLocale), superLocale));
 			}
 		}
 

@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSetBranchConstants;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalServiceUtil;
@@ -67,6 +67,7 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.staging.configuration.StagingConfiguration;
@@ -247,7 +248,7 @@ public class StagingImplTest {
 	@Test
 	public void testInitialPublication() throws Exception {
 		try {
-			ConfigurationProviderUtil.saveCompanyConfiguration(
+			_configurationProvider.saveCompanyConfiguration(
 				StagingConfiguration.class, _group.getCompanyId(),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"stagingDeleteTempLAROnSuccess", false
@@ -256,7 +257,7 @@ public class StagingImplTest {
 			doTestInitialPublication();
 		}
 		finally {
-			ConfigurationProviderUtil.deleteCompanyConfiguration(
+			_configurationProvider.deleteCompanyConfiguration(
 				StagingConfiguration.class, _group.getCompanyId());
 		}
 	}
@@ -819,6 +820,9 @@ public class StagingImplTest {
 	private static final Locale[] _locales = {
 		LocaleUtil.GERMANY, LocaleUtil.SPAIN, LocaleUtil.US
 	};
+
+	@Inject
+	private ConfigurationProvider _configurationProvider;
 
 	@DeleteAfterTestRun
 	private Group _group;

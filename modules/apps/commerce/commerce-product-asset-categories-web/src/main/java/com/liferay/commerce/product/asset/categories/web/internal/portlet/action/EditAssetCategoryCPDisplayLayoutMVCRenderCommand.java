@@ -13,6 +13,7 @@ import com.liferay.commerce.product.portlet.action.ActionHelper;
 import com.liferay.commerce.product.service.CPDisplayLayoutService;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.item.selector.ItemSelector;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.constants.MVCRenderConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -67,8 +68,8 @@ public class EditAssetCategoryCPDisplayLayoutMVCRenderCommand
 					new CategoryCPDisplayLayoutDisplayContext(
 						_actionHelper, _assetCategoryLocalService,
 						httpServletRequest, _commerceChannelLocalService,
-						_cpDisplayLayoutService, _groupLocalService,
-						_itemSelector, _layoutLocalService);
+						_configurationProvider, _cpDisplayLayoutService,
+						_groupLocalService, _itemSelector, _layoutLocalService);
 
 			httpServletRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -99,6 +100,9 @@ public class EditAssetCategoryCPDisplayLayoutMVCRenderCommand
 
 	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPDisplayLayoutService _cpDisplayLayoutService;

@@ -12,7 +12,7 @@ import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
 import com.liferay.item.selector.taglib.servlet.taglib.util.RepositoryEntryBrowserTagUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -44,7 +44,9 @@ import javax.servlet.http.HttpServletRequest;
 public class WikiAttachmentItemSelectorViewDisplayContext {
 
 	public WikiAttachmentItemSelectorViewDisplayContext(
-		HttpServletRequest httpServletRequest, String itemSelectedEventName,
+		HttpServletRequest httpServletRequest,
+		ConfigurationProvider configurationProvider,
+		String itemSelectedEventName,
 		ItemSelectorReturnTypeResolverHandler
 			itemSelectorReturnTypeResolverHandler,
 		PortletURL portletURL, boolean search,
@@ -52,6 +54,7 @@ public class WikiAttachmentItemSelectorViewDisplayContext {
 		WikiAttachmentItemSelectorView wikiAttachmentItemSelectorView) {
 
 		_httpServletRequest = httpServletRequest;
+		_configurationProvider = configurationProvider;
 		_itemSelectedEventName = itemSelectedEventName;
 		_itemSelectorReturnTypeResolverHandler =
 			itemSelectorReturnTypeResolverHandler;
@@ -184,13 +187,14 @@ public class WikiAttachmentItemSelectorViewDisplayContext {
 
 		if (_wikiFileUploadConfiguration == null) {
 			_wikiFileUploadConfiguration =
-				ConfigurationProviderUtil.getSystemConfiguration(
+				_configurationProvider.getSystemConfiguration(
 					WikiFileUploadConfiguration.class);
 		}
 
 		return _wikiFileUploadConfiguration;
 	}
 
+	private final ConfigurationProvider _configurationProvider;
 	private final HttpServletRequest _httpServletRequest;
 	private final String _itemSelectedEventName;
 	private final ItemSelectorReturnTypeResolverHandler

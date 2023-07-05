@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayRenderRequest;
 import com.liferay.portal.kernel.portlet.LiferayRenderResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -93,6 +93,7 @@ public class JournalContentDisplayContext {
 
 	public static JournalContentDisplayContext create(
 			PortletRequest portletRequest, PortletResponse portletResponse,
+			ConfigurationProvider configurationProvider,
 			long ddmStructureClassNameId,
 			ModelResourcePermission<DDMTemplate>
 				ddmTemplateModelResourcePermission,
@@ -115,8 +116,8 @@ public class JournalContentDisplayContext {
 						JournalContentPortletInstanceConfiguration.class);
 
 			journalContentDisplayContext = new JournalContentDisplayContext(
-				portletRequest, portletResponse, themeDisplay,
-				journalContentPortletInstanceConfiguration,
+				portletRequest, portletResponse, configurationProvider,
+				themeDisplay, journalContentPortletInstanceConfiguration,
 				ddmStructureClassNameId, ddmTemplateModelResourcePermission,
 				itemSelector, trashHelper);
 
@@ -135,7 +136,7 @@ public class JournalContentDisplayContext {
 
 	public boolean articleCommentsEnabled() throws Exception {
 		JournalServiceConfiguration journalServiceConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			_configurationProvider.getCompanyConfiguration(
 				JournalServiceConfiguration.class,
 				_themeDisplay.getCompanyId());
 
@@ -909,6 +910,7 @@ public class JournalContentDisplayContext {
 
 	private JournalContentDisplayContext(
 			PortletRequest portletRequest, PortletResponse portletResponse,
+			ConfigurationProvider configurationProvider,
 			ThemeDisplay themeDisplay,
 			JournalContentPortletInstanceConfiguration
 				journalContentPortletInstanceConfiguration,
@@ -920,6 +922,7 @@ public class JournalContentDisplayContext {
 
 		_portletRequest = portletRequest;
 		_portletResponse = portletResponse;
+		_configurationProvider = configurationProvider;
 		_themeDisplay = themeDisplay;
 		_journalContentPortletInstanceConfiguration =
 			journalContentPortletInstanceConfiguration;
@@ -1037,6 +1040,7 @@ public class JournalContentDisplayContext {
 	private JournalArticleDisplay _articleDisplay;
 	private Long _articleGroupId;
 	private String _articleId;
+	private final ConfigurationProvider _configurationProvider;
 	private final long _ddmStructureClassNameId;
 	private DDMTemplate _ddmTemplate;
 	private String _ddmTemplateKey;

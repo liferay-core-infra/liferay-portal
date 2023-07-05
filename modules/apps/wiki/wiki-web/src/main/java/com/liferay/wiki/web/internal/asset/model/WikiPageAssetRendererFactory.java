@@ -12,6 +12,7 @@ import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -87,7 +88,8 @@ public class WikiPageAssetRendererFactory
 		}
 
 		WikiPageAssetRenderer wikiPageAssetRenderer = new WikiPageAssetRenderer(
-			_htmlParser, _trashHelper, _wikiEngineRenderer, page);
+			_configurationProvider, _htmlParser, _trashHelper,
+			_wikiEngineRenderer, page);
 
 		wikiPageAssetRenderer.setAssetDisplayPageFriendlyURLProvider(
 			_assetDisplayPageFriendlyURLProvider);
@@ -148,6 +150,9 @@ public class WikiPageAssetRendererFactory
 	@Reference
 	private AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private HtmlParser _htmlParser;

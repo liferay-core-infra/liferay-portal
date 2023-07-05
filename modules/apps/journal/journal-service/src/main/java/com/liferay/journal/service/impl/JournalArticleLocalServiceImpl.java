@@ -5876,6 +5876,8 @@ public class JournalArticleLocalServiceImpl
 		JournalArticleImpl.setJournalConverter(_journalConverter);
 		JournalArticleImpl.setTransformerListener(_transformerListener);
 
+		_journalTransformer = new JournalTransformer(_configurationProvider);
+
 		_serviceTrackerList = ServiceTrackerListFactory.open(
 			bundleContext, TransformerListener.class,
 			"(javax.portlet.name=" + JournalPortletKeys.JOURNAL + ")");
@@ -8055,6 +8057,9 @@ public class JournalArticleLocalServiceImpl
 		new ConcurrentHashMap<>();
 
 	@Reference
+	private ConfigurationProvider _configurationProvider;
+
+	@Reference
 	private DDMFieldLocalService _ddmFieldLocalService;
 
 	@Reference
@@ -8118,8 +8123,7 @@ public class JournalArticleLocalServiceImpl
 	@Reference
 	private JournalHelper _journalHelper;
 
-	private final JournalTransformer _journalTransformer =
-		new JournalTransformer();
+	private JournalTransformer _journalTransformer;
 
 	@Reference
 	private JSONFactory _jsonFactory;

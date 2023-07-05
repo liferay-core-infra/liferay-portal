@@ -8,6 +8,7 @@ package com.liferay.journal.internal.transformer;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.layout.dynamic.data.mapping.form.field.type.constants.LayoutDDMFormFieldTypeConstants;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -22,6 +23,8 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.Mockito;
+
 /**
  * @author Eudaldo Alonso
  */
@@ -34,7 +37,8 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodes() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(
+			_configurationProvider);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
@@ -47,7 +51,8 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesFirstChildWithSiblings() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(
+			_configurationProvider);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
@@ -64,7 +69,8 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesNestedImageFieldSet() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(
+			_configurationProvider);
 
 		List<TemplateNode> templateNodes = new ArrayList<>();
 
@@ -121,7 +127,8 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesParentStructureWithFieldSet() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(
+			_configurationProvider);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
@@ -134,7 +141,8 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesWithNestedRepeatableFields() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(
+			_configurationProvider);
 
 		List<TemplateNode> nestedRepeatableFieldsTemplateNodes =
 			_getNestedRepeatableFieldsTemplateNodes();
@@ -186,7 +194,8 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesWithSiblings() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(
+			_configurationProvider);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
@@ -666,5 +675,8 @@ public class JournalTransformerTest {
 		"RepeatableTextField";
 
 	private static final String _TEXT_FIELD_NAME = "TextField";
+
+	private static final ConfigurationProvider _configurationProvider =
+		Mockito.mock(ConfigurationProvider.class);
 
 }

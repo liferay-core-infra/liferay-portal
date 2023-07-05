@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -187,9 +188,9 @@ public class JournalContentPortlet extends MVCPortlet {
 
 		try {
 			JournalContentDisplayContext.create(
-				renderRequest, renderResponse, _CLASS_NAME_ID,
-				_ddmTemplateModelResourcePermission, _itemSelector,
-				_trashHelper);
+				renderRequest, renderResponse, _configurationProvider,
+				_CLASS_NAME_ID, _ddmTemplateModelResourcePermission,
+				_itemSelector, _trashHelper);
 		}
 		catch (PortalException portalException) {
 			if (_log.isDebugEnabled()) {
@@ -245,9 +246,9 @@ public class JournalContentPortlet extends MVCPortlet {
 
 			try {
 				JournalContentDisplayContext.create(
-					resourceRequest, resourceResponse, _CLASS_NAME_ID,
-					_ddmTemplateModelResourcePermission, _itemSelector,
-					_trashHelper);
+					resourceRequest, resourceResponse, _configurationProvider,
+					_CLASS_NAME_ID, _ddmTemplateModelResourcePermission,
+					_itemSelector, _trashHelper);
 			}
 			catch (PortalException portalException) {
 				if (_log.isDebugEnabled()) {
@@ -277,6 +278,9 @@ public class JournalContentPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalContentPortlet.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.dynamic.data.mapping.model.DDMTemplate)"

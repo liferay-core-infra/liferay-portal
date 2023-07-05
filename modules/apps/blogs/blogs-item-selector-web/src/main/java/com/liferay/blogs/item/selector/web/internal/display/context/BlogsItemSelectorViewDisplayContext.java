@@ -14,7 +14,7 @@ import com.liferay.item.selector.ItemSelectorReturnTypeResolver;
 import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
 import com.liferay.item.selector.taglib.servlet.taglib.util.RepositoryEntryBrowserTagUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -43,6 +43,7 @@ public class BlogsItemSelectorViewDisplayContext {
 		BlogsEntryLocalService blogsEntryLocalService,
 		BlogsItemSelectorCriterion blogsItemSelectorCriterion,
 		BlogsItemSelectorView blogsItemSelectorView,
+		ConfigurationProvider configurationProvider,
 		HttpServletRequest httpServletRequest, String itemSelectedEventName,
 		ItemSelectorReturnTypeResolverHandler
 			itemSelectorReturnTypeResolverHandler,
@@ -51,6 +52,7 @@ public class BlogsItemSelectorViewDisplayContext {
 		_blogsEntryLocalService = blogsEntryLocalService;
 		_blogsItemSelectorCriterion = blogsItemSelectorCriterion;
 		_blogsItemSelectorView = blogsItemSelectorView;
+		_configurationProvider = configurationProvider;
 		_httpServletRequest = httpServletRequest;
 		_itemSelectedEventName = itemSelectedEventName;
 		_itemSelectorReturnTypeResolverHandler =
@@ -148,7 +150,7 @@ public class BlogsItemSelectorViewDisplayContext {
 
 		if (_blogsFileUploadsConfiguration == null) {
 			_blogsFileUploadsConfiguration =
-				ConfigurationProviderUtil.getSystemConfiguration(
+				_configurationProvider.getSystemConfiguration(
 					BlogsFileUploadsConfiguration.class);
 		}
 
@@ -159,6 +161,7 @@ public class BlogsItemSelectorViewDisplayContext {
 	private BlogsFileUploadsConfiguration _blogsFileUploadsConfiguration;
 	private final BlogsItemSelectorCriterion _blogsItemSelectorCriterion;
 	private final BlogsItemSelectorView _blogsItemSelectorView;
+	private final ConfigurationProvider _configurationProvider;
 	private final HttpServletRequest _httpServletRequest;
 	private final String _itemSelectedEventName;
 	private final ItemSelectorReturnTypeResolverHandler

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -87,8 +88,8 @@ public class CommerceChannelCategoryDisplayLayoutsScreenNavigationEntry
 				new CategoryCPDisplayLayoutDisplayContext(
 					_actionHelper, _assetCategoryLocalService,
 					httpServletRequest, _commerceChannelLocalService,
-					_cpDisplayLayoutService, _groupLocalService, _itemSelector,
-					_layoutLocalService);
+					_configurationProvider, _cpDisplayLayoutService,
+					_groupLocalService, _itemSelector, _layoutLocalService);
 
 		httpServletRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -110,6 +111,9 @@ public class CommerceChannelCategoryDisplayLayoutsScreenNavigationEntry
 
 	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPDisplayLayoutService _cpDisplayLayoutService;

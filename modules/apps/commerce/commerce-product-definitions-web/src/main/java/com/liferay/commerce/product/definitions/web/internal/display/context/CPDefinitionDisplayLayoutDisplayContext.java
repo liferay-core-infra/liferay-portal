@@ -29,7 +29,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -57,6 +57,7 @@ public class CPDefinitionDisplayLayoutDisplayContext
 	public CPDefinitionDisplayLayoutDisplayContext(
 		ActionHelper actionHelper, HttpServletRequest httpServletRequest,
 		CommerceChannelLocalService commerceChannelLocalService,
+		ConfigurationProvider configurationProvider,
 		CPDefinitionService cpDefinitionService,
 		CPDisplayLayoutService cpDisplayLayoutService,
 		GroupLocalService groupLocalService, ItemSelector itemSelector,
@@ -67,6 +68,7 @@ public class CPDefinitionDisplayLayoutDisplayContext
 		super(actionHelper, httpServletRequest);
 
 		_commerceChannelLocalService = commerceChannelLocalService;
+		_configurationProvider = configurationProvider;
 		_cpDefinitionService = cpDefinitionService;
 		_cpDisplayLayoutService = cpDisplayLayoutService;
 		_groupLocalService = groupLocalService;
@@ -137,7 +139,7 @@ public class CPDefinitionDisplayLayoutDisplayContext
 		CommerceChannel commerceChannel = getCommerceChannel();
 
 		CPDisplayLayoutConfiguration cpDisplayLayoutConfiguration =
-			ConfigurationProviderUtil.getConfiguration(
+			_configurationProvider.getConfiguration(
 				CPDisplayLayoutConfiguration.class,
 				new GroupServiceSettingsLocator(
 					commerceChannel.getGroupId(),
@@ -330,6 +332,7 @@ public class CPDefinitionDisplayLayoutDisplayContext
 	}
 
 	private final CommerceChannelLocalService _commerceChannelLocalService;
+	private final ConfigurationProvider _configurationProvider;
 	private final CPDefinitionService _cpDefinitionService;
 	private CPDisplayLayout _cpDisplayLayout;
 	private final CPDisplayLayoutService _cpDisplayLayoutService;

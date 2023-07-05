@@ -9,6 +9,7 @@ import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.util.Portal;
@@ -74,7 +75,8 @@ public class SearchBarPortlet extends MVCPortlet {
 		try {
 			searchBarPortletDisplayContextFactory =
 				new SearchBarPortletDisplayContextFactory(
-					layoutLocalService, portal, renderRequest);
+					configurationProvider, layoutLocalService, portal,
+					renderRequest);
 
 			SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 				searchBarPortletDisplayContextFactory.create(
@@ -108,6 +110,9 @@ public class SearchBarPortlet extends MVCPortlet {
 	protected void deactivate() {
 		_portletRegistry.unregisterAlias(_ALIAS);
 	}
+
+	@Reference
+	protected ConfigurationProvider configurationProvider;
 
 	@Reference
 	protected LayoutLocalService layoutLocalService;

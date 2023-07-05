@@ -40,6 +40,7 @@ page import="com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil" %
 page import="com.liferay.expando.kernel.service.ExpandoColumnServiceUtil" %><%@
 page import="com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil" %><%@
 page import="com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil" %><%@
+page import="com.liferay.expando.util.comparator.CustomAttributesDisplayComparator" %><%@
 page import="com.liferay.expando.web.internal.display.context.ExpandoDisplayContext" %><%@
 page import="com.liferay.expando.web.internal.search.CustomFieldChecker" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
@@ -66,7 +67,6 @@ page import="com.liferay.portal.kernel.util.TextFormatter" %><%@
 page import="com.liferay.portal.kernel.util.UnicodeProperties" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
-page import="com.liferay.portlet.expando.util.comparator.CustomAttributesDisplayComparator" %><%@
 page import="com.liferay.site.navigation.taglib.servlet.taglib.util.BreadcrumbEntriesUtil" %><%@
 page import="com.liferay.taglib.search.ResultRow" %>
 

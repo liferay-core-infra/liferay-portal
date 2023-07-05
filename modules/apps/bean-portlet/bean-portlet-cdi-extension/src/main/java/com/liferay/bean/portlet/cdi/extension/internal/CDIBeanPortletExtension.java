@@ -32,14 +32,13 @@ import com.liferay.bean.portlet.extension.BeanPortletMethodInvoker;
 import com.liferay.bean.portlet.extension.BeanPortletMethodType;
 import com.liferay.bean.portlet.extension.ScopedBean;
 import com.liferay.bean.portlet.extension.ViewRenderer;
-import com.liferay.bean.portlet.registration.BeanPortletRegistrar;
+import com.liferay.bean.portlet.registration.BeanPortletRegistrarBag;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.async.PortletAsyncListenerFactory;
 import com.liferay.portal.kernel.portlet.async.PortletAsyncScopeManagerFactory;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.PrintWriter;
@@ -250,47 +249,6 @@ public class CDIBeanPortletExtension implements Extension {
 				"servlet.context.name", servletContext.getServletContextName()
 			).build();
 
-		_serviceRegistrations.add(
-			bundleContext.registerService(
-				PortletAsyncScopeManagerFactory.class,
-				PortletAsyncScopeManagerImpl::new, properties));
-
-		_serviceRegistrations.add(
-			bundleContext.registerService(
-				PortletAsyncListenerFactory.class,
-				new PortletAsyncListenerFactory() {
-
-					@Override
-					public <T extends PortletAsyncListener> T
-							getPortletAsyncListener(Class<T> clazz)
-						throws PortletException {
-
-						Bean<?> bean = beanManager.resolve(
-							beanManager.getBeans(clazz));
-
-						if (bean == null) {
-							throw new PortletException(
-								"Unable to create an instance of " +
-									clazz.getName());
-						}
-
-						try {
-							return clazz.cast(
-								beanManager.getReference(
-									bean, bean.getBeanClass(),
-									beanManager.createCreationalContext(bean)));
-						}
-						catch (Exception exception) {
-							throw new PortletException(
-								"Unable to create an instance of " +
-									clazz.getName(),
-								exception);
-						}
-					}
-
-				},
-				properties));
-
 		BeanFilterMethodInvoker beanFilterMethodInvoker =
 			new BeanFilterMethodInvoker() {
 
@@ -383,12 +341,57 @@ public class CDIBeanPortletExtension implements Extension {
 
 			};
 
-		_serviceRegistrations.addAll(
-			_beanPortletRegistrar.register(
+		BeanPortletRegistrarBag beanPortletRegistrarBag =
+			new BeanPortletRegistrarBag(
 				new CDIBeanFilterMethodFactory(beanManager),
 				beanFilterMethodInvoker,
 				new CDIBeanPortletMethodFactory(beanManager),
-				beanPortletMethodInvoker, _discoveredClasses, servletContext));
+				beanPortletMethodInvoker, _discoveredClasses, servletContext);
+
+		beanPortletRegistrarBag.addServiceRegistration(
+			bundleContext.registerService(
+				PortletAsyncScopeManagerFactory.class,
+				PortletAsyncScopeManagerImpl::new, properties));
+
+		beanPortletRegistrarBag.addServiceRegistration(
+			bundleContext.registerService(
+				PortletAsyncListenerFactory.class,
+				new PortletAsyncListenerFactory() {
+
+					@Override
+					public <T extends PortletAsyncListener> T
+							getPortletAsyncListener(Class<T> clazz)
+						throws PortletException {
+
+						Bean<?> bean = beanManager.resolve(
+							beanManager.getBeans(clazz));
+
+						if (bean == null) {
+							throw new PortletException(
+								"Unable to create an instance of " +
+									clazz.getName());
+						}
+
+						try {
+							return clazz.cast(
+								beanManager.getReference(
+									bean, bean.getBeanClass(),
+									beanManager.createCreationalContext(bean)));
+						}
+						catch (Exception exception) {
+							throw new PortletException(
+								"Unable to create an instance of " +
+									clazz.getName(),
+								exception);
+						}
+					}
+
+				},
+				properties));
+
+		_serviceRegistrations.add(
+			bundleContext.registerService(
+				BeanPortletRegistrarBag.class, beanPortletRegistrarBag, null));
 
 		Bean<?> bean = beanManager.resolve(
 			beanManager.getBeans(ViewRenderer.class));
@@ -453,8 +456,11 @@ public class CDIBeanPortletExtension implements Extension {
 	public void step6ApplicationScopedBeforeDestroyed(
 		@Destroyed(ApplicationScoped.class) @Observes Object contextObject) {
 
-		_beanPortletRegistrar.unregister(
-			_serviceRegistrations, (ServletContext)contextObject);
+		for (ServiceRegistration<BeanPortletRegistrarBag> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 
 		_serviceRegistrations.clear();
 	}
@@ -656,11 +662,6 @@ public class CDIBeanPortletExtension implements Extension {
 
 		};
 
-	private static volatile BeanPortletRegistrar _beanPortletRegistrar =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			BeanPortletRegistrar.class, CDIBeanPortletExtension.class,
-			"_beanPortletRegistrar", true);
-
 	private static final Annotation _portletRequestScoped =
 		new PortletRequestScoped() {
 
@@ -687,8 +688,8 @@ public class CDIBeanPortletExtension implements Extension {
 		};
 
 	private final Set<Class<?>> _discoveredClasses = new HashSet<>();
-	private final List<ServiceRegistration<?>> _serviceRegistrations =
-		new ArrayList<>();
+	private final List<ServiceRegistration<BeanPortletRegistrarBag>>
+		_serviceRegistrations = new ArrayList<>();
 	private ViewRenderer _viewRenderer;
 
 }

@@ -22,7 +22,7 @@ import com.liferay.bean.portlet.extension.BeanPortletMethodInvoker;
 import com.liferay.bean.portlet.extension.BeanPortletMethodType;
 import com.liferay.bean.portlet.extension.ScopedBean;
 import com.liferay.bean.portlet.extension.ViewRenderer;
-import com.liferay.bean.portlet.registration.BeanPortletRegistrar;
+import com.liferay.bean.portlet.registration.BeanPortletRegistrarBag;
 import com.liferay.bean.portlet.spring.extension.internal.scope.SpringPortletRequestScope;
 import com.liferay.bean.portlet.spring.extension.internal.scope.SpringPortletSessionScope;
 import com.liferay.bean.portlet.spring.extension.internal.scope.SpringRedirectScope;
@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.async.PortletAsyncListenerFactory;
 import com.liferay.portal.kernel.portlet.async.PortletAsyncScopeManagerFactory;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.PrintWriter;
@@ -143,43 +142,6 @@ public class SpringBeanPortletExtension {
 				"servlet.context.name", servletContext.getServletContextName()
 			).build();
 
-		_serviceRegistrations.add(
-			bundleContext.registerService(
-				PortletAsyncScopeManagerFactory.class,
-				SpringPortletAsyncScopeManager::new, properties));
-
-		_serviceRegistrations.add(
-			bundleContext.registerService(
-				PortletAsyncListenerFactory.class,
-				new PortletAsyncListenerFactory() {
-
-					@Override
-					public <T extends PortletAsyncListener> T
-							getPortletAsyncListener(Class<T> clazz)
-						throws PortletException {
-
-						T bean = _applicationContext.getBean(clazz);
-
-						if (bean == null) {
-							throw new PortletException(
-								"Unable to create an instance of " +
-									clazz.getName());
-						}
-
-						try {
-							return clazz.cast(bean);
-						}
-						catch (Exception exception) {
-							throw new PortletException(
-								"Unable to create an instance of " +
-									clazz.getName(),
-								exception);
-						}
-					}
-
-				},
-				properties));
-
 		BeanFilterMethodInvoker beanFilterMethodInvoker =
 			new BeanFilterMethodInvoker() {
 
@@ -277,12 +239,53 @@ public class SpringBeanPortletExtension {
 
 			};
 
-		_serviceRegistrations.addAll(
-			_beanPortletRegistrar.register(
+		BeanPortletRegistrarBag beanPortletRegistrarBag =
+			new BeanPortletRegistrarBag(
 				new SpringBeanFilterMethodFactory(_configurableBeanFactory),
 				beanFilterMethodInvoker,
 				new SpringBeanPortletMethodFactory(_configurableBeanFactory),
-				beanPortletMethodInvoker, _annotatedClasses, servletContext));
+				beanPortletMethodInvoker, _annotatedClasses, servletContext);
+
+		beanPortletRegistrarBag.addServiceRegistration(
+			bundleContext.registerService(
+				PortletAsyncScopeManagerFactory.class,
+				SpringPortletAsyncScopeManager::new, properties));
+
+		beanPortletRegistrarBag.addServiceRegistration(
+			bundleContext.registerService(
+				PortletAsyncListenerFactory.class,
+				new PortletAsyncListenerFactory() {
+
+					@Override
+					public <T extends PortletAsyncListener> T
+							getPortletAsyncListener(Class<T> clazz)
+						throws PortletException {
+
+						T bean = _applicationContext.getBean(clazz);
+
+						if (bean == null) {
+							throw new PortletException(
+								"Unable to create an instance of " +
+									clazz.getName());
+						}
+
+						try {
+							return clazz.cast(bean);
+						}
+						catch (Exception exception) {
+							throw new PortletException(
+								"Unable to create an instance of " +
+									clazz.getName(),
+								exception);
+						}
+					}
+
+				},
+				properties));
+
+		_serviceRegistrations.add(
+			bundleContext.registerService(
+				BeanPortletRegistrarBag.class, beanPortletRegistrarBag, null));
 	}
 
 	public void step4SessionScopeBeforeDestroyed(HttpSession httpSession) {
@@ -304,7 +307,11 @@ public class SpringBeanPortletExtension {
 	public void step5ApplicationScopeBeforeDestroyed(
 		ServletContext servletContext) {
 
-		_beanPortletRegistrar.unregister(_serviceRegistrations, servletContext);
+		for (ServiceRegistration<BeanPortletRegistrarBag> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 
 		_serviceRegistrations.clear();
 	}
@@ -541,15 +548,10 @@ public class SpringBeanPortletExtension {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SpringBeanPortletExtension.class);
 
-	private static volatile BeanPortletRegistrar _beanPortletRegistrar =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			BeanPortletRegistrar.class, SpringBeanPortletExtension.class,
-			"_beanPortletRegistrar", true);
-
 	private final Set<Class<?>> _annotatedClasses = new HashSet<>();
 	private final ApplicationContext _applicationContext;
 	private BeanFactory _configurableBeanFactory;
-	private final List<ServiceRegistration<?>> _serviceRegistrations =
-		new ArrayList<>();
+	private final List<ServiceRegistration<BeanPortletRegistrarBag>>
+		_serviceRegistrations = new ArrayList<>();
 
 }

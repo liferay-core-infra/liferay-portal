@@ -101,6 +101,8 @@ public class CommentsSubscriptionTest {
 
 		Assert.assertFalse(
 			discussionPermission.hasSubscribePermission(
+				PermissionCheckerFactoryUtil.create(
+					UserLocalServiceUtil.getGuestUser(_group.getCompanyId())),
 				TestPropsValues.getCompanyId(), _group.getGroupId(),
 				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
 	}
@@ -121,6 +123,7 @@ public class CommentsSubscriptionTest {
 
 		Assert.assertTrue(
 			discussionPermission.hasSubscribePermission(
+				PermissionCheckerFactoryUtil.create(_user),
 				_group.getCompanyId(), _group.getGroupId(),
 				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
 	}

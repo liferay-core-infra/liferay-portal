@@ -71,8 +71,15 @@ public class ReleaseManagerOSGiCommandsTest {
 				).build());
 
 		try {
+			Bundle portalUpgradeImplBundle = FrameworkUtil.getBundle(
+				_releaseManagerImpl.getClass());
+
+			Class<?> clazz = portalUpgradeImplBundle.loadClass(
+				"com.liferay.portal.upgrade.internal.release." +
+					"ReleaseManagerUtil");
+
 			Set<String> bundleSymbolicNames = ReflectionTestUtil.invoke(
-				_releaseManagerImpl, "getBundleSymbolicNames", null);
+				clazz, "getBundleSymbolicNames", null);
 
 			Assert.assertTrue(bundleSymbolicNames.contains(bundleSymbolicName));
 
@@ -81,6 +88,9 @@ public class ReleaseManagerOSGiCommandsTest {
 				new Class<?>[] {String.class}, bundleSymbolicName);
 
 			Assert.assertFalse(Validator.isBlank(listInfo));
+		}
+		catch (ClassNotFoundException classNotFoundException) {
+			throw new RuntimeException(classNotFoundException);
 		}
 		finally {
 			serviceRegistration.unregister();

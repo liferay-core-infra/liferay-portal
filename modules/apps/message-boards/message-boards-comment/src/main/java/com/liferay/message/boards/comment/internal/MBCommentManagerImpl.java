@@ -319,7 +319,7 @@ public class MBCommentManagerImpl implements CommentManager {
 
 	@Override
 	public DiscussionPermission getDiscussionPermission() {
-		return new MBDiscussionPermissionImpl();
+		return _discussionPermission;
 	}
 
 	@Override
@@ -522,6 +522,9 @@ public class MBCommentManagerImpl implements CommentManager {
 		return new MBDiscussionCommentImpl(
 			treeWalker.getRoot(), treeWalker, ratingsEntries, ratingsStats);
 	}
+
+	@Reference
+	private DiscussionPermission _discussionPermission;
 
 	@Reference
 	private MBDiscussionLocalService _mbDiscussionLocalService;

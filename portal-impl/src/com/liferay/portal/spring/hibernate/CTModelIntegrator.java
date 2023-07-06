@@ -105,7 +105,7 @@ public class CTModelIntegrator implements Integrator {
 			sessionFactoryServiceRegistry.getService(
 				EventListenerRegistry.class);
 
-		eventListenerRegistry.setListeners(
+		eventListenerRegistry.appendListeners(
 			EventType.PRE_UPDATE,
 			preUpdateEvent -> {
 				long ctCollectionId =

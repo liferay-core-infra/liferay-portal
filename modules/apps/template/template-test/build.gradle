@@ -9,6 +9,7 @@ dependencies {
 	testIntegrationCompile project(":apps:journal:journal-api")
 	testIntegrationCompile project(":apps:journal:journal-test-util")
 	testIntegrationCompile project(":apps:layout:layout-test-util")
+	testIntegrationCompile project(":apps:portal:portal-upload-test-util")
 	testIntegrationCompile project(":apps:portlet-display-template:portlet-display-template-api")
 	testIntegrationCompile project(":apps:template:template-api")
 	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")

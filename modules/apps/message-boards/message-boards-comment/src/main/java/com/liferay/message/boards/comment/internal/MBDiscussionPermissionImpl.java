@@ -28,10 +28,6 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
  */
 public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
-	public MBDiscussionPermissionImpl(PermissionChecker permissionChecker) {
-		_permissionChecker = permissionChecker;
-	}
-
 	@Override
 	public boolean hasAddPermission(
 		PermissionChecker permissionChecker, long companyId, long groupId,
@@ -90,7 +86,5 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			permissionChecker, companyId, groupId, className, classPK,
 			ActionKeys.VIEW);
 	}
-
-	private final PermissionChecker _permissionChecker;
 
 }

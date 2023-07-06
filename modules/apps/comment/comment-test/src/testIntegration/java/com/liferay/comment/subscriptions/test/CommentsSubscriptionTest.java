@@ -95,9 +95,7 @@ public class CommentsSubscriptionTest {
 			String.valueOf(blogsEntry.getEntryId()), ActionKeys.VIEW);
 
 		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(
-				PermissionCheckerFactoryUtil.create(
-					UserLocalServiceUtil.getGuestUser(_group.getCompanyId())));
+			_commentManager.getDiscussionPermission();
 
 		Assert.assertFalse(
 			discussionPermission.hasSubscribePermission(
@@ -118,8 +116,7 @@ public class CommentsSubscriptionTest {
 				_group.getGroupId(), _creatorUser.getUserId()));
 
 		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(
-				PermissionCheckerFactoryUtil.create(_user));
+			_commentManager.getDiscussionPermission();
 
 		Assert.assertTrue(
 			discussionPermission.hasSubscribePermission(

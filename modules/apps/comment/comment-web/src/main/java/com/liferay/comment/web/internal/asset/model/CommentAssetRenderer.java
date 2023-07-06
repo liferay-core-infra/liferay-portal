@@ -249,7 +249,7 @@ public class CommentAssetRenderer
 		throws PortalException {
 
 		DiscussionPermission discussionPermission =
-			CommentManagerUtil.getDiscussionPermission(permissionChecker);
+			CommentManagerUtil.getDiscussionPermission();
 
 		return discussionPermission.hasUpdatePermission(
 			permissionChecker, _workflowableComment.getCommentId());
@@ -260,7 +260,7 @@ public class CommentAssetRenderer
 		throws PortalException {
 
 		DiscussionPermission discussionPermission =
-			CommentManagerUtil.getDiscussionPermission(permissionChecker);
+			CommentManagerUtil.getDiscussionPermission();
 
 		return discussionPermission.hasPermission(
 			permissionChecker, _workflowableComment, ActionKeys.VIEW);

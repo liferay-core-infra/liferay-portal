@@ -119,7 +119,7 @@ public class CommentAssetRendererFactory
 		throws Exception {
 
 		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(permissionChecker);
+			_commentManager.getDiscussionPermission();
 
 		return discussionPermission.hasPermission(
 			permissionChecker, classPK, actionId);

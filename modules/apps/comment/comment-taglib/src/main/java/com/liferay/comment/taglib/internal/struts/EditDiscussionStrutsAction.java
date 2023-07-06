@@ -144,8 +144,7 @@ public class EditDiscussionStrutsAction implements StrutsAction {
 
 		long commentId = ParamUtil.getLong(httpServletRequest, "commentId");
 
-		DiscussionPermission discussionPermission = _getDiscussionPermission(
-			themeDisplay);
+		DiscussionPermission discussionPermission = _getDiscussionPermission();
 
 		discussionPermission.checkDeletePermission(
 			themeDisplay.getPermissionChecker(), commentId);
@@ -153,13 +152,9 @@ public class EditDiscussionStrutsAction implements StrutsAction {
 		_commentManager.deleteComment(commentId);
 	}
 
-	private DiscussionPermission _getDiscussionPermission(
-			ThemeDisplay themeDisplay)
-		throws Exception {
-
+	private DiscussionPermission _getDiscussionPermission() throws Exception {
 		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(
-				themeDisplay.getPermissionChecker());
+			_commentManager.getDiscussionPermission();
 
 		if (discussionPermission == null) {
 			throw new PrincipalException("Discussion permission is null");
@@ -176,8 +171,7 @@ public class EditDiscussionStrutsAction implements StrutsAction {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		DiscussionPermission discussionPermission = _getDiscussionPermission(
-			themeDisplay);
+		DiscussionPermission discussionPermission = _getDiscussionPermission();
 
 		String className = ParamUtil.getString(httpServletRequest, "className");
 		long classPK = ParamUtil.getLong(httpServletRequest, "classPK");
@@ -219,8 +213,7 @@ public class EditDiscussionStrutsAction implements StrutsAction {
 		Function<String, ServiceContext> serviceContextFunction =
 			new ServiceContextFunction(httpServletRequest);
 
-		DiscussionPermission discussionPermission = _getDiscussionPermission(
-			themeDisplay);
+		DiscussionPermission discussionPermission = _getDiscussionPermission();
 
 		if (commentId <= 0) {
 

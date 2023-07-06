@@ -729,8 +729,7 @@ public class CommentResourceImpl extends BaseCommentResourceImpl {
 	}
 
 	private DiscussionPermission _getDiscussionPermission() {
-		return _commentManager.getDiscussionPermission(
-			PermissionThreadLocal.getPermissionChecker());
+		return _commentManager.getDiscussionPermission();
 	}
 
 	private long _getUserId() {

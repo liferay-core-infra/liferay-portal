@@ -109,7 +109,7 @@ public class MBDiscussionPermissionImplTest {
 			PermissionCheckerFactoryUtil.create(_siteUser1);
 
 		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(permissionChecker);
+			_commentManager.getDiscussionPermission();
 
 		Assert.assertFalse(
 			discussionPermission.hasAddPermission(
@@ -129,7 +129,7 @@ public class MBDiscussionPermissionImplTest {
 			PermissionCheckerFactoryUtil.create(_siteUser1);
 
 		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(permissionChecker);
+			_commentManager.getDiscussionPermission();
 
 		Assert.assertFalse(
 			discussionPermission.hasAddPermission(
@@ -144,7 +144,7 @@ public class MBDiscussionPermissionImplTest {
 			PermissionCheckerFactoryUtil.create(_siteUser1);
 
 		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(permissionChecker);
+			_commentManager.getDiscussionPermission();
 
 		Assert.assertTrue(
 			discussionPermission.hasAddPermission(
@@ -161,7 +161,7 @@ public class MBDiscussionPermissionImplTest {
 			PermissionCheckerFactoryUtil.create(_siteUser1);
 
 		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(permissionChecker);
+			_commentManager.getDiscussionPermission();
 
 		Assert.assertFalse(
 			discussionPermission.hasUpdatePermission(
@@ -186,7 +186,7 @@ public class MBDiscussionPermissionImplTest {
 				PermissionCheckerFactoryUtil.create(_siteUser2);
 
 			DiscussionPermission discussionPermission =
-				_commentManager.getDiscussionPermission(permissionChecker);
+				_commentManager.getDiscussionPermission();
 
 			Assert.assertFalse(
 				discussionPermission.hasUpdatePermission(
@@ -216,7 +216,7 @@ public class MBDiscussionPermissionImplTest {
 				PermissionCheckerFactoryUtil.create(_siteUser1);
 
 			DiscussionPermission discussionPermission =
-				_commentManager.getDiscussionPermission(permissionChecker);
+				_commentManager.getDiscussionPermission();
 
 			Assert.assertTrue(
 				discussionPermission.hasUpdatePermission(

@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.comment.DiscussionStagingHandler;
 import com.liferay.portal.kernel.comment.DuplicateCommentException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -319,10 +318,8 @@ public class MBCommentManagerImpl implements CommentManager {
 	}
 
 	@Override
-	public DiscussionPermission getDiscussionPermission(
-		PermissionChecker permissionChecker) {
-
-		return new MBDiscussionPermissionImpl(permissionChecker);
+	public DiscussionPermission getDiscussionPermission() {
+		return new MBDiscussionPermissionImpl();
 	}
 
 	@Override

@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.segments.experiment.web.internal.constants.ProductNavigationControlMenuEntryConstants;
-import com.liferay.segments.experiment.web.internal.processor.SegmentsExperimentSegmentsExperienceRequestProcessor;
+import com.liferay.segments.experiment.web.internal.util.SegmentsExperimentCookieCleanerUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,8 +44,8 @@ public class LogoutPreAction extends Action {
 			ProductNavigationControlMenuEntryConstants.SESSION_CLICKS_KEY,
 			"closed");
 
-		_segmentsExperimentSegmentsExperienceRequestProcessor.
-			cleanCookieLogoutAction(httpServletRequest, httpServletResponse);
+		SegmentsExperimentCookieCleanerUtil.cleanCookieLogoutAction(
+			httpServletRequest, httpServletResponse);
 	}
 
 	@Reference(
@@ -53,9 +53,5 @@ public class LogoutPreAction extends Action {
 	)
 	private ProductNavigationControlMenuEntry
 		_segmentsExperimentProductNavigationControlMenuEntry;
-
-	@Reference
-	private SegmentsExperimentSegmentsExperienceRequestProcessor
-		_segmentsExperimentSegmentsExperienceRequestProcessor;
 
 }

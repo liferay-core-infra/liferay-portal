@@ -657,6 +657,9 @@ public class EditInfoItemStrutsActionTest {
 		MockMultipartHttpServletRequest mockMultipartHttpServletRequest =
 			new MockMultipartHttpServletRequest();
 
+		mockMultipartHttpServletRequest.setContentType(
+			"multipart/form-data;boundary=" + System.currentTimeMillis());
+
 		Map<String, FileItem[]> fileParameters = null;
 
 		if (attachmentValue != null) {

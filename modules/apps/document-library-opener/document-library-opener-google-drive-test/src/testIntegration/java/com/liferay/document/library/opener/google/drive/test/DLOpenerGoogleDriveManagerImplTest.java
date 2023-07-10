@@ -67,7 +67,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 @Sync
-public class DLOpenerGoogleDriveManagerTest {
+public class DLOpenerGoogleDriveManagerImplTest {
 
 	@ClassRule
 	@Rule

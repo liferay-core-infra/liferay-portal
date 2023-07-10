@@ -16,7 +16,7 @@ package com.liferay.document.library.opener.google.drive.web.internal.servlet;
 
 import com.google.api.client.auth.oauth2.TokenResponseException;
 
-import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
+import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveWebConstants;
 import com.liferay.document.library.opener.google.drive.web.internal.oauth.OAuth2StateUtil;
 import com.liferay.document.library.opener.oauth.OAuth2State;

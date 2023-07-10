@@ -19,8 +19,9 @@ import com.liferay.document.library.kernel.service.DLAppServiceWrapper;
 import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.document.library.opener.constants.DLOpenerFileEntryReferenceConstants;
 import com.liferay.document.library.opener.constants.DLOpenerMimeTypes;
+import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveFileReference;
-import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
+import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManagerUtil;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveConstants;
 import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
@@ -137,7 +138,7 @@ public class DLOpenerGoogleDriveDLAppServiceWrapper
 		throws PortalException {
 
 		DLOpenerGoogleDriveFileReference dlOpenerGoogleDriveFileReference =
-			_dlOpenerGoogleDriveManager.getDLOpenerGoogleDriveFileReference(
+			DLOpenerGoogleDriveManagerUtil.getDLOpenerGoogleDriveFileReference(
 				serviceContext.getUserId(), fileEntry);
 
 		File file = dlOpenerGoogleDriveFileReference.getContentFile();

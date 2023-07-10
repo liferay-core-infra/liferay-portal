@@ -16,7 +16,7 @@ package com.liferay.document.library.opener.google.drive.web.internal.portlet.ac
 
 import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
+import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveWebKeys;
 import com.liferay.document.library.opener.google.drive.web.internal.helper.GoogleDrivePortletRequestAuthorizationHelper;
 import com.liferay.document.library.opener.google.drive.web.internal.oauth.OAuth2StateUtil;

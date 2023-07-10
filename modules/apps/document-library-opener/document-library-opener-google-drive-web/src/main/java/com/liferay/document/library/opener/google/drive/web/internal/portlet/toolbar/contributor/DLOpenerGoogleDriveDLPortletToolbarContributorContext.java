@@ -16,7 +16,7 @@ package com.liferay.document.library.opener.google.drive.web.internal.portlet.to
 
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.opener.constants.DLOpenerMimeTypes;
-import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
+import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.portlet.toolbar.contributor.DLPortletToolbarContributorContext;
 import com.liferay.portal.kernel.bean.BeanProperties;
 import com.liferay.portal.kernel.exception.PortalException;

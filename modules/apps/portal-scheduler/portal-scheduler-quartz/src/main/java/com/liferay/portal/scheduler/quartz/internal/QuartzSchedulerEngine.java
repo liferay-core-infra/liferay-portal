@@ -833,8 +833,13 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 		SchedulerContext schedulerContext = scheduler.getContext();
 
-		schedulerContext.put("jSONFactory", _jsonFactory);
-		schedulerContext.put("messageBus", _messageBus);
+		MessageSenderJob messageSenderJob = new MessageSenderJob();
+
+		messageSenderJob.setJSONFactory(_jsonFactory);
+		messageSenderJob.setMessageBus(_messageBus);
+
+		schedulerContext.put(
+			MessageSenderJob.class.getName(), messageSenderJob);
 
 		ListenerManager listenerManager = scheduler.getListenerManager();
 

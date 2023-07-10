@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -55,7 +56,8 @@ public class HttpMethodScopeLogicUtil {
 			}
 
 			ScopeFinder scopeFinder = _bundleContext.getService(
-				_getServiceReference(applicationName, ScopeFinder.class));
+				_getServiceReference(
+					applicationName, ScopeFinder.class, _bundleContext));
 
 			Collection<String> scopes = scopeFinder.findScopes();
 
@@ -75,12 +77,28 @@ public class HttpMethodScopeLogicUtil {
 		return false;
 	}
 
+	public static BundleContext setBundleContext(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
+		return _bundleContext;
+	}
+
+	public static Set<String> setIgnoreMissingScopes(
+		Map<String, Object> properties) {
+
+		_ignoreMissingScopes = new HashSet<>(
+			StringPlus.asList(properties.get("ignore.missing.scopes")));
+
+		return _ignoreMissingScopes;
+	}
+
 	private static <T> ServiceReference<? extends T> _getServiceReference(
-			String applicationName, Class<? extends T> clazz)
+			String applicationName, Class<? extends T> clazz,
+			BundleContext bundleContext)
 		throws Exception {
 
 		List<ServiceReference<T>> serviceReferences =
-			(List<ServiceReference<T>>)_bundleContext.<T>getServiceReferences(
+			(List<ServiceReference<T>>)bundleContext.<T>getServiceReferences(
 				(Class<T>)clazz, "(osgi.jaxrs.name=" + applicationName + ")");
 
 		if (ListUtil.isNotEmpty(serviceReferences)) {

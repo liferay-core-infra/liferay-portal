@@ -158,7 +158,7 @@ public class HttpMethodFeature implements Feature {
 
 	private BundleContext _bundleContext;
 
-	@Reference(target = "(oauth2.scope.checker.type=http.method)")
+	@Reference
 	private ScopeLogic _httpMethodScopeLogic;
 
 	private Function<String, Object> _propertyAccessorFunction;

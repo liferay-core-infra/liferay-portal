@@ -2,3 +2,19 @@ buildService {
 	apiDir = "../expando-api/src/main/java"
 	testDir = "../expando-test/src/testIntegration/java"
 }
+
+dependencies {
+	compileOnly group: "com.liferay", name: "jodd.util", version: "6.0.1.LIFERAY-PATCHED-1"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	compileOnly group: "org.apache.felix", name: "org.apache.felix.http.servlet-api", version: "1.1.2"
+	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
+	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
+	compileOnly project(":apps:expando:expando-api")
+	compileOnly project(":apps:portal:portal-aop-api")
+	compileOnly project(":core:osgi-service-tracker-collections")
+	compileOnly project(":core:petra:petra-function")
+	compileOnly project(":core:petra:petra-lang")
+	compileOnly project(":core:petra:petra-sql-dsl-api")
+	compileOnly project(":core:petra:petra-string")
+}

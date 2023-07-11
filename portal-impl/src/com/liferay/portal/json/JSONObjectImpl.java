@@ -357,6 +357,10 @@ public class JSONObjectImpl implements JSONObject {
 			Object value = valueUnsafeSupplier.get();
 
 			if (value != null) {
+				if (value instanceof Long) {
+					return put(key, (long)value);
+				}
+
 				return put(key, value);
 			}
 		}

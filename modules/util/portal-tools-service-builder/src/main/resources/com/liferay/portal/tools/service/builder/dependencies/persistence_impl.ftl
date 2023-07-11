@@ -1889,16 +1889,17 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 *
 				 * @param pk the primary key of the ${entity.humanName}
 				 * @param ${referenceEntity.variableName}PK the primary key of the ${referenceEntity.humanName}
+				 * @return <code>true</code> if the association between the ${entity.humanName} and the ${referenceEntity.humanName} is added; <code>false</code> if it was already added
 				 */
 				@Override
-				public void add${referenceEntity.name}(${entity.PKClassName} pk, ${referenceEntity.PKClassName} ${referenceEntity.variableName}PK) {
+				public boolean add${referenceEntity.name}(${entity.PKClassName} pk, ${referenceEntity.PKClassName} ${referenceEntity.variableName}PK) {
 					${entity.name} ${entity.variableName} = fetchByPrimaryKey(pk);
 
 					if (${entity.variableName} == null) {
-						${entity.variableName}To${referenceEntity.name}TableMapper.addTableMapping(CompanyThreadLocal.getCompanyId(), pk, ${referenceEntity.variableName}PK);
+						return ${entity.variableName}To${referenceEntity.name}TableMapper.addTableMapping(CompanyThreadLocal.getCompanyId(), pk, ${referenceEntity.variableName}PK);
 					}
 					else {
-						${entity.variableName}To${referenceEntity.name}TableMapper.addTableMapping(${entity.variableName}.getCompanyId(), pk, ${referenceEntity.variableName}PK);
+						return ${entity.variableName}To${referenceEntity.name}TableMapper.addTableMapping(${entity.variableName}.getCompanyId(), pk, ${referenceEntity.variableName}PK);
 					}
 				}
 
@@ -1907,16 +1908,17 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 *
 				 * @param pk the primary key of the ${entity.humanName}
 				 * @param ${referenceEntity.variableName} the ${referenceEntity.humanName}
+				 * @return <code>true</code> if the association between the ${entity.humanName} and the ${referenceEntity.humanName} is added; <code>false</code> if it was already added
 				 */
 				@Override
-				public void add${referenceEntity.name}(${entity.PKClassName} pk, ${referenceEntity.apiPackagePath}.model.${referenceEntity.name} ${referenceEntity.variableName}) {
+				public boolean add${referenceEntity.name}(${entity.PKClassName} pk, ${referenceEntity.apiPackagePath}.model.${referenceEntity.name} ${referenceEntity.variableName}) {
 					${entity.name} ${entity.variableName} = fetchByPrimaryKey(pk);
 
 					if (${entity.variableName} == null) {
-						${entity.variableName}To${referenceEntity.name}TableMapper.addTableMapping(CompanyThreadLocal.getCompanyId(), pk, ${referenceEntity.variableName}.getPrimaryKey());
+						return ${entity.variableName}To${referenceEntity.name}TableMapper.addTableMapping(CompanyThreadLocal.getCompanyId(), pk, ${referenceEntity.variableName}.getPrimaryKey());
 					}
 					else {
-						${entity.variableName}To${referenceEntity.name}TableMapper.addTableMapping(${entity.variableName}.getCompanyId(), pk, ${referenceEntity.variableName}.getPrimaryKey());
+						return ${entity.variableName}To${referenceEntity.name}TableMapper.addTableMapping(${entity.variableName}.getCompanyId(), pk, ${referenceEntity.variableName}.getPrimaryKey());
 					}
 				}
 

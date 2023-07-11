@@ -2344,16 +2344,19 @@ public interface UserPersistence
 	 *
 	 * @param pk the primary key of the user
 	 * @param groupPK the primary key of the group
+	 * @return <code>true</code> if the association between the user and the group is added; <code>false</code> if it was already added
 	 */
-	public void addGroup(long pk, long groupPK);
+	public boolean addGroup(long pk, long groupPK);
 
 	/**
 	 * Adds an association between the user and the group. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user
 	 * @param group the group
+	 * @return <code>true</code> if the association between the user and the group is added; <code>false</code> if it was already added
 	 */
-	public void addGroup(long pk, com.liferay.portal.kernel.model.Group group);
+	public boolean addGroup(
+		long pk, com.liferay.portal.kernel.model.Group group);
 
 	/**
 	 * Adds an association between the user and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2512,16 +2515,18 @@ public interface UserPersistence
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizationPK the primary key of the organization
+	 * @return <code>true</code> if the association between the user and the organization is added; <code>false</code> if it was already added
 	 */
-	public void addOrganization(long pk, long organizationPK);
+	public boolean addOrganization(long pk, long organizationPK);
 
 	/**
 	 * Adds an association between the user and the organization. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user
 	 * @param organization the organization
+	 * @return <code>true</code> if the association between the user and the organization is added; <code>false</code> if it was already added
 	 */
-	public void addOrganization(
+	public boolean addOrganization(
 		long pk, com.liferay.portal.kernel.model.Organization organization);
 
 	/**
@@ -2685,16 +2690,18 @@ public interface UserPersistence
 	 *
 	 * @param pk the primary key of the user
 	 * @param rolePK the primary key of the role
+	 * @return <code>true</code> if the association between the user and the role is added; <code>false</code> if it was already added
 	 */
-	public void addRole(long pk, long rolePK);
+	public boolean addRole(long pk, long rolePK);
 
 	/**
 	 * Adds an association between the user and the role. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user
 	 * @param role the role
+	 * @return <code>true</code> if the association between the user and the role is added; <code>false</code> if it was already added
 	 */
-	public void addRole(long pk, com.liferay.portal.kernel.model.Role role);
+	public boolean addRole(long pk, com.liferay.portal.kernel.model.Role role);
 
 	/**
 	 * Adds an association between the user and the roles. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2850,16 +2857,18 @@ public interface UserPersistence
 	 *
 	 * @param pk the primary key of the user
 	 * @param teamPK the primary key of the team
+	 * @return <code>true</code> if the association between the user and the team is added; <code>false</code> if it was already added
 	 */
-	public void addTeam(long pk, long teamPK);
+	public boolean addTeam(long pk, long teamPK);
 
 	/**
 	 * Adds an association between the user and the team. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user
 	 * @param team the team
+	 * @return <code>true</code> if the association between the user and the team is added; <code>false</code> if it was already added
 	 */
-	public void addTeam(long pk, com.liferay.portal.kernel.model.Team team);
+	public boolean addTeam(long pk, com.liferay.portal.kernel.model.Team team);
 
 	/**
 	 * Adds an association between the user and the teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -3016,16 +3025,18 @@ public interface UserPersistence
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroupPK the primary key of the user group
+	 * @return <code>true</code> if the association between the user and the user group is added; <code>false</code> if it was already added
 	 */
-	public void addUserGroup(long pk, long userGroupPK);
+	public boolean addUserGroup(long pk, long userGroupPK);
 
 	/**
 	 * Adds an association between the user and the user group. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroup the user group
+	 * @return <code>true</code> if the association between the user and the user group is added; <code>false</code> if it was already added
 	 */
-	public void addUserGroup(
+	public boolean addUserGroup(
 		long pk, com.liferay.portal.kernel.model.UserGroup userGroup);
 
 	/**

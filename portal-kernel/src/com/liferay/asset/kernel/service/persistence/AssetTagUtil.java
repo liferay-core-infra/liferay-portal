@@ -1604,9 +1604,10 @@ public class AssetTagUtil {
 	 *
 	 * @param pk the primary key of the asset tag
 	 * @param assetEntryPK the primary key of the asset entry
+	 * @return <code>true</code> if the association between the asset tag and the asset entry is added; <code>false</code> if it was already added
 	 */
-	public static void addAssetEntry(long pk, long assetEntryPK) {
-		getPersistence().addAssetEntry(pk, assetEntryPK);
+	public static boolean addAssetEntry(long pk, long assetEntryPK) {
+		return getPersistence().addAssetEntry(pk, assetEntryPK);
 	}
 
 	/**
@@ -1614,11 +1615,12 @@ public class AssetTagUtil {
 	 *
 	 * @param pk the primary key of the asset tag
 	 * @param assetEntry the asset entry
+	 * @return <code>true</code> if the association between the asset tag and the asset entry is added; <code>false</code> if it was already added
 	 */
-	public static void addAssetEntry(
+	public static boolean addAssetEntry(
 		long pk, com.liferay.asset.kernel.model.AssetEntry assetEntry) {
 
-		getPersistence().addAssetEntry(pk, assetEntry);
+		return getPersistence().addAssetEntry(pk, assetEntry);
 	}
 
 	/**

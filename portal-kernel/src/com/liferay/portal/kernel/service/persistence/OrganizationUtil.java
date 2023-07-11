@@ -2889,9 +2889,10 @@ public class OrganizationUtil {
 	 *
 	 * @param pk the primary key of the organization
 	 * @param groupPK the primary key of the group
+	 * @return <code>true</code> if the association between the organization and the group is added; <code>false</code> if it was already added
 	 */
-	public static void addGroup(long pk, long groupPK) {
-		getPersistence().addGroup(pk, groupPK);
+	public static boolean addGroup(long pk, long groupPK) {
+		return getPersistence().addGroup(pk, groupPK);
 	}
 
 	/**
@@ -2899,11 +2900,12 @@ public class OrganizationUtil {
 	 *
 	 * @param pk the primary key of the organization
 	 * @param group the group
+	 * @return <code>true</code> if the association between the organization and the group is added; <code>false</code> if it was already added
 	 */
-	public static void addGroup(
+	public static boolean addGroup(
 		long pk, com.liferay.portal.kernel.model.Group group) {
 
-		getPersistence().addGroup(pk, group);
+		return getPersistence().addGroup(pk, group);
 	}
 
 	/**
@@ -3098,9 +3100,10 @@ public class OrganizationUtil {
 	 *
 	 * @param pk the primary key of the organization
 	 * @param userPK the primary key of the user
+	 * @return <code>true</code> if the association between the organization and the user is added; <code>false</code> if it was already added
 	 */
-	public static void addUser(long pk, long userPK) {
-		getPersistence().addUser(pk, userPK);
+	public static boolean addUser(long pk, long userPK) {
+		return getPersistence().addUser(pk, userPK);
 	}
 
 	/**
@@ -3108,11 +3111,12 @@ public class OrganizationUtil {
 	 *
 	 * @param pk the primary key of the organization
 	 * @param user the user
+	 * @return <code>true</code> if the association between the organization and the user is added; <code>false</code> if it was already added
 	 */
-	public static void addUser(
+	public static boolean addUser(
 		long pk, com.liferay.portal.kernel.model.User user) {
 
-		getPersistence().addUser(pk, user);
+		return getPersistence().addUser(pk, user);
 	}
 
 	/**

@@ -1552,16 +1552,18 @@ public interface AssetEntryPersistence
 	 *
 	 * @param pk the primary key of the asset entry
 	 * @param assetTagPK the primary key of the asset tag
+	 * @return <code>true</code> if the association between the asset entry and the asset tag is added; <code>false</code> if it was already added
 	 */
-	public void addAssetTag(long pk, long assetTagPK);
+	public boolean addAssetTag(long pk, long assetTagPK);
 
 	/**
 	 * Adds an association between the asset entry and the asset tag. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the asset entry
 	 * @param assetTag the asset tag
+	 * @return <code>true</code> if the association between the asset entry and the asset tag is added; <code>false</code> if it was already added
 	 */
-	public void addAssetTag(
+	public boolean addAssetTag(
 		long pk, com.liferay.asset.kernel.model.AssetTag assetTag);
 
 	/**

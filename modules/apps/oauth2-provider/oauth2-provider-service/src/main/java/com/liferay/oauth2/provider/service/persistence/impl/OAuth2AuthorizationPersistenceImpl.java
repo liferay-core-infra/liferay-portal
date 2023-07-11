@@ -3495,18 +3495,21 @@ public class OAuth2AuthorizationPersistenceImpl
 	 *
 	 * @param pk the primary key of the o auth2 authorization
 	 * @param oAuth2ScopeGrantPK the primary key of the o auth2 scope grant
+	 * @return <code>true</code> if the association between the o auth2 authorization and the o auth2 scope grant is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addOAuth2ScopeGrant(long pk, long oAuth2ScopeGrantPK) {
+	public boolean addOAuth2ScopeGrant(long pk, long oAuth2ScopeGrantPK) {
 		OAuth2Authorization oAuth2Authorization = fetchByPrimaryKey(pk);
 
 		if (oAuth2Authorization == null) {
-			oAuth2AuthorizationToOAuth2ScopeGrantTableMapper.addTableMapping(
-				CompanyThreadLocal.getCompanyId(), pk, oAuth2ScopeGrantPK);
+			return oAuth2AuthorizationToOAuth2ScopeGrantTableMapper.
+				addTableMapping(
+					CompanyThreadLocal.getCompanyId(), pk, oAuth2ScopeGrantPK);
 		}
 		else {
-			oAuth2AuthorizationToOAuth2ScopeGrantTableMapper.addTableMapping(
-				oAuth2Authorization.getCompanyId(), pk, oAuth2ScopeGrantPK);
+			return oAuth2AuthorizationToOAuth2ScopeGrantTableMapper.
+				addTableMapping(
+					oAuth2Authorization.getCompanyId(), pk, oAuth2ScopeGrantPK);
 		}
 	}
 
@@ -3515,22 +3518,25 @@ public class OAuth2AuthorizationPersistenceImpl
 	 *
 	 * @param pk the primary key of the o auth2 authorization
 	 * @param oAuth2ScopeGrant the o auth2 scope grant
+	 * @return <code>true</code> if the association between the o auth2 authorization and the o auth2 scope grant is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addOAuth2ScopeGrant(
+	public boolean addOAuth2ScopeGrant(
 		long pk, OAuth2ScopeGrant oAuth2ScopeGrant) {
 
 		OAuth2Authorization oAuth2Authorization = fetchByPrimaryKey(pk);
 
 		if (oAuth2Authorization == null) {
-			oAuth2AuthorizationToOAuth2ScopeGrantTableMapper.addTableMapping(
-				CompanyThreadLocal.getCompanyId(), pk,
-				oAuth2ScopeGrant.getPrimaryKey());
+			return oAuth2AuthorizationToOAuth2ScopeGrantTableMapper.
+				addTableMapping(
+					CompanyThreadLocal.getCompanyId(), pk,
+					oAuth2ScopeGrant.getPrimaryKey());
 		}
 		else {
-			oAuth2AuthorizationToOAuth2ScopeGrantTableMapper.addTableMapping(
-				oAuth2Authorization.getCompanyId(), pk,
-				oAuth2ScopeGrant.getPrimaryKey());
+			return oAuth2AuthorizationToOAuth2ScopeGrantTableMapper.
+				addTableMapping(
+					oAuth2Authorization.getCompanyId(), pk,
+					oAuth2ScopeGrant.getPrimaryKey());
 		}
 	}
 

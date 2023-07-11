@@ -4859,9 +4859,10 @@ public class GroupUtil {
 	 *
 	 * @param pk the primary key of the group
 	 * @param organizationPK the primary key of the organization
+	 * @return <code>true</code> if the association between the group and the organization is added; <code>false</code> if it was already added
 	 */
-	public static void addOrganization(long pk, long organizationPK) {
-		getPersistence().addOrganization(pk, organizationPK);
+	public static boolean addOrganization(long pk, long organizationPK) {
+		return getPersistence().addOrganization(pk, organizationPK);
 	}
 
 	/**
@@ -4869,11 +4870,12 @@ public class GroupUtil {
 	 *
 	 * @param pk the primary key of the group
 	 * @param organization the organization
+	 * @return <code>true</code> if the association between the group and the organization is added; <code>false</code> if it was already added
 	 */
-	public static void addOrganization(
+	public static boolean addOrganization(
 		long pk, com.liferay.portal.kernel.model.Organization organization) {
 
-		getPersistence().addOrganization(pk, organization);
+		return getPersistence().addOrganization(pk, organization);
 	}
 
 	/**
@@ -5071,9 +5073,10 @@ public class GroupUtil {
 	 *
 	 * @param pk the primary key of the group
 	 * @param rolePK the primary key of the role
+	 * @return <code>true</code> if the association between the group and the role is added; <code>false</code> if it was already added
 	 */
-	public static void addRole(long pk, long rolePK) {
-		getPersistence().addRole(pk, rolePK);
+	public static boolean addRole(long pk, long rolePK) {
+		return getPersistence().addRole(pk, rolePK);
 	}
 
 	/**
@@ -5081,11 +5084,12 @@ public class GroupUtil {
 	 *
 	 * @param pk the primary key of the group
 	 * @param role the role
+	 * @return <code>true</code> if the association between the group and the role is added; <code>false</code> if it was already added
 	 */
-	public static void addRole(
+	public static boolean addRole(
 		long pk, com.liferay.portal.kernel.model.Role role) {
 
-		getPersistence().addRole(pk, role);
+		return getPersistence().addRole(pk, role);
 	}
 
 	/**
@@ -5283,9 +5287,10 @@ public class GroupUtil {
 	 *
 	 * @param pk the primary key of the group
 	 * @param userGroupPK the primary key of the user group
+	 * @return <code>true</code> if the association between the group and the user group is added; <code>false</code> if it was already added
 	 */
-	public static void addUserGroup(long pk, long userGroupPK) {
-		getPersistence().addUserGroup(pk, userGroupPK);
+	public static boolean addUserGroup(long pk, long userGroupPK) {
+		return getPersistence().addUserGroup(pk, userGroupPK);
 	}
 
 	/**
@@ -5293,11 +5298,12 @@ public class GroupUtil {
 	 *
 	 * @param pk the primary key of the group
 	 * @param userGroup the user group
+	 * @return <code>true</code> if the association between the group and the user group is added; <code>false</code> if it was already added
 	 */
-	public static void addUserGroup(
+	public static boolean addUserGroup(
 		long pk, com.liferay.portal.kernel.model.UserGroup userGroup) {
 
-		getPersistence().addUserGroup(pk, userGroup);
+		return getPersistence().addUserGroup(pk, userGroup);
 	}
 
 	/**
@@ -5492,9 +5498,10 @@ public class GroupUtil {
 	 *
 	 * @param pk the primary key of the group
 	 * @param userPK the primary key of the user
+	 * @return <code>true</code> if the association between the group and the user is added; <code>false</code> if it was already added
 	 */
-	public static void addUser(long pk, long userPK) {
-		getPersistence().addUser(pk, userPK);
+	public static boolean addUser(long pk, long userPK) {
+		return getPersistence().addUser(pk, userPK);
 	}
 
 	/**
@@ -5502,11 +5509,12 @@ public class GroupUtil {
 	 *
 	 * @param pk the primary key of the group
 	 * @param user the user
+	 * @return <code>true</code> if the association between the group and the user is added; <code>false</code> if it was already added
 	 */
-	public static void addUser(
+	public static boolean addUser(
 		long pk, com.liferay.portal.kernel.model.User user) {
 
-		getPersistence().addUser(pk, user);
+		return getPersistence().addUser(pk, user);
 	}
 
 	/**

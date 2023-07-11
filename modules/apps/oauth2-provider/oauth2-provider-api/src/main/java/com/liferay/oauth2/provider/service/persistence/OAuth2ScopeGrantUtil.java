@@ -666,11 +666,13 @@ public class OAuth2ScopeGrantUtil {
 	 *
 	 * @param pk the primary key of the o auth2 scope grant
 	 * @param oAuth2AuthorizationPK the primary key of the o auth2 authorization
+	 * @return <code>true</code> if the association between the o auth2 scope grant and the o auth2 authorization is added; <code>false</code> if it was already added
 	 */
-	public static void addOAuth2Authorization(
+	public static boolean addOAuth2Authorization(
 		long pk, long oAuth2AuthorizationPK) {
 
-		getPersistence().addOAuth2Authorization(pk, oAuth2AuthorizationPK);
+		return getPersistence().addOAuth2Authorization(
+			pk, oAuth2AuthorizationPK);
 	}
 
 	/**
@@ -678,13 +680,14 @@ public class OAuth2ScopeGrantUtil {
 	 *
 	 * @param pk the primary key of the o auth2 scope grant
 	 * @param oAuth2Authorization the o auth2 authorization
+	 * @return <code>true</code> if the association between the o auth2 scope grant and the o auth2 authorization is added; <code>false</code> if it was already added
 	 */
-	public static void addOAuth2Authorization(
+	public static boolean addOAuth2Authorization(
 		long pk,
 		com.liferay.oauth2.provider.model.OAuth2Authorization
 			oAuth2Authorization) {
 
-		getPersistence().addOAuth2Authorization(pk, oAuth2Authorization);
+		return getPersistence().addOAuth2Authorization(pk, oAuth2Authorization);
 	}
 
 	/**

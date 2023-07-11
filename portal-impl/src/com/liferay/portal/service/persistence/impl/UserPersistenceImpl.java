@@ -9474,17 +9474,18 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param groupPK the primary key of the group
+	 * @return <code>true</code> if the association between the user and the group is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addGroup(long pk, long groupPK) {
+	public boolean addGroup(long pk, long groupPK) {
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToGroupTableMapper.addTableMapping(
+			return userToGroupTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, groupPK);
 		}
 		else {
-			userToGroupTableMapper.addTableMapping(
+			return userToGroupTableMapper.addTableMapping(
 				user.getCompanyId(), pk, groupPK);
 		}
 	}
@@ -9494,17 +9495,20 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param group the group
+	 * @return <code>true</code> if the association between the user and the group is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addGroup(long pk, com.liferay.portal.kernel.model.Group group) {
+	public boolean addGroup(
+		long pk, com.liferay.portal.kernel.model.Group group) {
+
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToGroupTableMapper.addTableMapping(
+			return userToGroupTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, group.getPrimaryKey());
 		}
 		else {
-			userToGroupTableMapper.addTableMapping(
+			return userToGroupTableMapper.addTableMapping(
 				user.getCompanyId(), pk, group.getPrimaryKey());
 		}
 	}
@@ -9787,17 +9791,18 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizationPK the primary key of the organization
+	 * @return <code>true</code> if the association between the user and the organization is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addOrganization(long pk, long organizationPK) {
+	public boolean addOrganization(long pk, long organizationPK) {
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToOrganizationTableMapper.addTableMapping(
+			return userToOrganizationTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, organizationPK);
 		}
 		else {
-			userToOrganizationTableMapper.addTableMapping(
+			return userToOrganizationTableMapper.addTableMapping(
 				user.getCompanyId(), pk, organizationPK);
 		}
 	}
@@ -9807,20 +9812,21 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param organization the organization
+	 * @return <code>true</code> if the association between the user and the organization is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addOrganization(
+	public boolean addOrganization(
 		long pk, com.liferay.portal.kernel.model.Organization organization) {
 
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToOrganizationTableMapper.addTableMapping(
+			return userToOrganizationTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk,
 				organization.getPrimaryKey());
 		}
 		else {
-			userToOrganizationTableMapper.addTableMapping(
+			return userToOrganizationTableMapper.addTableMapping(
 				user.getCompanyId(), pk, organization.getPrimaryKey());
 		}
 	}
@@ -10109,17 +10115,18 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param rolePK the primary key of the role
+	 * @return <code>true</code> if the association between the user and the role is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addRole(long pk, long rolePK) {
+	public boolean addRole(long pk, long rolePK) {
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToRoleTableMapper.addTableMapping(
+			return userToRoleTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, rolePK);
 		}
 		else {
-			userToRoleTableMapper.addTableMapping(
+			return userToRoleTableMapper.addTableMapping(
 				user.getCompanyId(), pk, rolePK);
 		}
 	}
@@ -10129,17 +10136,18 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param role the role
+	 * @return <code>true</code> if the association between the user and the role is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addRole(long pk, com.liferay.portal.kernel.model.Role role) {
+	public boolean addRole(long pk, com.liferay.portal.kernel.model.Role role) {
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToRoleTableMapper.addTableMapping(
+			return userToRoleTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, role.getPrimaryKey());
 		}
 		else {
-			userToRoleTableMapper.addTableMapping(
+			return userToRoleTableMapper.addTableMapping(
 				user.getCompanyId(), pk, role.getPrimaryKey());
 		}
 	}
@@ -10415,17 +10423,18 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param teamPK the primary key of the team
+	 * @return <code>true</code> if the association between the user and the team is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addTeam(long pk, long teamPK) {
+	public boolean addTeam(long pk, long teamPK) {
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToTeamTableMapper.addTableMapping(
+			return userToTeamTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, teamPK);
 		}
 		else {
-			userToTeamTableMapper.addTableMapping(
+			return userToTeamTableMapper.addTableMapping(
 				user.getCompanyId(), pk, teamPK);
 		}
 	}
@@ -10435,17 +10444,18 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param team the team
+	 * @return <code>true</code> if the association between the user and the team is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addTeam(long pk, com.liferay.portal.kernel.model.Team team) {
+	public boolean addTeam(long pk, com.liferay.portal.kernel.model.Team team) {
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToTeamTableMapper.addTableMapping(
+			return userToTeamTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, team.getPrimaryKey());
 		}
 		else {
-			userToTeamTableMapper.addTableMapping(
+			return userToTeamTableMapper.addTableMapping(
 				user.getCompanyId(), pk, team.getPrimaryKey());
 		}
 	}
@@ -10723,17 +10733,18 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroupPK the primary key of the user group
+	 * @return <code>true</code> if the association between the user and the user group is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addUserGroup(long pk, long userGroupPK) {
+	public boolean addUserGroup(long pk, long userGroupPK) {
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToUserGroupTableMapper.addTableMapping(
+			return userToUserGroupTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, userGroupPK);
 		}
 		else {
-			userToUserGroupTableMapper.addTableMapping(
+			return userToUserGroupTableMapper.addTableMapping(
 				user.getCompanyId(), pk, userGroupPK);
 		}
 	}
@@ -10743,20 +10754,21 @@ public class UserPersistenceImpl
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroup the user group
+	 * @return <code>true</code> if the association between the user and the user group is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addUserGroup(
+	public boolean addUserGroup(
 		long pk, com.liferay.portal.kernel.model.UserGroup userGroup) {
 
 		User user = fetchByPrimaryKey(pk);
 
 		if (user == null) {
-			userToUserGroupTableMapper.addTableMapping(
+			return userToUserGroupTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk,
 				userGroup.getPrimaryKey());
 		}
 		else {
-			userToUserGroupTableMapper.addTableMapping(
+			return userToUserGroupTableMapper.addTableMapping(
 				user.getCompanyId(), pk, userGroup.getPrimaryKey());
 		}
 	}

@@ -6557,17 +6557,18 @@ public class LVEntryVersionPersistenceImpl
 	 *
 	 * @param pk the primary key of the lv entry version
 	 * @param bigDecimalEntryPK the primary key of the big decimal entry
+	 * @return <code>true</code> if the association between the lv entry version and the big decimal entry is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addBigDecimalEntry(long pk, long bigDecimalEntryPK) {
+	public boolean addBigDecimalEntry(long pk, long bigDecimalEntryPK) {
 		LVEntryVersion lvEntryVersion = fetchByPrimaryKey(pk);
 
 		if (lvEntryVersion == null) {
-			lvEntryVersionToBigDecimalEntryTableMapper.addTableMapping(
+			return lvEntryVersionToBigDecimalEntryTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, bigDecimalEntryPK);
 		}
 		else {
-			lvEntryVersionToBigDecimalEntryTableMapper.addTableMapping(
+			return lvEntryVersionToBigDecimalEntryTableMapper.addTableMapping(
 				lvEntryVersion.getCompanyId(), pk, bigDecimalEntryPK);
 		}
 	}
@@ -6577,9 +6578,10 @@ public class LVEntryVersionPersistenceImpl
 	 *
 	 * @param pk the primary key of the lv entry version
 	 * @param bigDecimalEntry the big decimal entry
+	 * @return <code>true</code> if the association between the lv entry version and the big decimal entry is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addBigDecimalEntry(
+	public boolean addBigDecimalEntry(
 		long pk,
 		com.liferay.portal.tools.service.builder.test.model.BigDecimalEntry
 			bigDecimalEntry) {
@@ -6587,12 +6589,12 @@ public class LVEntryVersionPersistenceImpl
 		LVEntryVersion lvEntryVersion = fetchByPrimaryKey(pk);
 
 		if (lvEntryVersion == null) {
-			lvEntryVersionToBigDecimalEntryTableMapper.addTableMapping(
+			return lvEntryVersionToBigDecimalEntryTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk,
 				bigDecimalEntry.getPrimaryKey());
 		}
 		else {
-			lvEntryVersionToBigDecimalEntryTableMapper.addTableMapping(
+			return lvEntryVersionToBigDecimalEntryTableMapper.addTableMapping(
 				lvEntryVersion.getCompanyId(), pk,
 				bigDecimalEntry.getPrimaryKey());
 		}

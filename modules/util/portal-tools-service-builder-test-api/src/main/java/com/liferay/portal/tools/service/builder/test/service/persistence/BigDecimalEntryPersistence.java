@@ -680,16 +680,18 @@ public interface BigDecimalEntryPersistence
 	 *
 	 * @param pk the primary key of the big decimal entry
 	 * @param lvEntryPK the primary key of the lv entry
+	 * @return <code>true</code> if the association between the big decimal entry and the lv entry is added; <code>false</code> if it was already added
 	 */
-	public void addLVEntry(long pk, long lvEntryPK);
+	public boolean addLVEntry(long pk, long lvEntryPK);
 
 	/**
 	 * Adds an association between the big decimal entry and the lv entry. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the big decimal entry
 	 * @param lvEntry the lv entry
+	 * @return <code>true</code> if the association between the big decimal entry and the lv entry is added; <code>false</code> if it was already added
 	 */
-	public void addLVEntry(
+	public boolean addLVEntry(
 		long pk,
 		com.liferay.portal.tools.service.builder.test.model.LVEntry lvEntry);
 

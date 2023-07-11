@@ -10076,17 +10076,18 @@ public class OrganizationPersistenceImpl
 	 *
 	 * @param pk the primary key of the organization
 	 * @param groupPK the primary key of the group
+	 * @return <code>true</code> if the association between the organization and the group is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addGroup(long pk, long groupPK) {
+	public boolean addGroup(long pk, long groupPK) {
 		Organization organization = fetchByPrimaryKey(pk);
 
 		if (organization == null) {
-			organizationToGroupTableMapper.addTableMapping(
+			return organizationToGroupTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, groupPK);
 		}
 		else {
-			organizationToGroupTableMapper.addTableMapping(
+			return organizationToGroupTableMapper.addTableMapping(
 				organization.getCompanyId(), pk, groupPK);
 		}
 	}
@@ -10096,17 +10097,20 @@ public class OrganizationPersistenceImpl
 	 *
 	 * @param pk the primary key of the organization
 	 * @param group the group
+	 * @return <code>true</code> if the association between the organization and the group is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addGroup(long pk, com.liferay.portal.kernel.model.Group group) {
+	public boolean addGroup(
+		long pk, com.liferay.portal.kernel.model.Group group) {
+
 		Organization organization = fetchByPrimaryKey(pk);
 
 		if (organization == null) {
-			organizationToGroupTableMapper.addTableMapping(
+			return organizationToGroupTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, group.getPrimaryKey());
 		}
 		else {
-			organizationToGroupTableMapper.addTableMapping(
+			return organizationToGroupTableMapper.addTableMapping(
 				organization.getCompanyId(), pk, group.getPrimaryKey());
 		}
 	}
@@ -10388,17 +10392,18 @@ public class OrganizationPersistenceImpl
 	 *
 	 * @param pk the primary key of the organization
 	 * @param userPK the primary key of the user
+	 * @return <code>true</code> if the association between the organization and the user is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addUser(long pk, long userPK) {
+	public boolean addUser(long pk, long userPK) {
 		Organization organization = fetchByPrimaryKey(pk);
 
 		if (organization == null) {
-			organizationToUserTableMapper.addTableMapping(
+			return organizationToUserTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, userPK);
 		}
 		else {
-			organizationToUserTableMapper.addTableMapping(
+			return organizationToUserTableMapper.addTableMapping(
 				organization.getCompanyId(), pk, userPK);
 		}
 	}
@@ -10408,17 +10413,18 @@ public class OrganizationPersistenceImpl
 	 *
 	 * @param pk the primary key of the organization
 	 * @param user the user
+	 * @return <code>true</code> if the association between the organization and the user is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addUser(long pk, com.liferay.portal.kernel.model.User user) {
+	public boolean addUser(long pk, com.liferay.portal.kernel.model.User user) {
 		Organization organization = fetchByPrimaryKey(pk);
 
 		if (organization == null) {
-			organizationToUserTableMapper.addTableMapping(
+			return organizationToUserTableMapper.addTableMapping(
 				CompanyThreadLocal.getCompanyId(), pk, user.getPrimaryKey());
 		}
 		else {
-			organizationToUserTableMapper.addTableMapping(
+			return organizationToUserTableMapper.addTableMapping(
 				organization.getCompanyId(), pk, user.getPrimaryKey());
 		}
 	}

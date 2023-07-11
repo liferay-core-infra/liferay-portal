@@ -4804,9 +4804,10 @@ public class DLFolderUtil {
 	 *
 	 * @param pk the primary key of the document library folder
 	 * @param dlFileEntryTypePK the primary key of the document library file entry type
+	 * @return <code>true</code> if the association between the document library folder and the document library file entry type is added; <code>false</code> if it was already added
 	 */
-	public static void addDLFileEntryType(long pk, long dlFileEntryTypePK) {
-		getPersistence().addDLFileEntryType(pk, dlFileEntryTypePK);
+	public static boolean addDLFileEntryType(long pk, long dlFileEntryTypePK) {
+		return getPersistence().addDLFileEntryType(pk, dlFileEntryTypePK);
 	}
 
 	/**
@@ -4814,13 +4815,14 @@ public class DLFolderUtil {
 	 *
 	 * @param pk the primary key of the document library folder
 	 * @param dlFileEntryType the document library file entry type
+	 * @return <code>true</code> if the association between the document library folder and the document library file entry type is added; <code>false</code> if it was already added
 	 */
-	public static void addDLFileEntryType(
+	public static boolean addDLFileEntryType(
 		long pk,
 		com.liferay.document.library.kernel.model.DLFileEntryType
 			dlFileEntryType) {
 
-		getPersistence().addDLFileEntryType(pk, dlFileEntryType);
+		return getPersistence().addDLFileEntryType(pk, dlFileEntryType);
 	}
 
 	/**

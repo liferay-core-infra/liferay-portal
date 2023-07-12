@@ -12,25 +12,29 @@
  * details.
  */
 
-package com.liferay.portal.workflow.permission;
+package com.liferay.portal.workflow.kaleo.runtime.integration.internal.security.permission;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.WorkflowInstanceLink;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalServiceUtil;
+import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
-import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowInstanceManager;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
 
 import java.util.Objects;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Jorge Ferrer
  */
+@Component(service = WorkflowPermission.class)
 public class WorkflowPermissionImpl implements WorkflowPermission {
 
 	@Override
@@ -60,11 +64,11 @@ public class WorkflowPermissionImpl implements WorkflowPermission {
 			return Boolean.TRUE;
 		}
 
-		if (WorkflowInstanceLinkLocalServiceUtil.hasWorkflowInstanceLink(
+		if (_workflowInstanceLinkLocalService.hasWorkflowInstanceLink(
 				companyId, groupId, className, classPK)) {
 
 			WorkflowInstanceLink workflowInstanceLink =
-				WorkflowInstanceLinkLocalServiceUtil.getWorkflowInstanceLink(
+				_workflowInstanceLinkLocalService.getWorkflowInstanceLink(
 					companyId, groupId, className, classPK);
 
 			if (Objects.equals(actionId, ActionKeys.VIEW) &&
@@ -75,7 +79,7 @@ public class WorkflowPermissionImpl implements WorkflowPermission {
 			}
 
 			WorkflowInstance workflowInstance =
-				WorkflowInstanceManagerUtil.getWorkflowInstance(
+				_workflowInstanceManager.getWorkflowInstance(
 					companyId, workflowInstanceLink.getWorkflowInstanceId());
 
 			if (workflowInstance.isComplete()) {
@@ -100,16 +104,15 @@ public class WorkflowPermissionImpl implements WorkflowPermission {
 			WorkflowInstance workflowInstance)
 		throws WorkflowException {
 
-		int count =
-			WorkflowTaskManagerUtil.getWorkflowTaskCountByWorkflowInstance(
-				permissionChecker.getCompanyId(), permissionChecker.getUserId(),
-				workflowInstance.getWorkflowInstanceId(), Boolean.FALSE);
+		int count = _workflowTaskManager.getWorkflowTaskCountByWorkflowInstance(
+			permissionChecker.getCompanyId(), permissionChecker.getUserId(),
+			workflowInstance.getWorkflowInstanceId(), Boolean.FALSE);
 
 		if (count > 0) {
 			return true;
 		}
 
-		count = WorkflowTaskManagerUtil.getWorkflowTaskCountByUserRoles(
+		count = _workflowTaskManager.getWorkflowTaskCountByUserRoles(
 			permissionChecker.getCompanyId(), permissionChecker.getUserId(),
 			workflowInstance.getWorkflowInstanceId(), Boolean.FALSE);
 
@@ -122,5 +125,14 @@ public class WorkflowPermissionImpl implements WorkflowPermission {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		WorkflowPermissionImpl.class);
+
+	@Reference
+	private WorkflowInstanceLinkLocalService _workflowInstanceLinkLocalService;
+
+	@Reference
+	private WorkflowInstanceManager _workflowInstanceManager;
+
+	@Reference
+	private WorkflowTaskManager _workflowTaskManager;
 
 }

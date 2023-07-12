@@ -285,7 +285,12 @@ public class PropsUtil {
 	}
 
 	private static String _getDefaultLiferayHome() {
-		String defaultLiferayHome = null;
+		String defaultLiferayHome = System.getProperty(
+			PropsKeys.DEFAULT_LIFERAY_HOME);
+
+		if (defaultLiferayHome != null) {
+			return defaultLiferayHome;
+		}
 
 		if (ServerDetector.isJBoss()) {
 			defaultLiferayHome = SystemProperties.get("jboss.home.dir") + "/..";

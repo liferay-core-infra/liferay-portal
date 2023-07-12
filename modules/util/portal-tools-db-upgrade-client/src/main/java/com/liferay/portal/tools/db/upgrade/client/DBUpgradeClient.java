@@ -191,12 +191,17 @@ public class DBUpgradeClient {
 		commands.add("-cp");
 		commands.add(_getBootstrapClassPath());
 
+		String defaultLiferayHome = _portalUpgradeExtProperties.getProperty(
+			"liferay.home");
+
 		String jvmOptsCommands = _jvmOpts.concat(
 			" -Dexternal-properties=portal-upgrade.properties " +
 				"-Dserver.detector.server.id=" +
 					_appServer.getServerDetectorServerId() +
 						" -Dliferay.shielded.container.lib.portal.dir=" +
-							_appServer.getPortalShieldedContainerLibDir());
+							_appServer.getPortalShieldedContainerLibDir() +
+								" -Ddefault.liferay.home=" +
+									defaultLiferayHome);
 
 		System.out.println("JVM arguments: " + jvmOptsCommands);
 

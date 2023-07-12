@@ -532,7 +532,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addGroupUser(long groupId, long userId) {
-		_groupPersistence.addUser(groupId, userId);
+		if (!_groupPersistence.addUser(groupId, userId)) {
+			return;
+		}
 
 		try {
 			reindex(userId);
@@ -600,7 +602,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addOrganizationUser(long organizationId, long userId) {
-		_organizationPersistence.addUser(organizationId, userId);
+		if (!_organizationPersistence.addUser(organizationId, userId)) {
+			return;
+		}
 
 		try {
 			reindex(userId);
@@ -618,7 +622,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addOrganizationUser(long organizationId, User user) {
-		_organizationPersistence.addUser(organizationId, user);
+		if (!_organizationPersistence.addUser(organizationId, user)) {
+			return;
+		}
 
 		try {
 			reindex(user);
@@ -738,7 +744,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addRoleUser(long roleId, long userId) {
-		_rolePersistence.addUser(roleId, userId);
+		if (!_rolePersistence.addUser(roleId, userId)) {
+			return;
+		}
 
 		try {
 			reindex(userId);
@@ -756,7 +764,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addRoleUser(long roleId, User user) {
-		_rolePersistence.addUser(roleId, user);
+		if (!_rolePersistence.addUser(roleId, user)) {
+			return;
+		}
 
 		try {
 			reindex(user);
@@ -805,7 +815,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addTeamUser(long teamId, long userId) {
-		_teamPersistence.addUser(teamId, userId);
+		if (!_teamPersistence.addUser(teamId, userId)) {
+			return;
+		}
 
 		try {
 			reindex(userId);
@@ -823,7 +835,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addTeamUser(long teamId, User user) {
-		_teamPersistence.addUser(teamId, user);
+		if (!_teamPersistence.addUser(teamId, user)) {
+			return;
+		}
 
 		try {
 			reindex(user);
@@ -959,7 +973,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	@Override
 	public void addUserGroupUser(long userGroupId, long userId) {
 		try {
-			_userGroupPersistence.addUser(userGroupId, userId);
+			if (!_userGroupPersistence.addUser(userGroupId, userId)) {
+				return;
+			}
 
 			reindex(userId);
 		}

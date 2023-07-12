@@ -54,7 +54,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.UserBag;
-import com.liferay.portal.kernel.security.permission.UserBagFactoryUtil;
+import com.liferay.portal.kernel.security.permission.UserBagFactory;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleService;
@@ -229,7 +229,7 @@ public class UserResourceDTOConverter
 					});
 				setRoleBriefs(
 					() -> {
-						UserBag userBag = UserBagFactoryUtil.create(
+						UserBag userBag = _userBagFactory.create(
 							user.getUserId());
 
 						return TransformUtil.transformToArray(
@@ -403,6 +403,9 @@ public class UserResourceDTOConverter
 
 	@Reference
 	private RoleService _roleService;
+
+	@Reference
+	private UserBagFactory _userBagFactory;
 
 	@Reference
 	private UserGroupLocalService _userGroupLocalService;

@@ -15,6 +15,7 @@
 package com.liferay.layout.uad.test;
 
 import com.liferay.layout.test.util.LayoutFriendlyURLRandomizerBumper;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -24,7 +25,7 @@ import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBu
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 
 /**
  * @author Brian Wing Shun Chan
@@ -40,8 +41,11 @@ public class LayoutUADTestUtil {
 			NumericStringRandomizerBumper.INSTANCE,
 			UniqueStringRandomizerBumper.INSTANCE);
 
+		FriendlyURLNormalizer friendlyURLNormalizer =
+			_friendlyURLNormalizerSnapshot.get();
+
 		String friendlyURL =
-			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name);
+			StringPool.SLASH + friendlyURLNormalizer.normalize(name);
 
 		return layoutLocalService.addLayout(
 			userId, TestPropsValues.getGroupId(), false,
@@ -50,5 +54,9 @@ public class LayoutUADTestUtil {
 			LayoutConstants.TYPE_PORTLET, false, friendlyURL,
 			ServiceContextTestUtil.getServiceContext());
 	}
+
+	private static final Snapshot<FriendlyURLNormalizer>
+		_friendlyURLNormalizerSnapshot = new Snapshot<>(
+			LayoutUADTestUtil.class, FriendlyURLNormalizer.class);
 
 }

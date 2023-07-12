@@ -22,8 +22,10 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.search.test.util.IndexerFixture;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.users.admin.test.util.search.UserSearchFixture;
@@ -84,7 +86,7 @@ public class LayoutIndexerReindexTest {
 	}
 
 	protected void setUpLayoutFixture() {
-		layoutFixture = new LayoutFixture(_group);
+		layoutFixture = new LayoutFixture(_friendlyURLNormalizer, _group);
 
 		_layouts = layoutFixture.getLayouts();
 	}
@@ -108,6 +110,9 @@ public class LayoutIndexerReindexTest {
 	protected LayoutFixture layoutFixture;
 	protected IndexerFixture<Layout> layoutIndexerFixture;
 	protected UserSearchFixture userSearchFixture;
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	private Group _group;
 

@@ -52,7 +52,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -569,20 +569,24 @@ public class LayoutSEOLinkManagerTest {
 	private final Map<Locale, String> _expectedFriendlyURLs =
 		HashMapBuilder.put(
 			LocaleUtil.GERMANY,
-			FriendlyURLNormalizerUtil.normalize(
+			_friendlyURLNormalizer.normalize(
 				RandomTestUtil.randomString(
 					LayoutFriendlyURLRandomizerBumper.INSTANCE))
 		).put(
 			LocaleUtil.SPAIN,
-			FriendlyURLNormalizerUtil.normalize(
+			_friendlyURLNormalizer.normalize(
 				RandomTestUtil.randomString(
 					LayoutFriendlyURLRandomizerBumper.INSTANCE))
 		).put(
 			LocaleUtil.US,
-			FriendlyURLNormalizerUtil.normalize(
+			_friendlyURLNormalizer.normalize(
 				RandomTestUtil.randomString(
 					LayoutFriendlyURLRandomizerBumper.INSTANCE))
 		).build();
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
+
 	private Group _group;
 	private String _groupFriendlyURL;
 	private Layout _layout;

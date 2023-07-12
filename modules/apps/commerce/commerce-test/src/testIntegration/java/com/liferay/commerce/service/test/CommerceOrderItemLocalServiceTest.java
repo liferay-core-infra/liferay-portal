@@ -71,7 +71,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -500,7 +500,7 @@ public class CommerceOrderItemLocalServiceTest {
 				0, option1Key, _toValueKey(option1Key), option1Price,
 				CPConstants.PRODUCT_OPTION_PRICE_TYPE_STATIC, 2));
 
-		String option2Key = FriendlyURLNormalizerUtil.normalize(
+		String option2Key = _friendlyURLNormalizer.normalize(
 			RandomTestUtil.randomString());
 		BigDecimal option2Price = BigDecimal.valueOf(200);
 		int option2Quantity = 3;
@@ -1026,7 +1026,7 @@ public class CommerceOrderItemLocalServiceTest {
 
 		_commerceOrders.add(commerceOrder);
 
-		String option1Key = FriendlyURLNormalizerUtil.normalize(
+		String option1Key = _friendlyURLNormalizer.normalize(
 			RandomTestUtil.randomString());
 
 		BigDecimal option1DeltaPrice = BigDecimal.ZERO;
@@ -1048,8 +1048,8 @@ public class CommerceOrderItemLocalServiceTest {
 				optionSKU1.getCPInstanceId(), option1Key,
 				_toValueKey(option1Key), option1DeltaPrice, priceType, 2));
 
-		String option2Key = FriendlyURLNormalizerUtil.normalize(
-			FriendlyURLNormalizerUtil.normalize(RandomTestUtil.randomString()));
+		String option2Key = _friendlyURLNormalizer.normalize(
+			_friendlyURLNormalizer.normalize(RandomTestUtil.randomString()));
 		int option2Quantity = 3;
 
 		CommerceOptionValue testCommerceOptionValue =
@@ -1349,7 +1349,7 @@ public class CommerceOrderItemLocalServiceTest {
 				_user.getUserId(), _commerceInventoryWarehouse,
 				optionSKU2.getSku(), 100));
 
-		String option1Key = FriendlyURLNormalizerUtil.normalize(
+		String option1Key = _friendlyURLNormalizer.normalize(
 			RandomTestUtil.randomString());
 
 		BigDecimal option1DeltaPrice = BigDecimal.ZERO;
@@ -1369,7 +1369,7 @@ public class CommerceOrderItemLocalServiceTest {
 				_toValueKey(option1Key), option1DeltaPrice, priceType,
 				option1Quantity));
 
-		String option2Key = FriendlyURLNormalizerUtil.normalize(
+		String option2Key = _friendlyURLNormalizer.normalize(
 			RandomTestUtil.randomString());
 		int option2Quantity = 3;
 
@@ -1695,6 +1695,9 @@ public class CommerceOrderItemLocalServiceTest {
 
 	@DeleteAfterTestRun
 	private List<CPOptionValue> _cpOptionValues = new ArrayList<>();
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@DeleteAfterTestRun
 	private Group _group;

@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -77,7 +77,7 @@ public class DepotEntryGroupRelServiceTest {
 				LocaleUtil.getDefault(), RandomTestUtil.randomString()),
 			GroupConstants.TYPE_SITE_RESTRICTED, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
-			FriendlyURLNormalizerUtil.normalize(RandomTestUtil.randomString()),
+			_friendlyURLNormalizer.normalize(RandomTestUtil.randomString()),
 			true, true, ServiceContextTestUtil.getServiceContext());
 
 		DepotEntry depotEntry = _addDepotEntry();
@@ -123,7 +123,7 @@ public class DepotEntryGroupRelServiceTest {
 				LocaleUtil.getDefault(), RandomTestUtil.randomString()),
 			GroupConstants.TYPE_SITE_OPEN, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
-			FriendlyURLNormalizerUtil.normalize(RandomTestUtil.randomString()),
+			_friendlyURLNormalizer.normalize(RandomTestUtil.randomString()),
 			true, true, ServiceContextTestUtil.getServiceContext());
 
 		DepotEntry depotEntry = _addDepotEntry();
@@ -176,6 +176,9 @@ public class DepotEntryGroupRelServiceTest {
 
 	@Inject
 	private DepotEntryLocalService _depotEntryLocalService;
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@Inject
 	private GroupLocalService _groupLocalService;

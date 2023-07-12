@@ -18,6 +18,7 @@ import com.liferay.knowledge.base.constants.KBFolderConstants;
 import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalServiceUtil;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -30,7 +31,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -141,8 +142,10 @@ public class KnowledgeBaseUtil {
 			title = String.valueOf(id);
 		}
 		else {
-			title = FriendlyURLNormalizerUtil.normalizeWithPeriodsAndSlashes(
-				title);
+			FriendlyURLNormalizer friendlyURLNormalizer =
+				_friendlyURLNormalizerSnapshot.get();
+
+			title = friendlyURLNormalizer.normalizeWithPeriodsAndSlashes(title);
 		}
 
 		return ModelHintsUtil.trimString(
@@ -246,6 +249,9 @@ public class KnowledgeBaseUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		KnowledgeBaseUtil.class);
 
+	private static final Snapshot<FriendlyURLNormalizer>
+		_friendlyURLNormalizerSnapshot = new Snapshot<>(
+			KnowledgeBaseUtil.class, FriendlyURLNormalizer.class);
 	private static final Pattern _validFriendlyUrlPattern = Pattern.compile(
 		"/[a-z0-9_-]+");
 

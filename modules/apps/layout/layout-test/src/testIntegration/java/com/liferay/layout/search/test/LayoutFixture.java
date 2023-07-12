@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
@@ -39,7 +39,10 @@ import java.util.Locale;
  */
 public class LayoutFixture {
 
-	public LayoutFixture(Group group) {
+	public LayoutFixture(
+		FriendlyURLNormalizer friendlyURLNormalizer, Group group) {
+
+		_friendlyURLNormalizer = friendlyURLNormalizer;
 		_group = group;
 	}
 
@@ -53,7 +56,7 @@ public class LayoutFixture {
 
 		LocalizedValuesMap friendlyUrlMap = new LocalizedValuesMap() {
 			{
-				String randomString = FriendlyURLNormalizerUtil.normalize(
+				String randomString = _friendlyURLNormalizer.normalize(
 					RandomTestUtil.randomString());
 
 				put(LocaleUtil.US, StringPool.SLASH + randomString);
@@ -97,6 +100,7 @@ public class LayoutFixture {
 		_group.setModelAttributes(group.getModelAttributes());
 	}
 
+	private final FriendlyURLNormalizer _friendlyURLNormalizer;
 	private final Group _group;
 	private final List<Layout> _layouts = new ArrayList<>();
 

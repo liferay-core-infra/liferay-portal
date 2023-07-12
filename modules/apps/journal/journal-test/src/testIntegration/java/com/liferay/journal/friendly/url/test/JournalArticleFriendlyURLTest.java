@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
@@ -126,10 +126,10 @@ public class JournalArticleFriendlyURLTest {
 		Map<Locale, String> friendlyURLMap = updatedArticle.getFriendlyURLMap();
 
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(title2 + "-1"),
+			_friendlyURLNormalizer.normalizeWithEncoding(title2 + "-1"),
 			friendlyURLMap.get(LocaleUtil.US));
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(title2 + "-1"),
+			_friendlyURLNormalizer.normalizeWithEncoding(title2 + "-1"),
 			friendlyURLMap.get(LocaleUtil.FRANCE));
 	}
 
@@ -148,10 +148,10 @@ public class JournalArticleFriendlyURLTest {
 		Map<Locale, String> friendlyURLMap = article.getFriendlyURLMap();
 
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(usTitle),
+			_friendlyURLNormalizer.normalizeWithEncoding(usTitle),
 			friendlyURLMap.get(LocaleUtil.US));
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(frTitle),
+			_friendlyURLNormalizer.normalizeWithEncoding(frTitle),
 			friendlyURLMap.get(LocaleUtil.FRANCE));
 	}
 
@@ -169,7 +169,7 @@ public class JournalArticleFriendlyURLTest {
 		Map<Locale, String> friendlyURLMap = article.getFriendlyURLMap();
 
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(title + "-1"),
+			_friendlyURLNormalizer.normalizeWithEncoding(title + "-1"),
 			friendlyURLMap.get(LocaleUtil.US));
 	}
 
@@ -185,10 +185,10 @@ public class JournalArticleFriendlyURLTest {
 		Map<Locale, String> friendlyURLMap = article.getFriendlyURLMap();
 
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(title),
+			_friendlyURLNormalizer.normalizeWithEncoding(title),
 			friendlyURLMap.get(LocaleUtil.US));
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(title),
+			_friendlyURLNormalizer.normalizeWithEncoding(title),
 			friendlyURLMap.get(LocaleUtil.FRANCE));
 	}
 
@@ -213,7 +213,7 @@ public class JournalArticleFriendlyURLTest {
 		Map<Locale, String> friendlyURLMap = article.getFriendlyURLMap();
 
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(frTitle + "-1"),
+			_friendlyURLNormalizer.normalizeWithEncoding(frTitle + "-1"),
 			friendlyURLMap.get(LocaleUtil.US));
 	}
 
@@ -233,10 +233,10 @@ public class JournalArticleFriendlyURLTest {
 		Map<Locale, String> friendlyURLMap = article.getFriendlyURLMap();
 
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(title + "-1"),
+			_friendlyURLNormalizer.normalizeWithEncoding(title + "-1"),
 			friendlyURLMap.get(LocaleUtil.US));
 		Assert.assertEquals(
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(title + "-1"),
+			_friendlyURLNormalizer.normalizeWithEncoding(title + "-1"),
 			friendlyURLMap.get(LocaleUtil.FRANCE));
 	}
 
@@ -274,6 +274,9 @@ public class JournalArticleFriendlyURLTest {
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId()));
 	}
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@DeleteAfterTestRun
 	private Group _group;

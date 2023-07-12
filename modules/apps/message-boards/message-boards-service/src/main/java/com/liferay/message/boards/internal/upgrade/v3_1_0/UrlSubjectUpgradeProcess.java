@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -35,6 +35,12 @@ import java.util.Map;
  * @author Javier Gamarra
  */
 public class UrlSubjectUpgradeProcess extends UpgradeProcess {
+
+	public UrlSubjectUpgradeProcess(
+		FriendlyURLNormalizer friendlyURLNormalizer) {
+
+		_friendlyURLNormalizer = friendlyURLNormalizer;
+	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -66,7 +72,7 @@ public class UrlSubjectUpgradeProcess extends UpgradeProcess {
 			subject = String.valueOf(id);
 		}
 		else {
-			subject = FriendlyURLNormalizerUtil.normalizeWithPeriodsAndSlashes(
+			subject = _friendlyURLNormalizer.normalizeWithPeriodsAndSlashes(
 				subject);
 		}
 
@@ -114,5 +120,7 @@ public class UrlSubjectUpgradeProcess extends UpgradeProcess {
 			preparedStatement2.executeBatch();
 		}
 	}
+
+	private final FriendlyURLNormalizer _friendlyURLNormalizer;
 
 }

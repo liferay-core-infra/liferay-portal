@@ -47,7 +47,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -200,7 +200,7 @@ public class ExportImportLocalServiceTest {
 
 		_sites.mergeLayoutPrototypeLayout(layout.getGroup(), layout);
 
-		String newFriendlyURL = FriendlyURLNormalizerUtil.normalize(
+		String newFriendlyURL = _friendlyURLNormalizer.normalize(
 			RandomTestUtil.randomString());
 
 		layout = _layoutLocalService.updateFriendlyURL(
@@ -209,7 +209,7 @@ public class ExportImportLocalServiceTest {
 
 		long classNameId = _layoutFriendlyURLEntryHelper.getClassNameId(false);
 
-		String oldFriendlyURL = FriendlyURLNormalizerUtil.normalize(name);
+		String oldFriendlyURL = _friendlyURLNormalizer.normalize(name);
 
 		FriendlyURLEntry oldFriendlyURLEntry =
 			_friendlyURLEntryLocalService.fetchFriendlyURLEntry(
@@ -315,6 +315,9 @@ public class ExportImportLocalServiceTest {
 
 	@Inject
 	private ExportImportLocalService _exportImportLocalService;
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@Inject
 	private LayoutFriendlyURLEntryHelper _layoutFriendlyURLEntryHelper;

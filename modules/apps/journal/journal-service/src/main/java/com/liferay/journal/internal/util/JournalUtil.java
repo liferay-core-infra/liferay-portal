@@ -20,6 +20,7 @@ import com.liferay.journal.configuration.JournalServiceConfiguration;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -41,7 +42,7 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -203,8 +204,10 @@ public class JournalUtil {
 			title = String.valueOf(id);
 		}
 		else {
-			title = FriendlyURLNormalizerUtil.normalizeWithPeriodsAndSlashes(
-				title);
+			FriendlyURLNormalizer friendlyURLNormalizer =
+				_friendlyURLNormalizerSnapshot.get();
+
+			title = friendlyURLNormalizer.normalizeWithPeriodsAndSlashes(title);
 		}
 
 		return ModelHintsUtil.trimString(
@@ -471,5 +474,8 @@ public class JournalUtil {
 	private static final Log _log = LogFactoryUtil.getLog(JournalUtil.class);
 
 	private static Map<String, String> _customTokens;
+	private static final Snapshot<FriendlyURLNormalizer>
+		_friendlyURLNormalizerSnapshot = new Snapshot<>(
+			JournalUtil.class, FriendlyURLNormalizer.class);
 
 }

@@ -16,7 +16,7 @@ package com.liferay.knowledge.base.internal.upgrade.v1_3_3;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -31,6 +31,10 @@ import java.util.Map;
  * @author Adolfo Pérez
  */
 public class KBFolderUpgradeProcess extends UpgradeProcess {
+
+	public KBFolderUpgradeProcess(FriendlyURLNormalizer friendlyURLNormalizer) {
+		_friendlyURLNormalizer = friendlyURLNormalizer;
+	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -115,7 +119,7 @@ public class KBFolderUpgradeProcess extends UpgradeProcess {
 			title = String.valueOf(id);
 		}
 		else {
-			title = FriendlyURLNormalizerUtil.normalizeWithPeriodsAndSlashes(
+			title = _friendlyURLNormalizer.normalizeWithPeriodsAndSlashes(
 				title);
 		}
 
@@ -136,5 +140,7 @@ public class KBFolderUpgradeProcess extends UpgradeProcess {
 			preparedStatement.execute();
 		}
 	}
+
+	private final FriendlyURLNormalizer _friendlyURLNormalizer;
 
 }

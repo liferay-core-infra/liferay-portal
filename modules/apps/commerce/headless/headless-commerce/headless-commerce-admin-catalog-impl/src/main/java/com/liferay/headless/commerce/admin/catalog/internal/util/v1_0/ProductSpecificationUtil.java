@@ -20,9 +20,10 @@ import com.liferay.commerce.product.service.CPDefinitionSpecificationOptionValue
 import com.liferay.commerce.product.service.CPSpecificationOptionService;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.ProductSpecification;
 import com.liferay.headless.commerce.core.util.LanguageUtils;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 /**
@@ -39,10 +40,13 @@ public class ProductSpecificationUtil {
 				ServiceContext serviceContext)
 		throws PortalException {
 
+		FriendlyURLNormalizer friendlyURLNormalizer =
+			_friendlyURLNormalizerSnapshot.get();
+
 		CPSpecificationOption cpSpecificationOption =
 			cpSpecificationOptionService.fetchCPSpecificationOption(
 				serviceContext.getCompanyId(),
-				FriendlyURLNormalizerUtil.normalize(
+				friendlyURLNormalizer.normalize(
 					productSpecification.getSpecificationKey()));
 
 		return cpDefinitionSpecificationOptionValueService.
@@ -69,10 +73,13 @@ public class ProductSpecificationUtil {
 				ServiceContext serviceContext)
 		throws PortalException {
 
+		FriendlyURLNormalizer friendlyURLNormalizer =
+			_friendlyURLNormalizerSnapshot.get();
+
 		CPSpecificationOption cpSpecificationOption =
 			cpSpecificationOptionService.fetchCPSpecificationOption(
 				serviceContext.getCompanyId(),
-				FriendlyURLNormalizerUtil.normalize(
+				friendlyURLNormalizer.normalize(
 					productSpecification.getSpecificationKey()));
 
 		return cpDefinitionSpecificationOptionValueService.
@@ -125,5 +132,9 @@ public class ProductSpecificationUtil {
 
 		return cpSpecificationOption.getCPSpecificationOptionId();
 	}
+
+	private static final Snapshot<FriendlyURLNormalizer>
+		_friendlyURLNormalizerSnapshot = new Snapshot<>(
+			ProductSpecificationUtil.class, FriendlyURLNormalizer.class);
 
 }

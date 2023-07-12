@@ -68,7 +68,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -883,7 +883,7 @@ public class DefaultExportImportContentProcessorTest {
 				UniqueStringRandomizerBumper.INSTANCE);
 
 			String friendlyURL =
-				StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name);
+				StringPool.SLASH + _friendlyURLNormalizer.normalize(name);
 
 			nameMap.put(locale, name);
 
@@ -1190,7 +1190,7 @@ public class DefaultExportImportContentProcessorTest {
 				_externalGroup.getFriendlyURL(),
 				_externalPrivateLayout.getFriendlyURL(),
 				_externalPublicLayout.getFriendlyURL(),
-				FriendlyURLNormalizerUtil.normalizeWithPeriodsAndSlashes(
+				_friendlyURLNormalizer.normalizeWithPeriodsAndSlashes(
 					fileEntry.getTitle()),
 				Portal.FRIENDLY_URL_SEPARATOR, _stagingGroup.getFriendlyURL(),
 				String.valueOf(fileEntry.getGroupId()),
@@ -1429,6 +1429,9 @@ public class DefaultExportImportContentProcessorTest {
 	private Layout _externalPrivateLayout;
 	private Layout _externalPublicLayout;
 	private FileEntry _fileEntry;
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@Inject(filter = "content.processor.type=LayoutReferences")
 	private ExportImportContentProcessor<String>

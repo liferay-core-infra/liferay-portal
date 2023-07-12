@@ -16,7 +16,9 @@ package com.liferay.layout.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.search.test.util.BaseSearchRequestBuilderHighlightTestCase;
+import com.liferay.portal.test.rule.Inject;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -33,7 +35,7 @@ public class LayoutSearchRequestBuilderHighlightTest
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_layoutFixture = new LayoutFixture(group);
+		_layoutFixture = new LayoutFixture(_friendlyURLNormalizer, group);
 	}
 
 	@Override
@@ -51,6 +53,9 @@ public class LayoutSearchRequestBuilderHighlightTest
 	protected String[] getFieldNames() {
 		return new String[] {"title_en_US"};
 	}
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	private LayoutFixture _layoutFixture;
 

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -150,6 +150,9 @@ public abstract class BaseUserDemoDataCreator implements UserDemoDataCreator {
 	}
 
 	@Reference
+	protected FriendlyURLNormalizer friendlyURLNormalizer;
+
+	@Reference
 	protected UserLocalService userLocalService;
 
 	private static List<String> _read(String fileName) {
@@ -244,7 +247,7 @@ public abstract class BaseUserDemoDataCreator implements UserDemoDataCreator {
 			String[] emailAddressParts = StringUtil.split(
 				emailAddress, CharPool.AT);
 
-			String normalizedEmailAddress = FriendlyURLNormalizerUtil.normalize(
+			String normalizedEmailAddress = friendlyURLNormalizer.normalize(
 				emailAddressParts[0]);
 
 			if (StringUtil.endsWith(normalizedEmailAddress, CharPool.DASH)) {

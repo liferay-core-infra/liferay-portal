@@ -62,7 +62,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -112,7 +112,7 @@ public class CommerceTermEntryLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		name = FriendlyURLNormalizerUtil.normalize(name);
+		name = _friendlyURLNormalizer.normalize(name);
 
 		_validate(null, serviceContext.getCompanyId(), name, priority, type);
 
@@ -915,6 +915,9 @@ public class CommerceTermEntryLocalServiceImpl
 
 	@Reference
 	private CommerceTermEntryRelLocalService _commerceTermEntryRelLocalService;
+
+	@Reference
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@Reference
 	private Portal _portal;

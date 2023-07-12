@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -120,7 +121,7 @@ public class LayoutIndexerIndexedFieldsTest {
 	}
 
 	protected void setUpLayoutFixture() {
-		layoutFixture = new LayoutFixture(_group);
+		layoutFixture = new LayoutFixture(_friendlyURLNormalizer, _group);
 
 		_layouts = layoutFixture.getLayouts();
 	}
@@ -244,6 +245,9 @@ public class LayoutIndexerIndexedFieldsTest {
 					Field.CONTENT, LocaleUtil.toLanguageId(locale)));
 		}
 	}
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	private Group _group;
 

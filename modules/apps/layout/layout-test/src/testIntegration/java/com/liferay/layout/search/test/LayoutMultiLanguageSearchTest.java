@@ -23,11 +23,13 @@ import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.search.test.util.FieldValuesAssert;
 import com.liferay.portal.search.test.util.IndexerFixture;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.users.admin.test.util.search.UserSearchFixture;
@@ -111,7 +113,7 @@ public class LayoutMultiLanguageSearchTest {
 	}
 
 	protected void setUpLayoutFixture() {
-		layoutFixture = new LayoutFixture(_group);
+		layoutFixture = new LayoutFixture(_friendlyURLNormalizer, _group);
 
 		_layouts = layoutFixture.getLayouts();
 	}
@@ -190,6 +192,9 @@ public class LayoutMultiLanguageSearchTest {
 	private static final String _NAME = "name";
 
 	private static final String _TITLE = "title";
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	private Group _group;
 

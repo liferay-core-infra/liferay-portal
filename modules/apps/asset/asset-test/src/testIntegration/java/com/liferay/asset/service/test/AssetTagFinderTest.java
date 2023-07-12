@@ -33,10 +33,11 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public class AssetTagFinderTest {
 			RandomTestUtil.randomLocaleStringMap(),
 			GroupConstants.TYPE_SITE_OPEN, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
-			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name), false,
+			StringPool.SLASH + _friendlyURLNormalizer.normalize(name), false,
 			true,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 	}
@@ -188,6 +189,9 @@ public class AssetTagFinderTest {
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(), true,
 			serviceContext);
 	}
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	private Group _group;
 	private Group _scopeGroup;

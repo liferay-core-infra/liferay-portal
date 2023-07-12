@@ -14,6 +14,7 @@
 
 package com.liferay.layout.test.util;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.log.Log;
@@ -41,7 +42,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -432,8 +433,11 @@ public class LayoutTestUtil {
 			boolean hidden)
 		throws Exception {
 
+		FriendlyURLNormalizer friendlyURLNormalizer =
+			_friendlyURLNormalizerSnapshot.get();
+
 		String friendlyURL =
-			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name);
+			StringPool.SLASH + friendlyURLNormalizer.normalize(name);
 
 		try {
 			return LayoutLocalServiceUtil.getFriendlyURLLayout(
@@ -586,5 +590,9 @@ public class LayoutTestUtil {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LayoutTestUtil.class);
+
+	private static final Snapshot<FriendlyURLNormalizer>
+		_friendlyURLNormalizerSnapshot = new Snapshot<>(
+			LayoutTestUtil.class, FriendlyURLNormalizer.class);
 
 }

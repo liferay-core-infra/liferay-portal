@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -87,8 +88,11 @@ public class LayoutRelevanceSearchTest {
 	}
 
 	private void _setUpLayoutFixture() {
-		_layoutFixture = new LayoutFixture(_group);
+		_layoutFixture = new LayoutFixture(_friendlyURLNormalizer, _group);
 	}
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@DeleteAfterTestRun
 	private Group _group;

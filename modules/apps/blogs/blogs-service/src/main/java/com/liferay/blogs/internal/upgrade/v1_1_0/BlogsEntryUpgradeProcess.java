@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -36,10 +36,12 @@ public class BlogsEntryUpgradeProcess extends UpgradeProcess {
 
 	public BlogsEntryUpgradeProcess(
 		ClassNameLocalService classNameLocalService,
-		FriendlyURLEntryLocalService friendlyURLEntryLocalService) {
+		FriendlyURLEntryLocalService friendlyURLEntryLocalService,
+		FriendlyURLNormalizer friendlyURLNormalizer) {
 
 		_classNameLocalService = classNameLocalService;
 		_friendlyURLEntryLocalService = friendlyURLEntryLocalService;
+		_friendlyURLNormalizer = friendlyURLNormalizer;
 	}
 
 	@Override
@@ -93,7 +95,7 @@ public class BlogsEntryUpgradeProcess extends UpgradeProcess {
 			}
 			else {
 				urlTitle =
-					FriendlyURLNormalizerUtil.normalizeWithPeriodsAndSlashes(
+					_friendlyURLNormalizer.normalizeWithPeriodsAndSlashes(
 						urlTitle);
 			}
 
@@ -108,5 +110,6 @@ public class BlogsEntryUpgradeProcess extends UpgradeProcess {
 
 	private final ClassNameLocalService _classNameLocalService;
 	private final FriendlyURLEntryLocalService _friendlyURLEntryLocalService;
+	private final FriendlyURLNormalizer _friendlyURLNormalizer;
 
 }

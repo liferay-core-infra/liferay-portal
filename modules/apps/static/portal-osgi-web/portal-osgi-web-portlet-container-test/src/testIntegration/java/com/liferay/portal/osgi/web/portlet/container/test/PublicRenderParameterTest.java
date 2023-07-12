@@ -31,10 +31,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.osgi.web.portlet.container.test.util.PortletContainerTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.IOException;
@@ -119,7 +120,7 @@ public class PublicRenderParameterTest extends BasePortletContainerTestCase {
 			TestPropsValues.getUserId(), group.getGroupId(), false,
 			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, name, null, null,
 			"full_page_application", false,
-			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name),
+			StringPool.SLASH + _friendlyURLNormalizer.normalize(name),
 			ServiceContextTestUtil.getServiceContext());
 
 		UnicodeProperties typeSettingsUnicodeProperties =
@@ -207,5 +208,8 @@ public class PublicRenderParameterTest extends BasePortletContainerTestCase {
 
 		Assert.assertTrue(success.get());
 	}
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 }

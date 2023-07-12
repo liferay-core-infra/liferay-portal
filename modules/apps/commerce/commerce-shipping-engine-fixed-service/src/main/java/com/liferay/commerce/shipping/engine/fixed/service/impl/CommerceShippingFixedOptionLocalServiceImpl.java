@@ -49,7 +49,7 @@ import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -92,7 +92,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 			key = _getKey(user.getCompanyId(), nameMap);
 		}
 		else {
-			key = FriendlyURLNormalizerUtil.normalize(key);
+			key = _friendlyURLNormalizer.normalize(key);
 		}
 
 		_validate(commerceShippingFixedOptionId, user.getCompanyId(), key);
@@ -276,7 +276,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 			commerceShippingFixedOptionPersistence.findByPrimaryKey(
 				commerceShippingFixedOptionId);
 
-		key = FriendlyURLNormalizerUtil.normalize(key);
+		key = _friendlyURLNormalizer.normalize(key);
 
 		_validate(
 			commerceShippingFixedOptionId,
@@ -398,13 +398,13 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 	}
 
 	private String _getKey(long companyId, Map<Locale, String> nameMap) {
-		String key = FriendlyURLNormalizerUtil.normalize(
+		String key = _friendlyURLNormalizer.normalize(
 			nameMap.get(LocaleThreadLocal.getDefaultLocale()));
 
 		if (Validator.isNull(key)) {
 			for (String value : nameMap.values()) {
 				if (Validator.isNotNull(value)) {
-					key = FriendlyURLNormalizerUtil.normalize(value);
+					key = _friendlyURLNormalizer.normalize(value);
 
 					break;
 				}
@@ -467,6 +467,9 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 	@Reference
 	private CommerceShippingOptionAccountEntryRelLocalService
 		_commerceShippingOptionAccountEntryRelLocalService;
+
+	@Reference
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.ViewCountUpgradeProcess;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.view.count.service.ViewCountEntryLocalService;
 
@@ -79,7 +80,9 @@ public class MBServiceUpgradeStepRegistrator implements UpgradeStepRegistrator {
 				"MBThread", MBThread.class, "threadId", "viewCount"),
 			new MBMessageTreePathUpgradeProcess());
 
-		registry.register("3.0.0", "3.1.0", new UrlSubjectUpgradeProcess());
+		registry.register(
+			"3.0.0", "3.1.0",
+			new UrlSubjectUpgradeProcess(_friendlyURLNormalizer));
 
 		registry.register(
 			"3.1.0", "4.0.0",
@@ -151,6 +154,9 @@ public class MBServiceUpgradeStepRegistrator implements UpgradeStepRegistrator {
 			UpgradeProcessFactory.alterColumnType(
 				"MBSuspiciousActivity", "reason", "VARCHAR(255) null"));
 	}
+
+	@Reference
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@Reference
 	private ResourceActionLocalService _resourceActionLocalService;

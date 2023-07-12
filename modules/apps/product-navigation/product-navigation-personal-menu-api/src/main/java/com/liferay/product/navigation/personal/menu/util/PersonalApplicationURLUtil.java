@@ -14,6 +14,7 @@
 
 package com.liferay.product.navigation.personal.menu.util;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
@@ -36,7 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -155,7 +156,10 @@ public class PersonalApplicationURLUtil {
 			long userId, Group group, boolean privateLayout)
 		throws PortalException {
 
-		String friendlyURL = FriendlyURLNormalizerUtil.normalize(
+		FriendlyURLNormalizer friendlyURLNormalizer =
+			_friendlyURLNormalizerSnapshot.get();
+
+		String friendlyURL = friendlyURLNormalizer.normalize(
 			PropsValues.CONTROL_PANEL_LAYOUT_FRIENDLY_URL);
 
 		ServiceContext serviceContext = new ServiceContext();
@@ -195,6 +199,9 @@ public class PersonalApplicationURLUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PersonalApplicationURLUtil.class);
 
+	private static final Snapshot<FriendlyURLNormalizer>
+		_friendlyURLNormalizerSnapshot = new Snapshot<>(
+			PersonalApplicationURLUtil.class, FriendlyURLNormalizer.class);
 	private static final ServiceTracker
 		<PersonalMenuConfigurationRegistry, PersonalMenuConfigurationRegistry>
 			_serviceTracker;

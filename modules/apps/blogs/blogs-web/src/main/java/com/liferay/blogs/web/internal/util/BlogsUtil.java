@@ -20,6 +20,7 @@ import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.util.comparator.EntryDisplayDateComparator;
 import com.liferay.blogs.util.comparator.EntryTitleComparator;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.dao.search.SearchContainerResults;
@@ -29,7 +30,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -274,12 +275,18 @@ public class BlogsUtil {
 			title = String.valueOf(entryId);
 		}
 		else {
-			title = FriendlyURLNormalizerUtil.normalizeWithPeriodsAndSlashes(
-				title);
+			FriendlyURLNormalizer friendlyURLNormalizer =
+				_friendlyURLNormalizerSnapshot.get();
+
+			title = friendlyURLNormalizer.normalizeWithPeriodsAndSlashes(title);
 		}
 
 		return ModelHintsUtil.trimString(
 			BlogsEntry.class.getName(), "urlTitle", title);
 	}
+
+	private static final Snapshot<FriendlyURLNormalizer>
+		_friendlyURLNormalizerSnapshot = new Snapshot<>(
+			BlogsUtil.class, FriendlyURLNormalizer.class);
 
 }

@@ -53,7 +53,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -146,17 +146,17 @@ public class PortalImplAlternateURLTest {
 
 		Map<Locale, String> friendlyURLMap = HashMapBuilder.put(
 			LocaleUtil.GERMANY,
-			FriendlyURLNormalizerUtil.normalize(
+			_friendlyURLNormalizer.normalize(
 				RandomTestUtil.randomString(
 					LayoutFriendlyURLRandomizerBumper.INSTANCE))
 		).put(
 			LocaleUtil.SPAIN,
-			FriendlyURLNormalizerUtil.normalize(
+			_friendlyURLNormalizer.normalize(
 				RandomTestUtil.randomString(
 					LayoutFriendlyURLRandomizerBumper.INSTANCE))
 		).put(
 			LocaleUtil.US,
-			FriendlyURLNormalizerUtil.normalize(
+			_friendlyURLNormalizer.normalize(
 				RandomTestUtil.randomString(
 					LayoutFriendlyURLRandomizerBumper.INSTANCE))
 		).build();
@@ -216,19 +216,19 @@ public class PortalImplAlternateURLTest {
 		Map<Locale, String> friendlyURLMap = HashMapBuilder.put(
 			LocaleUtil.GERMANY,
 			StringPool.SLASH.concat(
-				FriendlyURLNormalizerUtil.normalize(
+				_friendlyURLNormalizer.normalize(
 					RandomTestUtil.randomString(
 						LayoutFriendlyURLRandomizerBumper.INSTANCE)))
 		).put(
 			LocaleUtil.SPAIN,
 			StringPool.SLASH.concat(
-				FriendlyURLNormalizerUtil.normalize(
+				_friendlyURLNormalizer.normalize(
 					RandomTestUtil.randomString(
 						LayoutFriendlyURLRandomizerBumper.INSTANCE)))
 		).put(
 			LocaleUtil.US,
 			StringPool.SLASH.concat(
-				FriendlyURLNormalizerUtil.normalize(
+				_friendlyURLNormalizer.normalize(
 					RandomTestUtil.randomString(
 						LayoutFriendlyURLRandomizerBumper.INSTANCE)))
 		).build();
@@ -844,6 +844,9 @@ public class PortalImplAlternateURLTest {
 
 	@Inject
 	private CompanyLocalService _companyLocalService;
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@DeleteAfterTestRun
 	private Group _group;

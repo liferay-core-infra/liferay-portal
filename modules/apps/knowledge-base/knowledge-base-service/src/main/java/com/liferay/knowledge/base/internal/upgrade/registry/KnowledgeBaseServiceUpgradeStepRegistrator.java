@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.ViewCountUpgradeProcess;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.view.count.service.ViewCountEntryLocalService;
 
@@ -103,7 +104,7 @@ public class KnowledgeBaseServiceUpgradeStepRegistrator
 		registry.register(
 			"1.3.2", "1.3.3",
 			new com.liferay.knowledge.base.internal.upgrade.v1_3_3.
-				KBFolderUpgradeProcess());
+				KBFolderUpgradeProcess(_friendlyURLNormalizer));
 
 		registry.register(
 			"1.3.3", "1.3.4",
@@ -199,6 +200,9 @@ public class KnowledgeBaseServiceUpgradeStepRegistrator
 
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
+
+	@Reference
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

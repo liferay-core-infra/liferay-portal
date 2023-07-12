@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -115,7 +115,7 @@ public class SegmentsExperienceSelectorProductNavigationControlMenuEntryTest {
 			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, "Full Page Application",
 			null, null, "full_page_application", false,
 			StringPool.SLASH +
-				FriendlyURLNormalizerUtil.normalize("Full Page Application"),
+				_friendlyURLNormalizer.normalize("Full Page Application"),
 			ServiceContextTestUtil.getServiceContext());
 
 		Assert.assertFalse(
@@ -186,6 +186,9 @@ public class SegmentsExperienceSelectorProductNavigationControlMenuEntryTest {
 
 	@Inject
 	private CompanyLocalService _companyLocalService;
+
+	@Inject
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@DeleteAfterTestRun
 	private Group _group;

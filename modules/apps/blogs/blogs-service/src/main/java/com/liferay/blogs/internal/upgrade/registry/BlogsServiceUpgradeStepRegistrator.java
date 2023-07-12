@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.subscription.service.SubscriptionLocalService;
 
@@ -62,7 +63,8 @@ public class BlogsServiceUpgradeStepRegistrator
 			"1.0.0", "1.1.0",
 			new com.liferay.blogs.internal.upgrade.v1_1_0.
 				BlogsEntryUpgradeProcess(
-					_classNameLocalService, _friendlyURLEntryLocalService));
+					_classNameLocalService, _friendlyURLEntryLocalService,
+					_friendlyURLNormalizer));
 
 		registry.register(
 			"1.1.0", "1.1.1",
@@ -153,6 +155,9 @@ public class BlogsServiceUpgradeStepRegistrator
 
 	@Reference
 	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;
+
+	@Reference
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
 
 	@Reference
 	private ImageLocalService _imageLocalService;

@@ -149,7 +149,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.service.http.GroupServiceHttp;
 import com.liferay.portal.service.http.LayoutServiceHttp;
@@ -2075,7 +2075,7 @@ public class StagingImpl implements Staging {
 		}
 
 		List<WorkflowTask> workflowTasks =
-			WorkflowTaskManagerUtil.getWorkflowTasksByWorkflowInstance(
+			_workflowTaskManager.getWorkflowTasksByWorkflowInstance(
 				layoutRevision.getCompanyId(), userId,
 				workflowInstanceLink.getWorkflowInstanceId(), false, 0, 1,
 				null);
@@ -4142,6 +4142,9 @@ public class StagingImpl implements Staging {
 
 	@Reference
 	private WorkflowInstanceLinkLocalService _workflowInstanceLinkLocalService;
+
+	@Reference
+	private WorkflowTaskManager _workflowTaskManager;
 
 	private class ScheduleInformation {
 

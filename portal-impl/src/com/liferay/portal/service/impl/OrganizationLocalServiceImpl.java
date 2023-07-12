@@ -133,7 +133,9 @@ public class OrganizationLocalServiceImpl
 	 */
 	@Override
 	public void addGroupOrganization(long groupId, long organizationId) {
-		super.addGroupOrganization(groupId, organizationId);
+		if (!groupPersistence.addOrganization(groupId, organizationId)) {
+			return;
+		}
 
 		try {
 			reindexUsers(organizationId);
@@ -151,7 +153,9 @@ public class OrganizationLocalServiceImpl
 	 */
 	@Override
 	public void addGroupOrganization(long groupId, Organization organization) {
-		super.addGroupOrganization(groupId, organization);
+		if (!groupPersistence.addOrganization(groupId, organization)) {
+			return;
+		}
 
 		try {
 			reindexUsers(organization);

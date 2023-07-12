@@ -234,7 +234,9 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addUserRole(long userId, long roleId) throws PortalException {
-		_userPersistence.addRole(userId, roleId);
+		if (!_userPersistence.addRole(userId, roleId)) {
+			return;
+		}
 
 		reindex(userId);
 	}
@@ -249,7 +251,9 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addUserRole(long userId, Role role) throws PortalException {
-		_userPersistence.addRole(userId, role);
+		if (!_userPersistence.addRole(userId, role)) {
+			return;
+		}
 
 		reindex(userId);
 	}

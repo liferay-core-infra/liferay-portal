@@ -563,7 +563,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addOrganizationGroup(long organizationId, Group group) {
-		super.addOrganizationGroup(organizationId, group);
+		if (!organizationPersistence.addGroup(organizationId, group)) {
+			return;
+		}
 
 		try {
 			reindexUsersInOrganization(organizationId);
@@ -581,7 +583,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addOrganizationGroup(long organizationId, long groupId) {
-		super.addOrganizationGroup(organizationId, groupId);
+		if (!organizationPersistence.addGroup(organizationId, groupId)) {
+			return;
+		}
 
 		try {
 			reindexUsersInOrganization(organizationId);
@@ -670,7 +674,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addUserGroupGroup(long userGroupId, Group group) {
-		super.addUserGroupGroup(userGroupId, group);
+		if (!userGroupPersistence.addGroup(userGroupId, group)) {
+			return;
+		}
 
 		try {
 			reindexUsersInUserGroup(userGroupId);
@@ -688,7 +694,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addUserGroupGroup(long userGroupId, long groupId) {
-		super.addUserGroupGroup(userGroupId, groupId);
+		if (!userGroupPersistence.addGroup(userGroupId, groupId)) {
+			return;
+		}
 
 		try {
 			reindexUsersInUserGroup(userGroupId);

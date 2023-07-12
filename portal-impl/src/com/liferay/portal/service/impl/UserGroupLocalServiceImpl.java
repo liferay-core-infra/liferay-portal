@@ -112,7 +112,9 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addGroupUserGroup(long groupId, long userGroupId) {
-		super.addGroupUserGroup(groupId, userGroupId);
+		if (!groupPersistence.addUserGroup(groupId, userGroupId)) {
+			return;
+		}
 
 		try {
 			reindexUsers(userGroupId);
@@ -130,7 +132,9 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public void addGroupUserGroup(long groupId, UserGroup userGroup) {
-		super.addGroupUserGroup(groupId, userGroup);
+		if (!groupPersistence.addUserGroup(groupId, userGroup)) {
+			return;
+		}
 
 		try {
 			reindexUsers(userGroup);
@@ -201,7 +205,9 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 	@Override
 	public void addTeamUserGroup(long teamId, UserGroup userGroup) {
-		super.addTeamUserGroup(teamId, userGroup);
+		if (!teamPersistence.addUserGroup(teamId, userGroup)) {
+			return;
+		}
 
 		try {
 			reindexUsers(userGroup);
@@ -302,7 +308,9 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	public void addUserUserGroup(long userId, long userGroupId)
 		throws PortalException {
 
-		super.addUserUserGroup(userId, userGroupId);
+		if (!userPersistence.addUserGroup(userId, userGroupId)) {
+			return;
+		}
 
 		reindexUserGroup(getUserGroup(userGroupId));
 	}
@@ -311,7 +319,9 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	public void addUserUserGroup(long userId, UserGroup userGroup)
 		throws PortalException {
 
-		super.addUserUserGroup(userId, userGroup);
+		if (!userPersistence.addUserGroup(userId, userGroup)) {
+			return;
+		}
 
 		reindexUserGroup(userGroup);
 	}

@@ -28,13 +28,12 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.UserGroupGroupRole;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
@@ -99,8 +98,8 @@ public class UserSXPParameterContributorTest {
 			_mockAssetCategoryLocalService(Collections.emptyList()),
 			_mockAssetTagLocalService(Collections.emptyList()),
 			_mockExpandoColumnLocalService(Collections.emptyList()),
-			_mockExpandoValueLocalService(Collections.emptyList()), _language,
-			_portal, _mockRoleLocalService(Collections.emptyList()),
+			_mockExpandoValueLocalService(Collections.emptyList()),
+			_mockGroupLocalService(new long[0]), _language, _portal,
 			_mockSegmentsEntryRetriever(segmentsEntryIds),
 			_mockUserGroupGroupRoleLocalService(Collections.emptyList()),
 			_mockUserGroupLocalService(Collections.emptyList()),
@@ -149,8 +148,8 @@ public class UserSXPParameterContributorTest {
 				Arrays.asList(assetCategory1, assetCategory2)),
 			_mockAssetTagLocalService(Collections.emptyList()),
 			_mockExpandoColumnLocalService(Collections.emptyList()),
-			_mockExpandoValueLocalService(Collections.emptyList()), _language,
-			_portal, _mockRoleLocalService(Collections.emptyList()),
+			_mockExpandoValueLocalService(Collections.emptyList()),
+			_mockGroupLocalService(new long[0]), _language, _portal,
 			_mockSegmentsEntryRetriever(new long[0]),
 			_mockUserGroupGroupRoleLocalService(Collections.emptyList()),
 			_mockUserGroupLocalService(Collections.emptyList()),
@@ -193,8 +192,8 @@ public class UserSXPParameterContributorTest {
 			_mockAssetCategoryLocalService(Collections.emptyList()),
 			_mockAssetTagLocalService(Arrays.asList(assetTag1, assetTag2)),
 			_mockExpandoColumnLocalService(Collections.emptyList()),
-			_mockExpandoValueLocalService(Collections.emptyList()), _language,
-			_portal, _mockRoleLocalService(Collections.emptyList()),
+			_mockExpandoValueLocalService(Collections.emptyList()),
+			_mockGroupLocalService(new long[0]), _language, _portal,
 			_mockSegmentsEntryRetriever(new long[0]),
 			_mockUserGroupGroupRoleLocalService(Collections.emptyList()),
 			_mockUserGroupLocalService(Collections.emptyList()),
@@ -279,8 +278,8 @@ public class UserSXPParameterContributorTest {
 			_mockAssetCategoryLocalService(Collections.emptyList()),
 			_mockAssetTagLocalService(Collections.emptyList()),
 			_mockExpandoColumnLocalService(Collections.emptyList()),
-			_mockExpandoValueLocalService(Collections.emptyList()), _language,
-			_portal, _mockRoleLocalService(Collections.emptyList()),
+			_mockExpandoValueLocalService(Collections.emptyList()),
+			_mockGroupLocalService(new long[0]), _language, _portal,
 			_mockSegmentsEntryRetriever(new long[0]),
 			_mockUserGroupGroupRoleLocalService(Collections.emptyList()),
 			_mockUserGroupLocalService(Collections.emptyList()),
@@ -661,8 +660,8 @@ public class UserSXPParameterContributorTest {
 				Arrays.asList(assetCategory1, assetCategory2)),
 			_mockAssetTagLocalService(Collections.emptyList()),
 			_mockExpandoColumnLocalService(Collections.emptyList()),
-			_mockExpandoValueLocalService(Collections.emptyList()), _language,
-			_portal, _mockRoleLocalService(Collections.emptyList()),
+			_mockExpandoValueLocalService(Collections.emptyList()),
+			_mockGroupLocalService(new long[0]), _language, _portal,
 			_mockSegmentsEntryRetriever(new long[0]),
 			_mockUserGroupGroupRoleLocalService(Collections.emptyList()),
 			_mockUserGroupLocalService(Collections.emptyList()),
@@ -826,8 +825,8 @@ public class UserSXPParameterContributorTest {
 			_mockAssetCategoryLocalService(Collections.emptyList()),
 			_mockAssetTagLocalService(Collections.emptyList()),
 			_mockExpandoColumnLocalService(Collections.emptyList()),
-			_mockExpandoValueLocalService(Collections.emptyList()), _language,
-			_portal, _mockRoleLocalService(Collections.emptyList()),
+			_mockExpandoValueLocalService(Collections.emptyList()),
+			_mockGroupLocalService(new long[0]), _language, _portal,
 			_mockSegmentsEntryRetriever(new long[0]),
 			_mockUserGroupGroupRoleLocalService(Collections.emptyList()),
 			_mockUserGroupLocalService(Arrays.asList(userGroup1, userGroup2)),
@@ -954,6 +953,21 @@ public class UserSXPParameterContributorTest {
 		return expandoValueLocalService;
 	}
 
+	private GroupLocalService _mockGroupLocalService(long[] roleIds) {
+		GroupLocalService groupLocalService = Mockito.mock(
+			GroupLocalService.class);
+
+		Mockito.doReturn(
+			roleIds
+		).when(
+			groupLocalService
+		).getRolePrimaryKeys(
+			Mockito.anyLong()
+		);
+
+		return groupLocalService;
+	}
+
 	private void _mockLanguage() {
 		Mockito.doReturn(
 			_locale.toString()
@@ -972,21 +986,6 @@ public class UserSXPParameterContributorTest {
 		).isOmniadmin(
 			Mockito.anyLong()
 		);
-	}
-
-	private RoleLocalService _mockRoleLocalService(List<Role> roles) {
-		RoleLocalService roleLocalService = Mockito.mock(
-			RoleLocalService.class);
-
-		Mockito.doReturn(
-			roles
-		).when(
-			roleLocalService
-		).getGroupRoles(
-			Mockito.anyLong()
-		);
-
-		return roleLocalService;
 	}
 
 	private SegmentsEntryRetriever _mockSegmentsEntryRetriever(
@@ -1214,7 +1213,7 @@ public class UserSXPParameterContributorTest {
 						add(expandoValue);
 					}
 				}),
-			_language, _portal, _mockRoleLocalService(Collections.emptyList()),
+			_mockGroupLocalService(new long[0]), _language, _portal,
 			_mockSegmentsEntryRetriever(new long[0]),
 			_mockUserGroupGroupRoleLocalService(Collections.emptyList()),
 			_mockUserGroupLocalService(Collections.emptyList()),
@@ -1246,8 +1245,8 @@ public class UserSXPParameterContributorTest {
 			_mockAssetCategoryLocalService(Collections.emptyList()),
 			_mockAssetTagLocalService(Collections.emptyList()),
 			_mockExpandoColumnLocalService(Collections.emptyList()),
-			_mockExpandoValueLocalService(Collections.emptyList()), _language,
-			_portal, _mockRoleLocalService(Collections.emptyList()),
+			_mockExpandoValueLocalService(Collections.emptyList()),
+			_mockGroupLocalService(new long[0]), _language, _portal,
 			_mockSegmentsEntryRetriever(new long[0]),
 			_mockUserGroupGroupRoleLocalService(Collections.emptyList()),
 			_mockUserGroupLocalService(Collections.emptyList()),

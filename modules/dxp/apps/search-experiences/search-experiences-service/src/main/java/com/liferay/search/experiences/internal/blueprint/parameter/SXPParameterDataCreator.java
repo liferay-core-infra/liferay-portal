@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
@@ -148,7 +147,7 @@ public class SXPParameterDataCreator
 			new UserSXPParameterContributor(
 				_assetCategoryLocalService, _assetTagLocalService,
 				_expandoColumnLocalService, _expandoValueLocalService,
-				_language, _portal, _roleLocalService, _segmentsEntryRetriever,
+				_groupLocalService, _language, _portal, _segmentsEntryRetriever,
 				_userGroupGroupRoleLocalService, _userGroupLocalService,
 				_userGroupRoleLocalService, _userLocalService)
 		};
@@ -729,9 +728,6 @@ public class SXPParameterDataCreator
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private RoleLocalService _roleLocalService;
 
 	@Reference
 	private SegmentsEntryRetriever _segmentsEntryRetriever;

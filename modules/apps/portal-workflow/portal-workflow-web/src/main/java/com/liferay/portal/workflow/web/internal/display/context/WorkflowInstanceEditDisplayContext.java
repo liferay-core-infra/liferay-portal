@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowLog;
 import com.liferay.portal.kernel.workflow.WorkflowLogManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
 
 import java.io.Serializable;
@@ -65,11 +65,13 @@ public class WorkflowInstanceEditDisplayContext
 	public WorkflowInstanceEditDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		WorkflowComparatorFactory workflowComparatorFactory) {
+		WorkflowComparatorFactory workflowComparatorFactory,
+		WorkflowTaskManager workflowTaskManager) {
 
 		super(liferayPortletRequest, liferayPortletResponse);
 
 		_workflowComparatorFactory = workflowComparatorFactory;
+		workflowTaskManager = this.workflowTaskManager;
 	}
 
 	public AssetEntry getAssetEntry() throws PortalException {
@@ -288,7 +290,7 @@ public class WorkflowInstanceEditDisplayContext
 	public List<WorkflowTask> getWorkflowTasks() throws PortalException {
 		if (workflowTasks == null) {
 			workflowTasks =
-				WorkflowTaskManagerUtil.getWorkflowTasksByWorkflowInstance(
+				workflowTaskManager.getWorkflowTasksByWorkflowInstance(
 					workflowInstanceRequestHelper.getCompanyId(), null,
 					getWorkflowInstanceId(), null, QueryUtil.ALL_POS,
 					QueryUtil.ALL_POS, null);
@@ -319,6 +321,7 @@ public class WorkflowInstanceEditDisplayContext
 		return workflowInstance.getWorkflowInstanceId();
 	}
 
+	protected WorkflowTaskManager workflowTaskManager;
 	protected List<WorkflowTask> workflowTasks;
 
 	private String _getActorName(WorkflowLog workflowLog) {

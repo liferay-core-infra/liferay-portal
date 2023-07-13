@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
 import com.liferay.portal.workflow.constants.WorkflowPortletKeys;
 import com.liferay.portal.workflow.constants.WorkflowWebKeys;
@@ -159,6 +160,9 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 	@Reference
 	protected WorkflowPreprocessorHelper workflowPreprocessorHelper;
 
+	@Reference
+	protected WorkflowTaskManager workflowTaskManager;
+
 	private void _setWorkflowInstanceDisplayContextRenderRequestAttribute(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortalException {
@@ -177,7 +181,7 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 				new MyWorkflowInstanceEditDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory));
+					workflowComparatorFactory, workflowTaskManager));
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
 				new MyWorkflowInstanceViewDisplayContext(
@@ -191,7 +195,7 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 				new WorkflowInstanceEditDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory));
+					workflowComparatorFactory, workflowTaskManager));
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
 				new WorkflowInstanceViewDisplayContext(

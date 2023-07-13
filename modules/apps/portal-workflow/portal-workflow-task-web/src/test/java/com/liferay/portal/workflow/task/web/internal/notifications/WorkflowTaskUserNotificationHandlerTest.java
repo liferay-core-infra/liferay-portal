@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.workflow.DefaultWorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.workflow.security.permission.WorkflowTaskPermission;
 
@@ -74,7 +73,7 @@ public class WorkflowTaskUserNotificationHandlerTest {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		_setUpUserNotificationEventLocalService();
-		_setUpWorkflowTaskManagerUtil();
+		_setUpWorkflowTaskManager();
 		_setUpWorkflowTaskPermission();
 
 		ReflectionTestUtil.setFieldValue(
@@ -247,7 +246,7 @@ public class WorkflowTaskUserNotificationHandlerTest {
 				UserNotificationEventLocalService.class));
 	}
 
-	private static void _setUpWorkflowTaskManagerUtil() throws Exception {
+	private static void _setUpWorkflowTaskManager() throws Exception {
 		WorkflowTaskManager workflowTaskManager = Mockito.spy(
 			WorkflowTaskManager.class);
 
@@ -277,7 +276,7 @@ public class WorkflowTaskUserNotificationHandlerTest {
 		);
 
 		ReflectionTestUtil.setFieldValue(
-			WorkflowTaskManagerUtil.class, "_workflowTaskManager",
+			_workflowTaskUserNotificationHandler, "_workflowTaskManager",
 			workflowTaskManager);
 	}
 

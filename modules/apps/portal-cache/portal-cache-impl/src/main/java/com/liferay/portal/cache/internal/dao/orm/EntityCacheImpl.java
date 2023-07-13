@@ -46,17 +46,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  */
-@Component(service = {CacheRegistryItem.class, EntityCache.class})
+@Component(service = EntityCache.class)
 public class EntityCacheImpl
-	implements CacheRegistryItem, EntityCache, PortalCacheManagerListener {
+	implements EntityCache, PortalCacheManagerListener {
 
 	@Override
 	public void clearCache() {
@@ -151,11 +154,6 @@ public class EntityCacheImpl
 		}
 
 		return portalCache;
-	}
-
-	@Override
-	public String getRegistryName() {
-		return EntityCache.class.getName();
 	}
 
 	@Override
@@ -260,10 +258,27 @@ public class EntityCacheImpl
 		_removeResult(clazz, primaryKey, null);
 	}
 
+	public class EntityCacheCacheRegistryItem implements CacheRegistryItem {
+
+		@Override
+		public String getRegistryName() {
+			return EntityCache.class.getName();
+		}
+
+		@Override
+		public void invalidate() {
+		}
+
+	}
+
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		_dbPartitionEnabled = GetterUtil.getBoolean(
 			_props.get("database.partition.enabled"));
+
+		_serviceRegistration = bundleContext.registerService(
+			CacheRegistryItem.class, new EntityCacheCacheRegistryItem(), null);
+
 		_valueObjectEntityCacheEnabled = GetterUtil.getBoolean(
 			_props.get(PropsKeys.VALUE_OBJECT_ENTITY_CACHE_ENABLED));
 		_valueObjectMVCCEntityCacheEnabled = GetterUtil.getBoolean(
@@ -286,6 +301,11 @@ public class EntityCacheImpl
 			portalCacheManager = _multiVMPool.getPortalCacheManager();
 
 		portalCacheManager.registerPortalCacheManagerListener(this);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
 	}
 
 	private FinderCacheImpl _getFinderCacheImpl() {
@@ -445,6 +465,7 @@ public class EntityCacheImpl
 	@Reference
 	private Props _props;
 
+	private ServiceRegistration<CacheRegistryItem> _serviceRegistration;
 	private boolean _valueObjectEntityCacheEnabled;
 	private boolean _valueObjectMVCCEntityCacheEnabled;
 

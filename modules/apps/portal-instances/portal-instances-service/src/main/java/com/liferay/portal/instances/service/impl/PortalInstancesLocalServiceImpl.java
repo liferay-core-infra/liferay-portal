@@ -134,9 +134,9 @@ public class PortalInstancesLocalServiceImpl
 			Role role = _roleLocalService.fetchRole(
 				companyId, RoleConstants.ADMINISTRATOR);
 
-			List<User> users = _userLocalService.getRoleUsers(role.getRoleId());
+			long[] userIds = _userLocalService.getRoleUserIds(role.getRoleId());
 
-			User user = users.get(0);
+			User user = _userLocalService.getUser(userIds[0]);
 
 			PermissionChecker permissionChecker =
 				_permissionCheckerFactory.create(user);

@@ -46,8 +46,6 @@ import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.site.initializer.SiteInitializer;
 
-import java.util.List;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -113,14 +111,14 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 			return _userLocalService.getGuestUser(companyId);
 		}
 
-		List<User> adminUsers = _userLocalService.getRoleUsers(
-			role.getRoleId(), 0, 1);
+		long[] adminUserIds = _userLocalService.getRoleUserIds(
+			role.getRoleId());
 
-		if (adminUsers.isEmpty()) {
+		if (adminUserIds.length == 0) {
 			return _userLocalService.getGuestUser(companyId);
 		}
 
-		return adminUsers.get(0);
+		return _userLocalService.getUser(adminUserIds[0]);
 	}
 
 	@Reference

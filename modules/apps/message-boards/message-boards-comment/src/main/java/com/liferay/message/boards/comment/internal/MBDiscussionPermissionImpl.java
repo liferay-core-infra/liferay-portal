@@ -37,7 +37,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 		PermissionChecker permissionChecker, long companyId, long groupId,
 		String className, long classPK) {
 
-		return MBDiscussionPermission.contains(
+		return hasPermission(
 			permissionChecker, companyId, groupId, className, classPK,
 			ActionKeys.ADD_DISCUSSION);
 	}
@@ -96,7 +96,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 		PermissionChecker permissionChecker, long companyId, long groupId,
 		String className, long classPK) {
 
-		return MBDiscussionPermission.contains(
+		return hasPermission(
 			permissionChecker, companyId, groupId, className, classPK,
 			ActionKeys.VIEW);
 	}

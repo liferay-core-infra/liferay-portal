@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -364,8 +365,8 @@ public class DDMFormAdminDisplayContextTest {
 			Mockito.mock(DDMStorageAdapterRegistry.class),
 			Mockito.mock(DDMStructureLocalService.class),
 			Mockito.mock(DDMStructureService.class),
-			Mockito.mock(JSONFactory.class), Mockito.mock(NPMResolver.class),
-			null, Mockito.mock(Portal.class));
+			Mockito.mock(HtmlParser.class), Mockito.mock(JSONFactory.class),
+			Mockito.mock(NPMResolver.class), null, Mockito.mock(Portal.class));
 	}
 
 	private void _setUpLanguageUtil() {

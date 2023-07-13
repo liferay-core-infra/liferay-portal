@@ -52,7 +52,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HtmlParserUtil;
+import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -86,7 +86,8 @@ public class DDMFormViewFormInstanceRecordsDisplayContext {
 			RenderRequest renderRequest, RenderResponse renderResponse,
 			DDMFormInstance ddmFormInstance,
 			DDMFormInstanceRecordLocalService ddmFormInstanceRecordLocalService,
-			DDMFormFieldTypeServicesRegistry ddmFormFieldTypeServicesRegistry)
+			DDMFormFieldTypeServicesRegistry ddmFormFieldTypeServicesRegistry,
+			HtmlParser htmlParser)
 		throws PortalException {
 
 		_renderRequest = renderRequest;
@@ -94,6 +95,7 @@ public class DDMFormViewFormInstanceRecordsDisplayContext {
 		_ddmFormInstance = ddmFormInstance;
 		_ddmFormInstanceRecordLocalService = ddmFormInstanceRecordLocalService;
 		_ddmFormFieldTypeServicesRegistry = ddmFormFieldTypeServicesRegistry;
+		_htmlParser = htmlParser;
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -296,7 +298,7 @@ public class DDMFormViewFormInstanceRecordsDisplayContext {
 				DDMFormInstance ddmFormInstance = getDDMFormInstance();
 
 				navigationItem.setLabel(
-					HtmlParserUtil.extractText(
+					_htmlParser.extractText(
 						ddmFormInstance.getName(_renderRequest.getLocale())));
 			}
 		).build();
@@ -655,6 +657,7 @@ public class DDMFormViewFormInstanceRecordsDisplayContext {
 	private final DDMFormInstance _ddmFormInstance;
 	private final DDMFormInstanceRecordLocalService
 		_ddmFormInstanceRecordLocalService;
+	private final HtmlParser _htmlParser;
 	private String _orderByCol;
 	private String _orderByType;
 	private final RenderRequest _renderRequest;

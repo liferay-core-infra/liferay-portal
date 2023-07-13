@@ -106,6 +106,7 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -163,8 +164,8 @@ public class DDMFormAdminDisplayContext {
 		DDMFormWebConfiguration ddmFormWebConfiguration,
 		DDMStorageAdapterRegistry ddmStorageAdapterRegistry,
 		DDMStructureLocalService ddmStructureLocalService,
-		DDMStructureService ddmStructureService, JSONFactory jsonFactory,
-		NPMResolver npmResolver,
+		DDMStructureService ddmStructureService, HtmlParser htmlParser,
+		JSONFactory jsonFactory, NPMResolver npmResolver,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		Portal portal) {
 
@@ -187,6 +188,7 @@ public class DDMFormAdminDisplayContext {
 		_ddmStorageAdapterRegistry = ddmStorageAdapterRegistry;
 		_ddmStructureLocalService = ddmStructureLocalService;
 		_ddmStructureService = ddmStructureService;
+		_htmlParser = htmlParser;
 		_npmResolver = npmResolver;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_portal = portal;
@@ -524,7 +526,7 @@ public class DDMFormAdminDisplayContext {
 		return new DDMFormViewFormInstanceRecordsDisplayContext(
 			renderRequest, renderResponse, getDDMFormInstance(),
 			_ddmFormInstanceRecordLocalService,
-			_ddmFormFieldTypeServicesRegistry);
+			_ddmFormFieldTypeServicesRegistry, _htmlParser);
 	}
 
 	public DDMStructure getDDMStructure() throws PortalException {
@@ -1814,6 +1816,7 @@ public class DDMFormAdminDisplayContext {
 	private String _displayStyle;
 	private final FormInstancePermissionCheckerHelper
 		_formInstancePermissionCheckerHelper;
+	private final HtmlParser _htmlParser;
 	private final Map<Long, String> _invalidDDMFormFieldTypes = new HashMap<>();
 	private final NPMResolver _npmResolver;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;

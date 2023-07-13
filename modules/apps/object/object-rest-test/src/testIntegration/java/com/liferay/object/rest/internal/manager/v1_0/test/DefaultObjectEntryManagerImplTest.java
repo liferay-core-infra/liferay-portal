@@ -107,7 +107,7 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HtmlParserUtil;
+import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -2560,7 +2560,7 @@ public class DefaultObjectEntryManagerImplTest {
 						"richTextObjectFieldNameRawText")) {
 
 				Assert.assertEquals(
-					HtmlParserUtil.extractText(
+					_htmlParser.extractText(
 						String.valueOf(expectedEntry.getValue())),
 					String.valueOf(
 						actualObjectEntryProperties.get(
@@ -2926,6 +2926,9 @@ public class DefaultObjectEntryManagerImplTest {
 
 	@Inject
 	private GroupLocalService _groupLocalService;
+
+	@Inject
+	private HtmlParser _htmlParser;
 
 	private ListTypeDefinition _listTypeDefinition;
 

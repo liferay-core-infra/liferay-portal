@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -154,8 +155,8 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 					_ddmFormWebConfigurationActivator.
 						getDDMFormWebConfiguration(),
 					_ddmStorageAdapterRegistry, _ddmStructureLocalService,
-					_ddmStructureService, _jsonFactory, _npmResolver,
-					_objectDefinitionLocalService, _portal));
+					_ddmStructureService, _htmlParser, _jsonFactory,
+					_npmResolver, _objectDefinitionLocalService, _portal));
 		}
 		else {
 			renderRequest.setAttribute(
@@ -176,8 +177,8 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 					_ddmFormWebConfigurationActivator.
 						getDDMFormWebConfiguration(),
 					_ddmStorageAdapterRegistry, _ddmStructureLocalService,
-					_ddmStructureService, _jsonFactory, _npmResolver,
-					_objectDefinitionLocalService, _portal));
+					_ddmStructureService, _htmlParser, _jsonFactory,
+					_npmResolver, _objectDefinitionLocalService, _portal));
 		}
 	}
 
@@ -243,6 +244,9 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private DDMStructureService _ddmStructureService;
+
+	@Reference
+	private HtmlParser _htmlParser;
 
 	@Reference
 	private JSONFactory _jsonFactory;

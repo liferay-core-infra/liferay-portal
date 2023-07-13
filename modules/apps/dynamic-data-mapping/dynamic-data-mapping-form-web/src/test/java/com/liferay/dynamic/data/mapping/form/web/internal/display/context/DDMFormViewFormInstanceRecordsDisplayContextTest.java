@@ -31,6 +31,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -275,7 +276,8 @@ public class DDMFormViewFormInstanceRecordsDisplayContextTest {
 				renderRequest, Mockito.mock(RenderResponse.class),
 				_mockDDMFormInstance(),
 				Mockito.mock(DDMFormInstanceRecordLocalService.class),
-				_mockDDMFormFieldTypeServicesRegistry());
+				_mockDDMFormFieldTypeServicesRegistry(),
+				Mockito.mock(HtmlParser.class));
 	}
 
 	private void _setUpPortalUtil() {

@@ -18,13 +18,14 @@ import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalServiceUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.model.ObjectField;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlParserUtil;
+import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -94,7 +95,9 @@ public class ObjectEntryValuesUtil {
 					objectField.getBusinessType(),
 					ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
 
-			return HtmlParserUtil.extractText(GetterUtil.getString(value));
+			HtmlParser htmlParser = _htmlParserSnapshot.get();
+
+			return htmlParser.extractText(GetterUtil.getString(value));
 		}
 
 		if (Validator.isNull(value)) {
@@ -131,5 +134,8 @@ public class ObjectEntryValuesUtil {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectEntryValuesUtil.class);
+
+	private static final Snapshot<HtmlParser> _htmlParserSnapshot =
+		new Snapshot<>(ObjectEntryValuesUtil.class, HtmlParser.class);
 
 }

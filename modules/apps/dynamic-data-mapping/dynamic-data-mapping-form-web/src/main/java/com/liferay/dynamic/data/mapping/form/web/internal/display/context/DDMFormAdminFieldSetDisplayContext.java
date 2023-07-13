@@ -63,6 +63,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -109,8 +110,8 @@ public class DDMFormAdminFieldSetDisplayContext
 		DDMFormWebConfiguration ddmFormWebConfiguration,
 		DDMStorageAdapterRegistry ddmStorageAdapterRegistry,
 		DDMStructureLocalService ddmStructureLocalService,
-		DDMStructureService ddmStructureService, JSONFactory jsonFactory,
-		NPMResolver npmResolver,
+		DDMStructureService ddmStructureService, HtmlParser htmlParser,
+		JSONFactory jsonFactory, NPMResolver npmResolver,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		Portal portal) {
 
@@ -124,7 +125,7 @@ public class DDMFormAdminFieldSetDisplayContext
 			ddmFormTemplateContextFactory, ddmFormValuesFactory,
 			ddmFormValuesMerger, ddmFormWebConfiguration,
 			ddmStorageAdapterRegistry, ddmStructureLocalService,
-			ddmStructureService, jsonFactory, npmResolver,
+			ddmStructureService, htmlParser, jsonFactory, npmResolver,
 			objectDefinitionLocalService, portal);
 
 		_fieldSetPermissionCheckerHelper = new FieldSetPermissionCheckerHelper(

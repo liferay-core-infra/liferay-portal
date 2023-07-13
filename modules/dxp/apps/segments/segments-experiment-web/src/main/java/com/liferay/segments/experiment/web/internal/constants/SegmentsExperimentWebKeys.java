@@ -19,6 +19,9 @@ package com.liferay.segments.experiment.web.internal.constants;
  */
 public class SegmentsExperimentWebKeys {
 
+	public static final String AB_TEST_VARIANT_ID_COOKIE_PREFIX =
+		"ab_test_variant_id_";
+
 	public static final String SEGMENTS_EXPERIMENT = "SEGMENTS_EXPERIMENT";
 
 	public static final String SEGMENTS_EXPERIMENT_DISPLAY_CONTEXT =

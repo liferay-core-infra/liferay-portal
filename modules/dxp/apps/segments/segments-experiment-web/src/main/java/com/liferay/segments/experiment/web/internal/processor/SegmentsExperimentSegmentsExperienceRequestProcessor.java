@@ -54,20 +54,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "segments.experience.request.processor.priority:Integer=50",
-	service = {
-		SegmentsExperienceRequestProcessor.class,
-		SegmentsExperimentSegmentsExperienceRequestProcessor.class
-	}
+	service = SegmentsExperienceRequestProcessor.class
 )
 public class SegmentsExperimentSegmentsExperienceRequestProcessor
 	implements SegmentsExperienceRequestProcessor {
-
-	public void cleanCookieLogoutAction(
-		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse) {
-
-		_unsetCookies(httpServletRequest, httpServletResponse);
-	}
 
 	@Override
 	public long[] getSegmentsExperienceIds(
@@ -228,7 +218,8 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessor
 		for (Cookie cookie : cookies) {
 			if (Objects.equals(
 					cookie.getName(),
-					_AB_TEST_VARIANT_ID_COOKIE_PREFIX + plid)) {
+					SegmentsExperimentWebKeys.AB_TEST_VARIANT_ID_COOKIE_PREFIX +
+						plid)) {
 
 				return cookie;
 			}
@@ -336,7 +327,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessor
 		long segmentsExperienceId) {
 
 		Cookie abTestVariantIdCookie = new Cookie(
-			_AB_TEST_VARIANT_ID_COOKIE_PREFIX + plid,
+			SegmentsExperimentWebKeys.AB_TEST_VARIANT_ID_COOKIE_PREFIX + plid,
 			_getSegmentsExperienceKey(segmentsExperienceId));
 
 		String domain = CookiesManagerUtil.getDomain(httpServletRequest);
@@ -367,30 +358,6 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessor
 			CookiesManagerUtil.getDomain(httpServletRequest),
 			httpServletRequest, httpServletResponse, cookie.getName());
 	}
-
-	private void _unsetCookies(
-		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse) {
-
-		Cookie[] cookies = httpServletRequest.getCookies();
-
-		if (ArrayUtil.isEmpty(cookies)) {
-			return;
-		}
-
-		for (Cookie cookie : cookies) {
-			if (StringUtil.startsWith(
-					cookie.getName(), _AB_TEST_VARIANT_ID_COOKIE_PREFIX)) {
-
-				CookiesManagerUtil.deleteCookies(
-					CookiesManagerUtil.getDomain(httpServletRequest),
-					httpServletRequest, httpServletResponse, cookie.getName());
-			}
-		}
-	}
-
-	private static final String _AB_TEST_VARIANT_ID_COOKIE_PREFIX =
-		"ab_test_variant_id_";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SegmentsExperimentSegmentsExperienceRequestProcessor.class);

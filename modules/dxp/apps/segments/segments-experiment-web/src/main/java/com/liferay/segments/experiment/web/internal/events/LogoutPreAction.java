@@ -14,13 +14,17 @@
 
 package com.liferay.segments.experiment.web.internal.events;
 
+import com.liferay.portal.kernel.cookies.CookiesManager;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.LifecycleAction;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.segments.experiment.web.internal.constants.ProductNavigationControlMenuEntryConstants;
-import com.liferay.segments.experiment.web.internal.processor.SegmentsExperimentSegmentsExperienceRequestProcessor;
+import com.liferay.segments.experiment.web.internal.constants.SegmentsExperimentWebKeys;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,18 +48,32 @@ public class LogoutPreAction extends Action {
 			ProductNavigationControlMenuEntryConstants.SESSION_CLICKS_KEY,
 			"closed");
 
-		_segmentsExperimentSegmentsExperienceRequestProcessor.
-			cleanCookieLogoutAction(httpServletRequest, httpServletResponse);
+		Cookie[] cookies = httpServletRequest.getCookies();
+
+		if (ArrayUtil.isEmpty(cookies)) {
+			return;
+		}
+
+		for (Cookie cookie : cookies) {
+			if (StringUtil.startsWith(
+					cookie.getName(),
+					SegmentsExperimentWebKeys.
+						AB_TEST_VARIANT_ID_COOKIE_PREFIX)) {
+
+				_cookiesManager.deleteCookies(
+					_cookiesManager.getDomain(httpServletRequest),
+					httpServletRequest, httpServletResponse, cookie.getName());
+			}
+		}
 	}
+
+	@Reference
+	private CookiesManager _cookiesManager;
 
 	@Reference(
 		target = "(component.name=com.liferay.segments.experiment.web.internal.product.navigation.control.menu.SegmentsExperimentProductNavigationControlMenuEntry)"
 	)
 	private ProductNavigationControlMenuEntry
 		_segmentsExperimentProductNavigationControlMenuEntry;
-
-	@Reference
-	private SegmentsExperimentSegmentsExperienceRequestProcessor
-		_segmentsExperimentSegmentsExperienceRequestProcessor;
 
 }

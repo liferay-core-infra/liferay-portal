@@ -708,10 +708,11 @@ public class DDMFormDisplayContext {
 			Role role = _roleLocalService.getRole(
 				themeDisplay.getCompanyId(), RoleConstants.ADMINISTRATOR);
 
-			List<User> users = _userLocalService.getRoleUsers(role.getRoleId());
+			long[] userIds = _userLocalService.getRoleUserIds(role.getRoleId());
 
 			if (!DDMFormInstanceStagingUtil.isFormInstancePublishedToRemoteLive(
-					group, users.get(0), ddmFormInstance.getUuid())) {
+					group, _userLocalService.getUser(userIds[0]),
+					ddmFormInstance.getUuid())) {
 
 				return false;
 			}

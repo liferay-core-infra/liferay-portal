@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.model.TrashedModel;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
@@ -282,7 +283,8 @@ public class WikiPageTrashHandler extends BaseWikiTrashHandler {
 			classPK, WorkflowConstants.STATUS_ANY, false);
 
 		return new WikiPageAssetRenderer(
-			_htmlParser, _trashHelper, _wikiEngineRenderer, page);
+			_configurationProvider, _htmlParser, _trashHelper,
+			_wikiEngineRenderer, page);
 	}
 
 	@Override
@@ -473,6 +475,9 @@ public class WikiPageTrashHandler extends BaseWikiTrashHandler {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiPageTrashHandler.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private HtmlParser _htmlParser;

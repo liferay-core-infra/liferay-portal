@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.repository.capabilities.PortalCapabilityLocator;
@@ -170,7 +171,7 @@ public class JournalServiceUpgradeStepRegistrator
 			"0.0.8", "1.0.0",
 			new ArticleAssetsUpgradeProcess(
 				_assetEntryLocalService, _companyLocalService),
-			new ArticleExpirationDateUpgradeProcess(),
+			new ArticleExpirationDateUpgradeProcess(_configurationProvider),
 			new ArticleSystemEventsUpgradeProcess(_systemEventLocalService));
 
 		registry.register(
@@ -439,6 +440,9 @@ public class JournalServiceUpgradeStepRegistrator
 	private ConfigurationAdmin _configurationAdmin;
 
 	@Reference
+	private ConfigurationProvider _configurationProvider;
+
+	@Reference
 	private CounterLocalService _counterLocalService;
 
 	@Reference
@@ -490,10 +494,10 @@ public class JournalServiceUpgradeStepRegistrator
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
+	// See LPS-82746
+
 	@Reference
 	private Portal _portal;
-
-	// See LPS-82746
 
 	@Reference
 	private PortalCapabilityLocator _portalCapabilityLocator;

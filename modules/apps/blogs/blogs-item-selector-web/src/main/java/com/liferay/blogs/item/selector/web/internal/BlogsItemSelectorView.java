@@ -25,6 +25,7 @@ import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType;
 import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.util.ListUtil;
 
 import java.io.IOException;
@@ -90,7 +91,8 @@ public class BlogsItemSelectorView
 			blogsItemSelectorViewDisplayContext =
 				new BlogsItemSelectorViewDisplayContext(
 					_blogsEntryLocalService, blogsItemSelectorCriterion, this,
-					(HttpServletRequest)servletRequest, itemSelectedEventName,
+					_configurationProvider, (HttpServletRequest)servletRequest,
+					itemSelectedEventName,
 					_itemSelectorReturnTypeResolverHandler, portletURL, search);
 
 		servletRequest.setAttribute(
@@ -108,6 +110,9 @@ public class BlogsItemSelectorView
 
 	@Reference
 	private BlogsEntryLocalService _blogsEntryLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private ItemSelectorReturnTypeResolverHandler

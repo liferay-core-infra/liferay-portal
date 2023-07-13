@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
@@ -129,10 +129,13 @@ public class AssignableAccountUserDisplaySearchContainerFactory {
 	private static String _getDefaultNavigation(
 		LiferayPortletRequest liferayPortletRequest) {
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		try {
 			AccountEntryEmailDomainsConfiguration
 				accountEntryEmailDomainsConfiguration =
-					ConfigurationProviderUtil.getCompanyConfiguration(
+					configurationProvider.getCompanyConfiguration(
 						AccountEntryEmailDomainsConfiguration.class,
 						PortalUtil.getCompanyId(liferayPortletRequest));
 
@@ -186,5 +189,9 @@ public class AssignableAccountUserDisplaySearchContainerFactory {
 		_accountUserRetrieverSnapshot = new Snapshot<>(
 			AssignableAccountUserDisplaySearchContainerFactory.class,
 			AccountUserRetriever.class);
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			AssignableAccountUserDisplaySearchContainerFactory.class,
+			ConfigurationProvider.class);
 
 }

@@ -26,6 +26,7 @@ import com.liferay.commerce.tax.service.CommerceTaxMethodService;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.RegionService;
@@ -89,9 +90,10 @@ public class CommerceTaxMethodAddressRateRelsScreenNavigationEntry
 				new CommerceTaxFixedRateAddressRelsDisplayContext(
 					_commerceChannelLocalService, _commerceCurrencyLocalService,
 					_commerceTaxFixedRateAddressRelService,
-					_commerceTaxMethodService, _countryService,
-					_cpTaxCategoryService, _modelResourcePermission,
-					_percentageFormatter, _regionService, renderRequest);
+					_commerceTaxMethodService, _configurationProvider,
+					_countryService, _cpTaxCategoryService,
+					_modelResourcePermission, _percentageFormatter,
+					_regionService, renderRequest);
 
 		httpServletRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -114,6 +116,9 @@ public class CommerceTaxMethodAddressRateRelsScreenNavigationEntry
 
 	@Reference
 	private CommerceTaxMethodService _commerceTaxMethodService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CountryService _countryService;

@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -98,10 +98,11 @@ public class JournalArticleAssetRenderer
 	}
 
 	public JournalArticleAssetRenderer(
-		JournalArticle article, HtmlParser htmlParser,
-		JournalHelper journalHelper) {
+		JournalArticle article, ConfigurationProvider configurationProvider,
+		HtmlParser htmlParser, JournalHelper journalHelper) {
 
 		_article = article;
+		_configurationProvider = configurationProvider;
 		_htmlParser = htmlParser;
 		_journalHelper = journalHelper;
 	}
@@ -150,7 +151,7 @@ public class JournalArticleAssetRenderer
 		if (_journalServiceConfiguration == null) {
 			try {
 				_journalServiceConfiguration =
-					ConfigurationProviderUtil.getCompanyConfiguration(
+					_configurationProvider.getCompanyConfiguration(
 						JournalServiceConfiguration.class,
 						_article.getCompanyId());
 			}
@@ -658,6 +659,7 @@ public class JournalArticleAssetRenderer
 	private final JournalArticle _article;
 	private AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+	private final ConfigurationProvider _configurationProvider;
 	private final HtmlParser _htmlParser;
 	private JournalContent _journalContent;
 	private final JournalHelper _journalHelper;

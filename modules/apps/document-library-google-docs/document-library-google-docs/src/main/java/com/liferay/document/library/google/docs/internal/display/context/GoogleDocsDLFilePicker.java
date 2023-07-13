@@ -21,6 +21,7 @@ import com.liferay.document.library.google.docs.internal.util.constants.GoogleDo
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
@@ -35,6 +36,7 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 public class GoogleDocsDLFilePicker implements DLFilePicker {
 
 	public GoogleDocsDLFilePicker(
+			ConfigurationProvider configurationProvider,
 			GoogleDocsMetadataHelper googleDocsMetadataHelper, String namespace,
 			String onFilePickCallback, ThemeDisplay themeDisplay)
 		throws PortalException {
@@ -44,7 +46,7 @@ public class GoogleDocsDLFilePicker implements DLFilePicker {
 		_onFilePickCallback = onFilePickCallback;
 
 		_googleDocsConfigurationHelper = new GoogleDocsConfigurationHelper(
-			themeDisplay.getCompanyId());
+			themeDisplay.getCompanyId(), configurationProvider);
 	}
 
 	@Override

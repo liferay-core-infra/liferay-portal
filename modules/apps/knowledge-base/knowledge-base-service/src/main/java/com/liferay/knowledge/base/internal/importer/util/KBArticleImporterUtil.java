@@ -20,12 +20,13 @@ import com.liferay.knowledge.base.constants.KBConstants;
 import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.exception.KBArticleImportException;
 import com.liferay.knowledge.base.model.KBArticle;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
@@ -49,8 +50,11 @@ public class KBArticleImporterUtil {
 			ZipReader zipReader, Map<String, FileEntry> fileEntriesMap)
 		throws PortalException {
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		KBGroupServiceConfiguration kbGroupServiceConfiguration =
-			ConfigurationProviderUtil.getConfiguration(
+			configurationProvider.getConfiguration(
 				KBGroupServiceConfiguration.class,
 				new GroupServiceSettingsLocator(
 					kbArticle.getGroupId(), KBConstants.SERVICE_NAME));
@@ -200,5 +204,9 @@ public class KBArticleImporterUtil {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		KBArticleImporterUtil.class);
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			KBArticleImporterUtil.class, ConfigurationProvider.class);
 
 }

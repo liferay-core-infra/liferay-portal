@@ -17,7 +17,7 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.assignment;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
@@ -71,7 +71,7 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 		Collection<KaleoTaskAssignment> kaleoTaskAssignments = null;
 
 		WorkflowTaskScriptConfiguration workflowTaskScriptConfiguration =
-			ConfigurationProviderUtil.getConfiguration(
+			_configurationProvider.getConfiguration(
 				WorkflowTaskScriptConfiguration.class,
 				new SystemSettingsLocator(
 					WorkflowTaskScriptConfiguration.class.getName()));
@@ -120,6 +120,9 @@ public class MultiLanguageKaleoTaskAssignmentSelector
 	protected void deactivate() {
 		_serviceTrackerMap.close();
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private KaleoInstanceLocalService _kaleoInstanceLocalService;

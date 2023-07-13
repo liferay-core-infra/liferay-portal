@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
@@ -82,9 +82,11 @@ public class WikiPageAssetRenderer
 	}
 
 	public WikiPageAssetRenderer(
-		HtmlParser htmlParser, TrashHelper trashHelper,
-		WikiEngineRenderer wikiEngineRenderer, WikiPage page) {
+		ConfigurationProvider configurationProvider, HtmlParser htmlParser,
+		TrashHelper trashHelper, WikiEngineRenderer wikiEngineRenderer,
+		WikiPage page) {
 
+		_configurationProvider = configurationProvider;
 		_htmlParser = htmlParser;
 		_trashHelper = trashHelper;
 		_wikiEngineRenderer = wikiEngineRenderer;
@@ -111,7 +113,7 @@ public class WikiPageAssetRenderer
 		if (_wikiGroupServiceOverriddenConfiguration == null) {
 			try {
 				_wikiGroupServiceOverriddenConfiguration =
-					ConfigurationProviderUtil.getConfiguration(
+					_configurationProvider.getConfiguration(
 						WikiGroupServiceOverriddenConfiguration.class,
 						new GroupServiceSettingsLocator(
 							_page.getGroupId(), WikiConstants.SERVICE_NAME));
@@ -426,6 +428,7 @@ public class WikiPageAssetRenderer
 
 	private AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+	private final ConfigurationProvider _configurationProvider;
 	private final HtmlParser _htmlParser;
 	private final WikiPage _page;
 	private final TrashHelper _trashHelper;

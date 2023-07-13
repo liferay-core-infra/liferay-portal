@@ -22,6 +22,7 @@ import com.liferay.document.library.google.docs.internal.util.constants.GoogleDo
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -39,6 +40,7 @@ public class GoogleDocsDLEditFileEntryDisplayContext
 	extends BaseDLEditFileEntryDisplayContext {
 
 	public GoogleDocsDLEditFileEntryDisplayContext(
+		ConfigurationProvider configurationProvider,
 		DLEditFileEntryDisplayContext parentDLEditFileEntryDisplayContext,
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse,
@@ -47,9 +49,12 @@ public class GoogleDocsDLEditFileEntryDisplayContext
 		super(
 			_UUID, parentDLEditFileEntryDisplayContext, httpServletRequest,
 			httpServletResponse, dlFileEntryType);
+
+		_configurationProvider = configurationProvider;
 	}
 
 	public GoogleDocsDLEditFileEntryDisplayContext(
+		ConfigurationProvider configurationProvider,
 		DLEditFileEntryDisplayContext parentDLEditFileEntryDisplayContext,
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse, FileEntry fileEntry,
@@ -59,6 +64,7 @@ public class GoogleDocsDLEditFileEntryDisplayContext
 			_UUID, parentDLEditFileEntryDisplayContext, httpServletRequest,
 			httpServletResponse, fileEntry);
 
+		_configurationProvider = configurationProvider;
 		_googleDocsMetadataHelper = googleDocsMetadataHelper;
 	}
 
@@ -72,8 +78,8 @@ public class GoogleDocsDLEditFileEntryDisplayContext
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		return new GoogleDocsDLFilePicker(
-			_googleDocsMetadataHelper, portletDisplay.getNamespace(),
-			onFilePickCallback, themeDisplay);
+			_configurationProvider, _googleDocsMetadataHelper,
+			portletDisplay.getNamespace(), onFilePickCallback, themeDisplay);
 	}
 
 	@Override
@@ -119,6 +125,7 @@ public class GoogleDocsDLEditFileEntryDisplayContext
 	private static final UUID _UUID = UUID.fromString(
 		"62BE5287-BEA3-4E3F-9731-15B1B901380D");
 
+	private final ConfigurationProvider _configurationProvider;
 	private GoogleDocsMetadataHelper _googleDocsMetadataHelper;
 
 }

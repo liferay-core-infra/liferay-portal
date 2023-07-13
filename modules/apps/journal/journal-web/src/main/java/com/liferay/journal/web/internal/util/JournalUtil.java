@@ -25,6 +25,7 @@ import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalArticleServiceUtil;
 import com.liferay.journal.service.JournalFolderLocalServiceUtil;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,7 +37,7 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -277,9 +278,12 @@ public class JournalUtil {
 	}
 
 	public static boolean isIncludeVersionHistory() {
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		try {
 			JournalServiceConfiguration journalServiceConfiguration =
-				ConfigurationProviderUtil.getCompanyConfiguration(
+				configurationProvider.getCompanyConfiguration(
 					JournalServiceConfiguration.class,
 					CompanyThreadLocal.getCompanyId());
 
@@ -383,5 +387,9 @@ public class JournalUtil {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(JournalUtil.class);
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			JournalUtil.class, ConfigurationProvider.class);
 
 }

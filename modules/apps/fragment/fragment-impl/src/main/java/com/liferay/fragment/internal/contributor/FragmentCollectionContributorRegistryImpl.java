@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.resource.bundle.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -262,7 +262,7 @@ public class FragmentCollectionContributorRegistryImpl
 
 		if (_getFragmentServiceCompanyConfiguration(companyId) != null) {
 			FragmentServiceConfiguration companyFragmentServiceConfiguration =
-				ConfigurationProviderUtil.getCompanyConfiguration(
+				_configurationProvider.getCompanyConfiguration(
 					FragmentServiceConfiguration.class, companyId);
 
 			return companyFragmentServiceConfiguration.
@@ -270,7 +270,7 @@ public class FragmentCollectionContributorRegistryImpl
 		}
 
 		FragmentServiceConfiguration systemFragmentServiceConfiguration =
-			ConfigurationProviderUtil.getSystemConfiguration(
+			_configurationProvider.getSystemConfiguration(
 				FragmentServiceConfiguration.class);
 
 		return systemFragmentServiceConfiguration.
@@ -374,6 +374,9 @@ public class FragmentCollectionContributorRegistryImpl
 
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;

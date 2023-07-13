@@ -19,6 +19,7 @@ import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
 import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.wiki.item.selector.constants.WikiItemSelectorViewConstants;
 import com.liferay.wiki.item.selector.criterion.WikiAttachmentItemSelectorCriterion;
 import com.liferay.wiki.web.internal.item.selector.constants.WikiItemSelectorWebKeys;
@@ -91,7 +92,8 @@ public class WikiAttachmentItemSelectorView
 		WikiAttachmentItemSelectorViewDisplayContext
 			wikiAttachmentItemSelectorViewDisplayContext =
 				new WikiAttachmentItemSelectorViewDisplayContext(
-					(HttpServletRequest)servletRequest, itemSelectedEventName,
+					_configurationProvider, (HttpServletRequest)servletRequest,
+					itemSelectedEventName,
 					_itemSelectorReturnTypeResolverHandler, portletURL, search,
 					wikiAttachmentItemSelectorCriterion, this);
 
@@ -106,6 +108,9 @@ public class WikiAttachmentItemSelectorView
 	private static final List<ItemSelectorReturnType>
 		_supportedItemSelectorReturnTypes = Collections.singletonList(
 			new FileEntryItemSelectorReturnType());
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private ItemSelectorReturnTypeResolverHandler

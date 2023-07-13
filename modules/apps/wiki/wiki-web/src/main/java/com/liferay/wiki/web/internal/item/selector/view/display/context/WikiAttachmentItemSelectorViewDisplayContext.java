@@ -21,7 +21,7 @@ import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
 import com.liferay.item.selector.taglib.servlet.taglib.util.RepositoryEntryBrowserTagUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -53,6 +53,7 @@ import javax.servlet.http.HttpServletRequest;
 public class WikiAttachmentItemSelectorViewDisplayContext {
 
 	public WikiAttachmentItemSelectorViewDisplayContext(
+		ConfigurationProvider configurationProvider,
 		HttpServletRequest httpServletRequest, String itemSelectedEventName,
 		ItemSelectorReturnTypeResolverHandler
 			itemSelectorReturnTypeResolverHandler,
@@ -60,6 +61,7 @@ public class WikiAttachmentItemSelectorViewDisplayContext {
 		WikiAttachmentItemSelectorCriterion wikiAttachmentItemSelectorCriterion,
 		WikiAttachmentItemSelectorView wikiAttachmentItemSelectorView) {
 
+		_configurationProvider = configurationProvider;
 		_httpServletRequest = httpServletRequest;
 		_itemSelectedEventName = itemSelectedEventName;
 		_itemSelectorReturnTypeResolverHandler =
@@ -193,13 +195,14 @@ public class WikiAttachmentItemSelectorViewDisplayContext {
 
 		if (_wikiFileUploadConfiguration == null) {
 			_wikiFileUploadConfiguration =
-				ConfigurationProviderUtil.getSystemConfiguration(
+				_configurationProvider.getSystemConfiguration(
 					WikiFileUploadConfiguration.class);
 		}
 
 		return _wikiFileUploadConfiguration;
 	}
 
+	private final ConfigurationProvider _configurationProvider;
 	private final HttpServletRequest _httpServletRequest;
 	private final String _itemSelectedEventName;
 	private final ItemSelectorReturnTypeResolverHandler

@@ -34,6 +34,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
@@ -97,9 +98,9 @@ public class JournalContentConfigurationAction
 
 		try {
 			JournalContentDisplayContext.create(
-				portletRequest, portletResponse, _CLASS_NAME_ID,
-				_ddmTemplateModelResourcePermission, _itemSelector,
-				_trashHelper);
+				_configurationProvider, portletRequest, portletResponse,
+				_CLASS_NAME_ID, _ddmTemplateModelResourcePermission,
+				_itemSelector, _trashHelper);
 		}
 		catch (PortalException portalException) {
 			if (_log.isDebugEnabled()) {
@@ -239,6 +240,9 @@ public class JournalContentConfigurationAction
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private DDMTemplateLinkLocalService _ddmTemplateLinkLocalService;

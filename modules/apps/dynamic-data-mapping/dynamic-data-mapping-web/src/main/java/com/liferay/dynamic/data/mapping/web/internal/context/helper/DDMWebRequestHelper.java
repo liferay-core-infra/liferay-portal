@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.display.context.helper.BaseRequestHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ParameterMapSettingsLocator;
 import com.liferay.portal.kernel.util.Validator;
@@ -33,8 +33,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class DDMWebRequestHelper extends BaseRequestHelper {
 
-	public DDMWebRequestHelper(HttpServletRequest httpServletRequest) {
+	public DDMWebRequestHelper(
+		HttpServletRequest httpServletRequest,
+		ConfigurationProvider configurationProvider) {
+
 		super(httpServletRequest);
+
+		_configurationProvider = configurationProvider;
 	}
 
 	public DDMGroupServiceConfiguration getDDMGroupServiceConfiguration() {
@@ -71,7 +76,7 @@ public class DDMWebRequestHelper extends BaseRequestHelper {
 		if (Validator.isNotNull(getPortletResource())) {
 			HttpServletRequest httpServletRequest = getRequest();
 
-			return (T)ConfigurationProviderUtil.getConfiguration(
+			return (T)_configurationProvider.getConfiguration(
 				clazz,
 				new ParameterMapSettingsLocator(
 					httpServletRequest.getParameterMap(),
@@ -79,12 +84,13 @@ public class DDMWebRequestHelper extends BaseRequestHelper {
 						getSiteGroupId(), DDMConstants.SERVICE_NAME)));
 		}
 
-		return (T)ConfigurationProviderUtil.getConfiguration(
+		return (T)_configurationProvider.getConfiguration(
 			clazz,
 			new GroupServiceSettingsLocator(
 				getSiteGroupId(), DDMConstants.SERVICE_NAME));
 	}
 
+	private final ConfigurationProvider _configurationProvider;
 	private DDMGroupServiceConfiguration _ddmGroupServiceConfiguration;
 	private DDMWebConfiguration _ddmWebConfiguration;
 

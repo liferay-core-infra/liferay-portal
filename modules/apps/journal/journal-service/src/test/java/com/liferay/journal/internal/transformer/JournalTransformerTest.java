@@ -43,7 +43,7 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodes() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(null);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
@@ -56,7 +56,7 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesFirstChildWithSiblings() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(null);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
@@ -73,7 +73,7 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesNestedImageFieldSet() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(null);
 
 		List<TemplateNode> templateNodes = new ArrayList<>();
 
@@ -130,7 +130,7 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesParentStructureWithFieldSet() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(null);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
@@ -143,7 +143,7 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesWithNestedRepeatableFields() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(null);
 
 		List<TemplateNode> nestedRepeatableFieldsTemplateNodes =
 			_getNestedRepeatableFieldsTemplateNodes();
@@ -195,7 +195,7 @@ public class JournalTransformerTest {
 
 	@Test
 	public void testIncludeBackwardsCompatibilityTemplateNodesWithSiblings() {
-		JournalTransformer journalTransformer = new JournalTransformer();
+		JournalTransformer journalTransformer = new JournalTransformer(null);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(

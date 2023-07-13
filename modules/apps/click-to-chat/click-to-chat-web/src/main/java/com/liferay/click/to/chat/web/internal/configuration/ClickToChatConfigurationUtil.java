@@ -14,9 +14,10 @@
 
 package com.liferay.click.to.chat.web.internal.configuration;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Objects;
@@ -29,9 +30,12 @@ public class ClickToChatConfigurationUtil {
 	public static ClickToChatConfiguration getClickToChatConfiguration(
 		long companyId, long groupId) {
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		try {
 			ClickToChatConfiguration companyClickToChatConfiguration =
-				ConfigurationProviderUtil.getCompanyConfiguration(
+				configurationProvider.getCompanyConfiguration(
 					ClickToChatConfiguration.class, companyId);
 
 			if ((groupId == 0) ||
@@ -43,7 +47,7 @@ public class ClickToChatConfigurationUtil {
 			}
 
 			ClickToChatConfiguration groupClickToChatConfiguration =
-				ConfigurationProviderUtil.getGroupConfiguration(
+				configurationProvider.getGroupConfiguration(
 					ClickToChatConfiguration.class, groupId);
 
 			if (Objects.equals(
@@ -75,5 +79,9 @@ public class ClickToChatConfigurationUtil {
 			return ReflectionUtil.throwException(configurationException);
 		}
 	}
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			ClickToChatConfigurationUtil.class, ConfigurationProvider.class);
 
 }

@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -539,7 +538,7 @@ public class CPDefinitionsDisplayContext
 
 	private boolean _isVersioningEnabled() throws PortalException {
 		CProductVersionConfiguration cProductVersionConfiguration =
-			ConfigurationProviderUtil.getConfiguration(
+			_configurationProvider.getConfiguration(
 				CProductVersionConfiguration.class,
 				new SystemSettingsLocator(
 					CProductVersionConfiguration.class.getName()));

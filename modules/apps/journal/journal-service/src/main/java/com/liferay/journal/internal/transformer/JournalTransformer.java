@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.mobile.device.Device;
 import com.liferay.portal.kernel.mobile.device.UnknownDevice;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.portlet.constants.FriendlyURLResolverConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -107,6 +107,10 @@ import javax.servlet.http.HttpServletRequest;
  * @author Eduardo García
  */
 public class JournalTransformer {
+
+	public JournalTransformer(ConfigurationProvider configurationProvider) {
+		_configurationProvider = configurationProvider;
+	}
 
 	public String transform(
 			JournalArticle article, DDMTemplate ddmTemplate,
@@ -805,7 +809,7 @@ public class JournalTransformer {
 	private TemplateResource _getErrorTemplateResource() {
 		try {
 			JournalServiceConfiguration journalServiceConfiguration =
-				ConfigurationProviderUtil.getCompanyConfiguration(
+				_configurationProvider.getCompanyConfiguration(
 					JournalServiceConfiguration.class,
 					CompanyThreadLocal.getCompanyId());
 
@@ -1027,5 +1031,7 @@ public class JournalTransformer {
 		JournalTransformer.class.getName() + ".XmlAfterListener");
 	private static final Log _logXmlBeforeListener = LogFactoryUtil.getLog(
 		JournalTransformer.class.getName() + ".XmlBeforeListener");
+
+	private final ConfigurationProvider _configurationProvider;
 
 }

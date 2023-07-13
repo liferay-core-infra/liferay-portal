@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -146,7 +146,7 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 			PortletPreferencesFactoryUtil.toXML(portalPreferences));
 
 		_journalServiceConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			_configurationProvider.getCompanyConfiguration(
 				JournalServiceConfiguration.class,
 				TestPropsValues.getCompanyId());
 	}
@@ -708,6 +708,9 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 		}
 
 	}
+
+	@Inject
+	private ConfigurationProvider _configurationProvider;
 
 	@Inject
 	private DDMIndexer _ddmIndexer;

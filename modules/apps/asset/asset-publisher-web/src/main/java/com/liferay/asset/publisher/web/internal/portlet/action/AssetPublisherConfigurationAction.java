@@ -48,7 +48,7 @@ import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
@@ -180,7 +180,7 @@ public class AssetPublisherConfigurationAction
 
 		AssetPublisherPortletInstanceConfiguration
 			assetPublisherPortletInstanceConfiguration =
-				ConfigurationProviderUtil.getSystemConfiguration(
+				_configurationProvider.getSystemConfiguration(
 					AssetPublisherPortletInstanceConfiguration.class);
 
 		String languageId = LocaleUtil.toLanguageId(
@@ -889,5 +889,8 @@ public class AssetPublisherConfigurationAction
 				queryRule.getName());
 		}
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 }

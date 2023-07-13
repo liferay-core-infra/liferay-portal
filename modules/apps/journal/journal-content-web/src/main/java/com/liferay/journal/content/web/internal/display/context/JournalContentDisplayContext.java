@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayRenderRequest;
 import com.liferay.portal.kernel.portlet.LiferayRenderResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -101,6 +101,7 @@ import javax.portlet.PortletURL;
 public class JournalContentDisplayContext {
 
 	public static JournalContentDisplayContext create(
+			ConfigurationProvider configurationProvider,
 			PortletRequest portletRequest, PortletResponse portletResponse,
 			long ddmStructureClassNameId,
 			ModelResourcePermission<DDMTemplate>
@@ -124,8 +125,8 @@ public class JournalContentDisplayContext {
 						JournalContentPortletInstanceConfiguration.class);
 
 			journalContentDisplayContext = new JournalContentDisplayContext(
-				portletRequest, portletResponse, themeDisplay,
-				journalContentPortletInstanceConfiguration,
+				configurationProvider, portletRequest, portletResponse,
+				themeDisplay, journalContentPortletInstanceConfiguration,
 				ddmStructureClassNameId, ddmTemplateModelResourcePermission,
 				itemSelector, trashHelper);
 
@@ -144,7 +145,7 @@ public class JournalContentDisplayContext {
 
 	public boolean articleCommentsEnabled() throws Exception {
 		JournalServiceConfiguration journalServiceConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			_configurationProvider.getCompanyConfiguration(
 				JournalServiceConfiguration.class,
 				_themeDisplay.getCompanyId());
 
@@ -917,6 +918,7 @@ public class JournalContentDisplayContext {
 	}
 
 	private JournalContentDisplayContext(
+			ConfigurationProvider configurationProvider,
 			PortletRequest portletRequest, PortletResponse portletResponse,
 			ThemeDisplay themeDisplay,
 			JournalContentPortletInstanceConfiguration
@@ -927,6 +929,7 @@ public class JournalContentDisplayContext {
 			ItemSelector itemSelector, TrashHelper trashHelper)
 		throws PortalException {
 
+		_configurationProvider = configurationProvider;
 		_portletRequest = portletRequest;
 		_portletResponse = portletResponse;
 		_themeDisplay = themeDisplay;
@@ -1046,6 +1049,7 @@ public class JournalContentDisplayContext {
 	private JournalArticleDisplay _articleDisplay;
 	private Long _articleGroupId;
 	private String _articleId;
+	private final ConfigurationProvider _configurationProvider;
 	private final long _ddmStructureClassNameId;
 	private DDMTemplate _ddmTemplate;
 	private String _ddmTemplateKey;

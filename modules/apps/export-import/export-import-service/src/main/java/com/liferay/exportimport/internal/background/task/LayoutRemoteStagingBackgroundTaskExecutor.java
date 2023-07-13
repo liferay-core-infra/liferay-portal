@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -285,6 +286,11 @@ public class LayoutRemoteStagingBackgroundTaskExecutor
 			exportImportConfiguration);
 	}
 
+	@Override
+	protected ConfigurationProvider getConfigurationProvider() {
+		return _configurationProvider;
+	}
+
 	/**
 	 * @see com.liferay.portal.lar.ExportImportHelperImpl#getMissingParentLayouts(
 	 *      Layout, long)
@@ -320,6 +326,9 @@ public class LayoutRemoteStagingBackgroundTaskExecutor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutRemoteStagingBackgroundTaskExecutor.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private ExportImportHelper _exportImportHelper;

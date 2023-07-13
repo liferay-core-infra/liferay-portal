@@ -16,18 +16,19 @@ package com.liferay.document.library.google.docs.internal.helper;
 
 import com.liferay.document.library.google.drive.configuration.DLGoogleDriveCompanyConfiguration;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 
 /**
  * @author Iván Zaera
  */
 public class GoogleDocsConfigurationHelper {
 
-	public GoogleDocsConfigurationHelper(long companyId)
+	public GoogleDocsConfigurationHelper(
+			long companyId, ConfigurationProvider configurationProvider)
 		throws ConfigurationException {
 
 		_dlGoogleDriveCompanyConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			configurationProvider.getCompanyConfiguration(
 				DLGoogleDriveCompanyConfiguration.class, companyId);
 	}
 

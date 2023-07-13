@@ -52,6 +52,7 @@ import com.liferay.portal.kernel.exception.PortletPreferencesException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -225,6 +226,9 @@ public class DDMPortlet extends MVCPortlet {
 	}
 
 	@Reference
+	protected ConfigurationProvider configurationProvider;
+
+	@Reference
 	protected DDMDisplayRegistry ddmDisplayRegistry;
 
 	@Reference
@@ -264,10 +268,10 @@ public class DDMPortlet extends MVCPortlet {
 		throws PortalException {
 
 		DDMDisplayContext ddmDisplayContext = new DDMDisplayContext(
-			renderRequest, renderResponse, ddmDisplayRegistry,
-			ddmStructureLinkLocalService, ddmStructureService,
-			ddmTemplateHelper, ddmTemplateService, ddmWebConfiguration,
-			storageAdapterRegistry);
+			renderRequest, renderResponse, configurationProvider,
+			ddmDisplayRegistry, ddmStructureLinkLocalService,
+			ddmStructureService, ddmTemplateHelper, ddmTemplateService,
+			ddmWebConfiguration, storageAdapterRegistry);
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, ddmDisplayContext);

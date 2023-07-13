@@ -54,7 +54,7 @@ import com.liferay.commerce.util.CommerceUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
@@ -92,6 +92,7 @@ public class OrderSummaryCheckoutStepDisplayContext {
 		CommerceProductPriceCalculation commerceProductPriceCalculation,
 		CommerceShippingEngineRegistry commerceShippingEngineRegistry,
 		CommerceTermEntryLocalService commerceTermEntryLocalService,
+		ConfigurationProvider configurationProvider,
 		CPInstanceHelper cpInstanceHelper,
 		HttpServletRequest httpServletRequest,
 		PercentageFormatter percentageFormatter, Portal portal,
@@ -106,6 +107,7 @@ public class OrderSummaryCheckoutStepDisplayContext {
 		_commerceProductPriceCalculation = commerceProductPriceCalculation;
 		_commerceShippingEngineRegistry = commerceShippingEngineRegistry;
 		_commerceTermEntryLocalService = commerceTermEntryLocalService;
+		_configurationProvider = configurationProvider;
 		_cpInstanceHelper = cpInstanceHelper;
 		_httpServletRequest = httpServletRequest;
 		_percentageFormatter = percentageFormatter;
@@ -320,7 +322,7 @@ public class OrderSummaryCheckoutStepDisplayContext {
 				commerceOrder.getGroupId());
 
 		CommerceOrderCheckoutConfiguration commerceOrderCheckoutConfiguration =
-			ConfigurationProviderUtil.getConfiguration(
+			_configurationProvider.getConfiguration(
 				CommerceOrderCheckoutConfiguration.class,
 				new GroupServiceSettingsLocator(
 					commerceChannel.getGroupId(),
@@ -515,6 +517,7 @@ public class OrderSummaryCheckoutStepDisplayContext {
 	private final CommerceShippingEngineRegistry
 		_commerceShippingEngineRegistry;
 	private final CommerceTermEntryLocalService _commerceTermEntryLocalService;
+	private final ConfigurationProvider _configurationProvider;
 	private final CPInstanceHelper _cpInstanceHelper;
 	private final HttpServletRequest _httpServletRequest;
 	private final PercentageFormatter _percentageFormatter;

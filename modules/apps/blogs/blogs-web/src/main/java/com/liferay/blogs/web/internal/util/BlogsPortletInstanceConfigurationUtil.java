@@ -16,8 +16,9 @@ package com.liferay.blogs.web.internal.util;
 
 import com.liferay.blogs.web.internal.configuration.BlogsPortletInstanceConfiguration;
 import com.liferay.blogs.web.internal.constants.BlogsWebConstants;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -42,8 +43,11 @@ public class BlogsPortletInstanceConfigurationUtil {
 		if (blogsPortletInstanceConfiguration == null) {
 			PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
+			ConfigurationProvider configurationProvider =
+				_configurationProviderSnapshot.get();
+
 			blogsPortletInstanceConfiguration =
-				ConfigurationProviderUtil.getConfiguration(
+				configurationProvider.getConfiguration(
 					BlogsPortletInstanceConfiguration.class,
 					new PortletInstanceSettingsLocator(
 						themeDisplay.getLayout(), portletDisplay.getId()));
@@ -55,5 +59,10 @@ public class BlogsPortletInstanceConfigurationUtil {
 
 		return blogsPortletInstanceConfiguration;
 	}
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			BlogsPortletInstanceConfigurationUtil.class,
+			ConfigurationProvider.class);
 
 }

@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutFriendlyURLComposite;
 import com.liferay.portal.kernel.model.LayoutQueryStringComposite;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolver;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -278,6 +278,9 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 	protected AssetEntryService assetEntryLocalService;
 
 	@Reference
+	protected ConfigurationProvider configurationProvider;
+
+	@Reference
 	protected InfoItemServiceRegistry infoItemServiceRegistry;
 
 	@Reference
@@ -320,7 +323,7 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 				className, classPK);
 
 			AssetDisplayPageConfiguration assetDisplayPageConfiguration =
-				ConfigurationProviderUtil.getSystemConfiguration(
+				configurationProvider.getSystemConfiguration(
 					AssetDisplayPageConfiguration.class);
 
 			if ((assetEntry != null) &&

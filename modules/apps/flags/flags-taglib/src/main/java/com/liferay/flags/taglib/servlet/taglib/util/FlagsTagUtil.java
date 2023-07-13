@@ -15,9 +15,10 @@
 package com.liferay.flags.taglib.servlet.taglib.util;
 
 import com.liferay.flags.configuration.FlagsGroupServiceConfiguration;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
@@ -76,8 +77,11 @@ public class FlagsTagUtil {
 			long companyId, HttpServletRequest httpServletRequest)
 		throws PortalException {
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		FlagsGroupServiceConfiguration flagsGroupServiceConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			configurationProvider.getCompanyConfiguration(
 				FlagsGroupServiceConfiguration.class, companyId);
 
 		Map<String, String> reasons = new HashMap<>();
@@ -102,8 +106,11 @@ public class FlagsTagUtil {
 	public static boolean isFlagsEnabled(ThemeDisplay themeDisplay)
 		throws PortalException {
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		FlagsGroupServiceConfiguration flagsGroupServiceConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			configurationProvider.getCompanyConfiguration(
 				FlagsGroupServiceConfiguration.class,
 				themeDisplay.getCompanyId());
 
@@ -115,5 +122,9 @@ public class FlagsTagUtil {
 
 		return false;
 	}
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			FlagsTagUtil.class, ConfigurationProvider.class);
 
 }

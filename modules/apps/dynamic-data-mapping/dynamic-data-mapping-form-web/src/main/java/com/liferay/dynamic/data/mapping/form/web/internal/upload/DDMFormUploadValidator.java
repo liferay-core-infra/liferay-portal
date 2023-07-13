@@ -18,9 +18,10 @@ import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileSizeException;
 import com.liferay.document.library.kernel.exception.InvalidFileException;
 import com.liferay.dynamic.data.mapping.form.web.internal.configuration.DDMFormWebConfiguration;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -35,8 +36,11 @@ public class DDMFormUploadValidator {
 	public static String[] getGuestUploadFileExtensions()
 		throws ConfigurationException {
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		DDMFormWebConfiguration ddmFormWebConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			configurationProvider.getCompanyConfiguration(
 				DDMFormWebConfiguration.class,
 				CompanyThreadLocal.getCompanyId());
 
@@ -47,8 +51,11 @@ public class DDMFormUploadValidator {
 	public static long getGuestUploadMaximumFileSize()
 		throws ConfigurationException {
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		DDMFormWebConfiguration ddmFormWebConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			configurationProvider.getCompanyConfiguration(
 				DDMFormWebConfiguration.class,
 				CompanyThreadLocal.getCompanyId());
 
@@ -99,5 +106,9 @@ public class DDMFormUploadValidator {
 	}
 
 	private static final long _FILE_LENGTH_MB = 1024 * 1024;
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			DDMFormUploadValidator.class, ConfigurationProvider.class);
 
 }

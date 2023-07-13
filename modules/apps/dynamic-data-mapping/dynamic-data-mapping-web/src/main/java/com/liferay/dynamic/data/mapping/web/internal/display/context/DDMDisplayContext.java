@@ -52,6 +52,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
@@ -92,6 +93,7 @@ public class DDMDisplayContext {
 
 	public DDMDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
+		ConfigurationProvider configurationProvider,
 		DDMDisplayRegistry ddmDisplayRegistry,
 		DDMStructureLinkLocalService ddmStructureLinkLocalService,
 		DDMStructureService ddmStructureService,
@@ -111,7 +113,8 @@ public class DDMDisplayContext {
 		_storageAdapterRegistry = storageAdapterRegistry;
 
 		_ddmWebRequestHelper = new DDMWebRequestHelper(
-			PortalUtil.getHttpServletRequest(renderRequest));
+			PortalUtil.getHttpServletRequest(renderRequest),
+			configurationProvider);
 	}
 
 	public boolean autogenerateStructureKey() {

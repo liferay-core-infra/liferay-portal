@@ -5879,6 +5879,11 @@ public class JournalArticleLocalServiceImpl
 	}
 
 	@Activate
+	protected void activate() {
+		_journalTransformer = new JournalTransformer(_configurationProvider);
+	}
+
+	@Activate
 	protected void activate(BundleContext bundleContext) {
 		JournalArticleImpl.setDDMFormValuesToFieldsConverter(
 			_ddmFormValuesToFieldsConverter);
@@ -8062,6 +8067,9 @@ public class JournalArticleLocalServiceImpl
 		new ConcurrentHashMap<>();
 
 	@Reference
+	private ConfigurationProvider _configurationProvider;
+
+	@Reference
 	private DDMFieldLocalService _ddmFieldLocalService;
 
 	@Reference
@@ -8125,8 +8133,7 @@ public class JournalArticleLocalServiceImpl
 	@Reference
 	private JournalHelper _journalHelper;
 
-	private final JournalTransformer _journalTransformer =
-		new JournalTransformer();
+	private JournalTransformer _journalTransformer;
 
 	@Reference
 	private JSONFactory _jsonFactory;

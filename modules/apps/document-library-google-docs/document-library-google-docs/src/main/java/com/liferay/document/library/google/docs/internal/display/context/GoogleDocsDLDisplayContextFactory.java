@@ -77,8 +77,8 @@ public class GoogleDocsDLDisplayContextFactory
 
 		if (googleDocsDDMStructure != null) {
 			return new GoogleDocsDLEditFileEntryDisplayContext(
-				parentDLEditFileEntryDisplayContext, httpServletRequest,
-				httpServletResponse, dlFileEntryType);
+				_configurationProvider, parentDLEditFileEntryDisplayContext,
+				httpServletRequest, httpServletResponse, dlFileEntryType);
 		}
 
 		return parentDLEditFileEntryDisplayContext;
@@ -112,8 +112,9 @@ public class GoogleDocsDLDisplayContextFactory
 
 		if (googleDocsMetadataHelper.isGoogleDocs()) {
 			return new GoogleDocsDLEditFileEntryDisplayContext(
-				parentDLEditFileEntryDisplayContext, httpServletRequest,
-				httpServletResponse, fileEntry, googleDocsMetadataHelper);
+				_configurationProvider, parentDLEditFileEntryDisplayContext,
+				httpServletRequest, httpServletResponse, fileEntry,
+				googleDocsMetadataHelper);
 		}
 
 		return parentDLEditFileEntryDisplayContext;

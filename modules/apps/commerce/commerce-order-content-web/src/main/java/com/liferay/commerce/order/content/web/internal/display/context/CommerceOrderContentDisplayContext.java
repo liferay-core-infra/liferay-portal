@@ -77,7 +77,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -1190,7 +1189,7 @@ public class CommerceOrderContentDisplayContext {
 	public boolean isShowPurchaseOrderNumber() throws PortalException {
 		try {
 			CommerceOrderFieldsConfiguration commerceOrderFieldsConfiguration =
-				ConfigurationProviderUtil.getConfiguration(
+				_configurationProvider.getConfiguration(
 					CommerceOrderFieldsConfiguration.class,
 					new GroupServiceSettingsLocator(
 						_cpRequestHelper.getCommerceChannelGroupId(),

@@ -14,9 +14,10 @@
 
 package com.liferay.digital.signature.configuration;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Objects;
@@ -29,9 +30,12 @@ public class DigitalSignatureConfigurationUtil {
 	public static DigitalSignatureConfiguration
 		getDigitalSignatureConfiguration(long companyId, long groupId) {
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		try {
 			DigitalSignatureConfiguration companyDigitalSignatureConfiguration =
-				ConfigurationProviderUtil.getCompanyConfiguration(
+				configurationProvider.getCompanyConfiguration(
 					DigitalSignatureConfiguration.class, companyId);
 
 			if ((groupId == 0) ||
@@ -43,7 +47,7 @@ public class DigitalSignatureConfigurationUtil {
 			}
 
 			DigitalSignatureConfiguration groupDigitalSignatureConfiguration =
-				ConfigurationProviderUtil.getGroupConfiguration(
+				configurationProvider.getGroupConfiguration(
 					DigitalSignatureConfiguration.class, groupId);
 
 			if (Objects.equals(
@@ -80,5 +84,10 @@ public class DigitalSignatureConfigurationUtil {
 			return ReflectionUtil.throwException(configurationException);
 		}
 	}
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			DigitalSignatureConfigurationUtil.class,
+			ConfigurationProvider.class);
 
 }

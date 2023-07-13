@@ -16,9 +16,10 @@ package com.liferay.message.boards.web.internal.util;
 
 import com.liferay.captcha.configuration.CaptchaConfiguration;
 import com.liferay.message.boards.settings.MBGroupServiceSettings;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,7 +40,10 @@ public class MBRequestUtil {
 			return captchaConfiguration;
 		}
 
-		captchaConfiguration = ConfigurationProviderUtil.getSystemConfiguration(
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		captchaConfiguration = configurationProvider.getSystemConfiguration(
 			CaptchaConfiguration.class);
 
 		httpServletRequest.setAttribute(
@@ -73,5 +77,9 @@ public class MBRequestUtil {
 
 	private static final String _MB_GROUP_SERVICE_SETTINGS =
 		"MB_GROUP_SERVICE_SETTINGS";
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			MBRequestUtil.class, ConfigurationProvider.class);
 
 }

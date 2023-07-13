@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -189,8 +190,16 @@ public class PortletRemoteStagingBackgroundTaskExecutor
 		return new PortletExportImportBackgroundTaskDisplay(backgroundTask);
 	}
 
+	@Override
+	protected ConfigurationProvider getConfigurationProvider() {
+		return _configurationProvider;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletRemoteStagingBackgroundTaskExecutor.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private ExportImportLocalService _exportImportLocalService;

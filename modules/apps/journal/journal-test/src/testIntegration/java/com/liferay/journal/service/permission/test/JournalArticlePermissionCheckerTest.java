@@ -20,7 +20,7 @@ import com.liferay.journal.constants.JournalConstants;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.test.util.JournalTestUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -59,7 +59,7 @@ public class JournalArticlePermissionCheckerTest
 		super.setUp();
 
 		_journalServiceConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
+			_configurationProvider.getCompanyConfiguration(
 				JournalServiceConfiguration.class,
 				TestPropsValues.getCompanyId());
 
@@ -116,6 +116,10 @@ public class JournalArticlePermissionCheckerTest
 		_journalArticleModelResourcePermission;
 
 	private JournalArticle _article;
+
+	@Inject
+	private ConfigurationProvider _configurationProvider;
+
 	private JournalServiceConfiguration _journalServiceConfiguration;
 	private JournalArticle _subarticle;
 

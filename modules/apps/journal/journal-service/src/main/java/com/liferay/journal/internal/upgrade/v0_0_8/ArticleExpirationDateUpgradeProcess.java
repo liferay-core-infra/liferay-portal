@@ -17,7 +17,7 @@ package com.liferay.journal.internal.upgrade.v0_0_8;
 import com.liferay.journal.configuration.JournalServiceConfiguration;
 import com.liferay.journal.constants.JournalArticleConstants;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.LoggingTimer;
@@ -33,6 +33,12 @@ import java.sql.Timestamp;
  */
 public class ArticleExpirationDateUpgradeProcess extends UpgradeProcess {
 
+	public ArticleExpirationDateUpgradeProcess(
+		ConfigurationProvider configurationProvider) {
+
+		_configurationProvider = configurationProvider;
+	}
+
 	@Override
 	protected void doUpgrade() throws Exception {
 		_updateArticleExpirationDate();
@@ -41,7 +47,7 @@ public class ArticleExpirationDateUpgradeProcess extends UpgradeProcess {
 	private void _updateArticleExpirationDate() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			JournalServiceConfiguration journalServiceConfiguration =
-				ConfigurationProviderUtil.getCompanyConfiguration(
+				_configurationProvider.getCompanyConfiguration(
 					JournalServiceConfiguration.class,
 					CompanyThreadLocal.getCompanyId());
 
@@ -103,5 +109,7 @@ public class ArticleExpirationDateUpgradeProcess extends UpgradeProcess {
 			preparedStatement.executeUpdate();
 		}
 	}
+
+	private final ConfigurationProvider _configurationProvider;
 
 }

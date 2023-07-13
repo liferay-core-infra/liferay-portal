@@ -14,13 +14,14 @@
 
 package com.liferay.wiki.web.internal.portlet.action;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -113,8 +114,11 @@ public class ActionUtil {
 
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		WikiPortletInstanceConfiguration wikiPortletInstanceConfiguration =
-			ConfigurationProviderUtil.getConfiguration(
+			configurationProvider.getConfiguration(
 				WikiPortletInstanceConfiguration.class,
 				new PortletInstanceSettingsLocator(
 					themeDisplay.getLayout(), portletDisplay.getId()));
@@ -455,5 +459,9 @@ public class ActionUtil {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ActionUtil.class);
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			ActionUtil.class, ConfigurationProvider.class);
 
 }

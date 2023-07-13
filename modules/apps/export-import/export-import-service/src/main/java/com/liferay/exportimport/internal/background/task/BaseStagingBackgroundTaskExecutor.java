@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -103,6 +103,8 @@ public abstract class BaseStagingBackgroundTaskExecutor
 			_log.debug("Kept temporary LAR file " + file.getAbsolutePath());
 		}
 	}
+
+	protected abstract ConfigurationProvider getConfigurationProvider();
 
 	protected void initThreadLocals(long groupId, boolean privateLayout)
 		throws PortalException {
@@ -179,8 +181,11 @@ public abstract class BaseStagingBackgroundTaskExecutor
 	}
 
 	private StagingConfiguration _getStagingConfiguration() {
+		ConfigurationProvider configurationProvider =
+			getConfigurationProvider();
+
 		try {
-			return ConfigurationProviderUtil.getCompanyConfiguration(
+			return configurationProvider.getCompanyConfiguration(
 				StagingConfiguration.class, CompanyThreadLocal.getCompanyId());
 		}
 		catch (ConfigurationException configurationException) {

@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -63,10 +63,12 @@ import javax.servlet.http.HttpServletRequest;
 public class SearchBarPortletDisplayContextFactory {
 
 	public SearchBarPortletDisplayContextFactory(
+			ConfigurationProvider configurationProvider,
 			LayoutLocalService layoutLocalService, Portal portal,
 			RenderRequest renderRequest)
 		throws ConfigurationException {
 
+		_configurationProvider = configurationProvider;
 		_layoutLocalService = layoutLocalService;
 		_portal = portal;
 		_renderRequest = renderRequest;
@@ -329,7 +331,7 @@ public class SearchBarPortletDisplayContextFactory {
 		getSearchSuggestionsCompanyConfiguration(long companyId) {
 
 		try {
-			return ConfigurationProviderUtil.getCompanyConfiguration(
+			return _configurationProvider.getCompanyConfiguration(
 				SearchSuggestionsCompanyConfiguration.class, companyId);
 		}
 		catch (ConfigurationException configurationException) {
@@ -494,6 +496,7 @@ public class SearchBarPortletDisplayContextFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchBarPortletDisplayContextFactory.class);
 
+	private final ConfigurationProvider _configurationProvider;
 	private final LayoutLocalService _layoutLocalService;
 	private final Portal _portal;
 	private final RenderRequest _renderRequest;

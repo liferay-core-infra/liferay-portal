@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -295,9 +295,12 @@ public class JournalUtil {
 
 		JournalServiceConfiguration journalServiceConfiguration = null;
 
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
 		try {
 			journalServiceConfiguration =
-				ConfigurationProviderUtil.getCompanyConfiguration(
+				configurationProvider.getCompanyConfiguration(
 					JournalServiceConfiguration.class, companyId);
 		}
 		catch (Exception exception) {
@@ -473,6 +476,9 @@ public class JournalUtil {
 
 	private static final Log _log = LogFactoryUtil.getLog(JournalUtil.class);
 
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			JournalUtil.class, ConfigurationProvider.class);
 	private static Map<String, String> _customTokens;
 	private static final Snapshot<FriendlyURLNormalizer>
 		_friendlyURLNormalizerSnapshot = new Snapshot<>(

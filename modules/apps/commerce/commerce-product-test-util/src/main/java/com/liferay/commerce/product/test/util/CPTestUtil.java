@@ -45,12 +45,13 @@ import com.liferay.commerce.product.service.CPOptionValueLocalServiceUtil;
 import com.liferay.commerce.product.service.CommerceCatalogLocalServiceUtil;
 import com.liferay.commerce.product.type.simple.constants.SimpleCPTypeConstants;
 import com.liferay.commerce.service.CPDefinitionInventoryLocalServiceUtil;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -1140,7 +1141,10 @@ public class CPTestUtil {
 	private static CPOptionConfiguration _getCPOptionConfiguration()
 		throws ConfigurationException {
 
-		return ConfigurationProviderUtil.getConfiguration(
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		return configurationProvider.getConfiguration(
 			CPOptionConfiguration.class,
 			new SystemSettingsLocator(CPConstants.SERVICE_NAME_CP_OPTION));
 	}
@@ -1241,5 +1245,9 @@ public class CPTestUtil {
 
 		return cpDefinitionOptionValueRels;
 	}
+
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			CPTestUtil.class, ConfigurationProvider.class);
 
 }

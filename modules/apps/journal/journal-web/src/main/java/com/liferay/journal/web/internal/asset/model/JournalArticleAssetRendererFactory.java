@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -338,7 +339,7 @@ public class JournalArticleAssetRendererFactory
 
 		JournalArticleAssetRenderer journalArticleAssetRenderer =
 			new JournalArticleAssetRenderer(
-				article, _htmlParser, _journalHelper);
+				article, _configurationProvider, _htmlParser, _journalHelper);
 
 		journalArticleAssetRenderer.setAssetDisplayPageFriendlyURLProvider(
 			_assetDisplayPageFriendlyURLProvider);
@@ -357,6 +358,9 @@ public class JournalArticleAssetRendererFactory
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;

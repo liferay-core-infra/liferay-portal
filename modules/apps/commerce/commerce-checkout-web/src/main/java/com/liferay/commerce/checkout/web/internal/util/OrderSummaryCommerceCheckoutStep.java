@@ -153,9 +153,9 @@ public class OrderSummaryCommerceCheckoutStep extends BaseCommerceCheckoutStep {
 					_commerceOrderValidatorRegistry, _commerceOptionValueHelper,
 					_commercePaymentEngine, _commerceProductPriceCalculation,
 					_commerceShippingEngineRegistry,
-					_commerceTermEntryLocalService, _cpInstanceHelper,
-					httpServletRequest, _percentageFormatter, _portal,
-					_portletResourcePermission);
+					_commerceTermEntryLocalService, _configurationProvider,
+					_cpInstanceHelper, httpServletRequest, _percentageFormatter,
+					_portal, _portletResourcePermission);
 
 		CommerceOrder commerceOrder =
 			orderSummaryCheckoutStepDisplayContext.getCommerceOrder();

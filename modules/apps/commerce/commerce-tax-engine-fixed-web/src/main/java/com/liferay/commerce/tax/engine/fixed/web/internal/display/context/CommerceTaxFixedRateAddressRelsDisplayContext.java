@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -60,6 +60,7 @@ public class CommerceTaxFixedRateAddressRelsDisplayContext
 		CommerceTaxFixedRateAddressRelService
 			commerceTaxFixedRateAddressRelService,
 		CommerceTaxMethodService commerceTaxMethodService,
+		ConfigurationProvider configurationProvider,
 		CountryService countryService,
 		CPTaxCategoryService cpTaxCategoryService,
 		ModelResourcePermission<CommerceChannel> modelResourcePermission,
@@ -73,6 +74,7 @@ public class CommerceTaxFixedRateAddressRelsDisplayContext
 
 		_commerceTaxFixedRateAddressRelService =
 			commerceTaxFixedRateAddressRelService;
+		_configurationProvider = configurationProvider;
 		_countryService = countryService;
 		_regionService = regionService;
 	}
@@ -178,7 +180,7 @@ public class CommerceTaxFixedRateAddressRelsDisplayContext
 
 		CommerceTaxByAddressTypeConfiguration
 			commerceTaxByAddressTypeConfiguration =
-				ConfigurationProviderUtil.getConfiguration(
+				_configurationProvider.getConfiguration(
 					CommerceTaxByAddressTypeConfiguration.class,
 					new GroupServiceSettingsLocator(
 						commerceTaxMethod.getGroupId(),
@@ -190,6 +192,7 @@ public class CommerceTaxFixedRateAddressRelsDisplayContext
 
 	private final CommerceTaxFixedRateAddressRelService
 		_commerceTaxFixedRateAddressRelService;
+	private final ConfigurationProvider _configurationProvider;
 	private final CountryService _countryService;
 	private final RegionService _regionService;
 

@@ -24,6 +24,7 @@ import com.liferay.commerce.tax.engine.fixed.exception.NoSuchTaxFixedRateAddress
 import com.liferay.commerce.tax.engine.fixed.service.CommerceTaxFixedRateAddressRelService;
 import com.liferay.commerce.tax.engine.fixed.web.internal.display.context.CommerceTaxFixedRateAddressRelsDisplayContext;
 import com.liferay.commerce.tax.service.CommerceTaxMethodService;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.constants.MVCRenderConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -73,9 +74,10 @@ public class EditCommerceTaxFixedRateAddressRelMVCRenderCommand
 						_commerceChannelLocalService,
 						_commerceCurrencyLocalService,
 						_commerceTaxFixedRateAddressRelService,
-						_commerceTaxMethodService, _countryService,
-						_cpTaxCategoryService, _modelResourcePermission,
-						_percentageFormatter, _regionService, renderRequest);
+						_commerceTaxMethodService, _configurationProvider,
+						_countryService, _cpTaxCategoryService,
+						_modelResourcePermission, _percentageFormatter,
+						_regionService, renderRequest);
 
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -112,6 +114,9 @@ public class EditCommerceTaxFixedRateAddressRelMVCRenderCommand
 
 	@Reference
 	private CommerceTaxMethodService _commerceTaxMethodService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CountryService _countryService;

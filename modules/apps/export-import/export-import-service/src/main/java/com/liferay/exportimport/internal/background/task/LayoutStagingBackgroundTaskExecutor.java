@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -219,6 +220,11 @@ public class LayoutStagingBackgroundTaskExecutor
 		return new LayoutStagingBackgroundTaskDisplay(backgroundTask);
 	}
 
+	@Override
+	protected ConfigurationProvider getConfigurationProvider() {
+		return _configurationProvider;
+	}
+
 	private void _initLayoutSetBranches(
 			long userId, long sourceGroupId, long targetGroupId)
 		throws PortalException {
@@ -253,6 +259,9 @@ public class LayoutStagingBackgroundTaskExecutor
 
 	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private DLAppHelperLocalService _dLAppHelperLocalService;

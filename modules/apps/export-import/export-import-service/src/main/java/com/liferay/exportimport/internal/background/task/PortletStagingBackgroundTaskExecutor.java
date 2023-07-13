@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
 import com.liferay.portal.kernel.backgroundtask.display.BackgroundTaskDisplay;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 
 import java.io.File;
@@ -134,6 +135,14 @@ public class PortletStagingBackgroundTaskExecutor
 
 		return new PortletExportImportBackgroundTaskDisplay(backgroundTask);
 	}
+
+	@Override
+	protected ConfigurationProvider getConfigurationProvider() {
+		return _configurationProvider;
+	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private ExportImportLocalService _exportImportLocalService;

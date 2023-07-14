@@ -15,53 +15,187 @@
 package com.liferay.portal.kernel.security.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collection;
-
-import org.osgi.annotation.versioning.ProviderType;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author László Csontos
  * @author Preston Crary
  */
-@ProviderType
-public interface UserBag extends Serializable {
+public class UserBag implements Serializable {
 
-	public Collection<Group> getGroups() throws PortalException;
+	public UserBag(
+		long userId, long[] userGroupIds, Collection<Organization> userOrgs,
+		Collection<Long> userOrgGroups, Collection<UserGroup> userUserGroups,
+		long[] userUserGroupGroupIds, Collection<Role> userRoles) {
 
-	public long[] getRoleIds();
+		_userId = userId;
 
-	public Collection<Role> getRoles() throws PortalException;
+		_userGroupIds = userGroupIds;
 
-	public long[] getUserGroupIds();
+		Arrays.sort(_userGroupIds);
 
-	public Collection<Group> getUserGroups() throws PortalException;
+		_userOrgGroupIds = ArrayUtil.toLongArray(userOrgGroups);
 
-	public long getUserId();
+		Arrays.sort(_userOrgGroupIds);
 
-	public long[] getUserOrgGroupIds();
+		_userOrgIds = _toSortedLongArray(userOrgs);
+		_userRoleIds = _toSortedLongArray(userRoles);
 
-	public Collection<Group> getUserOrgGroups() throws PortalException;
+		_userUserGroupGroupIds = userUserGroupGroupIds;
 
-	public long[] getUserOrgIds();
+		Arrays.sort(_userUserGroupGroupIds);
 
-	public Collection<Organization> getUserOrgs() throws PortalException;
+		_userUserGroupIds = _toSortedLongArray(userUserGroups);
+	}
 
-	public Collection<Group> getUserUserGroupGroups() throws PortalException;
+	public UserBag(
+		long userId, long[] userGroupIds, Collection<Organization> userOrgs,
+		Collection<Long> userOrgGroups, Collection<UserGroup> userUserGroups,
+		long[] userUserGroupGroupIds, long[] userRoleIds) {
 
-	public long[] getUserUserGroupsIds();
+		_userId = userId;
+		_userGroupIds = userGroupIds;
 
-	public boolean hasRole(Role role);
+		Arrays.sort(userGroupIds);
 
-	public boolean hasUserGroup(Group group);
+		_userOrgIds = _toSortedLongArray(userOrgs);
 
-	public boolean hasUserOrg(Organization organization);
+		_userOrgGroupIds = ArrayUtil.toLongArray(userOrgGroups);
 
-	public boolean hasUserOrgGroup(Group group);
+		Arrays.sort(_userOrgGroupIds);
+
+		_userUserGroupIds = _toSortedLongArray(userUserGroups);
+
+		_userUserGroupGroupIds = userUserGroupGroupIds;
+
+		Arrays.sort(_userUserGroupGroupIds);
+
+		_userRoleIds = userRoleIds;
+
+		Arrays.sort(_userRoleIds);
+	}
+
+	public Set<Group> getGroups() throws PortalException {
+		Set<Group> groups = new HashSet<>(getUserGroups());
+
+		groups.addAll(getUserOrgGroups());
+		groups.addAll(getUserUserGroupGroups());
+
+		return groups;
+	}
+
+	public long[] getRoleIds() {
+		return _userRoleIds.clone();
+	}
+
+	public List<Role> getRoles() throws PortalException {
+		return RoleLocalServiceUtil.getRoles(_userRoleIds);
+	}
+
+	public long[] getUserGroupIds() {
+		return _userGroupIds.clone();
+	}
+
+	public List<Group> getUserGroups() throws PortalException {
+		return GroupLocalServiceUtil.getGroups(_userGroupIds);
+	}
+
+	public long getUserId() {
+		return _userId;
+	}
+
+	public long[] getUserOrgGroupIds() {
+		return _userOrgGroupIds.clone();
+	}
+
+	public List<Group> getUserOrgGroups() throws PortalException {
+		return GroupLocalServiceUtil.getGroups(_userOrgGroupIds);
+	}
+
+	public long[] getUserOrgIds() {
+		return _userOrgIds.clone();
+	}
+
+	public List<Organization> getUserOrgs() throws PortalException {
+		return OrganizationLocalServiceUtil.getOrganizations(_userOrgIds);
+	}
+
+	public List<Group> getUserUserGroupGroups() throws PortalException {
+		return GroupLocalServiceUtil.getGroups(_userUserGroupGroupIds);
+	}
+
+	public long[] getUserUserGroupsIds() {
+		return _userUserGroupIds;
+	}
+
+	public boolean hasRole(Role role) {
+		return _search(_userRoleIds, role.getRoleId());
+	}
+
+	public boolean hasUserGroup(Group group) {
+		return _search(_userGroupIds, group.getGroupId());
+	}
+
+	public boolean hasUserOrg(Organization organization) {
+		return _search(_userOrgIds, organization.getOrganizationId());
+	}
+
+	public boolean hasUserOrgGroup(Group group) {
+		return _search(_userOrgGroupIds, group.getGroupId());
+	}
+
+	private boolean _search(long[] ids, long id) {
+		if (Arrays.binarySearch(ids, id) >= 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private long[] _toSortedLongArray(
+		Collection<? extends BaseModel<?>> baseModels) {
+
+		if ((baseModels == null) || baseModels.isEmpty()) {
+			return _EMPTY;
+		}
+
+		long[] array = new long[baseModels.size()];
+
+		int index = 0;
+
+		for (BaseModel<?> baseModel : baseModels) {
+			array[index++] = (long)baseModel.getPrimaryKeyObj();
+		}
+
+		Arrays.sort(array);
+
+		return array;
+	}
+
+	private static final long[] _EMPTY = {};
+
+	private final long[] _userGroupIds;
+	private final long _userId;
+	private final long[] _userOrgGroupIds;
+	private final long[] _userOrgIds;
+	private final long[] _userRoleIds;
+	private final long[] _userUserGroupGroupIds;
+	private final long[] _userUserGroupIds;
 
 }

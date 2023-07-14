@@ -227,16 +227,14 @@ public class KaleoProcessAssetRenderer
 	private WorkflowTask _getWorkflowTask(HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		WorkflowTask workflowTask = null;
-
 		long workflowTaskId = ParamUtil.getLong(
 			httpServletRequest, "workflowTaskId");
 
-		if (workflowTaskId > 0) {
-			workflowTask = _workflowTaskManager.getWorkflowTask(workflowTaskId);
+		if (workflowTaskId == 0) {
+			return null;
 		}
 
-		return workflowTask;
+		return _workflowTaskManager.getWorkflowTask(workflowTaskId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

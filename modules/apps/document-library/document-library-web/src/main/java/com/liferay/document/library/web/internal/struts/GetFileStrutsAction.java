@@ -16,11 +16,14 @@ package com.liferay.document.library.web.internal.struts;
 
 import com.liferay.document.library.web.internal.portlet.action.helper.GetFileActionHelper;
 import com.liferay.portal.kernel.struts.StrutsAction;
+import com.liferay.portal.kernel.util.MimeTypes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -45,7 +48,14 @@ public class GetFileStrutsAction implements StrutsAction {
 		return null;
 	}
 
-	private final GetFileActionHelper _getFileActionHelper =
-		new GetFileActionHelper();
+	@Activate
+	protected void activate() {
+		_getFileActionHelper = new GetFileActionHelper(_mimeTypes);
+	}
+
+	private GetFileActionHelper _getFileActionHelper;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 }

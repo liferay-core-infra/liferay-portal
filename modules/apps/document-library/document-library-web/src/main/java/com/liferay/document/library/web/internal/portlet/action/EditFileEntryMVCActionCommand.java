@@ -104,7 +104,7 @@ import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -901,7 +901,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 		String[] mimeTypes = dlPortletInstanceSettings.getMimeTypes();
 
 		for (String mimeType : mimeTypes) {
-			extensions.addAll(MimeTypesUtil.getExtensions(mimeType));
+			extensions.addAll(_mimeTypes.getExtensions(mimeType));
 		}
 
 		return extensions.toArray(new String[0]);
@@ -1273,10 +1273,10 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 				 cmd.equals(Constants.ADD_DYNAMIC)) &&
 				(size == 0)) {
 
-				contentType = MimeTypesUtil.getContentType(sourceFileName);
+				contentType = _mimeTypes.getContentType(sourceFileName);
 
 				if (Validator.isNotNull(contentType)) {
-					contentType = MimeTypesUtil.getContentType(title);
+					contentType = _mimeTypes.getContentType(title);
 				}
 			}
 
@@ -1463,6 +1463,9 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference(target = "(upload.response.handler=multiple)")
 	private UploadResponseHandler _multipleUploadResponseHandler;

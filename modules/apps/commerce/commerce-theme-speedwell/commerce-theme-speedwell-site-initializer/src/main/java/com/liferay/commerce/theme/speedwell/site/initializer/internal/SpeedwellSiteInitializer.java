@@ -98,7 +98,7 @@ import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -915,7 +915,7 @@ public class SpeedwellSiteInitializer implements SiteInitializer {
 		try {
 			file = _file.createTempFile(inputStream);
 
-			String mimeType = MimeTypesUtil.getContentType(file);
+			String mimeType = _mimeTypes.getContentType(file);
 
 			FileEntry fileEntry = TempFileEntryUtil.addTempFileEntry(
 				catalogGroupId, serviceContext.getUserId(),
@@ -1112,6 +1112,9 @@ public class SpeedwellSiteInitializer implements SiteInitializer {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private OrganizationImporter _organizationImporter;

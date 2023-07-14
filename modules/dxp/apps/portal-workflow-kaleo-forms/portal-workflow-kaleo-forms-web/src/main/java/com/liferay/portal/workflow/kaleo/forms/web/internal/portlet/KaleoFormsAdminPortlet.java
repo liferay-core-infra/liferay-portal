@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -407,7 +407,7 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 
 		PortletResponseUtil.sendFile(
 			resourceRequest, resourceResponse, fileName, bytes,
-			MimeTypesUtil.getContentType(fileName));
+			_mimeTypes.getContentType(fileName));
 	}
 
 	/**
@@ -457,6 +457,9 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	private final List<String> _parameterNames;
 

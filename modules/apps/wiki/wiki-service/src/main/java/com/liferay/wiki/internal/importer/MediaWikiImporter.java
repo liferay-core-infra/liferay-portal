@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GroupThreadLocal;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ProgressTracker;
 import com.liferay.portal.kernel.util.ProgressTrackerThreadLocal;
@@ -265,7 +265,7 @@ public class MediaWikiImporter {
 
 			DLValidatorUtil.validateFileSize(
 				GroupThreadLocal.getGroupId(), fileName,
-				MimeTypesUtil.getContentType(fileName), inputStream);
+				_mimeTypes.getContentType(fileName), inputStream);
 		}
 		catch (PortalException | SystemException exception) {
 
@@ -805,6 +805,9 @@ public class MediaWikiImporter {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private PortletFileRepository _portletFileRepository;

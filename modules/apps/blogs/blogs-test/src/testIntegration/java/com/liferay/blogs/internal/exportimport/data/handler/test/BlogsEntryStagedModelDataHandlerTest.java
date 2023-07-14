@@ -34,8 +34,9 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
@@ -368,7 +369,7 @@ public class BlogsEntryStagedModelDataHandlerTest
 
 		InputStream inputStream = _getInputStream();
 
-		String mimeType = MimeTypesUtil.getContentType(_IMAGE_TITLE);
+		String mimeType = _mimeTypes.getContentType(_IMAGE_TITLE);
 
 		ImageSelector imageSelector = new ImageSelector(
 			FileUtil.getBytes(inputStream), _IMAGE_TITLE, mimeType,
@@ -384,7 +385,7 @@ public class BlogsEntryStagedModelDataHandlerTest
 
 		InputStream inputStream = _getInputStream();
 
-		String mimeType = MimeTypesUtil.getContentType(_IMAGE_TITLE);
+		String mimeType = _mimeTypes.getContentType(_IMAGE_TITLE);
 
 		ImageSelector imageSelector = new ImageSelector(
 			FileUtil.getBytes(inputStream), _IMAGE_TITLE, mimeType,
@@ -416,5 +417,8 @@ public class BlogsEntryStagedModelDataHandlerTest
 		"{\"height\": 10, \"width\": 10, \"x\": 0, \"y\": 0}";
 
 	private static final String _IMAGE_TITLE = "test.jpg";
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

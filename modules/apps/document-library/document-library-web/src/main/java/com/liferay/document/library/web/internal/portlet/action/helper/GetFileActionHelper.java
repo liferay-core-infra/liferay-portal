@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -57,6 +57,10 @@ import javax.servlet.http.HttpServletResponse;
  * @author Iván Zaera
  */
 public class GetFileActionHelper {
+
+	public GetFileActionHelper(MimeTypes mimeTypes) {
+		_mimeTypes = mimeTypes;
+	}
 
 	public void processRequest(
 			HttpServletRequest httpServletRequest,
@@ -219,7 +223,7 @@ public class GetFileActionHelper {
 					targetExtension);
 				inputStream = new FileInputStream(convertedFile);
 				contentLength = convertedFile.length();
-				contentType = MimeTypesUtil.getContentType(fileName);
+				contentType = _mimeTypes.getContentType(fileName);
 			}
 		}
 
@@ -257,5 +261,7 @@ public class GetFileActionHelper {
 
 		httpServletResponse.sendRedirect(redirect);
 	}
+
+	private final MimeTypes _mimeTypes;
 
 }

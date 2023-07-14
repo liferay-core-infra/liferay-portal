@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -150,6 +150,9 @@ public class AdminPortlet extends MVCPortlet {
 	protected DefinitionLocalService definitionLocalService;
 
 	@Reference
+	protected MimeTypes mimeTypes;
+
+	@Reference
 	protected SourceLocalService sourceLocalService;
 
 	@Reference(target = "(default=true)")
@@ -172,7 +175,7 @@ public class AdminPortlet extends MVCPortlet {
 
 		PortletResponseUtil.sendFile(
 			resourceRequest, resourceResponse, shortFileName, inputStream,
-			MimeTypesUtil.getContentType(fileName));
+			mimeTypes.getContentType(fileName));
 	}
 
 	private void _setDefinitionRequestAttribute(RenderRequest renderRequest)

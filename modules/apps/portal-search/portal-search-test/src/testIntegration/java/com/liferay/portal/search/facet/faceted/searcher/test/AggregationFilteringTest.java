@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.facet.Facet;
@@ -94,7 +95,7 @@ public class AggregationFilteringTest {
 			new BlogsEntrySearchFixture(blogsEntryLocalService);
 
 		FileEntrySearchFixture fileEntrySearchFixture =
-			new FileEntrySearchFixture(dlAppLocalService);
+			new FileEntrySearchFixture(dlAppLocalService, _mimeTypes);
 
 		GroupSearchFixture groupSearchFixture = new GroupSearchFixture();
 
@@ -525,6 +526,10 @@ public class AggregationFilteringTest {
 
 	private JournalArticleSearchFixture _journalArticleSearchFixture;
 	private String _keyword;
+
+	@Inject
+	private MimeTypes _mimeTypes;
+
 	private User _user1;
 	private User _user2;
 	private User _user3;

@@ -69,7 +69,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -1526,7 +1526,7 @@ public class ContentDashboardAdminPortletTest {
 			RandomTestUtil.randomString(), _user.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + "." + fileExtension,
-			MimeTypesUtil.getExtensionContentType(fileExtension), new byte[0],
+			_mimeTypes.getExtensionContentType(fileExtension), new byte[0],
 			null, null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 	}
@@ -1734,6 +1734,9 @@ public class ContentDashboardAdminPortletTest {
 
 	@Inject
 	private Language _language;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@Inject(
 		filter = "component.name=com.liferay.content.dashboard.web.internal.portlet.ContentDashboardAdminPortlet"

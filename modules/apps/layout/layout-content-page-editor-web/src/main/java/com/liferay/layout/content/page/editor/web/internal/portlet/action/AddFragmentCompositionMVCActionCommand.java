@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -204,7 +204,7 @@ public class AddFragmentCompositionMVCActionCommand
 				FragmentComposition.class.getName(), fragmentCompositionId,
 				FragmentPortletKeys.FRAGMENT, repository.getDlFolderId(), bytes,
 				fragmentCompositionId + "_preview",
-				MimeTypesUtil.getContentType(url), false);
+				_mimeTypes.getContentType(url), false);
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
@@ -236,6 +236,9 @@ public class AddFragmentCompositionMVCActionCommand
 	@Reference
 	private LayoutStructureItemJSONSerializer
 		_layoutStructureItemJSONSerializer;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

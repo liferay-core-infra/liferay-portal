@@ -94,7 +94,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -867,7 +867,7 @@ public class LayoutsImporterImpl implements LayoutsImporter {
 		fileEntry = _portletFileRepository.addPortletFileEntry(
 			groupId, userId, className, classPK,
 			LayoutAdminPortletKeys.GROUP_PAGES, repository.getDlFolderId(),
-			bytes, imageFileName, MimeTypesUtil.getContentType(imageFileName),
+			bytes, imageFileName, _mimeTypes.getContentType(imageFileName),
 			false);
 
 		return fileEntry.getFileEntryId();
@@ -1721,6 +1721,9 @@ public class LayoutsImporterImpl implements LayoutsImporter {
 
 	@Reference
 	private LayoutUtilityPageEntryService _layoutUtilityPageEntryService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

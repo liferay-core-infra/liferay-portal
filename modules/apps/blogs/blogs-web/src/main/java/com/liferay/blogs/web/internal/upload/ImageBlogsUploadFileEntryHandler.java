@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -115,6 +115,9 @@ public class ImageBlogsUploadFileEntryHandler
 	protected BlogsEntryLocalService blogsLocalService;
 
 	@Reference
+	protected MimeTypes mimeTypes;
+
+	@Reference
 	protected PortletFileRepository portletFileRepository;
 
 	@Reference(target = "(resource.name=" + BlogsConstants.RESOURCE_NAME + ")")
@@ -163,7 +166,7 @@ public class ImageBlogsUploadFileEntryHandler
 			throw new EntryImageSizeException();
 		}
 
-		Set<String> extensions = MimeTypesUtil.getExtensions(contentType);
+		Set<String> extensions = mimeTypes.getExtensions(contentType);
 
 		for (String extension :
 				_blogsFileUploadsConfiguration.imageExtensions()) {

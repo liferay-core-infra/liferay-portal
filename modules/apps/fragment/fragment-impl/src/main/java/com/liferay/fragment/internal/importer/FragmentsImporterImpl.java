@@ -58,7 +58,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -369,7 +369,7 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 				FragmentPortletKeys.FRAGMENT,
 				fragmentCollection.getResourcesFolderId(),
 				_getInputStream(zipFile, entry.getValue()), fileName,
-				MimeTypesUtil.getContentType(fileName), false);
+				_mimeTypes.getContentType(fileName), false);
 		}
 	}
 
@@ -457,7 +457,7 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 					folderIdsMap, folderPath, repository.getRepositoryId(),
 					userId),
 				_getInputStream(zipFile, entry.getValue()), fileName,
-				MimeTypesUtil.getContentType(fileName), false);
+				_mimeTypes.getContentType(fileName), false);
 		}
 	}
 
@@ -793,7 +793,7 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 			FragmentPortletKeys.FRAGMENT, repository.getDlFolderId(),
 			inputStream,
 			classPK + "_preview." + FileUtil.getExtension(contentPath),
-			MimeTypesUtil.getContentType(contentPath), false);
+			_mimeTypes.getContentType(contentPath), false);
 
 		return fileEntry.getFileEntryId();
 	}
@@ -1156,6 +1156,9 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

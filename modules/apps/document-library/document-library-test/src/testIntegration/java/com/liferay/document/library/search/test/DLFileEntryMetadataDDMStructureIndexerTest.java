@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.search.test.util.IndexerFixture;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -119,7 +120,7 @@ public class DLFileEntryMetadataDDMStructureIndexerTest
 	protected void setUpFileEntryMetadataFixture() {
 		fileEntryMetadataFixture = new DLFileEntryMetadataDDMStructureFixture(
 			dlFixture, dlAppLocalService, ddmStructureLocalService,
-			dlFileEntryTypeLocalService);
+			dlFileEntryTypeLocalService, _mimeTypes);
 	}
 
 	@Inject
@@ -133,5 +134,8 @@ public class DLFileEntryMetadataDDMStructureIndexerTest
 
 	@Inject
 	private static MessageBus _messageBus;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

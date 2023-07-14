@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -300,8 +300,7 @@ public class ImportTranslationMVCActionCommand extends BaseMVCActionCommand {
 				_processXLIFFTranslation(
 					actionRequest, groupId, className, classPK,
 					new Translation(
-						() -> MimeTypesUtil.getContentType(
-							fileItem.getFileName()),
+						() -> _mimeTypes.getContentType(fileItem.getFileName()),
 						fileItem.getFileName(), fileItem::getInputStream),
 					successMessages, failureMessages, locale);
 			}
@@ -426,6 +425,9 @@ public class ImportTranslationMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

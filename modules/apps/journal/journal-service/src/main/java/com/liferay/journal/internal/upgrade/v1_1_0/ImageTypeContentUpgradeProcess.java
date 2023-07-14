@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.LoggingTimer;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 /**
@@ -40,10 +40,11 @@ public class ImageTypeContentUpgradeProcess extends UpgradeProcess {
 	public ImageTypeContentUpgradeProcess(
 		ImageLocalService imageLocalService,
 		JournalArticleImageUpgradeHelper journalArticleImageUpgradeHelper,
-		PortletFileRepository portletFileRepository) {
+		MimeTypes mimeTypes, PortletFileRepository portletFileRepository) {
 
 		_imageLocalService = imageLocalService;
 		_journalArticleImageUpgradeHelper = journalArticleImageUpgradeHelper;
+		_mimeTypes = mimeTypes;
 		_portletFileRepository = portletFileRepository;
 	}
 
@@ -118,7 +119,7 @@ public class ImageTypeContentUpgradeProcess extends UpgradeProcess {
 							return;
 						}
 
-						String mimeType = MimeTypesUtil.getContentType(
+						String mimeType = _mimeTypes.getContentType(
 							fileName + StringPool.PERIOD + image.getType());
 
 						_portletFileRepository.addPortletFileEntry(
@@ -148,6 +149,7 @@ public class ImageTypeContentUpgradeProcess extends UpgradeProcess {
 	private final ImageLocalService _imageLocalService;
 	private final JournalArticleImageUpgradeHelper
 		_journalArticleImageUpgradeHelper;
+	private final MimeTypes _mimeTypes;
 	private final PortletFileRepository _portletFileRepository;
 
 }

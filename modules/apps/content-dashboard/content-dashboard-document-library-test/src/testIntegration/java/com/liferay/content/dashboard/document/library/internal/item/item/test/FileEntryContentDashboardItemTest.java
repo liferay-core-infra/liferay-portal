@@ -55,7 +55,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -242,7 +242,7 @@ public class FileEntryContentDashboardItemTest {
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + ".jpg",
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null, serviceContext);
 
 		VersionableContentDashboardItem<FileEntry>
@@ -585,7 +585,7 @@ public class FileEntryContentDashboardItemTest {
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			"example.jpg",
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -649,7 +649,7 @@ public class FileEntryContentDashboardItemTest {
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			"example.jpg",
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -706,7 +706,7 @@ public class FileEntryContentDashboardItemTest {
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			"example.jpg",
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null, serviceContext);
 
 		fileEntry = _dlAppLocalService.updateFileEntry(
@@ -777,6 +777,9 @@ public class FileEntryContentDashboardItemTest {
 	@Inject
 	private LayoutPageTemplateEntryLocalService
 		_layoutPageTemplateEntryLocalService;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@Inject
 	private Portal _portal;

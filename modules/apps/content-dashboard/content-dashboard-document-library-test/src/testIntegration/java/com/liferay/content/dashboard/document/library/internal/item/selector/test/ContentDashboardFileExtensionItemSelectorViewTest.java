@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -171,7 +171,7 @@ public class ContentDashboardFileExtensionItemSelectorViewTest {
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + "." + fileExtension,
-			MimeTypesUtil.getExtensionContentType(fileExtension), new byte[0],
+			_mimeTypes.getExtensionContentType(fileExtension), new byte[0],
 			null, null,
 			ServiceContextTestUtil.getServiceContext(group.getGroupId()));
 	}
@@ -274,5 +274,8 @@ public class ContentDashboardFileExtensionItemSelectorViewTest {
 
 	@Inject
 	private GroupLocalService _groupLocalService;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

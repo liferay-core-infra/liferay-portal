@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.File;
@@ -48,10 +48,11 @@ import java.sql.ResultSet;
 public class BlogsImagesUpgradeProcess extends UpgradeProcess {
 
 	public BlogsImagesUpgradeProcess(
-		ImageLocalService imageLocalService,
+		ImageLocalService imageLocalService, MimeTypes mimeTypes,
 		PortletFileRepository portletFileRepository) {
 
 		_imageLocalService = imageLocalService;
+		_mimeTypes = mimeTypes;
 		_portletFileRepository = portletFileRepository;
 	}
 
@@ -152,7 +153,7 @@ public class BlogsImagesUpgradeProcess extends UpgradeProcess {
 		File tempFile = FileUtil.createTempFile(bytes);
 
 		try {
-			return MimeTypesUtil.getContentType(tempFile);
+			return _mimeTypes.getContentType(tempFile);
 		}
 		finally {
 			FileUtil.delete(tempFile);
@@ -160,6 +161,7 @@ public class BlogsImagesUpgradeProcess extends UpgradeProcess {
 	}
 
 	private final ImageLocalService _imageLocalService;
+	private final MimeTypes _mimeTypes;
 	private final PortletFileRepository _portletFileRepository;
 
 }

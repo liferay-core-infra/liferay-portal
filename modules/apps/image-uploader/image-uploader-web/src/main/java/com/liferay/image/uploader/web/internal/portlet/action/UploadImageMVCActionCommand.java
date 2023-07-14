@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.upload.configuration.UploadServletRequestConfig
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -181,7 +181,7 @@ public class UploadImageMVCActionCommand extends BaseMVCActionCommand {
 
 		String fileName = uploadPortletRequest.getFileName("fileName");
 
-		String mimeType = MimeTypesUtil.getContentType(file, fileName);
+		String mimeType = _mimeTypes.getContentType(file, fileName);
 
 		if (!StringUtil.equalsIgnoreCase(
 				ContentTypes.APPLICATION_OCTET_STREAM, mimeType)) {
@@ -409,6 +409,9 @@ public class UploadImageMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

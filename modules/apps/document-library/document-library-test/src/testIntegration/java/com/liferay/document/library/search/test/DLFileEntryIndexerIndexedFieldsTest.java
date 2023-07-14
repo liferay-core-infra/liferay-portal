@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.test.util.FieldValuesAssert;
@@ -84,7 +85,8 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_fileEntrySearchFixture = new FileEntrySearchFixture(dlAppLocalService);
+		_fileEntrySearchFixture = new FileEntrySearchFixture(
+			dlAppLocalService, _mimeTypes);
 
 		_fileEntrySearchFixture.setUp();
 
@@ -416,5 +418,8 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 	private DLFileEntryLocalService _dlFileEntryLocalService;
 
 	private FileEntrySearchFixture _fileEntrySearchFixture;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

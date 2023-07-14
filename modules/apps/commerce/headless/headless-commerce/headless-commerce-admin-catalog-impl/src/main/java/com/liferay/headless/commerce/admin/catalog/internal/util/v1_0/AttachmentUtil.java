@@ -34,6 +34,7 @@ import com.liferay.headless.commerce.admin.catalog.dto.v1_0.AttachmentUrl;
 import com.liferay.headless.commerce.admin.catalog.internal.util.DateConfigUtil;
 import com.liferay.headless.commerce.core.util.DateConfig;
 import com.liferay.headless.commerce.core.util.LanguageUtils;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -48,7 +49,7 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -364,7 +365,9 @@ public class AttachmentUtil {
 				curFileName));
 
 		if (Validator.isNull(contentType)) {
-			contentType = MimeTypesUtil.getContentType(file);
+			MimeTypes mimeTypes = _mimeTypesSnapshot.get();
+
+			contentType = mimeTypes.getContentType(file);
 		}
 
 		uniqueFileName = _appendExtension(contentType, uniqueFileName);
@@ -385,7 +388,9 @@ public class AttachmentUtil {
 
 		String extension = StringPool.BLANK;
 
-		Set<String> extensions = MimeTypesUtil.getExtensions(contentType);
+		MimeTypes mimeTypes = _mimeTypesSnapshot.get();
+
+		Set<String> extensions = mimeTypes.getExtensions(contentType);
 
 		if (!extensions.isEmpty()) {
 			Iterator<String> iterator = extensions.iterator();
@@ -480,5 +485,8 @@ public class AttachmentUtil {
 		AttachmentUtil.class.getName();
 
 	private static final Log _log = LogFactoryUtil.getLog(AttachmentUtil.class);
+
+	private static final Snapshot<MimeTypes> _mimeTypesSnapshot =
+		new Snapshot<>(AttachmentUtil.class, MimeTypes.class);
 
 }

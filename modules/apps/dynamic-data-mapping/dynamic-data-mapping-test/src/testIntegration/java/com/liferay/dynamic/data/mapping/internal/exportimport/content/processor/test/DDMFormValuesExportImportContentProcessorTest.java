@@ -72,7 +72,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -514,7 +514,7 @@ public class DDMFormValuesExportImportContentProcessorTest {
 			_stagingGroup.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + ".txt",
-			MimeTypesUtil.getExtensionContentType("txt"),
+			_mimeTypes.getExtensionContentType("txt"),
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), StringPool.BLANK,
 			dlFileEntryType.getFileEntryTypeId(), ddmFormValuesMap, file,
@@ -560,6 +560,9 @@ public class DDMFormValuesExportImportContentProcessorTest {
 
 	@DeleteAfterTestRun
 	private Group _liveGroup;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	private PortletDataContext _portletDataContextExport;
 	private PortletDataContext _portletDataContextImport;

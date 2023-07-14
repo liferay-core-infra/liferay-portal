@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletConfig;
@@ -86,8 +87,8 @@ public class OpenCommerceOrderContentConfigurationAction
 						_commercePaymentMethodRegistry,
 						_commerceTermEntryService, _configurationProvider,
 						_dlAppLocalService, httpServletRequest, _itemSelector,
-						_modelResourcePermission, _percentageFormatter,
-						_portletResourcePermission);
+						_mimeTypes, _modelResourcePermission,
+						_percentageFormatter, _portletResourcePermission);
 
 			httpServletRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -152,6 +153,9 @@ public class OpenCommerceOrderContentConfigurationAction
 
 	@Reference
 	private ItemSelector _itemSelector;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.commerce.model.CommerceOrder)"

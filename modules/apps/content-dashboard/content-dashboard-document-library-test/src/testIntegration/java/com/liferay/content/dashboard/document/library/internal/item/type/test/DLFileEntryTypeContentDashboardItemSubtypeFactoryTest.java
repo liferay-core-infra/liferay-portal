@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -68,7 +68,7 @@ public class DLFileEntryTypeContentDashboardItemSubtypeFactoryTest {
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + ".jpg",
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -115,5 +115,8 @@ public class DLFileEntryTypeContentDashboardItemSubtypeFactoryTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

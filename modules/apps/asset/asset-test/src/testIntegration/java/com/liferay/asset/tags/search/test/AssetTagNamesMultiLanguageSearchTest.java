@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.search.facet.tag.AssetTagNamesFacetFactory;
 import com.liferay.portal.search.test.util.DocumentsAssert;
@@ -74,7 +75,8 @@ public class AssetTagNamesMultiLanguageSearchTest {
 	public void setUp() throws Exception {
 		WorkflowThreadLocal.setEnabled(false);
 
-		_fileEntrySearchFixture = new FileEntrySearchFixture(dlAppLocalService);
+		_fileEntrySearchFixture = new FileEntrySearchFixture(
+			dlAppLocalService, _mimeTypes);
 
 		_fileEntrySearchFixture.setUp();
 
@@ -318,6 +320,9 @@ public class AssetTagNamesMultiLanguageSearchTest {
 
 	@DeleteAfterTestRun
 	private List<Group> _groups;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@DeleteAfterTestRun
 	private List<User> _users;

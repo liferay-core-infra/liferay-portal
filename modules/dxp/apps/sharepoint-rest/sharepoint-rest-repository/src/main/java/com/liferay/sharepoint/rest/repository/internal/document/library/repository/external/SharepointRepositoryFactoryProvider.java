@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.RepositoryEntryLocalService;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.sharepoint.rest.repository.internal.configuration.SharepointRepositoryConfiguration;
 import com.liferay.sharepoint.rest.repository.internal.configuration.SharepointSearchConfiguration;
 
@@ -58,6 +59,9 @@ public class SharepointRepositoryFactoryProvider {
 
 	@Reference
 	private DLFolderLocalService _dlFolderLocalService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private RepositoryEntryLocalService _repositoryEntryLocalService;
@@ -105,7 +109,8 @@ public class SharepointRepositoryFactoryProvider {
 				new SharepointExtRepositoryAdapter(
 					new SharepointCachingExtRepository(
 						new SharepointExtRepository(
-							_tokenStore, _sharepointRepositoryConfiguration,
+							_mimeTypes, _tokenStore,
+							_sharepointRepositoryConfiguration,
 							_sharepointSearchConfiguration)));
 
 			sharepointExtRepositoryAdapter.setAssetEntryLocalService(

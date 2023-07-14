@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
@@ -240,7 +240,7 @@ public class PreviewImageBlogsEntryContentDashboardItemActionProviderTest {
 		return TempFileEntryUtil.addTempFileEntry(
 			serviceContext.getScopeGroupId(), userId,
 			BlogsEntry.class.getName(), title, inputStream,
-			MimeTypesUtil.getContentType(title));
+			_mimeTypes.getContentType(title));
 	}
 
 	private ThemeDisplay _getThemeDisplay(HttpServletRequest httpServletRequest)
@@ -268,6 +268,9 @@ public class PreviewImageBlogsEntryContentDashboardItemActionProviderTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@Inject
 	private UserLocalService _userLocalService;

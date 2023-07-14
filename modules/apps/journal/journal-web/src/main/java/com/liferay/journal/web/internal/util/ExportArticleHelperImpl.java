@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -149,7 +149,7 @@ public class ExportArticleHelperImpl implements ExportArticleHelper {
 			fileName = StringBundler.concat(
 				title, StringPool.PERIOD, targetExtension);
 
-			contentType = MimeTypesUtil.getContentType(fileName);
+			contentType = _mimeTypes.getContentType(fileName);
 
 			inputStream = new FileInputStream(convertedFile);
 		}
@@ -167,6 +167,9 @@ public class ExportArticleHelperImpl implements ExportArticleHelper {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

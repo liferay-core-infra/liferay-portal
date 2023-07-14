@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Localization;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -145,7 +145,7 @@ public class AddTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 
 		String fileScriptContent = FileUtil.read(file);
 
-		String contentType = MimeTypesUtil.getContentType(file);
+		String contentType = _mimeTypes.getContentType(file);
 
 		if (Validator.isNotNull(fileScriptContent) &&
 			!_isValidContentType(contentType)) {
@@ -166,5 +166,8 @@ public class AddTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 
 		return false;
 	}
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 }

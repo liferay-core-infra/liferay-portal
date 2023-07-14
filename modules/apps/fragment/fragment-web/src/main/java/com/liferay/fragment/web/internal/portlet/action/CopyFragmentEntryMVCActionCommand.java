@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -232,7 +232,7 @@ public class CopyFragmentEntryMVCActionCommand extends BaseMVCActionCommand {
 				groupId, userId, FragmentCollection.class.getName(),
 				fragmentCollectionId, FragmentPortletKeys.FRAGMENT,
 				repository.getDlFolderId(), bytes, shortFileName,
-				MimeTypesUtil.getContentType(shortFileName), false);
+				_mimeTypes.getContentType(shortFileName), false);
 
 			return fileEntry.getFileEntryId();
 		}
@@ -282,6 +282,9 @@ public class CopyFragmentEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

@@ -73,6 +73,7 @@ import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -142,7 +143,7 @@ public class SiteInitializerFactoryImpl implements SiteInitializerFactory {
 			_layoutPageTemplateStructureRelLocalService, _layoutSetLocalService,
 			_layoutUtilityPageEntryLocalService, _listTypeDefinitionResource,
 			_listTypeDefinitionResourceFactory, _listTypeEntryLocalService,
-			_listTypeEntryResource, _listTypeEntryResourceFactory,
+			_listTypeEntryResource, _listTypeEntryResourceFactory, _mimeTypes,
 			_notificationTemplateResourceFactory, _objectActionLocalService,
 			_objectDefinitionLocalService, _objectDefinitionResourceFactory,
 			_objectEntryLocalService, _objectEntryManager,
@@ -304,6 +305,9 @@ public class SiteInitializerFactoryImpl implements SiteInitializerFactory {
 
 	@Reference
 	private ListTypeEntryResource.Factory _listTypeEntryResourceFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private NotificationTemplateResource.Factory

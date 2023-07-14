@@ -14,6 +14,7 @@
 
 package com.liferay.portal.osgi.web.servlet.context.helper.internal;
 
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
 
@@ -33,10 +34,12 @@ public class ServletContextHelperRegistrationServiceFactory
 	implements ServiceFactory<ServletContextHelperRegistration> {
 
 	public ServletContextHelperRegistrationServiceFactory(
-		JSPServletFactory jspServletFactory, SAXParserFactory saxParserFactory,
-		Map<String, Object> properties, ExecutorService executorService) {
+		JSPServletFactory jspServletFactory, MimeTypes mimeTypes,
+		SAXParserFactory saxParserFactory, Map<String, Object> properties,
+		ExecutorService executorService) {
 
 		_jspServletFactory = jspServletFactory;
+		_mimeTypes = mimeTypes;
 		_saxParserFactory = saxParserFactory;
 		_properties = properties;
 		_executorService = executorService;
@@ -49,8 +52,8 @@ public class ServletContextHelperRegistrationServiceFactory
 			serviceRegistration) {
 
 		return new ServletContextHelperRegistrationImpl(
-			bundle, _jspServletFactory, _saxParserFactory, _properties,
-			_executorService);
+			bundle, _jspServletFactory, _mimeTypes, _saxParserFactory,
+			_properties, _executorService);
 	}
 
 	@Override
@@ -65,6 +68,7 @@ public class ServletContextHelperRegistrationServiceFactory
 
 	private final ExecutorService _executorService;
 	private final JSPServletFactory _jspServletFactory;
+	private final MimeTypes _mimeTypes;
 	private final Map<String, Object> _properties;
 	private final SAXParserFactory _saxParserFactory;
 

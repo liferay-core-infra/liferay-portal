@@ -75,7 +75,7 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
@@ -608,7 +608,7 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 		InputStream inputStream = classLoader.getResourceAsStream(filePath);
 
-		String mimeType = MimeTypesUtil.getContentType(fileName);
+		String mimeType = _mimeTypes.getContentType(fileName);
 
 		byte[] byteArray = _file.getBytes(inputStream);
 
@@ -1045,6 +1045,9 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 	@Reference
 	private LayoutSetLocalService _layoutSetLocalService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

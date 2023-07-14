@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.io.File;
@@ -62,8 +62,7 @@ public class DownloadCommerceVirtualOrderItemMVCResourceCommand
 
 			PortletResponseUtil.sendFile(
 				resourceRequest, resourceResponse, file.getName(),
-				new FileInputStream(file), 0,
-				MimeTypesUtil.getContentType(file),
+				new FileInputStream(file), 0, _mimeTypes.getContentType(file),
 				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 		}
 		catch (Exception exception) {
@@ -76,5 +75,8 @@ public class DownloadCommerceVirtualOrderItemMVCResourceCommand
 
 	@Reference
 	private CommerceVirtualOrderItemService _commerceVirtualOrderItemService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 }

@@ -51,7 +51,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.SystemEnv;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
@@ -244,7 +244,7 @@ public class PDFProcessorImpl
 		}
 
 		if (DocumentConversionUtil.isEnabled()) {
-			Set<String> extensions = MimeTypesUtil.getExtensions(mimeType);
+			Set<String> extensions = _mimeTypes.getExtensions(mimeType);
 
 			for (String extension : extensions) {
 				extension = extension.substring(1);
@@ -1126,6 +1126,9 @@ public class PDFProcessorImpl
 	private Ghostscript _ghostscript;
 
 	private boolean _ghostscriptInitialized;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private PDFPreviewManagedServiceFactory _pdfPreviewManagedServiceFactory;

@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -81,7 +81,7 @@ public class
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + "." + ContentTypes.IMAGE_JPEG,
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -127,7 +127,7 @@ public class
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + "." + ContentTypes.IMAGE_JPEG,
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -157,7 +157,7 @@ public class
 				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 				_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 				RandomTestUtil.randomString() + "." + ContentTypes.IMAGE_JPEG,
-				MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+				_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 				new byte[0], null, null,
 				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -206,6 +206,9 @@ public class
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@Inject
 	private UserLocalService _userLocalService;

@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
@@ -97,7 +98,7 @@ public class IndexerScoreDistortionTest {
 			new BlogsEntrySearchFixture(blogsEntryLocalService);
 
 		FileEntrySearchFixture fileEntrySearchFixture =
-			new FileEntrySearchFixture(dlAppLocalService);
+			new FileEntrySearchFixture(dlAppLocalService, _mimeTypes);
 
 		GroupSearchFixture groupSearchFixture = new GroupSearchFixture();
 
@@ -376,6 +377,10 @@ public class IndexerScoreDistortionTest {
 	private List<JournalArticle> _journalArticles;
 
 	private JournalArticleSearchFixture _journalArticleSearchFixture;
+
+	@Inject
+	private MimeTypes _mimeTypes;
+
 	private User _user;
 
 	@DeleteAfterTestRun

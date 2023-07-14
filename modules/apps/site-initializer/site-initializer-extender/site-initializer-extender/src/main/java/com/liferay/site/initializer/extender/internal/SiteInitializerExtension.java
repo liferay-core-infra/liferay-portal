@@ -74,6 +74,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.language.override.service.PLOEntryLocalService;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
@@ -141,6 +142,7 @@ public class SiteInitializerExtension {
 		ListTypeEntryLocalService listTypeEntryLocalService,
 		ListTypeEntryResource listTypeEntryResource,
 		ListTypeEntryResource.Factory listTypeEntryResourceFactory,
+		MimeTypes mimeTypes,
 		NotificationTemplateResource.Factory
 			notificationTemplateResourceFactory,
 		ObjectActionLocalService objectActionLocalService,
@@ -200,7 +202,7 @@ public class SiteInitializerExtension {
 			layoutPageTemplateStructureRelLocalService, layoutSetLocalService,
 			layoutUtilityPageEntryLocalService, listTypeDefinitionResource,
 			listTypeDefinitionResourceFactory, listTypeEntryLocalService,
-			listTypeEntryResource, listTypeEntryResourceFactory,
+			listTypeEntryResource, listTypeEntryResourceFactory, mimeTypes,
 			notificationTemplateResourceFactory, objectActionLocalService,
 			objectDefinitionLocalService, objectDefinitionResourceFactory,
 			objectEntryLocalService, objectEntryManager,

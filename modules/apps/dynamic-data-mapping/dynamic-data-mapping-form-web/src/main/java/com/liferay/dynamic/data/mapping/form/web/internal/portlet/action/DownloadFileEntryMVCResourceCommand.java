@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -106,7 +106,7 @@ public class DownloadFileEntryMVCResourceCommand
 		PortletResponseUtil.sendFile(
 			resourceRequest, resourceResponse, fileEntry.getFileName(),
 			fileEntry.getContentStream(),
-			MimeTypesUtil.getContentType(fileEntry.getFileName()));
+			_mimeTypes.getContentType(fileEntry.getFileName()));
 	}
 
 	@Reference
@@ -117,5 +117,8 @@ public class DownloadFileEntryMVCResourceCommand
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 }

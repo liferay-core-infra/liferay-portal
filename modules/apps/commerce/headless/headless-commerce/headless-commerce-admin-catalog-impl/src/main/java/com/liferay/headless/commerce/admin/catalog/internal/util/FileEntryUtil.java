@@ -16,6 +16,7 @@ package com.liferay.headless.commerce.admin.catalog.internal.util;
 
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppServiceUtil;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -24,7 +25,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.upload.UniqueFileNameProvider;
@@ -72,7 +73,9 @@ public class FileEntryUtil {
 				curFileName));
 
 		if (Validator.isNull(contentType)) {
-			contentType = MimeTypesUtil.getContentType(file);
+			MimeTypes mimeTypes = _mimeTypesSnapshot.get();
+
+			contentType = mimeTypes.getContentType(file);
 		}
 
 		uniqueFileName = _appendExtension(contentType, uniqueFileName);
@@ -93,7 +96,9 @@ public class FileEntryUtil {
 
 		String extension = StringPool.BLANK;
 
-		Set<String> extensions = MimeTypesUtil.getExtensions(contentType);
+		MimeTypes mimeTypes = _mimeTypesSnapshot.get();
+
+		Set<String> extensions = mimeTypes.getExtensions(contentType);
 
 		if (!extensions.isEmpty()) {
 			Iterator<String> iterator = extensions.iterator();
@@ -131,5 +136,8 @@ public class FileEntryUtil {
 	private static final String _TEMP_FILE_NAME = FileEntryUtil.class.getName();
 
 	private static final Log _log = LogFactoryUtil.getLog(FileEntryUtil.class);
+
+	private static final Snapshot<MimeTypes> _mimeTypesSnapshot =
+		new Snapshot<>(FileEntryUtil.class, MimeTypes.class);
 
 }

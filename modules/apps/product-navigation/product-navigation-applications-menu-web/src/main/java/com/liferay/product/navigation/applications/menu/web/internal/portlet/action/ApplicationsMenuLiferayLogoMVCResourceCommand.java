@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.product.navigation.applications.menu.web.internal.constants.ProductNavigationApplicationsMenuPortletKeys;
@@ -38,6 +38,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
@@ -123,7 +124,7 @@ public class ApplicationsMenuLiferayLogoMVCResourceCommand
 		}
 
 		resourceResponse.setContentType(
-			MimeTypesUtil.getExtensionContentType(
+			_mimeTypes.getExtensionContentType(
 				applicationsMenuDefaultLiferayLogo));
 
 		PortletResponseUtil.write(resourceResponse, inputStream);
@@ -139,5 +140,8 @@ public class ApplicationsMenuLiferayLogoMVCResourceCommand
 		ApplicationsMenuLiferayLogoMVCResourceCommand.class);
 
 	private BundleContext _bundleContext;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 }

@@ -84,6 +84,7 @@ import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.view.count.service.ViewCountEntryLocalService;
 
@@ -132,7 +133,7 @@ public class DDMServiceUpgradeStepRegistrator
 					_dlFileEntryLocalService, _dlFileVersionLocalService,
 					_dlFolderLocalService, _expandoRowLocalService,
 					_expandoTableLocalService, _expandoValueLocalService,
-					_resourceActions, _resourceLocalService,
+					_mimeTypes, _resourceActions, _resourceLocalService,
 					_resourcePermissionLocalService, _store,
 					_viewCountEntryLocalService),
 			new UpgradeLastPublishDate());
@@ -604,6 +605,9 @@ public class DDMServiceUpgradeStepRegistrator
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private ResourceActionLocalService _resourceActionLocalService;

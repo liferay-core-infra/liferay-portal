@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -78,7 +78,7 @@ public class ViewFileVersionContentDashboardItemVersionActionProviderTest {
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + "." + ContentTypes.IMAGE_JPEG,
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -130,7 +130,7 @@ public class ViewFileVersionContentDashboardItemVersionActionProviderTest {
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + "." + ContentTypes.IMAGE_JPEG,
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -171,5 +171,8 @@ public class ViewFileVersionContentDashboardItemVersionActionProviderTest {
 
 	@Inject
 	private Language _language;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

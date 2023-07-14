@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.io.InputStream;
@@ -89,7 +89,7 @@ public class UploadImageMVCResourceCommand extends BaseMVCResourceCommand {
 			imageBag.getRenderedImage(), imageBag.getType());
 
 		mimeResponse.setContentType(
-			MimeTypesUtil.getExtensionContentType(imageBag.getType()));
+			_mimeTypes.getExtensionContentType(imageBag.getType()));
 
 		PortletResponseUtil.write(mimeResponse, bytes);
 	}
@@ -99,5 +99,8 @@ public class UploadImageMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference
 	private ImageTool _imageTool;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 }

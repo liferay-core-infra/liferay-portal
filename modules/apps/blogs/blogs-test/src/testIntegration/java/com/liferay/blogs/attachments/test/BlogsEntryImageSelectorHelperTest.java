@@ -30,8 +30,9 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.InputStream;
@@ -116,7 +117,7 @@ public class BlogsEntryImageSelectorHelperTest {
 			FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 				null, TestPropsValues.getUserId(), _group.getGroupId(),
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, _IMAGE_TITLE,
-				MimeTypesUtil.getContentType(_IMAGE_TITLE), "image",
+				_mimeTypes.getContentType(_IMAGE_TITLE), "image",
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, bytes,
 				null, null,
 				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
@@ -132,7 +133,7 @@ public class BlogsEntryImageSelectorHelperTest {
 			Assert.assertArrayEquals(bytes, imageSelector.getImageBytes());
 			Assert.assertEquals(_IMAGE_TITLE, imageSelector.getImageTitle());
 			Assert.assertEquals(
-				MimeTypesUtil.getContentType(_IMAGE_TITLE),
+				_mimeTypes.getContentType(_IMAGE_TITLE),
 				imageSelector.getImageMimeType());
 			Assert.assertEquals(
 				_IMAGE_CROP_REGION, imageSelector.getImageCropRegion());
@@ -173,7 +174,7 @@ public class BlogsEntryImageSelectorHelperTest {
 			FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 				null, TestPropsValues.getUserId(), _group.getGroupId(),
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, _IMAGE_TITLE,
-				MimeTypesUtil.getContentType(_IMAGE_TITLE), "image",
+				_mimeTypes.getContentType(_IMAGE_TITLE), "image",
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
 				FileUtil.getBytes(inputStream), null, null,
 				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
@@ -226,7 +227,7 @@ public class BlogsEntryImageSelectorHelperTest {
 			Assert.assertArrayEquals(bytes, imageSelector.getImageBytes());
 			Assert.assertEquals(_IMAGE_TITLE, imageSelector.getImageTitle());
 			Assert.assertEquals(
-				MimeTypesUtil.getContentType(_IMAGE_TITLE),
+				_mimeTypes.getContentType(_IMAGE_TITLE),
 				imageSelector.getImageMimeType());
 			Assert.assertEquals(
 				_IMAGE_CROP_REGION, imageSelector.getImageCropRegion());
@@ -263,5 +264,8 @@ public class BlogsEntryImageSelectorHelperTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

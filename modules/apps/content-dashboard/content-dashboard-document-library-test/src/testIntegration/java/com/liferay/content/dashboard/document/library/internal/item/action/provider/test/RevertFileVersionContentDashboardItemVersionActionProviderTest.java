@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -235,7 +235,7 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 			RandomTestUtil.randomString(), userId, _group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + "." + ContentTypes.IMAGE_JPEG,
-			MimeTypesUtil.getExtensionContentType(ContentTypes.IMAGE_JPEG),
+			_mimeTypes.getExtensionContentType(ContentTypes.IMAGE_JPEG),
 			new byte[0], null, null, serviceContext);
 
 		if (numVersions > 1) {
@@ -305,5 +305,8 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

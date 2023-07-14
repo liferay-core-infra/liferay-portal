@@ -18,7 +18,7 @@ import com.liferay.document.library.repository.external.ExtRepositoryFileEntry;
 import com.liferay.document.library.repository.external.ExtRepositoryFileVersion;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.sharepoint.rest.repository.internal.helper.SharepointURLHelper;
 
 import java.util.Date;
@@ -30,13 +30,14 @@ public class SharepointFileEntry
 	implements ExtRepositoryFileEntry, SharepointModel {
 
 	public SharepointFileEntry(
-		String extRepositoryModelKey, String name, String title,
-		Date createDate, Date modifiedDate, long size,
+		String extRepositoryModelKey, MimeTypes mimeTypes, String name,
+		String title, Date createDate, Date modifiedDate, long size,
 		String fileVersionExtRepositoryModelKey, String version, String owner,
 		String checkedOutBy, long effectiveBasePermissionsBits,
 		SharepointURLHelper sharepointURLHelper) {
 
 		_extRepositoryModelKey = extRepositoryModelKey;
+		_mimeTypes = mimeTypes;
 		_name = name;
 		_title = title;
 		_createDate = createDate;
@@ -139,7 +140,7 @@ public class SharepointFileEntry
 
 	@Override
 	public String getMimeType() {
-		return MimeTypesUtil.getContentType(_name);
+		return _mimeTypes.getContentType(_name);
 	}
 
 	@Override
@@ -168,6 +169,7 @@ public class SharepointFileEntry
 	private ExtRepositoryFileVersion _extRepositoryFileVersion;
 	private final String _extRepositoryModelKey;
 	private final String _fileVersionExtRepositoryModelKey;
+	private final MimeTypes _mimeTypes;
 	private final Date _modifiedDate;
 	private final String _name;
 	private final String _owner;

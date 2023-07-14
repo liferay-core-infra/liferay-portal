@@ -26,6 +26,7 @@ import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.JournalArticleServiceUtil;
 import com.liferay.journal.service.JournalFeedServiceUtil;
 import com.liferay.journal.web.internal.portlet.JournalPortlet;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -36,7 +37,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -245,7 +246,9 @@ public class ActionUtil {
 
 		String fileScriptContent = FileUtil.read(file);
 
-		String contentType = MimeTypesUtil.getContentType(file);
+		MimeTypes mimeTypes = _mimeTypesSnapshot.get();
+
+		String contentType = mimeTypes.getContentType(file);
 
 		if (Validator.isNotNull(fileScriptContent) &&
 			!_isValidContentType(contentType)) {
@@ -268,5 +271,8 @@ public class ActionUtil {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ActionUtil.class);
+
+	private static final Snapshot<MimeTypes> _mimeTypesSnapshot =
+		new Snapshot<>(ActionUtil.class, MimeTypes.class);
 
 }

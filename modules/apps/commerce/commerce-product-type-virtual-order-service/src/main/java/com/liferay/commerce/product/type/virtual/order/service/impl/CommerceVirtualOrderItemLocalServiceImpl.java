@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -254,7 +254,7 @@ public class CommerceVirtualOrderItemLocalServiceImpl
 			String mimeType = URLConnection.guessContentTypeFromStream(
 				contentInputStream);
 
-			Set<String> extensions = MimeTypesUtil.getExtensions(mimeType);
+			Set<String> extensions = _mimeTypes.getExtensions(mimeType);
 
 			if (!extensions.isEmpty()) {
 				Iterator<String> iterator = extensions.iterator();
@@ -475,6 +475,9 @@ public class CommerceVirtualOrderItemLocalServiceImpl
 
 	@Reference
 	private com.liferay.portal.kernel.util.File _file;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.subscription.service.SubscriptionLocalService;
 
@@ -74,7 +75,7 @@ public class BlogsServiceUpgradeStepRegistrator
 		registry.register(
 			"1.1.1", "1.1.2",
 			new BlogsImagesUpgradeProcess(
-				_imageLocalService, _portletFileRepository));
+				_imageLocalService, _mimeTypes, _portletFileRepository));
 
 		registry.register(
 			"1.1.2", "1.1.3",
@@ -161,6 +162,9 @@ public class BlogsServiceUpgradeStepRegistrator
 
 	@Reference
 	private ImageLocalService _imageLocalService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

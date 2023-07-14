@@ -96,7 +96,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -145,6 +145,7 @@ public class CommerceOrderContentDisplayContext {
 			ConfigurationProvider configurationProvider,
 			DLAppLocalService dlAppLocalService,
 			HttpServletRequest httpServletRequest, ItemSelector itemSelector,
+			MimeTypes mimeTypes,
 			ModelResourcePermission<CommerceOrder> modelResourcePermission,
 			PercentageFormatter percentageFormatter,
 			PortletResourcePermission portletResourcePermission)
@@ -168,6 +169,7 @@ public class CommerceOrderContentDisplayContext {
 		_dlAppLocalService = dlAppLocalService;
 		_httpServletRequest = httpServletRequest;
 		_itemSelector = itemSelector;
+		_mimeTypes = mimeTypes;
 		_modelResourcePermission = modelResourcePermission;
 		_percentageFormatter = percentageFormatter;
 		_portletResourcePermission = portletResourcePermission;
@@ -468,7 +470,7 @@ public class CommerceOrderContentDisplayContext {
 				"CSV_TEMPLATE_ERC", _cpRequestHelper.getUserId(),
 				_cpRequestHelper.getScopeGroupId(),
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, "csv_template.csv",
-				MimeTypesUtil.getContentType(file), "csv_template",
+				_mimeTypes.getContentType(file), "csv_template",
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, file,
 				null, null,
 				ServiceContextFactory.getInstance(
@@ -1375,6 +1377,7 @@ public class CommerceOrderContentDisplayContext {
 	private final DLAppLocalService _dlAppLocalService;
 	private final HttpServletRequest _httpServletRequest;
 	private final ItemSelector _itemSelector;
+	private final MimeTypes _mimeTypes;
 	private final ModelResourcePermission<CommerceOrder>
 		_modelResourcePermission;
 	private final PercentageFormatter _percentageFormatter;

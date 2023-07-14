@@ -78,7 +78,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
@@ -861,9 +861,9 @@ public class CPAttachmentFileEntryLocalServiceImpl
 			FileEntry newFileEntry = _dlAppLocalService.addFileEntry(
 				null, userId, repository.getRepositoryId(),
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, uniqueFileName,
-				MimeTypesUtil.getContentType(uniqueFileName), uniqueFileName,
-				null, null, null, fileEntry.getContentStream(),
-				fileEntry.getSize(), null, null, newServiceContext);
+				_mimeTypes.getContentType(uniqueFileName), uniqueFileName, null,
+				null, null, fileEntry.getContentStream(), fileEntry.getSize(),
+				null, null, newServiceContext);
 
 			TempFileEntryUtil.deleteTempFileEntry(fileEntry.getFileEntryId());
 
@@ -1034,6 +1034,9 @@ public class CPAttachmentFileEntryLocalServiceImpl
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

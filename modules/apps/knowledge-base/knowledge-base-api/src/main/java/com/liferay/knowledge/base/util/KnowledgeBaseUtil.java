@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -103,7 +103,9 @@ public class KnowledgeBaseUtil {
 
 	public static String getMimeType(byte[] bytes, String fileName) {
 		try (InputStream inputStream = new UnsyncByteArrayInputStream(bytes)) {
-			return MimeTypesUtil.getContentType(inputStream, fileName);
+			MimeTypes mimeTypes = _mimeTypesSnapshot.get();
+
+			return mimeTypes.getContentType(inputStream, fileName);
 		}
 		catch (IOException ioException) {
 			if (_log.isWarnEnabled()) {
@@ -252,6 +254,8 @@ public class KnowledgeBaseUtil {
 	private static final Snapshot<FriendlyURLNormalizer>
 		_friendlyURLNormalizerSnapshot = new Snapshot<>(
 			KnowledgeBaseUtil.class, FriendlyURLNormalizer.class);
+	private static final Snapshot<MimeTypes> _mimeTypesSnapshot =
+		new Snapshot<>(KnowledgeBaseUtil.class, MimeTypes.class);
 	private static final Pattern _validFriendlyUrlPattern = Pattern.compile(
 		"/[a-z0-9_-]+");
 

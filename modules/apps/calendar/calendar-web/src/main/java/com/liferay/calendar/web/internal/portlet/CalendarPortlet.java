@@ -110,7 +110,7 @@ import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Localization;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -1613,7 +1613,7 @@ public class CalendarPortlet extends MVCPortlet {
 
 		String data = calendarDataHandler.exportCalendar(calendarId);
 
-		String contentType = MimeTypesUtil.getContentType(fileName);
+		String contentType = _mimeTypes.getContentType(fileName);
 
 		PortletResponseUtil.sendFile(
 			resourceRequest, resourceResponse, fileName, data.getBytes(),
@@ -1866,6 +1866,9 @@ public class CalendarPortlet extends MVCPortlet {
 
 	@Reference
 	private Localization _localization;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

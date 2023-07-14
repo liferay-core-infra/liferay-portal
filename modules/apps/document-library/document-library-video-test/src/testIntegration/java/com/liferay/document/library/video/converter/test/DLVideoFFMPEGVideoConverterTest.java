@@ -31,11 +31,12 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.ExpectedLog;
 import com.liferay.portal.test.rule.ExpectedLogs;
 import com.liferay.portal.test.rule.ExpectedType;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.documentlibrary.util.VideoProcessorImpl;
 
@@ -201,7 +202,7 @@ public class DLVideoFFMPEGVideoConverterTest {
 		return DLAppServiceUtil.addFileEntry(
 			null, _group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, fileName,
-			MimeTypesUtil.getContentType(fileName), "video",
+			_mimeTypes.getContentType(fileName), "video",
 			StringUtil.randomString(), StringUtil.randomString(),
 			StringUtil.randomString(),
 			FileUtil.getBytes(getClass(), "dependencies/" + fileName), null,
@@ -230,6 +231,9 @@ public class DLVideoFFMPEGVideoConverterTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	private ServiceContext _serviceContext;
 

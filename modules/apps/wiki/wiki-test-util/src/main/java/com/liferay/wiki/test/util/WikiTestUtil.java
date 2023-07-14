@@ -14,6 +14,7 @@
 
 package com.liferay.wiki.test.util;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -22,7 +23,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
@@ -424,7 +425,9 @@ public class WikiTestUtil {
 				file = FileUtil.createTempFile(fileBytes);
 			}
 
-			String mimeType = MimeTypesUtil.getExtensionContentType("docx");
+			MimeTypes mimeTypes = _mimeTypesSnapshot.get();
+
+			String mimeType = mimeTypes.getExtensionContentType("docx");
 
 			WikiPageLocalServiceUtil.addPageAttachment(
 				userId, nodeId, title, fileName, file, mimeType);
@@ -524,5 +527,8 @@ public class WikiTestUtil {
 				WorkflowConstants.CONTEXT_URL, "http://localhost"
 			).build());
 	}
+
+	private static final Snapshot<MimeTypes> _mimeTypesSnapshot =
+		new Snapshot<>(WikiTestUtil.class, MimeTypes.class);
 
 }

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.zip.ZipReader;
@@ -161,7 +161,9 @@ public class KBArticleImporterUtil {
 			return fileEntry;
 		}
 
-		String mimeType = MimeTypesUtil.getContentType(imageFileName);
+		MimeTypes mimeTypes = _mimeTypesSnapshot.get();
+
+		String mimeType = mimeTypes.getContentType(imageFileName);
 
 		try {
 			PortletFileRepositoryUtil.getPortletFileEntry(
@@ -208,5 +210,7 @@ public class KBArticleImporterUtil {
 	private static final Snapshot<ConfigurationProvider>
 		_configurationProviderSnapshot = new Snapshot<>(
 			KBArticleImporterUtil.class, ConfigurationProvider.class);
+	private static final Snapshot<MimeTypes> _mimeTypesSnapshot =
+		new Snapshot<>(KBArticleImporterUtil.class, MimeTypes.class);
 
 }

@@ -112,7 +112,7 @@ import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.FeatureFlags;
@@ -2788,7 +2788,7 @@ public class DefaultObjectEntryManagerImplTest {
 			null, _group.getCreatorUserId(), _group.getGroupId(),
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + ".txt",
-			MimeTypesUtil.getExtensionContentType("txt"),
+			_mimeTypes.getExtensionContentType("txt"),
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			StringPool.BLANK, StringPool.BLANK,
 			DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT, null,
@@ -2936,6 +2936,9 @@ public class DefaultObjectEntryManagerImplTest {
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
 
 	private Map<String, Object> _localizedObjectFieldI18nValues;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@DeleteAfterTestRun
 	private ObjectDefinition _objectDefinition1;

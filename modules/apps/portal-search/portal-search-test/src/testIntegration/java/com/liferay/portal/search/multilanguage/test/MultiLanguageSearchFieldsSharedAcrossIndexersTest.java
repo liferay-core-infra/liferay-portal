@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.search.test.util.DocumentsAssert;
@@ -85,7 +86,8 @@ public class MultiLanguageSearchFieldsSharedAcrossIndexersTest {
 	public void setUp() throws Exception {
 		WorkflowThreadLocal.setEnabled(false);
 
-		_fileEntrySearchFixture = new FileEntrySearchFixture(dlAppLocalService);
+		_fileEntrySearchFixture = new FileEntrySearchFixture(
+			dlAppLocalService, _mimeTypes);
 
 		_fileEntrySearchFixture.setUp();
 
@@ -374,6 +376,10 @@ public class MultiLanguageSearchFieldsSharedAcrossIndexersTest {
 	private List<JournalArticle> _journalArticles;
 
 	private JournalArticleSearchFixture _journalArticleSearchFixture;
+
+	@Inject
+	private MimeTypes _mimeTypes;
+
 	private User _user;
 
 	@DeleteAfterTestRun

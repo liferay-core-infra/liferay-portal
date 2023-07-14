@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
@@ -81,7 +82,7 @@ public class ServletContextHelperRegistrationImpl
 	implements ServletContextHelperRegistration {
 
 	public ServletContextHelperRegistrationImpl(
-		Bundle bundle, JSPServletFactory jspServletFactory,
+		Bundle bundle, JSPServletFactory jspServletFactory, MimeTypes mimeTypes,
 		SAXParserFactory saxParserFactory, Map<String, Object> properties,
 		ExecutorService executorService) {
 
@@ -129,7 +130,8 @@ public class ServletContextHelperRegistrationImpl
 		_bundleContext = _bundle.getBundleContext();
 
 		_customServletContextHelper = new CustomServletContextHelper(
-			_bundle, _webXMLDefinition.getWebResourceCollectionDefinitions());
+			_bundle, mimeTypes,
+			_webXMLDefinition.getWebResourceCollectionDefinitions());
 
 		_servletContextHelperServiceRegistration = _createServletContextHelper(
 			contextPath);

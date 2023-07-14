@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.File;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UniqueFileNameProvider;
@@ -135,7 +135,7 @@ public class TempAttachmentsUploadFileEntryHandler
 		for (String imageExtension : imageExtensions) {
 			if (StringPool.STAR.equals(imageExtension) ||
 				(imageExtension.equals(StringPool.PERIOD + extension) &&
-				 MimeTypesUtil.getExtensionContentType(
+				 _mimeTypes.getExtensionContentType(
 					 imageExtension
 				 ).equals(
 					 contentType
@@ -161,6 +161,9 @@ public class TempAttachmentsUploadFileEntryHandler
 
 	@Reference
 	private File _file;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private UniqueFileNameProvider _uniqueFileNameProvider;

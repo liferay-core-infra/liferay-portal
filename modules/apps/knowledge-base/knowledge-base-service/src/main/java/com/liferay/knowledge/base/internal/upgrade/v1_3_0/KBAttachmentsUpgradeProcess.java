@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.sql.PreparedStatement;
@@ -41,9 +41,11 @@ import java.sql.ResultSet;
 public class KBAttachmentsUpgradeProcess extends UpgradeProcess {
 
 	public KBAttachmentsUpgradeProcess(
-		CompanyLocalService companyLocalService, Store store) {
+		CompanyLocalService companyLocalService, MimeTypes mimeTypes,
+		Store store) {
 
 		_companyLocalService = companyLocalService;
+		_mimeTypes = mimeTypes;
 		_store = store;
 	}
 
@@ -138,7 +140,7 @@ public class KBAttachmentsUpgradeProcess extends UpgradeProcess {
 
 				String title = FileUtil.getShortFileName(attachment);
 
-				String mimeType = MimeTypesUtil.getExtensionContentType(
+				String mimeType = _mimeTypes.getExtensionContentType(
 					FileUtil.getExtension(title));
 
 				PortletFileRepositoryUtil.addPortletFileEntry(
@@ -173,6 +175,7 @@ public class KBAttachmentsUpgradeProcess extends UpgradeProcess {
 		KBAttachmentsUpgradeProcess.class);
 
 	private final CompanyLocalService _companyLocalService;
+	private final MimeTypes _mimeTypes;
 	private final Store _store;
 
 }

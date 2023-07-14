@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -85,7 +86,7 @@ public class ViewCommerceOrderDeliveryTermsMVCRenderCommand
 						_commerceTermEntryService, _configurationProvider,
 						_dlAppLocalService,
 						_portal.getHttpServletRequest(renderRequest),
-						_itemSelector, _modelResourcePermission,
+						_itemSelector, _mimeTypes, _modelResourcePermission,
 						_percentageFormatter, _portletResourcePermission);
 
 			renderRequest.setAttribute(
@@ -156,6 +157,9 @@ public class ViewCommerceOrderDeliveryTermsMVCRenderCommand
 
 	@Reference
 	private ItemSelector _itemSelector;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.commerce.model.CommerceOrder)"

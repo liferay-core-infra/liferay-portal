@@ -63,7 +63,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -240,7 +240,7 @@ public class DLFileEntrySearchTest extends BaseSearchTestCase {
 				"org.apache.xmlbeans.impl.common.SAXHelper",
 				LoggerTestUtil.WARN)) {
 
-			String mimeType = MimeTypesUtil.getContentType(file, fileName);
+			String mimeType = _mimeTypes.getContentType(file, fileName);
 
 			file = FileUtil.createTempFile(inputStream);
 
@@ -619,5 +619,8 @@ public class DLFileEntrySearchTest extends BaseSearchTestCase {
 	private static DDMIndexer _ddmIndexer;
 
 	private DDMStructure _ddmStructure;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

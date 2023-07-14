@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.File;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 
 import java.io.InputStream;
 
@@ -144,7 +144,7 @@ public class BlogsImporter {
 
 		ImageSelector imageSelector = new ImageSelector(
 			_file.getBytes(inputStream), fileName,
-			MimeTypesUtil.getContentType(fileName), StringPool.BLANK);
+			_mimeTypes.getContentType(fileName), StringPool.BLANK);
 
 		_blogsEntryLocalService.addCoverImage(
 			blogsEntry.getEntryId(), imageSelector);
@@ -170,6 +170,9 @@ public class BlogsImporter {
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;

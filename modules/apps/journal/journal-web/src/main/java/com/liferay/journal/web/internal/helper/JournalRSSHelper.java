@@ -60,7 +60,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -231,8 +231,7 @@ public class JournalRSSHelper {
 
 		syndEnclosure.setLength((Long)imageProperties[1]);
 		syndEnclosure.setType(
-			MimeTypesUtil.getExtensionContentType(
-				imageProperties[0].toString()));
+			_mimeTypes.getExtensionContentType(imageProperties[0].toString()));
 		syndEnclosure.setUrl(portalURL + url);
 
 		syndEnclosures.add(syndEnclosure);
@@ -255,8 +254,7 @@ public class JournalRSSHelper {
 		syndLink.setLength((Long)imageProperties[1]);
 		syndLink.setRel("enclosure");
 		syndLink.setType(
-			MimeTypesUtil.getExtensionContentType(
-				imageProperties[0].toString()));
+			_mimeTypes.getExtensionContentType(imageProperties[0].toString()));
 
 		syndLinks.add(syndLink);
 
@@ -722,6 +720,9 @@ public class JournalRSSHelper {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -70,7 +71,8 @@ public class DLFileEntryIndexerLocalizedContentTest {
 
 	@Before
 	public void setUp() throws Exception {
-		fileEntrySearchFixture = new FileEntrySearchFixture(dlAppLocalService);
+		fileEntrySearchFixture = new FileEntrySearchFixture(
+			dlAppLocalService, _mimeTypes);
 
 		fileEntrySearchFixture.setUp();
 
@@ -254,5 +256,8 @@ public class DLFileEntryIndexerLocalizedContentTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 }

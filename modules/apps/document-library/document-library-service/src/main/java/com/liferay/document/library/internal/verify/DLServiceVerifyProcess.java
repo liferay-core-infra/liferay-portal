@@ -57,7 +57,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.LoggingTimer;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -243,7 +243,7 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 							dlFileVersion.getFileEntryId(),
 							dlFileVersion.getVersion(), false)) {
 
-					String mimeType = MimeTypesUtil.getContentType(
+					String mimeType = _mimeTypes.getContentType(
 						inputStream, title);
 
 					if (mimeType.equals(dlFileVersion.getMimeType())) {
@@ -470,6 +470,9 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 
 	@Reference(target = "(ddm.form.serializer.type=json)")
 	private DDMFormSerializer _jsonDDMFormSerializer;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

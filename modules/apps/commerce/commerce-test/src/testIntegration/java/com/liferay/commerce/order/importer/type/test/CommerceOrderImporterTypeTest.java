@@ -60,7 +60,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -174,7 +174,7 @@ public class CommerceOrderImporterTypeTest {
 					null, _serviceContext.getUserId(),
 					_serviceContext.getScopeGroupId(),
 					DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, fileName,
-					MimeTypesUtil.getContentType(file, fileName), fileName,
+					_mimeTypes.getContentType(file, fileName), fileName,
 					StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, file,
 					null, null, _serviceContext));
 
@@ -243,7 +243,7 @@ public class CommerceOrderImporterTypeTest {
 					null, _serviceContext.getUserId(),
 					_serviceContext.getScopeGroupId(),
 					DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, fileName,
-					MimeTypesUtil.getContentType(file, fileName), fileName,
+					_mimeTypes.getContentType(file, fileName), fileName,
 					StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, file,
 					null, null, _serviceContext));
 
@@ -283,6 +283,9 @@ public class CommerceOrderImporterTypeTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	private ServiceContext _serviceContext;
 

@@ -97,7 +97,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -157,7 +157,7 @@ public class DynamicDataMappingUpgradeProcess extends UpgradeProcess {
 		DLFolderLocalService dlFolderLocalService,
 		ExpandoRowLocalService expandoRowLocalService,
 		ExpandoTableLocalService expandoTableLocalService,
-		ExpandoValueLocalService expandoValueLocalService,
+		ExpandoValueLocalService expandoValueLocalService, MimeTypes mimeTypes,
 		ResourceActions resourceActions,
 		ResourceLocalService resourceLocalService,
 		ResourcePermissionLocalService resourcePermissionLocalService,
@@ -178,6 +178,7 @@ public class DynamicDataMappingUpgradeProcess extends UpgradeProcess {
 		_expandoRowLocalService = expandoRowLocalService;
 		_expandoTableLocalService = expandoTableLocalService;
 		_expandoValueLocalService = expandoValueLocalService;
+		_mimeTypes = mimeTypes;
 		_resourceLocalService = resourceLocalService;
 		_resourcePermissionLocalService = resourcePermissionLocalService;
 		_store = store;
@@ -1695,6 +1696,7 @@ public class DynamicDataMappingUpgradeProcess extends UpgradeProcess {
 	private final ExpandoTableLocalService _expandoTableLocalService;
 	private final ExpandoValueLocalService _expandoValueLocalService;
 	private final Map<Long, DDMForm> _fullHierarchyDDMForms = new HashMap<>();
+	private final MimeTypes _mimeTypes;
 	private final ResourceLocalService _resourceLocalService;
 	private final ResourcePermissionLocalService
 		_resourcePermissionLocalService;
@@ -2632,7 +2634,7 @@ public class DynamicDataMappingUpgradeProcess extends UpgradeProcess {
 					fileEntryUuid, fileEntryId, _groupId, _companyId, _userId,
 					_userName, _createDate, _createDate, 0, 0, _groupId,
 					dlFolderId, StringPool.BLANK, name, fileName, extension,
-					MimeTypesUtil.getContentType(fileName), fileName,
+					_mimeTypes.getContentType(fileName), fileName,
 					StringPool.BLANK, StringPool.BLANK,
 					DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT,
 					DLFileEntryConstants.VERSION_DEFAULT, file.length(),
@@ -2644,7 +2646,7 @@ public class DynamicDataMappingUpgradeProcess extends UpgradeProcess {
 					fileEntryUuid, increment(), _groupId, _companyId, _userId,
 					_userName, _createDate, _createDate, _groupId, dlFolderId,
 					fileEntryId, StringPool.BLANK, fileName, extension,
-					MimeTypesUtil.getContentType(fileName), fileName,
+					_mimeTypes.getContentType(fileName), fileName,
 					StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
 					DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT,
 					DLFileEntryConstants.VERSION_DEFAULT, file.length(),
@@ -2673,7 +2675,7 @@ public class DynamicDataMappingUpgradeProcess extends UpgradeProcess {
 					fileEntryUuid,
 					DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT,
 					false, null, null, null, null,
-					MimeTypesUtil.getContentType(fileName), fileName,
+					_mimeTypes.getContentType(fileName), fileName,
 					StringPool.BLANK, StringPool.BLANK, null, null, 0, 0, 0, 0);
 
 				// File

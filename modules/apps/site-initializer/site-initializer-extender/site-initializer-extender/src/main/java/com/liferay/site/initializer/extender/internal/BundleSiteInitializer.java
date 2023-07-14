@@ -164,7 +164,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.NaturalOrderStringComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ReleaseInfo;
@@ -275,6 +275,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		ListTypeEntryLocalService listTypeEntryLocalService,
 		ListTypeEntryResource listTypeEntryResource,
 		ListTypeEntryResource.Factory listTypeEntryResourceFactory,
+		MimeTypes mimeTypes,
 		NotificationTemplateResource.Factory
 			notificationTemplateResourceFactory,
 		ObjectActionLocalService objectActionLocalService,
@@ -356,6 +357,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_listTypeEntryLocalService = listTypeEntryLocalService;
 		_listTypeEntryResource = listTypeEntryResource;
 		_listTypeEntryResourceFactory = listTypeEntryResourceFactory;
+		_mimeTypes = mimeTypes;
 		_notificationTemplateResourceFactory =
 			notificationTemplateResourceFactory;
 		_objectActionLocalService = objectActionLocalService;
@@ -2056,7 +2058,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 							Collections.singletonMap(
 								"file",
 								new BinaryFile(
-									MimeTypesUtil.getContentType(fileName),
+									_mimeTypes.getContentType(fileName),
 									fileName, urlConnection.getInputStream(),
 									urlConnection.getContentLength())),
 							__ -> _objectMapper, values));
@@ -2068,7 +2070,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 							Collections.singletonMap(
 								"file",
 								new BinaryFile(
-									MimeTypesUtil.getContentType(fileName),
+									_mimeTypes.getContentType(fileName),
 									fileName, urlConnection.getInputStream(),
 									urlConnection.getContentLength())),
 							__ -> _objectMapper, values));
@@ -2091,7 +2093,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 							Collections.singletonMap(
 								"file",
 								new BinaryFile(
-									MimeTypesUtil.getContentType(fileName),
+									_mimeTypes.getContentType(fileName),
 									fileName, urlConnection.getInputStream(),
 									urlConnection.getContentLength())),
 							__ -> _objectMapper, values));
@@ -2103,7 +2105,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 							Collections.singletonMap(
 								"file",
 								new BinaryFile(
-									MimeTypesUtil.getContentType(fileName),
+									_mimeTypes.getContentType(fileName),
 									fileName, urlConnection.getInputStream(),
 									urlConnection.getContentLength())),
 							__ -> _objectMapper, values));
@@ -5157,6 +5159,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final ListTypeEntryLocalService _listTypeEntryLocalService;
 	private final ListTypeEntryResource _listTypeEntryResource;
 	private final ListTypeEntryResource.Factory _listTypeEntryResourceFactory;
+	private final MimeTypes _mimeTypes;
 	private final NotificationTemplateResource.Factory
 		_notificationTemplateResourceFactory;
 	private final ObjectActionLocalService _objectActionLocalService;

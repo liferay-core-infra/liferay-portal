@@ -16,6 +16,7 @@ package com.liferay.portal.osgi.web.servlet.context.helper.internal;
 
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
@@ -73,7 +74,7 @@ public class ServletContextHelperFactoryImpl
 		_serviceRegistration = bundleContext.registerService(
 			ServletContextHelperRegistration.class.getName(),
 			new ServletContextHelperRegistrationServiceFactory(
-				_jspServletFactory, _saxParserFactory, properties,
+				_jspServletFactory, _mimeTypes, _saxParserFactory, properties,
 				_executorService),
 			null);
 	}
@@ -104,6 +105,9 @@ public class ServletContextHelperFactoryImpl
 
 	@Reference
 	private JSPServletFactory _jspServletFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;

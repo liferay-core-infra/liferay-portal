@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.search.test.util.DocumentsAssert;
 import com.liferay.portal.test.rule.Inject;
@@ -73,7 +74,8 @@ public class DLFileEntryFileNameSearchWhenTitleDifferentThanFileNameTest {
 	public void setUp() throws Exception {
 		WorkflowThreadLocal.setEnabled(false);
 
-		_fileEntrySearchFixture = new FileEntrySearchFixture(dlAppLocalService);
+		_fileEntrySearchFixture = new FileEntrySearchFixture(
+			dlAppLocalService, _mimeTypes);
 
 		_fileEntrySearchFixture.setUp();
 
@@ -355,6 +357,9 @@ public class DLFileEntryFileNameSearchWhenTitleDifferentThanFileNameTest {
 
 	@DeleteAfterTestRun
 	private List<Group> _groups;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@DeleteAfterTestRun
 	private List<User> _users;

@@ -103,6 +103,7 @@ import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.subscription.service.SubscriptionLocalService;
@@ -185,7 +186,7 @@ public class JournalServiceUpgradeStepRegistrator
 				_journalArticleImageUpgradeHelper),
 			new ImageTypeContentUpgradeProcess(
 				_imageLocalService, _journalArticleImageUpgradeHelper,
-				_portletFileRepository),
+				_mimeTypes, _portletFileRepository),
 			new JournalArticleLocalizedValuesUpgradeProcess(
 				_counterLocalService));
 
@@ -490,6 +491,9 @@ public class JournalServiceUpgradeStepRegistrator
 
 	@Reference
 	private Localization _localization;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

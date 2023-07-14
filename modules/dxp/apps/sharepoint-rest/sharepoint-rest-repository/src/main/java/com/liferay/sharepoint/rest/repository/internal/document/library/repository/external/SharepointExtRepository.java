@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -75,10 +76,11 @@ import java.util.List;
 public class SharepointExtRepository implements ExtRepository {
 
 	public SharepointExtRepository(
-		TokenStore tokenStore,
+		MimeTypes mimeTypes, TokenStore tokenStore,
 		SharepointRepositoryConfiguration sharepointRepositoryConfiguration,
 		SharepointSearchConfiguration sharepointSearchConfiguration) {
 
+		_mimeTypes = mimeTypes;
 		_tokenStore = tokenStore;
 		_sharepointRepositoryConfiguration = sharepointRepositoryConfiguration;
 		_sharepointSearchConfiguration = sharepointSearchConfiguration;
@@ -545,7 +547,8 @@ public class SharepointExtRepository implements ExtRepository {
 
 		_sharepointServerResponseConverter =
 			new SharepointServerResponseConverter(
-				_sharepointURLHelper, this, _siteAbsoluteURL, _libraryPath);
+				_sharepointURLHelper, this, _siteAbsoluteURL, _libraryPath,
+				_mimeTypes);
 	}
 
 	@Override
@@ -913,6 +916,7 @@ public class SharepointExtRepository implements ExtRepository {
 	}
 
 	private String _libraryPath;
+	private final MimeTypes _mimeTypes;
 	private ExtRepositoryFolder _rootFolder;
 	private final SharepointRepositoryConfiguration
 		_sharepointRepositoryConfiguration;

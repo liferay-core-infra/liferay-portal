@@ -51,7 +51,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
@@ -156,7 +156,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		if (Validator.isNull(mimeType) ||
 			mimeType.equals(ContentTypes.APPLICATION_OCTET_STREAM)) {
 
-			mimeType = MimeTypesUtil.getContentType(file, fileName);
+			mimeType = _mimeTypes.getContentType(file, fileName);
 		}
 
 		boolean dlAppHelperEnabled = DLAppHelperThreadLocal.isEnabled();
@@ -835,6 +835,9 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		target = "(class.name=com.liferay.portal.repository.liferayrepository.LiferayRepository)"
 	)
 	private RepositoryFactory _liferayRepositoryFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

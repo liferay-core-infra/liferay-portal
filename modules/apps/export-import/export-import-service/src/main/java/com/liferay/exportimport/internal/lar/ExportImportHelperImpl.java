@@ -84,7 +84,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LongWrapper;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
@@ -785,7 +785,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 		try {
 			fileEntry = TempFileEntryUtil.addTempFileEntry(
 				sourceGroupId, userId, ExportImportHelper.TEMP_FOLDER_NAME,
-				file.getName(), file, MimeTypesUtil.getContentType(file));
+				file.getName(), file, _mimeTypes.getContentType(file));
 
 			ManifestSummary manifestSummary = getManifestSummary(
 				userId, sourceGroupId, new HashMap<>(), fileEntry);
@@ -1480,6 +1480,9 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 
 	@Reference
 	private LayoutService _layoutService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private PortletDataContextFactory _portletDataContextFactory;

@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.test.rule.Inject;
@@ -210,7 +210,7 @@ public abstract class BaseBlogsEntryImageTestCase {
 			null, serviceContext.getScopeGroupId(), userId,
 			BlogsEntry.class.getName(), 0, StringUtil.randomString(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, inputStream, title,
-			MimeTypesUtil.getContentType(title), false);
+			_mimeTypes.getContentType(title), false);
 	}
 
 	protected abstract long getImageFileEntryId(BlogsEntry blogsEntry);
@@ -229,7 +229,7 @@ public abstract class BaseBlogsEntryImageTestCase {
 		return TempFileEntryUtil.addTempFileEntry(
 			serviceContext.getScopeGroupId(), userId,
 			BlogsEntry.class.getName(), title, inputStream,
-			MimeTypesUtil.getContentType(title));
+			_mimeTypes.getContentType(title));
 	}
 
 	protected abstract BlogsEntry updateBlogsEntry(
@@ -247,6 +247,9 @@ public abstract class BaseBlogsEntryImageTestCase {
 	protected Group group;
 
 	protected User user;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@Inject
 	private PortletFileRepository _portletFileRepository;

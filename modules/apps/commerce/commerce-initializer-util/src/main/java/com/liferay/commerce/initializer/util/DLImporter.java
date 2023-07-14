@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
@@ -155,7 +155,7 @@ public class DLImporter {
 			FileEntry fileEntry = _dlAppLocalService.addFileEntry(
 				null, userId, repository.getRepositoryId(),
 				dlFolder.getFolderId(), fileName,
-				MimeTypesUtil.getContentType(file), title, StringPool.BLANK,
+				_mimeTypes.getContentType(file), title, StringPool.BLANK,
 				description, StringPool.BLANK, file, null, null,
 				serviceContext);
 
@@ -241,6 +241,9 @@ public class DLImporter {
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private RepositoryLocalService _repositoryLocalService;

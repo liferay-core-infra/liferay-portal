@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,8 +37,11 @@ import java.util.List;
  */
 public class FileEntrySearchFixture {
 
-	public FileEntrySearchFixture(DLAppLocalService dlAppLocalService1) {
+	public FileEntrySearchFixture(
+		DLAppLocalService dlAppLocalService1, MimeTypes mimeTypes) {
+
 		dlAppLocalService = dlAppLocalService1;
+		_mimeTypes = mimeTypes;
 	}
 
 	public FileEntry addFileEntry(FileEntryBlueprint fileEntryBlueprint) {
@@ -106,7 +109,7 @@ public class FileEntrySearchFixture {
 				null, serviceContext.getUserId(),
 				serviceContext.getScopeGroupId(),
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, fileName,
-				MimeTypesUtil.getContentType(fileName), title, StringPool.BLANK,
+				_mimeTypes.getContentType(fileName), title, StringPool.BLANK,
 				StringPool.BLANK, StringPool.BLANK, file, null, null,
 				serviceContext);
 		}
@@ -161,5 +164,6 @@ public class FileEntrySearchFixture {
 	protected final DLAppLocalService dlAppLocalService;
 
 	private final List<FileEntry> _fileEntries = new ArrayList<>();
+	private final MimeTypes _mimeTypes;
 
 }

@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletContextClassLoaderPool;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.WebResourceCollectionDefinition;
@@ -58,13 +58,14 @@ public class CustomServletContextHelper
 	extends ServletContextHelper implements ServletContextListener {
 
 	public CustomServletContextHelper(
-		Bundle bundle,
+		Bundle bundle, MimeTypes mimeTypes,
 		List<WebResourceCollectionDefinition>
 			webResourceCollectionDefinitions) {
 
 		super(bundle);
 
 		_bundle = bundle;
+		_mimeTypes = mimeTypes;
 		_webResourceCollectionDefinitions = webResourceCollectionDefinitions;
 
 		_overrideDirName = StringBundler.concat(
@@ -98,7 +99,7 @@ public class CustomServletContextHelper
 
 	@Override
 	public String getMimeType(String name) {
-		return MimeTypesUtil.getContentType(name);
+		return _mimeTypes.getContentType(name);
 	}
 
 	@Override
@@ -343,6 +344,7 @@ public class CustomServletContextHelper
 		CustomServletContextHelper.class);
 
 	private final Bundle _bundle;
+	private final MimeTypes _mimeTypes;
 	private final String _overrideDirName;
 	private ServletContext _servletContext;
 	private final String _string;

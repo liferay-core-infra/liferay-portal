@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.repository.RepositoryFactory;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -111,7 +111,7 @@ public class PortalInstanceLifecycleListenerImpl
 				File file = _file.createTempFile(image.getTextObj());
 
 				try {
-					String mimeType = MimeTypesUtil.getContentType(file);
+					String mimeType = _mimeTypes.getContentType(file);
 
 					_dlAppLocalService.addFileEntry(
 						PropsKeys.IMAGE_DEFAULT_COMPANY_LOGO, user.getUserId(),
@@ -149,6 +149,9 @@ public class PortalInstanceLifecycleListenerImpl
 		target = "(class.name=com.liferay.portal.repository.liferayrepository.LiferayRepository)"
 	)
 	private RepositoryFactory _liferayRepositoryFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private Portal _portal;

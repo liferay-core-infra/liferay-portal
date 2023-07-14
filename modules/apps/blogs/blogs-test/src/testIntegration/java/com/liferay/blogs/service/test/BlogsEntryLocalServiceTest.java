@@ -67,12 +67,13 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 import com.liferay.subscription.service.SubscriptionLocalServiceUtil;
@@ -1252,7 +1253,7 @@ public class BlogsEntryLocalServiceTest {
 
 		return TempFileEntryUtil.addTempFileEntry(
 			groupId, userId, BlogsEntry.class.getName(), title, inputStream,
-			MimeTypesUtil.getContentType(title));
+			_mimeTypes.getContentType(title));
 	}
 
 	protected void testGetCompanyEntries(boolean statusInTrash)
@@ -1570,6 +1571,9 @@ public class BlogsEntryLocalServiceTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private MimeTypes _mimeTypes;
 
 	@DeleteAfterTestRun
 	private Organization _organization;

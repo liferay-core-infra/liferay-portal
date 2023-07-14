@@ -68,7 +68,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.webdav.BaseResourceImpl;
@@ -1000,7 +1000,7 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 		if (contentType.equals(ContentTypes.APPLICATION_OCTET_STREAM) ||
 			contentType.equals(MS_OFFICE_2010_TEXT_XML_UTF8)) {
 
-			contentType = MimeTypesUtil.getContentType(file, title);
+			contentType = _mimeTypes.getContentType(file, title);
 		}
 
 		return contentType;
@@ -1290,5 +1290,8 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 	@Reference
 	private DLTrashService _dlTrashService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 }

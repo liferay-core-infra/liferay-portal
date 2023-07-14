@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.sharepoint.rest.repository.internal.document.library.repository.external.model.SharepointFileEntry;
 import com.liferay.sharepoint.rest.repository.internal.document.library.repository.external.model.SharepointFileVersion;
@@ -50,12 +50,13 @@ public class SharepointServerResponseConverter {
 
 	public SharepointServerResponseConverter(
 		SharepointURLHelper sharepointURLHelper, ExtRepository extRepository,
-		String siteAbsoluteURL, String libraryPath) {
+		String siteAbsoluteURL, String libraryPath, MimeTypes mimeTypes) {
 
 		_sharepointURLHelper = sharepointURLHelper;
 		_extRepository = extRepository;
 		_siteAbsoluteURL = siteAbsoluteURL;
 		_libraryPath = libraryPath;
+		_mimeTypes = mimeTypes;
 
 		_rootDocumentPath = _join(
 			StringPool.SLASH, siteAbsoluteURL, libraryPath);
@@ -288,9 +289,10 @@ public class SharepointServerResponseConverter {
 			jsonObject);
 
 		return new SharepointFileEntry(
-			extRepositoryModelKey, name, title, createDate, modifiedDate, size,
-			fileVersionExtRepositoryModelKey, version, owner, checkedOutBy,
-			effectiveBasePermissionsBits, _sharepointURLHelper);
+			extRepositoryModelKey, _mimeTypes, name, title, createDate,
+			modifiedDate, size, fileVersionExtRepositoryModelKey, version,
+			owner, checkedOutBy, effectiveBasePermissionsBits,
+			_sharepointURLHelper);
 	}
 
 	private <T extends ExtRepositoryFileEntry & SharepointModel>
@@ -308,7 +310,7 @@ public class SharepointServerResponseConverter {
 			extRepositoryFileEntry, id);
 		Date createDate = _parseDate(jsonObject.getString("Created"));
 		String changeLog = jsonObject.getString("CheckInComment");
-		String mimeType = MimeTypesUtil.getContentType(
+		String mimeType = _mimeTypes.getContentType(
 			jsonObject.getString("Url"));
 		long size = jsonObject.getLong("Size");
 
@@ -420,6 +422,7 @@ public class SharepointServerResponseConverter {
 
 	private final ExtRepository _extRepository;
 	private final String _libraryPath;
+	private final MimeTypes _mimeTypes;
 	private final String _rootDocumentPath;
 	private final SharepointURLHelper _sharepointURLHelper;
 	private final String _siteAbsoluteURL;

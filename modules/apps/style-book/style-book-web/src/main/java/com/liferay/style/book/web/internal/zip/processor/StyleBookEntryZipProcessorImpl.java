@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.zip.ZipWriter;
@@ -260,7 +260,7 @@ public class StyleBookEntryZipProcessorImpl
 			StyleBookPortletKeys.STYLE_BOOK, repository.getDlFolderId(),
 			inputStream,
 			classPK + "_preview." + FileUtil.getExtension(contentPath),
-			MimeTypesUtil.getContentType(contentPath), false);
+			_mimeTypes.getContentType(contentPath), false);
 
 		return fileEntry.getFileEntryId();
 	}
@@ -375,6 +375,9 @@ public class StyleBookEntryZipProcessorImpl
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private StyleBookEntryLocalService _styleBookEntryEntryLocalService;

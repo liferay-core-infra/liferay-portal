@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.SetUtil;
 
 import java.io.IOException;
@@ -51,13 +52,15 @@ public class DLFileEntryMetadataDDMStructureFixture {
 	public DLFileEntryMetadataDDMStructureFixture(
 		DLFixture dlFixture, DLAppLocalService dlAppLocalService,
 		DDMStructureLocalService ddmStructureLocalService,
-		DLFileEntryTypeLocalService dlFileEntryTypeLocalService) {
+		DLFileEntryTypeLocalService dlFileEntryTypeLocalService,
+		MimeTypes mimeTypes) {
 
 		_dlFixture = dlFixture;
 		_ddmStructureLocalService = ddmStructureLocalService;
 		_dlFileEntryTypeLocalService = dlFileEntryTypeLocalService;
 
-		_fileEntrySearchFixture = new FileEntrySearchFixture(dlAppLocalService);
+		_fileEntrySearchFixture = new FileEntrySearchFixture(
+			dlAppLocalService, mimeTypes);
 
 		_fileEntrySearchFixture.setUp();
 	}

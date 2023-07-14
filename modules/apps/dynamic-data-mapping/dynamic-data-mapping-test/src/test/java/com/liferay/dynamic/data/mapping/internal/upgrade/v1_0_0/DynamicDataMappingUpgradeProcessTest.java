@@ -85,7 +85,7 @@ public class DynamicDataMappingUpgradeProcessTest extends BaseDDMTestCase {
 			new DynamicDataMappingUpgradeProcess(
 				null, null, null, null, null, null, null,
 				ddmFormValuesJSONDeserializer, ddmFormValuesJSONSerializer,
-				null, null, null, null, null, null,
+				null, null, null, null, null, null, null,
 				(ResourceActions)ProxyUtil.newProxyInstance(
 					DynamicDataMappingUpgradeProcessTest.class.getClassLoader(),
 					new Class<?>[] {ResourceActions.class},

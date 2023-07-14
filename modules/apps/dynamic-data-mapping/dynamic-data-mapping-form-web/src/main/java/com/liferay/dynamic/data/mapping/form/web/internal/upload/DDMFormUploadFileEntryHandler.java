@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UploadFileEntryHandler;
@@ -84,7 +84,7 @@ public class DDMFormUploadFileEntryHandler implements UploadFileEntryHandler {
 
 			return addFileEntry(
 				formInstanceId, groupId, folderId, file, fileName,
-				MimeTypesUtil.getContentType(file, fileName), themeDisplay);
+				_mimeTypes.getContentType(file, fileName), themeDisplay);
 		}
 		finally {
 			FileUtil.delete(file);
@@ -145,6 +145,9 @@ public class DDMFormUploadFileEntryHandler implements UploadFileEntryHandler {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private MimeTypes _mimeTypes;
 
 	@Reference
 	private ObjectFieldSettingLocalService _objectFieldSettingLocalService;

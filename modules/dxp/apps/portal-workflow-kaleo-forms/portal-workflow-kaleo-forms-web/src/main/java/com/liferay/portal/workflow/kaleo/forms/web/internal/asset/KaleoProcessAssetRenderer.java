@@ -27,12 +27,10 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.workflow.kaleo.forms.constants.KaleoFormsActionKeys;
 import com.liferay.portal.workflow.kaleo.forms.constants.KaleoFormsPortletKeys;
 import com.liferay.portal.workflow.kaleo.forms.constants.KaleoFormsWebKeys;
@@ -58,11 +56,13 @@ public class KaleoProcessAssetRenderer
 
 	public KaleoProcessAssetRenderer(
 		KaleoProcess kaleoProcess, DDLRecord ddlRecord,
-		DDLRecordVersion ddlRecordVersion) {
+		DDLRecordVersion ddlRecordVersion,
+		WorkflowTaskManager workflowTaskManager) {
 
 		_kaleoProcess = kaleoProcess;
 		_ddlRecord = ddlRecord;
 		_ddlRecordVersion = ddlRecordVersion;
+		_workflowTaskManager = workflowTaskManager;
 	}
 
 	@Override
@@ -233,12 +233,7 @@ public class KaleoProcessAssetRenderer
 			httpServletRequest, "workflowTaskId");
 
 		if (workflowTaskId > 0) {
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)httpServletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
-
-			workflowTask = WorkflowTaskManagerUtil.getWorkflowTask(
-				themeDisplay.getCompanyId(), workflowTaskId);
+			workflowTask = _workflowTaskManager.getWorkflowTask(workflowTaskId);
 		}
 
 		return workflowTask;
@@ -251,5 +246,6 @@ public class KaleoProcessAssetRenderer
 	private final DDLRecordVersion _ddlRecordVersion;
 	private KaleoProcessLinkLocalService _kaKaleoProcessLinkLocalService;
 	private final KaleoProcess _kaleoProcess;
+	private final WorkflowTaskManager _workflowTaskManager;
 
 }

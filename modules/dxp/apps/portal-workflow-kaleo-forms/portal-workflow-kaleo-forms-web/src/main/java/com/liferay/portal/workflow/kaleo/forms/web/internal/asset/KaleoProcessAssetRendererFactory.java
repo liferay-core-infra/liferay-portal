@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.lists.model.DDLRecordVersion;
 import com.liferay.dynamic.data.lists.service.DDLRecordLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.workflow.kaleo.forms.constants.KaleoFormsPortletKeys;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess;
 import com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService;
@@ -79,7 +80,8 @@ public class KaleoProcessAssetRendererFactory
 				record.getRecordSetId());
 
 		KaleoProcessAssetRenderer kaleoProcessAssetRenderer =
-			new KaleoProcessAssetRenderer(kaleoProcess, record, recordVersion);
+			new KaleoProcessAssetRenderer(
+				kaleoProcess, record, recordVersion, _workflowTaskManager);
 
 		kaleoProcessAssetRenderer.setAssetRendererType(type);
 		kaleoProcessAssetRenderer.setKaleoProcessLinkLocalService(
@@ -131,5 +133,8 @@ public class KaleoProcessAssetRendererFactory
 		target = "(osgi.web.symbolicname=com.liferay.portal.workflow.kaleo.forms.web)"
 	)
 	private ServletContext _servletContext;
+
+	@Reference
+	private WorkflowTaskManager _workflowTaskManager;
 
 }

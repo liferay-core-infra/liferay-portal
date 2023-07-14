@@ -64,8 +64,7 @@ public class WorkflowTaskManagerUtil {
 			workflowContext);
 	}
 
-	public static WorkflowTask getWorkflowTask(
-			long companyId, long workflowTaskId)
+	public static WorkflowTask getWorkflowTask(long workflowTaskId)
 		throws WorkflowException {
 
 		WorkflowTaskManager workflowTaskManager =

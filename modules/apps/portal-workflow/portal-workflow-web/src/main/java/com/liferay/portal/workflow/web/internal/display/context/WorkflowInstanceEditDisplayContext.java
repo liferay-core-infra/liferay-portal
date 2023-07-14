@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowLog;
 import com.liferay.portal.kernel.workflow.WorkflowLogManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
+import com.liferay.portal.workflow.manager.WorkflowTaskManager;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
 
 import java.io.Serializable;

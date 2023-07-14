@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManager;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
+import com.liferay.portal.workflow.manager.WorkflowTaskManager;
 import com.liferay.portal.workflow.kaleo.demo.data.creator.WorkflowTaskDemoDataCreator;
 import com.liferay.portal.workflow.kaleo.demo.data.creator.internal.util.WorkflowDemoDataCreatorUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken;

@@ -20,9 +20,9 @@ import com.liferay.headless.admin.workflow.resource.v1_0.AssigneeResource;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.workflow.manager.WorkflowTaskManager;
 
 import java.util.List;
 

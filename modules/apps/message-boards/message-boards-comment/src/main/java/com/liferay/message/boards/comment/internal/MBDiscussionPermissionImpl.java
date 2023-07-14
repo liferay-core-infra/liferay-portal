@@ -66,49 +66,12 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			return _contains(permissionChecker, mbMessage, actionId);
 		}
 
-		return _contains(permissionChecker, comment.getCommentId(), actionId);
-	}
-
-	@Override
-	public boolean hasPermission(
-		PermissionChecker permissionChecker, long companyId, long groupId,
-		String className, long classPK, String actionId) {
-
-		return _contains(
-			permissionChecker, companyId, groupId, className, classPK,
-			actionId);
-	}
-
-	@Override
-	public boolean hasPermission(
-			PermissionChecker permissionChecker, long commentId,
-			String actionId)
-		throws PortalException {
-
-		return _contains(permissionChecker, commentId, actionId);
-	}
-
-	@Override
-	public boolean hasSubscribePermission(
-			PermissionChecker permissionChecker, long companyId, long groupId,
-			String className, long classPK)
-		throws PortalException {
-
-		return hasViewPermission(
-			permissionChecker, companyId, groupId, className, classPK);
-	}
-
-	@Override
-	public boolean hasViewPermission(
-		PermissionChecker permissionChecker, long companyId, long groupId,
-		String className, long classPK) {
-
 		return hasPermission(
-			permissionChecker, companyId, groupId, className, classPK,
-			ActionKeys.VIEW);
+			permissionChecker, comment.getCommentId(), actionId);
 	}
 
-	private boolean _contains(
+	@Override
+	public boolean hasPermission(
 		PermissionChecker permissionChecker, long companyId, long groupId,
 		String className, long classPK, String actionId) {
 
@@ -135,14 +98,35 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			groupId, className, classPK, actionId);
 	}
 
-	private boolean _contains(
-			PermissionChecker permissionChecker, long messageId,
+	@Override
+	public boolean hasPermission(
+			PermissionChecker permissionChecker, long commentId,
 			String actionId)
 		throws PortalException {
 
 		return _contains(
-			permissionChecker, _mbMessageLocalService.getMessage(messageId),
+			permissionChecker, _mbMessageLocalService.getMessage(commentId),
 			actionId);
+	}
+
+	@Override
+	public boolean hasSubscribePermission(
+			PermissionChecker permissionChecker, long companyId, long groupId,
+			String className, long classPK)
+		throws PortalException {
+
+		return hasViewPermission(
+			permissionChecker, companyId, groupId, className, classPK);
+	}
+
+	@Override
+	public boolean hasViewPermission(
+		PermissionChecker permissionChecker, long companyId, long groupId,
+		String className, long classPK) {
+
+		return hasPermission(
+			permissionChecker, companyId, groupId, className, classPK,
+			ActionKeys.VIEW);
 	}
 
 	private boolean _contains(
@@ -175,7 +159,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			}
 		}
 
-		return _contains(
+		return hasPermission(
 			permissionChecker, message.getCompanyId(), message.getGroupId(),
 			className, message.getClassPK(), actionId);
 	}

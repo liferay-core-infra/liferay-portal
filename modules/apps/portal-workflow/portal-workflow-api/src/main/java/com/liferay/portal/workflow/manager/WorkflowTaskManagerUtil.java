@@ -12,11 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.kernel.workflow;
+package com.liferay.portal.workflow.manager;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.portal.kernel.workflow.WorkflowException;
+import com.liferay.portal.kernel.workflow.WorkflowTask;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 
 import java.io.Serializable;
 
@@ -39,7 +42,10 @@ public class WorkflowTaskManagerUtil {
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
-		return _workflowTaskManager.assignWorkflowTaskToUser(
+		WorkflowTaskManager workflowTaskManager =
+			_workflowTaskManagerSnapshot.get();
+
+		return workflowTaskManager.assignWorkflowTaskToUser(
 			companyId, userId, workflowTaskId, assigneeUserId, comment, dueDate,
 			workflowContext);
 	}
@@ -50,7 +56,10 @@ public class WorkflowTaskManagerUtil {
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
-		return _workflowTaskManager.completeWorkflowTask(
+		WorkflowTaskManager workflowTaskManager =
+			_workflowTaskManagerSnapshot.get();
+
+		return workflowTaskManager.completeWorkflowTask(
 			companyId, userId, workflowTaskId, transitionName, comment,
 			workflowContext);
 	}
@@ -59,7 +68,10 @@ public class WorkflowTaskManagerUtil {
 			long companyId, long workflowTaskId)
 		throws WorkflowException {
 
-		return _workflowTaskManager.getWorkflowTask(workflowTaskId);
+		WorkflowTaskManager workflowTaskManager =
+			_workflowTaskManagerSnapshot.get();
+
+		return workflowTaskManager.getWorkflowTask(workflowTaskId);
 	}
 
 	public static List<WorkflowTask> getWorkflowTasksByUser(
@@ -67,7 +79,10 @@ public class WorkflowTaskManagerUtil {
 			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException {
 
-		return _workflowTaskManager.getWorkflowTasksByUser(
+		WorkflowTaskManager workflowTaskManager =
+			_workflowTaskManagerSnapshot.get();
+
+		return workflowTaskManager.getWorkflowTasksByUser(
 			companyId, userId, completed, start, end, orderByComparator);
 	}
 
@@ -76,13 +91,15 @@ public class WorkflowTaskManagerUtil {
 			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException {
 
-		return _workflowTaskManager.getWorkflowTasksByUserRoles(
+		WorkflowTaskManager workflowTaskManager =
+			_workflowTaskManagerSnapshot.get();
+
+		return workflowTaskManager.getWorkflowTasksByUserRoles(
 			companyId, userId, completed, start, end, orderByComparator);
 	}
 
-	private static volatile WorkflowTaskManager _workflowTaskManager =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			WorkflowTaskManager.class, WorkflowTaskManagerUtil.class,
-			"_workflowTaskManager", true);
+	private static final Snapshot<WorkflowTaskManager>
+		_workflowTaskManagerSnapshot = new Snapshot<>(
+			WorkflowTaskManagerUtil.class, WorkflowTaskManager.class);
 
 }

@@ -107,7 +107,7 @@ public class UserBagFactoryImpl implements UserBagFactory {
 			long[] userRoleIds = UserLocalServiceUtil.getRolePrimaryKeys(
 				userId);
 
-			userBag = new UserBagImpl(
+			userBag = new UserBag(
 				userId, userGroupIds, userOrgs, userOrgGroupIds, userUserGroups,
 				userUserGroupGroupIds, userRoleIds);
 		}
@@ -115,7 +115,7 @@ public class UserBagFactoryImpl implements UserBagFactory {
 			List<Role> userRoles = RoleLocalServiceUtil.getUserRelatedRoles(
 				userId, ArrayUtil.toLongArray(allGroupIds));
 
-			userBag = new UserBagImpl(
+			userBag = new UserBag(
 				userId, userGroupIds, userOrgs, userOrgGroupIds, userUserGroups,
 				userUserGroupGroupIds, userRoles);
 		}

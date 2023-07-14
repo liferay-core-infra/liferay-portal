@@ -211,22 +211,6 @@ public class KaleoProcessAssetRenderer
 			HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		KaleoProcessLink kaleoProcessLink = null;
-
-		WorkflowTask workflowTask = _getWorkflowTask(httpServletRequest);
-
-		if (workflowTask != null) {
-			kaleoProcessLink =
-				_kaKaleoProcessLinkLocalService.fetchKaleoProcessLink(
-					_kaleoProcess.getKaleoProcessId(), workflowTask.getName());
-		}
-
-		return kaleoProcessLink;
-	}
-
-	private WorkflowTask _getWorkflowTask(HttpServletRequest httpServletRequest)
-		throws Exception {
-
 		long workflowTaskId = ParamUtil.getLong(
 			httpServletRequest, "workflowTaskId");
 
@@ -234,7 +218,15 @@ public class KaleoProcessAssetRenderer
 			return null;
 		}
 
-		return _workflowTaskManager.getWorkflowTask(workflowTaskId);
+		WorkflowTask workflowTask = _workflowTaskManager.getWorkflowTask(
+			workflowTaskId);
+
+		if (workflowTask == null) {
+			return null;
+		}
+
+		return _kaKaleoProcessLinkLocalService.fetchKaleoProcessLink(
+			_kaleoProcess.getKaleoProcessId(), workflowTask.getName());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

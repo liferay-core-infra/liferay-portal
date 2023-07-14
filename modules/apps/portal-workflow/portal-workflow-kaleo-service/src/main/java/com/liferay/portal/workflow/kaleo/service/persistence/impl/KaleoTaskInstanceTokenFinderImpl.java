@@ -566,10 +566,6 @@ public class KaleoTaskInstanceTokenFinderImpl
 			KaleoTaskInstanceTokenQuery kaleoTaskInstanceTokenQuery)
 		throws Exception {
 
-		long[] roleIds = ArrayUtil.toLongArray(
-			RoleUtil.getRoleIds(
-				kaleoTaskInstanceTokenQuery.getServiceContext()));
-
 		User user = _userLocalService.getUserById(
 			kaleoTaskInstanceTokenQuery.getUserId());
 
@@ -586,6 +582,10 @@ public class KaleoTaskInstanceTokenFinderImpl
 		groups.addAll(
 			_groupLocalService.getUserGroupsRelatedGroups(
 				user.getUserGroups()));
+
+		long[] roleIds = ArrayUtil.toLongArray(
+			RoleUtil.getRoleIds(
+				kaleoTaskInstanceTokenQuery.getServiceContext()));
 
 		for (Group group : groups) {
 			roleIds = ArrayUtil.append(

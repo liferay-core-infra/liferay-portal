@@ -27,7 +27,9 @@ import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -133,7 +135,9 @@ public class UserBagFactoryImpl implements UserBagFactory {
 			return Collections.emptyList();
 		}
 
-		if (PropsValues.ORGANIZATIONS_MEMBERSHIP_STRICT) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.ORGANIZATIONS_MEMBERSHIP_STRICT))) {
+
 			return userOrgs;
 		}
 

@@ -12,9 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.kernel.workflow;
+package com.liferay.portal.workflow.manager;
 
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.workflow.WorkflowException;
+import com.liferay.portal.kernel.workflow.WorkflowLog;
 
 import java.util.List;
 

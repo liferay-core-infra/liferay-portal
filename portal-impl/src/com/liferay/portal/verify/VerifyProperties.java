@@ -2146,6 +2146,24 @@ public class VerifyProperties {
 			"ehcache.replicator.properties.default"
 		},
 		{
+			"ehcache.replicator.properties.com.liferay.portal.security." +
+				"permission.PermissionCacheUtil_PERMISSION",
+			"ehcache.replicator.properties.com.liferay.portal.kernel." +
+				"security.permission.PermissionCacheUtil_PERMISSION"
+		},
+		{
+			"ehcache.replicator.properties.com.liferay.portal.security." +
+				"permission.PermissionCacheUtil_PERMISSION_CHECKER_BAG",
+			"ehcache.replicator.properties.com.liferay.portal.kernel." +
+				"security.permission.PermissionCacheUtil_PERMISSION_CHECKER_BAG"
+		},
+		{
+			"ehcache.replicator.properties.com.liferay.portal.security." +
+				"permission.PermissionCacheUtil_RESOURCE_BLOCK_IDS_BAG",
+			"ehcache.replicator.properties.com.liferay.portal.kernel." +
+				"security.permission.PermissionCacheUtil_RESOURCE_BLOCK_IDS_BAG"
+		},
+		{
 			"field.editable.com.liferay.portal.kernel.model.User.emailAddress",
 			"field.editable.user.types"
 		},

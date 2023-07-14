@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.security.permission.PermissionCacheUtil;
 import com.liferay.portal.model.impl.UserGroupRoleModelImpl;
 
 /**

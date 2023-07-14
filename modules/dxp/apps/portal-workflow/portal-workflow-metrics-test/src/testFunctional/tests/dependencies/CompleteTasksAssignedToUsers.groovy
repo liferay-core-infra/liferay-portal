@@ -8,6 +8,8 @@ import com.liferay.portal.kernel.test.util.*
 import com.liferay.portal.kernel.util.*
 import com.liferay.portal.kernel.workflow.*
 import com.liferay.blogs.service.*
+import com.liferay.portal.workflow.task.manager.WorkflowTaskManagerUtil
+
 import java.util.*
 
 companyId = com.liferay.portal.kernel.util.PortalUtil.getCompanyId(actionRequest)
@@ -26,7 +28,8 @@ for (User activeUser : activeUsers) {
 	activeUserId = activeUser.getUserId();
 
 	List<WorkflowTask> workflowTasks = new ArrayList<>()
-	workflowTasks.addAll(WorkflowTaskManagerUtil.getWorkflowTasksByUser(companyId, activeUserId, false, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null))
+	workflowTasks.addAll(
+			WorkflowTaskManagerUtil.getWorkflowTasksByUser(companyId, activeUserId, false, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null))
 
 	for (WorkflowTask workflowTask : workflowTasks) {
 		WorkflowTaskManagerUtil.completeWorkflowTask(companyId, activeUserId, workflowTask.getWorkflowTaskId(), Constants.APPROVE, StringPool.BLANK, null);

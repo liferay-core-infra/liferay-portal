@@ -8,6 +8,8 @@ import com.liferay.portal.kernel.test.util.*
 import com.liferay.portal.kernel.util.*
 import com.liferay.portal.kernel.workflow.*
 import com.liferay.blogs.service.*
+import com.liferay.portal.workflow.task.manager.WorkflowTaskManagerUtil
+
 import java.util.*
 
 //Excluding from the count the existing users

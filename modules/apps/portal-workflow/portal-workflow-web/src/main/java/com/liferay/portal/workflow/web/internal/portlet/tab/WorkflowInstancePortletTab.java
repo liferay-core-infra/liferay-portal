@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowLogManager;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
 import com.liferay.portal.workflow.constants.WorkflowPortletKeys;
 import com.liferay.portal.workflow.constants.WorkflowWebKeys;
@@ -157,6 +158,9 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 		workflowInstanceWebConfiguration;
 
 	@Reference
+	protected WorkflowLogManager workflowLogManager;
+
+	@Reference
 	protected WorkflowPreprocessorHelper workflowPreprocessorHelper;
 
 	private void _setWorkflowInstanceDisplayContextRenderRequestAttribute(
@@ -177,13 +181,13 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 				new MyWorkflowInstanceEditDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory));
+					workflowComparatorFactory, workflowLogManager));
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
 				new MyWorkflowInstanceViewDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory));
+					workflowComparatorFactory, workflowLogManager));
 		}
 		else {
 			renderRequest.setAttribute(
@@ -191,13 +195,13 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 				new WorkflowInstanceEditDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory));
+					workflowComparatorFactory, workflowLogManager));
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
 				new WorkflowInstanceViewDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory));
+					workflowComparatorFactory, workflowLogManager));
 		}
 	}
 

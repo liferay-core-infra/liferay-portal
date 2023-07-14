@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.security.permission;
+package com.liferay.portal.kernel.security.permission;
 
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.petra.lang.HashUtil;
@@ -27,9 +27,6 @@ import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
-import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 

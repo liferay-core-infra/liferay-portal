@@ -38,9 +38,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -111,11 +108,6 @@ public class ElasticsearchFilterTranslator
 
 	@Override
 	public QueryBuilder visit(QueryFilter queryFilter) {
-		if (queryFilterTranslator == null) {
-			throw new IllegalStateException(
-				"No queryFilter translator configured");
-		}
-
 		return queryFilterTranslator.translate(queryFilter);
 	}
 
@@ -169,12 +161,8 @@ public class ElasticsearchFilterTranslator
 	@Reference
 	protected PrefixFilterTranslator prefixFilterTranslator;
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected volatile QueryFilterTranslator queryFilterTranslator;
+	@Reference
+	protected QueryFilterTranslator queryFilterTranslator;
 
 	@Reference
 	protected RangeTermFilterTranslator rangeTermFilterTranslator;

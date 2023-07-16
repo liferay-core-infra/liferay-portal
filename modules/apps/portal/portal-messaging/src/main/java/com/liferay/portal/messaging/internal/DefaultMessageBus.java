@@ -16,6 +16,7 @@ package com.liferay.portal.messaging.internal;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -28,6 +29,7 @@ import com.liferay.portal.kernel.messaging.MessageBusEventListener;
 import com.liferay.portal.kernel.messaging.MessageBusInterceptor;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -136,6 +138,14 @@ public class DefaultMessageBus implements MessageBus {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
+		_destinationEventListenerServiceTracker = ServiceTrackerFactory.open(
+			bundleContext,
+			"(&(objectClass=" + DestinationEventListener.class.getName() +
+				")(destination.name=*))",
+			new DestinationEventListenerServiceTrackerCustomizer());
+
 		_messageListenerServiceTracker = new ServiceTracker<>(
 			bundleContext, MessageListener.class,
 			new ServiceTrackerCustomizer
@@ -210,6 +220,8 @@ public class DefaultMessageBus implements MessageBus {
 
 	@Deactivate
 	protected void deactivate() {
+		_destinationEventListenerServiceTracker.close();
+
 		_messageBusInterceptorServiceTrackerList.close();
 
 		_serviceRegistration.unregister();
@@ -247,60 +259,10 @@ public class DefaultMessageBus implements MessageBus {
 		_updateDestination(destination, destinationWorkerConfiguration);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(destination.name=*)"
-	)
-	protected synchronized void registerDestinationEventListener(
-		DestinationEventListener destinationEventListener,
-		Map<String, Object> properties) {
-
-		String destinationName = MapUtil.getString(
-			properties, "destination.name");
-
-		Destination destination = _destinations.get(destinationName);
-
-		if (destination == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Unable to unregister destination event listener for " +
-						destinationName);
-			}
-
-			return;
-		}
-
-		destination.addDestinationEventListener(destinationEventListener);
-	}
-
 	protected synchronized void unregisterDestination(
 		Destination destination, Map<String, Object> properties) {
 
 		_removeDestination(destination.getName());
-	}
-
-	protected synchronized void unregisterDestinationEventListener(
-		DestinationEventListener destinationEventListener,
-		Map<String, Object> properties) {
-
-		String destinationName = MapUtil.getString(
-			properties, "destination.name");
-
-		Destination destination = _destinations.get(destinationName);
-
-		if (destination == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Unable to unregister destination event listener for " +
-						destinationName);
-			}
-
-			return;
-		}
-
-		destination.removeDestinationEventListener(destinationEventListener);
 	}
 
 	private void _addDestination(Destination destination) {
@@ -440,6 +402,9 @@ public class DefaultMessageBus implements MessageBus {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultMessageBus.class);
 
+	private BundleContext _bundleContext;
+	private ServiceTracker<DestinationEventListener, DestinationEventListener>
+		_destinationEventListenerServiceTracker;
 	private final Map<String, Destination> _destinations =
 		new ConcurrentHashMap<>();
 	private final Map<String, DestinationWorkerConfiguration>
@@ -492,6 +457,72 @@ public class DefaultMessageBus implements MessageBus {
 				destinationWorkerConfiguration.destinationName());
 
 			_updateDestination(destination, destinationWorkerConfiguration);
+		}
+
+	}
+
+	private class DestinationEventListenerServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer
+			<DestinationEventListener, DestinationEventListener> {
+
+		@Override
+		public DestinationEventListener addingService(
+			ServiceReference<DestinationEventListener> serviceReference) {
+
+			DestinationEventListener destinationEventListener =
+				_bundleContext.getService(serviceReference);
+
+			String destinationName = GetterUtil.getString(
+				serviceReference.getProperty("destination.name"));
+
+			Destination destination = _destinations.get(destinationName);
+
+			if (destination != null) {
+				destination.addDestinationEventListener(
+					destinationEventListener);
+
+				return destinationEventListener;
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Unable to unregister destination event listener for " +
+						destinationName);
+			}
+
+			return destinationEventListener;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<DestinationEventListener> serviceReference,
+			DestinationEventListener destinationEventListener) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<DestinationEventListener> serviceReference,
+			DestinationEventListener destinationEventListener) {
+
+			_bundleContext.ungetService(serviceReference);
+
+			String destinationName = GetterUtil.getString(
+				serviceReference.getProperty("destination.name"));
+
+			Destination destination = _destinations.get(destinationName);
+
+			if (destination != null) {
+				destination.removeDestinationEventListener(
+					destinationEventListener);
+
+				return;
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Unable to unregister destination event listener for " +
+						destinationName);
+			}
 		}
 
 	}

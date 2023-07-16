@@ -74,7 +74,7 @@ public class DefaultMessageBus implements MessageBus {
 		MessageBusThreadLocalUtil.populateMessageFromThreadLocals(message);
 
 		for (MessageBusInterceptor messageBusInterceptor :
-				_serviceTrackerList) {
+				_messageBusInterceptorServiceTrackerList) {
 
 			if (messageBusInterceptor.intercept(
 					this, destinationName, message)) {
@@ -203,13 +203,14 @@ public class DefaultMessageBus implements MessageBus {
 			ServiceTrackerListFactory.open(
 				bundleContext, MessageBusEventListener.class);
 
-		_serviceTrackerList = ServiceTrackerListFactory.open(
-			bundleContext, MessageBusInterceptor.class);
+		_messageBusInterceptorServiceTrackerList =
+			ServiceTrackerListFactory.open(
+				bundleContext, MessageBusInterceptor.class);
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTrackerList.close();
+		_messageBusInterceptorServiceTrackerList.close();
 
 		_serviceRegistration.unregister();
 
@@ -447,13 +448,14 @@ public class DefaultMessageBus implements MessageBus {
 		new ConcurrentHashMap<>();
 	private ServiceTrackerList<MessageBusEventListener>
 		_messageBusEventListenerServiceTrackerList;
+	private ServiceTrackerList<MessageBusInterceptor>
+		_messageBusInterceptorServiceTrackerList;
 	private ServiceTracker
 		<MessageListener, ObjectValuePair<String, MessageListener>>
 			_messageListenerServiceTracker;
 	private final Map<String, List<MessageListener>> _queuedMessageListeners =
 		new HashMap<>();
 	private ServiceRegistration<ManagedServiceFactory> _serviceRegistration;
-	private ServiceTrackerList<MessageBusInterceptor> _serviceTrackerList;
 
 	private class DefaultMessageBusManagedServiceFactory
 		implements ManagedServiceFactory {

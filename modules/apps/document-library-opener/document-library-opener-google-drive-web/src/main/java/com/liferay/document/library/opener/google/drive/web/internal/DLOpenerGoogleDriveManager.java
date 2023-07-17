@@ -69,18 +69,9 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Adolfo Pérez
  */
-@Component(
-	service = {
-		com.liferay.document.library.opener.google.drive.
-			DLOpenerGoogleDriveManager.class,
-		DLOpenerGoogleDriveManager.class
-	}
-)
-public class DLOpenerGoogleDriveManager
-	implements com.liferay.document.library.opener.google.drive.
-				   DLOpenerGoogleDriveManager {
+@Component(service = DLOpenerGoogleDriveManager.class)
+public class DLOpenerGoogleDriveManager {
 
-	@Override
 	public DLOpenerGoogleDriveFileReference checkOut(
 			long userId, FileEntry fileEntry)
 		throws PortalException {
@@ -102,7 +93,6 @@ public class DLOpenerGoogleDriveManager
 			backgroundTask.getBackgroundTaskId());
 	}
 
-	@Override
 	public DLOpenerGoogleDriveFileReference create(
 			long userId, FileEntry fileEntry)
 		throws PortalException {
@@ -124,7 +114,6 @@ public class DLOpenerGoogleDriveManager
 			backgroundTask.getBackgroundTaskId());
 	}
 
-	@Override
 	public void delete(long userId, FileEntry fileEntry)
 		throws PortalException {
 
@@ -163,7 +152,6 @@ public class DLOpenerGoogleDriveManager
 		}
 	}
 
-	@Override
 	public String getAuthorizationURL(
 			long companyId, String state, String redirectUri)
 		throws PortalException {
@@ -217,7 +205,6 @@ public class DLOpenerGoogleDriveManager
 		return true;
 	}
 
-	@Override
 	public boolean hasValidCredential(long companyId, long userId)
 		throws IOException, PortalException {
 
@@ -233,12 +220,10 @@ public class DLOpenerGoogleDriveManager
 		return true;
 	}
 
-	@Override
 	public boolean isConfigured(long companyId) {
 		return _oAuth2Manager.isConfigured(companyId);
 	}
 
-	@Override
 	public boolean isGoogleDriveFile(FileEntry fileEntry) {
 		DLOpenerFileEntryReference dlOpenerFileEntryReference =
 			_dlOpenerFileEntryReferenceLocalService.
@@ -253,7 +238,6 @@ public class DLOpenerGoogleDriveManager
 		return false;
 	}
 
-	@Override
 	public void requestAuthorizationToken(
 			long companyId, long userId, String code, String redirectUri)
 		throws IOException, PortalException {
@@ -262,7 +246,6 @@ public class DLOpenerGoogleDriveManager
 			companyId, userId, code, redirectUri);
 	}
 
-	@Override
 	public DLOpenerGoogleDriveFileReference requestEditAccess(
 			long userId, FileEntry fileEntry)
 		throws PortalException {
@@ -279,7 +262,6 @@ public class DLOpenerGoogleDriveManager
 		return checkOut(userId, fileEntry);
 	}
 
-	@Override
 	public void setAuthorizationToken(
 			long companyId, long userId, String authorizationToken)
 		throws IOException, PortalException {

@@ -16,13 +16,19 @@ package com.liferay.adaptive.media.image.internal.processor;
 
 import com.liferay.adaptive.media.image.internal.processor.util.BaseAMImageProcessor;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
+import com.liferay.adaptive.media.processor.AMProcessor;
+import com.liferay.portal.kernel.repository.model.FileVersion;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Adolfo Pérez
+ * @author Valmir Junior
  */
-@Component(service = AMImageProcessor.class)
-public final class AMImageProcessorImpl
-	extends BaseAMImageProcessor implements AMImageProcessor {
+@Component(
+	property = "model.class.name=com.liferay.portal.kernel.repository.model.FileVersion",
+	service = AMProcessor.class
+)
+public class AMProcessorImpl
+	extends BaseAMImageProcessor
+	implements AMProcessor<FileVersion, AMImageProcessor> {
 }

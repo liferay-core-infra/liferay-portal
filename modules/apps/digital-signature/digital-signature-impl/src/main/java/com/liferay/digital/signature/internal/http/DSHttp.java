@@ -111,21 +111,20 @@ public class DSHttp {
 	}
 
 	private JSONObject _convert(
-		String apiUserName, String integrationKey, String rsaPrivateKeyBytes) {
+		DigitalSignatureConfiguration digitalSignatureConfiguration) {
 
 		try {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Get DocuSign access token for integration key " +
-						integrationKey);
+						digitalSignatureConfiguration.integrationKey());
 			}
 
 			Http.Options options = new Http.Options();
 
 			options.setParts(
 				HashMapBuilder.put(
-					"assertion",
-					_getJWT(apiUserName, integrationKey, rsaPrivateKeyBytes)
+					"assertion", _getJWT(digitalSignatureConfiguration)
 				).put(
 					"grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer"
 				).build());
@@ -152,11 +151,12 @@ public class DSHttp {
 	}
 
 	private JSONObject _get(
-		String apiUserName, String integrationKey, String rsaPrivateKey) {
+		DigitalSignatureConfiguration digitalSignatureConfiguration) {
 
 		String key = StringBundler.concat(
-			apiUserName, StringPool.POUND, integrationKey, StringPool.POUND,
-			rsaPrivateKey);
+			digitalSignatureConfiguration.apiUsername(), StringPool.POUND,
+			digitalSignatureConfiguration.integrationKey(), StringPool.POUND,
+			digitalSignatureConfiguration.rsaPrivateKey());
 
 		JSONObject jsonObject = _portalCache.get(key);
 
@@ -164,7 +164,7 @@ public class DSHttp {
 			return jsonObject;
 		}
 
-		jsonObject = _convert(apiUserName, integrationKey, rsaPrivateKey);
+		jsonObject = _convert(digitalSignatureConfiguration);
 
 		_portalCache.put(key, jsonObject, (int)(_REFRESH_TIME / Time.SECOND));
 
@@ -175,17 +175,13 @@ public class DSHttp {
 			DigitalSignatureConfiguration digitalSignatureConfiguration)
 		throws Exception {
 
-		JSONObject jsonObject = _get(
-			digitalSignatureConfiguration.apiUsername(),
-			digitalSignatureConfiguration.integrationKey(),
-			digitalSignatureConfiguration.rsaPrivateKey());
+		JSONObject jsonObject = _get(digitalSignatureConfiguration);
 
 		return jsonObject.getString("access_token");
 	}
 
 	private String _getJWT(
-			String apiUserName, String integrationKey,
-			String rsaPrivateKeyBytes)
+			DigitalSignatureConfiguration digitalSignatureConfiguration)
 		throws Exception {
 
 		Signature signature = Signature.getInstance("SHA256withRSA");
@@ -208,11 +204,11 @@ public class DSHttp {
 		).put(
 			"iat", unixTime
 		).put(
-			"iss", integrationKey
+			"iss", digitalSignatureConfiguration.integrationKey()
 		).put(
 			"scope", "signature"
 		).put(
-			"sub", apiUserName
+			"sub", digitalSignatureConfiguration.apiUsername()
 		).toString();
 
 		String token =

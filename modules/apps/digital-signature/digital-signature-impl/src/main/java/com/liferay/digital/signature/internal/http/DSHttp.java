@@ -190,7 +190,8 @@ public class DSHttp {
 
 		Signature signature = Signature.getInstance("SHA256withRSA");
 
-		signature.initSign(_readPrivateKey(rsaPrivateKeyBytes));
+		signature.initSign(
+			_readPrivateKey(digitalSignatureConfiguration.rsaPrivateKey()));
 
 		String headerJSON = JSONUtil.put(
 			"alg", "RS256"
@@ -274,12 +275,14 @@ public class DSHttp {
 		return _http.URLtoByteArray(options);
 	}
 
-	private PrivateKey _readPrivateKey(String rsaPrivateKeyBytes)
-		throws Exception {
-
+	private PrivateKey _readPrivateKey(String rsaPrivateKey) throws Exception {
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-		PEMReader pemReader = new PEMReader(rsaPrivateKeyBytes);
+		if (rsaPrivateKey == null) {
+			rsaPrivateKey = StringPool.BLANK;
+		}
+
+		PEMReader pemReader = new PEMReader(rsaPrivateKey.getBytes());
 
 		PKCS1EncodedKeySpec pkcs1EncodedKeySpec = new PKCS1EncodedKeySpec(
 			pemReader.getDerBytes());

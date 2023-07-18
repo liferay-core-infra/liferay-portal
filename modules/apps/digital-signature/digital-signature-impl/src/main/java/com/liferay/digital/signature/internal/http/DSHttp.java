@@ -100,9 +100,8 @@ public class DSHttp {
 
 	@Activate
 	protected void activate() {
-		_portalCache =
-			(PortalCache<String, JSONObject>)_multiVMPool.getPortalCache(
-				DSHttp.class.getName());
+		_portalCache = (PortalCache<String, String>)_multiVMPool.getPortalCache(
+			DSHttp.class.getName());
 	}
 
 	@Deactivate
@@ -110,7 +109,7 @@ public class DSHttp {
 		_multiVMPool.removePortalCache(DSHttp.class.getName());
 	}
 
-	private JSONObject _convert(
+	private String _createAccessToken(
 		DigitalSignatureConfiguration digitalSignatureConfiguration) {
 
 		try {
@@ -131,14 +130,17 @@ public class DSHttp {
 			options.setLocation("https://account-d.docusign.com/oauth/token");
 			options.setPost(true);
 
-			return _jsonFactory.createJSONObject(_http.URLtoString(options));
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
+				_http.URLtoString(options));
+
+			return jsonObject.getString("access_token");
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(exception);
 			}
 
-			return _jsonFactory.createJSONObject();
+			return StringPool.BLANK;
 		}
 	}
 
@@ -148,36 +150,6 @@ public class DSHttp {
 		Base64.Encoder encoder = Base64.getUrlEncoder();
 
 		return encoder.encodeToString(bytes);
-	}
-
-	private JSONObject _get(
-		DigitalSignatureConfiguration digitalSignatureConfiguration) {
-
-		String key = StringBundler.concat(
-			digitalSignatureConfiguration.apiUsername(), StringPool.POUND,
-			digitalSignatureConfiguration.integrationKey(), StringPool.POUND,
-			digitalSignatureConfiguration.rsaPrivateKey());
-
-		JSONObject jsonObject = _portalCache.get(key);
-
-		if (jsonObject != null) {
-			return jsonObject;
-		}
-
-		jsonObject = _convert(digitalSignatureConfiguration);
-
-		_portalCache.put(key, jsonObject, (int)(_REFRESH_TIME / Time.SECOND));
-
-		return jsonObject;
-	}
-
-	private String _getDocuSignAccessToken(
-			DigitalSignatureConfiguration digitalSignatureConfiguration)
-		throws Exception {
-
-		JSONObject jsonObject = _get(digitalSignatureConfiguration);
-
-		return jsonObject.getString("access_token");
 	}
 
 	private String _getJWT(
@@ -251,9 +223,20 @@ public class DSHttp {
 			DigitalSignatureConfigurationUtil.getDigitalSignatureConfiguration(
 				companyId, groupId);
 
-		options.addHeader(
-			"Authorization",
-			"Bearer " + _getDocuSignAccessToken(digitalSignatureConfiguration));
+		String key = StringBundler.concat(
+			digitalSignatureConfiguration.apiUsername(), StringPool.POUND,
+			digitalSignatureConfiguration.integrationKey(), StringPool.POUND,
+			digitalSignatureConfiguration.rsaPrivateKey());
+
+		String accessToken = _portalCache.get(key);
+
+		if (accessToken == null) {
+			accessToken = _createAccessToken(digitalSignatureConfiguration);
+
+			_portalCache.put(key, accessToken, _REFRESH_TIME_IN_SECONDS);
+		}
+
+		options.addHeader("Authorization", "Bearer " + accessToken);
 
 		if (bodyJSONObject != null) {
 			options.setBody(
@@ -286,7 +269,8 @@ public class DSHttp {
 		return keyFactory.generatePrivate(pkcs1EncodedKeySpec.getKeySpec());
 	}
 
-	private static final long _REFRESH_TIME = Time.MINUTE * 45;
+	private static final int _REFRESH_TIME_IN_SECONDS =
+		(int)(Time.MINUTE * 45 / Time.SECOND);
 
 	private static final Log _log = LogFactoryUtil.getLog(DSHttp.class);
 
@@ -299,6 +283,6 @@ public class DSHttp {
 	@Reference
 	private MultiVMPool _multiVMPool;
 
-	private PortalCache<String, JSONObject> _portalCache;
+	private PortalCache<String, String> _portalCache;
 
 }

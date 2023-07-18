@@ -406,6 +406,14 @@ public class SXPElementLocalServiceWrapper
 	}
 
 	@Override
+	public void importSXPElements(
+			com.liferay.portal.kernel.model.Company company)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_sxpElementLocalService.importSXPElements(company);
+	}
+
+	@Override
 	public com.liferay.search.experiences.model.SXPElement updateStatus(
 			long userId, long sxpElementId, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {

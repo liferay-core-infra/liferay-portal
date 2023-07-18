@@ -358,6 +358,13 @@ public class SXPElementLocalServiceUtil {
 		return getService().getSXPElementsCount();
 	}
 
+	public static void importSXPElements(
+			com.liferay.portal.kernel.model.Company company)
+		throws PortalException {
+
+		getService().importSXPElements(company);
+	}
+
 	public static SXPElement updateStatus(
 			long userId, long sxpElementId, int status)
 		throws PortalException {

@@ -35,6 +35,8 @@ import net.sf.ehcache.event.RegisteredEventListeners;
 public class ShardedEhcachePortalCache<K extends Serializable, V>
 	extends BaseEhcachePortalCache<K, V> {
 
+	public static final String SHARDED_SEPARATOR = "_SHARDED_SEPARATOR_";
+
 	public ShardedEhcachePortalCache(
 		BaseEhcachePortalCacheManager<K, V> baseEhcachePortalCacheManager,
 		EhcachePortalCacheConfiguration ehcachePortalCacheConfiguration) {
@@ -52,7 +54,7 @@ public class ShardedEhcachePortalCache<K extends Serializable, V>
 			companyId,
 			key -> {
 				String shardedPortalCacheName =
-					getPortalCacheName() + _SHARDED_SEPARATOR + key;
+					getPortalCacheName() + SHARDED_SEPARATOR + key;
 
 				synchronized (_cacheManager) {
 					if (!_cacheManager.cacheExists(shardedPortalCacheName)) {
@@ -121,8 +123,6 @@ public class ShardedEhcachePortalCache<K extends Serializable, V>
 	protected void resetEhcache() {
 		_ehcaches.clear();
 	}
-
-	private static final String _SHARDED_SEPARATOR = "_SHARDED_SEPARATOR_";
 
 	private final CacheManager _cacheManager;
 	private final Map<Long, Ehcache> _ehcaches = new ConcurrentHashMap<>();

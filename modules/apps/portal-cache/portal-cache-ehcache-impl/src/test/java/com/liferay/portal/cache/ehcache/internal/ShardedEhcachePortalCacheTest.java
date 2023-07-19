@@ -664,10 +664,7 @@ public class ShardedEhcachePortalCacheTest {
 
 	private String _getShardedCacheName(String cacheName, long companyId) {
 		return StringBundler.concat(
-			cacheName,
-			ReflectionTestUtil.getFieldValue(
-				ShardedEhcachePortalCache.class, "_SHARDED_SEPARATOR"),
-			companyId);
+			cacheName, ShardedEhcachePortalCache.SHARDED_SEPARATOR, companyId);
 	}
 
 	private static final int _MAX_ENTRIES_LOCAL_HEAP_DEFAULT = 100;

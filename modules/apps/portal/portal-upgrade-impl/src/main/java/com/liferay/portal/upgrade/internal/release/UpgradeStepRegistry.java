@@ -24,9 +24,12 @@ import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -46,6 +49,30 @@ public class UpgradeStepRegistry {
 
 	public Set<String> getBundleSymbolicNames() {
 		return _serviceTrackerMap.keySet();
+	}
+
+	public String getSchemaVersionString(String bundleSymbolicName) {
+		Release release = _releaseLocalService.fetchRelease(bundleSymbolicName);
+
+		if ((release != null) &&
+			Validator.isNotNull(release.getSchemaVersion())) {
+
+			return release.getSchemaVersion();
+		}
+
+		return "0.0.0";
+	}
+
+	public Set<String> getUpgradableBundleSymbolicNames() {
+		Set<String> upgradableBundleSymbolicNames = new HashSet<>();
+
+		for (String bundleSymbolicName : _serviceTrackerMap.keySet()) {
+			if (_isUpgradable(bundleSymbolicName)) {
+				upgradableBundleSymbolicNames.add(bundleSymbolicName);
+			}
+		}
+
+		return upgradableBundleSymbolicNames;
 	}
 
 	public List<UpgradeInfo> getUpgradeInfos(String bundleSymbolicName) {
@@ -77,6 +104,21 @@ public class UpgradeStepRegistry {
 		_initialUpgradeStepServiceTrackerMap.close();
 
 		_serviceTrackerMap.close();
+	}
+
+	private boolean _isUpgradable(String bundleSymbolicName) {
+		ReleaseGraphManager releaseGraphManager = new ReleaseGraphManager(
+			getUpgradeInfos(bundleSymbolicName));
+
+		List<List<UpgradeInfo>> upgradeInfosList =
+			releaseGraphManager.getUpgradeInfosList(
+				getSchemaVersionString(bundleSymbolicName));
+
+		if (upgradeInfosList.size() == 1) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private ServiceTrackerMap<String, Release>

@@ -19,7 +19,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -36,7 +35,6 @@ import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
@@ -50,18 +48,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = {ReleaseManager.class, ReleaseManagerImpl.class})
 public class ReleaseManagerImpl implements ReleaseManager {
-
-	public String getSchemaVersionString(String bundleSymbolicName) {
-		Release release = _releaseLocalService.fetchRelease(bundleSymbolicName);
-
-		if ((release != null) &&
-			Validator.isNotNull(release.getSchemaVersion())) {
-
-			return release.getSchemaVersion();
-		}
-
-		return "0.0.0";
-	}
 
 	@Override
 	public String getShortStatusMessage(boolean onlyRequiredUpgrades) {
@@ -93,7 +79,7 @@ public class ReleaseManagerImpl implements ReleaseManager {
 		}
 
 		Set<String> upgradableBundleSymbolicNames =
-			getUpgradableBundleSymbolicNames();
+			_upgradeStepRegistry.getUpgradableBundleSymbolicNames();
 
 		if (!upgradableBundleSymbolicNames.isEmpty()) {
 			if (Validator.isNotNull(where)) {
@@ -133,20 +119,6 @@ public class ReleaseManagerImpl implements ReleaseManager {
 		return sb.toString();
 	}
 
-	public Set<String> getUpgradableBundleSymbolicNames() {
-		Set<String> upgradableBundleSymbolicNames = new HashSet<>();
-
-		for (String bundleSymbolicName :
-				_upgradeStepRegistry.getBundleSymbolicNames()) {
-
-			if (_isUpgradable(bundleSymbolicName)) {
-				upgradableBundleSymbolicNames.add(bundleSymbolicName);
-			}
-		}
-
-		return upgradableBundleSymbolicNames;
-	}
-
 	@Override
 	public boolean isUpgraded() throws Exception {
 		try (Connection connection = DataAccess.getConnection()) {
@@ -155,7 +127,7 @@ public class ReleaseManagerImpl implements ReleaseManager {
 			}
 
 			Set<String> upgradableBundleSymbolicNames =
-				getUpgradableBundleSymbolicNames();
+				_upgradeStepRegistry.getUpgradableBundleSymbolicNames();
 
 			if (!upgradableBundleSymbolicNames.isEmpty()) {
 				return false;
@@ -171,8 +143,8 @@ public class ReleaseManagerImpl implements ReleaseManager {
 		for (String bundleSymbolicName :
 				_upgradeStepRegistry.getBundleSymbolicNames()) {
 
-			String schemaVersionString = getSchemaVersionString(
-				bundleSymbolicName);
+			String schemaVersionString =
+				_upgradeStepRegistry.getSchemaVersionString(bundleSymbolicName);
 
 			ReleaseGraphManager releaseGraphManager = new ReleaseGraphManager(
 				_upgradeStepRegistry.getUpgradeInfos(bundleSymbolicName));
@@ -328,7 +300,7 @@ public class ReleaseManagerImpl implements ReleaseManager {
 
 	private boolean _isPendingRequiredModuleUpgrades() {
 		Set<String> upgradableBundleSymbolicNames =
-			getUpgradableBundleSymbolicNames();
+			_upgradeStepRegistry.getUpgradableBundleSymbolicNames();
 
 		for (String bundleSymbolicName : upgradableBundleSymbolicNames) {
 			ReleaseGraphManager releaseGraphManager = new ReleaseGraphManager(
@@ -336,7 +308,8 @@ public class ReleaseManagerImpl implements ReleaseManager {
 
 			List<List<UpgradeInfo>> upgradeInfosList =
 				releaseGraphManager.getUpgradeInfosList(
-					getSchemaVersionString(bundleSymbolicName));
+					_upgradeStepRegistry.getSchemaVersionString(
+						bundleSymbolicName));
 
 			List<UpgradeInfo> upgradeInfos = upgradeInfosList.get(0);
 
@@ -350,21 +323,6 @@ public class ReleaseManagerImpl implements ReleaseManager {
 					return true;
 				}
 			}
-		}
-
-		return false;
-	}
-
-	private boolean _isUpgradable(String bundleSymbolicName) {
-		ReleaseGraphManager releaseGraphManager = new ReleaseGraphManager(
-			getUpgradeInfos(bundleSymbolicName));
-
-		List<List<UpgradeInfo>> upgradeInfosList =
-			releaseGraphManager.getUpgradeInfosList(
-				getSchemaVersionString(bundleSymbolicName));
-
-		if (upgradeInfosList.size() == 1) {
-			return true;
 		}
 
 		return false;

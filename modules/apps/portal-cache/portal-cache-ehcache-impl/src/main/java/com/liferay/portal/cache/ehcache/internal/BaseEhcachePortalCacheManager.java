@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.MVCCModel;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
@@ -50,7 +51,7 @@ import java.io.Serializable;
 
 import java.net.URL;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -298,6 +299,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 				"Portal cache manager name is not specified");
 		}
 
+		_dbPartitionEnabled = GetterUtil.getBoolean(
+			props.get("database.partition.enabled"));
+
 		_transactionalPortalCacheEnabled = GetterUtil.getBoolean(
 			props.get(PropsKeys.TRANSACTIONAL_CACHE_ENABLED));
 
@@ -400,6 +404,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	protected BundleContext bundleContext;
 
 	@Reference
+	protected CompanyLocalService companyLocalService;
+
+	@Reference
 	protected PortalCacheListenerFactory portalCacheListenerFactory;
 
 	@Reference
@@ -443,16 +450,22 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	}
 
 	private void _reconfigEhcache(Configuration configuration) {
-		Map<String, CacheConfiguration> cacheConfigurationsMap =
-			configuration.getCacheConfigurations();
+		Set<String> portalCacheNames = new HashSet<>();
 
-		Collection<CacheConfiguration> cacheConfigurations =
-			cacheConfigurationsMap.values();
+		for (String cacheName : configuration.getCacheConfigurationsKeySet()) {
+			if (_dbPartitionEnabled) {
+				companyLocalService.forEachCompanyId(
+					companyId -> portalCacheNames.add(
+						cacheName +
+							ShardedEhcachePortalCache.SHARDED_SEPARATOR +
+								companyId));
+			}
+
+			portalCacheNames.add(cacheName);
+		}
 
 		synchronized (_cacheManager) {
-			for (CacheConfiguration cacheConfiguration : cacheConfigurations) {
-				String portalCacheName = cacheConfiguration.getName();
-
+			for (String portalCacheName : portalCacheNames) {
 				if (_cacheManager.cacheExists(portalCacheName)) {
 					if (_log.isInfoEnabled()) {
 						_log.info(
@@ -481,7 +494,12 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 				}
 			}
 
-			for (CacheConfiguration cacheConfiguration : cacheConfigurations) {
+			Map<String, CacheConfiguration> cacheConfigurationsMap =
+				configuration.getCacheConfigurations();
+
+			for (CacheConfiguration cacheConfiguration :
+					cacheConfigurationsMap.values()) {
+
 				_cacheManager.addCache(new Cache(cacheConfiguration));
 			}
 		}
@@ -609,6 +627,7 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	private CacheManager _cacheManager;
 	private String _configFile;
 	private ServiceTracker<?, ?> _configuratorSettingsServiceTracker;
+	private boolean _dbPartitionEnabled;
 	private String _defaultConfigFile;
 	private ServiceTracker<MBeanServer, ManagementService>
 		_mBeanServerServiceTracker;

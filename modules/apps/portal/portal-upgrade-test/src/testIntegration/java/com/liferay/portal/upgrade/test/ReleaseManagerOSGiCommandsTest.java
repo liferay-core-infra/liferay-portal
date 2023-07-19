@@ -72,7 +72,7 @@ public class ReleaseManagerOSGiCommandsTest {
 
 		try {
 			Set<String> bundleSymbolicNames = ReflectionTestUtil.invoke(
-				_releaseManagerImpl, "getBundleSymbolicNames", null);
+				_upgradeStepRegistry, "getBundleSymbolicNames", null);
 
 			Assert.assertTrue(bundleSymbolicNames.contains(bundleSymbolicName));
 
@@ -88,15 +88,15 @@ public class ReleaseManagerOSGiCommandsTest {
 	}
 
 	@Inject(
-		filter = "component.name=com.liferay.portal.upgrade.internal.release.ReleaseManagerImpl",
-		type = Inject.NoType.class
-	)
-	private Object _releaseManagerImpl;
-
-	@Inject(
 		filter = "component.name=com.liferay.portal.upgrade.internal.release.osgi.commands.ReleaseManagerOSGiCommands",
 		type = Inject.NoType.class
 	)
 	private Object _releaseManagerOSGiCommands;
+
+	@Inject(
+		filter = "component.name=com.liferay.portal.upgrade.internal.release.UpgradeStepRegistry",
+		type = Inject.NoType.class
+	)
+	private Object _upgradeStepRegistry;
 
 }

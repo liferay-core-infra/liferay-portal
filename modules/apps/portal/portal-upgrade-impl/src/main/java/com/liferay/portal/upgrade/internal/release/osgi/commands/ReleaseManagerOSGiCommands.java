@@ -90,7 +90,7 @@ public class ReleaseManagerOSGiCommands {
 			() -> _upgradeExecutor.executeUpgradeInfos(
 				bundleSymbolicName,
 				releaseGraphManager.getUpgradeInfos(
-					_releaseManagerImpl.getSchemaVersionString(
+					_upgradeStepRegistry.getSchemaVersionString(
 						bundleSymbolicName),
 					toVersionString)));
 
@@ -155,7 +155,7 @@ public class ReleaseManagerOSGiCommands {
 		sb.append(bundleSymbolicName);
 		sb.append(StringPool.SPACE);
 		sb.append(
-			_releaseManagerImpl.getSchemaVersionString(bundleSymbolicName));
+			_upgradeStepRegistry.getSchemaVersionString(bundleSymbolicName));
 		sb.append(StringPool.NEW_LINE);
 
 		for (UpgradeInfo upgradeProcess : upgradeInfos) {
@@ -174,7 +174,7 @@ public class ReleaseManagerOSGiCommands {
 
 		while (true) {
 			Set<String> upgradableBundleSymbolicNames =
-				_releaseManagerImpl.getUpgradableBundleSymbolicNames();
+				_upgradeStepRegistry.getUpgradableBundleSymbolicNames();
 
 			upgradableBundleSymbolicNames.removeAll(
 				upgradeThrewExceptionBundleSymbolicNames);

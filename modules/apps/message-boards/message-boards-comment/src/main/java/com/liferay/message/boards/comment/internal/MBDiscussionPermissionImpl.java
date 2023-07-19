@@ -63,7 +63,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 			MBMessage mbMessage = mbCommentImpl.getMessage();
 
-			return _contains(permissionChecker, mbMessage, actionId);
+			return _hasPermission(permissionChecker, mbMessage, actionId);
 		}
 
 		return hasPermission(
@@ -104,7 +104,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			String actionId)
 		throws PortalException {
 
-		return _contains(
+		return _hasPermission(
 			permissionChecker, _mbMessageLocalService.getMessage(commentId),
 			actionId);
 	}
@@ -129,7 +129,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			ActionKeys.VIEW);
 	}
 
-	private boolean _contains(
+	private boolean _hasPermission(
 			PermissionChecker permissionChecker, MBMessage message,
 			String actionId)
 		throws PortalException {

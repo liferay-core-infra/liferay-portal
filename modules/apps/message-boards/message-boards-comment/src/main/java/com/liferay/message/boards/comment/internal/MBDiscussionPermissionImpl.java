@@ -49,16 +49,11 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			String actionId)
 		throws PortalException {
 
-		if (comment instanceof MBCommentImpl) {
-			MBCommentImpl mbCommentImpl = (MBCommentImpl)comment;
+		MBCommentImpl mbCommentImpl = (MBCommentImpl)comment;
 
-			MBMessage mbMessage = mbCommentImpl.getMessage();
+		MBMessage mbMessage = mbCommentImpl.getMessage();
 
-			return _hasPermission(permissionChecker, mbMessage, actionId);
-		}
-
-		return hasPermission(
-			permissionChecker, comment.getCommentId(), actionId);
+		return _hasPermission(permissionChecker, mbMessage, actionId);
 	}
 
 	@Override

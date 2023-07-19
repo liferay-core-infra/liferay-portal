@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alberto Chaparro
  * @author Samuel Ziemer
  */
-@Component(service = {ReleaseManager.class, ReleaseManagerImpl.class})
+@Component(service = ReleaseManager.class)
 public class ReleaseManagerImpl implements ReleaseManager {
 
 	@Override

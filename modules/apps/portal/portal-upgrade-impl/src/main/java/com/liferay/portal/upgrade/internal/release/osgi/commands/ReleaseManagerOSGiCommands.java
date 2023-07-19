@@ -10,10 +10,10 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.upgrade.internal.executor.UpgradeExecutor;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
-import com.liferay.portal.upgrade.internal.release.ReleaseManagerImpl;
 import com.liferay.portal.upgrade.internal.release.UpgradeStepRegistry;
 
 import java.util.HashSet;
@@ -41,12 +41,12 @@ public class ReleaseManagerOSGiCommands {
 
 	@Descriptor("List pending upgrades")
 	public String check() {
-		return _releaseManagerImpl.getStatusMessage(false);
+		return _releaseManager.getStatusMessage(false);
 	}
 
 	@Descriptor("List pending upgrade processes and their upgrade steps")
 	public String checkAll() {
-		return _releaseManagerImpl.getStatusMessage(true);
+		return _releaseManager.getStatusMessage(true);
 	}
 
 	@Descriptor("Execute upgrade for a specific module")
@@ -211,7 +211,7 @@ public class ReleaseManagerOSGiCommands {
 		ReleaseManagerOSGiCommands.class);
 
 	@Reference
-	private ReleaseManagerImpl _releaseManagerImpl;
+	private ReleaseManager _releaseManager;
 
 	@Reference
 	private UpgradeExecutor _upgradeExecutor;

@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
@@ -31,10 +32,12 @@ import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -44,7 +47,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 /**
  * @author Tina Tian
  */
-@Component(service = UpgradeStepRegistry.class)
+@Component(service = {})
 public class UpgradeStepRegistry {
 
 	public Set<String> getBundleSymbolicNames() {
@@ -80,7 +83,9 @@ public class UpgradeStepRegistry {
 	}
 
 	@Activate
-	protected void activate(BundleContext bundleContext) {
+	protected void activate(
+		BundleContext bundleContext, Map<String, Object> properties) {
+
 		_initialUpgradeStepServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, UpgradeStep.class,
@@ -97,6 +102,10 @@ public class UpgradeStepRegistry {
 			Collections.reverseOrder(
 				new PropertyServiceReferenceComparator<>(
 					"upgrade.from.schema.version")));
+
+		_serviceRegistration = bundleContext.registerService(
+			UpgradeStepRegistry.class, this,
+			new HashMapDictionary<>(properties));
 	}
 
 	@Deactivate
@@ -104,6 +113,8 @@ public class UpgradeStepRegistry {
 		_initialUpgradeStepServiceTrackerMap.close();
 
 		_serviceTrackerMap.close();
+
+		_serviceRegistration.unregister();
 	}
 
 	private boolean _isUpgradable(String bundleSymbolicName) {
@@ -130,6 +141,7 @@ public class UpgradeStepRegistry {
 	@Reference
 	private ReleasePublisher _releasePublisher;
 
+	private ServiceRegistration<UpgradeStepRegistry> _serviceRegistration;
 	private ServiceTrackerMap<String, List<UpgradeInfo>> _serviceTrackerMap;
 
 	private static class UpgradeServiceTrackerCustomizer

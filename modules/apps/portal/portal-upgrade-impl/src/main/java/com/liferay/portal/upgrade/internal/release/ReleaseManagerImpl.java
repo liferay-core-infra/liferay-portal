@@ -51,10 +51,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = {ReleaseManager.class, ReleaseManagerImpl.class})
 public class ReleaseManagerImpl implements ReleaseManager {
 
-	public Set<String> getBundleSymbolicNames() {
-		return _upgradeStepRegistry.getBundleSymbolicNames();
-	}
-
 	public String getSchemaVersionString(String bundleSymbolicName) {
 		Release release = _releaseLocalService.fetchRelease(bundleSymbolicName);
 
@@ -137,17 +133,15 @@ public class ReleaseManagerImpl implements ReleaseManager {
 	public Set<String> getUpgradableBundleSymbolicNames() {
 		Set<String> upgradableBundleSymbolicNames = new HashSet<>();
 
-		for (String bundleSymbolicName : getBundleSymbolicNames()) {
+		for (String bundleSymbolicName :
+				_upgradeStepRegistry.getBundleSymbolicNames()) {
+
 			if (_isUpgradable(bundleSymbolicName)) {
 				upgradableBundleSymbolicNames.add(bundleSymbolicName);
 			}
 		}
 
 		return upgradableBundleSymbolicNames;
-	}
-
-	public List<UpgradeInfo> getUpgradeInfos(String bundleSymbolicName) {
-		return _upgradeStepRegistry.getUpgradeInfos(bundleSymbolicName);
 	}
 
 	@Override
@@ -166,14 +160,14 @@ public class ReleaseManagerImpl implements ReleaseManager {
 	private String _checkModules(boolean showUpgradeSteps) {
 		StringBundler sb = new StringBundler();
 
-		Set<String> bundleSymbolicNames = getBundleSymbolicNames();
+		for (String bundleSymbolicName :
+				_upgradeStepRegistry.getBundleSymbolicNames()) {
 
-		for (String bundleSymbolicName : bundleSymbolicNames) {
 			String schemaVersionString = getSchemaVersionString(
 				bundleSymbolicName);
 
 			ReleaseGraphManager releaseGraphManager = new ReleaseGraphManager(
-				getUpgradeInfos(bundleSymbolicName));
+				_upgradeStepRegistry.getUpgradeInfos(bundleSymbolicName));
 
 			List<List<UpgradeInfo>> upgradeInfosList =
 				releaseGraphManager.getUpgradeInfosList(schemaVersionString);
@@ -325,7 +319,9 @@ public class ReleaseManagerImpl implements ReleaseManager {
 	}
 
 	private boolean _isPendingModuleUpgrades() {
-		for (String bundleSymbolicName : getBundleSymbolicNames()) {
+		for (String bundleSymbolicName :
+				_upgradeStepRegistry.getBundleSymbolicNames()) {
+
 			if (_isUpgradable(bundleSymbolicName)) {
 				return true;
 			}
@@ -340,7 +336,7 @@ public class ReleaseManagerImpl implements ReleaseManager {
 
 		for (String bundleSymbolicName : upgradableBundleSymbolicNames) {
 			ReleaseGraphManager releaseGraphManager = new ReleaseGraphManager(
-				getUpgradeInfos(bundleSymbolicName));
+				_upgradeStepRegistry.getUpgradeInfos(bundleSymbolicName));
 
 			List<List<UpgradeInfo>> upgradeInfosList =
 				releaseGraphManager.getUpgradeInfosList(

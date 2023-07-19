@@ -14,8 +14,12 @@
 
 package com.liferay.search.experiences.service.impl;
 
+import com.liferay.petra.io.StreamUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
@@ -26,16 +30,31 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.search.experiences.exception.SXPElementTitleException;
+import com.liferay.search.experiences.internal.model.listener.CompanyModelListener;
 import com.liferay.search.experiences.model.SXPElement;
+import com.liferay.search.experiences.rest.dto.v1_0.util.SXPElementUtil;
 import com.liferay.search.experiences.service.base.SXPElementLocalServiceBaseImpl;
 import com.liferay.search.experiences.validator.SXPElementValidator;
 
+import java.io.IOException;
+
+import java.net.URL;
+
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -133,6 +152,49 @@ public class SXPElementLocalServiceImpl extends SXPElementLocalServiceBaseImpl {
 		return sxpElementPersistence.findByC_R(companyId, readOnly);
 	}
 
+	@Override
+	public void importSXPElements(Company company) throws PortalException {
+		Set<String> externalReferenceCodes = new HashSet<>();
+
+		for (SXPElement sxpElement :
+				getSXPElements(company.getCompanyId(), true)) {
+
+			externalReferenceCodes.add(sxpElement.getExternalReferenceCode());
+		}
+
+		for (com.liferay.search.experiences.rest.dto.v1_0.SXPElement
+				sxpElement : _getSXPElements()) {
+
+			if ((!FeatureFlagManagerUtil.isEnabled("LPS-122920") &&
+				 Objects.equals(
+					 sxpElement.getExternalReferenceCode(),
+					 "RESCORE_BY_TEXT_EMBEDDING")) ||
+				externalReferenceCodes.contains(
+					sxpElement.getExternalReferenceCode())) {
+
+				continue;
+			}
+
+			User user = company.getGuestUser();
+
+			addSXPElement(
+				sxpElement.getExternalReferenceCode(), user.getUserId(),
+				LocalizedMapUtil.getLocalizedMap(
+					sxpElement.getDescription_i18n()),
+				String.valueOf(sxpElement.getElementDefinition()), true,
+				_SCHEMA_VERSION,
+				LocalizedMapUtil.getLocalizedMap(sxpElement.getTitle_i18n()), 0,
+				new ServiceContext() {
+					{
+						setAddGuestPermissions(true);
+						setCompanyId(company.getCompanyId());
+						setScopeGroupId(company.getGroupId());
+						setUserId(user.getUserId());
+					}
+				});
+		}
+	}
+
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public SXPElement updateStatus(long userId, long sxpElementId, int status)
@@ -175,6 +237,48 @@ public class SXPElementLocalServiceImpl extends SXPElementLocalServiceBaseImpl {
 		return updateSXPElement(sxpElement);
 	}
 
+	private List<com.liferay.search.experiences.rest.dto.v1_0.SXPElement>
+		_createSXPElements() {
+
+		Bundle bundle = FrameworkUtil.getBundle(CompanyModelListener.class);
+
+		Package pkg = CompanyModelListener.class.getPackage();
+
+		String path = StringUtil.replace(
+			pkg.getName(), CharPool.PERIOD, CharPool.SLASH);
+
+		List<com.liferay.search.experiences.rest.dto.v1_0.SXPElement>
+			sxpElements = new ArrayList<>();
+
+		Enumeration<URL> enumeration = bundle.findEntries(
+			path.concat("/dependencies"), "*.json", false);
+
+		try {
+			while (enumeration.hasMoreElements()) {
+				URL url = enumeration.nextElement();
+
+				sxpElements.add(
+					SXPElementUtil.toSXPElement(
+						StreamUtil.toString(url.openStream())));
+			}
+		}
+		catch (IOException ioException) {
+			throw new ExceptionInInitializerError(ioException);
+		}
+
+		return sxpElements;
+	}
+
+	private List<com.liferay.search.experiences.rest.dto.v1_0.SXPElement>
+		_getSXPElements() {
+
+		if (_sxpElements == null) {
+			_sxpElements = _createSXPElements();
+		}
+
+		return _sxpElements;
+	}
+
 	private void _validate(
 			Map<Locale, String> titleMap, int type,
 			ServiceContext serviceContext)
@@ -189,8 +293,20 @@ public class SXPElementLocalServiceImpl extends SXPElementLocalServiceBaseImpl {
 		}
 	}
 
+	private static final String _SCHEMA_VERSION = StringUtil.replace(
+		StringUtil.extractFirst(
+			StringUtil.extractLast(
+				com.liferay.search.experiences.rest.dto.v1_0.SXPElement.class.
+					getName(),
+				".v"),
+			CharPool.PERIOD),
+		CharPool.UNDERLINE, CharPool.PERIOD);
+
 	@Reference
 	private ResourceLocalService _resourceLocalService;
+
+	private List<com.liferay.search.experiences.rest.dto.v1_0.SXPElement>
+		_sxpElements;
 
 	@Reference
 	private SXPElementValidator _sxpElementValidator;

@@ -92,7 +92,10 @@ public class ReleaseManagerImpl implements ReleaseManager {
 			}
 		}
 
-		if (_isPendingModuleUpgrades()) {
+		Set<String> upgradableBundleSymbolicNames =
+			getUpgradableBundleSymbolicNames();
+
+		if (!upgradableBundleSymbolicNames.isEmpty()) {
 			if (Validator.isNotNull(where)) {
 				where = "and " + where;
 			}
@@ -147,9 +150,14 @@ public class ReleaseManagerImpl implements ReleaseManager {
 	@Override
 	public boolean isUpgraded() throws Exception {
 		try (Connection connection = DataAccess.getConnection()) {
-			if (!PortalUpgradeProcess.isInLatestSchemaVersion(connection) ||
-				_isPendingModuleUpgrades()) {
+			if (!PortalUpgradeProcess.isInLatestSchemaVersion(connection)) {
+				return false;
+			}
 
+			Set<String> upgradableBundleSymbolicNames =
+				getUpgradableBundleSymbolicNames();
+
+			if (!upgradableBundleSymbolicNames.isEmpty()) {
 				return false;
 			}
 		}
@@ -316,18 +324,6 @@ public class ReleaseManagerImpl implements ReleaseManager {
 		String result = _systemChecker.check();
 
 		return !result.contains("UpgradeStepRegistrator");
-	}
-
-	private boolean _isPendingModuleUpgrades() {
-		for (String bundleSymbolicName :
-				_upgradeStepRegistry.getBundleSymbolicNames()) {
-
-			if (_isUpgradable(bundleSymbolicName)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private boolean _isPendingRequiredModuleUpgrades() {

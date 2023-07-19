@@ -16,6 +16,9 @@ package com.liferay.learn;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -23,8 +26,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.webcache.WebCacheItem;
-import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.util.PropsValues;
 
 /**
@@ -33,10 +35,22 @@ import com.liferay.portal.util.PropsValues;
 public class LearnMessageUtil {
 
 	public static JSONObject getJSONObject(String resource) {
-		return (JSONObject)WebCachePoolUtil.get(
-			JSONObjectWebCacheItem.class.getName() + StringPool.POUND +
-				resource,
-			new JSONObjectWebCacheItem(resource));
+		String key =
+			LearnMessageUtil.class.getName() + StringPool.POUND + resource;
+
+		JSONObject jsonObject = _portalCache.get(key);
+
+		if (jsonObject != null) {
+			return jsonObject;
+		}
+
+		jsonObject = _createJSONObject(resource);
+
+		_portalCache.put(
+			key, jsonObject,
+			(int)(PropsValues.LEARN_RESOURCES_REFRESH_TIME / Time.SECOND));
+
+		return jsonObject;
 	}
 
 	public static LearnMessage getLearnMessage(
@@ -65,59 +79,46 @@ public class LearnMessageUtil {
 		return jsonObject;
 	}
 
+	private static JSONObject _createJSONObject(String resource) {
+		try {
+			if (!PropsValues.LEARN_RESOURCES_ENABLED) {
+				return JSONFactoryUtil.createJSONObject();
+			}
+
+			StringBundler sb = new StringBundler(5);
+
+			sb.append(Http.HTTPS_WITH_SLASH);
+
+			if (!PropsValues.LEARN_RESOURCES_CDN_ENABLED) {
+				sb.append("s3.amazonaws.com/");
+			}
+
+			sb.append("learn-resources.liferay.com/");
+			sb.append(resource);
+			sb.append(".json");
+
+			String url = sb.toString();
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Reading " + url);
+			}
+
+			return JSONFactoryUtil.createJSONObject(HttpUtil.URLtoString(url));
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+
+			return JSONFactoryUtil.createJSONObject();
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LearnMessageUtil.class);
 
-	private static class JSONObjectWebCacheItem implements WebCacheItem {
-
-		public JSONObjectWebCacheItem(String resource) {
-			_resource = resource;
-		}
-
-		@Override
-		public JSONObject convert(String key) {
-			try {
-				if (!PropsValues.LEARN_RESOURCES_ENABLED) {
-					return JSONFactoryUtil.createJSONObject();
-				}
-
-				StringBundler sb = new StringBundler(5);
-
-				sb.append(Http.HTTPS_WITH_SLASH);
-
-				if (!PropsValues.LEARN_RESOURCES_CDN_ENABLED) {
-					sb.append("s3.amazonaws.com/");
-				}
-
-				sb.append("learn-resources.liferay.com/");
-				sb.append(_resource);
-				sb.append(".json");
-
-				String url = sb.toString();
-
-				if (_log.isDebugEnabled()) {
-					_log.debug("Reading " + url);
-				}
-
-				return JSONFactoryUtil.createJSONObject(
-					HttpUtil.URLtoString(url));
-			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception);
-				}
-
-				return JSONFactoryUtil.createJSONObject();
-			}
-		}
-
-		@Override
-		public long getRefreshTime() {
-			return PropsValues.LEARN_RESOURCES_REFRESH_TIME;
-		}
-
-		private final String _resource;
-
-	}
+	private static final PortalCache<String, JSONObject> _portalCache =
+		PortalCacheHelperUtil.getPortalCache(
+			PortalCacheManagerNames.MULTI_VM, LearnMessageUtil.class.getName());
 
 }

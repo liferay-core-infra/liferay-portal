@@ -260,7 +260,11 @@ public enum SpelMessage {
 
 	/** @since 5.2.20 */
 	MAX_ARRAY_ELEMENTS_THRESHOLD_EXCEEDED(Kind.ERROR, 1075,
-		"Array declares too many elements, exceeding the threshold of ''{0}''");
+		"Array declares too many elements, exceeding the threshold of ''{0}''"),
+
+	/** @since 5.2.24 */
+	MAX_CONCATENATED_STRING_LENGTH_EXCEEDED(Kind.ERROR, 1078,
+		"Concatenated string is too long, exceeding the threshold of ''{0}'' characters");
 
 	private final Kind kind;
 

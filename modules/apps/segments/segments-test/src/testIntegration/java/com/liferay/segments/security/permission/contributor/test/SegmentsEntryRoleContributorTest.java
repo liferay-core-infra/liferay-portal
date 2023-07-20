@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -91,7 +91,7 @@ public class SegmentsEntryRoleContributorTest {
 				).put(
 					"segmentationEnabled", true
 				).build(),
-				SettingsFactoryUtil.getSettingsFactory());
+				_settingsFactory);
 
 		_configurationTemporarySwapper = new ConfigurationTemporarySwapper(
 			"com.liferay.segments.configuration.SegmentsConfiguration",
@@ -440,6 +440,9 @@ public class SegmentsEntryRoleContributorTest {
 
 	@Inject
 	private SegmentsEntryRoleLocalService _segmentsEntryRoleLocalService;
+
+	@Inject
+	private SettingsFactory _settingsFactory;
 
 	@DeleteAfterTestRun
 	private User _user;

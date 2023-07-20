@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceResponse;
@@ -102,7 +102,7 @@ public class GetTotalViewsMVCResourceCommandTest {
 							"liferayAnalyticsFaroBackendURL",
 							"http://" + RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			ReflectionTestUtil.setFieldValue(
 				_mvcResourceCommand, "_http",
@@ -256,5 +256,8 @@ public class GetTotalViewsMVCResourceCommandTest {
 
 	@Inject
 	private Portal _portal;
+
+	@Inject
+	private SettingsFactory _settingsFactory;
 
 }

@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -121,7 +121,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			long[] segmentsExperienceIds =
 				_segmentsExperienceRequestProcessor.getSegmentsExperienceIds(
@@ -182,7 +182,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			MockHttpServletRequest mockHttpServletRequest =
 				_getMockHttpServletRequest();
@@ -228,7 +228,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			long[] segmentsExperienceIds =
 				_segmentsExperienceRequestProcessor.getSegmentsExperienceIds(
@@ -265,7 +265,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			long[] segmentsExperienceIds =
 				_segmentsExperienceRequestProcessor.getSegmentsExperienceIds(
@@ -323,7 +323,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			long[] segmentsExperienceIds =
 				_segmentsExperienceRequestProcessor.getSegmentsExperienceIds(
@@ -363,7 +363,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 				_group.getGroupId());
@@ -422,7 +422,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 				_group.getGroupId());
@@ -499,7 +499,7 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			MockHttpServletRequest mockHttpServletRequest =
 				_getMockHttpServletRequest();
@@ -574,5 +574,8 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 	@Inject
 	private SegmentsExperimentRelLocalService
 		_segmentsExperimentRelLocalService;
+
+	@Inject
+	private SettingsFactory _settingsFactory;
 
 }

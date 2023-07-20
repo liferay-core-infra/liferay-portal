@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -73,7 +73,7 @@ public class ConfigurationOverrideInstanceTest {
 
 		boolean currentValue = _isRssEnabled();
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = _settingsFactory.getSettings(
 			new GroupServiceSettingsLocator(
 				_group.getGroupId(), BlogsConstants.SERVICE_NAME));
 
@@ -102,5 +102,8 @@ public class ConfigurationOverrideInstanceTest {
 	private static ConfigurationProvider _configurationProvider;
 
 	private Group _group;
+
+	@Inject
+	private SettingsFactory _settingsFactory;
 
 }

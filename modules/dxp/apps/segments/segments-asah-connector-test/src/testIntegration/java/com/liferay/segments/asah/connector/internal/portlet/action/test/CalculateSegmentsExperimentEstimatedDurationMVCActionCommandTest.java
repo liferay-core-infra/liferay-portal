@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
@@ -170,7 +170,7 @@ public class CalculateSegmentsExperimentEstimatedDurationMVCActionCommandTest {
 							"liferayAnalyticsFaroBackendURL",
 							"http://localhost:8080"
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						_settingsFactory)) {
 
 			_mvcActionCommand.processAction(
 				mockLiferayPortletActionRequest,
@@ -240,5 +240,8 @@ public class CalculateSegmentsExperimentEstimatedDurationMVCActionCommandTest {
 	@Inject
 	private SegmentsExperimentRelLocalService
 		_segmentsExperimentRelLocalService;
+
+	@Inject
+	private SettingsFactory _settingsFactory;
 
 }

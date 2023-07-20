@@ -47,7 +47,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -890,7 +890,7 @@ public class FragmentEntryLinkLocalServiceTest {
 			HashMapDictionaryBuilder.<String, Object>put(
 				"enable.freemarker", false
 			).build(),
-			SettingsFactoryUtil.getSettingsFactory());
+			_settingsFactory);
 	}
 
 	private MockHttpServletRequest _getMockHttpServletRequest()
@@ -974,5 +974,8 @@ public class FragmentEntryLinkLocalServiceTest {
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
 
 	private ServiceContext _serviceContext;
+
+	@Inject
+	private SettingsFactory _settingsFactory;
 
 }

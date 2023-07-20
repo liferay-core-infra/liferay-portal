@@ -67,7 +67,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -784,7 +784,7 @@ public class CommerceShipmentTest {
 			commerceTaxCategoryId, commerceTaxMethod.getCommerceTaxMethodId(),
 			shippingTaxRate);
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = _settingsFactory.getSettings(
 			new GroupServiceSettingsLocator(
 				_commerceChannel.getGroupId(),
 				CommerceConstants.SERVICE_NAME_COMMERCE_TAX));
@@ -1115,6 +1115,9 @@ public class CommerceShipmentTest {
 	private CPInstanceLocalService _cpInstanceLocalService;
 
 	private Group _group;
+
+	@Inject
+	private SettingsFactory _settingsFactory;
 
 	@Inject
 	private UserLocalService _userLocalService;

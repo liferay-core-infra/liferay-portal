@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.MockHttp;
@@ -127,7 +127,7 @@ public class IndividualSegmentsCheckerTest {
 							"liferayAnalyticsFaroBackendURL",
 							"http://localhost:8080"
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory());
+						_settingsFactory);
 			ConfigurationTemporarySwapper configurationTemporarySwapper =
 				new ConfigurationTemporarySwapper(
 					"com.liferay.segments.asah.connector.internal." +
@@ -282,6 +282,10 @@ public class IndividualSegmentsCheckerTest {
 	private SegmentsEntryRelLocalService _segmentsEntryRelLocalService;
 
 	private ServiceTracker<Object, Object> _serviceTracker;
+
+	@Inject
+	private SettingsFactory _settingsFactory;
+
 	private User _user;
 
 	@Inject

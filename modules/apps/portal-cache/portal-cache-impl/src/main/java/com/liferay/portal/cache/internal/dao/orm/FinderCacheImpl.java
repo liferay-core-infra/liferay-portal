@@ -64,21 +64,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  */
-@Component(
-	service = {
-		CacheRegistryItem.class, FinderCache.class, FinderCacheImpl.class
-	}
-)
+@Component(service = FinderCache.class)
 public class FinderCacheImpl
-	implements CacheRegistryItem, FinderCache, PortalCacheManagerListener {
+	implements FinderCache, PortalCacheManagerListener {
 
 	public void clearByEntityCache(String className) {
 		clearLocalCache();
@@ -92,11 +90,7 @@ public class FinderCacheImpl
 
 	@Override
 	public void clearCache() {
-		clearLocalCache();
-
-		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
-			portalCache.removeAll();
-		}
+		_cleanCache();
 	}
 
 	@Override
@@ -138,11 +132,6 @@ public class FinderCacheImpl
 	@Override
 	public void dispose() {
 		_portalCaches.clear();
-	}
-
-	@Override
-	public String getRegistryName() {
-		return FinderCache.class.getName();
 	}
 
 	@Override
@@ -232,7 +221,7 @@ public class FinderCacheImpl
 
 	@Override
 	public void invalidate() {
-		clearCache();
+		_cleanCache();
 	}
 
 	@Override
@@ -502,6 +491,22 @@ public class FinderCacheImpl
 
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, ArgumentsResolver.class, "class.name");
+
+		_serviceRegistration = bundleContext.registerService(
+			CacheRegistryItem.class, new FinderCacheCacheRegistryItem(), null);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
+	}
+
+	private void _cleanCache() {
+		clearLocalCache();
+
+		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
+			portalCache.removeAll();
+		}
 	}
 
 	private void _clearCache(String cacheName) {
@@ -719,6 +724,7 @@ public class FinderCacheImpl
 	@Reference
 	private Props _props;
 
+	private ServiceRegistration<CacheRegistryItem> _serviceRegistration;
 	private ServiceTrackerMap<String, ArgumentsResolver> _serviceTrackerMap;
 	private boolean _valueObjectFinderCacheEnabled;
 	private int _valueObjectFinderCacheListThreshold;
@@ -750,6 +756,20 @@ public class FinderCacheImpl
 
 		private final Serializable _cacheKey;
 		private final String _className;
+
+	}
+
+	private class FinderCacheCacheRegistryItem implements CacheRegistryItem {
+
+		@Override
+		public String getRegistryName() {
+			return FinderCache.class.getName();
+		}
+
+		@Override
+		public void invalidate() {
+			_cleanCache();
+		}
 
 	}
 

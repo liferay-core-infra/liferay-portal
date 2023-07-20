@@ -18,7 +18,6 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import org.osgi.framework.BundleContext;
 
@@ -51,19 +50,11 @@ public class SettingsFactoryUtil {
 		return settings;
 	}
 
-	public static SettingsFactory getSettingsFactory() {
-		return _settingsFactory;
-	}
-
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
 	private static final ServiceTrackerMap<String, FallbackKeys>
 		_fallbackKeysServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				_bundleContext, FallbackKeys.class, "settingsId");
-	private static volatile SettingsFactory _settingsFactory =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			SettingsFactory.class, SettingsFactoryUtil.class,
-			"_settingsFactory", true);
 
 }

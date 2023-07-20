@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -606,8 +605,7 @@ public class AccountEntryUserRelLocalServiceTest {
 							"invitationEmailBody", invitationEmailBody
 						).put(
 							"invitationEmailSubject", invitationEmailSubject
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			ServiceContext serviceContext =
 				ServiceContextTestUtil.getServiceContext();
@@ -860,9 +858,6 @@ public class AccountEntryUserRelLocalServiceTest {
 
 	@Inject
 	private AccountUserRetriever _accountUserRetriever;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
 
 	@DeleteAfterTestRun
 	private User _user;

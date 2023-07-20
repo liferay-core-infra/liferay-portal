@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -654,8 +653,7 @@ public class LayoutReferencesExportImportContentProcessorTest {
 						HashMapDictionaryBuilder.<String, Object>put(
 							"validateLayoutReferencesWhitelistedURLPatterns",
 							new String[] {exactMatchPattern}
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			_exportImportServiceConfigurationWhitelistedURLPatternsHelper.
 				rebuildURLPatternMapper(TestPropsValues.getCompanyId());
@@ -696,8 +694,7 @@ public class LayoutReferencesExportImportContentProcessorTest {
 						HashMapDictionaryBuilder.<String, Object>put(
 							"validateLayoutReferencesWhitelistedURLPatterns",
 							new String[] {exactMatchPattern}
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			_exportImportServiceConfigurationWhitelistedURLPatternsHelper.
 				rebuildURLPatternMapper(TestPropsValues.getCompanyId());
@@ -737,8 +734,7 @@ public class LayoutReferencesExportImportContentProcessorTest {
 											INSTANCE),
 									StringPool.SLASH, StringPool.STAR)
 							}
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			_exportImportServiceConfigurationWhitelistedURLPatternsHelper.
 				rebuildURLPatternMapper(TestPropsValues.getCompanyId());
@@ -783,8 +779,7 @@ public class LayoutReferencesExportImportContentProcessorTest {
 						HashMapDictionaryBuilder.<String, Object>put(
 							"validateLayoutReferencesWhitelistedURLPatterns",
 							new String[] {prefixPattern + StringPool.STAR}
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			_exportImportServiceConfigurationWhitelistedURLPatternsHelper.
 				rebuildURLPatternMapper(TestPropsValues.getCompanyId());
@@ -1012,8 +1007,5 @@ public class LayoutReferencesExportImportContentProcessorTest {
 
 	@Inject
 	private Portal _portal;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
 
 }

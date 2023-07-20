@@ -269,8 +269,7 @@ public class AccountEntryEmailAddressValidatorTest {
 						).put(
 							"enableEmailDomainValidation",
 							validatorArgs.emailAddressDomainValidationEnabled
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			accountEntryEmailAddressValidatorExceptionUnsafeConsumer.accept(
 				_accountEntryEmailAddressValidatorFactory.create(

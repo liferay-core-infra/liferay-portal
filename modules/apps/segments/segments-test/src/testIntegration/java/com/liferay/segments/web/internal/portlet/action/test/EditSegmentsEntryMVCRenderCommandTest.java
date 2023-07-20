@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderResponse;
@@ -96,8 +95,7 @@ public class EditSegmentsEntryMVCRenderCommandTest {
 						SegmentsCompanyConfiguration.class.getName(),
 						HashMapDictionaryBuilder.<String, Object>put(
 							"segmentationEnabled", true
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
 				_getMockLiferayPortletRenderRequests();
@@ -292,9 +290,6 @@ public class EditSegmentsEntryMVCRenderCommandTest {
 
 	@Inject
 	private Portal _portal;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
 
 	@Inject(
 		filter = "segments.criteria.contributor.key=user",

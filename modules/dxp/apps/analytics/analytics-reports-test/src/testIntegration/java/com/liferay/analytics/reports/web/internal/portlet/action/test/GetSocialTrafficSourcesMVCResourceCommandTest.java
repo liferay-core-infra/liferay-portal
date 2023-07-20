@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceResponse;
@@ -102,8 +101,7 @@ public class GetSocialTrafficSourcesMVCResourceCommandTest {
 						).put(
 							"liferayAnalyticsFaroBackendURL",
 							"http://" + RandomTestUtil.randomString()
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			ReflectionTestUtil.setFieldValue(
 				_mvcResourceCommand, "_http",
@@ -185,8 +183,7 @@ public class GetSocialTrafficSourcesMVCResourceCommandTest {
 				companyConfigurationTemporarySwapper =
 					new CompanyConfigurationTemporarySwapper(
 						TestPropsValues.getCompanyId(),
-						AnalyticsConfiguration.class.getName(), dictionary,
-						_settingsFactory)) {
+						AnalyticsConfiguration.class.getName(), dictionary)) {
 
 			MockContextUtil.testWithMockContext(
 				MockContextUtil.MockContext.builder(
@@ -278,8 +275,5 @@ public class GetSocialTrafficSourcesMVCResourceCommandTest {
 
 	@Inject
 	private Portal _portal;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
 
 }

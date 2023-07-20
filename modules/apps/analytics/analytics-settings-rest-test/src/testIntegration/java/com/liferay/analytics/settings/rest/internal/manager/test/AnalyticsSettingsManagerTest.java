@@ -22,7 +22,6 @@ import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporaryS
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -351,8 +350,7 @@ public class AnalyticsSettingsManagerTest {
 						).put(
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			Assert.assertTrue(
 				_analyticsSettingsManager.isSiteIdSynced(
@@ -372,8 +370,7 @@ public class AnalyticsSettingsManagerTest {
 				companyConfigurationTemporarySwapper =
 					new CompanyConfigurationTemporarySwapper(
 						TestPropsValues.getCompanyId(),
-						AnalyticsConfiguration.class.getName(), dictionary,
-						_settingsFactory)) {
+						AnalyticsConfiguration.class.getName(), dictionary)) {
 
 			Assert.assertFalse(
 				_analyticsSettingsManager.isSiteIdSynced(
@@ -402,8 +399,7 @@ public class AnalyticsSettingsManagerTest {
 							new String[] {
 								String.valueOf(_siteGroup1.getGroupId())
 							}
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			Assert.assertTrue(
 				_analyticsSettingsManager.isSiteIdSynced(
@@ -470,9 +466,6 @@ public class AnalyticsSettingsManagerTest {
 
 	@Inject
 	private GroupLocalService _groupLocalService;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
 
 	private Group _siteGroup1;
 	private Group _siteGroup2;

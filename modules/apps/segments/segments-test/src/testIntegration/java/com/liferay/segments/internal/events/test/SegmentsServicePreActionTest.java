@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -101,8 +100,7 @@ public class SegmentsServicePreActionTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"segmentationEnabled", true
-							).build(),
-							_settingsFactory)) {
+							).build())) {
 
 				LifecycleAction lifecycleAction = _getLifecycleAction();
 
@@ -159,8 +157,7 @@ public class SegmentsServicePreActionTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"segmentationEnabled", true
-							).build(),
-							_settingsFactory)) {
+							).build())) {
 
 				LifecycleAction lifecycleAction = _getLifecycleAction();
 
@@ -223,8 +220,7 @@ public class SegmentsServicePreActionTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"segmentationEnabled", true
-							).build(),
-							_settingsFactory)) {
+							).build())) {
 
 				LifecycleAction lifecycleAction = _getLifecycleAction();
 
@@ -265,8 +261,7 @@ public class SegmentsServicePreActionTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"segmentationEnabled", true
-							).build(),
-							_settingsFactory)) {
+							).build())) {
 
 				LifecycleAction lifecycleAction = _getLifecycleAction();
 
@@ -306,8 +301,7 @@ public class SegmentsServicePreActionTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"segmentationEnabled", true
-							).build(),
-							_settingsFactory)) {
+							).build())) {
 
 				LifecycleAction lifecycleAction = _getLifecycleAction();
 
@@ -415,8 +409,5 @@ public class SegmentsServicePreActionTest {
 
 	@Inject
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
 
 }

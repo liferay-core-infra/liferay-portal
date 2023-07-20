@@ -18,7 +18,6 @@ import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.configuration.test.util.GroupConfigurationTemporarySwapper;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 
 /**
@@ -40,8 +39,7 @@ public class LayoutReportsTestUtil {
 								"CompanyConfiguration",
 						HashMapDictionaryBuilder.<String, Object>put(
 							"enabled", enabled
-						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						).build())) {
 
 			unsafeRunnable.run();
 		}
@@ -79,8 +77,7 @@ public class LayoutReportsTestUtil {
 							"apiKey", apiKey
 						).put(
 							"enabled", enabled
-						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						).build())) {
 
 			unsafeRunnable.run();
 		}

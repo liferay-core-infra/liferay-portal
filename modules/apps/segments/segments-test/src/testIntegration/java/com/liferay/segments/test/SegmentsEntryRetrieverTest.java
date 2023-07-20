@@ -18,7 +18,6 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -73,8 +72,7 @@ public class SegmentsEntryRetrieverTest {
 						SegmentsCompanyConfiguration.class.getName(),
 						HashMapDictionaryBuilder.<String, Object>put(
 							"segmentationEnabled", true
-						).build(),
-						_settingsFactory)) {
+						).build())) {
 
 			SegmentsEntry segmentsEntry = _addSegmentsEntry(_user);
 
@@ -121,9 +119,6 @@ public class SegmentsEntryRetrieverTest {
 
 	@Inject
 	private SegmentsEntryRetriever _segmentsEntryRetriever;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
 
 	@DeleteAfterTestRun
 	private User _user;

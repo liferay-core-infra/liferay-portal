@@ -21,14 +21,12 @@ import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporaryS
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.MockHttp;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
@@ -96,8 +94,7 @@ public class InterestTermsCheckerTest {
 						).put(
 							"liferayAnalyticsFaroBackendURL",
 							"http://localhost:8080"
-						).build(),
-						_settingsFactory);
+						).build());
 			ConfigurationTemporarySwapper configurationTemporarySwapper =
 				new ConfigurationTemporarySwapper(
 					"com.liferay.segments.asah.connector.internal." +
@@ -174,10 +171,6 @@ public class InterestTermsCheckerTest {
 
 	private Object _asahInterestTermProvider;
 	private Object _interestTermsChecker;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
-
 	private User _user;
 
 }

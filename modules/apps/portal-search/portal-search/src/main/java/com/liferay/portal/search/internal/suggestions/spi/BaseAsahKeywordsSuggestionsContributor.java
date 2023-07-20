@@ -108,7 +108,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		}
 
 		JSONArray jsonArray = JSONUtil.getValueAsJSONArray(
-			_get(
+			_getJSONObject(
 				analyticsConfiguration, asahSearchKeywordsConfiguration,
 				searchContext.getCompanyId(),
 				_getDisplayLanguageId(attributes, searchContext.getLocale()),
@@ -139,7 +139,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 	@Reference
 	protected MultiVMPool multiVMPool;
 
-	private JSONObject _convert(
+	private JSONObject _createJSONObject(
 		AnalyticsConfiguration analyticsConfiguration, String displayLanguageId,
 		long groupId, int minCounts, int size, String sort) {
 
@@ -193,33 +193,6 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		return false;
 	}
 
-	private JSONObject _get(
-		AnalyticsConfiguration analyticsConfiguration,
-		AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
-		long companyId, String displayLanguageId, long groupId, int minCounts,
-		int size, String sort) {
-
-		String key = StringBundler.concat(
-			StringPool.POUND, companyId, StringPool.POUND, minCounts,
-			StringPool.POUND, displayLanguageId, StringPool.POUND, groupId,
-			StringPool.POUND, sort);
-
-		JSONObject jsonObject = _portalCache.get(key);
-
-		if (jsonObject != null) {
-			return jsonObject;
-		}
-
-		jsonObject = _convert(
-			analyticsConfiguration, displayLanguageId, groupId, minCounts, size,
-			sort);
-
-		_portalCache.put(
-			key, jsonObject, asahSearchKeywordsConfiguration.cacheTimeout());
-
-		return jsonObject;
-	}
-
 	private AnalyticsConfiguration _getAnalyticsConfiguration(
 		AnalyticsSettingsManager analyticsSettingsManager, long companyId) {
 
@@ -263,6 +236,33 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		}
 
 		return groupIds[0];
+	}
+
+	private JSONObject _getJSONObject(
+		AnalyticsConfiguration analyticsConfiguration,
+		AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
+		long companyId, String displayLanguageId, long groupId, int minCounts,
+		int size, String sort) {
+
+		String key = StringBundler.concat(
+			StringPool.POUND, companyId, StringPool.POUND, minCounts,
+			StringPool.POUND, displayLanguageId, StringPool.POUND, groupId,
+			StringPool.POUND, sort);
+
+		JSONObject jsonObject = _portalCache.get(key);
+
+		if (jsonObject != null) {
+			return jsonObject;
+		}
+
+		jsonObject = _createJSONObject(
+			analyticsConfiguration, displayLanguageId, groupId, minCounts, size,
+			sort);
+
+		_portalCache.put(
+			key, jsonObject, asahSearchKeywordsConfiguration.cacheTimeout());
+
+		return jsonObject;
 	}
 
 	private int _getMinCounts(Map<String, Object> attributes) {

@@ -281,13 +281,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	@Override
-	public void addExpando(
-		Element element, String path, ClassedModel classedModel) {
-
-		addExpando(element, path, classedModel, classedModel.getModelClass());
-	}
-
-	@Override
 	public void addLocks(Class<?> clazz, String key) throws PortalException {
 		if (!_locksMap.containsKey(
 				_getPrimaryKeyString(clazz, (Serializable)key)) &&
@@ -933,11 +926,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	@Override
-	public Object getNewPrimaryKey(Class<?> clazz, Object newPrimaryKey) {
-		return getNewPrimaryKey(clazz.getName(), newPrimaryKey);
-	}
-
-	@Override
 	public Object getNewPrimaryKey(String className, Object newPrimaryKey) {
 		Map<?, ?> primaryKeys = getNewPrimaryKeysMap(className);
 
@@ -1074,11 +1062,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	@Override
-	public Element getReferenceElement(Class<?> clazz, Serializable classPK) {
-		return getReferenceElement(clazz.getName(), classPK);
-	}
-
-	@Override
 	public Element getReferenceElement(
 		Element parentElement, Class<?> clazz, long groupId, String uuid,
 		String referenceType) {
@@ -1091,13 +1074,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 		}
 
 		return null;
-	}
-
-	@Override
-	public Element getReferenceElement(
-		StagedModel parentStagedModel, Class<?> clazz, Serializable classPK) {
-
-		return getReferenceElement(parentStagedModel, clazz.getName(), classPK);
 	}
 
 	@Override
@@ -1501,19 +1477,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 		}
 
 		importPermissions(resourceName, getSourceGroupId(), getScopeGroupId());
-	}
-
-	@Override
-	public boolean isCompanyStagedGroupedModel(
-		StagedGroupedModel stagedGroupedModel) {
-
-		if ((stagedGroupedModel.getGroupId() == getCompanyGroupId()) &&
-			(getGroupId() != getCompanyGroupId())) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override

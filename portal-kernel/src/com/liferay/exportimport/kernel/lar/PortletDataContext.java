@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.StagedGroupedModel;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.DateRange;
@@ -89,10 +88,6 @@ public interface PortletDataContext extends Serializable {
 
 	public void addDeletionSystemEventStagedModelTypes(
 		StagedModelType... stagedModelTypes);
-
-	public void addExpando(
-			Element element, String path, ClassedModel classedModel)
-		throws PortalException;
 
 	public void addLocks(Class<?> clazz, String key) throws PortalException;
 
@@ -232,8 +227,6 @@ public interface PortletDataContext extends Serializable {
 
 	public Element getMissingReferencesElement();
 
-	public Object getNewPrimaryKey(Class<?> clazz, Object newPrimaryKey);
-
 	public Object getNewPrimaryKey(String className, Object newPrimaryKey);
 
 	public Map<?, ?> getNewPrimaryKeysMap(Class<?> clazz);
@@ -274,14 +267,9 @@ public interface PortletDataContext extends Serializable {
 	public List<Element> getReferenceDataElements(
 		StagedModel parentStagedModel, Class<?> clazz, String referenceType);
 
-	public Element getReferenceElement(Class<?> clazz, Serializable classPK);
-
 	public Element getReferenceElement(
 		Element parentElement, Class<?> clazz, long groupId, String uuid,
 		String referenceType);
-
-	public Element getReferenceElement(
-		StagedModel parentStagedModel, Class<?> clazz, Serializable classPK);
 
 	public Element getReferenceElement(
 		StagedModel parentStagedModel, String className, Serializable classPK);
@@ -367,9 +355,6 @@ public interface PortletDataContext extends Serializable {
 
 	public void importPortletPermissions(String resourceName)
 		throws PortalException;
-
-	public boolean isCompanyStagedGroupedModel(
-		StagedGroupedModel stagedGroupedModel);
 
 	public boolean isDataStrategyMirror();
 

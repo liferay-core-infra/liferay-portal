@@ -6,7 +6,6 @@
 package com.liferay.portal.deploy.hot;
 
 import com.liferay.document.library.kernel.util.DLProcessor;
-import com.liferay.document.library.kernel.util.DLProcessorRegistryUtil;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
@@ -86,6 +85,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -2278,20 +2278,35 @@ public class HookHotDeployListener
 	private static class DLFileEntryProcessorContainer {
 
 		public void registerDLProcessor(DLProcessor dlProcessor) {
-			DLProcessorRegistryUtil.register(dlProcessor);
+			Class<?>[] classes = ReflectionUtil.getInterfaces(dlProcessor);
 
-			_dlProcessors.add(dlProcessor);
+			String[] classNames = new String[classes.length];
+
+			for (int i = 0; i < classes.length; i++) {
+				classNames[i] = classes[i].getName();
+			}
+
+			BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+			_dlProcessorServiceRegistrations.add(
+				bundleContext.registerService(
+					classNames, dlProcessor,
+					MapUtil.singletonDictionary(
+						"type", dlProcessor.getType())));
 		}
 
 		public void unregisterDLProcessors() {
-			for (DLProcessor dlProcessor : _dlProcessors) {
-				DLProcessorRegistryUtil.unregister(dlProcessor);
+			for (ServiceRegistration<?> serviceRegistration :
+					_dlProcessorServiceRegistrations) {
+
+				serviceRegistration.unregister();
 			}
 
-			_dlProcessors.clear();
+			_dlProcessorServiceRegistrations.clear();
 		}
 
-		private final List<DLProcessor> _dlProcessors = new ArrayList<>();
+		private final List<ServiceRegistration<?>>
+			_dlProcessorServiceRegistrations = new ArrayList<>();
 
 	}
 

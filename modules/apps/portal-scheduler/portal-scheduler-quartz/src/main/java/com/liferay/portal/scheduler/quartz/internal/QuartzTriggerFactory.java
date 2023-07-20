@@ -14,9 +14,6 @@
 
 package com.liferay.portal.scheduler.quartz.internal;
 
-import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
@@ -44,17 +41,6 @@ public class QuartzTriggerFactory implements TriggerFactory {
 	public Trigger createTrigger(
 		String jobName, String groupName, Date startDate, Date endDate,
 		int interval, TimeUnit timeUnit) {
-
-		if (interval < 0) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					StringBundler.concat(
-						"Not scheduling ", jobName,
-						" because interval is less than 0"));
-			}
-
-			return null;
-		}
 
 		if (interval <= 0) {
 			return createTrigger(
@@ -146,8 +132,5 @@ public class QuartzTriggerFactory implements TriggerFactory {
 
 		return new QuartzTrigger(triggerBuilder.build());
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		QuartzTriggerFactory.class);
 
 }

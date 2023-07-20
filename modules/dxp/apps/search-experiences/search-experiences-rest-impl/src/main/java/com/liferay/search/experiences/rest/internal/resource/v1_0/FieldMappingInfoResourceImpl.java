@@ -15,15 +15,21 @@
 package com.liferay.search.experiences.rest.internal.resource.v1_0;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.webcache.WebCacheItem;
+import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 import com.liferay.portal.search.index.IndexInformation;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.search.experiences.rest.dto.v1_0.FieldMappingInfo;
-import com.liferay.search.experiences.rest.internal.web.cache.FieldMappingsWebCacheItem;
 import com.liferay.search.experiences.rest.resource.v1_0.FieldMappingInfoResource;
 
 import java.util.ArrayList;
@@ -62,7 +68,7 @@ public class FieldMappingInfoResourceImpl
 	public List<FieldMappingInfo> getFieldMappings(
 		boolean external, String indexName, String query) {
 
-		JSONObject jsonObject = FieldMappingsWebCacheItem.get(
+		JSONObject jsonObject = _get(
 			_indexInformation, _getIndexName(indexName), _jsonFactory);
 
 		if (jsonObject.length() == 0) {
@@ -76,6 +82,48 @@ public class FieldMappingInfoResourceImpl
 			StringPool.BLANK, query);
 
 		return fieldMappingInfos;
+	}
+
+	public static class FieldMappingsWebCacheItem implements WebCacheItem {
+
+		public FieldMappingsWebCacheItem(
+			IndexInformation indexInformation, String indexName,
+			JSONFactory jsonFactory) {
+
+			_indexInformation = indexInformation;
+			_indexName = indexName;
+			_jsonFactory = jsonFactory;
+		}
+
+		@Override
+		public JSONObject convert(String key) {
+			try {
+				return JSONUtil.getValueAsJSONObject(
+					_jsonFactory.createJSONObject(
+						_indexInformation.getFieldMappings(_indexName)),
+					"JSONObject/" + _indexName, "JSONObject/mappings",
+					"JSONObject/properties");
+			}
+			catch (JSONException jsonException) {
+				_log.error(jsonException);
+			}
+
+			return _jsonFactory.createJSONObject();
+		}
+
+		@Override
+		public long getRefreshTime() {
+			return _REFRESH_TIME;
+		}
+
+		private static final long _REFRESH_TIME = Time.MINUTE * 30;
+
+		private final IndexInformation _indexInformation;
+		private final String _indexName;
+		private final JSONFactory _jsonFactory;
+		private final Log _log = LogFactoryUtil.getLog(
+			FieldMappingsWebCacheItem.class);
+
 	}
 
 	private void _addFieldMappingInfo(
@@ -141,6 +189,17 @@ public class FieldMappingInfoResourceImpl
 					languageIdPosition);
 			}
 		}
+	}
+
+	private JSONObject _get(
+		IndexInformation indexInformation, String indexName,
+		JSONFactory jsonFactory) {
+
+		return (JSONObject)WebCachePoolUtil.get(
+			FieldMappingsWebCacheItem.class.getName() + StringPool.POUND +
+				indexName,
+			new FieldMappingsWebCacheItem(
+				indexInformation, indexName, jsonFactory));
 	}
 
 	private String _getIndexName(String indexName) {

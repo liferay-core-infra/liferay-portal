@@ -14,7 +14,13 @@
 
 package com.liferay.portal.kernel.settings;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
+
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Raymond Augé
@@ -25,13 +31,36 @@ public class SettingsFactoryUtil {
 	public static Settings getSettings(SettingsLocator settingsLocator)
 		throws SettingsException {
 
-		return _settingsFactory.getSettings(settingsLocator);
+		Settings settings = settingsLocator.getSettings();
+
+		if (settings instanceof FallbackKeys) {
+			return settings;
+		}
+
+		String settingsId = settingsLocator.getSettingsId();
+
+		settingsId = PortletIdCodec.decodePortletName(settingsId);
+
+		FallbackKeys fallbackKeys = _fallbackKeysServiceTrackerMap.getService(
+			settingsId);
+
+		if (fallbackKeys != null) {
+			settings = new FallbackSettings(settings, fallbackKeys);
+		}
+
+		return settings;
 	}
 
 	public static SettingsFactory getSettingsFactory() {
 		return _settingsFactory;
 	}
 
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
+	private static final ServiceTrackerMap<String, FallbackKeys>
+		_fallbackKeysServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				_bundleContext, FallbackKeys.class, "settingsId");
 	private static volatile SettingsFactory _settingsFactory =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			SettingsFactory.class, SettingsFactoryUtil.class,

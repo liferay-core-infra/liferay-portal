@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -17,10 +17,10 @@ import com.liferay.portal.monitoring.internal.statistics.RequestStatistics;
  * @author Michael C. Han
  * @author Brian Wing Shun Chan
  */
-public class CompanyStatistics
+public class PortalRequestDataSampleProcessor
 	implements DataSampleProcessor<PortalRequestDataSample> {
 
-	public CompanyStatistics() {
+	public PortalRequestDataSampleProcessor() {
 		_companyId = CompanyConstants.SYSTEM;
 
 		_webId = CompanyConstants.SYSTEM_STRING;
@@ -28,7 +28,7 @@ public class CompanyStatistics
 		_requestStatistics = new RequestStatistics(_webId);
 	}
 
-	public CompanyStatistics(
+	public PortalRequestDataSampleProcessor(
 		CompanyLocalService companyLocalService, String webId) {
 
 		try {

@@ -26,23 +26,24 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 
 	@Override
 	public long getAverageTime() {
-		Set<CompanyStatistics> companyStatisticsSet =
-			_serverStatistics.getCompanyStatisticsSet();
+		Set<PortalRequestDataSampleProcessor>
+			portalRequestDataSampleProcessorSet =
+			_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet();
 
-		if (companyStatisticsSet.isEmpty()) {
+		if (portalRequestDataSampleProcessorSet.isEmpty()) {
 			return 0;
 		}
 
 		long averageTime = 0;
 
-		for (CompanyStatistics companyStatistics : companyStatisticsSet) {
+		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor : portalRequestDataSampleProcessorSet) {
 			RequestStatistics requestStatistics =
-				companyStatistics.getRequestStatistics();
+				portalRequestDataSampleProcessor.getRequestStatistics();
 
 			averageTime += requestStatistics.getAverageTime();
 		}
 
-		return averageTime / companyStatisticsSet.size();
+		return averageTime / portalRequestDataSampleProcessorSet.size();
 	}
 
 	@Override
@@ -67,11 +68,11 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	public long getErrorCount() {
 		int errorCount = 0;
 
-		for (CompanyStatistics companyStatistics :
-				_serverStatistics.getCompanyStatisticsSet()) {
+		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
+				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
 
 			RequestStatistics requestStatistics =
-				companyStatistics.getRequestStatistics();
+				portalRequestDataSampleProcessor.getRequestStatistics();
 
 			errorCount += requestStatistics.getErrorCount();
 		}
@@ -101,11 +102,11 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	public long getMaxTime() {
 		long maxTime = 0;
 
-		for (CompanyStatistics companyStatistics :
-				_serverStatistics.getCompanyStatisticsSet()) {
+		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
+				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
 
-			if (companyStatistics.getMaxTime() > maxTime) {
-				maxTime = companyStatistics.getMaxTime();
+			if (portalRequestDataSampleProcessor.getMaxTime() > maxTime) {
+				maxTime = portalRequestDataSampleProcessor.getMaxTime();
 			}
 		}
 
@@ -130,11 +131,11 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	public long getMinTime() {
 		long minTime = 0;
 
-		for (CompanyStatistics companyStatistics :
-				_serverStatistics.getCompanyStatisticsSet()) {
+		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
+				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
 
-			if (companyStatistics.getMinTime() < minTime) {
-				minTime = companyStatistics.getMinTime();
+			if (portalRequestDataSampleProcessor.getMinTime() < minTime) {
+				minTime = portalRequestDataSampleProcessor.getMinTime();
 			}
 		}
 
@@ -159,11 +160,11 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	public long getRequestCount() {
 		int requestCount = 0;
 
-		for (CompanyStatistics companyStatistics :
-				_serverStatistics.getCompanyStatisticsSet()) {
+		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
+				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
 
 			RequestStatistics requestStatistics =
-				companyStatistics.getRequestStatistics();
+				portalRequestDataSampleProcessor.getRequestStatistics();
 
 			requestCount += requestStatistics.getRequestCount();
 		}
@@ -193,11 +194,11 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	public long getSuccessCount() {
 		int successCount = 0;
 
-		for (CompanyStatistics companyStatistics :
-				_serverStatistics.getCompanyStatisticsSet()) {
+		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
+				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
 
 			RequestStatistics requestStatistics =
-				companyStatistics.getRequestStatistics();
+				portalRequestDataSampleProcessor.getRequestStatistics();
 
 			successCount += requestStatistics.getSuccessCount();
 		}
@@ -227,11 +228,11 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	public long getTimeoutCount() {
 		int timeoutCount = 0;
 
-		for (CompanyStatistics companyStatistics :
-				_serverStatistics.getCompanyStatisticsSet()) {
+		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
+				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
 
 			RequestStatistics requestStatistics =
-				companyStatistics.getRequestStatistics();
+				portalRequestDataSampleProcessor.getRequestStatistics();
 
 			timeoutCount += requestStatistics.getTimeoutCount();
 		}
@@ -261,10 +262,10 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		throws MonitoringException {
 
 		try {
-			CompanyStatistics companyStatistics =
-				_serverStatistics.getCompanyStatistics(companyId);
+			PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+				_serverPortalRequestDataSampleProcessor.getCompanyStatistics(companyId);
 
-			return companyStatistics.getRequestStatistics();
+			return portalRequestDataSampleProcessor.getRequestStatistics();
 		}
 		catch (Exception exception) {
 			throw new MonitoringException(
@@ -277,10 +278,10 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		throws MonitoringException {
 
 		try {
-			CompanyStatistics companyStatistics =
-				_serverStatistics.getCompanyStatistics(webId);
+			PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+				_serverPortalRequestDataSampleProcessor.getCompanyStatistics(webId);
 
-			return companyStatistics.getRequestStatistics();
+			return portalRequestDataSampleProcessor.getRequestStatistics();
 		}
 		catch (Exception exception) {
 			throw new MonitoringException(
@@ -289,6 +290,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	}
 
 	@Reference
-	private ServerStatistics _serverStatistics;
+	private ServerPortalRequestDataSampleProcessor
+		_serverPortalRequestDataSampleProcessor;
 
 }

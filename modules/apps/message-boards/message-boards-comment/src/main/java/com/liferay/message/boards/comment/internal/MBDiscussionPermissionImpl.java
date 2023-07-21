@@ -45,9 +45,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 	@Override
 	public boolean hasPermission(
-			PermissionChecker permissionChecker, Comment comment,
-			String actionId)
-		throws PortalException {
+		PermissionChecker permissionChecker, Comment comment, String actionId) {
 
 		MBCommentImpl mbCommentImpl = (MBCommentImpl)comment;
 
@@ -97,9 +95,8 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 	@Override
 	public boolean hasSubscribePermission(
-			PermissionChecker permissionChecker, long companyId, long groupId,
-			String className, long classPK)
-		throws PortalException {
+		PermissionChecker permissionChecker, long companyId, long groupId,
+		String className, long classPK) {
 
 		return hasViewPermission(
 			permissionChecker, companyId, groupId, className, classPK);
@@ -116,9 +113,8 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 	}
 
 	private boolean _hasPermission(
-			PermissionChecker permissionChecker, MBMessage message,
-			String actionId)
-		throws PortalException {
+		PermissionChecker permissionChecker, MBMessage message,
+		String actionId) {
 
 		String className = message.getClassName();
 

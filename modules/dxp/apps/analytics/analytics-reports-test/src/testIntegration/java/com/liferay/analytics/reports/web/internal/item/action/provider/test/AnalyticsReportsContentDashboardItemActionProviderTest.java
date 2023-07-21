@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -91,8 +90,7 @@ public class AnalyticsReportsContentDashboardItemActionProviderTest {
 						).put(
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
-						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						).build())) {
 
 			MockContextUtil.testWithMockContext(
 				new MockContextUtil.MockContext.Builder(

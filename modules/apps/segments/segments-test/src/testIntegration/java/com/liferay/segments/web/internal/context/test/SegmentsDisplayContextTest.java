@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderResponse;
@@ -170,8 +169,7 @@ public class SegmentsDisplayContextTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"roleSegmentationEnabled", false
-							).build(),
-							SettingsFactoryUtil.getSettingsFactory())) {
+							).build())) {
 
 				SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 					ServiceContextTestUtil.getServiceContext(
@@ -200,8 +198,7 @@ public class SegmentsDisplayContextTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"roleSegmentationEnabled", true
-							).build(),
-							SettingsFactoryUtil.getSettingsFactory())) {
+							).build())) {
 
 				SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 					ServiceContextTestUtil.getServiceContext(
@@ -376,8 +373,7 @@ public class SegmentsDisplayContextTest {
 						AnalyticsConfiguration.class.getName(),
 						HashMapDictionaryBuilder.<String, Object>put(
 							"liferayAnalyticsURL", RandomTestUtil.randomString()
-						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						).build())) {
 
 			SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
@@ -407,8 +403,7 @@ public class SegmentsDisplayContextTest {
 						AnalyticsConfiguration.class.getName(),
 						HashMapDictionaryBuilder.<String, Object>put(
 							"liferayAnalyticsURL", RandomTestUtil.randomString()
-						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						).build())) {
 
 			SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
@@ -443,8 +438,7 @@ public class SegmentsDisplayContextTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"roleSegmentationEnabled", true
-							).build(),
-							SettingsFactoryUtil.getSettingsFactory())) {
+							).build())) {
 
 				Assert.assertTrue(
 					_isRoleSegmentationEnabled(TestPropsValues.getCompanyId()));
@@ -485,8 +479,7 @@ public class SegmentsDisplayContextTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"segmentationEnabled", false
-							).build(),
-							SettingsFactoryUtil.getSettingsFactory())) {
+							).build())) {
 
 				Assert.assertFalse(
 					_isSegmentationEnabled(TestPropsValues.getCompanyId()));
@@ -510,8 +503,7 @@ public class SegmentsDisplayContextTest {
 							SegmentsCompanyConfiguration.class.getName(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"segmentationEnabled", true
-							).build(),
-							SettingsFactoryUtil.getSettingsFactory())) {
+							).build())) {
 
 				Assert.assertTrue(
 					_isSegmentationEnabled(TestPropsValues.getCompanyId()));

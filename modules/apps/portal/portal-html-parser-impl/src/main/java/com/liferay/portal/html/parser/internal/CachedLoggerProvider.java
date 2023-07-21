@@ -61,6 +61,11 @@ public class CachedLoggerProvider implements LoggerProvider {
 		return logger;
 	}
 
+	@Override
+	public Logger getSourceLogger() {
+		return getLogger("net.htmlparser.jericho");
+	}
+
 	private final LoggerProvider _loggerProvider;
 	private final Map<String, Logger> _loggers = new ConcurrentHashMap<>();
 

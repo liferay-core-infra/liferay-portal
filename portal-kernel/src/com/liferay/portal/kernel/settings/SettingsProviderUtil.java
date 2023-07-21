@@ -9,13 +9,12 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Raymond Augé
  * @author Jorge Ferrer
  */
-public class SettingsFactoryUtil {
+public class SettingsProviderUtil {
 
 	public static Settings getSettings(SettingsLocator settingsLocator)
 		throws SettingsException {
@@ -40,18 +39,10 @@ public class SettingsFactoryUtil {
 		return settings;
 	}
 
-	public static SettingsFactory getSettingsFactory() {
-		return _settingsFactory;
-	}
-
 	private static final ServiceTrackerMap<String, FallbackKeys>
 		_fallbackKeysServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				SystemBundleUtil.getBundleContext(), FallbackKeys.class,
 				"settingsId");
-	private static volatile SettingsFactory _settingsFactory =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			SettingsFactory.class, SettingsFactoryUtil.class,
-			"_settingsFactory", true);
 
 }

@@ -13,6 +13,7 @@ Import-Package:\
 	!org.apache.log,\
 	!org.apache.log.format,\
 	!org.apache.log.output.io,\
+	!org.apache.log4j.*,\
 	!org.apache.oro.text.perl,\
 	!org.apache.struts.*,\
 	!org.apache.tools.ant.*,\

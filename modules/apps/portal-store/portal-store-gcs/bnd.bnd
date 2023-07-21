@@ -11,6 +11,7 @@ Import-Package:\
 	\
 	!org.apache.avalon.framework.logger,\
 	!org.apache.log,\
+	!org.apache.log4j.*,\
 	\
 	!org.checkerframework.checker.*,\
 	\

@@ -123,7 +123,7 @@ public class EntityCacheImplTest {
 				SystemBundleUtil.getBundleContext(), ArgumentsResolver.class,
 				"class.name"));
 
-		entityCacheImpl.activate();
+		entityCacheImpl.activate(_bundleContext);
 
 		PortalCache<?, ?> portalCache = entityCacheImpl.getPortalCache(
 			EntityCacheImplTest.class);
@@ -157,7 +157,7 @@ public class EntityCacheImplTest {
 				new MultiVMPoolInvocationHandler(_classLoader, serialized)));
 		ReflectionTestUtil.setFieldValue(entityCacheImpl, "_props", _props);
 
-		entityCacheImpl.activate();
+		entityCacheImpl.activate(_bundleContext);
 
 		entityCacheImpl.putResult(EntityCacheImplTest.class, 12345, _nullModel);
 
@@ -173,6 +173,8 @@ public class EntityCacheImplTest {
 	private static final MockedStatic<FrameworkUtil>
 		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
 
+	private final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 	private ClassLoader _classLoader;
 	private Serializable _nullModel;
 	private Props _props;

@@ -24,12 +24,14 @@ import java.util.function.Supplier;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.SynchronousBundleListener;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -88,6 +90,18 @@ public class Snapshot<T> {
 				}
 
 				serviceTracker.open();
+
+				bundleContext.addBundleListener(
+					new SynchronousBundleListener() {
+
+						@Override
+						public void bundleChanged(BundleEvent bundleEvent) {
+							serviceTrackerDCLSingleton.destroy(null);
+
+							bundleContext.removeBundleListener(this);
+						}
+
+					});
 
 				return serviceTracker;
 			};

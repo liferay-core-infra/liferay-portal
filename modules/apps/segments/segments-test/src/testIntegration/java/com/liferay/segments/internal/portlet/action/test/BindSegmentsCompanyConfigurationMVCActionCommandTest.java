@@ -19,7 +19,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
@@ -205,9 +204,6 @@ public class BindSegmentsCompanyConfigurationMVCActionCommandTest {
 
 	@Inject
 	private ConfigurationAdmin _configurationAdmin;
-
-	@Inject
-	private ConfigurationProvider _configurationProvider;
 
 	@Inject(
 		filter = "mvc.command.name=/instance_settings/bind_segments_company_configuration",

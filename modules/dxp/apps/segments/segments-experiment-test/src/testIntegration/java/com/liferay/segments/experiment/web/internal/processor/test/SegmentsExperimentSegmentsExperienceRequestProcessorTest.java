@@ -22,7 +22,6 @@ import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporaryS
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -42,7 +41,6 @@ import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.processor.SegmentsExperienceRequestProcessor;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.segments.service.SegmentsExperimentLocalService;
-import com.liferay.segments.service.SegmentsExperimentRelLocalService;
 import com.liferay.segments.test.util.SegmentsTestUtil;
 
 import java.util.Arrays;
@@ -548,9 +546,6 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 	private Layout _layout;
 
 	@Inject
-	private LayoutLocalService _layoutLocalService;
-
-	@Inject
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
 
 	@Inject(
@@ -561,9 +556,5 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 
 	@Inject
 	private SegmentsExperimentLocalService _segmentsExperimentLocalService;
-
-	@Inject
-	private SegmentsExperimentRelLocalService
-		_segmentsExperimentRelLocalService;
 
 }

@@ -16,7 +16,7 @@ package com.liferay.oauth2.provider.scope.internal;
 
 import com.liferay.oauth2.provider.model.OAuth2ScopeGrant;
 import com.liferay.oauth2.provider.scope.ScopeChecker;
-import com.liferay.oauth2.provider.scope.internal.liferay.ThreadLocalScopeContext;
+import com.liferay.oauth2.provider.scope.internal.util.OAuth2ProviderScopeThreadLocalUtil;
 import com.liferay.oauth2.provider.service.OAuth2ScopeGrantLocalService;
 import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.util.Validator;
@@ -30,8 +30,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Carlos Sierra Andrés
  */
 @Component(service = ScopeChecker.class)
-public class ThreadLocalScopeChecker
-	extends ThreadLocalScopeContext implements ScopeChecker {
+public class ThreadLocalScopeChecker implements ScopeChecker {
 
 	@Override
 	public boolean checkAllScopes(String... scopes) {
@@ -117,8 +116,10 @@ public class ThreadLocalScopeChecker
 			_oAuth2ScopeGrantLocalServiceSnapshot.get();
 
 		return oAuth2ScopeGrantLocalService.getOAuth2ScopeGrants(
-			companyIdThreadLocal.get(), applicationNameThreadLocal.get(),
-			bundleSymbolicNameThreadLocal.get(), accessTokenThreadLocal.get());
+			OAuth2ProviderScopeThreadLocalUtil.getCompanyId(),
+			OAuth2ProviderScopeThreadLocalUtil.getApplicationName(),
+			OAuth2ProviderScopeThreadLocalUtil.getBundleSymbolicName(),
+			OAuth2ProviderScopeThreadLocalUtil.getAccessToken());
 	}
 
 	private static final Snapshot<OAuth2ScopeGrantLocalService>

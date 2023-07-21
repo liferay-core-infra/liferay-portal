@@ -14,8 +14,8 @@
 
 package com.liferay.oauth2.provider.scope.internal.liferay;
 
+import com.liferay.oauth2.provider.scope.internal.util.OAuth2ProviderScopeThreadLocalUtil;
 import com.liferay.oauth2.provider.scope.liferay.ScopeContext;
-import com.liferay.petra.string.StringPool;
 
 import org.osgi.framework.Bundle;
 import org.osgi.service.component.annotations.Component;
@@ -28,20 +28,17 @@ public class ThreadLocalScopeContext implements ScopeContext {
 
 	@Override
 	public void clear() {
-		accessTokenThreadLocal.remove();
-		applicationNameThreadLocal.remove();
-		bundleSymbolicNameThreadLocal.remove();
-		companyIdThreadLocal.remove();
+		OAuth2ProviderScopeThreadLocalUtil.clear();
 	}
 
 	@Override
 	public void setAccessToken(String accessToken) {
-		accessTokenThreadLocal.set(accessToken);
+		OAuth2ProviderScopeThreadLocalUtil.setAccessToken(accessToken);
 	}
 
 	@Override
 	public void setApplicationName(String applicationName) {
-		applicationNameThreadLocal.set(applicationName);
+		OAuth2ProviderScopeThreadLocalUtil.setApplicationName(applicationName);
 	}
 
 	@Override
@@ -52,21 +49,12 @@ public class ThreadLocalScopeContext implements ScopeContext {
 			symbolicName = bundle.getSymbolicName();
 		}
 
-		bundleSymbolicNameThreadLocal.set(symbolicName);
+		OAuth2ProviderScopeThreadLocalUtil.setBundleSymbolicName(symbolicName);
 	}
 
 	@Override
 	public void setCompanyId(long companyId) {
-		companyIdThreadLocal.set(companyId);
+		OAuth2ProviderScopeThreadLocalUtil.setCompanyId(companyId);
 	}
-
-	protected final ThreadLocal<String> accessTokenThreadLocal =
-		ThreadLocal.withInitial(() -> StringPool.BLANK);
-	protected final ThreadLocal<String> applicationNameThreadLocal =
-		ThreadLocal.withInitial(() -> StringPool.BLANK);
-	protected final ThreadLocal<String> bundleSymbolicNameThreadLocal =
-		ThreadLocal.withInitial(() -> StringPool.BLANK);
-	protected final ThreadLocal<Long> companyIdThreadLocal =
-		ThreadLocal.withInitial(() -> 0L);
 
 }

@@ -105,7 +105,13 @@ public class ClassLoaderTrackerTest {
 
 			Assert.assertEquals(Bundle.RESOLVED, bundle.getState());
 
-			Assert.assertNull(classLoaders.get(contextName));
+			BundleWiring resolveBundleWiring = bundle.adapt(BundleWiring.class);
+
+			Assert.assertNotNull(resolveBundleWiring.getClassLoader());
+
+			Assert.assertSame(
+				resolveBundleWiring.getClassLoader(),
+				classLoaders.get(contextName));
 
 			// Test 3, start bundle
 
@@ -113,10 +119,17 @@ public class ClassLoaderTrackerTest {
 
 			Assert.assertEquals(Bundle.STARTING, bundle.getState());
 
-			BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+			BundleWiring startBundleWiring = bundle.adapt(BundleWiring.class);
+
+			Assert.assertNotNull(startBundleWiring.getClassLoader());
 
 			Assert.assertSame(
-				bundleWiring.getClassLoader(), classLoaders.get(contextName));
+				startBundleWiring.getClassLoader(),
+				classLoaders.get(contextName));
+
+			Assert.assertSame(
+				resolveBundleWiring.getClassLoader(),
+				startBundleWiring.getClassLoader());
 
 			// Test 4, load class cause lazy activation
 
@@ -127,7 +140,8 @@ public class ClassLoaderTrackerTest {
 			Assert.assertEquals(Bundle.ACTIVE, bundle.getState());
 
 			Assert.assertSame(
-				bundleWiring.getClassLoader(), classLoaders.get(contextName));
+				startBundleWiring.getClassLoader(),
+				classLoaders.get(contextName));
 
 			// Test 5, refresh bundle
 
@@ -151,14 +165,16 @@ public class ClassLoaderTrackerTest {
 				throw throwable;
 			}
 
-			BundleWiring newBundleWiring = bundle.adapt(BundleWiring.class);
+			BundleWiring refershBundleWiring = bundle.adapt(BundleWiring.class);
+
+			Assert.assertNotNull(refershBundleWiring.getClassLoader());
 
 			Assert.assertSame(
-				newBundleWiring.getClassLoader(),
+				refershBundleWiring.getClassLoader(),
 				classLoaders.get(contextName));
 			Assert.assertNotSame(
-				bundleWiring.getClassLoader(),
-				newBundleWiring.getClassLoader());
+				startBundleWiring.getClassLoader(),
+				refershBundleWiring.getClassLoader());
 
 			// Test 6, stop bundle
 
@@ -166,9 +182,35 @@ public class ClassLoaderTrackerTest {
 
 			Assert.assertEquals(Bundle.RESOLVED, bundle.getState());
 
-			Assert.assertNull(classLoaders.get(contextName));
+			BundleWiring stopBundleWiring = bundle.adapt(BundleWiring.class);
 
-			// Test 7, uninstall bundle
+			Assert.assertNotNull(stopBundleWiring.getClassLoader());
+
+			Assert.assertSame(
+				stopBundleWiring.getClassLoader(),
+				classLoaders.get(contextName));
+			Assert.assertSame(
+				stopBundleWiring.getClassLoader(),
+				refershBundleWiring.getClassLoader());
+
+			// Test 7, restart bundle
+
+			bundle.start();
+
+			Assert.assertEquals(Bundle.ACTIVE, bundle.getState());
+
+			BundleWiring restartBundleWiring = bundle.adapt(BundleWiring.class);
+
+			Assert.assertNotNull(restartBundleWiring.getClassLoader());
+
+			Assert.assertSame(
+				restartBundleWiring.getClassLoader(),
+				classLoaders.get(contextName));
+			Assert.assertSame(
+				stopBundleWiring.getClassLoader(),
+				restartBundleWiring.getClassLoader());
+
+			// Test 8, uninstall bundle
 
 			bundle.uninstall();
 

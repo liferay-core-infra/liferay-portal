@@ -32,7 +32,8 @@ public class ClassLoaderTrackerBundleActivator implements BundleActivator {
 	@Override
 	public void start(BundleContext bundleContext) {
 		_bundleTracker = new BundleTracker<ClassLoader>(
-			bundleContext, Bundle.STARTING | Bundle.ACTIVE, null) {
+			bundleContext, Bundle.RESOLVED | Bundle.STARTING | Bundle.ACTIVE,
+			null) {
 
 			@Override
 			public ClassLoader addingBundle(
@@ -41,6 +42,10 @@ public class ClassLoaderTrackerBundleActivator implements BundleActivator {
 				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
 				ClassLoader classLoader = bundleWiring.getClassLoader();
+
+				if (classLoader == null) {
+					return null;
+				}
 
 				ClassLoaderPool.register(
 					_toClassLoaderName(bundle), classLoader);

@@ -16,8 +16,8 @@ import com.liferay.portal.kernel.settings.ArchivedSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsException;
 import com.liferay.portal.kernel.settings.SettingsFactory;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.settings.SettingsLocator;
+import com.liferay.portal.kernel.settings.SettingsProviderUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +71,7 @@ public class SettingsFactoryImpl implements SettingsFactory {
 	public Settings getSettings(SettingsLocator settingsLocator)
 		throws SettingsException {
 
-		return SettingsFactoryUtil.getSettings(settingsLocator);
+		return SettingsProviderUtil.getSettings(settingsLocator);
 	}
 
 	private PortletItem _getPortletItem(

@@ -63,7 +63,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
@@ -1115,8 +1114,5 @@ public class CommerceShipmentTest {
 	private CPInstanceLocalService _cpInstanceLocalService;
 
 	private Group _group;
-
-	@Inject
-	private UserLocalService _userLocalService;
 
 }

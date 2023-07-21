@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.MockHttp;
@@ -281,8 +280,5 @@ public class IndividualSegmentsCheckerTest {
 
 	private ServiceTracker<Object, Object> _serviceTracker;
 	private User _user;
-
-	@Inject
-	private UserLocalService _userLocalService;
 
 }

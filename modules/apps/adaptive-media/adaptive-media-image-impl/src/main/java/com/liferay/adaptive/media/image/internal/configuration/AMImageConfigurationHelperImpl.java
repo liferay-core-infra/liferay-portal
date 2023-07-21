@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsException;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsProviderUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -469,7 +469,7 @@ public class AMImageConfigurationHelperImpl
 				(ArrayList<AMImageConfigurationEntry>)
 					TransformUtil.transformToList(
 						_getImageVariants(
-							SettingsFactoryUtil.getSettings(
+							SettingsProviderUtil.getSettings(
 								new CompanyServiceSettingsLocator(
 									companyId,
 									AMImageCompanyConfiguration.class.
@@ -536,7 +536,7 @@ public class AMImageConfigurationHelperImpl
 		throws IOException {
 
 		try {
-			Settings settings = SettingsFactoryUtil.getSettings(
+			Settings settings = SettingsProviderUtil.getSettings(
 				new CompanyServiceSettingsLocator(
 					companyId, AMImageCompanyConfiguration.class.getName()));
 

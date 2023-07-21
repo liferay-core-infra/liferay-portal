@@ -14,8 +14,8 @@ import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsDescriptor;
 import com.liferay.portal.kernel.settings.SettingsException;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelperUtil;
+import com.liferay.portal.kernel.settings.SettingsProviderUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -110,7 +110,7 @@ public class SavePortalSettingsFormMVCActionCommand
 			ActionRequest actionRequest, ThemeDisplay themeDisplay)
 		throws IOException, SettingsException, ValidatorException {
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = SettingsProviderUtil.getSettings(
 			new CompanyServiceSettingsLocator(
 				themeDisplay.getCompanyId(), getSettingsId()));
 

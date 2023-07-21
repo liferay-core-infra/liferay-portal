@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.settings.ParameterMapSettings;
 import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsProviderUtil;
 import com.liferay.portal.kernel.settings.TypedSettings;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
@@ -28,7 +28,7 @@ public class DLPortletInstanceSettings {
 			Layout layout, String portletId)
 		throws PortalException {
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = SettingsProviderUtil.getSettings(
 			new PortletInstanceSettingsLocator(layout, portletId));
 
 		return new DLPortletInstanceSettings(settings);
@@ -38,7 +38,7 @@ public class DLPortletInstanceSettings {
 			Layout layout, String portletId, Map<String, String[]> parameterMap)
 		throws PortalException {
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = SettingsProviderUtil.getSettings(
 			new PortletInstanceSettingsLocator(layout, portletId));
 
 		Settings parameterMapSettings = new ParameterMapSettings(

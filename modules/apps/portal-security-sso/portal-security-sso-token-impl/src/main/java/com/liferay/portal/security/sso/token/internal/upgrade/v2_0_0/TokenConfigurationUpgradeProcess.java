@@ -10,8 +10,8 @@ import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsDescriptor;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelperUtil;
+import com.liferay.portal.kernel.settings.SettingsProviderUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
@@ -37,7 +37,7 @@ public class TokenConfigurationUpgradeProcess extends UpgradeProcess {
 			Dictionary<String, String> dictionary)
 		throws Exception {
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = SettingsProviderUtil.getSettings(
 			new CompanyServiceSettingsLocator(companyId, settingsId));
 
 		ModifiableSettings modifiableSettings =

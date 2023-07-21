@@ -73,6 +73,7 @@ Import-Package:\
 	!org.apache.ivy.*,\
 	!org.apache.kafka.clients.producer.*,\
 	!org.apache.log.*,\
+	!org.apache.log4j.*,\
 	!org.apache.lucene.analysis.*,\
 	!org.apache.lucene.expressions.*,\
 	!org.apache.lucene.geo3d.*,\

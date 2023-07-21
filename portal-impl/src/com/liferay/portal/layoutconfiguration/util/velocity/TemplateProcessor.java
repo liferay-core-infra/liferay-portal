@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsProviderUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -174,7 +174,7 @@ public class TemplateProcessor implements ColumnProcessor {
 
 				String defaultPreferences = portlet.getDefaultPreferences();
 
-				Settings currentSettings = SettingsFactoryUtil.getSettings(
+				Settings currentSettings = SettingsProviderUtil.getSettings(
 					new PortletInstanceSettingsLocator(layout, portletId));
 
 				ModifiableSettings currentModifiableSettings =
@@ -223,7 +223,7 @@ public class TemplateProcessor implements ColumnProcessor {
 		}
 
 		if (defaultSettingsMap != null) {
-			Settings settings = SettingsFactoryUtil.getSettings(
+			Settings settings = SettingsProviderUtil.getSettings(
 				new PortletInstanceSettingsLocator(layout, portletId));
 
 			ModifiableSettings modifiableSettings =

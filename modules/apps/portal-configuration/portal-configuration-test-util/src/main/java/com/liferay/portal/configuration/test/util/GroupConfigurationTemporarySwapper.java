@@ -17,7 +17,7 @@ package com.liferay.portal.configuration.test.util;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsProviderUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.util.Dictionary;
@@ -35,7 +35,7 @@ public class GroupConfigurationTemporarySwapper implements AutoCloseable {
 		_groupId = groupId;
 		_pid = pid;
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = SettingsProviderUtil.getSettings(
 			new GroupServiceSettingsLocator(_groupId, _pid));
 
 		ModifiableSettings modifiableSettings =
@@ -59,7 +59,7 @@ public class GroupConfigurationTemporarySwapper implements AutoCloseable {
 
 	@Override
 	public void close() throws Exception {
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = SettingsProviderUtil.getSettings(
 			new GroupServiceSettingsLocator(_groupId, _pid));
 
 		ModifiableSettings modifiableSettings =

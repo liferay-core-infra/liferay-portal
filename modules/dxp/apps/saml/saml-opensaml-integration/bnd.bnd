@@ -45,6 +45,7 @@ Import-Package:\
 	!org.apache.commons.httpclient.*,\
 	!org.apache.commons.ssl,\
 	!org.apache.log.*,\
+	!org.apache.log4j.*,\
 	!org.apache.oro.*,\
 	!org.apache.poi.*,\
 	!org.apache.tools.ant.*,\

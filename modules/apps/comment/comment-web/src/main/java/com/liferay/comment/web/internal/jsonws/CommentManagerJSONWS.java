@@ -16,8 +16,6 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -109,9 +107,9 @@ public class CommentManagerJSONWS extends BaseServiceImpl {
 	public boolean hasDiscussion(long groupId, String className, long classPK)
 		throws PortalException {
 
-		BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-			getPermissionChecker(), groupId, className, classPK,
-			ActionKeys.VIEW);
+		_discussionPermission.checkViewPermission(
+			getPermissionChecker(), _getCompanyId(groupId), groupId, className,
+			classPK);
 
 		return _commentManager.hasDiscussion(className, classPK);
 	}

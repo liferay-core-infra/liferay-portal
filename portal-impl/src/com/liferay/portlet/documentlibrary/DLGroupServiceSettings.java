@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.settings.ParameterMapSettings;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsProviderUtil;
 import com.liferay.portal.kernel.settings.TypedSettings;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
@@ -26,7 +26,7 @@ public class DLGroupServiceSettings {
 	public static DLGroupServiceSettings getInstance(long groupId)
 		throws PortalException {
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = SettingsProviderUtil.getSettings(
 			new GroupServiceSettingsLocator(groupId, DLConstants.SERVICE_NAME));
 
 		return new DLGroupServiceSettings(settings);
@@ -36,7 +36,7 @@ public class DLGroupServiceSettings {
 			long groupId, Map<String, String[]> parameterMap)
 		throws PortalException {
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = SettingsProviderUtil.getSettings(
 			new GroupServiceSettingsLocator(groupId, DLConstants.SERVICE_NAME));
 
 		Settings parameterMapSettings = new ParameterMapSettings(

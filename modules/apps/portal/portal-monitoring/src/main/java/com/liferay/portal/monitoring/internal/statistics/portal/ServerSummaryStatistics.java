@@ -8,6 +8,7 @@ package com.liferay.portal.monitoring.internal.statistics.portal;
 import com.liferay.portal.kernel.monitoring.MonitoringException;
 import com.liferay.portal.monitoring.internal.statistics.RequestStatistics;
 import com.liferay.portal.monitoring.internal.statistics.SummaryStatistics;
+import com.liferay.portal.monitoring.internal.statistics.util.RequestDataSampleProcessorHelper;
 
 import java.util.Set;
 
@@ -28,7 +29,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	public long getAverageTime() {
 		Set<PortalRequestDataSampleProcessor>
 			portalRequestDataSampleProcessorSet =
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessorSet();
 
 		if (portalRequestDataSampleProcessorSet.isEmpty()) {
@@ -72,7 +73,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		int errorCount = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessorSet()) {
 
 			RequestStatistics requestStatistics =
@@ -107,7 +108,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		long maxTime = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessorSet()) {
 
 			if (portalRequestDataSampleProcessor.getMaxTime() > maxTime) {
@@ -137,7 +138,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		long minTime = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessorSet()) {
 
 			if (portalRequestDataSampleProcessor.getMinTime() < minTime) {
@@ -167,7 +168,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		int requestCount = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessorSet()) {
 
 			RequestStatistics requestStatistics =
@@ -202,7 +203,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		int successCount = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessorSet()) {
 
 			RequestStatistics requestStatistics =
@@ -237,7 +238,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		int timeoutCount = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessorSet()) {
 
 			RequestStatistics requestStatistics =
@@ -272,7 +273,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 
 		try {
 			PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessor(companyId);
 
 			return portalRequestDataSampleProcessor.getRequestStatistics();
@@ -289,7 +290,7 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 
 		try {
 			PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
-				_serverPortalRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortalRequestDataSampleProcessor(webId);
 
 			return portalRequestDataSampleProcessor.getRequestStatistics();
@@ -301,7 +302,6 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	}
 
 	@Reference
-	private ServerPortalRequestDataSampleProcessor
-		_serverPortalRequestDataSampleProcessor;
+	private RequestDataSampleProcessorHelper _requestDataSampleProcessorHelper;
 
 }

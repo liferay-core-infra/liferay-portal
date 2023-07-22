@@ -5,6 +5,8 @@ Import-Package:\
 	!com.google.api.client.json.gson,\
 	!com.google.common.util.concurrent.*,\
 	\
+	!javax.annotation.meta.*,\
+	\
 	!javax.jdo.*,\
 	\
 	!org.apache.http.*,\

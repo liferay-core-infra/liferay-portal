@@ -9,6 +9,8 @@ Import-Package:\
 	!com.google.common.util.concurrent.*,\
 	!com.google.errorprone.annotations.*,\
 	\
+	!javax.annotation.meta.*,\
+	\
 	!org.apache.avalon.framework.logger,\
 	!org.apache.log,\
 	\

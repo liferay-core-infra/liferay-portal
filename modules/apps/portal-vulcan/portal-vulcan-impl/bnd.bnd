@@ -12,6 +12,8 @@ Import-Package:\
 	\
 	!javafx.beans.*,\
 	\
+	!javax.annotation.meta.*,\
+	\
 	!javax.money.*,\
 	\
 	!lombok,\

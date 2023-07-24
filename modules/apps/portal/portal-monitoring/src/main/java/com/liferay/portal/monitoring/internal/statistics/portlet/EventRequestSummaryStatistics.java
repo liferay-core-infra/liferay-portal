@@ -29,7 +29,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			for (RequestStatistics requestStatistics :
 					portletRequestDataSampleProcessor.
@@ -53,8 +53,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getAverageTimeByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getAverageTimeByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		Set<PortletRequestDataSampleProcessor>
 			portletRequestDataSampleProcessorSet =
 				_serverPortletRequestDataSampleProcessor.
-					getCompanyStatisticsSet();
+					getPortletRequestDataSampleProcessor();
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
@@ -100,8 +100,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId);
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId);
 
 		RequestStatistics requestStatistics =
 			portletRequestDataSampleProcessor.getEventRequestStatistics(
@@ -115,8 +115,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId);
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId);
 
 		RequestStatistics requestStatistics =
 			portletRequestDataSampleProcessor.getEventRequestStatistics(
@@ -132,7 +132,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			errorCount += getErrorCountByCompany(
 				portletRequestDataSampleProcessor);
@@ -146,8 +146,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getErrorCountByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -155,8 +155,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getErrorCountByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			errorCount += getErrorCountByPortlet(
 				portletId, portletRequestDataSampleProcessor);
@@ -183,8 +183,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getErrorCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -193,8 +193,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getErrorCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			for (RequestStatistics requestStatistics :
 					portletRequestDataSampleProcessor.
@@ -222,8 +222,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 	@Override
 	public long getMaxTimeByCompany(long companyId) throws MonitoringException {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId);
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId);
 
 		return portletRequestDataSampleProcessor.getMaxTime();
 	}
@@ -231,8 +231,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 	@Override
 	public long getMaxTimeByCompany(String webId) throws MonitoringException {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId);
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId);
 
 		return portletRequestDataSampleProcessor.getMaxTime();
 	}
@@ -246,7 +246,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			long curMaxTime = getMaxTimeByPortlet(
 				portletId, portletRequestDataSampleProcessor);
@@ -265,8 +265,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getMaxTimeByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -275,8 +275,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getMaxTimeByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -286,7 +286,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			for (RequestStatistics requestStatistics :
 					portletRequestDataSampleProcessor.
@@ -304,8 +304,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 	@Override
 	public long getMinTimeByCompany(long companyId) throws MonitoringException {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId);
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId);
 
 		return portletRequestDataSampleProcessor.getMinTime();
 	}
@@ -313,8 +313,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 	@Override
 	public long getMinTimeByCompany(String webId) throws MonitoringException {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId);
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId);
 
 		return portletRequestDataSampleProcessor.getMinTime();
 	}
@@ -328,7 +328,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			long curMinTime = getMinTimeByPortlet(
 				portletId, portletRequestDataSampleProcessor);
@@ -347,8 +347,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getMinTimeByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -357,8 +357,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getMinTimeByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -368,7 +368,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			requestCount += getRequestCountByCompany(
 				portletRequestDataSampleProcessor);
@@ -382,8 +382,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getRequestCountByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -391,8 +391,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getRequestCountByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -404,7 +404,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			requestCount += getRequestCountByPortlet(
 				portletId, portletRequestDataSampleProcessor);
@@ -419,8 +419,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getRequestCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -429,8 +429,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getRequestCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -440,7 +440,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			successCount += getSuccessCountByCompany(
 				portletRequestDataSampleProcessor);
@@ -454,8 +454,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getSuccessCountByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -463,8 +463,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getSuccessCountByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -476,7 +476,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			successCount += getSuccessCountByPortlet(
 				portletId, portletRequestDataSampleProcessor);
@@ -491,8 +491,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getSuccessCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -501,8 +501,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getSuccessCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -512,7 +512,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			timeoutCount += getTimeoutCountByCompany(
 				portletRequestDataSampleProcessor);
@@ -526,8 +526,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getTimeoutCountByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -535,8 +535,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		throws MonitoringException {
 
 		return getTimeoutCountByCompany(
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	@Override
@@ -548,7 +548,7 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
 					_serverPortletRequestDataSampleProcessor.
-						getCompanyStatisticsSet()) {
+						getPortletRequestDataSampleProcessor()) {
 
 			timeoutCount += getTimeoutCountByPortlet(
 				portletId, portletRequestDataSampleProcessor);
@@ -563,8 +563,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getTimeoutCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				companyId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(companyId));
 	}
 
 	@Override
@@ -573,8 +573,8 @@ public class EventRequestSummaryStatistics implements PortletSummaryStatistics {
 
 		return getTimeoutCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.getCompanyStatistics(
-				webId));
+			_serverPortletRequestDataSampleProcessor.
+				getPortletRequestDataSampleProcessor(webId));
 	}
 
 	protected long getAverageTimeByCompany(

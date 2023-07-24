@@ -33,16 +33,35 @@ import org.osgi.service.component.annotations.Reference;
 public class ServerPortletRequestDataSampleProcessor
 	implements DataSampleProcessor<PortletRequestDataSample> {
 
-	public Set<Long> getCompanyIds() {
-		return _companyStatisticsByCompanyId.keySet();
+	public Set<Long> getPortletCompanyIds() {
+		return _portletRequestDataSampleProcessorByCompanyId.keySet();
 	}
 
-	public PortletRequestDataSampleProcessor getCompanyStatistics(
-			long companyId)
+	public Set<String> getPortletIds() {
+		Set<String> portletIds = new HashSet<>();
+
+		for (PortletRequestDataSampleProcessor containerStatistics :
+				_portletRequestDataSampleProcessorByWebId.values()) {
+
+			portletIds.addAll(containerStatistics.getPortletIds());
+		}
+
+		return portletIds;
+	}
+
+	public Set<PortletRequestDataSampleProcessor>
+		getPortletRequestDataSampleProcessor() {
+
+		return new HashSet<>(
+			_portletRequestDataSampleProcessorByWebId.values());
+	}
+
+	public PortletRequestDataSampleProcessor
+			getPortletRequestDataSampleProcessor(long companyId)
 		throws MonitoringException {
 
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_companyStatisticsByCompanyId.get(companyId);
+			_portletRequestDataSampleProcessorByCompanyId.get(companyId);
 
 		if (portletRequestDataSampleProcessor == null) {
 			throw new MonitoringException(
@@ -52,11 +71,12 @@ public class ServerPortletRequestDataSampleProcessor
 		return portletRequestDataSampleProcessor;
 	}
 
-	public PortletRequestDataSampleProcessor getCompanyStatistics(String webId)
+	public PortletRequestDataSampleProcessor
+			getPortletRequestDataSampleProcessor(String webId)
 		throws MonitoringException {
 
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_companyStatisticsByWebId.get(webId);
+			_portletRequestDataSampleProcessorByWebId.get(webId);
 
 		if (portletRequestDataSampleProcessor == null) {
 			throw new MonitoringException(
@@ -66,24 +86,8 @@ public class ServerPortletRequestDataSampleProcessor
 		return portletRequestDataSampleProcessor;
 	}
 
-	public Set<PortletRequestDataSampleProcessor> getCompanyStatisticsSet() {
-		return new HashSet<>(_companyStatisticsByWebId.values());
-	}
-
-	public Set<String> getPortletIds() {
-		Set<String> portletIds = new HashSet<>();
-
-		for (PortletRequestDataSampleProcessor containerStatistics :
-				_companyStatisticsByWebId.values()) {
-
-			portletIds.addAll(containerStatistics.getPortletIds());
-		}
-
-		return portletIds;
-	}
-
-	public Set<String> getWebIds() {
-		return _companyStatisticsByWebId.keySet();
+	public Set<String> getPortletWebIds() {
+		return _portletRequestDataSampleProcessorByWebId.keySet();
 	}
 
 	@Override
@@ -94,14 +98,15 @@ public class ServerPortletRequestDataSampleProcessor
 		long companyId = portletRequestDataSample.getCompanyId();
 
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_companyStatisticsByCompanyId.get(companyId);
+			_portletRequestDataSampleProcessorByCompanyId.get(companyId);
 
 		if (portletRequestDataSampleProcessor == null) {
 			try {
 				Company company = _companyLocalService.getCompany(companyId);
 
-				portletRequestDataSampleProcessor = register(
-					company.getWebId());
+				portletRequestDataSampleProcessor =
+					registerPortletRequestDataSampleProcessor(
+						company.getWebId());
 			}
 			catch (Exception exception) {
 				throw new IllegalStateException(
@@ -114,29 +119,31 @@ public class ServerPortletRequestDataSampleProcessor
 			portletRequestDataSample);
 	}
 
-	public synchronized PortletRequestDataSampleProcessor register(
-		String webId) {
+	public synchronized PortletRequestDataSampleProcessor
+		registerPortletRequestDataSampleProcessor(String webId) {
 
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
 			new PortletRequestDataSampleProcessor(_companyLocalService, webId);
 
-		_companyStatisticsByCompanyId.put(
+		_portletRequestDataSampleProcessorByCompanyId.put(
 			portletRequestDataSampleProcessor.getCompanyId(),
 			portletRequestDataSampleProcessor);
-		_companyStatisticsByWebId.put(webId, portletRequestDataSampleProcessor);
+		_portletRequestDataSampleProcessorByWebId.put(
+			webId, portletRequestDataSampleProcessor);
 
 		return portletRequestDataSampleProcessor;
 	}
 
-	public void reset() {
+	public void resetPortletRequestDataSampleProcessor() {
 		_companyLocalService.forEachCompanyId(
-			companyId -> reset(companyId),
-			ArrayUtil.toLongArray(_companyStatisticsByCompanyId.keySet()));
+			companyId -> resetPortletRequestDataSampleProcessor(companyId),
+			ArrayUtil.toLongArray(
+				_portletRequestDataSampleProcessorByCompanyId.keySet()));
 	}
 
-	public void reset(long companyId) {
+	public void resetPortletRequestDataSampleProcessor(long companyId) {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_companyStatisticsByCompanyId.get(companyId);
+			_portletRequestDataSampleProcessorByCompanyId.get(companyId);
 
 		if (portletRequestDataSampleProcessor == null) {
 			return;
@@ -145,9 +152,9 @@ public class ServerPortletRequestDataSampleProcessor
 		portletRequestDataSampleProcessor.reset();
 	}
 
-	public void reset(String webId) {
+	public void resetPortletRequestDataSampleProcessor(String webId) {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_companyStatisticsByWebId.get(webId);
+			_portletRequestDataSampleProcessorByWebId.get(webId);
 
 		if (portletRequestDataSampleProcessor == null) {
 			return;
@@ -156,12 +163,14 @@ public class ServerPortletRequestDataSampleProcessor
 		portletRequestDataSampleProcessor.reset();
 	}
 
-	public synchronized void unregister(String webId) {
+	public synchronized void unregisterPortletRequestDataSampleProcessor(
+		String webId) {
+
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_companyStatisticsByWebId.remove(webId);
+			_portletRequestDataSampleProcessorByWebId.remove(webId);
 
 		if (portletRequestDataSampleProcessor != null) {
-			_companyStatisticsByCompanyId.remove(
+			_portletRequestDataSampleProcessorByCompanyId.remove(
 				portletRequestDataSampleProcessor.getCompanyId());
 		}
 	}
@@ -171,10 +180,10 @@ public class ServerPortletRequestDataSampleProcessor
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
 			new PortletRequestDataSampleProcessor();
 
-		_companyStatisticsByCompanyId.put(
+		_portletRequestDataSampleProcessorByCompanyId.put(
 			portletRequestDataSampleProcessor.getCompanyId(),
 			portletRequestDataSampleProcessor);
-		_companyStatisticsByWebId.put(
+		_portletRequestDataSampleProcessorByWebId.put(
 			portletRequestDataSampleProcessor.getWebId(),
 			portletRequestDataSampleProcessor);
 	}
@@ -183,8 +192,8 @@ public class ServerPortletRequestDataSampleProcessor
 	private CompanyLocalService _companyLocalService;
 
 	private final Map<Long, PortletRequestDataSampleProcessor>
-		_companyStatisticsByCompanyId = new TreeMap<>();
+		_portletRequestDataSampleProcessorByCompanyId = new TreeMap<>();
 	private final Map<String, PortletRequestDataSampleProcessor>
-		_companyStatisticsByWebId = new TreeMap<>();
+		_portletRequestDataSampleProcessorByWebId = new TreeMap<>();
 
 }

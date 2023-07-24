@@ -78,12 +78,14 @@ public class PermissionServiceImpl extends PermissionServiceBaseImpl {
 		checkPermission(getPermissionChecker(), groupId, name, primKey);
 	}
 
-	protected boolean checkBaseModelPermission(
-			PermissionChecker permissionChecker, long groupId, String className,
-			long classPK)
+	protected void checkPermission(
+			PermissionChecker permissionChecker, long groupId, String name,
+			String primKey)
 		throws PortalException {
 
 		String actionId = ActionKeys.PERMISSIONS;
+		String className = name;
+		long classPK = GetterUtil.getLong(primKey);
 
 		if (className.equals(Team.class.getName())) {
 			className = Group.class.getName();
@@ -99,25 +101,10 @@ public class PermissionServiceImpl extends PermissionServiceBaseImpl {
 			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
 				className);
 
-		if (modelResourcePermission == null) {
-			return false;
-		}
-
-		ModelResourcePermissionUtil.check(
-			modelResourcePermission, permissionChecker, groupId, classPK,
-			actionId);
-
-		return true;
-	}
-
-	protected void checkPermission(
-			PermissionChecker permissionChecker, long groupId, String name,
-			String primKey)
-		throws PortalException {
-
-		if (checkBaseModelPermission(
-				permissionChecker, groupId, name,
-				GetterUtil.getLong(primKey))) {
+		if (modelResourcePermission != null) {
+			ModelResourcePermissionUtil.check(
+				modelResourcePermission, permissionChecker, groupId, classPK,
+				actionId);
 
 			return;
 		}

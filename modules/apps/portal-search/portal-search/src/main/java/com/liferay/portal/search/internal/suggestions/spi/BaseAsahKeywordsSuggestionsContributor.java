@@ -99,7 +99,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		}
 
 		JSONArray jsonArray = JSONUtil.getValueAsJSONArray(
-			AsahSearchKeywordsCache.get(
+			AsahSearchKeywordsCache.getJSONObject(
 				analyticsConfiguration, asahSearchKeywordsConfiguration,
 				searchContext.getCompanyId(),
 				_getDisplayLanguageId(attributes, searchContext.getLocale()),
@@ -265,7 +265,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 
 	private static class AsahSearchKeywordsCache {
 
-		public static JSONObject get(
+		public static JSONObject getJSONObject(
 			AnalyticsConfiguration analyticsConfiguration,
 			AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
 			long companyId, String displayLanguageId, long groupId,
@@ -286,7 +286,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			AsahSearchKeywordsCache asahSearchKeywordsCache =
 				new AsahSearchKeywordsCache();
 
-			jsonObject = asahSearchKeywordsCache._convert(
+			jsonObject = asahSearchKeywordsCache._createJSONObject(
 				analyticsConfiguration, displayLanguageId, groupId, minCounts,
 				size, sort);
 
@@ -299,7 +299,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			return jsonObject;
 		}
 
-		private JSONObject _convert(
+		private JSONObject _createJSONObject(
 			AnalyticsConfiguration analyticsConfiguration,
 			String displayLanguageId, long groupId, int minCounts, int size,
 			String sort) {

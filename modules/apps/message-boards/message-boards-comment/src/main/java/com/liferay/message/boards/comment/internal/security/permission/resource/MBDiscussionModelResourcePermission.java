@@ -73,8 +73,9 @@ public class MBDiscussionModelResourcePermission
 
 	@Override
 	public boolean contains(
-		PermissionChecker permissionChecker, MBDiscussion mbDiscussion,
-		String actionId) {
+			PermissionChecker permissionChecker, MBDiscussion mbDiscussion,
+			String actionId)
+		throws PortalException {
 
 		return _discussionPermission.hasPermission(
 			permissionChecker, mbDiscussion.getCompanyId(),

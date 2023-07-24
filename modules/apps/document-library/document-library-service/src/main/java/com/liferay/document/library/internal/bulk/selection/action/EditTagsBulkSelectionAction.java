@@ -25,11 +25,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -122,7 +122,7 @@ public class EditTagsBulkSelectionAction
 			return false;
 		}
 
-		return BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+		return ModelResourcePermissionUtil.contains(
 			modelResourcePermission, permissionChecker, assetEntry.getGroupId(),
 			assetEntry.getClassPK(), ActionKeys.UPDATE);
 	}

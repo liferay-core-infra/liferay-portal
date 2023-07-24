@@ -22,11 +22,11 @@ import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
@@ -46,8 +46,9 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 	@Override
 	public boolean hasAddPermission(
-		PermissionChecker permissionChecker, long companyId, long groupId,
-		String className, long classPK) {
+			PermissionChecker permissionChecker, long companyId, long groupId,
+			String className, long classPK)
+		throws PortalException {
 
 		return hasPermission(
 			permissionChecker, companyId, groupId, className, classPK,
@@ -69,8 +70,9 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 	@Override
 	public boolean hasPermission(
-		PermissionChecker permissionChecker, long companyId, long groupId,
-		String className, long classPK, String actionId) {
+			PermissionChecker permissionChecker, long companyId, long groupId,
+			String className, long classPK, String actionId)
+		throws PortalException {
 
 		if (_mbBanLocalService.hasBan(groupId, permissionChecker.getUserId())) {
 			return false;
@@ -88,7 +90,7 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 				className);
 
 		if (modelResourcePermission != null) {
-			return BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+			return ModelResourcePermissionUtil.contains(
 				modelResourcePermission, permissionChecker, groupId, classPK,
 				actionId);
 		}
@@ -120,8 +122,9 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 	@Override
 	public boolean hasViewPermission(
-		PermissionChecker permissionChecker, long companyId, long groupId,
-		String className, long classPK) {
+			PermissionChecker permissionChecker, long companyId, long groupId,
+			String className, long classPK)
+		throws PortalException {
 
 		return hasPermission(
 			permissionChecker, companyId, groupId, className, classPK,

@@ -29,11 +29,11 @@ import com.liferay.bulk.selection.BulkSelection;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -98,7 +98,7 @@ public class TaxonomyVocabularyResourceImpl
 						getModelResourcePermission(assetEntry.getClassName());
 
 				if ((modelResourcePermission != null) &&
-					BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+					ModelResourcePermissionUtil.contains(
 						modelResourcePermission, permissionChecker,
 						assetEntry.getGroupId(), assetEntry.getClassPK(),
 						ActionKeys.UPDATE)) {

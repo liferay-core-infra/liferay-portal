@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
 
 import org.osgi.service.component.annotations.Component;
@@ -46,7 +46,7 @@ public class LayoutPageTemplateStructureServiceImpl
 			long groupId, long plid, long segmentsExperienceId, String data)
 		throws PortalException {
 
-		if (BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+		if (ModelResourcePermissionUtil.contains(
 				_layoutModelResourcePermission, getPermissionChecker(), groupId,
 				plid, ActionKeys.UPDATE) ||
 			_layoutPermission.containsLayoutRestrictedUpdatePermission(

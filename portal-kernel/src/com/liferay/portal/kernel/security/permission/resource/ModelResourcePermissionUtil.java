@@ -32,13 +32,15 @@ public class ModelResourcePermissionUtil {
 			PortletResourcePermission portletResourcePermission =
 				modelResourcePermission.getPortletResourcePermission();
 
-			portletResourcePermission.check(
-				permissionChecker, groupId, actionId);
+			if (portletResourcePermission != null) {
+				portletResourcePermission.check(
+					permissionChecker, groupId, actionId);
+
+				return;
+			}
 		}
-		else {
-			modelResourcePermission.check(
-				permissionChecker, primaryKey, actionId);
-		}
+
+		modelResourcePermission.check(permissionChecker, primaryKey, actionId);
 	}
 
 	public static boolean contains(

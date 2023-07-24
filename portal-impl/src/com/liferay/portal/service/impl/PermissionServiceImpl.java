@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
-import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.TeamLocalService;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
@@ -111,15 +110,6 @@ public class PermissionServiceImpl extends PermissionServiceBaseImpl {
 
 		if (modelResourcePermission == null) {
 			return false;
-		}
-
-		PortletResourcePermission portletResourcePermission =
-			modelResourcePermission.getPortletResourcePermission();
-
-		if (portletResourcePermission == null) {
-			modelResourcePermission.check(permissionChecker, classPK, actionId);
-
-			return true;
 		}
 
 		ModelResourcePermissionUtil.check(

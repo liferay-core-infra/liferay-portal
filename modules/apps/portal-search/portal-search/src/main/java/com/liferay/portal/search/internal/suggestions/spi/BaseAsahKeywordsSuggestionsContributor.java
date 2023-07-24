@@ -10,6 +10,8 @@ import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -25,9 +27,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.webcache.WebCacheItem;
-import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 import com.liferay.portal.search.internal.configuration.AsahSearchKeywordsConfiguration;
 import com.liferay.portal.search.rest.dto.v1_0.SuggestionsContributorConfiguration;
 import com.liferay.portal.search.suggestions.Suggestion;
@@ -43,6 +44,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -54,6 +56,14 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 	protected void activate(Map<String, Object> properties) {
 		asahSearchKeywordsConfiguration = ConfigurableUtil.createConfigurable(
 			AsahSearchKeywordsConfiguration.class, properties);
+		_portalCache =
+			(PortalCache<String, JSONObject>)multiVMPool.getPortalCache(
+				getClass().getName());
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		multiVMPool.removePortalCache(getClass().getName());
 	}
 
 	protected SuggestionsContributorResults getSuggestionsContributorResults(
@@ -89,14 +99,14 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		}
 
 		JSONArray jsonArray = JSONUtil.getValueAsJSONArray(
-			AsahSearchKeywordsWebCacheItem.get(
+			AsahSearchKeywordsCache.get(
 				analyticsConfiguration, asahSearchKeywordsConfiguration,
 				searchContext.getCompanyId(),
 				_getDisplayLanguageId(attributes, searchContext.getLocale()),
 				_getGroupId(searchContext), _getMinCounts(attributes),
 				GetterUtil.getInteger(
 					suggestionsContributorConfiguration.getSize(), 5),
-				sort),
+				sort, _portalCache),
 			"JSONObject/_embedded", "JSONArray/search-keywords");
 
 		if (jsonArray.length() == 0) {
@@ -116,6 +126,9 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 
 	@Reference
 	protected JSONFactory jsonFactory;
+
+	@Reference
+	protected MultiVMPool multiVMPool;
 
 	private boolean _exceedsCharacterThreshold(
 		Map<String, Object> attributes, String keywords) {
@@ -248,36 +261,44 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseAsahKeywordsSuggestionsContributor.class);
 
-	private static class AsahSearchKeywordsWebCacheItem
-		implements WebCacheItem {
+	private PortalCache<String, JSONObject> _portalCache;
+
+	private static class AsahSearchKeywordsCache {
 
 		public static JSONObject get(
 			AnalyticsConfiguration analyticsConfiguration,
 			AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
 			long companyId, String displayLanguageId, long groupId,
-			int minCounts, int size, String sort) {
+			int minCounts, int size, String sort,
+			PortalCache<String, JSONObject> portalCache) {
 
-			try {
-				return (JSONObject)WebCachePoolUtil.get(
-					StringBundler.concat(
-						AsahSearchKeywordsWebCacheItem.class.getName(),
-						StringPool.POUND, companyId, StringPool.POUND,
-						minCounts, StringPool.POUND, displayLanguageId,
-						StringPool.POUND, groupId, StringPool.POUND, sort),
-					new AsahSearchKeywordsWebCacheItem(
-						analyticsConfiguration, asahSearchKeywordsConfiguration,
-						displayLanguageId, groupId, minCounts, size, sort));
-			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception);
-				}
+			String key = StringBundler.concat(
+				StringPool.POUND, companyId, StringPool.POUND, minCounts,
+				StringPool.POUND, displayLanguageId, StringPool.POUND, groupId,
+				StringPool.POUND, sort);
 
-				return JSONFactoryUtil.createJSONObject();
+			JSONObject jsonObject = portalCache.get(key);
+
+			if (jsonObject != null) {
+				return jsonObject;
 			}
+
+			AsahSearchKeywordsCache asahSearchKeywordsWebCacheItem =
+				new AsahSearchKeywordsCache(
+					analyticsConfiguration, asahSearchKeywordsConfiguration,
+					displayLanguageId, groupId, minCounts, size, sort);
+
+			jsonObject = asahSearchKeywordsWebCacheItem._convert();
+
+			portalCache.put(
+				key, jsonObject,
+				(int)(asahSearchKeywordsWebCacheItem._getRefreshTime() /
+					Time.SECOND));
+
+			return jsonObject;
 		}
 
-		public AsahSearchKeywordsWebCacheItem(
+		public AsahSearchKeywordsCache(
 			AnalyticsConfiguration analyticsConfiguration,
 			AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
 			String displayLanguageId, long groupId, int minCounts, int size,
@@ -292,8 +313,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			_sort = sort;
 		}
 
-		@Override
-		public JSONObject convert(String key) {
+		private JSONObject _convert() {
 			try {
 				Http.Options options = new Http.Options();
 
@@ -325,8 +345,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			}
 		}
 
-		@Override
-		public long getRefreshTime() {
+		private long _getRefreshTime() {
 			return _asahSearchKeywordsConfiguration.cacheTimeout();
 		}
 

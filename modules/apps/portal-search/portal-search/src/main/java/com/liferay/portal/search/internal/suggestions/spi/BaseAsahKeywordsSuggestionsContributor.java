@@ -99,7 +99,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		}
 
 		JSONArray jsonArray = JSONUtil.getValueAsJSONArray(
-			AsahSearchKeywordsCache.getJSONObject(
+			_getJSONObject(
 				analyticsConfiguration, asahSearchKeywordsConfiguration,
 				searchContext.getCompanyId(),
 				_getDisplayLanguageId(attributes, searchContext.getLocale()),
@@ -263,124 +263,117 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 
 	private PortalCache<String, JSONObject> _portalCache;
 
-	private static class AsahSearchKeywordsCache {
+	private JSONObject _getJSONObject(
+		AnalyticsConfiguration analyticsConfiguration,
+		AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
+		long companyId, String displayLanguageId, long groupId,
+		int minCounts, int size, String sort,
+		PortalCache<String, JSONObject> portalCache) {
 
-		public static JSONObject getJSONObject(
-			AnalyticsConfiguration analyticsConfiguration,
-			AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
-			long companyId, String displayLanguageId, long groupId,
-			int minCounts, int size, String sort,
-			PortalCache<String, JSONObject> portalCache) {
+		String key = StringBundler.concat(
+			StringPool.POUND, companyId, StringPool.POUND, minCounts,
+			StringPool.POUND, displayLanguageId, StringPool.POUND, groupId,
+			StringPool.POUND, sort);
 
-			String key = StringBundler.concat(
-				StringPool.POUND, companyId, StringPool.POUND, minCounts,
-				StringPool.POUND, displayLanguageId, StringPool.POUND, groupId,
-				StringPool.POUND, sort);
+		JSONObject jsonObject = portalCache.get(key);
 
-			JSONObject jsonObject = portalCache.get(key);
-
-			if (jsonObject != null) {
-				return jsonObject;
-			}
-
-			AsahSearchKeywordsCache asahSearchKeywordsCache =
-				new AsahSearchKeywordsCache();
-
-			jsonObject = asahSearchKeywordsCache._createJSONObject(
-				analyticsConfiguration, displayLanguageId, groupId, minCounts,
-				size, sort);
-
-			portalCache.put(
-				key, jsonObject,
-				(int)
-					(asahSearchKeywordsConfiguration.cacheTimeout() /
-						Time.SECOND));
-
+		if (jsonObject != null) {
 			return jsonObject;
 		}
 
-		private JSONObject _createJSONObject(
-			AnalyticsConfiguration analyticsConfiguration,
-			String displayLanguageId, long groupId, int minCounts, int size,
-			String sort) {
+		jsonObject = _createJSONObject(
+			analyticsConfiguration, displayLanguageId, groupId, minCounts,
+			size, sort);
 
-			try {
-				Http.Options options = new Http.Options();
+		portalCache.put(
+			key, jsonObject,
+			(int)
+				(asahSearchKeywordsConfiguration.cacheTimeout() /
+					Time.SECOND));
 
-				options.addHeader(
-					"OSB-Asah-Faro-Backend-Security-Signature",
-					analyticsConfiguration.
-						liferayAnalyticsFaroBackendSecuritySignature());
-				options.addHeader(
-					"OSB-Asah-Project-ID",
-					analyticsConfiguration.liferayAnalyticsProjectId());
+		return jsonObject;
+	}
 
-				String url = _getURL(
-					analyticsConfiguration, displayLanguageId, groupId,
-					minCounts, size, sort);
+	private JSONObject _createJSONObject(
+		AnalyticsConfiguration analyticsConfiguration,
+		String displayLanguageId, long groupId, int minCounts, int size,
+		String sort) {
 
-				if (_log.isDebugEnabled()) {
-					_log.debug("Reading " + url);
-				}
+		try {
+			Http.Options options = new Http.Options();
 
-				options.setLocation(url);
+			options.addHeader(
+				"OSB-Asah-Faro-Backend-Security-Signature",
+				analyticsConfiguration.
+					liferayAnalyticsFaroBackendSecuritySignature());
+			options.addHeader(
+				"OSB-Asah-Project-ID",
+				analyticsConfiguration.liferayAnalyticsProjectId());
 
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-					HttpUtil.URLtoString(options));
+			String url = _getURL(
+				analyticsConfiguration, displayLanguageId, groupId,
+				minCounts, size, sort);
 
-				_validateResponse(jsonObject, options.getResponse());
-
-				return jsonObject;
+			if (_log.isDebugEnabled()) {
+				_log.debug("Reading " + url);
 			}
-			catch (Exception exception) {
-				throw new RuntimeException(exception);
-			}
+
+			options.setLocation(url);
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				HttpUtil.URLtoString(options));
+
+			_validateResponse(jsonObject, options.getResponse());
+
+			return jsonObject;
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
+	private String _getURL(
+		AnalyticsConfiguration analyticsConfiguration,
+		String displayLanguageId, long groupId, int minCounts, int size,
+		String sort) {
+
+		StringBundler sb = new StringBundler(11);
+
+		sb.append(analyticsConfiguration.liferayAnalyticsFaroBackendURL());
+		sb.append("/api/1.0/pages/search-keywords?minCounts=");
+		sb.append(minCounts);
+
+		if (!Validator.isBlank(displayLanguageId)) {
+			sb.append("&displayLanguageId=");
+			sb.append(displayLanguageId);
 		}
 
-		private String _getURL(
-			AnalyticsConfiguration analyticsConfiguration,
-			String displayLanguageId, long groupId, int minCounts, int size,
-			String sort) {
-
-			StringBundler sb = new StringBundler(11);
-
-			sb.append(analyticsConfiguration.liferayAnalyticsFaroBackendURL());
-			sb.append("/api/1.0/pages/search-keywords?minCounts=");
-			sb.append(minCounts);
-
-			if (!Validator.isBlank(displayLanguageId)) {
-				sb.append("&displayLanguageId=");
-				sb.append(displayLanguageId);
-			}
-
-			if (groupId > 0) {
-				sb.append("&groupId=");
-				sb.append(groupId);
-			}
-
-			sb.append("&size=");
-			sb.append(size);
-			sb.append("&sort=");
-			sb.append(sort);
-
-			return sb.toString();
+		if (groupId > 0) {
+			sb.append("&groupId=");
+			sb.append(groupId);
 		}
 
-		private void _validateResponse(
-			JSONObject jsonObject, Http.Response response) {
+		sb.append("&size=");
+		sb.append(size);
+		sb.append("&sort=");
+		sb.append(sort);
 
-			if ((response.getResponseCode() == HttpURLConnection.HTTP_OK) &&
-				jsonObject.has("_embedded")) {
+		return sb.toString();
+	}
 
-				return;
-			}
+	private void _validateResponse(
+		JSONObject jsonObject, Http.Response response) {
 
-			throw new RuntimeException(
-				StringBundler.concat(
-					"Response body: ", jsonObject, "\nResponse code: ",
-					response.getResponseCode()));
+		if ((response.getResponseCode() == HttpURLConnection.HTTP_OK) &&
+			jsonObject.has("_embedded")) {
+
+			return;
 		}
 
+		throw new RuntimeException(
+			StringBundler.concat(
+				"Response body: ", jsonObject, "\nResponse code: ",
+				response.getResponseCode()));
 	}
 
 }

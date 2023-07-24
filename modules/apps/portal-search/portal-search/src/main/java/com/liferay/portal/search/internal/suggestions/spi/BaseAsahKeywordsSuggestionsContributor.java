@@ -130,6 +130,43 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 	@Reference
 	protected MultiVMPool multiVMPool;
 
+	private JSONObject _createJSONObject(
+		AnalyticsConfiguration analyticsConfiguration, String displayLanguageId,
+		long groupId, int minCounts, int size, String sort) {
+
+		try {
+			Http.Options options = new Http.Options();
+
+			options.addHeader(
+				"OSB-Asah-Faro-Backend-Security-Signature",
+				analyticsConfiguration.
+					liferayAnalyticsFaroBackendSecuritySignature());
+			options.addHeader(
+				"OSB-Asah-Project-ID",
+				analyticsConfiguration.liferayAnalyticsProjectId());
+
+			String url = _getURL(
+				analyticsConfiguration, displayLanguageId, groupId, minCounts,
+				size, sort);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Reading " + url);
+			}
+
+			options.setLocation(url);
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				HttpUtil.URLtoString(options));
+
+			_validateResponse(jsonObject, options.getResponse());
+
+			return jsonObject;
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
 	private boolean _exceedsCharacterThreshold(
 		Map<String, Object> attributes, String keywords) {
 
@@ -192,6 +229,35 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		return groupIds[0];
 	}
 
+	private JSONObject _getJSONObject(
+		AnalyticsConfiguration analyticsConfiguration,
+		AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
+		long companyId, String displayLanguageId, long groupId, int minCounts,
+		int size, String sort, PortalCache<String, JSONObject> portalCache) {
+
+		String key = StringBundler.concat(
+			StringPool.POUND, companyId, StringPool.POUND, minCounts,
+			StringPool.POUND, displayLanguageId, StringPool.POUND, groupId,
+			StringPool.POUND, sort);
+
+		JSONObject jsonObject = portalCache.get(key);
+
+		if (jsonObject != null) {
+			return jsonObject;
+		}
+
+		jsonObject = _createJSONObject(
+			analyticsConfiguration, displayLanguageId, groupId, minCounts, size,
+			sort);
+
+		portalCache.put(
+			key, jsonObject,
+			(int)
+				(asahSearchKeywordsConfiguration.cacheTimeout() / Time.SECOND));
+
+		return jsonObject;
+	}
+
 	private int _getMinCounts(Map<String, Object> attributes) {
 		if (attributes == null) {
 			return _MIN_COUNTS;
@@ -237,105 +303,9 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		return suggestions;
 	}
 
-	private boolean _isEnabled(
-		AnalyticsSettingsManager analyticsSettingsManager, long companyId) {
-
-		try {
-			if (FeatureFlagManagerUtil.isEnabled("LPS-159643") &&
-				analyticsSettingsManager.isAnalyticsEnabled(companyId)) {
-
-				return true;
-			}
-		}
-		catch (Exception exception) {
-			_log.error(exception);
-		}
-
-		return false;
-	}
-
-	private static final int _CHARACTER_THRESHOLD = 2;
-
-	private static final int _MIN_COUNTS = 5;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseAsahKeywordsSuggestionsContributor.class);
-
-	private PortalCache<String, JSONObject> _portalCache;
-
-	private JSONObject _getJSONObject(
-		AnalyticsConfiguration analyticsConfiguration,
-		AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
-		long companyId, String displayLanguageId, long groupId,
-		int minCounts, int size, String sort,
-		PortalCache<String, JSONObject> portalCache) {
-
-		String key = StringBundler.concat(
-			StringPool.POUND, companyId, StringPool.POUND, minCounts,
-			StringPool.POUND, displayLanguageId, StringPool.POUND, groupId,
-			StringPool.POUND, sort);
-
-		JSONObject jsonObject = portalCache.get(key);
-
-		if (jsonObject != null) {
-			return jsonObject;
-		}
-
-		jsonObject = _createJSONObject(
-			analyticsConfiguration, displayLanguageId, groupId, minCounts,
-			size, sort);
-
-		portalCache.put(
-			key, jsonObject,
-			(int)
-				(asahSearchKeywordsConfiguration.cacheTimeout() /
-					Time.SECOND));
-
-		return jsonObject;
-	}
-
-	private JSONObject _createJSONObject(
-		AnalyticsConfiguration analyticsConfiguration,
-		String displayLanguageId, long groupId, int minCounts, int size,
-		String sort) {
-
-		try {
-			Http.Options options = new Http.Options();
-
-			options.addHeader(
-				"OSB-Asah-Faro-Backend-Security-Signature",
-				analyticsConfiguration.
-					liferayAnalyticsFaroBackendSecuritySignature());
-			options.addHeader(
-				"OSB-Asah-Project-ID",
-				analyticsConfiguration.liferayAnalyticsProjectId());
-
-			String url = _getURL(
-				analyticsConfiguration, displayLanguageId, groupId,
-				minCounts, size, sort);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Reading " + url);
-			}
-
-			options.setLocation(url);
-
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				HttpUtil.URLtoString(options));
-
-			_validateResponse(jsonObject, options.getResponse());
-
-			return jsonObject;
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-	}
-
 	private String _getURL(
-		AnalyticsConfiguration analyticsConfiguration,
-		String displayLanguageId, long groupId, int minCounts, int size,
-		String sort) {
+		AnalyticsConfiguration analyticsConfiguration, String displayLanguageId,
+		long groupId, int minCounts, int size, String sort) {
 
 		StringBundler sb = new StringBundler(11);
 
@@ -361,6 +331,23 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		return sb.toString();
 	}
 
+	private boolean _isEnabled(
+		AnalyticsSettingsManager analyticsSettingsManager, long companyId) {
+
+		try {
+			if (FeatureFlagManagerUtil.isEnabled("LPS-159643") &&
+				analyticsSettingsManager.isAnalyticsEnabled(companyId)) {
+
+				return true;
+			}
+		}
+		catch (Exception exception) {
+			_log.error(exception);
+		}
+
+		return false;
+	}
+
 	private void _validateResponse(
 		JSONObject jsonObject, Http.Response response) {
 
@@ -375,5 +362,14 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 				"Response body: ", jsonObject, "\nResponse code: ",
 				response.getResponseCode()));
 	}
+
+	private static final int _CHARACTER_THRESHOLD = 2;
+
+	private static final int _MIN_COUNTS = 5;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseAsahKeywordsSuggestionsContributor.class);
+
+	private PortalCache<String, JSONObject> _portalCache;
 
 }

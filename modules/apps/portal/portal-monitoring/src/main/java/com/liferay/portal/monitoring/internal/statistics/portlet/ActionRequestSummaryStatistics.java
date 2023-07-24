@@ -7,6 +7,7 @@ package com.liferay.portal.monitoring.internal.statistics.portlet;
 
 import com.liferay.portal.kernel.monitoring.MonitoringException;
 import com.liferay.portal.monitoring.internal.statistics.RequestStatistics;
+import com.liferay.portal.monitoring.internal.statistics.util.RequestDataSampleProcessorHelper;
 
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			for (RequestStatistics requestStatistics :
@@ -54,7 +55,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getAverageTimeByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -63,7 +64,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getAverageTimeByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -75,7 +76,7 @@ public class ActionRequestSummaryStatistics
 
 		Set<PortletRequestDataSampleProcessor>
 			portletRequestDataSampleProcessorSet =
-				_serverPortletRequestDataSampleProcessor.
+				_requestDataSampleProcessorHelper.
 					getPortletRequestDataSampleProcessor();
 
 		for (PortletRequestDataSampleProcessor
@@ -101,7 +102,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId);
 
 		RequestStatistics requestStatistics =
@@ -116,7 +117,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId);
 
 		RequestStatistics requestStatistics =
@@ -132,7 +133,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			errorCount += getErrorCountByCompany(
@@ -147,7 +148,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getErrorCountByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -156,7 +157,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getErrorCountByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -168,7 +169,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			errorCount += getErrorCountByPortlet(
@@ -184,7 +185,7 @@ public class ActionRequestSummaryStatistics
 
 		return getErrorCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -194,7 +195,7 @@ public class ActionRequestSummaryStatistics
 
 		return getErrorCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -204,7 +205,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			for (RequestStatistics requestStatistics :
@@ -223,7 +224,7 @@ public class ActionRequestSummaryStatistics
 	@Override
 	public long getMaxTimeByCompany(long companyId) throws MonitoringException {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId);
 
 		return portletRequestDataSampleProcessor.getMaxTime();
@@ -232,7 +233,7 @@ public class ActionRequestSummaryStatistics
 	@Override
 	public long getMaxTimeByCompany(String webId) throws MonitoringException {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId);
 
 		return portletRequestDataSampleProcessor.getMaxTime();
@@ -246,7 +247,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			long curMaxTime = getMaxTimeByPortlet(
@@ -266,7 +267,7 @@ public class ActionRequestSummaryStatistics
 
 		return getMaxTimeByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -276,7 +277,7 @@ public class ActionRequestSummaryStatistics
 
 		return getMaxTimeByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -286,7 +287,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			for (RequestStatistics requestStatistics :
@@ -305,7 +306,7 @@ public class ActionRequestSummaryStatistics
 	@Override
 	public long getMinTimeByCompany(long companyId) throws MonitoringException {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId);
 
 		return portletRequestDataSampleProcessor.getMinTime();
@@ -314,7 +315,7 @@ public class ActionRequestSummaryStatistics
 	@Override
 	public long getMinTimeByCompany(String webId) throws MonitoringException {
 		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId);
 
 		return portletRequestDataSampleProcessor.getMinTime();
@@ -328,7 +329,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			long curMinTime = getMinTimeByPortlet(
@@ -348,7 +349,7 @@ public class ActionRequestSummaryStatistics
 
 		return getMinTimeByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -358,7 +359,7 @@ public class ActionRequestSummaryStatistics
 
 		return getMinTimeByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -368,7 +369,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			requestCount += getRequestCountByCompany(
@@ -383,7 +384,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getRequestCountByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -392,7 +393,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getRequestCountByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -404,7 +405,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			requestCount += getRequestCountByPortlet(
@@ -420,7 +421,7 @@ public class ActionRequestSummaryStatistics
 
 		return getRequestCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -430,7 +431,7 @@ public class ActionRequestSummaryStatistics
 
 		return getRequestCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -440,7 +441,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			successCount += getSuccessCountByCompany(
@@ -455,7 +456,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getSuccessCountByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -464,7 +465,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getSuccessCountByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -476,7 +477,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			successCount += getSuccessCountByPortlet(
@@ -492,7 +493,7 @@ public class ActionRequestSummaryStatistics
 
 		return getSuccessCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -502,7 +503,7 @@ public class ActionRequestSummaryStatistics
 
 		return getSuccessCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -512,7 +513,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			timeoutCount += getTimeoutCountByCompany(
@@ -527,7 +528,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getTimeoutCountByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -536,7 +537,7 @@ public class ActionRequestSummaryStatistics
 		throws MonitoringException {
 
 		return getTimeoutCountByCompany(
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -548,7 +549,7 @@ public class ActionRequestSummaryStatistics
 
 		for (PortletRequestDataSampleProcessor
 				portletRequestDataSampleProcessor :
-					_serverPortletRequestDataSampleProcessor.
+					_requestDataSampleProcessorHelper.
 						getPortletRequestDataSampleProcessor()) {
 
 			timeoutCount += getTimeoutCountByPortlet(
@@ -564,7 +565,7 @@ public class ActionRequestSummaryStatistics
 
 		return getTimeoutCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(companyId));
 	}
 
@@ -574,7 +575,7 @@ public class ActionRequestSummaryStatistics
 
 		return getTimeoutCountByPortlet(
 			portletId,
-			_serverPortletRequestDataSampleProcessor.
+			_requestDataSampleProcessorHelper.
 				getPortletRequestDataSampleProcessor(webId));
 	}
 
@@ -742,7 +743,6 @@ public class ActionRequestSummaryStatistics
 	}
 
 	@Reference
-	private ServerPortletRequestDataSampleProcessor
-		_serverPortletRequestDataSampleProcessor;
+	private RequestDataSampleProcessorHelper _requestDataSampleProcessorHelper;
 
 }

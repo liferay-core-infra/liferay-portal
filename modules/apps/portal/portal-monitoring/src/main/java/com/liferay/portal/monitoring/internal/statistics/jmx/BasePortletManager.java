@@ -8,7 +8,7 @@ package com.liferay.portal.monitoring.internal.statistics.jmx;
 import com.liferay.portal.kernel.monitoring.MonitoringException;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.monitoring.internal.statistics.portlet.PortletSummaryStatistics;
-import com.liferay.portal.monitoring.internal.statistics.portlet.ServerPortletRequestDataSampleProcessor;
+import com.liferay.portal.monitoring.internal.statistics.util.RequestDataSampleProcessorHelper;
 
 import java.util.Set;
 
@@ -93,7 +93,7 @@ public abstract class BasePortletManager
 	@Override
 	public long[] getCompanyIds() {
 		Set<Long> companyIds =
-			serverPortletRequestDataSampleProcessor.getPortletCompanyIds();
+			requestDataSampleProcessorHelper.getPorletCompanyIds();
 
 		return ArrayUtil.toArray(companyIds.toArray(new Long[0]));
 	}
@@ -271,7 +271,7 @@ public abstract class BasePortletManager
 	@Override
 	public String[] getPortletIds() {
 		Set<String> portletIds =
-			serverPortletRequestDataSampleProcessor.getPortletIds();
+			requestDataSampleProcessorHelper.getPortletIds();
 
 		return portletIds.toArray(new String[0]);
 	}
@@ -459,33 +459,32 @@ public abstract class BasePortletManager
 	@Override
 	public String[] getWebIds() {
 		Set<String> webIds =
-			serverPortletRequestDataSampleProcessor.getPortletWebIds();
+			requestDataSampleProcessorHelper.getPortletWebIds();
 
 		return webIds.toArray(new String[0]);
 	}
 
 	@Override
 	public void reset() {
-		serverPortletRequestDataSampleProcessor.
+		requestDataSampleProcessorHelper.
 			resetPortletRequestDataSampleProcessor();
 	}
 
 	@Override
 	public void reset(long companyId) {
-		serverPortletRequestDataSampleProcessor.
-			resetPortletRequestDataSampleProcessor(companyId);
+		requestDataSampleProcessorHelper.resetPortletRequestDataSampleProcessor(
+			companyId);
 	}
 
 	@Override
 	public void reset(String webId) {
-		serverPortletRequestDataSampleProcessor.
-			resetPortletRequestDataSampleProcessor(webId);
+		requestDataSampleProcessorHelper.resetPortletRequestDataSampleProcessor(
+			webId);
 	}
 
 	protected abstract PortletSummaryStatistics getPortletSummaryStatistics();
 
 	@Reference
-	protected ServerPortletRequestDataSampleProcessor
-		serverPortletRequestDataSampleProcessor;
+	protected RequestDataSampleProcessorHelper requestDataSampleProcessorHelper;
 
 }

@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.monitoring.MonitoringException;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.monitoring.internal.statistics.portal.PortalRequestDataSampleProcessor;
+import com.liferay.portal.monitoring.internal.statistics.portlet.PortletRequestDataSampleProcessor;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -37,6 +38,10 @@ public class RequestDataSampleProcessorHelper {
 		throws PortalException {
 
 		return _companyLocalService.getCompany(companyId);
+	}
+
+	public Set<Long> getPorletCompanyIds() {
+		return _portletRequestDataSampleProcessorByCompanyId.keySet();
 	}
 
 	public Set<Long> getPortalCompanyIds() {
@@ -83,6 +88,65 @@ public class RequestDataSampleProcessorHelper {
 		return _portalRequestDataSampleProcessorByWebId.keySet();
 	}
 
+	public Set<String> getPortletIds() {
+		Set<String> portletIds = new HashSet<>();
+
+		for (PortletRequestDataSampleProcessor containerStatistics :
+				_portletRequestDataSampleProcessorByWebId.values()) {
+
+			portletIds.addAll(containerStatistics.getPortletIds());
+		}
+
+		return portletIds;
+	}
+
+	public Set<PortletRequestDataSampleProcessor>
+		getPortletRequestDataSampleProcessor() {
+
+		return new HashSet<>(
+			_portletRequestDataSampleProcessorByWebId.values());
+	}
+
+	public PortletRequestDataSampleProcessor
+			getPortletRequestDataSampleProcessor(long companyId)
+		throws MonitoringException {
+
+		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
+			_portletRequestDataSampleProcessorByCompanyId.get(companyId);
+
+		if (portletRequestDataSampleProcessor == null) {
+			throw new MonitoringException(
+				"No statistics found for company ID " + companyId);
+		}
+
+		return portletRequestDataSampleProcessor;
+	}
+
+	public PortletRequestDataSampleProcessor
+			getPortletRequestDataSampleProcessor(String webId)
+		throws MonitoringException {
+
+		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
+			_portletRequestDataSampleProcessorByWebId.get(webId);
+
+		if (portletRequestDataSampleProcessor == null) {
+			throw new MonitoringException(
+				"No statistics found for web ID " + webId);
+		}
+
+		return portletRequestDataSampleProcessor;
+	}
+
+	public PortletRequestDataSampleProcessor
+		getPortletRequestDataSampleProcessorByCompanyId(long companyId) {
+
+		return _portletRequestDataSampleProcessorByCompanyId.get(companyId);
+	}
+
+	public Set<String> getPortletWebIds() {
+		return _portletRequestDataSampleProcessorByWebId.keySet();
+	}
+
 	public synchronized PortalRequestDataSampleProcessor
 		registerPortalRequestDataSampleProcessor(String webId) {
 
@@ -96,6 +160,21 @@ public class RequestDataSampleProcessorHelper {
 			webId, portalRequestDataSampleProcessor);
 
 		return portalRequestDataSampleProcessor;
+	}
+
+	public synchronized PortletRequestDataSampleProcessor
+		registerPortletRequestDataSampleProcessor(String webId) {
+
+		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
+			new PortletRequestDataSampleProcessor(_companyLocalService, webId);
+
+		_portletRequestDataSampleProcessorByCompanyId.put(
+			portletRequestDataSampleProcessor.getCompanyId(),
+			portletRequestDataSampleProcessor);
+		_portletRequestDataSampleProcessorByWebId.put(
+			webId, portletRequestDataSampleProcessor);
+
+		return portletRequestDataSampleProcessor;
 	}
 
 	public void resetPortalRequestDataSampleProcessor() {
@@ -127,6 +206,35 @@ public class RequestDataSampleProcessorHelper {
 		portalRequestDataSampleProcessor.reset();
 	}
 
+	public void resetPortletRequestDataSampleProcessor() {
+		_companyLocalService.forEachCompanyId(
+			companyId -> resetPortletRequestDataSampleProcessor(companyId),
+			ArrayUtil.toLongArray(
+				_portletRequestDataSampleProcessorByCompanyId.keySet()));
+	}
+
+	public void resetPortletRequestDataSampleProcessor(long companyId) {
+		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
+			_portletRequestDataSampleProcessorByCompanyId.get(companyId);
+
+		if (portletRequestDataSampleProcessor == null) {
+			return;
+		}
+
+		portletRequestDataSampleProcessor.reset();
+	}
+
+	public void resetPortletRequestDataSampleProcessor(String webId) {
+		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
+			_portletRequestDataSampleProcessorByWebId.get(webId);
+
+		if (portletRequestDataSampleProcessor == null) {
+			return;
+		}
+
+		portletRequestDataSampleProcessor.reset();
+	}
+
 	public synchronized void unregisterPortalRequestDataSampleProcessor(
 		String webId) {
 
@@ -139,10 +247,25 @@ public class RequestDataSampleProcessorHelper {
 		}
 	}
 
+	public synchronized void unregisterPortletRequestDataSampleProcessor(
+		String webId) {
+
+		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
+			_portletRequestDataSampleProcessorByWebId.remove(webId);
+
+		if (portletRequestDataSampleProcessor != null) {
+			_portletRequestDataSampleProcessorByCompanyId.remove(
+				portletRequestDataSampleProcessor.getCompanyId());
+		}
+	}
+
 	@Activate
 	protected void activate() {
 		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
 			new PortalRequestDataSampleProcessor();
+
+		PortletRequestDataSampleProcessor portletRequestDataSampleProcessor =
+			new PortletRequestDataSampleProcessor();
 
 		_portalRequestDataSampleProcessorByCompanyId.put(
 			portalRequestDataSampleProcessor.getCompanyId(),
@@ -150,6 +273,13 @@ public class RequestDataSampleProcessorHelper {
 		_portalRequestDataSampleProcessorByWebId.put(
 			portalRequestDataSampleProcessor.getWebId(),
 			portalRequestDataSampleProcessor);
+
+		_portletRequestDataSampleProcessorByCompanyId.put(
+			portletRequestDataSampleProcessor.getCompanyId(),
+			portletRequestDataSampleProcessor);
+		_portletRequestDataSampleProcessorByWebId.put(
+			portletRequestDataSampleProcessor.getWebId(),
+			portletRequestDataSampleProcessor);
 	}
 
 	private static final Map<Long, PortalRequestDataSampleProcessor>
@@ -159,5 +289,10 @@ public class RequestDataSampleProcessorHelper {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	private final Map<Long, PortletRequestDataSampleProcessor>
+		_portletRequestDataSampleProcessorByCompanyId = new TreeMap<>();
+	private final Map<String, PortletRequestDataSampleProcessor>
+		_portletRequestDataSampleProcessorByWebId = new TreeMap<>();
 
 }

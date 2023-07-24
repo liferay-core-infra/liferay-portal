@@ -15,17 +15,15 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
@@ -125,7 +123,13 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		asahSearchKeywordsConfiguration;
 
 	@Reference
+	protected Http http;
+
+	@Reference
 	protected JSONFactory jsonFactory;
+
+	@Reference
+	protected Language language;
 
 	@Reference
 	protected MultiVMPool multiVMPool;
@@ -155,8 +159,8 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 
 			options.setLocation(url);
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				HttpUtil.URLtoString(options));
+			JSONObject jsonObject = jsonFactory.createJSONObject(
+				http.URLtoString(options));
 
 			_validateResponse(jsonObject, options.getResponse());
 
@@ -213,7 +217,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		if ((attributes == null) ||
 			MapUtil.getBoolean(attributes, "matchDisplayLanguageId", true)) {
 
-			return LanguageUtil.getBCP47LanguageId(locale);
+			return language.getBCP47LanguageId(locale);
 		}
 
 		return StringPool.BLANK;

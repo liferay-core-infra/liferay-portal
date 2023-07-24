@@ -21,8 +21,8 @@ page import="com.liferay.portal.kernel.comment.WorkflowableComment" %><%@
 page import="com.liferay.portal.kernel.comment.display.context.CommentSectionDisplayContext" %><%@
 page import="com.liferay.portal.kernel.comment.display.context.CommentTreeDisplayContext" %><%@
 page import="com.liferay.portal.kernel.security.auth.AuthTokenUtil" %><%@
-page import="com.liferay.portal.kernel.service.ServiceContextFunction" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
+page import="com.liferay.portal.service.context.function.ServiceContextFunction" %><%@
 page import="com.liferay.staging.StagingGroupHelper" %><%@
 page import="com.liferay.staging.StagingGroupHelperUtil" %>
 

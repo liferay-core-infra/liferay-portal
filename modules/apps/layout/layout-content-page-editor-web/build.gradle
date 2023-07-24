@@ -48,6 +48,7 @@ dependencies {
 	compileOnly project(":apps:mentions:mentions-api")
 	compileOnly project(":apps:object:object-api")
 	compileOnly project(":apps:portal:portal-aop-api")
+	compileOnly project(":apps:portal:portal-service-context-function-api")
 	compileOnly project(":apps:portlet-display-template:portlet-display-template-api")
 	compileOnly project(":apps:product-navigation:product-navigation-control-menu-api")
 	compileOnly project(":apps:product-navigation:product-navigation-taglib")

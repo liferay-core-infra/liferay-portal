@@ -7,8 +7,8 @@ package com.liferay.layout.content.page.editor.web.internal.workflow;
 
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextFunction;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
+import com.liferay.portal.service.context.function.ServiceContextFunction;
 
 import java.util.function.Function;
 

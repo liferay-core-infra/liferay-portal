@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
-import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 
 /**
  * @author Roberto Díaz
@@ -32,14 +31,6 @@ public class BaseModelPermissionCheckerUtil {
 		String actionId) {
 
 		try {
-			PortletResourcePermission portletResourcePermission =
-				modelResourcePermission.getPortletResourcePermission();
-
-			if (portletResourcePermission == null) {
-				return modelResourcePermission.contains(
-					permissionChecker, classPK, actionId);
-			}
-
 			return ModelResourcePermissionUtil.contains(
 				modelResourcePermission, permissionChecker, groupId, classPK,
 				actionId);

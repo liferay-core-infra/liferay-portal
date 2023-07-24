@@ -53,8 +53,10 @@ public class ModelResourcePermissionUtil {
 			PortletResourcePermission portletResourcePermission =
 				modelResourcePermission.getPortletResourcePermission();
 
-			return portletResourcePermission.contains(
-				permissionChecker, groupId, actionId);
+			if (portletResourcePermission != null) {
+				return portletResourcePermission.contains(
+					permissionChecker, groupId, actionId);
+			}
 		}
 
 		return modelResourcePermission.contains(

@@ -1,0 +1,212 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.portal.log4j.internal;
+
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import java.nio.charset.StandardCharsets;
+
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.config.Node;
+import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.core.config.plugins.PluginBuilderAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginBuilderFactory;
+import org.apache.logging.log4j.core.layout.AbstractStringLayout;
+import org.apache.logging.log4j.core.layout.ByteBufferDestination;
+import org.apache.logging.log4j.core.layout.Encoder;
+import org.apache.logging.log4j.core.util.Transform;
+import org.apache.logging.log4j.message.Message;
+import org.apache.logging.log4j.util.ReadOnlyStringMap;
+import org.apache.logging.log4j.util.Strings;
+
+/**
+ * @author Hai Yu
+ * @see org.apache.log4j.layout.Log4j1XmlLayout
+ */
+@Plugin(
+	category = Node.CATEGORY, elementType = Layout.ELEMENT_TYPE,
+	name = Log4j1XmlLayout.PLUGIN_NAME, printObject = true
+)
+public final class Log4j1XmlLayout extends AbstractStringLayout {
+
+	public static final String PLUGIN_NAME = "Log4j1XmlLayout";
+
+	@PluginBuilderFactory
+	public static Builder newBuilder() {
+		return new Builder();
+	}
+
+	@Override
+	public void encode(
+		LogEvent logEvent, ByteBufferDestination byteBufferDestination) {
+
+		StringBuilder sb = getStringBuilder();
+
+		_formatTo(logEvent, sb);
+
+		Encoder<StringBuilder> encode = getStringBuilderEncoder();
+
+		encode.encode(sb, byteBufferDestination);
+	}
+
+	@Override
+	public String toSerializable(LogEvent logEvent) {
+		StringBuilder sb = getStringBuilder();
+
+		_formatTo(logEvent, sb);
+
+		return sb.toString();
+	}
+
+	public static class Builder
+		implements org.apache.logging.log4j.core.util.Builder<Log4j1XmlLayout> {
+
+		@Override
+		public Log4j1XmlLayout build() {
+			return new Log4j1XmlLayout(_locationInfo, _properties);
+		}
+
+		@PluginBuilderAttribute("locationInfo")
+		private boolean _locationInfo;
+
+		@PluginBuilderAttribute("properties")
+		private boolean _properties;
+
+	}
+
+	private Log4j1XmlLayout(boolean locationInfo, boolean properties) {
+		super(StandardCharsets.UTF_8);
+
+		_locationInfo = locationInfo;
+		_properties = properties;
+	}
+
+	private void _formatTo(LogEvent logEvent, StringBuilder sb) {
+		sb.append("<log4j:event logger=\"");
+		sb.append(Transform.escapeHtmlTags(logEvent.getLoggerName()));
+		sb.append("\" timestamp=\"");
+		sb.append(logEvent.getTimeMillis());
+		sb.append("\" level=\"");
+		sb.append(
+			Transform.escapeHtmlTags(String.valueOf(logEvent.getLevel())));
+		sb.append("\" thread=\"");
+		sb.append(Transform.escapeHtmlTags(logEvent.getThreadName()));
+		sb.append("\">");
+		sb.append(StringPool.RETURN_NEW_LINE);
+		sb.append("<log4j:message>");
+		sb.append(StringPool.CDATA_OPEN);
+
+		Message message = logEvent.getMessage();
+
+		Transform.appendEscapingCData(sb, message.getFormattedMessage());
+
+		sb.append(StringPool.CDATA_CLOSE);
+		sb.append("</log4j:message>");
+		sb.append(StringPool.RETURN_NEW_LINE);
+
+		ThreadContext.ContextStack contextStack = logEvent.getContextStack();
+
+		List<String> ndc = contextStack.asList();
+
+		if (!ndc.isEmpty()) {
+			sb.append("<log4j:NDC>");
+			sb.append(StringPool.CDATA_OPEN);
+
+			Transform.appendEscapingCData(
+				sb, Strings.join(ndc, CharPool.SPACE));
+
+			sb.append(StringPool.CDATA_CLOSE);
+			sb.append("</log4j:NDC>");
+			sb.append(StringPool.RETURN_NEW_LINE);
+		}
+
+		Throwable throwable = logEvent.getThrown();
+
+		if (throwable != null) {
+			sb.append("<log4j:throwable>");
+			sb.append(StringPool.CDATA_OPEN);
+
+			StringWriter stringWriter = new StringWriter();
+
+			throwable.printStackTrace(new PrintWriter(stringWriter));
+
+			Transform.appendEscapingCData(sb, stringWriter.toString());
+
+			sb.append(StringPool.CDATA_CLOSE);
+			sb.append("</log4j:throwable>");
+			sb.append(StringPool.RETURN_NEW_LINE);
+		}
+
+		if (_locationInfo) {
+			StackTraceElement source = logEvent.getSource();
+
+			if (source != null) {
+				sb.append("<log4j:locationInfo class=\"");
+				sb.append(Transform.escapeHtmlTags(source.getClassName()));
+				sb.append("\" method=\"");
+				sb.append(Transform.escapeHtmlTags(source.getMethodName()));
+				sb.append("\" file=\"");
+				sb.append(Transform.escapeHtmlTags(source.getFileName()));
+				sb.append("\" line=\"");
+				sb.append(source.getLineNumber());
+				sb.append("\"/>");
+				sb.append(StringPool.RETURN_NEW_LINE);
+			}
+		}
+
+		if (_properties) {
+			ReadOnlyStringMap contextMap = logEvent.getContextData();
+
+			if (!contextMap.isEmpty()) {
+				sb.append("<log4j:properties>");
+				sb.append(StringPool.RETURN_NEW_LINE);
+
+				contextMap.forEach(
+					(key, value) -> {
+						if (value != null) {
+							sb.append("<log4j:data name=\"");
+							sb.append(Transform.escapeHtmlTags(key));
+							sb.append("\" value=\"");
+							sb.append(
+								Transform.escapeHtmlTags(
+									Objects.toString(value, null)));
+							sb.append("\"/>");
+							sb.append(StringPool.RETURN_NEW_LINE);
+						}
+					});
+
+				sb.append("</log4j:properties>");
+				sb.append(StringPool.RETURN_NEW_LINE);
+			}
+		}
+
+		sb.append("</log4j:event>");
+		sb.append(StringPool.RETURN_NEW_LINE);
+		sb.append(StringPool.RETURN_NEW_LINE);
+	}
+
+	private final boolean _locationInfo;
+	private final boolean _properties;
+
+}

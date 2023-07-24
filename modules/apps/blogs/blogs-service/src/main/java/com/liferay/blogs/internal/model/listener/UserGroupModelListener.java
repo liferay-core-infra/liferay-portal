@@ -58,14 +58,15 @@ public class UserGroupModelListener extends BaseModelListener<UserGroup> {
 			long userId, long userGroupId)
 		throws PortalException {
 
-		List<Group> userGroupGroups = _groupLocalService.getUserGroupGroups(
+		long[] userGroupGroupIds = _userGroupLocalService.getGroupPrimaryKeys(
 			userGroupId);
 
-		userGroupGroups.removeAll(
-			_groupLocalService.getUserGroups(userId, true));
+		List<Group> userGroups = _groupLocalService.getUserGroups(userId, true);
 
-		for (Group group : userGroupGroups) {
-			_blogsEntryLocalService.unsubscribe(userId, group.getGroupId());
+		for (long groupId : userGroupGroupIds) {
+			if (!userGroups.contains(groupId)) {
+				_blogsEntryLocalService.unsubscribe(userId, groupId);
+			}
 		}
 	}
 

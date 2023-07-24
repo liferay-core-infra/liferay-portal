@@ -32,6 +32,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -91,9 +93,14 @@ public class TaxonomyVocabularyResourceImpl
 
 		assetEntryBulkSelection.forEach(
 			assetEntry -> {
-				if (BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-						permissionChecker, assetEntry.getGroupId(),
-						assetEntry.getClassName(), assetEntry.getClassPK(),
+				ModelResourcePermission<?> modelResourcePermission =
+					ModelResourcePermissionRegistryUtil.
+						getModelResourcePermission(assetEntry.getClassName());
+
+				if ((modelResourcePermission != null) &&
+					BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+						modelResourcePermission, permissionChecker,
+						assetEntry.getGroupId(), assetEntry.getClassPK(),
 						ActionKeys.UPDATE)) {
 
 					List<AssetCategory> assetEntryAssetCategories =

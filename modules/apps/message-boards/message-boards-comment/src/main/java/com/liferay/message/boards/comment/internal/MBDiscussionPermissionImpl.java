@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
@@ -81,12 +83,14 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			return true;
 		}
 
-		Boolean hasPermission =
-			BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-				permissionChecker, groupId, className, classPK, actionId);
+		ModelResourcePermission<?> modelResourcePermission =
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				className);
 
-		if (hasPermission != null) {
-			return hasPermission.booleanValue();
+		if (modelResourcePermission != null) {
+			return BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+				modelResourcePermission, permissionChecker, groupId, classPK,
+				actionId);
 		}
 
 		return permissionChecker.hasPermission(

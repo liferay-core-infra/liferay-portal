@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.security.permission.resource.DynamicInheritance
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionLogic;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.StagedModelPermissionLogic;
 import com.liferay.portal.kernel.util.Validator;
@@ -126,14 +127,17 @@ public class DLFileEntryModelResourcePermissionWrapper
 							return false;
 						}
 
-						Boolean hasBaseModelPermission =
-							BaseModelPermissionCheckerUtil.
-								containsBaseModelPermission(
-									permissionChecker, fileEntry.getGroupId(),
-									className, classPK, relatedModelActionId);
+						ModelResourcePermission<?>
+							existingModelResourcePermission =
+								ModelResourcePermissionRegistryUtil.
+									getModelResourcePermission(className);
 
-						if ((hasBaseModelPermission != null) &&
-							!hasBaseModelPermission) {
+						if ((existingModelResourcePermission != null) &&
+							!BaseModelPermissionCheckerUtil.
+								containsBaseModelPermission(
+									existingModelResourcePermission,
+									permissionChecker, fileEntry.getGroupId(),
+									classPK, relatedModelActionId)) {
 
 							return false;
 						}

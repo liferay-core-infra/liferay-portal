@@ -40,7 +40,7 @@ public class DLSubscriptionSender
 	}
 
 	@Override
-	protected Boolean hasSubscribePermission(
+	protected boolean hasSubscribePermission(
 			PermissionChecker permissionChecker, Subscription subscription)
 		throws PortalException {
 

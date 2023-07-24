@@ -106,7 +106,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 				_getGroupId(searchContext), _getMinCounts(attributes),
 				GetterUtil.getInteger(
 					suggestionsContributorConfiguration.getSize(), 5),
-				sort, _portalCache),
+				sort),
 			"JSONObject/_embedded", "JSONArray/search-keywords");
 
 		if (jsonArray.length() == 0) {
@@ -233,14 +233,14 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		AnalyticsConfiguration analyticsConfiguration,
 		AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
 		long companyId, String displayLanguageId, long groupId, int minCounts,
-		int size, String sort, PortalCache<String, JSONObject> portalCache) {
+		int size, String sort) {
 
 		String key = StringBundler.concat(
 			StringPool.POUND, companyId, StringPool.POUND, minCounts,
 			StringPool.POUND, displayLanguageId, StringPool.POUND, groupId,
 			StringPool.POUND, sort);
 
-		JSONObject jsonObject = portalCache.get(key);
+		JSONObject jsonObject = _portalCache.get(key);
 
 		if (jsonObject != null) {
 			return jsonObject;
@@ -250,7 +250,7 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			analyticsConfiguration, displayLanguageId, groupId, minCounts, size,
 			sort);
 
-		portalCache.put(
+		_portalCache.put(
 			key, jsonObject,
 			(int)
 				(asahSearchKeywordsConfiguration.cacheTimeout() / Time.SECOND));

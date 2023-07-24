@@ -24,8 +24,6 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 
-import java.util.List;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -75,9 +73,9 @@ public class CommerceOSGiCommands {
 		Role role = _roleLocalService.fetchRole(
 			company.getCompanyId(), RoleConstants.ADMINISTRATOR);
 
-		List<User> roleUsers = _userLocalService.getRoleUsers(role.getRoleId());
+		long[] roleUserIds = _userLocalService.getRoleUserIds(role.getRoleId());
 
-		User user = roleUsers.get(0);
+		User user = _userLocalService.getUser(roleUserIds[0]);
 
 		PermissionChecker permissionChecker = _permissionCheckerFactory.create(
 			user);

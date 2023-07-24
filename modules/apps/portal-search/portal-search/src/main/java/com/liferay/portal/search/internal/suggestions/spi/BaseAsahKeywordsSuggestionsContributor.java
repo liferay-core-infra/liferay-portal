@@ -283,49 +283,41 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 				return jsonObject;
 			}
 
-			AsahSearchKeywordsCache asahSearchKeywordsWebCacheItem =
-				new AsahSearchKeywordsCache(
-					analyticsConfiguration, asahSearchKeywordsConfiguration,
-					displayLanguageId, groupId, minCounts, size, sort);
+			AsahSearchKeywordsCache asahSearchKeywordsCache =
+				new AsahSearchKeywordsCache();
 
-			jsonObject = asahSearchKeywordsWebCacheItem._convert();
+			jsonObject = asahSearchKeywordsCache._convert(
+				analyticsConfiguration, displayLanguageId, groupId, minCounts,
+				size, sort);
 
 			portalCache.put(
 				key, jsonObject,
-				(int)(asahSearchKeywordsWebCacheItem._getRefreshTime() /
-					Time.SECOND));
+				(int)
+					(asahSearchKeywordsConfiguration.cacheTimeout() /
+						Time.SECOND));
 
 			return jsonObject;
 		}
 
-		public AsahSearchKeywordsCache(
+		private JSONObject _convert(
 			AnalyticsConfiguration analyticsConfiguration,
-			AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,
 			String displayLanguageId, long groupId, int minCounts, int size,
 			String sort) {
 
-			_analyticsConfiguration = analyticsConfiguration;
-			_asahSearchKeywordsConfiguration = asahSearchKeywordsConfiguration;
-			_displayLanguageId = displayLanguageId;
-			_groupId = groupId;
-			_minCounts = minCounts;
-			_size = size;
-			_sort = sort;
-		}
-
-		private JSONObject _convert() {
 			try {
 				Http.Options options = new Http.Options();
 
 				options.addHeader(
 					"OSB-Asah-Faro-Backend-Security-Signature",
-					_analyticsConfiguration.
+					analyticsConfiguration.
 						liferayAnalyticsFaroBackendSecuritySignature());
 				options.addHeader(
 					"OSB-Asah-Project-ID",
-					_analyticsConfiguration.liferayAnalyticsProjectId());
+					analyticsConfiguration.liferayAnalyticsProjectId());
 
-				String url = _getURL();
+				String url = _getURL(
+					analyticsConfiguration, displayLanguageId, groupId,
+					minCounts, size, sort);
 
 				if (_log.isDebugEnabled()) {
 					_log.debug("Reading " + url);
@@ -345,31 +337,31 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			}
 		}
 
-		private long _getRefreshTime() {
-			return _asahSearchKeywordsConfiguration.cacheTimeout();
-		}
+		private String _getURL(
+			AnalyticsConfiguration analyticsConfiguration,
+			String displayLanguageId, long groupId, int minCounts, int size,
+			String sort) {
 
-		private String _getURL() {
 			StringBundler sb = new StringBundler(11);
 
-			sb.append(_analyticsConfiguration.liferayAnalyticsFaroBackendURL());
+			sb.append(analyticsConfiguration.liferayAnalyticsFaroBackendURL());
 			sb.append("/api/1.0/pages/search-keywords?minCounts=");
-			sb.append(_minCounts);
+			sb.append(minCounts);
 
-			if (!Validator.isBlank(_displayLanguageId)) {
+			if (!Validator.isBlank(displayLanguageId)) {
 				sb.append("&displayLanguageId=");
-				sb.append(_displayLanguageId);
+				sb.append(displayLanguageId);
 			}
 
-			if (_groupId > 0) {
+			if (groupId > 0) {
 				sb.append("&groupId=");
-				sb.append(_groupId);
+				sb.append(groupId);
 			}
 
 			sb.append("&size=");
-			sb.append(_size);
+			sb.append(size);
 			sb.append("&sort=");
-			sb.append(_sort);
+			sb.append(sort);
 
 			return sb.toString();
 		}
@@ -388,15 +380,6 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 					"Response body: ", jsonObject, "\nResponse code: ",
 					response.getResponseCode()));
 		}
-
-		private final AnalyticsConfiguration _analyticsConfiguration;
-		private final AsahSearchKeywordsConfiguration
-			_asahSearchKeywordsConfiguration;
-		private final String _displayLanguageId;
-		private final long _groupId;
-		private final int _minCounts;
-		private final int _size;
-		private final String _sort;
 
 	}
 

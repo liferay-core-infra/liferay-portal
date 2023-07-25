@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -251,9 +250,6 @@ public class AnalyticsReportsProductNavigationControlMenuEntryTest {
 	)
 	private ProductNavigationControlMenuEntry
 		_productNavigationControlMenuEntry;
-
-	@Inject
-	private UserLocalService _userLocalService;
 
 	private class HidePanelPortalPreferencesWrapper
 		extends PortalPreferencesImpl {

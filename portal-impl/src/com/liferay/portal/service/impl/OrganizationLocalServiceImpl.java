@@ -121,10 +121,13 @@ public class OrganizationLocalServiceImpl
 	 *
 	 * @param groupId the primary key of the group
 	 * @param organizationId the primary key of the organization
+	 * @return <code>true</code> if the association between the ${groupId} and ${organizationId} is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addGroupOrganization(long groupId, long organizationId) {
-		super.addGroupOrganization(groupId, organizationId);
+	public boolean addGroupOrganization(long groupId, long organizationId) {
+		if (!super.addGroupOrganization(groupId, organizationId)) {
+			return false;
+		}
 
 		try {
 			reindexUsers(organizationId);
@@ -132,6 +135,8 @@ public class OrganizationLocalServiceImpl
 		catch (PortalException portalException) {
 			throw new SystemException(portalException);
 		}
+
+		return true;
 	}
 
 	/**
@@ -139,17 +144,13 @@ public class OrganizationLocalServiceImpl
 	 *
 	 * @param groupId the primary key of the group
 	 * @param organization the organization
+	 * @return <code>true</code> if the association between the ${groupId} and ${organization} is added; <code>false</code> if it was already added
 	 */
 	@Override
-	public void addGroupOrganization(long groupId, Organization organization) {
-		super.addGroupOrganization(groupId, organization);
+	public boolean addGroupOrganization(
+		long groupId, Organization organization) {
 
-		try {
-			reindexUsers(organization);
-		}
-		catch (PortalException portalException) {
-			throw new SystemException(portalException);
-		}
+		return addGroupOrganization(groupId, organization.getOrganizationId());
 	}
 
 	/**
@@ -157,12 +158,15 @@ public class OrganizationLocalServiceImpl
 	 *
 	 * @param groupId the primary key of the group
 	 * @param organizations the organizations
+	 * @return <code>true</code> if at least an association between the ${groupId} and the ${organizations} is added; <code>false</code> if all were already added
 	 */
 	@Override
-	public void addGroupOrganizations(
+	public boolean addGroupOrganizations(
 		long groupId, List<Organization> organizations) {
 
-		super.addGroupOrganizations(groupId, organizations);
+		if (!super.addGroupOrganizations(groupId, organizations)) {
+			return false;
+		}
 
 		try {
 			reindexUsers(organizations);
@@ -170,6 +174,8 @@ public class OrganizationLocalServiceImpl
 		catch (PortalException portalException) {
 			throw new SystemException(portalException);
 		}
+
+		return true;
 	}
 
 	/**
@@ -177,10 +183,13 @@ public class OrganizationLocalServiceImpl
 	 *
 	 * @param groupId the primary key of the group
 	 * @param organizationIds the primary keys of the organizations
+	 * @return <code>true</code> if at least an association between the ${groupId} and the ${organizationIds} is added; <code>false</code> if all were already added
 	 */
 	@Override
-	public void addGroupOrganizations(long groupId, long[] organizationIds) {
-		super.addGroupOrganizations(groupId, organizationIds);
+	public boolean addGroupOrganizations(long groupId, long[] organizationIds) {
+		if (!super.addGroupOrganizations(groupId, organizationIds)) {
+			return false;
+		}
 
 		try {
 			reindexUsers(organizationIds);
@@ -188,6 +197,8 @@ public class OrganizationLocalServiceImpl
 		catch (PortalException portalException) {
 			throw new SystemException(portalException);
 		}
+
+		return true;
 	}
 
 	/**

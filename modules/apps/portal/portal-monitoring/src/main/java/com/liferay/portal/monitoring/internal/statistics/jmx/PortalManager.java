@@ -59,7 +59,8 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	@Override
 	public long[] getCompanyIds() {
-		Set<Long> companyIds = _serverPortalRequestDataSampleProcessor.getCompanyIds();
+		Set<Long> companyIds =
+			_serverPortalRequestDataSampleProcessor.getPortalCompanyIds();
 
 		return ArrayUtil.toArray(companyIds.toArray(new Long[0]));
 	}
@@ -134,14 +135,16 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	public long getStartTime(long companyId) throws MonitoringException {
 		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
-			_serverPortalRequestDataSampleProcessor.getCompanyStatistics(companyId);
+			_serverPortalRequestDataSampleProcessor.
+				getPortalRequestDataSampleProcessor(companyId);
 
 		return portalRequestDataSampleProcessor.getStartTime();
 	}
 
 	public long getStartTime(String webId) throws MonitoringException {
 		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
-			_serverPortalRequestDataSampleProcessor.getCompanyStatistics(webId);
+			_serverPortalRequestDataSampleProcessor.
+				getPortalRequestDataSampleProcessor(webId);
 
 		return portalRequestDataSampleProcessor.getStartTime();
 	}
@@ -187,7 +190,8 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 	@Override
 	public long getUptime(long companyId) throws MonitoringException {
 		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
-			_serverPortalRequestDataSampleProcessor.getCompanyStatistics(companyId);
+			_serverPortalRequestDataSampleProcessor.
+				getPortalRequestDataSampleProcessor(companyId);
 
 		return portalRequestDataSampleProcessor.getUptime();
 	}
@@ -195,31 +199,36 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 	@Override
 	public long getUptime(String webId) throws MonitoringException {
 		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
-			_serverPortalRequestDataSampleProcessor.getCompanyStatistics(webId);
+			_serverPortalRequestDataSampleProcessor.
+				getPortalRequestDataSampleProcessor(webId);
 
 		return portalRequestDataSampleProcessor.getUptime();
 	}
 
 	@Override
 	public String[] getWebIds() {
-		Set<String> webIds = _serverPortalRequestDataSampleProcessor.getWebIds();
+		Set<String> webIds =
+			_serverPortalRequestDataSampleProcessor.getPortalWebIds();
 
 		return webIds.toArray(new String[0]);
 	}
 
 	@Override
 	public void reset() {
-		_serverPortalRequestDataSampleProcessor.reset();
+		_serverPortalRequestDataSampleProcessor.
+			resetPortalRequestDataSampleProcessor();
 	}
 
 	@Override
 	public void reset(long companyId) {
-		_serverPortalRequestDataSampleProcessor.reset(companyId);
+		_serverPortalRequestDataSampleProcessor.
+			resetPortalRequestDataSampleProcessor(companyId);
 	}
 
 	@Override
 	public void reset(String webId) {
-		_serverPortalRequestDataSampleProcessor.reset(webId);
+		_serverPortalRequestDataSampleProcessor.
+			resetPortalRequestDataSampleProcessor(webId);
 	}
 
 	@Reference

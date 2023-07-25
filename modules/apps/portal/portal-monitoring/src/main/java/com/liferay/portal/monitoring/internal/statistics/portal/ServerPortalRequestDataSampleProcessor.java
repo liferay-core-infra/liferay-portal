@@ -26,20 +26,23 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	enabled = false, property = "namespace=com.liferay.monitoring.Portal",
-	service = {DataSampleProcessor.class, ServerPortalRequestDataSampleProcessor.class}
+	service = {
+		DataSampleProcessor.class, ServerPortalRequestDataSampleProcessor.class
+	}
 )
 public class ServerPortalRequestDataSampleProcessor
 	implements DataSampleProcessor<PortalRequestDataSample> {
 
-	public Set<Long> getCompanyIds() {
-		return _companyStatisticsByCompanyId.keySet();
+	public Set<Long> getPortalCompanyIds() {
+		return _portalRequestDataSampleProcessorByCompanyId.keySet();
 	}
 
-	public PortalRequestDataSampleProcessor getCompanyStatistics(long companyId)
+	public PortalRequestDataSampleProcessor getPortalRequestDataSampleProcessor(
+			long companyId)
 		throws MonitoringException {
 
-		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor = _companyStatisticsByCompanyId.get(
-			companyId);
+		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+			_portalRequestDataSampleProcessorByCompanyId.get(companyId);
 
 		if (portalRequestDataSampleProcessor == null) {
 			throw new MonitoringException(
@@ -49,11 +52,12 @@ public class ServerPortalRequestDataSampleProcessor
 		return portalRequestDataSampleProcessor;
 	}
 
-	public PortalRequestDataSampleProcessor getCompanyStatistics(String webId)
+	public PortalRequestDataSampleProcessor getPortalRequestDataSampleProcessor(
+			String webId)
 		throws MonitoringException {
 
-		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor = _companyStatisticsByWebId.get(
-			webId);
+		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+			_portalRequestDataSampleProcessorByWebId.get(webId);
 
 		if (portalRequestDataSampleProcessor == null) {
 			throw new MonitoringException(
@@ -63,12 +67,14 @@ public class ServerPortalRequestDataSampleProcessor
 		return portalRequestDataSampleProcessor;
 	}
 
-	public Set<PortalRequestDataSampleProcessor> getCompanyStatisticsSet() {
-		return new HashSet<>(_companyStatisticsByWebId.values());
+	public Set<PortalRequestDataSampleProcessor>
+		getPortalRequestDataSampleProcessorSet() {
+
+		return new HashSet<>(_portalRequestDataSampleProcessorByWebId.values());
 	}
 
-	public Set<String> getWebIds() {
-		return _companyStatisticsByWebId.keySet();
+	public Set<String> getPortalWebIds() {
+		return _portalRequestDataSampleProcessorByWebId.keySet();
 	}
 
 	@Override
@@ -77,14 +83,16 @@ public class ServerPortalRequestDataSampleProcessor
 
 		long companyId = portalRequestDataSample.getCompanyId();
 
-		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor = _companyStatisticsByCompanyId.get(
-			companyId);
+		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+			_portalRequestDataSampleProcessorByCompanyId.get(companyId);
 
 		if (portalRequestDataSampleProcessor == null) {
 			try {
 				Company company = _companyLocalService.getCompany(companyId);
 
-				portalRequestDataSampleProcessor = register(company.getWebId());
+				portalRequestDataSampleProcessor =
+					registerPortalRequestDataSampleProcessor(
+						company.getWebId());
 			}
 			catch (Exception exception) {
 				throw new IllegalStateException(
@@ -93,31 +101,35 @@ public class ServerPortalRequestDataSampleProcessor
 			}
 		}
 
-		portalRequestDataSampleProcessor.processDataSample(portalRequestDataSample);
+		portalRequestDataSampleProcessor.processDataSample(
+			portalRequestDataSample);
 	}
 
-	public synchronized PortalRequestDataSampleProcessor register(String webId) {
-		PortalRequestDataSampleProcessor
-			portalRequestDataSampleProcessor = new PortalRequestDataSampleProcessor(
-			_companyLocalService, webId);
+	public synchronized PortalRequestDataSampleProcessor
+		registerPortalRequestDataSampleProcessor(String webId) {
 
-		_companyStatisticsByCompanyId.put(
+		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+			new PortalRequestDataSampleProcessor(_companyLocalService, webId);
+
+		_portalRequestDataSampleProcessorByCompanyId.put(
 			portalRequestDataSampleProcessor.getCompanyId(),
 			portalRequestDataSampleProcessor);
-		_companyStatisticsByWebId.put(webId, portalRequestDataSampleProcessor);
+		_portalRequestDataSampleProcessorByWebId.put(
+			webId, portalRequestDataSampleProcessor);
 
 		return portalRequestDataSampleProcessor;
 	}
 
-	public void reset() {
+	public void resetPortalRequestDataSampleProcessor() {
 		_companyLocalService.forEachCompanyId(
-			companyId -> reset(companyId),
-			ArrayUtil.toLongArray(_companyStatisticsByCompanyId.keySet()));
+			companyId -> resetPortalRequestDataSampleProcessor(companyId),
+			ArrayUtil.toLongArray(
+				_portalRequestDataSampleProcessorByCompanyId.keySet()));
 	}
 
-	public void reset(long companyId) {
-		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor = _companyStatisticsByCompanyId.get(
-			companyId);
+	public void resetPortalRequestDataSampleProcessor(long companyId) {
+		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+			_portalRequestDataSampleProcessorByCompanyId.get(companyId);
 
 		if (portalRequestDataSampleProcessor == null) {
 			return;
@@ -126,9 +138,9 @@ public class ServerPortalRequestDataSampleProcessor
 		portalRequestDataSampleProcessor.reset();
 	}
 
-	public void reset(String webId) {
-		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor = _companyStatisticsByWebId.get(
-			webId);
+	public void resetPortalRequestDataSampleProcessor(String webId) {
+		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+			_portalRequestDataSampleProcessorByWebId.get(webId);
 
 		if (portalRequestDataSampleProcessor == null) {
 			return;
@@ -137,25 +149,27 @@ public class ServerPortalRequestDataSampleProcessor
 		portalRequestDataSampleProcessor.reset();
 	}
 
-	public synchronized void unregister(String webId) {
-		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor = _companyStatisticsByWebId.remove(
-			webId);
+	public synchronized void unregisterPortalRequestDataSampleProcessor(
+		String webId) {
+
+		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+			_portalRequestDataSampleProcessorByWebId.remove(webId);
 
 		if (portalRequestDataSampleProcessor != null) {
-			_companyStatisticsByCompanyId.remove(
+			_portalRequestDataSampleProcessorByCompanyId.remove(
 				portalRequestDataSampleProcessor.getCompanyId());
 		}
 	}
 
 	@Activate
 	protected void activate() {
-		PortalRequestDataSampleProcessor
-			portalRequestDataSampleProcessor = new PortalRequestDataSampleProcessor();
+		PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
+			new PortalRequestDataSampleProcessor();
 
-		_companyStatisticsByCompanyId.put(
+		_portalRequestDataSampleProcessorByCompanyId.put(
 			portalRequestDataSampleProcessor.getCompanyId(),
 			portalRequestDataSampleProcessor);
-		_companyStatisticsByWebId.put(
+		_portalRequestDataSampleProcessorByWebId.put(
 			portalRequestDataSampleProcessor.getWebId(),
 			portalRequestDataSampleProcessor);
 	}
@@ -163,9 +177,9 @@ public class ServerPortalRequestDataSampleProcessor
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	private final Map<Long, PortalRequestDataSampleProcessor> _companyStatisticsByCompanyId =
-		new TreeMap<>();
-	private final Map<String, PortalRequestDataSampleProcessor> _companyStatisticsByWebId =
-		new TreeMap<>();
+	private final Map<Long, PortalRequestDataSampleProcessor>
+		_portalRequestDataSampleProcessorByCompanyId = new TreeMap<>();
+	private final Map<String, PortalRequestDataSampleProcessor>
+		_portalRequestDataSampleProcessorByWebId = new TreeMap<>();
 
 }

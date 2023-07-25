@@ -18,7 +18,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	enabled = false, property = "namespace=com.liferay.monitoring.Service",
-	service = {DataSampleProcessor.class, ServerServiceRequestDataSampleProcessor.class}
+	service = {
+		DataSampleProcessor.class, ServerServiceRequestDataSampleProcessor.class
+	}
 )
 public class ServerServiceRequestDataSampleProcessor
 	implements DataSampleProcessor<ServiceRequestDataSample> {
@@ -26,10 +28,12 @@ public class ServerServiceRequestDataSampleProcessor
 	public long getAverageTime(
 		String className, String methodName, String[] parameterTypes) {
 
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor = _serviceStatistics.get(className);
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
 
 		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getAverageTime(methodName, parameterTypes);
+			return serviceRequestDataSampleProcessor.getAverageTime(
+				methodName, parameterTypes);
 		}
 
 		return -1;
@@ -38,10 +42,12 @@ public class ServerServiceRequestDataSampleProcessor
 	public long getErrorCount(
 		String className, String methodName, String[] parameterTypes) {
 
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor = _serviceStatistics.get(className);
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
 
 		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getErrorCount(methodName, parameterTypes);
+			return serviceRequestDataSampleProcessor.getErrorCount(
+				methodName, parameterTypes);
 		}
 
 		return -1;
@@ -50,10 +56,12 @@ public class ServerServiceRequestDataSampleProcessor
 	public long getMaxTime(
 		String className, String methodName, String[] parameterTypes) {
 
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor = _serviceStatistics.get(className);
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
 
 		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getMaxTime(methodName, parameterTypes);
+			return serviceRequestDataSampleProcessor.getMaxTime(
+				methodName, parameterTypes);
 		}
 
 		return -1;
@@ -62,10 +70,12 @@ public class ServerServiceRequestDataSampleProcessor
 	public long getMinTime(
 		String className, String methodName, String[] parameterTypes) {
 
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor = _serviceStatistics.get(className);
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
 
 		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getMinTime(methodName, parameterTypes);
+			return serviceRequestDataSampleProcessor.getMinTime(
+				methodName, parameterTypes);
 		}
 
 		return -1;
@@ -74,7 +84,8 @@ public class ServerServiceRequestDataSampleProcessor
 	public long getRequestCount(
 		String className, String methodName, String[] parameterTypes) {
 
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor = _serviceStatistics.get(className);
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
 
 		if (serviceRequestDataSampleProcessor != null) {
 			return serviceRequestDataSampleProcessor.getRequestCount(
@@ -93,18 +104,22 @@ public class ServerServiceRequestDataSampleProcessor
 
 		String className = methodSignature.getClassName();
 
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor = _serviceStatistics.get(className);
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
 
 		if (serviceRequestDataSampleProcessor == null) {
-			serviceRequestDataSampleProcessor = new ServiceRequestDataSampleProcessor(className);
+			serviceRequestDataSampleProcessor =
+				new ServiceRequestDataSampleProcessor(className);
 
-			_serviceStatistics.put(className, serviceRequestDataSampleProcessor);
+			_serviceStatistics.put(
+				className, serviceRequestDataSampleProcessor);
 		}
 
-		serviceRequestDataSampleProcessor.processDataSample(serviceRequestDataSample);
+		serviceRequestDataSampleProcessor.processDataSample(
+			serviceRequestDataSample);
 	}
 
-	private final Map<String, ServiceRequestDataSampleProcessor> _serviceStatistics =
-		new ConcurrentHashMap<>();
+	private final Map<String, ServiceRequestDataSampleProcessor>
+		_serviceStatistics = new ConcurrentHashMap<>();
 
 }

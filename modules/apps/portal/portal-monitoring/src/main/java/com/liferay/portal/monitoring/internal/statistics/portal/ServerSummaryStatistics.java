@@ -28,7 +28,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 	public long getAverageTime() {
 		Set<PortalRequestDataSampleProcessor>
 			portalRequestDataSampleProcessorSet =
-			_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet();
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessorSet();
 
 		if (portalRequestDataSampleProcessorSet.isEmpty()) {
 			return 0;
@@ -36,7 +37,9 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 
 		long averageTime = 0;
 
-		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor : portalRequestDataSampleProcessorSet) {
+		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
+				portalRequestDataSampleProcessorSet) {
+
 			RequestStatistics requestStatistics =
 				portalRequestDataSampleProcessor.getRequestStatistics();
 
@@ -69,7 +72,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		int errorCount = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessorSet()) {
 
 			RequestStatistics requestStatistics =
 				portalRequestDataSampleProcessor.getRequestStatistics();
@@ -103,7 +107,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		long maxTime = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessorSet()) {
 
 			if (portalRequestDataSampleProcessor.getMaxTime() > maxTime) {
 				maxTime = portalRequestDataSampleProcessor.getMaxTime();
@@ -132,7 +137,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		long minTime = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessorSet()) {
 
 			if (portalRequestDataSampleProcessor.getMinTime() < minTime) {
 				minTime = portalRequestDataSampleProcessor.getMinTime();
@@ -161,7 +167,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		int requestCount = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessorSet()) {
 
 			RequestStatistics requestStatistics =
 				portalRequestDataSampleProcessor.getRequestStatistics();
@@ -195,7 +202,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		int successCount = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessorSet()) {
 
 			RequestStatistics requestStatistics =
 				portalRequestDataSampleProcessor.getRequestStatistics();
@@ -229,7 +237,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 		int timeoutCount = 0;
 
 		for (PortalRequestDataSampleProcessor portalRequestDataSampleProcessor :
-				_serverPortalRequestDataSampleProcessor.getCompanyStatisticsSet()) {
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessorSet()) {
 
 			RequestStatistics requestStatistics =
 				portalRequestDataSampleProcessor.getRequestStatistics();
@@ -263,7 +272,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 
 		try {
 			PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
-				_serverPortalRequestDataSampleProcessor.getCompanyStatistics(companyId);
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessor(companyId);
 
 			return portalRequestDataSampleProcessor.getRequestStatistics();
 		}
@@ -279,7 +289,8 @@ public class ServerSummaryStatistics implements SummaryStatistics {
 
 		try {
 			PortalRequestDataSampleProcessor portalRequestDataSampleProcessor =
-				_serverPortalRequestDataSampleProcessor.getCompanyStatistics(webId);
+				_serverPortalRequestDataSampleProcessor.
+					getPortalRequestDataSampleProcessor(webId);
 
 			return portalRequestDataSampleProcessor.getRequestStatistics();
 		}

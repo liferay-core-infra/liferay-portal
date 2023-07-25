@@ -16,11 +16,17 @@ package com.liferay.portal.startup.monitor.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.ThreadUtil;
 
+import java.util.concurrent.CountDownLatch;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
@@ -37,8 +43,46 @@ public class PortalStartupMonitor {
 
 	@Activate
 	protected void activate(ComponentContext componentContext) {
+		BundleContext bundleContext = componentContext.getBundleContext();
+
+		DependencyManagerSyncUtil.registerSyncCallable(
+			() -> {
+				String componentName =
+					SCRComponentActorThreadGatekeeper.class.getName();
+
+				CountDownLatch countDownLatch = new CountDownLatch(1);
+
+				ServiceListener serviceListener = serviceEvent -> {
+					if (serviceEvent.getType() == ServiceEvent.REGISTERED) {
+						countDownLatch.countDown();
+					}
+				};
+
+				try {
+					bundleContext.addServiceListener(
+						serviceListener,
+						"(&(objectClass=" + componentName + "))");
+
+					componentContext.enableComponent(componentName);
+
+					countDownLatch.await();
+				}
+				catch (Exception exception) {
+					_log.error(
+						"Unable to enable component " + componentName,
+						exception);
+				}
+				finally {
+					componentContext.disableComponent(componentName);
+
+					bundleContext.removeServiceListener(serviceListener);
+				}
+
+				return null;
+			});
+
 		_serviceTracker = ServiceTrackerFactory.open(
-			componentContext.getBundleContext(),
+			bundleContext,
 			StringBundler.concat(
 				"(&", ModuleServiceLifecycle.PORTAL_INITIALIZED,
 				"(objectClass=", ModuleServiceLifecycle.class.getName(), "))"),

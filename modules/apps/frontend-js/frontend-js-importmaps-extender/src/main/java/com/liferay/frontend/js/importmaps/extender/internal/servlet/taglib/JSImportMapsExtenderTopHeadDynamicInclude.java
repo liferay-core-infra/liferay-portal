@@ -6,10 +6,10 @@
 package com.liferay.frontend.js.importmaps.extender.internal.servlet.taglib;
 
 import com.liferay.frontend.js.importmaps.extender.internal.configuration.JSImportMapsConfiguration;
+import com.liferay.frontend.js.importmaps.extender.internal.servlet.taglib.util.JSImportMapsRegistryUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.frontend.esm.FrontendESMUtil;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -20,10 +20,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,9 +36,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.frontend.js.importmaps.extender.internal.configuration.JSImportMapsConfiguration",
 	property = "service.ranking:Integer=" + Integer.MAX_VALUE,
-	service = {
-		DynamicInclude.class, JSImportMapsExtenderTopHeadDynamicInclude.class
-	}
+	service = DynamicInclude.class
 )
 public class JSImportMapsExtenderTopHeadDynamicInclude
 	extends BaseDynamicInclude {
@@ -56,8 +50,7 @@ public class JSImportMapsExtenderTopHeadDynamicInclude
 		PrintWriter printWriter = httpServletResponse.getWriter();
 
 		if (_jsImportMapsConfiguration.enableImportMaps() &&
-			(!_globalImportMapJSONObjects.isEmpty() ||
-			 !_scopedImportMapJSONObjects.isEmpty())) {
+			!JSImportMapsRegistryUtil.isImportMapsJSONObjectsEmpty()) {
 
 			printWriter.print("<script type=\"");
 
@@ -69,7 +62,8 @@ public class JSImportMapsExtenderTopHeadDynamicInclude
 			}
 
 			printWriter.print("\">");
-			printWriter.print(_importMaps.get());
+			printWriter.print(
+				JSImportMapsRegistryUtil.getImportMaps(_jsonFactory));
 			printWriter.print("</script>");
 		}
 
@@ -96,47 +90,11 @@ public class JSImportMapsExtenderTopHeadDynamicInclude
 		dynamicIncludeRegistry.register("/html/common/themes/top_head.jsp#pre");
 	}
 
-	public JSImportMapsRegistration register(
-		String scope, JSONObject jsonObject) {
-
-		if (scope == null) {
-			long globalId = _nextGlobalId.getAndIncrement();
-
-			_globalImportMapJSONObjects.put(globalId, jsonObject);
-
-			_rebuildImportMaps();
-
-			return new JSImportMapsRegistration() {
-
-				@Override
-				public void unregister() {
-					_globalImportMapJSONObjects.remove(globalId);
-				}
-
-			};
-		}
-
-		_scopedImportMapJSONObjects.put(scope, jsonObject);
-
-		_rebuildImportMaps();
-
-		return new JSImportMapsRegistration() {
-
-			@Override
-			public void unregister() {
-				_scopedImportMapJSONObjects.remove(scope);
-			}
-
-		};
-	}
-
 	@Activate
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
 		_bundleContext = bundleContext;
-
-		_rebuildImportMaps();
 
 		modified(properties);
 	}
@@ -159,57 +117,13 @@ public class JSImportMapsExtenderTopHeadDynamicInclude
 				"module");
 	}
 
-	private synchronized void _rebuildImportMaps() {
-		JSONObject jsonObject = _jsonFactory.createJSONObject();
-
-		jsonObject.put(
-			"imports",
-			() -> {
-				JSONObject importsJSONObject = _jsonFactory.createJSONObject();
-
-				for (JSONObject globalImportMapJSONObject :
-						_globalImportMapJSONObjects.values()) {
-
-					for (String key : globalImportMapJSONObject.keySet()) {
-						importsJSONObject.put(
-							key, globalImportMapJSONObject.getString(key));
-					}
-				}
-
-				return importsJSONObject;
-			}
-		).put(
-			"scopes",
-			() -> {
-				JSONObject scopesJSONObject = _jsonFactory.createJSONObject();
-
-				for (Map.Entry<String, JSONObject> entry :
-						_scopedImportMapJSONObjects.entrySet()) {
-
-					scopesJSONObject.put(entry.getKey(), entry.getValue());
-				}
-
-				return scopesJSONObject;
-			}
-		);
-
-		_importMaps.set(_jsonFactory.looseSerializeDeep(jsonObject));
-	}
-
 	@Reference
 	private AbsolutePortalURLBuilderFactory _absolutePortalURLBuilderFactory;
 
 	private volatile BundleContext _bundleContext;
-	private final ConcurrentMap<Long, JSONObject> _globalImportMapJSONObjects =
-		new ConcurrentHashMap<>();
-	private final AtomicReference<String> _importMaps = new AtomicReference<>();
 	private volatile JSImportMapsConfiguration _jsImportMapsConfiguration;
 
 	@Reference
 	private JSONFactory _jsonFactory;
-
-	private final AtomicLong _nextGlobalId = new AtomicLong();
-	private final ConcurrentMap<String, JSONObject>
-		_scopedImportMapJSONObjects = new ConcurrentHashMap<>();
 
 }

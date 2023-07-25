@@ -5,7 +5,7 @@
 
 package com.liferay.portal.monitoring.internal.statistics.jmx;
 
-import com.liferay.portal.monitoring.internal.statistics.service.ServerServiceRequestDataSampleProcessor;
+import com.liferay.portal.monitoring.internal.statistics.util.RequestDataSampleProcessorHelper;
 
 import javax.management.DynamicMBean;
 import javax.management.NotCompliantMBeanException;
@@ -36,7 +36,7 @@ public class ServiceManager
 	public long getErrorCount(
 		String className, String methodName, String[] parameterTypes) {
 
-		return _serverServiceRequestDataSampleProcessor.getErrorCount(
+		return _requestDataSampleProcessorHelper.getErrorCount(
 			className, methodName, parameterTypes);
 	}
 
@@ -44,7 +44,7 @@ public class ServiceManager
 	public long getMaxTime(
 		String className, String methodName, String[] parameterTypes) {
 
-		return _serverServiceRequestDataSampleProcessor.getMaxTime(
+		return _requestDataSampleProcessorHelper.getMaxTime(
 			className, methodName, parameterTypes);
 	}
 
@@ -52,7 +52,7 @@ public class ServiceManager
 	public long getMinTime(
 		String className, String methodName, String[] parameterTypes) {
 
-		return _serverServiceRequestDataSampleProcessor.getMinTime(
+		return _requestDataSampleProcessorHelper.getMinTime(
 			className, methodName, parameterTypes);
 	}
 
@@ -60,12 +60,11 @@ public class ServiceManager
 	public long getRequestCount(
 		String className, String methodName, String[] parameterTypes) {
 
-		return _serverServiceRequestDataSampleProcessor.getRequestCount(
+		return _requestDataSampleProcessorHelper.getRequestCount(
 			className, methodName, parameterTypes);
 	}
 
 	@Reference
-	private ServerServiceRequestDataSampleProcessor
-		_serverServiceRequestDataSampleProcessor;
+	private RequestDataSampleProcessorHelper _requestDataSampleProcessorHelper;
 
 }

@@ -12,11 +12,13 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.monitoring.internal.statistics.portal.PortalRequestDataSampleProcessor;
 import com.liferay.portal.monitoring.internal.statistics.portlet.PortletRequestDataSampleProcessor;
+import com.liferay.portal.monitoring.internal.statistics.service.ServiceRequestDataSampleProcessor;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -34,10 +36,66 @@ public class RequestDataSampleProcessorHelper {
 		return new HashSet<>(_portalRequestDataSampleProcessorByWebId.values());
 	}
 
+	public long getAverageTime(
+		String className, String methodName, String[] parameterTypes) {
+
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
+
+		if (serviceRequestDataSampleProcessor != null) {
+			return serviceRequestDataSampleProcessor.getAverageTime(
+				methodName, parameterTypes);
+		}
+
+		return -1;
+	}
+
 	public Company getCompanyByCompanyId(long companyId)
 		throws PortalException {
 
 		return _companyLocalService.getCompany(companyId);
+	}
+
+	public long getErrorCount(
+		String className, String methodName, String[] parameterTypes) {
+
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
+
+		if (serviceRequestDataSampleProcessor != null) {
+			return serviceRequestDataSampleProcessor.getErrorCount(
+				methodName, parameterTypes);
+		}
+
+		return -1;
+	}
+
+	public long getMaxTime(
+		String className, String methodName, String[] parameterTypes) {
+
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
+
+		if (serviceRequestDataSampleProcessor != null) {
+			return serviceRequestDataSampleProcessor.getMaxTime(
+				methodName, parameterTypes);
+		}
+
+		return -1;
+	}
+
+	public long getMinTime(
+		String className, String methodName, String[] parameterTypes) {
+
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
+
+		if (serviceRequestDataSampleProcessor != null) {
+			return serviceRequestDataSampleProcessor.getMinTime(
+				methodName, parameterTypes);
+		}
+
+		return -1;
 	}
 
 	public Set<Long> getPorletCompanyIds() {
@@ -147,6 +205,26 @@ public class RequestDataSampleProcessorHelper {
 		return _portletRequestDataSampleProcessorByWebId.keySet();
 	}
 
+	public long getRequestCount(
+		String className, String methodName, String[] parameterTypes) {
+
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
+			_serviceStatistics.get(className);
+
+		if (serviceRequestDataSampleProcessor != null) {
+			return serviceRequestDataSampleProcessor.getRequestCount(
+				methodName, parameterTypes);
+		}
+
+		return -1;
+	}
+
+	public ServiceRequestDataSampleProcessor
+		getServiceRequestDataSampleProcessorByClassName(String className) {
+
+		return _serviceStatistics.get(className);
+	}
+
 	public synchronized PortalRequestDataSampleProcessor
 		registerPortalRequestDataSampleProcessor(String webId) {
 
@@ -235,6 +313,13 @@ public class RequestDataSampleProcessorHelper {
 		portletRequestDataSampleProcessor.reset();
 	}
 
+	public void setServiceStatistics(
+		String className,
+		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor) {
+
+		_serviceStatistics.put(className, serviceRequestDataSampleProcessor);
+	}
+
 	public synchronized void unregisterPortalRequestDataSampleProcessor(
 		String webId) {
 
@@ -286,6 +371,8 @@ public class RequestDataSampleProcessorHelper {
 		_portalRequestDataSampleProcessorByCompanyId = new TreeMap<>();
 	private static final Map<String, PortalRequestDataSampleProcessor>
 		_portalRequestDataSampleProcessorByWebId = new TreeMap<>();
+	private static final Map<String, ServiceRequestDataSampleProcessor>
+		_serviceStatistics = new ConcurrentHashMap<>();
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

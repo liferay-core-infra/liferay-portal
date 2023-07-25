@@ -7,93 +7,20 @@ package com.liferay.portal.monitoring.internal.statistics.service;
 
 import com.liferay.portal.kernel.monitoring.DataSampleProcessor;
 import com.liferay.portal.kernel.monitoring.MethodSignature;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.liferay.portal.monitoring.internal.statistics.util.RequestDataSampleProcessorHelper;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
  */
 @Component(
 	enabled = false, property = "namespace=com.liferay.monitoring.Service",
-	service = {
-		DataSampleProcessor.class, ServerServiceRequestDataSampleProcessor.class
-	}
+	service = ServerServiceRequestDataSampleProcessor.class
 )
 public class ServerServiceRequestDataSampleProcessor
 	implements DataSampleProcessor<ServiceRequestDataSample> {
-
-	public long getAverageTime(
-		String className, String methodName, String[] parameterTypes) {
-
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
-			_serviceStatistics.get(className);
-
-		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getAverageTime(
-				methodName, parameterTypes);
-		}
-
-		return -1;
-	}
-
-	public long getErrorCount(
-		String className, String methodName, String[] parameterTypes) {
-
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
-			_serviceStatistics.get(className);
-
-		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getErrorCount(
-				methodName, parameterTypes);
-		}
-
-		return -1;
-	}
-
-	public long getMaxTime(
-		String className, String methodName, String[] parameterTypes) {
-
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
-			_serviceStatistics.get(className);
-
-		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getMaxTime(
-				methodName, parameterTypes);
-		}
-
-		return -1;
-	}
-
-	public long getMinTime(
-		String className, String methodName, String[] parameterTypes) {
-
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
-			_serviceStatistics.get(className);
-
-		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getMinTime(
-				methodName, parameterTypes);
-		}
-
-		return -1;
-	}
-
-	public long getRequestCount(
-		String className, String methodName, String[] parameterTypes) {
-
-		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
-			_serviceStatistics.get(className);
-
-		if (serviceRequestDataSampleProcessor != null) {
-			return serviceRequestDataSampleProcessor.getRequestCount(
-				methodName, parameterTypes);
-		}
-
-		return -1;
-	}
 
 	@Override
 	public void processDataSample(
@@ -105,13 +32,14 @@ public class ServerServiceRequestDataSampleProcessor
 		String className = methodSignature.getClassName();
 
 		ServiceRequestDataSampleProcessor serviceRequestDataSampleProcessor =
-			_serviceStatistics.get(className);
+			_requestDataSampleProcessorHelper.
+				getServiceRequestDataSampleProcessorByClassName(className);
 
 		if (serviceRequestDataSampleProcessor == null) {
 			serviceRequestDataSampleProcessor =
 				new ServiceRequestDataSampleProcessor(className);
 
-			_serviceStatistics.put(
+			_requestDataSampleProcessorHelper.setServiceStatistics(
 				className, serviceRequestDataSampleProcessor);
 		}
 
@@ -119,7 +47,7 @@ public class ServerServiceRequestDataSampleProcessor
 			serviceRequestDataSample);
 	}
 
-	private final Map<String, ServiceRequestDataSampleProcessor>
-		_serviceStatistics = new ConcurrentHashMap<>();
+	@Reference
+	private RequestDataSampleProcessorHelper _requestDataSampleProcessorHelper;
 
 }

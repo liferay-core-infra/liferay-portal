@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.LayoutQueryStringComposite;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LayoutFriendlyURLSeparatorComposite;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -36,8 +35,6 @@ import com.liferay.portal.kernel.upload.UploadServletRequest;
 
 import java.io.IOException;
 import java.io.Serializable;
-
-import java.net.InetAddress;
 
 import java.util.Date;
 import java.util.List;
@@ -59,8 +56,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.PreferencesValidator;
-import javax.portlet.RenderRequest;
-import javax.portlet.ValidatorException;
 import javax.portlet.WindowState;
 
 import javax.servlet.ServletContext;
@@ -225,14 +220,6 @@ public interface Portal {
 		boolean doAsUser);
 
 	/**
-	 * Clears the render parameters in the request if the portlet is in the
-	 * action phase.
-	 *
-	 * @param renderRequest the render request
-	 */
-	public void clearRequestParameters(RenderRequest renderRequest);
-
-	/**
 	 * Copies the request parameters to the render parameters, unless a
 	 * parameter with that name already exists in the render parameters.
 	 *
@@ -310,34 +297,6 @@ public interface Portal {
 		throws PortalException;
 
 	public long[] getAncestorSiteGroupIds(long groupId);
-
-	/**
-	 * Returns the base model instance for the resource permission.
-	 *
-	 * @param  resourcePermission the resource permission
-	 * @return the base model instance, or <code>null</code> if the resource
-	 *         permission does not have a base model instance (such as if its a
-	 *         portlet)
-	 * @throws PortalException if a portal exception occurred
-	 */
-	public BaseModel<?> getBaseModel(ResourcePermission resourcePermission)
-		throws PortalException;
-
-	/**
-	 * Returns the base model instance for the model name and primary key.
-	 *
-	 * @param  modelName the fully qualified class name of the model
-	 * @param  primKey the primary key of the model instance to get
-	 * @return the base model instance, or <code>null</code> if the model does
-	 *         not have a base model instance (such as if its a portlet)
-	 * @throws PortalException if a portal exception occurred
-	 */
-	public BaseModel<?> getBaseModel(String modelName, String primKey)
-		throws PortalException;
-
-	public List<Group> getBrowsableScopeGroups(
-			long userId, long companyId, long groupId, String portletId)
-		throws PortalException;
 
 	/**
 	 * Returns the canonical URL of the page, to distinguish it among its
@@ -514,14 +473,8 @@ public interface Portal {
 			long[] groupIds, boolean checkContentSharingWithChildrenEnabled)
 		throws PortalException;
 
-	public List<Group> getCurrentAndAncestorSiteGroups(long groupId)
-		throws PortalException;
-
 	public List<Group> getCurrentAndAncestorSiteGroups(
 			long groupId, boolean checkContentSharingWithChildrenEnabled)
-		throws PortalException;
-
-	public List<Group> getCurrentAndAncestorSiteGroups(long[] groupIds)
 		throws PortalException;
 
 	public List<Group> getCurrentAndAncestorSiteGroups(
@@ -652,14 +605,6 @@ public interface Portal {
 			String displayType)
 		throws PortalException;
 
-	public Serializable getExpandoValue(
-			PortletRequest portletRequest, String name, int type,
-			String displayType)
-		throws PortalException;
-
-	public String getFirstPageLayoutTypes(
-		HttpServletRequest httpServletRequest);
-
 	public String getForwardedHost(HttpServletRequest httpServletRequest);
 
 	public int getForwardedPort(HttpServletRequest httpServletRequest);
@@ -702,11 +647,6 @@ public interface Portal {
 	public String getLayoutActualURL(Layout layout);
 
 	public String getLayoutActualURL(Layout layout, String mainPath);
-
-	public String getLayoutActualURL(
-			long groupId, boolean privateLayout, String mainPath,
-			String friendlyURL)
-		throws PortalException;
 
 	public String getLayoutActualURL(
 			long groupId, boolean privateLayout, String mainPath,
@@ -839,13 +779,9 @@ public interface Portal {
 	public long getPlidFromPortletId(long groupId, String portletId)
 		throws PortalException;
 
-	public InetAddress getPortalLocalInetAddress(boolean secure);
-
 	public int getPortalLocalPort(boolean secure);
 
 	public Properties getPortalProperties();
-
-	public InetAddress getPortalServerInetAddress(boolean secure);
 
 	public int getPortalServerPort(boolean secure);
 
@@ -876,13 +812,7 @@ public interface Portal {
 	public String getPortletDescription(
 		Portlet portlet, ServletContext servletContext, Locale locale);
 
-	public String getPortletDescription(Portlet portlet, User user);
-
 	public String getPortletDescription(String portletId, Locale locale);
-
-	public String getPortletDescription(String portletId, String languageId);
-
-	public String getPortletDescription(String portletId, User user);
 
 	public LayoutQueryStringComposite
 		getPortletFriendlyURLMapperLayoutQueryStringComposite(
@@ -893,20 +823,10 @@ public interface Portal {
 
 	public String getPortletId(PortletRequest portletRequest);
 
-	public String getPortletLongTitle(Portlet portlet, Locale locale);
-
 	public String getPortletLongTitle(
 		Portlet portlet, ServletContext servletContext, Locale locale);
 
-	public String getPortletLongTitle(Portlet portlet, String languageId);
-
-	public String getPortletLongTitle(Portlet portlet, User user);
-
 	public String getPortletLongTitle(String portletId, Locale locale);
-
-	public String getPortletLongTitle(String portletId, String languageId);
-
-	public String getPortletLongTitle(String portletId, User user);
 
 	public String getPortletNamespace(String portletId);
 
@@ -931,8 +851,6 @@ public interface Portal {
 	public String getPortletTitle(String portletId, String languageId);
 
 	public String getPortletTitle(String portletId, User user);
-
-	public String getPortletXmlFileName();
 
 	public PortletPreferences getPreferences(
 		HttpServletRequest httpServletRequest);
@@ -1111,20 +1029,6 @@ public interface Portal {
 
 	public boolean isCompanyAdmin(User user) throws Exception;
 
-	public boolean isCompanyControlPanelPortlet(
-			String portletId, String category, ThemeDisplay themeDisplay)
-		throws PortalException;
-
-	public boolean isCompanyControlPanelPortlet(
-			String portletId, ThemeDisplay themeDisplay)
-		throws PortalException;
-
-	public boolean isControlPanelPortlet(
-		String portletId, String category, ThemeDisplay themeDisplay);
-
-	public boolean isControlPanelPortlet(
-		String portletId, ThemeDisplay themeDisplay);
-
 	public boolean isCustomPortletMode(PortletMode portletMode);
 
 	public boolean isForwardedSecure(HttpServletRequest httpServletRequest);
@@ -1145,10 +1049,6 @@ public interface Portal {
 
 	public boolean isLoginRedirectRequired(
 		HttpServletRequest httpServletRequest);
-
-	public boolean isMethodGet(PortletRequest portletRequest);
-
-	public boolean isMethodPost(PortletRequest portletRequest);
 
 	public boolean isMultipartRequest(HttpServletRequest httpServletRequest);
 
@@ -1177,8 +1077,6 @@ public interface Portal {
 	public boolean isValidResourceId(String resourceId);
 
 	public void resetCDNHosts();
-
-	public String resetPortletParameters(String url, String portletId);
 
 	public void sendError(
 			Exception exception, ActionRequest actionRequest,
@@ -1238,9 +1136,6 @@ public interface Portal {
 
 	public void setPortalInetSocketAddresses(
 		HttpServletRequest httpServletRequest);
-
-	public void storePreferences(PortletPreferences portletPreferences)
-		throws IOException, ValidatorException;
 
 	public String[] stripURLAnchor(String url, String separator);
 

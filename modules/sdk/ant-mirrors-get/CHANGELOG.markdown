@@ -1,5 +1,11 @@
 # Liferay Ant Mirrors Get Change Log
 
+## 1.2.12 - 2023-07-25
+
+### Commits
+- [LPS-191498] - update mysql-connector-java to 8.0.32 in build-test.xml
+(df95c39c7e)
+
 ## 1.2.11 - 2022-11-24
 
 ### Commits

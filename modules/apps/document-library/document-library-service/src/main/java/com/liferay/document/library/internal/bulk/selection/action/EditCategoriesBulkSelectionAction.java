@@ -17,6 +17,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -56,11 +58,16 @@ public class EditCategoriesBulkSelectionAction
 
 		bulkSelection.forEach(
 			assetEntry -> {
+				ModelResourcePermission<?> modelResourcePermission =
+					ModelResourcePermissionRegistryUtil.
+						getModelResourcePermission(assetEntry.getClassName());
+
 				try {
-					if (!BaseModelPermissionCheckerUtil.
+					if ((modelResourcePermission == null) ||
+						!BaseModelPermissionCheckerUtil.
 							containsBaseModelPermission(
-								permissionChecker, assetEntry.getGroupId(),
-								assetEntry.getClassName(),
+								modelResourcePermission, permissionChecker,
+								assetEntry.getGroupId(),
 								assetEntry.getClassPK(), ActionKeys.UPDATE)) {
 
 						return;

@@ -13,8 +13,8 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
-import com.liferay.portal.kernel.util.GetterUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,10 +37,9 @@ public class LayoutPageTemplateStructureServiceImpl
 			long groupId, long plid, long segmentsExperienceId, String data)
 		throws PortalException {
 
-		if (GetterUtil.getBoolean(
-				BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-					getPermissionChecker(), groupId, Layout.class.getName(),
-					plid, ActionKeys.UPDATE)) ||
+		if (BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+				_layoutModelResourcePermission, getPermissionChecker(), groupId,
+				plid, ActionKeys.UPDATE) ||
 			_layoutPermission.containsLayoutRestrictedUpdatePermission(
 				getPermissionChecker(), plid)) {
 
@@ -52,6 +51,11 @@ public class LayoutPageTemplateStructureServiceImpl
 		throw new PrincipalException.MustHavePermission(
 			getUserId(), Layout.class.getName(), plid, ActionKeys.UPDATE);
 	}
+
+	@Reference(
+		target = "(model.class.name=com.liferay.portal.kernel.model.Layout)"
+	)
+	private ModelResourcePermission<Layout> _layoutModelResourcePermission;
 
 	@Reference
 	private LayoutPermission _layoutPermission;

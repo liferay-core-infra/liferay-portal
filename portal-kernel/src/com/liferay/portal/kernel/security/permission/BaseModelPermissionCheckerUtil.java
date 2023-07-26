@@ -9,7 +9,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 
@@ -18,17 +17,10 @@ import com.liferay.portal.kernel.security.permission.resource.PortletResourcePer
  */
 public class BaseModelPermissionCheckerUtil {
 
-	public static Boolean containsBaseModelPermission(
-		PermissionChecker permissionChecker, long groupId, String className,
-		long classPK, String actionId) {
-
-		ModelResourcePermission<?> modelResourcePermission =
-			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
-				className);
-
-		if (modelResourcePermission == null) {
-			return null;
-		}
+	public static boolean containsBaseModelPermission(
+		ModelResourcePermission<?> modelResourcePermission,
+		PermissionChecker permissionChecker, long groupId, long classPK,
+		String actionId) {
 
 		try {
 			PortletResourcePermission portletResourcePermission =

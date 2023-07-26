@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -103,10 +105,17 @@ public class EditTagsBulkSelectionAction
 			return assetRenderer.hasEditPermission(permissionChecker);
 		}
 
+		ModelResourcePermission<?> modelResourcePermission =
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				assetEntry.getClassName());
+
+		if (modelResourcePermission == null) {
+			return false;
+		}
+
 		return BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-			permissionChecker, assetEntry.getGroupId(),
-			assetEntry.getClassName(), assetEntry.getClassPK(),
-			ActionKeys.UPDATE);
+			modelResourcePermission, permissionChecker, assetEntry.getGroupId(),
+			assetEntry.getClassPK(), ActionKeys.UPDATE);
 	}
 
 	private Set<String> _toStringSet(

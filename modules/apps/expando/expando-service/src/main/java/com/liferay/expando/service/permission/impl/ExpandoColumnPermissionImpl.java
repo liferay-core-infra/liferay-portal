@@ -12,9 +12,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Raymond Augé
  */
+@Component(service = ExpandoColumnPermission.class)
 public class ExpandoColumnPermissionImpl implements ExpandoColumnPermission {
 
 	@Override

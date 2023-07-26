@@ -8,6 +8,8 @@ package com.liferay.calendar.internal.model.listener;
 import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.CalendarResourceLocalService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -49,13 +51,27 @@ public class UserModelListener extends BaseModelListener<User> {
 				return;
 			}
 
+			long groupId = 0;
+
+			try {
+				groupId = user.getGroupId();
+			}
+			catch (Exception exception) {
+				_log.error(
+					"User " + user.getUserId() +
+						" is not related to any groups");
+				_log.error(exception.toString());
+
+				return;
+			}
+
 			calendarResource.setNameMap(
 				_localization.populateLocalizationMap(
 					HashMapBuilder.put(
 						LocaleUtil.getSiteDefault(), user.getFullName()
 					).build(),
 					LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()),
-					user.getGroupId()));
+					groupId));
 
 			_calendarResourceLocalService.updateCalendarResource(
 				calendarResource);
@@ -64,6 +80,9 @@ public class UserModelListener extends BaseModelListener<User> {
 			throw new ModelListenerException(exception);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserModelListener.class);
 
 	@Reference
 	private CalendarResourceLocalService _calendarResourceLocalService;

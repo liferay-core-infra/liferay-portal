@@ -7,29 +7,11 @@ package com.liferay.portal.kernel.workflow;
 
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
-import java.util.Map;
-
 /**
  * @author Brian Wing Shun Chan
  * @author Raymond Augé
  */
 public class WorkflowEngineManagerUtil {
-
-	public static String getKey() {
-		return _workflowEngineManager.getKey();
-	}
-
-	public static String getName() {
-		return _workflowEngineManager.getName();
-	}
-
-	public static Map<String, Object> getOptionalAttributes() {
-		return _workflowEngineManager.getOptionalAttributes();
-	}
-
-	public static String getVersion() {
-		return _workflowEngineManager.getVersion();
-	}
 
 	public static boolean isDeployed() {
 		return _workflowEngineManager.isDeployed();

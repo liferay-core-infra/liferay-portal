@@ -163,12 +163,4 @@
 			<finder-column name="data" />
 		</finder>
 	</entity>
-	<exceptions>
-		<exception>ColumnName</exception>
-		<exception>ColumnType</exception>
-		<exception>DuplicateColumnName</exception>
-		<exception>DuplicateTableName</exception>
-		<exception>TableName</exception>
-		<exception>ValueData</exception>
-	</exceptions>
 </service-builder>

@@ -12,12 +12,14 @@ import com.liferay.portal.kernel.comment.BaseDiscussionPermission;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
@@ -77,9 +79,18 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 				className);
 
 		if (modelResourcePermission != null) {
-			return BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-				modelResourcePermission, permissionChecker, groupId, classPK,
-				actionId);
+			try {
+				return ModelResourcePermissionUtil.contains(
+					modelResourcePermission, permissionChecker, groupId,
+					classPK, actionId);
+			}
+			catch (PortalException portalException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(portalException);
+				}
+
+				return false;
+			}
 		}
 
 		return permissionChecker.hasPermission(
@@ -149,6 +160,9 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			permissionChecker, message.getCompanyId(), message.getGroupId(),
 			className, message.getClassPK(), actionId);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		MBDiscussionPermissionImpl.class);
 
 	@Reference
 	private MBBanLocalService _mbBanLocalService;

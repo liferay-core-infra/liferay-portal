@@ -19,12 +19,15 @@ import com.liferay.bulk.rest.resource.v1_0.TaxonomyVocabularyResource;
 import com.liferay.bulk.selection.BulkSelection;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.portal.kernel.change.tracking.CTAware;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -88,23 +91,32 @@ public class TaxonomyVocabularyResourceImpl
 					ModelResourcePermissionRegistryUtil.
 						getModelResourcePermission(assetEntry.getClassName());
 
-				if ((modelResourcePermission != null) &&
-					BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-						modelResourcePermission, permissionChecker,
-						assetEntry.getGroupId(), assetEntry.getClassPK(),
-						ActionKeys.UPDATE)) {
+				try {
+					if ((modelResourcePermission != null) &&
+						ModelResourcePermissionUtil.contains(
+							modelResourcePermission, permissionChecker,
+							assetEntry.getGroupId(), assetEntry.getClassPK(),
+							ActionKeys.UPDATE)) {
 
-					List<AssetCategory> assetEntryAssetCategories =
-						_assetCategoryLocalService.getCategories(
-							assetEntry.getClassName(), assetEntry.getClassPK());
+						List<AssetCategory> assetEntryAssetCategories =
+							_assetCategoryLocalService.getCategories(
+								assetEntry.getClassName(),
+								assetEntry.getClassPK());
 
-					if (flag.get()) {
-						flag.set(false);
+						if (flag.get()) {
+							flag.set(false);
 
-						assetCategories.addAll(assetEntryAssetCategories);
+							assetCategories.addAll(assetEntryAssetCategories);
+						}
+						else {
+							assetCategories.retainAll(
+								assetEntryAssetCategories);
+						}
 					}
-					else {
-						assetCategories.retainAll(assetEntryAssetCategories);
+				}
+				catch (PortalException portalException) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(portalException);
 					}
 				}
 			});
@@ -197,6 +209,9 @@ public class TaxonomyVocabularyResourceImpl
 			}
 		};
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		TaxonomyVocabularyResourceImpl.class);
 
 	@Reference
 	private AssetCategoryLocalService _assetCategoryLocalService;

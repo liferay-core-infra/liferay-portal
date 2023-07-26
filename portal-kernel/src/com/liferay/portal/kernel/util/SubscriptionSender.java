@@ -35,11 +35,11 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.notifications.UserNotificationManagerUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
@@ -627,10 +627,19 @@ public class SubscriptionSender implements Serializable {
 				ModelResourcePermissionRegistryUtil.getModelResourcePermission(
 					className);
 
-			if ((modelResourcePermission == null) ||
-				!BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-					modelResourcePermission, permissionChecker, groupId,
-					classPK, ActionKeys.VIEW)) {
+			try {
+				if ((modelResourcePermission == null) ||
+					!ModelResourcePermissionUtil.contains(
+						modelResourcePermission, permissionChecker, groupId,
+						classPK, ActionKeys.VIEW)) {
+
+					return false;
+				}
+			}
+			catch (PortalException portalException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(portalException);
+				}
 
 				return false;
 			}
@@ -668,9 +677,18 @@ public class SubscriptionSender implements Serializable {
 			return false;
 		}
 
-		return BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-			modelResourcePermission, permissionChecker, groupId,
-			subscription.getClassPK(), ActionKeys.SUBSCRIBE);
+		try {
+			return ModelResourcePermissionUtil.contains(
+				modelResourcePermission, permissionChecker, groupId,
+				subscription.getClassPK(), ActionKeys.SUBSCRIBE);
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(portalException);
+			}
+
+			return false;
+		}
 	}
 
 	protected void notifyPersistedSubscriber(

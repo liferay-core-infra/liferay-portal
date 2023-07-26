@@ -9,11 +9,13 @@ import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.base.LayoutPageTemplateStructureServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
 
 import org.osgi.service.component.annotations.Component;
@@ -37,9 +39,20 @@ public class LayoutPageTemplateStructureServiceImpl
 			long groupId, long plid, long segmentsExperienceId, String data)
 		throws PortalException {
 
-		if (BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+		boolean contains = false;
+
+		try {
+			contains = ModelResourcePermissionUtil.contains(
 				_layoutModelResourcePermission, getPermissionChecker(), groupId,
-				plid, ActionKeys.UPDATE) ||
+				plid, ActionKeys.UPDATE);
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(portalException);
+			}
+		}
+
+		if (contains ||
 			_layoutPermission.containsLayoutRestrictedUpdatePermission(
 				getPermissionChecker(), plid)) {
 
@@ -51,6 +64,9 @@ public class LayoutPageTemplateStructureServiceImpl
 		throw new PrincipalException.MustHavePermission(
 			getUserId(), Layout.class.getName(), plid, ActionKeys.UPDATE);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LayoutPageTemplateStructureServiceImpl.class);
 
 	@Reference(
 		target = "(model.class.name=com.liferay.portal.kernel.model.Layout)"

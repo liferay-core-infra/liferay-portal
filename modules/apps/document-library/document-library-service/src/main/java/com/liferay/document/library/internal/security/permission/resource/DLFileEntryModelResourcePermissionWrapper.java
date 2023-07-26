@@ -17,8 +17,9 @@ import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourcePermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.resource.BaseModelResourcePermissionWrapper;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.StagedModelPermissionLogic;
 import com.liferay.portal.kernel.util.Validator;
@@ -123,12 +125,20 @@ public class DLFileEntryModelResourcePermissionWrapper
 								ModelResourcePermissionRegistryUtil.
 									getModelResourcePermission(className);
 
-						if ((existingModelResourcePermission != null) &&
-							!BaseModelPermissionCheckerUtil.
-								containsBaseModelPermission(
+						try {
+							if ((existingModelResourcePermission != null) &&
+								!ModelResourcePermissionUtil.contains(
 									existingModelResourcePermission,
 									permissionChecker, fileEntry.getGroupId(),
 									classPK, relatedModelActionId)) {
+
+								return false;
+							}
+						}
+						catch (PortalException portalException) {
+							if (_log.isWarnEnabled()) {
+								_log.warn(portalException);
+							}
 
 							return false;
 						}
@@ -170,6 +180,9 @@ public class DLFileEntryModelResourcePermissionWrapper
 
 		return actionId;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DLFileEntryModelResourcePermissionWrapper.class);
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;

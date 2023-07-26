@@ -17,12 +17,15 @@ import com.liferay.bulk.selection.BulkSelectionAction;
 import com.liferay.bulk.selection.BulkSelectionInputParameters;
 import com.liferay.bulk.selection.BulkSelectionRunner;
 import com.liferay.portal.kernel.change.tracking.CTAware;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.vulcan.pagination.Page;
 
@@ -96,25 +99,33 @@ public class KeywordResourceImpl extends BaseKeywordResourceImpl {
 					ModelResourcePermissionRegistryUtil.
 						getModelResourcePermission(assetEntry.getClassName());
 
-				if ((modelResourcePermission != null) &&
-					BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-						modelResourcePermission, permissionChecker,
-						assetEntry.getGroupId(), assetEntry.getClassPK(),
-						ActionKeys.UPDATE)) {
+				try {
+					if ((modelResourcePermission != null) &&
+						ModelResourcePermissionUtil.contains(
+							modelResourcePermission, permissionChecker,
+							assetEntry.getGroupId(), assetEntry.getClassPK(),
+							ActionKeys.UPDATE)) {
 
-					String[] assetEntryAssetTagNames =
-						_assetTagLocalService.getTagNames(
-							assetEntry.getClassName(), assetEntry.getClassPK());
+						String[] assetEntryAssetTagNames =
+							_assetTagLocalService.getTagNames(
+								assetEntry.getClassName(),
+								assetEntry.getClassPK());
 
-					if (flag.get()) {
-						flag.set(false);
+						if (flag.get()) {
+							flag.set(false);
 
-						Collections.addAll(
-							assetTagNames, assetEntryAssetTagNames);
+							Collections.addAll(
+								assetTagNames, assetEntryAssetTagNames);
+						}
+						else {
+							assetTagNames.retainAll(
+								Arrays.asList(assetEntryAssetTagNames));
+						}
 					}
-					else {
-						assetTagNames.retainAll(
-							Arrays.asList(assetEntryAssetTagNames));
+				}
+				catch (PortalException portalException) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(portalException);
 					}
 				}
 			});
@@ -150,6 +161,9 @@ public class KeywordResourceImpl extends BaseKeywordResourceImpl {
 				"toRemoveTagNames", keywordBulkSelection.getKeywordsToRemove()
 			).build());
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		KeywordResourceImpl.class);
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;

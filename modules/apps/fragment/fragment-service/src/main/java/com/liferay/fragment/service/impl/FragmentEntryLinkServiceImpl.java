@@ -11,12 +11,14 @@ import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
@@ -127,12 +129,19 @@ public class FragmentEntryLinkServiceImpl
 			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
 				className);
 
-		if ((modelResourcePermission != null) &&
-			BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-				modelResourcePermission, getPermissionChecker(), groupId,
-				classPK, ActionKeys.UPDATE)) {
+		try {
+			if ((modelResourcePermission != null) &&
+				ModelResourcePermissionUtil.contains(
+					modelResourcePermission, getPermissionChecker(), groupId,
+					classPK, ActionKeys.UPDATE)) {
 
-			return;
+				return;
+			}
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(portalException);
+			}
 		}
 
 		if (!Objects.equals(className, Layout.class.getName()) ||
@@ -163,6 +172,9 @@ public class FragmentEntryLinkServiceImpl
 		throw new PrincipalException.MustHavePermission(
 			getUserId(), className, classPK, ActionKeys.UPDATE);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FragmentEntryLinkServiceImpl.class);
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

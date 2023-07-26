@@ -10,10 +10,11 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.upgrade.internal.executor.UpgradeExecutor;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
-import com.liferay.portal.upgrade.internal.release.ReleaseManagerImpl;
+import com.liferay.portal.upgrade.internal.release.helper.ReleaseManagerHelper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ReleaseManagerOSGiCommands {
 
 	@Descriptor("Execute upgrade for a specific module")
 	public String execute(String bundleSymbolicName) {
-		List<UpgradeInfo> upgradeInfos = _releaseManagerImpl.getUpgradeInfos(
+		List<UpgradeInfo> upgradeInfos = _releaseManagerHelper.getUpgradeInfos(
 			bundleSymbolicName);
 
 		if (upgradeInfos == null) {
@@ -75,7 +76,7 @@ public class ReleaseManagerOSGiCommands {
 
 	@Descriptor("Execute upgrade for a specific module and final version")
 	public String execute(String bundleSymbolicName, String toVersionString) {
-		List<UpgradeInfo> upgradeInfos = _releaseManagerImpl.getUpgradeInfos(
+		List<UpgradeInfo> upgradeInfos = _releaseManagerHelper.getUpgradeInfos(
 			bundleSymbolicName);
 
 		if (upgradeInfos == null) {
@@ -89,7 +90,7 @@ public class ReleaseManagerOSGiCommands {
 			() -> _upgradeExecutor.executeUpgradeInfos(
 				bundleSymbolicName,
 				releaseGraphManager.getUpgradeInfos(
-					_releaseManagerImpl.getSchemaVersionString(
+					_releaseManagerHelper.getSchemaVersionString(
 						bundleSymbolicName),
 					toVersionString)));
 
@@ -129,7 +130,7 @@ public class ReleaseManagerOSGiCommands {
 	@Descriptor("List registered upgrade processes for all modules")
 	public String list() {
 		Set<String> bundleSymbolicNames =
-			_releaseManagerImpl.getBundleSymbolicNames();
+			_releaseManagerHelper.getBundleSymbolicNames();
 
 		StringBundler sb = new StringBundler(2 * bundleSymbolicNames.size());
 
@@ -145,7 +146,7 @@ public class ReleaseManagerOSGiCommands {
 
 	@Descriptor("List registered upgrade processes for a specific module")
 	public String list(String bundleSymbolicName) {
-		List<UpgradeInfo> upgradeInfos = _releaseManagerImpl.getUpgradeInfos(
+		List<UpgradeInfo> upgradeInfos = _releaseManagerHelper.getUpgradeInfos(
 			bundleSymbolicName);
 
 		StringBundler sb = new StringBundler(5 + (3 * upgradeInfos.size()));
@@ -154,7 +155,7 @@ public class ReleaseManagerOSGiCommands {
 		sb.append(bundleSymbolicName);
 		sb.append(StringPool.SPACE);
 		sb.append(
-			_releaseManagerImpl.getSchemaVersionString(bundleSymbolicName));
+			_releaseManagerHelper.getSchemaVersionString(bundleSymbolicName));
 		sb.append(StringPool.NEW_LINE);
 
 		for (UpgradeInfo upgradeProcess : upgradeInfos) {
@@ -173,7 +174,7 @@ public class ReleaseManagerOSGiCommands {
 
 		while (true) {
 			Set<String> upgradableBundleSymbolicNames =
-				_releaseManagerImpl.getUpgradableBundleSymbolicNames();
+				_releaseManagerHelper.getUpgradableBundleSymbolicNames();
 
 			upgradableBundleSymbolicNames.removeAll(
 				upgradeThrewExceptionBundleSymbolicNames);
@@ -187,7 +188,7 @@ public class ReleaseManagerOSGiCommands {
 
 				try {
 					List<UpgradeInfo> upgradeInfos =
-						_releaseManagerImpl.getUpgradeInfos(
+						_releaseManagerHelper.getUpgradeInfos(
 							upgradableBundleSymbolicName);
 
 					_upgradeExecutor.execute(
@@ -210,7 +211,10 @@ public class ReleaseManagerOSGiCommands {
 		ReleaseManagerOSGiCommands.class);
 
 	@Reference
-	private ReleaseManagerImpl _releaseManagerImpl;
+	private ReleaseManagerHelper _releaseManagerHelper;
+
+	@Reference
+	private ReleaseManager _releaseManagerImpl;
 
 	@Reference
 	private UpgradeExecutor _upgradeExecutor;

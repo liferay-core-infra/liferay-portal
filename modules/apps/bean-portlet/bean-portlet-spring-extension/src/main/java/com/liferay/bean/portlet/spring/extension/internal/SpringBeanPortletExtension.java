@@ -296,9 +296,7 @@ public class SpringBeanPortletExtension {
 		}
 	}
 
-	public void step5ApplicationScopeBeforeDestroyed(
-		ServletContext servletContext) {
-
+	public void step5ApplicationScopeBeforeDestroyed() {
 		for (ServiceRegistration<?> serviceRegistration :
 				_serviceRegistrations) {
 

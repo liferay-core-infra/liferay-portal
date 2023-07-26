@@ -241,12 +241,12 @@ public class CDIBeanPortletExtension implements Extension {
 				"servlet.context.name", servletContext.getServletContextName()
 			).build();
 
-		_serviceRegistrations.add(
+		_portletAsyncFactoryServiceRegistrations.add(
 			bundleContext.registerService(
 				PortletAsyncScopeManagerFactory.class,
 				PortletAsyncScopeManagerImpl::new, properties));
 
-		_serviceRegistrations.add(
+		_portletAsyncFactoryServiceRegistrations.add(
 			bundleContext.registerService(
 				PortletAsyncListenerFactory.class,
 				new PortletAsyncListenerFactory() {
@@ -448,6 +448,14 @@ public class CDIBeanPortletExtension implements Extension {
 			_serviceRegistrations, (ServletContext)contextObject);
 
 		_serviceRegistrations.clear();
+
+		for (ServiceRegistration<?> serviceRegistration :
+				_portletAsyncFactoryServiceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
+
+		_portletAsyncFactoryServiceRegistrations.clear();
 	}
 
 	private void _invokeBeanPortletMethod(
@@ -678,6 +686,8 @@ public class CDIBeanPortletExtension implements Extension {
 		};
 
 	private final Set<Class<?>> _discoveredClasses = new HashSet<>();
+	private final List<ServiceRegistration<?>>
+		_portletAsyncFactoryServiceRegistrations = new ArrayList<>();
 	private final List<ServiceRegistration<?>> _serviceRegistrations =
 		new ArrayList<>();
 	private ViewRenderer _viewRenderer;

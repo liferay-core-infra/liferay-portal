@@ -23,7 +23,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -543,7 +543,7 @@ public class ExpandoValueLocalServiceImpl
 		else if (type == ExpandoColumnConstants.GEOLOCATION) {
 			return expandoValueLocalService.addValue(
 				companyId, className, tableName, columnName, classPK,
-				JSONFactoryUtil.createJSONObject(
+				_jsonFactory.createJSONObject(
 					HtmlUtil.unescape(data.toString())));
 		}
 		else if (type == ExpandoColumnConstants.INTEGER) {
@@ -820,8 +820,7 @@ public class ExpandoValueLocalServiceImpl
 			}
 			else if (type == ExpandoColumnConstants.GEOLOCATION) {
 				value.setGeolocationJSONObject(
-					JSONFactoryUtil.createJSONObject(
-						attributeValue.toString()));
+					_jsonFactory.createJSONObject(attributeValue.toString()));
 			}
 			else if (type == ExpandoColumnConstants.INTEGER) {
 				value.setInteger((Integer)attributeValue);
@@ -1965,6 +1964,9 @@ public class ExpandoValueLocalServiceImpl
 
 	@Reference
 	private ExpandoTablePersistence _expandoTablePersistence;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	private static class ExpandoValueDeleteHandlerHolder {
 

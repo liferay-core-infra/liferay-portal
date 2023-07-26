@@ -22,8 +22,7 @@ public class SpringServletContextListener implements ServletContextListener {
 		ServletContext servletContext = servletContextEvent.getServletContext();
 
 		if (_springBeanPortletExtension != null) {
-			_springBeanPortletExtension.step5ApplicationScopeBeforeDestroyed(
-				servletContext);
+			_springBeanPortletExtension.step5ApplicationScopeBeforeDestroyed();
 		}
 
 		servletContext.removeAttribute(

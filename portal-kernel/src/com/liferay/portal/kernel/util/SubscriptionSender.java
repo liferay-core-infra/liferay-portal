@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
@@ -620,26 +622,21 @@ public class SubscriptionSender implements Serializable {
 		PermissionChecker permissionChecker =
 			PermissionCheckerFactoryUtil.create(user);
 
-		Boolean hasPermission = null;
-
 		if (Validator.isNotNull(className)) {
-			hasPermission =
-				BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-					permissionChecker, groupId, className, classPK,
-					ActionKeys.VIEW);
+			ModelResourcePermission<?> modelResourcePermission =
+				ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+					className);
 
-			if ((hasPermission == null) || !hasPermission) {
+			if ((modelResourcePermission == null) ||
+				!BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+					modelResourcePermission, permissionChecker, groupId,
+					classPK, ActionKeys.VIEW)) {
+
 				return false;
 			}
 		}
 
-		hasPermission = hasSubscribePermission(permissionChecker, subscription);
-
-		if ((hasPermission == null) || !hasPermission) {
-			return false;
-		}
-
-		return true;
+		return hasSubscribePermission(permissionChecker, subscription);
 	}
 
 	protected boolean hasPermission(Subscription subscription, User user)
@@ -651,7 +648,7 @@ public class SubscriptionSender implements Serializable {
 	/**
 	 * @throws PortalException
 	 */
-	protected Boolean hasSubscribePermission(
+	protected boolean hasSubscribePermission(
 			PermissionChecker permissionChecker, Subscription subscription)
 		throws PortalException {
 
@@ -659,13 +656,21 @@ public class SubscriptionSender implements Serializable {
 			ResourceActionLocalServiceUtil.fetchResourceAction(
 				subscription.getClassName(), ActionKeys.SUBSCRIBE);
 
-		if (resourceAction != null) {
-			return BaseModelPermissionCheckerUtil.containsBaseModelPermission(
-				permissionChecker, groupId, subscription.getClassName(),
-				subscription.getClassPK(), ActionKeys.SUBSCRIBE);
+		if (resourceAction == null) {
+			return true;
 		}
 
-		return Boolean.TRUE;
+		ModelResourcePermission<?> modelResourcePermission =
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				subscription.getClassName());
+
+		if (modelResourcePermission == null) {
+			return false;
+		}
+
+		return BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+			modelResourcePermission, permissionChecker, groupId,
+			subscription.getClassPK(), ActionKeys.SUBSCRIBE);
 	}
 
 	protected void notifyPersistedSubscriber(

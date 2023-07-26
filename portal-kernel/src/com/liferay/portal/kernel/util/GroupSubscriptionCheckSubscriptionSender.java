@@ -29,7 +29,7 @@ public class GroupSubscriptionCheckSubscriptionSender
 	}
 
 	@Override
-	protected Boolean hasSubscribePermission(
+	protected boolean hasSubscribePermission(
 			PermissionChecker permissionChecker, Subscription subscription)
 		throws PortalException {
 
@@ -45,9 +45,10 @@ public class GroupSubscriptionCheckSubscriptionSender
 				return true;
 			}
 
-			return ResourcePermissionCheckerUtil.containsResourcePermission(
-				permissionChecker, _resourceName, subscription.getClassPK(),
-				ActionKeys.SUBSCRIBE);
+			return GetterUtil.getBoolean(
+				ResourcePermissionCheckerUtil.containsResourcePermission(
+					permissionChecker, _resourceName, subscription.getClassPK(),
+					ActionKeys.SUBSCRIBE));
 		}
 
 		return super.hasSubscribePermission(permissionChecker, subscription);

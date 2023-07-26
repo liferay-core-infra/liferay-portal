@@ -45,9 +45,8 @@ public class TriggerConfiguration {
 	}
 
 	private TriggerConfiguration(int interval, TimeUnit timeUnit) {
-		if (interval <= 0) {
-			throw new IllegalArgumentException(
-				"Interval is either equal or less than 0");
+		if (interval < 0) {
+			throw new IllegalArgumentException("Interval is less than 0");
 		}
 
 		if (timeUnit == null) {

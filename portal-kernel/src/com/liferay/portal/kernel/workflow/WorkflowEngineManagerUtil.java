@@ -5,7 +5,9 @@
 
 package com.liferay.portal.kernel.workflow;
 
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -14,12 +16,15 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
 public class WorkflowEngineManagerUtil {
 
 	public static boolean isDeployed() {
-		return _workflowEngineManager.isDeployed();
+		if (_serviceTrackerList.size() == 0) {
+			return false;
+		}
+
+		return true;
 	}
 
-	private static volatile WorkflowEngineManager _workflowEngineManager =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			WorkflowEngineManager.class, WorkflowEngineManagerUtil.class,
-			"_workflowEngineManager", true);
+	private static final ServiceTrackerList<WorkflowEngineManager>
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			SystemBundleUtil.getBundleContext(), WorkflowEngineManager.class);
 
 }

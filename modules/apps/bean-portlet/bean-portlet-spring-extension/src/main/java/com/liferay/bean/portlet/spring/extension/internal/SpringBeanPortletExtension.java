@@ -133,12 +133,12 @@ public class SpringBeanPortletExtension {
 				"servlet.context.name", servletContext.getServletContextName()
 			).build();
 
-		_portletAsyncFactoryServiceRegistrations.add(
+		_serviceRegistrations.add(
 			bundleContext.registerService(
 				PortletAsyncScopeManagerFactory.class,
 				SpringPortletAsyncScopeManager::new, properties));
 
-		_portletAsyncFactoryServiceRegistrations.add(
+		_serviceRegistrations.add(
 			bundleContext.registerService(
 				PortletAsyncListenerFactory.class,
 				new PortletAsyncListenerFactory() {
@@ -306,14 +306,6 @@ public class SpringBeanPortletExtension {
 		}
 
 		_serviceRegistrations.clear();
-
-		for (ServiceRegistration<?> serviceRegistration :
-				_portletAsyncFactoryServiceRegistrations) {
-
-			serviceRegistration.unregister();
-		}
-
-		_portletAsyncFactoryServiceRegistrations.clear();
 	}
 
 	private void _invokeBeanPortletMethod(
@@ -551,8 +543,6 @@ public class SpringBeanPortletExtension {
 	private final Set<Class<?>> _annotatedClasses = new HashSet<>();
 	private final ApplicationContext _applicationContext;
 	private BeanFactory _configurableBeanFactory;
-	private final List<ServiceRegistration<?>>
-		_portletAsyncFactoryServiceRegistrations = new ArrayList<>();
 	private final List<ServiceRegistration<?>> _serviceRegistrations =
 		new ArrayList<>();
 

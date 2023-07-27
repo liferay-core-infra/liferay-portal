@@ -16,7 +16,7 @@ import com.liferay.dynamic.data.mapping.constants.DDMStructureConstants;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.StorageType;
-import com.liferay.expando.kernel.model.adapter.StagedExpandoColumn;
+import com.liferay.expando.model.adapter.StagedExpandoColumn;
 import com.liferay.expando.model.adapter.StagedExpandoTable;
 import com.liferay.exportimport.kernel.service.StagingLocalService;
 import com.liferay.layout.friendly.url.LayoutFriendlyURLEntryHelper;

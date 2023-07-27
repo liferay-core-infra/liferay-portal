@@ -5,9 +5,9 @@
 
 package com.liferay.expando.exportimport.internal.staged.model.repository;
 
-import com.liferay.expando.kernel.model.adapter.StagedExpandoColumn;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.model.adapter.StagedExpandoColumn;
 import com.liferay.expando.model.adapter.StagedExpandoTable;
 import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.expando.service.ExpandoTableLocalService;
@@ -44,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Akos Thurzo
  */
 @Component(
-	property = "model.class.name=com.liferay.expando.kernel.model.adapter.StagedExpandoColumn",
+	property = "model.class.name=com.liferay.expando.model.adapter.StagedExpandoColumn",
 	service = StagedModelRepository.class
 )
 public class StagedExpandoColumnStagedModelRepository

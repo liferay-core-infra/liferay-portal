@@ -7,9 +7,9 @@ package com.liferay.segments.exportimport.data.handler.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
-import com.liferay.expando.kernel.model.adapter.StagedExpandoColumn;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.model.adapter.StagedExpandoColumn;
 import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.test.util.ExpandoTestUtil;

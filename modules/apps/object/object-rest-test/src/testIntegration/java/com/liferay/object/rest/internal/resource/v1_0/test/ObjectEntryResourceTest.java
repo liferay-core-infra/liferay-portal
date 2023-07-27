@@ -304,6 +304,103 @@ public class ObjectEntryResourceTest {
 	}
 
 	@Test
+	public void testFilterByComparisonOperatorsObjectEntries()
+		throws Exception {
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s eq '%s'", _OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s eq '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 + 1)),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s ge '%s'", _OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s ge '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s ge '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 + 1)),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s gt '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s gt '%s'", _OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s le '%s'", _OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s le '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 + 1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s le '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1)),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s lt '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 + 1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s lt '%s'", _OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s ne '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s ne '%s'", _OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
+	}
+
+	@Test
 	public void testFilterByComparisonOperatorsObjectEntriesByRelatedObjectEntriesFields()
 		throws Exception {
 
@@ -1116,6 +1213,25 @@ public class ObjectEntryResourceTest {
 	}
 
 	@Test
+	public void testFilterByGroupingOperatorsObjectEntries() throws Exception {
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"(%s le '%s') and (%s gt '%s')", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1, _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"(%s lt '%s') and (%s gt '%s')", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1, _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1)),
+			_objectDefinition1);
+	}
+
+	@Test
 	public void testFilterByGroupingOperatorsObjectEntriesByRelatedObjectEntriesFields()
 		throws Exception {
 
@@ -1373,6 +1489,84 @@ public class ObjectEntryResourceTest {
 					_objectRelationship1.getName(),
 					_objectEntry1.getObjectEntryId() - 1)),
 			_objectDefinition3);
+	}
+
+	@Test
+	public void testFilterByLambdaOperatorsObjectEntries() throws Exception {
+		_objectEntry1 = ObjectEntryTestUtil.addObjectEntry(
+			_objectDefinition1,
+			HashMapBuilder.<String, Serializable>put(
+				_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1
+			).put(
+				_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST, _LIST_TYPE_ENTRY_KEY
+			).build(),
+			_TAG_1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s/any(k:contains(k,'%s'))",
+					_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+					_LIST_TYPE_ENTRY_KEY)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s/any(k:contains(k,'%s'))",
+					_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+					RandomTestUtil.randomString())),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s/any(k:k eq '%s')",
+					_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+					_LIST_TYPE_ENTRY_KEY)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s/any(k:k eq '%s')",
+					_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+					RandomTestUtil.randomString())),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s/any(k:k in ('%s', '%s'))",
+					_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+					_LIST_TYPE_ENTRY_KEY, RandomTestUtil.randomString())),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s/any(k:k in ('%s', '%s'))",
+					_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+					RandomTestUtil.randomString(),
+					RandomTestUtil.randomString())),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s/any(k:startswith(k,'%s'))",
+					_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+					_LIST_TYPE_ENTRY_KEY.substring(
+						0, _LIST_TYPE_ENTRY_KEY.length() - 2))),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s/any(k:startswith(k,'%s'))",
+					_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+					"a" + _LIST_TYPE_ENTRY_KEY)),
+			_objectDefinition1);
 	}
 
 	@Test
@@ -2084,6 +2278,23 @@ public class ObjectEntryResourceTest {
 	}
 
 	@Test
+	public void testFilterByListOperatorsObjectEntries() throws Exception {
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s in ('%s', '%s')", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1, RandomTestUtil.randomInt())),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s in ('%s', '%s')", _OBJECT_FIELD_NAME_1,
+					RandomTestUtil.randomInt(), RandomTestUtil.randomInt())),
+			_objectDefinition1);
+	}
+
+	@Test
 	public void testFilterByListOperatorsObjectEntriesByRelatedObjectEntriesFields()
 		throws Exception {
 
@@ -2183,6 +2394,55 @@ public class ObjectEntryResourceTest {
 					_objectEntry1.getObjectEntryId(),
 					RandomTestUtil.randomInt())),
 			_objectDefinition2);
+	}
+
+	@Test
+	public void testFilterByLogicalOperatorsObjectEntries() throws Exception {
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s le '%s' and %s gt '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1, _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s le '%s' and %s gt '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1, _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1)),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"%s le '%s' or %s gt '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1, _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"%s le '%s' or %s gt '%s'", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 - 1, _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			_escape(
+				String.format(
+					"not (%s eq '%s')", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1 + 1)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			_escape(
+				String.format(
+					"not (%s eq '%s')", _OBJECT_FIELD_NAME_1,
+					_OBJECT_FIELD_VALUE_1)),
+			_objectDefinition1);
 	}
 
 	@Test
@@ -2743,6 +3003,38 @@ public class ObjectEntryResourceTest {
 					_objectRelationship1.getName(),
 					_objectEntry1.getObjectEntryId() + 1)),
 			_objectDefinition3);
+	}
+
+	@Test
+	public void testFilterByStringOperatorsObjectEntries() throws Exception {
+		String objectFieldValue = String.valueOf(_OBJECT_FIELD_VALUE_1);
+
+		String objectFieldValueSubstring = objectFieldValue.substring(
+			1, objectFieldValue.length() - 2);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			String.format(
+				"contains(%s,'%s')", _OBJECT_FIELD_NAME_1,
+				objectFieldValueSubstring),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			String.format(
+				"contains(%s,'%s')", _OBJECT_FIELD_NAME_1,
+				"a" + objectFieldValueSubstring),
+			_objectDefinition1);
+
+		_assertFilterString(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1,
+			String.format(
+				"startswith(%s,'%s')", _OBJECT_FIELD_NAME_1,
+				objectFieldValue.substring(0, 2)),
+			_objectDefinition1);
+		_assertEmptyPageFilterString(
+			String.format(
+				"startswith(%s,'%s')", _OBJECT_FIELD_NAME_1,
+				"a" + objectFieldValue.substring(0, 2)),
+			_objectDefinition1);
 	}
 
 	@Test
@@ -5052,6 +5344,20 @@ public class ObjectEntryResourceTest {
 			TempFileEntryUtil.getTempFileName(title + ".txt"),
 			FileUtil.createTempFile(RandomTestUtil.randomBytes()),
 			ContentTypes.TEXT_PLAIN);
+	}
+
+	private void _assertEmptyPageFilterString(
+			String filterString, ObjectDefinition objectDefinition)
+		throws Exception {
+
+		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
+			null,
+			objectDefinition.getRESTContextPath() + "?filter=" + filterString,
+			Http.Method.GET);
+
+		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
+
+		Assert.assertEquals(0, itemsJSONArray.length());
 	}
 
 	private void _assertFilteredObjectEntries(

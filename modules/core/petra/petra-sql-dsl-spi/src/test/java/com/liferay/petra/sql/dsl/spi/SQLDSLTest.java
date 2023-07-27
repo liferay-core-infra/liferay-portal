@@ -959,13 +959,13 @@ public class SQLDSLTest {
 		Assert.assertSame(
 			rightPredicate, defaultPredicate.getRightExpression());
 
-		Assert.assertNotNull(defaultPredicate.not((Expression<Boolean>)null));
 		Assert.assertEquals(
-			"MainExample.mainExampleId >= ? or MainExample.mainExampleId <= " +
-				"? not MainExample.flag = ?",
-			String.valueOf(
-				defaultPredicate.not(
-					MainExampleTable.INSTANCE.flagColumn.eq(0))));
+			"MainExample.mainExampleId >= ? or MainExample.mainExampleId <= ?",
+			String.valueOf(defaultPredicate));
+		Assert.assertEquals(
+			" not MainExample.mainExampleId >= ? or " +
+				"MainExample.mainExampleId <= ?",
+			String.valueOf(defaultPredicate.not()));
 	}
 
 	@Test

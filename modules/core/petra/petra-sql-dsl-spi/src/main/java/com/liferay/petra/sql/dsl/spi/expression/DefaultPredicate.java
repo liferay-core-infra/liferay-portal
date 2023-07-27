@@ -55,12 +55,9 @@ public class DefaultPredicate
 	}
 
 	@Override
-	public Predicate not(Expression<Boolean> expression) {
-		if (expression == null) {
-			return this;
-		}
-
-		return new DefaultPredicate(this, Operand.NOT, expression);
+	public Predicate not() {
+		return new DefaultPredicate(
+			EmptyExpression.INSTANCE, Operand.NOT, this);
 	}
 
 	@Override

@@ -1,0 +1,208 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.portal.scheduler.internal.test;
+
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.function.UnsafeRunnable;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.scheduler.SchedulerEngine;
+import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
+import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
+import com.liferay.portal.kernel.scheduler.StorageType;
+import com.liferay.portal.kernel.scheduler.TimeUnit;
+import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+
+import java.util.Objects;
+
+import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
+
+/**
+ * @author Mariano Álvaro Sáiz
+ */
+@RunWith(Arquillian.class)
+public class SchedulerEngineHelperTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayIntegrationTestRule aggregateTestRule =
+		new LiferayIntegrationTestRule();
+
+	@Test
+	public void testJobNotStartedIfCronExpressionIsBlank() throws Exception {
+		_calledScheduleMethod = false;
+
+		try (AutoCloseable autoCloseable1 = _swapSchedulerEngine()) {
+			try (AutoCloseable autoCloseable2 = _registerCronJobConfiguration(
+					StringPool.BLANK)) {
+
+				Thread.sleep(3000);
+
+				Assert.assertFalse(_calledScheduleMethod);
+			}
+		}
+	}
+
+	@Test
+	public void testJobNotStartedIfIntervalIsZero() throws Exception {
+		_calledScheduleMethod = false;
+
+		try (AutoCloseable autoCloseable1 = _swapSchedulerEngine()) {
+			try (AutoCloseable autoCloseable2 =
+					_registerIntervalJobConfiguration(0, TimeUnit.MINUTE)) {
+
+				Thread.sleep(3000);
+
+				Assert.assertFalse(_calledScheduleMethod);
+			}
+		}
+	}
+
+	@Test
+	public void testJobStartedIfCronExpressionIsNotBlank() throws Exception {
+		try (AutoCloseable autoCloseable = _registerCronJobConfiguration(
+				"0 0 7 1/2 * ? *")) {
+
+			Thread.sleep(3000);
+
+			Assert.assertNotNull(
+				_schedulerEngineHelper.getScheduledJob(
+					TestSchedulerCronJobConfiguration.class.getName(),
+					TestSchedulerCronJobConfiguration.class.getName(),
+					StorageType.MEMORY_CLUSTERED));
+		}
+	}
+
+	@Test
+	public void testJobStartedIfIntervalGreaterThanZero() throws Exception {
+		try (AutoCloseable autoCloseable = _registerIntervalJobConfiguration(
+				16, TimeUnit.MINUTE)) {
+
+			Thread.sleep(3000);
+
+			Assert.assertNotNull(
+				_schedulerEngineHelper.getScheduledJob(
+					TestSchedulerIntervalJobConfiguration.class.getName(),
+					TestSchedulerIntervalJobConfiguration.class.getName(),
+					StorageType.MEMORY_CLUSTERED));
+		}
+	}
+
+	private AutoCloseable _registerCronJobConfiguration(String cronExpression) {
+		return _registerJobConfiguration(
+			new TestSchedulerCronJobConfiguration(cronExpression));
+	}
+
+	private AutoCloseable _registerIntervalJobConfiguration(
+		int interval, TimeUnit timeUnit) {
+
+		return _registerJobConfiguration(
+			new TestSchedulerIntervalJobConfiguration(interval, timeUnit));
+	}
+
+	private AutoCloseable _registerJobConfiguration(
+		SchedulerJobConfiguration schedulerJobConfiguration) {
+
+		Bundle bundle = FrameworkUtil.getBundle(
+			SchedulerEngineHelperTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServiceRegistration<?> serviceRegistration =
+			bundleContext.registerService(
+				SchedulerJobConfiguration.class, schedulerJobConfiguration,
+				null);
+
+		return serviceRegistration::unregister;
+	}
+
+	private AutoCloseable _swapSchedulerEngine() {
+		SchedulerEngine schedulerEngine =
+			ReflectionTestUtil.getAndSetFieldValue(
+				_schedulerEngineHelper, "_schedulerEngine",
+				(SchedulerEngine)ProxyUtil.newProxyInstance(
+					SchedulerEngine.class.getClassLoader(),
+					new Class<?>[] {SchedulerEngine.class},
+					(proxy, method, args) -> {
+						if (Objects.equals(method.getName(), "schedule")) {
+							_calledScheduleMethod = true;
+						}
+
+						return null;
+					}));
+
+		return () -> ReflectionTestUtil.setFieldValue(
+			_schedulerEngineHelper, "_schedulerEngine", schedulerEngine);
+	}
+
+	private boolean _calledScheduleMethod;
+
+	@Inject
+	private SchedulerEngineHelper _schedulerEngineHelper;
+
+	private static class TestSchedulerCronJobConfiguration
+		implements SchedulerJobConfiguration {
+
+		public TestSchedulerCronJobConfiguration(String cronExpression) {
+			_cronExpression = cronExpression;
+		}
+
+		@Override
+		public UnsafeRunnable<Exception> getJobExecutorUnsafeRunnable() {
+			return () -> {
+			};
+		}
+
+		@Override
+		public TriggerConfiguration getTriggerConfiguration() {
+			return TriggerConfiguration.createTriggerConfiguration(
+				_cronExpression);
+		}
+
+		private final String _cronExpression;
+
+	}
+
+	private static class TestSchedulerIntervalJobConfiguration
+		implements SchedulerJobConfiguration {
+
+		public TestSchedulerIntervalJobConfiguration(
+			int interval, TimeUnit timeUnit) {
+
+			_interval = interval;
+			_timeUnit = timeUnit;
+		}
+
+		@Override
+		public UnsafeRunnable<Exception> getJobExecutorUnsafeRunnable() {
+			return () -> {
+			};
+		}
+
+		@Override
+		public TriggerConfiguration getTriggerConfiguration() {
+			return TriggerConfiguration.createTriggerConfiguration(
+				_interval, _timeUnit);
+		}
+
+		private final int _interval;
+		private final TimeUnit _timeUnit;
+
+	}
+
+}

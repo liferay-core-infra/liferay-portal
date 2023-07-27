@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Preston Crary
  */
-@Component(service = UpgradeExecutor.class)
+@Component(service = {})
 public class UpgradeExecutor {
 
 	public void execute(

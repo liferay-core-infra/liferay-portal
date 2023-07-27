@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.module.util.BundleUtil;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
@@ -27,11 +28,13 @@ import com.liferay.portal.upgrade.log.UpgradeLogContext;
 
 import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -40,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Preston Crary
  */
-@Component(service = UpgradeExecutor.class)
+@Component(service = {})
 public class UpgradeExecutor {
 
 	public void execute(
@@ -160,8 +163,13 @@ public class UpgradeExecutor {
 	}
 
 	@Activate
-	protected void activate(BundleContext bundleContext) {
+	protected void activate(
+		BundleContext bundleContext, Map<String, Object> properties) {
+
 		_bundleContext = bundleContext;
+
+		_serviceRegistration = bundleContext.registerService(
+			UpgradeExecutor.class, this, new HashMapDictionary<>(properties));
 
 		_upgradeStepRegistratorTracker = new UpgradeStepRegistratorTracker(
 			bundleContext, _releaseLocalService, this);
@@ -172,6 +180,8 @@ public class UpgradeExecutor {
 	@Deactivate
 	protected void deactivate() {
 		_upgradeStepRegistratorTracker.close();
+
+		_serviceRegistration.unregister();
 	}
 
 	private void _executeUpgradeInfos(
@@ -286,6 +296,7 @@ public class UpgradeExecutor {
 	@Reference
 	private ReleasePublisher _releasePublisher;
 
+	private ServiceRegistration<UpgradeExecutor> _serviceRegistration;
 	private UpgradeStepRegistratorTracker _upgradeStepRegistratorTracker;
 
 }

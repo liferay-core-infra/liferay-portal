@@ -121,8 +121,7 @@ public class AnalyticsReportsProductNavigationControlMenuEntryTest {
 						).put(
 							"liferayAnalyticsFaroBackendURL",
 							RandomTestUtil.randomString()
-						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						).build())) {
 
 			MockContextUtil.testWithMockContext(
 				new MockContextUtil.MockContext.Builder(

@@ -5,7 +5,7 @@
 
 package com.liferay.users.admin.web.internal.portlet.configuration.icon;
 
-import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;

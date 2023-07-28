@@ -73,6 +73,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -961,20 +962,27 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			portletsMap.put(portlet.getPortletId(), portlet);
 		}
 
-		List<Portlet> portlets = portletPersistence.findByCompanyId(companyId);
+		if (MapUtil.isEmpty(portletsMap)) {
+			List<Portlet> portlets = portletPersistence.findByCompanyId(
+				companyId);
 
-		for (Portlet portlet : portlets) {
-			Portlet portletModel = portletsMap.get(portlet.getPortletId());
+			for (Portlet portlet : portlets) {
+				Portlet portletModel = portletsMap.get(portlet.getPortletId());
 
-			// Portlet may be null if it exists in the database but its portlet
-			// WAR is not yet loaded
+				/*
+				Portlet may be null if it exists in the database but its portlet
+				WAR is not yet loaded
+				*/
 
-			if (portletModel != null) {
-				portletModel.setPluginPackage(portlet.getPluginPackage());
-				portletModel.setDefaultPluginSetting(
-					portlet.getDefaultPluginSetting());
-				portletModel.setRoles(portlet.getRoles());
-				portletModel.setActive(portlet.isActive());
+				if (portletModel != null) {
+					portletModel.setPluginPackage(portlet.getPluginPackage());
+					portletModel.setDefaultPluginSetting(
+						portlet.getDefaultPluginSetting());
+					portletModel.setRoles(portlet.getRoles());
+					portletModel.setActive(portlet.isActive());
+				}
+
+				portletsMap.put(portletModel.getPortletId(), portletModel);
 			}
 		}
 

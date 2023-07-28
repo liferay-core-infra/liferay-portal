@@ -44,7 +44,7 @@ import com.liferay.data.cleanup.internal.upgrade.WysiwygUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.XSLContentUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.YoutubeUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.util.ConfigurationUtil;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;

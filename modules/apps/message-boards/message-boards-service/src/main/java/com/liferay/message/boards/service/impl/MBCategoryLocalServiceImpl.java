@@ -5,7 +5,7 @@
 
 package com.liferay.message.boards.service.impl;
 
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.message.boards.constants.MBCategoryConstants;
 import com.liferay.message.boards.exception.CategoryNameException;
 import com.liferay.message.boards.model.MBCategory;

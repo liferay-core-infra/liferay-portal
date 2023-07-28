@@ -54,7 +54,7 @@ import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowLog;
 import com.liferay.portal.kernel.workflow.WorkflowLogManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.kernel.workflow.WorkflowTransition;
 import com.liferay.portal.kernel.workflow.search.WorkflowModelSearchResult;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
@@ -88,11 +88,13 @@ public class WorkflowTaskDisplayContext {
 	public WorkflowTaskDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		WorkflowComparatorFactory workflowComparatorFactory) {
+		WorkflowComparatorFactory workflowComparatorFactory,
+		WorkflowTaskManager workflowTaskManager) {
 
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 		_workflowComparatorFactory = workflowComparatorFactory;
+		_workflowTaskManager = workflowTaskManager;
 
 		_httpServletRequest = PortalUtil.getHttpServletRequest(
 			liferayPortletRequest);
@@ -167,7 +169,7 @@ public class WorkflowTaskDisplayContext {
 	public List<User> getAssignableUsers(WorkflowTask workflowTask)
 		throws PortalException {
 
-		return WorkflowTaskManagerUtil.getAssignableUsers(
+		return _workflowTaskManager.getAssignableUsers(
 			workflowTask.getWorkflowTaskId());
 	}
 
@@ -484,8 +486,7 @@ public class WorkflowTaskDisplayContext {
 	public List<String> getTransitionNames(WorkflowTask workflowTask)
 		throws PortalException {
 
-		return WorkflowTaskManagerUtil.getNextTransitionNames(
-			_workflowTaskRequestHelper.getCompanyId(),
+		return _workflowTaskManager.getNextTransitionNames(
 			_workflowTaskRequestHelper.getUserId(),
 			workflowTask.getWorkflowTaskId());
 	}
@@ -611,15 +612,14 @@ public class WorkflowTaskDisplayContext {
 			WorkflowTask workflowTask)
 		throws PortalException {
 
-		return WorkflowTaskManagerUtil.getWorkflowTaskWorkflowTransitions(
+		return _workflowTaskManager.getWorkflowTaskWorkflowTransitions(
 			workflowTask.getWorkflowTaskId());
 	}
 
 	public boolean hasAssignableUsers(WorkflowTask workflowTask)
 		throws PortalException {
 
-		return WorkflowTaskManagerUtil.hasAssignableUsers(
-			_workflowTaskRequestHelper.getCompanyId(),
+		return _workflowTaskManager.hasAssignableUsers(
 			workflowTask.getWorkflowTaskId());
 	}
 
@@ -961,17 +961,14 @@ public class WorkflowTaskDisplayContext {
 			return _workflowModelSearchResult;
 		}
 
-		_workflowModelSearchResult =
-			WorkflowTaskManagerUtil.searchWorkflowTasks(
-				_workflowTaskRequestHelper.getCompanyId(),
-				_workflowTaskRequestHelper.getUserId(),
-				displayTerms.getKeywords(),
-				new String[] {displayTerms.getKeywords()},
-				_getAssetType(displayTerms.getKeywords()), null, null, null,
-				null, null, _getCompleted(), true, searchByUserRoles, null,
-				null, false, _workflowTaskSearch.getStart(),
-				_workflowTaskSearch.getEnd(),
-				_workflowTaskSearch.getOrderByComparator());
+		_workflowModelSearchResult = _workflowTaskManager.searchWorkflowTasks(
+			_workflowTaskRequestHelper.getCompanyId(),
+			_workflowTaskRequestHelper.getUserId(), displayTerms.getKeywords(),
+			new String[] {displayTerms.getKeywords()},
+			_getAssetType(displayTerms.getKeywords()), null, null, null, null,
+			null, _getCompleted(), true, searchByUserRoles, null, null, false,
+			_workflowTaskSearch.getStart(), _workflowTaskSearch.getEnd(),
+			_workflowTaskSearch.getOrderByComparator());
 
 		return _workflowModelSearchResult;
 	}
@@ -1050,6 +1047,7 @@ public class WorkflowTaskDisplayContext {
 	private final Map<Long, User> _users = new HashMap<>();
 	private final WorkflowComparatorFactory _workflowComparatorFactory;
 	private WorkflowModelSearchResult<WorkflowTask> _workflowModelSearchResult;
+	private final WorkflowTaskManager _workflowTaskManager;
 	private final WorkflowTaskRequestHelper _workflowTaskRequestHelper;
 	private WorkflowTaskSearch _workflowTaskSearch;
 

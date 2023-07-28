@@ -39,7 +39,6 @@ page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.workflow.RequiredWorkflowDefinitionException" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowDefinition" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTask" %><%@
-page import="com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil" %><%@
 page import="com.liferay.portal.workflow.instance.tracker.url.provider.WorkflowInstanceTrackerURLProviderUtil" %><%@
 page import="com.liferay.portal.workflow.kaleo.designer.web.constants.KaleoDesignerPortletKeys" %><%@
 page import="com.liferay.portal.workflow.kaleo.forms.exception.KaleoProcessDDMTemplateIdException" %><%@
@@ -54,7 +53,8 @@ page import="com.liferay.portal.workflow.kaleo.forms.web.internal.display.contex
 page import="com.liferay.portal.workflow.kaleo.forms.web.internal.display.context.KaleoFormsViewRecordsDisplayContext" %><%@
 page import="com.liferay.portal.workflow.kaleo.forms.web.internal.security.permission.resource.DDMStructurePermission" %><%@
 page import="com.liferay.portal.workflow.kaleo.forms.web.internal.util.KaleoFormsUtil" %><%@
-page import="com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion" %>
+page import="com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion" %><%@
+page import="com.liferay.portal.workflow.manager.WorkflowTaskManagerUtil" %>
 
 <%@ page import="javax.portlet.PortletRequest" %><%@
 page import="javax.portlet.WindowState" %>

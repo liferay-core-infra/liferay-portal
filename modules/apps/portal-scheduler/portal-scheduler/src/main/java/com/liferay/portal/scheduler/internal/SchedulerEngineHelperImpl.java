@@ -549,6 +549,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			TriggerConfiguration triggerConfiguration =
 				schedulerJobConfiguration.getTriggerConfiguration();
 
+			if (triggerConfiguration == null) {
+				return null;
+			}
+
 			Trigger trigger = null;
 
 			if (Validator.isNotNull(triggerConfiguration.getCronExpression())) {

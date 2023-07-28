@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.workflow.security.permission.WorkflowTaskPermission;
 
 import java.util.Locale;
@@ -168,7 +168,7 @@ public class WorkflowTaskUserNotificationHandler
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					ctCollectionId)) {
 
-			return WorkflowTaskManagerUtil.fetchWorkflowTask(workflowTaskId);
+			return _workflowTaskManager.fetchWorkflowTask(workflowTaskId);
 		}
 	}
 
@@ -277,7 +277,7 @@ public class WorkflowTaskUserNotificationHandler
 						ctCollectionId)) {
 
 				for (User user :
-						WorkflowTaskManagerUtil.getNotifiableUsers(
+						_workflowTaskManager.getNotifiableUsers(
 							jsonObject.getLong("workflowTaskId"))) {
 
 					if (user.getUserId() == serviceContext.getUserId()) {
@@ -312,6 +312,9 @@ public class WorkflowTaskUserNotificationHandler
 	@Reference
 	private UserNotificationEventLocalService
 		_userNotificationEventLocalService;
+
+	@Reference
+	private WorkflowTaskManager _workflowTaskManager;
 
 	@Reference
 	private WorkflowTaskPermission _workflowTaskPermission;

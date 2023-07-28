@@ -10,6 +10,7 @@ import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.audit.AuditMessage;
@@ -541,8 +542,23 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			SchedulerJobConfiguration schedulerJobConfiguration =
 				_bundleContext.getService(serviceReference);
 
-			TriggerConfiguration triggerConfiguration =
-				schedulerJobConfiguration.getTriggerConfiguration();
+			TriggerConfiguration triggerConfiguration = null;
+
+			try {
+				triggerConfiguration =
+					schedulerJobConfiguration.getTriggerConfiguration();
+			}
+			catch (IllegalArgumentException illegalArgumentException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Not scheduling ",
+							schedulerJobConfiguration.getName(), "due to: ",
+							illegalArgumentException.getMessage()));
+				}
+
+				return null;
+			}
 
 			Trigger trigger = null;
 

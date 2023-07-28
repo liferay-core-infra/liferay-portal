@@ -18,7 +18,7 @@ long groupId = BeanParamUtil.getLong(kaleoProcess, request, "groupId", scopeGrou
 
 long workflowTaskId = ParamUtil.getLong(request, "workflowTaskId");
 
-WorkflowTask workflowTask = WorkflowTaskManagerUtil.getWorkflowTask(company.getCompanyId(), workflowTaskId);
+WorkflowTask workflowTask = WorkflowTaskManagerUtil.getWorkflowTask(workflowTaskId);
 
 KaleoProcessLink kaleoProcessLink = KaleoProcessLinkLocalServiceUtil.fetchKaleoProcessLink(kaleoProcessId, workflowTask.getName());
 

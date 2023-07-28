@@ -8,6 +8,8 @@ import com.liferay.portal.kernel.test.util.*
 import com.liferay.portal.kernel.util.*
 import com.liferay.portal.kernel.workflow.*
 import com.liferay.blogs.service.*
+import com.liferay.portal.workflow.manager.WorkflowTaskManagerUtil
+
 import java.util.*
 
 //Excluding from the count the existing users
@@ -17,7 +19,8 @@ List<User> users = com.liferay.portal.kernel.service.UserLocalServiceUtil.getUse
 List<WorkflowTask> workflowTasks = new ArrayList<>()
 List<User> activeUsers = new ArrayList<User>();
 
-workflowTasks.addAll(WorkflowTaskManagerUtil.getWorkflowTasksByUserRoles(companyId, mainUserId, false, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null))
+workflowTasks.addAll(
+		WorkflowTaskManagerUtil.getWorkflowTasksByUserRoles(companyId, mainUserId, false, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null))
 
 for (User user : users){
 	if (user.getEmailAddress().contains("user")) {

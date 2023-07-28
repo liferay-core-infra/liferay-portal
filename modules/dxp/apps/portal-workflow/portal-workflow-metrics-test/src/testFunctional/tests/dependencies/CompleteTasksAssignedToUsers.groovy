@@ -8,6 +8,8 @@ import com.liferay.portal.kernel.test.util.*
 import com.liferay.portal.kernel.util.*
 import com.liferay.portal.kernel.workflow.*
 import com.liferay.blogs.service.*
+import com.liferay.portal.workflow.manager.WorkflowTaskManagerUtil
+
 import java.util.*
 
 companyId = com.liferay.portal.kernel.util.PortalUtil.getCompanyId(actionRequest)

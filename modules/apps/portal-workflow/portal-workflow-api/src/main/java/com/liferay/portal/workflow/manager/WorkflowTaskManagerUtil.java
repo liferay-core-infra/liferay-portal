@@ -1,0 +1,71 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.portal.workflow.manager;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.portal.kernel.workflow.WorkflowException;
+import com.liferay.portal.kernel.workflow.WorkflowTask;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
+
+import java.io.Serializable;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author Micha Kiener
+ * @author Shuyang Zhou
+ * @author Brian Wing Shun Chan
+ * @author Marcellus Tavares
+ * @author Raymond Augé
+ */
+public class WorkflowTaskManagerUtil {
+
+	public static WorkflowTask assignWorkflowTaskToUser(
+			long companyId, long userId, long workflowTaskId,
+			long assigneeUserId, String comment, Date dueDate,
+			Map<String, Serializable> workflowContext)
+		throws PortalException {
+
+		return _workflowTaskManager.assignWorkflowTaskToUser(
+			companyId, userId, workflowTaskId, assigneeUserId, comment, dueDate,
+			workflowContext);
+	}
+
+	public static WorkflowTask getWorkflowTask(
+			long companyId, long workflowTaskId)
+		throws WorkflowException {
+
+		return _workflowTaskManager.getWorkflowTask(workflowTaskId);
+	}
+
+	public static List<WorkflowTask> getWorkflowTasksByUser(
+			long companyId, long userId, Boolean completed, int start, int end,
+			OrderByComparator<WorkflowTask> orderByComparator)
+		throws WorkflowException {
+
+		return _workflowTaskManager.getWorkflowTasksByUser(
+			companyId, userId, completed, start, end, orderByComparator);
+	}
+
+	public static List<WorkflowTask> getWorkflowTasksByUserRoles(
+			long companyId, long userId, Boolean completed, int start, int end,
+			OrderByComparator<WorkflowTask> orderByComparator)
+		throws WorkflowException {
+
+		return _workflowTaskManager.getWorkflowTasksByUserRoles(
+			companyId, userId, completed, start, end, orderByComparator);
+	}
+
+	private static volatile WorkflowTaskManager _workflowTaskManager =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			WorkflowTaskManager.class, WorkflowTaskManagerUtil.class,
+			"_workflowTaskManager", true);
+
+}

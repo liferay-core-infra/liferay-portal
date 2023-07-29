@@ -21,6 +21,9 @@ import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -73,9 +76,9 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 				message.getLong("companyId"), segmentsEntryId, type,
 				newClassPKs, indexer);
 		}
-		catch (PortalException portalException) {
+		catch (Throwable throwable) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to index segment members", portalException);
+				_log.warn("Unable to index segment members", throwable);
 			}
 		}
 	}
@@ -126,8 +129,35 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 		return classPKsSet;
 	}
 
-	private void _updateDatabase(long segmentsEntryId, Set<Long> newClassPKs)
+	private Void _updateDatabase(
+			long segmentsEntryId, SegmentsEntry segmentsEntry,
+			Set<Long> addClassPKs, Set<Long> deleteClassPKs)
 		throws PortalException {
+
+		long classNameId = _portal.getClassNameId(segmentsEntry.getType());
+
+		if (!deleteClassPKs.isEmpty()) {
+			_segmentsEntryRelLocalService.deleteSegmentsEntryRels(
+				segmentsEntryId, classNameId,
+				ArrayUtil.toLongArray(deleteClassPKs));
+		}
+
+		if (!addClassPKs.isEmpty()) {
+			ServiceContext serviceContext = new ServiceContext();
+
+			serviceContext.setScopeGroupId(segmentsEntry.getGroupId());
+			serviceContext.setUserId(segmentsEntry.getUserId());
+
+			_segmentsEntryRelLocalService.addSegmentsEntryRels(
+				segmentsEntryId, classNameId,
+				ArrayUtil.toLongArray(addClassPKs), serviceContext);
+		}
+
+		return null;
+	}
+
+	private void _updateDatabase(long segmentsEntryId, Set<Long> newClassPKs)
+		throws Throwable {
 
 		SegmentsEntry segmentsEntry =
 			_segmentsEntryLocalService.fetchSegmentsEntry(segmentsEntryId);
@@ -149,20 +179,14 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 			}
 		}
 
-		long classNameId = _portal.getClassNameId(segmentsEntry.getType());
+		if (deleteClassPKs.isEmpty() && addClassPKs.isEmpty()) {
+			return;
+		}
 
-		_segmentsEntryRelLocalService.deleteSegmentsEntryRels(
-			segmentsEntryId, classNameId,
-			ArrayUtil.toLongArray(deleteClassPKs));
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setScopeGroupId(segmentsEntry.getGroupId());
-		serviceContext.setUserId(segmentsEntry.getUserId());
-
-		_segmentsEntryRelLocalService.addSegmentsEntryRels(
-			segmentsEntryId, classNameId, ArrayUtil.toLongArray(addClassPKs),
-			serviceContext);
+		TransactionInvokerUtil.invoke(
+			_transactionConfig,
+			() -> _updateDatabase(
+				segmentsEntryId, segmentsEntry, addClassPKs, deleteClassPKs));
 	}
 
 	private void _updateIndex(
@@ -181,6 +205,10 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SegmentsEntryReindexMessageListener.class);
+
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRED, new Class<?>[] {PortalException.class});
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;

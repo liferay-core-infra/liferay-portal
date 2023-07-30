@@ -6,6 +6,8 @@
 package com.liferay.segments.internal.messaging;
 
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.EntityCache;
+import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -31,6 +33,7 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.segments.internal.constants.SegmentsDestinationNames;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.model.SegmentsEntryRelTable;
+import com.liferay.segments.model.impl.SegmentsEntryRelImpl;
 import com.liferay.segments.provider.SegmentsEntryProviderRegistry;
 import com.liferay.segments.service.SegmentsEntryLocalService;
 import com.liferay.segments.service.SegmentsEntryRelLocalService;
@@ -153,6 +156,9 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 				ArrayUtil.toLongArray(addClassPKs), serviceContext);
 		}
 
+		_entityCache.clearCache(SegmentsEntryRelImpl.class);
+		_finderCache.clearCache(SegmentsEntryRelImpl.class);
+
 		return null;
 	}
 
@@ -209,6 +215,12 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {PortalException.class});
+
+	@Reference
+	private EntityCache _entityCache;
+
+	@Reference
+	private FinderCache _finderCache;
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;

@@ -14,6 +14,7 @@ import com.liferay.bean.portlet.extension.BeanPortletMethodFactory;
 import com.liferay.bean.portlet.extension.BeanPortletMethodInvoker;
 import com.liferay.bean.portlet.extension.BeanPortletMethodType;
 import com.liferay.bean.portlet.registration.BeanPortletRegistrar;
+import com.liferay.bean.portlet.registration.BeanPortletRegistrarBag;
 import com.liferay.bean.portlet.registration.internal.util.BeanMethodIndexUtil;
 import com.liferay.bean.portlet.registration.internal.util.PortletScannerUtil;
 import com.liferay.bean.portlet.registration.internal.xml.DisplayDescriptorParser;
@@ -48,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import javax.portlet.Portlet;
@@ -88,8 +90,12 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Neil Griffin
@@ -332,6 +338,83 @@ public class BeanPortletRegistrarImpl implements BeanPortletRegistrar {
 					totalBeanFilters, " bean filters for ",
 					servletContext.getServletContextName()));
 		}
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, BeanPortletRegistrarBag.class,
+			new ServiceTrackerCustomizer
+				<BeanPortletRegistrarBag, BeanPortletRegistrarBag>() {
+
+				@Override
+				public BeanPortletRegistrarBag addingService(
+					ServiceReference<BeanPortletRegistrarBag>
+						serviceReference) {
+
+					BeanPortletRegistrarBag beanPortletRegistrarBag =
+						bundleContext.getService(serviceReference);
+
+					_serviceRegistrations.put(
+						beanPortletRegistrarBag,
+						register(
+							beanPortletRegistrarBag.
+								getBeanFilterMethodFactory(),
+							beanPortletRegistrarBag.
+								getBeanFilterMethodInvoker(),
+							beanPortletRegistrarBag.
+								getBeanPortletMethodFactory(),
+							beanPortletRegistrarBag.
+								getBeanPortletMethodInvoker(),
+							beanPortletRegistrarBag.getDiscoveredClasses(),
+							beanPortletRegistrarBag.getServletContext()));
+
+					return beanPortletRegistrarBag;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<BeanPortletRegistrarBag> serviceReference,
+					BeanPortletRegistrarBag beanPortletRegistrarBag) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<BeanPortletRegistrarBag> serviceReference,
+					BeanPortletRegistrarBag beanPortletRegistrarBag) {
+
+					bundleContext.ungetService(serviceReference);
+
+					unregister(
+						_serviceRegistrations.remove(beanPortletRegistrarBag),
+						beanPortletRegistrarBag.getServletContext());
+				}
+
+			});
+
+		_serviceTracker.open();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
+
+		for (List<ServiceRegistration<?>> serviceRegistrations :
+				_serviceRegistrations.values()) {
+
+			for (ServiceRegistration<?> serviceRegistration :
+					serviceRegistrations) {
+
+				try {
+					serviceRegistration.unregister();
+				}
+				catch (IllegalStateException illegalStateException) {
+					_log.error(illegalStateException);
+				}
+			}
+		}
+
+		_serviceRegistrations.clear();
 	}
 
 	private void _addBeanFiltersFromDiscoveredClasses(
@@ -1266,5 +1349,10 @@ public class BeanPortletRegistrarImpl implements BeanPortletRegistrar {
 			private final UserAttribute[] _userAttributes = {};
 
 		};
+
+	private final Map<BeanPortletRegistrarBag, List<ServiceRegistration<?>>>
+		_serviceRegistrations = new ConcurrentHashMap<>();
+	private ServiceTracker<BeanPortletRegistrarBag, BeanPortletRegistrarBag>
+		_serviceTracker;
 
 }

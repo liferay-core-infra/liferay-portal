@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -13,7 +13,6 @@ import com.liferay.bean.portlet.extension.BeanPortletMethod;
 import com.liferay.bean.portlet.extension.BeanPortletMethodFactory;
 import com.liferay.bean.portlet.extension.BeanPortletMethodInvoker;
 import com.liferay.bean.portlet.extension.BeanPortletMethodType;
-import com.liferay.bean.portlet.registration.BeanPortletRegistrar;
 import com.liferay.bean.portlet.registration.BeanPortletRegistrarBag;
 import com.liferay.bean.portlet.registration.internal.util.BeanMethodIndexUtil;
 import com.liferay.bean.portlet.registration.internal.util.PortletScannerUtil;
@@ -100,10 +99,9 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 /**
  * @author Neil Griffin
  */
-@Component(service = BeanPortletRegistrar.class)
-public class BeanPortletRegistrarImpl implements BeanPortletRegistrar {
+@Component(service = {})
+public class BeanPortletRegistrar {
 
-	@Override
 	public List<ServiceRegistration<?>> register(
 		BeanFilterMethodFactory beanFilterMethodFactory,
 		BeanFilterMethodInvoker beanFilterMethodInvoker,
@@ -292,7 +290,6 @@ public class BeanPortletRegistrarImpl implements BeanPortletRegistrar {
 		return serviceRegistrations;
 	}
 
-	@Override
 	public void unregister(
 		List<ServiceRegistration<?>> serviceRegistrations,
 		ServletContext servletContext) {
@@ -1285,7 +1282,7 @@ public class BeanPortletRegistrarImpl implements BeanPortletRegistrar {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BeanPortletRegistrarImpl.class);
+		BeanPortletRegistrar.class);
 
 	private static final PortletApplication _portletApplication =
 		new PortletApplication() {

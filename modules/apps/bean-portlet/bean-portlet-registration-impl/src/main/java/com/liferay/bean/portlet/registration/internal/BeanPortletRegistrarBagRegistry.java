@@ -7,11 +7,8 @@ package com.liferay.bean.portlet.registration.internal;
 
 import com.liferay.bean.portlet.LiferayPortletConfiguration;
 import com.liferay.bean.portlet.LiferayPortletConfigurations;
-import com.liferay.bean.portlet.extension.BeanFilterMethodFactory;
-import com.liferay.bean.portlet.extension.BeanFilterMethodInvoker;
 import com.liferay.bean.portlet.extension.BeanPortletMethod;
 import com.liferay.bean.portlet.extension.BeanPortletMethodFactory;
-import com.liferay.bean.portlet.extension.BeanPortletMethodInvoker;
 import com.liferay.bean.portlet.extension.BeanPortletMethodType;
 import com.liferay.bean.portlet.registration.BeanPortletRegistrarBag;
 import com.liferay.bean.portlet.registration.internal.util.BeanMethodIndexUtil;
@@ -119,17 +116,7 @@ public class BeanPortletRegistrarBagRegistry {
 
 					_serviceRegistrations.put(
 						beanPortletRegistrarBag,
-						_register(
-							beanPortletRegistrarBag.
-								getBeanFilterMethodFactory(),
-							beanPortletRegistrarBag.
-								getBeanFilterMethodInvoker(),
-							beanPortletRegistrarBag.
-								getBeanPortletMethodFactory(),
-							beanPortletRegistrarBag.
-								getBeanPortletMethodInvoker(),
-							beanPortletRegistrarBag.getDiscoveredClasses(),
-							beanPortletRegistrarBag.getServletContext()));
+						_register(beanPortletRegistrarBag));
 
 					return beanPortletRegistrarBag;
 				}
@@ -1030,11 +1017,10 @@ public class BeanPortletRegistrarBagRegistry {
 	}
 
 	private List<ServiceRegistration<?>> _register(
-		BeanFilterMethodFactory beanFilterMethodFactory,
-		BeanFilterMethodInvoker beanFilterMethodInvoker,
-		BeanPortletMethodFactory beanPortletMethodFactory,
-		BeanPortletMethodInvoker beanPortletMethodInvoker,
-		Set<Class<?>> discoveredClasses, ServletContext servletContext) {
+		BeanPortletRegistrarBag beanPortletRegistrarBag) {
+
+		ServletContext servletContext =
+			beanPortletRegistrarBag.getServletContext();
 
 		BundleContext bundleContext =
 			(BundleContext)servletContext.getAttribute("osgi-bundlecontext");
@@ -1075,6 +1061,9 @@ public class BeanPortletRegistrarBagRegistry {
 
 		List<DiscoveredBeanMethod> discoveredBeanMethods = new ArrayList<>();
 
+		Set<Class<?>> discoveredClasses =
+			beanPortletRegistrarBag.getDiscoveredClasses();
+
 		for (Class<?> discoveredClass : discoveredClasses) {
 			for (Method method : discoveredClass.getMethods()) {
 				for (BeanPortletMethodType beanPortletMethodType :
@@ -1089,6 +1078,9 @@ public class BeanPortletRegistrarBagRegistry {
 				}
 			}
 		}
+
+		BeanPortletMethodFactory beanPortletMethodFactory =
+			beanPortletRegistrarBag.getBeanPortletMethodFactory();
 
 		Function<String, Set<BeanPortletMethod>> portletBeanMethodsFunction =
 			_collectPortletBeanMethods(
@@ -1156,7 +1148,8 @@ public class BeanPortletRegistrarBagRegistry {
 			ServiceRegistration<Portlet> portletServiceRegistration =
 				RegistrationUtil.registerBeanPortlet(
 					beanApp, beanPortlet, beanPortletIds,
-					beanPortletMethodInvoker, bundleContext, servletContext);
+					beanPortletRegistrarBag.getBeanPortletMethodInvoker(),
+					bundleContext, servletContext);
 
 			if (portletServiceRegistration != null) {
 				serviceRegistrations.add(portletServiceRegistration);
@@ -1176,9 +1169,11 @@ public class BeanPortletRegistrarBagRegistry {
 		for (BeanFilter beanFilter : beanFilters.values()) {
 			for (String portletName : beanFilter.getPortletNames()) {
 				RegistrationUtil.registerBeanFilter(
-					beanPortlets.keySet(), beanFilter, beanFilterMethodFactory,
-					beanFilterMethodInvoker, bundleContext, portletName,
-					serviceRegistrations, servletContext);
+					beanPortlets.keySet(), beanFilter,
+					beanPortletRegistrarBag.getBeanFilterMethodFactory(),
+					beanPortletRegistrarBag.getBeanFilterMethodInvoker(),
+					bundleContext, portletName, serviceRegistrations,
+					servletContext);
 			}
 		}
 

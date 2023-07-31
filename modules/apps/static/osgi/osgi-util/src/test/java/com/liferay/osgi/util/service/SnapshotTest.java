@@ -5,6 +5,7 @@
 
 package com.liferay.osgi.util.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -13,6 +14,8 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Dictionary;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -25,6 +28,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
@@ -55,6 +60,109 @@ public class SnapshotTest {
 	@AfterClass
 	public static void tearDownClass() {
 		_frameworkUtilMockedStatic.close();
+	}
+
+	@Test
+	public void testDCLSingletonBundleListener() {
+		Snapshot<TestService<String>> snapshot1 = new Snapshot<>(
+			SnapshotTest.class, Snapshot.cast(TestService.class),
+			"(name=test1)", true);
+
+		Snapshot<TestService<String>> snapshot2 = new Snapshot<>(
+			SnapshotTest.class, Snapshot.cast(TestService.class),
+			"(name=test2)", true);
+
+		BundleListener bundleListener = ReflectionTestUtil.getFieldValue(
+			Snapshot.class, "_dclSingletonBundleListener");
+
+		Map<BundleContext, Set<DCLSingleton<?>>> dclSingletonMap =
+			ReflectionTestUtil.getFieldValue(bundleListener, "_dclSingletons");
+
+		Assert.assertTrue(dclSingletonMap.isEmpty());
+
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.STOPPING, bundleContext.getBundle()));
+
+		Assert.assertTrue(dclSingletonMap.isEmpty());
+
+		Assert.assertNull(snapshot1.get());
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+
+		Set<DCLSingleton<?>> dclSingletons = dclSingletonMap.get(bundleContext);
+
+		Assert.assertEquals(dclSingletons.toString(), 1, dclSingletons.size());
+
+		Assert.assertNull(snapshot2.get());
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.INSTALLED, bundleContext.getBundle()));
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.STARTED, bundleContext.getBundle()));
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.STOPPED, bundleContext.getBundle()));
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.UPDATED, bundleContext.getBundle()));
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(
+				BundleEvent.UNINSTALLED, bundleContext.getBundle()));
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.RESOLVED, bundleContext.getBundle()));
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.UNRESOLVED, bundleContext.getBundle()));
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.STARTING, bundleContext.getBundle()));
+
+		Assert.assertEquals(
+			dclSingletonMap.toString(), 1, dclSingletonMap.size());
+		Assert.assertEquals(dclSingletons.toString(), 2, dclSingletons.size());
+
+		bundleListener.bundleChanged(
+			new BundleEvent(BundleEvent.STOPPING, bundleContext.getBundle()));
+
+		Assert.assertTrue(dclSingletonMap.isEmpty());
 	}
 
 	@Test

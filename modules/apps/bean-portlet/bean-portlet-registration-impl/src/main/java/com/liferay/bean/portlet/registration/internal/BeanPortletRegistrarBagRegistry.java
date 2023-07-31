@@ -100,7 +100,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * @author Neil Griffin
  */
 @Component(service = {})
-public class BeanPortletRegistrar {
+public class BeanPortletRegistrarBagRegistry {
 
 	public List<ServiceRegistration<?>> register(
 		BeanFilterMethodFactory beanFilterMethodFactory,
@@ -1265,7 +1265,7 @@ public class BeanPortletRegistrar {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BeanPortletRegistrar.class);
+		BeanPortletRegistrarBagRegistry.class);
 
 	private static final PortletApplication _portletApplication =
 		new PortletApplication() {

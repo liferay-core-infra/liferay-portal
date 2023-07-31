@@ -102,241 +102,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(service = {})
 public class BeanPortletRegistrarBagRegistry {
 
-	public List<ServiceRegistration<?>> register(
-		BeanFilterMethodFactory beanFilterMethodFactory,
-		BeanFilterMethodInvoker beanFilterMethodInvoker,
-		BeanPortletMethodFactory beanPortletMethodFactory,
-		BeanPortletMethodInvoker beanPortletMethodInvoker,
-		Set<Class<?>> discoveredClasses, ServletContext servletContext) {
-
-		BundleContext bundleContext =
-			(BundleContext)servletContext.getAttribute("osgi-bundlecontext");
-
-		Bundle bundle = bundleContext.getBundle();
-
-		URL displayDescriptorURL = bundle.getEntry(
-			"WEB-INF/liferay-display.xml");
-
-		Map<String, String> descriptorDisplayCategories =
-			Collections.emptyMap();
-
-		if (displayDescriptorURL != null) {
-			try {
-				descriptorDisplayCategories = DisplayDescriptorParser.parse(
-					displayDescriptorURL);
-			}
-			catch (Exception exception) {
-				_log.error(exception);
-			}
-		}
-
-		URL liferayDescriptorURL = bundle.getEntry(
-			"WEB-INF/liferay-portlet.xml");
-
-		Map<String, Map<String, Set<String>>> descriptorLiferayConfigurations =
-			Collections.emptyMap();
-
-		if (liferayDescriptorURL != null) {
-			try {
-				descriptorLiferayConfigurations = LiferayDescriptorParser.parse(
-					liferayDescriptorURL);
-			}
-			catch (Exception exception) {
-				_log.error(exception);
-			}
-		}
-
-		List<DiscoveredBeanMethod> discoveredBeanMethods = new ArrayList<>();
-
-		for (Class<?> discoveredClass : discoveredClasses) {
-			for (Method method : discoveredClass.getMethods()) {
-				for (BeanPortletMethodType beanPortletMethodType :
-						BeanPortletMethodType.values()) {
-
-					if (beanPortletMethodType.isMatch(method)) {
-						discoveredBeanMethods.add(
-							new DiscoveredBeanMethod(
-								discoveredClass, beanPortletMethodType,
-								method));
-					}
-				}
-			}
-		}
-
-		Function<String, Set<BeanPortletMethod>> portletBeanMethodsFunction =
-			_collectPortletBeanMethods(
-				beanPortletMethodFactory, discoveredBeanMethods);
-
-		Function<String, String> preferencesValidatorFunction =
-			_collectPreferencesValidators(discoveredClasses);
-
-		URL portletDescriptorURL = bundle.getEntry("/WEB-INF/portlet.xml");
-
-		BeanApp beanApp = null;
-		Map<String, BeanFilter> beanFilters = new HashMap<>();
-		Map<String, BeanPortlet> beanPortlets = new HashMap<>();
-
-		if (portletDescriptorURL != null) {
-			try {
-				beanApp = PortletDescriptorParser.parse(
-					beanFilters, beanPortletMethodFactory, beanPortlets, bundle,
-					descriptorDisplayCategories,
-					descriptorLiferayConfigurations, portletBeanMethodsFunction,
-					portletDescriptorURL, preferencesValidatorFunction);
-			}
-			catch (Exception exception) {
-				_log.error(exception);
-			}
-		}
-
-		if (beanApp == null) {
-			beanApp = new BeanAppImpl(
-				Collections.emptyMap(), Collections.emptySet(), null,
-				Collections.emptyList(), Collections.emptyList(),
-				Collections.emptyMap(), "3.0");
-		}
-
-		_addBeanFiltersFromDiscoveredClasses(beanFilters, discoveredClasses);
-
-		_addBeanPortletsFromDiscoveredClasses(
-			beanApp, beanPortletMethodFactory, beanPortlets,
-			descriptorDisplayCategories, descriptorLiferayConfigurations,
-			discoveredClasses, portletBeanMethodsFunction,
-			preferencesValidatorFunction);
-
-		_addBeanPortletsFromScannedMethods(
-			beanPortlets, discoveredBeanMethods, descriptorDisplayCategories,
-			descriptorLiferayConfigurations, portletBeanMethodsFunction);
-
-		_addBeanPortletsFromLiferayDescriptor(
-			beanPortlets, descriptorDisplayCategories,
-			descriptorLiferayConfigurations, portletBeanMethodsFunction);
-
-		@SuppressWarnings("unchecked")
-		List<String> beanPortletIds = (List<String>)servletContext.getAttribute(
-			WebKeys.BEAN_PORTLET_IDS);
-
-		if (beanPortletIds == null) {
-			beanPortletIds = new ArrayList<>();
-
-			servletContext.setAttribute(
-				WebKeys.BEAN_PORTLET_IDS, beanPortletIds);
-		}
-
-		List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>();
-
-		for (BeanPortlet beanPortlet : beanPortlets.values()) {
-			ServiceRegistration<Portlet> portletServiceRegistration =
-				RegistrationUtil.registerBeanPortlet(
-					beanApp, beanPortlet, beanPortletIds,
-					beanPortletMethodInvoker, bundleContext, servletContext);
-
-			if (portletServiceRegistration != null) {
-				serviceRegistrations.add(portletServiceRegistration);
-			}
-
-			ServiceRegistration<ResourceBundleLoader>
-				resourceBundleLoaderserviceRegistration =
-					RegistrationUtil.registerResourceBundleLoader(
-						beanPortlet, bundleContext, servletContext);
-
-			if (resourceBundleLoaderserviceRegistration != null) {
-				serviceRegistrations.add(
-					resourceBundleLoaderserviceRegistration);
-			}
-		}
-
-		for (BeanFilter beanFilter : beanFilters.values()) {
-			for (String portletName : beanFilter.getPortletNames()) {
-				RegistrationUtil.registerBeanFilter(
-					beanPortlets.keySet(), beanFilter, beanFilterMethodFactory,
-					beanFilterMethodInvoker, bundleContext, portletName,
-					serviceRegistrations, servletContext);
-			}
-		}
-
-		serviceRegistrations.add(
-			bundleContext.registerService(
-				Servlet.class, new PortletServlet(),
-				HashMapDictionaryBuilder.<String, Object>put(
-					HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
-					servletContext.getServletContextName()
-				).put(
-					HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME,
-					PortletServlet.class.getName()
-				).put(
-					HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN,
-					"/portlet-servlet/*"
-				).build()));
-
-		Set<String> portletNames = descriptorDisplayCategories.keySet();
-
-		portletNames.removeAll(beanPortlets.keySet());
-
-		if (!portletNames.isEmpty()) {
-			_log.error(
-				"Unknown portlet IDs " + portletNames +
-					" found in liferay-display.xml");
-		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				StringBundler.concat(
-					"Registered ", beanPortlets.size(), " bean portlets and ",
-					beanFilters.size(), " bean filters for ",
-					servletContext.getServletContextName()));
-		}
-
-		return serviceRegistrations;
-	}
-
-	public void unregister(
-		List<ServiceRegistration<?>> serviceRegistrations,
-		ServletContext servletContext) {
-
-		int totalBeanPortlets = 0;
-		int totalBeanFilters = 0;
-
-		for (ServiceRegistration<?> serviceRegistration :
-				serviceRegistrations) {
-
-			ServiceReference<?> serviceReference =
-				serviceRegistration.getReference();
-
-			String[] serviceClasses = (String[])serviceReference.getProperty(
-				Constants.OBJECTCLASS);
-
-			if (ArrayUtil.contains(serviceClasses, "javax.portlet.Portlet")) {
-				totalBeanPortlets++;
-			}
-			else if (ArrayUtil.contains(
-						serviceClasses, "javax.portlet.filter.PortletFilter")) {
-
-				totalBeanFilters++;
-			}
-
-			try {
-				serviceRegistration.unregister();
-			}
-			catch (IllegalStateException illegalStateException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(illegalStateException);
-				}
-
-				// Ignore since the service has been unregistered
-
-			}
-		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				StringBundler.concat(
-					"Unregistered ", totalBeanPortlets, " bean portlets and ",
-					totalBeanFilters, " bean filters for ",
-					servletContext.getServletContextName()));
-		}
-	}
-
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTracker = new ServiceTracker<>(
@@ -354,7 +119,7 @@ public class BeanPortletRegistrarBagRegistry {
 
 					_serviceRegistrations.put(
 						beanPortletRegistrarBag,
-						register(
+						_register(
 							beanPortletRegistrarBag.
 								getBeanFilterMethodFactory(),
 							beanPortletRegistrarBag.
@@ -382,7 +147,7 @@ public class BeanPortletRegistrarBagRegistry {
 
 					bundleContext.ungetService(serviceReference);
 
-					unregister(
+					_unregister(
 						_serviceRegistrations.remove(beanPortletRegistrarBag),
 						beanPortletRegistrarBag.getServletContext());
 				}
@@ -1279,6 +1044,241 @@ public class BeanPortletRegistrarBagRegistry {
 		}
 
 		return null;
+	}
+
+	private List<ServiceRegistration<?>> _register(
+		BeanFilterMethodFactory beanFilterMethodFactory,
+		BeanFilterMethodInvoker beanFilterMethodInvoker,
+		BeanPortletMethodFactory beanPortletMethodFactory,
+		BeanPortletMethodInvoker beanPortletMethodInvoker,
+		Set<Class<?>> discoveredClasses, ServletContext servletContext) {
+
+		BundleContext bundleContext =
+			(BundleContext)servletContext.getAttribute("osgi-bundlecontext");
+
+		Bundle bundle = bundleContext.getBundle();
+
+		URL displayDescriptorURL = bundle.getEntry(
+			"WEB-INF/liferay-display.xml");
+
+		Map<String, String> descriptorDisplayCategories =
+			Collections.emptyMap();
+
+		if (displayDescriptorURL != null) {
+			try {
+				descriptorDisplayCategories = DisplayDescriptorParser.parse(
+					displayDescriptorURL);
+			}
+			catch (Exception exception) {
+				_log.error(exception);
+			}
+		}
+
+		URL liferayDescriptorURL = bundle.getEntry(
+			"WEB-INF/liferay-portlet.xml");
+
+		Map<String, Map<String, Set<String>>> descriptorLiferayConfigurations =
+			Collections.emptyMap();
+
+		if (liferayDescriptorURL != null) {
+			try {
+				descriptorLiferayConfigurations = LiferayDescriptorParser.parse(
+					liferayDescriptorURL);
+			}
+			catch (Exception exception) {
+				_log.error(exception);
+			}
+		}
+
+		List<DiscoveredBeanMethod> discoveredBeanMethods = new ArrayList<>();
+
+		for (Class<?> discoveredClass : discoveredClasses) {
+			for (Method method : discoveredClass.getMethods()) {
+				for (BeanPortletMethodType beanPortletMethodType :
+						BeanPortletMethodType.values()) {
+
+					if (beanPortletMethodType.isMatch(method)) {
+						discoveredBeanMethods.add(
+							new DiscoveredBeanMethod(
+								discoveredClass, beanPortletMethodType,
+								method));
+					}
+				}
+			}
+		}
+
+		Function<String, Set<BeanPortletMethod>> portletBeanMethodsFunction =
+			_collectPortletBeanMethods(
+				beanPortletMethodFactory, discoveredBeanMethods);
+
+		Function<String, String> preferencesValidatorFunction =
+			_collectPreferencesValidators(discoveredClasses);
+
+		URL portletDescriptorURL = bundle.getEntry("/WEB-INF/portlet.xml");
+
+		BeanApp beanApp = null;
+		Map<String, BeanFilter> beanFilters = new HashMap<>();
+		Map<String, BeanPortlet> beanPortlets = new HashMap<>();
+
+		if (portletDescriptorURL != null) {
+			try {
+				beanApp = PortletDescriptorParser.parse(
+					beanFilters, beanPortletMethodFactory, beanPortlets, bundle,
+					descriptorDisplayCategories,
+					descriptorLiferayConfigurations, portletBeanMethodsFunction,
+					portletDescriptorURL, preferencesValidatorFunction);
+			}
+			catch (Exception exception) {
+				_log.error(exception);
+			}
+		}
+
+		if (beanApp == null) {
+			beanApp = new BeanAppImpl(
+				Collections.emptyMap(), Collections.emptySet(), null,
+				Collections.emptyList(), Collections.emptyList(),
+				Collections.emptyMap(), "3.0");
+		}
+
+		_addBeanFiltersFromDiscoveredClasses(beanFilters, discoveredClasses);
+
+		_addBeanPortletsFromDiscoveredClasses(
+			beanApp, beanPortletMethodFactory, beanPortlets,
+			descriptorDisplayCategories, descriptorLiferayConfigurations,
+			discoveredClasses, portletBeanMethodsFunction,
+			preferencesValidatorFunction);
+
+		_addBeanPortletsFromScannedMethods(
+			beanPortlets, discoveredBeanMethods, descriptorDisplayCategories,
+			descriptorLiferayConfigurations, portletBeanMethodsFunction);
+
+		_addBeanPortletsFromLiferayDescriptor(
+			beanPortlets, descriptorDisplayCategories,
+			descriptorLiferayConfigurations, portletBeanMethodsFunction);
+
+		@SuppressWarnings("unchecked")
+		List<String> beanPortletIds = (List<String>)servletContext.getAttribute(
+			WebKeys.BEAN_PORTLET_IDS);
+
+		if (beanPortletIds == null) {
+			beanPortletIds = new ArrayList<>();
+
+			servletContext.setAttribute(
+				WebKeys.BEAN_PORTLET_IDS, beanPortletIds);
+		}
+
+		List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>();
+
+		for (BeanPortlet beanPortlet : beanPortlets.values()) {
+			ServiceRegistration<Portlet> portletServiceRegistration =
+				RegistrationUtil.registerBeanPortlet(
+					beanApp, beanPortlet, beanPortletIds,
+					beanPortletMethodInvoker, bundleContext, servletContext);
+
+			if (portletServiceRegistration != null) {
+				serviceRegistrations.add(portletServiceRegistration);
+			}
+
+			ServiceRegistration<ResourceBundleLoader>
+				resourceBundleLoaderserviceRegistration =
+					RegistrationUtil.registerResourceBundleLoader(
+						beanPortlet, bundleContext, servletContext);
+
+			if (resourceBundleLoaderserviceRegistration != null) {
+				serviceRegistrations.add(
+					resourceBundleLoaderserviceRegistration);
+			}
+		}
+
+		for (BeanFilter beanFilter : beanFilters.values()) {
+			for (String portletName : beanFilter.getPortletNames()) {
+				RegistrationUtil.registerBeanFilter(
+					beanPortlets.keySet(), beanFilter, beanFilterMethodFactory,
+					beanFilterMethodInvoker, bundleContext, portletName,
+					serviceRegistrations, servletContext);
+			}
+		}
+
+		serviceRegistrations.add(
+			bundleContext.registerService(
+				Servlet.class, new PortletServlet(),
+				HashMapDictionaryBuilder.<String, Object>put(
+					HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
+					servletContext.getServletContextName()
+				).put(
+					HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME,
+					PortletServlet.class.getName()
+				).put(
+					HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN,
+					"/portlet-servlet/*"
+				).build()));
+
+		Set<String> portletNames = descriptorDisplayCategories.keySet();
+
+		portletNames.removeAll(beanPortlets.keySet());
+
+		if (!portletNames.isEmpty()) {
+			_log.error(
+				"Unknown portlet IDs " + portletNames +
+					" found in liferay-display.xml");
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				StringBundler.concat(
+					"Registered ", beanPortlets.size(), " bean portlets and ",
+					beanFilters.size(), " bean filters for ",
+					servletContext.getServletContextName()));
+		}
+
+		return serviceRegistrations;
+	}
+
+	private void _unregister(
+		List<ServiceRegistration<?>> serviceRegistrations,
+		ServletContext servletContext) {
+
+		int totalBeanPortlets = 0;
+		int totalBeanFilters = 0;
+
+		for (ServiceRegistration<?> serviceRegistration :
+				serviceRegistrations) {
+
+			ServiceReference<?> serviceReference =
+				serviceRegistration.getReference();
+
+			String[] serviceClasses = (String[])serviceReference.getProperty(
+				Constants.OBJECTCLASS);
+
+			if (ArrayUtil.contains(serviceClasses, "javax.portlet.Portlet")) {
+				totalBeanPortlets++;
+			}
+			else if (ArrayUtil.contains(
+						serviceClasses, "javax.portlet.filter.PortletFilter")) {
+
+				totalBeanFilters++;
+			}
+
+			try {
+				serviceRegistration.unregister();
+			}
+			catch (IllegalStateException illegalStateException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(illegalStateException);
+				}
+
+				// Ignore since the service has been unregistered
+
+			}
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				StringBundler.concat(
+					"Unregistered ", totalBeanPortlets, " bean portlets and ",
+					totalBeanFilters, " bean filters for ",
+					servletContext.getServletContextName()));
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

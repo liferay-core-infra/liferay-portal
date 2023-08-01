@@ -9,7 +9,6 @@ import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.service.MBBanLocalService;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -31,32 +30,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = {})
 public class MBDiscussionPermission {
-
-	public static void check(
-			PermissionChecker permissionChecker, long companyId, long groupId,
-			String className, long classPK, String actionId)
-		throws PortalException {
-
-		if (!contains(
-				permissionChecker, companyId, groupId, className, classPK,
-				actionId)) {
-
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, className, classPK, actionId);
-		}
-	}
-
-	public static void check(
-			PermissionChecker permissionChecker, long messageId,
-			String actionId)
-		throws PortalException {
-
-		if (!contains(permissionChecker, messageId, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, MBMessage.class.getName(), messageId,
-				actionId);
-		}
-	}
 
 	public static boolean contains(
 		PermissionChecker permissionChecker, long companyId, long groupId,

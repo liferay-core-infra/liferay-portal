@@ -11,9 +11,9 @@ import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionCheckerUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
@@ -74,7 +74,7 @@ public class MBDiscussionPermission {
 		}
 
 		Boolean hasPermission =
-			BaseModelPermissionCheckerUtil.containsBaseModelPermission(
+			ModelResourcePermissionUtil.containsBaseModelPermission(
 				permissionChecker, groupId, className, classPK, actionId);
 
 		if (hasPermission != null) {

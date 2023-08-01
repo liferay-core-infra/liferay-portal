@@ -150,18 +150,7 @@ public class OrganizationLocalServiceImpl
 	public boolean addGroupOrganization(
 		long groupId, Organization organization) {
 
-		if (!super.addGroupOrganization(groupId, organization)) {
-			return false;
-		}
-
-		try {
-			reindexUsers(organization);
-		}
-		catch (PortalException portalException) {
-			throw new SystemException(portalException);
-		}
-
-		return true;
+		return addGroupOrganization(groupId, organization.getOrganizationId());
 	}
 
 	/**

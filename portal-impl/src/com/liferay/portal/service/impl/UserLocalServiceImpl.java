@@ -627,18 +627,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public boolean addOrganizationUser(long organizationId, User user) {
-		if (!super.addOrganizationUser(organizationId, user)) {
-			return false;
-		}
-
-		try {
-			reindex(user);
-		}
-		catch (SearchException searchException) {
-			throw new SystemException(searchException);
-		}
-
-		return true;
+		return addOrganizationUser(organizationId, user.getUserId());
 	}
 
 	/**
@@ -785,18 +774,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public boolean addRoleUser(long roleId, User user) {
-		if (!super.addRoleUser(roleId, user)) {
-			return false;
-		}
-
-		try {
-			reindex(user);
-		}
-		catch (SearchException searchException) {
-			throw new SystemException(searchException);
-		}
-
-		return true;
+		return addRoleUser(roleId, user.getUserId());
 	}
 
 	/**
@@ -872,18 +850,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public boolean addTeamUser(long teamId, User user) {
-		if (!super.addTeamUser(teamId, user)) {
-			return false;
-		}
-
-		try {
-			reindex(user);
-		}
-		catch (SearchException searchException) {
-			throw new SystemException(searchException);
-		}
-
-		return true;
+		return addTeamUser(teamId, user.getUserId());
 	}
 
 	/**

@@ -127,18 +127,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public boolean addGroupUserGroup(long groupId, UserGroup userGroup) {
-		if (!super.addGroupUserGroup(groupId, userGroup)) {
-			return false;
-		}
-
-		try {
-			reindexUsers(userGroup);
-		}
-		catch (PortalException portalException) {
-			throw new SystemException(portalException);
-		}
-
-		return true;
+		return addGroupUserGroup(groupId, userGroup.getUserGroupId());
 	}
 
 	/**
@@ -336,13 +325,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	public boolean addUserUserGroup(long userId, UserGroup userGroup)
 		throws PortalException {
 
-		if (!super.addUserUserGroup(userId, userGroup)) {
-			return false;
-		}
-
-		reindexUserGroup(userGroup);
-
-		return true;
+		return addUserUserGroup(userId, userGroup.getUserGroupId());
 	}
 
 	@Override

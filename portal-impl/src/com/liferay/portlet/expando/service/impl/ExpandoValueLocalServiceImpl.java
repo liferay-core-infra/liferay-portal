@@ -12,7 +12,6 @@ import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.model.ExpandoValue;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence;
 import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
@@ -46,6 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import jodd.typeconverter.TypeConverterManager;
 
@@ -88,7 +88,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -111,7 +111,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -134,7 +134,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -157,7 +157,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -180,7 +180,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -203,7 +203,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -226,7 +226,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -249,7 +249,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -272,7 +272,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -295,7 +295,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -318,7 +318,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -341,7 +341,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -364,7 +364,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -388,7 +388,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -420,7 +420,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -443,7 +443,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -463,8 +463,12 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, Object data)
 		throws PortalException {
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
-			companyId, className, tableName, columnName);
+		ExpandoTable table = _expandoTablePersistence.fetchByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
+
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
+			table.getTableId(), columnName);
 
 		int type = column.getType();
 
@@ -593,7 +597,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -616,7 +620,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -639,7 +643,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -662,7 +666,7 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, className, tableName);
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
 			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
@@ -750,8 +754,10 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoTable table = _expandoTableLocalService.getTable(
 			companyId, classNameId, tableName);
 
-		List<ExpandoColumn> columns = _expandoColumnLocalService.getColumns(
-			table.getTableId(), attributes.keySet());
+		Set<String> keySet = attributes.keySet();
+
+		List<ExpandoColumn> columns = _expandoColumnPersistence.findByT_N(
+			table.getTableId(), keySet.toArray(new String[0]));
 
 		for (ExpandoColumn column : columns) {
 			ExpandoValue value = new ExpandoValueImpl();
@@ -1119,8 +1125,16 @@ public class ExpandoValueLocalServiceImpl
 			Collection<String> columnNames, long classPK)
 		throws PortalException {
 
-		List<ExpandoColumn> columns = _expandoColumnLocalService.getColumns(
-			companyId, className, tableName, columnNames);
+		List<ExpandoColumn> columns = Collections.emptyList();
+
+		ExpandoTable table = _expandoTablePersistence.fetchByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
+
+		if (table != null) {
+			columns = _expandoColumnPersistence.findByT_N(
+				table.getTableId(), columnNames.toArray(new String[0]));
+		}
 
 		Map<String, Serializable> attributeValues = new HashMap<>(
 			(int)(columnNames.size() * 1.4));
@@ -1147,12 +1161,16 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK)
 		throws PortalException {
 
-		ExpandoColumn column = _expandoColumnLocalService.getColumn(
-			companyId, className, tableName, columnName);
+		ExpandoTable table = _expandoTablePersistence.fetchByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
-		if (column == null) {
+		if (table == null) {
 			return null;
 		}
+
+		ExpandoColumn column = _expandoColumnPersistence.fetchByT_N(
+			table.getTableId(), columnName);
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -1914,9 +1932,6 @@ public class ExpandoValueLocalServiceImpl
 
 	@BeanReference(type = ClassNameLocalService.class)
 	private ClassNameLocalService _classNameLocalService;
-
-	@BeanReference(type = ExpandoColumnLocalService.class)
-	private ExpandoColumnLocalService _expandoColumnLocalService;
 
 	@BeanReference(type = ExpandoColumnPersistence.class)
 	private ExpandoColumnPersistence _expandoColumnPersistence;

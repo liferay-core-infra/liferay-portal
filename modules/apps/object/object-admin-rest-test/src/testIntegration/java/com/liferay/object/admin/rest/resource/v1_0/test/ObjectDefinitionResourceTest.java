@@ -16,6 +16,7 @@ import com.liferay.object.admin.rest.client.serdes.v1_0.ObjectDefinitionSerDes;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.exception.NoSuchObjectDefinitionException;
+import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.petra.string.StringPool;
@@ -249,7 +250,7 @@ public class ObjectDefinitionResourceTest
 				_objectDefinitionLocalService.fetchSystemObjectDefinition(
 					AccountEntry.class.getSimpleName());
 
-		_objectDefinitionLocalService.enableAccountEntryRestricted(
+		ObjectRelationship objectRelationship =
 			_objectRelationshipLocalService.addObjectRelationship(
 				TestPropsValues.getUserId(),
 				serviceBuilderAccountEntryObjectDefinition.
@@ -258,7 +259,19 @@ public class ObjectDefinitionResourceTest
 				ObjectRelationshipConstants.DELETION_TYPE_DISASSOCIATE,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"a" + RandomTestUtil.randomString(),
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY));
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		com.liferay.object.model.ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.getObjectDefinition(
+				postObjectDefinition.getId());
+
+		if (objectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition);
+		}
+
+		_objectDefinitionLocalService.enableAccountEntryRestricted(
+			objectRelationship);
 
 		postObjectDefinition = objectDefinitionResource.getObjectDefinition(
 			postObjectDefinition.getId());

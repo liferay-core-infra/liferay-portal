@@ -104,6 +104,11 @@ public class ObjectEntryInfoItemFormProviderTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (_childObjectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				_childObjectDefinition);
+		}
 	}
 
 	@Test

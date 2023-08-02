@@ -102,6 +102,13 @@ public class FDSViewsPortlet extends MVCPortlet {
 		super.doDispatch(renderRequest, renderResponse);
 	}
 
+	private void _deployObjectDefinition(ObjectDefinition objectDefinition) {
+		if (objectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition);
+		}
+	}
+
 	private synchronized void _generate(
 			long companyId, Locale locale, long userId)
 		throws Exception {
@@ -212,6 +219,8 @@ public class FDSViewsPortlet extends MVCPortlet {
 			"fdsEntryFDSViewRelationship",
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		_deployObjectDefinition(fdsViewObjectDefinition);
+
 		ObjectDefinition fdsFieldObjectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
 				"FDSField", userId, "FDSField", "FDSField", false,
@@ -258,6 +267,8 @@ public class FDSViewsPortlet extends MVCPortlet {
 			"fdsViewFDSFieldRelationship",
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		_deployObjectDefinition(fdsFieldObjectDefinition);
+
 		ObjectDefinition fdsDateFilterObjectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
 				"FDSDateFilter", userId, "FDSDateFilter", "FDSDateFilter",
@@ -299,6 +310,8 @@ public class FDSViewsPortlet extends MVCPortlet {
 				"FDSView FDSDateFilter Relationship"),
 			"fdsViewFDSDateFilterRelationship",
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		_deployObjectDefinition(fdsDateFilterObjectDefinition);
 
 		ObjectDefinition fdsDynamicFilterObjectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
@@ -349,6 +362,8 @@ public class FDSViewsPortlet extends MVCPortlet {
 			"fdsViewFDSDynamicFilterRelationship",
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		_deployObjectDefinition(fdsDynamicFilterObjectDefinition);
+
 		ObjectDefinition fdsSortObjectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
 				"FDSSort", userId, "FDSSort", "FDSSort", false,
@@ -378,6 +393,8 @@ public class FDSViewsPortlet extends MVCPortlet {
 			LocalizedMapUtil.getLocalizedMap("FDSView FDSSort Relationship"),
 			"fdsViewFDSSortRelationship",
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		_deployObjectDefinition(fdsSortObjectDefinition);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

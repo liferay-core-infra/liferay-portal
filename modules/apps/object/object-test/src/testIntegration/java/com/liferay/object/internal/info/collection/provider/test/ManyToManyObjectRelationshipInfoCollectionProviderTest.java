@@ -101,6 +101,11 @@ public class ManyToManyObjectRelationshipInfoCollectionProviderTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
+
+		if (_objectDefinition1.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				_objectDefinition1);
+		}
 	}
 
 	@Test

@@ -380,6 +380,11 @@ public class DefaultObjectEntryManagerImplTest {
 				"oneToManyRelationshipName",
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		if (_objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				_objectDefinition2);
+		}
+
 		_addAggregationObjectField(
 			"AVERAGE", "precisionDecimalObjectFieldName",
 			objectRelationship1.getName());
@@ -431,6 +436,11 @@ public class DefaultObjectEntryManagerImplTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"oneToManyRelationshipName",
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (_objectDefinition3.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				_objectDefinition3);
+		}
 
 		_objectDefinition3.setAccountEntryRestrictedObjectFieldId(
 			objectRelationship2.getObjectFieldId2());
@@ -999,6 +1009,11 @@ public class DefaultObjectEntryManagerImplTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"oneToManyRelationship",
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition2);
+		}
 
 		_addRelatedObjectEntries(
 			objectDefinition1, objectDefinition2, "externalReferenceCode1",
@@ -1892,6 +1907,11 @@ public class DefaultObjectEntryManagerImplTest {
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		if (childObjectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				childObjectDefinition);
+		}
+
 		ObjectDefinition accountEntryObjectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				_companyId, "AccountEntry");
@@ -1905,6 +1925,11 @@ public class DefaultObjectEntryManagerImplTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (childObjectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				childObjectDefinition);
+		}
 
 		childObjectDefinition.setAccountEntryRestrictedObjectFieldId(
 			objectRelationship2.getObjectFieldId2());

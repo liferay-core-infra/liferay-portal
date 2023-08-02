@@ -203,13 +203,21 @@ public class ObjectRelationshipServiceTest {
 	private ObjectRelationship _addObjectRelationship(User user)
 		throws Exception {
 
-		return _objectRelationshipLocalService.addObjectRelationship(
-			user.getUserId(), _objectDefinition1.getObjectDefinitionId(),
-			_objectDefinition2.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(),
-			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
+		ObjectRelationship objectRelationship =
+			_objectRelationshipLocalService.addObjectRelationship(
+				user.getUserId(), _objectDefinition1.getObjectDefinitionId(),
+				_objectDefinition2.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				StringUtil.randomId(),
+				ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
+
+		if (_objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				_objectDefinition2);
+		}
+
+		return objectRelationship;
 	}
 
 	private void _setUser(User user) {

@@ -120,6 +120,11 @@ public class ObjectDefinitionGraphQLTest {
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			_RELATIONSHIP_NAME, ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		if (childObjectDefinition.isApproved()) {
+			ObjectDefinitionLocalServiceUtil.deployObjectDefinition(
+				childObjectDefinition);
+		}
+
 		_parentObjectDefinition =
 			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
 				TestPropsValues.getUserId(),

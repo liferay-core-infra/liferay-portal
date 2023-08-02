@@ -243,6 +243,11 @@ public class ObjectEntryServiceTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"relationship", ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		if (_objectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				_objectDefinition);
+		}
+
 		_objectDefinition.setAccountEntryRestrictedObjectFieldId(
 			objectRelationship.getObjectFieldId2());
 

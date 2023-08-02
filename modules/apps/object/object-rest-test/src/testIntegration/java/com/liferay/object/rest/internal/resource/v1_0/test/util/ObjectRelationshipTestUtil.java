@@ -8,6 +8,7 @@ package com.liferay.object.rest.internal.resource.v1_0.test.util;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectRelationshipLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -25,12 +26,20 @@ public class ObjectRelationshipTestUtil {
 			ObjectDefinition relatedObjectDefinition, long userId, String type)
 		throws Exception {
 
-		return ObjectRelationshipLocalServiceUtil.addObjectRelationship(
-			userId, objectDefinition.getObjectDefinitionId(),
-			relatedObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(), type);
+		ObjectRelationship objectRelationship =
+			ObjectRelationshipLocalServiceUtil.addObjectRelationship(
+				userId, objectDefinition.getObjectDefinitionId(),
+				relatedObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				StringUtil.randomId(), type);
+
+		if (relatedObjectDefinition.isApproved()) {
+			ObjectDefinitionLocalServiceUtil.deployObjectDefinition(
+				relatedObjectDefinition);
+		}
+
+		return objectRelationship;
 	}
 
 	public static void relateObjectEntries(

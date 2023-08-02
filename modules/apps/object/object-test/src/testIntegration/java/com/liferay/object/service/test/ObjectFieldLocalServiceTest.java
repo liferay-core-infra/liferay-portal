@@ -1399,6 +1399,11 @@ public class ObjectFieldLocalServiceTest {
 			"oneToManyRelationshipName",
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		if (relatedObjectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				relatedObjectDefinition);
+		}
+
 		_assertReadOnly(
 			invalidDDMScript, invalidReadOnly,
 			_addReadOnlyAggregationObjectField(
@@ -1421,6 +1426,11 @@ public class ObjectFieldLocalServiceTest {
 				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"relationship", ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (relatedObjectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				relatedObjectDefinition);
+		}
 
 		ObjectField relationshipObjectField =
 			_objectFieldLocalService.fetchObjectField(
@@ -1489,6 +1499,11 @@ public class ObjectFieldLocalServiceTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition2);
+		}
 
 		ObjectField objectField = _objectFieldLocalService.updateRequired(
 			objectRelationship.getObjectFieldId2(), true);
@@ -1981,6 +1996,11 @@ public class ObjectFieldLocalServiceTest {
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			"oneToManyRelationshipName",
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition2);
+		}
 
 		_assertReadOnlyTrue(
 			_addReadOnlyAggregationObjectField(

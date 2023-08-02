@@ -523,13 +523,25 @@ public class ObjectViewLocalServiceTest {
 			long objectDefinitionId1, long objectDefinitionId2)
 		throws Exception {
 
-		return _objectRelationshipLocalService.addObjectRelationship(
-			TestPropsValues.getUserId(), objectDefinitionId1,
-			objectDefinitionId2, 0,
-			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(),
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		ObjectRelationship objectRelationship =
+			_objectRelationshipLocalService.addObjectRelationship(
+				TestPropsValues.getUserId(), objectDefinitionId1,
+				objectDefinitionId2, 0,
+				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				StringUtil.randomId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.getObjectDefinition(
+				objectDefinitionId2);
+
+		if (objectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition);
+		}
+
+		return objectRelationship;
 	}
 
 	private ObjectViewColumn _createObjectViewColumn(

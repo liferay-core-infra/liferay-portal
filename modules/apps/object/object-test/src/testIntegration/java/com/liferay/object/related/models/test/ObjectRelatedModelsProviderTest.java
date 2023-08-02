@@ -622,6 +622,11 @@ public class ObjectRelatedModelsProviderTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				StringUtil.randomId(), relationshipType);
 
+		if (objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition2);
+		}
+
 		if (!StringUtil.equals(
 				relationshipType,
 				ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {

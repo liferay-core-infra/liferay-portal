@@ -239,6 +239,11 @@ public class BaseNotificationTypeTest {
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		if (childObjectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				childObjectDefinition);
+		}
+
 		_childAuthorTermValues = HashMapBuilder.<String, Object>put(
 			getTermName("AUTHOR_EMAIL_ADDRESS"), user2.getEmailAddress()
 		).put(

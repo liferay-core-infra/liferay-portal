@@ -7,6 +7,7 @@ package com.liferay.object.service.impl;
 
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.base.ObjectRelationshipServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
 import com.liferay.portal.aop.AopService;
@@ -43,16 +44,27 @@ public class ObjectRelationshipServiceImpl
 			Map<Locale, String> labelMap, String name, String type)
 		throws PortalException {
 
-		ObjectDefinition objectDefinition =
+		ObjectDefinition objectDefinition1 =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId1);
 
 		_objectDefinitionModelResourcePermission.check(
-			getPermissionChecker(), objectDefinition.getObjectDefinitionId(),
+			getPermissionChecker(), objectDefinition1.getObjectDefinitionId(),
 			ActionKeys.UPDATE);
 
-		return objectRelationshipLocalService.addObjectRelationship(
-			getUserId(), objectDefinitionId1, objectDefinitionId2,
-			parameterObjectFieldId, deletionType, labelMap, name, type);
+		ObjectRelationship objectRelationship =
+			objectRelationshipLocalService.addObjectRelationship(
+				getUserId(), objectDefinitionId1, objectDefinitionId2,
+				parameterObjectFieldId, deletionType, labelMap, name, type);
+
+		ObjectDefinition objectDefinition2 =
+			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId2);
+
+		if (objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition2);
+		}
+
+		return objectRelationship;
 	}
 
 	@Override
@@ -153,6 +165,9 @@ public class ObjectRelationshipServiceImpl
 			objectRelationshipId, parameterObjectFieldId, deletionType,
 			labelMap);
 	}
+
+	@Reference
+	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.object.model.ObjectDefinition)"

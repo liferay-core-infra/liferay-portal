@@ -97,6 +97,11 @@ public class OneToManyObjectRelationshipInfoCollectionProviderTest {
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			"oneToManyRelationshipName",
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (_childObjectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				_childObjectDefinition);
+		}
 	}
 
 	@Test

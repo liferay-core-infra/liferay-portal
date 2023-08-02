@@ -243,6 +243,11 @@ public class HeadlessBuilderOpenAPIResourceTest extends BaseTestCase {
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			relationshipName, ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		if (_objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				_objectDefinition2);
+		}
+
 		ObjectField aggregationObjectField = new AggregationObjectFieldBuilder(
 		).externalReferenceCode(
 			_API_SCHEMA_AGGREGATION_FIELD_ERC

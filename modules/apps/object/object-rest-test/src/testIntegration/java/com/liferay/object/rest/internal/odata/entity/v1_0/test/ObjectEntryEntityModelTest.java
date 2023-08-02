@@ -176,6 +176,11 @@ public class ObjectEntryEntityModelTest {
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
+		if (objectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition);
+		}
+
 		_objectRelationships.add(objectRelationship);
 
 		return objectRelationship;

@@ -15,6 +15,7 @@ import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectEntryLocalServiceUtil;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalServiceUtil;
@@ -91,6 +92,11 @@ public class ObjectRelationshipExtensionProviderTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
+
+		if (userSystemObjectDefinition.isApproved()) {
+			ObjectDefinitionLocalServiceUtil.deployObjectDefinition(
+				userSystemObjectDefinition);
+		}
 
 		ObjectRelationshipLocalServiceUtil.
 			addObjectRelationshipMappingTableValues(

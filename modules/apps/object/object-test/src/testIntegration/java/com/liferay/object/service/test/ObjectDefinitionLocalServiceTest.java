@@ -1283,19 +1283,26 @@ public class ObjectDefinitionLocalServiceTest {
 				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 				true, false);
 
+		ObjectRelationship objectRelationship =
+			_objectRelationshipLocalService.addObjectRelationship(
+				TestPropsValues.getUserId(),
+				_objectDefinitionLocalService.fetchSystemObjectDefinition(
+					"AccountEntry"
+				).getObjectDefinitionId(),
+				objectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				StringUtil.randomId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (objectDefinition.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition);
+		}
+
 		objectDefinition =
 			_objectDefinitionLocalService.enableAccountEntryRestricted(
-				_objectRelationshipLocalService.addObjectRelationship(
-					TestPropsValues.getUserId(),
-					_objectDefinitionLocalService.fetchSystemObjectDefinition(
-						"AccountEntry"
-					).getObjectDefinitionId(),
-					objectDefinition.getObjectDefinitionId(), 0,
-					ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString()),
-					StringUtil.randomId(),
-					ObjectRelationshipConstants.TYPE_ONE_TO_MANY));
+				objectRelationship);
 
 		Assert.assertTrue(
 			objectDefinition.getAccountEntryRestrictedObjectFieldId() > 0);
@@ -1307,20 +1314,32 @@ public class ObjectDefinitionLocalServiceTest {
 		AssertUtils.assertFailure(
 			ObjectDefinitionAccountEntryRestrictedException.class,
 			"Custom object definitions can only be restricted by account entry",
-			() -> _objectDefinitionLocalService.enableAccountEntryRestricted(
-				_objectRelationshipLocalService.addObjectRelationship(
-					TestPropsValues.getUserId(),
+			() -> {
+				ObjectDefinition localObjectDefinition =
 					_addCustomObjectDefinition(
-						"Test" + RandomTestUtil.randomString()
-					).getObjectDefinitionId(),
-					_addCustomObjectDefinition(
-						"Test" + RandomTestUtil.randomString()
-					).getObjectDefinitionId(),
-					0, ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString()),
-					StringUtil.randomId(),
-					ObjectRelationshipConstants.TYPE_ONE_TO_MANY)));
+						"Test" + RandomTestUtil.randomString());
+
+				ObjectRelationship localObjectRelationship =
+					_objectRelationshipLocalService.addObjectRelationship(
+						TestPropsValues.getUserId(),
+						_addCustomObjectDefinition(
+							"Test" + RandomTestUtil.randomString()
+						).getObjectDefinitionId(),
+						localObjectDefinition.getObjectDefinitionId(), 0,
+						ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+						LocalizedMapUtil.getLocalizedMap(
+							RandomTestUtil.randomString()),
+						StringUtil.randomId(),
+						ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+				if (localObjectDefinition.isApproved()) {
+					_objectDefinitionLocalService.deployObjectDefinition(
+						localObjectDefinition);
+				}
+
+				_objectDefinitionLocalService.enableAccountEntryRestricted(
+					localObjectRelationship);
+			});
 	}
 
 	@Test
@@ -2094,6 +2113,11 @@ public class ObjectDefinitionLocalServiceTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				StringUtil.randomId(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		if (objectDefinition2.isApproved()) {
+			_objectDefinitionLocalService.deployObjectDefinition(
+				objectDefinition2);
+		}
 
 		try {
 			objectDefinition2 =

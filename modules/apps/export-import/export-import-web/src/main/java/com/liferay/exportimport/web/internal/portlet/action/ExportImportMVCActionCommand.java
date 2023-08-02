@@ -21,6 +21,7 @@ import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
 import com.liferay.exportimport.kernel.service.ExportImportService;
 import com.liferay.exportimport.kernel.staging.Staging;
+import com.liferay.exportimport.web.internal.portlet.helper.ImportLayoutsMVCActionCommandHelper;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.LocaleException;
@@ -112,7 +113,7 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 					group.getCtCollectionId())) {
 
 			if (cmd.equals(Constants.ADD_TEMP)) {
-				_importLayoutsMVCActionCommand.addTempFileEntry(
+				_importLayoutsMVCActionCommandHelper.addTempFileEntry(
 					actionRequest,
 					ExportImportHelper.TEMP_FOLDER_NAME +
 						portlet.getPortletId());
@@ -125,7 +126,7 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 				hideDefaultSuccessMessage(actionRequest);
 			}
 			else if (cmd.equals(Constants.DELETE_TEMP)) {
-				_importLayoutsMVCActionCommand.deleteTempFileEntry(
+				_importLayoutsMVCActionCommandHelper.deleteTempFileEntry(
 					actionRequest, actionResponse,
 					ExportImportHelper.TEMP_FOLDER_NAME +
 						portlet.getPortletId());
@@ -156,7 +157,7 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 
 				hideDefaultSuccessMessage(actionRequest);
 
-				_importLayoutsMVCActionCommand.handleUploadException(
+				_importLayoutsMVCActionCommandHelper.handleUploadException(
 					actionRequest, actionResponse,
 					ExportImportHelper.TEMP_FOLDER_NAME +
 						portlet.getPortletId(),
@@ -245,7 +246,7 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 
 			importData(actionRequest, inputStream);
 
-			_importLayoutsMVCActionCommand.deleteTempFileEntry(
+			_importLayoutsMVCActionCommandHelper.deleteTempFileEntry(
 				groupId, folderName);
 		}
 	}
@@ -391,7 +392,8 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 	private GroupLocalService _groupLocalService;
 
 	@Reference
-	private ImportLayoutsMVCActionCommand _importLayoutsMVCActionCommand;
+	private ImportLayoutsMVCActionCommandHelper
+		_importLayoutsMVCActionCommandHelper;
 
 	@Reference
 	private Portal _portal;

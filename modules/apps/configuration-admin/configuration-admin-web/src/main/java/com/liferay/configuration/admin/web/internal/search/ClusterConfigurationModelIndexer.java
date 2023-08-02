@@ -53,7 +53,7 @@ public class ClusterConfigurationModelIndexer
 			}
 
 			if (_clusterMasterExecutor.isMaster()) {
-				_bundleTracker = _configurationModelIndexer.initialize();
+				_bundleTracker = _configurationModelIndexerHelper.initialize();
 			}
 			else {
 				NoticeableFuture<Void> noticeableFuture =
@@ -138,7 +138,7 @@ public class ClusterConfigurationModelIndexer
 	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
-	private ConfigurationModelIndexer _configurationModelIndexer;
+	private ConfigurationModelIndexerHelper _configurationModelIndexerHelper;
 
 	private ConfigurationModelsClusterMasterTokenTransitionListener
 		_configurationModelsClusterMasterTokenTransitionListener;

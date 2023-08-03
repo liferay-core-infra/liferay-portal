@@ -21,18 +21,24 @@ public class Jdk14LogFactoryImpl implements LogFactory {
 			return;
 		}
 
-		try (InputStream inputStream =
-				Jdk14LogFactoryImpl.class.getResourceAsStream(
-					"/logging.properties")) {
+		for (String logConfigFileName :
+				new String[] {"logging-ext.properties", "logging.properties"}) {
 
-			if (inputStream != null) {
-				LogManager logManager = LogManager.getLogManager();
+			try (InputStream inputStream =
+					Jdk14LogFactoryImpl.class.getResourceAsStream(
+						"/" + logConfigFileName)) {
 
-				logManager.readConfiguration(inputStream);
+				if (inputStream != null) {
+					LogManager logManager = LogManager.getLogManager();
+
+					logManager.readConfiguration(inputStream);
+
+					return;
+				}
 			}
-		}
-		catch (IOException ioException) {
-			ioException.printStackTrace();
+			catch (IOException ioException) {
+				ioException.printStackTrace();
+			}
 		}
 	}
 

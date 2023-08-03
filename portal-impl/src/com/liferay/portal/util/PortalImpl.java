@@ -2592,16 +2592,6 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
-	public Serializable getExpandoValue(
-			PortletRequest portletRequest, String name, int type,
-			String displayType)
-		throws PortalException {
-
-		return getExpandoValue(
-			getHttpServletRequest(portletRequest), name, type, displayType);
-	}
-
-	@Override
 	public String getFirstPageLayoutTypes(
 		HttpServletRequest httpServletRequest) {
 

@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.search.experiences.blueprint.parameter.SXPParameter;
 import com.liferay.search.experiences.blueprint.parameter.contributor.SXPParameterContributorDefinition;
-import com.liferay.search.experiences.blueprint.parameter.contributor.SXPParameterContributorDefinitionProvider;
 import com.liferay.search.experiences.configuration.SemanticSearchConfigurationProvider;
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.ContextSXPParameterContributor;
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.IpstackSXPParameterContributor;
@@ -49,15 +48,12 @@ import java.beans.ExceptionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -71,15 +67,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Petteri Karttunen
  */
-@Component(
-	enabled = false,
-	service = {
-		SXPParameterContributorDefinitionProvider.class,
-		SXPParameterDataCreator.class
-	}
-)
-public class SXPParameterDataCreator
-	implements SXPParameterContributorDefinitionProvider {
+@Component(enabled = false, service = SXPParameterDataCreator.class)
+public class SXPParameterDataCreator {
 
 	public SXPParameterData create(
 		ExceptionListener exceptionListener, SearchContext searchContext,
@@ -104,26 +93,8 @@ public class SXPParameterDataCreator
 		return new SXPParameterData(keywords, sxpParameters);
 	}
 
-	@Override
-	public List<SXPParameterContributorDefinition>
-		getSXPParameterContributorDefinitions(long companyId, Locale locale) {
-
-		if (ArrayUtil.isEmpty(_sxpParameterContributors)) {
-			return Collections.emptyList();
-		}
-
-		List<SXPParameterContributorDefinition>
-			sxpParameterContributorDefinitions = new ArrayList<>();
-
-		for (SXPParameterContributor sxpParameterContributor :
-				_sxpParameterContributors) {
-
-			sxpParameterContributorDefinitions.addAll(
-				sxpParameterContributor.getSXPParameterContributorDefinitions(
-					companyId, locale));
-		}
-
-		return sxpParameterContributorDefinitions;
+	public SXPParameterContributor[] getSxpParameterContributors() {
+		return _sxpParameterContributors;
 	}
 
 	@Activate

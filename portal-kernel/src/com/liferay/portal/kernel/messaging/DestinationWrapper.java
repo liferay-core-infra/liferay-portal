@@ -85,11 +85,6 @@ public class DestinationWrapper implements Destination {
 	}
 
 	@Override
-	public boolean register(MessageListener messageListener) {
-		return destination.register(messageListener);
-	}
-
-	@Override
 	public boolean register(
 		MessageListener messageListener, ClassLoader classLoader) {
 

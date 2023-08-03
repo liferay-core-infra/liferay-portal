@@ -103,14 +103,6 @@ public abstract class BaseDestination implements Destination {
 	}
 
 	@Override
-	public boolean register(MessageListener messageListener) {
-		InvokerMessageListener invokerMessageListener =
-			new InvokerMessageListener(messageListener);
-
-		return registerMessageListener(invokerMessageListener);
-	}
-
-	@Override
 	public boolean register(
 		MessageListener messageListener, ClassLoader classLoader) {
 

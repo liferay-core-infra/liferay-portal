@@ -43,8 +43,6 @@ public interface Destination {
 
 	public void open();
 
-	public boolean register(MessageListener messageListener);
-
 	public boolean register(
 		MessageListener messageListener, ClassLoader classLoader);
 

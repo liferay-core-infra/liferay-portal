@@ -316,44 +316,37 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 		_bundleContext = componentContext.getBundleContext();
 
-		_registerDestination(
-			_bundleContext, DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-			DestinationNames.SCHEDULER_DISPATCH);
-
-		Destination scriptingDestination = _registerDestination(
-			_bundleContext, DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-			DestinationNames.SCHEDULER_SCRIPTING);
+		_registerMessaging(
+			_bundleContext, DestinationNames.SCHEDULER_DISPATCH, null);
 
 		ScriptingMessageListener scriptingMessageListener =
 			new ScriptingMessageListener();
 
-		SchedulerJobConfigurationMessageListener
-			schedulerJobConfigurationMessageListener =
-				new SchedulerJobConfigurationMessageListener(
-					new SchedulerJobConfiguration() {
+		_registerMessaging(
+			_bundleContext, DestinationNames.SCHEDULER_SCRIPTING,
+			new SchedulerJobConfigurationMessageListener(
+				new SchedulerJobConfiguration() {
 
-						@Override
-						public UnsafeConsumer<Message, Exception>
-							getJobExecutorUnsafeConsumer() {
+					@Override
+					public UnsafeConsumer<Message, Exception>
+						getJobExecutorUnsafeConsumer() {
 
-							return scriptingMessageListener::receive;
-						}
+						return scriptingMessageListener::receive;
+					}
 
-						@Override
-						public UnsafeRunnable<Exception>
-							getJobExecutorUnsafeRunnable() {
+					@Override
+					public UnsafeRunnable<Exception>
+						getJobExecutorUnsafeRunnable() {
 
-							return null;
-						}
+						return null;
+					}
 
-						@Override
-						public TriggerConfiguration getTriggerConfiguration() {
-							return null;
-						}
+					@Override
+					public TriggerConfiguration getTriggerConfiguration() {
+						return null;
+					}
 
-					});
-
-		scriptingDestination.register(schedulerJobConfigurationMessageListener);
+				}));
 
 		DependencyManagerSyncUtil.registerSyncCallable(
 			() -> {
@@ -385,8 +378,8 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			}
 		}
 
-		for (ServiceRegistration<Destination> serviceRegistration :
-				_destinationServiceRegistrations) {
+		for (ServiceRegistration<?> serviceRegistration :
+				_serviceRegistrations) {
 
 			serviceRegistration.unregister();
 		}
@@ -401,12 +394,14 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				SchedulerEngineHelperConfiguration.class, properties);
 	}
 
-	private Destination _registerDestination(
-		BundleContext bundleContext, String destinationType,
-		String destinationName) {
+	private void _registerMessaging(
+		BundleContext bundleContext, String destinationName,
+		MessageListener messageListener) {
 
 		DestinationConfiguration destinationConfiguration =
-			new DestinationConfiguration(destinationType, destinationName);
+			new DestinationConfiguration(
+				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
+				destinationName);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
@@ -416,13 +411,17 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				"destination.name", destination.getName()
 			).build();
 
-		ServiceRegistration<Destination> serviceRegistration =
+		_serviceRegistrations.add(
 			bundleContext.registerService(
-				Destination.class, destination, dictionary);
+				Destination.class, destination, dictionary));
 
-		_destinationServiceRegistrations.add(serviceRegistration);
+		if (messageListener == null) {
+			return;
+		}
 
-		return destination;
+		_serviceRegistrations.add(
+			bundleContext.registerService(
+				MessageListener.class, messageListener, dictionary));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -436,9 +435,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 	@Reference
 	private DestinationFactory _destinationFactory;
-
-	private final List<ServiceRegistration<Destination>>
-		_destinationServiceRegistrations = new ArrayList<>();
 
 	@Reference
 	private JSONFactory _jsonFactory;
@@ -459,6 +455,8 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		_schedulerEngineHelperConfiguration;
 	private ServiceTracker<SchedulerJobConfiguration, SchedulerJobConfiguration>
 		_schedulerJobConfigurationServiceTracker;
+	private final List<ServiceRegistration<?>> _serviceRegistrations =
+		new ArrayList<>();
 
 	@Reference
 	private TriggerFactory _triggerFactory;

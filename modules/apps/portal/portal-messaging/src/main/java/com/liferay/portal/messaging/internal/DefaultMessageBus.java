@@ -328,8 +328,11 @@ public class DefaultMessageBus implements MessageBus {
 							destination.getName()));
 				}
 
+				Thread currentThread = Thread.currentThread();
+
 				for (MessageListener messageListener : messageListeners) {
-					destination.register(messageListener);
+					destination.register(
+						messageListener, currentThread.getContextClassLoader());
 				}
 			}
 		}
@@ -361,7 +364,10 @@ public class DefaultMessageBus implements MessageBus {
 		Destination destination = _destinations.get(destinationName);
 
 		if (destination != null) {
-			return destination.register(messageListener);
+			Thread currentThread = Thread.currentThread();
+
+			return destination.register(
+				messageListener, currentThread.getContextClassLoader());
 		}
 
 		List<MessageListener> queuedMessageListeners =

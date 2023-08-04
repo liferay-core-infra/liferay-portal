@@ -6,25 +6,40 @@
 package com.liferay.configuration.admin.web.internal.search;
 
 import com.liferay.configuration.admin.web.internal.model.ConfigurationModel;
+import com.liferay.configuration.admin.web.internal.util.ConfigurationModelRetriever;
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
+import com.liferay.portal.kernel.search.IndexWriterHelper;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.portlet.PortletException;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.BundleTracker;
+import org.osgi.util.tracker.BundleTrackerCustomizer;
 
 /**
  * @author Tina Tian
@@ -53,7 +68,7 @@ public class ClusterConfigurationModelIndexer
 			}
 
 			if (_clusterMasterExecutor.isMaster()) {
-				_bundleTracker = _configurationModelIndexer.initialize();
+				_initialize();
 			}
 			else {
 				NoticeableFuture<Void> noticeableFuture =
@@ -116,6 +131,58 @@ public class ClusterConfigurationModelIndexer
 		clusterConfigurationModelIndexer._initialized = false;
 	}
 
+	private void _commit() {
+		try {
+			_indexWriterHelper.commit();
+		}
+		catch (SearchException searchException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to commit", searchException);
+			}
+		}
+	}
+
+	private void _initialize() {
+		Map<String, Collection<ConfigurationModel>> configurationModelsMap =
+			new ConcurrentHashMap<>();
+
+		Bundle[] bundles = _bundleContext.getBundles();
+
+		List<ConfigurationModel> configurationModelsList = new ArrayList<>();
+
+		for (Bundle bundle : bundles) {
+			if (bundle.getState() != Bundle.ACTIVE) {
+				continue;
+			}
+
+			Map<String, ConfigurationModel> configurationModels =
+				_configurationModelRetriever.getConfigurationModels(
+					bundle, ExtendedObjectClassDefinition.Scope.SYSTEM, null);
+
+			configurationModelsList.addAll(configurationModels.values());
+
+			configurationModelsMap.put(
+				bundle.getSymbolicName(), configurationModels.values());
+		}
+
+		try {
+			_configurationModelIndexer.reindex(configurationModelsList);
+		}
+		catch (SearchException searchException) {
+			throw new RuntimeException(searchException);
+		}
+
+		_commit();
+
+		BundleTracker<Collection<ConfigurationModel>> bundleTracker =
+			new BundleTracker<>(
+				_bundleContext, Bundle.ACTIVE,
+				new ConfigurationModelsBundleTrackerCustomizer(
+					configurationModelsMap));
+
+		bundleTracker.open();
+	}
+
 	private synchronized void _stopBundleTracker() {
 		if (_bundleTracker != null) {
 			_bundleTracker.close();
@@ -124,11 +191,15 @@ public class ClusterConfigurationModelIndexer
 		}
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		ClusterConfigurationModelIndexer.class);
+
 	private static final MethodKey _initializeMethodKey = new MethodKey(
 		ClusterConfigurationModelIndexer.class, "_initialize", String.class);
 	private static final MethodKey _resetMethodKey = new MethodKey(
 		ClusterConfigurationModelIndexer.class, "_reset", String.class);
 
+	private BundleContext _bundleContext;
 	private BundleTracker<Collection<ConfigurationModel>> _bundleTracker;
 
 	@Reference
@@ -137,12 +208,97 @@ public class ClusterConfigurationModelIndexer
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;
 
-	@Reference
-	private ConfigurationModelIndexer _configurationModelIndexer;
+	@Reference(
+		target = "(component.name=com.liferay.configuration.admin.web.internal.search.ConfigurationModelIndexer)"
+	)
+	private Indexer<ConfigurationModel> _configurationModelIndexer;
+
+	@Reference(target = "(!(filter.visibility=*))")
+	private ConfigurationModelRetriever _configurationModelRetriever;
 
 	private ConfigurationModelsClusterMasterTokenTransitionListener
 		_configurationModelsClusterMasterTokenTransitionListener;
+
+	@Reference
+	private IndexWriterHelper _indexWriterHelper;
+
 	private volatile boolean _initialized;
+
+	private class ConfigurationModelsBundleTrackerCustomizer
+		implements BundleTrackerCustomizer<Collection<ConfigurationModel>> {
+
+		@Override
+		public Collection<ConfigurationModel> addingBundle(
+			Bundle bundle, BundleEvent bundleEvent) {
+
+			Collection<ConfigurationModel> configurationModels =
+				_configurationModelsMap.remove(bundle.getSymbolicName());
+
+			if (configurationModels != null) {
+				if (configurationModels.isEmpty()) {
+					return null;
+				}
+
+				return configurationModels;
+			}
+
+			Map<String, ConfigurationModel> configurationModelsMap =
+				_configurationModelRetriever.getConfigurationModels(
+					bundle, ExtendedObjectClassDefinition.Scope.SYSTEM, null);
+
+			if (configurationModelsMap.isEmpty()) {
+				return null;
+			}
+
+			try {
+				_configurationModelIndexer.reindex(
+					configurationModelsMap.values());
+			}
+			catch (SearchException searchException) {
+				throw new RuntimeException(searchException);
+			}
+
+			_commit();
+
+			return configurationModelsMap.values();
+		}
+
+		@Override
+		public void modifiedBundle(
+			Bundle bundle, BundleEvent bundleEvent,
+			Collection<ConfigurationModel> configurationModels) {
+		}
+
+		@Override
+		public void removedBundle(
+			Bundle bundle, BundleEvent bundleEvent,
+			Collection<ConfigurationModel> configurationModels) {
+
+			for (ConfigurationModel configurationModel : configurationModels) {
+				try {
+					_configurationModelIndexer.delete(configurationModel);
+				}
+				catch (SearchException searchException) {
+					if (_log.isWarnEnabled()) {
+						_log.warn("Unable to reindex models", searchException);
+					}
+				}
+			}
+
+			_commit();
+		}
+
+		private ConfigurationModelsBundleTrackerCustomizer(
+			Map<String, Collection<ConfigurationModel>>
+				configurationModelsMap) {
+
+			_configurationModelsMap = configurationModelsMap;
+		}
+
+		private final Map<String, Collection<ConfigurationModel>>
+			_configurationModelsMap;
+
+	}
 
 	private class ConfigurationModelsClusterMasterTokenTransitionListener
 		implements ClusterMasterTokenTransitionListener {

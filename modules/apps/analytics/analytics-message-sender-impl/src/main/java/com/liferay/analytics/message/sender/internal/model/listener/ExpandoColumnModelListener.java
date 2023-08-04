@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,14 +36,9 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Rachael Koestartyo
  */
-@Component(service = {EntityModelListener.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class ExpandoColumnModelListener
 	extends BaseAnalyticsModelListener<ExpandoColumn> {
-
-	@Override
-	public List<String> getAttributeNames(long companyId) {
-		return _attributeNames;
-	}
 
 	@Override
 	public void onBeforeUpdate(
@@ -67,8 +61,10 @@ public class ExpandoColumnModelListener
 			return;
 		}
 
-		addAnalyticsMessage(
-			"update", getAttributeNames(expandoColumn.getCompanyId()),
+		_expandoColumnEntityModelListener.addAnalyticsMessage(
+			"update",
+			_expandoColumnEntityModelListener.getAttributeNames(
+				expandoColumn.getCompanyId()),
 			expandoColumn);
 	}
 
@@ -91,6 +87,11 @@ public class ExpandoColumnModelListener
 			});
 
 		return actionableDynamicQuery;
+	}
+
+	@Override
+	protected EntityModelListener<ExpandoColumn> getEntityModelListener() {
+		return _expandoColumnEntityModelListener;
 	}
 
 	@Override
@@ -197,9 +198,9 @@ public class ExpandoColumnModelListener
 		return dynamicQuery;
 	}
 
-	private static final List<String> _attributeNames = Arrays.asList(
-		"className", "companyId", "dataType", "displayType", "name",
-		"typeLabel");
+	@Reference(target = "(entity.model.listener.type=expandocolumn)")
+	private EntityModelListener<ExpandoColumn>
+		_expandoColumnEntityModelListener;
 
 	@Reference
 	private ExpandoColumnLocalService _expandoColumnLocalService;

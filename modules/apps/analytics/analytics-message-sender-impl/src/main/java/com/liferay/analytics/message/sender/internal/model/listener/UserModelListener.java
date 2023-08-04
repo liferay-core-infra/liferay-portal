@@ -10,19 +10,18 @@ import com.liferay.analytics.message.sender.model.listener.EntityModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
 
-import java.util.List;
-
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Rachael Koestartyo
  */
-@Component(service = {EntityModelListener.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class UserModelListener extends BaseAnalyticsModelListener<User> {
 
 	@Override
-	public List<String> getAttributeNames(long companyId) {
-		return getUserAttributeNames(companyId);
+	protected EntityModelListener<User> getEntityModelListener() {
+		return _userEntityModelListener;
 	}
 
 	@Override
@@ -39,5 +38,8 @@ public class UserModelListener extends BaseAnalyticsModelListener<User> {
 	protected boolean isExcluded(User user) {
 		return isUserExcluded(user);
 	}
+
+	@Reference(target = "(entity.model.listener.type=user)")
+	private EntityModelListener<User> _userEntityModelListener;
 
 }

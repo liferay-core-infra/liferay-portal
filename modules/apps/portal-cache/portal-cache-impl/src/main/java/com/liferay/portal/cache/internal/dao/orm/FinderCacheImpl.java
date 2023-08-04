@@ -228,7 +228,8 @@ public class FinderCacheImpl
 	public void notifyPortalCacheRemoved(String portalCacheName) {
 		if (portalCacheName.startsWith(_GROUP_KEY_PREFIX)) {
 			_portalCaches.remove(
-				portalCacheName.substring(_GROUP_KEY_PREFIX.length()));
+				_getPortalCacheName(
+					portalCacheName.substring(_GROUP_KEY_PREFIX.length())));
 		}
 	}
 
@@ -365,7 +366,7 @@ public class FinderCacheImpl
 
 	@Override
 	public void removeCache(String className) {
-		_portalCaches.remove(className);
+		_portalCaches.remove(_getPortalCacheName(className));
 
 		String groupKey = _GROUP_KEY_PREFIX.concat(className);
 
@@ -647,6 +648,16 @@ public class FinderCacheImpl
 		}
 
 		return portalCache;
+	}
+
+	private String _getPortalCacheName(String cacheName) {
+		int indexOf = cacheName.indexOf("_SHARDED_SEPARATOR_");
+
+		if (indexOf == -1) {
+			return cacheName;
+		}
+
+		return cacheName.substring(0, indexOf);
 	}
 
 	private boolean _isLocalCacheEnabled() {

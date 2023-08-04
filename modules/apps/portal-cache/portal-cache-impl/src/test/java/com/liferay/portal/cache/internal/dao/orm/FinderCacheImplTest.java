@@ -5,14 +5,20 @@
 
 package com.liferay.portal.cache.internal.dao.orm;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cache.key.HashCodeHexStringCacheKeyGenerator;
+import com.liferay.portal.db.partition.DBPartitionUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
+import com.liferay.portal.kernel.db.partition.DBPartition;
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -108,6 +114,37 @@ public class FinderCacheImplTest {
 			portalCache.getPortalCacheName());
 
 		Assert.assertTrue(portalCaches.toString(), portalCaches.isEmpty());
+	}
+
+	@Test
+	public void testNotifyPortalShardedCacheRemovedPortalCacheName() {
+		FinderCacheImpl finderCacheImpl = _activateFinderCache(
+			(MultiVMPool)ProxyUtil.newProxyInstance(
+				_classLoader, new Class<?>[] {MultiVMPool.class},
+				new MultiVMPoolInvocationHandler(_classLoader, true, true)));
+
+		try (EnableDBPartition enableDBPartition = new EnableDBPartition()) {
+			PortalCache<Serializable, Serializable> portalCache =
+				ReflectionTestUtil.invoke(
+					finderCacheImpl, "_getPortalCache",
+					new Class<?>[] {String.class},
+					ShardedModel.class.getName());
+
+			Map<String, PortalCache<Serializable, Serializable>> portalCaches =
+				ReflectionTestUtil.getFieldValue(
+					finderCacheImpl, "_portalCaches");
+
+			Assert.assertEquals(
+				portalCaches.toString(), 1, portalCaches.size());
+
+			Assert.assertSame(
+				portalCache, portalCaches.get(ShardedModel.class.getName()));
+
+			finderCacheImpl.notifyPortalCacheRemoved(
+				portalCache.getPortalCacheName());
+
+			Assert.assertTrue(portalCaches.toString(), portalCaches.isEmpty());
+		}
 	}
 
 	@Test
@@ -209,6 +246,37 @@ public class FinderCacheImplTest {
 					return null;
 				}));
 
+		ReflectionTestUtil.setFieldValue(
+			finderCacheImpl, "_serviceTrackerMap",
+			ProxyUtil.newProxyInstance(
+				ServiceTrackerMap.class.getClassLoader(),
+				new Class<?>[] {ServiceTrackerMap.class},
+				(proxy, method, args) -> {
+					if (Objects.equals(method.getName(), "getService")) {
+						return new ArgumentsResolver() {
+
+							public Object[] getArguments(
+								FinderPath finderPath, BaseModel<?> baseModel,
+								boolean checkColumn, boolean original) {
+
+								return null;
+							}
+
+							public String getClassName() {
+								return ShardedModel.class.getName();
+							}
+
+							public String getTableName() {
+								return ShardedModel.class.getName() +
+									"_TABLE_NAME";
+							}
+
+						};
+					}
+
+					return null;
+				}));
+
 		return finderCacheImpl;
 	}
 
@@ -243,6 +311,31 @@ public class FinderCacheImplTest {
 	private static MultiVMPool _serializedMultiVMPool;
 
 	private FinderPath _finderPath;
+
+	private static class EnableDBPartition implements AutoCloseable {
+
+		public EnableDBPartition() {
+			_databasePartitionEnabled = ReflectionTestUtil.getAndSetFieldValue(
+				DBPartition.class, "_DATABASE_PARTITION_ENABLED", true);
+
+			_defaultCompanyId = ReflectionTestUtil.getAndSetFieldValue(
+				DBPartitionUtil.class, "_defaultCompanyId", 2022L);
+		}
+
+		@Override
+		public void close() {
+			ReflectionTestUtil.setFieldValue(
+				DBPartition.class, "_DATABASE_PARTITION_ENABLED",
+				_databasePartitionEnabled);
+
+			ReflectionTestUtil.setFieldValue(
+				DBPartitionUtil.class, "_defaultCompanyId", _defaultCompanyId);
+		}
+
+		private final boolean _databasePartitionEnabled;
+		private final long _defaultCompanyId;
+
+	}
 
 	private static class TestBaseModel extends BaseModelImpl<TestBaseModel> {
 

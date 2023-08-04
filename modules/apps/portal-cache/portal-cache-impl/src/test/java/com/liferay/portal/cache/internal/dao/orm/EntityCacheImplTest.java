@@ -6,11 +6,14 @@
 package com.liferay.portal.cache.internal.dao.orm;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.db.partition.DBPartitionUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.db.partition.DBPartition;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -133,6 +136,52 @@ public class EntityCacheImplTest {
 	}
 
 	@Test
+	public void testNotifyPortalShardedCacheRemovedPortalCacheName() {
+		EntityCacheImpl entityCacheImpl = new EntityCacheImpl();
+
+		MultiVMPool multiVMPool = (MultiVMPool)ProxyUtil.newProxyInstance(
+			_classLoader, new Class<?>[] {MultiVMPool.class},
+			new MultiVMPoolInvocationHandler(_classLoader, true, true));
+
+		ReflectionTestUtil.setFieldValue(
+			entityCacheImpl, "_clusterExecutor",
+			ProxyFactory.newDummyInstance(ClusterExecutor.class));
+		ReflectionTestUtil.setFieldValue(
+			entityCacheImpl, "_multiVMPool", multiVMPool);
+
+		ReflectionTestUtil.setFieldValue(entityCacheImpl, "_props", _props);
+
+		ReflectionTestUtil.setFieldValue(
+			_finderCacheImpl, "_multiVMPool", multiVMPool);
+		ReflectionTestUtil.setFieldValue(
+			_finderCacheImpl, "_serviceTrackerMap",
+			ServiceTrackerMapFactory.openSingleValueMap(
+				SystemBundleUtil.getBundleContext(), ArgumentsResolver.class,
+				"class.name"));
+
+		entityCacheImpl.activate(_bundleContext);
+
+		try (EnableDBPartition enableDBPartition = new EnableDBPartition()) {
+			PortalCache<?, ?> portalCache = entityCacheImpl.getPortalCache(
+				ShardedModel.class);
+
+			Map<String, PortalCache<Serializable, Serializable>> portalCaches =
+				ReflectionTestUtil.getFieldValue(
+					entityCacheImpl, "_portalCaches");
+
+			Assert.assertEquals(
+				portalCaches.toString(), 1, portalCaches.size());
+			Assert.assertSame(
+				portalCache, portalCaches.get(ShardedModel.class.getName()));
+
+			entityCacheImpl.notifyPortalCacheRemoved(
+				portalCache.getPortalCacheName());
+
+			Assert.assertTrue(portalCaches.toString(), portalCaches.isEmpty());
+		}
+	}
+
+	@Test
 	public void testPutAndGetNullModel() throws Exception {
 		_testPutAndGetNullModel(false);
 		_testPutAndGetNullModel(true);
@@ -170,5 +219,30 @@ public class EntityCacheImplTest {
 	private ClassLoader _classLoader;
 	private Serializable _nullModel;
 	private Props _props;
+
+	private static class EnableDBPartition implements AutoCloseable {
+
+		public EnableDBPartition() {
+			_databasePartitionEnabled = ReflectionTestUtil.getAndSetFieldValue(
+				DBPartition.class, "_DATABASE_PARTITION_ENABLED", true);
+
+			_defaultCompanyId = ReflectionTestUtil.getAndSetFieldValue(
+				DBPartitionUtil.class, "_defaultCompanyId", 2022L);
+		}
+
+		@Override
+		public void close() {
+			ReflectionTestUtil.setFieldValue(
+				DBPartition.class, "_DATABASE_PARTITION_ENABLED",
+				_databasePartitionEnabled);
+
+			ReflectionTestUtil.setFieldValue(
+				DBPartitionUtil.class, "_defaultCompanyId", _defaultCompanyId);
+		}
+
+		private final boolean _databasePartitionEnabled;
+		private final long _defaultCompanyId;
+
+	}
 
 }

@@ -216,6 +216,8 @@ public class EntityCacheImpl
 
 		_notifyFinderCache(cacheName, null, true);
 
+		_portalCaches.remove(_getPortalCacheName(cacheName));
+
 		_portalCaches.remove(cacheName);
 	}
 
@@ -240,7 +242,7 @@ public class EntityCacheImpl
 	public void removeCache(String className) {
 		_notifyFinderCache(className, null, true);
 
-		_portalCaches.remove(className);
+		_portalCaches.remove(_getPortalCacheName(className));
 
 		String groupKey = _GROUP_KEY_PREFIX.concat(className);
 
@@ -302,6 +304,16 @@ public class EntityCacheImpl
 
 			return null;
 		}
+	}
+
+	private String _getPortalCacheName(String cacheName) {
+		int indexOf = cacheName.indexOf("_SHARDED_SEPARATOR_");
+
+		if (indexOf == -1) {
+			return cacheName;
+		}
+
+		return cacheName.substring(0, indexOf);
 	}
 
 	private boolean _isLocalCacheEnabled() {

@@ -11,16 +11,22 @@ import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import java.lang.management.ManagementFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -30,9 +36,7 @@ import java.util.zip.ZipEntry;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,60 +58,57 @@ public class PortalCacheExtenderTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() throws Exception {
-		_multiVmXML = _generateXMLContent(_TEST_CACHE_MULTI, 1001, 51);
-		_singleVmXML = _generateXMLContent(_TEST_CACHE_SINGLE, 1001, 51);
-
-		_bundle = _installBundle(
-			_BUNDLE_SYMBOLIC_NAME, _multiVmXML, _singleVmXML);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		if (_bundle.getState() != Bundle.UNINSTALLED) {
-			_bundle.uninstall();
-		}
-	}
-
 	@Test
 	public void testUpdateConfig() throws Exception {
-		_assertCacheConfig(
-			PortalCacheManagerNames.MULTI_VM, 1001, _TEST_CACHE_MULTI, 51L);
-		_assertCacheConfig(
-			PortalCacheManagerNames.SINGLE_VM, 1001, _TEST_CACHE_SINGLE, 51L);
+		CacheConfig multiVMCacheConfig = new CacheConfig(
+			1001, _TEST_CACHE_MULTI, 51L);
+		CacheConfig singleVMCacheConfig = new CacheConfig(
+			1001, _TEST_CACHE_SINGLE, 51L);
 
-		Bundle overridingBundle = null;
+		Bundle bundle = _installBundle(
+			_BUNDLE_SYMBOLIC_NAME, _generateXMLContent(multiVMCacheConfig),
+			_generateXMLContent(singleVMCacheConfig));
 
-		String multiVmXMLUpdated = _generateXMLContent(
-			_TEST_CACHE_MULTI, 2001, 101);
-		String singleVmXMLUpdated = _generateXMLContent(
-			_TEST_CACHE_SINGLE, 2001, 101);
+		_assertCacheConfig(
+			PortalCacheManagerNames.MULTI_VM, multiVMCacheConfig);
+		_assertCacheConfig(
+			PortalCacheManagerNames.SINGLE_VM, singleVMCacheConfig);
 
 		try {
-			overridingBundle = _installBundle(
-				_BUNDLE_SYMBOLIC_NAME.concat(".updated"), multiVmXMLUpdated,
-				singleVmXMLUpdated);
-
-			_assertCacheConfig(
-				PortalCacheManagerNames.MULTI_VM, 2001, _TEST_CACHE_MULTI,
-				101L);
-			_assertCacheConfig(
-				PortalCacheManagerNames.SINGLE_VM, 2001, _TEST_CACHE_SINGLE,
-				101L);
+			_updateAndAssertConfig(
+				new CacheConfig[] {
+					new CacheConfig(2001, _TEST_CACHE_MULTI, 101L)
+				},
+				new CacheConfig[] {
+					new CacheConfig(2001, _TEST_CACHE_SINGLE, 101L)
+				});
 		}
 		finally {
-			if ((overridingBundle != null) &&
-				(overridingBundle.getState() != Bundle.UNINSTALLED)) {
-
-				overridingBundle.uninstall();
+			if (bundle.getState() != Bundle.UNINSTALLED) {
+				bundle.uninstall();
 			}
 		}
 	}
 
+	@Test
+	public void testUpdateConfigMultipleRelatedCaches() throws Exception {
+		List<CacheConfig> cacheConfigs = new ArrayList<>();
+
+		for (String cacheName :
+				(String[])ReflectionTestUtil.invoke(
+					(Object)ReflectionTestUtil.getFieldValue(
+						_portalCacheManager, "_cacheManager"),
+					"getCacheNames", new Class<?>[0])) {
+
+			cacheConfigs.add(new CacheConfig(1000, cacheName, 200L));
+		}
+
+		_updateAndAssertConfig(
+			cacheConfigs.toArray(new CacheConfig[0]), new CacheConfig[0]);
+	}
+
 	private void _assertCacheConfig(
-			String cacheManagerName, int maxElementsInMemory, String name,
-			long timeToIdleSeconds)
+			String cacheManagerName, CacheConfig cacheConfig)
 		throws Exception {
 
 		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
@@ -115,14 +116,15 @@ public class PortalCacheExtenderTest {
 		ObjectName objectName = new ObjectName(
 			StringBundler.concat(
 				"net.sf.ehcache:type=CacheConfiguration,CacheManager=",
-				cacheManagerName, ",name=", name));
+				cacheManagerName, ",name=", cacheConfig._name));
 
 		Assert.assertEquals(
-			maxElementsInMemory,
+			cacheConfig._maxElementsInMemory,
 			mBeanServer.getAttribute(objectName, "MaxElementsInMemory"));
-		Assert.assertEquals(name, mBeanServer.getAttribute(objectName, "Name"));
 		Assert.assertEquals(
-			timeToIdleSeconds,
+			cacheConfig._name, mBeanServer.getAttribute(objectName, "Name"));
+		Assert.assertEquals(
+			cacheConfig._timeToIdleSeconds,
 			mBeanServer.getAttribute(objectName, "TimeToIdleSeconds"));
 	}
 
@@ -160,22 +162,25 @@ public class PortalCacheExtenderTest {
 		}
 	}
 
-	private String _generateXMLContent(
-		String cacheName, int maxElementsInMemory, int timeToIdleSeconds) {
-
-		StringBundler sb = new StringBundler(11);
+	private String _generateXMLContent(CacheConfig... cacheConfigs) {
+		StringBundler sb = new StringBundler(5 + (cacheConfigs.length * 7));
 
 		sb.append("<ehcache dynamicConfig=\"true\" monitoring=\"off\" ");
 		sb.append("updateCheck=\"false\" xmlns:xsi=\"http://www.w3.org/2001");
 		sb.append("/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"");
 		sb.append("http://www.ehcache.org/ehcache.xsd\">");
-		sb.append("<cache maxElementsInMemory=\"");
-		sb.append(maxElementsInMemory);
-		sb.append("\" name=\"");
-		sb.append(cacheName);
-		sb.append("\" timeToIdleSeconds=\"");
-		sb.append(timeToIdleSeconds);
-		sb.append("\"> </cache> </ehcache>");
+
+		for (CacheConfig cacheConfig : cacheConfigs) {
+			sb.append("<cache maxElementsInMemory=\"");
+			sb.append(cacheConfig._maxElementsInMemory);
+			sb.append("\" name=\"");
+			sb.append(cacheConfig._name);
+			sb.append("\" timeToIdleSeconds=\"");
+			sb.append(cacheConfig._timeToIdleSeconds);
+			sb.append("\"> </cache>");
+		}
+
+		sb.append("</ehcache>");
 
 		return sb.toString();
 	}
@@ -198,6 +203,50 @@ public class PortalCacheExtenderTest {
 		newBundle.start();
 
 		return newBundle;
+	}
+
+	private void _updateAndAssertConfig(
+			CacheConfig[] multiVMCacheConfigs,
+			CacheConfig[] singleVMCacheConfigs)
+		throws Exception {
+
+		String multiVmXMLUpdated = null;
+		String singleVmXMLUpdated = null;
+
+		if ((multiVMCacheConfigs != null) && (multiVMCacheConfigs.length > 0)) {
+			multiVmXMLUpdated = _generateXMLContent(multiVMCacheConfigs);
+		}
+
+		if ((singleVMCacheConfigs != null) &&
+			(singleVMCacheConfigs.length > 0)) {
+
+			singleVmXMLUpdated = _generateXMLContent(singleVMCacheConfigs);
+		}
+
+		Bundle overridingBundle = null;
+
+		try {
+			overridingBundle = _installBundle(
+				_BUNDLE_SYMBOLIC_NAME.concat(".updated"), multiVmXMLUpdated,
+				singleVmXMLUpdated);
+
+			for (CacheConfig cacheConfig : multiVMCacheConfigs) {
+				_assertCacheConfig(
+					PortalCacheManagerNames.MULTI_VM, cacheConfig);
+			}
+
+			for (CacheConfig cacheConfig : singleVMCacheConfigs) {
+				_assertCacheConfig(
+					PortalCacheManagerNames.SINGLE_VM, cacheConfig);
+			}
+		}
+		finally {
+			if ((overridingBundle != null) &&
+				(overridingBundle.getState() != Bundle.UNINSTALLED)) {
+
+				overridingBundle.uninstall();
+			}
+		}
 	}
 
 	private void _writeClass(JarOutputStream jarOutputStream)
@@ -263,8 +312,25 @@ public class PortalCacheExtenderTest {
 
 	private static final String _TEST_CACHE_SINGLE = "test.cache.single";
 
-	private static Bundle _bundle;
-	private static String _multiVmXML;
-	private static String _singleVmXML;
+	@Inject(
+		filter = "portal.cache.manager.name=" + PortalCacheManagerNames.MULTI_VM
+	)
+	private PortalCacheManager<? extends Serializable, ?> _portalCacheManager;
+
+	private static class CacheConfig {
+
+		public CacheConfig(
+			int maxElementsInMemory, String name, long timeToIdleSeconds) {
+
+			_maxElementsInMemory = maxElementsInMemory;
+			_name = name;
+			_timeToIdleSeconds = timeToIdleSeconds;
+		}
+
+		private final int _maxElementsInMemory;
+		private final String _name;
+		private final long _timeToIdleSeconds;
+
+	}
 
 }

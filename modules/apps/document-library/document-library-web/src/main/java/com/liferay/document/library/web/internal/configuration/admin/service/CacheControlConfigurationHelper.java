@@ -28,12 +28,10 @@ import org.osgi.service.component.annotations.Modified;
 	configurationPid = "com.liferay.document.library.web.internal.configuration.CacheControlConfiguration",
 	property = Constants.SERVICE_PID + "=com.liferay.document.library.web.internal.configuration.CacheControlConfiguration.scoped",
 	service = {
-		CacheControlConfigurationManagedServiceFactory.class,
-		ManagedServiceFactory.class
+		CacheControlConfigurationHelper.class, ManagedServiceFactory.class
 	}
 )
-public class CacheControlConfigurationManagedServiceFactory
-	implements ManagedServiceFactory {
+public class CacheControlConfigurationHelper implements ManagedServiceFactory {
 
 	@Override
 	public void deleted(String pid) {

@@ -66,10 +66,10 @@ public class FinderCacheImplTest {
 
 		_serializedMultiVMPool = (MultiVMPool)ProxyUtil.newProxyInstance(
 			_classLoader, new Class<?>[] {MultiVMPool.class},
-			new MultiVMPoolInvocationHandler(_classLoader, true));
+			new MultiVMPoolInvocationHandler(_classLoader, true, false));
 		_notSerializedMultiVMPool = (MultiVMPool)ProxyUtil.newProxyInstance(
 			_classLoader, new Class<?>[] {MultiVMPool.class},
-			new MultiVMPoolInvocationHandler(_classLoader, false));
+			new MultiVMPoolInvocationHandler(_classLoader, false, false));
 
 		CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
 			new CacheKeyGeneratorUtil();
@@ -89,7 +89,7 @@ public class FinderCacheImplTest {
 		FinderCacheImpl finderCacheImpl = _activateFinderCache(
 			(MultiVMPool)ProxyUtil.newProxyInstance(
 				_classLoader, new Class<?>[] {MultiVMPool.class},
-				new MultiVMPoolInvocationHandler(_classLoader, true)));
+				new MultiVMPoolInvocationHandler(_classLoader, true, false)));
 
 		PortalCache<Serializable, Serializable> portalCache =
 			ReflectionTestUtil.invoke(

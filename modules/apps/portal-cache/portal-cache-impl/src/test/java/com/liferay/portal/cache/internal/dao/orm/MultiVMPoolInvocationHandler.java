@@ -19,10 +19,11 @@ import java.lang.reflect.Method;
 public class MultiVMPoolInvocationHandler implements InvocationHandler {
 
 	public MultiVMPoolInvocationHandler(
-		ClassLoader classLoader, boolean serialized) {
+		ClassLoader classLoader, boolean serialized, boolean sharded) {
 
 		_classLoader = classLoader;
 		_serialized = serialized;
+		_sharded = sharded;
 	}
 
 	@Override
@@ -36,7 +37,8 @@ public class MultiVMPoolInvocationHandler implements InvocationHandler {
 
 			return ProxyUtil.newProxyInstance(
 				_classLoader, new Class<?>[] {PortalCache.class},
-				new PortalCacheInvocationHandler((String)args[0], _serialized));
+				new PortalCacheInvocationHandler(
+					(String)args[0], _serialized, _sharded));
 		}
 
 		if (methodName.equals("getPortalCacheManager")) {
@@ -68,5 +70,6 @@ public class MultiVMPoolInvocationHandler implements InvocationHandler {
 
 	private final ClassLoader _classLoader;
 	private final boolean _serialized;
+	private final boolean _sharded;
 
 }

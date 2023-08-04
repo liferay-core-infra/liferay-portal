@@ -5,6 +5,7 @@
 
 package com.liferay.portal.cache.internal.dao.orm;
 
+import com.liferay.portal.db.partition.DBPartitionUtil;
 import com.liferay.portal.kernel.io.Deserializer;
 import com.liferay.portal.kernel.io.Serializer;
 
@@ -25,9 +26,17 @@ import java.util.Map;
 public class PortalCacheInvocationHandler implements InvocationHandler {
 
 	public PortalCacheInvocationHandler(
-		String portalCacheName, boolean serialized) {
+		String portalCacheName, boolean serialized, boolean sharded) {
 
-		_portalCacheName = portalCacheName;
+		if (sharded) {
+			_portalCacheName =
+				portalCacheName + "_SHARDED_SEPARATOR_" +
+					DBPartitionUtil.getCurrentCompanyId();
+		}
+		else {
+			_portalCacheName = portalCacheName;
+		}
+
 		_serialized = serialized;
 	}
 

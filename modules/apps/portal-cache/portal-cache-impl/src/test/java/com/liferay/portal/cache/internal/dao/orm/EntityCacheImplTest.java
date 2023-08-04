@@ -96,7 +96,7 @@ public class EntityCacheImplTest {
 
 		MultiVMPool multiVMPool = (MultiVMPool)ProxyUtil.newProxyInstance(
 			_classLoader, new Class<?>[] {MultiVMPool.class},
-			new MultiVMPoolInvocationHandler(_classLoader, true));
+			new MultiVMPoolInvocationHandler(_classLoader, true, false));
 
 		ReflectionTestUtil.setFieldValue(
 			entityCacheImpl, "_clusterExecutor",
@@ -145,7 +145,8 @@ public class EntityCacheImplTest {
 			entityCacheImpl, "_multiVMPool",
 			ProxyUtil.newProxyInstance(
 				_classLoader, new Class<?>[] {MultiVMPool.class},
-				new MultiVMPoolInvocationHandler(_classLoader, serialized)));
+				new MultiVMPoolInvocationHandler(
+					_classLoader, serialized, false)));
 		ReflectionTestUtil.setFieldValue(entityCacheImpl, "_props", _props);
 
 		entityCacheImpl.activate(_bundleContext);

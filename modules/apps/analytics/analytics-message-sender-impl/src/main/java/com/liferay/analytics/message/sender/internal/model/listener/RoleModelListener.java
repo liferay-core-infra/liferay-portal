@@ -11,12 +11,8 @@ import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.service.RoleLocalService;
-
-import java.util.Collections;
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -24,23 +20,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Shinn Lok
  */
-@Component(service = {EntityModel.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class RoleModelListener extends BaseAnalyticsModelListener<Role> {
-
-	@Override
-	public List<String> getAttributeNames(long companyId) {
-		return _attributeNames;
-	}
-
-	@Override
-	public long[] getMembershipIds(User user) {
-		return user.getRoleIds();
-	}
-
-	@Override
-	public String getModelClassName() {
-		return Role.class.getName();
-	}
 
 	@Override
 	protected ActionableDynamicQuery getActionableDynamicQuery() {
@@ -63,6 +44,11 @@ public class RoleModelListener extends BaseAnalyticsModelListener<Role> {
 	}
 
 	@Override
+	protected EntityModel<Role> getEntityModelListener() {
+		return _roleEntityModel;
+	}
+
+	@Override
 	protected Role getModel(long id) throws Exception {
 		return _roleLocalService.getRole(id);
 	}
@@ -81,8 +67,8 @@ public class RoleModelListener extends BaseAnalyticsModelListener<Role> {
 		return true;
 	}
 
-	private static final List<String> _attributeNames =
-		Collections.singletonList("name");
+	@Reference(target = "(entity.model.type=role)")
+	private EntityModel<Role> _roleEntityModel;
 
 	@Reference
 	private RoleLocalService _roleLocalService;

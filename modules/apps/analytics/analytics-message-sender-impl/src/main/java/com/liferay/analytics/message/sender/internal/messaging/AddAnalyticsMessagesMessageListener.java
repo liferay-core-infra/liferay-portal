@@ -47,6 +47,7 @@ public class AddAnalyticsMessagesMessageListener extends BaseMessageListener {
 		}
 
 		String action = (String)message.get("action");
+
 		EntityModel entityModel = (EntityModel)message.get("entityModel");
 
 		List<? extends BaseModel> baseModels =

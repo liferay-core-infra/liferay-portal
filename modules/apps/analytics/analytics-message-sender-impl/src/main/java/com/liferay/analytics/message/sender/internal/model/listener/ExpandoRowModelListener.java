@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -25,13 +24,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Rachael Koestartyo
  */
-@Component(service = {EntityModel.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class ExpandoRowModelListener
 	extends BaseAnalyticsModelListener<ExpandoRow> {
 
 	@Override
-	public List<String> getAttributeNames(long companyId) {
-		return Collections.singletonList("modifiedDate");
+	protected EntityModel<ExpandoRow> getEntityModelListener() {
+		return _expandoRowEntityModel;
 	}
 
 	@Override
@@ -103,6 +102,9 @@ public class ExpandoRowModelListener
 
 		return _jsonFactory.createJSONObject();
 	}
+
+	@Reference(target = "(entity.model.type=expandorow)")
+	private EntityModel<ExpandoRow> _expandoRowEntityModel;
 
 	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;

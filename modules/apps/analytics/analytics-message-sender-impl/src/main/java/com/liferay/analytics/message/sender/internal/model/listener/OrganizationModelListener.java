@@ -10,10 +10,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
-
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -21,24 +18,9 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Rachael Koestartyo
  */
-@Component(service = {EntityModel.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class OrganizationModelListener
 	extends BaseAnalyticsModelListener<Organization> {
-
-	@Override
-	public List<String> getAttributeNames(long companyId) {
-		return getOrganizationAttributeNames();
-	}
-
-	@Override
-	public long[] getMembershipIds(User user) throws Exception {
-		return user.getOrganizationIds();
-	}
-
-	@Override
-	public String getModelClassName() {
-		return Organization.class.getName();
-	}
 
 	@Override
 	public void onAfterRemove(Organization organization)
@@ -61,6 +43,11 @@ public class OrganizationModelListener
 	}
 
 	@Override
+	protected EntityModel<Organization> getEntityModelListener() {
+		return _organizationEntityModel;
+	}
+
+	@Override
 	protected Organization getModel(long id) throws Exception {
 		return _organizationLocalService.getOrganization(id);
 	}
@@ -69,6 +56,9 @@ public class OrganizationModelListener
 	protected String getPrimaryKeyName() {
 		return "organizationId";
 	}
+
+	@Reference(target = "(entity.model.type=organization)")
+	private EntityModel<Organization> _organizationEntityModel;
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;

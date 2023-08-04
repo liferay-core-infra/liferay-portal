@@ -6,18 +6,13 @@
 package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
-import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalService;
-
-import java.util.Collections;
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -25,24 +20,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Rachael Koestartyo
  */
-@Component(service = {EntityModel.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class GroupModelListener extends BaseAnalyticsModelListener<Group> {
-
-	@Override
-	public List<String> getAttributeNames(long companyId) {
-		return _attributeNames;
-	}
-
-	@Override
-	public long[] getMembershipIds(User user) throws Exception {
-		return TransformUtil.transformToLongArray(
-			user.getSiteGroups(), Group::getGroupId);
-	}
-
-	@Override
-	public String getModelClassName() {
-		return Group.class.getName();
-	}
 
 	@Override
 	public void onAfterRemove(Group group) throws ModelListenerException {
@@ -71,6 +50,11 @@ public class GroupModelListener extends BaseAnalyticsModelListener<Group> {
 	}
 
 	@Override
+	protected EntityModel<Group> getEntityModelListener() {
+		return _groupEntityModel;
+	}
+
+	@Override
 	protected Group getModel(long id) throws Exception {
 		return _groupLocalService.getGroup(id);
 	}
@@ -89,8 +73,8 @@ public class GroupModelListener extends BaseAnalyticsModelListener<Group> {
 		return false;
 	}
 
-	private static final List<String> _attributeNames =
-		Collections.singletonList("name");
+	@Reference(target = "(entity.model.type=group)")
+	private EntityModel<Group> _groupEntityModel;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

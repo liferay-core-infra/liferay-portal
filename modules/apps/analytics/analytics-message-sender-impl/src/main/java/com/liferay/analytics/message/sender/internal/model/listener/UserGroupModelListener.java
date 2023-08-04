@@ -9,12 +9,8 @@ import com.liferay.analytics.message.sender.model.listener.EntityModel;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
-
-import java.util.Collections;
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -22,24 +18,9 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Rachael Koestartyo
  */
-@Component(service = {EntityModel.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class UserGroupModelListener
 	extends BaseAnalyticsModelListener<UserGroup> {
-
-	@Override
-	public List<String> getAttributeNames(long companyId) {
-		return _attributeNames;
-	}
-
-	@Override
-	public long[] getMembershipIds(User user) {
-		return user.getUserGroupIds();
-	}
-
-	@Override
-	public String getModelClassName() {
-		return UserGroup.class.getName();
-	}
 
 	@Override
 	public void onAfterRemove(UserGroup userGroup)
@@ -62,6 +43,11 @@ public class UserGroupModelListener
 	}
 
 	@Override
+	protected EntityModel<UserGroup> getEntityModelListener() {
+		return _userGroupEntityModel;
+	}
+
+	@Override
 	protected UserGroup getModel(long id) throws Exception {
 		return _userGroupLocalService.getUserGroup(id);
 	}
@@ -71,8 +57,8 @@ public class UserGroupModelListener
 		return "userGroupId";
 	}
 
-	private static final List<String> _attributeNames =
-		Collections.singletonList("name");
+	@Reference(target = "(entity.model.type=usergroup)")
+	private EntityModel<UserGroup> _userGroupEntityModel;
 
 	@Reference
 	private UserGroupLocalService _userGroupLocalService;

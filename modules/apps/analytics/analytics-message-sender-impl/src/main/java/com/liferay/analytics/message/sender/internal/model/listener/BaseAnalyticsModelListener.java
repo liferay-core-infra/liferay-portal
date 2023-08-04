@@ -11,16 +11,12 @@ import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.model.Contact;
-import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
@@ -45,90 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Rachael Koestartyo
  */
 public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
-	extends BaseModelListener<T> implements EntityModel<T> {
-
-	@Override
-	public void addAnalyticsMessage(
-		String eventType, List<String> includeAttributeNames, T model) {
-
-		String modelClassName = model.getModelClassName();
-
-		if (modelClassName.equals(Contact.class.getName())) {
-			Contact contact = (Contact)model;
-
-			User user = userLocalService.fetchUser(contact.getClassPK());
-
-			if ((!StringUtil.equalsIgnoreCase(eventType, "delete") &&
-				 !isUserActive(user)) ||
-				isUserExcluded(user)) {
-
-				return;
-			}
-		}
-		else if (modelClassName.equals(User.class.getName())) {
-			User user = (User)model;
-
-			if ((!StringUtil.equalsIgnoreCase(eventType, "delete") &&
-				 !isUserActive(user)) ||
-				isUserExcluded(user)) {
-
-				return;
-			}
-		}
-		else if (isExcluded(model)) {
-			return;
-		}
-
-		JSONObject jsonObject = serialize(model, includeAttributeNames);
-
-		ShardedModel shardedModel = (ShardedModel)model;
-
-		if (modelClassName.equals(ExpandoRow.class.getName())) {
-			ExpandoRow expandoRow = (ExpandoRow)model;
-
-			if (isCustomField(
-					Organization.class.getName(), expandoRow.getTableId())) {
-
-				modelClassName = Organization.class.getName();
-			}
-			else {
-				modelClassName = User.class.getName();
-			}
-		}
-
-		try {
-			AnalyticsMessage.Builder analyticsMessageBuilder =
-				AnalyticsMessage.builder(modelClassName);
-
-			analyticsMessageBuilder.action(eventType);
-			analyticsMessageBuilder.object(jsonObject);
-
-			String analyticsMessageJSON =
-				analyticsMessageBuilder.buildJSONString();
-
-			analyticsMessageLocalService.addAnalyticsMessage(
-				shardedModel.getCompanyId(),
-				userLocalService.getGuestUserId(shardedModel.getCompanyId()),
-				analyticsMessageJSON.getBytes(Charset.defaultCharset()));
-		}
-		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to add analytics message " + jsonObject.toString(),
-					exception);
-			}
-		}
-	}
-
-	@Override
-	public long[] getMembershipIds(User user) throws Exception {
-		return new long[0];
-	}
-
-	@Override
-	public String getModelClassName() {
-		return null;
-	}
+	extends BaseModelListener<T> {
 
 	@Override
 	public void onAfterAddAssociation(
@@ -157,8 +70,11 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 
 		ShardedModel shardedModel = (ShardedModel)model;
 
-		addAnalyticsMessage(
-			"add", getAttributeNames(shardedModel.getCompanyId()), model);
+		EntityModel<T> entityModel = getEntityModelListener();
+
+		entityModel.addAnalyticsMessage(
+			"add", entityModel.getAttributeNames(shardedModel.getCompanyId()),
+			model);
 	}
 
 	@Override
@@ -186,7 +102,9 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 			return;
 		}
 
-		addAnalyticsMessage("delete", new ArrayList<>(), model);
+		EntityModel<T> entityModel = getEntityModelListener();
+
+		entityModel.addAnalyticsMessage("delete", new ArrayList<>(), model);
 	}
 
 	@Override
@@ -202,16 +120,19 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 		ShardedModel shardedModel = (ShardedModel)model;
 
 		try {
+			EntityModel<T> entityModel = getEntityModelListener();
+
 			List<String> modifiedAttributeNames = _getModifiedAttributeNames(
-				getAttributeNames(shardedModel.getCompanyId()), model,
-				getModel((long)model.getPrimaryKeyObj()));
+				entityModel.getAttributeNames(shardedModel.getCompanyId()),
+				model, getModel((long)model.getPrimaryKeyObj()));
 
 			if (modifiedAttributeNames.isEmpty()) {
 				return;
 			}
 
-			addAnalyticsMessage(
-				"update", getAttributeNames(shardedModel.getCompanyId()),
+			entityModel.addAnalyticsMessage(
+				"update",
+				entityModel.getAttributeNames(shardedModel.getCompanyId()),
 				model);
 		}
 		catch (Exception exception) {
@@ -219,22 +140,7 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 		}
 	}
 
-	@Override
-	public void syncAll(long companyId) throws Exception {
-		ActionableDynamicQuery actionableDynamicQuery =
-			getActionableDynamicQuery();
-
-		if (actionableDynamicQuery == null) {
-			return;
-		}
-
-		actionableDynamicQuery.setCompanyId(companyId);
-		actionableDynamicQuery.setPerformActionMethod(
-			(T model) -> addAnalyticsMessage(
-				"add", getAttributeNames(companyId), model));
-
-		actionableDynamicQuery.performActions();
-	}
+	protected abstract EntityModel<T> getEntityModelListener();
 
 	protected void updateConfigurationProperties(
 		long companyId, String configurationPropertyName, String modelId,
@@ -331,7 +237,9 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 		Object classPK, String associationClassName, Object associationClassPK,
 		String eventType) {
 
-		String modelClassName = getModelClassName();
+		EntityModel<T> entityModel = getEntityModelListener();
+
+		String modelClassName = entityModel.getModelClassName();
 
 		if ((modelClassName == null) ||
 			!associationClassName.equals(User.class.getName())) {
@@ -361,14 +269,15 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 				userAttributeNames.add("associations");
 				userAttributeNames.add("userId");
 
-				addAnalyticsMessage("update", userAttributeNames, (T)user);
+				entityModel.addAnalyticsMessage(
+					"update", userAttributeNames, (T)user);
 
 				if (user.fetchContact() != null) {
 					AnalyticsConfiguration analyticsConfiguration =
 						analyticsConfigurationRegistry.
 							getAnalyticsConfiguration(user.getCompanyId());
 
-					addAnalyticsMessage(
+					entityModel.addAnalyticsMessage(
 						"update",
 						Arrays.asList(
 							analyticsConfiguration.syncedContactFieldNames()),
@@ -381,7 +290,7 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 			long companyId = (long)modelAttributes.get("companyId");
 
 			AnalyticsMessage.Builder analyticsMessageBuilder =
-				AnalyticsMessage.builder(getModelClassName());
+				AnalyticsMessage.builder(entityModel.getModelClassName());
 
 			analyticsMessageBuilder.action(eventType);
 			analyticsMessageBuilder.object(

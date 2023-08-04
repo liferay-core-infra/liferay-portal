@@ -1,11 +1,12 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.analytics.message.sender.model.listener;
+package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.AnalyticsMessage;
+import com.liferay.analytics.message.sender.model.listener.EntityModelListener;
 import com.liferay.analytics.message.sender.util.AnalyticsExpandoBridgeUtil;
 import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalService;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
@@ -64,14 +65,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Rachael Koestartyo
  */
-@ProviderType
-public abstract class BaseEntityModelListener<T extends BaseModel<T>>
+public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 	extends BaseModelListener<T> implements EntityModelListener<T> {
 
 	@Override
@@ -787,7 +786,7 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BaseEntityModelListener.class);
+		BaseAnalyticsModelListener.class);
 
 	private static final List<String> _organizationAttributeNames =
 		Arrays.asList(

@@ -5,7 +5,6 @@
 
 package com.liferay.analytics.message.sender.internal.model.listener;
 
-import com.liferay.analytics.message.sender.model.listener.BaseEntityModelListener;
 import com.liferay.analytics.message.sender.model.listener.EntityModelListener;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
@@ -28,7 +27,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = {EntityModelListener.class, ModelListener.class})
 public class ExpandoRowModelListener
-	extends BaseEntityModelListener<ExpandoRow> {
+	extends BaseAnalyticsModelListener<ExpandoRow> {
 
 	@Override
 	public List<String> getAttributeNames(long companyId) {

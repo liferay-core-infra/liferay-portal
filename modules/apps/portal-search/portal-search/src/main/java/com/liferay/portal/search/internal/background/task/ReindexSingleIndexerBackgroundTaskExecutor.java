@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.search.SearchEngine;
 import com.liferay.portal.kernel.search.SearchEngineHelper;
 import com.liferay.portal.kernel.search.background.task.ReindexBackgroundTaskConstants;
 import com.liferay.portal.kernel.search.background.task.ReindexStatusMessageSender;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.index.SyncReindexManager;
 
@@ -139,6 +138,9 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 					Thread.sleep(1000);
 				}
 				else {
+					IndexWriterHelper indexWriterHelper =
+						_indexWriterHelperSnapshot.get();
+
 					indexWriterHelper.deleteEntityDocuments(
 						companyId, className, true);
 				}
@@ -172,12 +174,6 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 			}
 		}
 	}
-
-	protected static volatile IndexWriterHelper indexWriterHelper =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			IndexWriterHelper.class,
-			ReindexSingleIndexerBackgroundTaskExecutor.class,
-			"indexWriterHelper", true);
 
 	@Reference
 	protected IndexerRegistry indexerRegistry;
@@ -215,6 +211,10 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReindexSingleIndexerBackgroundTaskExecutor.class);
 
+	private static final Snapshot<IndexWriterHelper>
+		_indexWriterHelperSnapshot = new Snapshot<>(
+			ReindexSingleIndexerBackgroundTaskExecutor.class,
+			IndexWriterHelper.class);
 	private static final Snapshot<SyncReindexManager>
 		_syncReindexManagerSnapshot = new Snapshot<>(
 			ReindexSingleIndexerBackgroundTaskExecutor.class,

@@ -41,6 +41,7 @@ import java.io.Serializable;
 
 import java.net.URL;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -434,15 +435,16 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	}
 
 	private void _reconfigEhcache(Configuration configuration) {
-		Map<String, CacheConfiguration> cacheConfigurations =
+		Map<String, CacheConfiguration> cacheConfigurationsMap =
 			configuration.getCacheConfigurations();
 
-		for (CacheConfiguration cacheConfiguration :
-				cacheConfigurations.values()) {
+		Collection<CacheConfiguration> cacheConfigurations =
+			cacheConfigurationsMap.values();
 
-			String portalCacheName = cacheConfiguration.getName();
+		synchronized (_cacheManager) {
+			for (CacheConfiguration cacheConfiguration : cacheConfigurations) {
+				String portalCacheName = cacheConfiguration.getName();
 
-			synchronized (_cacheManager) {
 				if (_cacheManager.cacheExists(portalCacheName)) {
 					if (_log.isInfoEnabled()) {
 						_log.info(
@@ -469,7 +471,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 
 					_cacheManager.removeCache(portalCacheName);
 				}
+			}
 
+			for (CacheConfiguration cacheConfiguration : cacheConfigurations) {
 				_cacheManager.addCache(new Cache(cacheConfiguration));
 			}
 		}

@@ -100,7 +100,15 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 
 	@Override
 	public PortalCache<K, V> fetchPortalCache(String portalCacheName) {
-		return _portalCaches.get(portalCacheName);
+		String cacheName = portalCacheName;
+
+		int indexOf = portalCacheName.indexOf(_SHARDED_SEPARATOR_);
+
+		if (indexOf != -1) {
+			cacheName = portalCacheName.substring(0, indexOf);
+		}
+
+		return _portalCaches.get(cacheName);
 	}
 
 	public CacheManager getEhcacheManager() {
@@ -400,6 +408,16 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	@Reference
 	protected Props props;
 
+	private long _getShardedCacheCompanyId(String portalCacheName) {
+		int indexOf = portalCacheName.lastIndexOf(StringPool.UNDERLINE);
+
+		if (indexOf == -1) {
+			return 0L;
+		}
+
+		return GetterUtil.getLong(portalCacheName.substring(indexOf + 1));
+	}
+
 	private void _initPortalCacheListeners(
 		PortalCache<K, V> portalCache,
 		PortalCacheConfiguration portalCacheConfiguration) {
@@ -452,12 +470,27 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 					PortalCache<K, V> portalCache = fetchPortalCache(
 						portalCacheName);
 
+					boolean companyIdShardedCache = false;
+
 					if (portalCache != null) {
 						BaseEhcachePortalCache<K, V> baseEhcachePortalCache =
 							EhcacheUnwrapUtil.getWrappedPortalCache(
 								portalCache);
 
-						if (baseEhcachePortalCache != null) {
+						if ((baseEhcachePortalCache != null) &&
+							baseEhcachePortalCache.isSharded()) {
+
+							long companyId = _getShardedCacheCompanyId(
+								portalCacheName);
+
+							if (companyId > 0) {
+								((ShardedEhcachePortalCache)
+									baseEhcachePortalCache).removeEhcache(
+										companyId);
+								companyIdShardedCache = true;
+							}
+						}
+						else if (baseEhcachePortalCache != null) {
 							baseEhcachePortalCache.resetEhcache();
 						}
 						else {
@@ -467,7 +500,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 						}
 					}
 
-					_cacheManager.removeCache(portalCacheName);
+					if (!companyIdShardedCache) {
+						_cacheManager.removeCache(portalCacheName);
+					}
 				}
 
 				_cacheManager.addCache(new Cache(cacheConfiguration));
@@ -587,6 +622,8 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 
 		throw new IllegalStateException(sb.toString());
 	}
+
+	private static final String _SHARDED_SEPARATOR_ = "_SHARDED_SEPARATOR_";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseEhcachePortalCacheManager.class);

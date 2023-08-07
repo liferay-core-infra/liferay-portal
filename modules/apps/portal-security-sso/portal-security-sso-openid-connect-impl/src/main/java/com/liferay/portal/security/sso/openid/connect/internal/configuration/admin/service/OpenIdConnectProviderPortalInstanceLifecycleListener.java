@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.security.sso.openid.connect.internal.util.OpenIdConnectProviderUtil;
 
 import java.net.URI;
 
@@ -70,28 +71,6 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 	extends BasePortalInstanceLifecycleListener
 	implements EveryNodeEveryStartup {
 
-	public long getOAuthClientEntryId(long companyId, String providerName) {
-		Map<String, Long> oAuthClientEntryIds = _oAuthClientEntryIds.get(
-			companyId);
-
-		if (oAuthClientEntryIds == null) {
-			oAuthClientEntryIds = _oAuthClientEntryIds.get(
-				CompanyConstants.SYSTEM);
-		}
-
-		if (oAuthClientEntryIds == null) {
-			return 0;
-		}
-
-		Long oAuthClientEntryId = oAuthClientEntryIds.get(providerName);
-
-		if (oAuthClientEntryId == null) {
-			return 0;
-		}
-
-		return oAuthClientEntryId;
-	}
-
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
 		if (!_clusterMasterExecutor.isMaster()) {
@@ -113,13 +92,14 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 				company.getCompanyId());
 
 		for (OAuthClientEntry oAuthClientEntry : oAuthClientEntries) {
-			Map<String, Long> oAuthClientEntryIds = _oAuthClientEntryIds.get(
-				company.getCompanyId());
+			Map<String, Long> oAuthClientEntryIds =
+				OpenIdConnectProviderUtil.getoAuthClientEntryIdsByCompanyId(
+					company.getCompanyId());
 
 			if (oAuthClientEntryIds == null) {
 				oAuthClientEntryIds = new HashMap<>();
 
-				_oAuthClientEntryIds.put(
+				OpenIdConnectProviderUtil.setoAuthClientEntryIds(
 					company.getCompanyId(), oAuthClientEntryIds);
 			}
 
@@ -208,8 +188,9 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 		long companyId, String oldProviderName,
 		Dictionary<String, ?> properties) {
 
-		Map<String, Long> oAuthClientEntryIds = _oAuthClientEntryIds.get(
-			companyId);
+		Map<String, Long> oAuthClientEntryIds =
+			OpenIdConnectProviderUtil.getoAuthClientEntryIdsByCompanyId(
+				companyId);
 
 		if (oAuthClientEntryIds != null) {
 			oAuthClientEntryIds.remove(oldProviderName);
@@ -520,13 +501,15 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 					properties, guestUserId);
 			}
 
-			Map<String, Long> oAuthClientEntryIds = _oAuthClientEntryIds.get(
-				companyId);
+			Map<String, Long> oAuthClientEntryIds =
+				OpenIdConnectProviderUtil.getoAuthClientEntryIdsByCompanyId(
+					companyId);
 
 			if (oAuthClientEntryIds == null) {
 				oAuthClientEntryIds = new HashMap<>();
 
-				_oAuthClientEntryIds.put(companyId, oAuthClientEntryIds);
+				OpenIdConnectProviderUtil.setoAuthClientEntryIds(
+					companyId, oAuthClientEntryIds);
 			}
 
 			oAuthClientEntryIds.remove(oldProviderName);
@@ -559,9 +542,6 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 	@Reference
 	private OAuthClientASLocalMetadataLocalService
 		_oAuthClientASLocalMetadataLocalService;
-
-	private final Map<Long, Map<String, Long>> _oAuthClientEntryIds =
-		new ConcurrentHashMap<>();
 
 	@Reference
 	private OAuthClientEntryLocalService _oAuthClientEntryLocalService;

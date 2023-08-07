@@ -10,9 +10,6 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.osgi.framework.BundleContext;
 
 /**
@@ -22,10 +19,6 @@ public class ExportImportControllerRegistryUtil {
 
 	public static ExportController getExportController(String className) {
 		return (ExportController)_exportControllers.getService(className);
-	}
-
-	public static List<ExportImportController> getExportImportControllers() {
-		return new ArrayList<>(_exportControllers.values());
 	}
 
 	public static ImportController getImportController(String className) {
@@ -38,41 +31,29 @@ public class ExportImportControllerRegistryUtil {
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
 
-	private static final ServiceTrackerMap<String, ExportImportController>
+	private static final ServiceTrackerMap<String, ExportController>
 		_exportControllers = ServiceTrackerMapFactory.openSingleValueMap(
-			_bundleContext, ExportImportController.class, null,
+			_bundleContext, null, "(export.controller=true)",
 			(serviceReference, emitter) -> {
-				ExportImportController exportImportController =
-					_bundleContext.getService(serviceReference);
+				for (String modelClassName :
+						StringUtil.asList(
+							serviceReference.getProperty("model.class.name"))) {
 
-				if (exportImportController instanceof ExportController) {
-					for (String modelClassName :
-							StringUtil.asList(
-								serviceReference.getProperty(
-									"model.class.name"))) {
-
-						emitter.emit(modelClassName);
-					}
+					emitter.emit(modelClassName);
 				}
 
 				_bundleContext.ungetService(serviceReference);
 			});
 
-	private static final ServiceTrackerMap<String, ExportImportController>
+	private static final ServiceTrackerMap<String, ImportController>
 		_importControllers = ServiceTrackerMapFactory.openSingleValueMap(
-			_bundleContext, ExportImportController.class, null,
+			_bundleContext, null, "(import.controller=true)",
 			(serviceReference, emitter) -> {
-				ExportImportController exportImportController =
-					_bundleContext.getService(serviceReference);
+				for (String modelClassName :
+						StringUtil.asList(
+							serviceReference.getProperty("model.class.name"))) {
 
-				if (exportImportController instanceof ImportController) {
-					for (String modelClassName :
-							StringUtil.asList(
-								serviceReference.getProperty(
-									"model.class.name"))) {
-
-						emitter.emit(modelClassName);
-					}
+					emitter.emit(modelClassName);
 				}
 
 				_bundleContext.ungetService(serviceReference);

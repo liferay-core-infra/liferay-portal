@@ -9,6 +9,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.base.ObjectRelationshipServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -50,9 +51,10 @@ public class ObjectRelationshipServiceImpl
 			getPermissionChecker(), objectDefinition.getObjectDefinitionId(),
 			ActionKeys.UPDATE);
 
-		return objectRelationshipLocalService.addObjectRelationship(
-			getUserId(), objectDefinitionId1, objectDefinitionId2,
-			parameterObjectFieldId, deletionType, labelMap, name, type);
+		return PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				getUserId(), objectDefinitionId1, objectDefinitionId2,
+				parameterObjectFieldId, deletionType, labelMap, name, type);
 	}
 
 	@Override

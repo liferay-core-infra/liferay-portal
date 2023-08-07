@@ -15,6 +15,7 @@ import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.service.ObjectRelationshipService;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -203,13 +204,14 @@ public class ObjectRelationshipServiceTest {
 	private ObjectRelationship _addObjectRelationship(User user)
 		throws Exception {
 
-		return _objectRelationshipLocalService.addObjectRelationship(
-			user.getUserId(), _objectDefinition1.getObjectDefinitionId(),
-			_objectDefinition2.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(),
-			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
+		return PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				user.getUserId(), _objectDefinition1.getObjectDefinitionId(),
+				_objectDefinition2.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				StringUtil.randomId(),
+				ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 	}
 
 	private void _setUser(User user) {

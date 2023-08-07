@@ -18,6 +18,7 @@ import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.exception.NoSuchObjectDefinitionException;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -250,15 +251,17 @@ public class ObjectDefinitionResourceTest
 					AccountEntry.class.getSimpleName());
 
 		_objectDefinitionLocalService.enableAccountEntryRestricted(
-			_objectRelationshipLocalService.addObjectRelationship(
-				TestPropsValues.getUserId(),
-				serviceBuilderAccountEntryObjectDefinition.
-					getObjectDefinitionId(),
-				postObjectDefinition.getId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_DISASSOCIATE,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"a" + RandomTestUtil.randomString(),
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY));
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					TestPropsValues.getUserId(),
+					serviceBuilderAccountEntryObjectDefinition.
+						getObjectDefinitionId(),
+					postObjectDefinition.getId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_DISASSOCIATE,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					"a" + RandomTestUtil.randomString(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY));
 
 		postObjectDefinition = objectDefinitionResource.getObjectDefinition(
 			postObjectDefinition.getId());

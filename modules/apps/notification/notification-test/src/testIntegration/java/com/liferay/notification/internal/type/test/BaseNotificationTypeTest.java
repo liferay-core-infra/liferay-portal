@@ -34,6 +34,7 @@ import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Contact;
@@ -230,14 +231,16 @@ public class BaseNotificationTypeTest {
 				parentObjectDefinition.getObjectDefinitionId());
 
 		objectRelationship =
-			_objectRelationshipLocalService.addObjectRelationship(
-				TestPropsValues.getUserId(),
-				parentObjectDefinition.getObjectDefinitionId(),
-				childObjectDefinition.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				StringUtil.randomId(),
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					TestPropsValues.getUserId(),
+					parentObjectDefinition.getObjectDefinitionId(),
+					childObjectDefinition.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					StringUtil.randomId(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		_childAuthorTermValues = HashMapBuilder.<String, Object>put(
 			getTermName("AUTHOR_EMAIL_ADDRESS"), user2.getEmailAddress()

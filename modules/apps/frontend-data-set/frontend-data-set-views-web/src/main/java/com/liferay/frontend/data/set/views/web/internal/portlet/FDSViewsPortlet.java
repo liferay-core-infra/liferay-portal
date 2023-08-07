@@ -18,6 +18,7 @@ import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.language.Language;
@@ -204,13 +205,15 @@ public class FDSViewsPortlet extends MVCPortlet {
 		_objectDefinitionLocalService.publishSystemObjectDefinition(
 			userId, fdsViewObjectDefinition.getObjectDefinitionId());
 
-		_objectRelationshipLocalService.addObjectRelationship(
-			userId, fdsEntryObjectDefinition.getObjectDefinitionId(),
-			fdsViewObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-			LocalizedMapUtil.getLocalizedMap("FDSEntry FDSView Relationship"),
-			"fdsEntryFDSViewRelationship",
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				userId, fdsEntryObjectDefinition.getObjectDefinitionId(),
+				fdsViewObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				LocalizedMapUtil.getLocalizedMap(
+					"FDSEntry FDSView Relationship"),
+				"fdsEntryFDSViewRelationship",
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectDefinition fdsFieldObjectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
@@ -250,13 +253,15 @@ public class FDSViewsPortlet extends MVCPortlet {
 		_objectDefinitionLocalService.publishSystemObjectDefinition(
 			userId, fdsFieldObjectDefinition.getObjectDefinitionId());
 
-		_objectRelationshipLocalService.addObjectRelationship(
-			userId, fdsViewObjectDefinition.getObjectDefinitionId(),
-			fdsFieldObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-			LocalizedMapUtil.getLocalizedMap("FDSView FDSField Relationship"),
-			"fdsViewFDSFieldRelationship",
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				userId, fdsViewObjectDefinition.getObjectDefinitionId(),
+				fdsFieldObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				LocalizedMapUtil.getLocalizedMap(
+					"FDSView FDSField Relationship"),
+				"fdsViewFDSFieldRelationship",
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectDefinition fdsDateFilterObjectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
@@ -291,14 +296,15 @@ public class FDSViewsPortlet extends MVCPortlet {
 		_objectDefinitionLocalService.publishSystemObjectDefinition(
 			userId, fdsDateFilterObjectDefinition.getObjectDefinitionId());
 
-		_objectRelationshipLocalService.addObjectRelationship(
-			userId, fdsViewObjectDefinition.getObjectDefinitionId(),
-			fdsDateFilterObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-			LocalizedMapUtil.getLocalizedMap(
-				"FDSView FDSDateFilter Relationship"),
-			"fdsViewFDSDateFilterRelationship",
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				userId, fdsViewObjectDefinition.getObjectDefinitionId(),
+				fdsDateFilterObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				LocalizedMapUtil.getLocalizedMap(
+					"FDSView FDSDateFilter Relationship"),
+				"fdsViewFDSDateFilterRelationship",
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectDefinition fdsDynamicFilterObjectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
@@ -340,14 +346,15 @@ public class FDSViewsPortlet extends MVCPortlet {
 		_objectDefinitionLocalService.publishSystemObjectDefinition(
 			userId, fdsDynamicFilterObjectDefinition.getObjectDefinitionId());
 
-		_objectRelationshipLocalService.addObjectRelationship(
-			userId, fdsViewObjectDefinition.getObjectDefinitionId(),
-			fdsDynamicFilterObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-			LocalizedMapUtil.getLocalizedMap(
-				"FDSView FDSDynamicFilter Relationship"),
-			"fdsViewFDSDynamicFilterRelationship",
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				userId, fdsViewObjectDefinition.getObjectDefinitionId(),
+				fdsDynamicFilterObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				LocalizedMapUtil.getLocalizedMap(
+					"FDSView FDSDynamicFilter Relationship"),
+				"fdsViewFDSDynamicFilterRelationship",
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectDefinition fdsSortObjectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
@@ -371,13 +378,15 @@ public class FDSViewsPortlet extends MVCPortlet {
 		_objectDefinitionLocalService.publishSystemObjectDefinition(
 			userId, fdsSortObjectDefinition.getObjectDefinitionId());
 
-		_objectRelationshipLocalService.addObjectRelationship(
-			userId, fdsViewObjectDefinition.getObjectDefinitionId(),
-			fdsSortObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-			LocalizedMapUtil.getLocalizedMap("FDSView FDSSort Relationship"),
-			"fdsViewFDSSortRelationship",
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				userId, fdsViewObjectDefinition.getObjectDefinitionId(),
+				fdsSortObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				LocalizedMapUtil.getLocalizedMap(
+					"FDSView FDSSort Relationship"),
+				"fdsViewFDSSortRelationship",
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

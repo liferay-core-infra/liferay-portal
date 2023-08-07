@@ -22,6 +22,7 @@ import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.service.test.util.ObjectDefinitionTestUtil;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
@@ -235,13 +236,16 @@ public class ObjectEntryServiceTest {
 				TestPropsValues.getCompanyId(), "accountEntry");
 
 		ObjectRelationship objectRelationship =
-			_objectRelationshipLocalService.addObjectRelationship(
-				TestPropsValues.getUserId(),
-				accountEntryObjectDefinition.getObjectDefinitionId(),
-				_objectDefinition.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"relationship", ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					TestPropsValues.getUserId(),
+					accountEntryObjectDefinition.getObjectDefinitionId(),
+					_objectDefinition.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					"relationship",
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		_objectDefinition.setAccountEntryRestrictedObjectFieldId(
 			objectRelationship.getObjectFieldId2());

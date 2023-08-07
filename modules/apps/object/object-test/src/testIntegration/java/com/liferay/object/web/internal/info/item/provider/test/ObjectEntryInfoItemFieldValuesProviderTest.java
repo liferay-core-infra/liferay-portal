@@ -30,6 +30,7 @@ import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -109,14 +110,15 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 				TestPropsValues.getUserId(),
 				_parentObjectDefinition.getObjectDefinitionId());
 
-		_objectRelationshipLocalService.addObjectRelationship(
-			TestPropsValues.getUserId(),
-			_parentObjectDefinition.getObjectDefinitionId(),
-			_childObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			"oneToManyRelationshipName",
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				TestPropsValues.getUserId(),
+				_parentObjectDefinition.getObjectDefinitionId(),
+				_childObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"oneToManyRelationshipName",
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 	}
 
 	@Test

@@ -40,6 +40,7 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.service.test.util.ObjectDefinitionTestUtil;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.object.system.BaseSystemObjectDefinitionManager;
 import com.liferay.object.system.JaxRsApplicationDescriptor;
 import com.liferay.petra.function.UnsafeConsumer;
@@ -1285,17 +1286,19 @@ public class ObjectDefinitionLocalServiceTest {
 
 		objectDefinition =
 			_objectDefinitionLocalService.enableAccountEntryRestricted(
-				_objectRelationshipLocalService.addObjectRelationship(
-					TestPropsValues.getUserId(),
-					_objectDefinitionLocalService.fetchSystemObjectDefinition(
-						"AccountEntry"
-					).getObjectDefinitionId(),
-					objectDefinition.getObjectDefinitionId(), 0,
-					ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString()),
-					StringUtil.randomId(),
-					ObjectRelationshipConstants.TYPE_ONE_TO_MANY));
+				PublishObjectRelationshipUtil.
+					addObjectRelationshipAndDeployObjectDefinition(
+						TestPropsValues.getUserId(),
+						_objectDefinitionLocalService.
+							fetchSystemObjectDefinition(
+								"AccountEntry"
+							).getObjectDefinitionId(),
+						objectDefinition.getObjectDefinitionId(), 0,
+						ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+						LocalizedMapUtil.getLocalizedMap(
+							RandomTestUtil.randomString()),
+						StringUtil.randomId(),
+						ObjectRelationshipConstants.TYPE_ONE_TO_MANY));
 
 		Assert.assertTrue(
 			objectDefinition.getAccountEntryRestrictedObjectFieldId() > 0);
@@ -1308,19 +1311,20 @@ public class ObjectDefinitionLocalServiceTest {
 			ObjectDefinitionAccountEntryRestrictedException.class,
 			"Custom object definitions can only be restricted by account entry",
 			() -> _objectDefinitionLocalService.enableAccountEntryRestricted(
-				_objectRelationshipLocalService.addObjectRelationship(
-					TestPropsValues.getUserId(),
-					_addCustomObjectDefinition(
-						"Test" + RandomTestUtil.randomString()
-					).getObjectDefinitionId(),
-					_addCustomObjectDefinition(
-						"Test" + RandomTestUtil.randomString()
-					).getObjectDefinitionId(),
-					0, ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString()),
-					StringUtil.randomId(),
-					ObjectRelationshipConstants.TYPE_ONE_TO_MANY)));
+				PublishObjectRelationshipUtil.
+					addObjectRelationshipAndDeployObjectDefinition(
+						TestPropsValues.getUserId(),
+						_addCustomObjectDefinition(
+							"Test" + RandomTestUtil.randomString()
+						).getObjectDefinitionId(),
+						_addCustomObjectDefinition(
+							"Test" + RandomTestUtil.randomString()
+						).getObjectDefinitionId(),
+						0, ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+						LocalizedMapUtil.getLocalizedMap(
+							RandomTestUtil.randomString()),
+						StringUtil.randomId(),
+						ObjectRelationshipConstants.TYPE_ONE_TO_MANY)));
 	}
 
 	@Test
@@ -2088,14 +2092,16 @@ public class ObjectDefinitionLocalServiceTest {
 				objectDefinition2.getObjectDefinitionId());
 
 		ObjectRelationship objectRelationship =
-			_objectRelationshipLocalService.addObjectRelationship(
-				TestPropsValues.getUserId(),
-				objectDefinition1.getObjectDefinitionId(),
-				objectDefinition2.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				StringUtil.randomId(),
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					TestPropsValues.getUserId(),
+					objectDefinition1.getObjectDefinitionId(),
+					objectDefinition2.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					StringUtil.randomId(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		try {
 			objectDefinition2 =

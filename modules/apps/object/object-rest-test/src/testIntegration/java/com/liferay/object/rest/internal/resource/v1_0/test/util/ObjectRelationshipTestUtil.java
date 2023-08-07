@@ -9,6 +9,7 @@ import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectRelationshipLocalServiceUtil;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -25,12 +26,13 @@ public class ObjectRelationshipTestUtil {
 			ObjectDefinition relatedObjectDefinition, long userId, String type)
 		throws Exception {
 
-		return ObjectRelationshipLocalServiceUtil.addObjectRelationship(
-			userId, objectDefinition.getObjectDefinitionId(),
-			relatedObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(), type);
+		return PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				userId, objectDefinition.getObjectDefinitionId(),
+				relatedObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				StringUtil.randomId(), type);
 	}
 
 	public static void relateObjectEntries(

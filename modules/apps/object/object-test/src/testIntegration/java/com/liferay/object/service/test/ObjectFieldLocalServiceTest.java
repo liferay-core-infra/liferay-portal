@@ -55,6 +55,7 @@ import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.service.test.util.ObjectDefinitionTestUtil;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -1390,14 +1391,15 @@ public class ObjectFieldLocalServiceTest {
 				Arrays.asList(
 					_getIntegerObjectField(0, Collections.emptyList())));
 
-		_objectRelationshipLocalService.addObjectRelationship(
-			TestPropsValues.getUserId(),
-			objectDefinition.getObjectDefinitionId(),
-			relatedObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			"oneToManyRelationshipName",
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				TestPropsValues.getUserId(),
+				objectDefinition.getObjectDefinitionId(),
+				relatedObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"oneToManyRelationshipName",
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		_assertReadOnly(
 			invalidDDMScript, invalidReadOnly,
@@ -1414,13 +1416,16 @@ public class ObjectFieldLocalServiceTest {
 			_objectDefinitionLocalService);
 
 		ObjectRelationship objectRelationship =
-			_objectRelationshipLocalService.addObjectRelationship(
-				TestPropsValues.getUserId(),
-				objectDefinition.getObjectDefinitionId(),
-				relatedObjectDefinition.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"relationship", ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					TestPropsValues.getUserId(),
+					objectDefinition.getObjectDefinitionId(),
+					relatedObjectDefinition.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					"relationship",
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectField relationshipObjectField =
 			_objectFieldLocalService.fetchObjectField(
@@ -1481,14 +1486,16 @@ public class ObjectFieldLocalServiceTest {
 		ObjectDefinition objectDefinition2 = _publishCustomObjectDefinition();
 
 		ObjectRelationship objectRelationship =
-			_objectRelationshipLocalService.addObjectRelationship(
-				TestPropsValues.getUserId(),
-				objectDefinition1.getObjectDefinitionId(),
-				objectDefinition2.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				StringUtil.randomId(),
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					TestPropsValues.getUserId(),
+					objectDefinition1.getObjectDefinitionId(),
+					objectDefinition2.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					StringUtil.randomId(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectField objectField = _objectFieldLocalService.updateRequired(
 			objectRelationship.getObjectFieldId2(), true);
@@ -1973,14 +1980,15 @@ public class ObjectFieldLocalServiceTest {
 				Arrays.asList(
 					_getIntegerObjectField(0, Collections.emptyList())));
 
-		_objectRelationshipLocalService.addObjectRelationship(
-			TestPropsValues.getUserId(),
-			objectDefinition1.getObjectDefinitionId(),
-			objectDefinition2.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			"oneToManyRelationshipName",
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				TestPropsValues.getUserId(),
+				objectDefinition1.getObjectDefinitionId(),
+				objectDefinition2.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"oneToManyRelationshipName",
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		_assertReadOnlyTrue(
 			_addReadOnlyAggregationObjectField(

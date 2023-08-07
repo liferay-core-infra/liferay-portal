@@ -18,7 +18,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectEntryLocalServiceUtil;
-import com.liferay.object.service.ObjectRelationshipLocalServiceUtil;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -112,13 +112,15 @@ public class ObjectDefinitionGraphQLTest {
 
 		_childObjectDefinitionName = childObjectDefinition.getShortName();
 
-		ObjectRelationshipLocalServiceUtil.addObjectRelationship(
-			TestPropsValues.getUserId(),
-			_parentObjectDefinition.getObjectDefinitionId(),
-			childObjectDefinition.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			_RELATIONSHIP_NAME, ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		PublishObjectRelationshipUtil.
+			addObjectRelationshipAndDeployObjectDefinition(
+				TestPropsValues.getUserId(),
+				_parentObjectDefinition.getObjectDefinitionId(),
+				childObjectDefinition.getObjectDefinitionId(), 0,
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				_RELATIONSHIP_NAME,
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		_parentObjectDefinition =
 			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(

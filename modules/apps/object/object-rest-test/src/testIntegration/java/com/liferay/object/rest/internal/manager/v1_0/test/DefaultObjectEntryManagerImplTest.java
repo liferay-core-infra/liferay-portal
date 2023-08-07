@@ -64,6 +64,7 @@ import com.liferay.object.service.ObjectFieldService;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectFilterLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.object.service.util.PublishObjectRelationshipUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
@@ -371,14 +372,16 @@ public class DefaultObjectEntryManagerImplTest {
 				).build()));
 
 		ObjectRelationship objectRelationship1 =
-			_objectRelationshipLocalService.addObjectRelationship(
-				_adminUser.getUserId(),
-				_objectDefinition1.getObjectDefinitionId(),
-				_objectDefinition2.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"oneToManyRelationshipName",
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					_adminUser.getUserId(),
+					_objectDefinition1.getObjectDefinitionId(),
+					_objectDefinition2.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					"oneToManyRelationshipName",
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		_addAggregationObjectField(
 			"AVERAGE", "precisionDecimalObjectFieldName",
@@ -423,14 +426,16 @@ public class DefaultObjectEntryManagerImplTest {
 				_companyId, "AccountEntry");
 
 		ObjectRelationship objectRelationship2 =
-			_objectRelationshipLocalService.addObjectRelationship(
-				_adminUser.getUserId(),
-				accountEntryObjectDefinition.getObjectDefinitionId(),
-				_objectDefinition3.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"oneToManyRelationshipName",
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					_adminUser.getUserId(),
+					accountEntryObjectDefinition.getObjectDefinitionId(),
+					_objectDefinition3.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					"oneToManyRelationshipName",
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		_objectDefinition3.setAccountEntryRestrictedObjectFieldId(
 			objectRelationship2.getObjectFieldId2());
@@ -991,14 +996,16 @@ public class DefaultObjectEntryManagerImplTest {
 		// Relationship type cascade
 
 		ObjectRelationship objectRelationship =
-			_objectRelationshipLocalService.addObjectRelationship(
-				_adminUser.getUserId(),
-				objectDefinition1.getObjectDefinitionId(),
-				objectDefinition2.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				"oneToManyRelationship",
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					_adminUser.getUserId(),
+					objectDefinition1.getObjectDefinitionId(),
+					objectDefinition2.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					"oneToManyRelationship",
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		_addRelatedObjectEntries(
 			objectDefinition1, objectDefinition2, "externalReferenceCode1",
@@ -1883,28 +1890,32 @@ public class DefaultObjectEntryManagerImplTest {
 				).build()));
 
 		ObjectRelationship objectRelationship1 =
-			_objectRelationshipLocalService.addObjectRelationship(
-				_adminUser.getUserId(),
-				_objectDefinition3.getObjectDefinitionId(),
-				childObjectDefinition.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				StringUtil.randomId(),
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					_adminUser.getUserId(),
+					_objectDefinition3.getObjectDefinitionId(),
+					childObjectDefinition.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					StringUtil.randomId(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectDefinition accountEntryObjectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				_companyId, "AccountEntry");
 
 		ObjectRelationship objectRelationship2 =
-			_objectRelationshipLocalService.addObjectRelationship(
-				_adminUser.getUserId(),
-				accountEntryObjectDefinition.getObjectDefinitionId(),
-				childObjectDefinition.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				StringUtil.randomId(),
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+			PublishObjectRelationshipUtil.
+				addObjectRelationshipAndDeployObjectDefinition(
+					_adminUser.getUserId(),
+					accountEntryObjectDefinition.getObjectDefinitionId(),
+					childObjectDefinition.getObjectDefinitionId(), 0,
+					ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					StringUtil.randomId(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		childObjectDefinition.setAccountEntryRestrictedObjectFieldId(
 			objectRelationship2.getObjectFieldId2());

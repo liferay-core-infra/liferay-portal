@@ -16,7 +16,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Daniel Kocsis
  */
 @ProviderType
-public interface ImportController extends ExportImportController {
+public interface ImportController {
 
 	public void importDataDeletions(
 			ExportImportConfiguration exportImportConfiguration, File file)

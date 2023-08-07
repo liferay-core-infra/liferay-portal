@@ -15,7 +15,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Daniel Kocsis
  */
 @ProviderType
-public interface ExportController extends ExportImportController {
+public interface ExportController {
 
 	public File export(ExportImportConfiguration exportImportConfiguration)
 		throws Exception;

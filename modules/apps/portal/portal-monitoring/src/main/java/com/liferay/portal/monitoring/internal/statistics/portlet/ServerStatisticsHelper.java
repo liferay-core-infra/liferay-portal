@@ -22,8 +22,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Michael C. Han
  * @author Brian Wing Shun Chan
  */
-@Component(service = ServerStatistics.class)
-public class ServerStatistics {
+@Component(service = ServerStatisticsHelper.class)
+public class ServerStatisticsHelper {
 
 	public Set<Long> getCompanyIds() {
 		return _companyStatisticsByCompanyId.keySet();

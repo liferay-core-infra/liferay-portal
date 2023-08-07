@@ -27,7 +27,6 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactoryUtil;
 import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfigurationConstants;
-import com.liferay.exportimport.kernel.controller.ExportImportController;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
@@ -1232,9 +1231,6 @@ public class AssetPublisherExportImportTest
 	@Inject
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
-
-	@Inject(filter = "model.class.name=com.liferay.portal.kernel.model.Layout")
-	private ExportImportController _exportImportController;
 
 	@Inject
 	private ExportImportLocalService _exportImportLocalService;

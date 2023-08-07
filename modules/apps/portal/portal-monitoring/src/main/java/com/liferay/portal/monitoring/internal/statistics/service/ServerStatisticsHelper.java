@@ -13,8 +13,8 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Michael C. Han
  */
-@Component(service = ServerStatistics.class)
-public class ServerStatistics {
+@Component(service = ServerStatisticsHelper.class)
+public class ServerStatisticsHelper {
 
 	public long getAverageTime(
 		String className, String methodName, String[] parameterTypes) {

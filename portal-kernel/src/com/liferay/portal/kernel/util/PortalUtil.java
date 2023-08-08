@@ -1870,10 +1870,6 @@ public class PortalUtil {
 		_portal.resetCDNHosts();
 	}
 
-	public static String resetPortletParameters(String url, String portletId) {
-		return _portal.resetPortletParameters(url, portletId);
-	}
-
 	public static void sendError(
 			Exception exception, ActionRequest actionRequest,
 			ActionResponse actionResponse)

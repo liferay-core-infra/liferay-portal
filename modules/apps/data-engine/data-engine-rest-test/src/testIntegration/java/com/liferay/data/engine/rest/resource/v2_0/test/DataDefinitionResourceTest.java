@@ -350,7 +350,7 @@ public class DataDefinitionResourceTest
 
 		// MustSetFields
 
-		_testDataDefinitionContentType.setAllowEmptyDataDefinition(false);
+		DataDefinitionTestUtil.setAllowEmptyDataDefinition(false);
 
 		try {
 			dataDefinitionResource.postDataDefinitionByContentType(
@@ -370,7 +370,7 @@ public class DataDefinitionResourceTest
 				problem.getType());
 		}
 
-		_testDataDefinitionContentType.setAllowEmptyDataDefinition(true);
+		DataDefinitionTestUtil.setAllowEmptyDataDefinition(true);
 
 		dataDefinitionResource.postDataDefinitionByContentType(
 			"test",
@@ -960,8 +960,5 @@ public class DataDefinitionResourceTest
 
 	@Inject(type = Portal.class)
 	private Portal _portal;
-
-	@Inject
-	private TestDataDefinitionContentType _testDataDefinitionContentType;
 
 }

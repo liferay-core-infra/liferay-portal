@@ -181,4 +181,14 @@ public class DataDefinitionTestUtil {
 		return dataDefinition;
 	}
 
+	public static boolean getAllowEmptyDataDefinition(){
+		return _allowEmptyDataDefinition;
+	}
+
+	public static void setAllowEmptyDataDefinition(boolean allowEmptyDataDefinition) {
+		_allowEmptyDataDefinition = allowEmptyDataDefinition;
+	}
+
+	private static boolean _allowEmptyDataDefinition = true;
+
 }

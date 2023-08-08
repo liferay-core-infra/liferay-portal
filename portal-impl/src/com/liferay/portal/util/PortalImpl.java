@@ -93,7 +93,6 @@ import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletMode;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.LiferayRenderRequest;
 import com.liferay.portal.kernel.portlet.LiferayRenderResponse;
 import com.liferay.portal.kernel.portlet.LiferayStateAwareResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -779,16 +778,6 @@ public class PortalImpl implements Portal {
 		}
 
 		return url;
-	}
-
-	@Override
-	public void clearRequestParameters(RenderRequest renderRequest) {
-		LiferayRenderRequest liferayRenderRequest =
-			(LiferayRenderRequest)renderRequest;
-
-		if (liferayRenderRequest.isTriggeredByActionURL()) {
-			liferayRenderRequest.clearRenderParameters();
-		}
 	}
 
 	@Override

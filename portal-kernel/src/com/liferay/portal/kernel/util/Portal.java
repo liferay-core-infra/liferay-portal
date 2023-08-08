@@ -1130,8 +1130,6 @@ public interface Portal {
 
 	public void resetCDNHosts();
 
-	public String resetPortletParameters(String url, String portletId);
-
 	public void sendError(
 			Exception exception, ActionRequest actionRequest,
 			ActionResponse actionResponse)

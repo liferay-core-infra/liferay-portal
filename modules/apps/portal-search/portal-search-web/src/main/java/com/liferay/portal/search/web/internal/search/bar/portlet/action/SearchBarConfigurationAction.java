@@ -91,9 +91,12 @@ public class SearchBarConfigurationAction extends DefaultConfigurationAction {
 		_getSearchBarPortletInstanceConfiguration(
 			PortletDisplay portletDisplay) {
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		try {
-			return portletDisplay.getPortletInstanceConfiguration(
-				SearchBarPortletInstanceConfiguration.class);
+			return configurationProvider.getPortletInstanceConfiguration(
+				SearchBarPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 		}
 		catch (ConfigurationException configurationException) {
 			throw new RuntimeException(configurationException);

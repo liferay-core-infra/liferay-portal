@@ -17,6 +17,7 @@ import com.liferay.portal.configuration.metatype.util.ParameterMapUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -40,11 +41,13 @@ import javax.servlet.http.HttpServletRequest;
 public class KBArticleConfigurationDisplayContext {
 
 	public KBArticleConfigurationDisplayContext(
-		HttpServletRequest httpServletRequest, ItemSelector itemSelector,
+		HttpServletRequest httpServletRequest,
+		ConfigurationProvider configurationProvider, ItemSelector itemSelector,
 		KBArticleService kbArticleService,
 		LiferayPortletResponse liferayPortletResponse, Portal portal) {
 
 		_httpServletRequest = httpServletRequest;
+		_configurationProvider = configurationProvider;
 		_itemSelector = itemSelector;
 		_kbArticleService = kbArticleService;
 		_liferayPortletResponse = liferayPortletResponse;
@@ -223,8 +226,9 @@ public class KBArticleConfigurationDisplayContext {
 		_kbArticlePortletInstanceConfiguration =
 			ParameterMapUtil.setParameterMap(
 				KBArticlePortletInstanceConfiguration.class,
-				portletDisplay.getPortletInstanceConfiguration(
-					KBArticlePortletInstanceConfiguration.class),
+				_configurationProvider.getPortletInstanceConfiguration(
+					KBArticlePortletInstanceConfiguration.class,
+					themeDisplay.getLayout(), portletDisplay.getPortletId()),
 				_httpServletRequest.getParameterMap(), "preferences--", "--");
 
 		return _kbArticlePortletInstanceConfiguration;
@@ -246,6 +250,7 @@ public class KBArticleConfigurationDisplayContext {
 		return portletURL.toString();
 	}
 
+	private final ConfigurationProvider _configurationProvider;
 	private final HttpServletRequest _httpServletRequest;
 	private final ItemSelector _itemSelector;
 	private KBArticlePortletInstanceConfiguration

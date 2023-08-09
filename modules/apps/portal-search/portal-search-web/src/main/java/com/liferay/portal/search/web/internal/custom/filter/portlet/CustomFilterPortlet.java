@@ -6,6 +6,7 @@
 package com.liferay.portal.search.web.internal.custom.filter.portlet;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -90,6 +91,9 @@ public class CustomFilterPortlet extends MVCPortlet {
 	}
 
 	@Reference
+	protected ConfigurationProvider configurationProvider;
+
+	@Reference
 	protected Portal portal;
 
 	@Reference
@@ -110,6 +114,8 @@ public class CustomFilterPortlet extends MVCPortlet {
 		SearchRequest searchRequest = searchResponse.getRequest();
 
 		return CustomFilterDisplayContextBuilder.builder(
+		).configurationProvider(
+			configurationProvider
 		).customHeading(
 			customFilterPortletPreferences.getCustomHeading()
 		).disabled(

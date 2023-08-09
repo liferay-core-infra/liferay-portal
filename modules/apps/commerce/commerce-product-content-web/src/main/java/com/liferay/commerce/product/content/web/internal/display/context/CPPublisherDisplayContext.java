@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.search.Field;
@@ -81,6 +82,7 @@ public class CPPublisherDisplayContext extends BaseCPPublisherDisplayContext {
 			AMImageHTMLTagFactory amImageHTMLTagFactory,
 			CommerceCatalogDefaultImage commerceCatalogDefaultImage,
 			CommerceMediaResolver commerceMediaResolver,
+			ConfigurationProvider configurationProvider,
 			CPAttachmentFileEntryLocalService cpAttachmentFileEntryLocalService,
 			CPContentListEntryRendererRegistry contentListEntryRendererRegistry,
 			CPContentListRendererRegistry cpContentListRendererRegistry,
@@ -98,8 +100,9 @@ public class CPPublisherDisplayContext extends BaseCPPublisherDisplayContext {
 		throws PortalException {
 
 		super(
-			contentListEntryRendererRegistry, cpContentListRendererRegistry,
-			cpPublisherWebHelper, cpTypeRegistry, httpServletRequest);
+			configurationProvider, contentListEntryRendererRegistry,
+			cpContentListRendererRegistry, cpPublisherWebHelper, cpTypeRegistry,
+			httpServletRequest);
 
 		_amImageHTMLTagFactory = amImageHTMLTagFactory;
 		_commerceCatalogDefaultImage = commerceCatalogDefaultImage;

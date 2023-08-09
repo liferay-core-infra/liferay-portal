@@ -14,6 +14,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.util.RangeParserUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -33,6 +34,7 @@ public class CPPriceRangeFacetsDisplayContext {
 
 	public CPPriceRangeFacetsDisplayContext(
 			CommercePriceFormatter commercePriceFormatter,
+			ConfigurationProvider configurationProvider,
 			RenderRequest renderRequest, Facet facet,
 			String paginationStartParameterName,
 			PortletSharedSearchResponse portletSharedSearchResponse)
@@ -50,8 +52,9 @@ public class CPPriceRangeFacetsDisplayContext {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_cpPriceRangeFacetsPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CPPriceRangeFacetsPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CPPriceRangeFacetsPortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public String getCurrentCommerceCurrencySymbol() throws PortalException {

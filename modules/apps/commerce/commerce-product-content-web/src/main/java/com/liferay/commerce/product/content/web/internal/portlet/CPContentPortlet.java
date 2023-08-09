@@ -13,6 +13,7 @@ import com.liferay.commerce.product.content.web.internal.display.context.CPConte
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -63,7 +64,8 @@ public class CPContentPortlet extends MVCPortlet {
 			CPContentConfigurationDisplayContext
 				cpContentConfigurationDisplayContext =
 					new CPContentConfigurationDisplayContext(
-						_portal.getHttpServletRequest(renderRequest));
+						_portal.getHttpServletRequest(renderRequest),
+						_configurationProvider);
 
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -84,6 +86,9 @@ public class CPContentPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CPContentPortlet.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPContentHelper _cpContentHelper;

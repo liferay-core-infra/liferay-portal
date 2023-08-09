@@ -15,6 +15,7 @@ import com.liferay.commerce.product.url.CPFriendlyURL;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.Portal;
@@ -43,8 +44,8 @@ public class CPAssetCategoriesNavigationConfigurationAction
 					new CPAssetCategoriesNavigationDisplayContext(
 						httpServletRequest, _assetCategoryService,
 						_assetVocabularyService, _commerceMediaResolver,
-						_cpAttachmentFileEntryService, _cpFriendlyURL,
-						_friendlyURLEntryLocalService, _portal);
+						_configurationProvider, _cpAttachmentFileEntryService,
+						_cpFriendlyURL, _friendlyURLEntryLocalService, _portal);
 
 			httpServletRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -68,6 +69,9 @@ public class CPAssetCategoriesNavigationConfigurationAction
 
 	@Reference
 	private CommerceMediaResolver _commerceMediaResolver;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPAttachmentFileEntryService _cpAttachmentFileEntryService;

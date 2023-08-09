@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.web.internal.BaseFacetDisplayContextTestCase;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.ScopeSearchFacetDisplayContextBuilder;
-import com.liferay.portal.search.web.internal.site.facet.configuration.SiteFacetPortletInstanceConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.ArrayList;
@@ -50,9 +49,7 @@ public class ScopeSearchFacetDisplayContextTest
 
 		ScopeSearchFacetDisplayContextBuilder
 			scopeSearchFacetDisplayContextBuilder =
-				new ScopeSearchFacetDisplayContextBuilder(
-					getRenderRequest(
-						SiteFacetPortletInstanceConfiguration.class));
+				new ScopeSearchFacetDisplayContextBuilder(getRenderRequest());
 
 		scopeSearchFacetDisplayContextBuilder.setFacet(facet);
 		scopeSearchFacetDisplayContextBuilder.setFrequenciesVisible(true);

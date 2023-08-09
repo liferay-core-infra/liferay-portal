@@ -507,20 +507,28 @@ public class CommerceOrderContentDisplayContext {
 		else if (portletId.equals(
 					CommercePortletKeys.COMMERCE_OPEN_ORDER_CONTENT)) {
 
+			ThemeDisplay themeDisplay = _portletDisplay.getThemeDisplay();
+
 			OpenCommerceOrderContentPortletInstanceConfiguration
 				openCommerceOrderContentPortletInstanceConfiguration =
-					_portletDisplay.getPortletInstanceConfiguration(
+					_configurationProvider.getPortletInstanceConfiguration(
 						OpenCommerceOrderContentPortletInstanceConfiguration.
-							class);
+							class,
+						themeDisplay.getLayout(),
+						_portletDisplay.getPortletId());
 
 			return openCommerceOrderContentPortletInstanceConfiguration.
 				displayStyle();
 		}
 		else if (portletId.equals(CommercePortletKeys.COMMERCE_ORDER_CONTENT)) {
+			ThemeDisplay themeDisplay = _portletDisplay.getThemeDisplay();
+
 			CommerceOrderContentPortletInstanceConfiguration
 				commerceOrderContentPortletInstanceConfiguration =
-					_portletDisplay.getPortletInstanceConfiguration(
-						CommerceOrderContentPortletInstanceConfiguration.class);
+					_configurationProvider.getPortletInstanceConfiguration(
+						CommerceOrderContentPortletInstanceConfiguration.class,
+						themeDisplay.getLayout(),
+						_portletDisplay.getPortletId());
 
 			return commerceOrderContentPortletInstanceConfiguration.
 				displayStyle();
@@ -538,20 +546,28 @@ public class CommerceOrderContentDisplayContext {
 		else if (portletId.equals(
 					CommercePortletKeys.COMMERCE_OPEN_ORDER_CONTENT)) {
 
+			ThemeDisplay themeDisplay = _portletDisplay.getThemeDisplay();
+
 			OpenCommerceOrderContentPortletInstanceConfiguration
 				openCommerceOrderContentPortletInstanceConfiguration =
-					_portletDisplay.getPortletInstanceConfiguration(
+					_configurationProvider.getPortletInstanceConfiguration(
 						OpenCommerceOrderContentPortletInstanceConfiguration.
-							class);
+							class,
+						themeDisplay.getLayout(),
+						_portletDisplay.getPortletId());
 
 			return openCommerceOrderContentPortletInstanceConfiguration.
 				displayStyleGroupId();
 		}
 		else if (portletId.equals(CommercePortletKeys.COMMERCE_ORDER_CONTENT)) {
+			ThemeDisplay themeDisplay = _portletDisplay.getThemeDisplay();
+
 			CommerceOrderContentPortletInstanceConfiguration
 				commerceOrderContentPortletInstanceConfiguration =
-					_portletDisplay.getPortletInstanceConfiguration(
-						CommerceOrderContentPortletInstanceConfiguration.class);
+					_configurationProvider.getPortletInstanceConfiguration(
+						CommerceOrderContentPortletInstanceConfiguration.class,
+						themeDisplay.getLayout(),
+						_portletDisplay.getPortletId());
 
 			return commerceOrderContentPortletInstanceConfiguration.
 				displayStyleGroupId();
@@ -1156,10 +1172,13 @@ public class CommerceOrderContentDisplayContext {
 	}
 
 	public boolean isShowCommerceOrderCreateTime() throws PortalException {
+		ThemeDisplay themeDisplay = _portletDisplay.getThemeDisplay();
+
 		CommerceOrderContentPortletInstanceConfiguration
 			commerceOrderContentPortletInstanceConfiguration =
-				_portletDisplay.getPortletInstanceConfiguration(
-					CommerceOrderContentPortletInstanceConfiguration.class);
+				_configurationProvider.getPortletInstanceConfiguration(
+					CommerceOrderContentPortletInstanceConfiguration.class,
+					themeDisplay.getLayout(), _portletDisplay.getPortletId());
 
 		return commerceOrderContentPortletInstanceConfiguration.
 			showCommerceOrderCreateTime();

@@ -7,6 +7,7 @@ package com.liferay.site.navigation.language.web.internal.display.context;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -47,8 +48,9 @@ public class SiteNavigationLanguageDisplayContext {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_siteNavigationLanguagePortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				SiteNavigationLanguagePortletInstanceConfiguration.class);
+			ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				SiteNavigationLanguagePortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public List<KeyValuePair> getAvailableLanguageIdKVPs() {

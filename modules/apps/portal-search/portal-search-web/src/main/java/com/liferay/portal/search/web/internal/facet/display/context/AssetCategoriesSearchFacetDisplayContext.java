@@ -39,8 +39,9 @@ public class AssetCategoriesSearchFacetDisplayContext
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_categoryFacetPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CategoryFacetPortletInstanceConfiguration.class);
+			ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				CategoryFacetPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 
 		CategoryFacetFieldConfiguration categoryFacetFieldConfiguration =
 			ConfigurationProviderUtil.getSystemConfiguration(

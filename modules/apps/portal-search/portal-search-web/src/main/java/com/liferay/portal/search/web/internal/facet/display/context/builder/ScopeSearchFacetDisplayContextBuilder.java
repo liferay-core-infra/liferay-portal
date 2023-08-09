@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
@@ -48,8 +49,9 @@ public class ScopeSearchFacetDisplayContextBuilder {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_siteFacetPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				SiteFacetPortletInstanceConfiguration.class);
+			ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				SiteFacetPortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public ScopeSearchFacetDisplayContext build() {

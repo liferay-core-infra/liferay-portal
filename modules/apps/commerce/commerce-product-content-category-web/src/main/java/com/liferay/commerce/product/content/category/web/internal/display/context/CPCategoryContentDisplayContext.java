@@ -17,6 +17,7 @@ import com.liferay.commerce.product.service.CPAttachmentFileEntryService;
 import com.liferay.commerce.util.CommerceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
@@ -37,6 +38,7 @@ public class CPCategoryContentDisplayContext {
 			HttpServletRequest httpServletRequest,
 			AssetCategoryService assetCategoryService,
 			CommerceMediaResolver commerceMediaResolver,
+			ConfigurationProvider configurationProvider,
 			CPAttachmentFileEntryService cpAttachmentFileEntryService,
 			Portal portal)
 		throws ConfigurationException {
@@ -54,8 +56,9 @@ public class CPCategoryContentDisplayContext {
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_cpCategoryContentPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CPCategoryContentPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CPCategoryContentPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public AssetCategory getAssetCategory() throws PortalException {

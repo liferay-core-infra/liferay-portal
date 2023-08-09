@@ -9,6 +9,7 @@ import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.web.internal.configuration.KBSearchPortletInstanceConfiguration;
 import com.liferay.knowledge.base.web.internal.configuration.KBSectionPortletInstanceConfiguration;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -71,8 +72,10 @@ public class ViewKBArticleMVCRenderCommand implements MVCRenderCommand {
 			try {
 				KBSearchPortletInstanceConfiguration
 					kbSearchPortletInstanceConfiguration =
-						portletDisplay.getPortletInstanceConfiguration(
-							KBSearchPortletInstanceConfiguration.class);
+						_configurationProvider.getPortletInstanceConfiguration(
+							KBSearchPortletInstanceConfiguration.class,
+							themeDisplay.getLayout(),
+							portletDisplay.getPortletId());
 
 				httpServletRequest.setAttribute(
 					"init.jsp-enableKBArticleDescription",
@@ -88,8 +91,10 @@ public class ViewKBArticleMVCRenderCommand implements MVCRenderCommand {
 			try {
 				KBSectionPortletInstanceConfiguration
 					kbSectionPortletInstanceConfiguration =
-						portletDisplay.getPortletInstanceConfiguration(
-							KBSectionPortletInstanceConfiguration.class);
+						_configurationProvider.getPortletInstanceConfiguration(
+							KBSectionPortletInstanceConfiguration.class,
+							themeDisplay.getLayout(),
+							portletDisplay.getPortletId());
 
 				httpServletRequest.setAttribute(
 					"init.jsp-enableKBArticleDescription",
@@ -112,6 +117,9 @@ public class ViewKBArticleMVCRenderCommand implements MVCRenderCommand {
 
 		return portletDisplay.getRootPortletId();
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private Portal _portal;

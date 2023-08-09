@@ -70,8 +70,9 @@ public class SearchBarPortletDisplayContextFactory {
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_searchBarPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				SearchBarPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				SearchBarPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public SearchBarPortletDisplayContext create(
@@ -275,9 +276,12 @@ public class SearchBarPortletDisplayContextFactory {
 		getSearchBarPortletInstanceConfiguration(
 			PortletDisplay portletDisplay) {
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		try {
-			return portletDisplay.getPortletInstanceConfiguration(
-				SearchBarPortletInstanceConfiguration.class);
+			return _configurationProvider.getPortletInstanceConfiguration(
+				SearchBarPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 		}
 		catch (ConfigurationException configurationException) {
 			throw new RuntimeException(configurationException);

@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.search.configuration.CategoryFacetFieldConfiguration;
 import com.liferay.portal.search.web.internal.BaseFacetDisplayContextTestCase;
-import com.liferay.portal.search.web.internal.category.facet.configuration.CategoryFacetPortletInstanceConfiguration;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.AssetCategoriesSearchFacetDisplayContextBuilder;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.AssetCategoryPermissionChecker;
 
@@ -498,8 +497,7 @@ public abstract class BaseCategoriesSearchFacetDisplayContextTestCase
 		Portal portal = Mockito.mock(Portal.class);
 
 		Mockito.doReturn(
-			getHttpServletRequest(
-				CategoryFacetPortletInstanceConfiguration.class)
+			getHttpServletRequest()
 		).when(
 			portal
 		).getHttpServletRequest(

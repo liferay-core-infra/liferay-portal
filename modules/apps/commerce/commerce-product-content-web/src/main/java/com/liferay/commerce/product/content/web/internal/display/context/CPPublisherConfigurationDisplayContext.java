@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
@@ -73,6 +74,7 @@ public class CPPublisherConfigurationDisplayContext
 	public CPPublisherConfigurationDisplayContext(
 			AssetCategoryLocalService assetCategoryLocalService,
 			AssetTagLocalService assetTagLocalService,
+			ConfigurationProvider configurationProvider,
 			CPContentListEntryRendererRegistry contentListEntryRendererRegistry,
 			CPContentListRendererRegistry cpContentListRendererRegistry,
 			CPDataSourceRegistry cpDataSourceRegistry,
@@ -84,8 +86,9 @@ public class CPPublisherConfigurationDisplayContext
 		throws PortalException {
 
 		super(
-			contentListEntryRendererRegistry, cpContentListRendererRegistry,
-			cpPublisherWebHelper, cpTypeRegistry, httpServletRequest);
+			configurationProvider, contentListEntryRendererRegistry,
+			cpContentListRendererRegistry, cpPublisherWebHelper, cpTypeRegistry,
+			httpServletRequest);
 
 		_assetCategoryLocalService = assetCategoryLocalService;
 		_assetTagLocalService = assetTagLocalService;

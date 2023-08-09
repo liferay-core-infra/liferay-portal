@@ -7,6 +7,7 @@ package com.liferay.portal.search.web.internal.custom.filter.display.context.bui
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -39,6 +40,14 @@ public class CustomFilterDisplayContextBuilder {
 		customFilterDisplayContext.setSearchURL(_getURLCurrentPath());
 
 		return customFilterDisplayContext;
+	}
+
+	public CustomFilterDisplayContextBuilder configurationProvider(
+		ConfigurationProvider configurationProvider) {
+
+		_configurationProvider = configurationProvider;
+
+		return this;
 	}
 
 	public CustomFilterDisplayContextBuilder customHeading(
@@ -117,8 +126,9 @@ public class CustomFilterDisplayContextBuilder {
 
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
-		return portletDisplay.getPortletInstanceConfiguration(
-			CustomFilterPortletInstanceConfiguration.class);
+		return _configurationProvider.getPortletInstanceConfiguration(
+			CustomFilterPortletInstanceConfiguration.class,
+			_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	protected long getDisplayStyleGroupId() throws ConfigurationException {
@@ -184,6 +194,7 @@ public class CustomFilterDisplayContextBuilder {
 		return HttpComponentsUtil.getPath(_themeDisplay.getURLCurrent());
 	}
 
+	private ConfigurationProvider _configurationProvider;
 	private String _customHeading;
 	private boolean _disabled;
 	private String _filterField;

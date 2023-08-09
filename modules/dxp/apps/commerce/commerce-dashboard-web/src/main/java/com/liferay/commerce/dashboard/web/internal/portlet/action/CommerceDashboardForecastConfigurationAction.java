@@ -10,6 +10,7 @@ import com.liferay.commerce.dashboard.web.internal.constants.CommerceDashboardPo
 import com.liferay.commerce.dashboard.web.internal.display.context.CommerceDashboardForecastDisplayContext;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -52,7 +53,7 @@ public class CommerceDashboardForecastConfigurationAction
 				commerceDashboardForecastDisplayContext =
 					new CommerceDashboardForecastDisplayContext(
 						_accountEntryModelResourcePermission,
-						httpServletRequest);
+						httpServletRequest, _configurationProvider);
 
 			httpServletRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -94,5 +95,8 @@ public class CommerceDashboardForecastConfigurationAction
 	)
 	private volatile ModelResourcePermission<AccountEntry>
 		_accountEntryModelResourcePermission;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 }

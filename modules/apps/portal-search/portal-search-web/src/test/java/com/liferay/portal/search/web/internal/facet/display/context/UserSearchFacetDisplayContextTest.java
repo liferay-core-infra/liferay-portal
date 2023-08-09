@@ -8,7 +8,6 @@ package com.liferay.portal.search.web.internal.facet.display.context;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.search.web.internal.BaseFacetDisplayContextTestCase;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.UserSearchFacetDisplayContextBuilder;
-import com.liferay.portal.search.web.internal.user.facet.configuration.UserFacetPortletInstanceConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.ClassRule;
@@ -39,9 +38,7 @@ public class UserSearchFacetDisplayContextTest
 
 		UserSearchFacetDisplayContextBuilder
 			userSearchFacetDisplayContextBuilder =
-				new UserSearchFacetDisplayContextBuilder(
-					getRenderRequest(
-						UserFacetPortletInstanceConfiguration.class));
+				new UserSearchFacetDisplayContextBuilder(getRenderRequest());
 
 		userSearchFacetDisplayContextBuilder.setFacet(facet);
 		userSearchFacetDisplayContextBuilder.setFrequenciesVisible(true);

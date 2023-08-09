@@ -11,6 +11,7 @@ import com.liferay.commerce.product.content.search.web.internal.display.context.
 import com.liferay.commerce.product.display.context.helper.CPRequestHelper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -46,8 +47,8 @@ public class CPPriceRangeFacetsConfigurationAction
 		try {
 			CPPriceRangeFacetsDisplayContext cpPriceRangeFacetsDisplayContext =
 				new CPPriceRangeFacetsDisplayContext(
-					_commercePriceFormatter, cpRequestHelper.getRenderRequest(),
-					null,
+					_commercePriceFormatter, _configurationProvider,
+					cpRequestHelper.getRenderRequest(), null,
 					_getPaginationStartParameterName(
 						portletSharedSearchResponse),
 					portletSharedSearchResponse);
@@ -79,6 +80,9 @@ public class CPPriceRangeFacetsConfigurationAction
 
 	@Reference
 	private CommercePriceFormatter _commercePriceFormatter;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private PortletSharedSearchRequest _portletSharedSearchRequest;

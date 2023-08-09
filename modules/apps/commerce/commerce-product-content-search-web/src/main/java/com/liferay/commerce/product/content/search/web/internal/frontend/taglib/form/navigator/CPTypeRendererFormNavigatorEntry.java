@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -87,8 +88,10 @@ public class CPTypeRendererFormNavigatorEntry
 		try {
 			CPSearchResultsPortletInstanceConfiguration
 				cpSearchResultsPortletInstanceConfiguration =
-					portletDisplay.getPortletInstanceConfiguration(
-						CPSearchResultsPortletInstanceConfiguration.class);
+					_configurationProvider.getPortletInstanceConfiguration(
+						CPSearchResultsPortletInstanceConfiguration.class,
+						themeDisplay.getLayout(),
+						portletDisplay.getPortletId());
 
 			String selectionStyle =
 				cpSearchResultsPortletInstanceConfiguration.selectionStyle();
@@ -106,6 +109,9 @@ public class CPTypeRendererFormNavigatorEntry
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CPTypeRendererFormNavigatorEntry.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private Language _language;

@@ -17,6 +17,7 @@ import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.util.CommerceAccountHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Query;
@@ -148,8 +149,9 @@ public class CPSearchResultsPortletSharedSearchContributor
 
 		CPSearchResultsPortletInstanceConfiguration
 			cpSearchResultsPortletInstanceConfiguration =
-				portletDisplay.getPortletInstanceConfiguration(
-					CPSearchResultsPortletInstanceConfiguration.class);
+				_configurationProvider.getPortletInstanceConfiguration(
+					CPSearchResultsPortletInstanceConfiguration.class,
+					themeDisplay.getLayout(), portletDisplay.getPortletId());
 
 		_paginate(
 			cpSearchResultsPortletInstanceConfiguration,
@@ -208,6 +210,9 @@ public class CPSearchResultsPortletSharedSearchContributor
 
 	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private Portal _portal;

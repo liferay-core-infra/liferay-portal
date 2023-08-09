@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
@@ -163,6 +164,7 @@ public class AssetPublisherDisplayContext {
 			AssetPublisherHelper assetPublisherHelper,
 			AssetPublisherWebConfiguration assetPublisherWebConfiguration,
 			AssetPublisherWebHelper assetPublisherWebHelper,
+			ConfigurationProvider configurationProvider,
 			InfoItemServiceRegistry infoItemServiceRegistry,
 			ItemSelector itemSelector, Portal portal,
 			PortletRequest portletRequest, PortletResponse portletResponse,
@@ -195,8 +197,9 @@ public class AssetPublisherDisplayContext {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_assetPublisherPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				AssetPublisherPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				AssetPublisherPortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 
 		_httpServletRequest = portal.getHttpServletRequest(portletRequest);
 	}

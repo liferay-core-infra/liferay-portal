@@ -144,9 +144,10 @@ public class AssetPublisherConfigurationAction
 				assetListEntrySegmentsEntryRelLocalService,
 				assetPublisherCustomizer, assetPublisherHelper,
 				assetPublisherWebConfiguration, assetPublisherWebHelper,
-				infoItemServiceRegistry, itemSelector, portal, renderRequest,
-				renderResponse, renderRequest.getPreferences(),
-				requestContextMapper, segmentsEntryRetriever);
+				configurationProvider, infoItemServiceRegistry, itemSelector,
+				portal, renderRequest, renderResponse,
+				renderRequest.getPreferences(), requestContextMapper,
+				segmentsEntryRetriever);
 
 		httpServletRequest.setAttribute(
 			AssetPublisherWebKeys.ASSET_PUBLISHER_DISPLAY_CONTEXT,
@@ -483,8 +484,9 @@ public class AssetPublisherConfigurationAction
 
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
-		return portletDisplay.getPortletInstanceConfiguration(
-			AssetPublisherPortletInstanceConfiguration.class);
+		return configurationProvider.getPortletInstanceConfiguration(
+			AssetPublisherPortletInstanceConfiguration.class,
+			themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	private String[] _getClassTypeIds(

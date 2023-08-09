@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -283,8 +284,9 @@ public class AssetPublisherPortlet extends MVCPortlet {
 					assetPublisherCustomizerRegistry.
 						getAssetPublisherCustomizer(rootPortletId),
 					assetPublisherHelper, assetPublisherWebConfiguration,
-					assetPublisherWebHelper, infoItemServiceRegistry,
-					itemSelector, portal, resourceRequest, resourceResponse,
+					assetPublisherWebHelper, configurationProvider,
+					infoItemServiceRegistry, itemSelector, portal,
+					resourceRequest, resourceResponse,
 					resourceRequest.getPreferences(), requestContextMapper,
 					segmentsEntryRetriever);
 
@@ -403,10 +405,10 @@ public class AssetPublisherPortlet extends MVCPortlet {
 					assetPublisherCustomizerRegistry.
 						getAssetPublisherCustomizer(rootPortletId),
 					assetPublisherHelper, assetPublisherWebConfiguration,
-					assetPublisherWebHelper, infoItemServiceRegistry,
-					itemSelector, portal, renderRequest, renderResponse,
-					portletPreferences, requestContextMapper,
-					segmentsEntryRetriever);
+					assetPublisherWebHelper, configurationProvider,
+					infoItemServiceRegistry, itemSelector, portal,
+					renderRequest, renderResponse, portletPreferences,
+					requestContextMapper, segmentsEntryRetriever);
 
 			renderRequest.setAttribute(
 				AssetPublisherWebKeys.ASSET_PUBLISHER_DISPLAY_CONTEXT,
@@ -472,6 +474,9 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 	@Reference
 	protected AssetRSSHelper assetRSSHelper;
+
+	@Reference
+	protected ConfigurationProvider configurationProvider;
 
 	@Reference
 	protected InfoItemServiceRegistry infoItemServiceRegistry;

@@ -6,6 +6,7 @@
 package com.liferay.portal.search.web.internal.modified.facet.portlet;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -150,7 +151,7 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 
 		try {
 			return new ModifiedFacetDisplayContextBuilder(
-				dateFormatFactory, renderRequest);
+				_configurationProvider, dateFormatFactory, renderRequest);
 		}
 		catch (ConfigurationException configurationException) {
 			throw new RuntimeException(configurationException);
@@ -180,6 +181,9 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 
 		return themeDisplaySupplier.getThemeDisplay();
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private DateFormatFactory _dateFormatFactory;

@@ -7,6 +7,7 @@ package com.liferay.portal.search.web.internal.sort.portlet;
 
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -114,7 +115,8 @@ public class SortPortlet extends MVCPortlet {
 
 		try {
 			return new SortDisplayContextBuilder(
-				language, portal, renderRequest, sortPortletPreferences);
+				_configurationProvider, language, portal, renderRequest,
+				sortPortletPreferences);
 		}
 		catch (ConfigurationException configurationException) {
 			throw new RuntimeException(configurationException);
@@ -135,6 +137,9 @@ public class SortPortlet extends MVCPortlet {
 
 		return !searchRequest.isEmptySearchEnabled();
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private PortletSharedSearchRequest _portletSharedSearchRequest;

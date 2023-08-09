@@ -267,15 +267,12 @@ public abstract class BaseFacetDisplayContextTestCase {
 		return termCollector;
 	}
 
-	protected static HttpServletRequest getHttpServletRequest(
-			Class<?> facetPortletConfiguration)
-		throws ConfigurationException {
-
+	protected static HttpServletRequest getHttpServletRequest() {
 		HttpServletRequest httpServletRequest = Mockito.mock(
 			HttpServletRequest.class);
 
 		Mockito.doReturn(
-			getThemeDisplay(facetPortletConfiguration)
+			getThemeDisplay()
 		).when(
 			httpServletRequest
 		).getAttribute(
@@ -285,31 +282,25 @@ public abstract class BaseFacetDisplayContextTestCase {
 		return httpServletRequest;
 	}
 
-	protected static PortletDisplay getPortletDisplay(
-			Class<?> facetPortletConfiguration)
-		throws ConfigurationException {
-
+	protected static PortletDisplay getPortletDisplay() {
 		PortletDisplay portletDisplay = Mockito.mock(PortletDisplay.class);
 
-		Mockito.doReturn(
-			Mockito.mock(facetPortletConfiguration)
-		).when(
-			portletDisplay
-		).getPortletInstanceConfiguration(
-			Mockito.any()
+		Mockito.when(
+			portletDisplay.getPortletId()
+		).thenReturn(
+			Mockito.anyString()
 		);
 
 		return portletDisplay;
 	}
 
-	protected static RenderRequest getRenderRequest(
-			Class<?> facetPortletConfiguration)
+	protected static RenderRequest getRenderRequest()
 		throws ConfigurationException {
 
 		RenderRequest renderRequest = Mockito.mock(RenderRequest.class);
 
 		Mockito.doReturn(
-			getThemeDisplay(facetPortletConfiguration)
+			getThemeDisplay()
 		).when(
 			renderRequest
 		).getAttribute(
@@ -331,14 +322,11 @@ public abstract class BaseFacetDisplayContextTestCase {
 		return termCollectors;
 	}
 
-	protected static ThemeDisplay getThemeDisplay(
-			Class<?> facetPortletConfiguration)
-		throws ConfigurationException {
-
+	protected static ThemeDisplay getThemeDisplay() {
 		ThemeDisplay themeDisplay = Mockito.mock(ThemeDisplay.class);
 
 		Mockito.doReturn(
-			getPortletDisplay(facetPortletConfiguration)
+			getPortletDisplay()
 		).when(
 			themeDisplay
 		).getPortletDisplay();

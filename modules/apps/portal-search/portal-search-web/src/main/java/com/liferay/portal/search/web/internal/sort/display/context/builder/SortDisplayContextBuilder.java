@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
@@ -32,7 +33,8 @@ import javax.portlet.RenderRequest;
 public class SortDisplayContextBuilder {
 
 	public SortDisplayContextBuilder(
-			Language language, Portal portal, RenderRequest renderRequest,
+			ConfigurationProvider configurationProvider, Language language,
+			Portal portal, RenderRequest renderRequest,
 			SortPortletPreferences sortPortletPreferences)
 		throws ConfigurationException {
 
@@ -47,8 +49,9 @@ public class SortDisplayContextBuilder {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_sortPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				SortPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				SortPortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public SortDisplayContext build() {

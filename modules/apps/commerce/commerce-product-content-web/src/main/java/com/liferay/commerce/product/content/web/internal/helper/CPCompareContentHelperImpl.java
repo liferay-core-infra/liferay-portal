@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.cookies.CookiesManagerUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -270,10 +271,14 @@ public class CPCompareContentHelperImpl implements CPCompareContentHelper {
 		if (CPPortletKeys.CP_COMPARE_CONTENT_MINI_WEB.equals(
 				portletDisplay.getPortletName())) {
 
+			ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 			CPCompareContentMiniPortletInstanceConfiguration
 				cpCompareContentMiniPortletInstanceConfiguration =
-					portletDisplay.getPortletInstanceConfiguration(
-						CPCompareContentMiniPortletInstanceConfiguration.class);
+					_configurationProvider.getPortletInstanceConfiguration(
+						CPCompareContentMiniPortletInstanceConfiguration.class,
+						themeDisplay.getLayout(),
+						portletDisplay.getPortletId());
 
 			return cpCompareContentMiniPortletInstanceConfiguration.
 				productsLimit();
@@ -281,10 +286,14 @@ public class CPCompareContentHelperImpl implements CPCompareContentHelper {
 		else if (CPPortletKeys.CP_COMPARE_CONTENT_WEB.equals(
 					portletDisplay.getPortletName())) {
 
+			ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 			CPCompareContentPortletInstanceConfiguration
 				cpCompareContentPortletInstanceConfiguration =
-					portletDisplay.getPortletInstanceConfiguration(
-						CPCompareContentPortletInstanceConfiguration.class);
+					_configurationProvider.getPortletInstanceConfiguration(
+						CPCompareContentPortletInstanceConfiguration.class,
+						themeDisplay.getLayout(),
+						portletDisplay.getPortletId());
 
 			return cpCompareContentPortletInstanceConfiguration.productsLimit();
 		}
@@ -390,6 +399,9 @@ public class CPCompareContentHelperImpl implements CPCompareContentHelper {
 
 		return multiValueCPDefinitionOptionRels;
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPCompareHelper _cpCompareHelper;

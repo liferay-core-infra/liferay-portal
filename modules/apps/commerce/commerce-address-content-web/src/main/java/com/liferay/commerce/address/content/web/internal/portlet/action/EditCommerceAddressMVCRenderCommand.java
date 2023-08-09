@@ -14,6 +14,7 @@ import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.util.CommerceAccountHelper;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CountryService;
@@ -50,7 +51,8 @@ public class EditCommerceAddressMVCRenderCommand implements MVCRenderCommand {
 			CommerceAddressDisplayContext commerceAddressDisplayContext =
 				new CommerceAddressDisplayContext(
 					_actionHelper, _commerceAccountHelper,
-					_commerceAddressService, _countryService,
+					_commerceAddressService, _configurationProvider,
+					_countryService,
 					_portal.getHttpServletRequest(renderRequest),
 					_regionService);
 
@@ -93,6 +95,9 @@ public class EditCommerceAddressMVCRenderCommand implements MVCRenderCommand {
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CountryService _countryService;

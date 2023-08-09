@@ -14,6 +14,7 @@ import com.liferay.commerce.product.util.CPCompareHelper;
 import com.liferay.commerce.product.util.CPDefinitionHelper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -39,7 +40,8 @@ public class CPCompareContentMiniConfigurationAction
 			CPCompareContentMiniDisplayContext
 				cpCompareContentMiniDisplayContext =
 					new CPCompareContentMiniDisplayContext(
-						_cpCompareHelper, _cpContentListEntryRendererRegistry,
+						_configurationProvider, _cpCompareHelper,
+						_cpContentListEntryRendererRegistry,
 						_cpContentListRendererRegistry, _cpDefinitionHelper,
 						_cpTypeRegistry, httpServletRequest);
 
@@ -56,6 +58,9 @@ public class CPCompareContentMiniConfigurationAction
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CPCompareContentMiniConfigurationAction.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPCompareHelper _cpCompareHelper;

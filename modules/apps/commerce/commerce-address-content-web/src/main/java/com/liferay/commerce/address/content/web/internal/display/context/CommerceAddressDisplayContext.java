@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -46,6 +47,7 @@ public class CommerceAddressDisplayContext {
 			ActionHelper actionHelper,
 			CommerceAccountHelper commerceAccountHelper,
 			CommerceAddressService commerceAddressService,
+			ConfigurationProvider configurationProvider,
 			CountryService countryService,
 			HttpServletRequest httpServletRequest, RegionService regionService)
 		throws PortalException {
@@ -69,8 +71,9 @@ public class CommerceAddressDisplayContext {
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_commerceAddressContentPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CommerceAddressContentPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CommerceAddressContentPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public AccountEntry getAccountEntry() throws PortalException {

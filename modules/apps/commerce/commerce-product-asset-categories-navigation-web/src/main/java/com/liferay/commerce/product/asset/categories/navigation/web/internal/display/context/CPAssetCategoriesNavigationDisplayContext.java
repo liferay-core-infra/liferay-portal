@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -54,6 +55,7 @@ public class CPAssetCategoriesNavigationDisplayContext {
 			AssetCategoryService assetCategoryService,
 			AssetVocabularyService assetVocabularyService,
 			CommerceMediaResolver commerceMediaResolver,
+			ConfigurationProvider configurationProvider,
 			CPAttachmentFileEntryService cpAttachmentFileEntryService,
 			CPFriendlyURL cpFriendlyURL,
 			FriendlyURLEntryLocalService friendlyURLEntryLocalService,
@@ -76,8 +78,9 @@ public class CPAssetCategoriesNavigationDisplayContext {
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_cpAssetCategoriesNavigationPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CPAssetCategoriesNavigationPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CPAssetCategoriesNavigationPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public List<AssetCategory> getAssetCategories() throws PortalException {

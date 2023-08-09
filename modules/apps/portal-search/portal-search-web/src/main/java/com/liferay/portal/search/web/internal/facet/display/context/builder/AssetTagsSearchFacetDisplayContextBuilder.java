@@ -7,6 +7,7 @@ package com.liferay.portal.search.web.internal.facet.display.context.builder;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
@@ -43,8 +44,9 @@ public class AssetTagsSearchFacetDisplayContextBuilder {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_tagFacetPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				TagFacetPortletInstanceConfiguration.class);
+			ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				TagFacetPortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public AssetTagsSearchFacetDisplayContext build() {

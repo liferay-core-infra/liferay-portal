@@ -9,7 +9,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.search.web.internal.BaseFacetDisplayContextTestCase;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.AssetTagsSearchFacetDisplayContextBuilder;
-import com.liferay.portal.search.web.internal.tag.facet.configuration.TagFacetPortletInstanceConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.ClassRule;
@@ -41,8 +40,7 @@ public class AssetTagsSearchFacetDisplayContextTest
 		AssetTagsSearchFacetDisplayContextBuilder
 			assetTagsSearchFacetDisplayContextBuilder =
 				new AssetTagsSearchFacetDisplayContextBuilder(
-					getRenderRequest(
-						TagFacetPortletInstanceConfiguration.class));
+					getRenderRequest());
 
 		assetTagsSearchFacetDisplayContextBuilder.setDisplayStyle("cloud");
 		assetTagsSearchFacetDisplayContextBuilder.setFacet(facet);

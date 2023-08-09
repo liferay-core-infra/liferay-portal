@@ -256,6 +256,14 @@ public class PortletDisplay implements Cloneable, Serializable {
 		return _portletDisplayName;
 	}
 
+	public String getPortletId() {
+		if (Validator.isNull(_portletResource)) {
+			return _id;
+		}
+
+		return _portletResource;
+	}
+
 	public <T> T getPortletInstanceConfiguration(Class<T> clazz)
 		throws ConfigurationException {
 

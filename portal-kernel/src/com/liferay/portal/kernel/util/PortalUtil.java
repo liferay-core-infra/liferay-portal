@@ -52,7 +52,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.PreferencesValidator;
-import javax.portlet.ValidatorException;
 import javax.portlet.WindowState;
 
 import javax.servlet.ServletContext;
@@ -1936,12 +1935,6 @@ public class PortalUtil {
 		HttpServletRequest httpServletRequest) {
 
 		_portal.setPortalInetSocketAddresses(httpServletRequest);
-	}
-
-	public static void storePreferences(PortletPreferences portletPreferences)
-		throws IOException, ValidatorException {
-
-		_portal.storePreferences(portletPreferences);
 	}
 
 	public static String[] stripURLAnchor(String url, String separator) {

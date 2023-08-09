@@ -205,7 +205,6 @@ import com.liferay.portal.upload.UploadPortletRequestImpl;
 import com.liferay.portal.upload.UploadServletRequestImpl;
 import com.liferay.portal.webserver.WebServerServlet;
 import com.liferay.portlet.LiferayPortletUtil;
-import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.PortletPreferencesWrapper;
 import com.liferay.portlet.admin.util.OmniadminUtil;
 import com.liferay.sites.kernel.util.Sites;
@@ -268,7 +267,6 @@ import javax.portlet.PortletURL;
 import javax.portlet.PreferencesValidator;
 import javax.portlet.RenderRequest;
 import javax.portlet.StateAwareResponse;
-import javax.portlet.ValidatorException;
 import javax.portlet.WindowState;
 
 import javax.servlet.RequestDispatcher;
@@ -6777,19 +6775,6 @@ public class PortalImpl implements Portal {
 					serverInetSocketAddress, false, false);
 			}
 		}
-	}
-
-	@Override
-	public void storePreferences(PortletPreferences portletPreferences)
-		throws IOException, ValidatorException {
-
-		PortletPreferencesWrapper portletPreferencesWrapper =
-			(PortletPreferencesWrapper)portletPreferences;
-
-		PortletPreferencesImpl portletPreferencesImpl =
-			portletPreferencesWrapper.getPortletPreferencesImpl();
-
-		portletPreferencesImpl.store();
 	}
 
 	@Override

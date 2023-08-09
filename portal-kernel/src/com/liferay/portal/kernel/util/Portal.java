@@ -49,7 +49,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.PreferencesValidator;
-import javax.portlet.ValidatorException;
 import javax.portlet.WindowState;
 
 import javax.servlet.ServletContext;
@@ -1171,9 +1170,6 @@ public interface Portal {
 
 	public void setPortalInetSocketAddresses(
 		HttpServletRequest httpServletRequest);
-
-	public void storePreferences(PortletPreferences portletPreferences)
-		throws IOException, ValidatorException;
 
 	public String[] stripURLAnchor(String url, String separator);
 

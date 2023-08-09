@@ -1327,10 +1327,6 @@ public class PortalUtil {
 		return _portal.getPortletTitle(portletId, user);
 	}
 
-	public static String getPortletXmlFileName() {
-		return _portal.getPortletXmlFileName();
-	}
-
 	public static PortletPreferences getPreferences(
 		HttpServletRequest httpServletRequest) {
 

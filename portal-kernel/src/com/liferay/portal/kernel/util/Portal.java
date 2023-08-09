@@ -849,8 +849,6 @@ public interface Portal {
 
 	public String getPortletTitle(String portletId, User user);
 
-	public String getPortletXmlFileName();
-
 	public PortletPreferences getPreferences(
 		HttpServletRequest httpServletRequest);
 

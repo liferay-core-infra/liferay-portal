@@ -1,15 +1,15 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.liferay.portal.configuration.module.configuration;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.SettingsLocator;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.util.Dictionary;
 
@@ -22,65 +22,92 @@ public class ConfigurationProviderUtil {
 			Class<T> clazz, long companyId)
 		throws ConfigurationException {
 
-		_configurationProvider.deleteCompanyConfiguration(clazz, companyId);
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		configurationProvider.deleteCompanyConfiguration(clazz, companyId);
 	}
 
 	public static <T> void deleteGroupConfiguration(
 			Class<T> clazz, long groupId)
 		throws ConfigurationException {
 
-		_configurationProvider.deleteGroupConfiguration(clazz, groupId);
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		configurationProvider.deleteGroupConfiguration(clazz, groupId);
 	}
 
 	public static <T> void deletePortletInstanceConfiguration(
 			Class<T> clazz, String portletId)
 		throws ConfigurationException {
 
-		_configurationProvider.deletePortletInstanceConfiguration(
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		configurationProvider.deletePortletInstanceConfiguration(
 			clazz, portletId);
 	}
 
 	public static <T> void deleteSystemConfiguration(Class<T> clazz)
 		throws ConfigurationException {
 
-		_configurationProvider.deleteSystemConfiguration(clazz);
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		configurationProvider.deleteSystemConfiguration(clazz);
 	}
 
 	public static <T> T getCompanyConfiguration(Class<T> clazz, long companyId)
 		throws ConfigurationException {
 
-		return _configurationProvider.getCompanyConfiguration(clazz, companyId);
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		return configurationProvider.getCompanyConfiguration(clazz, companyId);
 	}
 
 	public static <T> T getConfiguration(
 			Class<T> clazz, SettingsLocator settingsLocator)
 		throws ConfigurationException {
 
-		return _configurationProvider.getConfiguration(clazz, settingsLocator);
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		return configurationProvider.getConfiguration(clazz, settingsLocator);
 	}
 
 	public static ConfigurationProvider getConfigurationProvider() {
-		return _configurationProvider;
+		return _configurationProviderSnapshot.get();
 	}
 
 	public static <T> T getGroupConfiguration(Class<T> clazz, long groupId)
 		throws ConfigurationException {
 
-		return _configurationProvider.getGroupConfiguration(clazz, groupId);
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		return configurationProvider.getGroupConfiguration(clazz, groupId);
 	}
 
 	public static <T> T getPortletInstanceConfiguration(
 			Class<T> clazz, Layout layout, String portletId)
 		throws ConfigurationException {
 
-		return _configurationProvider.getPortletInstanceConfiguration(
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		return configurationProvider.getPortletInstanceConfiguration(
 			clazz, layout, portletId);
 	}
 
 	public static <T> T getSystemConfiguration(Class<T> clazz)
 		throws ConfigurationException {
 
-		return _configurationProvider.getSystemConfiguration(clazz);
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		return configurationProvider.getSystemConfiguration(clazz);
 	}
 
 	public static <T> void saveCompanyConfiguration(
@@ -88,7 +115,10 @@ public class ConfigurationProviderUtil {
 			Dictionary<String, Object> properties)
 		throws ConfigurationException {
 
-		_configurationProvider.saveCompanyConfiguration(
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		configurationProvider.saveCompanyConfiguration(
 			clazz, companyId, properties);
 	}
 
@@ -96,7 +126,10 @@ public class ConfigurationProviderUtil {
 			Class<T> clazz, long groupId, Dictionary<String, Object> properties)
 		throws ConfigurationException {
 
-		_configurationProvider.saveGroupConfiguration(
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		configurationProvider.saveGroupConfiguration(
 			clazz, groupId, properties);
 	}
 
@@ -105,7 +138,10 @@ public class ConfigurationProviderUtil {
 			Dictionary<String, Object> properties)
 		throws ConfigurationException {
 
-		_configurationProvider.savePortletInstanceConfiguration(
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		configurationProvider.savePortletInstanceConfiguration(
 			clazz, portletId, properties);
 	}
 
@@ -113,12 +149,14 @@ public class ConfigurationProviderUtil {
 			Class<T> clazz, Dictionary<String, Object> properties)
 		throws ConfigurationException {
 
-		_configurationProvider.saveSystemConfiguration(clazz, properties);
+		ConfigurationProvider configurationProvider =
+			_configurationProviderSnapshot.get();
+
+		configurationProvider.saveSystemConfiguration(clazz, properties);
 	}
 
-	private static volatile ConfigurationProvider _configurationProvider =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			ConfigurationProvider.class, ConfigurationProviderUtil.class,
-			"_configurationProvider", true);
+	private static final Snapshot<ConfigurationProvider>
+		_configurationProviderSnapshot = new Snapshot<>(
+			ConfigurationProviderUtil.class, ConfigurationProvider.class);
 
 }

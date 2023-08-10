@@ -1082,8 +1082,6 @@ public interface Portal {
 
 	public boolean isMethodGet(PortletRequest portletRequest);
 
-	public boolean isMethodPost(PortletRequest portletRequest);
-
 	public boolean isMultipartRequest(HttpServletRequest httpServletRequest);
 
 	public boolean isOmniadmin(long userId);

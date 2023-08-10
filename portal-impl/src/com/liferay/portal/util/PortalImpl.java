@@ -6195,20 +6195,6 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
-	public boolean isMethodPost(PortletRequest portletRequest) {
-		HttpServletRequest httpServletRequest = getHttpServletRequest(
-			portletRequest);
-
-		String method = GetterUtil.getString(httpServletRequest.getMethod());
-
-		if (StringUtil.equalsIgnoreCase(method, HttpMethods.POST)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
 	public boolean isMultipartRequest(HttpServletRequest httpServletRequest) {
 		String contentType = httpServletRequest.getHeader(
 			HttpHeaders.CONTENT_TYPE);

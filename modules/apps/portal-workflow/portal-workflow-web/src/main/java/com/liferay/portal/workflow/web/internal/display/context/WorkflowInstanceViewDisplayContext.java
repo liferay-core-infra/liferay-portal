@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
@@ -66,7 +66,8 @@ public class WorkflowInstanceViewDisplayContext
 			LiferayPortletRequest liferayPortletRequest,
 			LiferayPortletResponse liferayPortletResponse,
 			WorkflowComparatorFactory workflowComparatorFactory,
-			WorkflowLogManager workflowLogManager)
+			WorkflowLogManager workflowLogManager,
+			WorkflowDefinitionManager workflowDefinitionManager)
 		throws PortalException {
 
 		super(liferayPortletRequest, liferayPortletResponse);
@@ -75,6 +76,7 @@ public class WorkflowInstanceViewDisplayContext
 
 		_workflowComparatorFactory = workflowComparatorFactory;
 		_workflowLogManager = workflowLogManager;
+		_workflowDefinitionManager = workflowDefinitionManager;
 	}
 
 	public String getAssetIconCssClass(WorkflowInstance workflowInstance) {
@@ -120,7 +122,7 @@ public class WorkflowInstanceViewDisplayContext
 		throws PortalException {
 
 		WorkflowDefinition workflowDefinition =
-			WorkflowDefinitionManagerUtil.getWorkflowDefinition(
+			_workflowDefinitionManager.getWorkflowDefinition(
 				workflowInstanceRequestHelper.getCompanyId(),
 				workflowInstance.getWorkflowDefinitionName(),
 				workflowInstance.getWorkflowDefinitionVersion());
@@ -558,6 +560,7 @@ public class WorkflowInstanceViewDisplayContext
 	private WorkflowInstanceSearch _searchContainer;
 	private Boolean _showExtraInfo;
 	private final WorkflowComparatorFactory _workflowComparatorFactory;
+	private final WorkflowDefinitionManager _workflowDefinitionManager;
 	private final WorkflowLogManager _workflowLogManager;
 
 }

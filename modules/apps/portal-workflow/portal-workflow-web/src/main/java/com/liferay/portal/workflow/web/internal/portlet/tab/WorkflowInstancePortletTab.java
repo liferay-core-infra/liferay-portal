@@ -176,7 +176,8 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 				new MyWorkflowInstanceViewDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory, workflowLogManager));
+					workflowComparatorFactory, workflowLogManager,
+					workflowDefinitionManager));
 			renderRequest.setAttribute(
 				WorkflowWebKeys.WORKFLOW_INSTANCE_EDIT_DISPLAY_CONTEXT,
 				new MyWorkflowInstanceEditDisplayContext(
@@ -191,7 +192,8 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 				new WorkflowInstanceViewDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory, workflowLogManager));
+					workflowComparatorFactory, workflowLogManager,
+					workflowDefinitionManager));
 			renderRequest.setAttribute(
 				WorkflowWebKeys.WORKFLOW_INSTANCE_EDIT_DISPLAY_CONTEXT,
 				new WorkflowInstanceEditDisplayContext(

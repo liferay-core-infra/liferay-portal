@@ -9,7 +9,7 @@
 
 <%@ page import="com.liferay.captcha.configuration.CaptchaConfiguration" %><%@
 page import="com.liferay.captcha.util.CaptchaUtil" %><%@
-page import="com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil" %><%@
+page import="com.liferay.portal.configuration.module.configuration.ConfigurationProviderUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %>
 
 <%

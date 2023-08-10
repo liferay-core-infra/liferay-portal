@@ -1080,8 +1080,6 @@ public interface Portal {
 	public boolean isLoginRedirectRequired(
 		HttpServletRequest httpServletRequest);
 
-	public boolean isMethodGet(PortletRequest portletRequest);
-
 	public boolean isMultipartRequest(HttpServletRequest httpServletRequest);
 
 	public boolean isOmniadmin(long userId);

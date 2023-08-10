@@ -1053,9 +1053,6 @@ public interface Portal {
 			String portletId, ThemeDisplay themeDisplay)
 		throws PortalException;
 
-	public boolean isControlPanelPortlet(
-		String portletId, ThemeDisplay themeDisplay);
-
 	public boolean isCustomPortletMode(PortletMode portletMode);
 
 	public boolean isForwardedSecure(HttpServletRequest httpServletRequest);

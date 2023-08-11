@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -57,12 +57,14 @@ public class WorkflowInstanceEditDisplayContext
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
 		WorkflowComparatorFactory workflowComparatorFactory,
-		WorkflowLogManager workflowLogManager) {
+		WorkflowLogManager workflowLogManager,
+		WorkflowDefinitionManager workflowDefinitionManager) {
 
 		super(liferayPortletRequest, liferayPortletResponse);
 
 		_workflowComparatorFactory = workflowComparatorFactory;
 		_workflowLogManager = workflowLogManager;
+		_workflowDefinitionManager = workflowDefinitionManager;
 	}
 
 	public AssetEntry getAssetEntry() throws PortalException {
@@ -388,7 +390,7 @@ public class WorkflowInstanceEditDisplayContext
 		WorkflowInstance workflowInstance = _getWorkflowInstance();
 
 		WorkflowDefinition workflowDefinition =
-			WorkflowDefinitionManagerUtil.getWorkflowDefinition(
+			_workflowDefinitionManager.getWorkflowDefinition(
 				workflowInstanceRequestHelper.getCompanyId(),
 				workflowInstance.getWorkflowDefinitionName(),
 				workflowInstance.getWorkflowDefinitionVersion());
@@ -411,6 +413,7 @@ public class WorkflowInstanceEditDisplayContext
 	private final Map<Long, Role> _roles = new HashMap<>();
 	private final Map<Long, User> _users = new HashMap<>();
 	private final WorkflowComparatorFactory _workflowComparatorFactory;
+	private final WorkflowDefinitionManager _workflowDefinitionManager;
 	private final WorkflowLogManager _workflowLogManager;
 	private List<WorkflowLog> _workflowLogs;
 

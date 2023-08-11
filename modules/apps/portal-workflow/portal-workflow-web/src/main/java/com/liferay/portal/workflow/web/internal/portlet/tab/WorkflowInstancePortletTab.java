@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
@@ -145,6 +146,9 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 	@Reference
 	protected WorkflowComparatorFactory workflowComparatorFactory;
 
+	@Reference
+	protected WorkflowDefinitionManager workflowDefinitionManager;
+
 	protected volatile WorkflowInstanceWebConfiguration
 		workflowInstanceWebConfiguration;
 
@@ -178,7 +182,8 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 				new MyWorkflowInstanceEditDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory, workflowLogManager));
+					workflowComparatorFactory, workflowLogManager,
+					workflowDefinitionManager));
 		}
 		else {
 			renderRequest.setAttribute(
@@ -192,7 +197,8 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 				new WorkflowInstanceEditDisplayContext(
 					portal.getLiferayPortletRequest(renderRequest),
 					portal.getLiferayPortletResponse(renderResponse),
-					workflowComparatorFactory, workflowLogManager));
+					workflowComparatorFactory, workflowLogManager,
+					workflowDefinitionManager));
 		}
 	}
 

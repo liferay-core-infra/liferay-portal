@@ -1,0 +1,45 @@
+import com.liferay.gradle.plugins.patcher.PatchTask
+
+apply plugin: "com.liferay.patcher"
+
+task patch(type: PatchTask)
+
+compileJava {
+	options.compilerArgs.add("-g:lines,source,vars")
+}
+
+dependencies {
+	api group: "org.hsqldb", name: "hsqldb", version: "2.7.1"
+}
+
+patch {
+	ext {
+		autoClean = false
+	}
+
+	fileNames "org/hsqldb/*.java"
+	fileNames "org/hsqldb/auth/*.java"
+	fileNames "org/hsqldb/dbinfo/*.java"
+	fileNames "org/hsqldb/error/*.java"
+	fileNames "org/hsqldb/index/*.java"
+	fileNames "org/hsqldb/jdbc/*.java"
+	fileNames "org/hsqldb/jdbc/pool/*.java"
+	fileNames "org/hsqldb/lib/*.java"
+	fileNames "org/hsqldb/lib/java/*.java"
+	fileNames "org/hsqldb/lib/tar/*.java"
+	fileNames "org/hsqldb/lib/rb/*.java"
+	fileNames "org/hsqldb/map/*.java"
+	fileNames "org/hsqldb/navigator/*.java"
+	fileNames "org/hsqldb/persist/*.java"
+	fileNames "org/hsqldb/resources/*.java"
+	fileNames "org/hsqldb/result/*.java"
+	fileNames "org/hsqldb/rights/*.java"
+	fileNames "org/hsqldb/rowio/*.java"
+	fileNames "org/hsqldb/scriptio/*.java"
+	fileNames "org/hsqldb/trigger/*.java"
+	fileNames "org/hsqldb/types/*.java"
+	fileNames "org/hsqldb/util/*.java"
+	fileNames "org/hsqldb/server/*.java"
+
+	originalLibModuleName = "hsqldb"
+}

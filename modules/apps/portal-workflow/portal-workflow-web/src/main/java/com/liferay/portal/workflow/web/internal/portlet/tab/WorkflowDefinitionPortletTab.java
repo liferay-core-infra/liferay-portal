@@ -73,7 +73,7 @@ public class WorkflowDefinitionPortletTab extends BaseWorkflowPortletTab {
 					ctEntryLocalService, portal, _portletResourcePermission,
 					renderRequest,
 					ResourceBundleLoaderUtil.getPortalResourceBundleLoader(),
-					userLocalService);
+					userLocalService, _workflowDefinitionManager);
 
 			renderRequest.setAttribute(
 				WorkflowWebKeys.WORKFLOW_DEFINITION_DISPLAY_CONTEXT,

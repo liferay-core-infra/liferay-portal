@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.RequiredWorkflowDefinitionException;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.workflow.constants.WorkflowDefinitionConstants;
 import com.liferay.portal.workflow.constants.WorkflowPortletKeys;
 import com.liferay.portal.workflow.constants.WorkflowWebKeys;
@@ -79,13 +79,15 @@ public class WorkflowDefinitionDisplayContext {
 		CTEntryLocalService ctEntryLocalService, Portal portal,
 		PortletResourcePermission portletResourcePermission,
 		RenderRequest renderRequest, ResourceBundleLoader resourceBundleLoader,
-		UserLocalService userLocalService) {
+		UserLocalService userLocalService,
+		WorkflowDefinitionManager workflowDefinitionManager) {
 
 		_ctEntryLocalService = ctEntryLocalService;
 		_portal = portal;
 		_portletResourcePermission = portletResourcePermission;
 		_resourceBundleLoader = resourceBundleLoader;
 		_userLocalService = userLocalService;
+		_workflowDefinitionManager = workflowDefinitionManager;
 
 		_workflowDefinitionRequestHelper = new WorkflowDefinitionRequestHelper(
 			renderRequest);
@@ -359,7 +361,7 @@ public class WorkflowDefinitionDisplayContext {
 			"no-workflow-definitions-are-defined");
 
 		List<WorkflowDefinition> workflowDefinitions =
-			WorkflowDefinitionManagerUtil.getLatestWorkflowDefinitions(
+			_workflowDefinitionManager.getLatestWorkflowDefinitions(
 				_workflowDefinitionRequestHelper.getCompanyId(),
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				_getWorkflowDefinitionOrderByComparator());
@@ -374,7 +376,7 @@ public class WorkflowDefinitionDisplayContext {
 						setProductionModeWithSafeCloseable()) {
 
 				workflowDefinitions.addAll(
-					WorkflowDefinitionManagerUtil.getLatestWorkflowDefinitions(
+					_workflowDefinitionManager.getLatestWorkflowDefinitions(
 						_workflowDefinitionRequestHelper.getCompanyId(),
 						QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 						_getWorkflowDefinitionOrderByComparator()));
@@ -520,7 +522,7 @@ public class WorkflowDefinitionDisplayContext {
 	public List<WorkflowDefinition> getWorkflowDefinitions(String name)
 		throws PortalException {
 
-		return WorkflowDefinitionManagerUtil.getWorkflowDefinitions(
+		return _workflowDefinitionManager.getWorkflowDefinitions(
 			_workflowDefinitionRequestHelper.getCompanyId(), name,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -529,7 +531,7 @@ public class WorkflowDefinitionDisplayContext {
 			WorkflowDefinition workflowDefinition)
 		throws PortalException {
 
-		return WorkflowDefinitionManagerUtil.getWorkflowDefinitionsCount(
+		return _workflowDefinitionManager.getWorkflowDefinitionsCount(
 			_workflowDefinitionRequestHelper.getCompanyId(),
 			workflowDefinition.getName());
 	}
@@ -711,6 +713,7 @@ public class WorkflowDefinitionDisplayContext {
 	private final PortletResourcePermission _portletResourcePermission;
 	private final ResourceBundleLoader _resourceBundleLoader;
 	private final UserLocalService _userLocalService;
+	private final WorkflowDefinitionManager _workflowDefinitionManager;
 	private final WorkflowDefinitionRequestHelper
 		_workflowDefinitionRequestHelper;
 	private WorkflowDefinitionSearch _workflowDefinitionSearch;

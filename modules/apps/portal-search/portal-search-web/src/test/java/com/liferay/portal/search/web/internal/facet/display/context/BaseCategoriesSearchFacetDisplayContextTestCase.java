@@ -15,8 +15,6 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.theme.PortletDisplay;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -376,18 +374,6 @@ public abstract class BaseCategoriesSearchFacetDisplayContextTestCase
 	}
 
 	protected abstract String getFacetFieldName();
-
-	protected ThemeDisplay getThemeDisplay() {
-		ThemeDisplay themeDisplay = Mockito.mock(ThemeDisplay.class);
-
-		Mockito.doReturn(
-			Mockito.mock(PortletDisplay.class)
-		).when(
-			themeDisplay
-		).getPortletDisplay();
-
-		return themeDisplay;
-	}
 
 	@Override
 	protected void setUpAsset(String assetCategoryId) throws Exception {

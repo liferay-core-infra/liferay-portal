@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 
 import java.io.IOException;
 
@@ -88,6 +89,10 @@ public class DDLDisplayPortlet extends MVCPortlet {
 			setDDLRecordRequestAttribute(renderRequest);
 
 			setDDLRecordSetRequestAttribute(renderRequest);
+
+			renderRequest.setAttribute(
+				DDLWebKeys.WORKFLOW_DEFINITION_MANAGER,
+				_workflowDefinitionManager);
 
 			DDLDisplayContext ddlDisplayContext = new DDLDisplayContext(
 				renderRequest, renderResponse, _ddl, _ddlRecordSetLocalService,
@@ -232,5 +237,8 @@ public class DDLDisplayPortlet extends MVCPortlet {
 
 	@Reference
 	private StorageEngine _storageEngine;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

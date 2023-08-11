@@ -33,4 +33,7 @@ public class DDLWebKeys {
 	public static final String DYNAMIC_DATA_LISTS_RECORD_VERSION =
 		"DYNAMIC_DATA_LISTS_RECORD_VERSION";
 
+	public static final String WORKFLOW_DEFINITION_MANAGER =
+		"WORKFLOW_DEFINITION_MANAGER";
+
 }

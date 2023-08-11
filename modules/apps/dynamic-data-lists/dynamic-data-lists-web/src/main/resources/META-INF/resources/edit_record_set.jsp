@@ -15,6 +15,8 @@ String portletResource = ParamUtil.getString(request, "portletResource");
 
 DDLRecordSet recordSet = (DDLRecordSet)request.getAttribute(DDLWebKeys.DYNAMIC_DATA_LISTS_RECORD_SET);
 
+WorkflowDefinitionManager workflowDefinitionManager = (WorkflowDefinitionManager)request.getAttribute(DDLWebKeys.WORKFLOW_DEFINITION_MANAGER);
+
 long recordSetId = BeanParamUtil.getLong(recordSet, request, "recordSetId");
 
 long groupId = BeanParamUtil.getLong(recordSet, request, "groupId", scopeGroupId);
@@ -121,7 +123,7 @@ if (ddlDisplayContext.isAdminPortlet()) {
 							<aui:option><liferay-ui:message key="no-workflow" /></aui:option>
 
 							<%
-							List<WorkflowDefinition> workflowDefinitions = WorkflowDefinitionManagerUtil.getActiveWorkflowDefinitions(company.getCompanyId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+							List<WorkflowDefinition> workflowDefinitions = workflowDefinitionManager.getActiveWorkflowDefinitions(company.getCompanyId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 							for (WorkflowDefinition workflowDefinition : workflowDefinitions) {
 								boolean selected = false;

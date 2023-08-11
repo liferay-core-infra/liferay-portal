@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.osgi.debug.SystemChecker;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
-import com.liferay.portal.upgrade.internal.executor.UpgradeExecutor;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 
@@ -329,9 +328,6 @@ public class ReleaseManagerImpl implements ReleaseManager {
 		target = "(component.name=com.liferay.portal.osgi.debug.declarative.service.internal.DeclarativeServiceUnsatisfiedComponentSystemChecker)"
 	)
 	private volatile SystemChecker _systemChecker;
-
-	@Reference
-	private UpgradeExecutor _upgradeExecutor;
 
 	@Reference
 	private UpgradeStepRegistry _upgradeStepRegistry;

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowEngineManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -46,8 +46,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class DLEditFolderDisplayContext {
 
-	public DLEditFolderDisplayContext(HttpServletRequest httpServletRequest) {
+	public DLEditFolderDisplayContext(
+		HttpServletRequest httpServletRequest,
+		WorkflowDefinitionManager workflowDefinitionManager) {
+
 		_httpServletRequest = httpServletRequest;
+		_workflowDefinitionManager = workflowDefinitionManager;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -210,7 +214,7 @@ public class DLEditFolderDisplayContext {
 		}
 
 		_workflowDefinitions =
-			WorkflowDefinitionManagerUtil.getActiveWorkflowDefinitions(
+			_workflowDefinitionManager.getActiveWorkflowDefinitions(
 				_themeDisplay.getCompanyId(), QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null);
 
@@ -427,6 +431,7 @@ public class DLEditFolderDisplayContext {
 	private String _redirect;
 	private Long _repositoryId;
 	private final ThemeDisplay _themeDisplay;
+	private final WorkflowDefinitionManager _workflowDefinitionManager;
 	private List<WorkflowDefinition> _workflowDefinitions;
 	private Boolean _workflowEnabled;
 

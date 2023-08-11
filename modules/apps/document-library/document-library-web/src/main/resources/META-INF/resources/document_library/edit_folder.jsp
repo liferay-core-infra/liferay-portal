@@ -8,7 +8,7 @@
 <%@ include file="/document_library/init.jsp" %>
 
 <%
-DLEditFolderDisplayContext dlEditFolderDisplayContext = new DLEditFolderDisplayContext(request);
+DLEditFolderDisplayContext dlEditFolderDisplayContext = (DLEditFolderDisplayContext)renderRequest.getAttribute(DLWebKeys.DOCUMENT_LIBRARY_EDIT_FOLDER_DISPLAY_CONTEXT);
 
 Folder folder = dlEditFolderDisplayContext.getFolder();
 

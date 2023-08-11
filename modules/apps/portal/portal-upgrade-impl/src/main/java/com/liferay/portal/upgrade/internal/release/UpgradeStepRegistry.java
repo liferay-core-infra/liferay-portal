@@ -5,12 +5,10 @@
 
 package com.liferay.portal.upgrade.internal.release;
 
-import com.liferay.osgi.service.tracker.collections.EagerServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
@@ -72,14 +70,6 @@ public class UpgradeStepRegistry {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_initialUpgradeStepServiceTrackerMap =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, UpgradeStep.class,
-				"(upgrade.initial.database.creation=true)",
-				new PropertyServiceReferenceMapper<>(
-					"upgrade.bundle.symbolic.name"),
-				new InitialUpgradeStepServiceTrackerCustomizer(bundleContext));
-
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
 			bundleContext, UpgradeStep.class, null,
 			new PropertyServiceReferenceMapper<>(
@@ -92,8 +82,6 @@ public class UpgradeStepRegistry {
 
 	@Deactivate
 	protected void deactivate() {
-		_initialUpgradeStepServiceTrackerMap.close();
-
 		_serviceTrackerMap.close();
 	}
 
@@ -112,14 +100,8 @@ public class UpgradeStepRegistry {
 		return false;
 	}
 
-	private ServiceTrackerMap<String, Release>
-		_initialUpgradeStepServiceTrackerMap;
-
 	@Reference
 	private ReleaseLocalService _releaseLocalService;
-
-	@Reference
-	private ReleasePublisher _releasePublisher;
 
 	private ServiceTrackerMap<String, List<UpgradeInfo>> _serviceTrackerMap;
 
@@ -158,66 +140,6 @@ public class UpgradeStepRegistry {
 		}
 
 		private UpgradeServiceTrackerCustomizer(BundleContext bundleContext) {
-			_bundleContext = bundleContext;
-		}
-
-		private final BundleContext _bundleContext;
-
-	}
-
-	private class InitialUpgradeStepServiceTrackerCustomizer
-		implements EagerServiceTrackerCustomizer<UpgradeStep, Release> {
-
-		@Override
-		public Release addingService(
-			ServiceReference<UpgradeStep> serviceReference) {
-
-			String bundleSymbolicName = (String)serviceReference.getProperty(
-				"upgrade.bundle.symbolic.name");
-
-			Release release = _releaseLocalService.fetchRelease(
-				bundleSymbolicName);
-
-			if (release == null) {
-				UpgradeStep initialUpgradeStep = _bundleContext.getService(
-					serviceReference);
-
-				try {
-					initialUpgradeStep.upgrade();
-
-					release = _releaseLocalService.updateRelease(
-						bundleSymbolicName,
-						(String)serviceReference.getProperty(
-							"upgrade.to.schema.version"),
-						"0.0.0");
-
-					release.setVerified(true);
-
-					release = _releaseLocalService.updateRelease(release);
-
-					_releasePublisher.publish(release, true);
-				}
-				catch (Exception exception) {
-					ReflectionUtil.throwException(exception);
-				}
-			}
-
-			return release;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<UpgradeStep> serviceReference, Release release) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<UpgradeStep> serviceReference, Release release) {
-		}
-
-		private InitialUpgradeStepServiceTrackerCustomizer(
-			BundleContext bundleContext) {
-
 			_bundleContext = bundleContext;
 		}
 

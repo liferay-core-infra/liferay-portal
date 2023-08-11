@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerVisibleFilter;
@@ -83,7 +83,8 @@ public class WorkflowDefinitionLinkDisplayContext {
 		WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService,
 		ResourceBundleLoader resourceBundleLoader,
 		WorkflowHandlerVisibleFilter workflowHandlerVisibleFilter,
-		WorkflowComparatorFactory workflowComparatorFactory) {
+		WorkflowComparatorFactory workflowComparatorFactory,
+		WorkflowDefinitionManager workflowDefinitionManager) {
 
 		_workflowDefinitionLinkLocalService =
 			workflowDefinitionLinkLocalService;
@@ -102,6 +103,7 @@ public class WorkflowDefinitionLinkDisplayContext {
 		_resourceBundleLoader = resourceBundleLoader;
 		_workflowHandlerVisibleFilter = workflowHandlerVisibleFilter;
 		_workflowComparatorFactory = workflowComparatorFactory;
+		_workflowDefinitionManager = workflowDefinitionManager;
 	}
 
 	public WorkflowDefinition fetchDefaultWorkflowDefinition(String className)
@@ -117,7 +119,7 @@ public class WorkflowDefinitionLinkDisplayContext {
 			return null;
 		}
 
-		return WorkflowDefinitionManagerUtil.getLatestWorkflowDefinition(
+		return _workflowDefinitionManager.getLatestWorkflowDefinition(
 			_workflowDefinitionLinkRequestHelper.getCompanyId(),
 			defaultWorkflowDefinitionLink.getWorkflowDefinitionName());
 	}
@@ -395,7 +397,7 @@ public class WorkflowDefinitionLinkDisplayContext {
 		}
 
 		_workflowDefinitions = ListUtil.filter(
-			WorkflowDefinitionManagerUtil.getActiveWorkflowDefinitions(
+			_workflowDefinitionManager.getActiveWorkflowDefinitions(
 				_workflowDefinitionLinkRequestHelper.getCompanyId(),
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				_workflowComparatorFactory.getDefinitionNameComparator(true)),
@@ -673,6 +675,7 @@ public class WorkflowDefinitionLinkDisplayContext {
 		_workflowDefinitionLinkLocalService;
 	private final WorkflowDefinitionLinkRequestHelper
 		_workflowDefinitionLinkRequestHelper;
+	private final WorkflowDefinitionManager _workflowDefinitionManager;
 	private List<WorkflowDefinition> _workflowDefinitions;
 	private final WorkflowHandlerVisibleFilter _workflowHandlerVisibleFilter;
 

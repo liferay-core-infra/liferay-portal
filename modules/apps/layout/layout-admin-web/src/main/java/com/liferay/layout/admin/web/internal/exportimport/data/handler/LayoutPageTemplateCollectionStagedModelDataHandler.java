@@ -11,6 +11,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import org.osgi.service.component.annotations.Component;
@@ -93,7 +94,8 @@ public class LayoutPageTemplateCollectionStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			layoutPageTemplateCollection, importedLayoutPageTemplateCollection);
+			layoutPageTemplateCollection, importedLayoutPageTemplateCollection,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -109,5 +111,8 @@ public class LayoutPageTemplateCollectionStagedModelDataHandler
 	)
 	private StagedModelRepository<LayoutPageTemplateCollection>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

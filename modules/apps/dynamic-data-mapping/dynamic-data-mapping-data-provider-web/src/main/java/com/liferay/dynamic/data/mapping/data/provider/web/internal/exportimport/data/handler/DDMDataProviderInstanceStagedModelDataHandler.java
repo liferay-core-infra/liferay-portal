@@ -25,6 +25,7 @@ import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -196,7 +197,8 @@ public class DDMDataProviderInstanceStagedModelDataHandler
 			serviceContext);
 
 		portletDataContext.importClassedModel(
-			dataProviderInstance, importedDataProviderInstance);
+			dataProviderInstance, importedDataProviderInstance,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -233,5 +235,8 @@ public class DDMDataProviderInstanceStagedModelDataHandler
 	)
 	private StagedModelRepository<DDMDataProviderInstance>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

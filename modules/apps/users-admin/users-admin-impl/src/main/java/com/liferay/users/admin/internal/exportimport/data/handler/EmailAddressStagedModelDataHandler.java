@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.EmailAddressLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -110,7 +111,7 @@ public class EmailAddressStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			emailAddress, importedEmailAddress);
+			emailAddress, importedEmailAddress, _workflowDefinitionManager);
 	}
 
 	@Reference
@@ -118,5 +119,8 @@ public class EmailAddressStagedModelDataHandler
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

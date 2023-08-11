@@ -16,6 +16,7 @@ import com.liferay.knowledge.base.service.KBFolderLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -134,10 +135,14 @@ public class KBFolderStagedModelDataHandler
 				serviceContext);
 		}
 
-		portletDataContext.importClassedModel(kbFolder, importedKBFolder);
+		portletDataContext.importClassedModel(
+			kbFolder, importedKBFolder, _workflowDefinitionManager);
 	}
 
 	@Reference
 	private KBFolderLocalService _kbFolderLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

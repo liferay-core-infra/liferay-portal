@@ -22,6 +22,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelModifiedDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -202,7 +203,8 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			calendarNotificationTemplate, importedCalendarNotificationTemplate);
+			calendarNotificationTemplate, importedCalendarNotificationTemplate,
+			_workflowDefinitionManager);
 	}
 
 	@Reference
@@ -217,5 +219,8 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 	@Reference
 	private CalendarNotificationTemplateLocalService
 		_calendarNotificationTemplateLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

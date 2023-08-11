@@ -19,6 +19,7 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateStructureRelLo
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -116,7 +117,8 @@ public class LayoutPageTemplateStructureStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			layoutPageTemplateStructure, importedLayoutPageTemplateStructure);
+			layoutPageTemplateStructure, importedLayoutPageTemplateStructure,
+			_workflowDefinitionManager);
 
 		_importLayoutPageTemplateStructureRels(
 			portletDataContext, layoutPageTemplateStructure);
@@ -216,5 +218,8 @@ public class LayoutPageTemplateStructureStagedModelDataHandler
 	)
 	private StagedModelRepository<LayoutPageTemplateStructure>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portlet.documentlibrary.lar.FileEntryUtil;
 import com.liferay.ratings.kernel.model.RatingsEntry;
@@ -392,7 +393,8 @@ public class MBMessageStagedModelDataHandler
 					thread.getThreadId());
 			}
 
-			portletDataContext.importClassedModel(message, importedMessage);
+			portletDataContext.importClassedModel(
+				message, importedMessage, _workflowDefinitionManager);
 		}
 		finally {
 			for (ObjectValuePair<String, InputStream> inputStreamOVP :
@@ -579,5 +581,8 @@ public class MBMessageStagedModelDataHandler
 
 	@Reference
 	private TrashHelper _trashHelper;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

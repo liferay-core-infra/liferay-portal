@@ -90,6 +90,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portlet.documentlibrary.lar.FileEntryUtil;
 
@@ -1109,7 +1110,8 @@ public class JournalArticleStagedModelDataHandler
 				ServiceContextThreadLocal.popServiceContext();
 			}
 
-			portletDataContext.importClassedModel(article, importedArticle);
+			portletDataContext.importClassedModel(
+				article, importedArticle, _workflowDefinitionManager);
 		}
 		finally {
 			if (smallFile != null) {
@@ -1768,5 +1770,8 @@ public class JournalArticleStagedModelDataHandler
 	@Reference
 	private UserNotificationEventLocalService
 		_userNotificationEventLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

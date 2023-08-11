@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.staging.StagingGroupHelper;
 import com.liferay.staging.StagingGroupHelperUtil;
@@ -251,7 +252,8 @@ public class LayoutClassedModelUsageStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			layoutClassedModelUsage, importedLayoutClassedModelUsage);
+			layoutClassedModelUsage, importedLayoutClassedModelUsage,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -277,5 +279,8 @@ public class LayoutClassedModelUsageStagedModelDataHandler
 	)
 	private StagedModelRepository<LayoutClassedModelUsage>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

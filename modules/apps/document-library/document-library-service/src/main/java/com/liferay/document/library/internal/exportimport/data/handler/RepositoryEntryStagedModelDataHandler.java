@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.model.RepositoryEntry;
 import com.liferay.portal.kernel.service.RepositoryEntryLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -142,10 +143,14 @@ public class RepositoryEntryStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			repositoryEntry, importedRepositoryEntry);
+			repositoryEntry, importedRepositoryEntry,
+			_workflowDefinitionManager);
 	}
 
 	@Reference
 	private RepositoryEntryLocalService _repositoryEntryLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

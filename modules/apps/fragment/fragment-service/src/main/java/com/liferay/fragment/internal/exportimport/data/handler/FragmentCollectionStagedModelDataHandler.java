@@ -14,6 +14,7 @@ import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import org.osgi.service.component.annotations.Component;
@@ -112,7 +113,8 @@ public class FragmentCollectionStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			fragmentCollection, importedFragmentCollection);
+			fragmentCollection, importedFragmentCollection,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -127,5 +129,8 @@ public class FragmentCollectionStagedModelDataHandler
 		unbind = "-"
 	)
 	private StagedModelRepository<FragmentCollection> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

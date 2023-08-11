@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.PasswordPolicyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -162,7 +163,7 @@ public class PasswordPolicyStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			passwordPolicy, importedPasswordPolicy);
+			passwordPolicy, importedPasswordPolicy, _workflowDefinitionManager);
 	}
 
 	@Reference
@@ -170,5 +171,8 @@ public class PasswordPolicyStagedModelDataHandler
 
 	@Reference
 	private PasswordPolicyLocalService _passwordPolicyLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -186,7 +187,8 @@ public class MBCategoryStagedModelDataHandler
 				outPassword, allowAnonymous, mailingListActive, serviceContext);
 		}
 
-		portletDataContext.importClassedModel(category, importedCategory);
+		portletDataContext.importClassedModel(
+			category, importedCategory, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -213,5 +215,8 @@ public class MBCategoryStagedModelDataHandler
 
 	@Reference
 	private MBCategoryLocalService _mbCategoryLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.io.File;
@@ -456,7 +457,8 @@ public class DDMTemplateStagedModelDataHandler
 					template.getSmallImageURL(), smallFile, serviceContext);
 			}
 
-			portletDataContext.importClassedModel(template, importedTemplate);
+			portletDataContext.importClassedModel(
+				template, importedTemplate, _workflowDefinitionManager);
 
 			try {
 				portletDataContext.importPermissions(
@@ -601,5 +603,8 @@ public class DDMTemplateStagedModelDataHandler
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

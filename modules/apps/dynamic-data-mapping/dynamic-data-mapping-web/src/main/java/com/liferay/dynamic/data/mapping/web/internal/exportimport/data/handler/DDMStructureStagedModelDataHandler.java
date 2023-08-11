@@ -59,6 +59,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.io.IOException;
@@ -448,7 +449,8 @@ public class DDMStructureStagedModelDataHandler
 		structureIds.put(
 			structure.getStructureId(), importedStructure.getStructureId());
 
-		portletDataContext.importClassedModel(structure, importedStructure);
+		portletDataContext.importClassedModel(
+			structure, importedStructure, _workflowDefinitionManager);
 
 		portletDataContext.importPermissions(
 			getResourceName(structure), structure.getPrimaryKey(),
@@ -909,5 +911,8 @@ public class DDMStructureStagedModelDataHandler
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

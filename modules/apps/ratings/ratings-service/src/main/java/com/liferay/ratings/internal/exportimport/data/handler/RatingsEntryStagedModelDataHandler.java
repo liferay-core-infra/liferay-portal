@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.service.PersistedResourcedModelLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.ratings.kernel.model.RatingsEntry;
 import com.liferay.ratings.kernel.service.RatingsEntryLocalService;
@@ -173,7 +174,8 @@ public class RatingsEntryStagedModelDataHandler
 			userId, entry.getClassName(), newClassPK, entry.getScore(),
 			serviceContext);
 
-		portletDataContext.importClassedModel(entry, importedEntry);
+		portletDataContext.importClassedModel(
+			entry, importedEntry, _workflowDefinitionManager);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -184,5 +186,8 @@ public class RatingsEntryStagedModelDataHandler
 
 	@Reference
 	private RatingsEntryLocalService _ratingsEntryLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.staging.StagingGroupHelper;
 
@@ -162,7 +163,7 @@ public class AssetListEntryStagedModelDataHandler
 				importedAssetListEntry);
 
 		portletDataContext.importClassedModel(
-			assetListEntry, importedAssetListEntry);
+			assetListEntry, importedAssetListEntry, _workflowDefinitionManager);
 
 		if (existingAssetListEntry != null) {
 			_assetListEntryAssetEntryRelLocalService.
@@ -447,5 +448,8 @@ public class AssetListEntryStagedModelDataHandler
 
 	@Reference
 	private StagingGroupHelper _stagingGroupHelper;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

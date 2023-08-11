@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -303,7 +304,8 @@ public class CalendarBookingStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			calendarBooking, importedCalendarBooking);
+			calendarBooking, importedCalendarBooking,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -362,5 +364,8 @@ public class CalendarBookingStagedModelDataHandler
 
 	@Reference
 	private MBMessageLocalService _mbMessageLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

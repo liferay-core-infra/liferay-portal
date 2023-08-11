@@ -30,6 +30,7 @@ import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -145,7 +146,8 @@ public class DDLRecordStagedModelDataHandler
 					portletDataContext, importedRecord, ddmFormValues);
 		}
 
-		portletDataContext.importClassedModel(record, importedRecord);
+		portletDataContext.importClassedModel(
+			record, importedRecord, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -264,5 +266,8 @@ public class DDLRecordStagedModelDataHandler
 
 	@Reference
 	private StorageEngine _storageEngine;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

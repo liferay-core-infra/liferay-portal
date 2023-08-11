@@ -63,6 +63,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ThemeFactory;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.model.impl.ThemeSettingImpl;
 import com.liferay.portal.service.impl.LayoutLocalServiceHelper;
@@ -223,7 +224,8 @@ public class StagedLayoutSetStagedModelDataHandler
 		_importTheme(portletDataContext, stagedLayoutSet);
 
 		portletDataContext.importClassedModel(
-			stagedLayoutSet, importedStagedLayoutSet);
+			stagedLayoutSet, importedStagedLayoutSet,
+			_workflowDefinitionManager);
 
 		Element layoutsElement = portletDataContext.getImportDataGroupElement(
 			Layout.class);
@@ -1156,6 +1158,9 @@ public class StagedLayoutSetStagedModelDataHandler
 
 	@Reference
 	private ThemeImporter _themeImporter;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 	private class UpdateLayoutSetLastPublishDateCallable
 		implements Callable<Void> {

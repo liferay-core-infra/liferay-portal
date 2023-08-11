@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.site.teams.web.internal.constants.SiteTeamsPortletKeys;
 
@@ -179,7 +180,8 @@ public class TeamStagedModelDataHandler
 			}
 		}
 
-		portletDataContext.importClassedModel(team, importedTeam);
+		portletDataContext.importClassedModel(
+			team, importedTeam, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -205,5 +207,8 @@ public class TeamStagedModelDataHandler
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

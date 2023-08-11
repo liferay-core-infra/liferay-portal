@@ -13,6 +13,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelModifiedDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.reports.engine.console.model.Source;
 import com.liferay.portal.reports.engine.console.service.SourceLocalService;
@@ -124,10 +125,14 @@ public class SourceStagedModelDataHandler
 				source.getDriverPassword(), serviceContext);
 		}
 
-		portletDataContext.importClassedModel(source, importedSource);
+		portletDataContext.importClassedModel(
+			source, importedSource, _workflowDefinitionManager);
 	}
 
 	@Reference
 	private SourceLocalService _sourceLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

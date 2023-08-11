@@ -15,6 +15,7 @@ import com.liferay.knowledge.base.service.KBTemplateLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -125,10 +126,14 @@ public class KBTemplateStagedModelDataHandler
 				serviceContext);
 		}
 
-		portletDataContext.importClassedModel(kbTemplate, importedKBTemplate);
+		portletDataContext.importClassedModel(
+			kbTemplate, importedKBTemplate, _workflowDefinitionManager);
 	}
 
 	@Reference
 	private KBTemplateLocalService _kbTemplateLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -127,6 +127,7 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
@@ -982,7 +983,8 @@ public class LayoutStagedModelDataHandler
 				portletDataContext.setPrivateLayout(false);
 			}
 
-			portletDataContext.importClassedModel(layout, importedLayout);
+			portletDataContext.importClassedModel(
+				layout, importedLayout, _workflowDefinitionManager);
 		}
 		finally {
 			portletDataContext.setPrivateLayout(privateLayout);
@@ -3105,6 +3107,9 @@ public class LayoutStagedModelDataHandler
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 	private class ImportLinkedLayoutCallable implements Callable<Void> {
 

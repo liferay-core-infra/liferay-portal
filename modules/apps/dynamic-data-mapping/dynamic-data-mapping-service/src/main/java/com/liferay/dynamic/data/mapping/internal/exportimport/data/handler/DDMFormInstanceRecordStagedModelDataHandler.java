@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -154,7 +155,8 @@ public class DDMFormInstanceRecordStagedModelDataHandler
 						portletDataContext, importedRecord, ddmFormValues);
 		}
 
-		portletDataContext.importClassedModel(record, importedRecord);
+		portletDataContext.importClassedModel(
+			record, importedRecord, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -275,5 +277,8 @@ public class DDMFormInstanceRecordStagedModelDataHandler
 
 	@Reference(target = "(ddm.form.values.serializer.type=json)")
 	private DDMFormValuesSerializer _jsonDDMFormValuesSerializer;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -346,7 +347,8 @@ public class BlogsEntryStagedModelDataHandler
 			ServiceContextThreadLocal.popServiceContext();
 		}
 
-		portletDataContext.importClassedModel(entry, importedEntry);
+		portletDataContext.importClassedModel(
+			entry, importedEntry, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -556,5 +558,8 @@ public class BlogsEntryStagedModelDataHandler
 
 	@Reference
 	private PortletFileRepository _portletFileRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

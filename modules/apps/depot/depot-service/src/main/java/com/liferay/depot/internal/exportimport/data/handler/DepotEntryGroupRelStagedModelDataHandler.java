@@ -17,6 +17,7 @@ import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import org.osgi.service.component.annotations.Component;
@@ -105,7 +106,8 @@ public class DepotEntryGroupRelStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			depotEntryGroupRel, importedDepotEntryGroupRel);
+			depotEntryGroupRel, importedDepotEntryGroupRel,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -154,5 +156,8 @@ public class DepotEntryGroupRelStagedModelDataHandler
 		unbind = "-"
 	)
 	private StagedModelRepository<DepotEntryGroupRel> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

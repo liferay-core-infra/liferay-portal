@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -138,7 +139,8 @@ public class UserGroupStagedModelDataHandler
 				userGroup.getDescription(), serviceContext);
 		}
 
-		portletDataContext.importClassedModel(userGroup, importedUserGroup);
+		portletDataContext.importClassedModel(
+			userGroup, importedUserGroup, _workflowDefinitionManager);
 	}
 
 	@Reference
@@ -146,5 +148,8 @@ public class UserGroupStagedModelDataHandler
 
 	@Reference
 	private UserGroupLocalService _userGroupLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

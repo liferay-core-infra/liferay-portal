@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.reports.engine.console.model.Definition;
 import com.liferay.portal.reports.engine.console.model.Source;
@@ -201,7 +202,7 @@ public class DefinitionStagedModelDataHandler
 			}
 
 			portletDataContext.importClassedModel(
-				definition, importedDefinition);
+				definition, importedDefinition, _workflowDefinitionManager);
 		}
 	}
 
@@ -213,5 +214,8 @@ public class DefinitionStagedModelDataHandler
 
 	@Reference(target = "(default=true)")
 	private Store _store;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -10,6 +10,7 @@ import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 
@@ -111,7 +112,8 @@ public class SiteNavigationMenuStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			siteNavigationMenu, importedSiteNavigationMenu);
+			siteNavigationMenu, importedSiteNavigationMenu,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -125,5 +127,8 @@ public class SiteNavigationMenuStagedModelDataHandler
 		target = "(model.class.name=com.liferay.site.navigation.model.SiteNavigationMenu)"
 	)
 	private StagedModelRepository<SiteNavigationMenu> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

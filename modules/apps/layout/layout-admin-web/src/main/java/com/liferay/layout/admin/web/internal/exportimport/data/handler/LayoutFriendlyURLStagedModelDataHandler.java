@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -146,7 +147,8 @@ public class LayoutFriendlyURLStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			layoutFriendlyURL, importedLayoutFriendlyURL);
+			layoutFriendlyURL, importedLayoutFriendlyURL,
+			_workflowDefinitionManager);
 	}
 
 	private LayoutFriendlyURL _fetchExistingLayoutFriendlyURL(
@@ -207,5 +209,8 @@ public class LayoutFriendlyURLStagedModelDataHandler
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

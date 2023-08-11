@@ -15,6 +15,7 @@ import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -168,7 +169,8 @@ public class FriendlyURLEntryStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			friendlyURLEntry, importedFriendlyURLEntry);
+			friendlyURLEntry, importedFriendlyURLEntry,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -188,5 +190,8 @@ public class FriendlyURLEntryStagedModelDataHandler
 		target = "(model.class.name=com.liferay.friendly.url.model.FriendlyURLEntry)"
 	)
 	private StagedModelRepository<FriendlyURLEntry> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

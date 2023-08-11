@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.portletrepository.PortletRepository;
@@ -659,7 +660,8 @@ public class FileEntryStagedModelDataHandler
 			}
 
 			portletDataContext.importClassedModel(
-				fileEntry, importedFileEntry, DLFileEntry.class);
+				fileEntry, importedFileEntry, DLFileEntry.class,
+				_workflowDefinitionManager);
 
 			Map<Long, Long> fileEntryIds =
 				(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
@@ -1307,5 +1309,8 @@ public class FileEntryStagedModelDataHandler
 
 	@Reference
 	private TrashHelper _trashHelper;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

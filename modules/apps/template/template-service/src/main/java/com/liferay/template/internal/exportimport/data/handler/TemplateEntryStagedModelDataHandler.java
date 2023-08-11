@@ -15,6 +15,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.template.model.TemplateEntry;
 
@@ -154,7 +155,7 @@ public class TemplateEntryStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			templateEntry, importedTemplateEntry);
+			templateEntry, importedTemplateEntry, _workflowDefinitionManager);
 	}
 
 	@Reference
@@ -164,5 +165,8 @@ public class TemplateEntryStagedModelDataHandler
 		target = "(model.class.name=com.liferay.template.model.TemplateEntry)"
 	)
 	private StagedModelRepository<TemplateEntry> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

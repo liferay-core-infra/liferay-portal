@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -191,7 +192,7 @@ public class RepositoryStagedModelDataHandler
 			}
 
 			portletDataContext.importClassedModel(
-				repository, importedRepository);
+				repository, importedRepository, _workflowDefinitionManager);
 
 			StagedModelDataHandlerUtil.importReferenceStagedModels(
 				portletDataContext, repository, RepositoryEntry.class);
@@ -240,5 +241,8 @@ public class RepositoryStagedModelDataHandler
 
 	@Reference
 	private RepositoryLocalService _repositoryLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

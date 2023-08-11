@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -189,7 +190,8 @@ public class AssetTagStagedModelDataHandler
 			}
 		}
 
-		portletDataContext.importClassedModel(assetTag, importedAssetTag);
+		portletDataContext.importClassedModel(
+			assetTag, importedAssetTag, _workflowDefinitionManager);
 	}
 
 	private ServiceContext _createServiceContext(
@@ -209,5 +211,8 @@ public class AssetTagStagedModelDataHandler
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

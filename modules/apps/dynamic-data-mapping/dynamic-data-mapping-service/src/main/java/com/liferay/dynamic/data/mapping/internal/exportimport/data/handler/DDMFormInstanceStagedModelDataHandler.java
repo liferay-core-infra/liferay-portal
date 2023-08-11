@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -187,7 +188,8 @@ public class DDMFormInstanceStagedModelDataHandler
 			portletDataContext.createServiceContext(importedDDMFormInstance));
 
 		portletDataContext.importClassedModel(
-			ddmFormInstance, importedDDMFormInstance);
+			ddmFormInstance, importedDDMFormInstance,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -292,5 +294,8 @@ public class DDMFormInstanceStagedModelDataHandler
 		target = "(model.class.name=com.liferay.dynamic.data.mapping.model.DDMFormInstance)"
 	)
 	private StagedModelRepository<DDMFormInstance> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

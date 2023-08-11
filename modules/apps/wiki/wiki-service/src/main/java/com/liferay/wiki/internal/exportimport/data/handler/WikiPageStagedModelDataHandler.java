@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portlet.documentlibrary.lar.FileEntryUtil;
 import com.liferay.wiki.model.WikiNode;
@@ -340,7 +341,8 @@ public class WikiPageStagedModelDataHandler
 			}
 		}
 
-		portletDataContext.importClassedModel(page, importedPage);
+		portletDataContext.importClassedModel(
+			page, importedPage, _workflowDefinitionManager);
 
 		Map<Long, Long> pageIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
@@ -424,5 +426,8 @@ public class WikiPageStagedModelDataHandler
 
 	@Reference
 	private WikiPageResourceLocalService _wikiPageResourceLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

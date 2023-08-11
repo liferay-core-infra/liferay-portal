@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.style.book.model.StyleBookEntry;
 import com.liferay.style.book.service.StyleBookEntryLocalService;
@@ -155,7 +156,7 @@ public class StylebookEntryStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			styleBookEntry, importedStyleBookEntry);
+			styleBookEntry, importedStyleBookEntry, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -171,5 +172,8 @@ public class StylebookEntryStagedModelDataHandler
 
 	@Reference
 	private StyleBookEntryLocalService _styleBookEntryLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

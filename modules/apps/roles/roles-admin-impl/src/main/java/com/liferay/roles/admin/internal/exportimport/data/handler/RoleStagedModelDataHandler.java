@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.site.model.adapter.StagedGroup;
 
@@ -194,7 +195,8 @@ public class RoleStagedModelDataHandler
 			}
 		}
 
-		portletDataContext.importClassedModel(role, importedRole);
+		portletDataContext.importClassedModel(
+			role, importedRole, _workflowDefinitionManager);
 	}
 
 	private void _deleteRolePermissions(
@@ -307,5 +309,8 @@ public class RoleStagedModelDataHandler
 
 	@Reference
 	private RoleLocalService _roleLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

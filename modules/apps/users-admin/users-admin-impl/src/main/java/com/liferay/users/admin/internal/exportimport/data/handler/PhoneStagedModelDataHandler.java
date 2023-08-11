@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.PhoneLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -105,7 +106,8 @@ public class PhoneStagedModelDataHandler
 				phone.getExtension(), phone.getListTypeId(), phone.isPrimary());
 		}
 
-		portletDataContext.importClassedModel(phone, importedPhone);
+		portletDataContext.importClassedModel(
+			phone, importedPhone, _workflowDefinitionManager);
 	}
 
 	@Reference
@@ -113,5 +115,8 @@ public class PhoneStagedModelDataHandler
 
 	@Reference
 	private PhoneLocalService _phoneLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

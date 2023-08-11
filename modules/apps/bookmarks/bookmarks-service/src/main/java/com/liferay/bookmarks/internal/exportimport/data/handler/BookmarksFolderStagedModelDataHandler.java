@@ -14,6 +14,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -97,7 +98,8 @@ public class BookmarksFolderStagedModelDataHandler
 				portletDataContext, importedFolder);
 		}
 
-		portletDataContext.importClassedModel(folder, importedFolder);
+		portletDataContext.importClassedModel(
+			folder, importedFolder, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -111,5 +113,8 @@ public class BookmarksFolderStagedModelDataHandler
 		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)"
 	)
 	private StagedModelRepository<BookmarksFolder> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

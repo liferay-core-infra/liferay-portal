@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -358,7 +359,7 @@ public class DLFileEntryTypeStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			fileEntryType, importedDLFileEntryType);
+			fileEntryType, importedDLFileEntryType, _workflowDefinitionManager);
 
 		if (preloaded) {
 			return;
@@ -477,5 +478,8 @@ public class DLFileEntryTypeStagedModelDataHandler
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

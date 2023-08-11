@@ -15,6 +15,7 @@ import com.liferay.layout.service.LayoutLocalizationLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -143,7 +144,8 @@ public class LayoutLocalizationStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			layoutLocalization, importedLayoutLocalization);
+			layoutLocalization, importedLayoutLocalization,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -161,5 +163,8 @@ public class LayoutLocalizationStagedModelDataHandler
 		unbind = "-"
 	)
 	private StagedModelRepository<LayoutLocalization> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

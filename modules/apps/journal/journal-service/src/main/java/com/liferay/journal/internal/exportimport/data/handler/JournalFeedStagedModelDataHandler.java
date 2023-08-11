@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -257,7 +258,8 @@ public class JournalFeedStagedModelDataHandler
 					serviceContext);
 			}
 
-			portletDataContext.importClassedModel(feed, importedFeed);
+			portletDataContext.importClassedModel(
+				feed, importedFeed, _workflowDefinitionManager);
 
 			if (!feedId.equals(importedFeed.getFeedId())) {
 				if (_log.isWarnEnabled()) {
@@ -306,5 +308,8 @@ public class JournalFeedStagedModelDataHandler
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

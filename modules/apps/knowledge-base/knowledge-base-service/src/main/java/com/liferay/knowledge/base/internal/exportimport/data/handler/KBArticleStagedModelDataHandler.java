@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portlet.documentlibrary.lar.FileEntryUtil;
 
@@ -257,7 +258,8 @@ public class KBArticleStagedModelDataHandler
 		_importKBArticleAttachments(
 			portletDataContext, kbArticle, importedKBArticle);
 
-		portletDataContext.importClassedModel(kbArticle, importedKBArticle);
+		portletDataContext.importClassedModel(
+			kbArticle, importedKBArticle, _workflowDefinitionManager);
 
 		if (!kbArticle.isMain()) {
 			kbArticleResourcePrimKeys.put(
@@ -526,5 +528,8 @@ public class KBArticleStagedModelDataHandler
 
 	@Reference
 	private PortletFileRepository _portletFileRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

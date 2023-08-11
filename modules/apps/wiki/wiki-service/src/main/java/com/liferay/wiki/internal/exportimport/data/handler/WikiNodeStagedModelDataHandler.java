@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
 import com.liferay.wiki.model.WikiNode;
@@ -181,7 +182,8 @@ public class WikiNodeStagedModelDataHandler
 			}
 		}
 
-		portletDataContext.importClassedModel(node, importedNode);
+		portletDataContext.importClassedModel(
+			node, importedNode, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -229,5 +231,8 @@ public class WikiNodeStagedModelDataHandler
 
 	@Reference
 	private WikiNodeLocalService _wikiNodeLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

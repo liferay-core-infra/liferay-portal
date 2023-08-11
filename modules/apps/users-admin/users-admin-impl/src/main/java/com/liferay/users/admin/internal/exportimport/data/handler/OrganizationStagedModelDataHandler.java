@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.WebsiteLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.users.admin.kernel.util.UsersAdmin;
 
@@ -199,7 +200,7 @@ public class OrganizationStagedModelDataHandler
 		_importWebsites(portletDataContext, organization, importedOrganization);
 
 		portletDataContext.importClassedModel(
-			organization, importedOrganization);
+			organization, importedOrganization, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -543,5 +544,8 @@ public class OrganizationStagedModelDataHandler
 
 	@Reference
 	private WebsiteLocalService _websiteLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

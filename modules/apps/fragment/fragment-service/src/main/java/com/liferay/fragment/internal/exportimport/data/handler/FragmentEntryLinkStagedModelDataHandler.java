@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.segments.model.SegmentsExperience;
 
@@ -273,7 +274,8 @@ public class FragmentEntryLinkStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			fragmentEntryLink, importedFragmentEntryLink);
+			fragmentEntryLink, importedFragmentEntryLink,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -306,5 +308,8 @@ public class FragmentEntryLinkStagedModelDataHandler
 		unbind = "-"
 	)
 	private StagedModelRepository<FragmentEntryLink> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

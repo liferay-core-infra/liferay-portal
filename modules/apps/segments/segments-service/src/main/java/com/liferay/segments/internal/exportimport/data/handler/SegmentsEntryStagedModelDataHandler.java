@@ -12,6 +12,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.segments.model.SegmentsEntry;
 
@@ -134,7 +135,7 @@ public class SegmentsEntryStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			segmentsEntry, importedSegmentsEntry);
+			segmentsEntry, importedSegmentsEntry, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -153,5 +154,8 @@ public class SegmentsEntryStagedModelDataHandler
 		unbind = "-"
 	)
 	private StagedModelRepository<SegmentsEntry> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

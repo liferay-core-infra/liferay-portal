@@ -13,6 +13,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -116,7 +117,8 @@ public class ClientExtensionEntryRelStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			clientExtensionEntryRel, importedClientExtensionEntryRel);
+			clientExtensionEntryRel, importedClientExtensionEntryRel,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -135,5 +137,8 @@ public class ClientExtensionEntryRelStagedModelDataHandler
 	)
 	private StagedModelRepository<ClientExtensionEntryRel>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

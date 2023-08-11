@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.segments.constants.SegmentsEntryConstants;
 import com.liferay.segments.constants.SegmentsPortletKeys;
@@ -196,7 +197,7 @@ public class AssetListEntrySegmentsEntryRelStagedModelDataHandler
 
 		portletDataContext.importClassedModel(
 			assetListEntrySegmentsEntryRel,
-			importedAssetListEntrySegmentsEntryRel);
+			importedAssetListEntrySegmentsEntryRel, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -226,5 +227,8 @@ public class AssetListEntrySegmentsEntryRelStagedModelDataHandler
 	)
 	private StagedModelRepository<AssetListEntrySegmentsEntryRel>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.WebsiteLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -109,7 +110,8 @@ public class WebsiteStagedModelDataHandler
 				website.getListTypeId(), website.isPrimary());
 		}
 
-		portletDataContext.importClassedModel(website, importedWebsite);
+		portletDataContext.importClassedModel(
+			website, importedWebsite, _workflowDefinitionManager);
 	}
 
 	@Reference
@@ -117,5 +119,8 @@ public class WebsiteStagedModelDataHandler
 
 	@Reference
 	private WebsiteLocalService _websiteLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

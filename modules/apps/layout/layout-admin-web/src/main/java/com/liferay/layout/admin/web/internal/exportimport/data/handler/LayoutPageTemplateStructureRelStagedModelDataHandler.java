@@ -24,6 +24,7 @@ import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
@@ -200,7 +201,7 @@ public class LayoutPageTemplateStructureRelStagedModelDataHandler
 
 		portletDataContext.importClassedModel(
 			layoutPageTemplateStructureRel,
-			importedLayoutPageTemplateStructureRel);
+			importedLayoutPageTemplateStructureRel, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -299,5 +300,8 @@ public class LayoutPageTemplateStructureRelStagedModelDataHandler
 	)
 	private StagedModelRepository<LayoutPageTemplateStructureRel>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

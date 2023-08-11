@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -222,7 +223,8 @@ public class CalendarStagedModelDataHandler
 				serviceContext);
 		}
 
-		portletDataContext.importClassedModel(calendar, importedCalendar);
+		portletDataContext.importClassedModel(
+			calendar, importedCalendar, _workflowDefinitionManager);
 	}
 
 	private Calendar _fetchExistingCalendar(
@@ -282,5 +284,8 @@ public class CalendarStagedModelDataHandler
 
 	@Reference
 	private Localization _localization;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

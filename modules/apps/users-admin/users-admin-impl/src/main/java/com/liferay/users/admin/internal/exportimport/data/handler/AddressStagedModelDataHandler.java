@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.AddressLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -115,7 +116,8 @@ public class AddressStagedModelDataHandler
 				address.isPrimary());
 		}
 
-		portletDataContext.importClassedModel(address, importedAddress);
+		portletDataContext.importClassedModel(
+			address, importedAddress, _workflowDefinitionManager);
 	}
 
 	@Reference
@@ -123,5 +125,8 @@ public class AddressStagedModelDataHandler
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

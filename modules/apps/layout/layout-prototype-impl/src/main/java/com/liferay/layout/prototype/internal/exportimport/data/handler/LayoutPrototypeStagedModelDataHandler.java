@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -176,7 +177,8 @@ public class LayoutPrototypeStagedModelDataHandler
 			importedLayoutPrototype.getGroupId());
 
 		portletDataContext.importClassedModel(
-			layoutPrototype, importedLayoutPrototype);
+			layoutPrototype, importedLayoutPrototype,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -294,5 +296,8 @@ public class LayoutPrototypeStagedModelDataHandler
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

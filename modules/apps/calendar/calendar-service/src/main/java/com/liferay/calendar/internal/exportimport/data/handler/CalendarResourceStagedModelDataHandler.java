@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -252,7 +253,8 @@ public class CalendarResourceStagedModelDataHandler
 			portletDataContext, calendarResource, importedCalendarResource);
 
 		portletDataContext.importClassedModel(
-			calendarResource, importedCalendarResource);
+			calendarResource, importedCalendarResource,
+			_workflowDefinitionManager);
 	}
 
 	private Map<Locale, String> _getCalendarResourceNameMap(
@@ -372,5 +374,8 @@ public class CalendarResourceStagedModelDataHandler
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

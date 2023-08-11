@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileShortcut;
 
@@ -220,7 +221,8 @@ public class FileShortcutStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			fileShortcut, importedFileShortcut, DLFileShortcut.class);
+			fileShortcut, importedFileShortcut, DLFileShortcut.class,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -281,5 +283,8 @@ public class FileShortcutStagedModelDataHandler
 
 	@Reference
 	private DLFolderLocalService _dlFolderLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -13,6 +13,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -101,12 +102,16 @@ public class StagedExpandoTableStagedModelDataHandler
 		// attributes are either IDs or used as IDs
 
 		portletDataContext.importClassedModel(
-			stagedExpandoTable, importedStagedExpandoTable);
+			stagedExpandoTable, importedStagedExpandoTable,
+			_workflowDefinitionManager);
 	}
 
 	@Reference(
 		target = "(model.class.name=com.liferay.expando.model.adapter.StagedExpandoTable)"
 	)
 	private StagedModelRepository<StagedExpandoTable> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

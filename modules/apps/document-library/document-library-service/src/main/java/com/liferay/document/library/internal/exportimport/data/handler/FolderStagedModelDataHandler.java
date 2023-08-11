@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
 import com.liferay.portal.repository.portletrepository.PortletRepository;
@@ -294,7 +295,7 @@ public class FolderStagedModelDataHandler
 			serviceContext);
 
 		portletDataContext.importClassedModel(
-			folder, importedFolder, DLFolder.class);
+			folder, importedFolder, DLFolder.class, _workflowDefinitionManager);
 
 		folderIds.put(folder.getFolderId(), importedFolder.getFolderId());
 		folderIdsAndRepositoryEntryIds.put(
@@ -522,5 +523,8 @@ public class FolderStagedModelDataHandler
 
 	@Reference
 	private TrashHelper _trashHelper;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

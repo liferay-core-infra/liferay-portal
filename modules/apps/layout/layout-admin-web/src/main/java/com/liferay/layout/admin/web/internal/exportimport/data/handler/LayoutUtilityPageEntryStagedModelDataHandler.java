@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -142,7 +143,8 @@ public class LayoutUtilityPageEntryStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			layoutUtilityPageEntry, importedLayoutUtilityPageEntry);
+			layoutUtilityPageEntry, importedLayoutUtilityPageEntry,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -223,5 +225,8 @@ public class LayoutUtilityPageEntryStagedModelDataHandler
 	)
 	private StagedModelRepository<LayoutUtilityPageEntry>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Calendar;
@@ -264,7 +265,8 @@ public class CPAttachmentFileEntryStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			cpAttachmentFileEntry, importedCPAttachmentFileEntry);
+			cpAttachmentFileEntry, importedCPAttachmentFileEntry,
+			_workflowDefinitionManager);
 	}
 
 	@Reference
@@ -279,5 +281,8 @@ public class CPAttachmentFileEntryStagedModelDataHandler
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

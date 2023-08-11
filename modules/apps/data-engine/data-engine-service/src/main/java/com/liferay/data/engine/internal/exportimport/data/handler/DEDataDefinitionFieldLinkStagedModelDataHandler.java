@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -223,7 +224,8 @@ public class DEDataDefinitionFieldLinkStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			deDataDefinitionFieldLink, importedDEDataDefinitionFieldLink);
+			deDataDefinitionFieldLink, importedDEDataDefinitionFieldLink,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -255,5 +257,8 @@ public class DEDataDefinitionFieldLinkStagedModelDataHandler
 	)
 	private StagedModelRepository<DEDataDefinitionFieldLink>
 		_stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

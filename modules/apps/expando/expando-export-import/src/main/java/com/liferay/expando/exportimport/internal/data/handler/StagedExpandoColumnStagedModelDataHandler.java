@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.adapter.ModelAdapterUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -184,7 +185,8 @@ public class StagedExpandoColumnStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			stagedExpandoColumn, importedExpandoColumn);
+			stagedExpandoColumn, importedExpandoColumn,
+			_workflowDefinitionManager);
 	}
 
 	@Reference
@@ -194,5 +196,8 @@ public class StagedExpandoColumnStagedModelDataHandler
 		target = "(model.class.name=com.liferay.expando.kernel.model.adapter.StagedExpandoColumn)"
 	)
 	private StagedModelRepository<StagedExpandoColumn> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

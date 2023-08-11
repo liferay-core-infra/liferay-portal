@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Map;
@@ -213,7 +214,7 @@ public class FragmentEntryStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			fragmentEntry, importedFragmentEntry);
+			fragmentEntry, importedFragmentEntry, _workflowDefinitionManager);
 	}
 
 	@Override
@@ -239,5 +240,8 @@ public class FragmentEntryStagedModelDataHandler
 		unbind = "-"
 	)
 	private StagedModelRepository<FragmentEntry> _stagedModelRepository;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

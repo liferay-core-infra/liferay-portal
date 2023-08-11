@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.staging.StagingGroupHelper;
 
@@ -170,7 +171,8 @@ public class AssetDisplayPageStagedModelDataHandler
 		}
 
 		portletDataContext.importClassedModel(
-			assetDisplayPageEntry, importedAssetDisplayPageEntry);
+			assetDisplayPageEntry, importedAssetDisplayPageEntry,
+			_workflowDefinitionManager);
 	}
 
 	@Override
@@ -239,5 +241,8 @@ public class AssetDisplayPageStagedModelDataHandler
 
 	@Reference
 	private StagingGroupHelper _stagingGroupHelper;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

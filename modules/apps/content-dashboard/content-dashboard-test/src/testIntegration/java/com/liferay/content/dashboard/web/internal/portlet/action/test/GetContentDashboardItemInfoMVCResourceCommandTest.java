@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.PortletServlet;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.FallbackKeysSettingsUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderResponse;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletURL;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceRequest;
@@ -254,7 +254,7 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 						HashMapDictionaryBuilder.<String, Object>put(
 							"enabled", false
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						FallbackKeysSettingsUtil.getSettingsFactory())) {
 
 			JSONObject jsonObject = _serveResource(
 				_createContentDashboardFileItem());
@@ -278,7 +278,7 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 						HashMapDictionaryBuilder.<String, Object>put(
 							"enabled", false
 						).build(),
-						SettingsFactoryUtil.getSettingsFactory())) {
+						FallbackKeysSettingsUtil.getSettingsFactory())) {
 
 			JSONObject jsonObject = _serveResource(
 				_createContentDashboardFileItem());

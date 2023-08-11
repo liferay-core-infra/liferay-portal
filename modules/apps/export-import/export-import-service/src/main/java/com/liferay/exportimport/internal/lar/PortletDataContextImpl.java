@@ -92,7 +92,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.xml.Attribute;
 import com.liferay.portal.kernel.xml.Element;
@@ -1266,17 +1266,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 	@Override
 	public void importClassedModel(
-			ClassedModel classedModel, ClassedModel newClassedModel)
-		throws PortalException {
-
-		importClassedModel(
-			classedModel, newClassedModel, classedModel.getModelClass());
-	}
-
-	@Override
-	public void importClassedModel(
 			ClassedModel classedModel, ClassedModel newClassedModel,
-			Class<?> clazz)
+			Class<?> clazz, WorkflowDefinitionManager workflowDefinitionManager)
 		throws PortalException {
 
 		if (!_isResourceMain(classedModel)) {
@@ -1313,12 +1304,24 @@ public class PortletDataContextImpl implements PortletDataContext {
 			}
 		}
 
-		_importWorkflowDefinitionLink(newClassedModel);
+		_importWorkflowDefinitionLink(
+			newClassedModel, workflowDefinitionManager);
 
 		importLocks(
 			clazz, String.valueOf(primaryKeyObj),
 			String.valueOf(newPrimaryKeyObj));
 		importPermissions(clazz, primaryKeyObj, newPrimaryKeyObj);
+	}
+
+	@Override
+	public void importClassedModel(
+			ClassedModel classedModel, ClassedModel newClassedModel,
+			WorkflowDefinitionManager workflowDefinitionManager)
+		throws PortalException {
+
+		importClassedModel(
+			classedModel, newClassedModel, classedModel.getModelClass(),
+			workflowDefinitionManager);
 	}
 
 	@Override
@@ -2475,7 +2478,9 @@ public class PortletDataContextImpl implements PortletDataContext {
 		return StringBundler.concat(className, StringPool.POUND, classPK);
 	}
 
-	private void _importWorkflowDefinitionLink(ClassedModel classedModel)
+	private void _importWorkflowDefinitionLink(
+			ClassedModel classedModel,
+			WorkflowDefinitionManager workflowDefinitionManager)
 		throws PortletDataException {
 
 		Element stagedGroupedWorkflowDefinitionLinkElements =
@@ -2520,7 +2525,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 			try {
 				workflowDefinition =
-					WorkflowDefinitionManagerUtil.getLatestWorkflowDefinition(
+					workflowDefinitionManager.getLatestWorkflowDefinition(
 						getCompanyId(), displayName);
 			}
 			catch (WorkflowException workflowException) {

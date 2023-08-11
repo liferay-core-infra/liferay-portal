@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.DateRange;
 import com.liferay.portal.kernel.util.KeyValuePair;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipWriter;
@@ -320,12 +321,13 @@ public interface PortletDataContext extends Serializable {
 	public boolean hasScopedPrimaryKey(Class<?> clazz, String primaryKey);
 
 	public void importClassedModel(
-			ClassedModel classedModel, ClassedModel newClassedModel)
+			ClassedModel classedModel, ClassedModel newClassedModel,
+			Class<?> clazz, WorkflowDefinitionManager workflowDefinitionManager)
 		throws PortalException;
 
 	public void importClassedModel(
 			ClassedModel classedModel, ClassedModel newClassedModel,
-			Class<?> clazz)
+			WorkflowDefinitionManager workflowDefinitionManager)
 		throws PortalException;
 
 	public void importLocks(Class<?> clazz, String key, String newKey)

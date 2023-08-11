@@ -5,80 +5,47 @@
 
 package com.liferay.search.experiences.internal.blueprint.parameter;
 
-import com.liferay.asset.kernel.service.AssetCategoryLocalService;
-import com.liferay.asset.kernel.service.AssetTagLocalService;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalService;
-import com.liferay.portal.kernel.service.UserGroupLocalService;
-import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.search.experiences.blueprint.parameter.SXPParameter;
 import com.liferay.search.experiences.blueprint.parameter.contributor.SXPParameterContributorDefinition;
-import com.liferay.search.experiences.blueprint.parameter.contributor.SXPParameterContributorDefinitionProvider;
-import com.liferay.search.experiences.configuration.SemanticSearchConfigurationProvider;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.ContextSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.IpstackSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.MLSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.OpenWeatherMapSXPParameterContributor;
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.SXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.TimeSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.UserSXPParameterContributor;
-import com.liferay.search.experiences.ml.embedding.text.TextEmbeddingRetriever;
 import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
 import com.liferay.search.experiences.rest.dto.v1_0.Parameter;
 import com.liferay.search.experiences.rest.dto.v1_0.ParameterConfiguration;
 import com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint;
-import com.liferay.segments.SegmentsEntryRetriever;
 
 import java.beans.ExceptionListener;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Petteri Karttunen
  */
-@Component(
-	enabled = false,
-	service = {
-		SXPParameterContributorDefinitionProvider.class,
-		SXPParameterDataCreator.class
-	}
-)
-public class SXPParameterDataCreator
-	implements SXPParameterContributorDefinitionProvider {
+@Component(enabled = false, service = SXPParameterDataCreator.class)
+public class SXPParameterDataCreator {
 
 	public SXPParameterData create(
 		ExceptionListener exceptionListener, SearchContext searchContext,
@@ -101,47 +68,6 @@ public class SXPParameterDataCreator
 			exceptionListener, searchContext, sxpBlueprint, sxpParameters);
 
 		return new SXPParameterData(keywords, sxpParameters);
-	}
-
-	@Override
-	public List<SXPParameterContributorDefinition>
-		getSXPParameterContributorDefinitions(long companyId, Locale locale) {
-
-		if (ArrayUtil.isEmpty(_sxpParameterContributors)) {
-			return Collections.emptyList();
-		}
-
-		List<SXPParameterContributorDefinition>
-			sxpParameterContributorDefinitions = new ArrayList<>();
-
-		for (SXPParameterContributor sxpParameterContributor :
-				_sxpParameterContributors) {
-
-			sxpParameterContributorDefinitions.addAll(
-				sxpParameterContributor.getSXPParameterContributorDefinitions(
-					companyId, locale));
-		}
-
-		return sxpParameterContributorDefinitions;
-	}
-
-	@Activate
-	protected void activate() {
-		_sxpParameterContributors = new SXPParameterContributor[] {
-			new ContextSXPParameterContributor(_groupLocalService, _language),
-			new IpstackSXPParameterContributor(_configurationProvider),
-			new MLSXPParameterContributor(
-				_language, _semanticSearchConfigurationProvider,
-				_textEmbeddingRetriever),
-			new OpenWeatherMapSXPParameterContributor(_configurationProvider),
-			new TimeSXPParameterContributor(),
-			new UserSXPParameterContributor(
-				_assetCategoryLocalService, _assetTagLocalService,
-				_expandoColumnLocalService, _expandoValueLocalService,
-				_groupLocalService, _language, _portal, _segmentsEntryRetriever,
-				_userGroupGroupRoleLocalService, _userGroupLocalService,
-				_userGroupRoleLocalService, _userLocalService)
-		};
 	}
 
 	private void _add(
@@ -237,12 +163,16 @@ public class SXPParameterDataCreator
 		ExceptionListener exceptionListener, SearchContext searchContext,
 		SXPBlueprint sxpBlueprint, Map<String, SXPParameter> sxpParameters) {
 
-		if (ArrayUtil.isEmpty(_sxpParameterContributors)) {
+		if (ArrayUtil.isEmpty(
+				_sxpParameterContributorProvider.
+					getSxpParameterContributors())) {
+
 			return;
 		}
 
 		for (SXPParameterContributor sxpParameterContributor :
-				_sxpParameterContributors) {
+				_sxpParameterContributorProvider.
+					getSxpParameterContributors()) {
 
 			Set<SXPParameter> set = new LinkedHashSet<>();
 
@@ -697,51 +627,6 @@ public class SXPParameterDataCreator
 	}
 
 	@Reference
-	private AssetCategoryLocalService _assetCategoryLocalService;
-
-	@Reference
-	private AssetTagLocalService _assetTagLocalService;
-
-	@Reference
-	private ConfigurationProvider _configurationProvider;
-
-	@Reference
-	private ExpandoColumnLocalService _expandoColumnLocalService;
-
-	@Reference
-	private ExpandoValueLocalService _expandoValueLocalService;
-
-	@Reference
-	private GroupLocalService _groupLocalService;
-
-	@Reference
-	private Language _language;
-
-	@Reference
-	private Portal _portal;
-
-	@Reference
-	private SegmentsEntryRetriever _segmentsEntryRetriever;
-
-	@Reference
-	private SemanticSearchConfigurationProvider
-		_semanticSearchConfigurationProvider;
-
-	private SXPParameterContributor[] _sxpParameterContributors;
-
-	@Reference
-	private TextEmbeddingRetriever _textEmbeddingRetriever;
-
-	@Reference
-	private UserGroupGroupRoleLocalService _userGroupGroupRoleLocalService;
-
-	@Reference
-	private UserGroupLocalService _userGroupLocalService;
-
-	@Reference
-	private UserGroupRoleLocalService _userGroupRoleLocalService;
-
-	@Reference
-	private UserLocalService _userLocalService;
+	private SXPParameterContributorProvider _sxpParameterContributorProvider;
 
 }

@@ -6,6 +6,7 @@
 package com.liferay.portal.search.web.internal.search.bar.portlet.action;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
@@ -79,6 +80,9 @@ public class SearchBarConfigurationAction extends DefaultConfigurationAction {
 	}
 
 	@Reference
+	protected ConfigurationProvider configurationProvider;
+
+	@Reference
 	protected SearchBarPrecedenceHelper searchBarPrecedenceHelper;
 
 	@Reference
@@ -88,9 +92,12 @@ public class SearchBarConfigurationAction extends DefaultConfigurationAction {
 		_getSearchBarPortletInstanceConfiguration(
 			PortletDisplay portletDisplay) {
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		try {
-			return portletDisplay.getPortletInstanceConfiguration(
-				SearchBarPortletInstanceConfiguration.class);
+			return configurationProvider.getPortletInstanceConfiguration(
+				SearchBarPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 		}
 		catch (ConfigurationException configurationException) {
 			throw new RuntimeException(configurationException);

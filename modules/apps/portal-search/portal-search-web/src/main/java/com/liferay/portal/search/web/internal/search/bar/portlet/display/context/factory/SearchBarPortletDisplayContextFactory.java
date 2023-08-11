@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.service.LayoutLocalService;
@@ -54,10 +55,12 @@ import javax.servlet.http.HttpServletRequest;
 public class SearchBarPortletDisplayContextFactory {
 
 	public SearchBarPortletDisplayContextFactory(
+			ConfigurationProvider configurationProvider,
 			LayoutLocalService layoutLocalService, Portal portal,
 			RenderRequest renderRequest)
 		throws ConfigurationException {
 
+		_configurationProvider = configurationProvider;
 		_layoutLocalService = layoutLocalService;
 		_portal = portal;
 		_renderRequest = renderRequest;
@@ -68,8 +71,9 @@ public class SearchBarPortletDisplayContextFactory {
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_searchBarPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				SearchBarPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				SearchBarPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public SearchBarPortletDisplayContext create(
@@ -273,9 +277,12 @@ public class SearchBarPortletDisplayContextFactory {
 		getSearchBarPortletInstanceConfiguration(
 			PortletDisplay portletDisplay) {
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		try {
-			return portletDisplay.getPortletInstanceConfiguration(
-				SearchBarPortletInstanceConfiguration.class);
+			return _configurationProvider.getPortletInstanceConfiguration(
+				SearchBarPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 		}
 		catch (ConfigurationException configurationException) {
 			throw new RuntimeException(configurationException);
@@ -484,6 +491,7 @@ public class SearchBarPortletDisplayContextFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchBarPortletDisplayContextFactory.class);
 
+	private final ConfigurationProvider _configurationProvider;
 	private final LayoutLocalService _layoutLocalService;
 	private final Portal _portal;
 	private final RenderRequest _renderRequest;

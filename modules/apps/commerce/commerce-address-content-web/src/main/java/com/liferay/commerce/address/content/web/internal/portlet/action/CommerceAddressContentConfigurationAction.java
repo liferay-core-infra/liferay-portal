@@ -12,6 +12,7 @@ import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.util.CommerceAccountHelper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.service.CountryService;
@@ -51,8 +52,8 @@ public class CommerceAddressContentConfigurationAction
 			CommerceAddressDisplayContext commerceAddressDisplayContext =
 				new CommerceAddressDisplayContext(
 					_actionHelper, _commerceAccountHelper,
-					_commerceAddressService, _countryService,
-					httpServletRequest, _regionService);
+					_commerceAddressService, _configurationProvider,
+					_countryService, httpServletRequest, _regionService);
 
 			httpServletRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT, commerceAddressDisplayContext);
@@ -75,6 +76,9 @@ public class CommerceAddressContentConfigurationAction
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CountryService _countryService;

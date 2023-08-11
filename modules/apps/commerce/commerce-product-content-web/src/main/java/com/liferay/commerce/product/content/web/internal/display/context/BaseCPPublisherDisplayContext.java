@@ -21,7 +21,9 @@ import com.liferay.commerce.product.type.CPTypeRegistry;
 import com.liferay.commerce.util.CommerceUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.theme.PortletDisplay;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -39,6 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BaseCPPublisherDisplayContext {
 
 	public BaseCPPublisherDisplayContext(
+			ConfigurationProvider configurationProvider,
 			CPContentListEntryRendererRegistry contentListEntryRendererRegistry,
 			CPContentListRendererRegistry cpContentListRendererRegistry,
 			CPPublisherWebHelper cpPublisherWebHelper,
@@ -57,9 +60,12 @@ public class BaseCPPublisherDisplayContext {
 		PortletDisplay portletDisplay =
 			cpContentRequestHelper.getPortletDisplay();
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		cpPublisherPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CPPublisherPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CPPublisherPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public List<CPCatalogEntry> getCPCatalogEntries() throws Exception {

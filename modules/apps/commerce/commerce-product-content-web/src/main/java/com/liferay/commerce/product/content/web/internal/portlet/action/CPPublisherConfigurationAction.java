@@ -26,6 +26,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -74,6 +75,7 @@ public class CPPublisherConfigurationAction extends DefaultConfigurationAction {
 				cpPublisherConfigurationDisplayContext =
 					new CPPublisherConfigurationDisplayContext(
 						_assetCategoryLocalService, _assetTagLocalService,
+						_configurationProvider,
 						_cpContentListEntryRendererRegistry,
 						_cpContentListRendererRegistry, _cpDataSourceRegistry,
 						_cpDefinitionHelper, _cpInstanceHelper,
@@ -460,6 +462,9 @@ public class CPPublisherConfigurationAction extends DefaultConfigurationAction {
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPContentListEntryRendererRegistry

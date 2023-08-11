@@ -96,9 +96,12 @@ public class CommerceCartContentDisplayContext {
 		PortletDisplay portletDisplay =
 			commerceCartContentRequestHelper.getPortletDisplay();
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		_commerceCartContentPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CommerceCartContentPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CommerceCartContentPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 
 		_configurationProvider = configurationProvider;
 		_httpServletRequest = httpServletRequest;

@@ -6,6 +6,7 @@
 package com.liferay.portal.search.similar.results.web.internal.display.context;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -34,8 +35,9 @@ public class SimilarResultsDisplayContext {
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_similarResultsPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				SimilarResultsPortletInstanceConfiguration.class);
+			ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				SimilarResultsPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public long getDisplayStyleGroupId() {

@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayRenderRequest;
 import com.liferay.portal.kernel.portlet.LiferayRenderResponse;
@@ -93,6 +94,7 @@ public class JournalContentDisplayContext {
 
 	public static JournalContentDisplayContext create(
 			PortletRequest portletRequest, PortletResponse portletResponse,
+			ConfigurationProvider configurationProvider,
 			long ddmStructureClassNameId,
 			ModelResourcePermission<DDMTemplate>
 				ddmTemplateModelResourcePermission,
@@ -111,8 +113,10 @@ public class JournalContentDisplayContext {
 		if (journalContentDisplayContext == null) {
 			JournalContentPortletInstanceConfiguration
 				journalContentPortletInstanceConfiguration =
-					portletDisplay.getPortletInstanceConfiguration(
-						JournalContentPortletInstanceConfiguration.class);
+					configurationProvider.getPortletInstanceConfiguration(
+						JournalContentPortletInstanceConfiguration.class,
+						themeDisplay.getLayout(),
+						portletDisplay.getPortletId());
 
 			journalContentDisplayContext = new JournalContentDisplayContext(
 				portletRequest, portletResponse, themeDisplay,

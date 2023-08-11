@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Lino Alves
@@ -103,7 +105,8 @@ public class ModifiedFacetPortletConfigurationAction
 		try {
 			ModifiedFacetDisplayContextBuilder
 				modifiedFacetDisplayContextBuilder =
-					new ModifiedFacetDisplayContextBuilder(null, renderRequest);
+					new ModifiedFacetDisplayContextBuilder(
+						_configurationProvider, null, renderRequest);
 
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
@@ -124,5 +127,8 @@ public class ModifiedFacetPortletConfigurationAction
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ModifiedFacetPortletConfigurationAction.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 }

@@ -9,6 +9,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
@@ -48,6 +49,7 @@ import javax.portlet.RenderRequest;
 public class ModifiedFacetDisplayContextBuilder implements Serializable {
 
 	public ModifiedFacetDisplayContextBuilder(
+			ConfigurationProvider configurationProvider,
 			DateFormatFactory dateFormatFactory, RenderRequest renderRequest)
 		throws ConfigurationException {
 
@@ -61,8 +63,9 @@ public class ModifiedFacetDisplayContextBuilder implements Serializable {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_modifiedFacetPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				ModifiedFacetPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				ModifiedFacetPortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public ModifiedFacetDisplayContext build() {

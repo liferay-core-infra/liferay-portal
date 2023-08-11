@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.PortletDisplay;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 
 import java.math.BigDecimal;
@@ -65,9 +66,12 @@ public class CommerceCartContentMiniDisplayContext
 		PortletDisplay portletDisplay =
 			commerceCartContentRequestHelper.getPortletDisplay();
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		_commerceCartContentMiniPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CommerceCartContentMiniPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CommerceCartContentMiniPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 
 		_commerceOrderHttpHelper = commerceOrderHttpHelper;
 		_percentageFormatter = percentageFormatter;

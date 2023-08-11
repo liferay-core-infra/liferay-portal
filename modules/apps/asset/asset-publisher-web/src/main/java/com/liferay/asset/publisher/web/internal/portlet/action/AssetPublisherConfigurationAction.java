@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
@@ -144,9 +145,10 @@ public class AssetPublisherConfigurationAction
 				assetListEntrySegmentsEntryRelLocalService,
 				assetPublisherCustomizer, assetPublisherHelper,
 				assetPublisherWebConfiguration, assetPublisherWebHelper,
-				infoItemServiceRegistry, itemSelector, portal, renderRequest,
-				renderResponse, renderRequest.getPreferences(),
-				requestContextMapper, segmentsEntryRetriever);
+				configurationProvider, infoItemServiceRegistry, itemSelector,
+				portal, renderRequest, renderResponse,
+				renderRequest.getPreferences(), requestContextMapper,
+				segmentsEntryRetriever);
 
 		httpServletRequest.setAttribute(
 			AssetPublisherWebKeys.ASSET_PUBLISHER_DISPLAY_CONTEXT,
@@ -353,6 +355,9 @@ public class AssetPublisherConfigurationAction
 	protected AssetTagLocalService assetTagLocalService;
 
 	@Reference
+	protected ConfigurationProvider configurationProvider;
+
+	@Reference
 	protected GroupLocalService groupLocalService;
 
 	@Reference
@@ -480,8 +485,9 @@ public class AssetPublisherConfigurationAction
 
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
-		return portletDisplay.getPortletInstanceConfiguration(
-			AssetPublisherPortletInstanceConfiguration.class);
+		return configurationProvider.getPortletInstanceConfiguration(
+			AssetPublisherPortletInstanceConfiguration.class,
+			themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	private String[] _getClassTypeIds(

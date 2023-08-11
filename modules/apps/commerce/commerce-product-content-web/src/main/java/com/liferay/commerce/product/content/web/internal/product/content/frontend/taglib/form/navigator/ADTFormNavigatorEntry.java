@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -81,8 +82,10 @@ public class ADTFormNavigatorEntry extends BaseJSPFormNavigatorEntry<Void> {
 		try {
 			CPContentPortletInstanceConfiguration
 				cpContentPortletInstanceConfiguration =
-					portletDisplay.getPortletInstanceConfiguration(
-						CPContentPortletInstanceConfiguration.class);
+					_configurationProvider.getPortletInstanceConfiguration(
+						CPContentPortletInstanceConfiguration.class,
+						themeDisplay.getLayout(),
+						portletDisplay.getPortletId());
 
 			String selectionStyle =
 				cpContentPortletInstanceConfiguration.selectionStyle();
@@ -100,6 +103,9 @@ public class ADTFormNavigatorEntry extends BaseJSPFormNavigatorEntry<Void> {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ADTFormNavigatorEntry.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private Language _language;

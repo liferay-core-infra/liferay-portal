@@ -25,6 +25,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -54,6 +55,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CPSearchResultsDisplayContext {
 
 	public CPSearchResultsDisplayContext(
+			ConfigurationProvider configurationProvider,
 			CPContentListEntryRendererRegistry
 				cpContentListEntryRendererRegistry,
 			CPContentListRendererRegistry cpContentListRendererRegistry,
@@ -75,9 +77,12 @@ public class CPSearchResultsDisplayContext {
 
 		PortletDisplay portletDisplay = _cpRequestHelper.getPortletDisplay();
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		_cpSearchResultsPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CPSearchResultsPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CPSearchResultsPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public Map<String, String> getCPContentListEntryRendererKeys() {

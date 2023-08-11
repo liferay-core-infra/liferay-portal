@@ -15,6 +15,7 @@ import com.liferay.commerce.product.util.CPDefinitionHelper;
 import com.liferay.commerce.product.util.CPInstanceHelper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -55,7 +56,7 @@ public class CommerceVirtualOrderItemContentConfigurationAction
 						_commerceChannelLocalService,
 						_commerceVirtualOrderItemLocalService,
 						_commerceVirtualOrderItemPermission,
-						_cpDefinitionHelper,
+						_configurationProvider, _cpDefinitionHelper,
 						_cpDefinitionVirtualSettingLocalService,
 						_cpInstanceHelper, httpServletRequest);
 
@@ -83,6 +84,9 @@ public class CommerceVirtualOrderItemContentConfigurationAction
 	@Reference
 	private CommerceVirtualOrderItemPermission
 		_commerceVirtualOrderItemPermission;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPDefinitionHelper _cpDefinitionHelper;

@@ -12,6 +12,7 @@ import com.liferay.commerce.product.content.search.web.internal.display.context.
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.searcher.SearchRequest;
@@ -69,7 +70,8 @@ public class CPPriceRangeFacetsPortlet extends MVCPortlet {
 		try {
 			CPPriceRangeFacetsDisplayContext cpPriceRangeFacetsDisplayContext =
 				new CPPriceRangeFacetsDisplayContext(
-					_commercePriceFormatter, renderRequest,
+					_commercePriceFormatter, _configurationProvider,
+					renderRequest,
 					portletSharedSearchResponse.getFacet(CPField.BASE_PRICE),
 					getPaginationStartParameterName(
 						portletSharedSearchResponse),
@@ -105,5 +107,8 @@ public class CPPriceRangeFacetsPortlet extends MVCPortlet {
 
 	@Reference
 	private CommercePriceFormatter _commercePriceFormatter;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 }

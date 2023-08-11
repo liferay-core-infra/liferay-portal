@@ -11,10 +11,12 @@ import com.liferay.commerce.dashboard.web.internal.display.context.helper.Commer
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.theme.PortletDisplay;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,7 +28,8 @@ public class CommerceDashboardForecastDisplayContext {
 	public CommerceDashboardForecastDisplayContext(
 			ModelResourcePermission<AccountEntry>
 				accountEntryModelResourcePermission,
-			HttpServletRequest httpServletRequest)
+			HttpServletRequest httpServletRequest,
+			ConfigurationProvider configurationProvider)
 		throws PortalException {
 
 		_accountEntryModelResourcePermission =
@@ -38,9 +41,12 @@ public class CommerceDashboardForecastDisplayContext {
 		PortletDisplay portletDisplay =
 			_commerceDashboardForecastRequestHelper.getPortletDisplay();
 
+		ThemeDisplay themeDisplay = portletDisplay.getThemeDisplay();
+
 		_commerceDashboardForecastPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CommerceDashboardForecastPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CommerceDashboardForecastPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public String getAssetCategoryIds() {

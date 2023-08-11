@@ -8,6 +8,7 @@ package com.liferay.portal.search.web.internal.facet.display.context.builder;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
@@ -43,8 +44,9 @@ public class FolderSearchFacetDisplayContextBuilder {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_folderFacetPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				FolderFacetPortletInstanceConfiguration.class);
+			ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				FolderFacetPortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public FolderSearchFacetDisplayContext build() {

@@ -10,6 +10,7 @@ import com.liferay.commerce.organization.web.internal.display.context.CommerceOr
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.service.OrganizationService;
@@ -49,8 +50,8 @@ public class CommerceOrganizationConfigurationAction
 			CommerceOrganizationDisplayContext
 				commerceOrganizationDisplayContext =
 					new CommerceOrganizationDisplayContext(
-						httpServletRequest, _organizationService,
-						_userLocalService);
+						httpServletRequest, _configurationProvider,
+						_organizationService, _userLocalService);
 
 			httpServletRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -65,6 +66,9 @@ public class CommerceOrganizationConfigurationAction
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceOrganizationConfigurationAction.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private OrganizationService _organizationService;

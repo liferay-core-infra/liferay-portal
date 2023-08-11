@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -84,8 +85,9 @@ public class CPPriceRangeFacetsPortletSharedSearchContributor
 
 		CPPriceRangeFacetsPortletInstanceConfiguration
 			cpPriceRangeFacetsPortletInstanceConfiguration =
-				portletDisplay.getPortletInstanceConfiguration(
-					CPPriceRangeFacetsPortletInstanceConfiguration.class);
+				_configurationProvider.getPortletInstanceConfiguration(
+					CPPriceRangeFacetsPortletInstanceConfiguration.class,
+					themeDisplay.getLayout(), portletDisplay.getPortletId());
 
 		Facet facet = _dateRangeFacetFactory.newInstance(searchContext);
 
@@ -123,6 +125,9 @@ public class CPPriceRangeFacetsPortletSharedSearchContributor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CPPriceRangeFacetsPortletSharedSearchContributor.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private DateRangeFacetFactory _dateRangeFacetFactory;

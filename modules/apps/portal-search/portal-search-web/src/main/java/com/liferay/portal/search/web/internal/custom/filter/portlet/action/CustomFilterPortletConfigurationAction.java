@@ -6,6 +6,7 @@
 package com.liferay.portal.search.web.internal.custom.filter.portlet.action;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Nazar
@@ -65,6 +67,8 @@ public class CustomFilterPortletConfigurationAction
 		throws ConfigurationException {
 
 		return CustomFilterDisplayContextBuilder.builder(
+		).configurationProvider(
+			_configurationProvider
 		).themeDisplay(
 			(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY)
 		).build();
@@ -80,5 +84,8 @@ public class CustomFilterPortletConfigurationAction
 			throw new RuntimeException(configurationException);
 		}
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 }

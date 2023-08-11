@@ -65,8 +65,9 @@ public class CommerceCartContentTotalDisplayContext
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_commerceCartContentTotalPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CommerceCartContentTotalPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CommerceCartContentTotalPortletInstanceConfiguration.class,
+				themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public PortletURL getCheckoutPortletURL() throws PortalException {

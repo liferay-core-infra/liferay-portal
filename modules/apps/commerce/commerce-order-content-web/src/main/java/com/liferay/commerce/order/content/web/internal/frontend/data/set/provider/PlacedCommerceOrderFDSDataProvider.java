@@ -21,6 +21,7 @@ import com.liferay.frontend.data.set.provider.FDSDataProvider;
 import com.liferay.frontend.data.set.provider.search.FDSKeywords;
 import com.liferay.frontend.data.set.provider.search.FDSPagination;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -84,8 +85,9 @@ public class PlacedCommerceOrderFDSDataProvider
 
 		CommerceOrderContentPortletInstanceConfiguration
 			commerceOrderContentPortletInstanceConfiguration =
-				portletDisplay.getPortletInstanceConfiguration(
-					CommerceOrderContentPortletInstanceConfiguration.class);
+				_configurationProvider.getPortletInstanceConfiguration(
+					CommerceOrderContentPortletInstanceConfiguration.class,
+					themeDisplay.getLayout(), portletDisplay.getPortletId());
 
 		return CommerceOrderFDSUtil.getOrders(
 			commerceChannel.getGroupId(), commerceOrders,
@@ -129,6 +131,9 @@ public class PlacedCommerceOrderFDSDataProvider
 
 	@Reference
 	private CommerceOrderTypeService _commerceOrderTypeService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

@@ -16,6 +16,7 @@ import com.liferay.commerce.product.util.CPInstanceHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -68,7 +69,7 @@ public class CommerceVirtualOrderItemContentPortlet extends MVCPortlet {
 						_commerceChannelLocalService,
 						_commerceVirtualOrderItemLocalService,
 						_commerceVirtualOrderItemPermission,
-						_cpDefinitionHelper,
+						_configurationProvider, _cpDefinitionHelper,
 						_cpDefinitionVirtualSettingLocalService,
 						_cpInstanceHelper,
 						_portal.getHttpServletRequest(renderRequest));
@@ -97,6 +98,9 @@ public class CommerceVirtualOrderItemContentPortlet extends MVCPortlet {
 	@Reference
 	private CommerceVirtualOrderItemPermission
 		_commerceVirtualOrderItemPermission;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPDefinitionHelper _cpDefinitionHelper;

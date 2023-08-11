@@ -25,6 +25,7 @@ import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.Portal;
@@ -76,7 +77,8 @@ public class CPPublisherPortlet extends MVCPortlet {
 			CPPublisherDisplayContext cpPublisherDisplayContext =
 				new CPPublisherDisplayContext(
 					_amImageHTMLTagFactory, _commerceCatalogDefaultImage,
-					_commerceMediaResolver, _cpAttachmentFileEntryLocalService,
+					_commerceMediaResolver, _configurationProvider,
+					_cpAttachmentFileEntryLocalService,
 					_cpContentListEntryRendererRegistry,
 					_cpContentListRendererRegistry, _cpDataSourceRegistry,
 					_cpDefinitionHelper, _cpDefinitionLocalService,
@@ -107,6 +109,9 @@ public class CPPublisherPortlet extends MVCPortlet {
 
 	@Reference
 	private CommerceMediaResolver _commerceMediaResolver;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPAttachmentFileEntryLocalService

@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -38,6 +39,7 @@ public class CommerceOrganizationDisplayContext {
 
 	public CommerceOrganizationDisplayContext(
 			HttpServletRequest httpServletRequest,
+			ConfigurationProvider configurationProvider,
 			OrganizationService organizationService,
 			UserLocalService userLocalService)
 		throws PortalException {
@@ -54,8 +56,9 @@ public class CommerceOrganizationDisplayContext {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		_commerceOrganizationPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				CommerceOrganizationPortletInstanceConfiguration.class);
+			configurationProvider.getPortletInstanceConfiguration(
+				CommerceOrganizationPortletInstanceConfiguration.class,
+				_themeDisplay.getLayout(), portletDisplay.getPortletId());
 	}
 
 	public String getKeywords() {

@@ -7,6 +7,7 @@ package com.liferay.portal.search.web.internal.sort.portlet.action;
 
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -82,12 +83,16 @@ public class SortConfigurationAction extends DefaultConfigurationAction {
 
 		try {
 			return new SortDisplayContextBuilder(
-				language, portal, renderRequest, sortPortletPreferences);
+				_configurationProvider, language, portal, renderRequest,
+				sortPortletPreferences);
 		}
 		catch (ConfigurationException configurationException) {
 			throw new RuntimeException(configurationException);
 		}
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private PortletSharedSearchRequest _portletSharedSearchRequest;

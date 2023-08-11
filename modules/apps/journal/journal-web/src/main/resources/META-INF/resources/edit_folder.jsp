@@ -23,7 +23,7 @@ boolean workflowEnabled = WorkflowEngineManagerUtil.isDeployed() && (WorkflowHan
 List<WorkflowDefinition> workflowDefinitions = null;
 
 if (workflowEnabled) {
-	workflowDefinitions = WorkflowDefinitionManagerUtil.getActiveWorkflowDefinitions(company.getCompanyId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	workflowDefinitions = workflowDefinitionManager.getActiveWorkflowDefinitions(company.getCompanyId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 }
 
 String languageId = LocaleUtil.toLanguageId(locale);

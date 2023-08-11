@@ -76,6 +76,7 @@ import com.liferay.portal.kernel.upload.LiferayFileItemException;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.translation.security.permission.TranslationPermission;
 import com.liferay.translation.url.provider.TranslationURLProvider;
 import com.liferay.trash.TrashHelper;
@@ -195,6 +196,10 @@ public class JournalPortlet extends MVCPortlet {
 		catch (ConfigurationException configurationException) {
 			throw new PortletException(configurationException);
 		}
+
+		renderRequest.setAttribute(
+			JournalWebKeys.WORKFLOW_DEFINITION_MANAGER,
+			_workflowDefinitionManager);
 
 		super.render(renderRequest, renderResponse);
 	}
@@ -414,5 +419,8 @@ public class JournalPortlet extends MVCPortlet {
 
 	@Reference
 	private TrashHelper _trashHelper;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

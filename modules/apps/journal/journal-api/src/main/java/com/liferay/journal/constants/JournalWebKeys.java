@@ -18,4 +18,7 @@ public class JournalWebKeys {
 
 	public static final String JOURNAL_FOLDERS = "JOURNAL_FOLDERS";
 
+	public static final String WORKFLOW_DEFINITION_MANAGER =
+		"WORKFLOW_DEFINITION_MANAGER";
+
 }

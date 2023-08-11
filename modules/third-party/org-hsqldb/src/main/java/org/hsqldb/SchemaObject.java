@@ -172,3 +172,4 @@ public interface SchemaObject {
         int PERIOD_ROW_END   = 2;
     }
 }
+/* @generated */

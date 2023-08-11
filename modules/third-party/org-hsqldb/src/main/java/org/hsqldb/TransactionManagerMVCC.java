@@ -841,3 +841,4 @@ implements TransactionManager {
         super.resetSession(session, targetSession, statementTimestamp, mode);
     }
 }
+/* @generated */

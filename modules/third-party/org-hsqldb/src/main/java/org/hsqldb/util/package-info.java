@@ -36,3 +36,4 @@
  * databases.
  */
 package org.hsqldb.util;
+/* @generated */

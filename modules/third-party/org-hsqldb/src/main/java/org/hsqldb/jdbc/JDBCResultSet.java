@@ -7785,3 +7785,4 @@ public class JDBCResultSet implements ResultSet {
         }
     }
 }
+/* @generated */

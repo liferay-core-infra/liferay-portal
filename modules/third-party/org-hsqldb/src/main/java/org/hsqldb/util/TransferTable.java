@@ -461,3 +461,4 @@ class TransferTable implements Serializable {
         hTypes = destDb.helper.getSupportedTypes();
     }
 }
+/* @generated */

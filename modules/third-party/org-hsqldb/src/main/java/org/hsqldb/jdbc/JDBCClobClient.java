@@ -607,3 +607,4 @@ public class JDBCClobClient implements Clob {
                && pos <= fullLength - len;
     }
 }
+/* @generated */

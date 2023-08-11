@@ -85,3 +85,4 @@ class RecoverableOdbcFailure extends Exception {
         return clientMessage;
     }
 }
+/* @generated */

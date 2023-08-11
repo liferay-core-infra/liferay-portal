@@ -595,3 +595,4 @@ public class RowInputText extends RowInputBase implements RowInputInterface {
         line    = 0;
     }
 }
+/* @generated */

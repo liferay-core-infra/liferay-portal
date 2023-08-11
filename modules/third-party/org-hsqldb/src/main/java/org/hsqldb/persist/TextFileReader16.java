@@ -127,3 +127,4 @@ implements TextFileReader {
         return ((RowInputText) rowIn).getLineNumber();
     }
 }
+/* @generated */

@@ -200,3 +200,4 @@ public class JDBCXAConnectionWrapper extends JDBCConnection {
         }
     }
 }
+/* @generated */

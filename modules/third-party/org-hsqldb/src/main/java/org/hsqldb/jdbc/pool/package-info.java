@@ -33,3 +33,4 @@
  * Contains classes for connection pooling and distributed XA connections.
  */
 package org.hsqldb.jdbc.pool;
+/* @generated */

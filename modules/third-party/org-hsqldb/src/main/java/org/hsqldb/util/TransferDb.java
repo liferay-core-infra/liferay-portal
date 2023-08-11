@@ -937,3 +937,4 @@ class TransferDb extends DataAccessPoint {
         return conn;
     }
 }
+/* @generated */

@@ -72,3 +72,4 @@ public class RowOutputTextQuoted extends RowOutputText {
         return false;
     }
 }
+/* @generated */

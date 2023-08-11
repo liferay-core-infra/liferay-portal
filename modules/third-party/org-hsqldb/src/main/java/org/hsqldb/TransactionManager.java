@@ -110,3 +110,4 @@ public interface TransactionManager {
     void resetSession(Session session, Session targetSession,
                       long statementTimestamp, int mode);
 }
+/* @generated */

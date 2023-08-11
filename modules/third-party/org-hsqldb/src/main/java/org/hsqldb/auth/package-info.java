@@ -33,3 +33,4 @@
  * Contains the HyperSQL utility classes for managing external user authentication.
  */
 package org.hsqldb.auth;
+/* @generated */

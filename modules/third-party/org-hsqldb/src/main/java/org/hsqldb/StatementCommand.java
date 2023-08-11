@@ -1678,3 +1678,4 @@ public class StatementCommand extends Statement {
         return sql;
     }
 }
+/* @generated */

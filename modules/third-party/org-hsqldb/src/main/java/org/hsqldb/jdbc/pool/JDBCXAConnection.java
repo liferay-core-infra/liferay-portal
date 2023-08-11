@@ -96,3 +96,4 @@ public class JDBCXAConnection extends JDBCPooledConnection implements XAConnecti
         // deal with xaResource
     }
 }
+/* @generated */

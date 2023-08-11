@@ -89,3 +89,4 @@ public class TypedComparator implements Comparator, ObjectComparator {
         this.sort = sort;
     }
 }
+/* @generated */

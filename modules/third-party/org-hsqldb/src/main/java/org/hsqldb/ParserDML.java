@@ -1626,3 +1626,4 @@ public class ParserDML extends ParserDQL {
         e.resolveTypes(session, null);
     }
 }
+/* @generated */

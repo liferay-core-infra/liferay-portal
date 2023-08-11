@@ -66,3 +66,4 @@ public class ScriptWriterTextColumnNames extends ScriptWriterText {
         writeRowOutToFile();
     }
 }
+/* @generated */

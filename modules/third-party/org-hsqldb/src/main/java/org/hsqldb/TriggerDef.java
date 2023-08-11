@@ -708,3 +708,4 @@ public class TriggerDef implements Runnable, SchemaObject {
         }
     }
 }
+/* @generated */

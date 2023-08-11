@@ -319,3 +319,4 @@ public class BinaryData implements BlobData {
         return hashCode;
     }
 }
+/* @generated */

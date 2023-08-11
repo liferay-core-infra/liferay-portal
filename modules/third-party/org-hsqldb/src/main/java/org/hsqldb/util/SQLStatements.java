@@ -98,3 +98,4 @@ class SQLStatements implements Serializable {
     boolean bFKForced    = false;
     boolean bIdxForced   = false;
 }
+/* @generated */

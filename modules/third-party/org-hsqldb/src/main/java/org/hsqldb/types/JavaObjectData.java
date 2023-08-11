@@ -132,3 +132,4 @@ public class JavaObjectData {
         return 1;
     }
 }
+/* @generated */

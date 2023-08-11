@@ -139,3 +139,4 @@ public interface Trigger {
     void fire(int type, String trigName, String tabName, Object[] oldRow,
               Object[] newRow);
 }
+/* @generated */

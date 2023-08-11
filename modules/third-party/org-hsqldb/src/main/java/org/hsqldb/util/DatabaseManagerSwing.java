@@ -2920,3 +2920,4 @@ implements ActionListener, WindowListener, KeyListener, MouseListener {
     private static final String tString = Boolean.TRUE.toString();
     private static final String fString = Boolean.FALSE.toString();
 }
+/* @generated */

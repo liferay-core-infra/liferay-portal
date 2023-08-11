@@ -981,3 +981,4 @@ public class StatementCompound extends Statement implements RangeGroup {
         return true;
     }
 }
+/* @generated */

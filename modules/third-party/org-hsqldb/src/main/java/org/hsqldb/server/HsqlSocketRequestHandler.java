@@ -49,3 +49,4 @@ public interface HsqlSocketRequestHandler {
 
     void signalCloseAllServerConnections();
 }
+/* @generated */

@@ -517,3 +517,4 @@ public abstract class ScriptWriterBase implements Runnable {
         return writeDelay;
     }
 }
+/* @generated */

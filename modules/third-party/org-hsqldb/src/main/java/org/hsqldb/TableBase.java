@@ -557,3 +557,4 @@ public class TableBase implements Cloneable {
                : store;
     }
 }
+/* @generated */

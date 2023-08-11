@@ -233,3 +233,4 @@ public final class ClobType extends CharacterType {
         }
     }
 }
+/* @generated */

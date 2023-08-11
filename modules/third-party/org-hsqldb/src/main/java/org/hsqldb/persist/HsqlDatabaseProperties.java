@@ -1021,3 +1021,4 @@ public class HsqlDatabaseProperties extends HsqlProperties {
         return version.substring(0, 4).equals("1.7.");
     }
 }
+/* @generated */

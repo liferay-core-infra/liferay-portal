@@ -252,3 +252,4 @@ public class TextFileOps {
         return Result.newUpdateCountResult((int) lineCount);
     }
 }
+/* @generated */

@@ -67,3 +67,4 @@ public interface TableSpaceManager {
 
     boolean isDefaultSpace();
 }
+/* @generated */

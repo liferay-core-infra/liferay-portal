@@ -1020,3 +1020,4 @@ public class JDBCResultSetMetaData implements ResultSetMetaData {
         return meta;
     }
 }
+/* @generated */

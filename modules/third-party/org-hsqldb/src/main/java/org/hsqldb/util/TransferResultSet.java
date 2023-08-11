@@ -170,3 +170,4 @@ class TransferResultSet {
         return ((Object[]) vRows.elementAt(iRowIdx))[columnIdx];
     }
 }
+/* @generated */

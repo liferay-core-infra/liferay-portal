@@ -146,3 +146,4 @@ class StatementPortal {
         containingMap.remove(handle);
     }
 }
+/* @generated */

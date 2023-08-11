@@ -349,3 +349,4 @@ class JDBCStatementBase {
         return false;
     }
 }
+/* @generated */

@@ -383,3 +383,4 @@ public class ScriptReaderText extends ScriptReaderBase {
         errorLogger.writeLogStatement(lineCount, rawStatement);
     }
 }
+/* @generated */

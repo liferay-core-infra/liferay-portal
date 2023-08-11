@@ -372,3 +372,4 @@ final class DatabaseManagerCommon {
 
     private DatabaseManagerCommon() {}
 }
+/* @generated */

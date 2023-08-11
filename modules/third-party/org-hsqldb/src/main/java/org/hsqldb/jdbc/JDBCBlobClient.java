@@ -410,3 +410,4 @@ public class JDBCBlobClient implements Blob {
         return pos >= 0 && len >= 0 && pos + len <= fullLength;
     }
 }
+/* @generated */

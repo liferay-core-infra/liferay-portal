@@ -651,3 +651,4 @@ public final class BitType extends BinaryType {
         return bs;
     }
 }
+/* @generated */

@@ -9830,3 +9830,4 @@ extends org.hsqldb.dbinfo.DatabaseInformationMain {
         return t;
     }
 }
+/* @generated */

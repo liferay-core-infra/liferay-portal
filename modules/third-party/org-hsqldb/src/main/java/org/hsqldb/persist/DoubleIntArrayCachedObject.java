@@ -149,3 +149,4 @@ public class DoubleIntArrayCachedObject extends CachedObjectBase {
         return table.lookup(key, def);
     }
 }
+/* @generated */

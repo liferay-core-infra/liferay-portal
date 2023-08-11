@@ -444,3 +444,4 @@ class Tree extends Panel {
         return f.getHeight() + 2;
     }
 }
+/* @generated */

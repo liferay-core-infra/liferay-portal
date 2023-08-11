@@ -516,3 +516,4 @@ public class RowOutputBinary extends RowOutputBase {
         return new RowOutputBinary(128, this.scale);
     }
 }
+/* @generated */

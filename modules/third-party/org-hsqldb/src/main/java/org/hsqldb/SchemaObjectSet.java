@@ -680,3 +680,4 @@ public class SchemaObjectSet {
         return true;
     }
 }
+/* @generated */

@@ -168,3 +168,4 @@ public interface PersistentStore {
 
     void writeUnlock();
 }
+/* @generated */

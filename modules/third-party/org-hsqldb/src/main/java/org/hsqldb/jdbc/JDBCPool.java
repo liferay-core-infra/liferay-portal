@@ -566,3 +566,4 @@ public class JDBCPool implements DataSource,
     JDBCPooledDataSource     source;
     volatile boolean         closed;
 }
+/* @generated */

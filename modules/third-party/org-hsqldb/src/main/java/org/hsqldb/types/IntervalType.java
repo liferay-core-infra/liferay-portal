@@ -1810,3 +1810,4 @@ public final class IntervalType extends DTIType {
         }
     }
 }
+/* @generated */

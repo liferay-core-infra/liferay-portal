@@ -81,3 +81,4 @@ class McKoiTransferHelper extends TransferHelper {
         return (true);
     }
 }
+/* @generated */

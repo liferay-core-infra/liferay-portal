@@ -780,3 +780,4 @@ public abstract class StatementDMQL extends Statement {
         session.sessionContext.clearStructures(this);
     }
 }
+/* @generated */

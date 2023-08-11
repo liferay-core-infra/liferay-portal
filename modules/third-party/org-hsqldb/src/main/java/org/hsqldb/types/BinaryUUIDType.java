@@ -534,3 +534,4 @@ public class BinaryUUIDType extends BinaryType {
         return new UUID(msb, lsb);
     }
 }
+/* @generated */

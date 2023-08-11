@@ -237,3 +237,4 @@ public class JDBCDataSourceFactory implements ObjectFactory {
 
     public JDBCDataSourceFactory() {}
 }
+/* @generated */

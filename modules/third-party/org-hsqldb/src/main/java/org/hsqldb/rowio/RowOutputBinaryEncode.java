@@ -95,3 +95,4 @@ public class RowOutputBinaryEncode extends RowOutputBinary {
         return new RowOutputBinaryEncode(crypto, 128, this.scale);
     }
 }
+/* @generated */

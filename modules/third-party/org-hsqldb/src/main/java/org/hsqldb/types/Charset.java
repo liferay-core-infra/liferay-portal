@@ -285,3 +285,4 @@ public class Charset implements SchemaObject {
         return SQL_TEXT;
     }
 }
+/* @generated */

@@ -211,3 +211,4 @@ public abstract class SimpleStore implements PersistentStore {
 
     public void postCommitAction(Session session, RowAction rowAction) {}
 }
+/* @generated */

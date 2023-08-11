@@ -2912,3 +2912,4 @@ public class ParserCommand extends ParserDDL {
                                     new HsqlName[]{ t.getName() });
     }
 }
+/* @generated */

@@ -1262,3 +1262,4 @@ public abstract class Type implements SchemaObject, Cloneable {
         return true;
     }
 }
+/* @generated */

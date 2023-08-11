@@ -689,3 +689,4 @@ public class SessionData {
                                          : sequenceUpdateMap.get(sequence);
     }
 }
+/* @generated */

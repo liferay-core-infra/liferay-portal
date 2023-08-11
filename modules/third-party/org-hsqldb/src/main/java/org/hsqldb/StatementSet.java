@@ -427,3 +427,4 @@ public class StatementSet extends StatementDMQL {
         return Result.updateZeroResult;
     }
 }
+/* @generated */

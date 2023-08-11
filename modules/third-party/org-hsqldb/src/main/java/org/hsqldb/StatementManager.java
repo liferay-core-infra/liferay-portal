@@ -394,3 +394,4 @@ public final class StatementManager {
         long           usageCount;
     }
 }
+/* @generated */

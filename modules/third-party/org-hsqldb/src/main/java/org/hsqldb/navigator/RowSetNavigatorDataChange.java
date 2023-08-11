@@ -76,3 +76,4 @@ public interface RowSetNavigatorDataChange extends RangeIterator {
 
     RangeIterator getUpdateRowIterator();
 }
+/* @generated */

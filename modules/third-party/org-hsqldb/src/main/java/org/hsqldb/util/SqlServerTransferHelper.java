@@ -129,3 +129,4 @@ class SqlServerTransferHelper extends TransferHelper {
         return (value);
     }
 }
+/* @generated */

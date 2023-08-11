@@ -2496,3 +2496,4 @@ public class ParserTable extends ParserDML {
                                    args, null, writeLockNames);
     }
 }
+/* @generated */

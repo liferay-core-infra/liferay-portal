@@ -136,3 +136,4 @@ class DataAccessPoint implements Serializable {
         return helper;
     }
 }
+/* @generated */

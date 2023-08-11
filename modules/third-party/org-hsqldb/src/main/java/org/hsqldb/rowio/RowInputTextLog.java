@@ -546,3 +546,4 @@ implements RowInputInterface {
         return data;
     }
 }
+/* @generated */

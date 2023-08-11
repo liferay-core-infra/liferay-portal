@@ -155,3 +155,4 @@ class OdbcPacketOutputStream extends DataOutputStream {
         writeByte(c);
     }
 }
+/* @generated */

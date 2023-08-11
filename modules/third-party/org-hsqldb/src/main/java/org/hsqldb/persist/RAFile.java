@@ -426,3 +426,4 @@ final class RAFile implements RandomAccessInterface {
         } catch (Throwable e) {}
     }
 }
+/* @generated */

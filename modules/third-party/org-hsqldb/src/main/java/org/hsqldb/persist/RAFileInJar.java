@@ -275,3 +275,4 @@ final class RAFileInJar implements RandomAccessInterface {
 
     public void synch() {}
 }
+/* @generated */

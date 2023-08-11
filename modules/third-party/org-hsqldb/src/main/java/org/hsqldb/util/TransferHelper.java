@@ -205,3 +205,4 @@ class TransferHelper {
         return columnType;
     }
 }
+/* @generated */

@@ -571,3 +571,4 @@ class WebServerConnection implements Runnable {
         return "HSQLDB HTTP Connection @" + Integer.toString(hashCode(), 16);
     }
 }
+/* @generated */

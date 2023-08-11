@@ -136,3 +136,4 @@ public class RowInsertSimple implements RowInsertInterface {
         public void close() {}
     }
 }
+/* @generated */

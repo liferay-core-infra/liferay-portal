@@ -318,3 +318,4 @@ public abstract class RowSetNavigator implements RangeIterator {
         return rangePosition;
     }
 }
+/* @generated */

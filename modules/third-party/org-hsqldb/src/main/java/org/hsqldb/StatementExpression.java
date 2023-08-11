@@ -195,3 +195,4 @@ public class StatementExpression extends StatementDMQL {
 
     void collectTableNamesForWrite(OrderedHashSet set) {}
 }
+/* @generated */

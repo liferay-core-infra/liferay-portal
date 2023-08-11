@@ -95,3 +95,4 @@ public interface BlobData extends LobData {
 
     int getStreamBlockSize();
 }
+/* @generated */

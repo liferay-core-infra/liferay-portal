@@ -56,3 +56,4 @@ public class SetFunctionValueUser implements SetFunction {
         java.util.Arrays.fill(list, null);
     }
 }
+/* @generated */

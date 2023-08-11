@@ -283,3 +283,4 @@ public class RowSetNavigatorClient extends RowSetNavigator {
         }
     }
 }
+/* @generated */

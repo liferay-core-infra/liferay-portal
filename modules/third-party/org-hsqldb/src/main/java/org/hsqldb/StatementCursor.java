@@ -100,3 +100,4 @@ public class StatementCursor extends StatementQuery {
     void collectTableNamesForWrite(OrderedHashSet set) {}
 
 }
+/* @generated */

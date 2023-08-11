@@ -1205,3 +1205,4 @@ public class CharacterType extends Type {
         }
     }
 }
+/* @generated */

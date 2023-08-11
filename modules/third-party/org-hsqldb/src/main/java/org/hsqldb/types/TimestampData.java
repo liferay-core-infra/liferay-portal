@@ -120,3 +120,4 @@ public class TimestampData {
                         : -1;
     }
 }
+/* @generated */

@@ -538,3 +538,4 @@ public class JDBCArrayBasic implements Array {
     private void checkClosed() throws SQLException {
     }
 }
+/* @generated */

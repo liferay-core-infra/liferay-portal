@@ -262,3 +262,4 @@ final class DITableInfo {
         this.table = table;
     }
 }
+/* @generated */

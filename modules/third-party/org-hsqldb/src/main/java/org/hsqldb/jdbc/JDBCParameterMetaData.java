@@ -437,3 +437,4 @@ public class JDBCParameterMetaData implements ParameterMetaData,
         return sb.toString();
     }
 }
+/* @generated */

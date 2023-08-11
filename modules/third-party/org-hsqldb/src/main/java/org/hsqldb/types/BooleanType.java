@@ -313,3 +313,4 @@ public final class BooleanType extends Type {
         return booleanType;
     }
 }
+/* @generated */

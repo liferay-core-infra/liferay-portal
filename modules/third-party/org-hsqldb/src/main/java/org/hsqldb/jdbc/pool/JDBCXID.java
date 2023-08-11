@@ -250,3 +250,4 @@ public class JDBCXID implements Xid {
                            branchQualifier);
     }
 }
+/* @generated */

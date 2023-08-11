@@ -1078,3 +1078,4 @@ public final class Right {
         }
     }
 }
+/* @generated */

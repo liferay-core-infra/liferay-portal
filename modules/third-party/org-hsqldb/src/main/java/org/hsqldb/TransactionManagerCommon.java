@@ -1024,3 +1024,4 @@ class TransactionManagerCommon {
 
     public void abortAction(Session session) {}
 }
+/* @generated */

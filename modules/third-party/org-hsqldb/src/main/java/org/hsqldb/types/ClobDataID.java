@@ -287,3 +287,4 @@ public class ClobDataID implements ClobData {
         return (int) id;
     }
 }
+/* @generated */

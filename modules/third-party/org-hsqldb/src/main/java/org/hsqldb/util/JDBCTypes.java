@@ -144,3 +144,4 @@ class JDBCTypes {
         return tempInteger.intValue();
     }
 }
+/* @generated */

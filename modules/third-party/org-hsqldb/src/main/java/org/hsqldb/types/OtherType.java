@@ -195,3 +195,4 @@ public final class OtherType extends Type {
         return otherType;
     }
 }
+/* @generated */

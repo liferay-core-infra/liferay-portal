@@ -130,3 +130,4 @@ public class BlockObjectStore extends SimpleStore {
         }
     }
 }
+/* @generated */

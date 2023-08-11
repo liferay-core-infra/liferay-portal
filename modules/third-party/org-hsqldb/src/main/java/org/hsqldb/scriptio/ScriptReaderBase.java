@@ -116,3 +116,4 @@ public abstract class ScriptReaderBase {
 
     public abstract void close();
 }
+/* @generated */

@@ -67,3 +67,4 @@ public interface GrantConstants {
     /** Combined flag permitting any action. */
     int ALL = SELECT | DELETE | INSERT | UPDATE | USAGE | EXECUTE;
 }
+/* @generated */

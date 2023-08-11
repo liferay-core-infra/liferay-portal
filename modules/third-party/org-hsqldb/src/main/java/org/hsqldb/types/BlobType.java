@@ -317,3 +317,4 @@ public final class BlobType extends BinaryType {
         return convertToString(a);
     }
 }
+/* @generated */

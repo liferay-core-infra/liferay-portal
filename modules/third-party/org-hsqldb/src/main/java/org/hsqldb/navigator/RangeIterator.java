@@ -46,3 +46,4 @@ public interface RangeIterator extends RowIterator {
 
     int getRangePosition();
 }
+/* @generated */

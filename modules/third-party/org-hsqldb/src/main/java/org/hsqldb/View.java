@@ -292,3 +292,4 @@ public class View extends TableDerived {
         return td;
     }
 }
+/* @generated */

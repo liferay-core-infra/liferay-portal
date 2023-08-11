@@ -516,3 +516,4 @@ public class RCData {
         return "Custom Transaction Isolation numerical value: " + ti;
     }
 }
+/* @generated */

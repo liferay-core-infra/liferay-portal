@@ -34,3 +34,4 @@
  * functionality and support.
  */
 package org.hsqldb.jdbc;
+/* @generated */

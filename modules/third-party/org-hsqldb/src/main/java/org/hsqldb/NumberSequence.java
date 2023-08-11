@@ -740,3 +740,4 @@ public final class NumberSequence implements SchemaObject {
         startValue = currValue = lastValue = value;
     }
 }
+/* @generated */

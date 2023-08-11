@@ -138,3 +138,4 @@ implements PersistentStoreCollection {
         }
     }
 }
+/* @generated */

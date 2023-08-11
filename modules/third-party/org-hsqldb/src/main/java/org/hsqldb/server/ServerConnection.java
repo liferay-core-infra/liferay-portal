@@ -2031,7 +2031,6 @@ class ServerConnection implements Runnable {
     }
 }
 
-
 interface InResultProcessor {
 
     void receiveConnection(int type) throws CleanExit, IOException;
@@ -2041,3 +2040,4 @@ interface InResultProcessor {
 
 
 class CleanExit extends Exception {}
+/* @generated */

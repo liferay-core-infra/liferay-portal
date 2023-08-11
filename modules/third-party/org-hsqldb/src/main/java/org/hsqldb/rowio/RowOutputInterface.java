@@ -102,3 +102,4 @@ public interface RowOutputInterface extends Cloneable {
 
     RowOutputInterface duplicate();
 }
+/* @generated */

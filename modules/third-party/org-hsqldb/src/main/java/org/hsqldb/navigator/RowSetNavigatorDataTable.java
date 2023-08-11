@@ -631,3 +631,4 @@ public class RowSetNavigatorDataTable extends RowSetNavigatorData {
         return mainIndex.findFirstRow((Session) session, store, data);
     }
 }
+/* @generated */

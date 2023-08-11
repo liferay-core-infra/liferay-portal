@@ -97,3 +97,4 @@ public class BitMapCachedObject extends CachedObjectBase {
         return bitMap;
     }
 }
+/* @generated */

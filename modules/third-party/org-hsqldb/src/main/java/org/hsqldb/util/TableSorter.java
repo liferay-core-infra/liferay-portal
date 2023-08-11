@@ -618,3 +618,4 @@ public class TableSorter extends AbstractTableModel {
         }
     }
 }
+/* @generated */

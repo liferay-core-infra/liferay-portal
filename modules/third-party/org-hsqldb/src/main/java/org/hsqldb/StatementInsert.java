@@ -329,3 +329,4 @@ public class StatementInsert extends StatementDML {
         return newData;
     }
 }
+/* @generated */

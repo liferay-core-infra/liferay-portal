@@ -422,3 +422,4 @@ public class RowOutputText extends RowOutputBase {
         throw Error.runtimeError(ErrorCode.U_S0500, "RowOutputText");
     }
 }
+/* @generated */

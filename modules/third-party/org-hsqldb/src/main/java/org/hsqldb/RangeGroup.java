@@ -119,3 +119,4 @@ public interface RangeGroup {
         }
     }
 }
+/* @generated */

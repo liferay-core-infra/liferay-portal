@@ -245,3 +245,4 @@ public class StatementResultUpdate extends StatementDML {
         }
     }
 }
+/* @generated */

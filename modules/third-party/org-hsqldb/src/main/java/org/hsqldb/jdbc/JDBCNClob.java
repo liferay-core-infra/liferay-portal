@@ -81,3 +81,4 @@ public class JDBCNClob extends JDBCClob implements NClob {
         super(data);
     }
 }
+/* @generated */

@@ -32,3 +32,4 @@
 package org.hsqldb;
 
 public interface Trigger extends org.hsqldb.trigger.Trigger {}
+/* @generated */

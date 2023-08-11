@@ -186,3 +186,4 @@ public class ColumnBase {
         this.parameterMode = mode;
     }
 }
+/* @generated */

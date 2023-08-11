@@ -3602,3 +3602,4 @@ public class ParserDDL extends ParserRoutine {
         return Boolean.valueOf(processTrueOrFalse());
     }
 }
+/* @generated */

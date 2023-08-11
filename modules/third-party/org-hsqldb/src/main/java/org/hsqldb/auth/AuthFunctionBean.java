@@ -62,3 +62,4 @@ public interface AuthFunctionBean {
      */
     String[] authenticate(String userName, String password) throws Exception;
 }
+/* @generated */

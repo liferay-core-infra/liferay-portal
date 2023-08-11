@@ -90,3 +90,4 @@ public class TableUtil {
         table.setColumnStructures();
     }
 }
+/* @generated */

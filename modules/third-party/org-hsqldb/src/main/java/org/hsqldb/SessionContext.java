@@ -407,3 +407,4 @@ public class SessionContext {
         sessionTables.remove(name);
     }
 }
+/* @generated */

@@ -160,3 +160,4 @@ public final class JDBCColumnMetaData {
         return sb.toString();
     }
 }
+/* @generated */

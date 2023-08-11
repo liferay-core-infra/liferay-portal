@@ -41,3 +41,4 @@ public final class LongPair {
         this.b = b;
     }
 }
+/* @generated */

@@ -289,3 +289,4 @@ implements RowOutputInterface {
 
     public abstract RowOutputInterface duplicate();
 }
+/* @generated */

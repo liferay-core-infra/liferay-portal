@@ -1802,3 +1802,4 @@ public class StatementDML extends StatementDMQL {
         session.sessionContext.clearStructures(this);
     }
 }
+/* @generated */

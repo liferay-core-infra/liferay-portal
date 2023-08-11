@@ -1,0 +1,3818 @@
+diff --git a/org/hsqldb/ClientConnection.java b/org/hsqldb/ClientConnection.java
+index 4906208f581f..8fdefc766e10 100644
+--- a/org/hsqldb/ClientConnection.java
++++ b/org/hsqldb/ClientConnection.java
+@@ -708,3 +708,4 @@ public class ClientConnection implements SessionInterface, Cloneable {
+         return super.clone();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ClientConnectionHTTP.java b/org/hsqldb/ClientConnectionHTTP.java
+index 40c9b8a8a516..ed4f467e2eac 100644
+--- a/org/hsqldb/ClientConnectionHTTP.java
++++ b/org/hsqldb/ClientConnectionHTTP.java
+@@ -177,3 +177,4 @@ public class ClientConnectionHTTP extends ClientConnection {
+         // We depend on the HTTP wrappings to assure end-to-end handshaking
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ColumnBase.java b/org/hsqldb/ColumnBase.java
+index dbe04be468ba..4bcd9e5b152e 100644
+--- a/org/hsqldb/ColumnBase.java
++++ b/org/hsqldb/ColumnBase.java
+@@ -186,3 +186,4 @@ public class ColumnBase {
+         this.parameterMode = mode;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ColumnSchema.java b/org/hsqldb/ColumnSchema.java
+index 8d4a83fedca5..74b869774599 100644
+--- a/org/hsqldb/ColumnSchema.java
++++ b/org/hsqldb/ColumnSchema.java
+@@ -459,3 +459,4 @@ public class ColumnSchema extends ColumnBase implements SchemaObject {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Constraint.java b/org/hsqldb/Constraint.java
+index 344b7bb3284e..8ade34f66346 100644
+--- a/org/hsqldb/Constraint.java
++++ b/org/hsqldb/Constraint.java
+@@ -1158,3 +1158,4 @@ public final class Constraint implements SchemaObject {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Database.java b/org/hsqldb/Database.java
+index 9d5e3073c199..139f2f57665f 100644
+--- a/org/hsqldb/Database.java
++++ b/org/hsqldb/Database.java
+@@ -973,3 +973,4 @@ public class Database {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/DatabaseManager.java b/org/hsqldb/DatabaseManager.java
+index c4df4c9e8a1f..2407bacc5c7c 100644
+--- a/org/hsqldb/DatabaseManager.java
++++ b/org/hsqldb/DatabaseManager.java
+@@ -568,3 +568,4 @@ public class DatabaseManager {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/DatabaseType.java b/org/hsqldb/DatabaseType.java
+index 3e55a691c54c..f40f692c1a5f 100644
+--- a/org/hsqldb/DatabaseType.java
++++ b/org/hsqldb/DatabaseType.java
+@@ -90,3 +90,4 @@ public enum DatabaseType {
+         throw Error.runtimeError(ErrorCode.U_S0500, "DatabaseType");
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/DatabaseURL.java b/org/hsqldb/DatabaseURL.java
+index 52315ac862aa..a99024ede9df 100644
+--- a/org/hsqldb/DatabaseURL.java
++++ b/org/hsqldb/DatabaseURL.java
+@@ -384,3 +384,4 @@ public final class DatabaseURL {
+         return props;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Expression.java b/org/hsqldb/Expression.java
+index 5c5a05bf49e8..4ef3fc0a41b8 100644
+--- a/org/hsqldb/Expression.java
++++ b/org/hsqldb/Expression.java
+@@ -2140,3 +2140,4 @@ public class Expression implements Cloneable {
+         this.collation = collation;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionAccessor.java b/org/hsqldb/ExpressionAccessor.java
+index 194fcf28fe8b..0153d53b6933 100644
+--- a/org/hsqldb/ExpressionAccessor.java
++++ b/org/hsqldb/ExpressionAccessor.java
+@@ -200,3 +200,4 @@ public class ExpressionAccessor extends Expression {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionAggregate.java b/org/hsqldb/ExpressionAggregate.java
+index 0b520be6fd76..918bbaa6d40f 100644
+--- a/org/hsqldb/ExpressionAggregate.java
++++ b/org/hsqldb/ExpressionAggregate.java
+@@ -463,3 +463,4 @@ public class ExpressionAggregate extends Expression {
+         nodes[RIGHT] = e;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionArithmetic.java b/org/hsqldb/ExpressionArithmetic.java
+index 4194a14833b3..f09c914c59df 100644
+--- a/org/hsqldb/ExpressionArithmetic.java
++++ b/org/hsqldb/ExpressionArithmetic.java
+@@ -708,3 +708,4 @@ public class ExpressionArithmetic extends Expression {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionArrayAggregate.java b/org/hsqldb/ExpressionArrayAggregate.java
+index 28b529948bfc..47d9f51f7f2b 100644
+--- a/org/hsqldb/ExpressionArrayAggregate.java
++++ b/org/hsqldb/ExpressionArrayAggregate.java
+@@ -442,3 +442,4 @@ public class ExpressionArrayAggregate extends Expression {
+         return e;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionBoolean.java b/org/hsqldb/ExpressionBoolean.java
+index 98767a0b6c82..03aa3e80f508 100644
+--- a/org/hsqldb/ExpressionBoolean.java
++++ b/org/hsqldb/ExpressionBoolean.java
+@@ -48,3 +48,4 @@ public class ExpressionBoolean extends ExpressionValue {
+         return booleanValue;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionColumn.java b/org/hsqldb/ExpressionColumn.java
+index aaa44989bcbf..a8c17a4dc771 100644
+--- a/org/hsqldb/ExpressionColumn.java
++++ b/org/hsqldb/ExpressionColumn.java
+@@ -1377,3 +1377,4 @@ public class ExpressionColumn extends Expression {
+         return super.duplicate();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionColumnAccessor.java b/org/hsqldb/ExpressionColumnAccessor.java
+index bbdd062eac95..df77c8bb19d1 100644
+--- a/org/hsqldb/ExpressionColumnAccessor.java
++++ b/org/hsqldb/ExpressionColumnAccessor.java
+@@ -170,3 +170,4 @@ public class ExpressionColumnAccessor extends Expression {
+         return column.getDataType();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionJSON.java b/org/hsqldb/ExpressionJSON.java
+index d14ba0cc054d..2bae973fa093 100644
+--- a/org/hsqldb/ExpressionJSON.java
++++ b/org/hsqldb/ExpressionJSON.java
+@@ -453,3 +453,4 @@ public interface ExpressionJSON {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionLike.java b/org/hsqldb/ExpressionLike.java
+index 3496ef6b86f9..ed0346d1a70d 100644
+--- a/org/hsqldb/ExpressionLike.java
++++ b/org/hsqldb/ExpressionLike.java
+@@ -371,3 +371,4 @@ public final class ExpressionLike extends ExpressionLogical {
+         return e;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionLogical.java b/org/hsqldb/ExpressionLogical.java
+index b40c9bc5ddaf..fc2b9d794812 100644
+--- a/org/hsqldb/ExpressionLogical.java
++++ b/org/hsqldb/ExpressionLogical.java
+@@ -2483,3 +2483,4 @@ public class ExpressionLogical extends Expression {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionOp.java b/org/hsqldb/ExpressionOp.java
+index 642caaead5f1..329ad257ff8b 100644
+--- a/org/hsqldb/ExpressionOp.java
++++ b/org/hsqldb/ExpressionOp.java
+@@ -990,3 +990,4 @@ public class ExpressionOp extends Expression {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionOrderBy.java b/org/hsqldb/ExpressionOrderBy.java
+index 1e3bd6f7fa2c..d43e93989c67 100644
+--- a/org/hsqldb/ExpressionOrderBy.java
++++ b/org/hsqldb/ExpressionOrderBy.java
+@@ -145,3 +145,4 @@ public class ExpressionOrderBy extends Expression {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionPeriod.java b/org/hsqldb/ExpressionPeriod.java
+index 8a08081553e8..9def85a4e4e4 100644
+--- a/org/hsqldb/ExpressionPeriod.java
++++ b/org/hsqldb/ExpressionPeriod.java
+@@ -189,3 +189,4 @@ public class ExpressionPeriod extends Expression {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionPeriodOp.java b/org/hsqldb/ExpressionPeriodOp.java
+index 53d8adfaf0e8..3ffc5c81b4b6 100644
+--- a/org/hsqldb/ExpressionPeriodOp.java
++++ b/org/hsqldb/ExpressionPeriodOp.java
+@@ -404,3 +404,4 @@ public class ExpressionPeriodOp extends ExpressionLogical {
+         return c;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionTable.java b/org/hsqldb/ExpressionTable.java
+index 515e52ba4b69..f9f738bdf9ee 100644
+--- a/org/hsqldb/ExpressionTable.java
++++ b/org/hsqldb/ExpressionTable.java
+@@ -271,3 +271,4 @@ public class ExpressionTable extends Expression {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ExpressionValue.java b/org/hsqldb/ExpressionValue.java
+index eb5a560c5d81..48770f2201bc 100644
+--- a/org/hsqldb/ExpressionValue.java
++++ b/org/hsqldb/ExpressionValue.java
+@@ -114,3 +114,4 @@ public class ExpressionValue extends Expression {
+         return valueData;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/FunctionCustom.java b/org/hsqldb/FunctionCustom.java
+index 341a703946d1..b8241f1f8478 100644
+--- a/org/hsqldb/FunctionCustom.java
++++ b/org/hsqldb/FunctionCustom.java
+@@ -4631,3 +4631,4 @@ public class FunctionCustom extends FunctionSQL {
+         return flags;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/FunctionSQL.java b/org/hsqldb/FunctionSQL.java
+index bd50db18db68..6d2921990c1c 100644
+--- a/org/hsqldb/FunctionSQL.java
++++ b/org/hsqldb/FunctionSQL.java
+@@ -2192,3 +2192,4 @@ public class FunctionSQL extends Expression {
+         return isSQLValueFunction;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/FunctionSQLInvoked.java b/org/hsqldb/FunctionSQLInvoked.java
+index 830b683e20ee..4db1e829d15a 100644
+--- a/org/hsqldb/FunctionSQLInvoked.java
++++ b/org/hsqldb/FunctionSQLInvoked.java
+@@ -325,3 +325,4 @@ public class FunctionSQLInvoked extends Expression {
+         condition = e;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/GroupSet.java b/org/hsqldb/GroupSet.java
+index ae1b0743cf0a..1aba3eda7e06 100644
+--- a/org/hsqldb/GroupSet.java
++++ b/org/hsqldb/GroupSet.java
+@@ -342,3 +342,4 @@ public class GroupSet {
+         return sets;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/HsqlDateTime.java b/org/hsqldb/HsqlDateTime.java
+index 6e62878538cf..5659d049885f 100644
+--- a/org/hsqldb/HsqlDateTime.java
++++ b/org/hsqldb/HsqlDateTime.java
+@@ -941,3 +941,4 @@ public class HsqlDateTime {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/HsqlException.java b/org/hsqldb/HsqlException.java
+index ada78fc06d01..71826e9b9447 100644
+--- a/org/hsqldb/HsqlException.java
++++ b/org/hsqldb/HsqlException.java
+@@ -172,3 +172,4 @@ public class HsqlException extends RuntimeException {
+         return a.equals(b);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/HsqlNameManager.java b/org/hsqldb/HsqlNameManager.java
+index a32bcf5d25f0..6db1477cb065 100644
+--- a/org/hsqldb/HsqlNameManager.java
++++ b/org/hsqldb/HsqlNameManager.java
+@@ -605,3 +605,4 @@ public final class HsqlNameManager {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Like.java b/org/hsqldb/Like.java
+index b4b5067727fa..95a09fc90589 100644
+--- a/org/hsqldb/Like.java
++++ b/org/hsqldb/Like.java
+@@ -480,3 +480,4 @@ class Like implements Cloneable {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/NumberSequence.java b/org/hsqldb/NumberSequence.java
+index 9357831f1ccc..d4cd027320eb 100644
+--- a/org/hsqldb/NumberSequence.java
++++ b/org/hsqldb/NumberSequence.java
+@@ -740,3 +740,4 @@ public final class NumberSequence implements SchemaObject {
+         startValue = currValue = lastValue = value;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/OpTypes.java b/org/hsqldb/OpTypes.java
+index 1b6254185de3..c30b78c9136f 100644
+--- a/org/hsqldb/OpTypes.java
++++ b/org/hsqldb/OpTypes.java
+@@ -193,3 +193,4 @@ public interface OpTypes {
+     OrderedIntHashSet sequenceExpressionSet =
+         new OrderedIntHashSet(sequenceOpTypes);
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ParserBase.java b/org/hsqldb/ParserBase.java
+index 29b7455a396f..c45551abbe42 100644
+--- a/org/hsqldb/ParserBase.java
++++ b/org/hsqldb/ParserBase.java
+@@ -1056,3 +1056,4 @@ public class ParserBase {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ParserCommand.java b/org/hsqldb/ParserCommand.java
+index c4f94a21804b..affc498c031f 100644
+--- a/org/hsqldb/ParserCommand.java
++++ b/org/hsqldb/ParserCommand.java
+@@ -2912,3 +2912,4 @@ public class ParserCommand extends ParserDDL {
+                                     new HsqlName[]{ t.getName() });
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ParserDDL.java b/org/hsqldb/ParserDDL.java
+index e0ddca8ae529..1ba81e2dbdff 100644
+--- a/org/hsqldb/ParserDDL.java
++++ b/org/hsqldb/ParserDDL.java
+@@ -3602,3 +3602,4 @@ public class ParserDDL extends ParserRoutine {
+         return Boolean.valueOf(processTrueOrFalse());
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ParserDML.java b/org/hsqldb/ParserDML.java
+index 0c5861a8ec70..000ea325e792 100644
+--- a/org/hsqldb/ParserDML.java
++++ b/org/hsqldb/ParserDML.java
+@@ -1626,3 +1626,4 @@ public class ParserDML extends ParserDQL {
+         e.resolveTypes(session, null);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ParserDQL.java b/org/hsqldb/ParserDQL.java
+index cad3bbeacced..3f86bab35a41 100644
+--- a/org/hsqldb/ParserDQL.java
++++ b/org/hsqldb/ParserDQL.java
+@@ -8211,3 +8211,4 @@ public class ParserDQL extends ParserBase {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ParserRoutine.java b/org/hsqldb/ParserRoutine.java
+index e57cdd9984f4..e063f0b38281 100644
+--- a/org/hsqldb/ParserRoutine.java
++++ b/org/hsqldb/ParserRoutine.java
+@@ -2571,3 +2571,4 @@ public class ParserRoutine extends ParserTable {
+         session.checkDDLWrite();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ParserTable.java b/org/hsqldb/ParserTable.java
+index a1ecd8097c4e..df5fd17bfdce 100644
+--- a/org/hsqldb/ParserTable.java
++++ b/org/hsqldb/ParserTable.java
+@@ -2496,3 +2496,4 @@ public class ParserTable extends ParserDML {
+                                    args, null, writeLockNames);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/PeriodDefinition.java b/org/hsqldb/PeriodDefinition.java
+index 4662ddfbf54c..1f076aae66d8 100644
+--- a/org/hsqldb/PeriodDefinition.java
++++ b/org/hsqldb/PeriodDefinition.java
+@@ -108,3 +108,4 @@ public class PeriodDefinition implements SchemaObject {
+         return 0L;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/QueryExpression.java b/org/hsqldb/QueryExpression.java
+index 47333336b451..432c2fe00d4a 100644
+--- a/org/hsqldb/QueryExpression.java
++++ b/org/hsqldb/QueryExpression.java
+@@ -1217,3 +1217,4 @@ public class QueryExpression implements RangeGroup {
+         ColumnSchema     cyclePathColumn;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/QuerySpecification.java b/org/hsqldb/QuerySpecification.java
+index 63fe8696baec..9ff453686c28 100644
+--- a/org/hsqldb/QuerySpecification.java
++++ b/org/hsqldb/QuerySpecification.java
+@@ -2891,3 +2891,4 @@ public class QuerySpecification extends QueryExpression {
+         return true;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RangeGroup.java b/org/hsqldb/RangeGroup.java
+index baebbd18f77c..0ed2524991c6 100644
+--- a/org/hsqldb/RangeGroup.java
++++ b/org/hsqldb/RangeGroup.java
+@@ -119,3 +119,4 @@ public interface RangeGroup {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RangeVariable.java b/org/hsqldb/RangeVariable.java
+index efc65b8bfa4e..fb54347bd4c0 100644
+--- a/org/hsqldb/RangeVariable.java
++++ b/org/hsqldb/RangeVariable.java
+@@ -2288,3 +2288,4 @@ public class RangeVariable {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RangeVariableJoined.java b/org/hsqldb/RangeVariableJoined.java
+index c299de925397..c5d0a26d84bb 100644
+--- a/org/hsqldb/RangeVariableJoined.java
++++ b/org/hsqldb/RangeVariableJoined.java
+@@ -388,3 +388,4 @@ public class RangeVariableJoined extends RangeVariable {
+         return super.getIterator(session);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RangeVariableResolver.java b/org/hsqldb/RangeVariableResolver.java
+index 12f7fd439c83..c02705a0a0da 100644
+--- a/org/hsqldb/RangeVariableResolver.java
++++ b/org/hsqldb/RangeVariableResolver.java
+@@ -1553,3 +1553,4 @@ public class RangeVariableResolver {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/ReferenceObject.java b/org/hsqldb/ReferenceObject.java
+index 61607a2797e5..2ed6c4194596 100644
+--- a/org/hsqldb/ReferenceObject.java
++++ b/org/hsqldb/ReferenceObject.java
+@@ -107,3 +107,4 @@ public class ReferenceObject implements SchemaObject {
+         return target;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Routine.java b/org/hsqldb/Routine.java
+index e3f8d6bfea8f..870ebb2d2f37 100644
+--- a/org/hsqldb/Routine.java
++++ b/org/hsqldb/Routine.java
+@@ -1438,3 +1438,4 @@ public class Routine implements SchemaObject, RangeGroup, Cloneable {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RoutineSchema.java b/org/hsqldb/RoutineSchema.java
+index e259f89e4052..829e5aa5893d 100644
+--- a/org/hsqldb/RoutineSchema.java
++++ b/org/hsqldb/RoutineSchema.java
+@@ -367,3 +367,4 @@ public class RoutineSchema implements SchemaObject {
+         return routines[0].isAggregate;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Row.java b/org/hsqldb/Row.java
+index b67cb13b4978..83d6f023e383 100644
+--- a/org/hsqldb/Row.java
++++ b/org/hsqldb/Row.java
+@@ -254,3 +254,4 @@ public class Row implements CachedObject {
+         return (int) position;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RowAVL.java b/org/hsqldb/RowAVL.java
+index 960b11508258..4f7c7c2a84d2 100644
+--- a/org/hsqldb/RowAVL.java
++++ b/org/hsqldb/RowAVL.java
+@@ -211,3 +211,4 @@ public class RowAVL extends Row {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RowAVLDisk.java b/org/hsqldb/RowAVLDisk.java
+index 0bad143b7db3..285b7e5708ff 100644
+--- a/org/hsqldb/RowAVLDisk.java
++++ b/org/hsqldb/RowAVLDisk.java
+@@ -351,3 +351,4 @@ public class RowAVLDisk extends RowAVL {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RowAVLDiskData.java b/org/hsqldb/RowAVLDiskData.java
+index bc0a9d586c87..c08c570560d5 100644
+--- a/org/hsqldb/RowAVLDiskData.java
++++ b/org/hsqldb/RowAVLDiskData.java
+@@ -213,3 +213,4 @@ public class RowAVLDiskData extends RowAVL {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RowAVLDiskLarge.java b/org/hsqldb/RowAVLDiskLarge.java
+index 5d30364fe6c2..477698126eb9 100644
+--- a/org/hsqldb/RowAVLDiskLarge.java
++++ b/org/hsqldb/RowAVLDiskLarge.java
+@@ -97,3 +97,4 @@ public class RowAVLDiskLarge extends RowAVLDisk {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RowAction.java b/org/hsqldb/RowAction.java
+index f756bd015fe3..b4e68c971905 100644
+--- a/org/hsqldb/RowAction.java
++++ b/org/hsqldb/RowAction.java
+@@ -865,3 +865,4 @@ public class RowAction extends RowActionBase {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RowActionBase.java b/org/hsqldb/RowActionBase.java
+index 5fae00165f5d..ec1cac9e1e22 100644
+--- a/org/hsqldb/RowActionBase.java
++++ b/org/hsqldb/RowActionBase.java
+@@ -94,3 +94,4 @@ public class RowActionBase {
+         changeColumnMap = action.changeColumnMap;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/RowDiskDataChange.java b/org/hsqldb/RowDiskDataChange.java
+index af618c481fbc..afbb8d50fe80 100644
+--- a/org/hsqldb/RowDiskDataChange.java
++++ b/org/hsqldb/RowDiskDataChange.java
+@@ -174,3 +174,4 @@ public class RowDiskDataChange extends RowAVLDisk {
+         return size;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Scanner.java b/org/hsqldb/Scanner.java
+index eccfc7d46879..a0ec1a7de5c2 100644
+--- a/org/hsqldb/Scanner.java
++++ b/org/hsqldb/Scanner.java
+@@ -2688,3 +2688,4 @@ public class Scanner {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Schema.java b/org/hsqldb/Schema.java
+index 8902979770f8..22ddb8b66456 100644
+--- a/org/hsqldb/Schema.java
++++ b/org/hsqldb/Schema.java
+@@ -618,3 +618,4 @@ public final class Schema implements SchemaObject {
+         referenceList.clear();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SchemaManager.java b/org/hsqldb/SchemaManager.java
+index e9691e4bb60f..776e98b6f9e1 100644
+--- a/org/hsqldb/SchemaManager.java
++++ b/org/hsqldb/SchemaManager.java
+@@ -2793,3 +2793,4 @@ public class SchemaManager {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SchemaObject.java b/org/hsqldb/SchemaObject.java
+index 29e4baffa42f..e99e5d7e0cfe 100644
+--- a/org/hsqldb/SchemaObject.java
++++ b/org/hsqldb/SchemaObject.java
+@@ -172,3 +172,4 @@ public interface SchemaObject {
+         int PERIOD_ROW_END   = 2;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SchemaObjectSet.java b/org/hsqldb/SchemaObjectSet.java
+index a1f26978af05..164b957c53ad 100644
+--- a/org/hsqldb/SchemaObjectSet.java
++++ b/org/hsqldb/SchemaObjectSet.java
+@@ -680,3 +680,4 @@ public class SchemaObjectSet {
+         return true;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Server.java b/org/hsqldb/Server.java
+index 2093f2425adf..316813a1530b 100644
+--- a/org/hsqldb/Server.java
++++ b/org/hsqldb/Server.java
+@@ -32,3 +32,4 @@
+ package org.hsqldb;
+ 
+ public class Server extends org.hsqldb.server.Server {}
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Session.java b/org/hsqldb/Session.java
+index 159ce86d61c2..d96d785665d0 100644
+--- a/org/hsqldb/Session.java
++++ b/org/hsqldb/Session.java
+@@ -2381,3 +2381,4 @@ public class Session implements SessionInterface {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SessionContext.java b/org/hsqldb/SessionContext.java
+index 2b6e8d4d02b4..f46a21802012 100644
+--- a/org/hsqldb/SessionContext.java
++++ b/org/hsqldb/SessionContext.java
+@@ -407,3 +407,4 @@ public class SessionContext {
+         sessionTables.remove(name);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SessionData.java b/org/hsqldb/SessionData.java
+index 6a5aa02c146f..9d4e0db89801 100644
+--- a/org/hsqldb/SessionData.java
++++ b/org/hsqldb/SessionData.java
+@@ -689,3 +689,4 @@ public class SessionData {
+                                          : sequenceUpdateMap.get(sequence);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SessionInterface.java b/org/hsqldb/SessionInterface.java
+index 6927aa605c81..c0d133e2381a 100644
+--- a/org/hsqldb/SessionInterface.java
++++ b/org/hsqldb/SessionInterface.java
+@@ -152,3 +152,4 @@ public interface SessionInterface {
+ 
+     String getDatabaseUniqueName();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SessionManager.java b/org/hsqldb/SessionManager.java
+index c58317deaddc..17e1dc1f462b 100644
+--- a/org/hsqldb/SessionManager.java
++++ b/org/hsqldb/SessionManager.java
+@@ -308,3 +308,4 @@ public class SessionManager {
+         this.sysLobSession.loggedSchema = null;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SetFunction.java b/org/hsqldb/SetFunction.java
+index af4309537fe2..ed625afbda46 100644
+--- a/org/hsqldb/SetFunction.java
++++ b/org/hsqldb/SetFunction.java
+@@ -50,3 +50,4 @@ public interface SetFunction {
+ 
+     void reset();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SetFunctionValueAggregate.java b/org/hsqldb/SetFunctionValueAggregate.java
+index 3b8938fea2c6..888f7295053f 100644
+--- a/org/hsqldb/SetFunctionValueAggregate.java
++++ b/org/hsqldb/SetFunctionValueAggregate.java
+@@ -766,3 +766,4 @@ public class SetFunctionValueAggregate implements SetFunction {
+ 
+     // end statistics support
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SetFunctionValueArray.java b/org/hsqldb/SetFunctionValueArray.java
+index 32914f853224..a6b8fe66d116 100644
+--- a/org/hsqldb/SetFunctionValueArray.java
++++ b/org/hsqldb/SetFunctionValueArray.java
+@@ -63,3 +63,4 @@ public class SetFunctionValueArray implements SetFunction {
+         list.clear();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SetFunctionValueUser.java b/org/hsqldb/SetFunctionValueUser.java
+index 3053f8ab1f6a..485aa105d8a6 100644
+--- a/org/hsqldb/SetFunctionValueUser.java
++++ b/org/hsqldb/SetFunctionValueUser.java
+@@ -56,3 +56,4 @@ public class SetFunctionValueUser implements SetFunction {
+         java.util.Arrays.fill(list, null);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SortAndSlice.java b/org/hsqldb/SortAndSlice.java
+index 2f55d82f9c88..27f0dd9b7d15 100644
+--- a/org/hsqldb/SortAndSlice.java
++++ b/org/hsqldb/SortAndSlice.java
+@@ -502,3 +502,4 @@ public final class SortAndSlice {
+         return null;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/SqlInvariants.java b/org/hsqldb/SqlInvariants.java
+index 3ecad19f8275..b7029acc400e 100644
+--- a/org/hsqldb/SqlInvariants.java
++++ b/org/hsqldb/SqlInvariants.java
+@@ -163,3 +163,4 @@ public final class SqlInvariants {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Statement.java b/org/hsqldb/Statement.java
+index 2be3e08cb222..0a8783e3ddfa 100644
+--- a/org/hsqldb/Statement.java
++++ b/org/hsqldb/Statement.java
+@@ -364,3 +364,4 @@ public abstract class Statement {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementCommand.java b/org/hsqldb/StatementCommand.java
+index 83ef2e147705..986e7cb36228 100644
+--- a/org/hsqldb/StatementCommand.java
++++ b/org/hsqldb/StatementCommand.java
+@@ -1678,3 +1678,4 @@ public class StatementCommand extends Statement {
+         return sql;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementCompound.java b/org/hsqldb/StatementCompound.java
+index 5a688f5aca8f..0de55ffab116 100644
+--- a/org/hsqldb/StatementCompound.java
++++ b/org/hsqldb/StatementCompound.java
+@@ -981,3 +981,4 @@ public class StatementCompound extends Statement implements RangeGroup {
+         return true;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementCursor.java b/org/hsqldb/StatementCursor.java
+index 048c91033da6..6d670f4f0125 100644
+--- a/org/hsqldb/StatementCursor.java
++++ b/org/hsqldb/StatementCursor.java
+@@ -100,3 +100,4 @@ public class StatementCursor extends StatementQuery {
+     void collectTableNamesForWrite(OrderedHashSet set) {}
+ 
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementDML.java b/org/hsqldb/StatementDML.java
+index 6f57dd24dfa9..3d841a613d9c 100644
+--- a/org/hsqldb/StatementDML.java
++++ b/org/hsqldb/StatementDML.java
+@@ -1802,3 +1802,4 @@ public class StatementDML extends StatementDMQL {
+         session.sessionContext.clearStructures(this);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementDMQL.java b/org/hsqldb/StatementDMQL.java
+index 325a4f2b3f5f..56881fd8e8e6 100644
+--- a/org/hsqldb/StatementDMQL.java
++++ b/org/hsqldb/StatementDMQL.java
+@@ -780,3 +780,4 @@ public abstract class StatementDMQL extends Statement {
+         session.sessionContext.clearStructures(this);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementExpression.java b/org/hsqldb/StatementExpression.java
+index 2c7f8a9f8523..b8ccc34ca6b2 100644
+--- a/org/hsqldb/StatementExpression.java
++++ b/org/hsqldb/StatementExpression.java
+@@ -195,3 +195,4 @@ public class StatementExpression extends StatementDMQL {
+ 
+     void collectTableNamesForWrite(OrderedHashSet set) {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementHandler.java b/org/hsqldb/StatementHandler.java
+index 59ec4d143d57..501ebcc24c7f 100644
+--- a/org/hsqldb/StatementHandler.java
++++ b/org/hsqldb/StatementHandler.java
+@@ -232,3 +232,4 @@ public class StatementHandler extends Statement {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementInsert.java b/org/hsqldb/StatementInsert.java
+index 6e722a150a00..804dc813224b 100644
+--- a/org/hsqldb/StatementInsert.java
++++ b/org/hsqldb/StatementInsert.java
+@@ -329,3 +329,4 @@ public class StatementInsert extends StatementDML {
+         return newData;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementManager.java b/org/hsqldb/StatementManager.java
+index 0b52a6b950c0..a3b12d4793a5 100644
+--- a/org/hsqldb/StatementManager.java
++++ b/org/hsqldb/StatementManager.java
+@@ -394,3 +394,4 @@ public final class StatementManager {
+         long           usageCount;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementProcedure.java b/org/hsqldb/StatementProcedure.java
+index 14a4d3116b56..d832e8d556fb 100644
+--- a/org/hsqldb/StatementProcedure.java
++++ b/org/hsqldb/StatementProcedure.java
+@@ -418,3 +418,4 @@ public class StatementProcedure extends StatementDMQL {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementQuery.java b/org/hsqldb/StatementQuery.java
+index 18a8b8fa880d..60c352430e7f 100644
+--- a/org/hsqldb/StatementQuery.java
++++ b/org/hsqldb/StatementQuery.java
+@@ -127,3 +127,4 @@ public class StatementQuery extends StatementDMQL {
+         return cursorName;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementResultUpdate.java b/org/hsqldb/StatementResultUpdate.java
+index 0651257fdb65..c778f79a3d81 100644
+--- a/org/hsqldb/StatementResultUpdate.java
++++ b/org/hsqldb/StatementResultUpdate.java
+@@ -245,3 +245,4 @@ public class StatementResultUpdate extends StatementDML {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementSchema.java b/org/hsqldb/StatementSchema.java
+index 2b40ab627ecc..abba56972703 100644
+--- a/org/hsqldb/StatementSchema.java
++++ b/org/hsqldb/StatementSchema.java
+@@ -1863,3 +1863,4 @@ public class StatementSchema extends Statement {
+         return arguments;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementSchemaDefinition.java b/org/hsqldb/StatementSchemaDefinition.java
+index eadb4734b7d6..03199414927b 100644
+--- a/org/hsqldb/StatementSchemaDefinition.java
++++ b/org/hsqldb/StatementSchemaDefinition.java
+@@ -245,3 +245,4 @@ public class StatementSchemaDefinition extends StatementSchema {
+         return true;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementSession.java b/org/hsqldb/StatementSession.java
+index 44b0af4c42eb..53cfe6052f1e 100644
+--- a/org/hsqldb/StatementSession.java
++++ b/org/hsqldb/StatementSession.java
+@@ -848,3 +848,4 @@ public class StatementSession extends Statement {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementSet.java b/org/hsqldb/StatementSet.java
+index 73c36493d8c9..271f668234bc 100644
+--- a/org/hsqldb/StatementSet.java
++++ b/org/hsqldb/StatementSet.java
+@@ -427,3 +427,4 @@ public class StatementSet extends StatementDMQL {
+         return Result.updateZeroResult;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementSignal.java b/org/hsqldb/StatementSignal.java
+index 52701371e5dd..a01cda5a317f 100644
+--- a/org/hsqldb/StatementSignal.java
++++ b/org/hsqldb/StatementSignal.java
+@@ -173,3 +173,4 @@ public class StatementSignal extends Statement {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementSimple.java b/org/hsqldb/StatementSimple.java
+index 762ee8bf9647..446bcd20906e 100644
+--- a/org/hsqldb/StatementSimple.java
++++ b/org/hsqldb/StatementSimple.java
+@@ -175,3 +175,4 @@ public class StatementSimple extends Statement {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/StatementTypes.java b/org/hsqldb/StatementTypes.java
+index edf2da312f41..dc68d1b4d46d 100644
+--- a/org/hsqldb/StatementTypes.java
++++ b/org/hsqldb/StatementTypes.java
+@@ -325,3 +325,4 @@ public interface StatementTypes {
+     int RETURN_COUNT  = 1;
+     int RETURN_RESULT = 2;
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Table.java b/org/hsqldb/Table.java
+index 5b520bfb161a..54f1ceedfcd7 100644
+--- a/org/hsqldb/Table.java
++++ b/org/hsqldb/Table.java
+@@ -3265,3 +3265,4 @@ public class Table extends TableBase implements SchemaObject {
+ 
+     public void materialiseCorrelated(Session session) {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TableBase.java b/org/hsqldb/TableBase.java
+index 5f255b156494..1987a233a862 100644
+--- a/org/hsqldb/TableBase.java
++++ b/org/hsqldb/TableBase.java
+@@ -557,3 +557,4 @@ public class TableBase implements Cloneable {
+                : store;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TableDerived.java b/org/hsqldb/TableDerived.java
+index f697d4fc93ae..2072ab5c530c 100644
+--- a/org/hsqldb/TableDerived.java
++++ b/org/hsqldb/TableDerived.java
+@@ -490,3 +490,4 @@ public class TableDerived extends Table {
+         this.sql = sql;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TablePeriodWorks.java b/org/hsqldb/TablePeriodWorks.java
+index d1f00c75da8e..6d546725f769 100644
+--- a/org/hsqldb/TablePeriodWorks.java
++++ b/org/hsqldb/TablePeriodWorks.java
+@@ -137,3 +137,4 @@ class TablePeriodWorks {
+         return count;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TableUtil.java b/org/hsqldb/TableUtil.java
+index ef576033bb0d..27e6bc567a9d 100644
+--- a/org/hsqldb/TableUtil.java
++++ b/org/hsqldb/TableUtil.java
+@@ -90,3 +90,4 @@ public class TableUtil {
+         table.setColumnStructures();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TableWorks.java b/org/hsqldb/TableWorks.java
+index 5e0e2758872a..1bc701a92a70 100644
+--- a/org/hsqldb/TableWorks.java
++++ b/org/hsqldb/TableWorks.java
+@@ -1606,3 +1606,4 @@ public class TableWorks {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TextTable.java b/org/hsqldb/TextTable.java
+index a58c541e683f..15958f7684b0 100644
+--- a/org/hsqldb/TextTable.java
++++ b/org/hsqldb/TextTable.java
+@@ -397,3 +397,4 @@ public class TextTable extends Table {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Token.java b/org/hsqldb/Token.java
+index fc47fdc1288f..9238abf5295f 100644
+--- a/org/hsqldb/Token.java
++++ b/org/hsqldb/Token.java
+@@ -313,3 +313,4 @@ public class Token {
+         return array;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Tokens.java b/org/hsqldb/Tokens.java
+index 7e850bda4ac0..aac4397baa31 100644
+--- a/org/hsqldb/Tokens.java
++++ b/org/hsqldb/Tokens.java
+@@ -2884,3 +2884,4 @@ public class Tokens {
+         return (String) sqlTSILookup.get(token);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TransactionManager.java b/org/hsqldb/TransactionManager.java
+index c976f68e994f..0c23985e72ca 100644
+--- a/org/hsqldb/TransactionManager.java
++++ b/org/hsqldb/TransactionManager.java
+@@ -110,3 +110,4 @@ public interface TransactionManager {
+     void resetSession(Session session, Session targetSession,
+                       long statementTimestamp, int mode);
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TransactionManager2PL.java b/org/hsqldb/TransactionManager2PL.java
+index 8c379a996eb4..966253c2cedc 100644
+--- a/org/hsqldb/TransactionManager2PL.java
++++ b/org/hsqldb/TransactionManager2PL.java
+@@ -336,3 +336,4 @@ implements TransactionManager {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TransactionManagerCommon.java b/org/hsqldb/TransactionManagerCommon.java
+index fac97f8a090f..0b3cfa3afd40 100644
+--- a/org/hsqldb/TransactionManagerCommon.java
++++ b/org/hsqldb/TransactionManagerCommon.java
+@@ -1024,3 +1024,4 @@ class TransactionManagerCommon {
+ 
+     public void abortAction(Session session) {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TransactionManagerMV2PL.java b/org/hsqldb/TransactionManagerMV2PL.java
+index 4f3dcaed6512..92d45319c28d 100644
+--- a/org/hsqldb/TransactionManagerMV2PL.java
++++ b/org/hsqldb/TransactionManagerMV2PL.java
+@@ -484,3 +484,4 @@ implements TransactionManager {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TransactionManagerMVCC.java b/org/hsqldb/TransactionManagerMVCC.java
+index d197bf0e55ce..6c19155eb1de 100644
+--- a/org/hsqldb/TransactionManagerMVCC.java
++++ b/org/hsqldb/TransactionManagerMVCC.java
+@@ -841,3 +841,4 @@ implements TransactionManager {
+         super.resetSession(session, targetSession, statementTimestamp, mode);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/Trigger.java b/org/hsqldb/Trigger.java
+index 74d62f7b6d80..2c14a6772aa1 100644
+--- a/org/hsqldb/Trigger.java
++++ b/org/hsqldb/Trigger.java
+@@ -32,3 +32,4 @@
+ package org.hsqldb;
+ 
+ public interface Trigger extends org.hsqldb.trigger.Trigger {}
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TriggerDef.java b/org/hsqldb/TriggerDef.java
+index 241b819432b8..d7e3e6701765 100644
+--- a/org/hsqldb/TriggerDef.java
++++ b/org/hsqldb/TriggerDef.java
+@@ -708,3 +708,4 @@ public class TriggerDef implements Runnable, SchemaObject {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TriggerDefSQL.java b/org/hsqldb/TriggerDefSQL.java
+index 63a38f5d03c8..3cc21a431cc0 100644
+--- a/org/hsqldb/TriggerDefSQL.java
++++ b/org/hsqldb/TriggerDefSQL.java
+@@ -119,3 +119,4 @@ public class TriggerDefSQL extends TriggerDef {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/TypeInvariants.java b/org/hsqldb/TypeInvariants.java
+index 85959a5561b9..a680f7e5aec9 100644
+--- a/org/hsqldb/TypeInvariants.java
++++ b/org/hsqldb/TypeInvariants.java
+@@ -107,3 +107,4 @@ public class TypeInvariants {
+                 SchemaObject.DOMAIN, URI);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/View.java b/org/hsqldb/View.java
+index 065209aa31bd..75580a83d20c 100644
+--- a/org/hsqldb/View.java
++++ b/org/hsqldb/View.java
+@@ -292,3 +292,4 @@ public class View extends TableDerived {
+         return td;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/AuthBeanMultiplexer.java b/org/hsqldb/auth/AuthBeanMultiplexer.java
+index 502e48106a72..8df9b1a775df 100644
+--- a/org/hsqldb/auth/AuthBeanMultiplexer.java
++++ b/org/hsqldb/auth/AuthBeanMultiplexer.java
+@@ -296,3 +296,4 @@ public class AuthBeanMultiplexer {
+         throw firstRTE;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/AuthFunctionBean.java b/org/hsqldb/auth/AuthFunctionBean.java
+index 39fd3a6fadb8..c93046776e58 100644
+--- a/org/hsqldb/auth/AuthFunctionBean.java
++++ b/org/hsqldb/auth/AuthFunctionBean.java
+@@ -62,3 +62,4 @@ public interface AuthFunctionBean {
+      */
+     String[] authenticate(String userName, String password) throws Exception;
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/AuthUtils.java b/org/hsqldb/auth/AuthUtils.java
+index bedf0db59422..07f30446ad55 100644
+--- a/org/hsqldb/auth/AuthUtils.java
++++ b/org/hsqldb/auth/AuthUtils.java
+@@ -115,3 +115,4 @@ public final class AuthUtils {
+         return roles;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/DenyException.java b/org/hsqldb/auth/DenyException.java
+index 031316bdd660..af54b40d87b4 100644
+--- a/org/hsqldb/auth/DenyException.java
++++ b/org/hsqldb/auth/DenyException.java
+@@ -38,3 +38,4 @@ package org.hsqldb.auth;
+ public class DenyException extends Exception {
+     // Intentionally empty
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/HsqldbSlaveAuthBean.java b/org/hsqldb/auth/HsqldbSlaveAuthBean.java
+index 13433f7f5dcf..8e3d712819ee 100644
+--- a/org/hsqldb/auth/HsqldbSlaveAuthBean.java
++++ b/org/hsqldb/auth/HsqldbSlaveAuthBean.java
+@@ -175,3 +175,4 @@ public class HsqldbSlaveAuthBean implements AuthFunctionBean {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/JaasAuthBean.java b/org/hsqldb/auth/JaasAuthBean.java
+index d38f2b233799..8bbb47cb530b 100644
+--- a/org/hsqldb/auth/JaasAuthBean.java
++++ b/org/hsqldb/auth/JaasAuthBean.java
+@@ -299,3 +299,4 @@ public class JaasAuthBean implements AuthFunctionBean {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/LdapAuthBean.java b/org/hsqldb/auth/LdapAuthBean.java
+index 05405c21b2ff..890ee7e584bf 100644
+--- a/org/hsqldb/auth/LdapAuthBean.java
++++ b/org/hsqldb/auth/LdapAuthBean.java
+@@ -625,3 +625,4 @@ public class LdapAuthBean implements AuthFunctionBean {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/LdapAuthBeanTester.java b/org/hsqldb/auth/LdapAuthBeanTester.java
+index 60222e18ed68..174055cab73b 100644
+--- a/org/hsqldb/auth/LdapAuthBeanTester.java
++++ b/org/hsqldb/auth/LdapAuthBeanTester.java
+@@ -214,3 +214,4 @@ public class LdapAuthBeanTester {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/auth/package-info.java b/org/hsqldb/auth/package-info.java
+index ad088b32d174..c9b332ab9042 100644
+--- a/org/hsqldb/auth/package-info.java
++++ b/org/hsqldb/auth/package-info.java
+@@ -33,3 +33,4 @@
+  * Contains the HyperSQL utility classes for managing external user authentication.
+  */
+ package org.hsqldb.auth;
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/dbinfo/DITableInfo.java b/org/hsqldb/dbinfo/DITableInfo.java
+index ed2db2a01187..889721c847e8 100644
+--- a/org/hsqldb/dbinfo/DITableInfo.java
++++ b/org/hsqldb/dbinfo/DITableInfo.java
+@@ -262,3 +262,4 @@ final class DITableInfo {
+         this.table = table;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/dbinfo/DatabaseInformation.java b/org/hsqldb/dbinfo/DatabaseInformation.java
+index d442b05a2b0c..ac6b1647d720 100644
+--- a/org/hsqldb/dbinfo/DatabaseInformation.java
++++ b/org/hsqldb/dbinfo/DatabaseInformation.java
+@@ -397,3 +397,4 @@ public class DatabaseInformation {
+         this.withContent = withContent;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/dbinfo/DatabaseInformationFull.java b/org/hsqldb/dbinfo/DatabaseInformationFull.java
+index 338fa64ffb20..c460bde8899b 100644
+--- a/org/hsqldb/dbinfo/DatabaseInformationFull.java
++++ b/org/hsqldb/dbinfo/DatabaseInformationFull.java
+@@ -9830,3 +9830,4 @@ extends org.hsqldb.dbinfo.DatabaseInformationMain {
+         return t;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/dbinfo/DatabaseInformationMain.java b/org/hsqldb/dbinfo/DatabaseInformationMain.java
+index ffd7418586ea..1c2b9b5b7390 100644
+--- a/org/hsqldb/dbinfo/DatabaseInformationMain.java
++++ b/org/hsqldb/dbinfo/DatabaseInformationMain.java
+@@ -3740,3 +3740,4 @@ class DatabaseInformationMain extends DatabaseInformation {
+         return t;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/error/Error.java b/org/hsqldb/error/Error.java
+index 885d89279750..85434a0d8eed 100644
+--- a/org/hsqldb/error/Error.java
++++ b/org/hsqldb/error/Error.java
+@@ -322,3 +322,4 @@ public final class Error {
+         return -1;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/error/ErrorCode.java b/org/hsqldb/error/ErrorCode.java
+index 5cef580a63e8..e79cb157e032 100644
+--- a/org/hsqldb/error/ErrorCode.java
++++ b/org/hsqldb/error/ErrorCode.java
+@@ -700,3 +700,4 @@ public interface ErrorCode {
+     // CLI-specific condition - 200x
+     int X_HY093 = 6800;                            // CLI-specific condition: invalid datalink value
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/index/Index.java b/org/hsqldb/index/Index.java
+index 5d5c63a747e7..5c571efbeca0 100644
+--- a/org/hsqldb/index/Index.java
++++ b/org/hsqldb/index/Index.java
+@@ -281,3 +281,4 @@ public interface Index extends SchemaObject {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/index/IndexAVL.java b/org/hsqldb/index/IndexAVL.java
+index 195354168c6f..c71d575fa261 100644
+--- a/org/hsqldb/index/IndexAVL.java
++++ b/org/hsqldb/index/IndexAVL.java
+@@ -1941,3 +1941,4 @@ public class IndexAVL implements Index {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/index/IndexAVLCheck.java b/org/hsqldb/index/IndexAVLCheck.java
+index afad708746a3..577c0ea85650 100644
+--- a/org/hsqldb/index/IndexAVLCheck.java
++++ b/org/hsqldb/index/IndexAVLCheck.java
+@@ -574,3 +574,4 @@ public class IndexAVLCheck {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/index/IndexAVLMemory.java b/org/hsqldb/index/IndexAVLMemory.java
+index 5710de5941a6..c7458447c55b 100644
+--- a/org/hsqldb/index/IndexAVLMemory.java
++++ b/org/hsqldb/index/IndexAVLMemory.java
+@@ -405,3 +405,4 @@ public class IndexAVLMemory extends IndexAVL {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/index/IndexStats.java b/org/hsqldb/index/IndexStats.java
+index b43944ed4bcc..4918f9e80582 100644
+--- a/org/hsqldb/index/IndexStats.java
++++ b/org/hsqldb/index/IndexStats.java
+@@ -144,3 +144,4 @@ public class IndexStats {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/index/NodeAVL.java b/org/hsqldb/index/NodeAVL.java
+index 4570b9556d2b..8b1b476f9b9e 100644
+--- a/org/hsqldb/index/NodeAVL.java
++++ b/org/hsqldb/index/NodeAVL.java
+@@ -307,3 +307,4 @@ public class NodeAVL implements CachedObject {
+         return true;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/index/NodeAVLDisk.java b/org/hsqldb/index/NodeAVLDisk.java
+index 1548da842a02..7a079de24851 100644
+--- a/org/hsqldb/index/NodeAVLDisk.java
++++ b/org/hsqldb/index/NodeAVLDisk.java
+@@ -480,3 +480,4 @@ public class NodeAVLDisk extends NodeAVL {
+         return iParent;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/index/NodeAVLDiskLarge.java b/org/hsqldb/index/NodeAVLDiskLarge.java
+index 8b2056788d52..3d4d15e26d53 100644
+--- a/org/hsqldb/index/NodeAVLDiskLarge.java
++++ b/org/hsqldb/index/NodeAVLDiskLarge.java
+@@ -425,3 +425,4 @@ public class NodeAVLDiskLarge extends NodeAVL {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCArray.java b/org/hsqldb/jdbc/JDBCArray.java
+index 4492cbd90b91..32801a60f2a6 100644
+--- a/org/hsqldb/jdbc/JDBCArray.java
++++ b/org/hsqldb/jdbc/JDBCArray.java
+@@ -580,3 +580,4 @@ public class JDBCArray implements Array {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCArrayBasic.java b/org/hsqldb/jdbc/JDBCArrayBasic.java
+index f4cd6017623d..f15ba102d412 100644
+--- a/org/hsqldb/jdbc/JDBCArrayBasic.java
++++ b/org/hsqldb/jdbc/JDBCArrayBasic.java
+@@ -538,3 +538,4 @@ public class JDBCArrayBasic implements Array {
+     private void checkClosed() throws SQLException {
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCBlob.java b/org/hsqldb/jdbc/JDBCBlob.java
+index a333f559a07f..520b59c29bbf 100644
+--- a/org/hsqldb/jdbc/JDBCBlob.java
++++ b/org/hsqldb/jdbc/JDBCBlob.java
+@@ -791,3 +791,4 @@ public class JDBCBlob implements Blob {
+         m_data = data;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCBlobClient.java b/org/hsqldb/jdbc/JDBCBlobClient.java
+index 0b90f084f72a..5c1add2762d0 100644
+--- a/org/hsqldb/jdbc/JDBCBlobClient.java
++++ b/org/hsqldb/jdbc/JDBCBlobClient.java
+@@ -410,3 +410,4 @@ public class JDBCBlobClient implements Blob {
+         return pos >= 0 && len >= 0 && pos + len <= fullLength;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCBlobFile.java b/org/hsqldb/jdbc/JDBCBlobFile.java
+index 27668e83cfc2..160ded7b9c19 100644
+--- a/org/hsqldb/jdbc/JDBCBlobFile.java
++++ b/org/hsqldb/jdbc/JDBCBlobFile.java
+@@ -1030,3 +1030,4 @@ public class JDBCBlobFile implements java.sql.Blob {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCCallableStatement.java b/org/hsqldb/jdbc/JDBCCallableStatement.java
+index adc670186703..70f1db5e9467 100644
+--- a/org/hsqldb/jdbc/JDBCCallableStatement.java
++++ b/org/hsqldb/jdbc/JDBCCallableStatement.java
+@@ -5269,3 +5269,4 @@ public class JDBCCallableStatement extends JDBCPreparedStatement implements Call
+ 
+ 
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCClob.java b/org/hsqldb/jdbc/JDBCClob.java
+index fe601f97f6a9..999024384a70 100644
+--- a/org/hsqldb/jdbc/JDBCClob.java
++++ b/org/hsqldb/jdbc/JDBCClob.java
+@@ -1069,3 +1069,4 @@ public class JDBCClob implements Clob {
+         return len;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCClobClient.java b/org/hsqldb/jdbc/JDBCClobClient.java
+index 0b5185471e29..59bc540f6665 100644
+--- a/org/hsqldb/jdbc/JDBCClobClient.java
++++ b/org/hsqldb/jdbc/JDBCClobClient.java
+@@ -607,3 +607,4 @@ public class JDBCClobClient implements Clob {
+                && pos <= fullLength - len;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCClobFile.java b/org/hsqldb/jdbc/JDBCClobFile.java
+index ffb29881d503..9ac17b5a2e50 100644
+--- a/org/hsqldb/jdbc/JDBCClobFile.java
++++ b/org/hsqldb/jdbc/JDBCClobFile.java
+@@ -1468,3 +1468,4 @@ public class JDBCClobFile implements java.sql.Clob {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCColumnMetaData.java b/org/hsqldb/jdbc/JDBCColumnMetaData.java
+index 560d95876fa6..218f90b1217e 100644
+--- a/org/hsqldb/jdbc/JDBCColumnMetaData.java
++++ b/org/hsqldb/jdbc/JDBCColumnMetaData.java
+@@ -160,3 +160,4 @@ public final class JDBCColumnMetaData {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCCommonDataSource.java b/org/hsqldb/jdbc/JDBCCommonDataSource.java
+index d5addfdb81d6..c19a5bafbb7c 100644
+--- a/org/hsqldb/jdbc/JDBCCommonDataSource.java
++++ b/org/hsqldb/jdbc/JDBCCommonDataSource.java
+@@ -372,3 +372,4 @@ implements CommonDataSource, Serializable {
+     /** database URL */
+     protected String url = null;
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCConnection.java b/org/hsqldb/jdbc/JDBCConnection.java
+index e0e6fea011d3..cb66ec8580fb 100644
+--- a/org/hsqldb/jdbc/JDBCConnection.java
++++ b/org/hsqldb/jdbc/JDBCConnection.java
+@@ -3757,3 +3757,4 @@ public class JDBCConnection implements Connection {
+         return props;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCConnectionEventListener.java b/org/hsqldb/jdbc/JDBCConnectionEventListener.java
+index 4d0a09d17806..353f854efad8 100644
+--- a/org/hsqldb/jdbc/JDBCConnectionEventListener.java
++++ b/org/hsqldb/jdbc/JDBCConnectionEventListener.java
+@@ -39,3 +39,4 @@ public interface JDBCConnectionEventListener {
+ 
+     void connectionErrorOccurred(SQLException e);
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCDataSource.java b/org/hsqldb/jdbc/JDBCDataSource.java
+index 357f7e342d02..0baf23bbcaba 100644
+--- a/org/hsqldb/jdbc/JDBCDataSource.java
++++ b/org/hsqldb/jdbc/JDBCDataSource.java
+@@ -247,3 +247,4 @@ public class JDBCDataSource extends JDBCCommonDataSource implements DataSource,
+     public JDBCDataSource() {
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCDataSourceFactory.java b/org/hsqldb/jdbc/JDBCDataSourceFactory.java
+index edd0be680cda..7873d5950563 100644
+--- a/org/hsqldb/jdbc/JDBCDataSourceFactory.java
++++ b/org/hsqldb/jdbc/JDBCDataSourceFactory.java
+@@ -237,3 +237,4 @@ public class JDBCDataSourceFactory implements ObjectFactory {
+ 
+     public JDBCDataSourceFactory() {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCDatabaseMetaData.java b/org/hsqldb/jdbc/JDBCDatabaseMetaData.java
+index e3cd5a718624..0a3f580a1494 100644
+--- a/org/hsqldb/jdbc/JDBCDatabaseMetaData.java
++++ b/org/hsqldb/jdbc/JDBCDatabaseMetaData.java
+@@ -6231,3 +6231,4 @@ public class JDBCDatabaseMetaData implements DatabaseMetaData,
+         return catalogName;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCDriver.java b/org/hsqldb/jdbc/JDBCDriver.java
+index 9adf3025654e..790fa670b586 100644
+--- a/org/hsqldb/jdbc/JDBCDriver.java
++++ b/org/hsqldb/jdbc/JDBCDriver.java
+@@ -527,3 +527,4 @@ public class JDBCDriver implements Driver {
+ //#endif JAVA8
+ 
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCNClob.java b/org/hsqldb/jdbc/JDBCNClob.java
+index af3178960724..de0287577087 100644
+--- a/org/hsqldb/jdbc/JDBCNClob.java
++++ b/org/hsqldb/jdbc/JDBCNClob.java
+@@ -81,3 +81,4 @@ public class JDBCNClob extends JDBCClob implements NClob {
+         super(data);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCParameterMetaData.java b/org/hsqldb/jdbc/JDBCParameterMetaData.java
+index ed333ba54b07..0ebdbdc87a21 100644
+--- a/org/hsqldb/jdbc/JDBCParameterMetaData.java
++++ b/org/hsqldb/jdbc/JDBCParameterMetaData.java
+@@ -437,3 +437,4 @@ public class JDBCParameterMetaData implements ParameterMetaData,
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCPool.java b/org/hsqldb/jdbc/JDBCPool.java
+index 1f6b1da41193..bfb8adcc9d23 100644
+--- a/org/hsqldb/jdbc/JDBCPool.java
++++ b/org/hsqldb/jdbc/JDBCPool.java
+@@ -566,3 +566,4 @@ public class JDBCPool implements DataSource,
+     JDBCPooledDataSource     source;
+     volatile boolean         closed;
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCPreparedStatement.java b/org/hsqldb/jdbc/JDBCPreparedStatement.java
+index 47ae07ac3eaf..73b6a30308cf 100644
+--- a/org/hsqldb/jdbc/JDBCPreparedStatement.java
++++ b/org/hsqldb/jdbc/JDBCPreparedStatement.java
+@@ -4943,3 +4943,4 @@ implements PreparedStatement {
+         return parameterMetaData;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCResultSet.java b/org/hsqldb/jdbc/JDBCResultSet.java
+index eafd22388c6c..191314b86ee1 100644
+--- a/org/hsqldb/jdbc/JDBCResultSet.java
++++ b/org/hsqldb/jdbc/JDBCResultSet.java
+@@ -7785,3 +7785,4 @@ public class JDBCResultSet implements ResultSet {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCResultSetMetaData.java b/org/hsqldb/jdbc/JDBCResultSetMetaData.java
+index 255ad0a30e4e..c8c6f6846c1e 100644
+--- a/org/hsqldb/jdbc/JDBCResultSetMetaData.java
++++ b/org/hsqldb/jdbc/JDBCResultSetMetaData.java
+@@ -1020,3 +1020,4 @@ public class JDBCResultSetMetaData implements ResultSetMetaData {
+         return meta;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCRowId.java b/org/hsqldb/jdbc/JDBCRowId.java
+index be8edb15918d..1590b99efd3b 100644
+--- a/org/hsqldb/jdbc/JDBCRowId.java
++++ b/org/hsqldb/jdbc/JDBCRowId.java
+@@ -221,3 +221,4 @@ public final class JDBCRowId implements RowId {
+         return id;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCSQLXML.java b/org/hsqldb/jdbc/JDBCSQLXML.java
+index 1f34b34bf43a..5ee6561a9ac7 100644
+--- a/org/hsqldb/jdbc/JDBCSQLXML.java
++++ b/org/hsqldb/jdbc/JDBCSQLXML.java
+@@ -3161,3 +3161,4 @@ public class JDBCSQLXML implements SQLXML {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCSavepoint.java b/org/hsqldb/jdbc/JDBCSavepoint.java
+index 0e74beac247b..9813c4130392 100644
+--- a/org/hsqldb/jdbc/JDBCSavepoint.java
++++ b/org/hsqldb/jdbc/JDBCSavepoint.java
+@@ -136,3 +136,4 @@ public class JDBCSavepoint implements Savepoint {
+         return super.toString() + "[name=" + name + "]";
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCStatement.java b/org/hsqldb/jdbc/JDBCStatement.java
+index 9dbafb83fdc8..546678ebaaf3 100644
+--- a/org/hsqldb/jdbc/JDBCStatement.java
++++ b/org/hsqldb/jdbc/JDBCStatement.java
+@@ -2088,3 +2088,4 @@ public class JDBCStatement extends JDBCStatementBase implements Statement,
+     }
+ 
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCStatementBase.java b/org/hsqldb/jdbc/JDBCStatementBase.java
+index 40d6b72939af..5f62ceb68797 100644
+--- a/org/hsqldb/jdbc/JDBCStatementBase.java
++++ b/org/hsqldb/jdbc/JDBCStatementBase.java
+@@ -349,3 +349,4 @@ class JDBCStatementBase {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/JDBCUtil.java b/org/hsqldb/jdbc/JDBCUtil.java
+index 3bae80ff2a22..59cf80ac013a 100644
+--- a/org/hsqldb/jdbc/JDBCUtil.java
++++ b/org/hsqldb/jdbc/JDBCUtil.java
+@@ -851,3 +851,4 @@ public final class JDBCUtil {
+ //        return sqlException(ErrorCode.JDBC_INVALID_ARGUMENT, String.valueOf(clazz));
+ //    }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/package-info.java b/org/hsqldb/jdbc/package-info.java
+index 7549e6e990df..16ad3df8ba2a 100644
+--- a/org/hsqldb/jdbc/package-info.java
++++ b/org/hsqldb/jdbc/package-info.java
+@@ -34,3 +34,4 @@
+  * functionality and support.
+  */
+ package org.hsqldb.jdbc;
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/pool/JDBCPooledConnection.java b/org/hsqldb/jdbc/pool/JDBCPooledConnection.java
+index be949db9fecd..d588d1a48b27 100644
+--- a/org/hsqldb/jdbc/pool/JDBCPooledConnection.java
++++ b/org/hsqldb/jdbc/pool/JDBCPooledConnection.java
+@@ -202,3 +202,4 @@ implements PooledConnection, JDBCConnectionEventListener {
+         this.connection = connection;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/pool/JDBCPooledDataSource.java b/org/hsqldb/jdbc/pool/JDBCPooledDataSource.java
+index e214ec0a446e..6f2e56a28b33 100644
+--- a/org/hsqldb/jdbc/pool/JDBCPooledDataSource.java
++++ b/org/hsqldb/jdbc/pool/JDBCPooledDataSource.java
+@@ -102,3 +102,4 @@ implements ConnectionPoolDataSource, Serializable, Referenceable,
+         return ref;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/pool/JDBCXAConnection.java b/org/hsqldb/jdbc/pool/JDBCXAConnection.java
+index 0ca6147bcd3c..9599782ba67e 100644
+--- a/org/hsqldb/jdbc/pool/JDBCXAConnection.java
++++ b/org/hsqldb/jdbc/pool/JDBCXAConnection.java
+@@ -96,3 +96,4 @@ public class JDBCXAConnection extends JDBCPooledConnection implements XAConnecti
+         // deal with xaResource
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/pool/JDBCXAConnectionWrapper.java b/org/hsqldb/jdbc/pool/JDBCXAConnectionWrapper.java
+index 5e7965466aa3..17293da1c9c4 100644
+--- a/org/hsqldb/jdbc/pool/JDBCXAConnectionWrapper.java
++++ b/org/hsqldb/jdbc/pool/JDBCXAConnectionWrapper.java
+@@ -200,3 +200,4 @@ public class JDBCXAConnectionWrapper extends JDBCConnection {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/pool/JDBCXADataSource.java b/org/hsqldb/jdbc/pool/JDBCXADataSource.java
+index cc841ff8b63b..8ec235f3c7bc 100644
+--- a/org/hsqldb/jdbc/pool/JDBCXADataSource.java
++++ b/org/hsqldb/jdbc/pool/JDBCXADataSource.java
+@@ -230,3 +230,4 @@ implements XADataSource, Serializable, Referenceable, CommonDataSource {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/pool/JDBCXAResource.java b/org/hsqldb/jdbc/pool/JDBCXAResource.java
+index 895f64344bb8..4f45ed8f2d81 100644
+--- a/org/hsqldb/jdbc/pool/JDBCXAResource.java
++++ b/org/hsqldb/jdbc/pool/JDBCXAResource.java
+@@ -478,3 +478,4 @@ public class JDBCXAResource implements XAResource {
+         connection = userConnection;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/pool/JDBCXID.java b/org/hsqldb/jdbc/pool/JDBCXID.java
+index e044b5e109cb..2f57e2177cb5 100644
+--- a/org/hsqldb/jdbc/pool/JDBCXID.java
++++ b/org/hsqldb/jdbc/pool/JDBCXID.java
+@@ -250,3 +250,4 @@ public class JDBCXID implements Xid {
+                            branchQualifier);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbc/pool/package-info.java b/org/hsqldb/jdbc/pool/package-info.java
+index 6ebbe5f888a3..fcd33220b52a 100644
+--- a/org/hsqldb/jdbc/pool/package-info.java
++++ b/org/hsqldb/jdbc/pool/package-info.java
+@@ -33,3 +33,4 @@
+  * Contains classes for connection pooling and distributed XA connections.
+  */
+ package org.hsqldb.jdbc.pool;
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/jdbcDriver.java b/org/hsqldb/jdbcDriver.java
+index 3f2572074685..d3c5bd7bd364 100644
+--- a/org/hsqldb/jdbcDriver.java
++++ b/org/hsqldb/jdbcDriver.java
+@@ -32,3 +32,4 @@
+ package org.hsqldb;
+ 
+ public class jdbcDriver extends org.hsqldb.jdbc.JDBCDriver {}
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/map/BaseHashMap.java b/org/hsqldb/map/BaseHashMap.java
+index 5a59d90f8134..7e3320757245 100644
+--- a/org/hsqldb/map/BaseHashMap.java
++++ b/org/hsqldb/map/BaseHashMap.java
+@@ -2056,3 +2056,4 @@ public class BaseHashMap {
+         return null;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/map/BitMap.java b/org/hsqldb/map/BitMap.java
+index b983db9b316e..425c67bf313e 100644
+--- a/org/hsqldb/map/BitMap.java
++++ b/org/hsqldb/map/BitMap.java
+@@ -792,3 +792,4 @@ public class BitMap {
+         return newMap;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/map/HashIndex.java b/org/hsqldb/map/HashIndex.java
+index 60d9ff6ff959..5855d69f9780 100644
+--- a/org/hsqldb/map/HashIndex.java
++++ b/org/hsqldb/map/HashIndex.java
+@@ -334,3 +334,4 @@ public class HashIndex {
+         return copy;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/map/ValuePool.java b/org/hsqldb/map/ValuePool.java
+index f88a7b041a9a..6280a09b978e 100644
+--- a/org/hsqldb/map/ValuePool.java
++++ b/org/hsqldb/map/ValuePool.java
+@@ -204,3 +204,4 @@ public final class ValuePool {
+                  : Boolean.FALSE;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/map/ValuePoolHashMap.java b/org/hsqldb/map/ValuePoolHashMap.java
+index 0c53da6fdb4d..2f6b6ba916fa 100644
+--- a/org/hsqldb/map/ValuePoolHashMap.java
++++ b/org/hsqldb/map/ValuePoolHashMap.java
+@@ -463,3 +463,4 @@ public class ValuePoolHashMap extends BaseHashMap {
+         return key;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/navigator/RangeIterator.java b/org/hsqldb/navigator/RangeIterator.java
+index d2a351c3e16a..357f159c1b5c 100644
+--- a/org/hsqldb/navigator/RangeIterator.java
++++ b/org/hsqldb/navigator/RangeIterator.java
+@@ -46,3 +46,4 @@ public interface RangeIterator extends RowIterator {
+ 
+     int getRangePosition();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/navigator/RowIterator.java b/org/hsqldb/navigator/RowIterator.java
+index f0889154c9a9..31f9c46b66d4 100644
+--- a/org/hsqldb/navigator/RowIterator.java
++++ b/org/hsqldb/navigator/RowIterator.java
+@@ -86,3 +86,4 @@ public interface RowIterator {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/navigator/RowSetNavigator.java b/org/hsqldb/navigator/RowSetNavigator.java
+index 9184082cf9f2..76318bdf42d9 100644
+--- a/org/hsqldb/navigator/RowSetNavigator.java
++++ b/org/hsqldb/navigator/RowSetNavigator.java
+@@ -318,3 +318,4 @@ public abstract class RowSetNavigator implements RangeIterator {
+         return rangePosition;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/navigator/RowSetNavigatorClient.java b/org/hsqldb/navigator/RowSetNavigatorClient.java
+index 219e7cd25ebe..b6100493d394 100644
+--- a/org/hsqldb/navigator/RowSetNavigatorClient.java
++++ b/org/hsqldb/navigator/RowSetNavigatorClient.java
+@@ -283,3 +283,4 @@ public class RowSetNavigatorClient extends RowSetNavigator {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/navigator/RowSetNavigatorData.java b/org/hsqldb/navigator/RowSetNavigatorData.java
+index 8b787fed3188..cc8b04f1f40e 100644
+--- a/org/hsqldb/navigator/RowSetNavigatorData.java
++++ b/org/hsqldb/navigator/RowSetNavigatorData.java
+@@ -776,3 +776,4 @@ implements Comparator<Object[]> {
+         return mainIndex.compareRow((Session) session, a, b);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/navigator/RowSetNavigatorDataChange.java b/org/hsqldb/navigator/RowSetNavigatorDataChange.java
+index b908b7cc7c79..68731a904430 100644
+--- a/org/hsqldb/navigator/RowSetNavigatorDataChange.java
++++ b/org/hsqldb/navigator/RowSetNavigatorDataChange.java
+@@ -76,3 +76,4 @@ public interface RowSetNavigatorDataChange extends RangeIterator {
+ 
+     RangeIterator getUpdateRowIterator();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/navigator/RowSetNavigatorDataChangeMemory.java b/org/hsqldb/navigator/RowSetNavigatorDataChangeMemory.java
+index 6a976b9a2166..b4677afa6eb1 100644
+--- a/org/hsqldb/navigator/RowSetNavigatorDataChangeMemory.java
++++ b/org/hsqldb/navigator/RowSetNavigatorDataChangeMemory.java
+@@ -340,3 +340,4 @@ implements RowSetNavigatorDataChange {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/navigator/RowSetNavigatorDataTable.java b/org/hsqldb/navigator/RowSetNavigatorDataTable.java
+index 589f8cd57e67..d6cb1e09953d 100644
+--- a/org/hsqldb/navigator/RowSetNavigatorDataTable.java
++++ b/org/hsqldb/navigator/RowSetNavigatorDataTable.java
+@@ -631,3 +631,4 @@ public class RowSetNavigatorDataTable extends RowSetNavigatorData {
+         return mainIndex.findFirstRow((Session) session, store, data);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/package-info.java b/org/hsqldb/package-info.java
+index 0194e1bd689a..4154924c5885 100644
+--- a/org/hsqldb/package-info.java
++++ b/org/hsqldb/package-info.java
+@@ -33,3 +33,4 @@
+  * Contains the HyperSQL engine classes.
+  */
+ package org.hsqldb;
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/BitMapCachedObject.java b/org/hsqldb/persist/BitMapCachedObject.java
+index 15543e152dbe..ac72de78f83e 100644
+--- a/org/hsqldb/persist/BitMapCachedObject.java
++++ b/org/hsqldb/persist/BitMapCachedObject.java
+@@ -97,3 +97,4 @@ public class BitMapCachedObject extends CachedObjectBase {
+         return bitMap;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/BlockObjectStore.java b/org/hsqldb/persist/BlockObjectStore.java
+index 0fcf74593c6e..983c35b2d702 100644
+--- a/org/hsqldb/persist/BlockObjectStore.java
++++ b/org/hsqldb/persist/BlockObjectStore.java
+@@ -130,3 +130,4 @@ public class BlockObjectStore extends SimpleStore {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/Cache.java b/org/hsqldb/persist/Cache.java
+index f51468e20138..7beeb74e7df8 100644
+--- a/org/hsqldb/persist/Cache.java
++++ b/org/hsqldb/persist/Cache.java
+@@ -526,3 +526,4 @@ public class Cache extends BaseHashMap {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/CachedObject.java b/org/hsqldb/persist/CachedObject.java
+index 87e98aebedc5..fc8be5bfd1d7 100644
+--- a/org/hsqldb/persist/CachedObject.java
++++ b/org/hsqldb/persist/CachedObject.java
+@@ -92,3 +92,4 @@ public interface CachedObject {
+ 
+     void write(RowOutputInterface out, LongLookup lookup);
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/CachedObjectBase.java b/org/hsqldb/persist/CachedObjectBase.java
+index 7a35a23cbb4a..1ea147976e82 100644
+--- a/org/hsqldb/persist/CachedObjectBase.java
++++ b/org/hsqldb/persist/CachedObjectBase.java
+@@ -143,3 +143,4 @@ public abstract class CachedObjectBase implements CachedObject {
+ 
+     public void destroy() {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/Crypto.java b/org/hsqldb/persist/Crypto.java
+index 1744623ab12b..2677eec39034 100644
+--- a/org/hsqldb/persist/Crypto.java
++++ b/org/hsqldb/persist/Crypto.java
+@@ -286,3 +286,4 @@ public class Crypto {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/DataFileCache.java b/org/hsqldb/persist/DataFileCache.java
+index e5ef5aafb9b5..cd0bde0b2e4b 100644
+--- a/org/hsqldb/persist/DataFileCache.java
++++ b/org/hsqldb/persist/DataFileCache.java
+@@ -1413,3 +1413,4 @@ public class DataFileCache {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/DataFileCacheSession.java b/org/hsqldb/persist/DataFileCacheSession.java
+index b42f9438e9bd..62cf495d400b 100644
+--- a/org/hsqldb/persist/DataFileCacheSession.java
++++ b/org/hsqldb/persist/DataFileCacheSession.java
+@@ -150,3 +150,4 @@ public class DataFileCacheSession extends DataFileCache {
+         initBuffers();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/DataFileDefrag.java b/org/hsqldb/persist/DataFileDefrag.java
+index 729c2c4e6043..cecb3592e510 100644
+--- a/org/hsqldb/persist/DataFileDefrag.java
++++ b/org/hsqldb/persist/DataFileDefrag.java
+@@ -235,3 +235,4 @@ final class DataFileDefrag {
+         return rootsList;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/DataSpaceManager.java b/org/hsqldb/persist/DataSpaceManager.java
+index c46b50a7b81d..1dc40aac06ed 100644
+--- a/org/hsqldb/persist/DataSpaceManager.java
++++ b/org/hsqldb/persist/DataSpaceManager.java
+@@ -81,3 +81,4 @@ public interface DataSpaceManager {
+ 
+     DirectoryBlockCachedObject[] getDirectoryList();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/DataSpaceManagerBlocks.java b/org/hsqldb/persist/DataSpaceManagerBlocks.java
+index 1589ac238125..5b120f7a610b 100644
+--- a/org/hsqldb/persist/DataSpaceManagerBlocks.java
++++ b/org/hsqldb/persist/DataSpaceManagerBlocks.java
+@@ -1193,3 +1193,4 @@ public class DataSpaceManagerBlocks implements DataSpaceManager {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/DataSpaceManagerSimple.java b/org/hsqldb/persist/DataSpaceManagerSimple.java
+index 758d3a275c2b..160e39475be6 100644
+--- a/org/hsqldb/persist/DataSpaceManagerSimple.java
++++ b/org/hsqldb/persist/DataSpaceManagerSimple.java
+@@ -180,3 +180,4 @@ public class DataSpaceManagerSimple implements DataSpaceManager {
+         return new DirectoryBlockCachedObject[0];
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/DirectoryBlockCachedObject.java b/org/hsqldb/persist/DirectoryBlockCachedObject.java
+index e9e2f7a1bcc3..6f3447ebf7b7 100644
+--- a/org/hsqldb/persist/DirectoryBlockCachedObject.java
++++ b/org/hsqldb/persist/DirectoryBlockCachedObject.java
+@@ -175,3 +175,4 @@ public class DirectoryBlockCachedObject extends CachedObjectBase {
+         return freeSpaceBlock;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/DoubleIntArrayCachedObject.java b/org/hsqldb/persist/DoubleIntArrayCachedObject.java
+index ba7c7b53f7b5..252bdc678635 100644
+--- a/org/hsqldb/persist/DoubleIntArrayCachedObject.java
++++ b/org/hsqldb/persist/DoubleIntArrayCachedObject.java
+@@ -149,3 +149,4 @@ public class DoubleIntArrayCachedObject extends CachedObjectBase {
+         return table.lookup(key, def);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/HsqlDatabaseProperties.java b/org/hsqldb/persist/HsqlDatabaseProperties.java
+index 9365a1b5c4cb..c7f2896028e7 100644
+--- a/org/hsqldb/persist/HsqlDatabaseProperties.java
++++ b/org/hsqldb/persist/HsqlDatabaseProperties.java
+@@ -1021,3 +1021,4 @@ public class HsqlDatabaseProperties extends HsqlProperties {
+         return version.substring(0, 4).equals("1.7.");
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/HsqlProperties.java b/org/hsqldb/persist/HsqlProperties.java
+index a3bde5032550..17082613b5d9 100644
+--- a/org/hsqldb/persist/HsqlProperties.java
++++ b/org/hsqldb/persist/HsqlProperties.java
+@@ -570,3 +570,4 @@ public class HsqlProperties {
+         public int[]   propValues;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/IntArrayCachedObject.java b/org/hsqldb/persist/IntArrayCachedObject.java
+index 462001d339ec..ad106f00304e 100644
+--- a/org/hsqldb/persist/IntArrayCachedObject.java
++++ b/org/hsqldb/persist/IntArrayCachedObject.java
+@@ -124,3 +124,4 @@ public class IntArrayCachedObject extends CachedObjectBase {
+         return values;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/LobManager.java b/org/hsqldb/persist/LobManager.java
+index d35e49bc1df3..1321c723cae8 100644
+--- a/org/hsqldb/persist/LobManager.java
++++ b/org/hsqldb/persist/LobManager.java
+@@ -2286,3 +2286,4 @@ public class LobManager {
+         return blocks;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/LobStore.java b/org/hsqldb/persist/LobStore.java
+index 2e76e5b09460..1add070c6ab1 100644
+--- a/org/hsqldb/persist/LobStore.java
++++ b/org/hsqldb/persist/LobStore.java
+@@ -55,3 +55,4 @@ public interface LobStore {
+ 
+     void synch();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/LobStoreInJar.java b/org/hsqldb/persist/LobStoreInJar.java
+index 01e487ce8216..2c5098bd2208 100644
+--- a/org/hsqldb/persist/LobStoreInJar.java
++++ b/org/hsqldb/persist/LobStoreInJar.java
+@@ -167,3 +167,4 @@ public class LobStoreInJar implements LobStore {
+         realPosition = position;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/LobStoreMem.java b/org/hsqldb/persist/LobStoreMem.java
+index fa0666fba60b..31d8c6304c5a 100644
+--- a/org/hsqldb/persist/LobStoreMem.java
++++ b/org/hsqldb/persist/LobStoreMem.java
+@@ -157,3 +157,4 @@ public class LobStoreMem implements LobStore {
+ 
+     public void synch() {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/LobStoreRAFile.java b/org/hsqldb/persist/LobStoreRAFile.java
+index 7039274931f9..83f96f35c748 100644
+--- a/org/hsqldb/persist/LobStoreRAFile.java
++++ b/org/hsqldb/persist/LobStoreRAFile.java
+@@ -182,3 +182,4 @@ public class LobStoreRAFile implements LobStore {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/LockFile.java b/org/hsqldb/persist/LockFile.java
+index 6994ede02074..57e8b891d02f 100644
+--- a/org/hsqldb/persist/LockFile.java
++++ b/org/hsqldb/persist/LockFile.java
+@@ -2385,3 +2385,4 @@ public class LockFile {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/Log.java b/org/hsqldb/persist/Log.java
+index 3d9734715d4d..098279964e33 100644
+--- a/org/hsqldb/persist/Log.java
++++ b/org/hsqldb/persist/Log.java
+@@ -834,3 +834,4 @@ public class Log {
+         } catch (Throwable t) {}
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/Logger.java b/org/hsqldb/persist/Logger.java
+index 5c645960e1dd..59b89cfd4b36 100644
+--- a/org/hsqldb/persist/Logger.java
++++ b/org/hsqldb/persist/Logger.java
+@@ -2374,3 +2374,4 @@ public class Logger implements EventLogInterface {
+         return isNewDatabase;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/PersistentStore.java b/org/hsqldb/persist/PersistentStore.java
+index ac93cba99dfd..b2e9a4719dc3 100644
+--- a/org/hsqldb/persist/PersistentStore.java
++++ b/org/hsqldb/persist/PersistentStore.java
+@@ -168,3 +168,4 @@ public interface PersistentStore {
+ 
+     void writeUnlock();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/PersistentStoreCollection.java b/org/hsqldb/persist/PersistentStoreCollection.java
+index 1c723f8c1890..1fed2a951924 100644
+--- a/org/hsqldb/persist/PersistentStoreCollection.java
++++ b/org/hsqldb/persist/PersistentStoreCollection.java
+@@ -41,3 +41,4 @@ public interface PersistentStoreCollection {
+ 
+     void release();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/PersistentStoreCollectionDatabase.java b/org/hsqldb/persist/PersistentStoreCollectionDatabase.java
+index e07da1424de6..64b741f343b5 100644
+--- a/org/hsqldb/persist/PersistentStoreCollectionDatabase.java
++++ b/org/hsqldb/persist/PersistentStoreCollectionDatabase.java
+@@ -138,3 +138,4 @@ implements PersistentStoreCollection {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/PersistentStoreCollectionSession.java b/org/hsqldb/persist/PersistentStoreCollectionSession.java
+index 5c23509319d9..79b9a34f14fc 100644
+--- a/org/hsqldb/persist/PersistentStoreCollectionSession.java
++++ b/org/hsqldb/persist/PersistentStoreCollectionSession.java
+@@ -421,3 +421,4 @@ implements PersistentStoreCollection {
+         clearAllTables();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RAFile.java b/org/hsqldb/persist/RAFile.java
+index ee05d07cf38a..9ba3761c9623 100644
+--- a/org/hsqldb/persist/RAFile.java
++++ b/org/hsqldb/persist/RAFile.java
+@@ -426,3 +426,4 @@ final class RAFile implements RandomAccessInterface {
+         } catch (Throwable e) {}
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RAFileHybrid.java b/org/hsqldb/persist/RAFileHybrid.java
+index a285664adf95..ae0d2c7db5c7 100644
+--- a/org/hsqldb/persist/RAFileHybrid.java
++++ b/org/hsqldb/persist/RAFileHybrid.java
+@@ -192,3 +192,4 @@ public final class RAFileHybrid implements RandomAccessInterface {
+         store.seek(currentPosition);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RAFileInJar.java b/org/hsqldb/persist/RAFileInJar.java
+index 1a58fc607e64..0895f1be73e4 100644
+--- a/org/hsqldb/persist/RAFileInJar.java
++++ b/org/hsqldb/persist/RAFileInJar.java
+@@ -275,3 +275,4 @@ final class RAFileInJar implements RandomAccessInterface {
+ 
+     public void synch() {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RAFileNIO.java b/org/hsqldb/persist/RAFileNIO.java
+index 9be6f326f5f9..864d7e682c8d 100644
+--- a/org/hsqldb/persist/RAFileNIO.java
++++ b/org/hsqldb/persist/RAFileNIO.java
+@@ -551,3 +551,4 @@ final class RAFileNIO implements RandomAccessInterface {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RAFileSimple.java b/org/hsqldb/persist/RAFileSimple.java
+index 2d7c7050c802..a712a119ce2e 100644
+--- a/org/hsqldb/persist/RAFileSimple.java
++++ b/org/hsqldb/persist/RAFileSimple.java
+@@ -156,3 +156,4 @@ final class RAFileSimple implements RandomAccessInterface {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RAShadowFile.java b/org/hsqldb/persist/RAShadowFile.java
+index 04d03f14c361..303d7dccb0bb 100644
+--- a/org/hsqldb/persist/RAShadowFile.java
++++ b/org/hsqldb/persist/RAShadowFile.java
+@@ -340,3 +340,4 @@ public class RAShadowFile {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RandomAccessInterface.java b/org/hsqldb/persist/RandomAccessInterface.java
+index 9103832a4820..9d4eded71db8 100644
+--- a/org/hsqldb/persist/RandomAccessInterface.java
++++ b/org/hsqldb/persist/RandomAccessInterface.java
+@@ -70,3 +70,4 @@ public interface RandomAccessInterface {
+ 
+     boolean setLength(long newLength);
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowInsertInterface.java b/org/hsqldb/persist/RowInsertInterface.java
+index 7aae4c99036a..bbddf29548b2 100644
+--- a/org/hsqldb/persist/RowInsertInterface.java
++++ b/org/hsqldb/persist/RowInsertInterface.java
+@@ -72,3 +72,4 @@ public interface RowInsertInterface {
+         void close();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowInsertSimple.java b/org/hsqldb/persist/RowInsertSimple.java
+index dca2a92fe56a..c996d761615b 100644
+--- a/org/hsqldb/persist/RowInsertSimple.java
++++ b/org/hsqldb/persist/RowInsertSimple.java
+@@ -136,3 +136,4 @@ public class RowInsertSimple implements RowInsertInterface {
+         public void close() {}
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowInsertVersioning.java b/org/hsqldb/persist/RowInsertVersioning.java
+index 649d4149b329..d34cfaeea197 100644
+--- a/org/hsqldb/persist/RowInsertVersioning.java
++++ b/org/hsqldb/persist/RowInsertVersioning.java
+@@ -192,3 +192,4 @@ public class RowInsertVersioning implements RowInsertInterface {
+                 data[colIndex]);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowStoreAVL.java b/org/hsqldb/persist/RowStoreAVL.java
+index 00dbe9f4000f..712c16e0b52d 100644
+--- a/org/hsqldb/persist/RowStoreAVL.java
++++ b/org/hsqldb/persist/RowStoreAVL.java
+@@ -792,3 +792,4 @@ public abstract class RowStoreAVL implements PersistentStore {
+         idx.unlinkNodes(this, root);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowStoreAVLDisk.java b/org/hsqldb/persist/RowStoreAVLDisk.java
+index dc374de8ba00..e676b43538bd 100644
+--- a/org/hsqldb/persist/RowStoreAVLDisk.java
++++ b/org/hsqldb/persist/RowStoreAVLDisk.java
+@@ -657,3 +657,4 @@ public class RowStoreAVLDisk extends RowStoreAVL {
+         writeLock.unlock();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowStoreAVLDiskData.java b/org/hsqldb/persist/RowStoreAVLDiskData.java
+index 9c31d2c2234b..12b183890568 100644
+--- a/org/hsqldb/persist/RowStoreAVLDiskData.java
++++ b/org/hsqldb/persist/RowStoreAVLDiskData.java
+@@ -313,3 +313,4 @@ public class RowStoreAVLDiskData extends RowStoreAVL {
+         writeLock.unlock();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowStoreAVLHybrid.java b/org/hsqldb/persist/RowStoreAVLHybrid.java
+index 1dbe6813817f..3ae46ff2b602 100644
+--- a/org/hsqldb/persist/RowStoreAVLHybrid.java
++++ b/org/hsqldb/persist/RowStoreAVLHybrid.java
+@@ -385,3 +385,4 @@ public class RowStoreAVLHybrid extends RowStoreAVL {
+         idx.unlinkNodes(this, root);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowStoreAVLHybridExtended.java b/org/hsqldb/persist/RowStoreAVLHybridExtended.java
+index 1cc3f2494a45..3a7ca3064dc7 100644
+--- a/org/hsqldb/persist/RowStoreAVLHybridExtended.java
++++ b/org/hsqldb/persist/RowStoreAVLHybridExtended.java
+@@ -196,3 +196,4 @@ public class RowStoreAVLHybridExtended extends RowStoreAVLHybrid {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowStoreAVLMemory.java b/org/hsqldb/persist/RowStoreAVLMemory.java
+index 297cc6f113a4..486cb483e0b7 100644
+--- a/org/hsqldb/persist/RowStoreAVLMemory.java
++++ b/org/hsqldb/persist/RowStoreAVLMemory.java
+@@ -216,3 +216,4 @@ public class RowStoreAVLMemory extends RowStoreAVL {
+         writeLock.unlock();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/RowStoreDataChange.java b/org/hsqldb/persist/RowStoreDataChange.java
+index 156dbbd17488..c2c9f523975a 100644
+--- a/org/hsqldb/persist/RowStoreDataChange.java
++++ b/org/hsqldb/persist/RowStoreDataChange.java
+@@ -77,3 +77,4 @@ public class RowStoreDataChange extends RowStoreAVLHybrid {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/ScriptLoader.java b/org/hsqldb/persist/ScriptLoader.java
+index e72a557f597a..06e086ae6754 100644
+--- a/org/hsqldb/persist/ScriptLoader.java
++++ b/org/hsqldb/persist/ScriptLoader.java
+@@ -75,3 +75,4 @@ public class ScriptLoader {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/ScriptRunner.java b/org/hsqldb/persist/ScriptRunner.java
+index 29c1118b5de7..40b46b6f0dad 100644
+--- a/org/hsqldb/persist/ScriptRunner.java
++++ b/org/hsqldb/persist/ScriptRunner.java
+@@ -275,3 +275,4 @@ public class ScriptRunner {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/SimpleStore.java b/org/hsqldb/persist/SimpleStore.java
+index 87bbb41b44e0..1fa6d406779d 100644
+--- a/org/hsqldb/persist/SimpleStore.java
++++ b/org/hsqldb/persist/SimpleStore.java
+@@ -211,3 +211,4 @@ public abstract class SimpleStore implements PersistentStore {
+ 
+     public void postCommitAction(Session session, RowAction rowAction) {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TableSpaceManager.java b/org/hsqldb/persist/TableSpaceManager.java
+index 29238bc2ede4..52163a97458c 100644
+--- a/org/hsqldb/persist/TableSpaceManager.java
++++ b/org/hsqldb/persist/TableSpaceManager.java
+@@ -67,3 +67,4 @@ public interface TableSpaceManager {
+ 
+     boolean isDefaultSpace();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TableSpaceManagerBlocks.java b/org/hsqldb/persist/TableSpaceManagerBlocks.java
+index 1f742ca1eed1..b469c2f9a764 100644
+--- a/org/hsqldb/persist/TableSpaceManagerBlocks.java
++++ b/org/hsqldb/persist/TableSpaceManagerBlocks.java
+@@ -364,3 +364,4 @@ public class TableSpaceManagerBlocks implements TableSpaceManager {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TableSpaceManagerSimple.java b/org/hsqldb/persist/TableSpaceManagerSimple.java
+index aafec5503efa..b7b4815b9c11 100644
+--- a/org/hsqldb/persist/TableSpaceManagerSimple.java
++++ b/org/hsqldb/persist/TableSpaceManagerSimple.java
+@@ -105,3 +105,4 @@ public class TableSpaceManagerSimple implements TableSpaceManager {
+         return true;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TextCache.java b/org/hsqldb/persist/TextCache.java
+index b92bc4042c6d..990a9796f95e 100644
+--- a/org/hsqldb/persist/TextCache.java
++++ b/org/hsqldb/persist/TextCache.java
+@@ -459,3 +459,4 @@ public class TextCache extends DataFileCache {
+                 rowIn, cacheReadonly);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TextFileOps.java b/org/hsqldb/persist/TextFileOps.java
+index 92f569cecd19..5fc262d447de 100644
+--- a/org/hsqldb/persist/TextFileOps.java
++++ b/org/hsqldb/persist/TextFileOps.java
+@@ -252,3 +252,4 @@ public class TextFileOps {
+         return Result.newUpdateCountResult((int) lineCount);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TextFileReader.java b/org/hsqldb/persist/TextFileReader.java
+index 3f0587d502f5..a2f8b2f1b724 100644
+--- a/org/hsqldb/persist/TextFileReader.java
++++ b/org/hsqldb/persist/TextFileReader.java
+@@ -50,3 +50,4 @@ public interface TextFileReader {
+ 
+     RowInputInterface readObject();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TextFileReader16.java b/org/hsqldb/persist/TextFileReader16.java
+index cea445226aec..73f96b03688f 100644
+--- a/org/hsqldb/persist/TextFileReader16.java
++++ b/org/hsqldb/persist/TextFileReader16.java
+@@ -127,3 +127,4 @@ implements TextFileReader {
+         return ((RowInputText) rowIn).getLineNumber();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TextFileReader8.java b/org/hsqldb/persist/TextFileReader8.java
+index c2a8aaf2f378..0d119196dc91 100644
+--- a/org/hsqldb/persist/TextFileReader8.java
++++ b/org/hsqldb/persist/TextFileReader8.java
+@@ -500,3 +500,4 @@ public class TextFileReader8 implements TextFileReader {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TextFileSettings.java b/org/hsqldb/persist/TextFileSettings.java
+index 15fe06b36bb4..678b8b2b2eee 100644
+--- a/org/hsqldb/persist/TextFileSettings.java
++++ b/org/hsqldb/persist/TextFileSettings.java
+@@ -379,3 +379,4 @@ public class TextFileSettings {
+         return sep;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/persist/TextTableStorageManager.java b/org/hsqldb/persist/TextTableStorageManager.java
+index b0b043dbbbf8..3731e7c3980f 100644
+--- a/org/hsqldb/persist/TextTableStorageManager.java
++++ b/org/hsqldb/persist/TextTableStorageManager.java
+@@ -111,3 +111,4 @@ public class TextTableStorageManager {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/resources/ResourceBundleHandler.java b/org/hsqldb/resources/ResourceBundleHandler.java
+index 3c9944c76267..de14b414016d 100644
+--- a/org/hsqldb/resources/ResourceBundleHandler.java
++++ b/org/hsqldb/resources/ResourceBundleHandler.java
+@@ -243,3 +243,4 @@ public final class ResourceBundleHandler {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/result/Result.java b/org/hsqldb/result/Result.java
+index de9bfcf99734..dd17b07b5f54 100644
+--- a/org/hsqldb/result/Result.java
++++ b/org/hsqldb/result/Result.java
+@@ -1678,3 +1678,4 @@ public class Result {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/result/ResultConstants.java b/org/hsqldb/result/ResultConstants.java
+index 8a0413b3ae8c..3622bd681b80 100644
+--- a/org/hsqldb/result/ResultConstants.java
++++ b/org/hsqldb/result/ResultConstants.java
+@@ -734,3 +734,4 @@ public interface ResultConstants {
+     int RETURN_GENERATED_KEYS_COL_INDEXES = 21;    // constant in HSQLDB only
+     int RETURN_PRIMARY_KEYS               = 31;    // constant in HSQLDB only
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/result/ResultLob.java b/org/hsqldb/result/ResultLob.java
+index 26b7bcf01452..7fc0350d6543 100644
+--- a/org/hsqldb/result/ResultLob.java
++++ b/org/hsqldb/result/ResultLob.java
+@@ -714,3 +714,4 @@ public final class ResultLob extends Result {
+         return reader;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/result/ResultMetaData.java b/org/hsqldb/result/ResultMetaData.java
+index 0836ab31cdf8..dfe8d4109996 100644
+--- a/org/hsqldb/result/ResultMetaData.java
++++ b/org/hsqldb/result/ResultMetaData.java
+@@ -583,3 +583,4 @@ public final class ResultMetaData {
+         return true;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/result/ResultProperties.java b/org/hsqldb/result/ResultProperties.java
+index c1c6e0dc8080..18cffe65d0f7 100644
+--- a/org/hsqldb/result/ResultProperties.java
++++ b/org/hsqldb/result/ResultProperties.java
+@@ -148,3 +148,4 @@ public class ResultProperties {
+                     : props & (~(1 << idx_isheld));
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rights/GrantConstants.java b/org/hsqldb/rights/GrantConstants.java
+index dba26359d3e1..d5e80ed38a90 100644
+--- a/org/hsqldb/rights/GrantConstants.java
++++ b/org/hsqldb/rights/GrantConstants.java
+@@ -67,3 +67,4 @@ public interface GrantConstants {
+     /** Combined flag permitting any action. */
+     int ALL = SELECT | DELETE | INSERT | UPDATE | USAGE | EXECUTE;
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rights/Grantee.java b/org/hsqldb/rights/Grantee.java
+index 2d7644b5a297..5388f13e898d 100644
+--- a/org/hsqldb/rights/Grantee.java
++++ b/org/hsqldb/rights/Grantee.java
+@@ -1327,3 +1327,4 @@ public class Grantee implements SchemaObject {
+         return list;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rights/GranteeManager.java b/org/hsqldb/rights/GranteeManager.java
+index 2eca0987acf2..133264ddf63b 100644
+--- a/org/hsqldb/rights/GranteeManager.java
++++ b/org/hsqldb/rights/GranteeManager.java
+@@ -940,3 +940,4 @@ public class GranteeManager {
+         return StringConverter.byteArrayToHexString(data);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rights/Right.java b/org/hsqldb/rights/Right.java
+index 63d90a95e634..c48557dbe61f 100644
+--- a/org/hsqldb/rights/Right.java
++++ b/org/hsqldb/rights/Right.java
+@@ -1078,3 +1078,4 @@ public final class Right {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rights/User.java b/org/hsqldb/rights/User.java
+index f43202590ebf..f805503c84ea 100644
+--- a/org/hsqldb/rights/User.java
++++ b/org/hsqldb/rights/User.java
+@@ -239,3 +239,4 @@ public class User extends Grantee {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rights/UserManager.java b/org/hsqldb/rights/UserManager.java
+index 1d6aecc06421..681364a5fa5f 100644
+--- a/org/hsqldb/rights/UserManager.java
++++ b/org/hsqldb/rights/UserManager.java
+@@ -486,3 +486,4 @@ public final class UserManager {
+         return array;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowInputBase.java b/org/hsqldb/rowio/RowInputBase.java
+index c003c04afa0a..4d901939a28c 100644
+--- a/org/hsqldb/rowio/RowInputBase.java
++++ b/org/hsqldb/rowio/RowInputBase.java
+@@ -334,3 +334,4 @@ abstract class RowInputBase extends HsqlByteArrayInputStream {
+         throw Error.runtimeError(ErrorCode.U_S0500, "RowInputBase");
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowInputBinary.java b/org/hsqldb/rowio/RowInputBinary.java
+index c26b217c7b3c..234bd3d89f9a 100644
+--- a/org/hsqldb/rowio/RowInputBinary.java
++++ b/org/hsqldb/rowio/RowInputBinary.java
+@@ -418,3 +418,4 @@ public class RowInputBinary extends RowInputBase implements RowInputInterface {
+         super.resetRow(filepos, rowsize);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowInputBinaryDecode.java b/org/hsqldb/rowio/RowInputBinaryDecode.java
+index f9888748b77e..98d1ef578dbf 100644
+--- a/org/hsqldb/rowio/RowInputBinaryDecode.java
++++ b/org/hsqldb/rowio/RowInputBinaryDecode.java
+@@ -64,3 +64,4 @@ public class RowInputBinaryDecode extends RowInputBinary {
+         return super.readData(colTypes);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowInputInterface.java b/org/hsqldb/rowio/RowInputInterface.java
+index f00cb0efd007..25704abc0695 100644
+--- a/org/hsqldb/rowio/RowInputInterface.java
++++ b/org/hsqldb/rowio/RowInputInterface.java
+@@ -73,3 +73,4 @@ public interface RowInputInterface {
+ 
+     byte[] getBuffer();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowInputText.java b/org/hsqldb/rowio/RowInputText.java
+index 700095a17585..d269e477e387 100644
+--- a/org/hsqldb/rowio/RowInputText.java
++++ b/org/hsqldb/rowio/RowInputText.java
+@@ -595,3 +595,4 @@ public class RowInputText extends RowInputBase implements RowInputInterface {
+         line    = 0;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowInputTextLog.java b/org/hsqldb/rowio/RowInputTextLog.java
+index 678239c4488d..8e9e3f4ae4cd 100644
+--- a/org/hsqldb/rowio/RowInputTextLog.java
++++ b/org/hsqldb/rowio/RowInputTextLog.java
+@@ -546,3 +546,4 @@ implements RowInputInterface {
+         return data;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowInputTextQuoted.java b/org/hsqldb/rowio/RowInputTextQuoted.java
+index c37bbba0b418..13604ccd1095 100644
+--- a/org/hsqldb/rowio/RowInputTextQuoted.java
++++ b/org/hsqldb/rowio/RowInputTextQuoted.java
+@@ -165,3 +165,4 @@ public class RowInputTextQuoted extends RowInputText {
+         return s;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowOutputBase.java b/org/hsqldb/rowio/RowOutputBase.java
+index 432e490e1abb..f1d4b68921f3 100644
+--- a/org/hsqldb/rowio/RowOutputBase.java
++++ b/org/hsqldb/rowio/RowOutputBase.java
+@@ -289,3 +289,4 @@ implements RowOutputInterface {
+ 
+     public abstract RowOutputInterface duplicate();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowOutputBinary.java b/org/hsqldb/rowio/RowOutputBinary.java
+index bfd841651d97..a0692dd40d68 100644
+--- a/org/hsqldb/rowio/RowOutputBinary.java
++++ b/org/hsqldb/rowio/RowOutputBinary.java
+@@ -516,3 +516,4 @@ public class RowOutputBinary extends RowOutputBase {
+         return new RowOutputBinary(128, this.scale);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowOutputBinaryEncode.java b/org/hsqldb/rowio/RowOutputBinaryEncode.java
+index 1e72ef296518..26bc90b527f1 100644
+--- a/org/hsqldb/rowio/RowOutputBinaryEncode.java
++++ b/org/hsqldb/rowio/RowOutputBinaryEncode.java
+@@ -95,3 +95,4 @@ public class RowOutputBinaryEncode extends RowOutputBinary {
+         return new RowOutputBinaryEncode(crypto, 128, this.scale);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowOutputInterface.java b/org/hsqldb/rowio/RowOutputInterface.java
+index 2086dcf4efc5..7d1877965aa1 100644
+--- a/org/hsqldb/rowio/RowOutputInterface.java
++++ b/org/hsqldb/rowio/RowOutputInterface.java
+@@ -102,3 +102,4 @@ public interface RowOutputInterface extends Cloneable {
+ 
+     RowOutputInterface duplicate();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowOutputText.java b/org/hsqldb/rowio/RowOutputText.java
+index d47cfd21dadc..0d1ed5f3c65c 100644
+--- a/org/hsqldb/rowio/RowOutputText.java
++++ b/org/hsqldb/rowio/RowOutputText.java
+@@ -422,3 +422,4 @@ public class RowOutputText extends RowOutputBase {
+         throw Error.runtimeError(ErrorCode.U_S0500, "RowOutputText");
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowOutputTextLog.java b/org/hsqldb/rowio/RowOutputTextLog.java
+index b983ac11d4ec..0446cb895f73 100644
+--- a/org/hsqldb/rowio/RowOutputTextLog.java
++++ b/org/hsqldb/rowio/RowOutputTextLog.java
+@@ -301,3 +301,4 @@ public class RowOutputTextLog extends RowOutputBase {
+         throw Error.runtimeError(ErrorCode.U_S0500, "RowOutputTextLog");
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/rowio/RowOutputTextQuoted.java b/org/hsqldb/rowio/RowOutputTextQuoted.java
+index 54e9a9254c34..5129f6ee4b91 100644
+--- a/org/hsqldb/rowio/RowOutputTextQuoted.java
++++ b/org/hsqldb/rowio/RowOutputTextQuoted.java
+@@ -72,3 +72,4 @@ public class RowOutputTextQuoted extends RowOutputText {
+         return false;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/scriptio/ScriptReaderBase.java b/org/hsqldb/scriptio/ScriptReaderBase.java
+index 2216c4734e44..e6376575122e 100644
+--- a/org/hsqldb/scriptio/ScriptReaderBase.java
++++ b/org/hsqldb/scriptio/ScriptReaderBase.java
+@@ -116,3 +116,4 @@ public abstract class ScriptReaderBase {
+ 
+     public abstract void close();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/scriptio/ScriptReaderDecode.java b/org/hsqldb/scriptio/ScriptReaderDecode.java
+index 1b5972d1c12d..143256052342 100644
+--- a/org/hsqldb/scriptio/ScriptReaderDecode.java
++++ b/org/hsqldb/scriptio/ScriptReaderDecode.java
+@@ -164,3 +164,4 @@ public class ScriptReaderDecode extends ScriptReaderText {
+         } catch (Exception e) {}
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/scriptio/ScriptReaderText.java b/org/hsqldb/scriptio/ScriptReaderText.java
+index 98d20cecd71e..010eae3c4cf6 100644
+--- a/org/hsqldb/scriptio/ScriptReaderText.java
++++ b/org/hsqldb/scriptio/ScriptReaderText.java
+@@ -383,3 +383,4 @@ public class ScriptReaderText extends ScriptReaderBase {
+         errorLogger.writeLogStatement(lineCount, rawStatement);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/scriptio/ScriptWriterBase.java b/org/hsqldb/scriptio/ScriptWriterBase.java
+index acd0aec9a21c..75c9d593ec28 100644
+--- a/org/hsqldb/scriptio/ScriptWriterBase.java
++++ b/org/hsqldb/scriptio/ScriptWriterBase.java
+@@ -517,3 +517,4 @@ public abstract class ScriptWriterBase implements Runnable {
+         return writeDelay;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/scriptio/ScriptWriterEncode.java b/org/hsqldb/scriptio/ScriptWriterEncode.java
+index 966e029ca39c..d2e609f6a713 100644
+--- a/org/hsqldb/scriptio/ScriptWriterEncode.java
++++ b/org/hsqldb/scriptio/ScriptWriterEncode.java
+@@ -166,3 +166,4 @@ public class ScriptWriterEncode extends ScriptWriterText {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/scriptio/ScriptWriterText.java b/org/hsqldb/scriptio/ScriptWriterText.java
+index a266a36e59a0..19ffd7b7b1b3 100644
+--- a/org/hsqldb/scriptio/ScriptWriterText.java
++++ b/org/hsqldb/scriptio/ScriptWriterText.java
+@@ -311,3 +311,4 @@ public class ScriptWriterText extends ScriptWriterBase {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/scriptio/ScriptWriterTextColumnNames.java b/org/hsqldb/scriptio/ScriptWriterTextColumnNames.java
+index 079b65289c93..03e72d13a969 100644
+--- a/org/hsqldb/scriptio/ScriptWriterTextColumnNames.java
++++ b/org/hsqldb/scriptio/ScriptWriterTextColumnNames.java
+@@ -66,3 +66,4 @@ public class ScriptWriterTextColumnNames extends ScriptWriterText {
+         writeRowOutToFile();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/scriptio/StatementLineTypes.java b/org/hsqldb/scriptio/StatementLineTypes.java
+index 9d70fd46fa3b..bedd28a7d3dc 100644
+--- a/org/hsqldb/scriptio/StatementLineTypes.java
++++ b/org/hsqldb/scriptio/StatementLineTypes.java
+@@ -48,3 +48,4 @@ public interface StatementLineTypes {
+     int SET_SCHEMA_STATEMENT      = 6;
+     int SET_FILES_CHECK_STATEMENT = 7;
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/HsqlServerFactory.java b/org/hsqldb/server/HsqlServerFactory.java
+index f6a361e5515c..481cb0572460 100644
+--- a/org/hsqldb/server/HsqlServerFactory.java
++++ b/org/hsqldb/server/HsqlServerFactory.java
+@@ -90,3 +90,4 @@ public class HsqlServerFactory {
+         return server;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/HsqlSocketFactory.java b/org/hsqldb/server/HsqlSocketFactory.java
+index 27a3f77213ab..46872a641cf5 100644
+--- a/org/hsqldb/server/HsqlSocketFactory.java
++++ b/org/hsqldb/server/HsqlSocketFactory.java
+@@ -219,3 +219,4 @@ public class HsqlSocketFactory {
+ 
+ // --
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/HsqlSocketFactorySecure.java b/org/hsqldb/server/HsqlSocketFactorySecure.java
+index e089e4a281c5..42a672e00878 100644
+--- a/org/hsqldb/server/HsqlSocketFactorySecure.java
++++ b/org/hsqldb/server/HsqlSocketFactorySecure.java
+@@ -402,3 +402,4 @@ implements HandshakeCompletedListener {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/HsqlSocketRequestHandler.java b/org/hsqldb/server/HsqlSocketRequestHandler.java
+index da247e028352..ff592ecdf379 100644
+--- a/org/hsqldb/server/HsqlSocketRequestHandler.java
++++ b/org/hsqldb/server/HsqlSocketRequestHandler.java
+@@ -49,3 +49,4 @@ public interface HsqlSocketRequestHandler {
+ 
+     void signalCloseAllServerConnections();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/OdbcPacketInputStream.java b/org/hsqldb/server/OdbcPacketInputStream.java
+index 1ef67cd18aa0..c840fe5de8c1 100644
+--- a/org/hsqldb/server/OdbcPacketInputStream.java
++++ b/org/hsqldb/server/OdbcPacketInputStream.java
+@@ -268,3 +268,4 @@ class OdbcPacketInputStream extends DataInputStream {
+         return (char) readByte();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/OdbcPacketOutputStream.java b/org/hsqldb/server/OdbcPacketOutputStream.java
+index c5b0a80f8881..c02cafc7513b 100644
+--- a/org/hsqldb/server/OdbcPacketOutputStream.java
++++ b/org/hsqldb/server/OdbcPacketOutputStream.java
+@@ -155,3 +155,4 @@ class OdbcPacketOutputStream extends DataOutputStream {
+         writeByte(c);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/OdbcPreparedStatement.java b/org/hsqldb/server/OdbcPreparedStatement.java
+index 2014b1f0fa61..6b399b22bb55 100644
+--- a/org/hsqldb/server/OdbcPreparedStatement.java
++++ b/org/hsqldb/server/OdbcPreparedStatement.java
+@@ -117,3 +117,4 @@ class OdbcPreparedStatement {
+         portals.add(portal);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/OdbcUtil.java b/org/hsqldb/server/OdbcUtil.java
+index a2d401526305..56e08b397289 100644
+--- a/org/hsqldb/server/OdbcUtil.java
++++ b/org/hsqldb/server/OdbcUtil.java
+@@ -296,3 +296,4 @@ public class OdbcUtil {
+         System.out.println("(" + OdbcUtil.hexCharsToOctalOctets(sa[0]) + ')');
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/PgType.java b/org/hsqldb/server/PgType.java
+index 5c3aefc3ead9..4887584cd859 100644
+--- a/org/hsqldb/server/PgType.java
++++ b/org/hsqldb/server/PgType.java
+@@ -518,3 +518,4 @@ public class PgType {
+         */
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/RecoverableOdbcFailure.java b/org/hsqldb/server/RecoverableOdbcFailure.java
+index 327b51b8f883..a43a99e9fe8d 100644
+--- a/org/hsqldb/server/RecoverableOdbcFailure.java
++++ b/org/hsqldb/server/RecoverableOdbcFailure.java
+@@ -85,3 +85,4 @@ class RecoverableOdbcFailure extends Exception {
+         return clientMessage;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/Server.java b/org/hsqldb/server/Server.java
+index 7b8560ddb6f1..1ff56b9a79d7 100644
+--- a/org/hsqldb/server/Server.java
++++ b/org/hsqldb/server/Server.java
+@@ -2377,3 +2377,4 @@ public class Server implements HsqlSocketRequestHandler, Notified {
+         } catch (Exception e) {}
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/ServerAcl.java b/org/hsqldb/server/ServerAcl.java
+index 376146f38eb6..986ffa011672 100644
+--- a/org/hsqldb/server/ServerAcl.java
++++ b/org/hsqldb/server/ServerAcl.java
+@@ -531,3 +531,4 @@ public final class ServerAcl {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/ServerConfiguration.java b/org/hsqldb/server/ServerConfiguration.java
+index bd858244d802..a54e2675114b 100644
+--- a/org/hsqldb/server/ServerConfiguration.java
++++ b/org/hsqldb/server/ServerConfiguration.java
+@@ -293,3 +293,4 @@ public final class ServerConfiguration implements ServerConstants {
+                                  "false");
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/ServerConnection.java b/org/hsqldb/server/ServerConnection.java
+index 10ab32ba328f..239dffbe1477 100644
+--- a/org/hsqldb/server/ServerConnection.java
++++ b/org/hsqldb/server/ServerConnection.java
+@@ -2031,7 +2031,6 @@ class ServerConnection implements Runnable {
+     }
+ }
+ 
+-
+ interface InResultProcessor {
+ 
+     void receiveConnection(int type) throws CleanExit, IOException;
+@@ -2041,3 +2040,4 @@ interface InResultProcessor {
+ 
+ 
+ class CleanExit extends Exception {}
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/ServerConstants.java b/org/hsqldb/server/ServerConstants.java
+index 5f430c790278..ddaceb16c673 100644
+--- a/org/hsqldb/server/ServerConstants.java
++++ b/org/hsqldb/server/ServerConstants.java
+@@ -79,3 +79,4 @@ public interface ServerConstants {
+     String SC_DEFAULT_WEB_PAGE = "index.html";
+     String SC_DEFAULT_WEB_ROOT = ".";
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/ServerProperties.java b/org/hsqldb/server/ServerProperties.java
+index 99ef69ff71cb..fb35f6e2b6d6 100644
+--- a/org/hsqldb/server/ServerProperties.java
++++ b/org/hsqldb/server/ServerProperties.java
+@@ -319,3 +319,4 @@ public class ServerProperties extends HsqlProperties {
+         prefixes.add(sc_key_system);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/StatementPortal.java b/org/hsqldb/server/StatementPortal.java
+index f8dc81c250d9..3e933a1310f3 100644
+--- a/org/hsqldb/server/StatementPortal.java
++++ b/org/hsqldb/server/StatementPortal.java
+@@ -146,3 +146,4 @@ class StatementPortal {
+         containingMap.remove(handle);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/WebServer.java b/org/hsqldb/server/WebServer.java
+index c40d1866a4fc..687a8cd0386c 100644
+--- a/org/hsqldb/server/WebServer.java
++++ b/org/hsqldb/server/WebServer.java
+@@ -262,3 +262,4 @@ public class WebServer extends Server {
+         return serverProperties.getProperty(ServerProperties.sc_key_web_root);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/WebServerConnection.java b/org/hsqldb/server/WebServerConnection.java
+index e6b6efd468e0..1be14217ced3 100644
+--- a/org/hsqldb/server/WebServerConnection.java
++++ b/org/hsqldb/server/WebServerConnection.java
+@@ -571,3 +571,4 @@ class WebServerConnection implements Runnable {
+         return "HSQLDB HTTP Connection @" + Integer.toString(hashCode(), 16);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/server/package-info.java b/org/hsqldb/server/package-info.java
+index c3991e9502a1..55b2af087818 100644
+--- a/org/hsqldb/server/package-info.java
++++ b/org/hsqldb/server/package-info.java
+@@ -37,3 +37,4 @@
+  * protocol.
+  */
+ package org.hsqldb.server;
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/trigger/Trigger.java b/org/hsqldb/trigger/Trigger.java
+index 79e504760f97..eb617f3cc197 100644
+--- a/org/hsqldb/trigger/Trigger.java
++++ b/org/hsqldb/trigger/Trigger.java
+@@ -139,3 +139,4 @@ public interface Trigger {
+     void fire(int type, String trigName, String tabName, Object[] oldRow,
+               Object[] newRow);
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/trigger/package-info.java b/org/hsqldb/trigger/package-info.java
+index 52ab71dfb3d5..abdd4f5f3d05 100644
+--- a/org/hsqldb/trigger/package-info.java
++++ b/org/hsqldb/trigger/package-info.java
+@@ -37,3 +37,4 @@
+  * the {@code Trigger} interface.
+  */
+ package org.hsqldb.trigger;
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/ArrayType.java b/org/hsqldb/types/ArrayType.java
+index 38a2ffd48db0..fea12cf5cd69 100644
+--- a/org/hsqldb/types/ArrayType.java
++++ b/org/hsqldb/types/ArrayType.java
+@@ -564,3 +564,4 @@ public class ArrayType extends Type {
+         return ArraySort.deDuplicate(array, array.length, comparator);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BinaryData.java b/org/hsqldb/types/BinaryData.java
+index fc8ef476e270..f922a7dc9b9c 100644
+--- a/org/hsqldb/types/BinaryData.java
++++ b/org/hsqldb/types/BinaryData.java
+@@ -319,3 +319,4 @@ public class BinaryData implements BlobData {
+         return hashCode;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BinaryType.java b/org/hsqldb/types/BinaryType.java
+index 1cfc0c595870..a43469a96490 100644
+--- a/org/hsqldb/types/BinaryType.java
++++ b/org/hsqldb/types/BinaryType.java
+@@ -804,3 +804,4 @@ public class BinaryType extends Type {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BinaryUUIDType.java b/org/hsqldb/types/BinaryUUIDType.java
+index f32a9b05e059..e9febd9c7300 100644
+--- a/org/hsqldb/types/BinaryUUIDType.java
++++ b/org/hsqldb/types/BinaryUUIDType.java
+@@ -534,3 +534,4 @@ public class BinaryUUIDType extends BinaryType {
+         return new UUID(msb, lsb);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BitType.java b/org/hsqldb/types/BitType.java
+index ce345bb7c733..8250b4cf3f3a 100644
+--- a/org/hsqldb/types/BitType.java
++++ b/org/hsqldb/types/BitType.java
+@@ -651,3 +651,4 @@ public final class BitType extends BinaryType {
+         return bs;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BlobData.java b/org/hsqldb/types/BlobData.java
+index 693bb50946ea..8718fae9b654 100644
+--- a/org/hsqldb/types/BlobData.java
++++ b/org/hsqldb/types/BlobData.java
+@@ -95,3 +95,4 @@ public interface BlobData extends LobData {
+ 
+     int getStreamBlockSize();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BlobDataID.java b/org/hsqldb/types/BlobDataID.java
+index d9247c9cbe93..9e4194c20ad4 100644
+--- a/org/hsqldb/types/BlobDataID.java
++++ b/org/hsqldb/types/BlobDataID.java
+@@ -292,3 +292,4 @@ public class BlobDataID implements BlobData {
+         return (int) id;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BlobInputStream.java b/org/hsqldb/types/BlobInputStream.java
+index 03dfe875998f..7b1dd3a0a550 100644
+--- a/org/hsqldb/types/BlobInputStream.java
++++ b/org/hsqldb/types/BlobInputStream.java
+@@ -154,3 +154,4 @@ public class BlobInputStream extends InputStream {
+         return pos >= 0 && len >= 0 && pos + len <= fullLength;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BlobType.java b/org/hsqldb/types/BlobType.java
+index 9b9a4b8d4dfe..134bbf133f1d 100644
+--- a/org/hsqldb/types/BlobType.java
++++ b/org/hsqldb/types/BlobType.java
+@@ -317,3 +317,4 @@ public final class BlobType extends BinaryType {
+         return convertToString(a);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/BooleanType.java b/org/hsqldb/types/BooleanType.java
+index db9b71a7c7b6..5d622201658d 100644
+--- a/org/hsqldb/types/BooleanType.java
++++ b/org/hsqldb/types/BooleanType.java
+@@ -313,3 +313,4 @@ public final class BooleanType extends Type {
+         return booleanType;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/CharacterType.java b/org/hsqldb/types/CharacterType.java
+index 7d2ae7400347..c032403e3070 100644
+--- a/org/hsqldb/types/CharacterType.java
++++ b/org/hsqldb/types/CharacterType.java
+@@ -1205,3 +1205,4 @@ public class CharacterType extends Type {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/Charset.java b/org/hsqldb/types/Charset.java
+index 3182ef8145fc..048fa2c9a22a 100644
+--- a/org/hsqldb/types/Charset.java
++++ b/org/hsqldb/types/Charset.java
+@@ -285,3 +285,4 @@ public class Charset implements SchemaObject {
+         return SQL_TEXT;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/ClobData.java b/org/hsqldb/types/ClobData.java
+index 39104bf5a3b8..68b6608c6d00 100644
+--- a/org/hsqldb/types/ClobData.java
++++ b/org/hsqldb/types/ClobData.java
+@@ -82,3 +82,4 @@ public interface ClobData extends LobData {
+ 
+     void setId(long id);
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/ClobDataID.java b/org/hsqldb/types/ClobDataID.java
+index dd2b77ce64fe..2797fda13b66 100644
+--- a/org/hsqldb/types/ClobDataID.java
++++ b/org/hsqldb/types/ClobDataID.java
+@@ -287,3 +287,4 @@ public class ClobDataID implements ClobData {
+         return (int) id;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/ClobInputStream.java b/org/hsqldb/types/ClobInputStream.java
+index 7da8e261299f..c07f90067a5b 100644
+--- a/org/hsqldb/types/ClobInputStream.java
++++ b/org/hsqldb/types/ClobInputStream.java
+@@ -173,3 +173,4 @@ public final class ClobInputStream extends Reader {
+         return pos >= 0 && len >= 0 && pos + len <= fullLength;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/ClobType.java b/org/hsqldb/types/ClobType.java
+index fbca0d86d957..2f306fa93c73 100644
+--- a/org/hsqldb/types/ClobType.java
++++ b/org/hsqldb/types/ClobType.java
+@@ -233,3 +233,4 @@ public final class ClobType extends CharacterType {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/Collation.java b/org/hsqldb/types/Collation.java
+index f8acf6a9b694..971e38ee55f7 100644
+--- a/org/hsqldb/types/Collation.java
++++ b/org/hsqldb/types/Collation.java
+@@ -579,3 +579,4 @@ public class Collation implements SchemaObject {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/DTIType.java b/org/hsqldb/types/DTIType.java
+index f09975312639..f4eef0788655 100644
+--- a/org/hsqldb/types/DTIType.java
++++ b/org/hsqldb/types/DTIType.java
+@@ -510,3 +510,4 @@ public abstract class DTIType extends Type {
+         return BigDecimal.valueOf(seconds, scale);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/DateTimeType.java b/org/hsqldb/types/DateTimeType.java
+index 02422e5c4c30..7b8c24942f57 100644
+--- a/org/hsqldb/types/DateTimeType.java
++++ b/org/hsqldb/types/DateTimeType.java
+@@ -2894,3 +2894,4 @@ public final class DateTimeType extends DTIType {
+ 
+ //#endif JAVA8
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/IntervalMonthData.java b/org/hsqldb/types/IntervalMonthData.java
+index 1811e5fd737b..41e6a2b4b330 100644
+--- a/org/hsqldb/types/IntervalMonthData.java
++++ b/org/hsqldb/types/IntervalMonthData.java
+@@ -113,3 +113,4 @@ public class IntervalMonthData {
+         return Type.SQL_INTERVAL_MONTH_MAX_PRECISION.convertToString(this);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/IntervalSecondData.java b/org/hsqldb/types/IntervalSecondData.java
+index ae934e30122c..798d3008cc04 100644
+--- a/org/hsqldb/types/IntervalSecondData.java
++++ b/org/hsqldb/types/IntervalSecondData.java
+@@ -183,3 +183,4 @@ public class IntervalSecondData {
+             .convertToString(this);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/IntervalType.java b/org/hsqldb/types/IntervalType.java
+index 6e57258e02a7..ddb57227e7cd 100644
+--- a/org/hsqldb/types/IntervalType.java
++++ b/org/hsqldb/types/IntervalType.java
+@@ -1810,3 +1810,4 @@ public final class IntervalType extends DTIType {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/JavaObjectData.java b/org/hsqldb/types/JavaObjectData.java
+index 3fef478ee638..55bed6e755db 100644
+--- a/org/hsqldb/types/JavaObjectData.java
++++ b/org/hsqldb/types/JavaObjectData.java
+@@ -132,3 +132,4 @@ public class JavaObjectData {
+         return 1;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/JavaObjectDataInternal.java b/org/hsqldb/types/JavaObjectDataInternal.java
+index d1ce6cb85142..46e6c3b686b4 100644
+--- a/org/hsqldb/types/JavaObjectDataInternal.java
++++ b/org/hsqldb/types/JavaObjectDataInternal.java
+@@ -117,3 +117,4 @@ public class JavaObjectDataInternal extends JavaObjectData {
+         return super.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/LobData.java b/org/hsqldb/types/LobData.java
+index ff1428508dd7..6e458ca70a1b 100644
+--- a/org/hsqldb/types/LobData.java
++++ b/org/hsqldb/types/LobData.java
+@@ -54,3 +54,4 @@ public interface LobData {
+ 
+     boolean isBinary();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/LongPair.java b/org/hsqldb/types/LongPair.java
+index de63489534c1..91e6ded61d9d 100644
+--- a/org/hsqldb/types/LongPair.java
++++ b/org/hsqldb/types/LongPair.java
+@@ -41,3 +41,4 @@ public final class LongPair {
+         this.b = b;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/NullType.java b/org/hsqldb/types/NullType.java
+index 0b97c6ff9bb0..6830c4816d46 100644
+--- a/org/hsqldb/types/NullType.java
++++ b/org/hsqldb/types/NullType.java
+@@ -117,3 +117,4 @@ public final class NullType extends Type {
+         return nullType;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/NumberType.java b/org/hsqldb/types/NumberType.java
+index b659dce76758..6b0112baec21 100644
+--- a/org/hsqldb/types/NumberType.java
++++ b/org/hsqldb/types/NumberType.java
+@@ -2090,3 +2090,4 @@ public final class NumberType extends Type {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/OtherType.java b/org/hsqldb/types/OtherType.java
+index a7b04cf7ac94..fe0e3b62670b 100644
+--- a/org/hsqldb/types/OtherType.java
++++ b/org/hsqldb/types/OtherType.java
+@@ -195,3 +195,4 @@ public final class OtherType extends Type {
+         return otherType;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/RowType.java b/org/hsqldb/types/RowType.java
+index f2a7c4edd7ac..ce9442fa89ca 100644
+--- a/org/hsqldb/types/RowType.java
++++ b/org/hsqldb/types/RowType.java
+@@ -528,3 +528,4 @@ public class RowType extends Type {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/TimeData.java b/org/hsqldb/types/TimeData.java
+index 532f840d14a2..2abfc6335e47 100644
+--- a/org/hsqldb/types/TimeData.java
++++ b/org/hsqldb/types/TimeData.java
+@@ -110,3 +110,4 @@ public class TimeData {
+                         : -1;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/TimestampData.java b/org/hsqldb/types/TimestampData.java
+index 07e16c88d977..3b474ac74f39 100644
+--- a/org/hsqldb/types/TimestampData.java
++++ b/org/hsqldb/types/TimestampData.java
+@@ -120,3 +120,4 @@ public class TimestampData {
+                         : -1;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/Type.java b/org/hsqldb/types/Type.java
+index 5906ca510650..ca1aec9cf5ae 100644
+--- a/org/hsqldb/types/Type.java
++++ b/org/hsqldb/types/Type.java
+@@ -1262,3 +1262,4 @@ public abstract class Type implements SchemaObject, Cloneable {
+         return true;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/TypedComparator.java b/org/hsqldb/types/TypedComparator.java
+index 8409f3db8e49..173c8796d8d3 100644
+--- a/org/hsqldb/types/TypedComparator.java
++++ b/org/hsqldb/types/TypedComparator.java
+@@ -89,3 +89,4 @@ public class TypedComparator implements Comparator, ObjectComparator {
+         this.sort = sort;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/Types.java b/org/hsqldb/types/Types.java
+index 284254b5f1c9..6b446fbded82 100644
+--- a/org/hsqldb/types/Types.java
++++ b/org/hsqldb/types/Types.java
+@@ -847,3 +847,4 @@ public class Types {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/types/UserTypeModifier.java b/org/hsqldb/types/UserTypeModifier.java
+index 8ee3127ed512..4a16c8201d4f 100644
+--- a/org/hsqldb/types/UserTypeModifier.java
++++ b/org/hsqldb/types/UserTypeModifier.java
+@@ -245,3 +245,4 @@ public class UserTypeModifier {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/CSVWriter.java b/org/hsqldb/util/CSVWriter.java
+index 4ad87a597d46..7c5a6cb5f60b 100644
+--- a/org/hsqldb/util/CSVWriter.java
++++ b/org/hsqldb/util/CSVWriter.java
+@@ -138,3 +138,4 @@ class CSVWriter {
+         return sb.toString();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/CodeSwitcher.java b/org/hsqldb/util/CodeSwitcher.java
+index 4bfa4848f93e..96a5042f1962 100644
+--- a/org/hsqldb/util/CodeSwitcher.java
++++ b/org/hsqldb/util/CodeSwitcher.java
+@@ -517,3 +517,4 @@ public class CodeSwitcher {
+         System.out.println("ERROR: " + error);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/CommonSwing.java b/org/hsqldb/util/CommonSwing.java
+index ee8f73912a1f..fe7877950911 100644
+--- a/org/hsqldb/util/CommonSwing.java
++++ b/org/hsqldb/util/CommonSwing.java
+@@ -238,3 +238,4 @@ final class CommonSwing {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/ConnectionDialog.java b/org/hsqldb/util/ConnectionDialog.java
+index 8c98f7f50e22..87663e312b85 100644
+--- a/org/hsqldb/util/ConnectionDialog.java
++++ b/org/hsqldb/util/ConnectionDialog.java
+@@ -340,3 +340,4 @@ class ConnectionDialog extends Dialog implements ActionListener, ItemListener {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/ConnectionDialogCommon.java b/org/hsqldb/util/ConnectionDialogCommon.java
+index edcaad1fd2f9..97785695705a 100644
+--- a/org/hsqldb/util/ConnectionDialogCommon.java
++++ b/org/hsqldb/util/ConnectionDialogCommon.java
+@@ -322,3 +322,4 @@ final class ConnectionDialogCommon {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/ConnectionDialogSwing.java b/org/hsqldb/util/ConnectionDialogSwing.java
+index 73ccd47e8cd1..cb8d786ee447 100644
+--- a/org/hsqldb/util/ConnectionDialogSwing.java
++++ b/org/hsqldb/util/ConnectionDialogSwing.java
+@@ -390,3 +390,4 @@ implements ActionListener, ItemListener {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/ConnectionSetting.java b/org/hsqldb/util/ConnectionSetting.java
+index 884b4d04f30f..7eb5077ef4b2 100644
+--- a/org/hsqldb/util/ConnectionSetting.java
++++ b/org/hsqldb/util/ConnectionSetting.java
+@@ -98,3 +98,4 @@ public class ConnectionSetting implements java.io.Serializable {
+                                  : getName().trim().hashCode();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/DataAccessPoint.java b/org/hsqldb/util/DataAccessPoint.java
+index 156e7110e349..9377981b3b19 100644
+--- a/org/hsqldb/util/DataAccessPoint.java
++++ b/org/hsqldb/util/DataAccessPoint.java
+@@ -136,3 +136,4 @@ class DataAccessPoint implements Serializable {
+         return helper;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/DataAccessPointException.java b/org/hsqldb/util/DataAccessPointException.java
+index a25c90e29285..a83da3927892 100644
+--- a/org/hsqldb/util/DataAccessPointException.java
++++ b/org/hsqldb/util/DataAccessPointException.java
+@@ -46,3 +46,4 @@ class DataAccessPointException extends Exception {
+         super(s);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/DatabaseManager.java b/org/hsqldb/util/DatabaseManager.java
+index 1adce8c6f8cf..36fce692536f 100644
+--- a/org/hsqldb/util/DatabaseManager.java
++++ b/org/hsqldb/util/DatabaseManager.java
+@@ -1406,3 +1406,4 @@ implements ActionListener, WindowListener, KeyListener {
+         } catch (Exception e) {}
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/DatabaseManagerCommon.java b/org/hsqldb/util/DatabaseManagerCommon.java
+index f5c93efe0997..66a9c96027f9 100644
+--- a/org/hsqldb/util/DatabaseManagerCommon.java
++++ b/org/hsqldb/util/DatabaseManagerCommon.java
+@@ -372,3 +372,4 @@ final class DatabaseManagerCommon {
+ 
+     private DatabaseManagerCommon() {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/DatabaseManagerSwing.java b/org/hsqldb/util/DatabaseManagerSwing.java
+index b11582e5e2a0..d14b7125488c 100644
+--- a/org/hsqldb/util/DatabaseManagerSwing.java
++++ b/org/hsqldb/util/DatabaseManagerSwing.java
+@@ -2920,3 +2920,4 @@ implements ActionListener, WindowListener, KeyListener, MouseListener {
+     private static final String tString = Boolean.TRUE.toString();
+     private static final String fString = Boolean.FALSE.toString();
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/FontDialogSwing.java b/org/hsqldb/util/FontDialogSwing.java
+index 75c98ad7f306..6da0dfcad562 100644
+--- a/org/hsqldb/util/FontDialogSwing.java
++++ b/org/hsqldb/util/FontDialogSwing.java
+@@ -321,3 +321,4 @@ class FontDialogSwing extends JDialog {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/Grid.java b/org/hsqldb/util/Grid.java
+index fcf2512b2155..0c5130414a0c 100644
+--- a/org/hsqldb/util/Grid.java
++++ b/org/hsqldb/util/Grid.java
+@@ -492,3 +492,4 @@ class Grid extends Panel {
+         return f.getHeight() + 4;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/GridSwing.java b/org/hsqldb/util/GridSwing.java
+index d286dbea1e9a..d8c7efdd6c53 100644
+--- a/org/hsqldb/util/GridSwing.java
++++ b/org/hsqldb/util/GridSwing.java
+@@ -224,3 +224,4 @@ class GridSwing extends AbstractTableModel {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/HelperFactory.java b/org/hsqldb/util/HelperFactory.java
+index a0cfff2681c4..fc689d456d71 100644
+--- a/org/hsqldb/util/HelperFactory.java
++++ b/org/hsqldb/util/HelperFactory.java
+@@ -68,3 +68,4 @@ class HelperFactory {
+         return (f);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/HsqldbTransferHelper.java b/org/hsqldb/util/HsqldbTransferHelper.java
+index 729521a09339..03b6dd4fdb16 100644
+--- a/org/hsqldb/util/HsqldbTransferHelper.java
++++ b/org/hsqldb/util/HsqldbTransferHelper.java
+@@ -108,3 +108,4 @@ class HsqldbTransferHelper extends TransferHelper {
+         return formatIdentifier(t);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/InformixTransferHelper.java b/org/hsqldb/util/InformixTransferHelper.java
+index ee6ddeb27117..62737152de6a 100644
+--- a/org/hsqldb/util/InformixTransferHelper.java
++++ b/org/hsqldb/util/InformixTransferHelper.java
+@@ -93,3 +93,4 @@ class InformixTransferHelper extends TransferHelper {
+         return (type);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/JDBCTypes.java b/org/hsqldb/util/JDBCTypes.java
+index 31fbf05a76e5..1435b590cff2 100644
+--- a/org/hsqldb/util/JDBCTypes.java
++++ b/org/hsqldb/util/JDBCTypes.java
+@@ -144,3 +144,4 @@ class JDBCTypes {
+         return tempInteger.intValue();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/MainInvoker.java b/org/hsqldb/util/MainInvoker.java
+index 931a116a5f1e..61d223eba83d 100644
+--- a/org/hsqldb/util/MainInvoker.java
++++ b/org/hsqldb/util/MainInvoker.java
+@@ -153,3 +153,4 @@ public class MainInvoker {
+         //System.err.println(c.getName() + ".main() invoked");
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/McKoiTransferHelper.java b/org/hsqldb/util/McKoiTransferHelper.java
+index cfd850712402..7b726271c94f 100644
+--- a/org/hsqldb/util/McKoiTransferHelper.java
++++ b/org/hsqldb/util/McKoiTransferHelper.java
+@@ -81,3 +81,4 @@ class McKoiTransferHelper extends TransferHelper {
+         return (true);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/OracleTransferHelper.java b/org/hsqldb/util/OracleTransferHelper.java
+index 71d4d36970c7..610a3e7df365 100644
+--- a/org/hsqldb/util/OracleTransferHelper.java
++++ b/org/hsqldb/util/OracleTransferHelper.java
+@@ -180,3 +180,4 @@ class OracleTransferHelper extends TransferHelper {
+         return (columnType);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/PostgresTransferHelper.java b/org/hsqldb/util/PostgresTransferHelper.java
+index a34b71dd117b..a2178ad57c05 100644
+--- a/org/hsqldb/util/PostgresTransferHelper.java
++++ b/org/hsqldb/util/PostgresTransferHelper.java
+@@ -165,3 +165,4 @@ class PostgresTransferHelper extends TransferHelper {
+         } catch (Exception e) {}
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/RCData.java b/org/hsqldb/util/RCData.java
+index 4093444d1e8f..7796c637f703 100644
+--- a/org/hsqldb/util/RCData.java
++++ b/org/hsqldb/util/RCData.java
+@@ -516,3 +516,4 @@ public class RCData {
+         return "Custom Transaction Isolation numerical value: " + ti;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/SQLStatements.java b/org/hsqldb/util/SQLStatements.java
+index 8e3b4238365b..1129ca7032cb 100644
+--- a/org/hsqldb/util/SQLStatements.java
++++ b/org/hsqldb/util/SQLStatements.java
+@@ -98,3 +98,4 @@ class SQLStatements implements Serializable {
+     boolean bFKForced    = false;
+     boolean bIdxForced   = false;
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/SqlServerTransferHelper.java b/org/hsqldb/util/SqlServerTransferHelper.java
+index c52b909ed046..6b036480c856 100644
+--- a/org/hsqldb/util/SqlServerTransferHelper.java
++++ b/org/hsqldb/util/SqlServerTransferHelper.java
+@@ -129,3 +129,4 @@ class SqlServerTransferHelper extends TransferHelper {
+         return (value);
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/TableSorter.java b/org/hsqldb/util/TableSorter.java
+index e5a13eef5dfd..29cb9bbeccd0 100644
+--- a/org/hsqldb/util/TableSorter.java
++++ b/org/hsqldb/util/TableSorter.java
+@@ -618,3 +618,4 @@ public class TableSorter extends AbstractTableModel {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/Traceable.java b/org/hsqldb/util/Traceable.java
+index df0fa6c387e1..fcfd05c11b89 100644
+--- a/org/hsqldb/util/Traceable.java
++++ b/org/hsqldb/util/Traceable.java
+@@ -43,3 +43,4 @@ interface Traceable {
+ 
+     void trace(String s);
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/Transfer.java b/org/hsqldb/util/Transfer.java
+index 6b0d4313a50e..b7d745910ce8 100644
+--- a/org/hsqldb/util/Transfer.java
++++ b/org/hsqldb/util/Transfer.java
+@@ -1176,3 +1176,4 @@ implements WindowListener, ActionListener, ItemListener, Traceable {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/TransferCommon.java b/org/hsqldb/util/TransferCommon.java
+index 498475595fa6..14badbb6d28f 100644
+--- a/org/hsqldb/util/TransferCommon.java
++++ b/org/hsqldb/util/TransferCommon.java
+@@ -161,3 +161,4 @@ class TransferCommon {
+ 
+     private TransferCommon() {}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/TransferDb.java b/org/hsqldb/util/TransferDb.java
+index 535789767009..c3760ed4d709 100644
+--- a/org/hsqldb/util/TransferDb.java
++++ b/org/hsqldb/util/TransferDb.java
+@@ -937,3 +937,4 @@ class TransferDb extends DataAccessPoint {
+         return conn;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/TransferHelper.java b/org/hsqldb/util/TransferHelper.java
+index fbebe1a87535..d59c032dc72b 100644
+--- a/org/hsqldb/util/TransferHelper.java
++++ b/org/hsqldb/util/TransferHelper.java
+@@ -205,3 +205,4 @@ class TransferHelper {
+         return columnType;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/TransferResultSet.java b/org/hsqldb/util/TransferResultSet.java
+index 5e51895083d3..d5b2bbb18b26 100644
+--- a/org/hsqldb/util/TransferResultSet.java
++++ b/org/hsqldb/util/TransferResultSet.java
+@@ -170,3 +170,4 @@ class TransferResultSet {
+         return ((Object[]) vRows.elementAt(iRowIdx))[columnIdx];
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/TransferSQLText.java b/org/hsqldb/util/TransferSQLText.java
+index 1fe6260e44a5..08bde25032e8 100644
+--- a/org/hsqldb/util/TransferSQLText.java
++++ b/org/hsqldb/util/TransferSQLText.java
+@@ -846,3 +846,4 @@ class TransferSQLText extends DataAccessPoint {
+         return trsData;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/TransferTable.java b/org/hsqldb/util/TransferTable.java
+index 615e6c31518c..edf1ab78ec2d 100644
+--- a/org/hsqldb/util/TransferTable.java
++++ b/org/hsqldb/util/TransferTable.java
+@@ -461,3 +461,4 @@ class TransferTable implements Serializable {
+         hTypes = destDb.helper.getSupportedTypes();
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/Tree.java b/org/hsqldb/util/Tree.java
+index 3213a3ce203d..27e437c2b337 100644
+--- a/org/hsqldb/util/Tree.java
++++ b/org/hsqldb/util/Tree.java
+@@ -444,3 +444,4 @@ class Tree extends Panel {
+         return f.getHeight() + 2;
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hsqldb/util/package-info.java b/org/hsqldb/util/package-info.java
+index 87817ca998f9..021b1f01e9da 100644
+--- a/org/hsqldb/util/package-info.java
++++ b/org/hsqldb/util/package-info.java
+@@ -36,3 +36,4 @@
+  * databases.
+  */
+ package org.hsqldb.util;
++/* @generated */
+\ No newline at end of file

@@ -136,3 +136,4 @@ public class JDBCSavepoint implements Savepoint {
         return super.toString() + "[name=" + name + "]";
     }
 }
+/* @generated */

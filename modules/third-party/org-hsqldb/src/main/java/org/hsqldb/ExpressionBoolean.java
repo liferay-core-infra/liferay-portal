@@ -48,3 +48,4 @@ public class ExpressionBoolean extends ExpressionValue {
         return booleanValue;
     }
 }
+/* @generated */

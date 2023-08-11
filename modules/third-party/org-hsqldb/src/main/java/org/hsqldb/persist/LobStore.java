@@ -55,3 +55,4 @@ public interface LobStore {
 
     void synch();
 }
+/* @generated */

@@ -421,3 +421,4 @@ implements PersistentStoreCollection {
         clearAllTables();
     }
 }
+/* @generated */

@@ -605,3 +605,4 @@ public final class HsqlNameManager {
         }
     }
 }
+/* @generated */

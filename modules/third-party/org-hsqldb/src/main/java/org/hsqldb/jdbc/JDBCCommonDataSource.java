@@ -372,3 +372,4 @@ implements CommonDataSource, Serializable {
     /** database URL */
     protected String url = null;
 }
+/* @generated */

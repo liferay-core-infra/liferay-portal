@@ -50,3 +50,4 @@ public interface TextFileReader {
 
     RowInputInterface readObject();
 }
+/* @generated */

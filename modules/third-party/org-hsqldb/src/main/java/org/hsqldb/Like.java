@@ -480,3 +480,4 @@ class Like implements Cloneable {
         }
     }
 }
+/* @generated */

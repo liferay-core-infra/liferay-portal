@@ -119,3 +119,4 @@ public class TriggerDefSQL extends TriggerDef {
         return sb.toString();
     }
 }
+/* @generated */

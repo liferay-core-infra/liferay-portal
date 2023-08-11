@@ -384,3 +384,4 @@ public final class DatabaseURL {
         return props;
     }
 }
+/* @generated */

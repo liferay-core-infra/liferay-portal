@@ -292,3 +292,4 @@ public class BlobDataID implements BlobData {
         return (int) id;
     }
 }
+/* @generated */

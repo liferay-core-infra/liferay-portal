@@ -322,3 +322,4 @@ public final class Error {
         return -1;
     }
 }
+/* @generated */

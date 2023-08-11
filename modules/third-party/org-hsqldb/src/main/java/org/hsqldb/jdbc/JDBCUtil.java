@@ -851,3 +851,4 @@ public final class JDBCUtil {
 //        return sqlException(ErrorCode.JDBC_INVALID_ARGUMENT, String.valueOf(clazz));
 //    }
 }
+/* @generated */

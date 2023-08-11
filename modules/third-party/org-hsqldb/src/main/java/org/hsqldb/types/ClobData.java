@@ -82,3 +82,4 @@ public interface ClobData extends LobData {
 
     void setId(long id);
 }
+/* @generated */

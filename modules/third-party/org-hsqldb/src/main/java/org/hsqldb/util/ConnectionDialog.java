@@ -340,3 +340,4 @@ class ConnectionDialog extends Dialog implements ActionListener, ItemListener {
         }
     }
 }
+/* @generated */

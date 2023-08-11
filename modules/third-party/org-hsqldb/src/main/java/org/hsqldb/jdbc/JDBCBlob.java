@@ -791,3 +791,4 @@ public class JDBCBlob implements Blob {
         m_data = data;
     }
 }
+/* @generated */

@@ -325,3 +325,4 @@ public interface StatementTypes {
     int RETURN_COUNT  = 1;
     int RETURN_RESULT = 2;
 }
+/* @generated */

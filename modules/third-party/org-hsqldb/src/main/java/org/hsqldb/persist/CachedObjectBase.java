@@ -143,3 +143,4 @@ public abstract class CachedObjectBase implements CachedObject {
 
     public void destroy() {}
 }
+/* @generated */

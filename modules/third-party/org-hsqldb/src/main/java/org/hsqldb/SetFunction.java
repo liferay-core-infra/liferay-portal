@@ -50,3 +50,4 @@ public interface SetFunction {
 
     void reset();
 }
+/* @generated */

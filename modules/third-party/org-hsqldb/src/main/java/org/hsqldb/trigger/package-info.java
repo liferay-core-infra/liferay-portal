@@ -37,3 +37,4 @@
  * the {@code Trigger} interface.
  */
 package org.hsqldb.trigger;
+/* @generated */

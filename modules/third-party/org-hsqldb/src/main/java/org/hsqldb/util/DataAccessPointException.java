@@ -46,3 +46,4 @@ class DataAccessPointException extends Exception {
         super(s);
     }
 }
+/* @generated */

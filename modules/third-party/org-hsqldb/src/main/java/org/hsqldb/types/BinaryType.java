@@ -804,3 +804,4 @@ public class BinaryType extends Type {
         }
     }
 }
+/* @generated */

@@ -148,3 +148,4 @@ public class ResultProperties {
                     : props & (~(1 << idx_isheld));
     }
 }
+/* @generated */

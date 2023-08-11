@@ -72,3 +72,4 @@ public interface RowInsertInterface {
         void close();
     }
 }
+/* @generated */

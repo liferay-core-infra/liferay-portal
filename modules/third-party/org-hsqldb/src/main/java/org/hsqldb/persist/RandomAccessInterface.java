@@ -70,3 +70,4 @@ public interface RandomAccessInterface {
 
     boolean setLength(long newLength);
 }
+/* @generated */

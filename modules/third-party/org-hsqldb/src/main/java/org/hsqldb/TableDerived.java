@@ -490,3 +490,4 @@ public class TableDerived extends Table {
         this.sql = sql;
     }
 }
+/* @generated */

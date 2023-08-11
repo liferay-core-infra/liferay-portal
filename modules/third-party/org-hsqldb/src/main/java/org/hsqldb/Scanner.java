@@ -2688,3 +2688,4 @@ public class Scanner {
         }
     }
 }
+/* @generated */

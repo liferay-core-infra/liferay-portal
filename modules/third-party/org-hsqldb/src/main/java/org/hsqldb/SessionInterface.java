@@ -152,3 +152,4 @@ public interface SessionInterface {
 
     String getDatabaseUniqueName();
 }
+/* @generated */

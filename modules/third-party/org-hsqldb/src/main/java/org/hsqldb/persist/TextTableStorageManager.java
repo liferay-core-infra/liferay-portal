@@ -111,3 +111,4 @@ public class TextTableStorageManager {
         return false;
     }
 }
+/* @generated */

@@ -4631,3 +4631,4 @@ public class FunctionCustom extends FunctionSQL {
         return flags;
     }
 }
+/* @generated */

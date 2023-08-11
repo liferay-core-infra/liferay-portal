@@ -579,3 +579,4 @@ public class Collation implements SchemaObject {
         return sb.toString();
     }
 }
+/* @generated */

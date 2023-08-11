@@ -618,3 +618,4 @@ public final class Schema implements SchemaObject {
         referenceList.clear();
     }
 }
+/* @generated */

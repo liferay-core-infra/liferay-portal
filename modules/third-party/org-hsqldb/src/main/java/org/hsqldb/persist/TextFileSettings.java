@@ -379,3 +379,4 @@ public class TextFileSettings {
         return sep;
     }
 }
+/* @generated */

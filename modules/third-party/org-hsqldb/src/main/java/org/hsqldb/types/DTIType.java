@@ -510,3 +510,4 @@ public abstract class DTIType extends Type {
         return BigDecimal.valueOf(seconds, scale);
     }
 }
+/* @generated */

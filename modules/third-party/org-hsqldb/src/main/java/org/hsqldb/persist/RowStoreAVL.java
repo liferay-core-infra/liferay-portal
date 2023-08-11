@@ -792,3 +792,4 @@ public abstract class RowStoreAVL implements PersistentStore {
         idx.unlinkNodes(this, root);
     }
 }
+/* @generated */

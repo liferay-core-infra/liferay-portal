@@ -43,3 +43,4 @@ interface Traceable {
 
     void trace(String s);
 }
+/* @generated */

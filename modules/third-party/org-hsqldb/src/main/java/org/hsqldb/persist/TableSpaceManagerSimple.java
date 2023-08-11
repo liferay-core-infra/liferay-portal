@@ -105,3 +105,4 @@ public class TableSpaceManagerSimple implements TableSpaceManager {
         return true;
     }
 }
+/* @generated */

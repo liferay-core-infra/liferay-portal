@@ -107,3 +107,4 @@ public class ReferenceObject implements SchemaObject {
         return target;
     }
 }
+/* @generated */

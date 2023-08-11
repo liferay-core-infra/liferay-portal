@@ -319,3 +319,4 @@ public class ServerProperties extends HsqlProperties {
         prefixes.add(sc_key_system);
     }
 }
+/* @generated */

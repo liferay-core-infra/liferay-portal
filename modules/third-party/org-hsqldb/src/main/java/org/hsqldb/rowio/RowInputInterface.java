@@ -73,3 +73,4 @@ public interface RowInputInterface {
 
     byte[] getBuffer();
 }
+/* @generated */

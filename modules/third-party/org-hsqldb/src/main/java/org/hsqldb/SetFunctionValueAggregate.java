@@ -766,3 +766,4 @@ public class SetFunctionValueAggregate implements SetFunction {
 
     // end statistics support
 }
+/* @generated */

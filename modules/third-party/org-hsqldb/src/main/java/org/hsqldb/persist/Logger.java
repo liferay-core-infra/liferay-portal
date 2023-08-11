@@ -2374,3 +2374,4 @@ public class Logger implements EventLogInterface {
         return isNewDatabase;
     }
 }
+/* @generated */

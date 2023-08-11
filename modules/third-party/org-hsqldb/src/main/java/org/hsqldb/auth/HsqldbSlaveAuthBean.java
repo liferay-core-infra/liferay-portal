@@ -175,3 +175,4 @@ public class HsqldbSlaveAuthBean implements AuthFunctionBean {
         }
     }
 }
+/* @generated */

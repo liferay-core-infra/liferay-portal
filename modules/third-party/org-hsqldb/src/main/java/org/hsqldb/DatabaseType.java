@@ -90,3 +90,4 @@ public enum DatabaseType {
         throw Error.runtimeError(ErrorCode.U_S0500, "DatabaseType");
     }
 }
+/* @generated */

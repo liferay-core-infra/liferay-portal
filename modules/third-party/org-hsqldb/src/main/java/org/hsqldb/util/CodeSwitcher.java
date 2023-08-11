@@ -517,3 +517,4 @@ public class CodeSwitcher {
         System.out.println("ERROR: " + error);
     }
 }
+/* @generated */

@@ -107,3 +107,4 @@ public class TypeInvariants {
                 SchemaObject.DOMAIN, URI);
     }
 }
+/* @generated */

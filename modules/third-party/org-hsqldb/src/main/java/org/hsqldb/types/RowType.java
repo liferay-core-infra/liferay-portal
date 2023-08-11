@@ -528,3 +528,4 @@ public class RowType extends Type {
         return sb.toString();
     }
 }
+/* @generated */

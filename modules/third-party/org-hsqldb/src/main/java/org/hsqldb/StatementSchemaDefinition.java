@@ -245,3 +245,4 @@ public class StatementSchemaDefinition extends StatementSchema {
         return true;
     }
 }
+/* @generated */

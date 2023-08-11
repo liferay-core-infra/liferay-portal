@@ -486,3 +486,4 @@ public final class UserManager {
         return array;
     }
 }
+/* @generated */

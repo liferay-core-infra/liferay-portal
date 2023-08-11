@@ -79,3 +79,4 @@ public interface ServerConstants {
     String SC_DEFAULT_WEB_PAGE = "index.html";
     String SC_DEFAULT_WEB_ROOT = ".";
 }
+/* @generated */

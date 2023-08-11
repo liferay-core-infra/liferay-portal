@@ -113,3 +113,4 @@ public class IntervalMonthData {
         return Type.SQL_INTERVAL_MONTH_MAX_PRECISION.convertToString(this);
     }
 }
+/* @generated */

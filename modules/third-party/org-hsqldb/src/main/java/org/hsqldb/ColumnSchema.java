@@ -459,3 +459,4 @@ public class ColumnSchema extends ColumnBase implements SchemaObject {
         }
     }
 }
+/* @generated */

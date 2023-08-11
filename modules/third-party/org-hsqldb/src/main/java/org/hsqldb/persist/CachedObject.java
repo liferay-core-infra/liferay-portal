@@ -92,3 +92,4 @@ public interface CachedObject {
 
     void write(RowOutputInterface out, LongLookup lookup);
 }
+/* @generated */

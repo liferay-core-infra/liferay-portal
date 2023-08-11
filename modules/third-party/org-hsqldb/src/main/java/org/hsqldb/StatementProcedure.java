@@ -418,3 +418,4 @@ public class StatementProcedure extends StatementDMQL {
         }
     }
 }
+/* @generated */

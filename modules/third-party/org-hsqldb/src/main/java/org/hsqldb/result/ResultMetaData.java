@@ -583,3 +583,4 @@ public final class ResultMetaData {
         return true;
     }
 }
+/* @generated */

@@ -154,3 +154,4 @@ public class BlobInputStream extends InputStream {
         return pos >= 0 && len >= 0 && pos + len <= fullLength;
     }
 }
+/* @generated */

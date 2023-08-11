@@ -6231,3 +6231,4 @@ public class JDBCDatabaseMetaData implements DatabaseMetaData,
         return catalogName;
     }
 }
+/* @generated */

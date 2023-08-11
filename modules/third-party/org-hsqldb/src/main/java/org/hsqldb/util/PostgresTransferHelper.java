@@ -165,3 +165,4 @@ class PostgresTransferHelper extends TransferHelper {
         } catch (Exception e) {}
     }
 }
+/* @generated */

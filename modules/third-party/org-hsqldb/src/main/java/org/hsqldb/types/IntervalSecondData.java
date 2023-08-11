@@ -183,3 +183,4 @@ public class IntervalSecondData {
             .convertToString(this);
     }
 }
+/* @generated */

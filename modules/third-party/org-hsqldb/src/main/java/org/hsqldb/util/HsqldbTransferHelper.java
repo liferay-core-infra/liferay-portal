@@ -108,3 +108,4 @@ class HsqldbTransferHelper extends TransferHelper {
         return formatIdentifier(t);
     }
 }
+/* @generated */

@@ -180,3 +180,4 @@ class OracleTransferHelper extends TransferHelper {
         return (columnType);
     }
 }
+/* @generated */

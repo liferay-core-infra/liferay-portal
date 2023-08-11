@@ -568,3 +568,4 @@ public class DatabaseManager {
         }
     }
 }
+/* @generated */

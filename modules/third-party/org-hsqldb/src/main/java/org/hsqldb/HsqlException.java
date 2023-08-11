@@ -172,3 +172,4 @@ public class HsqlException extends RuntimeException {
         return a.equals(b);
     }
 }
+/* @generated */

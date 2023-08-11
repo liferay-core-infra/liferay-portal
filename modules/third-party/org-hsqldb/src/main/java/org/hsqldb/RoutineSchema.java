@@ -367,3 +367,4 @@ public class RoutineSchema implements SchemaObject {
         return routines[0].isAggregate;
     }
 }
+/* @generated */

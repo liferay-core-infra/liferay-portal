@@ -478,3 +478,4 @@ public class JDBCXAResource implements XAResource {
         connection = userConnection;
     }
 }
+/* @generated */

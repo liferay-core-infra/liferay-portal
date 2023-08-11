@@ -336,3 +336,4 @@ implements TransactionManager {
         }
     }
 }
+/* @generated */

@@ -418,3 +418,4 @@ public class RowInputBinary extends RowInputBase implements RowInputInterface {
         super.resetRow(filepos, rowsize);
     }
 }
+/* @generated */

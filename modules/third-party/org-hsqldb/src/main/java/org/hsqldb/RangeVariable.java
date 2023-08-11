@@ -2288,3 +2288,4 @@ public class RangeVariable {
         }
     }
 }
+/* @generated */

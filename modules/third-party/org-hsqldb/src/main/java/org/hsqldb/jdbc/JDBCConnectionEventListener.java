@@ -39,3 +39,4 @@ public interface JDBCConnectionEventListener {
 
     void connectionErrorOccurred(SQLException e);
 }
+/* @generated */

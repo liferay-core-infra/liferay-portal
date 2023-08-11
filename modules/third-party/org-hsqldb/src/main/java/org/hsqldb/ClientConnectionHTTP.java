@@ -177,3 +177,4 @@ public class ClientConnectionHTTP extends ClientConnection {
         // We depend on the HTTP wrappings to assure end-to-end handshaking
     }
 }
+/* @generated */

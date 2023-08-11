@@ -48,3 +48,4 @@ public interface StatementLineTypes {
     int SET_SCHEMA_STATEMENT      = 6;
     int SET_FILES_CHECK_STATEMENT = 7;
 }
+/* @generated */

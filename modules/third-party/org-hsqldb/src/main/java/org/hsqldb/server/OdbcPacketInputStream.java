@@ -268,3 +268,4 @@ class OdbcPacketInputStream extends DataInputStream {
         return (char) readByte();
     }
 }
+/* @generated */

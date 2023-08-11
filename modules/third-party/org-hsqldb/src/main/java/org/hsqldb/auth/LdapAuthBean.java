@@ -625,3 +625,4 @@ public class LdapAuthBean implements AuthFunctionBean {
         }
     }
 }
+/* @generated */

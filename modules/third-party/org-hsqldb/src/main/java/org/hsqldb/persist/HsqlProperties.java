@@ -570,3 +570,4 @@ public class HsqlProperties {
         public int[]   propValues;
     }
 }
+/* @generated */

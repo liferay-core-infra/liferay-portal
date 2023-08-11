@@ -700,3 +700,4 @@ public interface ErrorCode {
     // CLI-specific condition - 200x
     int X_HY093 = 6800;                            // CLI-specific condition: invalid datalink value
 }
+/* @generated */

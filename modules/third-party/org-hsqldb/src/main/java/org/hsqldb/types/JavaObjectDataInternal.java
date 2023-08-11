@@ -117,3 +117,4 @@ public class JavaObjectDataInternal extends JavaObjectData {
         return super.toString();
     }
 }
+/* @generated */

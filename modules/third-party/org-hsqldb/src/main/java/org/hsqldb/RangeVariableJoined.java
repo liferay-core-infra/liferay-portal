@@ -388,3 +388,4 @@ public class RangeVariableJoined extends RangeVariable {
         return super.getIterator(session);
     }
 }
+/* @generated */

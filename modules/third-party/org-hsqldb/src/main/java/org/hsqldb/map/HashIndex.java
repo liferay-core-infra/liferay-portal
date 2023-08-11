@@ -334,3 +334,4 @@ public class HashIndex {
         return copy;
     }
 }
+/* @generated */

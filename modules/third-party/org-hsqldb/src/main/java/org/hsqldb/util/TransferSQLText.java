@@ -846,3 +846,4 @@ class TransferSQLText extends DataAccessPoint {
         return trsData;
     }
 }
+/* @generated */

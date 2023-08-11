@@ -37,3 +37,4 @@
  * protocol.
  */
 package org.hsqldb.server;
+/* @generated */

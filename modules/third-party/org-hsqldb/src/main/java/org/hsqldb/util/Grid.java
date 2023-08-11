@@ -492,3 +492,4 @@ class Grid extends Panel {
         return f.getHeight() + 4;
     }
 }
+/* @generated */

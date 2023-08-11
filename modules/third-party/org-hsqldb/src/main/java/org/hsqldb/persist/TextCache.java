@@ -459,3 +459,4 @@ public class TextCache extends DataFileCache {
                 rowIn, cacheReadonly);
     }
 }
+/* @generated */

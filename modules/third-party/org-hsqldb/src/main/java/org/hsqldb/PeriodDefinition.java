@@ -108,3 +108,4 @@ public class PeriodDefinition implements SchemaObject {
         return 0L;
     }
 }
+/* @generated */

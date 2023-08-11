@@ -243,3 +243,4 @@ public final class ResourceBundleHandler {
         }
     }
 }
+/* @generated */

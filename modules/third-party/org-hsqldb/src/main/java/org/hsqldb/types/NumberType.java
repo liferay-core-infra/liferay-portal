@@ -2090,3 +2090,4 @@ public final class NumberType extends Type {
         }
     }
 }
+/* @generated */

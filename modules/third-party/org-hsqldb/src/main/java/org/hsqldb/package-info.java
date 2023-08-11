@@ -33,3 +33,4 @@
  * Contains the HyperSQL engine classes.
  */
 package org.hsqldb;
+/* @generated */

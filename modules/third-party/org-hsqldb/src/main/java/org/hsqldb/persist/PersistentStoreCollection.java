@@ -41,3 +41,4 @@ public interface PersistentStoreCollection {
 
     void release();
 }
+/* @generated */

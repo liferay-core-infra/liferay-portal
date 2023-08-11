@@ -239,3 +239,4 @@ public class User extends Grantee {
         return sb.toString();
     }
 }
+/* @generated */

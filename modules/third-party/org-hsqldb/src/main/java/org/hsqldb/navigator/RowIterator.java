@@ -86,3 +86,4 @@ public interface RowIterator {
         }
     }
 }
+/* @generated */

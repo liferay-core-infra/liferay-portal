@@ -1377,3 +1377,4 @@ public class ExpressionColumn extends Expression {
         return super.duplicate();
     }
 }
+/* @generated */

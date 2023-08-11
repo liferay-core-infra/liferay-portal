@@ -247,3 +247,4 @@ public class JDBCDataSource extends JDBCCommonDataSource implements DataSource,
     public JDBCDataSource() {
     }
 }
+/* @generated */

@@ -117,3 +117,4 @@ class OdbcPreparedStatement {
         portals.add(portal);
     }
 }
+/* @generated */

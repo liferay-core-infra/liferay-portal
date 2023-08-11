@@ -340,3 +340,4 @@ implements RowSetNavigatorDataChange {
         }
     }
 }
+/* @generated */

@@ -117,3 +117,4 @@ public final class NullType extends Type {
         return nullType;
     }
 }
+/* @generated */

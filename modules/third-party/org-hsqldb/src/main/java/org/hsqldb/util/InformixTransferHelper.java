@@ -93,3 +93,4 @@ class InformixTransferHelper extends TransferHelper {
         return (type);
     }
 }
+/* @generated */

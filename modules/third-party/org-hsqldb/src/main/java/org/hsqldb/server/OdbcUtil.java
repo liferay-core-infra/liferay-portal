@@ -296,3 +296,4 @@ public class OdbcUtil {
         System.out.println("(" + OdbcUtil.hexCharsToOctalOctets(sa[0]) + ')');
     }
 }
+/* @generated */

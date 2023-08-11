@@ -580,3 +580,4 @@ public class JDBCArray implements Array {
         }
     }
 }
+/* @generated */

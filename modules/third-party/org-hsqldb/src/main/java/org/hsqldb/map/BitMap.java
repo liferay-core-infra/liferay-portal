@@ -792,3 +792,4 @@ public class BitMap {
         return newMap;
     }
 }
+/* @generated */

@@ -202,3 +202,4 @@ implements PooledConnection, JDBCConnectionEventListener {
         this.connection = connection;
     }
 }
+/* @generated */

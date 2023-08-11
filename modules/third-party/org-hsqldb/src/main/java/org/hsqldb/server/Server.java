@@ -2377,3 +2377,4 @@ public class Server implements HsqlSocketRequestHandler, Notified {
         } catch (Exception e) {}
     }
 }
+/* @generated */

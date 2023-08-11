@@ -98,3 +98,4 @@ public class ConnectionSetting implements java.io.Serializable {
                                  : getName().trim().hashCode();
     }
 }
+/* @generated */

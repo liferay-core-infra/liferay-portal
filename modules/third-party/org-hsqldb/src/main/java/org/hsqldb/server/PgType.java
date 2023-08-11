@@ -518,3 +518,4 @@ public class PgType {
         */
     }
 }
+/* @generated */

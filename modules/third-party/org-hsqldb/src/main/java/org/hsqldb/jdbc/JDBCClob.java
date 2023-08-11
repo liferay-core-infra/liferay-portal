@@ -1069,3 +1069,4 @@ public class JDBCClob implements Clob {
         return len;
     }
 }
+/* @generated */

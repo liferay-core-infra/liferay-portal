@@ -301,3 +301,4 @@ public class RowOutputTextLog extends RowOutputBase {
         throw Error.runtimeError(ErrorCode.U_S0500, "RowOutputTextLog");
     }
 }
+/* @generated */

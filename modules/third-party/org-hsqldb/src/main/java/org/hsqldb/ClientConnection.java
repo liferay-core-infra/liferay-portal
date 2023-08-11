@@ -708,3 +708,4 @@ public class ClientConnection implements SessionInterface, Cloneable {
         return super.clone();
     }
 }
+/* @generated */

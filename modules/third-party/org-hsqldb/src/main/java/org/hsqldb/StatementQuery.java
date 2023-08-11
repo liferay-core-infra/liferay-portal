@@ -127,3 +127,4 @@ public class StatementQuery extends StatementDMQL {
         return cursorName;
     }
 }
+/* @generated */

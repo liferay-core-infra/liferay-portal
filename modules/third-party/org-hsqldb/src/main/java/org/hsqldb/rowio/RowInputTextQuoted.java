@@ -165,3 +165,4 @@ public class RowInputTextQuoted extends RowInputText {
         return s;
     }
 }
+/* @generated */

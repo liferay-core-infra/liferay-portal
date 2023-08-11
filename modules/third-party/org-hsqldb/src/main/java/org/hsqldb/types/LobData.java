@@ -54,3 +54,4 @@ public interface LobData {
 
     boolean isBinary();
 }
+/* @generated */

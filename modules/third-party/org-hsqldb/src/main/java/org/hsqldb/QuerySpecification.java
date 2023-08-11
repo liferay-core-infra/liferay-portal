@@ -2891,3 +2891,4 @@ public class QuerySpecification extends QueryExpression {
         return true;
     }
 }
+/* @generated */

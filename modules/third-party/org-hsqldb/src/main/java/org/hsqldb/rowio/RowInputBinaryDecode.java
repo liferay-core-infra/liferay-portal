@@ -64,3 +64,4 @@ public class RowInputBinaryDecode extends RowInputBinary {
         return super.readData(colTypes);
     }
 }
+/* @generated */

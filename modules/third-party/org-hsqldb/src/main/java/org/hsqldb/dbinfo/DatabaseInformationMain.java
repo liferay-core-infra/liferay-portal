@@ -3740,3 +3740,4 @@ class DatabaseInformationMain extends DatabaseInformation {
         return t;
     }
 }
+/* @generated */

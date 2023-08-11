@@ -940,3 +940,4 @@ public class GranteeManager {
         return StringConverter.byteArrayToHexString(data);
     }
 }
+/* @generated */

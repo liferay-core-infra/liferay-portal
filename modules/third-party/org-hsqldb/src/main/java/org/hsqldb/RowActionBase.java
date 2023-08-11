@@ -94,3 +94,4 @@ public class RowActionBase {
         changeColumnMap = action.changeColumnMap;
     }
 }
+/* @generated */

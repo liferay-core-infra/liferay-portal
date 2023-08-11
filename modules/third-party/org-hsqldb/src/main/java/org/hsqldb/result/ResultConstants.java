@@ -734,3 +734,4 @@ public interface ResultConstants {
     int RETURN_GENERATED_KEYS_COL_INDEXES = 21;    // constant in HSQLDB only
     int RETURN_PRIMARY_KEYS               = 31;    // constant in HSQLDB only
 }
+/* @generated */

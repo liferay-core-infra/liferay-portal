@@ -254,3 +254,4 @@ public class Row implements CachedObject {
         return (int) position;
     }
 }
+/* @generated */

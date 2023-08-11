@@ -397,3 +397,4 @@ public class DatabaseInformation {
         this.withContent = withContent;
     }
 }
+/* @generated */

@@ -8,6 +8,7 @@ package com.liferay.portal.search.web.internal.facet.display.context;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -48,11 +49,16 @@ public class ScopeSearchFacetDisplayContextTest
 			String parameterValue, String order)
 		throws ConfigurationException {
 
+		configurationProviderUtilMockedStatic.when(
+			() -> ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				Mockito.any(), Mockito.any(), Mockito.anyString())
+		).thenReturn(
+			Mockito.mock(SiteFacetPortletInstanceConfiguration.class)
+		);
+
 		ScopeSearchFacetDisplayContextBuilder
 			scopeSearchFacetDisplayContextBuilder =
-				new ScopeSearchFacetDisplayContextBuilder(
-					getRenderRequest(
-						SiteFacetPortletInstanceConfiguration.class));
+				new ScopeSearchFacetDisplayContextBuilder(getRenderRequest());
 
 		scopeSearchFacetDisplayContextBuilder.setFacet(facet);
 		scopeSearchFacetDisplayContextBuilder.setFrequenciesVisible(true);

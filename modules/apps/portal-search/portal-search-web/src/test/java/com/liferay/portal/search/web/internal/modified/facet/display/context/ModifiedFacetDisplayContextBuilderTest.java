@@ -10,6 +10,7 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
@@ -449,11 +450,19 @@ public class ModifiedFacetDisplayContextBuilderTest
 	private ModifiedFacetDisplayContextBuilder
 		_createModifiedFacetDisplayContextBuilder() {
 
+		ConfigurationProvider configurationProvider = Mockito.mock(
+			ConfigurationProvider.class);
+
 		try {
+			Mockito.when(
+				configurationProvider.getPortletInstanceConfiguration(
+					Mockito.any(), Mockito.any(), Mockito.any())
+			).thenReturn(
+				Mockito.mock(ModifiedFacetPortletInstanceConfiguration.class)
+			);
+
 			return new ModifiedFacetDisplayContextBuilder(
-				_dateFormatFactory,
-				getRenderRequest(
-					ModifiedFacetPortletInstanceConfiguration.class));
+				configurationProvider, _dateFormatFactory, getRenderRequest());
 		}
 		catch (ConfigurationException configurationException) {
 			throw new RuntimeException(configurationException);

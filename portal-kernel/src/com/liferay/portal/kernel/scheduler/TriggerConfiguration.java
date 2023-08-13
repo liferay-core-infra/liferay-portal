@@ -15,6 +15,10 @@ public class TriggerConfiguration {
 	public static TriggerConfiguration createTriggerConfiguration(
 		int interval, TimeUnit timeUnit) {
 
+		if (interval == 0) {
+			return null;
+		}
+
 		return new TriggerConfiguration(interval, timeUnit);
 	}
 

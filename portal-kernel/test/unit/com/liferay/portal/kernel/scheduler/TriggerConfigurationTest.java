@@ -90,7 +90,9 @@ public class TriggerConfigurationTest {
 
 	@Test
 	public void testZeroIntervalTriggerConfigurationIsAccepted() {
-		TriggerConfiguration.createTriggerConfiguration(0, TimeUnit.MINUTE);
+		Assert.assertNull(
+			TriggerConfiguration.createTriggerConfiguration(
+				0, TimeUnit.MINUTE));
 	}
 
 }

@@ -5,6 +5,9 @@
 
 package com.liferay.portal.kernel.scheduler;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+
 import java.util.Date;
 
 /**
@@ -24,6 +27,10 @@ public class TriggerConfiguration {
 
 	public static TriggerConfiguration createTriggerConfiguration(
 		String cronExpression) {
+
+		if (StringUtil.equals(cronExpression, StringPool.BLANK)) {
+			return null;
+		}
 
 		return new TriggerConfiguration(cronExpression);
 	}

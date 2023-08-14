@@ -63,7 +63,7 @@ import com.liferay.portal.kernel.service.ThemeLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.ArchivedSettingsFactory;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -143,7 +143,7 @@ public class SiteInitializerFactoryImpl implements SiteInitializerFactory {
 			_ploEntryLocalService, _portal, _resourceActionLocalService,
 			_resourcePermissionLocalService, _roleLocalService,
 			_sapEntryLocalService, _segmentsEntryLocalService,
-			_segmentsExperienceLocalService, _settingsFactory,
+			_segmentsExperienceLocalService, _archivedSettingsFactory,
 			_siteNavigationMenuItemLocalService,
 			_siteNavigationMenuItemTypeRegistry,
 			_siteNavigationMenuLocalService,
@@ -199,6 +199,9 @@ public class SiteInitializerFactoryImpl implements SiteInitializerFactory {
 
 	@Reference
 	private AccountRoleResource.Factory _accountRoleResourceFactory;
+
+	@Reference
+	private ArchivedSettingsFactory _archivedSettingsFactory;
 
 	@Reference
 	private AssetCategoryLocalService _assetCategoryLocalService;
@@ -357,9 +360,6 @@ public class SiteInitializerFactoryImpl implements SiteInitializerFactory {
 
 	@Reference
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
-
-	@Reference
-	private SettingsFactory _settingsFactory;
 
 	@Reference
 	private SiteNavigationMenuItemLocalService

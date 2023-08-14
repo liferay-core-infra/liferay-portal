@@ -14,7 +14,10 @@ import com.liferay.configuration.admin.web.internal.util.ResourceBundleLoaderPro
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
@@ -62,6 +65,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.AttributeDefinition;
 import org.osgi.service.metatype.ObjectClassDefinition;
@@ -110,7 +114,7 @@ public class ConfigurationModelIndexer
 
 	@Override
 	public String getOSGiServiceIdentifier() {
-		return ClusterConfigurationModelIndexer.class.getName();
+		return ConfigurationModelIndexer.class.getName();
 	}
 
 	public BundleTracker<Collection<ConfigurationModel>> initialize() {
@@ -211,7 +215,7 @@ public class ConfigurationModelIndexer
 			}
 
 			if (_clusterMasterExecutor.isMaster()) {
-				_bundleTracker = _configurationModelIndexer.initialize();
+				_bundleTracker = initialize();
 			}
 			else {
 				NoticeableFuture<Void> noticeableFuture =
@@ -249,6 +253,14 @@ public class ConfigurationModelIndexer
 		setStagingAware(false);
 
 		_bundleContext = bundleContext;
+
+		if (_clusterExecutor.isEnabled()) {
+			_configurationModelsClusterMasterTokenTransitionListener =
+				new ConfigurationModelsClusterMasterTokenTransitionListener();
+
+			_clusterMasterExecutor.addClusterMasterTokenTransitionListener(
+				_configurationModelsClusterMasterTokenTransitionListener);
+		}
 	}
 
 	@Override
@@ -286,6 +298,16 @@ public class ConfigurationModelIndexer
 		fullBooleanQuery.add(searchQuery, BooleanClauseOccur.MUST);
 
 		return fullBooleanQuery;
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		if (_configurationModelsClusterMasterTokenTransitionListener != null) {
+			_clusterMasterExecutor.removeClusterMasterTokenTransitionListener(
+				_configurationModelsClusterMasterTokenTransitionListener);
+		}
+
+		_stopBundleTracker();
 	}
 
 	@Override
@@ -419,6 +441,15 @@ public class ConfigurationModelIndexer
 		}
 	}
 
+	private static void _reset(String osgiServiceIdentifier) {
+		ConfigurationModelIndexer configurationModelIndexer =
+			(ConfigurationModelIndexer)
+				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
+					osgiServiceIdentifier);
+
+		configurationModelIndexer._initialized = false;
+	}
+
 	private void _addLocalizedText(
 		Document document, ResourceBundleLoader resourceBundleLoader,
 		List<TranslationHelper> translationHelpers) {
@@ -502,12 +533,12 @@ public class ConfigurationModelIndexer
 	}
 
 	private void _initialize(String osgiServiceIdentifier) throws Exception {
-		ConfigurationModelIndexer clusterConfigurationModelIndexer =
+		ConfigurationModelIndexer configurationModelIndexer =
 			(ConfigurationModelIndexer)
 				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
 					osgiServiceIdentifier);
 
-		clusterConfigurationModelIndexer.startInitialize();
+		configurationModelIndexer.startInitialize();
 	}
 
 	private void _setUID(
@@ -518,14 +549,27 @@ public class ConfigurationModelIndexer
 			configurationModel.getFactoryPid());
 	}
 
+	private synchronized void _stopBundleTracker() {
+		if (_bundleTracker != null) {
+			_bundleTracker.close();
+
+			_bundleTracker = null;
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConfigurationModelIndexer.class);
 
 	private static final MethodKey _initializeMethodKey = new MethodKey(
-		ClusterConfigurationModelIndexer.class, "_initialize", String.class);
+		ConfigurationModelIndexer.class, "_initialize", String.class);
+	private static final MethodKey _resetMethodKey = new MethodKey(
+		ConfigurationModelIndexer.class, "_reset", String.class);
 
 	private BundleContext _bundleContext;
 	private BundleTracker<Collection<ConfigurationModel>> _bundleTracker;
+
+	@Reference
+	private ClusterExecutor _clusterExecutor;
 
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;
@@ -533,11 +577,11 @@ public class ConfigurationModelIndexer
 	@Reference
 	private ConfigurationEntryRetriever _configurationEntryRetriever;
 
-	@Reference
-	private ConfigurationModelIndexer _configurationModelIndexer;
-
 	@Reference(target = "(!(filter.visibility=*))")
 	private ConfigurationModelRetriever _configurationModelRetriever;
+
+	private ConfigurationModelsClusterMasterTokenTransitionListener
+		_configurationModelsClusterMasterTokenTransitionListener;
 
 	@Reference
 	private IndexStatusManager _indexStatusManager;
@@ -641,6 +685,31 @@ public class ConfigurationModelIndexer
 
 		private final Map<String, Collection<ConfigurationModel>>
 			_configurationModelsMap;
+
+	}
+
+	private class ConfigurationModelsClusterMasterTokenTransitionListener
+		implements ClusterMasterTokenTransitionListener {
+
+		@Override
+		public void masterTokenAcquired() {
+			_initialized = false;
+
+			ClusterRequest clusterRequest =
+				ClusterRequest.createMulticastRequest(
+					new MethodHandler(
+						_resetMethodKey, getOSGiServiceIdentifier()),
+					true);
+
+			clusterRequest.setFireAndForget(true);
+
+			_clusterExecutor.execute(clusterRequest);
+		}
+
+		@Override
+		public void masterTokenReleased() {
+			_stopBundleTracker();
+		}
 
 	}
 

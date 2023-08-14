@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
@@ -416,7 +417,7 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 				_ddlRecordLocalService, _ddmDisplayRegistry, _htmlParser,
 				_kaleoDefinitionVersionLocalService,
 				_kaleoFormsWebConfiguration, renderRequest, renderResponse,
-				storageEngine);
+				storageEngine, _workflowDefinitionManager);
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, kaleoFormsAdminDisplayContext);
@@ -450,5 +451,8 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 	private Language _language;
 
 	private final List<String> _parameterNames;
+
+	@Reference
+	private WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

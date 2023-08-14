@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.workflow.constants.WorkflowDefinitionConstants;
 import com.liferay.portal.workflow.kaleo.forms.constants.KaleoFormsActionKeys;
 import com.liferay.portal.workflow.kaleo.forms.constants.KaleoFormsPortletKeys;
@@ -79,7 +79,8 @@ public class KaleoFormsAdminDisplayContext {
 		KaleoDefinitionVersionLocalService kaleoDefinitionVersionLocalService,
 		KaleoFormsWebConfiguration kaleoFormsWebConfiguration,
 		RenderRequest renderRequest, RenderResponse renderResponse,
-		StorageEngine storageEngine) {
+		StorageEngine storageEngine,
+		WorkflowDefinitionManager workflowDefinitionManager) {
 
 		_ddlRecordLocalService = ddlRecordLocalService;
 		_ddmDisplayRegistry = ddmDisplayRegistry;
@@ -90,6 +91,7 @@ public class KaleoFormsAdminDisplayContext {
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 		_storageEngine = storageEngine;
+		_workflowDefinitionManager = workflowDefinitionManager;
 
 		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
 		_kaleoFormsAdminRequestHelper = new KaleoFormsAdminRequestHelper(
@@ -401,12 +403,10 @@ public class KaleoFormsAdminDisplayContext {
 					emptyResultsMessage);
 
 			searchContainer.setResultsAndTotal(
-				() ->
-					WorkflowDefinitionManagerUtil.getActiveWorkflowDefinitions(
-						_themeDisplay.getCompanyId(),
-						searchContainer.getStart(), searchContainer.getEnd(),
-						null),
-				WorkflowDefinitionManagerUtil.getActiveWorkflowDefinitionsCount(
+				() -> _workflowDefinitionManager.getActiveWorkflowDefinitions(
+					_themeDisplay.getCompanyId(), searchContainer.getStart(),
+					searchContainer.getEnd(), null),
+				_workflowDefinitionManager.getActiveWorkflowDefinitionsCount(
 					_themeDisplay.getCompanyId()));
 
 			_searchContainer = searchContainer;
@@ -634,5 +634,6 @@ public class KaleoFormsAdminDisplayContext {
 	private Boolean _tabs1Published;
 	private Boolean _tabs1Unpublished;
 	private final ThemeDisplay _themeDisplay;
+	private final WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

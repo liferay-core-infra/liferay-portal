@@ -63,6 +63,7 @@ import javax.portlet.PortletResponse;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -192,7 +193,7 @@ public class ConfigurationModelIndexer
 
 			processHits(searchContext, hits);
 
-			startInitialize();
+			_initialize();
 
 			return hits;
 		}
@@ -201,39 +202,6 @@ public class ConfigurationModelIndexer
 		}
 		catch (Exception exception) {
 			throw new SearchException(exception);
-		}
-	}
-
-	public void startInitialize() throws PortletException {
-		if (_initialized) {
-			return;
-		}
-
-		synchronized (this) {
-			if (_initialized) {
-				return;
-			}
-
-			if (_clusterMasterExecutor.isMaster()) {
-				_bundleTracker = initialize();
-			}
-			else {
-				NoticeableFuture<Void> noticeableFuture =
-					_clusterMasterExecutor.executeOnMaster(
-						new MethodHandler(
-							_initializeMethodKey, getOSGiServiceIdentifier()));
-
-				try {
-					noticeableFuture.get();
-				}
-				catch (Exception exception) {
-					throw new PortletException(
-						"Unable to initialize configuration model index",
-						exception);
-				}
-			}
-
-			_initialized = true;
 		}
 	}
 
@@ -253,6 +221,9 @@ public class ConfigurationModelIndexer
 		setStagingAware(false);
 
 		_bundleContext = bundleContext;
+
+		_destinationServiceRegistration = _bundleContext.registerService(
+			IdentifiableOSGiService.class, this, null);
 
 		if (_clusterExecutor.isEnabled()) {
 			_configurationModelsClusterMasterTokenTransitionListener =
@@ -307,6 +278,7 @@ public class ConfigurationModelIndexer
 				_configurationModelsClusterMasterTokenTransitionListener);
 		}
 
+		_destinationServiceRegistration.unregister();
 		_stopBundleTracker();
 	}
 
@@ -532,13 +504,46 @@ public class ConfigurationModelIndexer
 			configurationModel.getFactoryPid());
 	}
 
+	private void _initialize() throws PortletException {
+		if (_initialized) {
+			return;
+		}
+
+		synchronized (this) {
+			if (_initialized) {
+				return;
+			}
+
+			if (_clusterMasterExecutor.isMaster()) {
+				_bundleTracker = initialize();
+			}
+			else {
+				NoticeableFuture<Void> noticeableFuture =
+					_clusterMasterExecutor.executeOnMaster(
+						new MethodHandler(
+							_initializeMethodKey, getOSGiServiceIdentifier()));
+
+				try {
+					noticeableFuture.get();
+				}
+				catch (Exception exception) {
+					throw new PortletException(
+						"Unable to initialize configuration model index",
+						exception);
+				}
+			}
+
+			_initialized = true;
+		}
+	}
+
 	private void _initialize(String osgiServiceIdentifier) throws Exception {
 		ConfigurationModelIndexer configurationModelIndexer =
 			(ConfigurationModelIndexer)
 				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
 					osgiServiceIdentifier);
 
-		configurationModelIndexer.startInitialize();
+		configurationModelIndexer._initialize();
 	}
 
 	private void _setUID(
@@ -582,6 +587,8 @@ public class ConfigurationModelIndexer
 
 	private ConfigurationModelsClusterMasterTokenTransitionListener
 		_configurationModelsClusterMasterTokenTransitionListener;
+	private ServiceRegistration<IdentifiableOSGiService>
+		_destinationServiceRegistration;
 
 	@Reference
 	private IndexStatusManager _indexStatusManager;

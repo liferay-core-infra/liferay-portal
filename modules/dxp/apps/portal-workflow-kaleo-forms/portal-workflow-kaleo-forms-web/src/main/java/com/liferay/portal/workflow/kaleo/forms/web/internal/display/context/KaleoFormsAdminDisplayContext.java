@@ -484,6 +484,10 @@ public class KaleoFormsAdminDisplayContext {
 		return searchContainer.getTotal();
 	}
 
+	public WorkflowDefinitionManager getWorkflowDefinitionManager() {
+		return _workflowDefinitionManager;
+	}
+
 	public boolean isShowAddButton() {
 		return KaleoFormsPermission.contains(
 			_kaleoFormsAdminRequestHelper.getPermissionChecker(),

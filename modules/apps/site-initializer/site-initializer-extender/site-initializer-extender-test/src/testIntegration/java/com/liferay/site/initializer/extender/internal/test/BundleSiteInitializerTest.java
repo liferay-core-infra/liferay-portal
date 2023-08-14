@@ -143,10 +143,11 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
+import com.liferay.portal.kernel.settings.FallbackKeysSettingsUtil;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsLocator;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -727,10 +728,12 @@ public class BundleSiteInitializerTest {
 			CommerceChannel commerceChannel)
 		throws Exception {
 
-		Settings settings = _settingsFactory.getSettings(
-			new GroupServiceSettingsLocator(
-				commerceChannel.getGroupId(),
-				CommerceConstants.SERVICE_NAME_COMMERCE_ACCOUNT));
+		SettingsLocator settingsLocator2 = new GroupServiceSettingsLocator(
+			commerceChannel.getGroupId(),
+			CommerceConstants.SERVICE_NAME_COMMERCE_ACCOUNT);
+
+		Settings settings = FallbackKeysSettingsUtil.getSettings(
+			settingsLocator2);
 
 		ModifiableSettings modifiableSettings =
 			settings.getModifiableSettings();
@@ -738,10 +741,11 @@ public class BundleSiteInitializerTest {
 		Assert.assertEquals(
 			"2", modifiableSettings.getValue("commerceSiteType", null));
 
-		settings = _settingsFactory.getSettings(
-			new GroupServiceSettingsLocator(
-				commerceChannel.getGroupId(),
-				CommerceConstants.SERVICE_NAME_COMMERCE_ORDER));
+		SettingsLocator settingsLocator1 = new GroupServiceSettingsLocator(
+			commerceChannel.getGroupId(),
+			CommerceConstants.SERVICE_NAME_COMMERCE_ORDER);
+
+		settings = FallbackKeysSettingsUtil.getSettings(settingsLocator1);
 
 		modifiableSettings = settings.getModifiableSettings();
 
@@ -757,7 +761,7 @@ public class BundleSiteInitializerTest {
 			"true",
 			modifiableSettings.getValue("showPurchaseOrderNumber", null));
 
-		settings = _settingsFactory.getSettings(
+		settings = FallbackKeysSettingsUtil.getSettings(
 			new GroupServiceSettingsLocator(
 				commerceChannel.getGroupId(),
 				CommerceConstants.SERVICE_NAME_COMMERCE_ORDER_FIELDS));
@@ -772,7 +776,7 @@ public class BundleSiteInitializerTest {
 			CommerceChannel commerceChannel)
 		throws Exception {
 
-		Settings settings = _settingsFactory.getSettings(
+		Settings settings = FallbackKeysSettingsUtil.getSettings(
 			new GroupServiceSettingsLocator(
 				commerceChannel.getGroupId(),
 				CommerceConstants.SERVICE_NAME_COMMERCE_ACCOUNT));
@@ -783,7 +787,7 @@ public class BundleSiteInitializerTest {
 		Assert.assertEquals(
 			"1", modifiableSettings.getValue("commerceSiteType", null));
 
-		settings = _settingsFactory.getSettings(
+		settings = FallbackKeysSettingsUtil.getSettings(
 			new GroupServiceSettingsLocator(
 				commerceChannel.getGroupId(),
 				CommerceConstants.SERVICE_NAME_COMMERCE_ORDER));
@@ -803,10 +807,11 @@ public class BundleSiteInitializerTest {
 			"true",
 			modifiableSettings.getValue("showPurchaseOrderNumber", null));
 
-		settings = _settingsFactory.getSettings(
-			new GroupServiceSettingsLocator(
-				commerceChannel.getGroupId(),
-				CommerceConstants.SERVICE_NAME_COMMERCE_ORDER_FIELDS));
+		SettingsLocator settingsLocator = new GroupServiceSettingsLocator(
+			commerceChannel.getGroupId(),
+			CommerceConstants.SERVICE_NAME_COMMERCE_ORDER_FIELDS);
+
+		settings = FallbackKeysSettingsUtil.getSettings(settingsLocator);
 
 		modifiableSettings = settings.getModifiableSettings();
 
@@ -1174,7 +1179,7 @@ public class BundleSiteInitializerTest {
 	private void _assertDefaultCPDisplayLayout1(CommerceChannel commerceChannel)
 		throws Exception {
 
-		Settings settings = _settingsFactory.getSettings(
+		Settings settings = FallbackKeysSettingsUtil.getSettings(
 			new GroupServiceSettingsLocator(
 				commerceChannel.getGroupId(),
 				CPConstants.RESOURCE_NAME_CP_DISPLAY_LAYOUT));
@@ -1196,10 +1201,12 @@ public class BundleSiteInitializerTest {
 	private void _assertDefaultCPDisplayLayout2(CommerceChannel commerceChannel)
 		throws Exception {
 
-		Settings settings = _settingsFactory.getSettings(
-			new GroupServiceSettingsLocator(
-				commerceChannel.getGroupId(),
-				CPConstants.RESOURCE_NAME_CP_DISPLAY_LAYOUT));
+		SettingsLocator settingsLocator = new GroupServiceSettingsLocator(
+			commerceChannel.getGroupId(),
+			CPConstants.RESOURCE_NAME_CP_DISPLAY_LAYOUT);
+
+		Settings settings = FallbackKeysSettingsUtil.getSettings(
+			settingsLocator);
 
 		ModifiableSettings modifiableSettings =
 			settings.getModifiableSettings();
@@ -3707,9 +3714,6 @@ public class BundleSiteInitializerTest {
 
 	@Inject
 	private ServletContext _servletContext;
-
-	@Inject
-	private SettingsFactory _settingsFactory;
 
 	@Inject
 	private SiteInitializerFactory _siteInitializerFactory;

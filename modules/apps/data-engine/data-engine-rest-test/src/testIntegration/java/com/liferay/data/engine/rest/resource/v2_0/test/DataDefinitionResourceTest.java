@@ -6,6 +6,7 @@
 package com.liferay.data.engine.rest.resource.v2_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.data.engine.content.type.DataDefinitionContentType;
 import com.liferay.data.engine.nativeobject.tracker.DataEngineNativeObjectRegistry;
 import com.liferay.data.engine.rest.client.dto.v2_0.DataDefinition;
 import com.liferay.data.engine.rest.client.dto.v2_0.DataDefinitionField;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -350,7 +352,8 @@ public class DataDefinitionResourceTest
 
 		// MustSetFields
 
-		_testDataDefinitionContentType.setAllowEmptyDataDefinition(false);
+		ReflectionTestUtil.setFieldValue(
+			_testDataDefinitionContentType, "_allowEmptyDataDefinition", false);
 
 		try {
 			dataDefinitionResource.postDataDefinitionByContentType(
@@ -370,7 +373,8 @@ public class DataDefinitionResourceTest
 				problem.getType());
 		}
 
-		_testDataDefinitionContentType.setAllowEmptyDataDefinition(true);
+		ReflectionTestUtil.setFieldValue(
+			_testDataDefinitionContentType, "_allowEmptyDataDefinition", true);
 
 		dataDefinitionResource.postDataDefinitionByContentType(
 			"test",
@@ -961,7 +965,7 @@ public class DataDefinitionResourceTest
 	@Inject(type = Portal.class)
 	private Portal _portal;
 
-	@Inject
-	private TestDataDefinitionContentType _testDataDefinitionContentType;
+	@Inject(filter = "content.type=test")
+	private DataDefinitionContentType _testDataDefinitionContentType;
 
 }

@@ -26,7 +26,7 @@ if (Validator.isNotNull(workflowDefinition)) {
 	workflowDefinitionName = workflowDefinitionParts[0];
 	workflowDefinitionVersion = GetterUtil.getInteger(workflowDefinitionParts[1]);
 
-	if (!KaleoFormsUtil.isWorkflowDefinitionActive(themeDisplay.getCompanyId(), workflowDefinitionName, workflowDefinitionVersion)) {
+	if (!KaleoFormsUtil.isWorkflowDefinitionActive(themeDisplay.getCompanyId(), workflowDefinitionName, workflowDefinitionVersion, workflowDefinitionManager)) {
 		workflowDefinition = StringPool.BLANK;
 	}
 }
@@ -43,7 +43,7 @@ if (Validator.isNotNull(workflowDefinition)) {
 	String workflowDefinitionDisplay = StringPool.BLANK;
 
 	if (Validator.isNotNull(workflowDefinitionName)) {
-		WorkflowDefinition kaleoWorkflowDefinition = KaleoFormsUtil.getWorkflowDefinition(themeDisplay.getCompanyId(), workflowDefinitionName, workflowDefinitionVersion);
+		WorkflowDefinition kaleoWorkflowDefinition = KaleoFormsUtil.getWorkflowDefinition(themeDisplay.getCompanyId(), workflowDefinitionName, workflowDefinitionVersion, workflowDefinitionManager);
 
 		if (kaleoWorkflowDefinition != null) {
 			workflowDefinitionDisplay = kaleoWorkflowDefinition.getTitle(themeDisplay.getLanguageId());

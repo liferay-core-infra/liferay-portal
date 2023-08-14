@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.workflow.kaleo.forms.constants.KaleoFormsWebKeys;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoTaskFormPair;
@@ -34,12 +35,14 @@ public class KaleoFormsTaskTemplateSearchDisplayContext {
 		HttpServletRequest httpServletRequest,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		RenderRequest renderRequest) {
+		RenderRequest renderRequest,
+		WorkflowDefinitionManager workflowDefinitionManager) {
 
 		_httpServletRequest = httpServletRequest;
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 		_renderRequest = renderRequest;
+		_workflowDefinitionManager = workflowDefinitionManager;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -67,7 +70,8 @@ public class KaleoFormsTaskTemplateSearchDisplayContext {
 				_getKaleoProcessId(), _getDDMStructureId(),
 				_getWorkflowDefinition(),
 				KaleoFormsUtil.getInitialStateName(
-					_themeDisplay.getCompanyId(), _getWorkflowDefinition()),
+					_themeDisplay.getCompanyId(), _getWorkflowDefinition(),
+					_workflowDefinitionManager),
 				_renderRequest.getPortletSession());
 
 		return _initialStateKaleoTaskFormPair;
@@ -87,7 +91,7 @@ public class KaleoFormsTaskTemplateSearchDisplayContext {
 			KaleoFormsUtil.getKaleoTaskFormPairs(
 				_themeDisplay.getCompanyId(), _getKaleoProcessId(),
 				_getDDMStructureId(), _getWorkflowDefinition(),
-				_renderRequest.getPortletSession());
+				_renderRequest.getPortletSession(), _workflowDefinitionManager);
 
 		kaleoTaskFormPairs.add(0, getInitialStateKaleoTaskFormPair());
 
@@ -161,5 +165,6 @@ public class KaleoFormsTaskTemplateSearchDisplayContext {
 	private SearchContainer<KaleoTaskFormPair> _searchContainer;
 	private final ThemeDisplay _themeDisplay;
 	private String _workflowDefinition;
+	private final WorkflowDefinitionManager _workflowDefinitionManager;
 
 }

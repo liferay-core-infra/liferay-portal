@@ -8,7 +8,7 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
-KaleoFormsTaskTemplateSearchDisplayContext kaleoFormsTaskTemplateSearchDisplayContext = new KaleoFormsTaskTemplateSearchDisplayContext(request, liferayPortletRequest, liferayPortletResponse, renderRequest);
+KaleoFormsTaskTemplateSearchDisplayContext kaleoFormsTaskTemplateSearchDisplayContext = new KaleoFormsTaskTemplateSearchDisplayContext(request, liferayPortletRequest, liferayPortletResponse, renderRequest, workflowDefinitionManager);
 %>
 
 <div id="<portlet:namespace />formsSearchContainer">

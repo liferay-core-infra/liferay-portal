@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
@@ -111,7 +111,8 @@ public class KaleoFormsUtil {
 	 * @throws Exception if an exception occurred
 	 */
 	public static String getInitialStateName(
-			long companyId, String workflowDefinition)
+			long companyId, String workflowDefinition,
+			WorkflowDefinitionManager workflowDefinitionManager)
 		throws Exception {
 
 		if (Validator.isNull(workflowDefinition)) {
@@ -126,7 +127,8 @@ public class KaleoFormsUtil {
 			workflowDefinitionParts[1]);
 
 		Document document = _getWorkflowDefinitionDocument(
-			companyId, workflowDefinitionName, workflowDefinitionVersion);
+			companyId, workflowDefinitionName, workflowDefinitionVersion,
+			workflowDefinitionManager);
 
 		return _getInitalStateName(document.getRootElement());
 	}
@@ -310,12 +312,16 @@ public class KaleoFormsUtil {
 	 */
 	public static KaleoTaskFormPairs getKaleoTaskFormPairs(
 			long companyId, long kaleoProcessId, long ddmStructureId,
-			String workflowDefinition, PortletSession portletSession)
+			String workflowDefinition, PortletSession portletSession,
+			WorkflowDefinitionManager workflowDefinitionManager)
 		throws Exception {
 
 		KaleoTaskFormPairs kaleoKaleoTaskFormPairs = new KaleoTaskFormPairs();
 
-		for (String taskName : _getTaskNames(companyId, workflowDefinition)) {
+		for (String taskName :
+				_getTaskNames(
+					companyId, workflowDefinition, workflowDefinitionManager)) {
+
 			long ddmTemplateId = _getDDMTemplateId(
 				kaleoProcessId, ddmStructureId, workflowDefinition, taskName,
 				portletSession);
@@ -362,10 +368,11 @@ public class KaleoFormsUtil {
 	 * @return the workflow definition
 	 */
 	public static WorkflowDefinition getWorkflowDefinition(
-		long companyId, String name, int version) {
+		long companyId, String name, int version,
+		WorkflowDefinitionManager workflowDefinitionManager) {
 
 		try {
-			return WorkflowDefinitionManagerUtil.getWorkflowDefinition(
+			return workflowDefinitionManager.getWorkflowDefinition(
 				companyId, name, version);
 		}
 		catch (Exception exception) {
@@ -387,10 +394,11 @@ public class KaleoFormsUtil {
 	 *         <code>false</code> otherwise
 	 */
 	public static boolean isWorkflowDefinitionActive(
-		long companyId, String name, int version) {
+		long companyId, String name, int version,
+		WorkflowDefinitionManager workflowDefinitionManager) {
 
 		WorkflowDefinition workflowDefinition = getWorkflowDefinition(
-			companyId, name, version);
+			companyId, name, version, workflowDefinitionManager);
 
 		if (workflowDefinition != null) {
 			return workflowDefinition.isActive();
@@ -474,7 +482,8 @@ public class KaleoFormsUtil {
 	}
 
 	private static List<String> _getTaskNames(
-			long companyId, String workflowDefinition)
+			long companyId, String workflowDefinition,
+			WorkflowDefinitionManager workflowDefinitionManager)
 		throws Exception {
 
 		if (Validator.isNull(workflowDefinition)) {
@@ -489,7 +498,8 @@ public class KaleoFormsUtil {
 			workflowDefinitionParts[1]);
 
 		Document document = _getWorkflowDefinitionDocument(
-			companyId, workflowDefinitionName, workflowDefinitionVersion);
+			companyId, workflowDefinitionName, workflowDefinitionVersion,
+			workflowDefinitionManager);
 
 		return _getTaskNames(document.getRootElement());
 	}
@@ -503,11 +513,12 @@ public class KaleoFormsUtil {
 
 	private static Document _getWorkflowDefinitionDocument(
 			long companyId, String workflowDefinitionName,
-			int workflowDefinitionVersion)
+			int workflowDefinitionVersion,
+			WorkflowDefinitionManager workflowDefinitionManager)
 		throws Exception {
 
 		WorkflowDefinition workflowDefinition =
-			WorkflowDefinitionManagerUtil.getWorkflowDefinition(
+			workflowDefinitionManager.getWorkflowDefinition(
 				companyId, workflowDefinitionName, workflowDefinitionVersion);
 
 		return SAXReaderUtil.read(workflowDefinition.getContent());

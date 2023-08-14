@@ -24,7 +24,7 @@ String workflowDefinition = KaleoFormsUtil.getWorkflowDefinition(kaleoProcess, p
 <aui:field-wrapper>
 
 	<%
-	KaleoTaskFormPairs kaleoTaskFormPairs = KaleoFormsUtil.getKaleoTaskFormPairs(company.getCompanyId(), kaleoProcessId, ddmStructureId, workflowDefinition, portletSession);
+	KaleoTaskFormPairs kaleoTaskFormPairs = KaleoFormsUtil.getKaleoTaskFormPairs(company.getCompanyId(), kaleoProcessId, ddmStructureId, workflowDefinition, portletSession, workflowDefinitionManager);
 	%>
 
 	<aui:input name="kaleoTaskFormPairsData" type="hidden" value="<%= kaleoTaskFormPairs.toString() %>" />

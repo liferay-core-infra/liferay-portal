@@ -30,7 +30,7 @@ KaleoTaskFormPair kaleoTaskFormPair = (KaleoTaskFormPair)row.getObject();
 
 	String workflowDefinition = ParamUtil.getString(request, "workflowDefinition");
 
-	String initialStateName = KaleoFormsUtil.getInitialStateName(company.getCompanyId(), workflowDefinition);
+	String initialStateName = KaleoFormsUtil.getInitialStateName(company.getCompanyId(), workflowDefinition, workflowDefinitionManager);
 
 	String mode = initialStateName.equals(kaleoTaskFormPair.getWorkflowTaskName()) ? DDMTemplateConstants.TEMPLATE_MODE_CREATE : DDMTemplateConstants.TEMPLATE_MODE_EDIT;
 

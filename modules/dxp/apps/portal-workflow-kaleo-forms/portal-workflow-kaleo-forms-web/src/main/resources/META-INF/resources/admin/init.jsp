@@ -38,6 +38,7 @@ page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.workflow.RequiredWorkflowDefinitionException" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowDefinition" %><%@
+page import="com.liferay.portal.kernel.workflow.WorkflowDefinitionManager" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTask" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil" %><%@
 page import="com.liferay.portal.workflow.instance.tracker.url.provider.WorkflowInstanceTrackerURLProviderUtil" %><%@
@@ -61,6 +62,8 @@ page import="javax.portlet.WindowState" %>
 
 <%
 KaleoFormsAdminDisplayContext kaleoFormsAdminDisplayContext = (KaleoFormsAdminDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+
+WorkflowDefinitionManager workflowDefinitionManager = (WorkflowDefinitionManager)kaleoFormsAdminDisplayContext.getWorkflowDefinitionManager();
 
 DDMDisplay ddmDisplay = kaleoFormsAdminDisplayContext.getDDMDisplay();
 

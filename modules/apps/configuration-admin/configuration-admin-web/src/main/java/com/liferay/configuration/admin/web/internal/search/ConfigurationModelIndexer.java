@@ -14,10 +14,14 @@ import com.liferay.configuration.admin.web.internal.util.ResourceBundleLoaderPro
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -34,6 +38,8 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.index.IndexStatusManager;
@@ -47,6 +53,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
@@ -66,9 +73,10 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
  */
 @Component(
 	property = {"index.on.startup=false", "system.index=true"},
-	service = {ConfigurationModelIndexer.class, Indexer.class}
+	service = Indexer.class
 )
-public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
+public class ConfigurationModelIndexer
+	extends BaseIndexer<ConfigurationModel> implements IdentifiableOSGiService {
 
 	@Override
 	public String getClassName() {
@@ -98,6 +106,11 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 		catch (Exception exception) {
 			throw new SearchException(exception);
 		}
+	}
+
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return ClusterConfigurationModelIndexer.class.getName();
 	}
 
 	public BundleTracker<Collection<ConfigurationModel>> initialize() {
@@ -175,6 +188,8 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 
 			processHits(searchContext, hits);
 
+			startInitialize();
+
 			return hits;
 		}
 		catch (SearchException searchException) {
@@ -182,6 +197,39 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 		}
 		catch (Exception exception) {
 			throw new SearchException(exception);
+		}
+	}
+
+	public void startInitialize() throws PortletException {
+		if (_initialized) {
+			return;
+		}
+
+		synchronized (this) {
+			if (_initialized) {
+				return;
+			}
+
+			if (_clusterMasterExecutor.isMaster()) {
+				_bundleTracker = _configurationModelIndexer.initialize();
+			}
+			else {
+				NoticeableFuture<Void> noticeableFuture =
+					_clusterMasterExecutor.executeOnMaster(
+						new MethodHandler(
+							_initializeMethodKey, getOSGiServiceIdentifier()));
+
+				try {
+					noticeableFuture.get();
+				}
+				catch (Exception exception) {
+					throw new PortletException(
+						"Unable to initialize configuration model index",
+						exception);
+				}
+			}
+
+			_initialized = true;
 		}
 	}
 
@@ -453,6 +501,15 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 			configurationModel.getFactoryPid());
 	}
 
+	private void _initialize(String osgiServiceIdentifier) throws Exception {
+		ConfigurationModelIndexer clusterConfigurationModelIndexer =
+			(ConfigurationModelIndexer)
+				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
+					osgiServiceIdentifier);
+
+		clusterConfigurationModelIndexer.startInitialize();
+	}
+
 	private void _setUID(
 		Document document, ConfigurationModel configurationModel) {
 
@@ -464,10 +521,20 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConfigurationModelIndexer.class);
 
+	private static final MethodKey _initializeMethodKey = new MethodKey(
+		ClusterConfigurationModelIndexer.class, "_initialize", String.class);
+
 	private BundleContext _bundleContext;
+	private BundleTracker<Collection<ConfigurationModel>> _bundleTracker;
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private ConfigurationEntryRetriever _configurationEntryRetriever;
+
+	@Reference
+	private ConfigurationModelIndexer _configurationModelIndexer;
 
 	@Reference(target = "(!(filter.visibility=*))")
 	private ConfigurationModelRetriever _configurationModelRetriever;
@@ -477,6 +544,8 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
+
+	private volatile boolean _initialized;
 
 	@Reference
 	private Language _language;

@@ -45,7 +45,7 @@ public interface SamlConfiguration {
 	/**
 	 * Set the interval in minutes on how often to check for and delete SAML
 	 * IDP SSO sessions that are older than the maximum age set in the property
-	 * "saml.idp.sso.session.max.age".
+	 * "saml.idp.sso.session.max.age". Set to 0 to disable.
 	 */
 	@Meta.AD(
 		deflt = "60",
@@ -77,7 +77,7 @@ public interface SamlConfiguration {
 	/**
 	 * Set the interval in minutes on how often to check for and delete SAML SP
 	 * authentication requests that are older than the maximum age set in the
-	 * property "saml.sp.auth.request.max.age".
+	 * property "saml.sp.auth.request.max.age". Set to 0 to disable.
 	 */
 	@Meta.AD(
 		deflt = "60",
@@ -101,7 +101,7 @@ public interface SamlConfiguration {
 
 	/**
 	 * Set the interval in minutes on how often to check for and delete expired
-	 * SAML SP messages.
+	 * SAML SP messages. Set to 0 to disable.
 	 */
 	@Meta.AD(
 		deflt = "60",

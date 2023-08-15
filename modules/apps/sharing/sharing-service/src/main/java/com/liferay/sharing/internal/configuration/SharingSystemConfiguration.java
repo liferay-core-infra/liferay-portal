@@ -21,7 +21,7 @@ public interface SharingSystemConfiguration {
 
 	/**
 	 * Sets the interval in minutes of how often to check for expired sharing
-	 * entries.
+	 * entries. Set to 0 to disable.
 	 */
 	@Meta.AD(
 		deflt = "60",

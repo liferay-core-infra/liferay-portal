@@ -5,7 +5,7 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactoryUtil;
 import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfigurationConstants;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -418,7 +418,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 		// Expando
 
-		_expandoRowLocalService.deleteRows(userGroup.getUserGroupId());
+		ExpandoManagerUtil.deleteRows(userGroup.getUserGroupId());
 
 		// Group
 
@@ -1430,9 +1430,6 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 		ServiceProxyFactory.newServiceTrackedInstance(
 			ReindexerBridge.class, UserGroupLocalServiceImpl.class,
 			"_reindexerBridge", false);
-
-	@BeanReference(type = ExpandoRowLocalService.class)
-	private ExpandoRowLocalService _expandoRowLocalService;
 
 	@BeanReference(type = ExportImportConfigurationLocalService.class)
 	private ExportImportConfigurationLocalService

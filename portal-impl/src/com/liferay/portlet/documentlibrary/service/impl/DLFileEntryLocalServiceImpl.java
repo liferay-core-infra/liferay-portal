@@ -53,9 +53,8 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.util.ExpandoBridgeUtil;
+import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.string.StringBundler;
@@ -734,8 +733,7 @@ public class DLFileEntryLocalServiceImpl
 		for (DLFileVersion dlFileVersion : dlFileVersions) {
 			_dlFileVersionPersistence.remove(dlFileVersion);
 
-			_expandoRowLocalService.deleteRows(
-				dlFileVersion.getFileVersionId());
+			ExpandoManagerUtil.deleteRows(dlFileVersion.getFileVersionId());
 
 			_workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
 				dlFileEntry.getCompanyId(), dlFileEntry.getGroupId(),
@@ -744,7 +742,7 @@ public class DLFileEntryLocalServiceImpl
 
 		// Expando
 
-		_expandoRowLocalService.deleteRows(dlFileEntry.getFileEntryId());
+		ExpandoManagerUtil.deleteRows(dlFileEntry.getFileEntryId());
 
 		// Ratings
 
@@ -856,8 +854,7 @@ public class DLFileEntryLocalServiceImpl
 
 			_dlFileVersionPersistence.remove(dlFileVersion);
 
-			_expandoRowLocalService.deleteRows(
-				dlFileVersion.getFileVersionId());
+			ExpandoManagerUtil.deleteRows(dlFileVersion.getFileVersionId());
 
 			_dlFileEntryMetadataLocalService.deleteFileVersionFileEntryMetadata(
 				dlFileVersion.getFileVersionId());
@@ -2477,21 +2474,21 @@ public class DLFileEntryLocalServiceImpl
 	private void _copyExpandoRowModifiedDate(
 		long companyId, long sourceFileVersionId, long targetFileVersionId) {
 
-		ExpandoTable expandoTable = _expandoTableLocalService.fetchDefaultTable(
+		ExpandoTable expandoTable = ExpandoManagerUtil.fetchDefaultTable(
 			companyId, DLFileEntry.class.getName());
 
 		if (expandoTable == null) {
 			return;
 		}
 
-		ExpandoRow sourceExpandoRow = _expandoRowLocalService.fetchRow(
+		ExpandoRow sourceExpandoRow = ExpandoManagerUtil.fetchRow(
 			expandoTable.getTableId(), sourceFileVersionId);
 
 		if (sourceExpandoRow == null) {
 			return;
 		}
 
-		ExpandoRow targetExpandoRow = _expandoRowLocalService.fetchRow(
+		ExpandoRow targetExpandoRow = ExpandoManagerUtil.fetchRow(
 			expandoTable.getTableId(), targetFileVersionId);
 
 		if (targetExpandoRow == null) {
@@ -2500,7 +2497,7 @@ public class DLFileEntryLocalServiceImpl
 
 		targetExpandoRow.setModifiedDate(sourceExpandoRow.getModifiedDate());
 
-		_expandoRowLocalService.updateExpandoRow(targetExpandoRow);
+		ExpandoManagerUtil.updateExpandoRow(targetExpandoRow);
 	}
 
 	private void _copyFileEntryMetadata(
@@ -3303,7 +3300,7 @@ public class DLFileEntryLocalServiceImpl
 
 		_dlFileVersionPersistence.remove(dlFileVersion);
 
-		_expandoRowLocalService.deleteRows(dlFileVersion.getFileVersionId());
+		ExpandoManagerUtil.deleteRows(dlFileVersion.getFileVersionId());
 
 		_dlFileEntryMetadataLocalService.deleteFileVersionFileEntryMetadata(
 			dlFileVersion.getFileVersionId());
@@ -3698,12 +3695,6 @@ public class DLFileEntryLocalServiceImpl
 
 	@BeanReference(type = DLFolderPersistence.class)
 	private DLFolderPersistence _dlFolderPersistence;
-
-	@BeanReference(type = ExpandoRowLocalService.class)
-	private ExpandoRowLocalService _expandoRowLocalService;
-
-	@BeanReference(type = ExpandoTableLocalService.class)
-	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@BeanReference(type = GroupLocalService.class)
 	private GroupLocalService _groupLocalService;

@@ -6,7 +6,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.layout.admin.kernel.model.LayoutTypePortletConstants;
 import com.liferay.petra.lang.CentralizedThreadLocal;
@@ -824,7 +824,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		// Expando
 
-		_expandoRowLocalService.deleteRows(
+		ExpandoManagerUtil.deleteRows(
 			layout.getCompanyId(),
 			_classNameLocalService.getClassNameId(Layout.class.getName()),
 			layout.getPlid());
@@ -4127,9 +4127,6 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 	@BeanReference(type = ClassNameLocalService.class)
 	private ClassNameLocalService _classNameLocalService;
-
-	@BeanReference(type = ExpandoRowLocalService.class)
-	private ExpandoRowLocalService _expandoRowLocalService;
 
 	@BeanReference(type = GroupLocalService.class)
 	private GroupLocalService _groupLocalService;

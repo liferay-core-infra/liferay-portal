@@ -61,24 +61,27 @@ public class FreeMarkerTemplateTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		_templateResourceCache = new FreeMarkerTemplateResourceCache() {
+		FreeMarkerManager freeMarkerManager = new FreeMarkerManager();
 
-			@Override
-			public boolean isEnabled() {
-				return false;
-			}
+		_templateResourceCache =
+			freeMarkerManager.new FreeMarkerTemplateResourceCache() {
 
-		};
+				@Override
+				public boolean isEnabled() {
+					return false;
+				}
+
+			};
 
 		_freeMarkerTemplateResourceLoader =
-			new FreeMarkerTemplateResourceLoader();
+			freeMarkerManager.new FreeMarkerTemplateResourceLoader();
 
 		ReflectionTestUtil.setFieldValue(
-			_freeMarkerTemplateResourceLoader,
-			"_freeMarkerTemplateResourceCache", _templateResourceCache);
+			freeMarkerManager, "_freeMarkerTemplateResourceCache",
+			_templateResourceCache);
 
-		_freeMarkerTemplateResourceLoader.activate(
-			SystemBundleUtil.getBundleContext(), Collections.emptyMap());
+		_freeMarkerTemplateResourceLoader.init(
+			SystemBundleUtil.getBundleContext());
 
 		_freeMarkerManager = new FreeMarkerManager();
 
@@ -91,7 +94,7 @@ public class FreeMarkerTemplateTest {
 	@AfterClass
 	public static void tearDownClass() {
 		if (_freeMarkerTemplateResourceLoader != null) {
-			_freeMarkerTemplateResourceLoader.deactivate();
+			_freeMarkerTemplateResourceLoader.destroy();
 		}
 	}
 
@@ -443,7 +446,7 @@ public class FreeMarkerTemplateTest {
 	private static final String _WRONG_TEMPLATE_ID = "WRONG_TEMPLATE_ID";
 
 	private static FreeMarkerManager _freeMarkerManager;
-	private static FreeMarkerTemplateResourceLoader
+	private static FreeMarkerManager.FreeMarkerTemplateResourceLoader
 		_freeMarkerTemplateResourceLoader;
 	private static TemplateResourceCache _templateResourceCache;
 

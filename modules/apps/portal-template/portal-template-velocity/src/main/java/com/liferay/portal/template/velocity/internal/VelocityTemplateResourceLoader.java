@@ -6,10 +6,9 @@
 package com.liferay.portal.template.velocity.internal;
 
 import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.BaseTemplateResourceLoader;
-
-import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -27,9 +26,7 @@ public class VelocityTemplateResourceLoader extends BaseTemplateResourceLoader {
 
 	@Activate
 	@Modified
-	protected void activate(
-		BundleContext bundleContext, Map<String, Object> properties) {
-
+	protected void activate(BundleContext bundleContext) {
 		init(
 			bundleContext, TemplateConstants.LANG_TYPE_VM,
 			_velocityTemplateResourceCache);
@@ -40,7 +37,9 @@ public class VelocityTemplateResourceLoader extends BaseTemplateResourceLoader {
 		destroy();
 	}
 
-	@Reference
-	private VelocityTemplateResourceCache _velocityTemplateResourceCache;
+	@Reference(
+		target = "(component.name=com.liferay.portal.template.velocity.internal.VelocityTemplateResourceCache)"
+	)
+	private TemplateResourceCache _velocityTemplateResourceCache;
 
 }

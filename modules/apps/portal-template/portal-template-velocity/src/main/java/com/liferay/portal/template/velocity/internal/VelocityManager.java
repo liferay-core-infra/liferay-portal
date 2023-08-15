@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.template.engine.BaseTemplateManager;
@@ -237,7 +238,9 @@ public class VelocityManager extends BaseTemplateManager {
 
 	private VelocityEngine _velocityEngine;
 
-	@Reference
-	private VelocityTemplateResourceCache _velocityTemplateResourceCache;
+	@Reference(
+		target = "(component.name=com.liferay.portal.template.velocity.internal.VelocityTemplateResourceCache)"
+	)
+	private TemplateResourceCache _velocityTemplateResourceCache;
 
 }

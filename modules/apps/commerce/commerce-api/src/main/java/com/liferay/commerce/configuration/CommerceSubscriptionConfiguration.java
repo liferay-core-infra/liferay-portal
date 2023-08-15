@@ -24,7 +24,9 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface CommerceSubscriptionConfiguration {
 
 	@Meta.AD(
-		deflt = "10", name = "renewal-check-interval-minutes", required = false
+		deflt = "10",
+		description = "renewal-check-interval-minutes-description",
+		name = "renewal-check-interval-minutes", required = false
 	)
 	public int renewalCheckIntervalMinutes();
 

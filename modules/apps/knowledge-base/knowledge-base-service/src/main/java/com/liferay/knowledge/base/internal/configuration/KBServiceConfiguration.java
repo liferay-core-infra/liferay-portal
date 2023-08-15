@@ -23,7 +23,10 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface KBServiceConfiguration {
 
-	@Meta.AD(deflt = "15", name = "check-interval", required = false)
+	@Meta.AD(
+		deflt = "15", description = "check-interval-in-minutes-description",
+		name = "check-interval", required = false
+	)
 	public int checkInterval();
 
 	@Meta.AD(

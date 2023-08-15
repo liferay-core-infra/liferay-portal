@@ -10,6 +10,7 @@ import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.expando.kernel.exception.ValueDataException;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
+import com.liferay.expando.manager.ExpandoManager;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.ExpandoTable;
 import com.liferay.expando.model.ExpandoValue;
@@ -36,7 +37,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.expando.model.impl.ExpandoValueImpl;
 
 import java.io.Serializable;
 
@@ -228,8 +228,8 @@ public class ExpandoValueLocalServiceTest {
 				"Test Column 2", "column2-one"
 			).build());
 
-		_entityCache.clearCache(ExpandoValueImpl.class);
-		_finderCache.clearCache(ExpandoValueImpl.class);
+		_entityCache.clearCache(_expandoManager.getExpandoValueImplClass());
+		_finderCache.clearCache(_expandoManager.getExpandoValueImplClass());
 
 		TransactionInvokerUtil.invoke(
 			TransactionConfig.Factory.create(
@@ -276,8 +276,8 @@ public class ExpandoValueLocalServiceTest {
 				"Test Column 2", "column2-one"
 			).build());
 
-		_entityCache.clearCache(ExpandoValueImpl.class);
-		_finderCache.clearCache(ExpandoValueImpl.class);
+		_entityCache.clearCache(_expandoManager.getExpandoValueImplClass());
+		_finderCache.clearCache(_expandoManager.getExpandoValueImplClass());
 
 		TransactionInvokerUtil.invoke(
 			TransactionConfig.Factory.create(
@@ -456,6 +456,9 @@ public class ExpandoValueLocalServiceTest {
 
 	@Inject
 	private ExpandoColumnLocalService _expandoColumnLocalService;
+
+	@Inject
+	private ExpandoManager _expandoManager;
 
 	@Inject
 	private ExpandoRowLocalService _expandoRowLocalService;

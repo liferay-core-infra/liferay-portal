@@ -6,6 +6,7 @@
 package com.liferay.portal.template.freemarker.internal;
 
 import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.BaseTemplateResourceLoader;
 
@@ -40,7 +41,9 @@ public class FreeMarkerTemplateResourceLoader
 		destroy();
 	}
 
-	@Reference
-	private FreeMarkerTemplateResourceCache _freeMarkerTemplateResourceCache;
+	@Reference(
+		target = "(component.name=com.liferay.portal.template.freemarker.internal.FreeMarkerTemplateResourceCache)"
+	)
+	private TemplateResourceCache _freeMarkerTemplateResourceCache;
 
 }

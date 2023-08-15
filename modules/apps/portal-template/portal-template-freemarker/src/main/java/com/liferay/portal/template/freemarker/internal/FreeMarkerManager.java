@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.PropertiesUtil;
@@ -535,8 +536,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	private volatile FreeMarkerEngineConfiguration
 		_freeMarkerEngineConfiguration;
 
-	@Reference
-	private FreeMarkerTemplateResourceCache _freeMarkerTemplateResourceCache;
+	@Reference(
+		target = "(component.name=com.liferay.portal.template.freemarker.internal.FreeMarkerTemplateResourceCache)"
+	)
+	private TemplateResourceCache _freeMarkerTemplateResourceCache;
 
 	private volatile NoticeableExecutorService _noticeableExecutorService;
 

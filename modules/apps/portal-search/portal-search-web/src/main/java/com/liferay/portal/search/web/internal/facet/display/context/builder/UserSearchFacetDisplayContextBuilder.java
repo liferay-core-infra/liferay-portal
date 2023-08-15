@@ -7,10 +7,10 @@ package com.liferay.portal.search.web.internal.facet.display.context.builder;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
-import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -39,11 +39,9 @@ public class UserSearchFacetDisplayContextBuilder {
 		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
-
 		_userFacetPortletInstanceConfiguration =
-			portletDisplay.getPortletInstanceConfiguration(
-				UserFacetPortletInstanceConfiguration.class);
+			ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				UserFacetPortletInstanceConfiguration.class, _themeDisplay);
 	}
 
 	public UserSearchFacetDisplayContext build() {

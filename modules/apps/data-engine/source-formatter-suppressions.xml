@@ -2,6 +2,7 @@
 
 <suppressions>
 	<source-check>
+		<suppress checks="JavaVariableTypeCheck" files="data-engine-rest-test/src/testIntegration/java/com/liferay/data/engine/rest/resource/v2_0/test/util/content/type/TestDataDefinitionContentType\.java" />
 		<suppress checks="PoshiPauseUsageCheck" files="data-engine-test/src/testFunctional/macros/App\.macro" />
 		<suppress checks="PoshiPauseUsageCheck" files="data-engine-test/src/testFunctional/macros/AppBuilderAdmin\.macro" />
 		<suppress checks="PoshiPauseUsageCheck" files="data-engine-test/src/testFunctional/macros/FormViewBuilder\.macro" />

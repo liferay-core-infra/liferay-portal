@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceCache;
+import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.template.engine.TemplateContextHelper;
@@ -50,6 +51,8 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import org.osgi.framework.BundleContext;
+
 /**
  * @author Tina Tian
  */
@@ -61,26 +64,28 @@ public class FreeMarkerTemplateTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		_templateResourceCache = new FreeMarkerTemplateResourceCache() {
-
-			@Override
-			public boolean isEnabled() {
-				return false;
-			}
-
-		};
-
-		_freeMarkerTemplateResourceLoader =
-			new FreeMarkerTemplateResourceLoader();
-
-		ReflectionTestUtil.setFieldValue(
-			_freeMarkerTemplateResourceLoader,
-			"_freeMarkerTemplateResourceCache", _templateResourceCache);
-
-		_freeMarkerTemplateResourceLoader.activate(
-			SystemBundleUtil.getBundleContext(), Collections.emptyMap());
-
 		_freeMarkerManager = new FreeMarkerManager();
+
+		_templateResourceCache =
+			_freeMarkerManager.new FreeMarkerTemplateResourceCache() {
+
+				@Override
+				public boolean isEnabled() {
+					return false;
+				}
+
+			};
+
+		_templateResourceLoader =
+			_freeMarkerManager.new FreeMarkerTemplateResourceLoader();
+
+		ReflectionTestUtil.invoke(
+			_templateResourceLoader, "init",
+			new Class<?>[] {
+				BundleContext.class,
+				FreeMarkerManager.FreeMarkerTemplateResourceCache.class
+			},
+			SystemBundleUtil.getBundleContext(), _templateResourceCache);
 
 		ReflectionTestUtil.setFieldValue(
 			_freeMarkerManager, "_freeMarkerEngineConfiguration",
@@ -90,8 +95,8 @@ public class FreeMarkerTemplateTest {
 
 	@AfterClass
 	public static void tearDownClass() {
-		if (_freeMarkerTemplateResourceLoader != null) {
-			_freeMarkerTemplateResourceLoader.deactivate();
+		if (_templateResourceLoader != null) {
+			_templateResourceLoader.destroy();
 		}
 	}
 
@@ -102,7 +107,7 @@ public class FreeMarkerTemplateTest {
 		_configuration.setLogTemplateExceptions(false);
 
 		TemplateCache templateCache = new LiferayTemplateCache(
-			_configuration, _freeMarkerTemplateResourceLoader, null);
+			_configuration, _templateResourceLoader, null);
 
 		ReflectionTestUtil.setFieldValue(
 			_configuration, "cache", templateCache);
@@ -443,9 +448,8 @@ public class FreeMarkerTemplateTest {
 	private static final String _WRONG_TEMPLATE_ID = "WRONG_TEMPLATE_ID";
 
 	private static FreeMarkerManager _freeMarkerManager;
-	private static FreeMarkerTemplateResourceLoader
-		_freeMarkerTemplateResourceLoader;
 	private static TemplateResourceCache _templateResourceCache;
+	private static TemplateResourceLoader _templateResourceLoader;
 
 	private Configuration _configuration;
 	private TemplateContextHelper _templateContextHelper;

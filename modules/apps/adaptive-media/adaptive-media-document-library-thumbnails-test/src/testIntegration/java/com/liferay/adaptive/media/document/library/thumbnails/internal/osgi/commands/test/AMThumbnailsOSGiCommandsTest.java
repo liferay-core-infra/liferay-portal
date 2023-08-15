@@ -387,7 +387,9 @@ public class AMThumbnailsOSGiCommandsTest {
 	)
 	private static Object _amThumbnailsOSGiCommands;
 
-	@Inject(filter = "type=" + DLProcessorConstants.IMAGE_PROCESSOR)
+	@Inject(
+		filter = "component.name=com.liferay.adaptive.media.document.library.thumbnails.internal.processor.AMDLProcessor"
+	)
 	private static DLProcessor _dlProcessor;
 
 	@Inject

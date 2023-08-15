@@ -70,20 +70,6 @@
 	<bean class="com.liferay.portlet.documentlibrary.service.persistence.impl.DLFolderFinderImpl" id="com.liferay.document.library.kernel.service.persistence.DLFolderFinder" />
 	<bean class="com.liferay.portlet.documentlibrary.service.impl.DLTrashLocalServiceImpl" id="com.liferay.document.library.kernel.service.DLTrashLocalService" />
 	<bean class="com.liferay.portlet.documentlibrary.service.impl.DLTrashServiceImpl" id="com.liferay.document.library.kernel.service.DLTrashService" />
-	<bean class="com.liferay.portlet.expando.service.impl.ExpandoColumnLocalServiceImpl" id="com.liferay.expando.kernel.service.ExpandoColumnLocalService" />
-	<bean class="com.liferay.portlet.expando.service.impl.ExpandoColumnServiceImpl" id="com.liferay.expando.kernel.service.ExpandoColumnService" />
-	<bean class="com.liferay.portlet.expando.service.persistence.impl.ExpandoColumnModelArgumentsResolver" id="com.liferay.portlet.expando.service.persistence.impl.ExpandoColumnModelArgumentsResolver" />
-	<bean class="com.liferay.portlet.expando.service.persistence.impl.ExpandoColumnPersistenceImpl" id="com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence" />
-	<bean class="com.liferay.portlet.expando.service.impl.ExpandoRowLocalServiceImpl" id="com.liferay.expando.kernel.service.ExpandoRowLocalService" />
-	<bean class="com.liferay.portlet.expando.service.persistence.impl.ExpandoRowModelArgumentsResolver" id="com.liferay.portlet.expando.service.persistence.impl.ExpandoRowModelArgumentsResolver" />
-	<bean class="com.liferay.portlet.expando.service.persistence.impl.ExpandoRowPersistenceImpl" id="com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence" />
-	<bean class="com.liferay.portlet.expando.service.impl.ExpandoTableLocalServiceImpl" id="com.liferay.expando.kernel.service.ExpandoTableLocalService" />
-	<bean class="com.liferay.portlet.expando.service.persistence.impl.ExpandoTableModelArgumentsResolver" id="com.liferay.portlet.expando.service.persistence.impl.ExpandoTableModelArgumentsResolver" />
-	<bean class="com.liferay.portlet.expando.service.persistence.impl.ExpandoTablePersistenceImpl" id="com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence" />
-	<bean class="com.liferay.portlet.expando.service.impl.ExpandoValueLocalServiceImpl" id="com.liferay.expando.kernel.service.ExpandoValueLocalService" />
-	<bean class="com.liferay.portlet.expando.service.impl.ExpandoValueServiceImpl" id="com.liferay.expando.kernel.service.ExpandoValueService" />
-	<bean class="com.liferay.portlet.expando.service.persistence.impl.ExpandoValueModelArgumentsResolver" id="com.liferay.portlet.expando.service.persistence.impl.ExpandoValueModelArgumentsResolver" />
-	<bean class="com.liferay.portlet.expando.service.persistence.impl.ExpandoValuePersistenceImpl" id="com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence" />
 	<bean class="com.liferay.portlet.exportimport.service.impl.ExportImportLocalServiceImpl" id="com.liferay.exportimport.kernel.service.ExportImportLocalService" />
 	<bean class="com.liferay.portlet.exportimport.service.impl.ExportImportServiceImpl" id="com.liferay.exportimport.kernel.service.ExportImportService" />
 	<bean class="com.liferay.portlet.exportimport.service.impl.ExportImportConfigurationLocalServiceImpl" id="com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService" />

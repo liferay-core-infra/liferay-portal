@@ -5,12 +5,16 @@
 
 package com.liferay.portal.kernel.template;
 
+import com.liferay.portal.kernel.cache.PortalCache;
+
 /**
  * @author Tina Tian
  */
 public interface TemplateResourceCache {
 
 	public void clear();
+
+	public <T> PortalCache<TemplateResource, T> getSecondLevelPortalCache();
 
 	public TemplateResource getTemplateResource(String templateId);
 

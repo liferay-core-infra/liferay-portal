@@ -34,6 +34,7 @@ public abstract class BaseTemplateResourceCache
 		_singleVMPortalCache.removeAll();
 	}
 
+	@Override
 	public <T> PortalCache<TemplateResource, T> getSecondLevelPortalCache() {
 		return (PortalCache<TemplateResource, T>)_secondLevelPortalCache;
 	}

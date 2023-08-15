@@ -21,7 +21,7 @@ public interface SubscriptionConfiguration {
 
 	/**
 	 * Set the interval in hours on how often to check for expired tickets and
-	 * delete them.
+	 * delete them. Set to 0 to disable.
 	 */
 	@Meta.AD(
 		deflt = "24", name = "delete-expired-tickets-interval", required = false

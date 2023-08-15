@@ -15,10 +15,6 @@
 	<import class="com.liferay.document.library.kernel.model.DLFileShortcut" />
 	<import class="com.liferay.document.library.kernel.model.DLFileVersion" />
 	<import class="com.liferay.document.library.kernel.model.DLFolder" />
-	<import class="com.liferay.expando.kernel.model.ExpandoColumn" />
-	<import class="com.liferay.expando.kernel.model.ExpandoRow" />
-	<import class="com.liferay.expando.kernel.model.ExpandoTable" />
-	<import class="com.liferay.expando.kernel.model.ExpandoValue" />
 	<import class="com.liferay.exportimport.kernel.model.ExportImportConfiguration" />
 	<import class="com.liferay.portal.kernel.model.Address" />
 	<import class="com.liferay.portal.kernel.model.BrowserTracker" />
@@ -1478,55 +1474,6 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="statusByUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="statusDate" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class dynamic-update="true" name="com.liferay.portlet.expando.model.impl.ExpandoColumnImpl" table="ExpandoColumn">
-		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="columnId" type="long">
-			<generator class="assigned" />
-		</id>
-		<version access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" name="mvccVersion" type="long" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="ctCollectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="tableId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="defaultData" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="typeSettings" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
-	</class>
-	<class dynamic-update="true" name="com.liferay.portlet.expando.model.impl.ExpandoRowImpl" table="ExpandoRow">
-		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" column="rowId_" name="rowId" type="long">
-			<generator class="assigned" />
-		</id>
-		<version access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" name="mvccVersion" type="long" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="ctCollectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="tableId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class dynamic-update="true" name="com.liferay.portlet.expando.model.impl.ExpandoTableImpl" table="ExpandoTable">
-		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="tableId" type="long">
-			<generator class="assigned" />
-		</id>
-		<version access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" name="mvccVersion" type="long" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="ctCollectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class dynamic-update="true" name="com.liferay.portlet.expando.model.impl.ExpandoValueImpl" table="ExpandoValue">
-		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="valueId" type="long">
-			<generator class="assigned" />
-		</id>
-		<version access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" name="mvccVersion" type="long" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="ctCollectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="tableId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="columnId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" column="rowId_" name="rowId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" column="data_" name="data" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 	</class>
 	<class dynamic-update="true" name="com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationImpl" table="ExportImportConfiguration">
 		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="exportImportConfigurationId" type="long">

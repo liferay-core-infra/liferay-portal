@@ -291,12 +291,6 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		</antcall>
 	</target>
 
-	<target name="build-service-portlet-expando">
-		<antcall target="build-service">
-			<param name="service.file" value="${basedir}/src/com/liferay/portlet/expando/service.xml" />
-		</antcall>
-	</target>
-
 	<target name="build-service-portlet-exportimport">
 		<antcall target="build-service">
 			<param name="service.file" value="${basedir}/src/com/liferay/portlet/exportimport/service.xml" />
@@ -319,7 +313,6 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		<antcall target="build-service-portlet-announcements" />
 		<antcall target="build-service-portlet-asset" />
 		<antcall target="build-service-portlet-documentlibrary" />
-		<antcall target="build-service-portlet-expando" />
 		<antcall target="build-service-portlet-exportimport" />
 		<antcall target="build-service-portlet-ratings" />
 		<antcall target="build-service-portlet-social" />

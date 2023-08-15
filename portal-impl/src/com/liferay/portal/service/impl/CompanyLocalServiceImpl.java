@@ -8,8 +8,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoTable;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
@@ -1625,12 +1624,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		protected DeleteExpandoColumnActionableDynamicQuery(long companyId) {
 			_actionableDynamicQuery =
-				_expandoColumnLocalService.getActionableDynamicQuery();
+				ExpandoManagerUtil.getExpandColumnActionableDynamicQuery();
 
 			_actionableDynamicQuery.setCompanyId(companyId);
 			_actionableDynamicQuery.setPerformActionMethod(
 				(ExpandoColumn expandoColumn) ->
-					_expandoColumnLocalService.deleteColumn(expandoColumn));
+					ExpandoManagerUtil.deleteColumn(expandoColumn));
 		}
 
 		protected void performActions() throws PortalException {
@@ -1645,12 +1644,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		protected DeleteExpandoTableActionableDynamicQuery(long companyId) {
 			_actionableDynamicQuery =
-				_expandoTableLocalService.getActionableDynamicQuery();
+				ExpandoManagerUtil.getExpandTableActionableDynamicQuery();
 
 			_actionableDynamicQuery.setCompanyId(companyId);
 			_actionableDynamicQuery.setPerformActionMethod(
 				(ExpandoTable expandoTable) ->
-					_expandoTableLocalService.deleteExpandoTable(expandoTable));
+					ExpandoManagerUtil.deleteExpandoTable(expandoTable));
 		}
 
 		protected void performActions() throws PortalException {
@@ -2215,12 +2214,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 	@BeanReference(type = DLFileEntryTypeLocalService.class)
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
-
-	@BeanReference(type = ExpandoColumnLocalService.class)
-	private ExpandoColumnLocalService _expandoColumnLocalService;
-
-	@BeanReference(type = ExpandoTableLocalService.class)
-	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@BeanReference(type = GroupLocalService.class)
 	private GroupLocalService _groupLocalService;

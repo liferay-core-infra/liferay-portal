@@ -63,19 +63,23 @@ public class VelocityTemplateTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		_templateResourceCache = new VelocityTemplateResourceCache() {
+		VelocityManager velocityManager = new VelocityManager();
 
-			@Override
-			public boolean isEnabled() {
-				return false;
-			}
+		_templateResourceCache =
+			velocityManager.new VelocityTemplateResourceCache() {
 
-		};
+				@Override
+				public boolean isEnabled() {
+					return false;
+				}
 
-		_velocityTemplateResourceLoader = new VelocityTemplateResourceLoader();
+			};
+
+		_velocityTemplateResourceLoader =
+			velocityManager.new VelocityTemplateResourceLoader();
 
 		ReflectionTestUtil.setFieldValue(
-			_velocityTemplateResourceLoader, "_velocityTemplateResourceCache",
+			velocityManager, "_velocityTemplateResourceCache",
 			_templateResourceCache);
 
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
@@ -86,8 +90,7 @@ public class VelocityTemplateTest {
 				MapUtil.singletonDictionary(
 					"lang.type", TemplateConstants.LANG_TYPE_VM));
 
-		_velocityTemplateResourceLoader.activate(
-			bundleContext, Collections.emptyMap());
+		_velocityTemplateResourceLoader.init(bundleContext);
 	}
 
 	@AfterClass
@@ -97,7 +100,7 @@ public class VelocityTemplateTest {
 		}
 
 		if (_velocityTemplateResourceLoader != null) {
-			_velocityTemplateResourceLoader.deactivate();
+			_velocityTemplateResourceLoader.destroy();
 		}
 	}
 
@@ -149,7 +152,7 @@ public class VelocityTemplateTest {
 			velocityEngineConfiguration.resourceModificationCheckInterval() +
 				"");
 		extendedProperties.setProperty(
-			VelocityTemplateResourceLoader.class.getName(),
+			VelocityManager.VelocityTemplateResourceLoader.class.getName(),
 			_velocityTemplateResourceLoader);
 		extendedProperties.setProperty(
 			VelocityEngine.RUNTIME_LOG_LOGSYSTEM_CLASS,
@@ -395,7 +398,7 @@ public class VelocityTemplateTest {
 	private static TemplateResourceCache _templateResourceCache;
 	private static ServiceRegistration<TemplateResourceParser>
 		_templateResourceParserServiceRegistration;
-	private static VelocityTemplateResourceLoader
+	private static VelocityManager.VelocityTemplateResourceLoader
 		_velocityTemplateResourceLoader;
 
 	private TemplateContextHelper _templateContextHelper;

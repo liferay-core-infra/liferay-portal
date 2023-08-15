@@ -23,8 +23,9 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface CommerceInventorySystemConfiguration {
 
 	@Meta.AD(
-		deflt = "60", name = "check-temporary-booked-quantity-interval",
-		required = false
+		deflt = "60",
+		description = "check-temporary-booked-quantity-interval-description",
+		name = "check-temporary-booked-quantity-interval", required = false
 	)
 	public int checkCommerceInventoryTemporaryBookedQuantityInterval();
 

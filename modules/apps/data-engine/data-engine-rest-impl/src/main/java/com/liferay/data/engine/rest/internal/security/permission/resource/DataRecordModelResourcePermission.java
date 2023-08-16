@@ -125,8 +125,10 @@ public class DataRecordModelResourcePermission
 	private DataDefinitionContentTypeRegistry
 		_dataDefinitionContentTypeRegistry;
 
-	@Reference
-	private DataRecordCollectionModelResourcePermission
+	@Reference(
+		target = "(model.class.name=com.liferay.data.engine.rest.dto.v2_0.DataRecordCollection)"
+	)
+	private ModelResourcePermission<DDLRecordSet>
 		_dataRecordCollectionModelResourcePermission;
 
 	@Reference

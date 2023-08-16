@@ -6,10 +6,10 @@
 package com.liferay.commerce.catalog.web.internal.portlet.action;
 
 import com.liferay.commerce.catalog.web.internal.upload.AttachmentsUploadResponseHandler;
-import com.liferay.commerce.catalog.web.internal.upload.CommerceMediaDefaultImageUploadFileEntryHandler;
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.upload.UploadHandler;
 
 import javax.portlet.ActionRequest;
@@ -45,8 +45,10 @@ public class UploadCommerceMediaDefaultImageMVCActionCommand
 	@Reference
 	private AttachmentsUploadResponseHandler _attachmentsUploadResponseHandler;
 
-	@Reference
-	private CommerceMediaDefaultImageUploadFileEntryHandler
+	@Reference(
+		target = "(component.name=com.liferay.commerce.catalog.web.internal.upload.CommerceMediaDefaultImageUploadFileEntryHandler)"
+	)
+	private UploadFileEntryHandler
 		_commerceMediaDefaultImageUploadFileEntryHandler;
 
 	@Reference

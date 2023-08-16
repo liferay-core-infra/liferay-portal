@@ -6,11 +6,11 @@
 package com.liferay.commerce.product.asset.categories.web.internal.portlet.action;
 
 import com.liferay.commerce.product.asset.categories.web.internal.constants.CommerceProductAssetCategoriesPortletKeys;
-import com.liferay.commerce.product.asset.categories.web.internal.upload.AssetCategoryAttachmentsUploadResponseHandler;
-import com.liferay.commerce.product.asset.categories.web.internal.upload.TempAssetCategoryAttachmentsUploadFileEntryHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.upload.UploadHandler;
+import com.liferay.upload.UploadResponseHandler;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -42,12 +42,16 @@ public class UploadTempAssetCategoryAttachmentMVCActionCommand
 			actionResponse);
 	}
 
-	@Reference
-	private AssetCategoryAttachmentsUploadResponseHandler
+	@Reference(
+		target = "(component.name=com.liferay.commerce.product.asset.categories.web.internal.upload.AssetCategoryAttachmentsUploadResponseHandler)"
+	)
+	private UploadResponseHandler
 		_assetCategoryAttachmentsUploadResponseHandler;
 
-	@Reference
-	private TempAssetCategoryAttachmentsUploadFileEntryHandler
+	@Reference(
+		target = "(component.name=com.liferay.commerce.product.asset.categories.web.internal.upload.TempAssetCategoryAttachmentsUploadFileEntryHandler)"
+	)
+	private UploadFileEntryHandler
 		_tempAssetCategoryAttachmentsUploadFileEntryHandler;
 
 	@Reference

@@ -6,7 +6,6 @@
 package com.liferay.portal.monitoring.internal.statistics.jmx;
 
 import com.liferay.portal.monitoring.internal.statistics.portlet.PortletSummaryStatistics;
-import com.liferay.portal.monitoring.internal.statistics.portlet.ResourceRequestSummaryStatistics;
 
 import javax.management.DynamicMBean;
 import javax.management.NotCompliantMBeanException;
@@ -33,10 +32,12 @@ public class ResourceRequestPortletManager extends BasePortletManager {
 
 	@Override
 	protected PortletSummaryStatistics getPortletSummaryStatistics() {
-		return _resourceRequestSummaryStatistics;
+		return _portletSummaryStatistics;
 	}
 
-	@Reference
-	private ResourceRequestSummaryStatistics _resourceRequestSummaryStatistics;
+	@Reference(
+		target = "(component.name=com.liferay.portal.monitoring.internal.statistics.portlet.ResourceRequestSummaryStatistics)"
+	)
+	private PortletSummaryStatistics _portletSummaryStatistics;
 
 }

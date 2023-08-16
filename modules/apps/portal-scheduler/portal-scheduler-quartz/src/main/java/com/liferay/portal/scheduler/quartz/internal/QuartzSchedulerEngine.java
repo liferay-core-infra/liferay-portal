@@ -946,6 +946,19 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 			JobDataMap jobDataMap = jobDetail.getJobDataMap();
 
+			Scheduler scheduler = _getScheduler(
+				StorageType.valueOf(
+					jobDataMap.getString(SchedulerEngine.STORAGE_TYPE)));
+
+			try {
+				if (!scheduler.checkExists(jobDetail.getKey())) {
+					return;
+				}
+			}
+			catch (org.quartz.SchedulerException schedulerException) {
+				_log.error("Unable to check if job exists", schedulerException);
+			}
+
 			Message message = new Message();
 
 			message.setValues(new HashMap<>(jobDataMap.getWrappedMap()));

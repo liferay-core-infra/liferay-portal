@@ -6,11 +6,11 @@
 package com.liferay.commerce.shop.by.diagram.admin.web.internal.portlet.action;
 
 import com.liferay.commerce.product.constants.CPPortletKeys;
-import com.liferay.commerce.shop.by.diagram.admin.web.internal.upload.CSDiagramSettingImageUploadFileEntryHandler;
-import com.liferay.commerce.shop.by.diagram.admin.web.internal.upload.CSDiagramSettingImageUploadResponseHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.upload.UploadHandler;
+import com.liferay.upload.UploadResponseHandler;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -42,13 +42,15 @@ public class UploadCSDiagramSettingImageMVCActionCommand
 			actionResponse);
 	}
 
-	@Reference
-	private CSDiagramSettingImageUploadFileEntryHandler
-		_csDiagramSettingImageUploadFileEntryHandler;
+	@Reference(
+		target = "(component.name=com.liferay.commerce.shop.by.diagram.admin.web.internal.upload.CSDiagramSettingImageUploadFileEntryHandler)"
+	)
+	private UploadFileEntryHandler _csDiagramSettingImageUploadFileEntryHandler;
 
-	@Reference
-	private CSDiagramSettingImageUploadResponseHandler
-		_csDiagramSettingImageUploadResponseHandler;
+	@Reference(
+		target = "(component.name=com.liferay.commerce.shop.by.diagram.admin.web.internal.upload.CSDiagramSettingImageUploadResponseHandler)"
+	)
+	private UploadResponseHandler _csDiagramSettingImageUploadResponseHandler;
 
 	@Reference
 	private UploadHandler _uploadHandler;

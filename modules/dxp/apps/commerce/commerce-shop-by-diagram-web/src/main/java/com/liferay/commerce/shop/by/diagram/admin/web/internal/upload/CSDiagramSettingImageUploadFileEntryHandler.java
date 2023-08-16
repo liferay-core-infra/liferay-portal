@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.commerce.shop.by.diagram.configuration.CSDiagramSettingImageConfiguration",
-	service = CSDiagramSettingImageUploadFileEntryHandler.class
+	service = UploadFileEntryHandler.class
 )
 public class CSDiagramSettingImageUploadFileEntryHandler
 	implements UploadFileEntryHandler {

@@ -6,11 +6,11 @@
 package com.liferay.commerce.product.definitions.web.internal.portlet.action;
 
 import com.liferay.commerce.product.constants.CPPortletKeys;
-import com.liferay.commerce.product.definitions.web.internal.upload.AttachmentsUploadResponseHandler;
-import com.liferay.commerce.product.definitions.web.internal.upload.TempAttachmentsUploadFileEntryHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.upload.UploadHandler;
+import com.liferay.upload.UploadResponseHandler;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -40,12 +40,15 @@ public class UploadTempAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			_attachmentsUploadResponseHandler, actionRequest, actionResponse);
 	}
 
-	@Reference
-	private AttachmentsUploadResponseHandler _attachmentsUploadResponseHandler;
+	@Reference(
+		target = "(component.name=com.liferay.commerce.product.definitions.web.internal.upload.AttachmentsUploadResponseHandler)"
+	)
+	private UploadResponseHandler _attachmentsUploadResponseHandler;
 
-	@Reference
-	private TempAttachmentsUploadFileEntryHandler
-		_tempAttachmentsUploadFileEntryHandler;
+	@Reference(
+		target = "(component.name=com.liferay.commerce.product.definitions.web.internal.upload.TempAttachmentsUploadFileEntryHandler)"
+	)
+	private UploadFileEntryHandler _tempAttachmentsUploadFileEntryHandler;
 
 	@Reference
 	private UploadHandler _uploadHandler;

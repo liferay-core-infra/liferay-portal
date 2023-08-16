@@ -6,11 +6,11 @@
 package com.liferay.commerce.order.content.web.internal.portlet.action;
 
 import com.liferay.commerce.constants.CommercePortletKeys;
-import com.liferay.commerce.order.content.web.internal.upload.CSVUploadFileEntryHandler;
-import com.liferay.commerce.order.content.web.internal.upload.CSVUploadResponseHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.upload.UploadHandler;
+import com.liferay.upload.UploadResponseHandler;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -40,11 +40,15 @@ public class UploadCSVFileEntryMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, actionResponse);
 	}
 
-	@Reference
-	private CSVUploadFileEntryHandler _csvUploadFileEntryHandler;
+	@Reference(
+		target = "(component.name=com.liferay.commerce.order.content.web.internal.upload.CSVUploadFileEntryHandler)"
+	)
+	private UploadFileEntryHandler _csvUploadFileEntryHandler;
 
-	@Reference
-	private CSVUploadResponseHandler _csvUploadResponseHandler;
+	@Reference(
+		target = "(component.name=com.liferay.commerce.order.content.web.internal.upload.CSVUploadResponseHandler)"
+	)
+	private UploadResponseHandler _csvUploadResponseHandler;
 
 	@Reference
 	private UploadHandler _uploadHandler;

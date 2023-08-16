@@ -24,8 +24,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Leonardo Barros
  */
 @Component(
-	property = "model.class.name=com.liferay.dynamic.data.mapping.model.DDMStructure",
-	service = DataDefinitionModelResourcePermission.class
+	property = "model.class.name=com.liferay.data.engine.rest.dto.v2_0.DataDefinition",
+	service = ModelResourcePermission.class
 )
 public class DataDefinitionModelResourcePermission
 	implements ModelResourcePermission<DDMStructure> {
@@ -52,30 +52,6 @@ public class DataDefinitionModelResourcePermission
 		check(
 			permissionChecker,
 			_ddmStructureLocalService.getDDMStructure(primaryKey), actionId);
-	}
-
-	public void checkPortletPermission(
-			PermissionChecker permissionChecker, DDMStructure ddmStructure,
-			String actionId)
-		throws PortalException {
-
-		checkPortletPermission(
-			permissionChecker,
-			DataDefinitionContentTypeRegistryUtil.getDataDefinitionContentType(
-				ddmStructure.getClassNameId()),
-			ddmStructure.getGroupId(), actionId);
-	}
-
-	public void checkPortletPermission(
-			PermissionChecker permissionChecker, String contentType,
-			long groupId, String actionId)
-		throws Exception {
-
-		checkPortletPermission(
-			permissionChecker,
-			DataDefinitionContentTypeRegistryUtil.getDataDefinitionContentType(
-				contentType),
-			groupId, actionId);
 	}
 
 	@Override
@@ -117,26 +93,6 @@ public class DataDefinitionModelResourcePermission
 	@Override
 	public PortletResourcePermission getPortletResourcePermission() {
 		return null;
-	}
-
-	protected void checkPortletPermission(
-			PermissionChecker permissionChecker,
-			DataDefinitionContentType dataDefinitionContentType, long groupId,
-			String actionId)
-		throws PortalException {
-
-		if (dataDefinitionContentType == null) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, actionId);
-		}
-
-		if (!dataDefinitionContentType.hasPortletPermission(
-				permissionChecker, groupId, actionId)) {
-
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, dataDefinitionContentType.getContentType(),
-				groupId, actionId);
-		}
 	}
 
 	private String _getModelResourceName(DDMStructure ddmStructure) {

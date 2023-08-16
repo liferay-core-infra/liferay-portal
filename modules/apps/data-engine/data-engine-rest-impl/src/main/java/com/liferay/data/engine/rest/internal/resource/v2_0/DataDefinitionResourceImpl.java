@@ -25,7 +25,7 @@ import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentT
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataDefinitionEntityModel;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
+import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionModelResourcePermissionUtil;
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
@@ -92,6 +92,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -945,7 +946,7 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 			boolean copyPermissions)
 		throws Exception {
 
-		_dataDefinitionModelResourcePermission.checkPortletPermission(
+		DataDefinitionModelResourcePermissionUtil.checkPortletPermission(
 			PermissionThreadLocal.getPermissionChecker(), contentType, siteId,
 			DataActionKeys.ADD_DATA_DEFINITION);
 
@@ -1692,8 +1693,10 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 	private static final EntityModel _entityModel =
 		new DataDefinitionEntityModel();
 
-	@Reference
-	private DataDefinitionModelResourcePermission
+	@Reference(
+		target = "(model.class.name=com.liferay.data.engine.rest.dto.v2_0.DataDefinition)"
+	)
+	private ModelResourcePermission<DDMStructure>
 		_dataDefinitionModelResourcePermission;
 
 	@Reference

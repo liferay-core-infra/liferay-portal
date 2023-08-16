@@ -6,6 +6,7 @@
 package com.liferay.portal.search.web.internal.facet.display.context;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.search.web.internal.BaseFacetDisplayContextTestCase;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.UserSearchFacetDisplayContextBuilder;
 import com.liferay.portal.search.web.internal.user.facet.configuration.UserFacetPortletInstanceConfiguration;
@@ -13,6 +14,8 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
+
+import org.mockito.Mockito;
 
 /**
  * @author Lino Alves
@@ -37,11 +40,16 @@ public class UserSearchFacetDisplayContextTest
 			String parameterValue, String order)
 		throws Exception {
 
+		configurationProviderUtilMockedStatic.when(
+			() -> ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				Mockito.any(), Mockito.any())
+		).thenReturn(
+			Mockito.mock(UserFacetPortletInstanceConfiguration.class)
+		);
+
 		UserSearchFacetDisplayContextBuilder
 			userSearchFacetDisplayContextBuilder =
-				new UserSearchFacetDisplayContextBuilder(
-					getRenderRequest(
-						UserFacetPortletInstanceConfiguration.class));
+				new UserSearchFacetDisplayContextBuilder(getRenderRequest());
 
 		userSearchFacetDisplayContextBuilder.setFacet(facet);
 		userSearchFacetDisplayContextBuilder.setFrequenciesVisible(true);

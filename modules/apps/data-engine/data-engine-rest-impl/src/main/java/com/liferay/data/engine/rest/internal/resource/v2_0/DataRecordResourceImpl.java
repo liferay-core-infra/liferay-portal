@@ -10,7 +10,6 @@ import com.liferay.data.engine.model.DEDataListView;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecord;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataRecordEntityModel;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataRecordModelResourcePermission;
 import com.liferay.data.engine.rest.internal.storage.DataRecordExporter;
 import com.liferay.data.engine.rest.internal.storage.DataStorageRegistry;
 import com.liferay.data.engine.rest.resource.v2_0.DataRecordResource;
@@ -524,8 +523,10 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 	private ModelResourcePermission<DDLRecordSet>
 		_dataRecordCollectionModelResourcePermission;
 
-	@Reference
-	private DataRecordModelResourcePermission
+	@Reference(
+		target = "(model.class.name=com.liferay.data.engine.rest.dto.v2_0.DataRecord)"
+	)
+	private ModelResourcePermission<DDLRecord>
 		_dataRecordModelResourcePermission;
 
 	@Reference

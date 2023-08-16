@@ -26,8 +26,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Inácio Nery
  */
 @Component(
-	property = "model.class.name=com.liferay.dynamic.data.lists.model.DDLRecord",
-	service = DataRecordModelResourcePermission.class
+	property = "model.class.name=com.liferay.data.engine.rest.dto.v2_0.DataRecord",
+	service = ModelResourcePermission.class
 )
 public class DataRecordModelResourcePermission
 	implements ModelResourcePermission<DDLRecord> {

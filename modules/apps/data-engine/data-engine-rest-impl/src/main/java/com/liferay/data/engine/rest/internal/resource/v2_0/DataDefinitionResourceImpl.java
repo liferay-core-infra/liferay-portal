@@ -25,7 +25,7 @@ import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentT
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataDefinitionEntityModel;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
+import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionModelResourcePermissionUtil;
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
@@ -78,6 +78,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.editor.configuration.EditorConfiguration;
 import com.liferay.portal.kernel.editor.configuration.EditorConfigurationFactory;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -88,10 +89,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -131,7 +136,11 @@ import javax.validation.ValidationException;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
@@ -591,6 +600,19 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 		return _updateDataDefinition(dataDefinition, dataDefinitionId, ddmForm);
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceRegistration = bundleContext.registerService(
+			(Class<ModelResourcePermission<DDMStructure>>)
+				(Class<?>)ModelResourcePermission.class,
+			new DataDefinitionModelResourcePermission(), null);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
+	}
+
 	@Override
 	protected Long getPermissionCheckerGroupId(Object id) throws Exception {
 		DDMStructure ddmStructure = _ddmStructureLocalService.getDDMStructure(
@@ -945,7 +967,7 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 			boolean copyPermissions)
 		throws Exception {
 
-		_dataDefinitionModelResourcePermission.checkPortletPermission(
+		DataDefinitionModelResourcePermissionUtil.checkPortletPermission(
 			PermissionThreadLocal.getPermissionChecker(), contentType, siteId,
 			DataActionKeys.ADD_DATA_DEFINITION);
 
@@ -1692,9 +1714,9 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 	private static final EntityModel _entityModel =
 		new DataDefinitionEntityModel();
 
-	@Reference
-	private DataDefinitionModelResourcePermission
-		_dataDefinitionModelResourcePermission;
+	private final ModelResourcePermission<DDMStructure>
+		_dataDefinitionModelResourcePermission =
+			new DataDefinitionModelResourcePermission();
 
 	@Reference
 	private DataLayoutResource.Factory _dataLayoutResourceFactory;
@@ -1770,7 +1792,89 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 	@Reference
 	private ResourceLocalService _resourceLocalService;
 
+	private ServiceRegistration<ModelResourcePermission<DDMStructure>>
+		_serviceRegistration;
+
 	@Reference
 	private SPIDDMFormRuleConverter _spiDDMFormRuleConverter;
+
+	private class DataDefinitionModelResourcePermission
+		implements ModelResourcePermission<DDMStructure> {
+
+		@Override
+		public void check(
+				PermissionChecker permissionChecker, DDMStructure ddmStructure,
+				String actionId)
+			throws PortalException {
+
+			if (!contains(permissionChecker, ddmStructure, actionId)) {
+				throw new PrincipalException.MustHavePermission(
+					permissionChecker, _getModelResourceName(ddmStructure),
+					ddmStructure.getStructureId(), actionId);
+			}
+		}
+
+		@Override
+		public void check(
+				PermissionChecker permissionChecker, long primaryKey,
+				String actionId)
+			throws PortalException {
+
+			check(
+				permissionChecker,
+				_ddmStructureLocalService.getDDMStructure(primaryKey),
+				actionId);
+		}
+
+		@Override
+		public boolean contains(
+				PermissionChecker permissionChecker, DDMStructure ddmStructure,
+				String actionId)
+			throws PortalException {
+
+			DataDefinitionContentType dataDefinitionContentType =
+				DataDefinitionContentTypeRegistryUtil.
+					getDataDefinitionContentType(ddmStructure.getClassNameId());
+
+			if (dataDefinitionContentType == null) {
+				return false;
+			}
+
+			return dataDefinitionContentType.hasPermission(
+				permissionChecker, ddmStructure.getCompanyId(),
+				ddmStructure.getGroupId(), _getModelResourceName(ddmStructure),
+				ddmStructure.getStructureId(), ddmStructure.getUserId(),
+				actionId);
+		}
+
+		@Override
+		public boolean contains(
+				PermissionChecker permissionChecker, long primaryKey,
+				String actionId)
+			throws PortalException {
+
+			return contains(
+				permissionChecker,
+				_ddmStructureLocalService.getDDMStructure(primaryKey),
+				actionId);
+		}
+
+		@Override
+		public String getModelName() {
+			return DDMStructure.class.getName();
+		}
+
+		@Override
+		public PortletResourcePermission getPortletResourcePermission() {
+			return null;
+		}
+
+		private String _getModelResourceName(DDMStructure ddmStructure) {
+			return ResourceActionsUtil.getCompositeModelName(
+				_portal.getClassName(ddmStructure.getClassNameId()),
+				getModelName());
+		}
+
+	}
 
 }

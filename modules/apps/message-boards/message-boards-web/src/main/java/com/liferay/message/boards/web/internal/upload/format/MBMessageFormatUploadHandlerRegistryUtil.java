@@ -8,33 +8,30 @@ package com.liferay.message.boards.web.internal.upload.format;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Alejandro Tardín
  */
-@Component(service = MBMessageFormatUploadHandlerProvider.class)
-public class MBMessageFormatUploadHandlerProvider {
+public class MBMessageFormatUploadHandlerRegistryUtil {
 
-	public MBMessageFormatUploadHandler provide(String format) {
+	public static MBMessageFormatUploadHandler get(String format) {
 		return _serviceTrackerMap.getService(format);
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
+	private static final ServiceTrackerMap<String, MBMessageFormatUploadHandler>
+		_serviceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			MBMessageFormatUploadHandlerRegistryUtil.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, MBMessageFormatUploadHandler.class, "format");
 	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerMap.close();
-	}
-
-	private ServiceTrackerMap<String, MBMessageFormatUploadHandler>
-		_serviceTrackerMap;
 
 }

@@ -32,7 +32,7 @@ import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.message.boards.service.MBThreadService;
 import com.liferay.message.boards.settings.MBGroupServiceSettings;
 import com.liferay.message.boards.web.internal.upload.format.MBMessageFormatUploadHandler;
-import com.liferay.message.boards.web.internal.upload.format.MBMessageFormatUploadHandlerProvider;
+import com.liferay.message.boards.web.internal.upload.format.MBMessageFormatUploadHandlerRegistryUtil;
 import com.liferay.message.boards.web.internal.util.MBAttachmentFileEntryReference;
 import com.liferay.message.boards.web.internal.util.MBAttachmentFileEntryUtil;
 import com.liferay.message.boards.web.internal.util.MBRequestUtil;
@@ -543,7 +543,8 @@ public class EditMessageMVCActionCommand extends BaseMVCActionCommand {
 				}
 
 				MBMessageFormatUploadHandler formatHandler =
-					_formatHandlerProvider.provide(message.getFormat());
+					MBMessageFormatUploadHandlerRegistryUtil.get(
+						message.getFormat());
 
 				if (formatHandler != null) {
 					List<FileEntry> tempMBAttachmentFileEntries =
@@ -566,7 +567,8 @@ public class EditMessageMVCActionCommand extends BaseMVCActionCommand {
 				message = _mbMessageService.getMessage(messageId);
 
 				MBMessageFormatUploadHandler formatHandler =
-					_formatHandlerProvider.provide(message.getFormat());
+					MBMessageFormatUploadHandlerRegistryUtil.get(
+						message.getFormat());
 
 				if (formatHandler != null) {
 					List<FileEntry> tempMBAttachmentFileEntries =
@@ -636,9 +638,6 @@ public class EditMessageMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
-
-	@Reference
-	private MBMessageFormatUploadHandlerProvider _formatHandlerProvider;
 
 	@Reference
 	private MBCategoryService _mbCategoryService;

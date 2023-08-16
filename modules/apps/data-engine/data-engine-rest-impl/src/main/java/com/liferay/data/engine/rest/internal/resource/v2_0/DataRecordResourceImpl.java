@@ -9,7 +9,7 @@ import com.liferay.data.engine.constants.DataActionKeys;
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
 import com.liferay.data.engine.model.DEDataListView;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecord;
-import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
+import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistryUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataRecordEntityModel;
 import com.liferay.data.engine.rest.internal.storage.DataRecordExporter;
 import com.liferay.data.engine.rest.internal.storage.DataStorageRegistry;
@@ -155,9 +155,8 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 			dataRecordCollectionId, DataActionKeys.EXPORT_DATA_RECORDS);
 
 		DataRecordExporter dataRecordExporter = new DataRecordExporter(
-			_dataDefinitionContentTypeRegistry, _ddlRecordSetLocalService,
-			_ddmFormFieldTypeServicesRegistry, _ddmStructureLayoutLocalService,
-			_spiDDMFormRuleConverter);
+			_ddlRecordSetLocalService, _ddmFormFieldTypeServicesRegistry,
+			_ddmStructureLayoutLocalService, _spiDDMFormRuleConverter);
 
 		return dataRecordExporter.export(
 			transform(
@@ -536,10 +535,6 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 	}
 
 	@Reference
-	private DataDefinitionContentTypeRegistry
-		_dataDefinitionContentTypeRegistry;
-
-	@Reference
 	private ModelResourcePermission<DDLRecordSet>
 		_dataRecordCollectionModelResourcePermission;
 
@@ -638,8 +633,8 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 			DDMStructure ddmStructure = recordSet.getDDMStructure();
 
 			DataDefinitionContentType dataDefinitionContentType =
-				_dataDefinitionContentTypeRegistry.getDataDefinitionContentType(
-					ddmStructure.getClassNameId());
+				DataDefinitionContentTypeRegistryUtil.
+					getDataDefinitionContentType(ddmStructure.getClassNameId());
 
 			if (dataDefinitionContentType == null) {
 				return false;

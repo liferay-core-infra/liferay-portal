@@ -63,6 +63,7 @@ import javax.portlet.PortletResponse;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -218,6 +219,9 @@ public class ConfigurationModelIndexer
 
 		_bundleContext = bundleContext;
 
+		_serviceRegistration = _bundleContext.registerService(
+			IdentifiableOSGiService.class, this, null);
+
 		if (_clusterExecutor.isEnabled()) {
 			_configurationModelsClusterMasterTokenTransitionListener =
 				new ConfigurationModelsClusterMasterTokenTransitionListener();
@@ -271,6 +275,7 @@ public class ConfigurationModelIndexer
 				_configurationModelsClusterMasterTokenTransitionListener);
 		}
 
+		_serviceRegistration.unregister();
 		_stopBundleTracker();
 	}
 
@@ -596,6 +601,8 @@ public class ConfigurationModelIndexer
 
 	@Reference
 	private ResourceBundleLoaderProvider _resourceBundleLoaderProvider;
+
+	private ServiceRegistration<IdentifiableOSGiService> _serviceRegistration;
 
 	private static class TranslationHelper {
 

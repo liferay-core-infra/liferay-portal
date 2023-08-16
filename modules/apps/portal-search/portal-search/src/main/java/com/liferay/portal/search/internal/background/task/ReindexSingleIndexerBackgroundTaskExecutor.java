@@ -6,7 +6,6 @@
 package com.liferay.portal.search.internal.background.task;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
-import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
@@ -16,14 +15,14 @@ import com.liferay.portal.kernel.change.tracking.sql.CTSQLModeThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.search.IndexWriterHelper;
+import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistry;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchEngine;
 import com.liferay.portal.kernel.search.SearchEngineHelper;
+import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.search.background.task.ReindexBackgroundTaskConstants;
-import com.liferay.portal.kernel.search.background.task.ReindexStatusMessageSender;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.portal.kernel.search.background.task.ReindexStatusMessageSenderUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.index.SyncReindexManager;
 
@@ -33,32 +32,26 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Andrew Betts
  */
-@Component(
-	property = "background.task.executor.class.name=com.liferay.portal.search.internal.background.task.ReindexSingleIndexerBackgroundTaskExecutor",
-	service = {
-		BackgroundTaskExecutor.class,
-		ReindexSingleIndexerBackgroundTaskExecutor.class
-	}
-)
 public class ReindexSingleIndexerBackgroundTaskExecutor
 	extends BaseReindexBackgroundTaskExecutor {
 
-	public ReindexSingleIndexerBackgroundTaskExecutor() {
+	public ReindexSingleIndexerBackgroundTaskExecutor(
+		Snapshot<SyncReindexManager> syncReindexManagerSnapshot,
+		ServiceTrackerList<Indexer<?>> systemIndexers) {
+
 		setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_TASK_NAME);
+
+		_syncReindexManagerSnapshot = syncReindexManagerSnapshot;
+		_systemIndexers = systemIndexers;
 	}
 
 	@Override
 	public BackgroundTaskExecutor clone() {
-		return this;
+		return new ReindexSingleIndexerBackgroundTaskExecutor(
+			_syncReindexManagerSnapshot, _systemIndexers);
 	}
 
 	@Override
@@ -75,30 +68,19 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 		return super.generateLockKey(backgroundTask);
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		systemIndexers = ServiceTrackerListFactory.open(
-			bundleContext, (Class<Indexer<?>>)(Class<?>)Indexer.class,
-			"(system.index=true)");
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		if (systemIndexers != null) {
-			systemIndexers.close();
-		}
-	}
-
 	@Override
 	protected void reindex(
 			String className, long[] companyIds, String executionMode)
 		throws Exception {
 
-		Indexer<?> indexer = indexerRegistry.getIndexer(className);
+		Indexer<?> indexer = IndexerRegistryUtil.getIndexer(className);
 
 		if (indexer == null) {
 			return;
 		}
+
+		SearchEngineHelper searchEngineHelper =
+			SearchEngineHelperUtil.getSearchEngineHelper();
 
 		SearchEngine searchEngine = searchEngineHelper.getSearchEngine();
 
@@ -111,7 +93,7 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 				continue;
 			}
 
-			reindexStatusMessageSender.sendStatusMessage(
+			ReindexStatusMessageSenderUtil.sendStatusMessage(
 				ReindexBackgroundTaskConstants.SINGLE_START, companyId,
 				companyIds);
 
@@ -140,7 +122,7 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 					Thread.sleep(1000);
 				}
 				else {
-					indexWriterHelper.deleteEntityDocuments(
+					IndexWriterHelperUtil.deleteEntityDocuments(
 						companyId, className, true);
 				}
 
@@ -160,7 +142,7 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 			finally {
 				CTSQLModeThreadLocal.setCTSQLModeWithSafeCloseable(ctSQLMode);
 
-				reindexStatusMessageSender.sendStatusMessage(
+				ReindexStatusMessageSenderUtil.sendStatusMessage(
 					ReindexBackgroundTaskConstants.SINGLE_END, companyId,
 					companyIds);
 
@@ -175,23 +157,6 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 		}
 	}
 
-	protected static volatile IndexWriterHelper indexWriterHelper =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			IndexWriterHelper.class,
-			ReindexSingleIndexerBackgroundTaskExecutor.class,
-			"indexWriterHelper", true);
-
-	@Reference
-	protected IndexerRegistry indexerRegistry;
-
-	@Reference
-	protected ReindexStatusMessageSender reindexStatusMessageSender;
-
-	@Reference
-	protected SearchEngineHelper searchEngineHelper;
-
-	protected ServiceTrackerList<Indexer<?>> systemIndexers;
-
 	private boolean _isExecuteSyncReindex(String executionMode) {
 		if ((_syncReindexManagerSnapshot.get() != null) &&
 			(executionMode != null) && executionMode.equals("sync")) {
@@ -203,8 +168,8 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 	}
 
 	private boolean _isSystemIndexer(Indexer<?> indexer) {
-		if (systemIndexers.size() > 0) {
-			for (Indexer<?> systemIndexer : systemIndexers) {
+		if (_systemIndexers.size() > 0) {
+			for (Indexer<?> systemIndexer : _systemIndexers) {
 				if (indexer.equals(systemIndexer)) {
 					return true;
 				}
@@ -217,9 +182,7 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReindexSingleIndexerBackgroundTaskExecutor.class);
 
-	private static final Snapshot<SyncReindexManager>
-		_syncReindexManagerSnapshot = new Snapshot<>(
-			ReindexSingleIndexerBackgroundTaskExecutor.class,
-			SyncReindexManager.class, null, true);
+	private final Snapshot<SyncReindexManager> _syncReindexManagerSnapshot;
+	private final ServiceTrackerList<Indexer<?>> _systemIndexers;
 
 }

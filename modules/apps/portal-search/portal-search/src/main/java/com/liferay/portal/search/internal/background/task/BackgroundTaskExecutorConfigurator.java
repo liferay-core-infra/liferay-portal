@@ -5,9 +5,12 @@
 
 package com.liferay.portal.search.internal.background.task;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
+import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.search.index.ConcurrentReindexManager;
 import com.liferay.portal.search.index.SyncReindexManager;
@@ -30,6 +33,10 @@ public class BackgroundTaskExecutorConfigurator {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_systemIndexers = ServiceTrackerListFactory.open(
+			bundleContext, (Class<Indexer<?>>)(Class<?>)Indexer.class,
+			"(system.index=true)");
+
 		BackgroundTaskExecutor reindexPortalBackgroundTaskExecutor =
 			new ReindexPortalBackgroundTaskExecutor(
 				bundleContext, _concurrentReindexManagerSnapshot.get(),
@@ -38,8 +45,13 @@ public class BackgroundTaskExecutorConfigurator {
 		_registerBackgroundTaskExecutor(
 			bundleContext, reindexPortalBackgroundTaskExecutor);
 
+		ReindexSingleIndexerBackgroundTaskExecutor
+			reindexSingleIndexerBackgroundTaskExecutor =
+				new ReindexSingleIndexerBackgroundTaskExecutor(
+					_syncReindexManagerSnapshot, _systemIndexers);
+
 		_registerBackgroundTaskExecutor(
-			bundleContext, _reindexSingleIndexerBackgroundTaskExecutor);
+			bundleContext, reindexSingleIndexerBackgroundTaskExecutor);
 	}
 
 	@Deactivate
@@ -49,6 +61,8 @@ public class BackgroundTaskExecutorConfigurator {
 
 			serviceRegistration.unregister();
 		}
+
+		_systemIndexers.close();
 	}
 
 	private void _registerBackgroundTaskExecutor(
@@ -79,11 +93,8 @@ public class BackgroundTaskExecutorConfigurator {
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
 
-	@Reference
-	private ReindexSingleIndexerBackgroundTaskExecutor
-		_reindexSingleIndexerBackgroundTaskExecutor;
-
 	private final Set<ServiceRegistration<BackgroundTaskExecutor>>
 		_serviceRegistrations = new HashSet<>();
+	private ServiceTrackerList<Indexer<?>> _systemIndexers;
 
 }

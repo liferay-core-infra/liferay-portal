@@ -133,6 +133,12 @@ public abstract class BaseDestination implements Destination {
 		_destinationType = destinationType;
 	}
 
+	public void setMessageListenerRegistry(
+		MessageListenerRegistry messageListenerRegistry) {
+
+		this.messageListenerRegistry = messageListenerRegistry;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -206,6 +212,7 @@ public abstract class BaseDestination implements Destination {
 		return unregistered;
 	}
 
+	protected MessageListenerRegistry messageListenerRegistry;
 	protected Set<MessageListener> messageListeners = Collections.newSetFromMap(
 		new ConcurrentHashMap<>());
 	protected String name = StringPool.BLANK;

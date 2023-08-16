@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alessio Antonio Rendina
  */
-@Component(service = CSVUploadResponseHandler.class)
+@Component(service = UploadResponseHandler.class)
 public class CSVUploadResponseHandler implements UploadResponseHandler {
 
 	@Override

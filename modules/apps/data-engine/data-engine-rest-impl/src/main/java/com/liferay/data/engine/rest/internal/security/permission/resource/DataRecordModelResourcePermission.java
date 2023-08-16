@@ -126,7 +126,7 @@ public class DataRecordModelResourcePermission
 		_dataDefinitionContentTypeRegistry;
 
 	@Reference
-	private DataRecordCollectionModelResourcePermission
+	private ModelResourcePermission<DDLRecordSet>
 		_dataRecordCollectionModelResourcePermission;
 
 	@Reference

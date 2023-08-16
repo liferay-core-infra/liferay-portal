@@ -12,7 +12,6 @@ import com.liferay.data.engine.rest.dto.v2_0.DataRecordCollection;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataRecordCollectionUtil;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataRecordCollectionModelResourcePermission;
 import com.liferay.data.engine.rest.resource.v2_0.DataRecordCollectionResource;
 import com.liferay.dynamic.data.lists.constants.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
@@ -20,16 +19,20 @@ import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.change.tracking.CTAware;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -49,7 +52,11 @@ import java.util.Map;
 
 import javax.validation.ValidationException;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
@@ -231,6 +238,19 @@ public class DataRecordCollectionResourceImpl
 			dataRecordCollection.getName());
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceRegistration = bundleContext.registerService(
+			(Class<ModelResourcePermission<DDLRecordSet>>)
+				(Class<?>)ModelResourcePermission.class,
+			new DataRecordCollectionModelResourcePermission(), null);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
+	}
+
 	@Override
 	protected Long getPermissionCheckerGroupId(Object id) throws Exception {
 		DDLRecordSet ddlRecordSet = _ddlRecordSetLocalService.getRecordSet(
@@ -402,9 +422,9 @@ public class DataRecordCollectionResourceImpl
 	private DataDefinitionModelResourcePermission
 		_dataDefinitionModelResourcePermission;
 
-	@Reference
-	private DataRecordCollectionModelResourcePermission
-		_dataRecordCollectionModelResourcePermission;
+	private final ModelResourcePermission<DDLRecordSet>
+		_dataRecordCollectionModelResourcePermission =
+			new DataRecordCollectionModelResourcePermission();
 
 	@Reference
 	private DDLRecordSetLocalService _ddlRecordSetLocalService;
@@ -423,5 +443,93 @@ public class DataRecordCollectionResourceImpl
 
 	@Reference
 	private ResourceLocalService _resourceLocalService;
+
+	private ServiceRegistration<ModelResourcePermission<DDLRecordSet>>
+		_serviceRegistration;
+
+	private class DataRecordCollectionModelResourcePermission
+		implements ModelResourcePermission<DDLRecordSet> {
+
+		@Override
+		public void check(
+				PermissionChecker permissionChecker, DDLRecordSet ddlRecordSet,
+				String actionId)
+			throws PortalException {
+
+			if (!contains(permissionChecker, ddlRecordSet, actionId)) {
+				throw new PrincipalException.MustHavePermission(
+					permissionChecker, _getModelResourceName(ddlRecordSet),
+					ddlRecordSet.getRecordSetId(), actionId);
+			}
+		}
+
+		@Override
+		public void check(
+				PermissionChecker permissionChecker, long primaryKey,
+				String actionId)
+			throws PortalException {
+
+			check(
+				permissionChecker,
+				_ddlRecordSetLocalService.getDDLRecordSet(primaryKey),
+				actionId);
+		}
+
+		@Override
+		public boolean contains(
+				PermissionChecker permissionChecker, DDLRecordSet ddlRecordSet,
+				String actionId)
+			throws PortalException {
+
+			DDMStructure ddmStructure = ddlRecordSet.getDDMStructure();
+
+			DataDefinitionContentType dataDefinitionContentType =
+				_dataDefinitionContentTypeRegistry.getDataDefinitionContentType(
+					ddmStructure.getClassNameId());
+
+			if (dataDefinitionContentType == null) {
+				return false;
+			}
+
+			return dataDefinitionContentType.hasPermission(
+				permissionChecker, ddlRecordSet.getCompanyId(),
+				ddlRecordSet.getGroupId(), _getModelResourceName(ddlRecordSet),
+				ddlRecordSet.getRecordSetId(), ddlRecordSet.getUserId(),
+				actionId);
+		}
+
+		@Override
+		public boolean contains(
+				PermissionChecker permissionChecker, long primaryKey,
+				String actionId)
+			throws PortalException {
+
+			return contains(
+				permissionChecker,
+				_ddlRecordSetLocalService.getDDLRecordSet(primaryKey),
+				actionId);
+		}
+
+		@Override
+		public String getModelName() {
+			return DDLRecordSet.class.getName();
+		}
+
+		@Override
+		public PortletResourcePermission getPortletResourcePermission() {
+			return null;
+		}
+
+		private String _getModelResourceName(DDLRecordSet ddlRecordSet)
+			throws PortalException {
+
+			DDMStructure ddmStructure = ddlRecordSet.getDDMStructure();
+
+			return ResourceActionsUtil.getCompositeModelName(
+				_portal.getClassName(ddmStructure.getClassNameId()),
+				DDLRecordSet.class.getName());
+		}
+
+	}
 
 }

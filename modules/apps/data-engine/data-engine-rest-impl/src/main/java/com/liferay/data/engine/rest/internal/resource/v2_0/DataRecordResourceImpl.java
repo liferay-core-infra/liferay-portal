@@ -10,7 +10,6 @@ import com.liferay.data.engine.model.DEDataListView;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecord;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistry;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataRecordEntityModel;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataRecordCollectionModelResourcePermission;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataRecordModelResourcePermission;
 import com.liferay.data.engine.rest.internal.storage.DataRecordExporter;
 import com.liferay.data.engine.rest.internal.storage.DataStorageRegistry;
@@ -48,6 +47,7 @@ import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -519,7 +519,7 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 		_dataDefinitionContentTypeRegistry;
 
 	@Reference
-	private DataRecordCollectionModelResourcePermission
+	private ModelResourcePermission<DDLRecordSet>
 		_dataRecordCollectionModelResourcePermission;
 
 	@Reference

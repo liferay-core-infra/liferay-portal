@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.commerce.product.configuration.AttachmentsConfiguration",
-	service = TempAssetCategoryAttachmentsUploadFileEntryHandler.class
+	service = UploadFileEntryHandler.class
 )
 public class TempAssetCategoryAttachmentsUploadFileEntryHandler
 	implements UploadFileEntryHandler {

@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.commerce.product.configuration.AttachmentsConfiguration",
-	service = AssetCategoryAttachmentsUploadResponseHandler.class
+	service = UploadResponseHandler.class
 )
 public class AssetCategoryAttachmentsUploadResponseHandler
 	implements UploadResponseHandler {

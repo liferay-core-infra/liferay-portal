@@ -7,9 +7,9 @@ package com.liferay.portal.monitoring.internal.statistics.jmx;
 
 import com.liferay.portal.kernel.monitoring.MonitoringException;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.monitoring.internal.statistics.SummaryStatistics;
 import com.liferay.portal.monitoring.internal.statistics.portal.CompanyStatistics;
 import com.liferay.portal.monitoring.internal.statistics.portal.ServerStatistics;
-import com.liferay.portal.monitoring.internal.statistics.portal.ServerSummaryStatistics;
 
 import java.util.Set;
 
@@ -40,7 +40,12 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	@Override
 	public long getAverageTime() {
-		return _serverSummaryStatistics.getAverageTime();
+		try {
+			return _serverSummaryStatistics.getAverageTime();
+		}
+		catch (MonitoringException monitoringException) {
+			throw new RuntimeException(monitoringException);
+		}
 	}
 
 	@Override
@@ -66,7 +71,12 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	@Override
 	public long getErrorCount() {
-		return _serverSummaryStatistics.getErrorCount();
+		try {
+			return _serverSummaryStatistics.getErrorCount();
+		}
+		catch (MonitoringException monitoringException) {
+			throw new RuntimeException(monitoringException);
+		}
 	}
 
 	@Override
@@ -85,7 +95,12 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	@Override
 	public long getMaxTime() {
-		return _serverSummaryStatistics.getMaxTime();
+		try {
+			return _serverSummaryStatistics.getMaxTime();
+		}
+		catch (MonitoringException monitoringException) {
+			throw new RuntimeException(monitoringException);
+		}
 	}
 
 	@Override
@@ -100,7 +115,12 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	@Override
 	public long getMinTime() {
-		return _serverSummaryStatistics.getMinTime();
+		try {
+			return _serverSummaryStatistics.getMinTime();
+		}
+		catch (MonitoringException monitoringException) {
+			throw new RuntimeException(monitoringException);
+		}
 	}
 
 	@Override
@@ -115,7 +135,12 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	@Override
 	public long getRequestCount() {
-		return _serverSummaryStatistics.getRequestCount();
+		try {
+			return _serverSummaryStatistics.getRequestCount();
+		}
+		catch (MonitoringException monitoringException) {
+			throw new RuntimeException(monitoringException);
+		}
 	}
 
 	@Override
@@ -148,7 +173,12 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	@Override
 	public long getSuccessCount() {
-		return _serverSummaryStatistics.getSuccessCount();
+		try {
+			return _serverSummaryStatistics.getSuccessCount();
+		}
+		catch (MonitoringException monitoringException) {
+			throw new RuntimeException(monitoringException);
+		}
 	}
 
 	@Override
@@ -167,7 +197,12 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 
 	@Override
 	public long getTimeoutCount() {
-		return _serverSummaryStatistics.getTimeoutCount();
+		try {
+			return _serverSummaryStatistics.getTimeoutCount();
+		}
+		catch (MonitoringException monitoringException) {
+			throw new RuntimeException(monitoringException);
+		}
 	}
 
 	@Override
@@ -225,7 +260,9 @@ public class PortalManager extends StandardMBean implements PortalManagerMBean {
 	@Reference
 	private ServerStatistics _serverStatistics;
 
-	@Reference
-	private ServerSummaryStatistics _serverSummaryStatistics;
+	@Reference(
+		target = "(component.name=com.liferay.portal.monitoring.internal.statistics.portal.ServerSummaryStatistics)"
+	)
+	private SummaryStatistics _serverSummaryStatistics;
 
 }

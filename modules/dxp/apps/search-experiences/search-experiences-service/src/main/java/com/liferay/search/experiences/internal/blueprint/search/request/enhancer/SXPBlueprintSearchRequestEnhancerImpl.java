@@ -34,8 +34,9 @@ import com.liferay.search.experiences.blueprint.exception.InvalidElementInstance
 import com.liferay.search.experiences.blueprint.parameter.SXPParameter;
 import com.liferay.search.experiences.blueprint.search.request.enhancer.SXPBlueprintSearchRequestEnhancer;
 import com.liferay.search.experiences.internal.blueprint.highlight.HighlightConverter;
+import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterContributorProvider;
 import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterData;
-import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterDataCreator;
+import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterDataCreatorUtil;
 import com.liferay.search.experiences.internal.blueprint.property.PropertyExpander;
 import com.liferay.search.experiences.internal.blueprint.property.PropertyResolver;
 import com.liferay.search.experiences.internal.blueprint.query.QueryConverter;
@@ -192,11 +193,11 @@ public class SXPBlueprintSearchRequestEnhancerImpl
 
 		RuntimeException runtimeException = new RuntimeException();
 
-		SXPParameterData sxpParameterData = _sxpParameterDataCreator.create(
+		SXPParameterData sxpParameterData = SXPParameterDataCreatorUtil.create(
 			runtimeException::addSuppressed,
 			searchRequestBuilder.withSearchContextGet(
 				searchContext -> searchContext),
-			sxpBlueprint);
+			sxpBlueprint, _sxpParameterContributorProvider);
 
 		if (configuration != null) {
 			_contributeSXPSearchRequestBodyContributors(
@@ -513,7 +514,7 @@ public class SXPBlueprintSearchRequestEnhancerImpl
 	private Sorts _sorts;
 
 	@Reference
-	private SXPParameterDataCreator _sxpParameterDataCreator;
+	private SXPParameterContributorProvider _sxpParameterContributorProvider;
 
 	private List<SXPSearchRequestBodyContributor>
 		_sxpSearchRequestBodyContributors;

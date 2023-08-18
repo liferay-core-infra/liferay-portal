@@ -60,7 +60,7 @@ public class ExpandoColumnModelImpl
 		{"columnId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"modifiedDate", Types.TIMESTAMP}, {"tableId", Types.BIGINT},
 		{"name", Types.VARCHAR}, {"type_", Types.INTEGER},
-		{"defaultData", Types.VARCHAR}, {"typeSettings", Types.VARCHAR}
+		{"defaultData", Types.CLOB}, {"typeSettings", Types.CLOB}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -75,12 +75,12 @@ public class ExpandoColumnModelImpl
 		TABLE_COLUMNS_MAP.put("tableId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("defaultData", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("typeSettings", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("defaultData", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("typeSettings", Types.CLOB);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ExpandoColumn (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,columnId LONG not null,companyId LONG,modifiedDate DATE null,tableId LONG,name VARCHAR(75) null,type_ INTEGER,defaultData VARCHAR(75) null,typeSettings VARCHAR(75) null,primary key (columnId, ctCollectionId))";
+		"create table ExpandoColumn (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,columnId LONG not null,companyId LONG,modifiedDate DATE null,tableId LONG,name VARCHAR(75) null,type_ INTEGER,defaultData TEXT null,typeSettings TEXT null,primary key (columnId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table ExpandoColumn";
 

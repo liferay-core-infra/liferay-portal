@@ -88,7 +88,7 @@
 	<cache
 		eternal="false"
 		maxElementsInMemory="100000"
-		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portlet.expando.model.impl.ExpandoValueImpl"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.expando.model.impl.ExpandoValueImpl"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
@@ -219,7 +219,7 @@
 	<cache
 		eternal="false"
 		maxElementsInMemory="100000"
-		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portlet.expando.model.impl.ExpandoValueImpl"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.expando.model.impl.ExpandoValueImpl"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
@@ -227,7 +227,7 @@
 	<cache
 		eternal="false"
 		maxElementsInMemory="100000"
-		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portlet.expando.model.impl.ExpandoValueImpl.List1"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.expando.model.impl.ExpandoValueImpl.List1"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
@@ -235,7 +235,7 @@
 	<cache
 		eternal="false"
 		maxElementsInMemory="100000"
-		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portlet.expando.model.impl.ExpandoValueImpl.List2"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.expando.model.impl.ExpandoValueImpl.List2"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>

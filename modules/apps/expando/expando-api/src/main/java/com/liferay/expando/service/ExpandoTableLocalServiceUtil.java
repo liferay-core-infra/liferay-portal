@@ -35,6 +35,17 @@ public class ExpandoTableLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.expando.service.impl.ExpandoTableLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static ExpandoTable addDefaultTable(long companyId, long classNameId)
+		throws PortalException {
+
+		return getService().addDefaultTable(companyId, classNameId);
+	}
+
+	public static ExpandoTable addDefaultTable(long companyId, String className)
+		throws PortalException {
+
+		return getService().addDefaultTable(companyId, className);
+	}
 
 	/**
 	 * Adds the expando table to the database. Also notifies the appropriate model listeners.
@@ -48,6 +59,20 @@ public class ExpandoTableLocalServiceUtil {
 	 */
 	public static ExpandoTable addExpandoTable(ExpandoTable expandoTable) {
 		return getService().addExpandoTable(expandoTable);
+	}
+
+	public static ExpandoTable addTable(
+			long companyId, long classNameId, String name)
+		throws PortalException {
+
+		return getService().addTable(companyId, classNameId, name);
+	}
+
+	public static ExpandoTable addTable(
+			long companyId, String className, String name)
+		throws PortalException {
+
+		return getService().addTable(companyId, className, name);
 	}
 
 	/**
@@ -79,8 +104,11 @@ public class ExpandoTableLocalServiceUtil {
 	 *
 	 * @param expandoTable the expando table
 	 * @return the expando table that was removed
+	 * @throws PortalException
 	 */
-	public static ExpandoTable deleteExpandoTable(ExpandoTable expandoTable) {
+	public static ExpandoTable deleteExpandoTable(ExpandoTable expandoTable)
+		throws PortalException {
+
 		return getService().deleteExpandoTable(expandoTable);
 	}
 
@@ -109,6 +137,40 @@ public class ExpandoTableLocalServiceUtil {
 		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static void deleteTable(ExpandoTable table) throws PortalException {
+		getService().deleteTable(table);
+	}
+
+	public static void deleteTable(long tableId) throws PortalException {
+		getService().deleteTable(tableId);
+	}
+
+	public static void deleteTable(
+			long companyId, long classNameId, String name)
+		throws PortalException {
+
+		getService().deleteTable(companyId, classNameId, name);
+	}
+
+	public static void deleteTable(
+			long companyId, String className, String name)
+		throws PortalException {
+
+		getService().deleteTable(companyId, className, name);
+	}
+
+	public static void deleteTables(long companyId, long classNameId)
+		throws PortalException {
+
+		getService().deleteTables(companyId, classNameId);
+	}
+
+	public static void deleteTables(long companyId, String className)
+		throws PortalException {
+
+		getService().deleteTables(companyId, className);
 	}
 
 	public static <T> T dslQuery(DSLQuery dslQuery) {
@@ -196,14 +258,44 @@ public class ExpandoTableLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
+	public static ExpandoTable fetchDefaultTable(
+		long companyId, long classNameId) {
+
+		return getService().fetchDefaultTable(companyId, classNameId);
+	}
+
+	public static ExpandoTable fetchDefaultTable(
+		long companyId, String className) {
+
+		return getService().fetchDefaultTable(companyId, className);
+	}
+
 	public static ExpandoTable fetchExpandoTable(long tableId) {
 		return getService().fetchExpandoTable(tableId);
+	}
+
+	public static ExpandoTable fetchTable(
+		long companyId, long classNameId, String name) {
+
+		return getService().fetchTable(companyId, classNameId, name);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
+	}
+
+	public static ExpandoTable getDefaultTable(long companyId, long classNameId)
+		throws PortalException {
+
+		return getService().getDefaultTable(companyId, classNameId);
+	}
+
+	public static ExpandoTable getDefaultTable(long companyId, String className)
+		throws PortalException {
+
+		return getService().getDefaultTable(companyId, className);
 	}
 
 	/**
@@ -268,6 +360,36 @@ public class ExpandoTableLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static ExpandoTable getTable(long tableId) throws PortalException {
+		return getService().getTable(tableId);
+	}
+
+	public static ExpandoTable getTable(
+			long companyId, long classNameId, String name)
+		throws PortalException {
+
+		return getService().getTable(companyId, classNameId, name);
+	}
+
+	public static ExpandoTable getTable(
+			long companyId, String className, String name)
+		throws PortalException {
+
+		return getService().getTable(companyId, className, name);
+	}
+
+	public static List<ExpandoTable> getTables(
+		long companyId, long classNameId) {
+
+		return getService().getTables(companyId, classNameId);
+	}
+
+	public static List<ExpandoTable> getTables(
+		long companyId, String className) {
+
+		return getService().getTables(companyId, className);
+	}
+
 	/**
 	 * Updates the expando table in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -280,6 +402,12 @@ public class ExpandoTableLocalServiceUtil {
 	 */
 	public static ExpandoTable updateExpandoTable(ExpandoTable expandoTable) {
 		return getService().updateExpandoTable(expandoTable);
+	}
+
+	public static ExpandoTable updateTable(long tableId, String name)
+		throws PortalException {
+
+		return getService().updateTable(tableId, name);
 	}
 
 	public static ExpandoTableLocalService getService() {

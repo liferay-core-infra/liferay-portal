@@ -46,6 +46,13 @@ public class ExpandoRowLocalServiceWrapper
 		return _expandoRowLocalService.addExpandoRow(expandoRow);
 	}
 
+	@Override
+	public ExpandoRow addRow(long tableId, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoRowLocalService.addRow(tableId, classPK);
+	}
+
 	/**
 	 * Creates a new expando row with the primary key. Does not add the expando row to the database.
 	 *
@@ -110,6 +117,53 @@ public class ExpandoRowLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _expandoRowLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public void deleteRow(ExpandoRow row) {
+		_expandoRowLocalService.deleteRow(row);
+	}
+
+	@Override
+	public void deleteRow(long rowId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoRowLocalService.deleteRow(rowId);
+	}
+
+	@Override
+	public void deleteRow(long tableId, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoRowLocalService.deleteRow(tableId, classPK);
+	}
+
+	@Override
+	public void deleteRow(
+			long companyId, long classNameId, String tableName, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoRowLocalService.deleteRow(
+			companyId, classNameId, tableName, classPK);
+	}
+
+	@Override
+	public void deleteRow(
+			long companyId, String className, String tableName, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoRowLocalService.deleteRow(
+			companyId, className, tableName, classPK);
+	}
+
+	@Override
+	public void deleteRows(long classPK) {
+		_expandoRowLocalService.deleteRows(classPK);
+	}
+
+	@Override
+	public void deleteRows(long companyId, long classNameId, long classPK) {
+		_expandoRowLocalService.deleteRows(companyId, classNameId, classPK);
 	}
 
 	@Override
@@ -220,10 +274,43 @@ public class ExpandoRowLocalServiceWrapper
 	}
 
 	@Override
+	public ExpandoRow fetchRow(long tableId, long classPK) {
+		return _expandoRowLocalService.fetchRow(tableId, classPK);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return _expandoRowLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public java.util.List<ExpandoRow> getDefaultTableRows(
+		long companyId, long classNameId, int start, int end) {
+
+		return _expandoRowLocalService.getDefaultTableRows(
+			companyId, classNameId, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoRow> getDefaultTableRows(
+		long companyId, String className, int start, int end) {
+
+		return _expandoRowLocalService.getDefaultTableRows(
+			companyId, className, start, end);
+	}
+
+	@Override
+	public int getDefaultTableRowsCount(long companyId, long classNameId) {
+		return _expandoRowLocalService.getDefaultTableRowsCount(
+			companyId, classNameId);
+	}
+
+	@Override
+	public int getDefaultTableRowsCount(long companyId, String className) {
+		return _expandoRowLocalService.getDefaultTableRowsCount(
+			companyId, className);
 	}
 
 	/**
@@ -292,6 +379,82 @@ public class ExpandoRowLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _expandoRowLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public ExpandoRow getRow(long rowId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoRowLocalService.getRow(rowId);
+	}
+
+	@Override
+	public ExpandoRow getRow(long tableId, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoRowLocalService.getRow(tableId, classPK);
+	}
+
+	@Override
+	public ExpandoRow getRow(
+		long companyId, long classNameId, String tableName, long classPK) {
+
+		return _expandoRowLocalService.getRow(
+			companyId, classNameId, tableName, classPK);
+	}
+
+	@Override
+	public ExpandoRow getRow(
+		long companyId, String className, String tableName, long classPK) {
+
+		return _expandoRowLocalService.getRow(
+			companyId, className, tableName, classPK);
+	}
+
+	@Override
+	public java.util.List<ExpandoRow> getRows(
+		long tableId, int start, int end) {
+
+		return _expandoRowLocalService.getRows(tableId, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoRow> getRows(
+		long companyId, long classNameId, String tableName, int start,
+		int end) {
+
+		return _expandoRowLocalService.getRows(
+			companyId, classNameId, tableName, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoRow> getRows(
+		long companyId, String className, String tableName, int start,
+		int end) {
+
+		return _expandoRowLocalService.getRows(
+			companyId, className, tableName, start, end);
+	}
+
+	@Override
+	public int getRowsCount(long tableId) {
+		return _expandoRowLocalService.getRowsCount(tableId);
+	}
+
+	@Override
+	public int getRowsCount(
+		long companyId, long classNameId, String tableName) {
+
+		return _expandoRowLocalService.getRowsCount(
+			companyId, classNameId, tableName);
+	}
+
+	@Override
+	public int getRowsCount(
+		long companyId, String className, String tableName) {
+
+		return _expandoRowLocalService.getRowsCount(
+			companyId, className, tableName);
 	}
 
 	/**

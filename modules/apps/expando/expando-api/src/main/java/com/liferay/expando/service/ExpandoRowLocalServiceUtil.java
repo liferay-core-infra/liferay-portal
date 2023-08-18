@@ -50,6 +50,12 @@ public class ExpandoRowLocalServiceUtil {
 		return getService().addExpandoRow(expandoRow);
 	}
 
+	public static ExpandoRow addRow(long tableId, long classPK)
+		throws PortalException {
+
+		return getService().addRow(tableId, classPK);
+	}
+
 	/**
 	 * Creates a new expando row with the primary key. Does not add the expando row to the database.
 	 *
@@ -109,6 +115,44 @@ public class ExpandoRowLocalServiceUtil {
 		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static void deleteRow(ExpandoRow row) {
+		getService().deleteRow(row);
+	}
+
+	public static void deleteRow(long rowId) throws PortalException {
+		getService().deleteRow(rowId);
+	}
+
+	public static void deleteRow(long tableId, long classPK)
+		throws PortalException {
+
+		getService().deleteRow(tableId, classPK);
+	}
+
+	public static void deleteRow(
+			long companyId, long classNameId, String tableName, long classPK)
+		throws PortalException {
+
+		getService().deleteRow(companyId, classNameId, tableName, classPK);
+	}
+
+	public static void deleteRow(
+			long companyId, String className, String tableName, long classPK)
+		throws PortalException {
+
+		getService().deleteRow(companyId, className, tableName, classPK);
+	}
+
+	public static void deleteRows(long classPK) {
+		getService().deleteRows(classPK);
+	}
+
+	public static void deleteRows(
+		long companyId, long classNameId, long classPK) {
+
+		getService().deleteRows(companyId, classNameId, classPK);
 	}
 
 	public static <T> T dslQuery(DSLQuery dslQuery) {
@@ -200,10 +244,40 @@ public class ExpandoRowLocalServiceUtil {
 		return getService().fetchExpandoRow(rowId);
 	}
 
+	public static ExpandoRow fetchRow(long tableId, long classPK) {
+		return getService().fetchRow(tableId, classPK);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
+	}
+
+	public static List<ExpandoRow> getDefaultTableRows(
+		long companyId, long classNameId, int start, int end) {
+
+		return getService().getDefaultTableRows(
+			companyId, classNameId, start, end);
+	}
+
+	public static List<ExpandoRow> getDefaultTableRows(
+		long companyId, String className, int start, int end) {
+
+		return getService().getDefaultTableRows(
+			companyId, className, start, end);
+	}
+
+	public static int getDefaultTableRowsCount(
+		long companyId, long classNameId) {
+
+		return getService().getDefaultTableRowsCount(companyId, classNameId);
+	}
+
+	public static int getDefaultTableRowsCount(
+		long companyId, String className) {
+
+		return getService().getDefaultTableRowsCount(companyId, className);
 	}
 
 	/**
@@ -264,6 +338,64 @@ public class ExpandoRowLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static ExpandoRow getRow(long rowId) throws PortalException {
+		return getService().getRow(rowId);
+	}
+
+	public static ExpandoRow getRow(long tableId, long classPK)
+		throws PortalException {
+
+		return getService().getRow(tableId, classPK);
+	}
+
+	public static ExpandoRow getRow(
+		long companyId, long classNameId, String tableName, long classPK) {
+
+		return getService().getRow(companyId, classNameId, tableName, classPK);
+	}
+
+	public static ExpandoRow getRow(
+		long companyId, String className, String tableName, long classPK) {
+
+		return getService().getRow(companyId, className, tableName, classPK);
+	}
+
+	public static List<ExpandoRow> getRows(long tableId, int start, int end) {
+		return getService().getRows(tableId, start, end);
+	}
+
+	public static List<ExpandoRow> getRows(
+		long companyId, long classNameId, String tableName, int start,
+		int end) {
+
+		return getService().getRows(
+			companyId, classNameId, tableName, start, end);
+	}
+
+	public static List<ExpandoRow> getRows(
+		long companyId, String className, String tableName, int start,
+		int end) {
+
+		return getService().getRows(
+			companyId, className, tableName, start, end);
+	}
+
+	public static int getRowsCount(long tableId) {
+		return getService().getRowsCount(tableId);
+	}
+
+	public static int getRowsCount(
+		long companyId, long classNameId, String tableName) {
+
+		return getService().getRowsCount(companyId, classNameId, tableName);
+	}
+
+	public static int getRowsCount(
+		long companyId, String className, String tableName) {
+
+		return getService().getRowsCount(companyId, className, tableName);
 	}
 
 	/**

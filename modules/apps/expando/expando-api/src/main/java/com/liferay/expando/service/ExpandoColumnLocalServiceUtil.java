@@ -35,6 +35,18 @@ public class ExpandoColumnLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.expando.service.impl.ExpandoColumnLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static ExpandoColumn addColumn(long tableId, String name, int type)
+		throws PortalException {
+
+		return getService().addColumn(tableId, name, type);
+	}
+
+	public static ExpandoColumn addColumn(
+			long tableId, String name, int type, Object defaultData)
+		throws PortalException {
+
+		return getService().addColumn(tableId, name, type, defaultData);
+	}
 
 	/**
 	 * Adds the expando column to the database. Also notifies the appropriate model listeners.
@@ -68,6 +80,54 @@ public class ExpandoColumnLocalServiceUtil {
 		throws PortalException {
 
 		return getService().createPersistedModel(primaryKeyObj);
+	}
+
+	public static void deleteColumn(ExpandoColumn column)
+		throws PortalException {
+
+		getService().deleteColumn(column);
+	}
+
+	public static void deleteColumn(long columnId) throws PortalException {
+		getService().deleteColumn(columnId);
+	}
+
+	public static void deleteColumn(
+			long companyId, long classNameId, String tableName, String name)
+		throws PortalException {
+
+		getService().deleteColumn(companyId, classNameId, tableName, name);
+	}
+
+	public static void deleteColumn(long tableId, String name)
+		throws PortalException {
+
+		getService().deleteColumn(tableId, name);
+	}
+
+	public static void deleteColumn(
+			long companyId, String className, String tableName, String name)
+		throws PortalException {
+
+		getService().deleteColumn(companyId, className, tableName, name);
+	}
+
+	public static void deleteColumns(long tableId) throws PortalException {
+		getService().deleteColumns(tableId);
+	}
+
+	public static void deleteColumns(
+			long companyId, long classNameId, String tableName)
+		throws PortalException {
+
+		getService().deleteColumns(companyId, classNameId, tableName);
+	}
+
+	public static void deleteColumns(
+			long companyId, String className, String tableName)
+		throws PortalException {
+
+		getService().deleteColumns(companyId, className, tableName);
 	}
 
 	/**
@@ -208,6 +268,118 @@ public class ExpandoColumnLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static ExpandoColumn getColumn(long columnId)
+		throws PortalException {
+
+		return getService().getColumn(columnId);
+	}
+
+	public static ExpandoColumn getColumn(
+		long companyId, long classNameId, String tableName, String name) {
+
+		return getService().getColumn(companyId, classNameId, tableName, name);
+	}
+
+	public static ExpandoColumn getColumn(long tableId, String name) {
+		return getService().getColumn(tableId, name);
+	}
+
+	public static ExpandoColumn getColumn(
+		long companyId, String className, String tableName, String name) {
+
+		return getService().getColumn(companyId, className, tableName, name);
+	}
+
+	public static List<ExpandoColumn> getColumns(long tableId) {
+		return getService().getColumns(tableId);
+	}
+
+	public static List<ExpandoColumn> getColumns(
+		long tableId, java.util.Collection<String> names) {
+
+		return getService().getColumns(tableId, names);
+	}
+
+	public static List<ExpandoColumn> getColumns(
+		long companyId, long classNameId, String tableName) {
+
+		return getService().getColumns(companyId, classNameId, tableName);
+	}
+
+	public static List<ExpandoColumn> getColumns(
+		long companyId, long classNameId, String tableName,
+		java.util.Collection<String> names) {
+
+		return getService().getColumns(
+			companyId, classNameId, tableName, names);
+	}
+
+	public static List<ExpandoColumn> getColumns(
+		long companyId, String className, String tableName) {
+
+		return getService().getColumns(companyId, className, tableName);
+	}
+
+	public static List<ExpandoColumn> getColumns(
+		long companyId, String className, String tableName,
+		java.util.Collection<String> columnNames) {
+
+		return getService().getColumns(
+			companyId, className, tableName, columnNames);
+	}
+
+	public static int getColumnsCount(long tableId) {
+		return getService().getColumnsCount(tableId);
+	}
+
+	public static int getColumnsCount(
+		long companyId, long classNameId, String tableName) {
+
+		return getService().getColumnsCount(companyId, classNameId, tableName);
+	}
+
+	public static int getColumnsCount(
+		long companyId, String className, String tableName) {
+
+		return getService().getColumnsCount(companyId, className, tableName);
+	}
+
+	public static ExpandoColumn getDefaultTableColumn(
+		long companyId, long classNameId, String name) {
+
+		return getService().getDefaultTableColumn(companyId, classNameId, name);
+	}
+
+	public static ExpandoColumn getDefaultTableColumn(
+		long companyId, String className, String name) {
+
+		return getService().getDefaultTableColumn(companyId, className, name);
+	}
+
+	public static List<ExpandoColumn> getDefaultTableColumns(
+		long companyId, long classNameId) {
+
+		return getService().getDefaultTableColumns(companyId, classNameId);
+	}
+
+	public static List<ExpandoColumn> getDefaultTableColumns(
+		long companyId, String className) {
+
+		return getService().getDefaultTableColumns(companyId, className);
+	}
+
+	public static int getDefaultTableColumnsCount(
+		long companyId, long classNameId) {
+
+		return getService().getDefaultTableColumnsCount(companyId, classNameId);
+	}
+
+	public static int getDefaultTableColumnsCount(
+		long companyId, String className) {
+
+		return getService().getDefaultTableColumnsCount(companyId, className);
+	}
+
 	/**
 	 * Returns the expando column with the primary key.
 	 *
@@ -270,6 +442,20 @@ public class ExpandoColumnLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static ExpandoColumn updateColumn(
+			long columnId, String name, int type)
+		throws PortalException {
+
+		return getService().updateColumn(columnId, name, type);
+	}
+
+	public static ExpandoColumn updateColumn(
+			long columnId, String name, int type, Object defaultData)
+		throws PortalException {
+
+		return getService().updateColumn(columnId, name, type, defaultData);
+	}
+
 	/**
 	 * Updates the expando column in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -284,6 +470,13 @@ public class ExpandoColumnLocalServiceUtil {
 		ExpandoColumn expandoColumn) {
 
 		return getService().updateExpandoColumn(expandoColumn);
+	}
+
+	public static ExpandoColumn updateTypeSettings(
+			long columnId, String typeSettings)
+		throws PortalException {
+
+		return getService().updateTypeSettings(columnId, typeSettings);
 	}
 
 	public static ExpandoColumnLocalService getService() {

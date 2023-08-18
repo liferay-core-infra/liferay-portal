@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -58,6 +59,12 @@ public interface ExpandoColumnLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.expando.service.impl.ExpandoColumnLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the expando column local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ExpandoColumnLocalServiceUtil} if injection and service tracking are not available.
 	 */
+	public ExpandoColumn addColumn(long tableId, String name, int type)
+		throws PortalException;
+
+	public ExpandoColumn addColumn(
+			long tableId, String name, int type, Object defaultData)
+		throws PortalException;
 
 	/**
 	 * Adds the expando column to the database. Also notifies the appropriate model listeners.
@@ -85,6 +92,30 @@ public interface ExpandoColumnLocalService
 	 * @throws PortalException
 	 */
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	public void deleteColumn(ExpandoColumn column) throws PortalException;
+
+	public void deleteColumn(long columnId) throws PortalException;
+
+	public void deleteColumn(
+			long companyId, long classNameId, String tableName, String name)
+		throws PortalException;
+
+	public void deleteColumn(long tableId, String name) throws PortalException;
+
+	public void deleteColumn(
+			long companyId, String className, String tableName, String name)
+		throws PortalException;
+
+	public void deleteColumns(long tableId) throws PortalException;
+
+	public void deleteColumns(
+			long companyId, long classNameId, String tableName)
+		throws PortalException;
+
+	public void deleteColumns(
+			long companyId, String className, String tableName)
 		throws PortalException;
 
 	/**
@@ -200,6 +231,78 @@ public interface ExpandoColumnLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoColumn getColumn(long columnId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoColumn getColumn(
+		long companyId, long classNameId, String tableName, String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoColumn getColumn(long tableId, String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoColumn getColumn(
+		long companyId, String className, String tableName, String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoColumn> getColumns(long tableId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoColumn> getColumns(
+		long tableId, Collection<String> names);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoColumn> getColumns(
+		long companyId, long classNameId, String tableName);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoColumn> getColumns(
+		long companyId, long classNameId, String tableName,
+		Collection<String> names);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoColumn> getColumns(
+		long companyId, String className, String tableName);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoColumn> getColumns(
+		long companyId, String className, String tableName,
+		Collection<String> columnNames);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getColumnsCount(long tableId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getColumnsCount(
+		long companyId, long classNameId, String tableName);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getColumnsCount(
+		long companyId, String className, String tableName);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoColumn getDefaultTableColumn(
+		long companyId, long classNameId, String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoColumn getDefaultTableColumn(
+		long companyId, String className, String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoColumn> getDefaultTableColumns(
+		long companyId, long classNameId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoColumn> getDefaultTableColumns(
+		long companyId, String className);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDefaultTableColumnsCount(long companyId, long classNameId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDefaultTableColumnsCount(long companyId, String className);
+
 	/**
 	 * Returns the expando column with the primary key.
 	 *
@@ -250,6 +353,13 @@ public interface ExpandoColumnLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	public ExpandoColumn updateColumn(long columnId, String name, int type)
+		throws PortalException;
+
+	public ExpandoColumn updateColumn(
+			long columnId, String name, int type, Object defaultData)
+		throws PortalException;
+
 	/**
 	 * Updates the expando column in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -262,6 +372,9 @@ public interface ExpandoColumnLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public ExpandoColumn updateExpandoColumn(ExpandoColumn expandoColumn);
+
+	public ExpandoColumn updateTypeSettings(long columnId, String typeSettings)
+		throws PortalException;
 
 	@Override
 	@Transactional(enabled = false)

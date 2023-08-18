@@ -47,4 +47,6 @@ public interface ExpandoTable extends ExpandoTableModel, PersistedModel {
 
 		};
 
+	public boolean isDefaultTable();
+
 }

@@ -47,4 +47,15 @@ public interface ExpandoColumn extends ExpandoColumnModel, PersistedModel {
 
 		};
 
+	public java.io.Serializable getDefaultValue();
+
+	public String getDisplayName(java.util.Locale locale);
+
+	public com.liferay.portal.kernel.util.UnicodeProperties
+		getTypeSettingsProperties();
+
+	public void setTypeSettingsProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties
+			typeSettingsUnicodeProperties);
+
 }

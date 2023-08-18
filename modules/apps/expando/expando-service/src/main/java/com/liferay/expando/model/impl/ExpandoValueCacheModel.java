@@ -120,7 +120,9 @@ public class ExpandoValueCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		mvccVersion = objectInput.readLong();
 
 		ctCollectionId = objectInput.readLong();
@@ -138,7 +140,7 @@ public class ExpandoValueCacheModel
 		classNameId = objectInput.readLong();
 
 		classPK = objectInput.readLong();
-		data = objectInput.readUTF();
+		data = (String)objectInput.readObject();
 	}
 
 	@Override
@@ -162,10 +164,10 @@ public class ExpandoValueCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (data == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(data);
+			objectOutput.writeObject(data);
 		}
 	}
 

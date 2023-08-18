@@ -366,9 +366,13 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	@Override
 	public void shutdown() throws SchedulerException {
 		try {
+			_removeTriggerListener(_persistedScheduler);
+
 			if (!_persistedScheduler.isInStandbyMode()) {
 				_persistedScheduler.standby();
 			}
+
+			_removeTriggerListener(_memoryScheduler);
 
 			if (!_memoryScheduler.isInStandbyMode()) {
 				_memoryScheduler.standby();
@@ -383,9 +387,13 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	@Override
 	public void start() throws SchedulerException {
 		try {
+			_addTriggerListener(_persistedScheduler);
+
 			_persistedScheduler.start();
 
 			initJobState();
+
+			_addTriggerListener(_memoryScheduler);
 
 			_memoryScheduler.start();
 		}
@@ -749,6 +757,12 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 	}
 
+	private void _addTriggerListener(Scheduler scheduler) throws Exception {
+		ListenerManager listenerManager = scheduler.getListenerManager();
+
+		listenerManager.addTriggerListener(new TriggerListenerSupportImpl());
+	}
+
 	private String _fixMaxLength(
 		String argument, int maxLength, StorageType storageType) {
 
@@ -836,11 +850,14 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		schedulerContext.put("jSONFactory", _jsonFactory);
 		schedulerContext.put("messageBus", _messageBus);
 
+		return scheduler;
+	}
+
+	private void _removeTriggerListener(Scheduler scheduler) throws Exception {
 		ListenerManager listenerManager = scheduler.getListenerManager();
 
-		listenerManager.addTriggerListener(new TriggerListenerSupportImpl());
-
-		return scheduler;
+		listenerManager.removeTriggerListener(
+			TriggerListenerSupportImpl.class.getName());
 	}
 
 	private void _updateJobState(

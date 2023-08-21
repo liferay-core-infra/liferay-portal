@@ -46,7 +46,7 @@ public class SXPParameterDataCreatorUtil {
 	public static SXPParameterData create(
 		ExceptionListener exceptionListener, SearchContext searchContext,
 		SXPBlueprint sxpBlueprint,
-		SXPParameterContributorProvider sxpParameterContributorProvider) {
+		SXPParameterContributor[] sxpParameterContributors) {
 
 		Map<String, SXPParameter> sxpParameters = new LinkedHashMap<>();
 
@@ -63,7 +63,7 @@ public class SXPParameterDataCreatorUtil {
 
 		_contribute(
 			exceptionListener, searchContext, sxpBlueprint, sxpParameters,
-			sxpParameterContributorProvider);
+			sxpParameterContributors);
 
 		return new SXPParameterData(keywords, sxpParameters);
 	}
@@ -160,17 +160,14 @@ public class SXPParameterDataCreatorUtil {
 	private static void _contribute(
 		ExceptionListener exceptionListener, SearchContext searchContext,
 		SXPBlueprint sxpBlueprint, Map<String, SXPParameter> sxpParameters,
-		SXPParameterContributorProvider sxpParameterContributorProvider) {
+		SXPParameterContributor[] sxpParameterContributors) {
 
-		if (ArrayUtil.isEmpty(
-				sxpParameterContributorProvider.
-					getSxpParameterContributors())) {
-
+		if (ArrayUtil.isEmpty(sxpParameterContributors)) {
 			return;
 		}
 
 		for (SXPParameterContributor sxpParameterContributor :
-				sxpParameterContributorProvider.getSxpParameterContributors()) {
+				sxpParameterContributors) {
 
 			Set<SXPParameter> set = new LinkedHashSet<>();
 

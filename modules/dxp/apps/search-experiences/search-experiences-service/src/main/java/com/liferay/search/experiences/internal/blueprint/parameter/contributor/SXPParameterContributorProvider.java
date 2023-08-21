@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.search.experiences.internal.blueprint.parameter;
+package com.liferay.search.experiences.internal.blueprint.parameter.contributor;
 
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
@@ -18,13 +18,6 @@ import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.search.experiences.configuration.SemanticSearchConfigurationProvider;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.ContextSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.IpstackSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.MLSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.OpenWeatherMapSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.SXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.TimeSXPParameterContributor;
-import com.liferay.search.experiences.internal.blueprint.parameter.contributor.UserSXPParameterContributor;
 import com.liferay.search.experiences.ml.embedding.text.TextEmbeddingRetriever;
 import com.liferay.segments.SegmentsEntryRetriever;
 

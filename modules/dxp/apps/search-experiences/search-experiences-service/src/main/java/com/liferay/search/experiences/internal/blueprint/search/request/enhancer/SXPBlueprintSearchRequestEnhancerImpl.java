@@ -197,7 +197,8 @@ public class SXPBlueprintSearchRequestEnhancerImpl
 			runtimeException::addSuppressed,
 			searchRequestBuilder.withSearchContextGet(
 				searchContext -> searchContext),
-			sxpBlueprint, _sxpParameterContributorProvider);
+			sxpBlueprint,
+			_sxpParameterContributorProvider.getSxpParameterContributors());
 
 		if (configuration != null) {
 			_contributeSXPSearchRequestBodyContributors(

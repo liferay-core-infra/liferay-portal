@@ -610,7 +610,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				}
 
 				SchedulerEngineHelper schedulerEngineHelper =
-					_getSchedulerEngineHelper();
+					_schedulerEngineHelperSnapshot.get();
 
 				JobDetail jobDetail = _persistedScheduler.getJobDetail(jobKey);
 
@@ -778,17 +778,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		return _memoryScheduler;
 	}
 
-	private SchedulerEngineHelper _getSchedulerEngineHelper() {
-		SchedulerEngineHelper schedulerEngineHelper =
-			_schedulerEngineHelperSnapshot.get();
-
-		if (schedulerEngineHelper == null) {
-			throw new IllegalStateException("Scheduler engine helper is null");
-		}
-
-		return schedulerEngineHelper;
-	}
-
 	private Scheduler _initializeScheduler(
 			String propertiesPrefix, boolean useQuartzCluster)
 		throws Exception {
@@ -838,7 +827,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 		ListenerManager listenerManager = scheduler.getListenerManager();
 
-		listenerManager.addTriggerListener(new TriggerListenerSupportImpl());
+		listenerManager.addTriggerListener(
+			new TriggerListenerSupportImpl(scheduler));
 
 		return scheduler;
 	}
@@ -927,6 +917,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				SchedulerEngineHelper schedulerEngineHelper =
 					_getSchedulerEngineHelper();
 
+				if (schedulerEngineHelper == null) {
+					return;
+				}
+
 				schedulerEngineHelper.delete(
 					triggerKey.getName(), triggerKey.getGroup(),
 					StorageType.valueOf(
@@ -954,6 +948,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				SchedulerEngineHelper schedulerEngineHelper =
 					_getSchedulerEngineHelper();
 
+				if (schedulerEngineHelper == null) {
+					return;
+				}
+
 				schedulerEngineHelper.auditSchedulerJobs(
 					message, TriggerState.NORMAL);
 			}
@@ -964,6 +962,35 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 					schedulerException);
 			}
 		}
+
+		private TriggerListenerSupportImpl(Scheduler scheduler) {
+			_scheduler = scheduler;
+		}
+
+		private SchedulerEngineHelper _getSchedulerEngineHelper()
+			throws SchedulerException {
+
+			SchedulerEngineHelper schedulerEngineHelper =
+				_schedulerEngineHelperSnapshot.get();
+
+			if (schedulerEngineHelper != null) {
+				return schedulerEngineHelper;
+			}
+
+			try {
+				if (_scheduler.isInStandbyMode()) {
+					return null;
+				}
+
+				throw new IllegalStateException(
+					"Scheduler engine helper is null");
+			}
+			catch (org.quartz.SchedulerException schedulerException) {
+				throw new SchedulerException(schedulerException);
+			}
+		}
+
+		private final Scheduler _scheduler;
 
 	}
 

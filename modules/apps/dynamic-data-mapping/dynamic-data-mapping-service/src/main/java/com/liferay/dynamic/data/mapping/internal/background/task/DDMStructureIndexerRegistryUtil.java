@@ -12,19 +12,16 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.DDMStructureIndexer;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Igor Fabiano Nazar
  * @author Lucas Marques de Paula
  */
-@Component(service = DDMStructureIndexerRegistry.class)
-public class DDMStructureIndexerRegistry {
+public class DDMStructureIndexerRegistryUtil {
 
-	public DDMStructureIndexer getDDMStructureIndexer(String className)
+	public static DDMStructureIndexer getDDMStructureIndexer(String className)
 		throws PortalException {
 
 		DDMStructureIndexer ddmStructureIndexer = _serviceTrackerMap.getService(
@@ -43,21 +40,19 @@ public class DDMStructureIndexerRegistry {
 		return ddmStructureIndexer;
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
+	private static final Log _log = LogFactoryUtil.getLog(
+		DDMStructureIndexerRegistryUtil.class);
+
+	private static final ServiceTrackerMap<String, DDMStructureIndexer>
+		_serviceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DDMStructureIndexerRegistryUtil.class);
+
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, DDMStructureIndexer.class,
+			bundle.getBundleContext(), DDMStructureIndexer.class,
 			"ddm.structure.indexer.class.name");
 	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerMap.close();
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		DDMStructureIndexerRegistry.class);
-
-	private ServiceTrackerMap<String, DDMStructureIndexer> _serviceTrackerMap;
 
 }

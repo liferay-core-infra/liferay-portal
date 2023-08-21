@@ -34,9 +34,9 @@ import com.liferay.search.experiences.blueprint.exception.InvalidElementInstance
 import com.liferay.search.experiences.blueprint.parameter.SXPParameter;
 import com.liferay.search.experiences.blueprint.search.request.enhancer.SXPBlueprintSearchRequestEnhancer;
 import com.liferay.search.experiences.internal.blueprint.highlight.HighlightConverter;
-import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterContributorProvider;
 import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterData;
 import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterDataCreatorUtil;
+import com.liferay.search.experiences.internal.blueprint.parameter.contributor.SXPParameterContributorProvider;
 import com.liferay.search.experiences.internal.blueprint.property.PropertyExpander;
 import com.liferay.search.experiences.internal.blueprint.property.PropertyResolver;
 import com.liferay.search.experiences.internal.blueprint.query.QueryConverter;

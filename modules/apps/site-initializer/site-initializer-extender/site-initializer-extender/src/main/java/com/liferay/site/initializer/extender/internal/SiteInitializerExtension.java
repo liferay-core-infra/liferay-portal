@@ -66,6 +66,7 @@ import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.zip.ZipWriterFactory;
 import com.liferay.portal.language.override.service.PLOEntryLocalService;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
 import com.liferay.segments.service.SegmentsEntryLocalService;
@@ -168,7 +169,8 @@ public class SiteInitializerExtension {
 		UserGroupLocalService userGroupLocalService,
 		UserLocalService userLocalService,
 		WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService,
-		WorkflowDefinitionResource.Factory workflowDefinitionResourceFactory) {
+		WorkflowDefinitionResource.Factory workflowDefinitionResourceFactory,
+		ZipWriterFactory zipWriterFactory) {
 
 		_dependencyManager = dependencyManager;
 
@@ -210,7 +212,7 @@ public class SiteInitializerExtension {
 			templateEntryLocalService, themeLocalService,
 			userAccountResourceFactory, userGroupLocalService, userLocalService,
 			workflowDefinitionLinkLocalService,
-			workflowDefinitionResourceFactory);
+			workflowDefinitionResourceFactory, zipWriterFactory);
 
 		_component.setImplementation(bundleSiteInitializer);
 

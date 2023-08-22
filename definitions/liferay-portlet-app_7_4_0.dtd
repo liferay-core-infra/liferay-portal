@@ -167,7 +167,8 @@ time interval. The unit of measure is based on the value of time-unit element.
 <!ELEMENT property-key (#PCDATA)>
 
 <!--
-The cron-trigger-value value should be a cron text.
+The cron-trigger-value value should be a cron text. An empty value will disable
+the trigger of the class specified in scheduler-event-listener-class.
 -->
 <!ELEMENT cron-trigger-value (#PCDATA)>
 
@@ -178,7 +179,8 @@ The simple element specifies an interval trigger for a scheduler.
 
 <!--
 The simple-trigger-value value is a number that represents how often to trigger
-a scheduler.
+a scheduler. A 0 value will disable the trigger of the class specified in
+scheduler-event-listener-class.
 -->
 <!ELEMENT simple-trigger-value (#PCDATA)>
 

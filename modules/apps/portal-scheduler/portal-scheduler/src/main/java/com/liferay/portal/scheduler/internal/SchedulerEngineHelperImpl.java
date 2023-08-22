@@ -546,20 +546,30 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 			Trigger trigger = null;
 
-			if (Validator.isNotNull(triggerConfiguration.getCronExpression())) {
-				trigger = _triggerFactory.createTrigger(
-					schedulerJobConfiguration.getName(),
-					schedulerJobConfiguration.getName(),
-					triggerConfiguration.getStartDate(), null,
-					triggerConfiguration.getCronExpression());
-			}
-			else {
+			if (Validator.isNotNull(triggerConfiguration.getTimeUnit())) {
+				if (triggerConfiguration.getInterval() == 0) {
+					return null;
+				}
+
 				trigger = _triggerFactory.createTrigger(
 					schedulerJobConfiguration.getName(),
 					schedulerJobConfiguration.getName(),
 					triggerConfiguration.getStartDate(), null,
 					triggerConfiguration.getInterval(),
 					triggerConfiguration.getTimeUnit());
+			}
+			else {
+				if (Validator.isBlank(
+						triggerConfiguration.getCronExpression())) {
+
+					return null;
+				}
+
+				trigger = _triggerFactory.createTrigger(
+					schedulerJobConfiguration.getName(),
+					schedulerJobConfiguration.getName(),
+					triggerConfiguration.getStartDate(), null,
+					triggerConfiguration.getCronExpression());
 			}
 
 			ClusterableContextThreadLocal.putThreadLocalContext(

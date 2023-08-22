@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.scheduler.internal.configuration.SchedulerEngineHelperConfiguration;
 import com.liferay.portal.scheduler.internal.messaging.config.ScriptingMessageListener;
@@ -547,6 +548,13 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			Trigger trigger = null;
 
 			if (Validator.isNotNull(triggerConfiguration.getCronExpression())) {
+				if (StringUtil.equals(
+						triggerConfiguration.getCronExpression(),
+						StringPool.BLANK)) {
+
+					return null;
+				}
+
 				trigger = _triggerFactory.createTrigger(
 					schedulerJobConfiguration.getName(),
 					schedulerJobConfiguration.getName(),
@@ -554,6 +562,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 					triggerConfiguration.getCronExpression());
 			}
 			else {
+				if (triggerConfiguration.getInterval() == 0) {
+					return null;
+				}
+
 				trigger = _triggerFactory.createTrigger(
 					schedulerJobConfiguration.getName(),
 					schedulerJobConfiguration.getName(),

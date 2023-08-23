@@ -338,6 +338,10 @@ public class PortalUpgradeProcessRegistryImpl
 			new GuestUnsupportedResourcePermissionsUpgradeProcess(
 				Group.class.getName(), ActionKeys.CONFIGURE_PORTLETS,
 				ActionKeys.VIEW_SITE_ADMINISTRATION));
+
+		upgradeVersionTreeMap.put(
+			new Version(28, 0, 2), new UpgradeClassName(),
+			new UpgradeResourceActionName(), new UpgradeResourcePermission());
 	}
 
 }

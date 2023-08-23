@@ -59,7 +59,7 @@ public class EntityCacheImpl
 
 	@Override
 	public void clearCache() {
-		_notifyFinderCache(null, null, false);
+		_notifyFinderCache(null, null, true, false);
 
 		clearLocalCache();
 
@@ -70,7 +70,7 @@ public class EntityCacheImpl
 
 	@Override
 	public void clearCache(Class<?> clazz) {
-		_notifyFinderCache(clazz.getName(), null, false);
+		_notifyFinderCache(clazz.getName(), null, true, false);
 
 		clearLocalCache();
 
@@ -88,8 +88,6 @@ public class EntityCacheImpl
 
 	@Override
 	public void dispose() {
-		_notifyFinderCache(null, null, true);
-
 		_portalCaches.clear();
 	}
 
@@ -206,8 +204,6 @@ public class EntityCacheImpl
 			cacheName = portalCacheName.substring(_GROUP_KEY_PREFIX.length());
 		}
 
-		_notifyFinderCache(cacheName, null, true);
-
 		_portalCaches.remove(cacheName);
 	}
 
@@ -230,8 +226,6 @@ public class EntityCacheImpl
 
 	@Override
 	public void removeCache(String className) {
-		_notifyFinderCache(className, null, true);
-
 		_portalCaches.remove(className);
 
 		String groupKey = _GROUP_KEY_PREFIX.concat(className);
@@ -306,17 +300,18 @@ public class EntityCacheImpl
 
 	private void _notify(
 		long companyId, String className, BaseModel<?> baseModel,
-		Boolean removePortalCache) {
+		boolean clearCache, boolean removeCache) {
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setWithSafeCloseable(companyId)) {
 
-			_notify(className, baseModel, removePortalCache);
+			_notify(className, baseModel, clearCache, removeCache);
 		}
 	}
 
 	private void _notify(
-		String className, BaseModel<?> baseModel, Boolean removePortalCache) {
+		String className, BaseModel<?> baseModel, boolean clearCache,
+		boolean removeCache) {
 
 		FinderCacheImpl finderCacheImpl = _getFinderCacheImpl();
 
@@ -324,21 +319,10 @@ public class EntityCacheImpl
 			return;
 		}
 
-		if (removePortalCache == null) {
-			finderCacheImpl.updateByEntityCache(className, baseModel);
-		}
-		else if (baseModel != null) {
+		if (removeCache) {
 			finderCacheImpl.removeByEntityCache(className, baseModel);
 		}
-		else if (removePortalCache) {
-			if (className == null) {
-				finderCacheImpl.dispose();
-			}
-			else {
-				finderCacheImpl.removeCacheByEntityCache(className);
-			}
-		}
-		else {
+		else if (clearCache) {
 			if (className == null) {
 				finderCacheImpl.clearCache();
 			}
@@ -346,12 +330,16 @@ public class EntityCacheImpl
 				finderCacheImpl.clearByEntityCache(className);
 			}
 		}
+		else {
+			finderCacheImpl.updateByEntityCache(className, baseModel);
+		}
 	}
 
 	private void _notifyFinderCache(
-		String className, BaseModel<?> baseModel, Boolean removePortalCache) {
+		String className, BaseModel<?> baseModel, boolean clearCache,
+		boolean removeCache) {
 
-		_notify(className, baseModel, removePortalCache);
+		_notify(className, baseModel, clearCache, removeCache);
 
 		if (!_clusterExecutor.isEnabled() ||
 			!ClusterInvokeThreadLocal.isEnabled()) {
@@ -364,7 +352,7 @@ public class EntityCacheImpl
 				_notifyMethodKey,
 				new Object[] {
 					CompanyThreadLocal.getCompanyId(), className, baseModel,
-					removePortalCache
+					clearCache, removeCache
 				});
 
 			ClusterRequest clusterRequest =
@@ -390,7 +378,7 @@ public class EntityCacheImpl
 		}
 
 		if (!quiet && updateFinderCache) {
-			_notifyFinderCache(clazz.getName(), baseModel, null);
+			_notifyFinderCache(clazz.getName(), baseModel, false, false);
 		}
 
 		CacheModel<?> result = baseModel.toCacheModel();
@@ -424,7 +412,7 @@ public class EntityCacheImpl
 		}
 
 		if (baseModel != null) {
-			_notifyFinderCache(clazz.getName(), baseModel, false);
+			_notifyFinderCache(clazz.getName(), baseModel, false, true);
 		}
 
 		if (_isLocalCacheEnabled()) {
@@ -466,7 +454,7 @@ public class EntityCacheImpl
 		new Snapshot<>(EntityCacheImpl.class, FinderCache.class);
 	private static final MethodKey _notifyMethodKey = new MethodKey(
 		EntityCacheImpl.class, "_notify", long.class, String.class,
-		BaseModel.class, Boolean.class);
+		BaseModel.class, boolean.class, boolean.class);
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;

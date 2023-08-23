@@ -10,7 +10,7 @@ import com.liferay.dynamic.data.mapping.exception.StorageException;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.dynamic.data.mapping.util.DDMDisplay;
-import com.liferay.dynamic.data.mapping.util.DDMDisplayRegistry;
+import com.liferay.dynamic.data.mapping.util.DDMDisplayRegistryUtil;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
@@ -74,15 +74,13 @@ import javax.servlet.http.HttpServletRequest;
 public class KaleoFormsAdminDisplayContext {
 
 	public KaleoFormsAdminDisplayContext(
-		DDLRecordLocalService ddlRecordLocalService,
-		DDMDisplayRegistry ddmDisplayRegistry, HtmlParser htmlParser,
+		DDLRecordLocalService ddlRecordLocalService, HtmlParser htmlParser,
 		KaleoDefinitionVersionLocalService kaleoDefinitionVersionLocalService,
 		KaleoFormsWebConfiguration kaleoFormsWebConfiguration,
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		StorageEngine storageEngine) {
 
 		_ddlRecordLocalService = ddlRecordLocalService;
-		_ddmDisplayRegistry = ddmDisplayRegistry;
 		_htmlParser = htmlParser;
 		_kaleoDefinitionVersionLocalService =
 			kaleoDefinitionVersionLocalService;
@@ -140,7 +138,7 @@ public class KaleoFormsAdminDisplayContext {
 	}
 
 	public DDMDisplay getDDMDisplay() {
-		return _ddmDisplayRegistry.getDDMDisplay(
+		return DDMDisplayRegistryUtil.getDDMDisplay(
 			_kaleoFormsAdminRequestHelper.getPortletId());
 	}
 
@@ -614,7 +612,6 @@ public class KaleoFormsAdminDisplayContext {
 	private static final String[] _DISPLAY_VIEWS = {"list"};
 
 	private final DDLRecordLocalService _ddlRecordLocalService;
-	private final DDMDisplayRegistry _ddmDisplayRegistry;
 	private final HtmlParser _htmlParser;
 	private final HttpServletRequest _httpServletRequest;
 	private final KaleoDefinitionVersionLocalService

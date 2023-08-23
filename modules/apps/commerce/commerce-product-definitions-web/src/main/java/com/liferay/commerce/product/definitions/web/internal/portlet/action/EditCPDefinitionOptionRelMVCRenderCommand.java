@@ -11,7 +11,7 @@ import com.liferay.commerce.product.exception.NoSuchCPDefinitionOptionRelExcepti
 import com.liferay.commerce.product.portlet.action.ActionHelper;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesRegistry;
 import com.liferay.item.selector.ItemSelector;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
+import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;

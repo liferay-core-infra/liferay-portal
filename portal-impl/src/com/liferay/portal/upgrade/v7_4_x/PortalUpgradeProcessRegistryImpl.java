@@ -310,6 +310,10 @@ public class PortalUpgradeProcessRegistryImpl
 				}
 
 			});
+
+		upgradeVersionTreeMap.put(
+			new Version(26, 4, 1), new UpgradeClassName(),
+			new UpgradeResourceActionName(), new UpgradeResourcePermission());
 	}
 
 }

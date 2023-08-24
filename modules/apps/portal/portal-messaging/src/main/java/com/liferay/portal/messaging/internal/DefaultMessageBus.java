@@ -191,8 +191,6 @@ public class DefaultMessageBus implements MessageBus {
 		_destinationServiceTrackerMap.close();
 
 		_messageBusEventListenerServiceTrackerList.close();
-
-		shutdown(true);
 	}
 
 	private void _updateDestination(

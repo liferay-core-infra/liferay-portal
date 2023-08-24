@@ -5,9 +5,11 @@
 
 package com.liferay.portal.upgrade.v7_4_x;
 
+import com.liferay.portal.kernel.model.dao.ReleaseDAO;
 import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.util.UpgradeModulesFactory;
 import com.liferay.portal.kernel.upgrade.util.UpgradeVersionTreeMap;
@@ -313,6 +315,17 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeVersionTreeMap.put(
 			new Version(26, 4, 1), new UpgradeClassName(),
+			new UpgradeProcess() {
+
+				@Override
+				protected void doUpgrade() throws Exception {
+					ReleaseDAO releaseDAO = new ReleaseDAO();
+
+					releaseDAO.addRelease(
+						connection, "com.liferay.expando.service");
+				}
+
+			},
 			new UpgradeResourceActionName(), new UpgradeResourcePermission());
 	}
 

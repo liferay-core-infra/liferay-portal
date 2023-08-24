@@ -15,8 +15,6 @@ import com.liferay.adaptive.media.image.validator.AMImageValidator;
 import com.liferay.adaptive.media.processor.AMAsyncProcessor;
 import com.liferay.adaptive.media.processor.AMAsyncProcessorLocator;
 import com.liferay.adaptive.media.processor.AMProcessor;
-import com.liferay.document.library.kernel.model.DLProcessorConstants;
-import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.ImageProcessor;
 import com.liferay.document.library.security.io.InputStreamSanitizer;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -54,16 +52,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.adaptive.media.document.library.thumbnails.internal.configuration.AMSystemImagesConfiguration",
-	property = "type=" + DLProcessorConstants.IMAGE_PROCESSOR,
-	service = {
-		AMImageEntryProcessor.class, DLProcessor.class, ImageProcessor.class
-	}
+	service = ImageProcessor.class
 )
-public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
-
-	@Override
-	public void afterPropertiesSet() {
-	}
+public class AMImageEntryProcessor implements ImageProcessor {
 
 	@Override
 	public void cleanUp(FileEntry fileEntry) {
@@ -71,11 +62,6 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 	@Override
 	public void cleanUp(FileVersion fileVersion) {
-	}
-
-	@Override
-	public void copy(
-		FileVersion sourceFileVersion, FileVersion destinationFileVersion) {
 	}
 
 	@Override
@@ -92,7 +78,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	@Override
 	public Set<String> getImageMimeTypes() {
 		return new HashSet<>(
-			Arrays.asList(_amImageMimeTypeProvider.getSupportedMimeTypes()));
+			Arrays.asList(amImageMimeTypeProvider.getSupportedMimeTypes()));
 	}
 
 	@Override
@@ -190,11 +176,6 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	}
 
 	@Override
-	public String getType() {
-		return DLProcessorConstants.IMAGE_PROCESSOR;
-	}
-
-	@Override
 	public boolean hasImages(FileVersion fileVersion) {
 		try {
 			List<AdaptiveMedia<AMProcessor<FileVersion>>> adaptiveMedias =
@@ -225,17 +206,12 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 	@Override
 	public boolean isImageSupported(FileVersion fileVersion) {
-		return _amImageValidator.isValid(fileVersion);
+		return amImageValidator.isValid(fileVersion);
 	}
 
 	@Override
 	public boolean isImageSupported(String mimeType) {
 		return _isMimeTypeSupported(mimeType);
-	}
-
-	@Override
-	public boolean isSupported(FileVersion fileVersion) {
-		return _amImageValidator.isValid(fileVersion);
 	}
 
 	@Override
@@ -262,13 +238,28 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 			AMSystemImagesConfiguration.class, properties);
 	}
 
+	@Reference
+	protected AMAsyncProcessorLocator amAsyncProcessorLocator;
+
+	@Reference
+	protected AMImageFinder amImageFinder;
+
+	@Reference
+	protected AMImageMimeTypeProvider amImageMimeTypeProvider;
+
+	@Reference
+	protected AMImageValidator amImageValidator;
+
+	@Reference
+	protected InputStreamSanitizer inputStreamSanitizer;
+
 	private List<AdaptiveMedia<AMProcessor<FileVersion>>> _getAdaptiveMedias(
 			FileVersion fileVersion, String configurationUuid, int defaultWidth,
 			int defaultHeight)
 		throws PortalException {
 
 		if (Validator.isNotNull(configurationUuid)) {
-			return _amImageFinder.getAdaptiveMedias(
+			return amImageFinder.getAdaptiveMedias(
 				amImageQueryBuilder -> amImageQueryBuilder.forFileVersion(
 					fileVersion
 				).forConfiguration(
@@ -276,7 +267,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 				).done());
 		}
 
-		return _amImageFinder.getAdaptiveMedias(
+		return amImageFinder.getAdaptiveMedias(
 			amImageQueryBuilder -> amImageQueryBuilder.forFileVersion(
 				fileVersion
 			).with(
@@ -340,7 +331,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	}
 
 	private boolean _isMimeTypeSupported(String mimeType) {
-		return _amImageMimeTypeProvider.isMimeTypeSupported(mimeType);
+		return amImageMimeTypeProvider.isMimeTypeSupported(mimeType);
 	}
 
 	private boolean _isProcessingRequired(
@@ -354,9 +345,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 		AdaptiveMedia<AMProcessor<FileVersion>> adaptiveMedia =
 			adaptiveMedias.get(0);
 
-		if (_amImageValidator.isProcessingRequired(
-				adaptiveMedia, fileVersion)) {
-
+		if (amImageValidator.isProcessingRequired(adaptiveMedia, fileVersion)) {
 			return true;
 		}
 
@@ -364,13 +353,13 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	}
 
 	private void _processAMImage(FileVersion fileVersion) {
-		if (!_amImageValidator.isValid(fileVersion)) {
+		if (!amImageValidator.isValid(fileVersion)) {
 			return;
 		}
 
 		try {
 			AMAsyncProcessor<FileVersion, ?> amAsyncProcessor =
-				_amAsyncProcessorLocator.locateForClass(FileVersion.class);
+				amAsyncProcessorLocator.locateForClass(FileVersion.class);
 
 			amAsyncProcessor.triggerProcess(
 				new SafeFileVersion(fileVersion),
@@ -391,23 +380,8 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AMImageEntryProcessor.class);
 
-	@Reference
-	private AMAsyncProcessorLocator _amAsyncProcessorLocator;
-
-	@Reference
-	private AMImageFinder _amImageFinder;
-
-	@Reference
-	private AMImageMimeTypeProvider _amImageMimeTypeProvider;
-
-	@Reference
-	private AMImageValidator _amImageValidator;
-
 	private volatile AMSystemImagesConfiguration _amSystemImagesConfiguration;
 	private final ImageProcessor _imageProcessor = new ImageProcessorImpl();
-
-	@Reference
-	private InputStreamSanitizer _inputStreamSanitizer;
 
 	private class SafeFileEntry extends FileEntryWrapper {
 
@@ -417,14 +391,14 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 		@Override
 		public InputStream getContentStream() throws PortalException {
-			return _inputStreamSanitizer.sanitize(super.getContentStream());
+			return inputStreamSanitizer.sanitize(super.getContentStream());
 		}
 
 		@Override
 		public InputStream getContentStream(String version)
 			throws PortalException {
 
-			return _inputStreamSanitizer.sanitize(
+			return inputStreamSanitizer.sanitize(
 				super.getContentStream(version));
 		}
 
@@ -464,7 +438,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 		public InputStream getContentStream(boolean incrementCounter)
 			throws PortalException {
 
-			return _inputStreamSanitizer.sanitize(
+			return inputStreamSanitizer.sanitize(
 				super.getContentStream(incrementCounter));
 		}
 

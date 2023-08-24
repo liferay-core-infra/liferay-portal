@@ -351,6 +351,10 @@ public class PortalUpgradeProcessRegistryImpl
 
 					releaseDAO.addRelease(
 						connection, "com.liferay.expando.service");
+
+					runSQL(
+						"update Release_ set schemaVersion='1.0.0' where " +
+							"servletContextName='com.liferay.expando.service'");
 				}
 
 			},

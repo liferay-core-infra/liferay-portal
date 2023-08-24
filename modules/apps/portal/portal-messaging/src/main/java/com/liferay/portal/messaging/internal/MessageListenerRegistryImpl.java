@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -31,7 +31,14 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 public class MessageListenerRegistryImpl implements MessageListenerRegistry {
 
 	public List<MessageListener> getMessageListeners(String destinationName) {
-		return _messageListenerServiceTrackerMap.getService(destinationName);
+		List<MessageListener> messageListeners =
+			_messageListenerServiceTrackerMap.getService(destinationName);
+
+		if (messageListeners == null) {
+			return Collections.emptyList();
+		}
+
+		return messageListeners;
 	}
 
 	@Activate
@@ -82,9 +89,17 @@ public class MessageListenerRegistryImpl implements MessageListenerRegistry {
 						String key, MessageListener messageListener,
 						List<MessageListener> messageListeners) {
 
-						for (DestinationEventListener destinationEventListener :
+						List<DestinationEventListener>
+							destinationEventListeners =
 								_destinationEventListenerServiceTrackerMap.
-									getService(key)) {
+									getService(key);
+
+						if (destinationEventListeners == null) {
+							return;
+						}
+
+						for (DestinationEventListener destinationEventListener :
+								destinationEventListeners) {
 
 							destinationEventListener.messageListenerRegistered(
 								key, messageListener);
@@ -98,9 +113,17 @@ public class MessageListenerRegistryImpl implements MessageListenerRegistry {
 						String key, MessageListener messageListener,
 						List<MessageListener> messageListeners) {
 
-						for (DestinationEventListener destinationEventListener :
+						List<DestinationEventListener>
+							destinationEventListeners =
 								_destinationEventListenerServiceTrackerMap.
-									getService(key)) {
+									getService(key);
+
+						if (destinationEventListeners == null) {
+							return;
+						}
+
+						for (DestinationEventListener destinationEventListener :
+								destinationEventListeners) {
 
 							destinationEventListener.
 								messageListenerUnregistered(

@@ -11,42 +11,39 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 
 import java.util.Set;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Eduardo García
  */
-@Component(service = DDMDisplayRegistry.class)
-public class DDMDisplayRegistry {
+public class DDMDisplayRegistryUtil {
 
-	public DDMDisplay getDDMDisplay(String portletId) {
+	public static DDMDisplay getDDMDisplay(String portletId) {
 		return _serviceTrackerMap.getService(portletId);
 	}
 
-	public String[] getPortletIds() {
+	public static String[] getPortletIds() {
 		Set<String> portletIds = _serviceTrackerMap.keySet();
 
 		return portletIds.toArray(new String[0]);
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
+	private static final ServiceTrackerMap<String, DDMDisplay>
+		_serviceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(DDMDisplayRegistryUtil.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, DDMDisplay.class, null,
+			bundleContext, DDMDisplay.class, "javax.portlet.name",
 			ServiceReferenceMapperFactory.create(
 				bundleContext,
 				(ddmDisplay, emitter) -> emitter.emit(
 					ddmDisplay.getPortletId())));
 	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerMap.close();
-	}
-
-	private ServiceTrackerMap<String, DDMDisplay> _serviceTrackerMap;
 
 }

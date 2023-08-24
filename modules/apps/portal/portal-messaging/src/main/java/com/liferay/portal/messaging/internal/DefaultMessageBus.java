@@ -101,18 +101,6 @@ public class DefaultMessageBus implements MessageBus {
 		destination.send(message);
 	}
 
-	@Override
-	public void shutdown() {
-		shutdown(false);
-	}
-
-	@Override
-	public synchronized void shutdown(boolean force) {
-		for (Destination destination : _destinationServiceTrackerMap.values()) {
-			destination.close(force);
-		}
-	}
-
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_messageBusEventListenerServiceTrackerList =

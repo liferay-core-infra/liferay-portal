@@ -5,12 +5,14 @@
 
 package com.liferay.analytics.message.sender.internal.entity.model;
 
+import com.liferay.analytics.message.sender.internal.helper.AnalyticsModelHelper;
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
 import com.liferay.portal.kernel.model.User;
 
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Joao Victor Alves
@@ -20,7 +22,7 @@ public class UserEntityModel extends BaseEntityModel<User> {
 
 	@Override
 	public List<String> getAttributeNames(long companyId) {
-		return getUserAttributeNames(companyId);
+		return _analyticsModelHelper.getUserAttributeNames(companyId);
 	}
 
 	@Override
@@ -32,5 +34,13 @@ public class UserEntityModel extends BaseEntityModel<User> {
 	protected String getPrimaryKeyName() {
 		return "userId";
 	}
+
+	@Override
+	protected boolean isExcluded(User user) {
+		return _analyticsModelHelper.isUserExcluded(user);
+	}
+
+	@Reference
+	private AnalyticsModelHelper _analyticsModelHelper;
 
 }

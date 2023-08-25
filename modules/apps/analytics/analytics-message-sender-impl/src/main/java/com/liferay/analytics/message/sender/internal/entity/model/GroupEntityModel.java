@@ -7,6 +7,9 @@ package com.liferay.analytics.message.sender.internal.entity.model;
 
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Property;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -40,6 +43,21 @@ public class GroupEntityModel extends BaseEntityModel<Group> {
 	}
 
 	@Override
+	protected ActionableDynamicQuery getActionableDynamicQuery() {
+		ActionableDynamicQuery actionableDynamicQuery =
+			_groupLocalService.getActionableDynamicQuery();
+
+		actionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> {
+				Property property = PropertyFactoryUtil.forName("site");
+
+				dynamicQuery.add(property.eq(true));
+			});
+
+		return actionableDynamicQuery;
+	}
+
+	@Override
 	protected Group getModel(long id) throws Exception {
 		return _groupLocalService.getGroup(id);
 	}
@@ -47,6 +65,15 @@ public class GroupEntityModel extends BaseEntityModel<Group> {
 	@Override
 	protected String getPrimaryKeyName() {
 		return "groupId";
+	}
+
+	@Override
+	protected boolean isExcluded(Group group) {
+		if (!group.isSite()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final List<String> _attributeNames =

@@ -5,28 +5,17 @@
 
 package com.liferay.analytics.message.sender.internal.model.listener;
 
+import com.liferay.analytics.message.sender.internal.helper.AnalyticsModelHelper;
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.model.ExpandoColumnConstants;
-import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.Property;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
@@ -68,27 +57,6 @@ public class ExpandoColumnModelListener
 	}
 
 	@Override
-	protected ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			_expandoColumnLocalService.getActionableDynamicQuery();
-
-		actionableDynamicQuery.setAddCriteriaMethod(
-			dynamicQuery -> {
-				Property tableIdProperty = PropertyFactoryUtil.forName(
-					"tableId");
-
-				dynamicQuery.add(
-					tableIdProperty.in(
-						_getTableDynamicQuery(
-							classNameLocalService.getClassNameId(
-								Organization.class.getName()),
-							ExpandoTableConstants.DEFAULT_TABLE_NAME)));
-			});
-
-		return actionableDynamicQuery;
-	}
-
-	@Override
 	protected EntityModel<ExpandoColumn> getEntityModelListener() {
 		return _expandoColumnEntityModel;
 	}
@@ -99,19 +67,16 @@ public class ExpandoColumnModelListener
 	}
 
 	@Override
-	protected String getPrimaryKeyName() {
-		return "name";
-	}
-
-	@Override
 	protected boolean isExcluded(ExpandoColumn expandoColumn) {
-		if (isCustomField(
+		if (_analyticsModelHelper.isCustomField(
 				Organization.class.getName(), expandoColumn.getTableId())) {
 
 			return false;
 		}
 
-		if (isCustomField(User.class.getName(), expandoColumn.getTableId())) {
+		if (_analyticsModelHelper.isCustomField(
+				User.class.getName(), expandoColumn.getTableId())) {
+
 			AnalyticsConfiguration analyticsConfiguration =
 				analyticsConfigurationRegistry.getAnalyticsConfiguration(
 					expandoColumn.getCompanyId());
@@ -138,64 +103,8 @@ public class ExpandoColumnModelListener
 		return true;
 	}
 
-	@Override
-	protected JSONObject serialize(
-		BaseModel<?> baseModel, List<String> includeAttributeNames) {
-
-		ExpandoColumn expandoColumn = (ExpandoColumn)baseModel;
-
-		String className = User.class.getName();
-
-		if (isCustomField(
-				Organization.class.getName(), expandoColumn.getTableId())) {
-
-			className = Organization.class.getName();
-		}
-
-		String dataType = ExpandoColumnConstants.getDataType(
-			expandoColumn.getType());
-
-		if (Validator.isBlank(dataType)) {
-			dataType = ExpandoColumnConstants.DATA_TYPE_TEXT;
-		}
-
-		return JSONUtil.put(
-			"className", className
-		).put(
-			"companyId", expandoColumn.getCompanyId()
-		).put(
-			"dataType", dataType
-		).put(
-			"displayType",
-			ExpandoColumnConstants.getDefaultDisplayTypeProperty(
-				expandoColumn.getType(),
-				expandoColumn.getTypeSettingsProperties())
-		).put(
-			"name", expandoColumn.getName() + "-" + dataType
-		).put(
-			"typeLabel",
-			ExpandoColumnConstants.getTypeLabel(expandoColumn.getType())
-		);
-	}
-
-	private DynamicQuery _getTableDynamicQuery(
-		long organizationClassNameId, String name) {
-
-		DynamicQuery dynamicQuery = expandoTableLocalService.dynamicQuery();
-
-		Property classNameIdProperty = PropertyFactoryUtil.forName(
-			"classNameId");
-
-		dynamicQuery.add(classNameIdProperty.eq(organizationClassNameId));
-
-		Property nameProperty = PropertyFactoryUtil.forName("name");
-
-		dynamicQuery.add(nameProperty.eq(name));
-
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("tableId"));
-
-		return dynamicQuery;
-	}
+	@Reference
+	private AnalyticsModelHelper _analyticsModelHelper;
 
 	@Reference(target = "(entity.model.type=expandocolumn)")
 	private EntityModel<ExpandoColumn> _expandoColumnEntityModel;

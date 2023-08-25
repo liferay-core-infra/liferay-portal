@@ -6,9 +6,6 @@
 package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.Property;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -24,26 +21,6 @@ import org.osgi.service.component.annotations.Reference;
 public class RoleModelListener extends BaseAnalyticsModelListener<Role> {
 
 	@Override
-	protected ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			_roleLocalService.getActionableDynamicQuery();
-
-		actionableDynamicQuery.setAddCriteriaMethod(
-			dynamicQuery -> {
-				Property nameProperty = PropertyFactoryUtil.forName("name");
-
-				dynamicQuery.add(
-					nameProperty.ne(RoleConstants.ANALYTICS_ADMINISTRATOR));
-
-				Property typeProperty = PropertyFactoryUtil.forName("type");
-
-				dynamicQuery.add(typeProperty.eq(RoleConstants.TYPE_REGULAR));
-			});
-
-		return actionableDynamicQuery;
-	}
-
-	@Override
 	protected EntityModel<Role> getEntityModelListener() {
 		return _roleEntityModel;
 	}
@@ -51,11 +28,6 @@ public class RoleModelListener extends BaseAnalyticsModelListener<Role> {
 	@Override
 	protected Role getModel(long id) throws Exception {
 		return _roleLocalService.getRole(id);
-	}
-
-	@Override
-	protected String getPrimaryKeyName() {
-		return "roleId";
 	}
 
 	@Override

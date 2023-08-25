@@ -6,10 +6,12 @@
 package com.liferay.analytics.message.sender.internal.entity.model;
 
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -25,7 +27,7 @@ public class OrganizationEntityModel extends BaseEntityModel<Organization> {
 
 	@Override
 	public List<String> getAttributeNames(long companyId) {
-		return getOrganizationAttributeNames();
+		return _organizationAttributeNames;
 	}
 
 	@Override
@@ -39,6 +41,11 @@ public class OrganizationEntityModel extends BaseEntityModel<Organization> {
 	}
 
 	@Override
+	protected ActionableDynamicQuery getActionableDynamicQuery() {
+		return _organizationLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
 	protected Organization getModel(long id) throws Exception {
 		return _organizationLocalService.getOrganization(id);
 	}
@@ -47,6 +54,11 @@ public class OrganizationEntityModel extends BaseEntityModel<Organization> {
 	protected String getPrimaryKeyName() {
 		return "organizationId";
 	}
+
+	private static final List<String> _organizationAttributeNames =
+		Arrays.asList(
+			"expando", "modifiedDate", "name", "parentOrganizationId",
+			"treePath", "type");
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;

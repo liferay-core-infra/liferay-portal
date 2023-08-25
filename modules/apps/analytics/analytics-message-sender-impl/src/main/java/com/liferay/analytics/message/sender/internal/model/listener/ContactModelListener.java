@@ -31,19 +31,14 @@ public class ContactModelListener extends BaseAnalyticsModelListener<Contact> {
 	}
 
 	@Override
-	protected String getPrimaryKeyName() {
-		return "contactId";
-	}
-
-	@Override
 	protected boolean isExcluded(Contact contact) {
 		User user = userLocalService.fetchUser(contact.getClassPK());
 
-		if (!isUserActive(user)) {
+		if (!analyticsModelHelper.isUserActive(user)) {
 			return true;
 		}
 
-		return isUserExcluded(user);
+		return analyticsModelHelper.isUserExcluded(user);
 	}
 
 	@Reference(target = "(entity.model.type=contact)")

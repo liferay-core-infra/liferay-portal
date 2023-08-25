@@ -6,7 +6,6 @@
 package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Organization;
@@ -38,11 +37,6 @@ public class OrganizationModelListener
 	}
 
 	@Override
-	protected ActionableDynamicQuery getActionableDynamicQuery() {
-		return _organizationLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
 	protected EntityModel<Organization> getEntityModelListener() {
 		return _organizationEntityModel;
 	}
@@ -50,11 +44,6 @@ public class OrganizationModelListener
 	@Override
 	protected Organization getModel(long id) throws Exception {
 		return _organizationLocalService.getOrganization(id);
-	}
-
-	@Override
-	protected String getPrimaryKeyName() {
-		return "organizationId";
 	}
 
 	@Reference(target = "(entity.model.type=organization)")

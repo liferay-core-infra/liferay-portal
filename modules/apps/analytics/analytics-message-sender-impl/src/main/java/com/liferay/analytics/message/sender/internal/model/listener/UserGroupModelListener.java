@@ -6,7 +6,6 @@
 package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.UserGroup;
@@ -38,11 +37,6 @@ public class UserGroupModelListener
 	}
 
 	@Override
-	protected ActionableDynamicQuery getActionableDynamicQuery() {
-		return _userGroupLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
 	protected EntityModel<UserGroup> getEntityModelListener() {
 		return _userGroupEntityModel;
 	}
@@ -50,11 +44,6 @@ public class UserGroupModelListener
 	@Override
 	protected UserGroup getModel(long id) throws Exception {
 		return _userGroupLocalService.getUserGroup(id);
-	}
-
-	@Override
-	protected String getPrimaryKeyName() {
-		return "userGroupId";
 	}
 
 	@Reference(target = "(entity.model.type=usergroup)")

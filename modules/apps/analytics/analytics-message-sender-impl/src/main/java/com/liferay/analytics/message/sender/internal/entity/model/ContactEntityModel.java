@@ -8,6 +8,7 @@ package com.liferay.analytics.message.sender.internal.entity.model;
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ContactLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
@@ -45,6 +46,17 @@ public class ContactEntityModel extends BaseEntityModel<Contact> {
 	@Override
 	protected String getPrimaryKeyName() {
 		return "contactId";
+	}
+
+	@Override
+	protected boolean isExcluded(Contact contact) {
+		User user = userLocalService.fetchUser(contact.getClassPK());
+
+		if (!analyticsModelHelper.isUserActive(user)) {
+			return true;
+		}
+
+		return analyticsModelHelper.isUserExcluded(user);
 	}
 
 	private static final List<String> _attributeNames = Arrays.asList(

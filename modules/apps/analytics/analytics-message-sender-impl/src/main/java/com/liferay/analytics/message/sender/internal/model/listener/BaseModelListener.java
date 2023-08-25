@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -157,17 +156,6 @@ public abstract class BaseModelListener<T extends BaseModel<T>>
 		}
 
 		return false;
-	}
-
-	protected boolean isUserActive(User user) {
-		if ((user == null) ||
-			Objects.equals(
-				user.getStatus(), WorkflowConstants.STATUS_INACTIVE)) {
-
-			return false;
-		}
-
-		return true;
 	}
 
 	protected boolean isUserExcluded(User user) {

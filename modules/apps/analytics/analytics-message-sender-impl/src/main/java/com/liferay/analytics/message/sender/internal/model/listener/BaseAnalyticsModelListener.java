@@ -5,9 +5,12 @@
 
 package com.liferay.analytics.message.sender.internal.model.listener;
 
+import com.liferay.analytics.message.sender.internal.helper.AnalyticsModelHelper;
 import com.liferay.analytics.message.sender.model.AnalyticsMessage;
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
+import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalService;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
+import com.liferay.analytics.settings.configuration.AnalyticsConfigurationRegistry;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
@@ -17,10 +20,12 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.CompanyService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -142,6 +147,22 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 
 	protected abstract EntityModel<T> getEntityModelListener();
 
+	protected abstract T getModel(long id) throws Exception;
+
+	protected boolean isExcluded(T model) {
+		ShardedModel shardedModel = (ShardedModel)model;
+
+		Dictionary<String, Object> analyticsConfigurationProperties =
+			analyticsConfigurationRegistry.getAnalyticsConfigurationProperties(
+				shardedModel.getCompanyId());
+
+		if (analyticsConfigurationProperties == null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected void updateConfigurationProperties(
 		long companyId, String configurationPropertyName, String modelId,
 		String preferencePropertyName) {
@@ -200,10 +221,22 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 	}
 
 	@Reference
+	protected AnalyticsConfigurationRegistry analyticsConfigurationRegistry;
+
+	@Reference
+	protected AnalyticsMessageLocalService analyticsMessageLocalService;
+
+	@Reference
+	protected AnalyticsModelHelper analyticsModelHelper;
+
+	@Reference
 	protected CompanyService companyService;
 
 	@Reference
 	protected ConfigurationProvider configurationProvider;
+
+	@Reference
+	protected UserLocalService userLocalService;
 
 	private List<String> _getModifiedAttributeNames(
 		List<String> attributeNames, T model, T originalModel) {
@@ -257,14 +290,16 @@ public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
 			User user = userLocalService.fetchUser((long)associationClassPK);
 
 			if (!eventType.equals("deleteAssociation") &&
-				(!isUserActive(user) || isUserExcluded(user))) {
+				(!analyticsModelHelper.isUserActive(user) ||
+				 analyticsModelHelper.isUserExcluded(user))) {
 
 				return;
 			}
 
 			if (!eventType.equals("deleteAssociation")) {
-				List<String> userAttributeNames = getUserAttributeNames(
-					user.getCompanyId());
+				List<String> userAttributeNames =
+					analyticsModelHelper.getUserAttributeNames(
+						user.getCompanyId());
 
 				userAttributeNames.add("associations");
 				userAttributeNames.add("userId");

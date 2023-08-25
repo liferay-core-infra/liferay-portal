@@ -6,7 +6,6 @@
 package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.listener.EntityModel;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.service.TeamLocalService;
@@ -21,11 +20,6 @@ import org.osgi.service.component.annotations.Reference;
 public class TeamModelListener extends BaseAnalyticsModelListener<Team> {
 
 	@Override
-	protected ActionableDynamicQuery getActionableDynamicQuery() {
-		return _teamLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
 	protected EntityModel<Team> getEntityModelListener() {
 		return _teamEntityModel;
 	}
@@ -33,11 +27,6 @@ public class TeamModelListener extends BaseAnalyticsModelListener<Team> {
 	@Override
 	protected Team getModel(long id) throws Exception {
 		return _teamLocalService.getTeam(id);
-	}
-
-	@Override
-	protected String getPrimaryKeyName() {
-		return "teamId";
 	}
 
 	@Reference(target = "(entity.model.type=team)")

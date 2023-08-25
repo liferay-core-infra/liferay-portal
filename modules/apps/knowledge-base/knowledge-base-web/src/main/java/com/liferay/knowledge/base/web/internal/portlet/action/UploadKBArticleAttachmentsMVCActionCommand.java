@@ -7,9 +7,12 @@ package com.liferay.knowledge.base.web.internal.portlet.action;
 
 import com.liferay.item.selector.ItemSelectorUploadResponseHandler;
 import com.liferay.knowledge.base.constants.KBPortletKeys;
+import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.web.internal.upload.KBArticleAttachmentKBUploadFileEntryHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.upload.UniqueFileNameProvider;
 import com.liferay.upload.UploadHandler;
 
 import javax.portlet.ActionRequest;
@@ -38,7 +41,8 @@ public class UploadKBArticleAttachmentsMVCActionCommand
 		throws Exception {
 
 		_uploadHandler.upload(
-			_kbArticleAttachmentKBUploadFileEntryHandler,
+			new KBArticleAttachmentKBUploadFileEntryHandler(
+				_kbArticleModelResourcePermission, _uniqueFileNameProvider),
 			_itemSelectorUploadResponseHandler, actionRequest, actionResponse);
 	}
 
@@ -46,9 +50,14 @@ public class UploadKBArticleAttachmentsMVCActionCommand
 	private ItemSelectorUploadResponseHandler
 		_itemSelectorUploadResponseHandler;
 
+	@Reference(
+		target = "(model.class.name=com.liferay.knowledge.base.model.KBArticle)"
+	)
+	private ModelResourcePermission<KBArticle>
+		_kbArticleModelResourcePermission;
+
 	@Reference
-	private KBArticleAttachmentKBUploadFileEntryHandler
-		_kbArticleAttachmentKBUploadFileEntryHandler;
+	private UniqueFileNameProvider _uniqueFileNameProvider;
 
 	@Reference
 	private UploadHandler _uploadHandler;

@@ -5,10 +5,10 @@
 
 package com.liferay.knowledge.base.web.internal.upload;
 
-import com.liferay.document.library.kernel.service.DLAppService;
+import com.liferay.document.library.kernel.service.DLAppServiceUtil;
 import com.liferay.knowledge.base.constants.KBActionKeys;
 import com.liferay.knowledge.base.model.KBArticle;
-import com.liferay.knowledge.base.service.KBArticleLocalService;
+import com.liferay.knowledge.base.service.KBArticleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -27,15 +27,19 @@ import com.liferay.upload.UploadFileEntryHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Roberto Díaz
  */
-@Component(service = KBArticleAttachmentKBUploadFileEntryHandler.class)
 public class KBArticleAttachmentKBUploadFileEntryHandler
 	implements UploadFileEntryHandler {
+
+	public KBArticleAttachmentKBUploadFileEntryHandler(
+		ModelResourcePermission<KBArticle> kbArticleModelResourcePermission,
+		UniqueFileNameProvider uniqueFileNameProvider) {
+
+		_kbArticleModelResourcePermission = kbArticleModelResourcePermission;
+		_uniqueFileNameProvider = uniqueFileNameProvider;
+	}
 
 	@Override
 	public FileEntry upload(UploadPortletRequest uploadPortletRequest)
@@ -48,7 +52,7 @@ public class KBArticleAttachmentKBUploadFileEntryHandler
 		long resourcePrimKey = ParamUtil.getLong(
 			uploadPortletRequest, "resourcePrimKey");
 
-		KBArticle kbArticle = _kbArticleLocalService.getLatestKBArticle(
+		KBArticle kbArticle = KBArticleLocalServiceUtil.getLatestKBArticle(
 			resourcePrimKey, WorkflowConstants.STATUS_APPROVED);
 
 		_kbArticleModelResourcePermission.check(
@@ -84,7 +88,7 @@ public class KBArticleAttachmentKBUploadFileEntryHandler
 			long fileEntryId = ParamUtil.getLong(
 				uploadPortletRequest, "fileEntryId");
 
-			FileEntry fileEntry = _dlAppService.getFileEntry(fileEntryId);
+			FileEntry fileEntry = DLAppServiceUtil.getFileEntry(fileEntryId);
 
 			return _addKBAttachment(
 				fileEntry.getFileName(), inputStream, kbArticle, "imageBlob",
@@ -103,7 +107,7 @@ public class KBArticleAttachmentKBUploadFileEntryHandler
 			fileName,
 			curFileName -> _exists(themeDisplay, kbArticle, curFileName));
 
-		return _kbArticleLocalService.addAttachment(
+		return KBArticleLocalServiceUtil.addAttachment(
 			themeDisplay.getUserId(), resourcePrimKey, uniqueFileName,
 			inputStream, uploadPortletRequest.getContentType(parameterName));
 	}
@@ -137,19 +141,8 @@ public class KBArticleAttachmentKBUploadFileEntryHandler
 	private static final Log _log = LogFactoryUtil.getLog(
 		KBArticleAttachmentKBUploadFileEntryHandler.class);
 
-	@Reference
-	private DLAppService _dlAppService;
-
-	@Reference
-	private KBArticleLocalService _kbArticleLocalService;
-
-	@Reference(
-		target = "(model.class.name=com.liferay.knowledge.base.model.KBArticle)"
-	)
-	private ModelResourcePermission<KBArticle>
+	private final ModelResourcePermission<KBArticle>
 		_kbArticleModelResourcePermission;
-
-	@Reference
-	private UniqueFileNameProvider _uniqueFileNameProvider;
+	private final UniqueFileNameProvider _uniqueFileNameProvider;
 
 }

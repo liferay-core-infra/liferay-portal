@@ -5,12 +5,10 @@
 
 package com.liferay.message.boards.web.internal.upload;
 
-import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Adolfo Pérez
  */
-@Component(service = TempAttachmentMBUploadFileEntryHandler.class)
 public class TempAttachmentMBUploadFileEntryHandler
 	extends BaseMBUploadFileEntryHandler {
 

@@ -96,7 +96,7 @@ public class EditMessageAttachmentsMVCActionCommand
 		throws Exception {
 
 		_uploadHandler.upload(
-			_tempAttachmentMBUploadFileEntryHandler,
+			new TempAttachmentMBUploadFileEntryHandler(),
 			_multipleUploadResponseHandler, actionRequest, actionResponse);
 	}
 
@@ -185,9 +185,6 @@ public class EditMessageAttachmentsMVCActionCommand
 	@Reference
 	private Portal _portal;
 
-	@Reference
-	private TempAttachmentMBUploadFileEntryHandler
-		_tempAttachmentMBUploadFileEntryHandler;
 
 	@Reference
 	private UploadHandler _uploadHandler;

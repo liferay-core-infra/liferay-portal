@@ -37,17 +37,13 @@ public class UploadTempImageMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		_uploadHandler.upload(
-			_tempImageMBUploadFileEntryHandler,
+			new TempImageMBUploadFileEntryHandler(),
 			_itemSelectorUploadResponseHandler, actionRequest, actionResponse);
 	}
 
 	@Reference
 	private ItemSelectorUploadResponseHandler
 		_itemSelectorUploadResponseHandler;
-
-	@Reference
-	private TempImageMBUploadFileEntryHandler
-		_tempImageMBUploadFileEntryHandler;
 
 	@Reference
 	private UploadHandler _uploadHandler;

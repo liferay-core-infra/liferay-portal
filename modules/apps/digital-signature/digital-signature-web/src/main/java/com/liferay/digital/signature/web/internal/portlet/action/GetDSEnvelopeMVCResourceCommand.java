@@ -8,7 +8,6 @@ package com.liferay.digital.signature.web.internal.portlet.action;
 import com.liferay.digital.signature.constants.DigitalSignaturePortletKeys;
 import com.liferay.digital.signature.manager.DSEnvelopeManager;
 import com.liferay.digital.signature.model.DSEnvelope;
-import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.util.ImageProcessor;
 import com.liferay.document.library.kernel.util.PDFProcessorUtil;
@@ -124,7 +123,7 @@ public class GetDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference(
 		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(type=" + DLProcessorConstants.IMAGE_PROCESSOR + ")"
+		target = "(component.name=com.liferay.adaptive.media.document.library.thumbnails.internal.processor.AMImageEntryProcessor)"
 	)
 	private ImageProcessor _imageProcessor;
 

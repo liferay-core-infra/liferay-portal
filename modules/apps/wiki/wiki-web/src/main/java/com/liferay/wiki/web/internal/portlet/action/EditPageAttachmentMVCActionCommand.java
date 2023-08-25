@@ -168,8 +168,8 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		_uploadHandler.upload(
-			_tempAttachmentWikiUploadFileEntryHandler, _uploadResponseHandler,
-			actionRequest, actionResponse);
+			new TempAttachmentWikiUploadFileEntryHandler(),
+			_uploadResponseHandler, actionRequest, actionResponse);
 	}
 
 	private void _deleteAttachment(
@@ -406,10 +406,6 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private TempAttachmentWikiUploadFileEntryHandler
-		_tempAttachmentWikiUploadFileEntryHandler;
 
 	@Reference
 	private UploadHandler _uploadHandler;

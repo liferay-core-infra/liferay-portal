@@ -5,11 +5,10 @@
 
 package com.liferay.wiki.web.internal.upload;
 
-import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.document.library.kernel.util.DLValidator;
+import com.liferay.document.library.kernel.service.DLAppServiceUtil;
+import com.liferay.document.library.kernel.util.DLValidatorUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -27,30 +26,28 @@ import com.liferay.wiki.exception.WikiAttachmentMimeTypeException;
 import com.liferay.wiki.exception.WikiAttachmentSizeException;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
-import com.liferay.wiki.service.WikiPageService;
+import com.liferay.wiki.service.WikiPageServiceUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Roberto Díaz
  * @author Alejandro Tardín
  */
-@Component(
-	configurationPid = "com.liferay.wiki.configuration.WikiFileUploadConfiguration",
-	service = PageAttachmentWikiUploadFileEntryHandler.class
-)
 public class PageAttachmentWikiUploadFileEntryHandler
 	implements UploadFileEntryHandler {
+
+	public PageAttachmentWikiUploadFileEntryHandler(
+		WikiFileUploadConfiguration wikiFileUploadConfiguration,
+		ModelResourcePermission<WikiNode> wikiNodeModelResourcePermission) {
+
+		_wikiFileUploadConfiguration = wikiFileUploadConfiguration;
+		_wikiNodeModelResourcePermission = wikiNodeModelResourcePermission;
+	}
 
 	@Override
 	public FileEntry upload(UploadPortletRequest uploadPortletRequest)
@@ -72,22 +69,12 @@ public class PageAttachmentWikiUploadFileEntryHandler
 		return _editImageFileEntry(uploadPortletRequest, themeDisplay);
 	}
 
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_wikiFileUploadConfiguration = ConfigurableUtil.createConfigurable(
-			WikiFileUploadConfiguration.class, properties);
-	}
-
-	@Reference
-	protected DLValidator dlValidator;
-
 	private FileEntry _addPageAttachment(
 			UploadPortletRequest uploadPortletRequest,
 			ThemeDisplay themeDisplay, String fileName, String parameterName)
 		throws IOException, PortalException {
 
-		dlValidator.validateFileSize(
+		DLValidatorUtil.validateFileSize(
 			themeDisplay.getScopeGroupId(), fileName,
 			uploadPortletRequest.getContentType(parameterName),
 			uploadPortletRequest.getSize(parameterName));
@@ -95,7 +82,7 @@ public class PageAttachmentWikiUploadFileEntryHandler
 		long resourcePrimKey = ParamUtil.getLong(
 			uploadPortletRequest, "resourcePrimKey");
 
-		WikiPage page = _wikiPageService.getPage(resourcePrimKey);
+		WikiPage page = WikiPageServiceUtil.getPage(resourcePrimKey);
 
 		_wikiNodeModelResourcePermission.check(
 			themeDisplay.getPermissionChecker(), page.getNodeId(),
@@ -113,7 +100,7 @@ public class PageAttachmentWikiUploadFileEntryHandler
 		try (InputStream inputStream = uploadPortletRequest.getFileAsStream(
 				parameterName)) {
 
-			return _wikiPageService.addPageAttachment(
+			return WikiPageServiceUtil.addPageAttachment(
 				page.getNodeId(), page.getTitle(), fileName, inputStream,
 				contentType);
 		}
@@ -127,7 +114,7 @@ public class PageAttachmentWikiUploadFileEntryHandler
 		long fileEntryId = ParamUtil.getLong(
 			uploadPortletRequest, "fileEntryId");
 
-		FileEntry fileEntry = _dlAppService.getFileEntry(fileEntryId);
+		FileEntry fileEntry = DLAppServiceUtil.getFileEntry(fileEntryId);
 
 		return _addPageAttachment(
 			uploadPortletRequest, themeDisplay, fileEntry.getFileName(),
@@ -186,15 +173,8 @@ public class PageAttachmentWikiUploadFileEntryHandler
 				fileName));
 	}
 
-	@Reference
-	private DLAppService _dlAppService;
-
 	private volatile WikiFileUploadConfiguration _wikiFileUploadConfiguration;
-
-	@Reference(target = "(model.class.name=com.liferay.wiki.model.WikiNode)")
-	private ModelResourcePermission<WikiNode> _wikiNodeModelResourcePermission;
-
-	@Reference
-	private WikiPageService _wikiPageService;
+	private final ModelResourcePermission<WikiNode>
+		_wikiNodeModelResourcePermission;
 
 }

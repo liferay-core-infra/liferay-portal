@@ -18,15 +18,17 @@ import com.liferay.wiki.exception.WikiAttachmentSizeException;
 
 import javax.portlet.PortletRequest;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Roberto Díaz
  */
-@Component(service = PageAttachmentWikiUploadResponseHandler.class)
 public class PageAttachmentWikiUploadResponseHandler
 	implements UploadResponseHandler {
+
+	public PageAttachmentWikiUploadResponseHandler(
+		ItemSelectorUploadResponseHandler itemSelectorUploadResponseHandler) {
+
+		_itemSelectorUploadResponseHandler = itemSelectorUploadResponseHandler;
+	}
 
 	@Override
 	public JSONObject onFailure(
@@ -62,8 +64,7 @@ public class PageAttachmentWikiUploadResponseHandler
 			uploadPortletRequest, fileEntry);
 	}
 
-	@Reference
-	private ItemSelectorUploadResponseHandler
+	private final ItemSelectorUploadResponseHandler
 		_itemSelectorUploadResponseHandler;
 
 }

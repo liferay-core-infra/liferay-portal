@@ -5,11 +5,14 @@
 
 package com.liferay.blogs.web.internal.portlet.action;
 
+import com.liferay.blogs.constants.BlogsConstants;
 import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.blogs.web.internal.upload.ImageBlogsUploadResponseHandler;
 import com.liferay.blogs.web.internal.upload.TempImageBlogsUploadFileEntryHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.upload.UniqueFileNameProvider;
 import com.liferay.upload.UploadHandler;
 
 import javax.portlet.ActionRequest;
@@ -22,6 +25,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Sergio González
  */
 @Component(
+	configurationPid = "com.liferay.blogs.configuration.BlogsFileUploadsConfiguration",
 	property = {
 		"javax.portlet.name=" + BlogsPortletKeys.BLOGS,
 		"javax.portlet.name=" + BlogsPortletKeys.BLOGS_ADMIN,
@@ -37,16 +41,19 @@ public class UploadTempImageMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		_uploadHandler.upload(
-			_tempImageBlogsUploadFileEntryHandler,
+			new TempImageBlogsUploadFileEntryHandler(
+				_portletResourcePermission, _uniqueFileNameProvider),
 			_imageBlogsUploadResponseHandler, actionRequest, actionResponse);
 	}
 
 	@Reference
 	private ImageBlogsUploadResponseHandler _imageBlogsUploadResponseHandler;
 
+	@Reference(target = "(resource.name=" + BlogsConstants.RESOURCE_NAME + ")")
+	private PortletResourcePermission _portletResourcePermission;
+
 	@Reference
-	private TempImageBlogsUploadFileEntryHandler
-		_tempImageBlogsUploadFileEntryHandler;
+	private UniqueFileNameProvider _uniqueFileNameProvider;
 
 	@Reference
 	private UploadHandler _uploadHandler;

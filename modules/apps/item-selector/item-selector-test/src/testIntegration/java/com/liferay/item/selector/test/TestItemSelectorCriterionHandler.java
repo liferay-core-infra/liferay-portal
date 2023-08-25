@@ -6,6 +6,7 @@
 package com.liferay.item.selector.test;
 
 import com.liferay.item.selector.BaseItemSelectorCriterionHandler;
+import com.liferay.item.selector.ItemSelectorCriterionHandler;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -15,7 +16,7 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Roberto Díaz
  */
-@Component(service = TestItemSelectorCriterionHandler.class)
+@Component(service = ItemSelectorCriterionHandler.class)
 public class TestItemSelectorCriterionHandler
 	extends BaseItemSelectorCriterionHandler<TestItemSelectorCriterion> {
 

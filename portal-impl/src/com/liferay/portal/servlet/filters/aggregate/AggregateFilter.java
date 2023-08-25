@@ -55,7 +55,9 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.FutureTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -526,6 +528,49 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 			String finalContent = content;
 			String finalResourcePath = resourcePath;
 
+			Callable<String> callable = new Callable<String>() {
+
+				@Override
+				public String call() throws IOException {
+					String minifiedContent = null;
+
+					if (minifierType.equals("css")) {
+						minifiedContent = MinifierUtil.minifyCss(finalContent);
+					}
+					else {
+						minifiedContent = MinifierUtil.minifyJavaScript(
+							finalResourcePath, finalContent);
+					}
+
+					minifiedContent = StringBundler.concat(
+						_CSS_COMMENT_BEGIN,
+						URLUtil.getLastModifiedTime(resourceURL),
+						_CSS_COMMENT_END, StringPool.NEW_LINE, minifiedContent);
+
+					File tempFile = FileUtil.createTempFile();
+
+					FileUtil.write(tempFile, minifiedContent);
+
+					FileUtil.move(tempFile, cacheDataFile);
+
+					return minifiedContent;
+				}
+
+			};
+
+			if (_portalExecutorManager == null) {
+				return _contents.computeIfAbsent(
+					cacheCommonFileName,
+					key -> {
+						try {
+							return callable.call();
+						}
+						catch (Exception exception) {
+							throw new RuntimeException(exception);
+						}
+					});
+			}
+
 			NoticeableFuture<String> noticeableFuture =
 				_noticeableFutures.computeIfAbsent(
 					cacheCommonFileName,
@@ -534,34 +579,7 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 							_portalExecutorManager.getPortalExecutor(
 								AggregateFilter.class.getName());
 
-						return noticeableExecutorService.submit(
-							() -> {
-								String minifiedContent = null;
-
-								if (minifierType.equals("css")) {
-									minifiedContent = MinifierUtil.minifyCss(
-										finalContent);
-								}
-								else {
-									minifiedContent =
-										MinifierUtil.minifyJavaScript(
-											finalResourcePath, finalContent);
-								}
-
-								minifiedContent = StringBundler.concat(
-									_CSS_COMMENT_BEGIN,
-									URLUtil.getLastModifiedTime(resourceURL),
-									_CSS_COMMENT_END, StringPool.NEW_LINE,
-									minifiedContent);
-
-								File tempFile = FileUtil.createTempFile();
-
-								FileUtil.write(tempFile, minifiedContent);
-
-								FileUtil.move(tempFile, cacheDataFile);
-
-								return minifiedContent;
-							});
+						return noticeableExecutorService.submit(callable);
 					});
 
 			noticeableFuture.addFutureListener(
@@ -776,8 +794,9 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 	private static volatile PortalExecutorManager _portalExecutorManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			PortalExecutorManager.class, AggregateFilter.class,
-			"_portalExecutorManager", true);
+			"_portalExecutorManager", false, true);
 
+	private final Map<String, String> _contents = new ConcurrentHashMap<>();
 	private final Map<String, NoticeableFuture<String>> _noticeableFutures =
 		new ConcurrentHashMap<>();
 	private ServletContext _servletContext;

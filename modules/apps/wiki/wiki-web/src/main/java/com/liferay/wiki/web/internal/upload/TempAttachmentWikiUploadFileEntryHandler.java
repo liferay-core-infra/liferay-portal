@@ -5,7 +5,7 @@
 
 package com.liferay.wiki.web.internal.upload;
 
-import com.liferay.document.library.kernel.util.DLValidator;
+import com.liferay.document.library.kernel.util.DLValidatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -15,18 +15,14 @@ import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.wiki.constants.WikiConstants;
-import com.liferay.wiki.service.WikiPageService;
+import com.liferay.wiki.service.WikiPageServiceUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Adolfo Pérez
  */
-@Component(service = TempAttachmentWikiUploadFileEntryHandler.class)
 public class TempAttachmentWikiUploadFileEntryHandler
 	implements UploadFileEntryHandler {
 
@@ -38,7 +34,7 @@ public class TempAttachmentWikiUploadFileEntryHandler
 			(ThemeDisplay)uploadPortletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		_dlValidator.validateFileSize(
+		DLValidatorUtil.validateFileSize(
 			themeDisplay.getScopeGroupId(),
 			uploadPortletRequest.getFileName(_PARAMETER_NAME),
 			uploadPortletRequest.getContentType(_PARAMETER_NAME),
@@ -50,7 +46,7 @@ public class TempAttachmentWikiUploadFileEntryHandler
 		try (InputStream inputStream = uploadPortletRequest.getFileAsStream(
 				_PARAMETER_NAME)) {
 
-			return _wikiPageService.addTempFileEntry(
+			return WikiPageServiceUtil.addTempFileEntry(
 				nodeId, WikiConstants.TEMP_FOLDER_NAME,
 				TempFileEntryUtil.getTempFileName(
 					uploadPortletRequest.getFileName(_PARAMETER_NAME)),
@@ -60,11 +56,5 @@ public class TempAttachmentWikiUploadFileEntryHandler
 	}
 
 	private static final String _PARAMETER_NAME = "file";
-
-	@Reference
-	private DLValidator _dlValidator;
-
-	@Reference
-	private WikiPageService _wikiPageService;
 
 }

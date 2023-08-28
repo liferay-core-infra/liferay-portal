@@ -10,12 +10,12 @@ import com.liferay.analytics.batch.exportimport.constants.AnalyticsDXPEntityBatc
 import com.liferay.analytics.message.sender.constants.AnalyticsMessagesDestinationNames;
 import com.liferay.analytics.message.sender.constants.AnalyticsMessagesProcessorCommand;
 import com.liferay.analytics.message.sender.model.AnalyticsMessage;
-import com.liferay.analytics.message.sender.model.listener.EntityModelListener;
+import com.liferay.analytics.message.sender.model.listener.EntityModel;
 import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalService;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.configuration.AnalyticsConfigurationRegistry;
 import com.liferay.analytics.settings.internal.model.AnalyticsUserImpl;
-import com.liferay.analytics.settings.internal.util.EntityModelListenerRegistry;
+import com.liferay.analytics.settings.internal.util.EntityModelRegistry;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.analytics.settings.security.constants.AnalyticsSecurityConstants;
 import com.liferay.expando.kernel.model.ExpandoColumn;
@@ -228,9 +228,8 @@ public class AnalyticsConfigurationRegistryImpl
 		BaseModel<?> baseModel = baseModels.get(0);
 
 		message.put(
-			"entityModelListener",
-			_entityModelListenerRegistry.getEntityModelListener(
-				baseModel.getModelClassName()));
+			"entityModel",
+			_entityModelRegistry.getEntityModel(baseModel.getModelClassName()));
 
 		message.put("principalName", _getAnalyticsAdminUserId(companyId));
 
@@ -276,19 +275,18 @@ public class AnalyticsConfigurationRegistryImpl
 		for (User user : users) {
 			Map<String, long[]> memberships = new HashMap<>();
 
-			for (EntityModelListener<?> entityModelListener :
-					_entityModelListenerRegistry.getEntityModelListeners()) {
+			for (EntityModel<?> entityModel :
+					_entityModelRegistry.getEntityModels()) {
 
 				try {
-					long[] membershipIds = entityModelListener.getMembershipIds(
-						user);
+					long[] membershipIds = entityModel.getMembershipIds(user);
 
 					if (membershipIds.length == 0) {
 						continue;
 					}
 
 					memberships.put(
-						entityModelListener.getModelClassName(), membershipIds);
+						entityModel.getModelClassName(), membershipIds);
 				}
 				catch (Exception exception) {
 					_log.error(exception);
@@ -423,13 +421,11 @@ public class AnalyticsConfigurationRegistryImpl
 			AnalyticsConfiguration analyticsConfiguration =
 				getAnalyticsConfiguration(companyId);
 
-			Collection<EntityModelListener<?>> entityModelListeners =
-				_entityModelListenerRegistry.getEntityModelListeners();
+			Collection<EntityModel<?>> entityModels =
+				_entityModelRegistry.getEntityModels();
 
-			for (EntityModelListener<?> entityModelListener :
-					entityModelListeners) {
-
-				entityModelListener.syncAll(companyId);
+			for (EntityModel<?> entityModel : entityModels) {
+				entityModel.syncAll(companyId);
 			}
 
 			_syncDefaultFields(
@@ -525,13 +521,11 @@ public class AnalyticsConfigurationRegistryImpl
 			if (Validator.isNotNull(dictionary.get("token")) &&
 				Validator.isNull(dictionary.get("previousToken"))) {
 
-				Collection<EntityModelListener<?>> entityModelListeners =
-					_entityModelListenerRegistry.getEntityModelListeners();
+				Collection<EntityModel<?>> entityModels =
+					_entityModelRegistry.getEntityModels();
 
-				for (EntityModelListener<?> entityModelListener :
-						entityModelListeners) {
-
-					entityModelListener.syncAll(companyId);
+				for (EntityModel<?> entityModel : entityModels) {
+					entityModel.syncAll(companyId);
 				}
 			}
 
@@ -1085,7 +1079,7 @@ public class AnalyticsConfigurationRegistryImpl
 	private ConfigurationAdmin _configurationAdmin;
 
 	@Reference
-	private EntityModelListenerRegistry _entityModelListenerRegistry;
+	private EntityModelRegistry _entityModelRegistry;
 
 	@Reference
 	private ExpandoColumnLocalService _expandoColumnLocalService;

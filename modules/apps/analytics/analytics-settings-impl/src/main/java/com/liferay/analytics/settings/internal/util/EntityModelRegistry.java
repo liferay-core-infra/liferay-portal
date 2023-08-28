@@ -5,7 +5,7 @@
 
 package com.liferay.analytics.settings.internal.util;
 
-import com.liferay.analytics.message.sender.model.listener.EntityModelListener;
+import com.liferay.analytics.message.sender.model.listener.EntityModel;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -25,14 +25,14 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Rachael Koestartyo
  */
-@Component(service = EntityModelListenerRegistry.class)
-public class EntityModelListenerRegistry {
+@Component(service = EntityModelRegistry.class)
+public class EntityModelRegistry {
 
-	public EntityModelListener<?> getEntityModelListener(String className) {
+	public EntityModel<?> getEntityModel(String className) {
 		return _serviceTrackerMap.getService(className);
 	}
 
-	public Collection<EntityModelListener<?>> getEntityModelListeners() {
+	public Collection<EntityModel<?>> getEntityModels() {
 		return _serviceTrackerMap.values();
 	}
 
@@ -41,9 +41,8 @@ public class EntityModelListenerRegistry {
 		_bundleContext = bundleContext;
 
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext,
-			(Class<EntityModelListener<?>>)(Class<?>)EntityModelListener.class,
-			null, new EntityModelListenerServiceReferenceMapper());
+			bundleContext, (Class<EntityModel<?>>)(Class<?>)EntityModel.class,
+			null, new EntityModelServiceReferenceMapper());
 	}
 
 	@Deactivate
@@ -52,23 +51,20 @@ public class EntityModelListenerRegistry {
 	}
 
 	private BundleContext _bundleContext;
-	private ServiceTrackerMap<String, EntityModelListener<?>>
-		_serviceTrackerMap;
+	private ServiceTrackerMap<String, EntityModel<?>> _serviceTrackerMap;
 
-	private class EntityModelListenerServiceReferenceMapper
-		<T extends BaseModel<T>>
-			implements ServiceReferenceMapper<String, EntityModelListener<T>> {
+	private class EntityModelServiceReferenceMapper<T extends BaseModel<T>>
+		implements ServiceReferenceMapper<String, EntityModel<T>> {
 
 		@Override
 		public void map(
-			ServiceReference<EntityModelListener<T>> serviceReference,
+			ServiceReference<EntityModel<T>> serviceReference,
 			Emitter<String> emitter) {
 
-			EntityModelListener<?> entityModelListener =
-				_bundleContext.getService(serviceReference);
+			EntityModel<?> entityModel = _bundleContext.getService(
+				serviceReference);
 
-			Class<?> clazz = _getParameterizedClass(
-				entityModelListener.getClass());
+			Class<?> clazz = _getParameterizedClass(entityModel.getClass());
 
 			try {
 				emitter.emit(clazz.getName());

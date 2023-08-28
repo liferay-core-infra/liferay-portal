@@ -6,7 +6,7 @@
 package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.AnalyticsMessage;
-import com.liferay.analytics.message.sender.model.listener.EntityModelListener;
+import com.liferay.analytics.message.sender.model.listener.EntityModel;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.petra.string.StringPool;
@@ -45,7 +45,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Rachael Koestartyo
  */
 public abstract class BaseAnalyticsModelListener<T extends BaseModel<T>>
-	extends BaseModelListener<T> implements EntityModelListener<T> {
+	extends BaseModelListener<T> implements EntityModel<T> {
 
 	@Override
 	public void addAnalyticsMessage(

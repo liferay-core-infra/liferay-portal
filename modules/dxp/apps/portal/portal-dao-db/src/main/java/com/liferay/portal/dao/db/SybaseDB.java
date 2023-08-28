@@ -5,7 +5,6 @@
 
 package com.liferay.portal.dao.db;
 
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DBInspector;
@@ -26,8 +25,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Alexander Chow
@@ -166,38 +163,6 @@ public class SybaseDB extends BaseDB {
 	}
 
 	@Override
-	protected String replaceTemplate(String template) {
-		if (template == null) {
-			return null;
-		}
-
-		if (!template.contains("[$COLUMN_LENGTH:")) {
-			return super.replaceTemplate(template);
-		}
-
-		String[] strings = StringUtil.split(template, CharPool.NEW_LINE);
-
-		Matcher matcher = _columnLengthPattern.matcher(StringPool.BLANK);
-
-		for (int i = 0; i < strings.length; i++) {
-			matcher.reset(strings[i]);
-
-			while (matcher.find()) {
-				int length = Integer.valueOf(matcher.group(1));
-
-				if (length > 1250) {
-					strings[i] = StringPool.BLANK;
-
-					break;
-				}
-			}
-		}
-
-		return super.replaceTemplate(
-			StringUtil.merge(strings, StringPool.NEW_LINE));
-	}
-
-	@Override
 	protected String reword(String data) throws IOException {
 		try (UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(new UnsyncStringReader(data))) {
@@ -298,8 +263,5 @@ public class SybaseDB extends BaseDB {
 		" decimal(20,0)", " varchar(4000)", " text", " varchar",
 		"  identity(1,1)", "go"
 	};
-
-	private static final Pattern _columnLengthPattern = Pattern.compile(
-		"\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
 
 }

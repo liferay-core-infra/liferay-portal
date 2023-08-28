@@ -408,6 +408,11 @@ public class SQLServerDB extends BaseDB {
 	}
 
 	@Override
+	protected String limitColumnLength(String column, int length) {
+		return StringBundler.concat("substring(", column, ", 1, ", length, ")");
+	}
+
+	@Override
 	protected String reword(String data) throws IOException {
 		try (UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(new UnsyncStringReader(data))) {

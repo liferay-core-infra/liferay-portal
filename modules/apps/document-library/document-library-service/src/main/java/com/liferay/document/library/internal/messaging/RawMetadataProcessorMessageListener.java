@@ -6,6 +6,7 @@
 package com.liferay.document.library.internal.messaging;
 
 import com.liferay.document.library.kernel.util.RawMetadataProcessorUtil;
+import com.liferay.dynamic.data.mapping.kernel.DDMStructureManager;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -16,6 +17,7 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Miguel Pastor
@@ -35,7 +37,8 @@ public class RawMetadataProcessorMessageListener extends BaseMessageListener {
 		FileVersion fileVersion = (FileVersion)message.getPayload();
 
 		try {
-			RawMetadataProcessorUtil.saveMetadata(fileVersion);
+			RawMetadataProcessorUtil.saveMetadata(
+				fileVersion, _ddmStructureManager);
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
@@ -49,5 +52,8 @@ public class RawMetadataProcessorMessageListener extends BaseMessageListener {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RawMetadataProcessorMessageListener.class);
+
+	@Reference
+	private DDMStructureManager _ddmStructureManager;
 
 }

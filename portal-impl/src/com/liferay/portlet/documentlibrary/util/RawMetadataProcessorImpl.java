@@ -13,7 +13,7 @@ import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.RawMetadataProcessor;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
-import com.liferay.dynamic.data.mapping.kernel.DDMStructureManagerUtil;
+import com.liferay.dynamic.data.mapping.kernel.DDMStructureManager;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -106,7 +106,10 @@ public class RawMetadataProcessorImpl
 	}
 
 	@Override
-	public void saveMetadata(FileVersion fileVersion) throws PortalException {
+	public void saveMetadata(
+			FileVersion fileVersion, DDMStructureManager ddmStructureManager)
+		throws PortalException {
+
 		Map<String, DDMFormValues> rawMetadataMap = null;
 
 		try (InputStream inputStream = fileVersion.getContentStream(false)) {
@@ -130,7 +133,7 @@ public class RawMetadataProcessorImpl
 		}
 
 		List<DDMStructure> ddmStructures =
-			DDMStructureManagerUtil.getClassStructures(
+			ddmStructureManager.getClassStructures(
 				fileVersion.getCompanyId(),
 				PortalUtil.getClassNameId(RawMetadataProcessor.class));
 

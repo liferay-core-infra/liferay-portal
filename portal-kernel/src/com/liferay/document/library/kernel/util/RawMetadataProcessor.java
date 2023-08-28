@@ -5,6 +5,7 @@
 
 package com.liferay.document.library.kernel.util;
 
+import com.liferay.dynamic.data.mapping.kernel.DDMStructureManager;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -47,7 +48,9 @@ public interface RawMetadataProcessor {
 	 * @param fileVersion the file version from which the raw metatada is to be
 	 *        extracted and persisted
 	 */
-	public void saveMetadata(FileVersion fileVersion) throws PortalException;
+	public void saveMetadata(
+			FileVersion fileVersion, DDMStructureManager ddmStructureManager)
+		throws PortalException;
 
 	/**
 	 * Launches extraction of raw metadata from the file version.

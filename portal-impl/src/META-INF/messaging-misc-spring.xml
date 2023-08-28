@@ -22,7 +22,6 @@
 	<bean class="com.liferay.portlet.documentlibrary.messaging.AudioProcessorMessageListener" id="messageListener.document_library_audio_processor" />
 	<bean class="com.liferay.portlet.documentlibrary.messaging.ImageProcessorMessageListener" id="messageListener.document_library_image_processor" />
 	<bean class="com.liferay.portlet.documentlibrary.messaging.PDFProcessorMessageListener" id="messageListener.document_library_pdf_processor" />
-	<bean class="com.liferay.portlet.documentlibrary.messaging.RawMetadataProcessorMessageListener" id="messageListener.document_library_raw_metadata_processor" />
 	<bean class="com.liferay.portlet.documentlibrary.messaging.VideoProcessorMessageListener" id="messageListener.document_library_video_processor" />
 
 	<!-- Configurator -->
@@ -135,11 +134,6 @@
 				<entry key="liferay/document_library_pdf_processor">
 					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
 						<ref bean="messageListener.document_library_pdf_processor" />
-					</list>
-				</entry>
-				<entry key="liferay/document_library_raw_metadata_processor">
-					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.document_library_raw_metadata_processor" />
 					</list>
 				</entry>
 				<entry key="liferay/document_library_video_processor">

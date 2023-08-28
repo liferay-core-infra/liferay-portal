@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = ModelListener.class)
 public class ExpandoColumnModelListener
-	extends BaseAnalyticsModelListener<ExpandoColumn> {
+	extends BaseModelListener<ExpandoColumn> {
 
 	@Override
 	public void onBeforeUpdate(

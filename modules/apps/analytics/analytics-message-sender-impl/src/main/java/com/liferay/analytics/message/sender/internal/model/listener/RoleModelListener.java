@@ -18,7 +18,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Shinn Lok
  */
 @Component(service = ModelListener.class)
-public class RoleModelListener extends BaseAnalyticsModelListener<Role> {
+public class RoleModelListener extends BaseModelListener<Role> {
 
 	@Override
 	protected EntityModel<Role> getEntityModelListener() {

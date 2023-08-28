@@ -18,8 +18,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Rachael Koestartyo
  */
 @Component(service = ModelListener.class)
-public class UserGroupModelListener
-	extends BaseAnalyticsModelListener<UserGroup> {
+public class UserGroupModelListener extends BaseModelListener<UserGroup> {
 
 	@Override
 	public void onAfterRemove(UserGroup userGroup)

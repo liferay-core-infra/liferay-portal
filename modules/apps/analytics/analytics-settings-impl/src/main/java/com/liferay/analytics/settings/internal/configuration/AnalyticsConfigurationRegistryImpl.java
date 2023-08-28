@@ -10,12 +10,12 @@ import com.liferay.analytics.batch.exportimport.constants.AnalyticsDXPEntityBatc
 import com.liferay.analytics.message.sender.constants.AnalyticsMessagesDestinationNames;
 import com.liferay.analytics.message.sender.constants.AnalyticsMessagesProcessorCommand;
 import com.liferay.analytics.message.sender.model.AnalyticsMessage;
-import com.liferay.analytics.message.sender.model.listener.EntityModelListener;
+import com.liferay.analytics.message.sender.model.listener.AnalyticsEntityModel;
 import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalService;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.configuration.AnalyticsConfigurationRegistry;
 import com.liferay.analytics.settings.internal.model.AnalyticsUserImpl;
-import com.liferay.analytics.settings.internal.util.EntityModelListenerRegistry;
+import com.liferay.analytics.settings.internal.util.AnalyticsEntityModelRegistry;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.analytics.settings.security.constants.AnalyticsSecurityConstants;
 import com.liferay.expando.kernel.model.ExpandoColumn;
@@ -228,8 +228,8 @@ public class AnalyticsConfigurationRegistryImpl
 		BaseModel<?> baseModel = baseModels.get(0);
 
 		message.put(
-			"entityModelListener",
-			_entityModelListenerRegistry.getEntityModelListener(
+			"analyticsEntityModel",
+			_analyticsEntityModelRegistry.getAnalyticsEntityModel(
 				baseModel.getModelClassName()));
 
 		message.put("principalName", _getAnalyticsAdminUserId(companyId));
@@ -276,19 +276,20 @@ public class AnalyticsConfigurationRegistryImpl
 		for (User user : users) {
 			Map<String, long[]> memberships = new HashMap<>();
 
-			for (EntityModelListener<?> entityModelListener :
-					_entityModelListenerRegistry.getEntityModelListeners()) {
+			for (AnalyticsEntityModel<?> analyticsEntityModel :
+					_analyticsEntityModelRegistry.getAnalyticsEntityModels()) {
 
 				try {
-					long[] membershipIds = entityModelListener.getMembershipIds(
-						user);
+					long[] membershipIds =
+						analyticsEntityModel.getMembershipIds(user);
 
 					if (membershipIds.length == 0) {
 						continue;
 					}
 
 					memberships.put(
-						entityModelListener.getModelClassName(), membershipIds);
+						analyticsEntityModel.getModelClassName(),
+						membershipIds);
 				}
 				catch (Exception exception) {
 					_log.error(exception);
@@ -423,13 +424,13 @@ public class AnalyticsConfigurationRegistryImpl
 			AnalyticsConfiguration analyticsConfiguration =
 				getAnalyticsConfiguration(companyId);
 
-			Collection<EntityModelListener<?>> entityModelListeners =
-				_entityModelListenerRegistry.getEntityModelListeners();
+			Collection<AnalyticsEntityModel<?>> analyticsEntityModels =
+				_analyticsEntityModelRegistry.getAnalyticsEntityModels();
 
-			for (EntityModelListener<?> entityModelListener :
-					entityModelListeners) {
+			for (AnalyticsEntityModel<?> analyticsEntityModel :
+					analyticsEntityModels) {
 
-				entityModelListener.syncAll(companyId);
+				analyticsEntityModel.syncAll(companyId);
 			}
 
 			_syncDefaultFields(
@@ -525,13 +526,13 @@ public class AnalyticsConfigurationRegistryImpl
 			if (Validator.isNotNull(dictionary.get("token")) &&
 				Validator.isNull(dictionary.get("previousToken"))) {
 
-				Collection<EntityModelListener<?>> entityModelListeners =
-					_entityModelListenerRegistry.getEntityModelListeners();
+				Collection<AnalyticsEntityModel<?>> analyticsEntityModels =
+					_analyticsEntityModelRegistry.getAnalyticsEntityModels();
 
-				for (EntityModelListener<?> entityModelListener :
-						entityModelListeners) {
+				for (AnalyticsEntityModel<?> analyticsEntityModel :
+						analyticsEntityModels) {
 
-					entityModelListener.syncAll(companyId);
+					analyticsEntityModel.syncAll(companyId);
 				}
 			}
 
@@ -1068,6 +1069,9 @@ public class AnalyticsConfigurationRegistryImpl
 	private AnalyticsDXPEntityBatchExporter _analyticsDXPEntityBatchExporter;
 
 	@Reference
+	private AnalyticsEntityModelRegistry _analyticsEntityModelRegistry;
+
+	@Reference
 	private AnalyticsMessageLocalService _analyticsMessageLocalService;
 
 	@Reference
@@ -1083,9 +1087,6 @@ public class AnalyticsConfigurationRegistryImpl
 
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
-
-	@Reference
-	private EntityModelListenerRegistry _entityModelListenerRegistry;
 
 	@Reference
 	private ExpandoColumnLocalService _expandoColumnLocalService;

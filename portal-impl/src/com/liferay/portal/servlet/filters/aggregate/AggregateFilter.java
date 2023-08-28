@@ -57,7 +57,6 @@ import java.net.URLConnection;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.FutureTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -528,34 +527,29 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 			String finalContent = content;
 			String finalResourcePath = resourcePath;
 
-			Callable<String> callable = new Callable<String>() {
+			Callable<String> callable = () -> {
+				String minifiedContent = null;
 
-				@Override
-				public String call() throws IOException {
-					String minifiedContent = null;
-
-					if (minifierType.equals("css")) {
-						minifiedContent = MinifierUtil.minifyCss(finalContent);
-					}
-					else {
-						minifiedContent = MinifierUtil.minifyJavaScript(
-							finalResourcePath, finalContent);
-					}
-
-					minifiedContent = StringBundler.concat(
-						_CSS_COMMENT_BEGIN,
-						URLUtil.getLastModifiedTime(resourceURL),
-						_CSS_COMMENT_END, StringPool.NEW_LINE, minifiedContent);
-
-					File tempFile = FileUtil.createTempFile();
-
-					FileUtil.write(tempFile, minifiedContent);
-
-					FileUtil.move(tempFile, cacheDataFile);
-
-					return minifiedContent;
+				if (minifierType.equals("css")) {
+					minifiedContent = MinifierUtil.minifyCss(finalContent);
+				}
+				else {
+					minifiedContent = MinifierUtil.minifyJavaScript(
+						finalResourcePath, finalContent);
 				}
 
+				minifiedContent = StringBundler.concat(
+					_CSS_COMMENT_BEGIN,
+					URLUtil.getLastModifiedTime(resourceURL), _CSS_COMMENT_END,
+					StringPool.NEW_LINE, minifiedContent);
+
+				File tempFile = FileUtil.createTempFile();
+
+				FileUtil.write(tempFile, minifiedContent);
+
+				FileUtil.move(tempFile, cacheDataFile);
+
+				return minifiedContent;
 			};
 
 			if (_portalExecutorManager == null) {

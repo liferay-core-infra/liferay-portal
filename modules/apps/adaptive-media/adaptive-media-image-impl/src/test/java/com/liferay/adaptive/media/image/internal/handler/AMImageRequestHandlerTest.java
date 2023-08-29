@@ -536,7 +536,7 @@ public class AMImageRequestHandlerTest {
 	private final AMImageRequestHandler _amImageRequestHandler =
 		new AMImageRequestHandler();
 	private FileVersion _fileVersion;
-	private final PathInterpreter _pathInterpreter = Mockito.mock(
-		PathInterpreter.class);
+	private final AMImageRequestHandler.PathInterpreter _pathInterpreter =
+		Mockito.mock(AMImageRequestHandler.PathInterpreter.class);
 
 }

@@ -19,17 +19,22 @@ import com.liferay.adaptive.media.image.processor.AMImageAttribute;
 import com.liferay.adaptive.media.processor.AMAsyncProcessor;
 import com.liferay.adaptive.media.processor.AMAsyncProcessorLocator;
 import com.liferay.adaptive.media.processor.AMProcessor;
+import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -67,6 +72,89 @@ public class AMImageRequestHandler
 		}
 
 		return adaptiveMedia;
+	}
+
+	public static class PathInterpreter {
+
+		public Tuple<FileVersion, Map<String, String>> interpretPath(
+			String pathInfo) {
+
+			try {
+				if (pathInfo == null) {
+					throw new IllegalArgumentException(
+						"Path information is null");
+				}
+
+				Matcher matcher = _pattern.matcher(pathInfo);
+
+				if (!matcher.matches()) {
+					return null;
+				}
+
+				long fileEntryId = Long.valueOf(matcher.group(1));
+
+				FileVersion fileVersion = _getFileVersion(
+					_dlAppService.getFileEntry(fileEntryId),
+					_getFileVersionId(matcher));
+
+				AMImageConfigurationEntry amImageConfigurationEntry =
+					_amImageConfigurationHelper.getAMImageConfigurationEntry(
+						fileVersion.getCompanyId(),
+						_getConfigurationEntryUUID(matcher));
+
+				if (amImageConfigurationEntry == null) {
+					return Tuple.of(fileVersion, new HashMap<>());
+				}
+
+				Map<String, String> curProperties =
+					amImageConfigurationEntry.getProperties();
+
+				AMAttribute<?, String> configurationUuidAMAttribute =
+					AMAttribute.getConfigurationUuidAMAttribute();
+
+				curProperties.put(
+					configurationUuidAMAttribute.getName(),
+					amImageConfigurationEntry.getUUID());
+
+				return Tuple.of(fileVersion, curProperties);
+			}
+			catch (PortalException portalException) {
+				throw new AMRuntimeException(portalException);
+			}
+		}
+
+		private String _getConfigurationEntryUUID(Matcher matcher) {
+			return matcher.group(3);
+		}
+
+		private FileVersion _getFileVersion(
+				FileEntry fileEntry, long fileVersionId)
+			throws PortalException {
+
+			if (fileVersionId == 0) {
+				return fileEntry.getFileVersion();
+			}
+
+			return _dlAppService.getFileVersion(fileVersionId);
+		}
+
+		private long _getFileVersionId(Matcher matcher) {
+			if (matcher.group(2) == null) {
+				return 0;
+			}
+
+			return Long.valueOf(matcher.group(2));
+		}
+
+		private static final Pattern _pattern = Pattern.compile(
+			"/image/(\\d+)(?:/(\\d+))?/([^/]+)/(?:[^/]+)");
+
+		@Reference
+		private AMImageConfigurationHelper _amImageConfigurationHelper;
+
+		@Reference
+		private DLAppService _dlAppService;
+
 	}
 
 	private AdaptiveMedia<AMProcessor<FileVersion>> _createRawAdaptiveMedia(
@@ -285,7 +373,6 @@ public class AMImageRequestHandler
 	@Reference
 	private AMImageFinder _amImageFinder;
 
-	@Reference
-	private PathInterpreter _pathInterpreter;
+	private AMImageRequestHandler.PathInterpreter _pathInterpreter;
 
 }

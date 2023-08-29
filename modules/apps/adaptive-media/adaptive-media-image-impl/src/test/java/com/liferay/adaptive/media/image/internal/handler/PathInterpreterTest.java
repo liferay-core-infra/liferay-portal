@@ -232,6 +232,7 @@ public class PathInterpreterTest {
 	private final DLAppService _dlAppService = Mockito.mock(DLAppService.class);
 	private final FileEntry _fileEntry = Mockito.mock(FileEntry.class);
 	private final FileVersion _fileVersion = Mockito.mock(FileVersion.class);
-	private final PathInterpreter _pathInterpreter = new PathInterpreter();
+	private final AMImageRequestHandler.PathInterpreter _pathInterpreter =
+		new AMImageRequestHandler.PathInterpreter();
 
 }

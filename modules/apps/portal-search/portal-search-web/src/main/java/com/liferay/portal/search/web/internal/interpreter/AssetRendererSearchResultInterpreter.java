@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.search.web.internal.Interpreter;
+package com.liferay.portal.search.web.internal.interpreter;
 
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Wade Cao
  */
-@Component(service = AssetRendererSearchResultInterpreter.class)
+@Component(service = SearchResultInterpreter.class)
 public class AssetRendererSearchResultInterpreter
 	implements SearchResultInterpreter {
 

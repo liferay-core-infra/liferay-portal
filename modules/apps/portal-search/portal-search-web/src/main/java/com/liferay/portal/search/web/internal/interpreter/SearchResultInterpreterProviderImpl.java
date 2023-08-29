@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.search.web.internal.Interpreter;
+package com.liferay.portal.search.web.internal.interpreter;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -48,9 +48,10 @@ public class SearchResultInterpreterProviderImpl
 		_serviceTrackerMap.close();
 	}
 
-	@Reference
-	private AssetRendererSearchResultInterpreter
-		_assetRendererSearchResultInterpreter;
+	@Reference(
+		target = "(component.name=com.liferay.portal.search.web.internal.interpreter.AssetRendererSearchResultInterpreter)"
+	)
+	private SearchResultInterpreter _assetRendererSearchResultInterpreter;
 
 	private ServiceTrackerMap<String, SearchResultInterpreter>
 		_serviceTrackerMap;

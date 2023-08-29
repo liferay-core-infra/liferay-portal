@@ -70,9 +70,10 @@ public class SharingEntryInterpreterProviderImpl
 		return false;
 	}
 
-	@Reference
-	private AssetRendererSharingEntryInterpreter
-		_assetRendererSharingEntryInterpreter;
+	@Reference(
+		target = "(component.name=com.liferay.sharing.web.internal.interpreter.AssetRendererSharingEntryInterpreter)"
+	)
+	private SharingEntryInterpreter _assetRendererSharingEntryInterpreter;
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;

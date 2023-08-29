@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alejandro Tardín
  */
-@Component(service = AssetRendererSharingEntryInterpreter.class)
+@Component(service = SharingEntryInterpreter.class)
 public class AssetRendererSharingEntryInterpreter
 	implements SharingEntryInterpreter {
 

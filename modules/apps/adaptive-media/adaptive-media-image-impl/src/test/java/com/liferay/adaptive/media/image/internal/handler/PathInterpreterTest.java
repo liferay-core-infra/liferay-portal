@@ -41,10 +41,14 @@ public class PathInterpreterTest {
 	@Before
 	public void setUp() {
 		ReflectionTestUtil.setFieldValue(
-			_pathInterpreter, "_amImageConfigurationHelper",
+			_amImageRequestHandler, "_amImageConfigurationHelper",
 			_amImageConfigurationHelper);
+
 		ReflectionTestUtil.setFieldValue(
-			_pathInterpreter, "_dlAppService", _dlAppService);
+			_amImageRequestHandler, "_dlAppService", _dlAppService);
+
+		_pathInterpreter = ReflectionTestUtil.getFieldValue(
+			_amImageRequestHandler, "_pathInterpreter");
 	}
 
 	@Test
@@ -229,9 +233,11 @@ public class PathInterpreterTest {
 		Mockito.mock(AMImageConfigurationEntry.class);
 	private final AMImageConfigurationHelper _amImageConfigurationHelper =
 		Mockito.mock(AMImageConfigurationHelperImpl.class);
+	private final AMImageRequestHandler _amImageRequestHandler =
+		new AMImageRequestHandler();
 	private final DLAppService _dlAppService = Mockito.mock(DLAppService.class);
 	private final FileEntry _fileEntry = Mockito.mock(FileEntry.class);
 	private final FileVersion _fileVersion = Mockito.mock(FileVersion.class);
-	private final PathInterpreter _pathInterpreter = new PathInterpreter();
+	private AMImageRequestHandler.PathInterpreter _pathInterpreter;
 
 }

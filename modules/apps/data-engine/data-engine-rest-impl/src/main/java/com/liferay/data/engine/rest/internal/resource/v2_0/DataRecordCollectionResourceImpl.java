@@ -11,8 +11,8 @@ import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecordCollection;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistryUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataRecordCollectionUtil;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataRecordCollectionModelResourcePermission;
 import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionPermissionUtil;
+import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataRecordCollectionPermissionUtil;
 import com.liferay.data.engine.rest.resource.v2_0.DataRecordCollectionResource;
 import com.liferay.dynamic.data.lists.constants.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
@@ -68,9 +68,10 @@ public class DataRecordCollectionResourceImpl
 	public void deleteDataRecordCollection(Long dataRecordCollectionId)
 		throws Exception {
 
-		_dataRecordCollectionModelResourcePermission.check(
+		DataRecordCollectionPermissionUtil.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			dataRecordCollectionId, ActionKeys.DELETE);
+			_ddlRecordSetLocalService.getDDLRecordSet(dataRecordCollectionId),
+			ActionKeys.DELETE);
 
 		_deleteDataRecordCollection(dataRecordCollectionId);
 	}
@@ -114,9 +115,10 @@ public class DataRecordCollectionResourceImpl
 			Long dataRecordCollectionId)
 		throws Exception {
 
-		_dataRecordCollectionModelResourcePermission.check(
+		DataRecordCollectionPermissionUtil.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			dataRecordCollectionId, ActionKeys.VIEW);
+			_ddlRecordSetLocalService.getDDLRecordSet(dataRecordCollectionId),
+			ActionKeys.VIEW);
 
 		return _getDataRecordCollection(dataRecordCollectionId);
 	}
@@ -188,9 +190,9 @@ public class DataRecordCollectionResourceImpl
 		DDLRecordSet ddlRecordSet = _ddlRecordSetLocalService.getRecordSet(
 			siteId, dataRecordCollectionKey);
 
-		_dataRecordCollectionModelResourcePermission.check(
-			PermissionThreadLocal.getPermissionChecker(),
-			ddlRecordSet.getRecordSetId(), ActionKeys.VIEW);
+		DataRecordCollectionPermissionUtil.check(
+			PermissionThreadLocal.getPermissionChecker(), ddlRecordSet,
+			ActionKeys.VIEW);
 
 		return _getSiteDataRecordCollection(dataRecordCollectionKey, siteId);
 	}
@@ -226,9 +228,10 @@ public class DataRecordCollectionResourceImpl
 			DataRecordCollection dataRecordCollection)
 		throws Exception {
 
-		_dataRecordCollectionModelResourcePermission.check(
+		DataRecordCollectionPermissionUtil.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			dataRecordCollectionId, ActionKeys.UPDATE);
+			_ddlRecordSetLocalService.getDDLRecordSet(dataRecordCollectionId),
+			ActionKeys.UPDATE);
 
 		return _updateDataRecordCollection(
 			dataRecordCollectionId, dataRecordCollection.getDescription(),
@@ -397,10 +400,6 @@ public class DataRecordCollectionResourceImpl
 				LocalizedValueUtil.toLocaleStringMap(description), 0,
 				serviceContext));
 	}
-
-	@Reference
-	private DataRecordCollectionModelResourcePermission
-		_dataRecordCollectionModelResourcePermission;
 
 	@Reference
 	private DDLRecordSetLocalService _ddlRecordSetLocalService;

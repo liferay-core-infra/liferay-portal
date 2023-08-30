@@ -11,7 +11,6 @@ import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecordCollection;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistryUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataRecordCollectionUtil;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
 import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionModelResourcePermissionUtil;
 import com.liferay.data.engine.rest.resource.v2_0.DataRecordCollectionResource;
 import com.liferay.dynamic.data.lists.constants.DDLRecordSetConstants;
@@ -395,8 +394,10 @@ public class DataRecordCollectionResourceImpl
 				serviceContext));
 	}
 
-	@Reference
-	private DataDefinitionModelResourcePermission
+	@Reference(
+		target = "(component.name=com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission)"
+	)
+	private ModelResourcePermission<DDMStructure>
 		_dataDefinitionModelResourcePermission;
 
 	@Reference(

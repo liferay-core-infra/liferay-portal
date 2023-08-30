@@ -9,10 +9,15 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 
+import java.util.Collection;
+
 /**
  * @author Brian Wing Shun Chan
  */
 public interface ActionableDynamicQuery {
+
+	public default void findBy(String columnName, Collection<?> values) {
+	}
 
 	public AddCriteriaMethod getAddCriteriaMethod();
 

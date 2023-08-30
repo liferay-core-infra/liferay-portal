@@ -6,6 +6,10 @@
 package com.liferay.portal.kernel.dao.orm;
 
 import com.liferay.petra.executor.PortalExecutorManager;
+import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -14,12 +18,17 @@ import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -41,6 +50,28 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 			PortalException.class, SystemException.class);
 
 		REQUIRES_NEW_TRANSACTION_CONFIG = builder.build();
+	}
+
+	public DefaultActionableDynamicQuery() {
+		if (_databaseInMaxParameters == 0) {
+			_initializeDatabaseInMaxParameters();
+		}
+	}
+
+	@Override
+	public void findBy(String columnName, Collection<?> values) {
+		_columnName = columnName;
+		_values = ListUtil.fromCollection(values);
+
+		if (_values.size() <= _databaseInMaxParameters) {
+			setAddCriteriaMethod(
+				dynamicQuery -> dynamicQuery.add(
+					RestrictionsFactoryUtil.in(_columnName, values)));
+		}
+	}
+
+	public String getActionableDynamicQueryMethod() {
+		return "getActionableDynamicQuery";
 	}
 
 	@Override
@@ -71,24 +102,35 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 	@Override
 	public void performActions() throws PortalException {
 		try {
-			long previousPrimaryKey = -1;
+			if ((_values == null) ||
+				(_values.size() <= _databaseInMaxParameters)) {
 
-			while (true) {
-				long lastPrimaryKey = doPerformActions(previousPrimaryKey);
+				long previousPrimaryKey = -1;
 
-				if (lastPrimaryKey < 0) {
-					return;
+				while (true) {
+					long lastPrimaryKey = doPerformActions(previousPrimaryKey);
+
+					if (lastPrimaryKey < 0) {
+						return;
+					}
+
+					if (_notify) {
+						intervalCompleted(previousPrimaryKey, lastPrimaryKey);
+					}
+
+					previousPrimaryKey = lastPrimaryKey;
 				}
-
-				intervalCompleted(previousPrimaryKey, lastPrimaryKey);
-
-				previousPrimaryKey = lastPrimaryKey;
+			}
+			else {
+				_performActions();
 			}
 		}
 		finally {
 			_offset = 0;
 
-			actionsCompleted();
+			if (_notify) {
+				actionsCompleted();
+			}
 		}
 	}
 
@@ -98,15 +140,19 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 			return _performCountMethod.performCount();
 		}
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			_modelClass, _classLoader);
+		if ((_values == null) || (_values.size() <= _databaseInMaxParameters)) {
+			DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+				_modelClass, _classLoader);
 
-		addDefaultCriteria(dynamicQuery);
+			addDefaultCriteria(dynamicQuery);
 
-		addCriteria(dynamicQuery);
+			addCriteria(dynamicQuery);
 
-		return (Long)executeDynamicQuery(
-			_dynamicQueryCountMethod, dynamicQuery, getCountProjection());
+			return (Long)executeDynamicQuery(
+				_dynamicQueryCountMethod, dynamicQuery, getCountProjection());
+		}
+
+		return _performCount();
 	}
 
 	@Override
@@ -125,7 +171,7 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 	public void setBaseLocalService(BaseLocalService baseLocalService) {
 		_baseLocalService = baseLocalService;
 
-		Class<?> clazz = _baseLocalService.getClass();
+		Class<?> clazz = baseLocalService.getClass();
 
 		try {
 			_dynamicQueryMethod = clazz.getMethod(
@@ -379,6 +425,89 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 		}
 	}
 
+	private void _initializeDatabaseInMaxParameters() {
+		DB db = DBManagerUtil.getDB();
+
+		DBType dbType = db.getDBType();
+
+		_databaseInMaxParameters = GetterUtil.getInteger(
+			PropsUtil.get(
+				PropsKeys.DATABASE_IN_MAX_PARAMETERS,
+				new Filter(dbType.getName())),
+			Integer.MAX_VALUE);
+	}
+
+	private void _performActions() throws PortalException {
+		int size = _values.size();
+
+		int start = 0;
+		int end = _databaseInMaxParameters;
+
+		while (start < size) {
+			Class<?> clazz = _baseLocalService.getClass();
+
+			DefaultActionableDynamicQuery defaultActionableDynamicQuery = null;
+
+			try {
+				Method method = clazz.getMethod(
+					getActionableDynamicQueryMethod());
+
+				defaultActionableDynamicQuery =
+					(DefaultActionableDynamicQuery)method.invoke(
+						_baseLocalService);
+			}
+			catch (Exception exception) {
+				throw new SystemException(exception);
+			}
+
+			List<?> partition = ListUtil.subList(_values, start, end);
+
+			defaultActionableDynamicQuery.setAddCriteriaMethod(
+				dynamicQuery -> dynamicQuery.add(
+					RestrictionsFactoryUtil.in(_columnName, partition)));
+
+			defaultActionableDynamicQuery.setCompanyId(getCompanyId());
+			defaultActionableDynamicQuery.setPerformActionMethod(
+				getPerformActionMethod());
+
+			defaultActionableDynamicQuery._notify = false;
+
+			defaultActionableDynamicQuery.performActions();
+
+			end += _databaseInMaxParameters;
+			start += _databaseInMaxParameters;
+		}
+	}
+
+	private long _performCount() throws PortalException {
+		int size = _values.size();
+
+		int start = 0;
+		int end = _databaseInMaxParameters;
+
+		long total = 0;
+
+		while (start < size) {
+			DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+				_modelClass, _classLoader);
+
+			addDefaultCriteria(dynamicQuery);
+
+			dynamicQuery.add(
+				RestrictionsFactoryUtil.in(
+					_columnName, ListUtil.subList(_values, start, end)));
+
+			total += (Long)executeDynamicQuery(
+				_dynamicQueryCountMethod, dynamicQuery, getCountProjection());
+
+			end += _databaseInMaxParameters;
+			start += _databaseInMaxParameters;
+		}
+
+		return total;
+	}
+
+	private static int _databaseInMaxParameters;
 	private static volatile PortalExecutorManager _portalExecutorManager =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			PortalExecutorManager.class, DefaultActionableDynamicQuery.class,
@@ -388,6 +517,7 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 	private AddOrderCriteriaMethod _addOrderCriteriaMethod;
 	private BaseLocalService _baseLocalService;
 	private ClassLoader _classLoader;
+	private String _columnName;
 	private long _companyId;
 	private Method _dynamicQueryCountMethod;
 	private Method _dynamicQueryMethod;
@@ -395,6 +525,7 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 	private String _groupIdPropertyName = "groupId";
 	private int _interval = Indexer.DEFAULT_INTERVAL;
 	private Class<?> _modelClass;
+	private boolean _notify = true;
 	private int _offset;
 	private boolean _parallel;
 
@@ -404,5 +535,6 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 	private PerformCountMethod _performCountMethod;
 	private String _primaryKeyPropertyName;
 	private TransactionConfig _transactionConfig;
+	private List<?> _values;
 
 }

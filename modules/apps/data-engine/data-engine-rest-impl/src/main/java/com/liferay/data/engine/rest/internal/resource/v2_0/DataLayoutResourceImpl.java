@@ -19,7 +19,6 @@ import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.MapToDDMFormValuesConverterUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataLayoutEntityModel;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
 import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionModelResourcePermissionUtil;
 import com.liferay.data.engine.rest.resource.exception.DataLayoutValidationException;
 import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
@@ -58,6 +57,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.DummyHttpServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -707,8 +707,10 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 
 	private static final EntityModel _entityModel = new DataLayoutEntityModel();
 
-	@Reference
-	private DataDefinitionModelResourcePermission
+	@Reference(
+		target = "(model.class.name=com.liferay.data.engine.rest.dto.v2_0.DataDefinition)"
+	)
+	private ModelResourcePermission<DDMStructure>
 		_dataDefinitionModelResourcePermission;
 
 	@Reference

@@ -370,13 +370,7 @@ public class DLAppHelperLocalServiceImpl
 						_dlFileEntryLocalService.
 							getIndexableActionableDynamicQuery();
 
-				indexableActionableDynamicQuery.setAddCriteriaMethod(
-					dynamicQuery -> {
-						Property dlFileEntryId = PropertyFactoryUtil.forName(
-							"fileEntryId");
-
-						dynamicQuery.add(dlFileEntryId.in(sublist));
-					});
+				indexableActionableDynamicQuery.findBy("fileEntryId", sublist);
 				indexableActionableDynamicQuery.setCompanyId(companyId);
 				indexableActionableDynamicQuery.setPerformActionMethod(
 					(DLFileEntry dlFileEntry) ->

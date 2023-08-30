@@ -26,6 +26,7 @@ import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataDefinitionEntityModel;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
+import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionModelResourcePermissionUtil;
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
@@ -945,7 +946,7 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 			boolean copyPermissions)
 		throws Exception {
 
-		_dataDefinitionModelResourcePermission.checkPortletPermission(
+		DataDefinitionModelResourcePermissionUtil.checkPortletPermission(
 			PermissionThreadLocal.getPermissionChecker(), contentType, siteId,
 			DataActionKeys.ADD_DATA_DEFINITION);
 

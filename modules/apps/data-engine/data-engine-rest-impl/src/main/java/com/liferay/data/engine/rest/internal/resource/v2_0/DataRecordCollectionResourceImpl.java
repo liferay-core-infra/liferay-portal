@@ -13,6 +13,7 @@ import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentT
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataRecordCollectionUtil;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataRecordCollectionModelResourcePermission;
+import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionModelResourcePermissionUtil;
 import com.liferay.data.engine.rest.resource.v2_0.DataRecordCollectionResource;
 import com.liferay.dynamic.data.lists.constants.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
@@ -199,7 +200,7 @@ public class DataRecordCollectionResourceImpl
 		DDMStructure ddmStructure = _ddmStructureLocalService.getDDMStructure(
 			dataDefinitionId);
 
-		_dataDefinitionModelResourcePermission.checkPortletPermission(
+		DataDefinitionModelResourcePermissionUtil.checkPortletPermission(
 			PermissionThreadLocal.getPermissionChecker(), ddmStructure,
 			DataActionKeys.ADD_DATA_RECORD_COLLECTION);
 

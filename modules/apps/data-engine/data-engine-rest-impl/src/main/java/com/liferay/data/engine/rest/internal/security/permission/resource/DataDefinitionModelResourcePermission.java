@@ -54,30 +54,6 @@ public class DataDefinitionModelResourcePermission
 			_ddmStructureLocalService.getDDMStructure(primaryKey), actionId);
 	}
 
-	public void checkPortletPermission(
-			PermissionChecker permissionChecker, DDMStructure ddmStructure,
-			String actionId)
-		throws PortalException {
-
-		checkPortletPermission(
-			permissionChecker,
-			DataDefinitionContentTypeRegistryUtil.getDataDefinitionContentType(
-				ddmStructure.getClassNameId()),
-			ddmStructure.getGroupId(), actionId);
-	}
-
-	public void checkPortletPermission(
-			PermissionChecker permissionChecker, String contentType,
-			long groupId, String actionId)
-		throws Exception {
-
-		checkPortletPermission(
-			permissionChecker,
-			DataDefinitionContentTypeRegistryUtil.getDataDefinitionContentType(
-				contentType),
-			groupId, actionId);
-	}
-
 	@Override
 	public boolean contains(
 			PermissionChecker permissionChecker, DDMStructure ddmStructure,
@@ -117,26 +93,6 @@ public class DataDefinitionModelResourcePermission
 	@Override
 	public PortletResourcePermission getPortletResourcePermission() {
 		return null;
-	}
-
-	protected void checkPortletPermission(
-			PermissionChecker permissionChecker,
-			DataDefinitionContentType dataDefinitionContentType, long groupId,
-			String actionId)
-		throws PortalException {
-
-		if (dataDefinitionContentType == null) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, actionId);
-		}
-
-		if (!dataDefinitionContentType.hasPortletPermission(
-				permissionChecker, groupId, actionId)) {
-
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, dataDefinitionContentType.getContentType(),
-				groupId, actionId);
-		}
 	}
 
 	private String _getModelResourceName(DDMStructure ddmStructure) {

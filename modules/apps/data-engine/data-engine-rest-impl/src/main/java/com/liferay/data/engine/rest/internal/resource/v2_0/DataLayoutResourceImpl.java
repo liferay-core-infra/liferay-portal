@@ -20,6 +20,7 @@ import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.MapToDDMFormValuesConverterUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataLayoutEntityModel;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
+import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionModelResourcePermissionUtil;
 import com.liferay.data.engine.rest.resource.exception.DataLayoutValidationException;
 import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
 import com.liferay.data.engine.service.DEDataDefinitionFieldLinkLocalService;
@@ -195,7 +196,7 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
 			dataDefinitionId);
 
-		_dataDefinitionModelResourcePermission.checkPortletPermission(
+		DataDefinitionModelResourcePermissionUtil.checkPortletPermission(
 			PermissionThreadLocal.getPermissionChecker(), ddmStructure,
 			DataActionKeys.ADD_DATA_DEFINITION);
 

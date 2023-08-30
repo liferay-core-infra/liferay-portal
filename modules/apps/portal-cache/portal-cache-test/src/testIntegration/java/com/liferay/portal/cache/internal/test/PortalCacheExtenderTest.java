@@ -200,30 +200,41 @@ public class PortalCacheExtenderTest {
 		}
 	}
 
-	private String _generateXMLContent(
-		int cacheEntries, String cacheName, int maxElementsInMemory,
-		int timeToIdleSeconds) {
-
-		StringBundler sb = new StringBundler();
+	private String _generateXMLContent(CacheConfig... cacheConfigs) {
+		StringBundler sb = new StringBundler(5 + (cacheConfigs.length * 7));
 
 		sb.append("<ehcache dynamicConfig=\"true\" monitoring=\"off\" ");
 		sb.append("updateCheck=\"false\" xmlns:xsi=\"http://www.w3.org/2001");
 		sb.append("/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"");
 		sb.append("http://www.ehcache.org/ehcache.xsd\">");
 
-		for (int i = 1; i <= cacheEntries; i++) {
+		for (CacheConfig cacheConfig : cacheConfigs) {
 			sb.append("<cache maxElementsInMemory=\"");
-			sb.append(maxElementsInMemory);
+			sb.append(cacheConfig._maxElementsInMemory);
 			sb.append("\" name=\"");
-			sb.append(cacheName + i);
+			sb.append(cacheConfig._name);
 			sb.append("\" timeToIdleSeconds=\"");
-			sb.append(timeToIdleSeconds);
+			sb.append(cacheConfig._timeToIdleSeconds);
 			sb.append("\"> </cache>");
 		}
 
-		sb.append("\" </ehcache>");
+		sb.append("</ehcache>");
 
 		return sb.toString();
+	}
+
+	private String _generateXMLContent(
+		int cacheEntries, String cacheName, int maxElementsInMemory,
+		int timeToIdleSeconds) {
+
+		CacheConfig[] cacheConfigs = new CacheConfig[cacheEntries];
+
+		for (int i = 0; i < cacheEntries; i++) {
+			cacheConfigs[i] = new CacheConfig(
+				maxElementsInMemory, cacheName + (i + 1), timeToIdleSeconds);
+		}
+
+		return _generateXMLContent(cacheConfigs);
 	}
 
 	private Bundle _installBundle(
@@ -308,21 +319,31 @@ public class PortalCacheExtenderTest {
 	private static final String _CACHE_NAME_MULTI = "test.cache.multi";
 
 	private static final String _CACHE_NAME_MULTI_ENTITY =
-		PortalCacheExtenderTest._PREFIX_CACHE_NAME_ENTITY + _CACHE_NAME_MULTI;
+		EntityCache.class.getName() + StringPool.PERIOD + _CACHE_NAME_MULTI;
 
 	private static final String _CACHE_NAME_MULTI_FINDER =
-		PortalCacheExtenderTest._PREFIX_CACHE_NAME_FINDER + _CACHE_NAME_MULTI;
+		FinderCache.class.getName() + StringPool.PERIOD + _CACHE_NAME_MULTI;
 
 	private static final String _CACHE_NAME_SINGLE = "test.cache.single";
-
-	private static final String _PREFIX_CACHE_NAME_ENTITY =
-		EntityCache.class.getName() + StringPool.PERIOD;
-
-	private static final String _PREFIX_CACHE_NAME_FINDER =
-		FinderCache.class.getName() + StringPool.PERIOD;
 
 	private static Bundle _bundle;
 	private static String _multiVmXML;
 	private static String _singleVmXML;
+
+	private static class CacheConfig {
+
+		public CacheConfig(
+			int maxElementsInMemory, String name, long timeToIdleSeconds) {
+
+			_maxElementsInMemory = maxElementsInMemory;
+			_name = name;
+			_timeToIdleSeconds = timeToIdleSeconds;
+		}
+
+		private final int _maxElementsInMemory;
+		private final String _name;
+		private final long _timeToIdleSeconds;
+
+	}
 
 }

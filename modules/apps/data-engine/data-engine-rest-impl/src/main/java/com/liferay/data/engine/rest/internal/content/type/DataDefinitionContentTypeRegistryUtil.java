@@ -10,18 +10,16 @@ import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationE
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Leonardo Barros
  */
-@Component(service = DataDefinitionContentTypeRegistry.class)
-public class DataDefinitionContentTypeRegistry {
+public class DataDefinitionContentTypeRegistryUtil {
 
-	public Long getClassNameId(String contentType) throws Exception {
+	public static Long getClassNameId(String contentType) throws Exception {
 		DataDefinitionContentType dataDefinitionContentType =
 			getDataDefinitionContentType(contentType);
 
@@ -35,7 +33,7 @@ public class DataDefinitionContentTypeRegistry {
 		return id;
 	}
 
-	public DataDefinitionContentType getDataDefinitionContentType(
+	public static DataDefinitionContentType getDataDefinitionContentType(
 		long classNameId) {
 
 		for (DataDefinitionContentType dataDefinitionContentType :
@@ -49,7 +47,7 @@ public class DataDefinitionContentTypeRegistry {
 		return null;
 	}
 
-	public DataDefinitionContentType getDataDefinitionContentType(
+	public static DataDefinitionContentType getDataDefinitionContentType(
 			String contentType)
 		throws Exception {
 
@@ -64,18 +62,17 @@ public class DataDefinitionContentTypeRegistry {
 		return dataDefinitionContentType;
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
+	private static final ServiceTrackerMap<String, DataDefinitionContentType>
+		_serviceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DataDefinitionContentTypeRegistryUtil.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, DataDefinitionContentType.class, "content.type");
 	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerMap.close();
-	}
-
-	private ServiceTrackerMap<String, DataDefinitionContentType>
-		_serviceTrackerMap;
 
 }

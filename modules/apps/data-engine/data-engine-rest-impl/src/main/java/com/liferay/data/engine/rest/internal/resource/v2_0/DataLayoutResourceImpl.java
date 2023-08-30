@@ -19,7 +19,7 @@ import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.MapToDDMFormValuesConverterUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataLayoutEntityModel;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
+import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataDefinitionPermissionUtil;
 import com.liferay.data.engine.rest.resource.exception.DataLayoutValidationException;
 import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
 import com.liferay.data.engine.service.DEDataDefinitionFieldLinkLocalService;
@@ -127,11 +127,9 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 		DDMStructureLayout ddmStructureLayout =
 			_ddmStructureLayoutLocalService.getStructureLayout(dataLayoutId);
 
-		DDMStructure ddmStructure = ddmStructureLayout.getDDMStructure();
-
-		_dataDefinitionModelResourcePermission.check(
+		DataDefinitionPermissionUtil.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			ddmStructure.getStructureId(), ActionKeys.DELETE);
+			ddmStructureLayout.getDDMStructure(), ActionKeys.DELETE);
 
 		_deleteDataLayout(dataLayoutId);
 	}
@@ -152,9 +150,9 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 		DDMStructureLayout ddmStructureLayout =
 			_ddmStructureLayoutLocalService.getStructureLayout(dataLayoutId);
 
-		_dataDefinitionModelResourcePermission.check(
+		DataDefinitionPermissionUtil.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			ddmStructureLayout.getDDMStructureId(), ActionKeys.VIEW);
+			ddmStructureLayout.getDDMStructure(), ActionKeys.VIEW);
 
 		return _getDataLayout(dataLayoutId);
 	}
@@ -178,9 +176,9 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 					contentType),
 				dataLayoutKey);
 
-		_dataDefinitionModelResourcePermission.check(
+		DataDefinitionPermissionUtil.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			ddmStructureLayout.getDDMStructureId(), ActionKeys.VIEW);
+			ddmStructureLayout.getDDMStructure(), ActionKeys.VIEW);
 
 		return _getDataLayout(
 			DataDefinitionContentTypeRegistryUtil.getClassNameId(contentType),
@@ -195,7 +193,7 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
 			dataDefinitionId);
 
-		_dataDefinitionModelResourcePermission.checkPortletPermission(
+		DataDefinitionPermissionUtil.checkPortletPermission(
 			PermissionThreadLocal.getPermissionChecker(), ddmStructure,
 			DataActionKeys.ADD_DATA_DEFINITION);
 
@@ -230,9 +228,9 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 
 		DDMStructure ddmStructure = ddmStructureLayout.getDDMStructure();
 
-		_dataDefinitionModelResourcePermission.check(
-			PermissionThreadLocal.getPermissionChecker(),
-			ddmStructure.getStructureId(), ActionKeys.VIEW);
+		DataDefinitionPermissionUtil.check(
+			PermissionThreadLocal.getPermissionChecker(), ddmStructure,
+			ActionKeys.VIEW);
 
 		DDMForm ddmForm = ddmStructure.getDDMForm();
 
@@ -292,9 +290,9 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 		DDMStructureLayout ddmStructureLayout =
 			_ddmStructureLayoutLocalService.getStructureLayout(dataLayoutId);
 
-		_dataDefinitionModelResourcePermission.check(
+		DataDefinitionPermissionUtil.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			ddmStructureLayout.getDDMStructureId(), ActionKeys.UPDATE);
+			ddmStructureLayout.getDDMStructure(), ActionKeys.UPDATE);
 
 		_validate(dataLayout, ddmStructureLayout.getDDMStructure());
 
@@ -705,10 +703,6 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 	}
 
 	private static final EntityModel _entityModel = new DataLayoutEntityModel();
-
-	@Reference
-	private DataDefinitionModelResourcePermission
-		_dataDefinitionModelResourcePermission;
 
 	@Reference
 	private DDMFormFieldTypeServicesRegistry _ddmFormFieldTypeServicesRegistry;

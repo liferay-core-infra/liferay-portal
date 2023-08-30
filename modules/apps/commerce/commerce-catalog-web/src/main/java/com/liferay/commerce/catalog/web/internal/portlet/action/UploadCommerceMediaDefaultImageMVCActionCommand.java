@@ -5,7 +5,6 @@
 
 package com.liferay.commerce.catalog.web.internal.portlet.action;
 
-import com.liferay.commerce.catalog.web.internal.upload.CommerceMediaDefaultImageUploadFileEntryHandler;
 import com.liferay.commerce.product.configuration.AttachmentsConfiguration;
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.commerce.product.exception.CPAttachmentFileEntryNameException;
@@ -16,14 +15,26 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TempFileEntryUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.upload.UniqueFileNameProvider;
+import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.upload.UploadHandler;
 import com.liferay.upload.UploadResponseHandler;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.Map;
 
@@ -109,6 +120,97 @@ public class UploadCommerceMediaDefaultImageMVCActionCommand
 
 	}
 
+	public class CommerceMediaDefaultImageUploadFileEntryHandler
+		implements UploadFileEntryHandler {
+
+		@Override
+		public FileEntry upload(UploadPortletRequest uploadPortletRequest)
+			throws IOException, PortalException {
+
+			String fileName = uploadPortletRequest.getFileName(_PARAMETER_NAME);
+
+			_validateFile(
+				fileName, uploadPortletRequest.getSize(_PARAMETER_NAME));
+
+			String contentType = uploadPortletRequest.getContentType(
+				_PARAMETER_NAME);
+
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)uploadPortletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY);
+
+			try (InputStream inputStream = uploadPortletRequest.getFileAsStream(
+					_PARAMETER_NAME)) {
+
+				return _addFileEntry(
+					fileName, contentType, inputStream, themeDisplay);
+			}
+		}
+
+		private FileEntry _addFileEntry(
+				String fileName, String contentType, InputStream inputStream,
+				ThemeDisplay themeDisplay)
+			throws PortalException {
+
+			String uniqueFileName = _uniqueFileNameProvider.provide(
+				fileName, curFileName -> _exists(themeDisplay, curFileName));
+
+			Company company = themeDisplay.getCompany();
+
+			return TempFileEntryUtil.addTempFileEntry(
+				company.getGroupId(), themeDisplay.getUserId(),
+				_TEMP_FOLDER_NAME, uniqueFileName, inputStream, contentType);
+		}
+
+		private boolean _exists(ThemeDisplay themeDisplay, String curFileName) {
+			try {
+				FileEntry tempFileEntry = TempFileEntryUtil.getTempFileEntry(
+					themeDisplay.getScopeGroupId(), themeDisplay.getUserId(),
+					_TEMP_FOLDER_NAME, curFileName);
+
+				if (tempFileEntry != null) {
+					return true;
+				}
+
+				return false;
+			}
+			catch (PortalException portalException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(portalException);
+				}
+
+				return false;
+			}
+		}
+
+		private void _validateFile(String fileName, long size)
+			throws PortalException {
+
+			if ((_attachmentsConfiguration.imageMaxSize() > 0) &&
+				(size > _attachmentsConfiguration.imageMaxSize())) {
+
+				throw new CPAttachmentFileEntrySizeException();
+			}
+
+			String extension = _file.getExtension(fileName);
+
+			String[] imageExtensions =
+				_attachmentsConfiguration.imageExtensions();
+
+			for (String imageExtension : imageExtensions) {
+				if (StringPool.STAR.equals(imageExtension) ||
+					imageExtension.equals(StringPool.PERIOD + extension)) {
+
+					return;
+				}
+			}
+
+			throw new CPAttachmentFileEntryNameException(
+				"Invalid image for file name " + fileName);
+		}
+
+	}
+
 	@Activate
 	protected void activate(Map<String, Object> properties) {
 		_attachmentsConfiguration = ConfigurableUtil.createConfigurable(
@@ -121,20 +223,30 @@ public class UploadCommerceMediaDefaultImageMVCActionCommand
 		throws Exception {
 
 		_uploadHandler.upload(
-			_commerceMediaDefaultImageUploadFileEntryHandler,
+			new CommerceMediaDefaultImageUploadFileEntryHandler(),
 			new AttachmentsUploadResponseHandler(), actionRequest,
 			actionResponse);
 	}
 
+	private static final String _PARAMETER_NAME = "imageSelectorFileName";
+
+	private static final String _TEMP_FOLDER_NAME =
+		CommerceMediaDefaultImageUploadFileEntryHandler.class.getName();
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UploadCommerceMediaDefaultImageMVCActionCommand.class);
+
 	private volatile AttachmentsConfiguration _attachmentsConfiguration;
 
 	@Reference
-	private CommerceMediaDefaultImageUploadFileEntryHandler
-		_commerceMediaDefaultImageUploadFileEntryHandler;
+	private File _file;
 
 	@Reference
 	private ItemSelectorUploadResponseHandler
 		_itemSelectorUploadResponseHandler;
+
+	@Reference
+	private UniqueFileNameProvider _uniqueFileNameProvider;
 
 	@Reference
 	private UploadHandler _uploadHandler;

@@ -1,40 +1,27 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.data.engine.rest.internal.security.permission.resource;
+package com.liferay.data.engine.rest.internal.security.permission.resource.util;
 
 import com.liferay.data.engine.content.type.DataDefinitionContentType;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistryUtil;
-import com.liferay.data.engine.rest.internal.security.permission.resource.util.DataRecordCollectionPermissionUtil;
 import com.liferay.dynamic.data.lists.model.DDLRecord;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
-import com.liferay.dynamic.data.lists.service.DDLRecordLocalService;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.portal.kernel.util.Portal;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import com.liferay.portal.kernel.util.PortalUtil;
 
 /**
  * @author Inácio Nery
  */
-@Component(
-	property = "model.class.name=com.liferay.dynamic.data.lists.model.DDLRecord",
-	service = DataRecordModelResourcePermission.class
-)
-public class DataRecordModelResourcePermission
-	implements ModelResourcePermission<DDLRecord> {
+public class DataRecordPermissionUtil {
 
-	@Override
-	public void check(
+	public static void check(
 			PermissionChecker permissionChecker, DDLRecord ddlRecord,
 			String actionId)
 		throws PortalException {
@@ -46,19 +33,7 @@ public class DataRecordModelResourcePermission
 		}
 	}
 
-	@Override
-	public void check(
-			PermissionChecker permissionChecker, long primaryKey,
-			String actionId)
-		throws PortalException {
-
-		check(
-			permissionChecker, _ddlRecordLocalService.getDDLRecord(primaryKey),
-			actionId);
-	}
-
-	@Override
-	public boolean contains(
+	public static boolean contains(
 			PermissionChecker permissionChecker, DDLRecord ddlRecord,
 			String actionId)
 		throws PortalException {
@@ -88,28 +63,7 @@ public class DataRecordModelResourcePermission
 			ddlRecord.getUserId(), actionId);
 	}
 
-	@Override
-	public boolean contains(
-			PermissionChecker permissionChecker, long primaryKey,
-			String actionId)
-		throws PortalException {
-
-		return contains(
-			permissionChecker, _ddlRecordLocalService.getDDLRecord(primaryKey),
-			actionId);
-	}
-
-	@Override
-	public String getModelName() {
-		return DDLRecord.class.getName();
-	}
-
-	@Override
-	public PortletResourcePermission getPortletResourcePermission() {
-		return null;
-	}
-
-	private String _getModelResourceName(DDLRecord ddlRecord)
+	private static String _getModelResourceName(DDLRecord ddlRecord)
 		throws PortalException {
 
 		DDLRecordSet recordSet = ddlRecord.getRecordSet();
@@ -117,14 +71,8 @@ public class DataRecordModelResourcePermission
 		DDMStructure ddmStructure = recordSet.getDDMStructure();
 
 		return ResourceActionsUtil.getCompositeModelName(
-			_portal.getClassName(ddmStructure.getClassNameId()),
+			PortalUtil.getClassName(ddmStructure.getClassNameId()),
 			DDLRecord.class.getName());
 	}
-
-	@Reference
-	private DDLRecordLocalService _ddlRecordLocalService;
-
-	@Reference
-	private Portal _portal;
 
 }

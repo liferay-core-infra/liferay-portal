@@ -6,11 +6,12 @@
 package com.liferay.data.engine.rest.internal.resource.v2_0;
 
 import com.liferay.data.engine.constants.DataActionKeys;
+import com.liferay.data.engine.content.type.DataDefinitionContentType;
 import com.liferay.data.engine.model.DEDataListView;
 import com.liferay.data.engine.rest.dto.v2_0.DataRecord;
+import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeRegistryUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataRecordEntityModel;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataRecordCollectionModelResourcePermission;
-import com.liferay.data.engine.rest.internal.security.permission.resource.DataRecordModelResourcePermission;
 import com.liferay.data.engine.rest.internal.storage.DataRecordExporter;
 import com.liferay.data.engine.rest.internal.storage.DataStorageRegistry;
 import com.liferay.data.engine.rest.resource.v2_0.DataRecordResource;
@@ -45,8 +46,13 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -516,9 +522,9 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 	private DataRecordCollectionModelResourcePermission
 		_dataRecordCollectionModelResourcePermission;
 
-	@Reference
-	private DataRecordModelResourcePermission
-		_dataRecordModelResourcePermission;
+	private final DataRecordModelResourcePermission
+		_dataRecordModelResourcePermission =
+			new DataRecordModelResourcePermission();
 
 	@Reference
 	private DataStorageRegistry _dataStorageRegistry;
@@ -561,5 +567,99 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 
 	@Reference
 	private SPIDDMFormRuleConverter _spiDDMFormRuleConverter;
+
+	private class DataRecordModelResourcePermission
+		implements ModelResourcePermission<DDLRecord> {
+
+		@Override
+		public void check(
+				PermissionChecker permissionChecker, DDLRecord ddlRecord,
+				String actionId)
+			throws PortalException {
+
+			if (!contains(permissionChecker, ddlRecord, actionId)) {
+				throw new PrincipalException.MustHavePermission(
+					permissionChecker, _getModelResourceName(ddlRecord),
+					ddlRecord.getRecordId(), actionId);
+			}
+		}
+
+		@Override
+		public void check(
+				PermissionChecker permissionChecker, long primaryKey,
+				String actionId)
+			throws PortalException {
+
+			check(
+				permissionChecker,
+				_ddlRecordLocalService.getDDLRecord(primaryKey), actionId);
+		}
+
+		@Override
+		public boolean contains(
+				PermissionChecker permissionChecker, DDLRecord ddlRecord,
+				String actionId)
+			throws PortalException {
+
+			DDLRecordSet recordSet = ddlRecord.getRecordSet();
+
+			boolean hasPermission =
+				_dataRecordCollectionModelResourcePermission.contains(
+					permissionChecker, recordSet, actionId);
+
+			if (hasPermission) {
+				return true;
+			}
+
+			DDMStructure ddmStructure = recordSet.getDDMStructure();
+
+			DataDefinitionContentType dataDefinitionContentType =
+				DataDefinitionContentTypeRegistryUtil.
+					getDataDefinitionContentType(ddmStructure.getClassNameId());
+
+			if (dataDefinitionContentType == null) {
+				return false;
+			}
+
+			return dataDefinitionContentType.hasPermission(
+				permissionChecker, ddlRecord.getCompanyId(),
+				ddlRecord.getGroupId(), _getModelResourceName(ddlRecord),
+				ddlRecord.getRecordId(), ddlRecord.getUserId(), actionId);
+		}
+
+		@Override
+		public boolean contains(
+				PermissionChecker permissionChecker, long primaryKey,
+				String actionId)
+			throws PortalException {
+
+			return contains(
+				permissionChecker,
+				_ddlRecordLocalService.getDDLRecord(primaryKey), actionId);
+		}
+
+		@Override
+		public String getModelName() {
+			return DDLRecord.class.getName();
+		}
+
+		@Override
+		public PortletResourcePermission getPortletResourcePermission() {
+			return null;
+		}
+
+		private String _getModelResourceName(DDLRecord ddlRecord)
+			throws PortalException {
+
+			DDLRecordSet recordSet = ddlRecord.getRecordSet();
+
+			DDMStructure ddmStructure = recordSet.getDDMStructure();
+
+			return ResourceActionsUtil.getCompositeModelName(
+				_portal.getClassName(ddmStructure.getClassNameId()),
+				DDLRecord.class.getName());
+		}
+
+	}
 
 }

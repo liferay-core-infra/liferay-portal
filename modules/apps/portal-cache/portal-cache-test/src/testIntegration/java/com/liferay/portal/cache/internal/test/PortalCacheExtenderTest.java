@@ -12,18 +12,24 @@ import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import java.lang.management.ManagementFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -142,6 +148,32 @@ public class PortalCacheExtenderTest {
 
 				overridingBundle.uninstall();
 			}
+		}
+	}
+
+	@Test
+	public void testUpdateConfigMultipleRelatedCaches() throws Exception {
+		List<CacheConfig> cacheConfigs = new ArrayList<>();
+
+		for (String cacheName :
+				(String[])ReflectionTestUtil.invoke(
+					(Object)ReflectionTestUtil.getFieldValue(
+						_portalCacheManager, "_cacheManager"),
+					"getCacheNames", new Class<?>[0])) {
+
+			cacheConfigs.add(new CacheConfig(1000, cacheName, 200L));
+		}
+
+		_bundle = _installBundle(
+			_BUNDLE_SYMBOLIC_NAME,
+			_generateXMLContent(cacheConfigs.toArray(new CacheConfig[0])),
+			null);
+
+		for (CacheConfig cacheConfig : cacheConfigs) {
+			_assertCacheConfig(
+				PortalCacheManagerNames.MULTI_VM,
+				cacheConfig._maxElementsInMemory, cacheConfig._name,
+				cacheConfig._timeToIdleSeconds);
 		}
 	}
 
@@ -329,6 +361,11 @@ public class PortalCacheExtenderTest {
 	private static Bundle _bundle;
 	private static String _multiVmXML;
 	private static String _singleVmXML;
+
+	@Inject(
+		filter = "portal.cache.manager.name=" + PortalCacheManagerNames.MULTI_VM
+	)
+	private PortalCacheManager<? extends Serializable, ?> _portalCacheManager;
 
 	private static class CacheConfig {
 

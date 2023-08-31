@@ -8,7 +8,7 @@ package com.liferay.message.boards.web.internal.portlet.action;
 import com.liferay.message.boards.constants.MBMessageConstants;
 import com.liferay.message.boards.constants.MBPortletKeys;
 import com.liferay.message.boards.service.MBMessageService;
-import com.liferay.message.boards.web.internal.upload.TempAttachmentMBUploadFileEntryHandler;
+import com.liferay.message.boards.web.internal.upload.BaseMBUploadFileEntryHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -185,11 +185,21 @@ public class EditMessageAttachmentsMVCActionCommand
 	@Reference
 	private Portal _portal;
 
-	@Reference
-	private TempAttachmentMBUploadFileEntryHandler
-		_tempAttachmentMBUploadFileEntryHandler;
+	private final TempAttachmentMBUploadFileEntryHandler
+		_tempAttachmentMBUploadFileEntryHandler =
+			new TempAttachmentMBUploadFileEntryHandler();
 
 	@Reference
 	private UploadHandler _uploadHandler;
+
+	private class TempAttachmentMBUploadFileEntryHandler
+		extends BaseMBUploadFileEntryHandler {
+
+		@Override
+		protected String getParameterName() {
+			return "file";
+		}
+
+	}
 
 }

@@ -6,6 +6,7 @@
 package com.liferay.item.selector.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.item.selector.BaseItemSelectorCriterionHandler;
 import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorView;
@@ -43,7 +44,8 @@ public class ItemSelectorCriterionHandlerTest {
 		_bundleContext = _bundle.getBundleContext();
 
 		_serviceReference = _bundleContext.getServiceReference(
-			TestItemSelectorCriterionHandler.class);
+			(Class<BaseItemSelectorCriterionHandler<TestItemSelectorCriterion>>)
+				(Class<?>)BaseItemSelectorCriterionHandler.class);
 
 		_itemSelectorCriterionHandler = _bundleContext.getService(
 			_serviceReference);
@@ -142,8 +144,10 @@ public class ItemSelectorCriterionHandlerTest {
 
 	private Bundle _bundle;
 	private BundleContext _bundleContext;
-	private TestItemSelectorCriterionHandler _itemSelectorCriterionHandler;
-	private ServiceReference<TestItemSelectorCriterionHandler>
-		_serviceReference;
+	private BaseItemSelectorCriterionHandler<TestItemSelectorCriterion>
+		_itemSelectorCriterionHandler;
+	private ServiceReference
+		<BaseItemSelectorCriterionHandler<TestItemSelectorCriterion>>
+			_serviceReference;
 
 }

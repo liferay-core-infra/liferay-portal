@@ -15,7 +15,6 @@ import com.liferay.content.dashboard.item.action.exception.ContentDashboardItemA
 import com.liferay.content.dashboard.item.filter.ContentDashboardItemFilter;
 import com.liferay.content.dashboard.item.filter.provider.ContentDashboardItemFilterProvider;
 import com.liferay.content.dashboard.item.type.ContentDashboardItemSubtype;
-import com.liferay.content.dashboard.web.internal.item.filter.ContentDashboardItemFilterProviderRegistry;
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
@@ -27,6 +26,8 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.criteria.InfoItemItemSelectorReturnType;
 import com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -64,6 +65,9 @@ import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+
 /**
  * @author Cristina González Castellano
  */
@@ -74,8 +78,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		AssetCategoryLocalService assetCategoryLocalService,
 		AssetVocabularyLocalService assetVocabularyLocalService,
 		ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext,
-		ContentDashboardItemFilterProviderRegistry
-			contentDashboardItemFilterProviderRegistry,
 		GroupLocalService groupLocalService,
 		HttpServletRequest httpServletRequest, ItemSelector itemSelector,
 		Language language, LiferayPortletRequest liferayPortletRequest,
@@ -90,8 +92,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		_assetVocabularyLocalService = assetVocabularyLocalService;
 		_contentDashboardAdminDisplayContext =
 			contentDashboardAdminDisplayContext;
-		_contentDashboardItemFilterProviderRegistry =
-			contentDashboardItemFilterProviderRegistry;
 		_groupLocalService = groupLocalService;
 		_itemSelector = itemSelector;
 		_language = language;
@@ -123,9 +123,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 			);
 
 		List<ContentDashboardItemFilterProvider>
-			contentDashboardItemFilterProviders =
-				_contentDashboardItemFilterProviderRegistry.
-					getContentDashboardItemFilterProviders();
+			contentDashboardItemFilterProviders = _serviceTrackerList.toList();
 
 		try {
 			for (ContentDashboardItemFilterProvider
@@ -462,9 +460,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		LabelItemListBuilder.LabelItemListWrapper labelItemListWrapper) {
 
 		List<ContentDashboardItemFilterProvider>
-			contentDashboardItemFilterProviders =
-				_contentDashboardItemFilterProviderRegistry.
-					getContentDashboardItemFilterProviders();
+			contentDashboardItemFilterProviders = _serviceTrackerList.toList();
 
 		for (ContentDashboardItemFilterProvider
 				contentDashboardItemFilterProvider :
@@ -573,8 +569,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		_getContentDashboardItemFilterProviderDropdownItems() {
 
 		return TransformUtil.transform(
-			_contentDashboardItemFilterProviderRegistry.
-				getContentDashboardItemFilterProviders(),
+			_serviceTrackerList.toList(),
 			contentDashboardItemFilterProvider -> {
 				try {
 					ContentDashboardItemFilter contentDashboardItemFilter =
@@ -903,12 +898,22 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	private static final Log _log = LogFactoryUtil.getLog(
 		ContentDashboardAdminManagementToolbarDisplayContext.class);
 
+	private static final ServiceTrackerList<ContentDashboardItemFilterProvider>
+		_serviceTrackerList;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ContentDashboardAdminManagementToolbarDisplayContext.class);
+
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundle.getBundleContext(),
+			ContentDashboardItemFilterProvider.class);
+	}
+
 	private final AssetCategoryLocalService _assetCategoryLocalService;
 	private final AssetVocabularyLocalService _assetVocabularyLocalService;
 	private final ContentDashboardAdminDisplayContext
 		_contentDashboardAdminDisplayContext;
-	private final ContentDashboardItemFilterProviderRegistry
-		_contentDashboardItemFilterProviderRegistry;
 	private final GroupLocalService _groupLocalService;
 	private final ItemSelector _itemSelector;
 	private final Language _language;

@@ -10,10 +10,10 @@ import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.content.dashboard.item.action.exception.ContentDashboardItemActionException;
 import com.liferay.content.dashboard.item.filter.ContentDashboardItemFilter;
 import com.liferay.content.dashboard.item.filter.provider.ContentDashboardItemFilterProvider;
-import com.liferay.content.dashboard.web.internal.item.filter.ContentDashboardItemFilterProviderRegistry;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.item.selector.ItemSelector;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
@@ -86,13 +86,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 			contentDashboardAdminDisplayContext = Mockito.mock(
 				ContentDashboardAdminDisplayContext.class);
 
-		ContentDashboardItemFilterProviderRegistry
-			contentDashboardItemFilterProviderRegistry = Mockito.mock(
-				ContentDashboardItemFilterProviderRegistry.class);
-
 		Mockito.when(
-			contentDashboardItemFilterProviderRegistry.
-				getContentDashboardItemFilterProviders()
+			_serviceTrackerList.toList()
 		).thenReturn(
 			Collections.singletonList(
 				new ContentDashboardItemFilterProvider() {
@@ -181,7 +176,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 					Mockito.mock(AssetCategoryLocalService.class),
 					Mockito.mock(AssetVocabularyLocalService.class),
 					contentDashboardAdminDisplayContext,
-					contentDashboardItemFilterProviderRegistry,
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
@@ -233,8 +227,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 					Mockito.mock(AssetCategoryLocalService.class),
 					Mockito.mock(AssetVocabularyLocalService.class),
 					contentDashboardAdminDisplayContext,
-					Mockito.mock(
-						ContentDashboardItemFilterProviderRegistry.class),
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
@@ -275,13 +267,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 
 			};
 
-		ContentDashboardItemFilterProviderRegistry
-			contentDashboardItemFilterProviderRegistry = Mockito.mock(
-				ContentDashboardItemFilterProviderRegistry.class);
-
 		Mockito.when(
-			contentDashboardItemFilterProviderRegistry.
-				getContentDashboardItemFilterProviders()
+			_serviceTrackerList.toList()
 		).thenReturn(
 			Collections.singletonList(
 				new ContentDashboardItemFilterProvider() {
@@ -370,7 +357,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 					Mockito.mock(AssetCategoryLocalService.class),
 					Mockito.mock(AssetVocabularyLocalService.class),
 					Mockito.mock(ContentDashboardAdminDisplayContext.class),
-					contentDashboardItemFilterProviderRegistry,
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
@@ -391,5 +377,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 						labelItem.get("label"),
 						"contentDashboardItemFilterParameterLabel: value2")));
 	}
+
+	private final ServiceTrackerList<ContentDashboardItemFilterProvider>
+		_serviceTrackerList = Mockito.mock(ServiceTrackerList.class);
 
 }

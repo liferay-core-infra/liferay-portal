@@ -6,6 +6,10 @@
 package com.liferay.portal.kernel.dao.orm;
 
 import com.liferay.petra.executor.PortalExecutorManager;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManager;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.IndexWriterHelper;
@@ -13,11 +17,15 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ProxyFactory;
 
 import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -29,6 +37,29 @@ import org.osgi.framework.ServiceRegistration;
  * @author André de Oliveira
  */
 public class IndexableActionableDynamicQueryTest {
+
+	@BeforeClass
+	public static void setUpClass() {
+		DB db = Mockito.mock(DB.class);
+
+		Mockito.when(
+			db.getDBType()
+		).thenReturn(
+			DBType.HYPERSONIC
+		);
+
+		DBManager dbManager = Mockito.mock(DBManager.class);
+
+		Mockito.when(
+			dbManager.getDB()
+		).thenReturn(
+			db
+		);
+
+		DBManagerUtil.setDBManager(dbManager);
+
+		PropsUtil.setProps(ProxyFactory.newDummyInstance(Props.class));
+	}
 
 	@Before
 	public void setUp() {

@@ -87,40 +87,41 @@ public class ExpandoTableLocalServiceImpl
 	}
 
 	@Override
-	public void deleteTable(ExpandoTable table) throws PortalException {
+	public void deleteTable(ExpandoTable expandoTable) throws PortalException {
 
 		// Values
 
-		_expandoValuePersistence.removeByTableId(table.getTableId());
+		_expandoValuePersistence.removeByTableId(expandoTable.getTableId());
 
 		// Rows
 
-		_expandoRowPersistence.removeByTableId(table.getTableId());
+		_expandoRowPersistence.removeByTableId(expandoTable.getTableId());
 
 		// Columns
 
-		_expandoColumnLocalService.deleteColumns(table.getTableId());
+		_expandoColumnLocalService.deleteColumns(expandoTable.getTableId());
 
 		// Table
 
-		expandoTablePersistence.remove(table);
+		expandoTablePersistence.remove(expandoTable);
 	}
 
 	@Override
 	public void deleteTable(long tableId) throws PortalException {
-		ExpandoTable table = expandoTablePersistence.findByPrimaryKey(tableId);
+		ExpandoTable expandoTable = expandoTablePersistence.findByPrimaryKey(
+			tableId);
 
-		deleteTable(table);
+		deleteTable(expandoTable);
 	}
 
 	@Override
 	public void deleteTable(long companyId, long classNameId, String name)
 		throws PortalException {
 
-		ExpandoTable table = expandoTablePersistence.findByC_C_N(
+		ExpandoTable expandoTable = expandoTablePersistence.findByC_C_N(
 			companyId, classNameId, name);
 
-		deleteTable(table);
+		deleteTable(expandoTable);
 	}
 
 	@Override
@@ -135,11 +136,11 @@ public class ExpandoTableLocalServiceImpl
 	public void deleteTables(long companyId, long classNameId)
 		throws PortalException {
 
-		List<ExpandoTable> tables = expandoTablePersistence.findByC_C(
+		List<ExpandoTable> expandoTables = expandoTablePersistence.findByC_C(
 			companyId, classNameId);
 
-		for (ExpandoTable table : tables) {
-			deleteTable(table);
+		for (ExpandoTable expandoTable : expandoTables) {
+			deleteTable(expandoTable);
 		}
 	}
 
@@ -225,20 +226,23 @@ public class ExpandoTableLocalServiceImpl
 	public ExpandoTable updateTable(long tableId, String name)
 		throws PortalException {
 
-		ExpandoTable table = expandoTablePersistence.findByPrimaryKey(tableId);
+		ExpandoTable expandoTable = expandoTablePersistence.findByPrimaryKey(
+			tableId);
 
-		String tableName = table.getName();
+		String tableName = expandoTable.getName();
 
 		if (tableName.equals(ExpandoTableConstants.DEFAULT_TABLE_NAME)) {
 			throw new TableNameException(
 				"Cannot rename " + ExpandoTableConstants.DEFAULT_TABLE_NAME);
 		}
 
-		validate(table.getCompanyId(), tableId, table.getClassNameId(), name);
+		validate(
+			expandoTable.getCompanyId(), tableId, expandoTable.getClassNameId(),
+			name);
 
-		table.setName(name);
+		expandoTable.setName(name);
 
-		return expandoTablePersistence.update(table);
+		return expandoTablePersistence.update(expandoTable);
 	}
 
 	protected void validate(
@@ -249,10 +253,10 @@ public class ExpandoTableLocalServiceImpl
 			throw new TableNameException("Name is null");
 		}
 
-		ExpandoTable table = expandoTablePersistence.fetchByC_C_N(
+		ExpandoTable expandoTable = expandoTablePersistence.fetchByC_C_N(
 			companyId, classNameId, name);
 
-		if ((table != null) && (table.getTableId() != tableId)) {
+		if ((expandoTable != null) && (expandoTable.getTableId() != tableId)) {
 			throw new DuplicateTableNameException("{tableId=" + tableId + "}");
 		}
 	}

@@ -5,6 +5,9 @@
 
 package com.liferay.expando.service;
 
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.portal.kernel.exception.PortalException;
+
 /**
  * Provides the remote service utility for ExpandoColumn. This utility wraps
  * <code>com.liferay.expando.service.impl.ExpandoColumnServiceImpl</code> and is an
@@ -24,14 +27,57 @@ public class ExpandoColumnServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.expando.service.impl.ExpandoColumnServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static ExpandoColumn addColumn(long tableId, String name, int type)
+		throws PortalException {
+
+		return getService().addColumn(tableId, name, type);
+	}
+
+	public static ExpandoColumn addColumn(
+			long tableId, String name, int type, Object defaultData)
+		throws PortalException {
+
+		return getService().addColumn(tableId, name, type, defaultData);
+	}
+
+	public static void deleteColumn(long columnId) throws PortalException {
+		getService().deleteColumn(columnId);
+	}
+
+	public static ExpandoColumn fetchExpandoColumn(long columnId)
+		throws PortalException {
+
+		return getService().fetchExpandoColumn(columnId);
+	}
 
 	/**
 	 * Returns the OSGi service identifier.
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static ExpandoColumn updateColumn(
+			long columnId, String name, int type)
+		throws PortalException {
+
+		return getService().updateColumn(columnId, name, type);
+	}
+
+	public static ExpandoColumn updateColumn(
+			long columnId, String name, int type, Object defaultData)
+		throws PortalException {
+
+		return getService().updateColumn(columnId, name, type, defaultData);
+	}
+
+	public static ExpandoColumn updateTypeSettings(
+			long columnId, String typeSettings)
+		throws PortalException {
+
+		return getService().updateTypeSettings(columnId, typeSettings);
 	}
 
 	public static ExpandoColumnService getService() {

@@ -5,6 +5,13 @@
 
 package com.liferay.expando.service;
 
+import com.liferay.expando.model.ExpandoValue;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.io.Serializable;
+
+import java.util.Map;
+
 /**
  * Provides the remote service utility for ExpandoValue. This utility wraps
  * <code>com.liferay.expando.service.impl.ExpandoValueServiceImpl</code> and is an
@@ -24,13 +31,66 @@ public class ExpandoValueServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.expando.service.impl.ExpandoValueServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Object data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static void addValues(
+			long companyId, String className, String tableName, long classPK,
+			Map<String, Serializable> attributeValues)
+		throws PortalException {
+
+		getService().addValues(
+			companyId, className, tableName, classPK, attributeValues);
+	}
+
+	public static Map<String, Serializable> getData(
+			long companyId, String className, String tableName,
+			java.util.Collection<String> columnNames, long classPK)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnNames, classPK);
+	}
+
+	public static Serializable getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject getJSONData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK)
+		throws PortalException {
+
+		return getService().getJSONData(
+			companyId, className, tableName, columnName, classPK);
+	}
 
 	/**
 	 * Returns the OSGi service identifier.
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 

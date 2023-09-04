@@ -72,6 +72,8 @@ public interface ExpandoRowLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public ExpandoRow addExpandoRow(ExpandoRow expandoRow);
 
+	public ExpandoRow addRow(long tableId, long classPK) throws PortalException;
+
 	/**
 	 * Creates a new expando row with the primary key. Does not add the expando row to the database.
 	 *
@@ -120,6 +122,24 @@ public interface ExpandoRowLocalService
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
+
+	public void deleteRow(ExpandoRow row);
+
+	public void deleteRow(long rowId) throws PortalException;
+
+	public void deleteRow(long tableId, long classPK) throws PortalException;
+
+	public void deleteRow(
+			long companyId, long classNameId, String tableName, long classPK)
+		throws PortalException;
+
+	public void deleteRow(
+			long companyId, String className, String tableName, long classPK)
+		throws PortalException;
+
+	public void deleteRows(long classPK);
+
+	public void deleteRows(long companyId, long classNameId, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> T dslQuery(DSLQuery dslQuery);
@@ -197,7 +217,24 @@ public interface ExpandoRowLocalService
 	public ExpandoRow fetchExpandoRow(long rowId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoRow fetchRow(long tableId, long classPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoRow> getDefaultTableRows(
+		long companyId, long classNameId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoRow> getDefaultTableRows(
+		long companyId, String className, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDefaultTableRowsCount(long companyId, long classNameId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDefaultTableRowsCount(long companyId, String className);
 
 	/**
 	 * Returns the expando row with the primary key.
@@ -248,6 +285,40 @@ public interface ExpandoRowLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoRow getRow(long rowId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoRow getRow(long tableId, long classPK) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoRow getRow(
+		long companyId, long classNameId, String tableName, long classPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExpandoRow getRow(
+		long companyId, String className, String tableName, long classPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoRow> getRows(long tableId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoRow> getRows(
+		long companyId, long classNameId, String tableName, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExpandoRow> getRows(
+		long companyId, String className, String tableName, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getRowsCount(long tableId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getRowsCount(long companyId, long classNameId, String tableName);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getRowsCount(long companyId, String className, String tableName);
 
 	/**
 	 * Updates the expando row in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

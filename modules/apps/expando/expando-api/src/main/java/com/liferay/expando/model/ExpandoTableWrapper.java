@@ -169,6 +169,11 @@ public class ExpandoTableWrapper
 	}
 
 	@Override
+	public boolean isDefaultTable() {
+		return model.isDefaultTable();
+	}
+
+	@Override
 	public void persist() {
 		model.persist();
 	}

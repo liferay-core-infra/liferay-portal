@@ -5,6 +5,7 @@
 
 package com.liferay.expando.service;
 
+import com.liferay.expando.model.ExpandoValue;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -23,6 +24,66 @@ public class ExpandoValueServiceWrapper
 
 	public ExpandoValueServiceWrapper(ExpandoValueService expandoValueService) {
 		_expandoValueService = expandoValueService;
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Object data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public void addValues(
+			long companyId, String className, String tableName, long classPK,
+			java.util.Map<String, java.io.Serializable> attributeValues)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoValueService.addValues(
+			companyId, className, tableName, classPK, attributeValues);
+	}
+
+	@Override
+	public java.util.Map<String, java.io.Serializable> getData(
+			long companyId, String className, String tableName,
+			java.util.Collection<String> columnNames, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueService.getData(
+			companyId, className, tableName, columnNames, classPK);
+	}
+
+	@Override
+	public java.io.Serializable getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueService.getData(
+			companyId, className, tableName, columnName, classPK);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject getJSONData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueService.getJSONData(
+			companyId, className, tableName, columnName, classPK);
 	}
 
 	/**

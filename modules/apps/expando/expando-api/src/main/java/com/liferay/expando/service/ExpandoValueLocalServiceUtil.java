@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for ExpandoValue. This utility wraps
@@ -50,6 +51,235 @@ public class ExpandoValueLocalServiceUtil {
 		return getService().addExpandoValue(expandoValue);
 	}
 
+	public static ExpandoValue addValue(
+			long classNameId, long tableId, long columnId, long classPK,
+			String data)
+		throws PortalException {
+
+		return getService().addValue(
+			classNameId, tableId, columnId, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, boolean data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, boolean[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Date data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Date[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, double data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, double[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, float data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, float[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, int data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, int[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK,
+			com.liferay.portal.kernel.json.JSONObject dataJSONObject)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK,
+			dataJSONObject);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, long data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, long[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Map<java.util.Locale, ?> dataMap,
+			java.util.Locale defaultLocale)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, dataMap,
+			defaultLocale);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Number data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Number[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Object data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, short data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, short[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String[] data)
+		throws PortalException {
+
+		return getService().addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	public static void addValues(
+			long classNameId, long tableId,
+			List<com.liferay.expando.model.ExpandoColumn> columns, long classPK,
+			Map<String, String> data)
+		throws PortalException {
+
+		getService().addValues(classNameId, tableId, columns, classPK, data);
+	}
+
+	public static void addValues(
+			long companyId, long classNameId, String tableName, long classPK,
+			Map<String, Serializable> attributes)
+		throws PortalException {
+
+		getService().addValues(
+			companyId, classNameId, tableName, classPK, attributes);
+	}
+
+	public static void addValues(
+			long companyId, String className, String tableName, long classPK,
+			Map<String, Serializable> attributes)
+		throws PortalException {
+
+		getService().addValues(
+			companyId, className, tableName, classPK, attributes);
+	}
+
 	/**
 	 * Creates a new expando value with the primary key. Does not add the expando value to the database.
 	 *
@@ -68,6 +298,10 @@ public class ExpandoValueLocalServiceUtil {
 		throws PortalException {
 
 		return getService().createPersistedModel(primaryKeyObj);
+	}
+
+	public static void deleteColumnValues(long columnId) {
+		getService().deleteColumnValues(columnId);
 	}
 
 	/**
@@ -109,6 +343,54 @@ public class ExpandoValueLocalServiceUtil {
 		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static void deleteRowValues(long rowId) {
+		getService().deleteRowValues(rowId);
+	}
+
+	public static void deleteTableValues(long tableId) {
+		getService().deleteTableValues(tableId);
+	}
+
+	public static void deleteValue(ExpandoValue value) {
+		getService().deleteValue(value);
+	}
+
+	public static void deleteValue(long valueId) throws PortalException {
+		getService().deleteValue(valueId);
+	}
+
+	public static void deleteValue(long columnId, long rowId)
+		throws PortalException {
+
+		getService().deleteValue(columnId, rowId);
+	}
+
+	public static void deleteValue(
+			long companyId, long classNameId, String tableName,
+			String columnName, long classPK)
+		throws PortalException {
+
+		getService().deleteValue(
+			companyId, classNameId, tableName, columnName, classPK);
+	}
+
+	public static void deleteValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK)
+		throws PortalException {
+
+		getService().deleteValue(
+			companyId, className, tableName, columnName, classPK);
+	}
+
+	public static void deleteValues(long classNameId, long classPK) {
+		getService().deleteValues(classNameId, classPK);
+	}
+
+	public static void deleteValues(String className, long classPK) {
+		getService().deleteValues(className, classPK);
 	}
 
 	public static <T> T dslQuery(DSLQuery dslQuery) {
@@ -206,6 +488,308 @@ public class ExpandoValueLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static List<ExpandoValue> getColumnValues(
+		long columnId, int start, int end) {
+
+		return getService().getColumnValues(columnId, start, end);
+	}
+
+	public static List<ExpandoValue> getColumnValues(
+		long companyId, long classNameId, String tableName, String columnName,
+		int start, int end) {
+
+		return getService().getColumnValues(
+			companyId, classNameId, tableName, columnName, start, end);
+	}
+
+	public static List<ExpandoValue> getColumnValues(
+		long companyId, long classNameId, String tableName, String columnName,
+		String data, int start, int end) {
+
+		return getService().getColumnValues(
+			companyId, classNameId, tableName, columnName, data, start, end);
+	}
+
+	public static List<ExpandoValue> getColumnValues(
+		long companyId, String className, String tableName, String columnName,
+		int start, int end) {
+
+		return getService().getColumnValues(
+			companyId, className, tableName, columnName, start, end);
+	}
+
+	public static List<ExpandoValue> getColumnValues(
+		long companyId, String className, String tableName, String columnName,
+		String data, int start, int end) {
+
+		return getService().getColumnValues(
+			companyId, className, tableName, columnName, data, start, end);
+	}
+
+	public static int getColumnValuesCount(long columnId) {
+		return getService().getColumnValuesCount(columnId);
+	}
+
+	public static int getColumnValuesCount(
+		long companyId, long classNameId, String tableName, String columnName) {
+
+		return getService().getColumnValuesCount(
+			companyId, classNameId, tableName, columnName);
+	}
+
+	public static int getColumnValuesCount(
+		long companyId, long classNameId, String tableName, String columnName,
+		String data) {
+
+		return getService().getColumnValuesCount(
+			companyId, classNameId, tableName, columnName, data);
+	}
+
+	public static int getColumnValuesCount(
+		long companyId, String className, String tableName, String columnName) {
+
+		return getService().getColumnValuesCount(
+			companyId, className, tableName, columnName);
+	}
+
+	public static int getColumnValuesCount(
+		long companyId, String className, String tableName, String columnName,
+		String data) {
+
+		return getService().getColumnValuesCount(
+			companyId, className, tableName, columnName, data);
+	}
+
+	public static Map<String, Serializable> getData(
+			long companyId, String className, String tableName,
+			java.util.Collection<String> columnNames, long classPK)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnNames, classPK);
+	}
+
+	public static Serializable getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK);
+	}
+
+	public static boolean getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, boolean defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static boolean[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, boolean[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static java.util.Date getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Date defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static java.util.Date[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Date[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static double getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, double defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static double[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, double[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static float getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, float defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static float[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, float[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static int getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, int defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static int[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, int[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK,
+			com.liferay.portal.kernel.json.JSONObject defaultDataJSONObject)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK,
+			defaultDataJSONObject);
+	}
+
+	public static long getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, long defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static long[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, long[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static Map<?, ?> getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Map<?, ?> defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static Number getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Number defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static Number[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Number[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static short getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, short defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static short[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, short[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static String getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static String[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String[] defaultData)
+		throws PortalException {
+
+		return getService().getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	public static List<ExpandoValue> getDefaultTableColumnValues(
+		long companyId, long classNameId, String columnName, int start,
+		int end) {
+
+		return getService().getDefaultTableColumnValues(
+			companyId, classNameId, columnName, start, end);
+	}
+
+	public static List<ExpandoValue> getDefaultTableColumnValues(
+		long companyId, String className, String columnName, int start,
+		int end) {
+
+		return getService().getDefaultTableColumnValues(
+			companyId, className, columnName, start, end);
+	}
+
+	public static int getDefaultTableColumnValuesCount(
+		long companyId, long classNameId, String columnName) {
+
+		return getService().getDefaultTableColumnValuesCount(
+			companyId, classNameId, columnName);
+	}
+
+	public static int getDefaultTableColumnValuesCount(
+		long companyId, String className, String columnName) {
+
+		return getService().getDefaultTableColumnValuesCount(
+			companyId, className, columnName);
+	}
+
 	/**
 	 * Returns the expando value with the primary key.
 	 *
@@ -266,6 +850,82 @@ public class ExpandoValueLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static List<ExpandoValue> getRowValues(long rowId) {
+		return getService().getRowValues(rowId);
+	}
+
+	public static List<ExpandoValue> getRowValues(
+		long rowId, int start, int end) {
+
+		return getService().getRowValues(rowId, start, end);
+	}
+
+	public static List<ExpandoValue> getRowValues(
+		long companyId, long classNameId, String tableName, long classPK,
+		int start, int end) {
+
+		return getService().getRowValues(
+			companyId, classNameId, tableName, classPK, start, end);
+	}
+
+	public static List<ExpandoValue> getRowValues(
+		long companyId, String className, String tableName, long classPK,
+		int start, int end) {
+
+		return getService().getRowValues(
+			companyId, className, tableName, classPK, start, end);
+	}
+
+	public static int getRowValuesCount(long rowId) {
+		return getService().getRowValuesCount(rowId);
+	}
+
+	public static int getRowValuesCount(
+		long companyId, long classNameId, String tableName, long classPK) {
+
+		return getService().getRowValuesCount(
+			companyId, classNameId, tableName, classPK);
+	}
+
+	public static int getRowValuesCount(
+		long companyId, String className, String tableName, long classPK) {
+
+		return getService().getRowValuesCount(
+			companyId, className, tableName, classPK);
+	}
+
+	public static ExpandoValue getValue(long valueId) throws PortalException {
+		return getService().getValue(valueId);
+	}
+
+	public static ExpandoValue getValue(long columnId, long rowId)
+		throws PortalException {
+
+		return getService().getValue(columnId, rowId);
+	}
+
+	public static ExpandoValue getValue(
+		long tableId, long columnId, long classPK) {
+
+		return getService().getValue(tableId, columnId, classPK);
+	}
+
+	public static ExpandoValue getValue(
+		long companyId, long classNameId, String tableName, String columnName,
+		long classPK) {
+
+		return getService().getValue(
+			companyId, classNameId, tableName, columnName, classPK);
+	}
+
+	public static ExpandoValue getValue(
+		long companyId, String className, String tableName, String columnName,
+		long classPK) {
+
+		return getService().getValue(
+			companyId, className, tableName, columnName, classPK);
 	}
 
 	/**

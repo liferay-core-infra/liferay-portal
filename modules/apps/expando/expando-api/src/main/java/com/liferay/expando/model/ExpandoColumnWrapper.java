@@ -8,6 +8,8 @@ package com.liferay.expando.model;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
+import java.io.Serializable;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -157,6 +159,16 @@ public class ExpandoColumnWrapper
 		return model.getDefaultData();
 	}
 
+	@Override
+	public Serializable getDefaultValue() {
+		return model.getDefaultValue();
+	}
+
+	@Override
+	public String getDisplayName(java.util.Locale locale) {
+		return model.getDisplayName(locale);
+	}
+
 	/**
 	 * Returns the modified date of this expando column.
 	 *
@@ -225,6 +237,13 @@ public class ExpandoColumnWrapper
 	@Override
 	public String getTypeSettings() {
 		return model.getTypeSettings();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.util.UnicodeProperties
+		getTypeSettingsProperties() {
+
+		return model.getTypeSettingsProperties();
 	}
 
 	@Override
@@ -340,6 +359,14 @@ public class ExpandoColumnWrapper
 	@Override
 	public void setTypeSettings(String typeSettings) {
 		model.setTypeSettings(typeSettings);
+	}
+
+	@Override
+	public void setTypeSettingsProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties
+			typeSettingsUnicodeProperties) {
+
+		model.setTypeSettingsProperties(typeSettingsUnicodeProperties);
 	}
 
 	@Override

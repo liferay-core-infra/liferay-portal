@@ -5,11 +5,11 @@
 
 package com.liferay.expando.service.impl;
 
-import com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.ExpandoValue;
 import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.expando.service.base.ExpandoValueServiceBaseImpl;
+import com.liferay.expando.service.permission.ExpandoColumnPermissionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;

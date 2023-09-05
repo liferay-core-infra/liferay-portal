@@ -5,9 +5,9 @@
 
 package com.liferay.expando.service.impl;
 
-import com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.service.base.ExpandoColumnServiceBaseImpl;
+import com.liferay.expando.service.permission.ExpandoColumnPermissionUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;

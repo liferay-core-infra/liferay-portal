@@ -54,8 +54,6 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
-import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
-import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.portlet.LiferayActionResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -143,10 +141,9 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.name=" + PortletKeys.SERVER_ADMIN,
 		"mvc.command.name=/server_admin/edit_server"
 	},
-	service = {IdentifiableOSGiService.class, MVCActionCommand.class}
+	service = MVCActionCommand.class
 )
-public class EditServerMVCActionCommand
-	extends BaseMVCActionCommand implements IdentifiableOSGiService {
+public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 	@Override
 	public void doProcessAction(
@@ -281,11 +278,6 @@ public class EditServerMVCActionCommand
 		sendRedirect(actionRequest, actionResponse, redirect);
 	}
 
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return EditServerMVCActionCommand.class.getName();
-	}
-
 	private static void _resetLogLevels(
 		Map<String, String> logLevels, Map<String, String> customLogSettings) {
 
@@ -296,19 +288,32 @@ public class EditServerMVCActionCommand
 		}
 	}
 
-	private static void _updateLogLevels(
-		Map<String, String> logLevels, String osgiServiceIdentifier) {
+	private static void _updateLogLevels(Map<String, String> logLevels) {
+		for (Map.Entry<String, String> logLevelEntry : logLevels.entrySet()) {
+			Log4JUtil.setLevel(
+				logLevelEntry.getKey(), logLevelEntry.getValue(), true);
+		}
 
-		EditServerMVCActionCommand editServerMVCActionCommand =
-			(EditServerMVCActionCommand)
-				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
-					osgiServiceIdentifier);
-
-		if (editServerMVCActionCommand == null) {
+		if (!_clusterExecutor.isEnabled()) {
 			return;
 		}
 
-		editServerMVCActionCommand._updateLogLevels(logLevels);
+		if (_clusterMasterExecutor.isMaster()) {
+			ClusterRequest clusterRequest =
+				ClusterRequest.createMulticastRequest(
+					new MethodHandler(
+						_resetLogLevelsMethodKey, Log4JUtil.getPriorities(),
+						Log4JUtil.getCustomLogSettings()),
+					true);
+
+			clusterRequest.setFireAndForget(true);
+
+			_clusterExecutor.execute(clusterRequest);
+		}
+		else {
+			_clusterMasterExecutor.executeOnMaster(
+				new MethodHandler(_updateLogLevelsMethodKey, logLevels));
+		}
 	}
 
 	private void _cacheDb() throws Exception {
@@ -748,36 +753,6 @@ public class EditServerMVCActionCommand
 		_updateLogLevels(logLevels);
 	}
 
-	private void _updateLogLevels(Map<String, String> logLevels) {
-		for (Map.Entry<String, String> logLevelEntry : logLevels.entrySet()) {
-			Log4JUtil.setLevel(
-				logLevelEntry.getKey(), logLevelEntry.getValue(), true);
-		}
-
-		if (!_clusterExecutor.isEnabled()) {
-			return;
-		}
-
-		if (_clusterMasterExecutor.isMaster()) {
-			ClusterRequest clusterRequest =
-				ClusterRequest.createMulticastRequest(
-					new MethodHandler(
-						_resetLogLevelsMethodKey, Log4JUtil.getPriorities(),
-						Log4JUtil.getCustomLogSettings()),
-					true);
-
-			clusterRequest.setFireAndForget(true);
-
-			_clusterExecutor.execute(clusterRequest);
-		}
-		else {
-			_clusterMasterExecutor.executeOnMaster(
-				new MethodHandler(
-					_updateLogLevelsMethodKey, logLevels,
-					getOSGiServiceIdentifier()));
-		}
-	}
-
 	private void _updateMail(
 			ActionRequest actionRequest, PortletPreferences portletPreferences)
 		throws Exception {
@@ -927,6 +902,12 @@ public class EditServerMVCActionCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditServerMVCActionCommand.class);
 
+	@Reference
+	private static ClusterExecutor _clusterExecutor;
+
+	@Reference
+	private static ClusterMasterExecutor _clusterMasterExecutor;
+
 	private static final Function<InvocationHandler, Layout>
 		_proxyProviderFunction = ProxyUtil.getProxyProviderFunction(
 			Layout.class, ModelWrapper.class);
@@ -934,17 +915,10 @@ public class EditServerMVCActionCommand
 		EditServerMVCActionCommand.class, "_resetLogLevels", Map.class,
 		Map.class);
 	private static final MethodKey _updateLogLevelsMethodKey = new MethodKey(
-		EditServerMVCActionCommand.class, "_updateLogLevels", Map.class,
-		String.class);
+		EditServerMVCActionCommand.class, "_updateLogLevels", Map.class);
 
 	@Reference(target = "(type=" + DLProcessorConstants.AUDIO_PROCESSOR + ")")
 	private DLProcessor _audioDLProcessor;
-
-	@Reference
-	private ClusterExecutor _clusterExecutor;
-
-	@Reference
-	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

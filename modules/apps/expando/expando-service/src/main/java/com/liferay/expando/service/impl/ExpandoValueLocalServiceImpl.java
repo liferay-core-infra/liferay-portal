@@ -1745,9 +1745,9 @@ public class ExpandoValueLocalServiceImpl
 		return value;
 	}
 
-	private <T> T _convertType(int type, Object data) {
+	private Object _convertType(int type, Object data) {
 		if (data == null) {
-			return (T)data;
+			return data;
 		}
 
 		data = _handleCollections(type, data);
@@ -1807,7 +1807,7 @@ public class ExpandoValueLocalServiceImpl
 			data = typeConverterManager.convertType(data, String[].class);
 		}
 
-		return (T)data;
+		return data;
 	}
 
 	private Serializable _getData(

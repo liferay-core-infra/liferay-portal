@@ -6,6 +6,7 @@
 package com.liferay.portal.bundle.blacklist.internal;
 
 import com.liferay.osgi.util.BundleUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.bundle.blacklist.BundleBlacklistManager;
 import com.liferay.portal.bundle.blacklist.internal.configuration.BundleBlacklistConfiguration;
@@ -13,6 +14,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
@@ -46,9 +48,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.SynchronousBundleListener;
 import org.osgi.framework.startlevel.BundleStartLevel;
@@ -59,13 +58,17 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventAdmin;
+import org.osgi.service.event.EventConstants;
+import org.osgi.service.event.EventHandler;
 
 /**
  * @author Matthew Tambara
  */
 @Component(
 	configurationPid = "com.liferay.portal.bundle.blacklist.internal.configuration.BundleBlacklistConfiguration",
-	service = BundleBlacklist.class
+	service = {}
 )
 public class BundleBlacklist {
 
@@ -151,6 +154,9 @@ public class BundleBlacklist {
 				_removeFromBlacklistFile(symbolicName);
 			}
 		}
+
+		_eventAdmin.postEvent(
+			new Event(_TOPIC_BUNDLE_BLACKLIST_FINISHED, properties));
 	}
 
 	private void _addToBlacklistFile(
@@ -274,6 +280,11 @@ public class BundleBlacklist {
 
 	private static final String _BLACKLIST_FILE_NAME = "blacklist.properties";
 
+	private static final String _TOPIC_BUNDLE_BLACKLIST_FINISHED =
+		StringUtil.replace(
+			BundleBlacklist.class.getName(), CharPool.PERIOD,
+			CharPool.FORWARD_SLASH) + "/BLACKLIST_FINISHED";
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		BundleBlacklist.class);
 
@@ -297,6 +308,9 @@ public class BundleBlacklist {
 
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
+
+	@Reference
+	private EventAdmin _eventAdmin;
 
 	@Reference
 	private LPKGDeployer _lpkgDeployer;
@@ -369,33 +383,12 @@ public class BundleBlacklist {
 
 			CountDownLatch countDownLatch = new CountDownLatch(1);
 
-			ServiceListener serviceListener = new ServiceListener() {
-
-				@Override
-				public void serviceChanged(ServiceEvent serviceEvent) {
-					if (serviceEvent.getType() != ServiceEvent.MODIFIED) {
-						return;
-					}
-
-					ServiceReference<?> serviceReference =
-						serviceEvent.getServiceReference();
-
-					Object service = bundleContext.getService(serviceReference);
-
-					Class<?> serviceClass = service.getClass();
-
-					if (BundleBlacklist.class.getName() ==
-							serviceClass.getName()) {
-
-						countDownLatch.countDown();
-					}
-
-					bundleContext.ungetService(serviceReference);
-				}
-
-			};
-
-			bundleContext.addServiceListener(serviceListener);
+			ServiceRegistration<EventHandler> eventHandlerServiceRegistration =
+				bundleContext.registerService(
+					EventHandler.class, event -> countDownLatch.countDown(),
+					MapUtil.singletonDictionary(
+						EventConstants.EVENT_TOPIC,
+						_TOPIC_BUNDLE_BLACKLIST_FINISHED));
 
 			try {
 				configuration.update(properties);
@@ -408,7 +401,7 @@ public class BundleBlacklist {
 				}
 			}
 			finally {
-				bundleContext.removeServiceListener(serviceListener);
+				eventHandlerServiceRegistration.unregister();
 			}
 		}
 

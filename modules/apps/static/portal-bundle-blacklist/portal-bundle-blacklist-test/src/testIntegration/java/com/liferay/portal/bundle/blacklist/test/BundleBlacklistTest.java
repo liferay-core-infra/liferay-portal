@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.module.util.BundleUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.lpkg.deployer.test.util.LPKGTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -41,10 +42,11 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.event.EventConstants;
+import org.osgi.service.event.EventHandler;
 import org.osgi.util.tracker.BundleTracker;
 
 /**
@@ -349,27 +351,12 @@ public class BundleBlacklistTest {
 
 		CountDownLatch countDownLatch = new CountDownLatch(1);
 
-		ServiceListener serviceListener = new ServiceListener() {
-
-			@Override
-			public void serviceChanged(ServiceEvent serviceEvent) {
-				if (serviceEvent.getType() != ServiceEvent.MODIFIED) {
-					return;
-				}
-
-				Object service = _bundleContext.getService(
-					serviceEvent.getServiceReference());
-
-				Class<?> clazz = service.getClass();
-
-				if (_CLASS_NAME.equals(clazz.getName())) {
-					countDownLatch.countDown();
-				}
-			}
-
-		};
-
-		_bundleContext.addServiceListener(serviceListener);
+		ServiceRegistration<EventHandler> eventHandlerServiceRegistration =
+			_bundleContext.registerService(
+				EventHandler.class, event -> countDownLatch.countDown(),
+				MapUtil.singletonDictionary(
+					EventConstants.EVENT_TOPIC,
+					_TOPIC_BUNDLE_BLACKLIST_FINISHED));
 
 		try {
 			if (dictionary == null) {
@@ -382,12 +369,9 @@ public class BundleBlacklistTest {
 			countDownLatch.await();
 		}
 		finally {
-			_bundleContext.removeServiceListener(serviceListener);
+			eventHandlerServiceRegistration.unregister();
 		}
 	}
-
-	private static final String _CLASS_NAME =
-		"com.liferay.portal.bundle.blacklist.internal.BundleBlacklist";
 
 	private static final String _CONFIG_NAME =
 		"com.liferay.portal.bundle.blacklist.internal.configuration." +
@@ -399,6 +383,10 @@ public class BundleBlacklistTest {
 
 	private static final String _SYMBOLIC_NAME =
 		"com.liferay.portal.bundle.blacklist.test.bundle";
+
+	private static final String _TOPIC_BUNDLE_BLACKLIST_FINISHED =
+		"com/liferay/portal/bundle/blacklist/internal/BundleBlacklist" +
+			"/BLACKLIST_FINISHED";
 
 	@Inject
 	private static BundleBlacklistManager _bundleBlacklistManager;

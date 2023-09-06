@@ -494,7 +494,7 @@ public class ExpandoValueLocalServiceImpl
 
 		int type = column.getType();
 
-		data = convertType(type, data);
+		data = _convertType(type, data);
 
 		if (type == ExpandoColumnConstants.BOOLEAN) {
 			Boolean booleanData = (Boolean)data;
@@ -1692,7 +1692,60 @@ public class ExpandoValueLocalServiceImpl
 			tableName, columnName, classPK);
 	}
 
-	protected <T> T convertType(int type, Object data) {
+	private ExpandoValue _addValue(
+		long companyId, long classNameId, long tableId, long columnId,
+		long classPK, String data) {
+
+		ExpandoValue value = expandoValuePersistence.fetchByT_C_C(
+			tableId, columnId, classPK);
+
+		if (value == null) {
+			ExpandoRow row = _expandoRowPersistence.fetchByT_C(
+				tableId, classPK);
+
+			if (row == null) {
+				row = _expandoRowPersistence.create(
+					counterLocalService.increment());
+
+				row.setCompanyId(companyId);
+				row.setModifiedDate(new Date());
+				row.setTableId(tableId);
+				row.setClassPK(classPK);
+
+				row = _expandoRowPersistence.update(row);
+			}
+
+			value = expandoValuePersistence.create(
+				counterLocalService.increment());
+
+			value.setCompanyId(companyId);
+			value.setTableId(tableId);
+			value.setColumnId(columnId);
+			value.setRowId(row.getRowId());
+			value.setClassNameId(classNameId);
+			value.setClassPK(classPK);
+			value.setData(data);
+
+			return expandoValuePersistence.update(value);
+		}
+
+		if (!Objects.equals(value.getData(), data)) {
+			value.setData(data);
+
+			value = expandoValuePersistence.update(value);
+
+			ExpandoRow row = _expandoRowPersistence.fetchByT_C(
+				tableId, classPK);
+
+			row.setModifiedDate(new Date());
+
+			_expandoRowPersistence.update(row);
+		}
+
+		return value;
+	}
+
+	private <T> T _convertType(int type, Object data) {
 		if (data == null) {
 			return (T)data;
 		}
@@ -1755,59 +1808,6 @@ public class ExpandoValueLocalServiceImpl
 		}
 
 		return (T)data;
-	}
-
-	private ExpandoValue _addValue(
-		long companyId, long classNameId, long tableId, long columnId,
-		long classPK, String data) {
-
-		ExpandoValue value = expandoValuePersistence.fetchByT_C_C(
-			tableId, columnId, classPK);
-
-		if (value == null) {
-			ExpandoRow row = _expandoRowPersistence.fetchByT_C(
-				tableId, classPK);
-
-			if (row == null) {
-				row = _expandoRowPersistence.create(
-					counterLocalService.increment());
-
-				row.setCompanyId(companyId);
-				row.setModifiedDate(new Date());
-				row.setTableId(tableId);
-				row.setClassPK(classPK);
-
-				row = _expandoRowPersistence.update(row);
-			}
-
-			value = expandoValuePersistence.create(
-				counterLocalService.increment());
-
-			value.setCompanyId(companyId);
-			value.setTableId(tableId);
-			value.setColumnId(columnId);
-			value.setRowId(row.getRowId());
-			value.setClassNameId(classNameId);
-			value.setClassPK(classPK);
-			value.setData(data);
-
-			return expandoValuePersistence.update(value);
-		}
-
-		if (!Objects.equals(value.getData(), data)) {
-			value.setData(data);
-
-			value = expandoValuePersistence.update(value);
-
-			ExpandoRow row = _expandoRowPersistence.fetchByT_C(
-				tableId, classPK);
-
-			row.setModifiedDate(new Date());
-
-			_expandoRowPersistence.update(row);
-		}
-
-		return value;
 	}
 
 	private Serializable _getData(

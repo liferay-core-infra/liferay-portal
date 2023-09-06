@@ -109,7 +109,9 @@ public class BundleBlacklistManagerImpl implements BundleBlacklistManager {
 
 				Object service = bundleContext.getService(serviceReference);
 
-				if (_bundleBlacklist == service) {
+				Class<?> serviceClass = service.getClass();
+
+				if (BundleBlacklist.class.getName() == serviceClass.getName()) {
 					countDownLatch.countDown();
 				}
 

@@ -31,7 +31,10 @@ public interface CommerceCurrencyConfiguration {
 	)
 	public boolean enableAutoUpdate();
 
-	@Meta.AD(deflt = "60", name = "update-interval", required = false)
+	@Meta.AD(
+		deflt = "60", description = "update-interval-help",
+		name = "update-interval", required = false
+	)
 	public int updateInterval();
 
 }

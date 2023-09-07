@@ -19,6 +19,9 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvoker;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.spring.aop.AopCacheManager;
 import com.liferay.portal.test.log.LogCapture;
@@ -388,6 +391,8 @@ public class RestrictedLiferayObjectWrapperTest
 			"123", stringModel -> stringModel.getAsString(),
 			StringModel.class.cast(
 				objectWrapper.wrap(new TestBaseModel(123L))));
+
+		PropsUtil.setProps(ProxyFactory.newDummyInstance(Props.class));
 
 		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
 				CompanyThreadLocal.class.getName(), Level.OFF)) {

@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.test.rule.AbstractTestRule;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -139,11 +140,19 @@ public class LogAssertionTestRule
 		List<LogCapture> logCaptures = new ArrayList<>(expectedLogsList.size());
 
 		for (ExpectedLogs expectedLogs : expectedLogsList) {
+			String className = expectedLogs.loggerClassName();
+
+			if (Validator.isBlank(className)) {
+				Class<?> clazz = expectedLogs.loggerClass();
+
+				className = clazz.getName();
+			}
+
 			Class<?> clazz = expectedLogs.loggerClass();
 
 			logCaptures.add(
 				LoggerTestUtil.configureLog4JLogger(
-					clazz.getName(), expectedLogs.level()));
+					className, expectedLogs.level()));
 		}
 
 		installJdk14Handler();

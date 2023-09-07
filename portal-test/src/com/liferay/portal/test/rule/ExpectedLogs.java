@@ -25,4 +25,9 @@ public @interface ExpectedLogs {
 
 	public Class<?> loggerClass();
 
+	public String loggerClassName() default "";
+
+	public interface ClassByClassName {
+	}
+
 }

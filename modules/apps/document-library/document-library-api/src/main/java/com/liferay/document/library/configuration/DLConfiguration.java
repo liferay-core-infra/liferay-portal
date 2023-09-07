@@ -25,7 +25,10 @@ public interface DLConfiguration {
 	@Meta.AD(deflt = "true", name = "add-default-structures", required = false)
 	public boolean addDefaultStructures();
 
-	@Meta.AD(deflt = "15", name = "check-interval", required = false)
+	@Meta.AD(
+		deflt = "15", description = "check-interval-in-minutes-description",
+		name = "check-interval", required = false
+	)
 	public int checkInterval();
 
 	@Meta.AD(
@@ -80,8 +83,9 @@ public interface DLConfiguration {
 	 * temporary file entries.
 	 */
 	@Meta.AD(
-		deflt = "1", name = "temporary-file-entries-check-interval",
-		required = false
+		deflt = "1",
+		description = "temporary-file-entries-check-interval-description",
+		name = "temporary-file-entries-check-interval", required = false
 	)
 	public int temporaryFileEntriesCheckInterval();
 

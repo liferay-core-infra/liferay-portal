@@ -7,12 +7,16 @@ package com.liferay.portal.scheduler.internal.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.UnsafeRunnable;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
+import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.ExpectedLog;
 import com.liferay.portal.test.rule.ExpectedLogs;
 import com.liferay.portal.test.rule.ExpectedType;
@@ -20,6 +24,7 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Collections;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -53,6 +58,66 @@ public class SchedulerEngineHelperTest {
 			SchedulerEngineHelperTest.class);
 
 		_bundleContext = bundle.getBundleContext();
+	}
+
+	@ExpectedLogs(
+		expectedLogs = {
+			@ExpectedLog(
+				expectedLog = "Unable to process job",
+				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
+				expectedLog = "Cron expression is null or empty",
+				expectedType = ExpectedType.EXACT
+			)
+		},
+		level = "ERROR", loggerClass = ExpectedLogs.ClassByClassName.class,
+		loggerClassName = "com.liferay.portal.scheduler.internal.SchedulerEngineHelperImpl"
+	)
+	@Test
+	public void testJobIsNotScheduledIfCronExpressionIsBlank()
+		throws Exception {
+
+		_calledScheduleMethod = false;
+
+		try (AutoCloseable autoCloseable1 = _swapSchedulerEngine()) {
+			try (AutoCloseable autoCloseable2 = _registerCronJobConfiguration(
+					StringPool.BLANK)) {
+
+				Thread.sleep(3000);
+
+				Assert.assertFalse(_calledScheduleMethod);
+			}
+		}
+	}
+
+	@ExpectedLogs(
+		expectedLogs = {
+			@ExpectedLog(
+				expectedLog = "Unable to process job",
+				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
+				expectedLog = "Interval is either equal or less than 0",
+				expectedType = ExpectedType.EXACT
+			)
+		},
+		level = "ERROR", loggerClass = ExpectedLogs.ClassByClassName.class,
+		loggerClassName = "com.liferay.portal.scheduler.internal.SchedulerEngineHelperImpl"
+	)
+	@Test
+	public void testJobIsNotScheduledIfIntervalIsZero() throws Exception {
+		_calledScheduleMethod = false;
+
+		try (AutoCloseable autoCloseable1 = _swapSchedulerEngine()) {
+			try (AutoCloseable autoCloseable2 =
+					_registerIntervalJobConfiguration(0, TimeUnit.MINUTE)) {
+
+				Thread.sleep(3000);
+
+				Assert.assertFalse(_calledScheduleMethod);
+			}
+		}
 	}
 
 	@Test
@@ -225,7 +290,28 @@ public class SchedulerEngineHelperTest {
 		return serviceRegistration::unregister;
 	}
 
+	private AutoCloseable _swapSchedulerEngine() {
+		SchedulerEngine schedulerEngine =
+			ReflectionTestUtil.getAndSetFieldValue(
+				_schedulerEngineHelper, "_schedulerEngine",
+				(SchedulerEngine)ProxyUtil.newProxyInstance(
+					SchedulerEngine.class.getClassLoader(),
+					new Class<?>[] {SchedulerEngine.class},
+					(proxy, method, args) -> {
+						if (Objects.equals(method.getName(), "schedule")) {
+							_calledScheduleMethod = true;
+						}
+
+						return null;
+					}));
+
+		return () -> ReflectionTestUtil.setFieldValue(
+			_schedulerEngineHelper, "_schedulerEngine", schedulerEngine);
+	}
+
 	private static BundleContext _bundleContext;
+
+	private boolean _calledScheduleMethod;
 
 	@Inject
 	private SchedulerEngineHelper _schedulerEngineHelper;

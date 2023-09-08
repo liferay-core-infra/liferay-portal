@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.service.OrganizationService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserService;
-import com.liferay.portal.kernel.service.permission.CommonPermissionUtil;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
@@ -83,6 +82,7 @@ import com.liferay.portal.kernel.util.Validator_IW;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.webserver.WebServerServletTokenUtil;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.service.permission.CommonPermissionUtil_IW;
 import com.liferay.portal.struts.Definition;
 import com.liferay.portal.struts.TilesUtil;
 import com.liferay.portal.template.ServiceLocator;
@@ -667,7 +667,7 @@ public class TemplateContextHelper {
 
 		try {
 			variables.put(
-				"commonPermission", CommonPermissionUtil.getCommonPermission());
+				"commonPermission", CommonPermissionUtil_IW.getInstance());
 		}
 		catch (SecurityException securityException) {
 			_log.error(securityException);

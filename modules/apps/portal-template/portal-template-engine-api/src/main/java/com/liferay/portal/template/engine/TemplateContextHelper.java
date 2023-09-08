@@ -403,7 +403,7 @@ public class TemplateContextHelper {
 
 		try {
 			variables.put(
-				"browserSniffer", BrowserSnifferUtil.getBrowserSniffer());
+				"browserSniffer", BrowserSnifferUtil_IW.getInstance());
 		}
 		catch (SecurityException securityException) {
 			_log.error(securityException);

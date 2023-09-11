@@ -308,18 +308,12 @@ public class PortalCacheExtenderTest {
 	private static final String _CACHE_NAME_MULTI = "test.cache.multi";
 
 	private static final String _CACHE_NAME_MULTI_ENTITY =
-		PortalCacheExtenderTest._PREFIX_CACHE_NAME_ENTITY + _CACHE_NAME_MULTI;
+		EntityCache.class.getName() + StringPool.PERIOD + _CACHE_NAME_MULTI;
 
 	private static final String _CACHE_NAME_MULTI_FINDER =
-		PortalCacheExtenderTest._PREFIX_CACHE_NAME_FINDER + _CACHE_NAME_MULTI;
+		FinderCache.class.getName() + StringPool.PERIOD + _CACHE_NAME_MULTI;
 
 	private static final String _CACHE_NAME_SINGLE = "test.cache.single";
-
-	private static final String _PREFIX_CACHE_NAME_ENTITY =
-		EntityCache.class.getName() + StringPool.PERIOD;
-
-	private static final String _PREFIX_CACHE_NAME_FINDER =
-		FinderCache.class.getName() + StringPool.PERIOD;
 
 	private static Bundle _bundle;
 	private static String _multiVmXML;

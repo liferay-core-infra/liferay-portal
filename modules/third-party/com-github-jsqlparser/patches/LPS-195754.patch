@@ -1,0 +1,24 @@
+diff --git a/net/sf/jsqlparser/expression/BinaryExpression.java b/net/sf/jsqlparser/expression/BinaryExpression.java
+index f391549207b0..f1596e9fa210 100644
+--- a/net/sf/jsqlparser/expression/BinaryExpression.java
++++ b/net/sf/jsqlparser/expression/BinaryExpression.java
+@@ -12,6 +12,8 @@ package net.sf.jsqlparser.expression;
+ import java.util.Deque;
+ import java.util.LinkedList;
+ 
++import net.sf.jsqlparser.expression.operators.relational.LikeExpression;
++import net.sf.jsqlparser.expression.operators.relational.SimilarToExpression;
+ import net.sf.jsqlparser.parser.ASTNodeAccessImpl;
+ 
+ /**
+@@ -65,7 +67,9 @@ public abstract class BinaryExpression extends ASTNodeAccessImpl implements Expr
+ 		Expression expression = getLeftExpression();
+ 
+ 		while(!deque.isEmpty()) {
+-			if (expression instanceof BinaryExpression) {
++			if (expression instanceof BinaryExpression &&
++				(!(expression instanceof LikeExpression)) &&
++				(!(expression instanceof SimilarToExpression))) {
+ 				BinaryExpression binaryExpression =
+ 					(BinaryExpression)expression;
+ 

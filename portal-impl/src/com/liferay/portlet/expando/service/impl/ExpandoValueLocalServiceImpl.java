@@ -5,6 +5,7 @@
 
 package com.liferay.portlet.expando.service.impl;
 
+import com.liferay.expando.kernel.exception.NoSuchValueException;
 import com.liferay.expando.kernel.exception.ValueDataException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
@@ -1609,7 +1610,13 @@ public class ExpandoValueLocalServiceImpl
 
 	@Override
 	public ExpandoValue getValue(long tableId, long columnId, long classPK) {
-		return expandoValuePersistence.fetchByT_C_C(tableId, columnId, classPK);
+		try {
+			return expandoValuePersistence.findByT_C_C(
+				tableId, columnId, classPK);
+		}
+		catch (NoSuchValueException noSuchValueException) {
+			throw new RuntimeException(noSuchValueException);
+		}
 	}
 
 	@Override
@@ -1631,8 +1638,13 @@ public class ExpandoValueLocalServiceImpl
 			return null;
 		}
 
-		return expandoValuePersistence.fetchByT_C_C(
-			table.getTableId(), column.getColumnId(), classPK);
+		try {
+			return expandoValuePersistence.findByT_C_C(
+				table.getTableId(), column.getColumnId(), classPK);
+		}
+		catch (NoSuchValueException noSuchValueException) {
+			throw new RuntimeException(noSuchValueException);
+		}
 	}
 
 	@Override

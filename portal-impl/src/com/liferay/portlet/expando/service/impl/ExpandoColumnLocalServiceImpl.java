@@ -8,6 +8,7 @@ package com.liferay.portlet.expando.service.impl;
 import com.liferay.expando.kernel.exception.ColumnNameException;
 import com.liferay.expando.kernel.exception.ColumnTypeException;
 import com.liferay.expando.kernel.exception.DuplicateColumnNameException;
+import com.liferay.expando.kernel.exception.NoSuchColumnException;
 import com.liferay.expando.kernel.exception.ValueDataException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
@@ -188,12 +189,22 @@ public class ExpandoColumnLocalServiceImpl
 			return null;
 		}
 
-		return expandoColumnPersistence.fetchByT_N(table.getTableId(), name);
+		try {
+			return expandoColumnPersistence.findByT_N(table.getTableId(), name);
+		}
+		catch (NoSuchColumnException noSuchColumnException) {
+			throw new RuntimeException(noSuchColumnException);
+		}
 	}
 
 	@Override
 	public ExpandoColumn getColumn(long tableId, String name) {
-		return expandoColumnPersistence.fetchByT_N(tableId, name);
+		try {
+			return expandoColumnPersistence.findByT_N(tableId, name);
+		}
+		catch (NoSuchColumnException noSuchColumnException) {
+			throw new RuntimeException(noSuchColumnException);
+		}
 	}
 
 	@Override

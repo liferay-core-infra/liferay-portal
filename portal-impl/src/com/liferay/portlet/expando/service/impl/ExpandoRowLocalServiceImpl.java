@@ -5,6 +5,7 @@
 
 package com.liferay.portlet.expando.service.impl;
 
+import com.liferay.expando.kernel.exception.NoSuchRowException;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
@@ -173,7 +174,12 @@ public class ExpandoRowLocalServiceImpl extends ExpandoRowLocalServiceBaseImpl {
 			return null;
 		}
 
-		return expandoRowPersistence.fetchByT_C(table.getTableId(), classPK);
+		try {
+			return expandoRowPersistence.findByT_C(table.getTableId(), classPK);
+		}
+		catch (NoSuchRowException noSuchRowException) {
+			throw new RuntimeException(noSuchRowException);
+		}
 	}
 
 	@Override

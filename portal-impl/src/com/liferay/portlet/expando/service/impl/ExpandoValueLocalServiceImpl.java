@@ -13,7 +13,6 @@ import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.model.ExpandoValue;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence;
 import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
 import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
@@ -86,8 +85,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, boolean data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -109,8 +109,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, boolean[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -132,8 +133,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, Date data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -155,8 +157,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, Date[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -178,8 +181,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, double data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -201,8 +205,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, double[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -224,8 +229,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, float data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -247,8 +253,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, float[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -270,8 +277,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, int data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -293,8 +301,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, int[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -316,8 +325,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, JSONObject dataJSONObject)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -339,8 +349,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, long data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -362,8 +373,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, long[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -386,8 +398,9 @@ public class ExpandoValueLocalServiceImpl
 			Locale defaultLocale)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -418,8 +431,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, Number data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -441,8 +455,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, Number[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -599,8 +614,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, short data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -622,8 +638,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, short[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -645,8 +662,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, String data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -668,8 +686,9 @@ public class ExpandoValueLocalServiceImpl
 			String columnName, long classPK, String[] data)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
-			companyId, className, tableName);
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
 
 		ExpandoColumn column = _expandoColumnPersistence.findByT_N(
 			table.getTableId(), columnName);
@@ -756,7 +775,7 @@ public class ExpandoValueLocalServiceImpl
 
 		Map<String, String> data = new HashMap<>();
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
 			companyId, classNameId, tableName);
 
 		Set<String> keySet = attributes.keySet();
@@ -1958,9 +1977,6 @@ public class ExpandoValueLocalServiceImpl
 
 	@BeanReference(type = ExpandoRowPersistence.class)
 	private ExpandoRowPersistence _expandoRowPersistence;
-
-	@BeanReference(type = ExpandoTableLocalService.class)
-	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@BeanReference(type = ExpandoTablePersistence.class)
 	private ExpandoTablePersistence _expandoTablePersistence;

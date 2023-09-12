@@ -5,10 +5,11 @@
 
 package com.liferay.message.boards.web.internal.portlet.action;
 
+import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.message.boards.constants.MBMessageConstants;
 import com.liferay.message.boards.constants.MBPortletKeys;
 import com.liferay.message.boards.service.MBMessageService;
-import com.liferay.message.boards.web.internal.upload.TempAttachmentMBUploadFileEntryHandler;
+import com.liferay.message.boards.web.internal.upload.BaseMBUploadFileEntryHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -95,6 +96,10 @@ public class EditMessageAttachmentsMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		_tempAttachmentMBUploadFileEntryHandler =
+			new TempAttachmentMBUploadFileEntryHandler(
+				_dlValidator, _mbMessageService);
+
 		_uploadHandler.upload(
 			_tempAttachmentMBUploadFileEntryHandler,
 			_multipleUploadResponseHandler, actionRequest, actionResponse);
@@ -174,6 +179,9 @@ public class EditMessageAttachmentsMVCActionCommand
 		EditMessageAttachmentsMVCActionCommand.class);
 
 	@Reference
+	private DLValidator _dlValidator;
+
+	@Reference
 	private JSONFactory _jsonFactory;
 
 	@Reference
@@ -191,5 +199,21 @@ public class EditMessageAttachmentsMVCActionCommand
 
 	@Reference
 	private UploadHandler _uploadHandler;
+
+	private static class TempAttachmentMBUploadFileEntryHandler
+		extends BaseMBUploadFileEntryHandler {
+
+		public TempAttachmentMBUploadFileEntryHandler(
+			DLValidator dlValidator, MBMessageService mbMessageService) {
+
+			super(dlValidator, mbMessageService);
+		}
+
+		@Override
+		protected String getParameterName() {
+			return "file";
+		}
+
+	}
 
 }

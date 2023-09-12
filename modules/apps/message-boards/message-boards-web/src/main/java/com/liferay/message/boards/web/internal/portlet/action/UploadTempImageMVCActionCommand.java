@@ -5,9 +5,11 @@
 
 package com.liferay.message.boards.web.internal.portlet.action;
 
+import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.item.selector.ItemSelectorUploadResponseHandler;
 import com.liferay.message.boards.constants.MBPortletKeys;
-import com.liferay.message.boards.web.internal.upload.TempImageMBUploadFileEntryHandler;
+import com.liferay.message.boards.service.MBMessageService;
+import com.liferay.message.boards.web.internal.upload.BaseMBUploadFileEntryHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.upload.UploadHandler;
@@ -36,14 +38,24 @@ public class UploadTempImageMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		_tempImageMBUploadFileEntryHandler =
+			new TempImageMBUploadFileEntryHandler(
+				_dlValidator, _mbMessageService);
+
 		_uploadHandler.upload(
 			_tempImageMBUploadFileEntryHandler,
 			_itemSelectorUploadResponseHandler, actionRequest, actionResponse);
 	}
 
 	@Reference
+	private DLValidator _dlValidator;
+
+	@Reference
 	private ItemSelectorUploadResponseHandler
 		_itemSelectorUploadResponseHandler;
+
+	@Reference
+	private MBMessageService _mbMessageService;
 
 	@Reference
 	private TempImageMBUploadFileEntryHandler
@@ -51,5 +63,21 @@ public class UploadTempImageMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private UploadHandler _uploadHandler;
+
+	private static class TempImageMBUploadFileEntryHandler
+		extends BaseMBUploadFileEntryHandler {
+
+		public TempImageMBUploadFileEntryHandler(
+			DLValidator dlValidator, MBMessageService mbMessageService) {
+
+			super(dlValidator, mbMessageService);
+		}
+
+		@Override
+		protected String getParameterName() {
+			return "imageSelectorFileName";
+		}
+
+	}
 
 }

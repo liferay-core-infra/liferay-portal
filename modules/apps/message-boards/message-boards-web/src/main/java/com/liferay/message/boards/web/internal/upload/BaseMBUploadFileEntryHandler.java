@@ -20,13 +20,18 @@ import com.liferay.upload.UploadFileEntryHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Adolfo Pérez
  */
 public abstract class BaseMBUploadFileEntryHandler
 	implements UploadFileEntryHandler {
+
+	public BaseMBUploadFileEntryHandler(
+		DLValidator dlValidator, MBMessageService mbMessageService) {
+
+		this.dlValidator = dlValidator;
+		this.mbMessageService = mbMessageService;
+	}
 
 	@Override
 	public FileEntry upload(UploadPortletRequest uploadPortletRequest)
@@ -58,10 +63,7 @@ public abstract class BaseMBUploadFileEntryHandler
 
 	protected abstract String getParameterName();
 
-	@Reference
 	protected DLValidator dlValidator;
-
-	@Reference
 	protected MBMessageService mbMessageService;
 
 	private String _getContentType(UploadPortletRequest uploadPortletRequest) {

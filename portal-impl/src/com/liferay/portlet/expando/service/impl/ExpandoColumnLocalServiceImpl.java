@@ -16,7 +16,6 @@ import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.model.adapter.StagedExpandoColumn;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
@@ -116,7 +115,7 @@ public class ExpandoColumnLocalServiceImpl
 			long companyId, long classNameId, String tableName, String name)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
 			companyId, classNameId, tableName);
 
 		deleteColumn(table.getTableId(), name);
@@ -157,7 +156,7 @@ public class ExpandoColumnLocalServiceImpl
 			long companyId, long classNameId, String tableName)
 		throws PortalException {
 
-		ExpandoTable table = _expandoTableLocalService.getTable(
+		ExpandoTable table = _expandoTablePersistence.findByC_C_N(
 			companyId, classNameId, tableName);
 
 		deleteColumns(table.getTableId());
@@ -566,9 +565,6 @@ public class ExpandoColumnLocalServiceImpl
 
 	@BeanReference(type = ClassNameLocalService.class)
 	private ClassNameLocalService _classNameLocalService;
-
-	@BeanReference(type = ExpandoTableLocalService.class)
-	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@BeanReference(type = ExpandoTablePersistence.class)
 	private ExpandoTablePersistence _expandoTablePersistence;

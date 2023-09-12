@@ -423,6 +423,37 @@ public class SQLDSLTest {
 	}
 
 	@Test
+	public void testEscapedLike() {
+		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
+			MainExampleTable.INSTANCE.nameColumn
+		).from(
+			MainExampleTable.INSTANCE
+		).where(
+			MainExampleTable.INSTANCE.nameColumn.neq(
+				new Scalar<String>("Name%0")
+			).and(
+				MainExampleTable.INSTANCE.nameColumn.like(
+					"'Name=%%' ESCAPE '='")
+			).and(
+				MainExampleTable.INSTANCE.nameColumn.neq(
+					new Scalar<String>("Name%1"))
+			)
+		);
+
+		DefaultASTNodeListener defaultASTNodeListener =
+			new DefaultASTNodeListener();
+
+		Assert.assertEquals(
+			"select MainExample.name from MainExample where MainExample.name " +
+				"!= ? and MainExample.name like ? and MainExample.name != ?",
+			dslQuery.toSQL(defaultASTNodeListener));
+
+		Assert.assertEquals(
+			Arrays.asList("Name%0", "'Name=%%' ESCAPE '='", "Name%1"),
+			defaultASTNodeListener.getScalarValues());
+	}
+
+	@Test
 	public void testFrom() {
 		From from = new From(
 			DSLQueryFactoryUtil.count(), MainExampleTable.INSTANCE);

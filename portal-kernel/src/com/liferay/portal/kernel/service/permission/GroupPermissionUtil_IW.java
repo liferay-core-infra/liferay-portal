@@ -73,7 +73,7 @@ public class GroupPermissionUtil_IW {
 
 
 
-	
+
 	private GroupPermissionUtil_IW() {
 	}
 

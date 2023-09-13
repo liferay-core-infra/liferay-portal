@@ -5,10 +5,12 @@
 
 package com.liferay.portlet.expando.service.impl;
 
+import com.liferay.expando.kernel.exception.NoSuchColumnException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -37,11 +39,27 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 			String columnName, long classPK, Object data)
 		throws PortalException {
 
+		ExpandoColumn expandoColumn = _expandoColumnLocalService.getColumn(
+			companyId, className, tableName, columnName);
+
+		if (expandoColumn == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableName=");
+			sb.append(tableName);
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoColumnPermissionUtil.check(
-			getPermissionChecker(),
-			_expandoColumnLocalService.getColumn(
-				companyId, className, tableName, columnName),
-			ActionKeys.UPDATE);
+			getPermissionChecker(), expandoColumn, ActionKeys.UPDATE);
 
 		return expandoValueLocalService.addValue(
 			companyId, className, tableName, columnName, classPK, data);
@@ -54,11 +72,27 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 			String columnName, long classPK, String data)
 		throws PortalException {
 
+		ExpandoColumn expandoColumn = _expandoColumnLocalService.getColumn(
+			companyId, className, tableName, columnName);
+
+		if (expandoColumn == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableName=");
+			sb.append(tableName);
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoColumnPermissionUtil.check(
-			getPermissionChecker(),
-			_expandoColumnLocalService.getColumn(
-				companyId, className, tableName, columnName),
-			ActionKeys.UPDATE);
+			getPermissionChecker(), expandoColumn, ActionKeys.UPDATE);
 
 		return expandoValueLocalService.addValue(
 			companyId, className, tableName, columnName, classPK, data);
@@ -90,11 +124,27 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 				companyId, className, tableName, columnNames, classPK);
 
 		for (String columnName : columnNames) {
+			ExpandoColumn expandoColumn = _expandoColumnLocalService.getColumn(
+				companyId, className, tableName, columnName);
+
+			if (expandoColumn == null) {
+				StringBundler sb = new StringBundler(6);
+
+				sb.append("No ExpandoColumn exists with the key {");
+
+				sb.append("tableName=");
+				sb.append(tableName);
+
+				sb.append(", name=");
+				sb.append(columnName);
+
+				sb.append("}");
+
+				throw new NoSuchColumnException(sb.toString());
+			}
+
 			if (!ExpandoColumnPermissionUtil.contains(
-					getPermissionChecker(),
-					_expandoColumnLocalService.getColumn(
-						companyId, className, tableName, columnName),
-					ActionKeys.VIEW)) {
+					getPermissionChecker(), expandoColumn, ActionKeys.VIEW)) {
 
 				attributeValues.remove(columnName);
 			}

@@ -5,6 +5,7 @@
 
 package com.liferay.saml.opensaml.integration.internal.field.expression.handler;
 
+import com.liferay.expando.kernel.exception.NoSuchColumnException;
 import com.liferay.expando.kernel.exception.ValueDataException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
@@ -450,6 +451,22 @@ public class ExpandoUserFieldExpressionHandler
 		ExpandoColumn expandoColumn = _expandoColumnLocalService.getColumn(
 			companyId, User.class.getName(),
 			ExpandoTableConstants.DEFAULT_TABLE_NAME, columnName);
+
+		if (expandoColumn == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableName=");
+			sb.append(ExpandoTableConstants.DEFAULT_TABLE_NAME);
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		expandoValue.setColumnId(expandoColumn.getColumnId());
 

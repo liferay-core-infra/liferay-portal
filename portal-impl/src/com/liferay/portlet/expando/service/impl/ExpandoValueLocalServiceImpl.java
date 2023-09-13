@@ -5,6 +5,7 @@
 
 package com.liferay.portlet.expando.service.impl;
 
+import com.liferay.expando.kernel.exception.NoSuchColumnException;
 import com.liferay.expando.kernel.exception.ValueDataException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
@@ -19,6 +20,7 @@ import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
 import com.liferay.expando.kernel.util.ExpandoValueDeleteHandler;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -480,6 +482,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			companyId, className, tableName, columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableName=");
+			sb.append(tableName);
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		int type = column.getType();
 

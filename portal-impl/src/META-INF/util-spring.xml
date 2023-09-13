@@ -98,10 +98,6 @@
 	<bean class="com.liferay.portal.kernel.service.permission.PasswordPolicyPermissionUtil" id="com.liferay.portal.kernel.service.permission.PasswordPolicyPermissionUtil">
 		<property name="passwordPolicyPermission" ref="com.liferay.portal.kernel.service.permission.PasswordPolicyPermission" />
 	</bean>
-	<bean class="com.liferay.portal.service.permission.PortalPermissionImpl" id="com.liferay.portal.kernel.service.permission.PortalPermission" />
-	<bean class="com.liferay.portal.kernel.service.permission.PortalPermissionUtil" id="com.liferay.portal.kernel.service.permission.PortalPermissionUtil">
-		<property name="portalPermission" ref="com.liferay.portal.kernel.service.permission.PortalPermission" />
-	</bean>
 	<bean class="com.liferay.portal.service.permission.PortletPermissionImpl" id="com.liferay.portal.kernel.service.permission.PortletPermission" />
 	<bean class="com.liferay.portal.kernel.service.permission.PortletPermissionUtil" id="com.liferay.portal.kernel.service.permission.PortletPermissionUtil">
 		<property name="portletPermission" ref="com.liferay.portal.kernel.service.permission.PortletPermission" />

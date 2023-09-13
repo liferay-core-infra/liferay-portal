@@ -304,6 +304,27 @@ public class ExpandoUserFieldExpressionHandler
 			ExpandoColumn column = _expandoColumnLocalService.getColumn(
 				table.getTableId(), validUserFieldExpression);
 
+			if (column == null) {
+				StringBundler sb = new StringBundler(6);
+
+				sb.append("No ExpandoColumn exists with the key {");
+
+				sb.append("tableId=");
+				sb.append(table.getTableId());
+
+				sb.append(", name=");
+				sb.append(validUserFieldExpression);
+
+				sb.append("}");
+
+				try {
+					throw new NoSuchColumnException(sb.toString());
+				}
+				catch (NoSuchColumnException noSuchColumnException) {
+					throw new RuntimeException(noSuchColumnException);
+				}
+			}
+
 			expandoValue = _expandoValueLocalService.createExpandoValue(0);
 
 			expandoValue.setCompanyId(user.getCompanyId());

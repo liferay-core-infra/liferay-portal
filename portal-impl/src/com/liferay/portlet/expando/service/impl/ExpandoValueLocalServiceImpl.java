@@ -93,6 +93,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -116,6 +132,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -141,6 +173,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -164,6 +212,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -189,6 +253,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -212,6 +292,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -237,6 +333,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -260,6 +372,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -285,6 +413,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -308,6 +452,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -333,6 +493,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -356,6 +532,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -381,6 +573,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -405,6 +613,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -439,6 +663,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -462,6 +702,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -630,6 +886,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -653,6 +925,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 
@@ -678,6 +966,22 @@ public class ExpandoValueLocalServiceImpl
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
 
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
+
 		ExpandoValue value = new ExpandoValueImpl();
 
 		value.setCompanyId(table.getCompanyId());
@@ -701,6 +1005,22 @@ public class ExpandoValueLocalServiceImpl
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			table.getTableId(), columnName);
+
+		if (column == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("No ExpandoColumn exists with the key {");
+
+			sb.append("tableId=");
+			sb.append(table.getTableId());
+
+			sb.append(", name=");
+			sb.append(columnName);
+
+			sb.append("}");
+
+			throw new NoSuchColumnException(sb.toString());
+		}
 
 		ExpandoValue value = new ExpandoValueImpl();
 

@@ -11,6 +11,8 @@ import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -18,6 +20,7 @@ import com.liferay.portal.kernel.test.util.MockHttp;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
@@ -51,17 +54,8 @@ public class InterestTermsCheckerTest {
 	public void setUp() throws Exception {
 		_user = TestPropsValues.getUser();
 
-		Bundle bundle = FrameworkUtil.getBundle(InterestTermsCheckerTest.class);
-
-		_interestTermsChecker = _getService(
-			bundle,
-			"(component.name=com.liferay.segments.asah.connector.internal." +
-				"messaging.InterestTermsChecker)");
-
-		Assert.assertNotNull(_interestTermsChecker);
-
 		_asahInterestTermProvider = _getService(
-			bundle,
+			FrameworkUtil.getBundle(InterestTermsCheckerTest.class),
 			"(component.name=com.liferay.segments.asah.connector.internal." +
 				"provider.AsahInterestTermProvider)");
 
@@ -96,13 +90,13 @@ public class InterestTermsCheckerTest {
 
 			DCLSingleton<?> asahFaroBackendClientDCLSingleton =
 				ReflectionTestUtil.getFieldValue(
-					_interestTermsChecker,
+					_interestTermsMessageListener,
 					"_asahFaroBackendClientDCLSingleton");
 
 			asahFaroBackendClientDCLSingleton.destroy(null);
 
 			ReflectionTestUtil.setFieldValue(
-				_interestTermsChecker, "_http",
+				_interestTermsMessageListener, "_http",
 				new MockHttp(
 					Collections.singletonMap(
 						"/api/1.0/interests/terms/" + _user.getUserId(),
@@ -130,10 +124,12 @@ public class InterestTermsCheckerTest {
 							"total", 0
 						).toString())));
 
-			ReflectionTestUtil.invoke(
-				_interestTermsChecker, "checkInterestTerms",
-				new Class<?>[] {long.class, String.class}, _user.getCompanyId(),
-				String.valueOf(_user.getUserId()));
+			Message message = new Message();
+
+			message.put("companyId", _user.getCompanyId());
+			message.put("userId", _user.getUserId());
+
+			_interestTermsMessageListener.receive(message);
 
 			String[] interestTerms = ReflectionTestUtil.invoke(
 				_asahInterestTermProvider, "getInterestTerms",
@@ -161,7 +157,12 @@ public class InterestTermsCheckerTest {
 	}
 
 	private Object _asahInterestTermProvider;
-	private Object _interestTermsChecker;
+
+	@Inject(
+		filter = "component.name=com.liferay.segments.asah.connector.internal.messaging.InterestTermsMessageListener"
+	)
+	private MessageListener _interestTermsMessageListener;
+
 	private User _user;
 
 }

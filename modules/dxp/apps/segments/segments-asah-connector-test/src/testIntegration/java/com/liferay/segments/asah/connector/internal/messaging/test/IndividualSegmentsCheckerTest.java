@@ -82,14 +82,16 @@ public class IndividualSegmentsCheckerTest {
 			bundle.getBundleContext(),
 			FrameworkUtil.createFilter(
 				"(component.name=com.liferay.segments.asah.connector." +
-					"internal.messaging.IndividualSegmentsChecker)"),
+					"internal.scheduler." +
+						"CheckIndividualSegmentsSchedulerJobConfiguration)"),
 			null);
 
 		_serviceTracker.open();
 
-		_individualSegmentsChecker = _serviceTracker.getService();
+		_individualSegmentsSchedulerJobConfiguration =
+			_serviceTracker.getService();
 
-		Assert.assertNotNull(_individualSegmentsChecker);
+		Assert.assertNotNull(_individualSegmentsSchedulerJobConfiguration);
 	}
 
 	@After
@@ -132,7 +134,8 @@ public class IndividualSegmentsCheckerTest {
 			context.put("segmentsAnonymousUserId", guestUserUuid);
 
 			Object asahFaroBackendClient = ReflectionTestUtil.getFieldValue(
-				_individualSegmentsChecker, "_asahFaroBackendClient");
+				_individualSegmentsSchedulerJobConfiguration,
+				"_asahFaroBackendClient");
 
 			ReflectionTestUtil.setFieldValue(
 				asahFaroBackendClient, "_http",
@@ -216,8 +219,8 @@ public class IndividualSegmentsCheckerTest {
 						).build()));
 
 			ReflectionTestUtil.invoke(
-				_individualSegmentsChecker, "checkIndividualSegments",
-				new Class<?>[0]);
+				_individualSegmentsSchedulerJobConfiguration,
+				"checkIndividualSegments", new Class<?>[0]);
 
 			List<SegmentsEntry> segmentsEntries =
 				_segmentsEntryLocalService.getSegmentsEntriesBySource(
@@ -259,7 +262,7 @@ public class IndividualSegmentsCheckerTest {
 	@Inject
 	private static CompanyLocalService _companyLocalService;
 
-	private Object _individualSegmentsChecker;
+	private Object _individualSegmentsSchedulerJobConfiguration;
 
 	@Inject
 	private SegmentsEntryLocalService _segmentsEntryLocalService;

@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.permission.OrganizationPermission;
-import com.liferay.portal.kernel.service.permission.PortalPermission;
+import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
@@ -74,7 +74,7 @@ public class MyOrganizationsPortlet extends UsersAdminPortlet {
 							parentOrganizationId, ActionKeys.ADD_ORGANIZATION);
 					}
 					else {
-						_portalPermission.check(
+						PortalPermissionUtil.check(
 							PermissionThreadLocal.getPermissionChecker(),
 							ActionKeys.ADD_ORGANIZATION);
 					}
@@ -102,8 +102,5 @@ public class MyOrganizationsPortlet extends UsersAdminPortlet {
 
 	@Reference
 	private OrganizationPermission _organizationPermission;
-
-	@Reference
-	private PortalPermission _portalPermission;
 
 }

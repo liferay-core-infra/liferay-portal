@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.permission.GroupPermission;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
@@ -52,11 +51,6 @@ public class DepotAdminMembershipsDisplayContextTest {
 		).thenReturn(
 			_user
 		);
-
-		GroupPermissionUtil groupPermissionUtil = new GroupPermissionUtil();
-
-		groupPermissionUtil.setGroupPermission(
-			Mockito.mock(GroupPermission.class));
 	}
 
 	@Test

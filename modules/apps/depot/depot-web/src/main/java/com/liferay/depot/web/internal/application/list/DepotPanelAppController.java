@@ -8,7 +8,6 @@ package com.liferay.depot.web.internal.application.list;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.PanelAppRegistry;
 import com.liferay.application.list.PanelAppShowFilter;
-import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.depot.web.internal.application.controller.DepotApplicationController;
 import com.liferay.depot.web.internal.constants.DepotPortletKeys;
@@ -46,8 +45,7 @@ public class DepotPanelAppController {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_panelCategoryHelper = new PanelCategoryHelper(
-			_panelAppRegistry, _panelCategoryRegistry);
+		_panelCategoryHelper = new PanelCategoryHelper(_panelAppRegistry);
 
 		_serviceRegistration = bundleContext.registerService(
 			PanelAppShowFilter.class,
@@ -88,10 +86,6 @@ public class DepotPanelAppController {
 	private PanelAppRegistry _panelAppRegistry;
 
 	private PanelCategoryHelper _panelCategoryHelper;
-
-	@Reference
-	private PanelCategoryRegistry _panelCategoryRegistry;
-
 	private ServiceRegistration<?> _serviceRegistration;
 
 }

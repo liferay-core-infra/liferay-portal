@@ -73,8 +73,7 @@ public class UserManagementBarTag extends IncludeTag {
 
 	protected int getNotificationsCount(ThemeDisplay themeDisplay) {
 		PanelCategoryHelper panelCategoryHelper = new PanelCategoryHelper(
-			ServletContextUtil.getPanelAppRegistry(),
-			ServletContextUtil.getPanelCategoryRegistry());
+			ServletContextUtil.getPanelAppRegistry());
 
 		return panelCategoryHelper.getNotificationsCount(
 			PanelCategoryKeys.USER, themeDisplay.getPermissionChecker(),

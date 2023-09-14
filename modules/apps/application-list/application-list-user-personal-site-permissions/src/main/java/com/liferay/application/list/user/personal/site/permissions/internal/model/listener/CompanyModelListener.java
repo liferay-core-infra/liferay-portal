@@ -7,7 +7,6 @@ package com.liferay.application.list.user.personal.site.permissions.internal.mod
 
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.PanelAppRegistry;
-import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.osgi.service.tracker.collections.EagerServiceTrackerCustomizer;
@@ -55,8 +54,7 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
 				PanelCategoryHelper panelCategoryHelper =
-					new PanelCategoryHelper(
-						_panelAppRegistry, _panelCategoryRegistry);
+					new PanelCategoryHelper(_panelAppRegistry);
 
 				List<PanelApp> panelApps = panelCategoryHelper.getAllPanelApps(
 					PanelCategoryKeys.SITE_ADMINISTRATION);
@@ -238,9 +236,6 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 
 	@Reference
 	private PanelAppRegistry _panelAppRegistry;
-
-	@Reference
-	private PanelCategoryRegistry _panelCategoryRegistry;
 
 	@Reference
 	private PortletLocalService _portletLocalService;

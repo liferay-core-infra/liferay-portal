@@ -8,17 +8,17 @@ package com.liferay.ext.test.internal.portal.uuid;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
-import com.liferay.portal.uuid.PortalUUIDImpl;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+
 
 import java.util.UUID;
 
 /**
  * @author Victor Ware
  */
-public class ExtPortalUUIDImpl extends PortalUUIDImpl {
+public class ExtPortalUUIDImpl extends PortalUUIDUtil {
 
-	@Override
-	public String generate() {
+	public static String generate() {
 		UUID uuid = new UUID(
 			SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong());
 

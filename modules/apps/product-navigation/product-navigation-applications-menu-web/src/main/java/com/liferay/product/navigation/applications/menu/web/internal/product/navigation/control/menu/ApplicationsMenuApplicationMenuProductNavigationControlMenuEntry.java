@@ -7,7 +7,6 @@ package com.liferay.product.navigation.applications.menu.web.internal.product.na
 
 import com.liferay.application.list.PanelAppRegistry;
 import com.liferay.application.list.PanelCategory;
-import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -66,7 +65,7 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 		}
 
 		if (ApplicationsMenuUtil.hasChildPanelApps(
-				_panelAppRegistry, _panelCategoryRegistry, themeDisplay)) {
+				_panelAppRegistry, themeDisplay)) {
 
 			return true;
 		}
@@ -87,9 +86,6 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 
 	@Reference(target = "(panel.category.key=" + PanelCategoryKeys.HIDDEN + ")")
 	private PanelCategory _panelCategory;
-
-	@Reference
-	private PanelCategoryRegistry _panelCategoryRegistry;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.product.navigation.applications.menu.web)"

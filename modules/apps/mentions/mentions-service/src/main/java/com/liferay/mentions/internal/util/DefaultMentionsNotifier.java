@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
-import com.liferay.portal.kernel.service.permission.PortletPermission;
+import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -123,7 +123,7 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 
 					if (!_layoutPermission.contains(
 							permissionChecker, layout, true, ActionKeys.VIEW) ||
-						!_portletPermission.contains(
+						!PortletPermissionUtil.contains(
 							permissionChecker, layout, themeDisplay.getPpid(),
 							ActionKeys.VIEW)) {
 
@@ -201,9 +201,6 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private PortletPermission _portletPermission;
 
 	@Reference
 	private UserLocalService _userLocalService;

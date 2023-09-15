@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUID;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
@@ -5365,7 +5365,7 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		layoutPageTemplateCollection.setPrimaryKey(
 			layoutPageTemplateCollectionId);
 
-		String uuid = _portalUUID.generate();
+		String uuid = PortalUUIDUtil.generate();
 
 		layoutPageTemplateCollection.setUuid(uuid);
 
@@ -5501,7 +5501,7 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 					layoutPageTemplateCollection;
 
 		if (Validator.isNull(layoutPageTemplateCollection.getUuid())) {
-			String uuid = _portalUUID.generate();
+			String uuid = PortalUUIDUtil.generate();
 
 			layoutPageTemplateCollection.setUuid(uuid);
 		}
@@ -6330,8 +6330,5 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
-
-	@Reference
-	private PortalUUID _portalUUID;
 
 }

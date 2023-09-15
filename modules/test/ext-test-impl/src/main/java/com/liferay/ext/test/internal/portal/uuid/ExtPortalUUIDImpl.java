@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
-
 import java.util.UUID;
 
 /**

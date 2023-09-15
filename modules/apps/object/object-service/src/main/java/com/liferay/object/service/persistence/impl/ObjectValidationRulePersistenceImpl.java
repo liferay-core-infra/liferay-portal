@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUID;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
@@ -2988,7 +2988,7 @@ public class ObjectValidationRulePersistenceImpl
 		objectValidationRule.setNew(true);
 		objectValidationRule.setPrimaryKey(objectValidationRuleId);
 
-		String uuid = _portalUUID.generate();
+		String uuid = PortalUUIDUtil.generate();
 
 		objectValidationRule.setUuid(uuid);
 
@@ -3113,7 +3113,7 @@ public class ObjectValidationRulePersistenceImpl
 			(ObjectValidationRuleModelImpl)objectValidationRule;
 
 		if (Validator.isNull(objectValidationRule.getUuid())) {
-			String uuid = _portalUUID.generate();
+			String uuid = PortalUUIDUtil.generate();
 
 			objectValidationRule.setUuid(uuid);
 		}
@@ -3620,8 +3620,5 @@ public class ObjectValidationRulePersistenceImpl
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
-
-	@Reference
-	private PortalUUID _portalUUID;
 
 }

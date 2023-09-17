@@ -6,6 +6,7 @@
 package com.liferay.portal.bundle.blacklist.internal;
 
 import com.liferay.osgi.util.BundleUtil;
+import com.liferay.portal.bundle.blacklist.constants.BundleBlacklistConstants;
 import com.liferay.portal.bundle.blacklist.internal.configuration.BundleBlacklistConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -21,6 +22,7 @@ import java.io.OutputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -41,13 +43,15 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventAdmin;
 
 /**
  * @author Matthew Tambara
  */
 @Component(
 	configurationPid = "com.liferay.portal.bundle.blacklist.internal.configuration.BundleBlacklistConfiguration",
-	service = BundleBlacklist.class
+	service = {}
 )
 public class BundleBlacklist {
 
@@ -117,6 +121,11 @@ public class BundleBlacklist {
 				_removeFromBlacklistFile(symbolicName);
 			}
 		}
+
+		_eventAdmin.postEvent(
+			new Event(
+				BundleBlacklistConstants.TOPIC_BUNDLE_BLACKLIST_FINISHED,
+				Collections.emptyMap()));
 	}
 
 	private void _addToBlacklistFile(
@@ -260,6 +269,9 @@ public class BundleBlacklist {
 			}
 
 		};
+
+	@Reference
+	private EventAdmin _eventAdmin;
 
 	@Reference
 	private LPKGDeployer _lpkgDeployer;

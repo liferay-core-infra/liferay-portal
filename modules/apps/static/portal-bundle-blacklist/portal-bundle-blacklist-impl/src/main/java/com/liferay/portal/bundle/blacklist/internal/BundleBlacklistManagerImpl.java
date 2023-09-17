@@ -7,10 +7,12 @@ package com.liferay.portal.bundle.blacklist.internal;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.bundle.blacklist.BundleBlacklistManager;
+import com.liferay.portal.bundle.blacklist.constants.BundleBlacklistConstants;
 import com.liferay.portal.bundle.blacklist.internal.configuration.BundleBlacklistConfiguration;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -25,13 +27,13 @@ import java.util.function.Function;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.event.EventConstants;
+import org.osgi.service.event.EventHandler;
 
 /**
  * @author Preston Crary
@@ -90,29 +92,12 @@ public class BundleBlacklistManagerImpl implements BundleBlacklistManager {
 
 		CountDownLatch countDownLatch = new CountDownLatch(1);
 
-		ServiceListener serviceListener = new ServiceListener() {
-
-			@Override
-			public void serviceChanged(ServiceEvent serviceEvent) {
-				if (serviceEvent.getType() != ServiceEvent.MODIFIED) {
-					return;
-				}
-
-				ServiceReference<?> serviceReference =
-					serviceEvent.getServiceReference();
-
-				Object service = bundleContext.getService(serviceReference);
-
-				if (_bundleBlacklist == service) {
-					countDownLatch.countDown();
-				}
-
-				bundleContext.ungetService(serviceReference);
-			}
-
-		};
-
-		bundleContext.addServiceListener(serviceListener);
+		ServiceRegistration<EventHandler> eventHandlerServiceRegistration =
+			bundleContext.registerService(
+				EventHandler.class, event -> countDownLatch.countDown(),
+				MapUtil.singletonDictionary(
+					EventConstants.EVENT_TOPIC,
+					BundleBlacklistConstants.TOPIC_BUNDLE_BLACKLIST_FINISHED));
 
 		try {
 			configuration.update(properties);
@@ -125,7 +110,7 @@ public class BundleBlacklistManagerImpl implements BundleBlacklistManager {
 			}
 		}
 		finally {
-			bundleContext.removeServiceListener(serviceListener);
+			eventHandlerServiceRegistration.unregister();
 		}
 	}
 

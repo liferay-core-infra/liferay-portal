@@ -7,7 +7,6 @@ package com.liferay.portal.search.tuning.rankings.web.internal.index.creation.ac
 
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.search.engine.SearchEngineInformation;
 import com.liferay.portal.search.tuning.rankings.web.internal.background.task.RankingIndexCreationBackgroundTaskExecutor;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.importer.SingleIndexToMultipleIndexImporter;
@@ -38,8 +37,7 @@ public class RankingIndexCreationBundleActivatorTest {
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexCreationBundleActivator, "_backgroundTaskManager",
 			_backgroundTaskManager);
-		ReflectionTestUtil.setFieldValue(
-			_rankingIndexCreationBundleActivator, "_portalUUID", _portalUUID);
+
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexCreationBundleActivator,
 			"_rankingIndexRenameBackgroundTaskExecutor",
@@ -101,7 +99,6 @@ public class RankingIndexCreationBundleActivatorTest {
 
 	private final BackgroundTaskManager _backgroundTaskManager = Mockito.mock(
 		BackgroundTaskManager.class);
-	private final PortalUUID _portalUUID = Mockito.mock(PortalUUID.class);
 	private RankingIndexCreationBundleActivator
 		_rankingIndexCreationBundleActivator;
 	private final RankingIndexCreationBackgroundTaskExecutor

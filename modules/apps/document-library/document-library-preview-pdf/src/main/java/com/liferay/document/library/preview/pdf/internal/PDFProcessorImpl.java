@@ -377,7 +377,7 @@ public class PDFProcessorImpl
 	protected boolean hasPreview(FileVersion fileVersion, String type)
 		throws Exception {
 
-		return _store.hasFile(
+		return store.hasFile(
 			fileVersion.getCompanyId(), REPOSITORY_ID,
 			getPreviewFilePath(fileVersion, 1), Store.VERSION_DEFAULT);
 	}
@@ -1125,9 +1125,6 @@ public class PDFProcessorImpl
 
 	@Reference
 	private ProcessExecutor _processExecutor;
-
-	@Reference(target = "(default=true)")
-	private Store _store;
 
 	private static class LiferayPDFBoxProcessCallable
 		implements ProcessCallable<String> {

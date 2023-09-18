@@ -48,7 +48,6 @@ default.regular.theme.id
 default.wap.color.scheme.id
 default.wap.theme.id
 dl.file.entry.drafts.enabled
-dl.file.entry.processors
 dl.repository.impl
 dl.store.antivirus.impl
 dl.store.impl

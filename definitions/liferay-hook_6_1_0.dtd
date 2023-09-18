@@ -39,7 +39,6 @@ control.panel.entry.class.default
 convert.processes
 default.landing.page.path
 dl.file.entry.drafts.enabled
-dl.file.entry.processors
 dl.repository.impl
 dl.store.antivirus.impl
 dl.store.impl

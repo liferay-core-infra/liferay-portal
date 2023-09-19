@@ -28,11 +28,11 @@ FileVersion fileVersion = (FileVersion)request.getAttribute(WebKeys.DOCUMENT_LIB
 				long maxFileSize = dlPreviewSizeException.getMaxFileSize();
 
 				if (maxFileSize == 0) {
-					maxFileSize = DLProcessorRegistryUtil.getPreviewableProcessorMaxSize(fileVersion.getGroupId());
+					maxFileSize = DLProcessorHelperUtil.getPreviewableProcessorMaxSize(fileVersion.getGroupId());
 				}
 				%>
 
-				<liferay-ui:message arguments="<%= LanguageUtil.formatStorageSize(maxFileSize, locale) %>" key="this-file-is-too-large-to-preview.-the-maximum-file-size-for-previews-is-x" />
+				<liferay-ui:message arguments="<%= LanguageUtil.formatStorageSize(maxFileSize, locale) %>" key="this-file-is-F-large-to-preview.-the-maximum-file-size-for-previews-is-x" />
 			</p>
 
 			<clay:link

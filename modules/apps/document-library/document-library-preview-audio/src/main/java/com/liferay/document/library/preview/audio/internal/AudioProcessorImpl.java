@@ -56,7 +56,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "type=" + DLProcessorConstants.AUDIO_PROCESSOR,
-	service = {AudioProcessor.class, DLProcessor.class}
+	service = DLProcessor.class
 )
 public class AudioProcessorImpl
 	extends DLPreviewableProcessor implements AudioProcessor {

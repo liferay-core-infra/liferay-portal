@@ -9,7 +9,7 @@ import com.liferay.document.library.configuration.DLFileEntryConfiguration;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.exception.NoSuchFileVersionException;
 import com.liferay.document.library.kernel.util.DLProcessor;
-import com.liferay.document.library.kernel.util.DLProcessorRegistry;
+import com.liferay.document.library.kernel.util.DLProcessorHelper;
 import com.liferay.document.library.kernel.util.DLProcessorThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -34,9 +34,9 @@ import org.osgi.service.component.annotations.Modified;
  */
 @Component(
 	configurationPid = "com.liferay.document.library.configuration.DLFileEntryConfiguration",
-	service = DLProcessorRegistry.class
+	service = DLProcessorHelper.class
 )
-public class DLProcessorRegistryImpl implements DLProcessorRegistry {
+public class DLProcessorHelperImpl implements DLProcessorHelper {
 
 	@Override
 	public void cleanUp(FileEntry fileEntry) {
@@ -213,7 +213,7 @@ public class DLProcessorRegistryImpl implements DLProcessorRegistry {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLProcessorRegistryImpl.class);
+		DLProcessorHelperImpl.class);
 
 	private volatile DLFileEntryConfiguration _dlFileEntryConfiguration;
 	private ServiceTrackerMap<String, DLProcessor>

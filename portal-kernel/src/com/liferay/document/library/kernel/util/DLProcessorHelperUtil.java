@@ -14,14 +14,14 @@ import com.liferay.portal.kernel.xml.Element;
 /**
  * @author Mika Koivisto
  */
-public class DLProcessorRegistryUtil {
+public class DLProcessorHelperUtil {
 
 	public static void cleanUp(FileEntry fileEntry) {
-		_dlProcessorRegistry.cleanUp(fileEntry);
+		_dlProcessorHelper.cleanUp(fileEntry);
 	}
 
 	public static void cleanUp(FileVersion fileVersion) {
-		_dlProcessorRegistry.cleanUp(fileVersion);
+		_dlProcessorHelper.cleanUp(fileVersion);
 	}
 
 	public static void exportGeneratedFiles(
@@ -29,16 +29,16 @@ public class DLProcessorRegistryUtil {
 			Element fileEntryElement)
 		throws Exception {
 
-		_dlProcessorRegistry.exportGeneratedFiles(
+		_dlProcessorHelper.exportGeneratedFiles(
 			portletDataContext, fileEntry, fileEntryElement);
 	}
 
 	public static DLProcessor getDLProcessor(String dlProcessorType) {
-		return _dlProcessorRegistry.getDLProcessor(dlProcessorType);
+		return _dlProcessorHelper.getDLProcessor(dlProcessorType);
 	}
 
 	public static long getPreviewableProcessorMaxSize() {
-		return _dlProcessorRegistry.getPreviewableProcessorMaxSize();
+		return _dlProcessorHelper.getPreviewableProcessorMaxSize();
 	}
 
 	public static void importGeneratedFiles(
@@ -46,27 +46,27 @@ public class DLProcessorRegistryUtil {
 			FileEntry importedFileEntry, Element fileEntryElement)
 		throws Exception {
 
-		_dlProcessorRegistry.importGeneratedFiles(
+		_dlProcessorHelper.importGeneratedFiles(
 			portletDataContext, fileEntry, importedFileEntry, fileEntryElement);
 	}
 
 	public static boolean isPreviewableSize(FileVersion fileVersion) {
-		return _dlProcessorRegistry.isPreviewableSize(fileVersion);
+		return _dlProcessorHelper.isPreviewableSize(fileVersion);
 	}
 
 	public static void trigger(FileEntry fileEntry, FileVersion fileVersion) {
-		_dlProcessorRegistry.trigger(fileEntry, fileVersion);
+		_dlProcessorHelper.trigger(fileEntry, fileVersion);
 	}
 
 	public static void trigger(
 		FileEntry fileEntry, FileVersion fileVersion, boolean trusted) {
 
-		_dlProcessorRegistry.trigger(fileEntry, fileVersion, trusted);
+		_dlProcessorHelper.trigger(fileEntry, fileVersion, trusted);
 	}
 
-	private static volatile DLProcessorRegistry _dlProcessorRegistry =
+	private static volatile DLProcessorHelper _dlProcessorHelper =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			DLProcessorRegistry.class, DLProcessorRegistryUtil.class,
-			"_dlProcessorRegistry", false);
+			DLProcessorHelper.class, DLProcessorHelperUtil.class,
+			"_dlProcessorHelper", false);
 
 }

@@ -7,7 +7,7 @@ package com.liferay.portlet.documentlibrary.util;
 
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLProcessor;
-import com.liferay.document.library.kernel.util.DLProcessorRegistryUtil;
+import com.liferay.document.library.kernel.util.DLProcessorHelperUtil;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -153,7 +153,7 @@ public abstract class DLPreviewableProcessor implements DLProcessor {
 	@Override
 	public boolean isSupported(FileVersion fileVersion) {
 		if ((fileVersion == null) || (fileVersion.getSize() == 0) ||
-			!DLProcessorRegistryUtil.isPreviewableSize(fileVersion)) {
+			!DLProcessorHelperUtil.isPreviewableSize(fileVersion)) {
 
 			return false;
 		}

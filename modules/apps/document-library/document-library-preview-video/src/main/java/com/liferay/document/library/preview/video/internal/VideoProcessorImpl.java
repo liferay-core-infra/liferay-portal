@@ -62,7 +62,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "type=" + DLProcessorConstants.VIDEO_PROCESSOR,
-	service = {DLProcessor.class, VideoProcessor.class}
+	service = DLProcessor.class
 )
 public class VideoProcessorImpl
 	extends DLPreviewableProcessor implements VideoProcessor {

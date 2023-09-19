@@ -7,8 +7,10 @@ package com.liferay.server.admin.web.internal.portlet.action;
 
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.document.library.kernel.document.conversion.DocumentConversion;
+import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.util.AudioProcessor;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
+import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.PDFProcessor;
 import com.liferay.document.library.kernel.util.VideoProcessor;
 import com.liferay.image.Ghostscript;
@@ -208,7 +210,9 @@ public class EditServerMVCActionCommand
 			DLPreviewableProcessor.deleteFiles();
 		}
 		else if (cmd.equals("dlGenerateAudioPreviews")) {
-			_audioProcessor.generatePreviews();
+			AudioProcessor audioProcessor = (AudioProcessor)_audioDLProcessor;
+
+			audioProcessor.generatePreviews();
 
 			hideDefaultSuccessMessage(actionRequest);
 
@@ -229,7 +233,9 @@ public class EditServerMVCActionCommand
 			SessionMessages.add(actionRequest, "dlGeneratePDFPreviews");
 		}
 		else if (cmd.equals("dlGenerateVideoPreviews")) {
-			_videoProcessor.generatePreviews();
+			VideoProcessor videoProcessor = (VideoProcessor)_videoDLProcessor;
+
+			videoProcessor.generatePreviews();
 
 			hideDefaultSuccessMessage(actionRequest);
 
@@ -895,8 +901,8 @@ public class EditServerMVCActionCommand
 		EditServerMVCActionCommand.class, "_updateLogLevels", Map.class,
 		String.class);
 
-	@Reference
-	private AudioProcessor _audioProcessor;
+	@Reference(target = "(type=" + DLProcessorConstants.AUDIO_PROCESSOR + ")")
+	private DLProcessor _audioDLProcessor;
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;
@@ -968,7 +974,7 @@ public class EditServerMVCActionCommand
 	@Reference
 	private UserGroupMembershipPolicyFactory _userGroupMembershipPolicyFactory;
 
-	@Reference
-	private VideoProcessor _videoProcessor;
+	@Reference(target = "(type=" + DLProcessorConstants.VIDEO_PROCESSOR + ")")
+	private DLProcessor _videoDLProcessor;
 
 }

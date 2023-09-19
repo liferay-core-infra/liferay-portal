@@ -10,9 +10,11 @@ import com.liferay.change.tracking.spi.display.CTDisplayRenderer;
 import com.liferay.change.tracking.spi.display.context.DisplayContext;
 import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.model.DLFileEntry;
+import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.AudioProcessor;
+import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.ImageProcessor;
 import com.liferay.document.library.kernel.util.PDFProcessor;
 import com.liferay.document.library.kernel.util.VideoProcessor;
@@ -51,9 +53,9 @@ public class DLFileEntryCTDisplayRenderer
 		throws PortalException {
 
 		return DLFileVersionCTDisplayRenderer.getDownloadInputStream(
-			_store, _audioProcessor, _dlAppLocalService,
+			_store, (AudioProcessor)_audioDLProcessor, _dlAppLocalService,
 			dlFileEntry.getFileVersion(), _imageProcessor, key, _pdfProcessor,
-			_videoProcessor);
+			(VideoProcessor)_videoDLProcessor);
 	}
 
 	@Override
@@ -125,8 +127,11 @@ public class DLFileEntryCTDisplayRenderer
 			dlFileEntry.getFileVersion(), displayContext.getLocale());
 	}
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY)
-	private AudioProcessor _audioProcessor;
+	@Reference(
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(type=" + DLProcessorConstants.AUDIO_PROCESSOR + ")"
+	)
+	private DLProcessor _audioDLProcessor;
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
@@ -149,7 +154,10 @@ public class DLFileEntryCTDisplayRenderer
 	@Reference
 	private TrashHelper _trashHelper;
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY)
-	private VideoProcessor _videoProcessor;
+	@Reference(
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(type=" + DLProcessorConstants.VIDEO_PROCESSOR + ")"
+	)
+	private DLProcessor _videoDLProcessor;
 
 }

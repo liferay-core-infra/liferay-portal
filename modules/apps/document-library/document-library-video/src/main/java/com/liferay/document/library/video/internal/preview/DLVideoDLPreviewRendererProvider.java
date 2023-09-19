@@ -5,6 +5,8 @@
 
 package com.liferay.document.library.video.internal.preview;
 
+import com.liferay.document.library.kernel.model.DLProcessorConstants;
+import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.VideoProcessor;
 import com.liferay.document.library.preview.DLPreviewRenderer;
 import com.liferay.document.library.preview.DLPreviewRendererProvider;
@@ -35,7 +37,10 @@ public class DLVideoDLPreviewRendererProvider
 
 		mimeTypes.add(
 			ContentTypes.APPLICATION_VND_LIFERAY_VIDEO_EXTERNAL_SHORTCUT_HTML);
-		mimeTypes.addAll(_videoProcessor.getVideoMimeTypes());
+
+		VideoProcessor videoProcessor = (VideoProcessor)_dlProcessor;
+
+		mimeTypes.addAll(videoProcessor.getVideoMimeTypes());
 
 		return mimeTypes;
 	}
@@ -63,6 +68,12 @@ public class DLVideoDLPreviewRendererProvider
 		return null;
 	}
 
+	@Reference(
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(type=" + DLProcessorConstants.VIDEO_PROCESSOR + ")"
+	)
+	private DLProcessor _dlProcessor;
+
 	@Reference
 	private DLVideoRenderer _dlVideoRenderer;
 
@@ -70,8 +81,5 @@ public class DLVideoDLPreviewRendererProvider
 		target = "(osgi.web.symbolicname=com.liferay.document.library.video)"
 	)
 	private ServletContext _servletContext;
-
-	@Reference(policyOption = ReferencePolicyOption.GREEDY)
-	private VideoProcessor _videoProcessor;
 
 }

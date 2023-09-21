@@ -5,8 +5,10 @@
 
 package com.liferay.asset.auto.tagger.internal.model.listener;
 
+import com.liferay.asset.auto.tagger.configuration.AssetAutoTaggerConfiguration;
+import com.liferay.asset.auto.tagger.configuration.AssetAutoTaggerConfigurationFactory;
 import com.liferay.asset.auto.tagger.internal.constants.AssetAutoTaggerDestinationNames;
-import com.liferay.asset.auto.tagger.internal.helper.AssetAutoTaggerHelper;
+import com.liferay.asset.auto.tagger.internal.util.AssetAutoTaggerUtil;
 import com.liferay.asset.auto.tagger.model.AssetAutoTaggerEntry;
 import com.liferay.asset.auto.tagger.service.AssetAutoTaggerEntryLocalService;
 import com.liferay.asset.kernel.model.AssetEntry;
@@ -20,6 +22,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
@@ -75,10 +78,17 @@ public class AssetEntryModelListener extends BaseModelListener<AssetEntry> {
 
 			TransactionCommitCallbackUtil.registerCallback(
 				(Callable<Void>)() -> {
+					AssetAutoTaggerConfiguration assetAutoTaggerConfiguration =
+						_assetAutoTaggerConfigurationFactory.
+							getGroupAssetAutoTaggerConfiguration(
+								_groupLocalService.getGroup(
+									assetEntry.getGroupId()));
+
 					if (!updateAutoTags &&
 						((assetEntry.getPublishDate() == null) ||
 						 ListUtil.isNotEmpty(assetEntry.getTags()) ||
-						 !_assetAutoTaggerHelper.isAutoTaggable(assetEntry))) {
+						 !AssetAutoTaggerUtil.isAutoTaggable(
+							 assetAutoTaggerConfiguration, assetEntry))) {
 
 						return null;
 					}
@@ -130,10 +140,11 @@ public class AssetEntryModelListener extends BaseModelListener<AssetEntry> {
 	}
 
 	@Reference
-	private AssetAutoTaggerEntryLocalService _assetAutoTaggerEntryLocalService;
+	private AssetAutoTaggerConfigurationFactory
+		_assetAutoTaggerConfigurationFactory;
 
 	@Reference
-	private AssetAutoTaggerHelper _assetAutoTaggerHelper;
+	private AssetAutoTaggerEntryLocalService _assetAutoTaggerEntryLocalService;
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
@@ -142,6 +153,9 @@ public class AssetEntryModelListener extends BaseModelListener<AssetEntry> {
 	private DestinationFactory _destinationFactory;
 
 	private ServiceRegistration<Destination> _destinationServiceRegistration;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private MessageBus _messageBus;

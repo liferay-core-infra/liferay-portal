@@ -453,28 +453,36 @@ public class EditServerMVCActionCommand
 						return;
 					}
 
-					Layout layout = _layoutLocalService.getLayout(
-						pref.getPlid());
-
-					if (layout.isTypeContent() || layout.isTypeControlPanel()) {
-						return;
-					}
-
-					UnicodeProperties typeSettingsUnicodeProperties =
-						layout.getTypeSettingsProperties();
-
-					Set<String> keys = typeSettingsUnicodeProperties.keySet();
-
 					boolean orphan = true;
 
-					for (String key : keys) {
-						String value =
-							typeSettingsUnicodeProperties.getProperty(key);
+					Layout layout = _layoutLocalService.fetchLayout(
+						pref.getPlid());
 
-						if (value.contains(pref.getPortletId())) {
-							orphan = false;
+					if (layout == null) {
+						orphan = false;
+					}
+					else {
+						if (layout.isTypeContent() ||
+							layout.isTypeControlPanel()) {
 
-							break;
+							return;
+						}
+
+						UnicodeProperties typeSettingsUnicodeProperties =
+							layout.getTypeSettingsProperties();
+
+						Set<String> keys =
+							typeSettingsUnicodeProperties.keySet();
+
+						for (String key : keys) {
+							String value =
+								typeSettingsUnicodeProperties.getProperty(key);
+
+							if (value.contains(pref.getPortletId())) {
+								orphan = false;
+
+								break;
+							}
 						}
 					}
 

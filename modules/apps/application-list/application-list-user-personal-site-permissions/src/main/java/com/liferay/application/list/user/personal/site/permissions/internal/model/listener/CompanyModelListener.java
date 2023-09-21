@@ -42,6 +42,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,6 +85,11 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 				"*)",
 			new PropertyServiceReferenceMapper<>("panel.category.key"),
 			new PanelAppServiceTrackerCustomizer(bundleContext));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	private Role _getPowerUserRole(long companyId) {

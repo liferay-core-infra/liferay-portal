@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.sites.kernel.util.Sites;
 
 import javax.portlet.ActionRequest;
@@ -64,7 +65,7 @@ public class EditLayoutDesignMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			UploadPortletRequest uploadPortletRequest =
-				_portal.getUploadPortletRequest(actionRequest);
+				_uploadPortal.getUploadPortletRequest(actionRequest);
 
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
@@ -345,5 +346,8 @@ public class EditLayoutDesignMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private UploadPortal _uploadPortal;
 
 }

@@ -24,9 +24,9 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.upload.UploadPortal;
 
 import java.io.File;
 
@@ -66,7 +66,7 @@ public class ImportMVCResourceCommand extends BaseMVCResourceCommand {
 			resourceRequest, "fragmentCollectionId");
 
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(resourceRequest);
+			_uploadPortal.getUploadPortletRequest(resourceRequest);
 
 		File file = uploadPortletRequest.getFile("file");
 
@@ -195,6 +195,6 @@ public class ImportMVCResourceCommand extends BaseMVCResourceCommand {
 	private Language _language;
 
 	@Reference
-	private Portal _portal;
+	private UploadPortal _uploadPortal;
 
 }

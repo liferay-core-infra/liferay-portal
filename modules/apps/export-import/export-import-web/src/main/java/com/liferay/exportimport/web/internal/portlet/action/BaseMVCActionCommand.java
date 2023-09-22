@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.upload.UploadPortal;
 
 import java.io.InputStream;
 
@@ -47,7 +48,7 @@ public abstract class BaseMVCActionCommand
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			portal.getUploadPortletRequest(actionRequest);
+			uploadPortal.getUploadPortletRequest(actionRequest);
 
 		_checkExceededSizeLimit(uploadPortletRequest);
 
@@ -176,6 +177,9 @@ public abstract class BaseMVCActionCommand
 
 	@Reference
 	protected Staging staging;
+
+	@Reference
+	protected UploadPortal uploadPortal;
 
 	private void _checkExceededSizeLimit(HttpServletRequest httpServletRequest)
 		throws Exception {

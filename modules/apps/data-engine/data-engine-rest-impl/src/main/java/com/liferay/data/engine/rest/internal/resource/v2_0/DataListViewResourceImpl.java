@@ -23,10 +23,13 @@ import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.change.tracking.CTAware;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -87,7 +90,7 @@ public class DataListViewResourceImpl extends BaseDataListViewResourceImpl {
 	public void deleteDataListView(Long dataListViewId) throws Exception {
 		_dataDefinitionModelResourcePermission.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			_getDDMStructureId(
+			_getDDMStructure(
 				_deDataListViewLocalService.getDEDataListView(dataListViewId)),
 			ActionKeys.DELETE);
 
@@ -161,7 +164,7 @@ public class DataListViewResourceImpl extends BaseDataListViewResourceImpl {
 	public DataListView getDataListView(Long dataListViewId) throws Exception {
 		_dataDefinitionModelResourcePermission.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			_getDDMStructureId(
+			_getDDMStructure(
 				_deDataListViewLocalService.getDEDataListView(dataListViewId)),
 			ActionKeys.VIEW);
 
@@ -215,7 +218,7 @@ public class DataListViewResourceImpl extends BaseDataListViewResourceImpl {
 
 		_dataDefinitionModelResourcePermission.check(
 			PermissionThreadLocal.getPermissionChecker(),
-			_getDDMStructureId(
+			_getDDMStructure(
 				_deDataListViewLocalService.getDEDataListView(dataListViewId)),
 			ActionKeys.UPDATE);
 
@@ -319,8 +322,20 @@ public class DataListViewResourceImpl extends BaseDataListViewResourceImpl {
 		return _portal.getClassNameId(DEDataListView.class);
 	}
 
-	private long _getDDMStructureId(DEDataListView deDataListView) {
-		return deDataListView.getDdmStructureId();
+	private DDMStructure _getDDMStructure(DEDataListView deDataListView) {
+		DDMStructure ddmStructure = null;
+
+		try {
+			ddmStructure = _ddmStructureLocalService.getDDMStructure(
+				deDataListView.getDdmStructureId());
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
+			}
+		}
+
+		return ddmStructure;
 	}
 
 	private DataListView _toDataListView(DEDataListView deDataListView)
@@ -401,6 +416,9 @@ public class DataListViewResourceImpl extends BaseDataListViewResourceImpl {
 
 		return new DEDataListViewModifiedDateComparator(ascending);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DataListViewResourceImpl.class);
 
 	private static final EntityModel _entityModel =
 		new DataDefinitionEntityModel();

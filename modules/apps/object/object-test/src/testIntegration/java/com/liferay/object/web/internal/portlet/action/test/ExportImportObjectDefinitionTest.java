@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.impl.LayoutImpl;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.portal.upload.test.util.UploadTestUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -215,10 +216,10 @@ public class ExportImportObjectDefinitionTest {
 				externalReferenceCode, fileName, objectDefinitionName);
 
 		ReflectionTestUtil.setFieldValue(
-			_mvcActionCommand, "_portal",
+			_mvcActionCommand, "_uploadPortal",
 			ProxyUtil.newProxyInstance(
 				ExportImportObjectDefinitionTest.class.getClassLoader(),
-				new Class<?>[] {Portal.class},
+				new Class<?>[] {UploadPortal.class},
 				(proxy, method, args) -> {
 					if (Objects.equals(
 							method.getName(), "getUploadPortletRequest")) {
@@ -228,14 +229,14 @@ public class ExportImportObjectDefinitionTest {
 								mockLiferayPortletActionRequest);
 
 						return UploadTestUtil.createUploadPortletRequest(
-							_portal.getUploadServletRequest(
+							_uploadPortal.getUploadServletRequest(
 								liferayPortletRequest.getHttpServletRequest()),
 							liferayPortletRequest,
 							_portal.getPortletNamespace(
 								liferayPortletRequest.getPortletName()));
 					}
 
-					return method.invoke(_portal, args);
+					return method.invoke(_uploadPortal, args);
 				}));
 
 		_mvcActionCommand.processAction(
@@ -281,6 +282,9 @@ public class ExportImportObjectDefinitionTest {
 
 	@Inject
 	private Portal _portal;
+
+	@Inject
+	private UploadPortal _uploadPortal;
 
 	private User _user;
 

@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.portal.upload.test.util.UploadTestUtil;
 import com.liferay.template.model.TemplateEntry;
 import com.liferay.template.service.TemplateEntryLocalService;
@@ -121,10 +122,10 @@ public class UpdateTemplateEntryMVCActionCommandTest {
 			String.valueOf(_templateEntry.getTemplateEntryId()));
 
 		ReflectionTestUtil.setFieldValue(
-			_mvcActionCommand, "_portal",
+			_mvcActionCommand, "_uploadPortal",
 			ProxyUtil.newProxyInstance(
 				UpdateTemplateEntryMVCActionCommandTest.class.getClassLoader(),
-				new Class<?>[] {Portal.class},
+				new Class<?>[] {UploadPortal.class},
 				(proxy, method, args) -> {
 					if (Objects.equals(
 							method.getName(), "getUploadPortletRequest")) {
@@ -134,14 +135,14 @@ public class UpdateTemplateEntryMVCActionCommandTest {
 								mockLiferayPortletActionRequest);
 
 						return UploadTestUtil.createUploadPortletRequest(
-							_portal.getUploadServletRequest(
+							_uploadPortal.getUploadServletRequest(
 								liferayPortletRequest.getHttpServletRequest()),
 							liferayPortletRequest,
 							_portal.getPortletNamespace(
 								liferayPortletRequest.getPortletName()));
 					}
 
-					return method.invoke(_portal, args);
+					return method.invoke(_uploadPortal, args);
 				}));
 
 		ReflectionTestUtil.invoke(
@@ -267,5 +268,8 @@ public class UpdateTemplateEntryMVCActionCommandTest {
 
 	@Inject
 	private TemplateEntryLocalService _templateEntryLocalService;
+
+	@Inject
+	private UploadPortal _uploadPortal;
 
 }

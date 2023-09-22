@@ -37,6 +37,7 @@ import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.upload.UploadPortal;
 import com.liferay.portal.upload.test.util.UploadTestUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -381,10 +382,10 @@ public class ImportDataDefinitionMVCActionCommandTest {
 		MockLiferayPortletActionRequest mockLiferayPortletActionRequest) {
 
 		ReflectionTestUtil.setFieldValue(
-			_mvcActionCommand, "_portal",
+			_mvcActionCommand, "_uploadPortal",
 			ProxyUtil.newProxyInstance(
 				ImportDataDefinitionMVCActionCommandTest.class.getClassLoader(),
-				new Class<?>[] {Portal.class},
+				new Class<?>[] {UploadPortal.class},
 				(proxy, method, args) -> {
 					if (Objects.equals(
 							method.getName(), "getUploadPortletRequest")) {
@@ -394,14 +395,14 @@ public class ImportDataDefinitionMVCActionCommandTest {
 								mockLiferayPortletActionRequest);
 
 						return UploadTestUtil.createUploadPortletRequest(
-							_portal.getUploadServletRequest(
+							_uploadPortal.getUploadServletRequest(
 								liferayPortletRequest.getHttpServletRequest()),
 							liferayPortletRequest,
 							_portal.getPortletNamespace(
 								liferayPortletRequest.getPortletName()));
 					}
 
-					return method.invoke(_portal, args);
+					return method.invoke(_uploadPortal, args);
 				}));
 	}
 
@@ -416,5 +417,8 @@ public class ImportDataDefinitionMVCActionCommandTest {
 
 	@Inject
 	private Portal _portal;
+
+	@Inject
+	private UploadPortal _uploadPortal;
 
 }

@@ -1516,6 +1516,16 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/portal/txw2.jar</file-name>
+				<version>2.3.1</version>
+				<project-name>TXW2 Runtime</project-name>
+				<project-url>https://javaee.github.io/jaxb-v2</project-url>
+				<licenses>
+					<license>CDDL+GPL 1.1</license>
+					<license-url>http://glassfish.java.net/public/CDDL+GPL_1_1.html</license-url>
+				</licenses>
+			</library>
+			<library>
 				<file-name>lib/portal/wstx.jar</file-name>
 				<version>3.2.8</version>
 				<project-name>Woodstox</project-name>

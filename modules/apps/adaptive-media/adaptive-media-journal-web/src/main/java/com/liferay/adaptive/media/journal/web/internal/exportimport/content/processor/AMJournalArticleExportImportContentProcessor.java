@@ -12,9 +12,19 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.DocumentException;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.Node;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XPath;
 
 import java.util.List;
 import java.util.Map;
@@ -53,7 +63,7 @@ public class AMJournalArticleExportImportContentProcessor
 			return replacedContent;
 		}
 
-		return _amJournalArticleContentHTMLReplacer.replace(
+		return _replace(
 			replacedContent,
 			html ->
 				_htmlExportImportContentProcessor.
@@ -77,7 +87,7 @@ public class AMJournalArticleExportImportContentProcessor
 			return replacedContent;
 		}
 
-		return _amJournalArticleContentHTMLReplacer.replace(
+		return _replace(
 			replacedContent,
 			html ->
 				_htmlExportImportContentProcessor.
@@ -93,7 +103,7 @@ public class AMJournalArticleExportImportContentProcessor
 			groupId, content);
 
 		try {
-			_amJournalArticleContentHTMLReplacer.replace(
+			_replace(
 				content,
 				html -> {
 					_htmlExportImportContentProcessor.validateContentReferences(
@@ -143,9 +153,46 @@ public class AMJournalArticleExportImportContentProcessor
 		return false;
 	}
 
-	@Reference
-	private AMJournalArticleContentHTMLReplacer
-		_amJournalArticleContentHTMLReplacer;
+	private String _replace(String content, Replace replace) throws Exception {
+		try {
+			Document document = SAXReaderUtil.read(content);
+
+			XPath xPath = SAXReaderUtil.createXPath(
+				"//dynamic-element[@type='" +
+					DDMFormFieldTypeConstants.RICH_TEXT + "']");
+
+			List<Node> ddmJournalArticleNodes = xPath.selectNodes(document);
+
+			for (Node ddmJournalArticleNode : ddmJournalArticleNodes) {
+				Element ddmJournalArticleElement =
+					(Element)ddmJournalArticleNode;
+
+				List<Element> dynamicContentElements =
+					ddmJournalArticleElement.elements("dynamic-content");
+
+				for (Element dynamicContentElement : dynamicContentElements) {
+					String replacedHtml = replace.apply(
+						dynamicContentElement.getStringValue());
+
+					dynamicContentElement.clearContent();
+
+					dynamicContentElement.addCDATA(replacedHtml);
+				}
+			}
+
+			return document.asXML();
+		}
+		catch (DocumentException documentException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Invalid content:\n" + content, documentException);
+			}
+
+			return content;
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AMJournalArticleExportImportContentProcessor.class);
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
@@ -159,5 +206,13 @@ public class AMJournalArticleExportImportContentProcessor
 	)
 	private ExportImportContentProcessor<String>
 		_journalArticleExportImportContentProcessor;
+
+	@Reference
+	private Portal _portal;
+
+	@FunctionalInterface
+	private interface Replace
+		extends UnsafeFunction<String, String, Exception> {
+	}
 
 }

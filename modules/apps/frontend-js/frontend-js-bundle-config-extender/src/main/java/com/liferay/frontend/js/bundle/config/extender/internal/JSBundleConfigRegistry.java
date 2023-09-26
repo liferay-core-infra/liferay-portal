@@ -5,7 +5,8 @@
 
 package com.liferay.frontend.js.bundle.config.extender.internal;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
 
 import java.net.URL;
@@ -24,7 +25,6 @@ import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -71,10 +71,6 @@ public class JSBundleConfigRegistry
 
 	public long getLastModified() {
 		return _lastModified;
-	}
-
-	public long getTrackingCount() {
-		return _serviceTracker.getTrackingCount();
 	}
 
 	@Override
@@ -126,31 +122,28 @@ public class JSBundleConfigRegistry
 			ComponentContext componentContext, Map<String, Object> properties)
 		throws Exception {
 
-		if (_serviceTracker != null) {
-			_serviceTracker.close();
+		if (_serviceTrackerMap != null) {
+			_serviceTrackerMap.close();
 		}
 
 		_bundleContext = componentContext.getBundleContext();
 
-		_serviceTracker = ServiceTrackerFactory.open(
-			_bundleContext,
-			"(&(objectClass=" + ServletContext.class.getName() +
-				")(osgi.web.contextpath=*))",
-			this);
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext, ServletContext.class, "osgi.web.contextpath", this);
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTracker.close();
+		_serviceTrackerMap.close();
 
-		_serviceTracker = null;
+		_serviceTrackerMap = null;
 	}
 
 	private BundleContext _bundleContext;
 	private final Map<ServiceReference<ServletContext>, JSConfig> _jsConfigs =
 		new ConcurrentSkipListMap<>();
 	private volatile long _lastModified = System.currentTimeMillis();
-	private ServiceTracker<ServletContext, ServiceReference<ServletContext>>
-		_serviceTracker;
+	private ServiceTrackerMap<String, ServiceReference<ServletContext>>
+		_serviceTrackerMap;
 
 }

@@ -8,9 +8,6 @@ package com.liferay.sharing.web.internal.servlet.taglib.ui;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.ClassName;
-import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.sharing.model.SharingEntry;
@@ -20,45 +17,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Adolfo Pérez
  */
-@Component(service = SharingEntryDropdownItemContributorRegistry.class)
-public class SharingEntryDropdownItemContributorRegistry {
+public class SharingEntryDropdownItemContributorRegistryUtil {
 
-	public SharingEntryDropdownItemContributor
-			getSharingEntryMenuItemContributor(long classNameId)
-		throws PortalException {
-
-		ClassName className = _classNameLocalService.getClassName(classNameId);
+	public static SharingEntryDropdownItemContributor
+		getSharingEntryMenuItemContributor(String className) {
 
 		return new CompositeSharingEntryDropdownItemContributor(
-			_serviceTrackerMap.getService(className.getClassName()));
+			_serviceTrackerMap.getService(className));
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
+	private static final ServiceTrackerMap
+		<String, List<SharingEntryDropdownItemContributor>> _serviceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			SharingEntryDropdownItemContributorRegistryUtil.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
 			bundleContext, SharingEntryDropdownItemContributor.class,
 			"model.class.name");
 	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerMap.close();
-	}
-
-	@Reference
-	private ClassNameLocalService _classNameLocalService;
-
-	private ServiceTrackerMap<String, List<SharingEntryDropdownItemContributor>>
-		_serviceTrackerMap;
 
 	private static final class CompositeSharingEntryDropdownItemContributor
 		implements SharingEntryDropdownItemContributor {

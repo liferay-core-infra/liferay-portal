@@ -15,6 +15,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
@@ -41,7 +42,7 @@ import com.liferay.sharing.servlet.taglib.ui.SharingEntryDropdownItemContributor
 import com.liferay.sharing.util.comparator.SharingEntryModifiedDateComparator;
 import com.liferay.sharing.web.internal.constants.SharingPortletKeys;
 import com.liferay.sharing.web.internal.filter.SharedAssetsFilterItemRegistry;
-import com.liferay.sharing.web.internal.servlet.taglib.ui.SharingEntryDropdownItemContributorRegistry;
+import com.liferay.sharing.web.internal.servlet.taglib.ui.SharingEntryDropdownItemContributorRegistryUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -63,8 +64,6 @@ public class ViewSharedAssetsDisplayContext {
 		SharedAssetsFilterItemRegistry sharedAssetsFilterItemRegistry,
 		SharingConfigurationFactory sharingConfigurationFactory,
 		SharingDropdownItemFactory sharingDropdownItemFactory,
-		SharingEntryDropdownItemContributorRegistry
-			sharingEntryDropdownItemContributorRegistry,
 		Function<SharingEntry, SharingEntryInterpreter>
 			sharingEntryInterpreterFunction,
 		SharingEntryLocalService sharingEntryLocalService,
@@ -77,8 +76,6 @@ public class ViewSharedAssetsDisplayContext {
 		_sharedAssetsFilterItemRegistry = sharedAssetsFilterItemRegistry;
 		_sharingConfigurationFactory = sharingConfigurationFactory;
 		_sharingDropdownItemFactory = sharingDropdownItemFactory;
-		_sharingEntryDropdownItemContributorRegistry =
-			sharingEntryDropdownItemContributorRegistry;
 		_sharingEntryInterpreterFunction = sharingEntryInterpreterFunction;
 		_sharingEntryLocalService = sharingEntryLocalService;
 		_sharingPermission = sharingPermission;
@@ -209,11 +206,14 @@ public class ViewSharedAssetsDisplayContext {
 			return null;
 		}
 
+		ClassName className = ClassNameLocalServiceUtil.getClassName(
+			sharingEntry.getClassNameId());
+
 		SharingEntryDropdownItemContributor
 			sharingEntryDropdownItemContributor =
-				_sharingEntryDropdownItemContributorRegistry.
+				SharingEntryDropdownItemContributorRegistryUtil.
 					getSharingEntryMenuItemContributor(
-						sharingEntry.getClassNameId());
+						className.getClassName());
 
 		return DropdownItemListBuilder.add(
 			() -> _hasEditPermission(
@@ -367,8 +367,6 @@ public class ViewSharedAssetsDisplayContext {
 		_sharedAssetsFilterItemRegistry;
 	private final SharingConfigurationFactory _sharingConfigurationFactory;
 	private final SharingDropdownItemFactory _sharingDropdownItemFactory;
-	private final SharingEntryDropdownItemContributorRegistry
-		_sharingEntryDropdownItemContributorRegistry;
 	private final Function<SharingEntry, SharingEntryInterpreter>
 		_sharingEntryInterpreterFunction;
 	private final SharingEntryLocalService _sharingEntryLocalService;

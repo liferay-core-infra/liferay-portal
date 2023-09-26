@@ -5,7 +5,8 @@
 
 package com.liferay.frontend.js.bundle.config.extender.internal;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
 
 import java.net.URL;
@@ -13,7 +14,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 import javax.servlet.ServletContext;
 
@@ -24,7 +24,6 @@ import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -33,10 +32,10 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(service = JSBundleConfigRegistry.class)
 public class JSBundleConfigRegistry
 	implements ServiceTrackerCustomizer
-		<ServletContext, ServiceReference<ServletContext>> {
+		<ServletContext, JSBundleConfigRegistry.JSConfig> {
 
 	@Override
-	public ServiceReference<ServletContext> addingService(
+	public JSConfig addingService(
 		ServiceReference<ServletContext> serviceReference) {
 
 		Bundle bundle = serviceReference.getBundle();
@@ -53,12 +52,9 @@ public class JSBundleConfigRegistry
 				ServletContext servletContext = _bundleContext.getService(
 					serviceReference);
 
-				_jsConfigs.put(
-					serviceReference, new JSConfig(servletContext, url));
-
 				_lastModified = System.currentTimeMillis();
 
-				return serviceReference;
+				return new JSConfig(servletContext, url);
 			}
 		}
 
@@ -66,33 +62,25 @@ public class JSBundleConfigRegistry
 	}
 
 	public Collection<JSConfig> getJSConfigs() {
-		return _jsConfigs.values();
+		return _serviceTrackerMap.values();
 	}
 
 	public long getLastModified() {
 		return _lastModified;
 	}
 
-	public long getTrackingCount() {
-		return _serviceTracker.getTrackingCount();
-	}
-
 	@Override
 	public void modifiedService(
-		ServiceReference<ServletContext> serviceReference,
-		ServiceReference<ServletContext> trackedServiceReference) {
+		ServiceReference<ServletContext> serviceReference, JSConfig jsConfig) {
 
-		removedService(serviceReference, trackedServiceReference);
+		removedService(serviceReference, jsConfig);
 
 		addingService(serviceReference);
 	}
 
 	@Override
 	public void removedService(
-		ServiceReference<ServletContext> serviceReference,
-		ServiceReference<ServletContext> trackedServiceReference) {
-
-		JSConfig jsConfig = _jsConfigs.remove(serviceReference);
+		ServiceReference<ServletContext> serviceReference, JSConfig jsConfig) {
 
 		if (jsConfig != null) {
 			_bundleContext.ungetService(serviceReference);
@@ -126,31 +114,25 @@ public class JSBundleConfigRegistry
 			ComponentContext componentContext, Map<String, Object> properties)
 		throws Exception {
 
-		if (_serviceTracker != null) {
-			_serviceTracker.close();
+		if (_serviceTrackerMap != null) {
+			_serviceTrackerMap.close();
 		}
 
 		_bundleContext = componentContext.getBundleContext();
 
-		_serviceTracker = ServiceTrackerFactory.open(
-			_bundleContext,
-			"(&(objectClass=" + ServletContext.class.getName() +
-				")(osgi.web.contextpath=*))",
-			this);
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext, ServletContext.class, "osgi.web.contextpath", this);
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTracker.close();
+		_serviceTrackerMap.close();
 
-		_serviceTracker = null;
+		_serviceTrackerMap = null;
 	}
 
 	private BundleContext _bundleContext;
-	private final Map<ServiceReference<ServletContext>, JSConfig> _jsConfigs =
-		new ConcurrentSkipListMap<>();
 	private volatile long _lastModified = System.currentTimeMillis();
-	private ServiceTracker<ServletContext, ServiceReference<ServletContext>>
-		_serviceTracker;
+	private ServiceTrackerMap<String, JSConfig> _serviceTrackerMap;
 
 }

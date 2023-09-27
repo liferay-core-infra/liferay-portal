@@ -12,7 +12,6 @@ import com.liferay.object.related.models.ObjectRelatedModelsPredicateProviderReg
 import com.liferay.object.rest.filter.factory.BaseFilterFactory;
 import com.liferay.object.rest.filter.factory.FilterFactory;
 import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionVisitorImpl;
-import com.liferay.object.rest.internal.odata.filter.expression.field.predicate.provider.FieldPredicateProviderTracker;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.portal.odata.entity.EntityModel;
@@ -37,14 +36,10 @@ public class DefaultFilterFactoryImpl
 		EntityModel entityModel, ObjectDefinition objectDefinition) {
 
 		return new PredicateExpressionVisitorImpl(
-			entityModel, entityModelProvider, _fieldPredicateProviderTracker,
-			objectDefinition, _objectFieldBusinessTypeRegistry,
-			_objectFieldLocalService,
+			entityModel, entityModelProvider, objectDefinition,
+			_objectFieldBusinessTypeRegistry, _objectFieldLocalService,
 			_objectRelatedModelsPredicateProviderRegistry);
 	}
-
-	@Reference
-	private FieldPredicateProviderTracker _fieldPredicateProviderTracker;
 
 	@Reference
 	private ObjectFieldBusinessTypeRegistry _objectFieldBusinessTypeRegistry;

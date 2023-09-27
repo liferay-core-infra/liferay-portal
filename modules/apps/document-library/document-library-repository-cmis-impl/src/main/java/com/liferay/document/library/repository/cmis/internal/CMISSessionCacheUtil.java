@@ -23,16 +23,20 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.chemistry.opencmis.client.api.Session;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-
 /**
  * @author Adolfo Pérez
  */
-@Component(service = CMISSessionCache.class)
-public class CMISSessionCache {
+public class CMISSessionCacheUtil {
 
-	public Session get(String key) {
+	public static void destroy() {
+		for (Map.Entry<String, HttpSession> entry : _sessions.entrySet()) {
+			_clearSession(entry.getValue());
+		}
+
+		_sessions.clear();
+	}
+
+	public static Session get(String key) {
 		HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
 
 		if (httpSession == null) {
@@ -57,7 +61,7 @@ public class CMISSessionCache {
 		return null;
 	}
 
-	public void put(String key, Session session) {
+	public static void put(String key, Session session) {
 		HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
 
 		if (httpSession == null) {
@@ -73,16 +77,7 @@ public class CMISSessionCache {
 		_sessions.putIfAbsent(httpSession.getId(), httpSession);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		for (Map.Entry<String, HttpSession> entry : _sessions.entrySet()) {
-			_clearSession(entry.getValue());
-		}
-
-		_sessions.clear();
-	}
-
-	private void _clearSession(HttpSession httpSession) {
+	private static void _clearSession(HttpSession httpSession) {
 		Enumeration<String> enumeration = httpSession.getAttributeNames();
 
 		while (enumeration.hasMoreElements()) {
@@ -97,9 +92,9 @@ public class CMISSessionCache {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CMISSessionCache.class);
+		CMISSessionCacheUtil.class);
 
-	private final ConcurrentMap<String, HttpSession> _sessions =
+	private static final ConcurrentMap<String, HttpSession> _sessions =
 		new ConcurrentReferenceValueHashMap<>(
 			new ConcurrentHashMap<String, Reference<HttpSession>>(),
 			FinalizeManager.WEAK_REFERENCE_FACTORY);

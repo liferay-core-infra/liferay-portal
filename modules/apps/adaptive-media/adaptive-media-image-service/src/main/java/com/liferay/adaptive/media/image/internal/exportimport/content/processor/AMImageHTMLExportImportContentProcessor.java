@@ -8,6 +8,7 @@ package com.liferay.adaptive.media.image.internal.exportimport.content.processor
 import com.liferay.adaptive.media.image.html.AMImageHTMLTagFactory;
 import com.liferay.adaptive.media.image.html.constants.AMImageHTMLConstants;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
+import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
@@ -20,7 +21,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.jsoup.Jsoup;
@@ -98,6 +103,52 @@ public class AMImageHTMLExportImportContentProcessor
 				}
 			}
 		}
+	}
+
+	public static class AMEmbeddedReferenceSetFactory {
+
+		public AMEmbeddedReferenceSet create(
+			PortletDataContext portletDataContext, StagedModel stagedModel) {
+
+			Map<String, Long> embeddedReferences = new HashMap<>();
+
+			List<com.liferay.portal.kernel.xml.Element> referenceElements =
+				portletDataContext.getReferenceElements(
+					stagedModel, DLFileEntry.class);
+
+			for (com.liferay.portal.kernel.xml.Element referenceElement :
+					referenceElements) {
+
+				long classPK = GetterUtil.getLong(
+					referenceElement.attributeValue("class-pk"));
+
+				com.liferay.portal.kernel.xml.Element referenceDataElement =
+					portletDataContext.getReferenceDataElement(
+						stagedModel, DLFileEntry.class, classPK);
+
+				String path = null;
+
+				if (referenceDataElement != null) {
+					path = referenceDataElement.attributeValue("path");
+				}
+
+				if (Validator.isNull(path)) {
+					long groupId = GetterUtil.getLong(
+						referenceElement.attributeValue("group-id"));
+					String className = referenceElement.attributeValue(
+						"class-name");
+
+					path = ExportImportPathUtil.getModelPath(
+						groupId, className, classPK);
+				}
+
+				embeddedReferences.put(path, classPK);
+			}
+
+			return new AMEmbeddedReferenceSet(
+				portletDataContext, stagedModel, embeddedReferences);
+		}
+
 	}
 
 	private FileEntry _getFileEntry(long fileEntryId) {
@@ -232,8 +283,8 @@ public class AMImageHTMLExportImportContentProcessor
 	private static final Log _log = LogFactoryUtil.getLog(
 		AMImageHTMLExportImportContentProcessor.class);
 
-	@Reference
-	private AMEmbeddedReferenceSetFactory _amEmbeddedReferenceSetFactory;
+	private final AMEmbeddedReferenceSetFactory _amEmbeddedReferenceSetFactory =
+		new AMEmbeddedReferenceSetFactory();
 
 	@Reference
 	private AMImageHTMLTagFactory _amImageHTMLTagFactory;

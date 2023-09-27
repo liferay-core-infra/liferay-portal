@@ -106,6 +106,8 @@ import org.apache.chemistry.opencmis.commons.exceptions.CmisRuntimeException;
 import org.apache.chemistry.opencmis.commons.impl.Base64;
 import org.apache.chemistry.opencmis.commons.impl.dataobjects.ContentStreamImpl;
 
+import org.osgi.service.component.annotations.Deactivate;
+
 /**
  * CMIS does not provide vendor neutral support for workflow, metadata, tags,
  * categories, etc. They will be ignored in this implementation.
@@ -125,12 +127,11 @@ public class CMISRepository extends BaseCmisRepository {
 		CMISRepositoryConfiguration cmisRepositoryConfiguration,
 		CMISRepositoryHandler cmisRepositoryHandler,
 		CMISSearchQueryBuilder cmisSearchQueryBuilder,
-		CMISSessionCache cmisSessionCache, LockManager lockManager) {
+		LockManager lockManager) {
 
 		_cmisRepositoryConfiguration = cmisRepositoryConfiguration;
 		_cmisRepositoryHandler = cmisRepositoryHandler;
 		_cmisSearchQueryBuilder = cmisSearchQueryBuilder;
-		_cmisSessionCache = cmisSessionCache;
 		_lockManager = lockManager;
 	}
 
@@ -872,7 +873,7 @@ public class CMISRepository extends BaseCmisRepository {
 	}
 
 	public Session getSession() throws PortalException {
-		Session session = _cmisSessionCache.get(_sessionKey);
+		Session session = CMISSessionCacheUtil.get(_sessionKey);
 
 		if (session == null) {
 			SessionImpl sessionImpl =
@@ -880,7 +881,7 @@ public class CMISRepository extends BaseCmisRepository {
 
 			session = sessionImpl.getSession();
 
-			_cmisSessionCache.put(_sessionKey, session);
+			CMISSessionCacheUtil.put(_sessionKey, session);
 		}
 
 		if (_cmisRepositoryDetector == null) {
@@ -1517,6 +1518,11 @@ public class CMISRepository extends BaseCmisRepository {
 	@Override
 	public boolean verifyInheritableLock(long folderId, String lockUuid) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		CMISSessionCacheUtil.destroy();
 	}
 
 	protected List<FileEntry> getFileEntries(long folderId) {
@@ -2377,7 +2383,6 @@ public class CMISRepository extends BaseCmisRepository {
 	private CMISRepositoryDetector _cmisRepositoryDetector;
 	private final CMISRepositoryHandler _cmisRepositoryHandler;
 	private final CMISSearchQueryBuilder _cmisSearchQueryBuilder;
-	private final CMISSessionCache _cmisSessionCache;
 	private final LockManager _lockManager;
 	private String _sessionKey;
 

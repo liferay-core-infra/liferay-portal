@@ -46,7 +46,9 @@ public class UploadPortletRequestWhenCreatingFromParametrizedConstructorTest {
 	}
 
 	@Test
-	public void testShouldNotPopulateParametersWithEmptyParameters() {
+	public void testShouldNotPopulateParametersWithEmptyParameters()
+		throws Exception {
+
 		Map<String, FileItem[]> fileParameters = Collections.emptyMap();
 
 		LiferayServletRequest liferayServletRequest =
@@ -110,7 +112,9 @@ public class UploadPortletRequestWhenCreatingFromParametrizedConstructorTest {
 	}
 
 	@Test
-	public void testShouldPopulateRegularParametersWithRegularParameters() {
+	public void testShouldPopulateRegularParametersWithRegularParameters()
+		throws Exception {
+
 		Map<String, List<String>> regularParameters =
 			PortletContainerTestUtil.getRegularParameters(10);
 

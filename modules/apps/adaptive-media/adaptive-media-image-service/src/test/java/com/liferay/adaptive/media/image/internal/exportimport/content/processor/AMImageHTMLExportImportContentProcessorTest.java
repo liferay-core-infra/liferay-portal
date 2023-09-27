@@ -465,8 +465,11 @@ public class AMImageHTMLExportImportContentProcessorTest {
 
 	private final AMEmbeddedReferenceSet _amEmbeddedReferenceSet = Mockito.mock(
 		AMEmbeddedReferenceSet.class);
-	private final AMEmbeddedReferenceSetFactory _amEmbeddedReferenceSetFactory =
-		Mockito.mock(AMEmbeddedReferenceSetFactory.class);
+	private final
+		AMImageHTMLExportImportContentProcessor.AMEmbeddedReferenceSetFactory
+			_amEmbeddedReferenceSetFactory = Mockito.mock(
+				AMImageHTMLExportImportContentProcessor.
+					AMEmbeddedReferenceSetFactory.class);
 	private final AMImageHTMLExportImportContentProcessor
 		_amImageHTMLExportImportContentProcessor =
 			new AMImageHTMLExportImportContentProcessor();

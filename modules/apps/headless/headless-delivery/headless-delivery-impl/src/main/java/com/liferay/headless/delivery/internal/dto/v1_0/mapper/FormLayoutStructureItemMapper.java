@@ -38,7 +38,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Eudaldo Alonso
  */
-@Component(service = LayoutStructureItemMapper.class)
+@Component(
+	property = "layout.structure.item.mapper.class.name=com.liferay.headless.delivery.internal.dto.v1_0.mapper.FormLayoutStructureItemMapper",
+	service = LayoutStructureItemMapper.class
+)
 public class FormLayoutStructureItemMapper
 	extends BaseStyledLayoutStructureItemMapper {
 

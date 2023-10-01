@@ -62,36 +62,6 @@ public class AudioProcessorImpl
 	extends DLPreviewableProcessor implements AudioProcessor {
 
 	@Override
-	public void afterPropertiesSet() {
-		boolean valid = true;
-
-		if ((_PREVIEW_TYPES.length == 0) || (_PREVIEW_TYPES.length > 2)) {
-			valid = false;
-		}
-		else {
-			for (String previewType : _PREVIEW_TYPES) {
-				if (!previewType.equals("mp3") && !previewType.equals("ogg")) {
-					valid = false;
-
-					break;
-				}
-			}
-		}
-
-		if (!valid && _log.isWarnEnabled()) {
-			_log.warn(
-				StringBundler.concat(
-					"Liferay is incorrectly configured to generate video ",
-					"previews using video containers other than MP3 or OGG. ",
-					"Please change the property ",
-					PropsKeys.DL_FILE_ENTRY_PREVIEW_AUDIO_CONTAINERS,
-					" in portal-ext.properties."));
-		}
-
-		FileUtil.mkdirs(PREVIEW_TMP_PATH);
-	}
-
-	@Override
 	public void generateAudio(
 			FileVersion sourceFileVersion, FileVersion destinationFileVersion)
 		throws Exception {
@@ -205,7 +175,32 @@ public class AudioProcessorImpl
 
 	@Activate
 	protected void activate() {
-		afterPropertiesSet();
+		boolean valid = true;
+
+		if ((_PREVIEW_TYPES.length == 0) || (_PREVIEW_TYPES.length > 2)) {
+			valid = false;
+		}
+		else {
+			for (String previewType : _PREVIEW_TYPES) {
+				if (!previewType.equals("mp3") && !previewType.equals("ogg")) {
+					valid = false;
+
+					break;
+				}
+			}
+		}
+
+		if (!valid && _log.isWarnEnabled()) {
+			_log.warn(
+				StringBundler.concat(
+					"Liferay is incorrectly configured to generate video ",
+					"previews using video containers other than MP3 or OGG. ",
+					"Please change the property ",
+					PropsKeys.DL_FILE_ENTRY_PREVIEW_AUDIO_CONTAINERS,
+					" in portal-ext.properties."));
+		}
+
+		FileUtil.mkdirs(PREVIEW_TMP_PATH);
 	}
 
 	@Override

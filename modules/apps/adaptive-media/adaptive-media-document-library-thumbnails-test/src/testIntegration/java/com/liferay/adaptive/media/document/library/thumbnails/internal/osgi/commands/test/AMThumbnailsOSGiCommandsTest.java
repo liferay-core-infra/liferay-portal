@@ -431,10 +431,6 @@ public class AMThumbnailsOSGiCommandsTest {
 		extends DLPreviewableProcessor implements ImageProcessor {
 
 		@Override
-		public void afterPropertiesSet() {
-		}
-
-		@Override
 		public void cleanUp(FileEntry fileEntry) {
 			deleteFiles(fileEntry, null);
 		}

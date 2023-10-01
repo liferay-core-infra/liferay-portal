@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.xml.Element;
 
-import java.util.Map;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -166,9 +164,7 @@ public class DLProcessorRegistryImpl implements DLProcessorRegistry {
 	}
 
 	@Activate
-	protected void activate(BundleContext bundleContext)
-		throws Exception {
-
+	protected void activate(BundleContext bundleContext) throws Exception {
 		_bundleContext = bundleContext;
 
 		_dlProcessorServiceTrackerMap =

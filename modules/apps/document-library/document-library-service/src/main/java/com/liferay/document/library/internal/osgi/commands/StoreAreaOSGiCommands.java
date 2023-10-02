@@ -7,6 +7,7 @@ package com.liferay.document.library.internal.osgi.commands;
 
 import com.liferay.document.library.kernel.service.DLFileVersionLocalService;
 import com.liferay.document.library.kernel.store.StoreAreaProcessor;
+import com.liferay.osgi.util.OSGiCommand;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.util.PropsValues;
@@ -28,9 +29,9 @@ import org.osgi.util.tracker.ServiceTracker;
 	property = {
 		"osgi.command.function=cleanUp", "osgi.command.scope=documentLibrary"
 	},
-	service = StoreAreaOSGiCommands.class
+	service = OSGiCommand.class
 )
-public class StoreAreaOSGiCommands {
+public class StoreAreaOSGiCommands implements OSGiCommand {
 
 	public void cleanUp(long companyId) {
 		StoreAreaProcessor storeAreaProcessor = _serviceTracker.getService();

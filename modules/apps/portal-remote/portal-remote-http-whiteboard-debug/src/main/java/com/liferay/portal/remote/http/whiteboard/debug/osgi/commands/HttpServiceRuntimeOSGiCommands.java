@@ -5,6 +5,7 @@
 
 package com.liferay.portal.remote.http.whiteboard.debug.osgi.commands;
 
+import com.liferay.osgi.util.OSGiCommand;
 import com.liferay.petra.string.StringBundler;
 
 import java.util.HashMap;
@@ -30,9 +31,9 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
  */
 @Component(
 	property = {"osgi.command.function=check", "osgi.command.scope=http"},
-	service = HttpServiceRuntimeOSGiCommands.class
+	service = OSGiCommand.class
 )
-public class HttpServiceRuntimeOSGiCommands {
+public class HttpServiceRuntimeOSGiCommands implements OSGiCommand {
 
 	public void check() {
 		RuntimeDTO runtimeDTO = _httpServiceRuntime.getRuntimeDTO();

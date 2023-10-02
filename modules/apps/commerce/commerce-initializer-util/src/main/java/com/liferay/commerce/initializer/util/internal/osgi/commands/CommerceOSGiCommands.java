@@ -7,6 +7,7 @@ package com.liferay.commerce.initializer.util.internal.osgi.commands;
 
 import com.liferay.commerce.initializer.util.CommerceOrderGenerator;
 import com.liferay.commerce.initializer.util.CommerceShipmentGenerator;
+import com.liferay.osgi.util.OSGiCommand;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
@@ -37,9 +38,9 @@ import org.osgi.service.component.annotations.Reference;
 		"osgi.command.function=generateShipments",
 		"osgi.command.function=initializeSite", "osgi.command.scope=commerce"
 	},
-	service = CommerceOSGiCommands.class
+	service = OSGiCommand.class
 )
-public class CommerceOSGiCommands {
+public class CommerceOSGiCommands implements OSGiCommand {
 
 	public void generateOrders(long groupId, int ordersCount) {
 		_commerceOrderGenerator.generate(groupId, ordersCount);

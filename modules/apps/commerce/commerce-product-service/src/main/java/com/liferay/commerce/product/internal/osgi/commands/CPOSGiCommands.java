@@ -9,6 +9,7 @@ import com.liferay.commerce.product.constants.CPInstanceConstants;
 import com.liferay.commerce.product.model.CommerceCatalog;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
 import com.liferay.commerce.product.service.CommerceCatalogLocalService;
+import com.liferay.osgi.util.OSGiCommand;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -35,9 +36,9 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"osgi.command.function=createProducts", "osgi.command.scope=commerce"
 	},
-	service = CPOSGiCommands.class
+	service = OSGiCommand.class
 )
-public class CPOSGiCommands {
+public class CPOSGiCommands implements OSGiCommand {
 
 	public void createProducts(long groupId, String prefix, int quantity)
 		throws PortalException {

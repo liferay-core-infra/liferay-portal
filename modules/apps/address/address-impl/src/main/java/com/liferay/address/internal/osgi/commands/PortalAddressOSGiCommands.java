@@ -6,6 +6,7 @@
 package com.liferay.address.internal.osgi.commands;
 
 import com.liferay.address.internal.util.CompanyCountriesUtil;
+import com.liferay.osgi.util.OSGiCommand;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -34,9 +35,9 @@ import org.osgi.service.component.annotations.Reference;
 		"osgi.command.function=repopulateCompanyCountries",
 		"osgi.command.scope=address"
 	},
-	service = PortalAddressOSGiCommands.class
+	service = OSGiCommand.class
 )
-public class PortalAddressOSGiCommands {
+public class PortalAddressOSGiCommands implements OSGiCommand {
 
 	public void initializeCompanyCountries(long companyId) throws Exception {
 		_countryLocalService.deleteCompanyCountries(companyId);

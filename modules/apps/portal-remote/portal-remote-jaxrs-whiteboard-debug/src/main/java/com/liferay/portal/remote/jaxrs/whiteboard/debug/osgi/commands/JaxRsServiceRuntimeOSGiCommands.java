@@ -5,6 +5,7 @@
 
 package com.liferay.portal.remote.jaxrs.whiteboard.debug.osgi.commands;
 
+import com.liferay.osgi.util.OSGiCommand;
 import com.liferay.osgi.util.StringPlus;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -39,9 +40,9 @@ import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
  */
 @Component(
 	property = {"osgi.command.function=check", "osgi.command.scope=jaxrs"},
-	service = JaxRsServiceRuntimeOSGiCommands.class
+	service = OSGiCommand.class
 )
-public class JaxRsServiceRuntimeOSGiCommands {
+public class JaxRsServiceRuntimeOSGiCommands implements OSGiCommand {
 
 	public void check() {
 		RuntimeDTO runtimeDTO = _jaxrsServiceRuntime.getRuntimeDTO();

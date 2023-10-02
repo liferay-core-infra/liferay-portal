@@ -5,6 +5,7 @@
 
 package com.liferay.osgi.log.service.extender.internal.osgi.commands;
 
+import com.liferay.osgi.util.OSGiCommand;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
@@ -24,7 +25,7 @@ import org.osgi.service.log.admin.LoggerContext;
 /**
  * @author Raymond Augé
  */
-public class LoggingLevelsOSGiCommands {
+public class LoggingLevelsOSGiCommands implements OSGiCommand {
 
 	public LoggingLevelsOSGiCommands(LoggerAdmin loggerAdmin) {
 		_loggerAdmin = loggerAdmin;

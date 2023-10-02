@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.TextExtractor;
-import com.liferay.portal.tika.internal.configuration.helper.TikaConfigurationHelper;
+import com.liferay.portal.tika.internal.configuration.util.TikaConfigurationUtil;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
 
 import java.io.IOException;
@@ -26,6 +26,7 @@ import java.io.InputStream;
 
 import java.nio.charset.Charset;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -44,7 +45,9 @@ import org.apache.tika.parser.txt.UniversalEncodingDetector;
 import org.apache.tika.sax.BodyContentHandler;
 import org.apache.tika.sax.WriteOutContentHandler;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 import org.xml.sax.ContentHandler;
@@ -53,7 +56,10 @@ import org.xml.sax.SAXException;
 /**
  * @author Shuyang Zhou
  */
-@Component(service = TextExtractor.class)
+@Component(
+	configurationPid = "com.liferay.portal.tika.internal.configuration.TikaConfiguration",
+	service = TextExtractor.class
+)
 public class TextExtractorImpl implements TextExtractor {
 
 	@Override
@@ -65,7 +71,7 @@ public class TextExtractorImpl implements TextExtractor {
 		String text = null;
 
 		try {
-			Tika tika = new Tika(_tikaConfigurationHelper.getTikaConfig());
+			Tika tika = new Tika(TikaConfigurationUtil.getTikaConfig());
 
 			tika.setMaxStringLength(maxStringLength);
 
@@ -73,7 +79,7 @@ public class TextExtractorImpl implements TextExtractor {
 				inputStream = new UnsyncBufferedInputStream(inputStream);
 			}
 
-			if (_tikaConfigurationHelper.useForkProcess(
+			if (TikaConfigurationUtil.useForkProcess(
 					tika.detect(inputStream))) {
 
 				InputStream finalInputStream = inputStream;
@@ -108,6 +114,12 @@ public class TextExtractorImpl implements TextExtractor {
 		}
 
 		return text;
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		TikaConfigurationUtil.updateConfiguration(properties);
 	}
 
 	private static String _parseToString(
@@ -201,9 +213,6 @@ public class TextExtractorImpl implements TextExtractor {
 
 	@Reference
 	private ProcessExecutor _processExecutor;
-
-	@Reference
-	private TikaConfigurationHelper _tikaConfigurationHelper;
 
 	private static class ExtractTextProcessCallable
 		implements ProcessCallable<String> {

@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.tika.internal.configuration.helper.TikaConfigurationHelper;
+import com.liferay.portal.tika.internal.configuration.util.TikaConfigurationUtil;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
 
 import java.io.File;
@@ -63,7 +63,9 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 import org.xml.sax.SAXException;
@@ -74,7 +76,10 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Alexander Chow
  * @author Shuyang Zhou
  */
-@Component(service = RawMetadataProcessor.class)
+@Component(
+	configurationPid = "com.liferay.portal.tika.internal.configuration.TikaConfiguration",
+	service = RawMetadataProcessor.class
+)
 public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 	@Override
@@ -90,6 +95,12 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 		Metadata metadata = _extractMetadata(mimeType, inputStream);
 
 		return _createDDMFormValuesMap(metadata);
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		TikaConfigurationUtil.updateConfiguration(properties);
 	}
 
 	private static void _addFields(Class<?> clazz, Map<String, String> fields)
@@ -190,9 +201,9 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 		String mimeType, InputStream inputStream) {
 
 		Parser parser = new AutoDetectParser(
-			_tikaConfigurationHelper.getTikaConfig());
+			TikaConfigurationUtil.getTikaConfig());
 
-		if (_tikaConfigurationHelper.useForkProcess(mimeType)) {
+		if (TikaConfigurationUtil.useForkProcess(mimeType)) {
 			File file = FileUtil.createTempFile();
 
 			try {
@@ -285,9 +296,6 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 	@Reference
 	private ProcessExecutor _processExecutor;
-
-	@Reference
-	private TikaConfigurationHelper _tikaConfigurationHelper;
 
 	private static class ExtractMetadataProcessCallable
 		implements ProcessCallable<Metadata> {

@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl;
 import com.liferay.portal.spring.aop.AopInvocationHandler;
-import com.liferay.portal.spring.transaction.DefaultTransactionExecutor;
 import com.liferay.portal.test.rule.ExpectedDBType;
 import com.liferay.portal.test.rule.ExpectedLog;
 import com.liferay.portal.test.rule.ExpectedLogs;
@@ -44,9 +43,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
-
-import org.hibernate.engine.jdbc.batch.internal.BatchingBatch;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 import org.junit.Assert;
 import org.junit.Assume;
@@ -144,7 +140,8 @@ public class ResourcePermissionLocalServiceConcurrentTest {
 						expectedType = ExpectedType.PREFIX
 					)
 				},
-				level = "ERROR", loggerClass = DefaultTransactionExecutor.class
+				level = "ERROR",
+				loggerClassName = "com.liferay.portal.spring.transaction.DefaultTransactionExecutor"
 			),
 			@ExpectedLogs(
 				expectedLogs = {
@@ -199,7 +196,8 @@ public class ResourcePermissionLocalServiceConcurrentTest {
 						expectedType = ExpectedType.CONTAINS
 					)
 				},
-				level = "ERROR", loggerClass = SqlExceptionHelper.class
+				level = "ERROR",
+				loggerClassName = "org.hibernate.engine.jdbc.spi.SqlExceptionHelper"
 			),
 			@ExpectedLogs(
 				expectedLogs = {
@@ -209,7 +207,8 @@ public class ResourcePermissionLocalServiceConcurrentTest {
 						expectedType = ExpectedType.PREFIX
 					)
 				},
-				level = "ERROR", loggerClass = BatchingBatch.class
+				level = "ERROR",
+				loggerClassName = "org.hibernate.engine.jdbc.batch.internal.BatchingBatch"
 			)
 		}
 	)

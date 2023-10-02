@@ -23,6 +23,6 @@ public @interface ExpectedLogs {
 
 	public String level();
 
-	public Class<?> loggerClass();
+	public String loggerClassName();
 
 }

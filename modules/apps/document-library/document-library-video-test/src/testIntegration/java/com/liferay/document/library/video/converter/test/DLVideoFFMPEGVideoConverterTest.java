@@ -28,7 +28,6 @@ import com.liferay.portal.test.rule.ExpectedLog;
 import com.liferay.portal.test.rule.ExpectedLogs;
 import com.liferay.portal.test.rule.ExpectedType;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.documentlibrary.util.VideoProcessorImpl;
 
 import java.util.Dictionary;
 
@@ -86,7 +85,8 @@ public class DLVideoFFMPEGVideoConverterTest {
 				expectedType = ExpectedType.CONTAINS
 			)
 		},
-		level = "ERROR", loggerClass = VideoProcessorImpl.class
+		level = "ERROR",
+		loggerClassName = "com.liferay.portlet.documentlibrary.util.VideoProcessorImpl"
 	)
 	@Test
 	public void testDoesNotGenerateVideoPreviewIfTheVideoIsCorrupt()
@@ -161,7 +161,8 @@ public class DLVideoFFMPEGVideoConverterTest {
 				expectedType = ExpectedType.CONTAINS
 			)
 		},
-		level = "ERROR", loggerClass = VideoProcessorImpl.class
+		level = "ERROR",
+		loggerClassName = "com.liferay.document.library.preview.video.internal.VideoProcessorImpl"
 	)
 	@Test
 	public void testGeneratesVideoPreviewIfTheVideoHasOnlyAudio()

@@ -28,7 +28,6 @@ import com.liferay.portal.test.rule.ExpectedLog;
 import com.liferay.portal.test.rule.ExpectedLogs;
 import com.liferay.portal.test.rule.ExpectedType;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.documentlibrary.util.AudioProcessorImpl;
 
 import java.util.Dictionary;
 
@@ -86,7 +85,8 @@ public class DLAudioFFMPEGAudioConverterTest {
 				expectedType = ExpectedType.CONTAINS
 			)
 		},
-		level = "ERROR", loggerClass = AudioProcessorImpl.class
+		level = "ERROR",
+		loggerClassName = "com.liferay.portlet.documentlibrary.util.AudioProcessorImpl"
 	)
 	@Test
 	public void testDoesNotGenerateAudioPreviewIfTheAudioIsCorrupt()

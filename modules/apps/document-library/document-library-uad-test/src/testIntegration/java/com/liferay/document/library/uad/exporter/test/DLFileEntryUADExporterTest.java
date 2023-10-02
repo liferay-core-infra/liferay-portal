@@ -24,7 +24,6 @@ import com.liferay.portal.test.rule.ExpectedLogs;
 import com.liferay.portal.test.rule.ExpectedType;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 import com.liferay.user.associated.data.test.util.BaseUADExporterTestCase;
 
@@ -79,7 +78,8 @@ public class DLFileEntryUADExporterTest
 				expectedLog = "null", expectedType = ExpectedType.EXACT
 			)
 		},
-		level = "ERROR", loggerClass = DynamicQueryUADExporter.class
+		level = "ERROR",
+		loggerClassName = "com.liferay.user.associated.data.exporter.DynamicQueryUADExporter"
 	)
 	@Test
 	public void testExportAllWithMissingBinary() throws Exception {

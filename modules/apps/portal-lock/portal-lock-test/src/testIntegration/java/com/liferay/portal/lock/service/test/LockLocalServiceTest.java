@@ -41,8 +41,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.persistence.PersistenceException;
 
-import org.hibernate.engine.jdbc.batch.internal.BatchingBatch;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.GenericJDBCException;
 
@@ -139,7 +137,8 @@ public class LockLocalServiceTest {
 						expectedType = ExpectedType.CONTAINS
 					)
 				},
-				level = "ERROR", loggerClass = SqlExceptionHelper.class
+				level = "ERROR",
+				loggerClassName = "org.hibernate.engine.jdbc.spi.SqlExceptionHelper"
 			),
 			@ExpectedLogs(
 				expectedLogs = {
@@ -149,7 +148,8 @@ public class LockLocalServiceTest {
 						expectedType = ExpectedType.PREFIX
 					)
 				},
-				level = "ERROR", loggerClass = BatchingBatch.class
+				level = "ERROR",
+				loggerClassName = "org.hibernate.engine.jdbc.batch.internal.BatchingBatch"
 			)
 		}
 	)
@@ -359,7 +359,8 @@ public class LockLocalServiceTest {
 						expectedType = ExpectedType.CONTAINS
 					)
 				},
-				level = "ERROR", loggerClass = SqlExceptionHelper.class
+				level = "ERROR",
+				loggerClassName = "org.hibernate.engine.jdbc.spi.SqlExceptionHelper"
 			),
 			@ExpectedLogs(
 				expectedLogs = {
@@ -369,7 +370,8 @@ public class LockLocalServiceTest {
 						expectedType = ExpectedType.PREFIX
 					)
 				},
-				level = "ERROR", loggerClass = BatchingBatch.class
+				level = "ERROR",
+				loggerClassName = "org.hibernate.engine.jdbc.batch.internal.BatchingBatch"
 			)
 		}
 	)

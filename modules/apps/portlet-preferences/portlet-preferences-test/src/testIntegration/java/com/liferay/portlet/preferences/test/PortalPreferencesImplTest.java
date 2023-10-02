@@ -42,7 +42,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.FutureTask;
 
-import org.hibernate.engine.jdbc.batch.internal.BatchingBatch;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 import org.junit.After;
@@ -134,7 +133,8 @@ public class PortalPreferencesImplTest {
 				expectedType = ExpectedType.PREFIX
 			)
 		},
-		level = "ERROR", loggerClass = BatchingBatch.class
+		level = "ERROR",
+		loggerClassName = "org.hibernate.engine.jdbc.batch.internal.BatchingBatch"
 	)
 	@Test
 	public void testReset() {
@@ -170,7 +170,8 @@ public class PortalPreferencesImplTest {
 				expectedType = ExpectedType.PREFIX
 			)
 		},
-		level = "ERROR", loggerClass = BatchingBatch.class
+		level = "ERROR",
+		loggerClassName = "org.hibernate.engine.jdbc.batch.internal.BatchingBatch"
 	)
 	@Test
 	public void testSetSameKeyDifferentValues() {
@@ -255,7 +256,8 @@ public class PortalPreferencesImplTest {
 				expectedType = ExpectedType.PREFIX
 			)
 		},
-		level = "ERROR", loggerClass = BatchingBatch.class
+		level = "ERROR",
+		loggerClassName = "org.hibernate.engine.jdbc.batch.internal.BatchingBatch"
 	)
 	@Test
 	public void testSetValueSameKey() {
@@ -339,7 +341,8 @@ public class PortalPreferencesImplTest {
 				expectedType = ExpectedType.PREFIX
 			)
 		},
-		level = "ERROR", loggerClass = BatchingBatch.class
+		level = "ERROR",
+		loggerClassName = "org.hibernate.engine.jdbc.batch.internal.BatchingBatch"
 	)
 	@Test
 	public void testSetValuesSameKey() {

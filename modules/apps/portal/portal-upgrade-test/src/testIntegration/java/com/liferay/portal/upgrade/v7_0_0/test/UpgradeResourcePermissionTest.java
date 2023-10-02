@@ -7,7 +7,6 @@ package com.liferay.portal.upgrade.v7_0_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalService;
-import com.liferay.portal.dao.db.BaseDB;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
@@ -86,7 +85,7 @@ public class UpgradeResourcePermissionTest extends UpgradeResourcePermission {
 				expectedType = ExpectedType.PREFIX
 			)
 		},
-		level = "WARN", loggerClass = BaseDB.class
+		level = "WARN", loggerClassName = "com.liferay.portal.dao.db.BaseDB"
 	)
 	@Test
 	public void testUpgrade() throws Exception {

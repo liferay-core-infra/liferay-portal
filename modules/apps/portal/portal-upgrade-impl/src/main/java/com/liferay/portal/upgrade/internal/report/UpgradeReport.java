@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
-import com.liferay.portal.upgrade.internal.recorder.UpgradeRecorder;
+import com.liferay.portal.upgrade.internal.recorder.UpgradeRecorderUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -69,12 +69,12 @@ public class UpgradeReport {
 		_initialTableCounts = _getTableCounts();
 	}
 
-	public void generateReport(UpgradeRecorder upgradeRecorder) {
+	public void generateReport() {
 		if (_log.isInfoEnabled()) {
 			_log.info("Starting upgrade report generation");
 		}
 
-		Map<String, Object> reportData = _getReportData(upgradeRecorder);
+		Map<String, Object> reportData = _getReportData();
 
 		_printToLogContext(reportData);
 		_writeToFile(reportData);
@@ -125,9 +125,7 @@ public class UpgradeReport {
 		return messagesPrinters;
 	}
 
-	private Map<String, Object> _getReportData(
-		UpgradeRecorder upgradeRecorder) {
-
+	private Map<String, Object> _getReportData() {
 		return LinkedHashMapBuilder.<String, Object>put(
 			"execution.date",
 			() -> {
@@ -153,7 +151,7 @@ public class UpgradeReport {
 				"initial.schema.version",
 				() -> {
 					String initialSchemaVersion =
-						upgradeRecorder.getInitialSchemaVersion(
+						UpgradeRecorderUtil.getInitialSchemaVersion(
 							ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
 
 					if ((initialSchemaVersion != null) &&
@@ -179,7 +177,7 @@ public class UpgradeReport {
 				"final.schema.version",
 				() -> {
 					String schemaVersion =
-						upgradeRecorder.getFinalSchemaVersion(
+						UpgradeRecorderUtil.getFinalSchemaVersion(
 							ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
 
 					if (schemaVersion != null) {
@@ -213,9 +211,9 @@ public class UpgradeReport {
 				}
 			).build()
 		).put(
-			"type", upgradeRecorder.getType()
+			"type", UpgradeRecorderUtil.getType()
 		).put(
-			"result", upgradeRecorder.getResult()
+			"result", UpgradeRecorderUtil.getResult()
 		).put(
 			"status",
 			() -> {
@@ -382,7 +380,7 @@ public class UpgradeReport {
 			"longest.upgrade.processes",
 			() -> {
 				Map<String, ArrayList<String>> eventMessages =
-					upgradeRecorder.getUpgradeProcessMessages();
+					UpgradeRecorderUtil.getUpgradeProcessMessages();
 
 				List<String> messages = eventMessages.get(
 					UpgradeProcess.class.getName());
@@ -445,10 +443,11 @@ public class UpgradeReport {
 				return longestRunningUpgradeProcesses;
 			}
 		).put(
-			"errors", _getMessagesPrinters(upgradeRecorder.getErrorMessages())
+			"errors",
+			_getMessagesPrinters(UpgradeRecorderUtil.getErrorMessages())
 		).put(
 			"warnings",
-			_getMessagesPrinters(upgradeRecorder.getWarningMessages())
+			_getMessagesPrinters(UpgradeRecorderUtil.getWarningMessages())
 		).build();
 	}
 

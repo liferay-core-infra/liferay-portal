@@ -10,10 +10,13 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.test.rule.Inject;
@@ -38,6 +41,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Luis Ortiz
@@ -162,11 +168,30 @@ public class UpgradeRecorderTest {
 	}
 
 	private String _getResult() {
-		return ReflectionTestUtil.getFieldValue(_upgradeRecorder, "_result");
+		return ReflectionTestUtil.getFieldValue(
+			_getUpgradeRecorderUtil(), "_result");
 	}
 
 	private String _getType() {
-		return ReflectionTestUtil.getFieldValue(_upgradeRecorder, "_type");
+		return ReflectionTestUtil.getFieldValue(
+			_getUpgradeRecorderUtil(), "_type");
+	}
+
+	private Class<?> _getUpgradeRecorderUtil() {
+		try {
+			Bundle bundle = FrameworkUtil.getBundle(_releaseManager.getClass());
+
+			return bundle.loadClass(
+				"com.liferay.portal.upgrade.internal.recorder." +
+					"UpgradeRecorderUtil");
+		}
+		catch (ClassNotFoundException classNotFoundException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(classNotFoundException);
+			}
+		}
+
+		return null;
 	}
 
 	private void _testUpgrade(String type) {
@@ -243,24 +268,24 @@ public class UpgradeRecorderTest {
 		}
 	}
 
-	private static StopWatch _originalStopWatch;
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeRecorderTest.class);
 
-	@Inject(
-		filter = "component.name=com.liferay.portal.upgrade.internal.recorder.UpgradeRecorder",
-		type = Inject.NoType.class
-	)
-	private static Object _upgradeRecorder;
+	private static StopWatch _originalStopWatch;
 
 	@Inject
 	private ReleaseLocalService _releaseLocalService;
 
+	@Inject
+	private ReleaseManager _releaseManager;
+
 	private class ErrorUpgradeProcess extends UpgradeProcess {
 
 		@Override
-		protected void doUpgrade() {
+		protected void doUpgrade() throws Exception {
 			Map<String, Map<String, Integer>> errorMessages =
 				ReflectionTestUtil.getFieldValue(
-					_upgradeRecorder, "_errorMessages");
+					_getUpgradeRecorderUtil(), "_errorMessages");
 
 			errorMessages.put(
 				"ErrorUpgradeProcess",
@@ -275,7 +300,7 @@ public class UpgradeRecorderTest {
 		protected void doUpgrade() {
 			Map<String, Map<String, Integer>> warningMessages =
 				ReflectionTestUtil.getFieldValue(
-					_upgradeRecorder, "_warningMessages");
+					_getUpgradeRecorderUtil(), "_warningMessages");
 
 			warningMessages.put(
 				"WarningUpgradeProcess",

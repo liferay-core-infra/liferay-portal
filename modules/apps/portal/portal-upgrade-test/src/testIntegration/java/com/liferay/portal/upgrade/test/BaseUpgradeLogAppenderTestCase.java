@@ -703,13 +703,6 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 	private static boolean _originalUpgradeReportEnabled;
 	private static final Pattern _pattern = Pattern.compile(
 		"(\\w+_?)\\s+(\\d+|-)\\s+(\\d+|-)\n");
-
-	@Inject(
-		filter = "component.name=com.liferay.portal.upgrade.internal.recorder.UpgradeRecorder",
-		type = Inject.NoType.class
-	)
-	private static Object _upgradeRecorder;
-
 	private static Logger _upgradeReportLogger;
 
 	@Inject(filter = "appender.name=UpgradeLogAppender")

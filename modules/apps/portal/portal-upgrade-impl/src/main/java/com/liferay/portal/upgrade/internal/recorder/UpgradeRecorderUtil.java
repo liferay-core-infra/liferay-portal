@@ -31,19 +31,16 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.ThreadContext;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Luis Ortiz
  */
-@Component(service = UpgradeRecorder.class)
-public class UpgradeRecorder {
+public class UpgradeRecorderUtil {
 
-	public Map<String, Map<String, Integer>> getErrorMessages() {
+	public static Map<String, Map<String, Integer>> getErrorMessages() {
 		return _errorMessages;
 	}
 
-	public String getFinalSchemaVersion(String servletContextName) {
+	public static String getFinalSchemaVersion(String servletContextName) {
 		SchemaVersions schemaVersions = _schemaVersionsMap.get(
 			servletContextName);
 
@@ -54,7 +51,7 @@ public class UpgradeRecorder {
 		return schemaVersions._getFinal();
 	}
 
-	public String getInitialSchemaVersion(String servletContextName) {
+	public static String getInitialSchemaVersion(String servletContextName) {
 		SchemaVersions schemaVersions = _schemaVersionsMap.get(
 			servletContextName);
 
@@ -65,23 +62,23 @@ public class UpgradeRecorder {
 		return schemaVersions._getInitial();
 	}
 
-	public String getResult() {
+	public static String getResult() {
 		return _result;
 	}
 
-	public String getType() {
+	public static String getType() {
 		return _type;
 	}
 
-	public Map<String, ArrayList<String>> getUpgradeProcessMessages() {
+	public static Map<String, ArrayList<String>> getUpgradeProcessMessages() {
 		return _upgradeProcessMessages;
 	}
 
-	public Map<String, Map<String, Integer>> getWarningMessages() {
+	public static Map<String, Map<String, Integer>> getWarningMessages() {
 		return _warningMessages;
 	}
 
-	public void recordErrorMessage(String loggerName, String message) {
+	public static void recordErrorMessage(String loggerName, String message) {
 		Map<String, Integer> messages = _errorMessages.computeIfAbsent(
 			loggerName, key -> new ConcurrentHashMap<>());
 
@@ -92,14 +89,16 @@ public class UpgradeRecorder {
 		messages.put(message, occurrences);
 	}
 
-	public void recordUpgradeProcessMessage(String loggerName, String message) {
+	public static void recordUpgradeProcessMessage(
+		String loggerName, String message) {
+
 		List<String> messages = _upgradeProcessMessages.computeIfAbsent(
 			loggerName, key -> new ArrayList<>());
 
 		messages.add(message);
 	}
 
-	public void recordWarningMessage(String loggerName, String message) {
+	public static void recordWarningMessage(String loggerName, String message) {
 		Map<String, Integer> messages = _warningMessages.computeIfAbsent(
 			loggerName, key -> new ConcurrentHashMap<>());
 
@@ -110,7 +109,7 @@ public class UpgradeRecorder {
 		messages.put(message, occurrences);
 	}
 
-	public void start() {
+	public static void start() {
 		_errorMessages.clear();
 		_result = "running";
 		_schemaVersionsMap.clear();
@@ -123,7 +122,7 @@ public class UpgradeRecorder {
 				moduleSchemaVersions._setInitial(schemaVersion));
 	}
 
-	public void stop() {
+	public static void stop() {
 		_filter(_errorMessages);
 		_filter(_warningMessages);
 
@@ -160,7 +159,7 @@ public class UpgradeRecorder {
 		}
 	}
 
-	private String _calculateResult() {
+	private static String _calculateResult() {
 		if (!_errorMessages.isEmpty()) {
 			return "failure";
 		}
@@ -188,7 +187,7 @@ public class UpgradeRecorder {
 		return "success";
 	}
 
-	private String _calculateType() {
+	private static String _calculateType() {
 		_processRelease(
 			(moduleSchemaVersions, schemaVersion) ->
 				moduleSchemaVersions._setFinal(schemaVersion));
@@ -233,7 +232,7 @@ public class UpgradeRecorder {
 		return type;
 	}
 
-	private Map<String, Map<String, Integer>> _filter(
+	private static Map<String, Map<String, Integer>> _filter(
 		Map<String, Map<String, Integer>> messages) {
 
 		for (String filteredClassName : _FILTERED_CLASS_NAMES) {
@@ -243,7 +242,7 @@ public class UpgradeRecorder {
 		return messages;
 	}
 
-	private void _processRelease(
+	private static void _processRelease(
 		UnsafeBiConsumer<SchemaVersions, String, Exception> unsafeBiConsumer) {
 
 		DataSource dataSource = InfrastructureUtil.getDataSource();
@@ -290,12 +289,13 @@ public class UpgradeRecorder {
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		UpgradeRecorder.class);
+		UpgradeRecorderUtil.class);
 
 	private static final Map<String, Map<String, Integer>> _errorMessages =
 		new ConcurrentHashMap<>();
 	private static final Snapshot<ReleaseManager> _releaseManagerSnapshot =
-		new Snapshot<>(UpgradeRecorder.class, ReleaseManager.class, null, true);
+		new Snapshot<>(
+			UpgradeRecorderUtil.class, ReleaseManager.class, null, true);
 	private static String _result;
 	private static final Map<String, SchemaVersions> _schemaVersionsMap =
 		new ConcurrentHashMap<>();
@@ -318,7 +318,7 @@ public class UpgradeRecorder {
 		}
 	}
 
-	private class SchemaVersions {
+	private static class SchemaVersions {
 
 		public SchemaVersions(String initial) {
 			_initial = initial;

@@ -8,6 +8,7 @@ package com.liferay.portal.upgrade.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsUtil;
@@ -60,7 +61,7 @@ public class UpgradeManagerTest {
 	public void tearDown() throws Exception {
 		Promise<?> promise = _serviceComponentRuntime.disableComponent(
 			_serviceComponentRuntime.getComponentDescriptionDTO(
-				FrameworkUtil.getBundle(_upgradeRecorder.getClass()),
+				_getBundle(),
 				"com.liferay.portal.upgrade.internal.jmx.UpgradeManager"));
 
 		promise.getValue();
@@ -72,30 +73,28 @@ public class UpgradeManagerTest {
 	public void testUpgradeManager() throws Exception {
 		_restartComponentEnabler(true);
 
+		Class<?> clazz = _getBundle().loadClass(
+			"com.liferay.portal.upgrade.internal.recorder.UpgradeRecorderUtil");
+
 		String originalResult = ReflectionTestUtil.getFieldValue(
-			_upgradeRecorder, "_result");
-		String originalType = ReflectionTestUtil.getFieldValue(
-			_upgradeRecorder, "_type");
+			clazz, "_result");
+		String originalType = ReflectionTestUtil.getFieldValue(clazz, "_type");
 
 		try {
 			Assert.assertEquals(
 				originalResult, _upgradeManagerInvoke("getResult"));
 			Assert.assertEquals(originalType, _upgradeManagerInvoke("getType"));
 
-			ReflectionTestUtil.setFieldValue(
-				_upgradeRecorder, "_result", "testResult");
-			ReflectionTestUtil.setFieldValue(
-				_upgradeRecorder, "_type", "testType");
+			ReflectionTestUtil.setFieldValue(clazz, "_result", "testResult");
+			ReflectionTestUtil.setFieldValue(clazz, "_type", "testType");
 
 			Assert.assertEquals(
 				"testResult", _upgradeManagerInvoke("getResult"));
 			Assert.assertEquals("testType", _upgradeManagerInvoke("getType"));
 		}
 		finally {
-			ReflectionTestUtil.setFieldValue(
-				_upgradeRecorder, "_result", originalResult);
-			ReflectionTestUtil.setFieldValue(
-				_upgradeRecorder, "_type", originalType);
+			ReflectionTestUtil.setFieldValue(clazz, "_result", originalResult);
+			ReflectionTestUtil.setFieldValue(clazz, "_type", originalType);
 		}
 	}
 
@@ -111,6 +110,10 @@ public class UpgradeManagerTest {
 		_restartComponentEnabler(true);
 
 		Assert.assertTrue(_isUpgradeManagerMBeanRegistered());
+	}
+
+	private Bundle _getBundle() {
+		return FrameworkUtil.getBundle(_releaseManager.getClass());
 	}
 
 	private boolean _isUpgradeManagerMBeanRegistered() throws Exception {
@@ -137,7 +140,7 @@ public class UpgradeManagerTest {
 
 		Promise<?> promise = _serviceComponentRuntime.disableComponent(
 			_serviceComponentRuntime.getComponentDescriptionDTO(
-				FrameworkUtil.getBundle(_upgradeRecorder.getClass()),
+				_getBundle(),
 				"com.liferay.portal.upgrade.internal.component.enabler." +
 					"ComponentEnabler"));
 
@@ -149,7 +152,7 @@ public class UpgradeManagerTest {
 
 		promise = _serviceComponentRuntime.enableComponent(
 			_serviceComponentRuntime.getComponentDescriptionDTO(
-				FrameworkUtil.getBundle(_upgradeRecorder.getClass()),
+				FrameworkUtil.getBundle(_releaseManager.getClass()),
 				"com.liferay.portal.upgrade.internal.component.enabler." +
 					"ComponentEnabler"));
 
@@ -158,10 +161,7 @@ public class UpgradeManagerTest {
 
 	private String _upgradeManagerInvoke(String methodName) throws Exception {
 		if (_upgradeManager == null) {
-			Bundle bundle = FrameworkUtil.getBundle(
-				_upgradeRecorder.getClass());
-
-			BundleContext bundleContext = bundle.getBundleContext();
+			BundleContext bundleContext = _getBundle().getBundleContext();
 
 			ServiceReference<?>[] serviceReferences =
 				bundleContext.getServiceReferences(
@@ -180,12 +180,9 @@ public class UpgradeManagerTest {
 	private static Object _upgradeManager;
 
 	@Inject
-	private ServiceComponentRuntime _serviceComponentRuntime;
+	private ReleaseManager _releaseManager;
 
-	@Inject(
-		filter = "component.name=com.liferay.portal.upgrade.internal.recorder.UpgradeRecorder",
-		type = Inject.NoType.class
-	)
-	private Object _upgradeRecorder;
+	@Inject
+	private ServiceComponentRuntime _serviceComponentRuntime;
 
 }

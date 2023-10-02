@@ -5,14 +5,13 @@
 
 package com.liferay.portal.upgrade.internal.jmx;
 
-import com.liferay.portal.upgrade.internal.recorder.UpgradeRecorder;
+import com.liferay.portal.upgrade.internal.recorder.UpgradeRecorderUtil;
 
 import javax.management.DynamicMBean;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Luis Ortiz
@@ -34,15 +33,12 @@ public class UpgradeManager
 
 	@Override
 	public String getResult() {
-		return _upgradeRecorder.getResult();
+		return UpgradeRecorderUtil.getResult();
 	}
 
 	@Override
 	public String getType() {
-		return _upgradeRecorder.getType();
+		return UpgradeRecorderUtil.getType();
 	}
-
-	@Reference
-	private UpgradeRecorder _upgradeRecorder;
 
 }

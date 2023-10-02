@@ -15,42 +15,39 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.List;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Raymond Augé
  */
-@Component(service = AntivirusAsyncEventListenerManager.class)
-public class AntivirusAsyncEventListenerManager {
+public class AntivirusAsyncEventListenerManagerUtil {
 
-	public void onMissing(Message message) {
+	public static void onMissing(Message message) {
 		_onEvent(AntivirusAsyncEvent.MISSING, message);
 	}
 
-	public void onPrepare(Message message) {
+	public static void onPrepare(Message message) {
 		_onEvent(AntivirusAsyncEvent.PREPARE, message);
 	}
 
-	public void onProcessingError(Message message, Exception exception) {
+	public static void onProcessingError(Message message, Exception exception) {
 		message.put("exception", exception);
 
 		_onEvent(AntivirusAsyncEvent.PROCESSING_ERROR, message);
 	}
 
-	public void onSizeExceeded(Message message, Exception exception) {
+	public static void onSizeExceeded(Message message, Exception exception) {
 		message.put("exception", exception);
 
 		_onEvent(AntivirusAsyncEvent.SIZE_EXCEEDED, message);
 	}
 
-	public void onSuccess(Message message) {
+	public static void onSuccess(Message message) {
 		_onEvent(AntivirusAsyncEvent.SUCCESS, message);
 	}
 
-	public void onVirusFound(
+	public static void onVirusFound(
 		Message message, Exception exception, String virusName) {
 
 		message.put("exception", exception);
@@ -59,19 +56,7 @@ public class AntivirusAsyncEventListenerManager {
 		_onEvent(AntivirusAsyncEvent.VIRUS_FOUND, message);
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
-			bundleContext, AntivirusAsyncEventListener.class, null,
-			_serviceReferenceMapper);
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceTrackerMap.close();
-	}
-
-	private void _onEvent(
+	private static void _onEvent(
 		AntivirusAsyncEvent antivirusAsyncEvent, Message message) {
 
 		message.put("antivirusAsyncEvent", antivirusAsyncEvent);
@@ -113,7 +98,16 @@ public class AntivirusAsyncEventListenerManager {
 				}
 			};
 
-	private ServiceTrackerMap<String, List<AntivirusAsyncEventListener>>
-		_serviceTrackerMap;
+	private static final ServiceTrackerMap
+		<String, List<AntivirusAsyncEventListener>> _serviceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AntivirusAsyncEventListenerManagerUtil.class);
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
+			bundle.getBundleContext(), AntivirusAsyncEventListener.class, null,
+			_serviceReferenceMapper);
+	}
 
 }

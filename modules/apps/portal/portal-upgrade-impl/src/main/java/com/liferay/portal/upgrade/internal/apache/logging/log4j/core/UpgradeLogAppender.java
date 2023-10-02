@@ -7,7 +7,7 @@ package com.liferay.portal.upgrade.internal.apache.logging.log4j.core;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.internal.recorder.UpgradeRecorder;
+import com.liferay.portal.upgrade.internal.recorder.UpgradeRecorderUtil;
 import com.liferay.portal.upgrade.internal.report.UpgradeReport;
 import com.liferay.portal.util.PropsValues;
 
@@ -25,7 +25,6 @@ import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sam Ziemer
@@ -48,7 +47,7 @@ public class UpgradeLogAppender implements Appender {
 		}
 
 		if (logEvent.getLevel() == Level.ERROR) {
-			_upgradeRecorder.recordErrorMessage(
+			UpgradeRecorderUtil.recordErrorMessage(
 				logEvent.getLoggerName(), formattedMessage);
 		}
 		else if (logEvent.getLevel() == Level.INFO) {
@@ -56,12 +55,12 @@ public class UpgradeLogAppender implements Appender {
 					logEvent.getLoggerName(), UpgradeProcess.class.getName()) &&
 				formattedMessage.startsWith("Completed upgrade process ")) {
 
-				_upgradeRecorder.recordUpgradeProcessMessage(
+				UpgradeRecorderUtil.recordUpgradeProcessMessage(
 					logEvent.getLoggerName(), formattedMessage);
 			}
 		}
 		else if (logEvent.getLevel() == Level.WARN) {
-			_upgradeRecorder.recordWarningMessage(
+			UpgradeRecorderUtil.recordWarningMessage(
 				logEvent.getLoggerName(), message.getFormattedMessage());
 		}
 	}
@@ -113,7 +112,7 @@ public class UpgradeLogAppender implements Appender {
 	public void start() {
 		_started = true;
 
-		_upgradeRecorder.start();
+		UpgradeRecorderUtil.start();
 
 		if (PropsValues.UPGRADE_REPORT_ENABLED) {
 			_upgradeReport = new UpgradeReport();
@@ -125,10 +124,10 @@ public class UpgradeLogAppender implements Appender {
 	@Override
 	public void stop() {
 		if (_started) {
-			_upgradeRecorder.stop();
+			UpgradeRecorderUtil.stop();
 
 			if (_upgradeReport != null) {
-				_upgradeReport.generateReport(_upgradeRecorder);
+				_upgradeReport.generateReport();
 
 				_upgradeReport = null;
 			}
@@ -143,10 +142,6 @@ public class UpgradeLogAppender implements Appender {
 		(Logger)LogManager.getRootLogger();
 
 	private volatile boolean _started;
-
-	@Reference
-	private volatile UpgradeRecorder _upgradeRecorder;
-
 	private UpgradeReport _upgradeReport;
 
 }

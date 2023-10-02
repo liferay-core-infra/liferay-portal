@@ -6,7 +6,7 @@
 package com.liferay.antivirus.async.store;
 
 import com.liferay.antivirus.async.store.constants.AntivirusAsyncConstants;
-import com.liferay.antivirus.async.store.internal.event.AntivirusAsyncEventListenerManager;
+import com.liferay.antivirus.async.store.internal.event.AntivirusAsyncEventListenerManagerUtil;
 import com.liferay.antivirus.async.store.util.AntivirusAsyncUtil;
 import com.liferay.document.library.kernel.antivirus.AntivirusScanner;
 import com.liferay.document.library.kernel.antivirus.AntivirusScannerException;
@@ -51,7 +51,7 @@ public class AntivirusScannerHelper {
 							" is no longer present: ", message.getValues()));
 				}
 
-				_antivirusAsyncEventListenerManager.onMissing(message);
+				AntivirusAsyncEventListenerManagerUtil.onMissing(message);
 
 				return;
 			}
@@ -70,7 +70,7 @@ public class AntivirusScannerHelper {
 							message.getValues()));
 				}
 
-				_antivirusAsyncEventListenerManager.onSuccess(message);
+				AntivirusAsyncEventListenerManagerUtil.onSuccess(message);
 			}
 			catch (AntivirusScannerException antivirusScannerException) {
 				int type = antivirusScannerException.getType();
@@ -95,14 +95,14 @@ public class AntivirusScannerHelper {
 					_store.deleteFile(
 						companyId, repositoryId, fileName, versionLabel);
 
-					_antivirusAsyncEventListenerManager.onVirusFound(
+					AntivirusAsyncEventListenerManagerUtil.onVirusFound(
 						message, antivirusVirusFoundException,
 						antivirusVirusFoundException.getVirusName());
 				}
 				else if (type ==
 							AntivirusScannerException.SIZE_LIMIT_EXCEEDED) {
 
-					_antivirusAsyncEventListenerManager.onSizeExceeded(
+					AntivirusAsyncEventListenerManagerUtil.onSizeExceeded(
 						message, antivirusScannerException);
 				}
 				else {
@@ -111,17 +111,13 @@ public class AntivirusScannerHelper {
 			}
 		}
 		catch (Exception exception) {
-			_antivirusAsyncEventListenerManager.onProcessingError(
+			AntivirusAsyncEventListenerManagerUtil.onProcessingError(
 				message, exception);
 		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AntivirusScannerHelper.class);
-
-	@Reference
-	private AntivirusAsyncEventListenerManager
-		_antivirusAsyncEventListenerManager;
 
 	@Reference
 	private AntivirusScanner _antivirusScanner;

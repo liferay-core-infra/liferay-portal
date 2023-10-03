@@ -6,9 +6,10 @@
 package com.liferay.exportimport.internal.util;
 
 import com.liferay.document.library.kernel.util.DLValidatorUtil;
+import com.liferay.exportimport.controller.PortletExportController;
+import com.liferay.exportimport.controller.PortletImportController;
 import com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames;
 import com.liferay.exportimport.kernel.controller.ExportController;
-import com.liferay.exportimport.kernel.controller.ExportImportControllerRegistryUtil;
 import com.liferay.exportimport.kernel.controller.ImportController;
 import com.liferay.exportimport.kernel.exception.ExportImportIOException;
 import com.liferay.exportimport.kernel.exception.ExportImportRuntimeException;
@@ -25,8 +26,7 @@ import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.GuestOrUserUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -67,11 +67,7 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		}
 
 		try {
-			ExportController layoutExportController =
-				ExportImportControllerRegistryUtil.getExportController(
-					Layout.class.getName());
-
-			return layoutExportController.export(exportImportConfiguration);
+			return _exportControllerLayout.export(exportImportConfiguration);
 		}
 		catch (PortalException portalException) {
 			throw portalException;
@@ -165,11 +161,7 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ExportController portletExportController =
-				ExportImportControllerRegistryUtil.getExportController(
-					Portlet.class.getName());
-
-			return portletExportController.export(exportImportConfiguration);
+			return _exportControllerPortlet.export(exportImportConfiguration);
 		}
 		catch (PortalException portalException) {
 			throw portalException;
@@ -260,8 +252,7 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 		try {
 			ImportController layoutImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Layout.class.getName());
+				_layoutImportControllerSnapshot.get();
 
 			layoutImportController.importFile(exportImportConfiguration, file);
 		}
@@ -360,8 +351,7 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 		try {
 			ImportController layoutImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Layout.class.getName());
+				_layoutImportControllerSnapshot.get();
 
 			layoutImportController.importDataDeletions(
 				exportImportConfiguration, file);
@@ -527,11 +517,7 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ImportController portletImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Portlet.class.getName());
-
-			portletImportController.importDataDeletions(
+			_importControllerPortlet.importDataDeletions(
 				exportImportConfiguration, file);
 		}
 		catch (PortalException portalException) {
@@ -564,11 +550,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ImportController portletImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Portlet.class.getName());
-
-			portletImportController.importFile(exportImportConfiguration, file);
+			_importControllerPortlet.importFile(
+				exportImportConfiguration, file);
 		}
 		catch (PortalException portalException) {
 			Throwable throwable = portalException.getCause();
@@ -826,8 +809,7 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 		try {
 			ImportController layoutImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Layout.class.getName());
+				_layoutImportControllerSnapshot.get();
 
 			return layoutImportController.validateFile(
 				exportImportConfiguration, file);
@@ -919,11 +901,7 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ImportController portletImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Portlet.class.getName());
-
-			return portletImportController.validateFile(
+			return _importControllerPortlet.validateFile(
 				exportImportConfiguration, file);
 		}
 		catch (PortalException portalException) {
@@ -960,11 +938,31 @@ public class ExportImportManagerImpl implements ExportImportManager {
 			false, exportImportConfiguration, inputStream);
 	}
 
+	private static final Snapshot<ImportController>
+		_layoutImportControllerSnapshot = new Snapshot<>(
+			ExportImportManagerImpl.class, ImportController.class,
+			"(model.class.name=com.liferay.portal.kernel.model.Layout)", true);
+
 	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.portal.kernel.model.Layout)"
+	)
+	private ExportController _exportControllerLayout;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.portal.kernel.model.Portlet)"
+	)
+	private PortletExportController _exportControllerPortlet;
 
 	@Reference
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.portal.kernel.model.Portlet)"
+	)
+	private PortletImportController _importControllerPortlet;
 
 }

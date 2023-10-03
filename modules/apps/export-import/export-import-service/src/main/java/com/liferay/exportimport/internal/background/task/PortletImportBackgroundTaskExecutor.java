@@ -8,7 +8,6 @@ package com.liferay.exportimport.internal.background.task;
 import com.liferay.exportimport.internal.background.task.display.PortletExportImportBackgroundTaskDisplay;
 import com.liferay.exportimport.kernel.exception.ExportImportIOException;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Daniel Kocsis
@@ -118,9 +116,6 @@ public class PortletImportBackgroundTaskExecutor
 		return new PortletExportImportBackgroundTaskDisplay(backgroundTask);
 	}
 
-	@Reference
-	private ExportImportLocalService _exportImportLocalService;
-
 	private class PortletImportCallable implements Callable<Void> {
 
 		public PortletImportCallable(
@@ -132,10 +127,10 @@ public class PortletImportBackgroundTaskExecutor
 
 		@Override
 		public Void call() throws PortalException {
-			_exportImportLocalService.importPortletDataDeletions(
+			exportImportManager.importPortletDataDeletions(
 				_exportImportConfiguration, _file);
 
-			_exportImportLocalService.importPortletInfo(
+			exportImportManager.importPortletInfo(
 				_exportImportConfiguration, _file);
 
 			return null;

@@ -7,7 +7,6 @@ package com.liferay.exportimport.internal.background.task;
 
 import com.liferay.exportimport.internal.background.task.display.PortletExportImportBackgroundTaskDisplay;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
@@ -58,7 +57,7 @@ public class PortletExportBackgroundTaskExecutor
 		long userId = MapUtil.getLong(settingsMap, "userId");
 		String fileName = MapUtil.getString(settingsMap, "fileName");
 
-		File larFile = _exportImportLocalService.exportPortletInfoAsFile(
+		File larFile = exportImportManager.exportPortletInfoAsFile(
 			exportImportConfiguration);
 
 		_backgroundTaskManager.addBackgroundTaskAttachment(
@@ -76,8 +75,5 @@ public class PortletExportBackgroundTaskExecutor
 
 	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;
-
-	@Reference
-	private ExportImportLocalService _exportImportLocalService;
 
 }

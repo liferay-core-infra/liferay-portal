@@ -22,7 +22,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataContextFactoryUtil;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
+import com.liferay.exportimport.kernel.util.ExportImportManagerUtil;
 import com.liferay.exportimport.test.util.TestReaderWriter;
 import com.liferay.exportimport.test.util.TestUserIdStrategy;
 import com.liferay.journal.model.JournalArticle;
@@ -1010,10 +1010,10 @@ public class DefaultExportImportContentProcessorTest {
 						TYPE_PUBLISH_LAYOUT_LOCAL,
 					publishLayoutLocalSettingsMap);
 
-		File larFile = ExportImportLocalServiceUtil.exportLayoutsAsFile(
+		File larFile = ExportImportManagerUtil.exportLayoutsAsFile(
 			exportImportConfiguration);
 
-		ExportImportLocalServiceUtil.importLayouts(
+		ExportImportManagerUtil.importLayouts(
 			exportImportConfiguration, larFile);
 	}
 

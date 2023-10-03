@@ -12,7 +12,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.UserIdStrategy;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
+import com.liferay.exportimport.kernel.util.ExportImportManagerUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -77,7 +77,7 @@ public class LARImporter extends BaseImporter {
 			inputStream = _privateLARInputStream;
 		}
 
-		ExportImportLocalServiceUtil.importLayouts(
+		ExportImportManagerUtil.importLayouts(
 			exportImportConfiguration, inputStream);
 	}
 

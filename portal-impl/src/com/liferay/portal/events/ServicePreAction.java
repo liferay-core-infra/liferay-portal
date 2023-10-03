@@ -10,7 +10,7 @@ import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfi
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
+import com.liferay.exportimport.kernel.util.ExportImportManagerUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.image.ImageToolUtil;
@@ -267,7 +267,7 @@ public class ServicePreAction extends Action {
 					ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
 					importLayoutSettingsMap);
 
-		ExportImportLocalServiceUtil.importLayouts(
+		ExportImportManagerUtil.importLayouts(
 			exportImportConfiguration, larFile);
 	}
 

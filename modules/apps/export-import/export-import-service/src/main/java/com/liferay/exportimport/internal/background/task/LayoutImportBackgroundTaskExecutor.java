@@ -7,7 +7,6 @@ package com.liferay.exportimport.internal.background.task;
 
 import com.liferay.exportimport.kernel.exception.ExportImportIOException;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
@@ -27,7 +26,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Daniel Kocsis
@@ -109,9 +107,6 @@ public class LayoutImportBackgroundTaskExecutor
 		return BackgroundTaskResult.SUCCESS;
 	}
 
-	@Reference
-	private ExportImportLocalService _exportImportLocalService;
-
 	private class LayoutImportCallable implements Callable<Void> {
 
 		public LayoutImportCallable(
@@ -123,10 +118,10 @@ public class LayoutImportBackgroundTaskExecutor
 
 		@Override
 		public Void call() throws PortalException {
-			_exportImportLocalService.importLayoutsDataDeletions(
+			exportImportManager.importLayoutsDataDeletions(
 				_exportImportConfiguration, _file);
 
-			_exportImportLocalService.importLayouts(
+			exportImportManager.importLayouts(
 				_exportImportConfiguration, _file);
 
 			return null;

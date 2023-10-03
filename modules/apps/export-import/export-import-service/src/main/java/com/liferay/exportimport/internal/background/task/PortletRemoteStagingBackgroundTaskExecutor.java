@@ -13,7 +13,6 @@ import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleManagerUtil;
 import com.liferay.exportimport.kernel.lifecycle.constants.ExportImportLifecycleConstants;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
@@ -85,7 +84,7 @@ public class PortletRemoteStagingBackgroundTaskExecutor
 					exportImportConfiguration.getExportImportConfigurationId()),
 				exportImportConfiguration);
 
-			file = _exportImportLocalService.exportPortletInfoAsFile(
+			file = exportImportManager.exportPortletInfoAsFile(
 				exportImportConfiguration);
 
 			String checksum = FileUtil.getMD5Checksum(file);
@@ -177,9 +176,6 @@ public class PortletRemoteStagingBackgroundTaskExecutor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletRemoteStagingBackgroundTaskExecutor.class);
-
-	@Reference
-	private ExportImportLocalService _exportImportLocalService;
 
 	@Reference
 	private Staging _staging;

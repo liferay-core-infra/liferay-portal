@@ -14,9 +14,9 @@ import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSe
 import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfigurationConstants;
 import com.liferay.exportimport.kernel.lar.ExportImportHelper;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
+import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.exportimport.kernel.staging.StagingURLHelper;
 import com.liferay.petra.lang.SafeCloseable;
@@ -146,7 +146,7 @@ public class ExportImportChangesetMVCActionCommand
 						settingsMap);
 
 			backgroundTaskId =
-				exportImportLocalService.exportPortletInfoAsFileInBackground(
+				exportImportManager.exportPortletInfoAsFileInBackground(
 					themeDisplay.getUserId(), exportImportConfiguration);
 		}
 		else if (cmd.equals(Constants.PUBLISH) ||
@@ -258,7 +258,7 @@ public class ExportImportChangesetMVCActionCommand
 	protected ExportImportHelper exportImportHelper;
 
 	@Reference
-	protected ExportImportLocalService exportImportLocalService;
+	protected ExportImportManager exportImportManager;
 
 	@Reference
 	protected GroupLocalService groupLocalService;

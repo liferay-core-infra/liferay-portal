@@ -6,7 +6,6 @@
 package com.liferay.exportimport.internal.background.task;
 
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -55,7 +54,7 @@ public class LayoutExportBackgroundTaskExecutor
 		long userId = MapUtil.getLong(
 			exportImportConfiguration.getSettingsMap(), "userId");
 
-		File larFile = _exportImportLocalService.exportLayoutsAsFile(
+		File larFile = exportImportManager.exportLayoutsAsFile(
 			exportImportConfiguration);
 
 		_backgroundTaskManager.addBackgroundTaskAttachment(
@@ -72,8 +71,5 @@ public class LayoutExportBackgroundTaskExecutor
 
 	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;
-
-	@Reference
-	private ExportImportLocalService _exportImportLocalService;
 
 }

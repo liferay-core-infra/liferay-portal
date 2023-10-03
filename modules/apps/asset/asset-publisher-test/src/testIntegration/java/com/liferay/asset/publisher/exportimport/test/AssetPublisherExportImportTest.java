@@ -31,9 +31,9 @@ import com.liferay.exportimport.kernel.controller.ExportImportController;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
+import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.exportimport.test.util.lar.BasePortletExportImportTestCase;
 import com.liferay.journal.constants.JournalArticleConstants;
 import com.liferay.journal.constants.JournalFolderConstants;
@@ -971,7 +971,7 @@ public class AssetPublisherExportImportTest
 					ExportImportConfigurationConstants.TYPE_EXPORT_LAYOUT,
 					exportLayoutSettingsMap);
 
-		larFile = _exportImportLocalService.exportLayoutsAsFile(
+		larFile = _exportImportManager.exportLayoutsAsFile(
 			exportImportConfiguration);
 
 		// Import site LAR
@@ -989,8 +989,7 @@ public class AssetPublisherExportImportTest
 					ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
 					importLayoutSettingsMap);
 
-		_exportImportLocalService.importLayouts(
-			exportImportConfiguration, larFile);
+		_exportImportManager.importLayouts(exportImportConfiguration, larFile);
 
 		importedLayout = _layoutLocalService.getLayoutByUuidAndGroupId(
 			layout.getUuid(), importedGroup.getGroupId(),
@@ -1237,7 +1236,7 @@ public class AssetPublisherExportImportTest
 	private ExportImportController _exportImportController;
 
 	@Inject
-	private ExportImportLocalService _exportImportLocalService;
+	private ExportImportManager _exportImportManager;
 
 	@Inject
 	private GroupLocalService _groupLocalService;

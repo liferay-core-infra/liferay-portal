@@ -19,9 +19,9 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataContextFactoryUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
+import com.liferay.exportimport.kernel.manager.ExportImportManagerUtil;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.exportimport.kernel.service.StagingLocalService;
 import com.liferay.exportimport.kernel.staging.StagingURLHelperUtil;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
@@ -4102,7 +4102,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 					ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
 					importLayoutSettingsMap);
 
-		_exportImportLocalService.importLayouts(
+		ExportImportManagerUtil.importLayouts(
 			exportImportConfiguration, larFile);
 	}
 
@@ -5430,9 +5430,6 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	@BeanReference(type = ExportImportConfigurationLocalService.class)
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
-
-	@BeanReference(type = ExportImportLocalService.class)
-	private ExportImportLocalService _exportImportLocalService;
 
 	@BeanReference(type = LayoutLocalService.class)
 	private LayoutLocalService _layoutLocalService;

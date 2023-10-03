@@ -20,9 +20,9 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleManagerUtil;
 import com.liferay.exportimport.kernel.lifecycle.constants.ExportImportLifecycleConstants;
+import com.liferay.exportimport.kernel.manager.ExportImportManagerUtil;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.StringPool;
@@ -415,7 +415,7 @@ public abstract class BasePortletExportImportTestCase
 			exportImportConfiguration);
 
 		try {
-			larFile = ExportImportLocalServiceUtil.exportPortletInfoAsFile(
+			larFile = ExportImportManagerUtil.exportPortletInfoAsFile(
 				exportImportConfiguration);
 
 			importedLayout = LayoutTestUtil.addTypePortletLayout(importedGroup);
@@ -444,10 +444,10 @@ public abstract class BasePortletExportImportTestCase
 				ExportImportConfigurationLocalServiceUtil.
 					updateExportImportConfiguration(exportImportConfiguration);
 
-			ExportImportLocalServiceUtil.importPortletDataDeletions(
+			ExportImportManagerUtil.importPortletDataDeletions(
 				exportImportConfiguration, larFile);
 
-			ExportImportLocalServiceUtil.importPortletInfo(
+			ExportImportManagerUtil.importPortletInfo(
 				exportImportConfiguration, larFile);
 
 			ExportImportLifecycleManagerUtil.fireExportImportLifecycleEvent(

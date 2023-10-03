@@ -12,9 +12,9 @@ import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfi
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleEvent;
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleListener;
 import com.liferay.exportimport.kernel.lifecycle.constants.ExportImportLifecycleConstants;
+import com.liferay.exportimport.kernel.manager.ExportImportManagerUtil;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.journal.constants.JournalFolderConstants;
 import com.liferay.journal.test.util.JournalTestUtil;
@@ -115,7 +115,7 @@ public class ExportImportLifecycleEventTest {
 					exportLayoutSettingsMap);
 
 		try {
-			ExportImportLocalServiceUtil.exportLayoutsAsFile(
+			ExportImportManagerUtil.exportLayoutsAsFile(
 				exportImportConfiguration);
 
 			Assert.fail();
@@ -153,7 +153,7 @@ public class ExportImportLifecycleEventTest {
 					importLayoutSettingsMap);
 
 		try {
-			ExportImportLocalServiceUtil.importLayouts(
+			ExportImportManagerUtil.importLayouts(
 				exportImportConfiguration, (File)null);
 
 			Assert.fail();
@@ -225,7 +225,7 @@ public class ExportImportLifecycleEventTest {
 					exportPortletSettingsMap);
 
 		try {
-			ExportImportLocalServiceUtil.exportPortletInfoAsFile(
+			ExportImportManagerUtil.exportPortletInfoAsFile(
 				exportImportConfiguration);
 
 			Assert.fail();
@@ -258,7 +258,7 @@ public class ExportImportLifecycleEventTest {
 					importPortletSettingsMap);
 
 		try {
-			ExportImportLocalServiceUtil.importPortletInfo(
+			ExportImportManagerUtil.importPortletInfo(
 				exportImportConfiguration, (File)null);
 
 			Assert.fail();

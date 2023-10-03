@@ -9,9 +9,9 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactory;
 import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfigurationConstants;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
+import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.layout.friendly.url.LayoutFriendlyURLEntryHelper;
@@ -143,7 +143,7 @@ public class ExportImportLocalServiceTest {
 					ExportImportConfigurationConstants.TYPE_EXPORT_LAYOUT,
 					exportLayoutSettingsMap);
 
-		File file = _exportImportLocalService.exportLayoutsAsFile(
+		File file = _exportImportManager.exportLayoutsAsFile(
 			_exportImportConfiguration);
 
 		GroupTestUtil.deleteGroup(group1);
@@ -165,7 +165,7 @@ public class ExportImportLocalServiceTest {
 						ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
 						importLayoutSettingsMap);
 
-			_exportImportLocalService.importLayouts(
+			_exportImportManager.importLayouts(
 				_exportImportConfiguration, file);
 
 			for (long layoutId : layoutIds) {
@@ -310,7 +310,7 @@ public class ExportImportLocalServiceTest {
 		_exportImportConfigurationSettingsMapFactory;
 
 	@Inject
-	private ExportImportLocalService _exportImportLocalService;
+	private ExportImportManager _exportImportManager;
 
 	@Inject
 	private LayoutFriendlyURLEntryHelper _layoutFriendlyURLEntryHelper;

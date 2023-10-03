@@ -6,6 +6,7 @@
 package com.liferay.exportimport.internal.background.task;
 
 import com.liferay.exportimport.internal.background.task.display.ExportImportBackgroundTaskDisplay;
+import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
@@ -16,6 +17,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.util.MapUtil;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Akos Thurzo
@@ -59,5 +62,8 @@ public abstract class BaseExportImportBackgroundTaskExecutor
 	protected static final TransactionConfig transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
+
+	@Reference
+	protected ExportImportManager exportImportManager;
 
 }

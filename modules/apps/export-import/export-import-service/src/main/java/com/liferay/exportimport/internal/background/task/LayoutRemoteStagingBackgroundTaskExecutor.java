@@ -13,7 +13,6 @@ import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleManagerUtil;
 import com.liferay.exportimport.kernel.lifecycle.constants.ExportImportLifecycleConstants;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
@@ -267,7 +266,7 @@ public class LayoutRemoteStagingBackgroundTaskExecutor
 
 		settingsMap.put("layoutIds", layoutIds);
 
-		return _exportImportLocalService.exportLayoutsAsFile(
+		return exportImportManager.exportLayoutsAsFile(
 			exportImportConfiguration);
 	}
 
@@ -309,9 +308,6 @@ public class LayoutRemoteStagingBackgroundTaskExecutor
 
 	@Reference
 	private ExportImportHelper _exportImportHelper;
-
-	@Reference
-	private ExportImportLocalService _exportImportLocalService;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

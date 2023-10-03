@@ -17,9 +17,9 @@ import com.liferay.exportimport.kernel.exception.RemoteExportException;
 import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.lar.MissingReferences;
+import com.liferay.exportimport.kernel.manager.ExportImportManagerUtil;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.exportimport.kernel.staging.StagingURLHelperUtil;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.exportimport.kernel.staging.constants.StagingConstants;
@@ -528,25 +528,25 @@ public class StagingLocalServiceImpl extends StagingLocalServiceBaseImpl {
 					ExportImportConfigurationConstants.
 						TYPE_PUBLISH_PORTLET_REMOTE) {
 
-				_exportImportLocalService.importPortletDataDeletions(
+				ExportImportManagerUtil.importPortletDataDeletions(
 					exportImportConfiguration, file);
 
 				missingReferences =
-					_exportImportLocalService.validateImportPortletInfo(
+					ExportImportManagerUtil.validateImportPortletInfo(
 						exportImportConfiguration, file);
 
-				_exportImportLocalService.importPortletInfo(
+				ExportImportManagerUtil.importPortletInfo(
 					exportImportConfiguration, file);
 			}
 			else {
-				_exportImportLocalService.importLayoutsDataDeletions(
+				ExportImportManagerUtil.importLayoutsDataDeletions(
 					exportImportConfiguration, file);
 
 				missingReferences =
-					_exportImportLocalService.validateImportLayoutsFile(
+					ExportImportManagerUtil.validateImportLayoutsFile(
 						exportImportConfiguration, file);
 
-				_exportImportLocalService.importLayouts(
+				ExportImportManagerUtil.importLayouts(
 					exportImportConfiguration, file);
 			}
 
@@ -1261,9 +1261,6 @@ public class StagingLocalServiceImpl extends StagingLocalServiceBaseImpl {
 	@BeanReference(type = ExportImportConfigurationLocalService.class)
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
-
-	@BeanReference(type = ExportImportLocalService.class)
-	private ExportImportLocalService _exportImportLocalService;
 
 	@BeanReference(type = GroupLocalService.class)
 	private GroupLocalService _groupLocalService;

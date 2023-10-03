@@ -15,9 +15,9 @@ import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactory;
 import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfigurationConstants;
+import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.exportimport.kernel.service.StagingLocalService;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.exportimport.kernel.staging.Staging;
@@ -194,7 +194,7 @@ public class ExportImportPerformanceTest {
 						ExportImportConfigurationConstants.TYPE_EXPORT_LAYOUT,
 						exportLayoutSettingsMap);
 
-			_exportImportLocalService.exportLayoutsAsFile(
+			_exportImportManager.exportLayoutsAsFile(
 				_exportImportConfiguration);
 		}
 	}
@@ -214,7 +214,7 @@ public class ExportImportPerformanceTest {
 					ExportImportConfigurationConstants.TYPE_EXPORT_LAYOUT,
 					exportLayoutSettingsMap);
 
-		File file = _exportImportLocalService.exportLayoutsAsFile(
+		File file = _exportImportManager.exportLayoutsAsFile(
 			_exportImportConfiguration);
 
 		try (Closeable closeable = _startTimer()) {
@@ -231,7 +231,7 @@ public class ExportImportPerformanceTest {
 						ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
 						importLayoutSettingsMap);
 
-			_exportImportLocalService.importLayouts(
+			_exportImportManager.importLayouts(
 				_exportImportConfiguration, file);
 		}
 	}
@@ -586,7 +586,7 @@ public class ExportImportPerformanceTest {
 		_exportImportConfigurationSettingsMapFactory;
 
 	@Inject
-	private ExportImportLocalService _exportImportLocalService;
+	private ExportImportManager _exportImportManager;
 
 	@Inject
 	private FragmentCollectionContributorRegistry

@@ -11,9 +11,9 @@ import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfi
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.UserIdStrategy;
+import com.liferay.exportimport.kernel.manager.ExportImportManagerUtil;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
@@ -1147,7 +1147,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 						ExportImportConfigurationConstants.TYPE_EXPORT_LAYOUT,
 						exportLayoutSettingsMap);
 
-			files[0] = _exportImportLocalService.exportLayoutsAsFile(
+			files[0] = ExportImportManagerUtil.exportLayoutsAsFile(
 				exportImportConfiguration);
 		}
 
@@ -1167,7 +1167,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 						ExportImportConfigurationConstants.TYPE_EXPORT_LAYOUT,
 						exportLayoutSettingsMap);
 
-			files[1] = _exportImportLocalService.exportLayoutsAsFile(
+			files[1] = ExportImportManagerUtil.exportLayoutsAsFile(
 				exportImportConfiguration);
 		}
 
@@ -1251,7 +1251,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 						ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
 						importLayoutSettingsMap);
 
-			_exportImportLocalService.importLayouts(
+			ExportImportManagerUtil.importLayouts(
 				exportImportConfiguration, privateLayoutsFile);
 		}
 
@@ -1268,7 +1268,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 						ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
 						importLayoutSettingsMap);
 
-			_exportImportLocalService.importLayouts(
+			ExportImportManagerUtil.importLayouts(
 				exportImportConfiguration, publicLayoutsFile);
 		}
 	}
@@ -1437,9 +1437,6 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	@BeanReference(type = ExportImportConfigurationLocalService.class)
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
-
-	@BeanReference(type = ExportImportLocalService.class)
-	private ExportImportLocalService _exportImportLocalService;
 
 	@BeanReference(type = GroupLocalService.class)
 	private GroupLocalService _groupLocalService;

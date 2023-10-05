@@ -15,9 +15,9 @@ import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.image.ImageToolUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.image.ImageBag;
-import com.liferay.portal.kernel.image.ImageTool;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -284,7 +284,7 @@ public class AMThumbnailsOSGiCommands {
 					DLPreviewableProcessor.REPOSITORY_ID, fileName,
 					StringPool.BLANK));
 
-			ImageBag imageBag = _imageTool.read(bytes);
+			ImageBag imageBag = ImageToolUtil.read(bytes);
 
 			RenderedImage renderedImage = imageBag.getRenderedImage();
 
@@ -315,9 +315,6 @@ public class AMThumbnailsOSGiCommands {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
-
-	@Reference
-	private ImageTool _imageTool;
 
 	@Reference(target = "(default=true)")
 	private Store _store;

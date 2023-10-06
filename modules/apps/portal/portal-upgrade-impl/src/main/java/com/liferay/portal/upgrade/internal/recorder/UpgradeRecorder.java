@@ -9,6 +9,7 @@ import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -30,11 +31,7 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.ThreadContext;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Luis Ortiz
@@ -163,26 +160,13 @@ public class UpgradeRecorder {
 		}
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_serviceTracker = new ServiceTracker<>(
-			bundleContext, ReleaseManager.class, null);
-
-		_serviceTracker.open();
-	}
-
-	@Deactivate
-	protected void deactivate(BundleContext bundleContext) {
-		_serviceTracker.close();
-	}
-
 	private String _calculateResult() {
 		if (!_errorMessages.isEmpty()) {
 			return "failure";
 		}
 
 		try {
-			ReleaseManager releaseManager = _serviceTracker.getService();
+			ReleaseManager releaseManager = _releaseManagerSnapshot.get();
 
 			if (!releaseManager.isUpgraded()) {
 				return "unresolved";
@@ -310,6 +294,8 @@ public class UpgradeRecorder {
 
 	private static final Map<String, Map<String, Integer>> _errorMessages =
 		new ConcurrentHashMap<>();
+	private static final Snapshot<ReleaseManager> _releaseManagerSnapshot =
+		new Snapshot<>(UpgradeRecorder.class, ReleaseManager.class, null, true);
 	private static String _result;
 	private static final Map<String, SchemaVersions> _schemaVersionsMap =
 		new ConcurrentHashMap<>();
@@ -331,8 +317,6 @@ public class UpgradeRecorder {
 			_type = "not enabled";
 		}
 	}
-
-	private ServiceTracker<ReleaseManager, ReleaseManager> _serviceTracker;
 
 	private class SchemaVersions {
 

@@ -48,10 +48,10 @@ public class SnapshotTest {
 	public static void setUpClass() {
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
-		Bundle bundle = bundleContext.getBundle();
+		_bundle = bundleContext.getBundle();
 
 		ReflectionTestUtil.setFieldValue(
-			bundle, "bundleContext",
+			_bundle, "bundleContext",
 			ProxyUtil.newDelegateProxyInstance(
 				BundleContext.class.getClassLoader(), BundleContext.class,
 				new Object() {
@@ -61,7 +61,7 @@ public class SnapshotTest {
 							throw new IllegalStateException();
 						}
 
-						return bundle;
+						return _bundle;
 					}
 
 				},
@@ -70,7 +70,7 @@ public class SnapshotTest {
 		Mockito.when(
 			FrameworkUtil.getBundle(Mockito.any())
 		).thenReturn(
-			bundle
+			_bundle
 		);
 	}
 
@@ -257,6 +257,34 @@ public class SnapshotTest {
 	}
 
 	@Test
+	public void testNotFoundBundle() {
+		try {
+			Mockito.when(
+				FrameworkUtil.getBundle(Mockito.any())
+			).thenReturn(
+				null
+			);
+
+			Snapshot<TestService<String>> snapshot = new Snapshot<>(
+				SnapshotTest.class, Snapshot.cast(TestService.class));
+
+			snapshot.get();
+
+			Assert.fail();
+		}
+		catch (Exception exception) {
+			Assert.assertSame(NullPointerException.class, exception.getClass());
+		}
+		finally {
+			Mockito.when(
+				FrameworkUtil.getBundle(Mockito.any())
+			).thenReturn(
+				_bundle
+			);
+		}
+	}
+
+	@Test
 	public void testStaticWithFilter() {
 		Snapshot<TestService<String>> snapshot1 = new Snapshot<>(
 			SnapshotTest.class, Snapshot.cast(TestService.class),
@@ -343,6 +371,7 @@ public class SnapshotTest {
 		Assert.assertNull(snapshot2.get());
 	}
 
+	private static Bundle _bundle;
 	private static final MockedStatic<FrameworkUtil>
 		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
 	private static final AtomicBoolean _valid = new AtomicBoolean(true);

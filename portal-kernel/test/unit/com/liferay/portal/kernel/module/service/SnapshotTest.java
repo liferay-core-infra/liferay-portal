@@ -268,12 +268,19 @@ public class SnapshotTest {
 			Snapshot<TestService<String>> snapshot = new Snapshot<>(
 				SnapshotTest.class, Snapshot.cast(TestService.class));
 
-			snapshot.get();
+			Assert.assertNull(snapshot.get());
 
-			Assert.fail();
-		}
-		catch (Exception exception) {
-			Assert.assertSame(NullPointerException.class, exception.getClass());
+			BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+			TestService<String> testService = new TestService<>();
+
+			ServiceRegistration<?> serviceRegistration =
+				bundleContext.registerService(
+					TestService.class, testService, null);
+
+			Assert.assertSame(testService, snapshot.get());
+
+			serviceRegistration.unregister();
 		}
 		finally {
 			Mockito.when(

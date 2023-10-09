@@ -3,6 +3,7 @@ dependencies {
 	compileOnly group: "javax.portlet", name: "portlet-api", version: "3.0.1"
 	compileOnly group: "javax.ws.rs", name: "javax.ws.rs-api", version: "2.1"
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.http.servlet-api", version: "1.1.2"
+	compileOnly project(":apps:expando:expando-api")
 	compileOnly project(":apps:message-boards:message-boards-api")
 	compileOnly project(":apps:portal-odata:portal-odata-api")
 	compileOnly project(":apps:portal-search:portal-search-api")

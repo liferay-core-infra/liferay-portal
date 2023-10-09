@@ -47,6 +47,262 @@ public class ExpandoValueLocalServiceWrapper
 		return _expandoValueLocalService.addExpandoValue(expandoValue);
 	}
 
+	@Override
+	public ExpandoValue addValue(
+			long classNameId, long tableId, long columnId, long classPK,
+			String data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			classNameId, tableId, columnId, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, boolean data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, boolean[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Date data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Date[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, double data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, double[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, float data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, float[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, int data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, int[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK,
+			com.liferay.portal.kernel.json.JSONObject dataJSONObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK,
+			dataJSONObject);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, long data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, long[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK,
+			java.util.Map<java.util.Locale, ?> dataMap,
+			java.util.Locale defaultLocale)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, dataMap,
+			defaultLocale);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Number data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Number[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Object data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, short data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, short[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public ExpandoValue addValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public void addValues(
+			long classNameId, long tableId,
+			java.util.List<com.liferay.expando.model.ExpandoColumn> columns,
+			long classPK, java.util.Map<String, String> data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoValueLocalService.addValues(
+			classNameId, tableId, columns, classPK, data);
+	}
+
+	@Override
+	public void addValues(
+			long companyId, long classNameId, String tableName, long classPK,
+			java.util.Map<String, java.io.Serializable> attributes)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoValueLocalService.addValues(
+			companyId, classNameId, tableName, classPK, attributes);
+	}
+
+	@Override
+	public void addValues(
+			long companyId, String className, String tableName, long classPK,
+			java.util.Map<String, java.io.Serializable> attributes)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoValueLocalService.addValues(
+			companyId, className, tableName, classPK, attributes);
+	}
+
 	/**
 	 * Creates a new expando value with the primary key. Does not add the expando value to the database.
 	 *
@@ -67,6 +323,11 @@ public class ExpandoValueLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _expandoValueLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void deleteColumnValues(long columnId) {
+		_expandoValueLocalService.deleteColumnValues(columnId);
 	}
 
 	/**
@@ -111,6 +372,65 @@ public class ExpandoValueLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _expandoValueLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public void deleteRowValues(long rowId) {
+		_expandoValueLocalService.deleteRowValues(rowId);
+	}
+
+	@Override
+	public void deleteTableValues(long tableId) {
+		_expandoValueLocalService.deleteTableValues(tableId);
+	}
+
+	@Override
+	public void deleteValue(ExpandoValue value) {
+		_expandoValueLocalService.deleteValue(value);
+	}
+
+	@Override
+	public void deleteValue(long valueId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoValueLocalService.deleteValue(valueId);
+	}
+
+	@Override
+	public void deleteValue(long columnId, long rowId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoValueLocalService.deleteValue(columnId, rowId);
+	}
+
+	@Override
+	public void deleteValue(
+			long companyId, long classNameId, String tableName,
+			String columnName, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoValueLocalService.deleteValue(
+			companyId, classNameId, tableName, columnName, classPK);
+	}
+
+	@Override
+	public void deleteValue(
+			long companyId, String className, String tableName,
+			String columnName, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_expandoValueLocalService.deleteValue(
+			companyId, className, tableName, columnName, classPK);
+	}
+
+	@Override
+	public void deleteValues(long classNameId, long classPK) {
+		_expandoValueLocalService.deleteValues(classNameId, classPK);
+	}
+
+	@Override
+	public void deleteValues(String className, long classPK) {
+		_expandoValueLocalService.deleteValues(className, classPK);
 	}
 
 	@Override
@@ -227,6 +547,344 @@ public class ExpandoValueLocalServiceWrapper
 		return _expandoValueLocalService.getActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<ExpandoValue> getColumnValues(
+		long columnId, int start, int end) {
+
+		return _expandoValueLocalService.getColumnValues(columnId, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getColumnValues(
+		long companyId, long classNameId, String tableName, String columnName,
+		int start, int end) {
+
+		return _expandoValueLocalService.getColumnValues(
+			companyId, classNameId, tableName, columnName, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getColumnValues(
+		long companyId, long classNameId, String tableName, String columnName,
+		String data, int start, int end) {
+
+		return _expandoValueLocalService.getColumnValues(
+			companyId, classNameId, tableName, columnName, data, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getColumnValues(
+		long companyId, String className, String tableName, String columnName,
+		int start, int end) {
+
+		return _expandoValueLocalService.getColumnValues(
+			companyId, className, tableName, columnName, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getColumnValues(
+		long companyId, String className, String tableName, String columnName,
+		String data, int start, int end) {
+
+		return _expandoValueLocalService.getColumnValues(
+			companyId, className, tableName, columnName, data, start, end);
+	}
+
+	@Override
+	public int getColumnValuesCount(long columnId) {
+		return _expandoValueLocalService.getColumnValuesCount(columnId);
+	}
+
+	@Override
+	public int getColumnValuesCount(
+		long companyId, long classNameId, String tableName, String columnName) {
+
+		return _expandoValueLocalService.getColumnValuesCount(
+			companyId, classNameId, tableName, columnName);
+	}
+
+	@Override
+	public int getColumnValuesCount(
+		long companyId, long classNameId, String tableName, String columnName,
+		String data) {
+
+		return _expandoValueLocalService.getColumnValuesCount(
+			companyId, classNameId, tableName, columnName, data);
+	}
+
+	@Override
+	public int getColumnValuesCount(
+		long companyId, String className, String tableName, String columnName) {
+
+		return _expandoValueLocalService.getColumnValuesCount(
+			companyId, className, tableName, columnName);
+	}
+
+	@Override
+	public int getColumnValuesCount(
+		long companyId, String className, String tableName, String columnName,
+		String data) {
+
+		return _expandoValueLocalService.getColumnValuesCount(
+			companyId, className, tableName, columnName, data);
+	}
+
+	@Override
+	public java.util.Map<String, java.io.Serializable> getData(
+			long companyId, String className, String tableName,
+			java.util.Collection<String> columnNames, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnNames, classPK);
+	}
+
+	@Override
+	public java.io.Serializable getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK);
+	}
+
+	@Override
+	public boolean getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, boolean defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public boolean[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, boolean[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public java.util.Date getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Date defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public java.util.Date[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Date[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public double getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, double defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public double[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, double[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public float getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, float defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public float[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, float[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public int getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, int defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public int[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, int[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK,
+			com.liferay.portal.kernel.json.JSONObject defaultDataJSONObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK,
+			defaultDataJSONObject);
+	}
+
+	@Override
+	public long getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, long defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public long[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, long[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public java.util.Map<?, ?> getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, java.util.Map<?, ?> defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public Number getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Number defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public Number[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, Number[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public short getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, short defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public short[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, short[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public String getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public String[] getData(
+			long companyId, String className, String tableName,
+			String columnName, long classPK, String[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getDefaultTableColumnValues(
+		long companyId, long classNameId, String columnName, int start,
+		int end) {
+
+		return _expandoValueLocalService.getDefaultTableColumnValues(
+			companyId, classNameId, columnName, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getDefaultTableColumnValues(
+		long companyId, String className, String columnName, int start,
+		int end) {
+
+		return _expandoValueLocalService.getDefaultTableColumnValues(
+			companyId, className, columnName, start, end);
+	}
+
+	@Override
+	public int getDefaultTableColumnValuesCount(
+		long companyId, long classNameId, String columnName) {
+
+		return _expandoValueLocalService.getDefaultTableColumnValuesCount(
+			companyId, classNameId, columnName);
+	}
+
+	@Override
+	public int getDefaultTableColumnValuesCount(
+		long companyId, String className, String columnName) {
+
+		return _expandoValueLocalService.getDefaultTableColumnValuesCount(
+			companyId, className, columnName);
+	}
+
 	/**
 	 * Returns the expando value with the primary key.
 	 *
@@ -293,6 +951,94 @@ public class ExpandoValueLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _expandoValueLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getRowValues(long rowId) {
+		return _expandoValueLocalService.getRowValues(rowId);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getRowValues(
+		long rowId, int start, int end) {
+
+		return _expandoValueLocalService.getRowValues(rowId, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getRowValues(
+		long companyId, long classNameId, String tableName, long classPK,
+		int start, int end) {
+
+		return _expandoValueLocalService.getRowValues(
+			companyId, classNameId, tableName, classPK, start, end);
+	}
+
+	@Override
+	public java.util.List<ExpandoValue> getRowValues(
+		long companyId, String className, String tableName, long classPK,
+		int start, int end) {
+
+		return _expandoValueLocalService.getRowValues(
+			companyId, className, tableName, classPK, start, end);
+	}
+
+	@Override
+	public int getRowValuesCount(long rowId) {
+		return _expandoValueLocalService.getRowValuesCount(rowId);
+	}
+
+	@Override
+	public int getRowValuesCount(
+		long companyId, long classNameId, String tableName, long classPK) {
+
+		return _expandoValueLocalService.getRowValuesCount(
+			companyId, classNameId, tableName, classPK);
+	}
+
+	@Override
+	public int getRowValuesCount(
+		long companyId, String className, String tableName, long classPK) {
+
+		return _expandoValueLocalService.getRowValuesCount(
+			companyId, className, tableName, classPK);
+	}
+
+	@Override
+	public ExpandoValue getValue(long valueId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getValue(valueId);
+	}
+
+	@Override
+	public ExpandoValue getValue(long columnId, long rowId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.getValue(columnId, rowId);
+	}
+
+	@Override
+	public ExpandoValue getValue(long tableId, long columnId, long classPK) {
+		return _expandoValueLocalService.getValue(tableId, columnId, classPK);
+	}
+
+	@Override
+	public ExpandoValue getValue(
+		long companyId, long classNameId, String tableName, String columnName,
+		long classPK) {
+
+		return _expandoValueLocalService.getValue(
+			companyId, classNameId, tableName, columnName, classPK);
+	}
+
+	@Override
+	public ExpandoValue getValue(
+		long companyId, String className, String tableName, String columnName,
+		long classPK) {
+
+		return _expandoValueLocalService.getValue(
+			companyId, className, tableName, columnName, classPK);
 	}
 
 	/**

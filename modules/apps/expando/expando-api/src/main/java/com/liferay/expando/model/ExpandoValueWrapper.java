@@ -8,6 +8,9 @@ package com.liferay.expando.model;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
+import java.io.Serializable;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -116,6 +119,27 @@ public class ExpandoValueWrapper
 		return wrap(model.cloneWithOriginalValues());
 	}
 
+	@Override
+	public java.util.List<java.util.Locale> getAvailableLocales()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getAvailableLocales();
+	}
+
+	@Override
+	public boolean getBoolean()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getBoolean();
+	}
+
+	@Override
+	public boolean[] getBooleanArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getBooleanArray();
+	}
+
 	/**
 	 * Returns the fully qualified class name of this expando value.
 	 *
@@ -144,6 +168,13 @@ public class ExpandoValueWrapper
 	@Override
 	public long getClassPK() {
 		return model.getClassPK();
+	}
+
+	@Override
+	public ExpandoColumn getColumn()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getColumn();
 	}
 
 	/**
@@ -186,6 +217,90 @@ public class ExpandoValueWrapper
 		return model.getData();
 	}
 
+	@Override
+	public Date getDate()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getDate();
+	}
+
+	@Override
+	public Date[] getDateArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getDateArray();
+	}
+
+	@Override
+	public java.util.Locale getDefaultLocale()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getDefaultLocale();
+	}
+
+	@Override
+	public double getDouble()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getDouble();
+	}
+
+	@Override
+	public double[] getDoubleArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getDoubleArray();
+	}
+
+	@Override
+	public float getFloat()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getFloat();
+	}
+
+	@Override
+	public float[] getFloatArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getFloatArray();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject getGeolocationJSONObject()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getGeolocationJSONObject();
+	}
+
+	@Override
+	public int getInteger()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getInteger();
+	}
+
+	@Override
+	public int[] getIntegerArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getIntegerArray();
+	}
+
+	@Override
+	public long getLong()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getLong();
+	}
+
+	@Override
+	public long[] getLongArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getLongArray();
+	}
+
 	/**
 	 * Returns the mvcc version of this expando value.
 	 *
@@ -194,6 +309,20 @@ public class ExpandoValueWrapper
 	@Override
 	public long getMvccVersion() {
 		return model.getMvccVersion();
+	}
+
+	@Override
+	public Number getNumber()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getNumber();
+	}
+
+	@Override
+	public Number[] getNumberArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getNumberArray();
 	}
 
 	/**
@@ -214,6 +343,69 @@ public class ExpandoValueWrapper
 	@Override
 	public long getRowId() {
 		return model.getRowId();
+	}
+
+	@Override
+	public Serializable getSerializable()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getSerializable();
+	}
+
+	@Override
+	public short getShort()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getShort();
+	}
+
+	@Override
+	public short[] getShortArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getShortArray();
+	}
+
+	@Override
+	public String getString()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getString();
+	}
+
+	@Override
+	public String getString(java.util.Locale locale)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getString(locale);
+	}
+
+	@Override
+	public String[] getStringArray()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getStringArray();
+	}
+
+	@Override
+	public String[] getStringArray(java.util.Locale locale)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getStringArray(locale);
+	}
+
+	@Override
+	public Map<java.util.Locale, String[]> getStringArrayMap()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getStringArrayMap();
+	}
+
+	@Override
+	public Map<java.util.Locale, String> getStringMap()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getStringMap();
 	}
 
 	/**
@@ -242,6 +434,20 @@ public class ExpandoValueWrapper
 	}
 
 	@Override
+	public void setBoolean(boolean data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setBoolean(data);
+	}
+
+	@Override
+	public void setBooleanArray(boolean[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setBooleanArray(data);
+	}
+
+	@Override
 	public void setClassName(String className) {
 		model.setClassName(className);
 	}
@@ -264,6 +470,11 @@ public class ExpandoValueWrapper
 	@Override
 	public void setClassPK(long classPK) {
 		model.setClassPK(classPK);
+	}
+
+	@Override
+	public void setColumn(ExpandoColumn column) {
+		model.setColumn(column);
 	}
 
 	/**
@@ -306,6 +517,84 @@ public class ExpandoValueWrapper
 		model.setData(data);
 	}
 
+	@Override
+	public void setDate(Date data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setDate(data);
+	}
+
+	@Override
+	public void setDateArray(Date[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setDateArray(data);
+	}
+
+	@Override
+	public void setDouble(double data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setDouble(data);
+	}
+
+	@Override
+	public void setDoubleArray(double[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setDoubleArray(data);
+	}
+
+	@Override
+	public void setFloat(float data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setFloat(data);
+	}
+
+	@Override
+	public void setFloatArray(float[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setFloatArray(data);
+	}
+
+	@Override
+	public void setGeolocationJSONObject(
+			com.liferay.portal.kernel.json.JSONObject dataJSONObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setGeolocationJSONObject(dataJSONObject);
+	}
+
+	@Override
+	public void setInteger(int data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setInteger(data);
+	}
+
+	@Override
+	public void setIntegerArray(int[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setIntegerArray(data);
+	}
+
+	@Override
+	public void setLong(long data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setLong(data);
+	}
+
+	@Override
+	public void setLongArray(long[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setLongArray(data);
+	}
+
 	/**
 	 * Sets the mvcc version of this expando value.
 	 *
@@ -314,6 +603,20 @@ public class ExpandoValueWrapper
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		model.setMvccVersion(mvccVersion);
+	}
+
+	@Override
+	public void setNumber(Number data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setNumber(data);
+	}
+
+	@Override
+	public void setNumberArray(Number[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setNumberArray(data);
 	}
 
 	/**
@@ -334,6 +637,70 @@ public class ExpandoValueWrapper
 	@Override
 	public void setRowId(long rowId) {
 		model.setRowId(rowId);
+	}
+
+	@Override
+	public void setShort(short data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setShort(data);
+	}
+
+	@Override
+	public void setShortArray(short[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setShortArray(data);
+	}
+
+	@Override
+	public void setString(String data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setString(data);
+	}
+
+	@Override
+	public void setString(
+			String data, java.util.Locale locale,
+			java.util.Locale defaultLocale)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setString(data, locale, defaultLocale);
+	}
+
+	@Override
+	public void setStringArray(String[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setStringArray(data);
+	}
+
+	@Override
+	public void setStringArray(
+			String[] data, java.util.Locale locale,
+			java.util.Locale defaultLocale)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setStringArray(data, locale, defaultLocale);
+	}
+
+	@Override
+	public void setStringArrayMap(
+			Map<java.util.Locale, String[]> dataMap,
+			java.util.Locale defaultLocale)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setStringArrayMap(dataMap, defaultLocale);
+	}
+
+	@Override
+	public void setStringMap(
+			Map<java.util.Locale, String> dataMap,
+			java.util.Locale defaultLocale)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		model.setStringMap(dataMap, defaultLocale);
 	}
 
 	/**

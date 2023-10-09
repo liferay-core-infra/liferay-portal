@@ -1,0 +1,4 @@
+buildService {
+	apiDir = "../expando-api/src/main/java"
+	testDir = "../expando-test/src/testIntegration/java"
+}

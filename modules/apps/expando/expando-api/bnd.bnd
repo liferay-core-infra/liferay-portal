@@ -8,5 +8,6 @@ Export-Package:\
 	com.liferay.expando.model,\
 	com.liferay.expando.model.adapter,\
 	com.liferay.expando.service,\
+	com.liferay.expando.service.permission,\
 	com.liferay.expando.service.persistence,\
 	com.liferay.expando.util

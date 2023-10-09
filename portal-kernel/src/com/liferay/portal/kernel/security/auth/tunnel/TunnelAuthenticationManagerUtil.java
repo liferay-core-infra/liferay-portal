@@ -5,8 +5,8 @@
 
 package com.liferay.portal.kernel.security.auth.tunnel;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.AuthException;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.net.HttpURLConnection;
 
@@ -20,24 +20,28 @@ public class TunnelAuthenticationManagerUtil {
 	public static long getUserId(HttpServletRequest httpServletRequest)
 		throws AuthException {
 
-		return _tunnelAuthenticationManager.getUserId(httpServletRequest);
+		TunnelAuthenticationManager tunnelAuthenticationManager =
+			_tunnelAuthenticationManagerSnapshot.get();
+
+		return tunnelAuthenticationManager.getUserId(httpServletRequest);
 	}
 
 	public static void setCredentials(
 			String login, HttpURLConnection httpURLConnection)
 		throws Exception {
 
-		_tunnelAuthenticationManager.setCredentials(login, httpURLConnection);
+		TunnelAuthenticationManager tunnelAuthenticationManager =
+			_tunnelAuthenticationManagerSnapshot.get();
+
+		tunnelAuthenticationManager.setCredentials(login, httpURLConnection);
 	}
 
 	private TunnelAuthenticationManagerUtil() {
 	}
 
-	private static volatile TunnelAuthenticationManager
-		_tunnelAuthenticationManager =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				TunnelAuthenticationManager.class,
-				TunnelAuthenticationManagerUtil.class,
-				"_tunnelAuthenticationManager", false, true);
+	private static final Snapshot<TunnelAuthenticationManager>
+		_tunnelAuthenticationManagerSnapshot = new Snapshot<>(
+			TunnelAuthenticationManagerUtil.class,
+			TunnelAuthenticationManager.class);
 
 }

@@ -7,8 +7,8 @@ package com.liferay.analytics.message.sender.internal.analytics.entity.model;
 
 import com.liferay.analytics.message.sender.internal.util.AnalyticsModelUtil;
 import com.liferay.analytics.message.sender.model.listener.AnalyticsEntityModel;
-import com.liferay.expando.kernel.model.ExpandoRow;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.model.ExpandoRow;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModel;

@@ -6,7 +6,7 @@
 package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.listener.AnalyticsEntityModel;
-import com.liferay.expando.kernel.model.ExpandoRow;
+import com.liferay.expando.model.ExpandoRow;
 import com.liferay.portal.kernel.model.ModelListener;
 
 import org.osgi.service.component.annotations.Component;

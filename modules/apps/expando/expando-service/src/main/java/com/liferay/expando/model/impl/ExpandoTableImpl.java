@@ -5,8 +5,24 @@
 
 package com.liferay.expando.model.impl;
 
+import com.liferay.expando.kernel.model.ExpandoTableConstants;
+
+import java.util.Objects;
+
 /**
  * @author Brian Wing Shun Chan
  */
 public class ExpandoTableImpl extends ExpandoTableBaseImpl {
+
+	@Override
+	public boolean isDefaultTable() {
+		if (Objects.equals(
+				getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 }

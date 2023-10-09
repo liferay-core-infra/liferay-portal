@@ -68,7 +68,7 @@ public class SnapshotTest {
 				bundleContext));
 
 		Mockito.when(
-			FrameworkUtil.getBundle(Mockito.any())
+			FrameworkUtil.getBundle(SnapshotTest.class)
 		).thenReturn(
 			bundle
 		);
@@ -257,6 +257,31 @@ public class SnapshotTest {
 	}
 
 	@Test
+	public void testNotFoundBundle() {
+		Mockito.when(
+			FrameworkUtil.getBundle(TestHolderClass.class)
+		).thenReturn(
+			null
+		);
+
+		Snapshot<TestService<String>> snapshot = new Snapshot<>(
+			TestHolderClass.class, Snapshot.cast(TestService.class));
+
+		Assert.assertNull(snapshot.get());
+
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		TestService<String> testService = new TestService<>();
+
+		ServiceRegistration<?> serviceRegistration =
+			bundleContext.registerService(TestService.class, testService, null);
+
+		Assert.assertSame(testService, snapshot.get());
+
+		serviceRegistration.unregister();
+	}
+
+	@Test
 	public void testStaticWithFilter() {
 		Snapshot<TestService<String>> snapshot1 = new Snapshot<>(
 			SnapshotTest.class, Snapshot.cast(TestService.class),
@@ -346,6 +371,9 @@ public class SnapshotTest {
 	private static final MockedStatic<FrameworkUtil>
 		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
 	private static final AtomicBoolean _valid = new AtomicBoolean(true);
+
+	private static class TestHolderClass {
+	}
 
 	private static class TestService<T> {
 	}

@@ -21,7 +21,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Albert Lee
  */
 @Component(
-	property = "model.class.name=com.liferay.expando.kernel.model.ExpandoColumn",
+	property = "model.class.name=com.liferay.expando.model.ExpandoColumn",
 	service = PortletProvider.class
 )
 public class ExpandoManagePortletProvider extends BasePortletProvider {

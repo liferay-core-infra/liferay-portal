@@ -20,7 +20,6 @@ import com.liferay.headless.commerce.admin.order.dto.v1_0.Order;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderItem;
 import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.converter.constants.DTOConverterConstants;
 import com.liferay.headless.commerce.admin.order.internal.dto.v1_0.util.CustomFieldsUtil;
-import com.liferay.headless.commerce.admin.order.internal.helper.v1_0.OrderItemHelper;
 import com.liferay.headless.commerce.admin.order.internal.odata.entity.v1_0.OrderItemEntityModel;
 import com.liferay.headless.commerce.admin.order.internal.util.v1_0.OrderItemUtil;
 import com.liferay.headless.commerce.admin.order.resource.v1_0.OrderItemResource;
@@ -48,7 +47,10 @@ import java.io.Serializable;
 
 import java.math.BigDecimal;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -90,7 +92,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 
 	@Override
 	public Response deleteOrderItemByExternalReferenceCode(
-			String externalReferenceCode)
+		String externalReferenceCode)
 		throws Exception {
 
 		CommerceOrderItem commerceOrderItem =
@@ -100,7 +102,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 		if (commerceOrderItem == null) {
 			throw new NoSuchOrderItemException(
 				"Unable to find order item with external reference code " +
-					externalReferenceCode);
+				externalReferenceCode);
 		}
 
 		CommerceOrder commerceOrder = _commerceOrderService.getCommerceOrder(
@@ -131,7 +133,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 
 	@Override
 	public Page<OrderItem> getOrderByExternalReferenceCodeOrderItemsPage(
-			String externalReferenceCode, Pagination pagination)
+		String externalReferenceCode, Pagination pagination)
 		throws Exception {
 
 		CommerceOrder commerceOrder =
@@ -141,7 +143,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 		if (commerceOrder == null) {
 			throw new NoSuchOrderException(
 				"Unable to find order with external reference code " +
-					externalReferenceCode);
+				externalReferenceCode);
 		}
 
 		List<CommerceOrderItem> commerceOrderItems =
@@ -153,7 +155,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 			commerceOrder.getCommerceOrderId());
 
 		return Page.of(
-			_orderItemHelper.toOrderItems(
+			_toOrderItems(
 				commerceOrderItems, contextAcceptLanguage.getPreferredLocale()),
 			pagination, totalItems);
 	}
@@ -161,10 +163,10 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 	@NestedField(parentClass = Order.class, value = "orderItems")
 	@Override
 	public Page<OrderItem> getOrderIdOrderItemsPage(
-			Long id, Pagination pagination)
+		Long id, Pagination pagination)
 		throws Exception {
 
-		return _orderItemHelper.getOrderItemsPage(
+		return _getOrderItemsPage(
 			id, contextAcceptLanguage.getPreferredLocale(), pagination);
 	}
 
@@ -175,7 +177,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 
 	@Override
 	public OrderItem getOrderItemByExternalReferenceCode(
-			String externalReferenceCode)
+		String externalReferenceCode)
 		throws Exception {
 
 		CommerceOrderItem commerceOrderItem =
@@ -185,7 +187,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 		if (commerceOrderItem == null) {
 			throw new NoSuchOrderItemException(
 				"Unable to find order item with external reference code " +
-					externalReferenceCode);
+				externalReferenceCode);
 		}
 
 		return _toOrderItem(commerceOrderItem.getCommerceOrderItemId());
@@ -193,7 +195,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 
 	@Override
 	public Page<OrderItem> getOrderItemsPage(
-			String search, Filter filter, Pagination pagination, Sort[] sorts)
+		String search, Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
 
 		return SearchUtil.search(
@@ -222,7 +224,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 
 	@Override
 	public Response patchOrderItemByExternalReferenceCode(
-			String externalReferenceCode, OrderItem orderItem)
+		String externalReferenceCode, OrderItem orderItem)
 		throws Exception {
 
 		CommerceOrderItem commerceOrderItem =
@@ -232,7 +234,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 		if (commerceOrderItem == null) {
 			throw new NoSuchOrderItemException(
 				"Unable to find order item with external reference code " +
-					externalReferenceCode);
+				externalReferenceCode);
 		}
 
 		_updateOrderItem(commerceOrderItem, orderItem);
@@ -244,7 +246,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 
 	@Override
 	public OrderItem postOrderByExternalReferenceCodeOrderItem(
-			String externalReferenceCode, OrderItem orderItem)
+		String externalReferenceCode, OrderItem orderItem)
 		throws Exception {
 
 		CommerceOrder commerceOrder =
@@ -254,7 +256,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 		if (commerceOrder == null) {
 			throw new NoSuchOrderException(
 				"Unable to find order with external reference code " +
-					externalReferenceCode);
+				externalReferenceCode);
 		}
 
 		return _addOrderItem(commerceOrder, orderItem);
@@ -294,9 +296,9 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 				getPortletResourcePermission();
 
 		if (portletResourcePermission.contains(
-				PermissionThreadLocal.getPermissionChecker(),
-				commerceOrder.getGroupId(),
-				CommerceActionKeys.MANAGE_COMMERCE_ORDER_PRICES)) {
+			PermissionThreadLocal.getPermissionChecker(),
+			commerceOrder.getGroupId(),
+			CommerceActionKeys.MANAGE_COMMERCE_ORDER_PRICES)) {
 
 			commerceOrderItem =
 				_commerceOrderItemService.updateCommerceOrderItemPrices(
@@ -361,7 +363,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 
 	@Override
 	public OrderItem putOrderItemByExternalReferenceCode(
-			String externalReferenceCode, OrderItem orderItem)
+		String externalReferenceCode, OrderItem orderItem)
 		throws Exception {
 
 		CommerceOrder commerceOrder = _commerceOrderService.getCommerceOrder(
@@ -409,9 +411,9 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 					getPortletResourcePermission();
 
 			if (portletResourcePermission.contains(
-					PermissionThreadLocal.getPermissionChecker(),
-					commerceOrder.getGroupId(),
-					CommerceActionKeys.MANAGE_COMMERCE_ORDER_PRICES)) {
+				PermissionThreadLocal.getPermissionChecker(),
+				commerceOrder.getGroupId(),
+				CommerceActionKeys.MANAGE_COMMERCE_ORDER_PRICES)) {
 
 				commerceOrderItem =
 					_commerceOrderItemService.updateCommerceOrderItemPrices(
@@ -481,7 +483,7 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 	}
 
 	private OrderItem _addOrderItem(
-			CommerceOrder commerceOrder, OrderItem orderItem)
+		CommerceOrder commerceOrder, OrderItem orderItem)
 		throws Exception {
 
 		CommerceOrderItem commerceOrderItem =
@@ -502,9 +504,9 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 				getPortletResourcePermission();
 
 		if (portletResourcePermission.contains(
-				PermissionThreadLocal.getPermissionChecker(),
-				commerceOrder.getGroupId(),
-				CommerceActionKeys.MANAGE_COMMERCE_ORDER_PRICES)) {
+			PermissionThreadLocal.getPermissionChecker(),
+			commerceOrder.getGroupId(),
+			CommerceActionKeys.MANAGE_COMMERCE_ORDER_PRICES)) {
 
 			commerceOrderItem =
 				_commerceOrderItemService.updateCommerceOrderItemPrices(
@@ -585,6 +587,28 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 			contextAcceptLanguage.getPreferredLocale());
 	}
 
+	private Page<OrderItem> _getOrderItemsPage(
+		Long id, Locale locale, Pagination pagination)
+		throws Exception {
+
+		CommerceOrder commerceOrder = _commerceOrderService.fetchCommerceOrder(
+			id);
+
+		if (commerceOrder == null) {
+			return Page.of(Collections.emptyList());
+		}
+
+		List<CommerceOrderItem> commerceOrderItems =
+			_commerceOrderItemService.getCommerceOrderItems(
+				id, pagination.getStartPosition(), pagination.getEndPosition());
+
+		int totalItems = _commerceOrderItemService.getCommerceOrderItemsCount(
+			id);
+
+		return Page.of(
+			_toOrderItems(commerceOrderItems, locale), pagination, totalItems);
+	}
+
 	private OrderItem _toOrderItem(long commerceOrderItemId) throws Exception {
 		return _orderItemDTOConverter.toDTO(
 			new DefaultDTOConverterContext(
@@ -592,8 +616,24 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 				contextAcceptLanguage.getPreferredLocale()));
 	}
 
+	private List<OrderItem> _toOrderItems(
+		List<CommerceOrderItem> commerceOrderItems, Locale locale)
+		throws Exception {
+
+		List<OrderItem> orderItems = new ArrayList<>();
+
+		for (CommerceOrderItem commerceOrderItem : commerceOrderItems) {
+			orderItems.add(
+				_orderItemDTOConverter.toDTO(
+					new DefaultDTOConverterContext(
+						commerceOrderItem.getCommerceOrderItemId(), locale)));
+		}
+
+		return orderItems;
+	}
+
 	private OrderItem _updateOrderItem(
-			CommerceOrderItem commerceOrderItem, OrderItem orderItem)
+		CommerceOrderItem commerceOrderItem, OrderItem orderItem)
 		throws Exception {
 
 		CommerceOrder commerceOrder = _commerceOrderService.getCommerceOrder(
@@ -621,9 +661,9 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 				getPortletResourcePermission();
 
 		if (portletResourcePermission.contains(
-				PermissionThreadLocal.getPermissionChecker(),
-				commerceOrder.getGroupId(),
-				CommerceActionKeys.MANAGE_COMMERCE_ORDER_PRICES)) {
+			PermissionThreadLocal.getPermissionChecker(),
+			commerceOrder.getGroupId(),
+			CommerceActionKeys.MANAGE_COMMERCE_ORDER_PRICES)) {
 
 			commerceOrderItem =
 				_commerceOrderItemService.updateCommerceOrderItemPrices(
@@ -724,9 +764,6 @@ public class OrderItemResourceImpl extends BaseOrderItemResourceImpl {
 
 	@Reference(target = DTOConverterConstants.ORDER_ITEM_DTO_CONVERTER)
 	private DTOConverter<CommerceOrderItem, OrderItem> _orderItemDTOConverter;
-
-	@Reference
-	private OrderItemHelper _orderItemHelper;
 
 	@Reference
 	private Portal _portal;

@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "dto.class.name=com.liferay.headless.commerce.admin.catalog.dto.v1_0.ProductVirtualSettings",
-	service = {DTOConverter.class, ProductVirtualSettingsDTOConverter.class}
+	service = DTOConverter.class
 )
 public class ProductVirtualSettingsDTOConverter
 	implements DTOConverter<CPDefinition, ProductVirtualSettings> {

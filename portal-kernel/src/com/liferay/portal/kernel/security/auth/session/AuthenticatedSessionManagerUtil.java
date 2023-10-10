@@ -6,7 +6,7 @@
 package com.liferay.portal.kernel.security.auth.session;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 public class AuthenticatedSessionManagerUtil {
 
 	public static AuthenticatedSessionManager getAuthenticatedSessionManager() {
-		return _authenticatedSessionManager;
+		return _authenticatedSessionManagerSnapshot.get();
 	}
 
 	public static long getAuthenticatedUserId(
@@ -26,7 +26,10 @@ public class AuthenticatedSessionManagerUtil {
 			String password, String authType)
 		throws PortalException {
 
-		return _authenticatedSessionManager.getAuthenticatedUserId(
+		AuthenticatedSessionManager authenticatedSessionManager =
+			_authenticatedSessionManagerSnapshot.get();
+
+		return authenticatedSessionManager.getAuthenticatedUserId(
 			httpServletRequest, login, password, authType);
 	}
 
@@ -36,7 +39,10 @@ public class AuthenticatedSessionManagerUtil {
 			String password, boolean rememberMe, String authType)
 		throws Exception {
 
-		_authenticatedSessionManager.login(
+		AuthenticatedSessionManager authenticatedSessionManager =
+			_authenticatedSessionManagerSnapshot.get();
+
+		authenticatedSessionManager.login(
 			httpServletRequest, httpServletResponse, login, password,
 			rememberMe, authType);
 	}
@@ -46,7 +52,10 @@ public class AuthenticatedSessionManagerUtil {
 			HttpServletResponse httpServletResponse)
 		throws Exception {
 
-		_authenticatedSessionManager.logout(
+		AuthenticatedSessionManager authenticatedSessionManager =
+			_authenticatedSessionManagerSnapshot.get();
+
+		authenticatedSessionManager.logout(
 			httpServletRequest, httpServletResponse);
 	}
 
@@ -54,22 +63,26 @@ public class AuthenticatedSessionManagerUtil {
 			HttpServletRequest httpServletRequest, HttpSession httpSession)
 		throws Exception {
 
-		return _authenticatedSessionManager.renewSession(
+		AuthenticatedSessionManager authenticatedSessionManager =
+			_authenticatedSessionManagerSnapshot.get();
+
+		return authenticatedSessionManager.renewSession(
 			httpServletRequest, httpSession);
 	}
 
 	public static void signOutSimultaneousLogins(long userId) throws Exception {
-		_authenticatedSessionManager.signOutSimultaneousLogins(userId);
+		AuthenticatedSessionManager authenticatedSessionManager =
+			_authenticatedSessionManagerSnapshot.get();
+
+		authenticatedSessionManager.signOutSimultaneousLogins(userId);
 	}
 
 	private AuthenticatedSessionManagerUtil() {
 	}
 
-	private static volatile AuthenticatedSessionManager
-		_authenticatedSessionManager =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				AuthenticatedSessionManager.class,
-				AuthenticatedSessionManagerUtil.class,
-				"_authenticatedSessionManager", false, true);
+	private static final Snapshot<AuthenticatedSessionManager>
+		_authenticatedSessionManagerSnapshot = new Snapshot<>(
+			AuthenticatedSessionManagerUtil.class,
+			AuthenticatedSessionManager.class);
 
 }

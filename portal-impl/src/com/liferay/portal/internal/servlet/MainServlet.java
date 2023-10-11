@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.model.PortletFilter;
 import com.liferay.portal.kernel.model.PortletURLListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.plugin.PluginPackage;
@@ -59,7 +60,6 @@ import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ReleaseInfo;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -598,7 +598,9 @@ public class MainServlet extends HttpServlet {
 	}
 
 	private void _checkBuildDate() {
-		if (_releaseManager == null) {
+		ReleaseManager releaseManager = _releaseManagerSnapshot.get();
+
+		if (releaseManager == null) {
 			return;
 		}
 
@@ -611,7 +613,7 @@ public class MainServlet extends HttpServlet {
 			}
 
 			if (_log.isWarnEnabled()) {
-				String message = _releaseManager.getShortStatusMessage(true);
+				String message = releaseManager.getShortStatusMessage(true);
 
 				if (Validator.isNotNull(message)) {
 					_log.warn(message);
@@ -620,7 +622,7 @@ public class MainServlet extends HttpServlet {
 				}
 			}
 
-			String message = _releaseManager.getShortStatusMessage(false);
+			String message = releaseManager.getShortStatusMessage(false);
 
 			if (Validator.isNotNull(message)) {
 				if (_log.isInfoEnabled()) {
@@ -1048,7 +1050,10 @@ public class MainServlet extends HttpServlet {
 			return false;
 		}
 
-		_inactiveRequestHandler.processInactiveRequest(
+		InactiveRequestHandler inactiveRequestHandler =
+			_inactiveRequestHandlerSnapshot.get();
+
+		inactiveRequestHandler.processInactiveRequest(
 			httpServletRequest, httpServletResponse,
 			"this-instance-is-inactive-please-contact-the-administrator");
 
@@ -1072,7 +1077,10 @@ public class MainServlet extends HttpServlet {
 			return false;
 		}
 
-		_inactiveRequestHandler.processInactiveRequest(
+		InactiveRequestHandler inactiveRequestHandler =
+			_inactiveRequestHandlerSnapshot.get();
+
+		inactiveRequestHandler.processInactiveRequest(
 			httpServletRequest, httpServletResponse,
 			"this-site-is-inactive-please-contact-the-administrator");
 
@@ -1244,7 +1252,10 @@ public class MainServlet extends HttpServlet {
 			messageKey = "the-system-is-shutdown-please-try-again-later";
 		}
 
-		_inactiveRequestHandler.processInactiveRequest(
+		InactiveRequestHandler inactiveRequestHandler =
+			_inactiveRequestHandlerSnapshot.get();
+
+		inactiveRequestHandler.processInactiveRequest(
 			httpServletRequest, httpServletResponse, messageKey);
 
 		return true;
@@ -1317,13 +1328,11 @@ public class MainServlet extends HttpServlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(MainServlet.class);
 
-	private static volatile InactiveRequestHandler _inactiveRequestHandler =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			InactiveRequestHandler.class, MainServlet.class,
-			"_inactiveRequestHandler", false);
-	private static volatile ReleaseManager _releaseManager =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			ReleaseManager.class, MainServlet.class, "_releaseManager", false);
+	private static final Snapshot<InactiveRequestHandler>
+		_inactiveRequestHandlerSnapshot = new Snapshot<>(
+			MainServlet.class, InactiveRequestHandler.class);
+	private static final Snapshot<ReleaseManager> _releaseManagerSnapshot =
+		new Snapshot<>(MainServlet.class, ReleaseManager.class);
 
 	private PortalRequestProcessor _portalRequestProcessor;
 	private final List<ServiceRegistration<?>> _serviceRegistrations =

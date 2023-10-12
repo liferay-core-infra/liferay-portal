@@ -7,8 +7,8 @@ create table ExpandoColumn (
 	tableId LONG,
 	name VARCHAR(75) null,
 	type_ INTEGER,
-	defaultData VARCHAR(75) null,
-	typeSettings VARCHAR(75) null,
+	defaultData TEXT null,
+	typeSettings TEXT null,
 	primary key (columnId, ctCollectionId)
 );
 
@@ -43,6 +43,6 @@ create table ExpandoValue (
 	rowId_ LONG,
 	classNameId LONG,
 	classPK LONG,
-	data_ VARCHAR(75) null,
+	data_ TEXT null,
 	primary key (valueId, ctCollectionId)
 );

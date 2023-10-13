@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.sharing.model.SharingEntry;
+import com.liferay.sharing.security.permission.SharingPermission;
 import com.liferay.sharing.service.SharingEntryLocalService;
 import com.liferay.sharing.web.internal.constants.SharingPortletKeys;
 import com.liferay.sharing.web.internal.constants.SharingWebKeys;
@@ -196,8 +197,9 @@ public class ViewManageCollaboratorsMVCRenderCommand
 
 		List<SharingEntryPermissionDisplay> sharingEntryPermissionDisplays =
 			_sharingHelper.getSharingEntryPermissionDisplays(
-				themeDisplay.getPermissionChecker(), classNameId, classPK,
-				themeDisplay.getScopeGroupId(), themeDisplay.getLocale());
+				themeDisplay.getPermissionChecker(), _sharingPermission,
+				classNameId, classPK, themeDisplay.getScopeGroupId(),
+				themeDisplay.getLocale());
 
 		JSONArray sharingEntryPermissionDisplaySelectOptionsJSONArray =
 			_jsonFactory.createJSONArray();
@@ -227,8 +229,10 @@ public class ViewManageCollaboratorsMVCRenderCommand
 	@Reference
 	private SharingEntryLocalService _sharingEntryLocalService;
 
+	private final SharingHelper _sharingHelper = new SharingHelper();
+
 	@Reference
-	private SharingHelper _sharingHelper;
+	private SharingPermission _sharingPermission;
 
 	@Reference
 	private UserLocalService _userLocalService;

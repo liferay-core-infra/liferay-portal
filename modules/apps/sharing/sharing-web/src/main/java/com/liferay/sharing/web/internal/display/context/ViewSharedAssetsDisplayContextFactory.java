@@ -13,7 +13,6 @@ import com.liferay.sharing.display.context.util.SharingDropdownItemFactory;
 import com.liferay.sharing.interpreter.SharingEntryInterpreterProvider;
 import com.liferay.sharing.security.permission.SharingPermission;
 import com.liferay.sharing.service.SharingEntryLocalService;
-import com.liferay.sharing.web.internal.filter.SharedAssetsFilterItemRegistry;
 import com.liferay.sharing.web.internal.servlet.taglib.ui.SharingEntryDropdownItemContributorRegistry;
 
 import javax.portlet.RenderRequest;
@@ -35,8 +34,7 @@ public class ViewSharedAssetsDisplayContextFactory {
 			_groupLocalService, _itemSelector,
 			_portal.getLiferayPortletRequest(renderRequest),
 			_portal.getLiferayPortletResponse(renderResponse),
-			_sharedAssetsFilterItemRegistry, _sharingConfigurationFactory,
-			_sharingDropdownItemFactory,
+			_sharingConfigurationFactory, _sharingDropdownItemFactory,
 			_sharingEntryDropdownItemContributorRegistry,
 			_sharingEntryInterpreterProvider::getSharingEntryInterpreter,
 			_sharingEntryLocalService, _sharingPermission);
@@ -50,9 +48,6 @@ public class ViewSharedAssetsDisplayContextFactory {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private SharedAssetsFilterItemRegistry _sharedAssetsFilterItemRegistry;
 
 	@Reference
 	private SharingConfigurationFactory _sharingConfigurationFactory;

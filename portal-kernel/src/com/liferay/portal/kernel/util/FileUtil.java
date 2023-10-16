@@ -357,10 +357,6 @@ public class FileUtil {
 		return StringPool.BLANK;
 	}
 
-	public static com.liferay.portal.kernel.util.File getFile() {
-		return _file;
-	}
-
 	public static String getMD5Checksum(File file) throws IOException {
 		try (FileInputStream fileInputStream = new FileInputStream(file)) {
 			return DigesterUtil.digestHex(Digester.MD5, fileInputStream);
@@ -856,10 +852,6 @@ public class FileUtil {
 		write(new File(pathName, fileName), s, lazy, append);
 	}
 
-	public void setFile(com.liferay.portal.kernel.util.File file) {
-		_file = file;
-	}
-
 	private static void _mkdirsParentFile(File file) throws IOException {
 		File parentFile = file.getParentFile();
 
@@ -896,7 +888,5 @@ public class FileUtil {
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(FileUtil.class);
-
-	private static com.liferay.portal.kernel.util.File _file;
 
 }

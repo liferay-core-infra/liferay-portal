@@ -466,7 +466,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 	}
 
 	/**
-	 * @see com.liferay.portal.util.FileImpl#_SAFE_FILE_NAME_1
+	 * @see FileUtil#_SAFE_FILE_NAME_1
 	 */
 	private static final String[] _SAFE_FILE_NAME_1 = {
 		StringPool.BACK_SLASH, StringPool.COLON, StringPool.GREATER_THAN,
@@ -475,7 +475,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 	};
 
 	/**
-	 * @see com.liferay.portal.util.FileImpl#_SAFE_FILE_NAME_2
+	 * @see FileImpl#_SAFE_FILE_NAME_2
 	 */
 	private static final String[] _SAFE_FILE_NAME_2 = {
 		"_BSL_", "_COL_", "_GT_", "_LT_", "_PIP_", "_QUE_", "_QUO_", "_SL_",

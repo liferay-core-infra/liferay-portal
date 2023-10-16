@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -513,7 +513,7 @@ public abstract class LazyBlobEntryLocalServiceBaseImpl
 
 			if (_useTempFile) {
 				inputStream = new AutoDeleteFileInputStream(
-					_file.createTempFile(inputStream));
+					FileUtil.createTempFile(inputStream));
 			}
 
 			return inputStream;
@@ -560,7 +560,7 @@ public abstract class LazyBlobEntryLocalServiceBaseImpl
 
 			if (_useTempFile) {
 				inputStream = new AutoDeleteFileInputStream(
-					_file.createTempFile(inputStream));
+					FileUtil.createTempFile(inputStream));
 			}
 
 			return inputStream;
@@ -651,9 +651,6 @@ public abstract class LazyBlobEntryLocalServiceBaseImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LazyBlobEntryLocalServiceBaseImpl.class);
-
-	@BeanReference(type = File.class)
-	protected File _file;
 
 	private static final InputStream _EMPTY_INPUT_STREAM =
 		new UnsyncByteArrayInputStream(new byte[0]);

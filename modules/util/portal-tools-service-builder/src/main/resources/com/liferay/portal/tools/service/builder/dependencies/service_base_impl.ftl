@@ -58,6 +58,7 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -1587,7 +1588,11 @@ import org.osgi.service.component.annotations.Reference;
 
 						if (_useTempFile) {
 							inputStream = new AutoDeleteFileInputStream(
-								_file.createTempFile(inputStream));
+								<#if serviceBuilder.isVersionGTE_7_4_0()>
+									FileUtil.createTempFile(inputStream));
+								<#else>
+									_file.createTempFile(inputStream));
+								</#if>
 						}
 
 						return inputStream;
@@ -2159,13 +2164,14 @@ import org.osgi.service.component.annotations.Reference;
 	private static final Log _log = LogFactoryUtil.getLog(${entity.name}${sessionTypeName}ServiceBaseImpl.class);
 
 	<#if lazyBlobExists>
-		<#if dependencyInjectorDS>
-			@Reference
-		<#else>
-			@BeanReference(type = File.class)
+		<#if !serviceBuilder.isVersionGTE_7_4_0()>
+			<#if dependencyInjectorDS>
+				@Reference
+			<#else>
+				@BeanReference(type = File.class)
+			</#if>
+			protected File _file;
 		</#if>
-		protected File _file;
-
 		private static final InputStream _EMPTY_INPUT_STREAM = new UnsyncByteArrayInputStream(new byte[0]);
 
 		private boolean _useTempFile;

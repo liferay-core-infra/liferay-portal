@@ -14,12 +14,23 @@ import com.liferay.portal.kernel.module.service.Snapshot;
 public class FullNameGeneratorFactory {
 
 	public static FullNameGenerator getInstance() {
-		return _fullNameGeneratorSnapshot.get();
+		FullNameGenerator fullNameGenerator = _fullNameGeneratorSnapshot.get();
+
+		if (fullNameGenerator == null) {
+			return _fullNameGenerator;
+		}
+
+		return fullNameGenerator;
+	}
+
+	public void setFullNameGenerator(FullNameGenerator fullNameGenerator) {
+		_fullNameGenerator = fullNameGenerator;
 	}
 
 	private FullNameGeneratorFactory() {
 	}
 
+	private static FullNameGenerator _fullNameGenerator;
 	private static final Snapshot<FullNameGenerator>
 		_fullNameGeneratorSnapshot = new Snapshot<>(
 			FullNameGeneratorFactory.class, FullNameGenerator.class, null,

@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import org.osgi.service.component.annotations.Activate;
@@ -81,7 +81,7 @@ public class BatchEngineImportTaskModelListener
 	}
 
 	private String _getFileName(String externalURL) {
-		String fileName = _file.getShortFileName(externalURL);
+		String fileName = FileUtil.getShortFileName(externalURL);
 
 		return fileName.replaceAll("(.+)-(.+)\\.(\\w+)", "$1.$3");
 	}
@@ -165,9 +165,6 @@ public class BatchEngineImportTaskModelListener
 
 	@Reference
 	private BatchPlannerPlanLocalService _batchPlannerPlanLocalService;
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private UserNotificationEventLocalService

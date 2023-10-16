@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -123,7 +124,7 @@ public class PortletSettingsImporter {
 			InputStream inputStream = classLoader.getResourceAsStream(
 				displayTemplateDependenciesPath + fileName);
 
-			file = _file.createTempFile(inputStream);
+			file = FileUtil.createTempFile(inputStream);
 		}
 
 		DDMTemplate ddmTemplate = _cpFileImporter.getDDMTemplate(
@@ -298,9 +299,6 @@ public class PortletSettingsImporter {
 
 	@Reference
 	private DDMFormInstanceLocalService _ddmFormInstanceLocalService;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;

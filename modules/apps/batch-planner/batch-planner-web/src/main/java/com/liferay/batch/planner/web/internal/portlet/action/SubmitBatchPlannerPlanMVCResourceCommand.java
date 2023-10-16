@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseTransactionalMVCResourc
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 
@@ -111,16 +112,16 @@ public class SubmitBatchPlannerPlanMVCResourceCommand
 					batchPlannerPlan.getBatchPlannerPlanId()));
 		}
 		finally {
-			_file.delete(importFile);
+			FileUtil.delete(importFile);
 		}
 	}
 
 	private File _toBatchPlannerFile(String fileName, InputStream inputStream)
 		throws Exception {
 
-		File file = _file.createTempFile(
-			_file.stripExtension(fileName) + StringPool.DASH,
-			_file.getExtension(fileName));
+		File file = FileUtil.createTempFile(
+			FileUtil.stripExtension(fileName) + StringPool.DASH,
+			FileUtil.getExtension(fileName));
 
 		try {
 			Files.copy(inputStream, file.toPath());
@@ -141,9 +142,6 @@ public class SubmitBatchPlannerPlanMVCResourceCommand
 
 	@Reference
 	private BatchPlannerPlanHelper _batchPlannerPlanHelper;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Portal _portal;

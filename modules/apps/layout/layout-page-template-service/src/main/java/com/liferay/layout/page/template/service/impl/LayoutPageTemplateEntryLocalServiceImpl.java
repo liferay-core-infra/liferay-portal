@@ -54,7 +54,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.ThemeLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -930,7 +930,7 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 			LayoutPageTemplateEntry.class.getName(),
 			targetLayoutPageTemplateEntryId, LayoutAdminPortletKeys.GROUP_PAGES,
 			folder.getFolderId(),
-			_file.getBytes(portletFileEntry.getContentStream()), fileName,
+			FileUtil.getBytes(portletFileEntry.getContentStream()), fileName,
 			portletFileEntry.getMimeType(), false);
 	}
 
@@ -1096,9 +1096,6 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private InfoItemServiceRegistry _infoItemServiceRegistry;

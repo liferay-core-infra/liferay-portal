@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -93,7 +94,7 @@ public class AnalyticsBatchClientImpl
 			HttpEntity httpEntity = closeableHttpResponse.getEntity();
 
 			if (httpEntity != null) {
-				return _file.createTempFile(httpEntity.getContent());
+				return FileUtil.createTempFile(httpEntity.getContent());
 			}
 		}
 		catch (Exception exception) {
@@ -190,9 +191,6 @@ public class AnalyticsBatchClientImpl
 	private static final Format _modifiedSinceHeaderDateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"EEE, dd MMM yyyy HH:mm:ss zzz");
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private JSONFactory _jsonFactory;

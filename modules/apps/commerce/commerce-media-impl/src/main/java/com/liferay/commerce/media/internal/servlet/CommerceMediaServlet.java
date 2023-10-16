@@ -47,7 +47,7 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -230,7 +230,7 @@ public class CommerceMediaServlet extends HttpServlet {
 			ServletResponseUtil.sendFile(
 				httpServletRequest, httpServletResponse,
 				fileEntry.getFileName(),
-				_file.getBytes(fileEntry.getContentStream()),
+				FileUtil.getBytes(fileEntry.getContentStream()),
 				fileEntry.getMimeType(), contentDisposition);
 		}
 		catch (Exception exception) {
@@ -325,7 +325,7 @@ public class CommerceMediaServlet extends HttpServlet {
 				ServletResponseUtil.sendFile(
 					httpServletRequest, httpServletResponse,
 					fileEntry.getFileName(),
-					_file.getBytes(fileEntry.getContentStream()),
+					FileUtil.getBytes(fileEntry.getContentStream()),
 					fileEntry.getMimeType(),
 					HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 
@@ -458,7 +458,7 @@ public class CommerceMediaServlet extends HttpServlet {
 			ServletResponseUtil.sendFile(
 				httpServletRequest, httpServletResponse,
 				fileEntry.getFileName(),
-				_file.getBytes(fileEntry.getContentStream()),
+				FileUtil.getBytes(fileEntry.getContentStream()),
 				fileEntry.getMimeType(), contentDisposition);
 		}
 		catch (PortalException portalException) {
@@ -567,7 +567,7 @@ public class CommerceMediaServlet extends HttpServlet {
 			ServletResponseUtil.sendFile(
 				httpServletRequest, httpServletResponse,
 				fileEntry.getFileName(),
-				_file.getBytes(fileEntry.getContentStream()),
+				FileUtil.getBytes(fileEntry.getContentStream()),
 				fileEntry.getMimeType(),
 				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 		}
@@ -636,9 +636,6 @@ public class CommerceMediaServlet extends HttpServlet {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private Portal _portal;

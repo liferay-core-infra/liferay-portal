@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.RegionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -185,7 +185,8 @@ public class CommerceAccountsImporter {
 					accountEntry.getParentAccountEntryId(),
 					accountEntry.getName(), accountEntry.getDescription(),
 					false, accountEntry.getDomainsArray(),
-					accountEntry.getEmailAddress(), _file.getBytes(inputStream),
+					accountEntry.getEmailAddress(),
+					FileUtil.getBytes(inputStream),
 					accountEntry.getTaxIdNumber(),
 					WorkflowConstants.STATUS_APPROVED, serviceContext);
 			}
@@ -344,9 +345,6 @@ public class CommerceAccountsImporter {
 
 	@Reference
 	private CountryLocalService _countryLocalService;
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private FriendlyURLNormalizer _friendlyURLNormalizer;

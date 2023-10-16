@@ -415,7 +415,7 @@ public class AnalyticsBatchExportImportManagerImpl
 			}
 
 			if (inputStream != null) {
-				return _file.createTempFile(inputStream);
+				return FileUtil.createTempFile(inputStream);
 			}
 		}
 		catch (Exception exception) {
@@ -618,9 +618,6 @@ public class AnalyticsBatchExportImportManagerImpl
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Http _http;

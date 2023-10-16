@@ -28,7 +28,7 @@ import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -294,7 +294,7 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 		}
 
 		return new AbstractMap.SimpleImmutableEntry<>(
-			content, _file.getExtension(fileName));
+			content, FileUtil.getExtension(fileName));
 	}
 
 	private Map.Entry<byte[], String>
@@ -307,7 +307,7 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 
 		return new AbstractMap.SimpleImmutableEntry<>(
 			unsyncByteArrayOutputStream.toByteArray(),
-			_file.getExtension(fileName));
+			FileUtil.getExtension(fileName));
 	}
 
 	private int _getImportBatchSize(long companyId) throws Exception {
@@ -570,9 +570,6 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
-
-	@Reference
-	private File _file;
 
 	private final Map<String, Integer> _itemClassBatchSizeMap = new HashMap<>();
 

@@ -107,7 +107,7 @@ public class WabDirURLStreamHandlerService
 				).build());
 
 			if (generatedJarFile != null) {
-				_file.unzip(generatedJarFile, warDir);
+				FileUtil.unzip(generatedJarFile, warDir);
 			}
 
 			uri = warDir.toURI();
@@ -211,9 +211,6 @@ public class WabDirURLStreamHandlerService
 		".*\\/(.*-(T|t)heme)\\/?.*");
 
 	private ClassLoader _classLoader;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private WabGenerator _wabGenerator;

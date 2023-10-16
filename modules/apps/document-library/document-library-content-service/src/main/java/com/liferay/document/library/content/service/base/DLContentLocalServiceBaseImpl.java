@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -416,7 +416,7 @@ public abstract class DLContentLocalServiceBaseImpl
 
 			if (_useTempFile) {
 				inputStream = new AutoDeleteFileInputStream(
-					_file.createTempFile(inputStream));
+					FileUtil.createTempFile(inputStream));
 			}
 
 			return inputStream;
@@ -526,9 +526,6 @@ public abstract class DLContentLocalServiceBaseImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLContentLocalServiceBaseImpl.class);
-
-	@Reference
-	protected File _file;
 
 	private static final InputStream _EMPTY_INPUT_STREAM =
 		new UnsyncByteArrayInputStream(new byte[0]);

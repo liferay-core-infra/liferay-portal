@@ -11,12 +11,12 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.freemarker.FreeMarkerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.ArgumentsUtil;
-import com.liferay.portal.util.FileImpl;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -327,7 +327,7 @@ public class PropertiesDocBuilder {
 	protected List<PropertiesSection> getPropertiesSections(File propertiesFile)
 		throws IOException {
 
-		String content = _fileImpl.read(propertiesFile);
+		String content = FileUtil.read(propertiesFile);
 
 		String[] sections = content.split("\n\n");
 
@@ -388,7 +388,5 @@ public class PropertiesDocBuilder {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PropertiesDocBuilder.class);
-
-	private static final FileImpl _fileImpl = FileImpl.getInstance();
 
 }

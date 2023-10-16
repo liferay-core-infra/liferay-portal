@@ -16,12 +16,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.impl.ImageImpl;
 import com.liferay.portal.module.framework.ModuleFrameworkUtil;
-import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
@@ -471,21 +471,21 @@ public class ImageToolImpl implements ImageTool {
 	public Image getImage(File file)
 		throws ImageResolutionException, IOException {
 
-		return getImage(_fileImpl.getBytes(file));
+		return getImage(FileUtil.getBytes(file));
 	}
 
 	@Override
 	public Image getImage(InputStream inputStream)
 		throws ImageResolutionException, IOException {
 
-		return getImage(_fileImpl.getBytes(inputStream, -1, true));
+		return getImage(FileUtil.getBytes(inputStream, -1, true));
 	}
 
 	@Override
 	public Image getImage(InputStream inputStream, boolean cleanUpStream)
 		throws ImageResolutionException, IOException {
 
-		return getImage(_fileImpl.getBytes(inputStream, -1, cleanUpStream));
+		return getImage(FileUtil.getBytes(inputStream, -1, cleanUpStream));
 	}
 
 	@Override
@@ -601,14 +601,14 @@ public class ImageToolImpl implements ImageTool {
 	public ImageBag read(File file)
 		throws ImageResolutionException, IOException {
 
-		return read(_fileImpl.getBytes(file));
+		return read(FileUtil.getBytes(file));
 	}
 
 	@Override
 	public ImageBag read(InputStream inputStream)
 		throws ImageResolutionException, IOException {
 
-		return read(_fileImpl.getBytes(inputStream));
+		return read(FileUtil.getBytes(inputStream));
 	}
 
 	@Override
@@ -879,8 +879,6 @@ public class ImageToolImpl implements ImageTool {
 	private static final Log _log = LogFactoryUtil.getLog(ImageToolImpl.class);
 
 	private static final ImageTool _instance = new ImageToolImpl();
-
-	private static final FileImpl _fileImpl = FileImpl.getInstance();
 
 	private Image _defaultCompanyLogo;
 	private Image _defaultOrganizationLogo;

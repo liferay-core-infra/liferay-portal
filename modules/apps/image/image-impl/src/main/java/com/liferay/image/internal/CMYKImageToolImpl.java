@@ -13,8 +13,8 @@ import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageTool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.util.FileImpl;
 
 import java.awt.image.RenderedImage;
 
@@ -42,11 +42,11 @@ public class CMYKImageToolImpl implements CMYKImageTool {
 			return null;
 		}
 
-		File inputFile = _fileImpl.createTempFile(type);
-		final File outputFile = _fileImpl.createTempFile(type);
+		File inputFile = FileUtil.createTempFile(type);
+		final File outputFile = FileUtil.createTempFile(type);
 
 		try {
-			_fileImpl.write(inputFile, bytes);
+			FileUtil.write(inputFile, bytes);
 
 			IMOperation imOperation = new IMOperation();
 
@@ -79,7 +79,7 @@ public class CMYKImageToolImpl implements CMYKImageTool {
 
 						try {
 							ImageBag imageBag = _imageTool.read(
-								_fileImpl.getBytes(outputFile));
+								FileUtil.getBytes(outputFile));
 
 							renderedImage = imageBag.getRenderedImage();
 						}
@@ -102,8 +102,8 @@ public class CMYKImageToolImpl implements CMYKImageTool {
 			_log.error(exception);
 		}
 		finally {
-			_fileImpl.delete(inputFile);
-			_fileImpl.delete(outputFile);
+			FileUtil.delete(inputFile);
+			FileUtil.delete(outputFile);
 		}
 
 		return null;
@@ -111,8 +111,6 @@ public class CMYKImageToolImpl implements CMYKImageTool {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CMYKImageToolImpl.class);
-
-	private static final FileImpl _fileImpl = FileImpl.getInstance();
 
 	@Reference
 	private ImageMagick _imageMagick;

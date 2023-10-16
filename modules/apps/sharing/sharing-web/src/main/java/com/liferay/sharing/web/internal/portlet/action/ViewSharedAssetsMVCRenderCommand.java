@@ -5,10 +5,19 @@
 
 package com.liferay.sharing.web.internal.portlet.action;
 
+import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.sharing.configuration.SharingConfigurationFactory;
+import com.liferay.sharing.display.context.util.SharingDropdownItemFactory;
+import com.liferay.sharing.interpreter.SharingEntryInterpreterProvider;
+import com.liferay.sharing.security.permission.SharingPermission;
+import com.liferay.sharing.service.SharingEntryLocalService;
 import com.liferay.sharing.web.internal.constants.SharingPortletKeys;
 import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayContext;
-import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayContextFactory;
+import com.liferay.sharing.web.internal.filter.SharedAssetsFilterItemRegistry;
+import com.liferay.sharing.web.internal.servlet.taglib.ui.SharingEntryDropdownItemContributorRegistry;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -36,15 +45,54 @@ public class ViewSharedAssetsMVCRenderCommand implements MVCRenderCommand {
 
 		renderRequest.setAttribute(
 			ViewSharedAssetsDisplayContext.class.getName(),
-			_getViewSharedAssetsDisplayContextFactory.
-				getViewSharedAssetsDisplayContext(
-					renderRequest, renderResponse));
+			_getViewSharedAssetsDisplayContext(renderRequest, renderResponse));
 
 		return "/shared_assets/view.jsp";
 	}
 
+	private ViewSharedAssetsDisplayContext _getViewSharedAssetsDisplayContext(
+		RenderRequest renderRequest, RenderResponse renderResponse) {
+
+		return new ViewSharedAssetsDisplayContext(
+			_groupLocalService, _itemSelector,
+			_portal.getLiferayPortletRequest(renderRequest),
+			_portal.getLiferayPortletResponse(renderResponse),
+			_sharedAssetsFilterItemRegistry, _sharingConfigurationFactory,
+			_sharingDropdownItemFactory,
+			_sharingEntryDropdownItemContributorRegistry,
+			_sharingEntryInterpreterProvider::getSharingEntryInterpreter,
+			_sharingEntryLocalService, _sharingPermission);
+	}
+
 	@Reference
-	private ViewSharedAssetsDisplayContextFactory
-		_getViewSharedAssetsDisplayContextFactory;
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private ItemSelector _itemSelector;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private SharedAssetsFilterItemRegistry _sharedAssetsFilterItemRegistry;
+
+	@Reference
+	private SharingConfigurationFactory _sharingConfigurationFactory;
+
+	@Reference
+	private SharingDropdownItemFactory _sharingDropdownItemFactory;
+
+	@Reference
+	private SharingEntryDropdownItemContributorRegistry
+		_sharingEntryDropdownItemContributorRegistry;
+
+	@Reference
+	private SharingEntryInterpreterProvider _sharingEntryInterpreterProvider;
+
+	@Reference
+	private SharingEntryLocalService _sharingEntryLocalService;
+
+	@Reference
+	private SharingPermission _sharingPermission;
 
 }

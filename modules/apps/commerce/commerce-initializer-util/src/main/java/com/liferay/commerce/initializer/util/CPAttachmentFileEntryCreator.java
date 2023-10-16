@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MimeTypes;
@@ -114,7 +115,7 @@ public class CPAttachmentFileEntryCreator {
 			Repository repository = _repositoryProvider.getRepository(
 				serviceContext.getScopeGroupId());
 
-			file = _file.createTempFile(inputStream);
+			file = FileUtil.createTempFile(inputStream);
 
 			fileEntry = _dlAppService.addFileEntry(
 				null, repository.getRepositoryId(),
@@ -124,7 +125,7 @@ public class CPAttachmentFileEntryCreator {
 		}
 		finally {
 			if (file != null) {
-				_file.delete(file);
+				FileUtil.delete(file);
 			}
 
 			inputStream.close();
@@ -184,9 +185,6 @@ public class CPAttachmentFileEntryCreator {
 
 	@Reference
 	private DLAppService _dlAppService;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private MimeTypes _mimeTypes;

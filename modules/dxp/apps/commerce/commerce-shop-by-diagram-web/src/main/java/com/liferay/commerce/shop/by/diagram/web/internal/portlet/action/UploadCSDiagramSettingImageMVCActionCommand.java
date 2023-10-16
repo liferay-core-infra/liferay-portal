@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -89,9 +89,6 @@ public class UploadCSDiagramSettingImageMVCActionCommand
 	private final CSDiagramSettingImageUploadResponseHandler
 		_csDiagramSettingImageUploadResponseHandler =
 			new CSDiagramSettingImageUploadResponseHandler();
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private ItemSelectorUploadResponseHandler
@@ -175,7 +172,7 @@ public class UploadCSDiagramSettingImageMVCActionCommand
 				throw new CPAttachmentFileEntrySizeException();
 			}
 
-			String extension = _file.getExtension(fileName);
+			String extension = FileUtil.getExtension(fileName);
 
 			String[] imageExtensions =
 				_csDiagramSettingImageConfiguration.imageExtensions();

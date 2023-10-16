@@ -11,6 +11,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.OSDetector;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
@@ -205,9 +206,9 @@ public class ImageMagickImpl implements ImageMagick {
 		File scaledImageFile = null;
 
 		try {
-			imageFile = _file.createTempFile(bytes);
+			imageFile = FileUtil.createTempFile(bytes);
 
-			scaledImageFile = _file.createTempFile(mimeType);
+			scaledImageFile = FileUtil.createTempFile(mimeType);
 
 			List<String> arguments = new ArrayList<>();
 
@@ -235,7 +236,7 @@ public class ImageMagickImpl implements ImageMagick {
 				_log.debug(processEvent.getException());
 			}
 
-			return _file.getBytes(scaledImageFile);
+			return FileUtil.getBytes(scaledImageFile);
 		}
 		finally {
 			if (imageFile != null) {
@@ -285,9 +286,6 @@ public class ImageMagickImpl implements ImageMagick {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ImageMagickImpl.class);
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	private String _globalSearchPath;
 

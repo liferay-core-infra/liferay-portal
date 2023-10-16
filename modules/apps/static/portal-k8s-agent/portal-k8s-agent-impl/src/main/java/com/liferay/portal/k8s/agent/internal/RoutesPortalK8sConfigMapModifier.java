@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.service.Snapshot;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalInetSocketAddressEventListener;
 import com.liferay.portal.util.PropsValues;
@@ -183,7 +184,7 @@ public class RoutesPortalK8sConfigMapModifier
 		Matcher matcher = _lxcDXPMetadataPattern.matcher(configMapName);
 
 		if (matcher.matches()) {
-			_file.deltree(virtualInstanceIdPath.toFile());
+			FileUtil.deltree(virtualInstanceIdPath.toFile());
 		}
 		else {
 			matcher = _lxcExtInitMetadataPattern.matcher(configMapName);
@@ -194,7 +195,7 @@ public class RoutesPortalK8sConfigMapModifier
 				Path projectPath = virtualInstanceIdPath.resolve(projectName);
 
 				if (Files.exists(projectPath)) {
-					_file.deltree(projectPath.toFile());
+					FileUtil.deltree(projectPath.toFile());
 				}
 			}
 		}
@@ -253,7 +254,7 @@ public class RoutesPortalK8sConfigMapModifier
 								try {
 									Path keyPath = path.resolve(key);
 
-									_file.write(
+									FileUtil.write(
 										keyPath.toFile(), value.getBytes());
 								}
 								catch (IOException ioException) {
@@ -322,7 +323,7 @@ public class RoutesPortalK8sConfigMapModifier
 				try {
 					Path keyPath = path.resolve(key);
 
-					_file.write(keyPath.toFile(), value.getBytes());
+					FileUtil.write(keyPath.toFile(), value.getBytes());
 				}
 				catch (IOException ioException) {
 					ReflectionUtil.throwException(ioException);
@@ -390,9 +391,6 @@ public class RoutesPortalK8sConfigMapModifier
 		"(.*)-lxc-dxp-metadata$");
 	private static final Pattern _lxcExtInitMetadataPattern = Pattern.compile(
 		"(.*)-lxc-ext-init-metadata$");
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Portal _portal;

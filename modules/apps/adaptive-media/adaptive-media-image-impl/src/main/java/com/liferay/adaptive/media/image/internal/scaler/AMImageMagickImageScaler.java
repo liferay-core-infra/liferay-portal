@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageTool;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.awt.image.RenderedImage;
@@ -100,7 +101,7 @@ public class AMImageMagickImageScaler implements AMImageScaler {
 		throws IOException, PortalException {
 
 		try (InputStream inputStream = fileVersion.getContentStream(false)) {
-			return _file.createTempFile(inputStream);
+			return FileUtil.createTempFile(inputStream);
 		}
 	}
 
@@ -111,15 +112,12 @@ public class AMImageMagickImageScaler implements AMImageScaler {
 		Map<String, String> properties =
 			amImageConfigurationEntry.getProperties();
 
-		return _file.createTempFile(
+		return FileUtil.createTempFile(
 			_imageMagick.scale(
-				_file.getBytes(imageFile), ImageTool.TYPE_PNG,
+				FileUtil.getBytes(imageFile), ImageTool.TYPE_PNG,
 				GetterUtil.getInteger(properties.get("max-width")),
 				GetterUtil.getInteger(properties.get("max-height"))));
 	}
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private ImageMagick _imageMagick;

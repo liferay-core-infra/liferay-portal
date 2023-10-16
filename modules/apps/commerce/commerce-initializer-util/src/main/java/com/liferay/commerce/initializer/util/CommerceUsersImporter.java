@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.UserIdMapperLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -248,7 +249,7 @@ public class CommerceUsersImporter {
 						dependenciesPath + portrait);
 				}
 
-				portraitBytes = _file.getBytes(inputStream);
+				portraitBytes = FileUtil.getBytes(inputStream);
 
 				hasPortrait = true;
 			}
@@ -467,9 +468,6 @@ public class CommerceUsersImporter {
 
 	@Reference
 	private CommerceAccountHelper _commerceAccountHelper;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private FriendlyURLNormalizer _friendlyURLNormalizer;

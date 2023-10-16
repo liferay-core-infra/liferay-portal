@@ -25,6 +25,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.multipart.BinaryFile;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
@@ -257,7 +258,7 @@ public class BatchEngineBrokerImpl implements BatchEngineBroker {
 					null, Collections.emptyMap()));
 		}
 		finally {
-			_file.delete(file);
+			FileUtil.delete(file);
 		}
 	}
 
@@ -272,9 +273,6 @@ public class BatchEngineBrokerImpl implements BatchEngineBroker {
 
 	@Reference
 	private ExportTaskResource _exportTaskResource;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private ImportTaskResource _importTaskResource;

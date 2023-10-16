@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
@@ -84,9 +84,6 @@ public class UploadTempAttachmentMVCActionCommand extends BaseMVCActionCommand {
 	private final AttachmentsUploadResponseHandler
 		_attachmentsUploadResponseHandler =
 			new AttachmentsUploadResponseHandler();
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private ItemSelectorUploadResponseHandler
@@ -235,7 +232,7 @@ public class UploadTempAttachmentMVCActionCommand extends BaseMVCActionCommand {
 				throw new CPAttachmentFileEntrySizeException();
 			}
 
-			String extension = _file.getExtension(fileName);
+			String extension = FileUtil.getExtension(fileName);
 
 			String[] imageExtensions =
 				_attachmentsConfiguration.imageExtensions();

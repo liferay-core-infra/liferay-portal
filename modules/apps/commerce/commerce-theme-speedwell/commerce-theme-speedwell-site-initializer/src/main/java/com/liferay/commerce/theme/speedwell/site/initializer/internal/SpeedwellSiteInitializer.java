@@ -87,6 +87,7 @@ import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -904,7 +905,7 @@ public class SpeedwellSiteInitializer implements SiteInitializer {
 		File file = null;
 
 		try {
-			file = _file.createTempFile(inputStream);
+			file = FileUtil.createTempFile(inputStream);
 
 			String mimeType = MimeTypesUtil.getContentType(file);
 
@@ -918,7 +919,7 @@ public class SpeedwellSiteInitializer implements SiteInitializer {
 		}
 		finally {
 			if (file != null) {
-				_file.delete(file);
+				FileUtil.delete(file);
 			}
 		}
 	}
@@ -948,7 +949,7 @@ public class SpeedwellSiteInitializer implements SiteInitializer {
 			SpeedwellDependencyResolverUtil.getImageDependencyPath() +
 				"Speedwell_Logo.png");
 
-		File file = _file.createTempFile(inputStream);
+		File file = FileUtil.createTempFile(inputStream);
 
 		_cpFileImporter.updateLogo(file, false, true, serviceContext);
 		_cpFileImporter.updateLogo(file, true, true, serviceContext);
@@ -1085,9 +1086,6 @@ public class SpeedwellSiteInitializer implements SiteInitializer {
 
 	@Reference
 	private DLImporter _dlImporter;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

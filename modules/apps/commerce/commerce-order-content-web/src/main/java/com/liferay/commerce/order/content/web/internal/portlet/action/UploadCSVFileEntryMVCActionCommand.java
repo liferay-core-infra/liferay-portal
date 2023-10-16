@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UniqueFileNameProvider;
@@ -73,9 +73,6 @@ public class UploadCSVFileEntryMVCActionCommand extends BaseMVCActionCommand {
 	private DLValidator _dlValidator;
 
 	@Reference
-	private File _file;
-
-	@Reference
 	private ItemSelectorUploadResponseHandler
 		_itemSelectorUploadResponseHandler;
 
@@ -102,7 +99,7 @@ public class UploadCSVFileEntryMVCActionCommand extends BaseMVCActionCommand {
 				uploadPortletRequest.getContentType(_parameterName),
 				uploadPortletRequest.getSize(_parameterName));
 
-			String extension = _file.getExtension(fileName);
+			String extension = FileUtil.getExtension(fileName);
 
 			if (!extension.equals("csv")) {
 				throw new FileExtensionException(

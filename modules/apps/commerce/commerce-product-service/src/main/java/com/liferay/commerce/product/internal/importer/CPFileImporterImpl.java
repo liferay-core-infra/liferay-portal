@@ -63,6 +63,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ThemeLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -427,7 +428,7 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 			InputStream inputStream = classLoader.getResourceAsStream(filePath);
 
-			byte[] byteArray = _file.getBytes(inputStream);
+			byte[] byteArray = FileUtil.getBytes(inputStream);
 
 			layout = _layoutLocalService.updateIconImage(
 				layout.getPlid(), byteArray);
@@ -601,7 +602,7 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 		String mimeType = MimeTypesUtil.getContentType(fileName);
 
-		byte[] byteArray = _file.getBytes(inputStream);
+		byte[] byteArray = FileUtil.getBytes(inputStream);
 
 		return _dlAppLocalService.addFileEntry(
 			null, serviceContext.getUserId(), serviceContext.getScopeGroupId(),
@@ -1015,9 +1016,6 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private FriendlyURLNormalizer _friendlyURLNormalizer;

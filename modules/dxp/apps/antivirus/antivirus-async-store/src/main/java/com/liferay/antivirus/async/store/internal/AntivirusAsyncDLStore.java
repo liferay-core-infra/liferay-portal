@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -110,9 +111,9 @@ public class AntivirusAsyncDLStore implements DLStore {
 		File tempFile = null;
 
 		try {
-			tempFile = _file.createTempFile();
+			tempFile = FileUtil.createTempFile();
 
-			_file.write(tempFile, inputStream1);
+			FileUtil.write(tempFile, inputStream1);
 
 			try (InputStream inputStream2 = new FileInputStream(tempFile)) {
 				_store.addFile(
@@ -382,9 +383,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 
 	@Reference
 	private DLValidator _dlValidator;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference(target = "(default=true)")
 	private Store _store;

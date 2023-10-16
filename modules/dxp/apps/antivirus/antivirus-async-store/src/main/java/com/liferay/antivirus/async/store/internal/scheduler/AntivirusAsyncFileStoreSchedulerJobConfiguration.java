@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.io.IOException;
@@ -193,11 +193,11 @@ public class AntivirusAsyncFileStoreSchedulerJobConfiguration
 				relativePath.subpath(0, relativePath.getNameCount() - 1));
 		}
 
-		String fileExtension = _file.getExtension(fileName);
+		String fileExtension = FileUtil.getExtension(fileName);
 
 		if (fileExtension.equals("afsh")) {
 			fileExtension = StringPool.BLANK;
-			fileName = _file.stripExtension(fileName);
+			fileName = FileUtil.stripExtension(fileName);
 		}
 
 		if (!fileNameFragment.isEmpty()) {
@@ -259,9 +259,6 @@ public class AntivirusAsyncFileStoreSchedulerJobConfiguration
 	@Reference
 	private AntivirusAsyncEventListenerManager
 		_antivirusAsyncEventListenerManager;
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private MessageBus _messageBus;

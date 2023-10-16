@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -205,7 +205,7 @@ public class EditAccountEntryMVCActionCommand
 
 		FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
 
-		return _file.getBytes(fileEntry.getContentStream());
+		return FileUtil.getBytes(fileEntry.getContentStream());
 	}
 
 	private boolean _isAllowUpdateDomains(String type) {
@@ -229,9 +229,6 @@ public class EditAccountEntryMVCActionCommand
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private Portal _portal;

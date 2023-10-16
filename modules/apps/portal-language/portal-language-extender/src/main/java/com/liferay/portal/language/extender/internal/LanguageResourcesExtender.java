@@ -144,12 +144,13 @@ public class LanguageResourcesExtender
 
 			String languageId = StringPool.BLANK;
 
-			int languageIdIndex = path.length() + name.length();
+			index = StringUtil.indexOfAny(
+				urlPath, new char[] {CharPool.UNDERLINE}, path.length(),
+				urlPath.length());
 
-			if (urlPath.charAt(languageIdIndex + 1) == CharPool.UNDERLINE) {
+			if (index > -1) {
 				languageId = urlPath.substring(
-					languageIdIndex + 2,
-					urlPath.length() - ".properties".length());
+					index + 1, urlPath.length() - ".properties".length());
 			}
 
 			Locale locale = LocaleUtil.fromLanguageId(languageId, false);

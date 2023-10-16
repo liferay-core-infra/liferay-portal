@@ -9,10 +9,10 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.util.FileImpl;
 
 import java.io.File;
 import java.io.InputStream;
@@ -127,7 +127,7 @@ public class PluginsGitSvnSyncer {
 		throws Exception {
 
 		for (String pluginType : _PLUGIN_TYPES) {
-			String[] dirNames = _fileImpl.listDirs(srcDirName + pluginType);
+			String[] dirNames = FileUtil.listDirs(srcDirName + pluginType);
 
 			for (String dirName : dirNames) {
 				if (dirName.equals(".svn")) {
@@ -150,8 +150,8 @@ public class PluginsGitSvnSyncer {
 
 		File gitIgnoreFile = new File(destDirName + dirName + ".gitignore");
 
-		if (!_fileImpl.exists(srcDirName + dirName + ".svn")) {
-			_fileImpl.delete(gitIgnoreFile);
+		if (!FileUtil.exists(srcDirName + dirName + ".svn")) {
+			FileUtil.delete(gitIgnoreFile);
 
 			return;
 		}
@@ -189,12 +189,12 @@ public class PluginsGitSvnSyncer {
 				}
 			}
 
-			_fileImpl.write(
+			FileUtil.write(
 				destDirName + dirName + ".gitignore",
 				StringUtil.merge(ignoresArray, "\n"));
 		}
 		else {
-			_fileImpl.delete(gitIgnoreFile);
+			FileUtil.delete(gitIgnoreFile);
 		}
 	}
 
@@ -202,7 +202,7 @@ public class PluginsGitSvnSyncer {
 		throws Exception {
 
 		for (String pluginType : _PLUGIN_TYPES) {
-			String[] dirNames = _fileImpl.listDirs(srcDirName + pluginType);
+			String[] dirNames = FileUtil.listDirs(srcDirName + pluginType);
 
 			for (String dirName : dirNames) {
 				for (String pluginDirName : _PLUGIN_DIR_NAMES) {
@@ -219,7 +219,7 @@ public class PluginsGitSvnSyncer {
 			String srcDirName, String destDirName, String dirName)
 		throws Exception {
 
-		if (!_fileImpl.exists(destDirName + dirName)) {
+		if (!FileUtil.exists(destDirName + dirName)) {
 			return;
 		}
 
@@ -286,12 +286,12 @@ public class PluginsGitSvnSyncer {
 			return;
 		}
 
-		File tempFile = _fileImpl.createTempFile("svn-ignores-", "tmp");
+		File tempFile = FileUtil.createTempFile("svn-ignores-", "tmp");
 
 		try {
 			String[] ignoresArray = ignores.toArray(new String[0]);
 
-			_fileImpl.write(tempFile, StringUtil.merge(ignoresArray, "\n"));
+			FileUtil.write(tempFile, StringUtil.merge(ignoresArray, "\n"));
 
 			_exec(
 				StringBundler.concat(
@@ -299,7 +299,7 @@ public class PluginsGitSvnSyncer {
 					"\" \"", destDirName, dirName, "\""));
 		}
 		finally {
-			_fileImpl.delete(tempFile);
+			FileUtil.delete(tempFile);
 		}
 	}
 
@@ -320,7 +320,5 @@ public class PluginsGitSvnSyncer {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PluginsGitSvnSyncer.class);
-
-	private static final FileImpl _fileImpl = FileImpl.getInstance();
 
 }

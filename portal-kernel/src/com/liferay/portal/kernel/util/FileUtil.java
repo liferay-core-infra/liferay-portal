@@ -5,14 +5,41 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.nio.CharsetEncoderUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 import java.io.Reader;
+import java.io.Writer;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.FileChannel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Queue;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author Brian Wing Shun Chan
@@ -23,141 +50,311 @@ public class FileUtil {
 	public static String appendParentheticalSuffix(
 		String fileName, String suffix) {
 
-		return _file.appendParentheticalSuffix(fileName, suffix);
+		String fileNameWithoutExtension = stripExtension(fileName);
+
+		String fileNameWithParentheticalSuffix =
+			StringUtil.appendParentheticalSuffix(
+				fileNameWithoutExtension, suffix);
+
+		String extension = getExtension(fileName);
+
+		if (Validator.isNull(extension)) {
+			return fileNameWithParentheticalSuffix;
+		}
+
+		return StringBundler.concat(
+			fileNameWithParentheticalSuffix, StringPool.PERIOD, extension);
 	}
 
 	public static String appendSuffix(String fileName, String suffix) {
-		return _file.appendSuffix(fileName, suffix);
+		StringBundler sb = new StringBundler(4);
+
+		String fileNameWithoutExtension = stripExtension(fileName);
+
+		sb.append(fileNameWithoutExtension);
+
+		sb.append(suffix);
+
+		String extension = getExtension(fileName);
+
+		if (Validator.isNotNull(extension)) {
+			sb.append(StringPool.PERIOD);
+			sb.append(extension);
+		}
+
+		return sb.toString();
 	}
 
 	public static void copyDirectory(File source, File destination)
 		throws IOException {
 
-		_file.copyDirectory(source, destination);
+		if (!source.exists() || !source.isDirectory()) {
+			return;
+		}
+
+		mkdirs(destination);
+
+		Queue<File> queue = new LinkedList<>();
+
+		queue.add(source);
+
+		String basePath = source.getPath();
+
+		int prefixLength = basePath.length() + 1;
+
+		File directory;
+
+		while ((directory = queue.poll()) != null) {
+			for (File file : directory.listFiles()) {
+				String path = file.getPath();
+
+				File targetFile = new File(
+					destination, path.substring(prefixLength));
+
+				if (file.isFile()) {
+					StreamUtil.transfer(
+						new FileInputStream(file),
+						new FileOutputStream(targetFile));
+				}
+				else {
+					targetFile.mkdir();
+
+					queue.add(file);
+				}
+			}
+		}
 	}
 
 	public static void copyDirectory(
 			String sourceDirName, String destinationDirName)
 		throws IOException {
 
-		_file.copyDirectory(sourceDirName, destinationDirName);
+		copyDirectory(new File(sourceDirName), new File(destinationDirName));
 	}
 
 	public static void copyFile(File source, File destination)
 		throws IOException {
 
-		_file.copyFile(source, destination);
+		if (!source.exists()) {
+			return;
+		}
+
+		_mkdirsParentFile(destination);
+
+		StreamUtil.transfer(
+			new FileInputStream(source), new FileOutputStream(destination));
 	}
 
 	public static void copyFile(String source, String destination)
 		throws IOException {
 
-		_file.copyFile(source, destination);
+		copyFile(new File(source), new File(destination));
 	}
 
 	public static File createTempFile() {
-		return _file.createTempFile();
+		return createTempFile(StringPool.BLANK);
 	}
 
 	public static File createTempFile(byte[] bytes) throws IOException {
-		return _file.createTempFile(bytes);
+		File file = createTempFile(StringPool.BLANK);
+
+		write(file, bytes, false);
+
+		return file;
 	}
 
 	public static File createTempFile(InputStream inputStream)
 		throws IOException {
 
-		return _file.createTempFile(inputStream);
+		File file = createTempFile(StringPool.BLANK);
+
+		write(file, inputStream);
+
+		return file;
 	}
 
 	public static File createTempFile(String extension) {
-		return _file.createTempFile(extension);
+		return new File(createTempFileName(extension));
 	}
 
 	public static File createTempFile(String prefix, String extension) {
-		return _file.createTempFile(prefix, extension);
+		return new File(createTempFileName(prefix, extension));
 	}
 
 	public static String createTempFileName() {
-		return _file.createTempFileName();
+		return createTempFileName(null, null);
 	}
 
 	public static String createTempFileName(String extension) {
-		return _file.createTempFileName(extension);
+		return createTempFileName(null, extension);
 	}
 
 	public static String createTempFileName(String prefix, String extension) {
-		return _file.createTempFileName(prefix, extension);
+		StringBundler sb = new StringBundler(7);
+
+		sb.append(SystemProperties.get(SystemProperties.TMP_DIR));
+		sb.append(StringPool.SLASH);
+
+		if (Validator.isNotNull(prefix)) {
+			sb.append(prefix);
+		}
+
+		sb.append(Time.getTimestamp());
+		sb.append(PwdGenerator.getPassword(8, PwdGenerator.KEY2));
+
+		if (Validator.isFileExtension(extension)) {
+			sb.append(StringPool.PERIOD);
+			sb.append(extension);
+		}
+
+		return sb.toString();
 	}
 
 	public static File createTempFolder() throws IOException {
-		return _file.createTempFolder();
+		File file = new File(createTempFileName());
+
+		mkdirs(file);
+
+		return file;
 	}
 
 	public static String decodeSafeFileName(String fileName) {
-		return _file.decodeSafeFileName(fileName);
+		return StringUtil.replace(
+			fileName, _SAFE_FILE_NAME_2, _SAFE_FILE_NAME_1);
 	}
 
 	public static boolean delete(File file) {
-		return _file.delete(file);
+		if (file != null) {
+			return file.delete();
+		}
+
+		return false;
 	}
 
 	public static boolean delete(String file) {
-		return _file.delete(file);
+		return delete(new File(file));
 	}
 
 	public static void deltree(File directory) {
-		_file.deltree(directory);
+		if (directory.isDirectory()) {
+			Deque<File> deleteDeque = new LinkedList<>();
+
+			deleteDeque.push(directory);
+
+			Queue<File> visitQueue = new LinkedList<>();
+
+			visitQueue.add(directory);
+
+			File curDirectory;
+
+			while ((curDirectory = visitQueue.poll()) != null) {
+				for (File file : curDirectory.listFiles()) {
+					if (file.isFile()) {
+						file.delete();
+					}
+					else {
+						visitQueue.add(file);
+
+						deleteDeque.push(file);
+					}
+				}
+			}
+
+			deleteDeque.forEach(File::delete);
+		}
+		else {
+			directory.delete();
+		}
 	}
 
 	public static void deltree(String directory) {
-		_file.deltree(directory);
+		deltree(new File(directory));
 	}
 
 	public static String encodeSafeFileName(String fileName) {
-		return _file.encodeSafeFileName(fileName);
+		if (fileName == null) {
+			return StringPool.BLANK;
+		}
+
+		return StringUtil.replace(
+			fileName, _SAFE_FILE_NAME_1, _SAFE_FILE_NAME_2);
 	}
 
 	public static boolean exists(File file) {
-		return _file.exists(file);
+		return file.exists();
 	}
 
 	public static boolean exists(String fileName) {
-		return _file.exists(fileName);
+		return exists(new File(fileName));
 	}
 
 	public static String getAbsolutePath(File file) {
-		return _file.getAbsolutePath(file);
+		return StringUtil.replace(
+			file.getAbsolutePath(), CharPool.BACK_SLASH, CharPool.SLASH);
 	}
 
 	public static byte[] getBytes(Class<?> clazz, String fileName)
 		throws Exception {
 
-		return _file.getBytes(clazz, fileName);
+		return getBytes(clazz.getResourceAsStream(fileName));
 	}
 
 	public static byte[] getBytes(File file) throws IOException {
-		return _file.getBytes(file);
+		if ((file == null) || !file.exists()) {
+			return null;
+		}
+
+		try (RandomAccessFile randomAccessFile = new RandomAccessFile(
+				file, "r")) {
+
+			byte[] bytes = new byte[(int)randomAccessFile.length()];
+
+			randomAccessFile.readFully(bytes);
+
+			return bytes;
+		}
 	}
 
 	public static byte[] getBytes(InputStream inputStream) throws IOException {
-		return _file.getBytes(inputStream);
+		return getBytes(inputStream, -1);
 	}
 
 	public static byte[] getBytes(InputStream inputStream, int bufferSize)
 		throws IOException {
 
-		return _file.getBytes(inputStream);
+		return getBytes(inputStream, bufferSize, true);
 	}
 
 	public static byte[] getBytes(
 			InputStream inputStream, int bufferSize, boolean cleanUpStream)
 		throws IOException {
 
-		return _file.getBytes(inputStream, bufferSize, cleanUpStream);
+		if (inputStream == null) {
+			return null;
+		}
+
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		StreamUtil.transfer(
+			inputStream, unsyncByteArrayOutputStream, bufferSize,
+			cleanUpStream);
+
+		return unsyncByteArrayOutputStream.toByteArray();
 	}
 
 	public static String getExtension(String fileName) {
-		return _file.getExtension(fileName);
+		if (fileName == null) {
+			return null;
+		}
+
+		int pos = fileName.lastIndexOf(CharPool.PERIOD);
+
+		if (pos > 0) {
+			return StringUtil.toLowerCase(fileName.substring(pos + 1));
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public static com.liferay.portal.kernel.util.File getFile() {
@@ -165,198 +362,490 @@ public class FileUtil {
 	}
 
 	public static String getMD5Checksum(File file) throws IOException {
-		return _file.getMD5Checksum(file);
+		try (FileInputStream fileInputStream = new FileInputStream(file)) {
+			return DigesterUtil.digestHex(Digester.MD5, fileInputStream);
+		}
 	}
 
 	public static String getPath(String fullFileName) {
-		return _file.getPath(fullFileName);
+		int x = fullFileName.lastIndexOf(CharPool.SLASH);
+		int y = fullFileName.lastIndexOf(CharPool.BACK_SLASH);
+
+		if ((x == -1) && (y == -1)) {
+			return StringPool.SLASH;
+		}
+
+		return fullFileName.substring(0, Math.max(x, y));
 	}
 
 	public static String getShortFileName(String fullFileName) {
-		return _file.getShortFileName(fullFileName);
+		int x = fullFileName.lastIndexOf(CharPool.SLASH);
+		int y = fullFileName.lastIndexOf(CharPool.BACK_SLASH);
+
+		return fullFileName.substring(Math.max(x, y) + 1);
 	}
 
 	public static boolean isSameContent(File file, byte[] bytes, int length) {
-		return _file.isSameContent(file, bytes, length);
+		try (FileInputStream fileInputStream = new FileInputStream(file)) {
+			FileChannel fileChannel = fileInputStream.getChannel();
+
+			if (fileChannel.size() != length) {
+				return false;
+			}
+
+			byte[] buffer = new byte[1024];
+
+			ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+
+			int bufferIndex = 0;
+			int bufferLength = -1;
+
+			while (((bufferLength = fileChannel.read(byteBuffer)) > 0) &&
+				   (bufferIndex < length)) {
+
+				for (int i = 0; i < bufferLength; i++) {
+					if (buffer[i] != bytes[bufferIndex++]) {
+						return false;
+					}
+				}
+
+				byteBuffer.clear();
+			}
+
+			if ((bufferIndex != length) || (bufferLength != -1)) {
+				return false;
+			}
+
+			return true;
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+
+			return false;
+		}
 	}
 
 	public static boolean isSameContent(File file, String s) {
-		return _file.isSameContent(file, s);
+		ByteBuffer byteBuffer = CharsetEncoderUtil.encode(
+			StringPool.UTF8, CharBuffer.wrap(s));
+
+		return isSameContent(file, byteBuffer.array(), byteBuffer.limit());
 	}
 
 	public static String[] listDirs(File file) {
-		return _file.listDirs(file);
+		List<String> dirs = new ArrayList<>();
+
+		File[] fileArray = file.listFiles();
+
+		for (int i = 0; (fileArray != null) && (i < fileArray.length); i++) {
+			if (fileArray[i].isDirectory()) {
+				dirs.add(fileArray[i].getName());
+			}
+		}
+
+		return dirs.toArray(new String[0]);
 	}
 
 	public static String[] listDirs(String fileName) {
-		return _file.listDirs(fileName);
+		return listDirs(new File(fileName));
 	}
 
 	public static String[] listFiles(File file) {
-		return _file.listFiles(file);
+		List<String> files = new ArrayList<>();
+
+		File[] fileArray = file.listFiles();
+
+		for (int i = 0; (fileArray != null) && (i < fileArray.length); i++) {
+			if (fileArray[i].isFile()) {
+				files.add(fileArray[i].getName());
+			}
+		}
+
+		return files.toArray(new String[0]);
 	}
 
 	public static String[] listFiles(String fileName) {
-		return _file.listFiles(fileName);
+		if (Validator.isNull(fileName)) {
+			return new String[0];
+		}
+
+		return listFiles(new File(fileName));
 	}
 
 	public static void mkdirs(File file) {
-		_file.mkdirs(file);
+		file.mkdirs();
 	}
 
 	public static void mkdirs(String pathName) {
-		_file.mkdirs(pathName);
+		File file = new File(pathName);
+
+		if (file.exists() && file.isDirectory()) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Directory " + pathName + " already exists");
+			}
+
+			return;
+		}
+
+		mkdirs(file);
 	}
 
 	public static boolean move(File source, File destination) {
-		return _file.move(source, destination);
+		if (!source.exists()) {
+			return false;
+		}
+
+		destination.delete();
+
+		try {
+			if (source.isDirectory()) {
+				if (!source.renameTo(destination)) {
+					copyDirectory(source, destination);
+
+					deltree(source);
+				}
+			}
+			else {
+				if (!source.renameTo(destination)) {
+					copyFile(source, destination);
+
+					delete(source);
+				}
+			}
+		}
+		catch (IOException ioException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(ioException);
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 
 	public static boolean move(
 		String sourceFileName, String destinationFileName) {
 
-		return _file.move(sourceFileName, destinationFileName);
+		return move(new File(sourceFileName), new File(destinationFileName));
 	}
 
 	public static String read(File file) throws IOException {
-		return _file.read(file);
+		return read(file, false);
 	}
 
 	public static String read(File file, boolean raw) throws IOException {
-		return _file.read(file, raw);
+		byte[] bytes = getBytes(file);
+
+		if (bytes == null) {
+			return null;
+		}
+
+		String s = new String(bytes, StringPool.UTF8);
+
+		if (raw) {
+			return s;
+		}
+
+		return StringUtil.replace(
+			s, StringPool.RETURN_NEW_LINE, StringPool.NEW_LINE);
 	}
 
 	public static String read(String fileName) throws IOException {
-		return _file.read(fileName);
+		return read(new File(fileName));
 	}
 
 	public static String replaceSeparator(String fileName) {
-		return _file.replaceSeparator(fileName);
+		return StringUtil.replace(
+			fileName, CharPool.BACK_SLASH, CharPool.SLASH);
 	}
 
 	public static File[] sortFiles(File[] files) {
-		return _file.sortFiles(files);
+		if (files == null) {
+			return null;
+		}
+
+		Arrays.sort(files, new FileComparator());
+
+		List<File> directoryList = new ArrayList<>();
+		List<File> fileList = new ArrayList<>();
+
+		for (File file : files) {
+			if (file.isDirectory()) {
+				directoryList.add(file);
+			}
+			else {
+				fileList.add(file);
+			}
+		}
+
+		directoryList.addAll(fileList);
+
+		return directoryList.toArray(new File[0]);
 	}
 
 	public static String stripExtension(String fileName) {
-		return _file.stripExtension(fileName);
+		if (fileName == null) {
+			return null;
+		}
+
+		String ext = getExtension(fileName);
+
+		if (ext.length() > 0) {
+			return fileName.substring(0, fileName.length() - ext.length() - 1);
+		}
+
+		return fileName;
 	}
 
 	public static String stripParentheticalSuffix(String fileName) {
-		return _file.stripParentheticalSuffix(fileName);
+		StringBundler sb = new StringBundler(3);
+
+		String fileNameWithoutExtension = stripExtension(fileName);
+
+		sb.append(
+			StringUtil.stripParentheticalSuffix(fileNameWithoutExtension));
+
+		String extension = getExtension(fileName);
+
+		if (Validator.isNotNull(extension)) {
+			sb.append(StringPool.PERIOD);
+			sb.append(extension);
+		}
+
+		return sb.toString();
 	}
 
 	public static List<String> toList(Reader reader) {
-		return _file.toList(reader);
+		List<String> list = new ArrayList<>();
+
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(reader)) {
+
+			String line = null;
+
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				list.add(line);
+			}
+		}
+		catch (IOException ioException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(ioException);
+			}
+		}
+
+		return list;
 	}
 
 	public static List<String> toList(String fileName) {
-		return _file.toList(fileName);
+		try {
+			return toList(new FileReader(fileName));
+		}
+		catch (IOException ioException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(ioException);
+			}
+
+			return new ArrayList<>();
+		}
 	}
 
 	public static Properties toProperties(FileInputStream fileInputStream) {
-		return _file.toProperties(fileInputStream);
+		Properties properties = new Properties();
+
+		try {
+			properties.load(fileInputStream);
+		}
+		catch (IOException ioException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(ioException);
+			}
+		}
+
+		return properties;
 	}
 
 	public static Properties toProperties(String fileName) {
-		return _file.toProperties(fileName);
+		try {
+			return toProperties(new FileInputStream(fileName));
+		}
+		catch (IOException ioException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(ioException);
+			}
+
+			return new Properties();
+		}
 	}
 
 	public static void touch(File file) throws IOException {
-		_file.touch(file);
+		if (file.exists()) {
+			file.setLastModified(System.currentTimeMillis());
+		}
+		else {
+			file.createNewFile();
+		}
 	}
 
 	public static void touch(String fileName) throws IOException {
-		_file.touch(fileName);
+		touch(new File(fileName));
 	}
 
 	public static void unzip(File source, File destination) {
-		_file.unzip(source, destination);
+		try (InputStream inputStream = new FileInputStream(source);
+			ZipInputStream zipInputStream = new ZipInputStream(inputStream)) {
+
+			ZipEntry entry = null;
+
+			while ((entry = zipInputStream.getNextEntry()) != null) {
+				File destinationFile = new File(destination, entry.getName());
+
+				String destinationFileCanonicalPath =
+					destinationFile.getCanonicalPath();
+
+				if (!destinationFileCanonicalPath.startsWith(
+						destination.getCanonicalPath() + File.separator)) {
+
+					if (_log.isWarnEnabled()) {
+						_log.warn("Invalid entry name: " + entry.getName());
+					}
+
+					continue;
+				}
+
+				if (entry.isDirectory()) {
+					destinationFile.mkdirs();
+				}
+				else {
+					File parentFile = destinationFile.getParentFile();
+
+					parentFile.mkdirs();
+
+					try (OutputStream outputStream = new FileOutputStream(
+							destinationFile)) {
+
+						StreamUtil.transfer(
+							zipInputStream, outputStream, false);
+					}
+				}
+			}
+		}
+		catch (IOException ioException) {
+			ReflectionUtil.throwException(ioException);
+		}
 	}
 
 	public static void write(File file, byte[] bytes) throws IOException {
-		write(file, bytes, false);
+		write(file, bytes, 0, bytes.length, false);
 	}
 
 	public static void write(File file, byte[] bytes, boolean append)
 		throws IOException {
 
-		_file.write(file, bytes, append);
+		write(file, bytes, 0, bytes.length, append);
 	}
 
 	public static void write(File file, byte[] bytes, int offset, int length)
 		throws IOException {
 
-		write(file, bytes, offset, length, false);
+		write(file, bytes, offset, bytes.length, false);
 	}
 
 	public static void write(
 			File file, byte[] bytes, int offset, int length, boolean append)
 		throws IOException {
 
-		_file.write(file, bytes, offset, length, append);
+		_mkdirsParentFile(file);
+
+		try (FileOutputStream fileOutputStream = new FileOutputStream(
+				file, append)) {
+
+			fileOutputStream.write(bytes, offset, length);
+		}
 	}
 
 	public static void write(File file, InputStream inputStream)
 		throws IOException {
 
-		_file.write(file, inputStream);
+		_mkdirsParentFile(file);
+
+		StreamUtil.transfer(inputStream, new FileOutputStream(file));
 	}
 
 	public static void write(File file, String s) throws IOException {
-		_file.write(file, s);
+		write(file, s, false);
 	}
 
 	public static void write(File file, String s, boolean lazy)
 		throws IOException {
 
-		_file.write(file, s, lazy);
+		write(file, s, lazy, false);
 	}
 
 	public static void write(File file, String s, boolean lazy, boolean append)
 		throws IOException {
 
-		_file.write(file, s, lazy, append);
+		if (s == null) {
+			return;
+		}
+
+		_mkdirsParentFile(file);
+
+		if (lazy && file.exists()) {
+			String content = read(file);
+
+			if (content.equals(s)) {
+				return;
+			}
+		}
+
+		try (Writer writer = new OutputStreamWriter(
+				new FileOutputStream(file, append), StringPool.UTF8)) {
+
+			writer.write(s);
+		}
 	}
 
 	public static void write(String fileName, byte[] bytes) throws IOException {
-		_file.write(fileName, bytes);
+		write(new File(fileName), bytes);
 	}
 
 	public static void write(String fileName, InputStream inputStream)
 		throws IOException {
 
-		_file.write(fileName, inputStream);
+		write(new File(fileName), inputStream);
 	}
 
 	public static void write(String fileName, String s) throws IOException {
-		_file.write(fileName, s);
+		write(new File(fileName), s);
 	}
 
 	public static void write(String fileName, String s, boolean lazy)
 		throws IOException {
 
-		_file.write(fileName, s, lazy);
+		write(new File(fileName), s, lazy);
 	}
 
 	public static void write(
 			String fileName, String s, boolean lazy, boolean append)
 		throws IOException {
 
-		_file.write(fileName, s, lazy, append);
+		write(new File(fileName), s, lazy, append);
 	}
 
 	public static void write(String pathName, String fileName, String s)
 		throws IOException {
 
-		_file.write(pathName, fileName, s);
+		write(new File(pathName, fileName), s);
 	}
 
 	public static void write(
 			String pathName, String fileName, String s, boolean lazy)
 		throws IOException {
 
-		_file.write(pathName, fileName, s, lazy);
+		write(new File(pathName, fileName), s, lazy);
 	}
 
 	public static void write(
@@ -364,12 +853,49 @@ public class FileUtil {
 			boolean append)
 		throws IOException {
 
-		_file.write(pathName, fileName, s, lazy, append);
+		write(new File(pathName, fileName), s, lazy, append);
 	}
 
 	public void setFile(com.liferay.portal.kernel.util.File file) {
 		_file = file;
 	}
+
+	private static void _mkdirsParentFile(File file) throws IOException {
+		File parentFile = file.getParentFile();
+
+		if (parentFile == null) {
+			return;
+		}
+
+		try {
+			mkdirs(parentFile);
+		}
+		catch (SecurityException securityException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(securityException);
+			}
+
+			// We may have the permission to write a specific file without
+			// having the permission to check if the parent file exists
+
+		}
+	}
+
+	private static final String[] _SAFE_FILE_NAME_1 = {
+		StringPool.AMPERSAND, StringPool.CLOSE_PARENTHESIS,
+		StringPool.OPEN_PARENTHESIS, StringPool.SEMICOLON
+	};
+
+	private static final String[] _SAFE_FILE_NAME_2 = {
+		PropsUtil.get(PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_AMPERSAND),
+		PropsUtil.get(
+			PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_CLOSE_PARENTHESIS),
+		PropsUtil.get(
+			PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_OPEN_PARENTHESIS),
+		PropsUtil.get(PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_SEMICOLON)
+	};
+
+	private static final Log _log = LogFactoryUtil.getLog(FileUtil.class);
 
 	private static com.liferay.portal.kernel.util.File _file;
 

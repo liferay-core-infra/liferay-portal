@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -65,7 +65,7 @@ public class DLAppHelperLocalServiceTest {
 
 		Assert.assertArrayEquals(
 			content.getBytes(),
-			_file.getBytes(restoredFileEntry.getContentStream()));
+			FileUtil.getBytes(restoredFileEntry.getContentStream()));
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class DLAppHelperLocalServiceTest {
 
 		Assert.assertArrayEquals(
 			content.getBytes(),
-			_file.getBytes(restoredFileEntry.getContentStream()));
+			FileUtil.getBytes(restoredFileEntry.getContentStream()));
 	}
 
 	@Inject
@@ -102,8 +102,5 @@ public class DLAppHelperLocalServiceTest {
 
 	@Inject
 	private DLAppLocalService _dlAppLocalService;
-
-	@Inject
-	private File _file;
 
 }

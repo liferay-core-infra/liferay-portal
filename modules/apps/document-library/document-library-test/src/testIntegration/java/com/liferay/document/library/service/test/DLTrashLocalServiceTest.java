@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -61,7 +61,8 @@ public class DLTrashLocalServiceTest {
 			ServiceContextTestUtil.getServiceContext());
 
 		Assert.assertArrayEquals(
-			content.getBytes(), _file.getBytes(fileEntry.getContentStream()));
+			content.getBytes(),
+			FileUtil.getBytes(fileEntry.getContentStream()));
 	}
 
 	@Test
@@ -86,7 +87,8 @@ public class DLTrashLocalServiceTest {
 			fileEntry.getFileEntryId());
 
 		Assert.assertArrayEquals(
-			content.getBytes(), _file.getBytes(fileEntry.getContentStream()));
+			content.getBytes(),
+			FileUtil.getBytes(fileEntry.getContentStream()));
 	}
 
 	@Inject
@@ -94,8 +96,5 @@ public class DLTrashLocalServiceTest {
 
 	@Inject
 	private DLTrashLocalService _dlTrashLocalService;
-
-	@Inject
-	private File _file;
 
 }

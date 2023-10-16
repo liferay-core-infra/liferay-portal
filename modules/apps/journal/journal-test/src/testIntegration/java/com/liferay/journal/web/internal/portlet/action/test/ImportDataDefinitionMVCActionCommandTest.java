@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -312,7 +312,7 @@ public class ImportDataDefinitionMVCActionCommandTest {
 
 		Class<?> clazz = getClass();
 
-		byte[] bytes = _file.getBytes(
+		byte[] bytes = FileUtil.getBytes(
 			clazz.getResourceAsStream("dependencies/" + fileName));
 
 		mockMultipartHttpServletRequest.addFile(
@@ -407,9 +407,6 @@ public class ImportDataDefinitionMVCActionCommandTest {
 
 	@Inject
 	private DataDefinitionResource.Factory _dataDefinitionResourceFactory;
-
-	@Inject
-	private File _file;
 
 	@Inject(filter = "mvc.command.name=/journal/import_data_definition")
 	private MVCActionCommand _mvcActionCommand;

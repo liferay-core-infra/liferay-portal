@@ -103,6 +103,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -641,7 +642,7 @@ public class BatchEngineBrokerTest {
 
 		Class<?> clazz = getClass();
 
-		File file = _file.createTempFile("json");
+		File file = FileUtil.createTempFile("json");
 
 		String template = StreamUtil.toString(
 			clazz.getResourceAsStream(
@@ -666,7 +667,7 @@ public class BatchEngineBrokerTest {
 		template = StringUtil.replace(
 			template, "$[ATTACHMENT_NAME]", dlFileEntry.getFileName());
 
-		_file.write(file, template);
+		FileUtil.write(file, template);
 
 		return file;
 	}
@@ -674,7 +675,7 @@ public class BatchEngineBrokerTest {
 	private File _createImportFile(String fileName) throws Exception {
 		Class<?> clazz = getClass();
 
-		File file = _file.createTempFile("json");
+		File file = FileUtil.createTempFile("json");
 
 		Files.copy(
 			clazz.getResourceAsStream(
@@ -1160,9 +1161,6 @@ public class BatchEngineBrokerTest {
 
 	@Inject
 	private DTOConverterRegistry _dtoConverterRegistry;
-
-	@Inject
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Inject
 	private ListTypeDefinitionLocalService _listTypeDefinitionLocalService;

@@ -35,6 +35,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
@@ -50,15 +51,8 @@ public class ServletResponseUtilRangeTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		FileUtil fileUtil = new FileUtil();
-
-		com.liferay.portal.kernel.util.File file = Mockito.mock(
-			com.liferay.portal.kernel.util.File.class);
-
-		fileUtil.setFile(file);
-
-		Mockito.when(
-			file.createTempFile()
+		_fileUtilMockedStatic.when(
+			FileUtil::createTempFile
 		).thenAnswer(
 			(Answer<File>)invocation -> {
 				String name = String.valueOf(System.currentTimeMillis());
@@ -67,8 +61,8 @@ public class ServletResponseUtilRangeTest {
 			}
 		);
 
-		Mockito.when(
-			file.delete(Mockito.any(File.class))
+		_fileUtilMockedStatic.when(
+			() -> FileUtil.delete(Mockito.any(File.class))
 		).thenAnswer(
 			(Answer<Boolean>)invocation -> {
 				Object[] args = invocation.getArguments();
@@ -98,6 +92,7 @@ public class ServletResponseUtilRangeTest {
 
 	@AfterClass
 	public static void tearDownClass() {
+		_fileUtilMockedStatic.close();
 		_serviceRegistration.unregister();
 	}
 
@@ -312,6 +307,8 @@ public class ServletResponseUtilRangeTest {
 	private static final String _CONTENT_TYPE_BOUNDARY_PREFACE =
 		"multipart/byteranges; boundary=";
 
+	private static final MockedStatic<FileUtil> _fileUtilMockedStatic =
+		Mockito.mockStatic(FileUtil.class);
 	private static ServiceRegistration<MimeTypes> _serviceRegistration;
 
 	private final HttpServletRequest _httpServletRequest = Mockito.mock(

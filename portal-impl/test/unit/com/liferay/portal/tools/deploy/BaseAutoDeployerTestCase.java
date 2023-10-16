@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
-import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.portal.xml.SAXReaderImpl;
 
@@ -42,10 +41,6 @@ public abstract class BaseAutoDeployerTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
-
 		PropsUtil.setProps(new PropsImpl());
 
 		SAXReaderUtil saxReaderUtil = new SAXReaderUtil();

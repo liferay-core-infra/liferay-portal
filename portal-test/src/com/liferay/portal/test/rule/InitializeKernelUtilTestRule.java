@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AbstractTestRule;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -75,7 +74,6 @@ public class InitializeKernelUtilTestRule
 			_setUpPropsUtil(_processProperties(portalProps.properties()));
 		}
 
-		_setUpFileUtil();
 		_setUpJSONFactoryUtil();
 
 		return null;
@@ -115,19 +113,6 @@ public class InitializeKernelUtilTestRule
 		}
 
 		return propertyMap;
-	}
-
-	private void _setUpFileUtil() throws ClassNotFoundException {
-		Thread thread = Thread.currentThread();
-
-		ClassLoader classLoader = thread.getContextClassLoader();
-
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(
-			ReflectionTestUtil.getFieldValue(
-				classLoader.loadClass("com.liferay.portal.util.FileImpl"),
-				"_fileImpl"));
 	}
 
 	private void _setUpJSONFactoryUtil() throws ReflectiveOperationException {

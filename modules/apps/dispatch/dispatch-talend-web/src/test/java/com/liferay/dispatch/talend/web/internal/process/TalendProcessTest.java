@@ -13,12 +13,10 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
-import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PortalClassPathUtil;
 
 import java.io.InputStream;
@@ -50,8 +48,6 @@ public class TalendProcessTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		ReflectionTestUtil.setFieldValue(
-			FileUtil.class, "_file", FileImpl.getInstance());
 		ReflectionTestUtil.setFieldValue(
 			FastDateFormatFactoryUtil.class, "_fastDateFormatFactory",
 			new FastDateFormatFactoryImpl());

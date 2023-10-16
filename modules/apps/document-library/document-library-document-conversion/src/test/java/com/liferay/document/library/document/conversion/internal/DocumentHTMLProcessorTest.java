@@ -7,10 +7,8 @@ package com.liferay.document.library.document.conversion.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
-import com.liferay.portal.util.FileImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -44,10 +42,6 @@ public class DocumentHTMLProcessorTest {
 
 		fastDateFormatFactoryUtil.setFastDateFormatFactory(
 			new FastDateFormatFactoryImpl());
-
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
 
 		Mockito.when(
 			ImageRequestTokenUtil.createToken(Mockito.anyLong())

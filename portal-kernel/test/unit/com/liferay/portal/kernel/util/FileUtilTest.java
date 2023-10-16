@@ -3,13 +3,12 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,24 +23,17 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.junit.Assert;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Roberto Díaz
  */
-public class FileImplTest {
-
-	@ClassRule
-	@Rule
-	public static final LiferayUnitTestRule liferayUnitTestRule =
-		LiferayUnitTestRule.INSTANCE;
+public class FileUtilTest {
 
 	@Test
 	public void testAppendParentheticalSuffixWhenFileNameHasParenthesis() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
+		String fileName = FileUtil.appendParentheticalSuffix(
 			"test(1).jsp", "1");
 
 		Assert.assertEquals("test(1) (1).jsp", fileName);
@@ -49,7 +41,7 @@ public class FileImplTest {
 
 	@Test
 	public void testAppendParentheticalSuffixWithMultipleCharacterValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
+		String fileName = FileUtil.appendParentheticalSuffix(
 			"test.jsp", "1!$eae1");
 
 		Assert.assertEquals("test (1!$eae1).jsp", fileName);
@@ -57,7 +49,7 @@ public class FileImplTest {
 
 	@Test
 	public void testAppendParentheticalSuffixWithMultipleNumericalValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
+		String fileName = FileUtil.appendParentheticalSuffix(
 			"test.jsp", "1111111");
 
 		Assert.assertEquals("test (1111111).jsp", fileName);
@@ -65,7 +57,7 @@ public class FileImplTest {
 
 	@Test
 	public void testAppendParentheticalSuffixWithMultipleStringValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
+		String fileName = FileUtil.appendParentheticalSuffix(
 			"test.jsp", "AAAAAAA");
 
 		Assert.assertEquals("test (AAAAAAA).jsp", fileName);
@@ -73,34 +65,33 @@ public class FileImplTest {
 
 	@Test
 	public void testAppendParentheticalSuffixWithMultipleStringWithSpaceValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
-			"test.jsp", "A B");
+		String fileName = FileUtil.appendParentheticalSuffix("test.jsp", "A B");
 
 		Assert.assertEquals("test (A B).jsp", fileName);
 	}
 
 	@Test
 	public void testAppendParentheticalSuffixWithSingleNumericalValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix("test.jsp", "1");
+		String fileName = FileUtil.appendParentheticalSuffix("test.jsp", "1");
 
 		Assert.assertEquals("test (1).jsp", fileName);
 	}
 
 	@Test
 	public void testAppendParentheticalSuffixWithSingleStringValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix("test.jsp", "A");
+		String fileName = FileUtil.appendParentheticalSuffix("test.jsp", "A");
 
 		Assert.assertEquals("test (A).jsp", fileName);
 	}
 
 	@Test
 	public void testAppendSuffix() {
-		Assert.assertEquals("test_rtl", _fileImpl.appendSuffix("test", "_rtl"));
+		Assert.assertEquals("test_rtl", FileUtil.appendSuffix("test", "_rtl"));
 		Assert.assertEquals(
-			"test_rtl.css", _fileImpl.appendSuffix("test.css", "_rtl"));
+			"test_rtl.css", FileUtil.appendSuffix("test.css", "_rtl"));
 		Assert.assertEquals(
 			"/folder/test_rtl.css",
-			_fileImpl.appendSuffix("/folder/test.css", "_rtl"));
+			FileUtil.appendSuffix("/folder/test.css", "_rtl"));
 	}
 
 	@Test
@@ -133,7 +124,7 @@ public class FileImplTest {
 		File newDirectory1 = new File(
 			System.getProperty("java.io.tmpdir"), "newTempDir1");
 
-		_fileImpl.copyDirectory(directory1, newDirectory1);
+		FileUtil.copyDirectory(directory1, newDirectory1);
 
 		Assert.assertTrue(newDirectory1.exists());
 
@@ -157,15 +148,15 @@ public class FileImplTest {
 
 		Assert.assertTrue(newFile4.exists());
 
-		_fileImpl.deltree(newDirectory1);
-		_fileImpl.deltree(directory1);
+		FileUtil.deltree(newDirectory1);
+		FileUtil.deltree(directory1);
 	}
 
 	@Test
 	public void testDeltree() throws IOException {
 		File tempFile = File.createTempFile("tempFile", null);
 
-		_fileImpl.deltree(tempFile);
+		FileUtil.deltree(tempFile);
 
 		Assert.assertFalse(tempFile.exists());
 
@@ -194,7 +185,7 @@ public class FileImplTest {
 
 		file4.createNewFile();
 
-		_fileImpl.deltree(directory1);
+		FileUtil.deltree(directory1);
 
 		Assert.assertFalse(directory1.exists());
 	}
@@ -202,127 +193,125 @@ public class FileImplTest {
 	@Test
 	public void testGetPathBackSlashForwardSlash() {
 		Assert.assertEquals(
-			"aaa\\bbb/ccc\\ddd",
-			_fileImpl.getPath("aaa\\bbb/ccc\\ddd/eee.fff"));
+			"aaa\\bbb/ccc\\ddd", FileUtil.getPath("aaa\\bbb/ccc\\ddd/eee.fff"));
 	}
 
 	@Test
 	public void testGetPathForwardSlashBackSlash() {
 		Assert.assertEquals(
-			"aaa/bbb\\ccc/ddd", _fileImpl.getPath("aaa/bbb\\ccc/ddd\\eee.fff"));
+			"aaa/bbb\\ccc/ddd", FileUtil.getPath("aaa/bbb\\ccc/ddd\\eee.fff"));
 	}
 
 	@Test
 	public void testGetPathNoPath() {
-		Assert.assertEquals(StringPool.SLASH, _fileImpl.getPath("aaa.bbb"));
+		Assert.assertEquals(StringPool.SLASH, FileUtil.getPath("aaa.bbb"));
 	}
 
 	@Test
 	public void testGetShortFileNameBackSlashForwardSlash() {
 		Assert.assertEquals(
-			"eee.fff", _fileImpl.getShortFileName("aaa\\bbb/ccc\\ddd/eee.fff"));
+			"eee.fff", FileUtil.getShortFileName("aaa\\bbb/ccc\\ddd/eee.fff"));
 	}
 
 	@Test
 	public void testGetShortFileNameForwardSlashBackSlash() {
 		Assert.assertEquals(
-			"eee.fff", _fileImpl.getShortFileName("aaa/bbb\\ccc/ddd\\eee.fff"));
+			"eee.fff", FileUtil.getShortFileName("aaa/bbb\\ccc/ddd\\eee.fff"));
 	}
 
 	@Test
 	public void testGetShortFileNameNoPath() {
-		Assert.assertEquals("aaa.bbb", _fileImpl.getShortFileName("aaa.bbb"));
+		Assert.assertEquals("aaa.bbb", FileUtil.getShortFileName("aaa.bbb"));
 	}
 
 	@Test
 	public void testStripSuffixAppendedWhenFileNameHasParenthesis() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
+		String fileName = FileUtil.appendParentheticalSuffix(
 			"test(1).jsp", "1");
 
 		Assert.assertEquals(
-			"test(1).jsp", _fileImpl.stripParentheticalSuffix(fileName));
+			"test(1).jsp", FileUtil.stripParentheticalSuffix(fileName));
 	}
 
 	@Test
 	public void testStripSuffixAppendedWithMultipleCharacterValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
+		String fileName = FileUtil.appendParentheticalSuffix(
 			"test.jsp", "1!$eae1");
 
 		Assert.assertEquals(
-			"test.jsp", _fileImpl.stripParentheticalSuffix(fileName));
+			"test.jsp", FileUtil.stripParentheticalSuffix(fileName));
 	}
 
 	@Test
 	public void testStripSuffixAppendedWithMultipleNumericalValue() {
-		String fileName2 = _fileImpl.appendParentheticalSuffix(
+		String fileName2 = FileUtil.appendParentheticalSuffix(
 			"test.jsp", "1111111");
 
 		Assert.assertEquals(
-			"test.jsp", _fileImpl.stripParentheticalSuffix(fileName2));
+			"test.jsp", FileUtil.stripParentheticalSuffix(fileName2));
 	}
 
 	@Test
 	public void testStripSuffixAppendedWithMultipleStringValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
+		String fileName = FileUtil.appendParentheticalSuffix(
 			"test.jsp", "AAAAAAA");
 
 		Assert.assertEquals(
-			"test.jsp", _fileImpl.stripParentheticalSuffix(fileName));
+			"test.jsp", FileUtil.stripParentheticalSuffix(fileName));
 	}
 
 	@Test
 	public void testStripSuffixAppendedWithMultipleStringWithSpaceValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix(
-			"test.jsp", "A B");
+		String fileName = FileUtil.appendParentheticalSuffix("test.jsp", "A B");
 
 		Assert.assertEquals(
-			"test.jsp", _fileImpl.stripParentheticalSuffix(fileName));
+			"test.jsp", FileUtil.stripParentheticalSuffix(fileName));
 	}
 
 	@Test
 	public void testStripSuffixAppendedWithSingleNumericalValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix("test.jsp", "1");
+		String fileName = FileUtil.appendParentheticalSuffix("test.jsp", "1");
 
 		Assert.assertEquals(
-			"test.jsp", _fileImpl.stripParentheticalSuffix(fileName));
+			"test.jsp", FileUtil.stripParentheticalSuffix(fileName));
 	}
 
 	@Test
 	public void testStripSuffixAppendedWithSingleStringValue() {
-		String fileName = _fileImpl.appendParentheticalSuffix("test.jsp", "A");
+		String fileName = FileUtil.appendParentheticalSuffix("test.jsp", "A");
 
 		Assert.assertEquals(
-			"test.jsp", _fileImpl.stripParentheticalSuffix(fileName));
+			"test.jsp", FileUtil.stripParentheticalSuffix(fileName));
 	}
 
 	@Test
 	public void testStripSuffixWhenFileNameHasInvertedParenthesis() {
 		Assert.assertEquals(
-			"test)1(.jsp", _fileImpl.stripParentheticalSuffix("test)1(.jsp"));
+			"test)1(.jsp", FileUtil.stripParentheticalSuffix("test)1(.jsp"));
 	}
 
 	@Test
 	public void testStripSuffixWhenFileNameHasNoCloseParenthesis() {
 		Assert.assertEquals(
-			"test(1.jsp", _fileImpl.stripParentheticalSuffix("test(1.jsp"));
+			"test(1.jsp", FileUtil.stripParentheticalSuffix("test(1.jsp"));
 	}
 
 	@Test
 	public void testStripSuffixWhenFileNameHasNoExtension() {
 		Assert.assertEquals(
-			"test", _fileImpl.stripParentheticalSuffix("test (1)"));
+			"test", FileUtil.stripParentheticalSuffix("test (1)"));
 	}
 
 	@Test
 	public void testStripSuffixWhenFileNameHasNoParentheticalSuffix() {
 		Assert.assertEquals(
-			"test.jsp", _fileImpl.stripParentheticalSuffix("test.jsp"));
+			"test.jsp", FileUtil.stripParentheticalSuffix("test.jsp"));
 	}
 
 	@Test
 	public void testStripSuffixWhenFileNameHasParenthesisAtStart() {
 		Assert.assertEquals(
-			"()test.jsp", _fileImpl.stripParentheticalSuffix("()test.jsp"));
+			"()test.jsp", FileUtil.stripParentheticalSuffix("()test.jsp"));
 	}
 
 	@Test
@@ -333,13 +322,13 @@ public class FileImplTest {
 			testPath, "test.zip", "zip/test/entry/entry.txt");
 
 		try {
-			_fileImpl.unzip(zipFile, testPath.toFile());
+			FileUtil.unzip(zipFile, testPath.toFile());
 
 			Assert.assertTrue(
 				Files.exists(testPath.resolve("zip/test/entry/entry.txt")));
 		}
 		finally {
-			_fileImpl.deltree(testPath.toFile());
+			FileUtil.deltree(testPath.toFile());
 		}
 	}
 
@@ -353,9 +342,9 @@ public class FileImplTest {
 			testChildPath, "test_slip.zip", "../bad.txt", "good.txt");
 
 		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
-				FileImpl.class.getName(), Level.WARNING)) {
+				FileUtil.class.getName(), Level.WARNING)) {
 
-			_fileImpl.unzip(zipFile, testChildPath.toFile());
+			FileUtil.unzip(zipFile, testChildPath.toFile());
 
 			Assert.assertTrue(Files.exists(testChildPath.resolve("good.txt")));
 			Assert.assertFalse(Files.exists(testPath.resolve("bad.txt")));
@@ -370,7 +359,7 @@ public class FileImplTest {
 				"Invalid entry name: ../bad.txt", logEntry.getMessage());
 		}
 		finally {
-			_fileImpl.deltree(testPath.toFile());
+			FileUtil.deltree(testPath.toFile());
 		}
 	}
 
@@ -398,7 +387,5 @@ public class FileImplTest {
 	}
 
 	private static final byte[] _ENTRY_CONTENT = StringPool.CONTENT.getBytes();
-
-	private final FileImpl _fileImpl = new FileImpl();
 
 }

@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -139,7 +139,7 @@ public class ExportImportObjectDefinitionTest {
 
 		Class<?> clazz = getClass();
 
-		byte[] bytes = _file.getBytes(
+		byte[] bytes = FileUtil.getBytes(
 			clazz.getResourceAsStream("dependencies/" + fileName));
 
 		mockMultipartHttpServletRequest.addFile(
@@ -260,9 +260,6 @@ public class ExportImportObjectDefinitionTest {
 				mockLiferayResourceResponse.getPortletOutputStream()),
 			JSONCompareMode.STRICT_ORDER);
 	}
-
-	@Inject
-	private File _file;
 
 	@Inject(
 		filter = "mvc.command.name=/object_definitions/import_object_definition"

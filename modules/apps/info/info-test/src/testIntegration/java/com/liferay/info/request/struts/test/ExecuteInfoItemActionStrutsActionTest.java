@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -54,6 +54,7 @@ import com.liferay.portal.upload.test.util.UploadTestUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
+import java.io.File;
 import java.io.Serializable;
 
 import java.util.Collections;
@@ -107,7 +108,7 @@ public class ExecuteInfoItemActionStrutsActionTest {
 
 		_errorMessageMap = LocalizedMapUtil.getLocalizedMap(
 			RandomTestUtil.randomString());
-		_fileName = _file.createTempFileName("action-executed-", "txt");
+		_fileName = FileUtil.createTempFileName("action-executed-", "txt");
 		_layout = _layoutLocalService.addLayout(
 			_user.getUserId(), _group.getGroupId(), false,
 			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, 0, 0,
@@ -141,7 +142,7 @@ public class ExecuteInfoItemActionStrutsActionTest {
 	@After
 	public void tearDown() {
 		if (_fileName != null) {
-			java.io.File file = new java.io.File(_fileName);
+			File file = new File(_fileName);
 
 			file.delete();
 		}
@@ -255,11 +256,11 @@ public class ExecuteInfoItemActionStrutsActionTest {
 		String responseBody = unsyncStringWriter.toString();
 
 		if (success) {
-			Assert.assertTrue(_file.exists(_fileName));
+			Assert.assertTrue(FileUtil.exists(_fileName));
 			Assert.assertEquals("{}", responseBody);
 		}
 		else {
-			Assert.assertFalse(_file.exists(_fileName));
+			Assert.assertFalse(FileUtil.exists(_fileName));
 
 			JSONObject jsonObject = _jsonFactory.createJSONObject(responseBody);
 
@@ -277,9 +278,6 @@ public class ExecuteInfoItemActionStrutsActionTest {
 		filter = "component.name=com.liferay.info.internal.request.struts.ExecuteInfoItemActionStrutsAction"
 	)
 	private StrutsAction _executeInfoItemActionStrutsAction;
-
-	@Inject
-	private File _file;
 
 	private String _fileName;
 

@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -150,7 +150,7 @@ public class PortalImplTest {
 
 			LiferayServletRequest liferayServletRequest =
 				PortletContainerTestUtil.getMultipartRequest(
-					"fileParameterName", _file.getBytes(inputStream));
+					"fileParameterName", FileUtil.getBytes(inputStream));
 
 			UploadServletRequest uploadServletRequest =
 				_portal.getUploadServletRequest(
@@ -210,9 +210,6 @@ public class PortalImplTest {
 
 	@Inject
 	private CompanyLocalService _companyLocalService;
-
-	@Inject
-	private File _file;
 
 	@DeleteAfterTestRun
 	private Group _group;

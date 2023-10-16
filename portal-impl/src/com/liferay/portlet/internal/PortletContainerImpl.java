@@ -529,8 +529,8 @@ public class PortletContainerImpl implements PortletContainer {
 
 			List<Event> events = liferayActionResponse.getEvents();
 
-			String redirectLocation =
-				liferayActionResponse.getRedirectLocation();
+			String redirectLocation = PortalUtil.escapeRedirect(
+				liferayActionResponse.getRedirectLocation());
 
 			if (Validator.isNull(redirectLocation) &&
 				portlet.isActionURLRedirect()) {

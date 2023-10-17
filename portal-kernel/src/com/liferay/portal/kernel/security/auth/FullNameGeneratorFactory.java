@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.security.auth;
 
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
@@ -14,7 +15,14 @@ import com.liferay.portal.kernel.module.service.Snapshot;
 public class FullNameGeneratorFactory {
 
 	public static FullNameGenerator getInstance() {
-		return _fullNameGeneratorSnapshot.get();
+		FullNameGenerator fullNameGenerator = _fullNameGeneratorSnapshot.get();
+
+		if (fullNameGenerator != null) {
+			return fullNameGenerator;
+		}
+
+		return (FullNameGenerator)PortalBeanLocatorUtil.locate(
+			DefaultFullNameGenerator.class.getName());
 	}
 
 	private FullNameGeneratorFactory() {

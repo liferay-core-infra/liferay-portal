@@ -11,10 +11,10 @@ import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSe
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationUtil;
 import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfigurationConstants;
 import com.liferay.exportimport.kernel.lar.ExportImportHelper;
+import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationService;
-import com.liferay.exportimport.kernel.service.ExportImportService;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
@@ -220,7 +220,7 @@ public class EditExportConfigurationMVCActionCommand
 	protected ExportImportHelper exportImportHelper;
 
 	@Reference
-	protected ExportImportService exportImportService;
+	protected ExportImportManager exportImportManager;
 
 	@Reference
 	protected Portal portal;
@@ -247,7 +247,7 @@ public class EditExportConfigurationMVCActionCommand
 			ExportImportConfigurationFactory.cloneExportImportConfiguration(
 				exportImportConfiguration);
 
-		exportImportService.exportLayoutsAsFileInBackground(
+		exportImportManager.exportLayoutsAsFileInBackground(
 			exportImportConfiguration);
 	}
 

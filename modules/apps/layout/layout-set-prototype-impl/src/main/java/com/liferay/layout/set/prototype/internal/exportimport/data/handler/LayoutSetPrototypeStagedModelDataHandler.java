@@ -18,7 +18,6 @@ import com.liferay.exportimport.kernel.lar.UserIdStrategy;
 import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
@@ -500,8 +499,8 @@ public class LayoutSetPrototypeStagedModelDataHandler
 					ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
 					importLayoutSettingsMap);
 
-		_exportImportService.importLayouts(
-			exportImportConfiguration, inputStream);
+		_exportImportManager.importLayouts(
+			true, exportImportConfiguration, inputStream);
 	}
 
 	private void _setLayoutSetPrototypeLinkEnabledParameter(
@@ -565,9 +564,6 @@ public class LayoutSetPrototypeStagedModelDataHandler
 
 	@Reference
 	private ExportImportManager _exportImportManager;
-
-	@Reference
-	private ExportImportService _exportImportService;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

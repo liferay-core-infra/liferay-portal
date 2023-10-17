@@ -17,9 +17,9 @@ import com.liferay.exportimport.kernel.exception.LARTypeException;
 import com.liferay.exportimport.kernel.lar.ExportImportHelper;
 import com.liferay.exportimport.kernel.lar.MissingReference;
 import com.liferay.exportimport.kernel.lar.MissingReferences;
+import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportService;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
@@ -224,8 +224,9 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 					ExportImportConfigurationConstants.TYPE_IMPORT_PORTLET,
 					importPortletSettingsMap);
 
-		_exportImportService.importPortletInfoInBackground(
-			exportImportConfiguration, inputStream);
+		_exportImportManager.importPortletInfoInBackground(
+			true, _portal.getUserId(actionRequest), exportImportConfiguration,
+			inputStream);
 	}
 
 	protected void importData(ActionRequest actionRequest, String folderName)
@@ -318,8 +319,8 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 					ExportImportConfigurationConstants.TYPE_IMPORT_PORTLET,
 					importPortletSettingsMap);
 
-		return _exportImportService.validateImportPortletInfo(
-			exportImportConfiguration, inputStream);
+		return _exportImportManager.validateImportPortletInfo(
+			true, exportImportConfiguration, inputStream);
 	}
 
 	private void _exportData(ActionRequest actionRequest, Portlet portlet)
@@ -349,7 +350,8 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 						ExportImportConfigurationConstants.TYPE_EXPORT_PORTLET,
 						exportPortletSettingsMap);
 
-			_exportImportService.exportPortletInfoAsFileInBackground(
+			_exportImportManager.exportPortletInfoAsFileInBackground(
+				true, _portal.getUserId(actionRequest),
 				exportImportConfiguration);
 		}
 		catch (Exception exception) {
@@ -383,7 +385,7 @@ public class ExportImportMVCActionCommand extends BaseMVCActionCommand {
 	private ExportImportHelper _exportImportHelper;
 
 	@Reference
-	private ExportImportService _exportImportService;
+	private ExportImportManager _exportImportManager;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

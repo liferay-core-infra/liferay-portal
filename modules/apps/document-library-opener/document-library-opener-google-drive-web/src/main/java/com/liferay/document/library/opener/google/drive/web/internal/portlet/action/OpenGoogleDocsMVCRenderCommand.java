@@ -9,8 +9,8 @@ import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveWebKeys;
-import com.liferay.document.library.opener.google.drive.web.internal.helper.GoogleDrivePortletRequestAuthorizationHelper;
 import com.liferay.document.library.opener.google.drive.web.internal.oauth.OAuth2StateUtil;
+import com.liferay.document.library.opener.google.drive.web.internal.util.GoogleDrivePortletRequestAuthorizationUtil;
 import com.liferay.document.library.opener.oauth.OAuth2State;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
@@ -55,14 +55,16 @@ public class OpenGoogleDocsMVCRenderCommand implements MVCRenderCommand {
 					_portal.getHttpServletRequest(renderRequest)));
 
 			if (oAuth2State == null) {
-				_googleDrivePortletRequestAuthorizationHelper.
-					performAuthorizationFlow(renderRequest, renderResponse);
+				GoogleDrivePortletRequestAuthorizationUtil.
+					performAuthorizationFlow(
+						_dlOpenerGoogleDriveManager, renderRequest,
+						renderResponse);
 			}
 			else {
 				renderRequest.setAttribute(
 					DLOpenerGoogleDriveWebKeys.
 						DL_OPENER_GOOGLE_DRIVE_FILE_REFERENCE,
-					_googleDriveManager.requestEditAccess(
+					_dlOpenerGoogleDriveManager.requestEditAccess(
 						_portal.getUserId(renderRequest),
 						_dlAppService.getFileEntry(
 							ParamUtil.getLong(renderRequest, "fileEntryId"))));
@@ -87,11 +89,7 @@ public class OpenGoogleDocsMVCRenderCommand implements MVCRenderCommand {
 	private DLAppService _dlAppService;
 
 	@Reference
-	private DLOpenerGoogleDriveManager _googleDriveManager;
-
-	@Reference
-	private GoogleDrivePortletRequestAuthorizationHelper
-		_googleDrivePortletRequestAuthorizationHelper;
+	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
 
 	@Reference
 	private Portal _portal;

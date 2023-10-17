@@ -3,17 +3,17 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.document.library.opener.google.drive.web.internal.helper;
+package com.liferay.document.library.opener.google.drive.web.internal.util;
 
 import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.oauth.OAuth2StateUtil;
 import com.liferay.document.library.opener.oauth.OAuth2State;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
-import com.liferay.portal.kernel.portlet.PortletURLFactory;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -25,16 +25,13 @@ import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Alejandro Tardín
  */
-@Component(service = GoogleDrivePortletRequestAuthorizationHelper.class)
-public class GoogleDrivePortletRequestAuthorizationHelper {
+public class GoogleDrivePortletRequestAuthorizationUtil {
 
-	public void performAuthorizationFlow(
+	public static void performAuthorizationFlow(
+			DLOpenerGoogleDriveManager dlOpenerGoogleDriveManager,
 			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws IOException, PortalException {
 
@@ -44,8 +41,8 @@ public class GoogleDrivePortletRequestAuthorizationHelper {
 		String state = PwdGenerator.getPassword(5);
 
 		HttpServletRequest originalHttpServletRequest =
-			_portal.getOriginalServletRequest(
-				_portal.getHttpServletRequest(portletRequest));
+			PortalUtil.getOriginalServletRequest(
+				PortalUtil.getHttpServletRequest(portletRequest));
 
 		OAuth2StateUtil.save(
 			originalHttpServletRequest,
@@ -54,15 +51,15 @@ public class GoogleDrivePortletRequestAuthorizationHelper {
 				_getFailureURL(portletRequest), state));
 
 		HttpServletResponse httpServletResponse =
-			_portal.getHttpServletResponse(portletResponse);
+			PortalUtil.getHttpServletResponse(portletResponse);
 
 		String authorizationURL =
-			_dlOpenerGoogleDriveManager.getAuthorizationURL(
+			dlOpenerGoogleDriveManager.getAuthorizationURL(
 				themeDisplay.getCompanyId(), state,
 				OAuth2StateUtil.getRedirectURI(
-					_portal.getPortalURL(portletRequest)));
+					PortalUtil.getPortalURL(portletRequest)));
 
-		if (!_dlOpenerGoogleDriveManager.hasValidCredential(
+		if (!dlOpenerGoogleDriveManager.hasValidCredential(
 				themeDisplay.getCompanyId(), themeDisplay.getUserId())) {
 
 			authorizationURL = HttpComponentsUtil.setParameter(
@@ -72,29 +69,20 @@ public class GoogleDrivePortletRequestAuthorizationHelper {
 		httpServletResponse.sendRedirect(authorizationURL);
 	}
 
-	private String _getFailureURL(PortletRequest portletRequest)
+	private static String _getFailureURL(PortletRequest portletRequest)
 		throws PortalException {
 
-		LiferayPortletURL liferayPortletURL = _portletURLFactory.create(
-			portletRequest, _portal.getPortletId(portletRequest),
-			_portal.getControlPanelPlid(portletRequest),
+		LiferayPortletURL liferayPortletURL = PortletURLFactoryUtil.create(
+			portletRequest, PortalUtil.getPortletId(portletRequest),
+			PortalUtil.getControlPanelPlid(portletRequest),
 			PortletRequest.RENDER_PHASE);
 
 		return liferayPortletURL.toString();
 	}
 
-	private String _getSuccessURL(PortletRequest portletRequest) {
-		return _portal.getCurrentURL(
-			_portal.getHttpServletRequest(portletRequest));
+	private static String _getSuccessURL(PortletRequest portletRequest) {
+		return PortalUtil.getCurrentURL(
+			PortalUtil.getHttpServletRequest(portletRequest));
 	}
-
-	@Reference
-	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
-
-	@Reference
-	private Portal _portal;
-
-	@Reference
-	private PortletURLFactory _portletURLFactory;
 
 }

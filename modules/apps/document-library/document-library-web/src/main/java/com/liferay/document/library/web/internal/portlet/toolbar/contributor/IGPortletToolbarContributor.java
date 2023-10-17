@@ -6,9 +6,6 @@
 package com.liferay.document.library.web.internal.portlet.toolbar.contributor;
 
 import com.liferay.document.library.constants.DLPortletKeys;
-import com.liferay.document.library.web.internal.portlet.toolbar.contributor.helper.DLPortletToolbarContributorHelper;
-import com.liferay.document.library.web.internal.portlet.toolbar.contributor.helper.MenuItemProvider;
-import com.liferay.portal.kernel.portlet.toolbar.contributor.BasePortletToolbarContributor;
 import com.liferay.portal.kernel.portlet.toolbar.contributor.PortletToolbarContributor;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.taglib.ui.MenuItem;
@@ -22,7 +19,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Roberto Díaz
@@ -44,35 +40,32 @@ public class IGPortletToolbarContributor extends BasePortletToolbarContributor {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		if (!_dlPortletToolbarContributorHelper.isShowActionsEnabled(
-				themeDisplay, portletRequest)) {
-
+		if (!isShowActionsEnabled(themeDisplay)) {
 			return null;
 		}
 
-		Folder folder = _dlPortletToolbarContributorHelper.getFolder(
-			themeDisplay, portletRequest);
+		Folder folder = getFolder(themeDisplay, portletRequest);
 
 		List<MenuItem> menuItems = new ArrayList<>();
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddFileMenuItem(
+			menuItemProvider.getAddFileMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddMultipleFilesMenuItem(
+			menuItemProvider.getAddMultipleFilesMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddFolderMenuItem(
+			menuItemProvider.getAddFolderMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddShortcutMenuItem(
+			menuItemProvider.getAddShortcutMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		return menuItems;
@@ -83,12 +76,5 @@ public class IGPortletToolbarContributor extends BasePortletToolbarContributor {
 			menuItems.add(menuItem);
 		}
 	}
-
-	@Reference
-	private DLPortletToolbarContributorHelper
-		_dlPortletToolbarContributorHelper;
-
-	@Reference
-	private MenuItemProvider _menuItemProvider;
 
 }

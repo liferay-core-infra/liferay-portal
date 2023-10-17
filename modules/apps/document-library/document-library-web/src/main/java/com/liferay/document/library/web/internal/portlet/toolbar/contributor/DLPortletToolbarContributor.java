@@ -7,12 +7,9 @@ package com.liferay.document.library.web.internal.portlet.toolbar.contributor;
 
 import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.portlet.toolbar.contributor.DLPortletToolbarContributorContext;
-import com.liferay.document.library.web.internal.portlet.toolbar.contributor.helper.DLPortletToolbarContributorHelper;
-import com.liferay.document.library.web.internal.portlet.toolbar.contributor.helper.MenuItemProvider;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManager;
-import com.liferay.portal.kernel.portlet.toolbar.contributor.BasePortletToolbarContributor;
 import com.liferay.portal.kernel.portlet.toolbar.contributor.PortletToolbarContributor;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.taglib.ui.MenuItem;
@@ -67,41 +64,37 @@ public class DLPortletToolbarContributor extends BasePortletToolbarContributor {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		if (_isDLPortlet(themeDisplay) &&
-			!_dlPortletToolbarContributorHelper.isShowActionsEnabled(
-				themeDisplay, portletRequest)) {
-
+		if (_isDLPortlet(themeDisplay) && !isShowActionsEnabled(themeDisplay)) {
 			return null;
 		}
 
-		Folder folder = _dlPortletToolbarContributorHelper.getFolder(
-			themeDisplay, portletRequest);
+		Folder folder = getFolder(themeDisplay, portletRequest);
 
 		List<MenuItem> menuItems = new ArrayList<>();
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddFileMenuItem(
+			menuItemProvider.getAddFileMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddMultipleFilesMenuItem(
+			menuItemProvider.getAddMultipleFilesMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddFolderMenuItem(
+			menuItemProvider.getAddFolderMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddRepositoryMenuItem(
+			menuItemProvider.getAddRepositoryMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAddShortcutMenuItem(
+			menuItemProvider.getAddShortcutMenuItem(
 				folder, themeDisplay, portletRequest));
 
 		MenuItem lastStaticMenuItem = null;
@@ -122,7 +115,7 @@ public class DLPortletToolbarContributor extends BasePortletToolbarContributor {
 		if (_featureFlagManager.isEnabled("LPS-196648")) {
 			_add(
 				menuItems,
-				_menuItemProvider.getAICreatorMenuItem(
+				menuItemProvider.getAICreatorMenuItem(
 					folder, themeDisplay, portletRequest));
 		}
 
@@ -133,7 +126,7 @@ public class DLPortletToolbarContributor extends BasePortletToolbarContributor {
 		}
 
 		menuItems.addAll(
-			_menuItemProvider.getAddDocumentTypesMenuItems(
+			menuItemProvider.getAddDocumentTypesMenuItems(
 				folder, themeDisplay, portletRequest));
 
 		if ((lastStaticMenuItem != null) &&
@@ -177,13 +170,6 @@ public class DLPortletToolbarContributor extends BasePortletToolbarContributor {
 		_dlPortletToolbarContributorContexts;
 
 	@Reference
-	private DLPortletToolbarContributorHelper
-		_dlPortletToolbarContributorHelper;
-
-	@Reference
 	private FeatureFlagManager _featureFlagManager;
-
-	@Reference
-	private MenuItemProvider _menuItemProvider;
 
 }

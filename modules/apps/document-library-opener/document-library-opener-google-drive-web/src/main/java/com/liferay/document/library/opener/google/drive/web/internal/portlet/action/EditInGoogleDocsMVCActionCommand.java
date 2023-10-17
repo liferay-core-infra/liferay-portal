@@ -12,7 +12,7 @@ import com.liferay.document.library.opener.constants.DLOpenerMimeTypes;
 import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveFileReference;
 import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveWebKeys;
-import com.liferay.document.library.opener.google.drive.web.internal.helper.GoogleDrivePortletRequestAuthorizationHelper;
+import com.liferay.document.library.opener.google.drive.web.internal.util.GoogleDrivePortletRequestAuthorizationUtil;
 import com.liferay.document.library.opener.upload.UniqueFileEntryTitleProvider;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -70,8 +70,10 @@ public class EditInGoogleDocsMVCActionCommand extends BaseMVCActionCommand {
 				_executeCommand(actionRequest, actionResponse, fileEntryId);
 			}
 			else {
-				_googleDrivePortletRequestAuthorizationHelper.
-					performAuthorizationFlow(actionRequest, actionResponse);
+				GoogleDrivePortletRequestAuthorizationUtil.
+					performAuthorizationFlow(
+						_dlOpenerGoogleDriveManager, actionRequest,
+						actionResponse);
 			}
 		}
 		catch (PortalException portalException) {
@@ -236,10 +238,6 @@ public class EditInGoogleDocsMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
-
-	@Reference
-	private GoogleDrivePortletRequestAuthorizationHelper
-		_googleDrivePortletRequestAuthorizationHelper;
 
 	private final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(

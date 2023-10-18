@@ -1007,6 +1007,14 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 			portlet.setCompanyId(companyId);
 			portlet.setPortletId(portletId);
+
+			_portletsMap.computeIfPresent(
+				portlet.getRootPortletId(),
+				(key, value) -> {
+					value.setId(id);
+
+					return value;
+				});
 		}
 
 		portlet.setRoles(roles);

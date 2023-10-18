@@ -20,3 +20,4 @@ Export-Package:\
 	com.liferay.portal.workflow.kaleo.runtime.util,\
 	com.liferay.portal.workflow.kaleo.runtime.util.comparator,\
 	com.liferay.portal.workflow.kaleo.runtime.util.validator
+-dsannotations-options: inherit

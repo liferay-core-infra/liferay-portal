@@ -40,8 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = NotificationSender.class
 )
-public class EmailNotificationSender
-	extends BaseNotificationSender implements NotificationSender {
+public class EmailNotificationSender extends BaseNotificationSender {
 
 	@Override
 	public String getNotificationType() {

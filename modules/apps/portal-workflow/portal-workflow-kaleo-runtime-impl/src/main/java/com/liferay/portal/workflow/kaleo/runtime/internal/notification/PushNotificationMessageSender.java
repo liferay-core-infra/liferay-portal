@@ -6,7 +6,6 @@
 package com.liferay.portal.workflow.kaleo.runtime.internal.notification;
 
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -14,7 +13,6 @@ import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.workflow.kaleo.definition.NotificationReceptionType;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
-import com.liferay.portal.workflow.kaleo.runtime.internal.helper.NotificationMessageHelper;
 import com.liferay.portal.workflow.kaleo.runtime.notification.BaseNotificationSender;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationRecipient;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationSender;
@@ -39,8 +37,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "fromName=Liferay Portal Workflow Notifications",
 	service = NotificationSender.class
 )
-public class PushNotificationMessageSender
-	extends BaseNotificationSender implements NotificationSender {
+public class PushNotificationMessageSender extends BaseNotificationSender {
 
 	@Override
 	public String getNotificationType() {
@@ -79,13 +76,7 @@ public class PushNotificationMessageSender
 	}
 
 	@Reference
-	protected JSONFactory jsonFactory;
-
-	@Reference
 	protected MessageBus messageBus;
-
-	@Reference
-	protected NotificationMessageHelper notificationMessageHelper;
 
 	private Message _createMessage(
 			List<NotificationRecipient> notificationRecipients,
@@ -107,9 +98,8 @@ public class PushNotificationMessageSender
 			String notificationMessage, ExecutionContext executionContext)
 		throws Exception {
 
-		JSONObject jsonObject =
-			notificationMessageHelper.createMessageJSONObject(
-				notificationMessage, executionContext);
+		JSONObject jsonObject = createMessageJSONObject(
+			notificationMessage, executionContext);
 
 		jsonObject.put(
 			PushNotificationsConstants.KEY_BODY, notificationMessage

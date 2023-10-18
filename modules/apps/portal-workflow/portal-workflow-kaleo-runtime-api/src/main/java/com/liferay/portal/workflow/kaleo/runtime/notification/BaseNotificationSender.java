@@ -6,15 +6,25 @@
 package com.liferay.portal.workflow.kaleo.runtime.notification;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.notifications.UserNotificationManagerUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.workflow.constants.MyWorkflowTasksConstants;
 import com.liferay.portal.workflow.kaleo.definition.NotificationReceptionType;
 import com.liferay.portal.workflow.kaleo.definition.RecipientType;
+import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient;
+import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.notification.recipient.NotificationRecipientBuilder;
 import com.liferay.portal.workflow.kaleo.runtime.notification.recipient.NotificationRecipientBuilderRegistry;
+
+import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +63,70 @@ public abstract class BaseNotificationSender implements NotificationSender {
 			throw new NotificationMessageSenderException(
 				"Unable to send notification message", exception);
 		}
+	}
+
+	protected JSONObject createMessageJSONObject(
+		String notificationMessage, ExecutionContext executionContext) {
+
+		JSONObject jsonObject = jsonFactory.createJSONObject();
+
+		Map<String, Serializable> workflowContext =
+			executionContext.getWorkflowContext();
+
+		jsonObject.put(
+			WorkflowConstants.CONTEXT_COMPANY_ID,
+			String.valueOf(
+				workflowContext.get(WorkflowConstants.CONTEXT_COMPANY_ID))
+		).put(
+			WorkflowConstants.CONTEXT_CT_COLLECTION_ID,
+			String.valueOf(
+				workflowContext.get(WorkflowConstants.CONTEXT_CT_COLLECTION_ID))
+		).put(
+			WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME,
+			(String)workflowContext.get(
+				WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME)
+		).put(
+			WorkflowConstants.CONTEXT_ENTRY_CLASS_PK,
+			String.valueOf(
+				workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_PK))
+		).put(
+			WorkflowConstants.CONTEXT_ENTRY_TYPE,
+			(String)workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_TYPE)
+		).put(
+			WorkflowConstants.CONTEXT_GROUP_ID,
+			String.valueOf(
+				workflowContext.get(WorkflowConstants.CONTEXT_GROUP_ID))
+		).put(
+			WorkflowConstants.CONTEXT_URL,
+			String.valueOf(workflowContext.get(WorkflowConstants.CONTEXT_URL))
+		);
+
+		KaleoInstanceToken kaleoInstanceToken =
+			executionContext.getKaleoInstanceToken();
+
+		jsonObject.put(
+			WorkflowConstants.CONTEXT_USER_ID,
+			String.valueOf(_getUserId(executionContext, kaleoInstanceToken))
+		).put(
+			"notificationMessage", notificationMessage
+		).put(
+			"plid", workflowContext.get("plid")
+		).put(
+			"portletId", workflowContext.get("portletId")
+		).put(
+			"workflowInstanceId", kaleoInstanceToken.getKaleoInstanceId()
+		);
+
+		KaleoTaskInstanceToken kaleoTaskInstanceToken =
+			executionContext.getKaleoTaskInstanceToken();
+
+		if (kaleoTaskInstanceToken != null) {
+			jsonObject.put(
+				"workflowTaskId",
+				kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId());
+		}
+
+		return jsonObject;
 	}
 
 	protected abstract void doSendNotification(
@@ -164,7 +238,35 @@ public abstract class BaseNotificationSender implements NotificationSender {
 	}
 
 	@Reference
+	protected JSONFactory jsonFactory;
+
+	@Reference
 	protected NotificationRecipientBuilderRegistry
 		notificationRecipientBuilderRegistry;
+
+	private long _getUserId(
+		ExecutionContext executionContext,
+		KaleoInstanceToken kaleoInstanceToken) {
+
+		try {
+			ServiceContext serviceContext =
+				executionContext.getServiceContext();
+
+			return serviceContext.getGuestOrUserId();
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to get user from context, using userId from " +
+						"kaleoInstanceToken instead",
+					portalException);
+			}
+
+			return kaleoInstanceToken.getUserId();
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseNotificationSender.class);
 
 }

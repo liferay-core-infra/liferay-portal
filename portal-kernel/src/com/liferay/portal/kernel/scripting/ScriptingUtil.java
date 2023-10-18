@@ -21,13 +21,6 @@ public class ScriptingUtil {
 		_scripting.clearCache(language);
 	}
 
-	public static ScriptingExecutor createScriptingExecutor(
-		String language, boolean executeInSeparateThread) {
-
-		return _scripting.createScriptingExecutor(
-			language, executeInSeparateThread);
-	}
-
 	public static Map<String, Object> eval(
 			Set<String> allowedClasses, Map<String, Object> inputObjects,
 			Set<String> outputNames, String language, String script)

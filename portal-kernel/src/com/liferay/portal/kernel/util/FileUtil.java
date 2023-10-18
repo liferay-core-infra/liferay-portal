@@ -750,7 +750,7 @@ public class FileUtil {
 	public static void write(File file, byte[] bytes, int offset, int length)
 		throws IOException {
 
-		write(file, bytes, offset, bytes.length, false);
+		write(file, bytes, offset, length, false);
 	}
 
 	public static void write(

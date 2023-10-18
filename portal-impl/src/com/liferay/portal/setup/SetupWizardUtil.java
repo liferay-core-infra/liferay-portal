@@ -466,7 +466,7 @@ public class SetupWizardUtil {
 
 		company = CompanyLocalServiceUtil.updateCompany(company);
 
-		PortalInstances.initCompany(company);
+		PortalInstances.initCompany(company, true);
 
 		themeDisplay.setCompany(company);
 	}

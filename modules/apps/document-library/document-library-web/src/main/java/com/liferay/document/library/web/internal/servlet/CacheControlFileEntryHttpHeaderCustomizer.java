@@ -7,7 +7,7 @@ package com.liferay.document.library.web.internal.servlet;
 
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.web.internal.configuration.CacheControlConfiguration;
-import com.liferay.document.library.web.internal.configuration.helper.CacheControlConfigurationHelper;
+import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -28,7 +28,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Adolfo Pérez
  */
 @Component(
-	configurationPid = "com.liferay.document.library.web.internal.configuration.CacheControlConfiguration",
 	property = "http.header.name=" + HttpHeaders.CACHE_CONTROL,
 	service = FileEntryHttpHeaderCustomizer.class
 )
@@ -51,8 +50,8 @@ public class CacheControlFileEntryHttpHeaderCustomizer
 		throws PortalException {
 
 		CacheControlConfiguration cacheControlConfiguration =
-			_cacheControlConfigurationHelper.
-				getCompanyCacheControlConfiguration(fileEntry.getCompanyId());
+			_configurationProvider.getCompanyConfiguration(
+				CacheControlConfiguration.class, fileEntry.getCompanyId());
 
 		if (ArrayUtil.contains(
 				cacheControlConfiguration.notCacheableMimeTypes(),
@@ -84,10 +83,10 @@ public class CacheControlFileEntryHttpHeaderCustomizer
 		CacheControlFileEntryHttpHeaderCustomizer.class);
 
 	@Reference
-	private CacheControlConfigurationHelper _cacheControlConfigurationHelper;
+	private CompanyLocalService _companyLocalService;
 
 	@Reference
-	private CompanyLocalService _companyLocalService;
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.portal.kernel.repository.model.FileEntry)"

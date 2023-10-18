@@ -53,7 +53,7 @@ public class EditServerMVCActionCommandTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testCleanUpOrphanePortletPreferences() throws Exception {
+	public void testCleanUpLayoutRevisionPortletPreferences() throws Exception {
 		LayoutRevision layoutRevision = _getLayoutRevision();
 
 		PortletPreferences portletPreferences =

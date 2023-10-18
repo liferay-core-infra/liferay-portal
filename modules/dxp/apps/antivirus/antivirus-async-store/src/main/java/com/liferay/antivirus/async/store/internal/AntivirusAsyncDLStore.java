@@ -6,7 +6,7 @@
 package com.liferay.antivirus.async.store.internal;
 
 import com.liferay.antivirus.async.store.constants.AntivirusAsyncDestinationNames;
-import com.liferay.antivirus.async.store.internal.event.AntivirusAsyncEventListenerManager;
+import com.liferay.antivirus.async.store.internal.event.AntivirusAsyncEventListenerManagerUtil;
 import com.liferay.antivirus.async.store.util.AntivirusAsyncUtil;
 import com.liferay.document.library.kernel.exception.AccessDeniedException;
 import com.liferay.document.library.kernel.exception.DirectoryNameException;
@@ -345,7 +345,7 @@ public class AntivirusAsyncDLStore implements DLStore {
 
 		message.put("versionLabel", dlStoreRequest.getVersionLabel());
 
-		_antivirusAsyncEventListenerManager.onPrepare(message);
+		AntivirusAsyncEventListenerManagerUtil.onPrepare(message);
 
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
@@ -370,10 +370,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 
 		_dlValidator.validateVersionLabel(versionLabel);
 	}
-
-	@Reference
-	private AntivirusAsyncEventListenerManager
-		_antivirusAsyncEventListenerManager;
 
 	@Reference(
 		target = "(destination.name=" + AntivirusAsyncDestinationNames.ANTIVIRUS + ")"

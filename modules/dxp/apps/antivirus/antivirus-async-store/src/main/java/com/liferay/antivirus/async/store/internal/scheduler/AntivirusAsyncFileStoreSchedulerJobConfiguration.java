@@ -8,7 +8,7 @@ package com.liferay.antivirus.async.store.internal.scheduler;
 import com.liferay.antivirus.async.store.configuration.AntivirusAsyncConfiguration;
 import com.liferay.antivirus.async.store.constants.AntivirusAsyncConstants;
 import com.liferay.antivirus.async.store.constants.AntivirusAsyncDestinationNames;
-import com.liferay.antivirus.async.store.internal.event.AntivirusAsyncEventListenerManager;
+import com.liferay.antivirus.async.store.internal.event.AntivirusAsyncEventListenerManagerUtil;
 import com.liferay.antivirus.async.store.util.AntivirusAsyncUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
@@ -245,7 +245,7 @@ public class AntivirusAsyncFileStoreSchedulerJobConfiguration
 		message.put("userId", 0L);
 		message.put("versionLabel", versionLabel);
 
-		_antivirusAsyncEventListenerManager.onPrepare(message);
+		AntivirusAsyncEventListenerManagerUtil.onPrepare(message);
 
 		_messageBus.sendMessage(
 			AntivirusAsyncDestinationNames.ANTIVIRUS, message);
@@ -255,10 +255,6 @@ public class AntivirusAsyncFileStoreSchedulerJobConfiguration
 		AntivirusAsyncFileStoreSchedulerJobConfiguration.class);
 
 	private AntivirusAsyncConfiguration _antivirusAsyncConfiguration;
-
-	@Reference
-	private AntivirusAsyncEventListenerManager
-		_antivirusAsyncEventListenerManager;
 
 	@Reference
 	private File _file;

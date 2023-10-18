@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
@@ -45,6 +44,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.function.Predicate;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alexander Chow
@@ -1209,12 +1210,10 @@ public abstract class DLPreviewableProcessor implements DLProcessor {
 			fileVersion, renderedImage, THUMBNAIL_INDEX_CUSTOM_2);
 	}
 
-	protected static volatile Store store =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			Store.class, DLPreviewableProcessor.class, "store",
-			"(default=true)", true);
-
 	protected Map<String, Future<?>> futures = new ConcurrentHashMap<>();
+
+	@Reference(target = "(default=true)")
+	protected Store store;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLPreviewableProcessor.class);

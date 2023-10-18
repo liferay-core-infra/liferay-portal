@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
@@ -27,7 +26,6 @@ import com.liferay.portal.workflow.web.internal.display.context.MyWorkflowInstan
 import com.liferay.portal.workflow.web.internal.display.context.MyWorkflowInstanceViewDisplayContext;
 import com.liferay.portal.workflow.web.internal.display.context.WorkflowInstanceEditDisplayContext;
 import com.liferay.portal.workflow.web.internal.display.context.WorkflowInstanceViewDisplayContext;
-import com.liferay.portal.workflow.web.internal.request.preprocessor.helper.WorkflowPreprocessorHelper;
 
 import java.util.Objects;
 
@@ -70,7 +68,7 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 			actionRequest, ActionRequest.ACTION_NAME);
 
 		if (StringUtil.equalsIgnoreCase(actionName, "invokeTaglibDiscussion")) {
-			workflowPreprocessorHelper.hideDefaultSuccessMessage(actionRequest);
+			hideDefaultSuccessMessage(actionRequest);
 		}
 	}
 
@@ -85,13 +83,12 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 			_setWorkflowInstanceRenderRequestAttribute(renderRequest);
 		}
 		catch (Exception exception) {
-			if (workflowPreprocessorHelper.isSessionErrorException(exception)) {
+			if (isSessionErrorException(exception)) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(exception);
 				}
 
-				workflowPreprocessorHelper.hideDefaultErrorMessage(
-					renderRequest);
+				hideDefaultErrorMessage(renderRequest);
 
 				SessionErrors.add(renderRequest, exception.getClass());
 			}
@@ -106,9 +103,6 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 		return "/instance/view.jsp";
 	}
 
-	@Reference
-	protected Portal portal;
-
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.portal.workflow.web)"
 	)
@@ -119,9 +113,6 @@ public class WorkflowInstancePortletTab extends BaseWorkflowPortletTab {
 
 	@Reference
 	protected WorkflowLogManager workflowLogManager;
-
-	@Reference
-	protected WorkflowPreprocessorHelper workflowPreprocessorHelper;
 
 	private void _setWorkflowInstanceDisplayContextRenderRequestAttribute(
 			RenderRequest renderRequest, RenderResponse renderResponse)

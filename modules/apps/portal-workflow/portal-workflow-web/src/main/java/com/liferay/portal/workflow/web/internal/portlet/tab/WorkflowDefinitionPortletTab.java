@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -22,7 +21,6 @@ import com.liferay.portal.workflow.manager.WorkflowDefinitionManager;
 import com.liferay.portal.workflow.portlet.tab.BaseWorkflowPortletTab;
 import com.liferay.portal.workflow.portlet.tab.WorkflowPortletTab;
 import com.liferay.portal.workflow.web.internal.display.context.WorkflowDefinitionDisplayContext;
-import com.liferay.portal.workflow.web.internal.request.preprocessor.helper.WorkflowPreprocessorHelper;
 
 import java.util.Objects;
 
@@ -60,8 +58,7 @@ public class WorkflowDefinitionPortletTab extends BaseWorkflowPortletTab {
 		throws PortletException {
 
 		try {
-			String path = workflowPreprocessorHelper.getPath(
-				renderRequest, renderResponse);
+			String path = getPath(renderRequest, renderResponse);
 
 			WorkflowDefinitionDisplayContext displayContext =
 				new WorkflowDefinitionDisplayContext(
@@ -83,9 +80,8 @@ public class WorkflowDefinitionPortletTab extends BaseWorkflowPortletTab {
 			}
 		}
 		catch (Exception exception) {
-			if (workflowPreprocessorHelper.isSessionErrorException(exception)) {
-				workflowPreprocessorHelper.hideDefaultErrorMessage(
-					renderRequest);
+			if (isSessionErrorException(exception)) {
+				hideDefaultErrorMessage(renderRequest);
 
 				SessionErrors.add(renderRequest, exception.getClass());
 			}
@@ -104,13 +100,7 @@ public class WorkflowDefinitionPortletTab extends BaseWorkflowPortletTab {
 	protected CTEntryLocalService ctEntryLocalService;
 
 	@Reference
-	protected Portal portal;
-
-	@Reference
 	protected UserLocalService userLocalService;
-
-	@Reference
-	protected WorkflowPreprocessorHelper workflowPreprocessorHelper;
 
 	private void _setWorkflowDefinitionRenderRequestAttribute(
 			RenderRequest renderRequest)

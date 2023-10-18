@@ -5,9 +5,10 @@
 
 package com.liferay.on.demand.admin.internal.ticket.generator;
 
+import com.liferay.on.demand.admin.constants.OnDemandAdminActionKeys;
 import com.liferay.on.demand.admin.constants.OnDemandAdminConstants;
+import com.liferay.on.demand.admin.constants.OnDemandAdminPortletKeys;
 import com.liferay.on.demand.admin.internal.configuration.OnDemandAdminConfiguration;
-import com.liferay.on.demand.admin.internal.helper.OnDemandAdminHelper;
 import com.liferay.on.demand.admin.ticket.generator.OnDemandAdminTicketGenerator;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
@@ -18,6 +19,8 @@ import com.liferay.portal.kernel.audit.AuditRouter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.GroupConstants;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.Ticket;
 import com.liferay.portal.kernel.model.TicketConstants;
@@ -25,12 +28,16 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.TicketLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.security.audit.event.generators.util.AuditMessageBuilder;
+import com.liferay.portal.util.PortalInstances;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +57,7 @@ public class OnDemandAdminTicketGeneratorImpl
 			Company company, String justification, long requestorUserId)
 		throws PortalException {
 
-		_onDemandAdminHelper.checkRequestAdministratorAccessPermission(
+		_checkRequestAdministratorAccessPermission(
 			company.getCompanyId(), requestorUserId);
 
 		User requestorUser = _userLocalService.getUser(requestorUserId);
@@ -133,6 +140,34 @@ public class OnDemandAdminTicketGeneratorImpl
 		}
 	}
 
+	private void _checkRequestAdministratorAccessPermission(
+			long companyId, long userId)
+		throws PortalException {
+
+		if (companyId == PortalInstances.getDefaultCompanyId()) {
+			throw new PrincipalException(
+				"Target company must not be the default company");
+		}
+
+		User user = _userLocalService.getUser(userId);
+
+		if (user.getCompanyId() != PortalInstances.getDefaultCompanyId()) {
+			throw new PrincipalException(
+				"Request can only be made from the default company");
+		}
+
+		if (!PortletPermissionUtil.contains(
+				PermissionCheckerFactoryUtil.create(user),
+				GroupConstants.DEFAULT_LIVE_GROUP_ID,
+				LayoutConstants.DEFAULT_PLID,
+				OnDemandAdminPortletKeys.ON_DEMAND_ADMIN,
+				OnDemandAdminActionKeys.REQUEST_ADMINISTRATOR_ACCESS, true)) {
+
+			throw new PrincipalException.MustHavePermission(
+				userId, OnDemandAdminActionKeys.REQUEST_ADMINISTRATOR_ACCESS);
+		}
+	}
+
 	private String _getScreenName(long requestorUserId, long userId)
 		throws PortalException {
 
@@ -147,9 +182,6 @@ public class OnDemandAdminTicketGeneratorImpl
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
-
-	@Reference
-	private OnDemandAdminHelper _onDemandAdminHelper;
 
 	@Reference
 	private RoleLocalService _roleLocalService;

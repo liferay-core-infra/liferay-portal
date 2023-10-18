@@ -60,7 +60,6 @@ import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ReleaseInfo;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -122,6 +121,7 @@ import javax.servlet.http.HttpSession;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Brian Wing Shun Chan
@@ -133,6 +133,8 @@ public class MainServlet extends HttpServlet {
 	@Override
 	public void destroy() {
 		ShutdownHelperUtil.setShutdown(true);
+
+		_serviceTracker.close();
 
 		ListIterator<ServiceRegistration<?>> listIterator =
 			_serviceRegistrations.listIterator(_serviceRegistrations.size());
@@ -386,6 +388,11 @@ public class MainServlet extends HttpServlet {
 			_log.error(exception);
 		}
 
+		_serviceTracker = new ServiceTracker<>(
+			_bundleContext, ReleaseManager.class, null);
+
+		_serviceTracker.open();
+
 		if (DBUpgrader.isUpgradeDatabaseAutoRunEnabled()) {
 			DBUpgrader.upgradeModules(true);
 
@@ -599,7 +606,9 @@ public class MainServlet extends HttpServlet {
 	}
 
 	private void _checkBuildDate() {
-		if (_releaseManager == null) {
+		ReleaseManager releaseManager = _serviceTracker.getService();
+
+		if (releaseManager == null) {
 			return;
 		}
 
@@ -612,7 +621,7 @@ public class MainServlet extends HttpServlet {
 			}
 
 			if (_log.isWarnEnabled()) {
-				String message = _releaseManager.getShortStatusMessage(true);
+				String message = releaseManager.getShortStatusMessage(true);
 
 				if (Validator.isNotNull(message)) {
 					_log.warn(message);
@@ -621,7 +630,7 @@ public class MainServlet extends HttpServlet {
 				}
 			}
 
-			String message = _releaseManager.getShortStatusMessage(false);
+			String message = releaseManager.getShortStatusMessage(false);
 
 			if (Validator.isNotNull(message)) {
 				if (_log.isInfoEnabled()) {
@@ -1330,12 +1339,12 @@ public class MainServlet extends HttpServlet {
 	private static final Snapshot<InactiveRequestHandler>
 		_inactiveRequestHandlerSnapshot = new Snapshot<>(
 			MainServlet.class, InactiveRequestHandler.class);
-	private static volatile ReleaseManager _releaseManager =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			ReleaseManager.class, MainServlet.class, "_releaseManager", false);
 
+	private final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 	private PortalRequestProcessor _portalRequestProcessor;
 	private final List<ServiceRegistration<?>> _serviceRegistrations =
 		new ArrayList<>();
+	private ServiceTracker<ReleaseManager, ReleaseManager> _serviceTracker;
 
 }

@@ -3,23 +3,20 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.documentlibrary.util;
+package com.liferay.document.library.preview.audio.internal.processor;
 
 import com.liferay.document.library.kernel.background.task.DLBackgroundTaskExecutorNames;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
-import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
+import com.liferay.document.library.kernel.util.AudioConverter;
+import com.liferay.document.library.kernel.util.AudioProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
-import com.liferay.document.library.kernel.util.VideoConverter;
-import com.liferay.document.library.kernel.util.VideoProcessor;
+import com.liferay.document.library.preview.processor.DLPreviewableProcessor;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskContextMapConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.image.ImageBag;
-import com.liferay.portal.kernel.image.ImageToolUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -39,8 +36,6 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 
-import java.awt.image.RenderedImage;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -48,7 +43,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.CancellationException;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -58,8 +52,8 @@ import org.apache.commons.lang.time.StopWatch;
  * @author Mika Koivisto
  * @author Ivica Cardic
  */
-public class VideoProcessorImpl
-	extends DLPreviewableProcessor implements VideoProcessor {
+public class AudioProcessorImpl
+	extends DLPreviewableProcessor implements AudioProcessor {
 
 	@Override
 	public void afterPropertiesSet() {
@@ -70,7 +64,7 @@ public class VideoProcessorImpl
 		}
 		else {
 			for (String previewType : _PREVIEW_TYPES) {
-				if (!previewType.equals("mp4") && !previewType.equals("ogv")) {
+				if (!previewType.equals("mp3") && !previewType.equals("ogg")) {
 					valid = false;
 
 					break;
@@ -82,14 +76,21 @@ public class VideoProcessorImpl
 			_log.warn(
 				StringBundler.concat(
 					"Liferay is incorrectly configured to generate video ",
-					"previews using video containers other than MP4 or OGV. ",
+					"previews using video containers other than MP3 or OGG. ",
 					"Please change the property ",
-					PropsKeys.DL_FILE_ENTRY_PREVIEW_VIDEO_CONTAINERS,
+					PropsKeys.DL_FILE_ENTRY_PREVIEW_AUDIO_CONTAINERS,
 					" in portal-ext.properties."));
 		}
 
 		FileUtil.mkdirs(PREVIEW_TMP_PATH);
-		FileUtil.mkdirs(THUMBNAIL_TMP_PATH);
+	}
+
+	@Override
+	public void generateAudio(
+			FileVersion sourceFileVersion, FileVersion destinationFileVersion)
+		throws Exception {
+
+		_generateAudio(sourceFileVersion, destinationFileVersion);
 	}
 
 	@Override
@@ -97,14 +98,14 @@ public class VideoProcessorImpl
 		CompanyLocalServiceUtil.forEachCompanyId(
 			companyId -> {
 				try {
-					String jobName = "generateVideoPreviews-".concat(
+					String jobName = "generateAudioPreviews-".concat(
 						PortalUUIDUtil.generate());
 
 					BackgroundTaskManagerUtil.addBackgroundTask(
 						UserConstants.USER_ID_DEFAULT, CompanyConstants.SYSTEM,
 						jobName,
 						DLBackgroundTaskExecutorNames.
-							VIDEO_PREVIEW_BACKGROUND_TASK_EXECUTOR,
+							AUDIO_PREVIEW_BACKGROUND_TASK_EXECUTOR,
 						HashMapBuilder.<String, Serializable>put(
 							BackgroundTaskContextMapConstants.DELETE_ON_SUCCESS,
 							true
@@ -122,11 +123,8 @@ public class VideoProcessorImpl
 	}
 
 	@Override
-	public void generateVideo(
-			FileVersion sourceFileVersion, FileVersion destinationFileVersion)
-		throws Exception {
-
-		_generateVideo(sourceFileVersion, destinationFileVersion);
+	public Set<String> getAudioMimeTypes() {
+		return _audioMimeTypes;
 	}
 
 	@Override
@@ -144,37 +142,18 @@ public class VideoProcessorImpl
 	}
 
 	@Override
-	public InputStream getThumbnailAsStream(FileVersion fileVersion, int index)
-		throws Exception {
-
-		return doGetThumbnailAsStream(fileVersion, index);
-	}
-
-	@Override
-	public long getThumbnailFileSize(FileVersion fileVersion, int index)
-		throws Exception {
-
-		return doGetThumbnailFileSize(fileVersion, index);
-	}
-
-	@Override
 	public String getType() {
-		return DLProcessorConstants.VIDEO_PROCESSOR;
+		return DLProcessorConstants.AUDIO_PROCESSOR;
 	}
 
 	@Override
-	public Set<String> getVideoMimeTypes() {
-		return _videoMimeTypes;
-	}
-
-	@Override
-	public boolean hasVideo(FileVersion fileVersion) {
-		boolean hasVideo = false;
+	public boolean hasAudio(FileVersion fileVersion) {
+		boolean hasAudio = false;
 
 		try {
-			hasVideo = _hasVideo(fileVersion);
+			hasAudio = hasPreviews(fileVersion);
 
-			if (!hasVideo && isSupported(fileVersion)) {
+			if (!hasAudio && isSupported(fileVersion)) {
 				_queueGeneration(null, fileVersion);
 			}
 		}
@@ -182,31 +161,31 @@ public class VideoProcessorImpl
 			_log.error(exception);
 		}
 
-		return hasVideo;
+		return hasAudio;
 	}
 
 	@Override
-	public boolean isAvailable() {
-		return _videoConverter.isEnabled();
-	}
-
-	@Override
-	public boolean isSupported(String mimeType) {
-		if (_videoMimeTypes.contains(mimeType) && _videoConverter.isEnabled()) {
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public boolean isVideoSupported(FileVersion fileVersion) {
+	public boolean isAudioSupported(FileVersion fileVersion) {
 		return isSupported(fileVersion);
 	}
 
 	@Override
-	public boolean isVideoSupported(String mimeType) {
+	public boolean isAudioSupported(String mimeType) {
 		return isSupported(mimeType);
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return _audioConverter.isEnabled();
+	}
+
+	@Override
+	public boolean isSupported(String mimeType) {
+		if (_audioMimeTypes.contains(mimeType) && _audioConverter.isEnabled()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -224,9 +203,6 @@ public class VideoProcessorImpl
 			Element fileEntryElement)
 		throws Exception {
 
-		exportThumbnails(
-			portletDataContext, fileEntry, fileEntryElement, "video");
-
 		exportPreviews(portletDataContext, fileEntry, fileEntryElement);
 	}
 
@@ -235,10 +211,6 @@ public class VideoProcessorImpl
 			PortletDataContext portletDataContext, FileEntry fileEntry,
 			FileEntry importedFileEntry, Element fileEntryElement)
 		throws Exception {
-
-		importThumbnails(
-			portletDataContext, fileEntry, importedFileEntry, fileEntryElement,
-			"video");
 
 		importPreviews(
 			portletDataContext, fileEntry, importedFileEntry, fileEntryElement);
@@ -261,10 +233,10 @@ public class VideoProcessorImpl
 			}
 
 			for (String previewType : _PREVIEW_TYPES) {
-				if (previewType.equals("mp4") || previewType.equals("ogv")) {
+				if (previewType.equals("mp3") || previewType.equals("ogg")) {
 					exportPreview(
 						portletDataContext, fileEntry, fileEntryElement,
-						"video", previewType);
+						"audio", previewType);
 				}
 			}
 		}
@@ -287,7 +259,7 @@ public class VideoProcessorImpl
 
 	@Override
 	protected String getThumbnailType(FileVersion fileVersion) {
-		return THUMBNAIL_TYPE;
+		return null;
 	}
 
 	protected void importPreviews(
@@ -300,92 +272,16 @@ public class VideoProcessorImpl
 		}
 
 		for (String previewType : _PREVIEW_TYPES) {
-			if (previewType.equals("mp4") || previewType.equals("ogv")) {
+			if (previewType.equals("mp3") || previewType.equals("ogg")) {
 				importPreview(
 					portletDataContext, fileEntry, importedFileEntry,
-					fileEntryElement, "video", previewType);
+					fileEntryElement, "audio", previewType);
 			}
 		}
 	}
 
-	@Override
-	protected void storeThumbnailImages(FileVersion fileVersion, File file)
-		throws Exception {
-
-		if (!hasThumbnail(fileVersion, THUMBNAIL_INDEX_DEFAULT)) {
-			addFileToStore(
-				fileVersion.getCompanyId(), THUMBNAIL_PATH,
-				getThumbnailFilePath(fileVersion, THUMBNAIL_INDEX_DEFAULT),
-				file);
-		}
-
-		if (isThumbnailEnabled(THUMBNAIL_INDEX_CUSTOM_1) ||
-			isThumbnailEnabled(THUMBNAIL_INDEX_CUSTOM_2)) {
-
-			ImageBag imageBag = ImageToolUtil.read(file);
-
-			RenderedImage renderedImage = imageBag.getRenderedImage();
-
-			storeThumbnailImage(
-				fileVersion, renderedImage, THUMBNAIL_INDEX_CUSTOM_1);
-			storeThumbnailImage(
-				fileVersion, renderedImage, THUMBNAIL_INDEX_CUSTOM_2);
-		}
-	}
-
-	private void _generateThumbnail(FileVersion fileVersion, File file) {
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
-
-		File thumbnailTempFile = getThumbnailTempFile(
-			DLUtil.getTempFileId(
-				fileVersion.getFileEntryId(), fileVersion.getVersion()));
-
-		try {
-			try {
-				FileUtil.write(
-					thumbnailTempFile,
-					_videoConverter.generateVideoThumbnail(
-						file, THUMBNAIL_TYPE));
-			}
-			catch (CancellationException cancellationException) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						StringBundler.concat(
-							"Cancellation received for ",
-							fileVersion.getFileVersionId(), " ",
-							fileVersion.getTitle()),
-						cancellationException);
-				}
-			}
-			catch (Exception exception) {
-				_log.error(
-					StringBundler.concat(
-						"Unable to process ", fileVersion.getFileVersionId(),
-						" ", fileVersion.getTitle()),
-					exception);
-			}
-
-			storeThumbnailImages(fileVersion, thumbnailTempFile);
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					StringBundler.concat(
-						"Generated a thumbnail for ", fileVersion.getTitle(),
-						" in ", stopWatch.getTime(), " ms"));
-			}
-		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
-		}
-		finally {
-			FileUtil.delete(thumbnailTempFile);
-		}
-	}
-
-	private void _generateVideo(
-			FileVersion fileVersion, File sourceFile, File destinationFile,
+	private void _generateAudio(
+			FileVersion fileVersion, File srcFile, File destFile,
 			String containerType)
 		throws Exception {
 
@@ -399,63 +295,8 @@ public class VideoProcessorImpl
 
 		try {
 			FileUtil.write(
-				destinationFile,
-				_videoConverter.generateVideoPreview(
-					sourceFile, containerType));
-
-			_fileVersionPreviewEventListener.onSuccess(fileVersion);
-		}
-		catch (Exception exception) {
-			_fileVersionPreviewEventListener.onFailure(fileVersion);
-
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					StringBundler.concat(
-						"Unable to process ", fileVersion.getFileVersionId(),
-						" ", fileVersion.getTitle()));
-			}
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
-
-			throw exception;
-		}
-
-		addFileToStore(
-			fileVersion.getCompanyId(), PREVIEW_PATH,
-			getPreviewFilePath(fileVersion, containerType), destinationFile);
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				StringBundler.concat(
-					"Generated a ", containerType, " preview video for ",
-					fileVersion.getTitle(), " in ", stopWatch.getTime(),
-					" ms"));
-		}
-	}
-
-	private void _generateVideo(
-		FileVersion fileVersion, File sourceFile, File[] destinationFiles) {
-
-		try {
-			for (int i = 0; i < destinationFiles.length; i++) {
-				_generateVideo(
-					fileVersion, sourceFile, destinationFiles[i],
-					_PREVIEW_TYPES[i]);
-			}
-		}
-		catch (CancellationException cancellationException) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					StringBundler.concat(
-						"Cancellation received for ",
-						fileVersion.getFileVersionId(), " ",
-						fileVersion.getTitle()),
-					cancellationException);
-			}
-
-			_fileVersionPreviewEventListener.onFailure(fileVersion);
+				destFile,
+				_audioConverter.generateAudioPreview(srcFile, containerType));
 		}
 		catch (Exception exception) {
 			_log.error(
@@ -463,22 +304,55 @@ public class VideoProcessorImpl
 					"Unable to process ", fileVersion.getFileVersionId(), " ",
 					fileVersion.getTitle()),
 				exception);
+		}
 
-			_fileVersionPreviewEventListener.onFailure(fileVersion);
+		addFileToStore(
+			fileVersion.getCompanyId(), PREVIEW_PATH,
+			getPreviewFilePath(fileVersion, containerType), destFile);
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				StringBundler.concat(
+					"Generated a ", containerType, " preview audio for ",
+					fileVersion.getFileVersionId(), " in ", stopWatch.getTime(),
+					"ms"));
 		}
 	}
 
-	private void _generateVideo(
+	private void _generateAudio(
+		FileVersion fileVersion, File srcFile, File[] destFiles) {
+
+		try {
+			for (int i = 0; i < destFiles.length; i++) {
+				_generateAudio(
+					fileVersion, srcFile, destFiles[i], _PREVIEW_TYPES[i]);
+			}
+		}
+		catch (Exception exception) {
+			_log.error(
+				StringBundler.concat(
+					"Unable to process ", fileVersion.getFileVersionId(), " ",
+					fileVersion.getTitle()),
+				exception);
+		}
+	}
+
+	private void _generateAudio(
 			FileVersion sourceFileVersion, FileVersion destinationFileVersion)
 		throws Exception {
 
-		if (!_videoConverter.isEnabled() || _hasVideo(destinationFileVersion)) {
-			return;
-		}
+		String tempFileId = DLUtil.getTempFileId(
+			destinationFileVersion.getFileEntryId(),
+			destinationFileVersion.getVersion());
 
 		File[] previewTempFiles = new File[_PREVIEW_TYPES.length];
 
-		File videoTempFile = null;
+		for (int i = 0; i < _PREVIEW_TYPES.length; i++) {
+			previewTempFiles[i] = getPreviewTempFile(
+				tempFileId, _PREVIEW_TYPES[i]);
+		}
+
+		File audioTempFile = null;
 
 		try {
 			if (sourceFileVersion != null) {
@@ -487,48 +361,47 @@ public class VideoProcessorImpl
 				return;
 			}
 
-			if (!hasPreviews(destinationFileVersion) ||
-				!hasThumbnails(destinationFileVersion)) {
+			if (!_audioConverter.isEnabled() ||
+				hasPreviews(destinationFileVersion)) {
 
+				return;
+			}
+
+			audioTempFile = FileUtil.createTempFile(
+				destinationFileVersion.getExtension());
+
+			if (!hasPreviews(destinationFileVersion)) {
 				try (InputStream inputStream =
 						destinationFileVersion.getContentStream(false)) {
 
-					videoTempFile = FileUtil.createTempFile(
-						destinationFileVersion.getExtension());
-
-					FileUtil.write(videoTempFile, inputStream);
-				}
-			}
-
-			if (!hasPreviews(destinationFileVersion)) {
-				String tempFileId = DLUtil.getTempFileId(
-					destinationFileVersion.getFileEntryId(),
-					destinationFileVersion.getVersion());
-
-				for (int i = 0; i < _PREVIEW_TYPES.length; i++) {
-					previewTempFiles[i] = getPreviewTempFile(
-						tempFileId, _PREVIEW_TYPES[i]);
+					FileUtil.write(audioTempFile, inputStream);
 				}
 
 				try {
-					_generateVideo(
-						destinationFileVersion, videoTempFile,
+					_generateAudio(
+						destinationFileVersion, audioTempFile,
 						previewTempFiles);
+
+					_fileVersionPreviewEventListener.onSuccess(
+						destinationFileVersion);
 				}
 				catch (Exception exception) {
 					_fileVersionPreviewEventListener.onFailure(
 						destinationFileVersion);
 
-					_log.error(exception);
-				}
-			}
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Unable to process ",
+								destinationFileVersion.getFileVersionId(), " ",
+								destinationFileVersion.getTitle()));
+					}
 
-			if (!hasThumbnails(destinationFileVersion)) {
-				try {
-					_generateThumbnail(destinationFileVersion, videoTempFile);
-				}
-				catch (Exception exception) {
-					_log.error(exception);
+					if (_log.isDebugEnabled()) {
+						_log.debug(exception);
+					}
+
+					throw exception;
 				}
 			}
 		}
@@ -546,16 +419,8 @@ public class VideoProcessorImpl
 				FileUtil.delete(previewTempFile);
 			}
 
-			FileUtil.delete(videoTempFile);
+			FileUtil.delete(audioTempFile);
 		}
-	}
-
-	private boolean _hasVideo(FileVersion fileVersion) throws Exception {
-		if (hasPreviews(fileVersion) && hasThumbnails(fileVersion)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private void _queueGeneration(
@@ -571,28 +436,28 @@ public class VideoProcessorImpl
 		_fileVersionIds.add(destinationFileVersion.getFileVersionId());
 
 		sendGenerationMessage(
-			DestinationNames.DOCUMENT_LIBRARY_VIDEO_PROCESSOR,
+			DestinationNames.DOCUMENT_LIBRARY_AUDIO_PROCESSOR,
 			sourceFileVersion, destinationFileVersion);
 	}
 
 	private static final String[] _PREVIEW_TYPES =
-		PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_CONTAINERS;
+		PropsValues.DL_FILE_ENTRY_PREVIEW_AUDIO_CONTAINERS;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		VideoProcessorImpl.class);
+		AudioProcessorImpl.class);
 
+	private static volatile AudioConverter _audioConverter =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			AudioConverter.class, AudioProcessorImpl.class, "_audioConverter",
+			false);
 	private static volatile FileVersionPreviewEventListener
 		_fileVersionPreviewEventListener =
 			ServiceProxyFactory.newServiceTrackedInstance(
-				FileVersionPreviewEventListener.class, VideoProcessorImpl.class,
+				FileVersionPreviewEventListener.class, AudioProcessorImpl.class,
 				"_fileVersionPreviewEventListener", false, false);
-	private static volatile VideoConverter _videoConverter =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			VideoConverter.class, VideoProcessorImpl.class, "_videoConverter",
-			false);
 
+	private final Set<String> _audioMimeTypes = SetUtil.fromArray(
+		PropsValues.DL_FILE_ENTRY_PREVIEW_AUDIO_MIME_TYPES);
 	private final List<Long> _fileVersionIds = new Vector<>();
-	private final Set<String> _videoMimeTypes = SetUtil.fromArray(
-		PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_MIME_TYPES);
 
 }

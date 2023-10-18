@@ -13,7 +13,7 @@ import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.store.Store;
-import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
+import com.liferay.document.library.preview.processor.DLPreviewableProcessor;
 import com.liferay.osgi.util.osgi.commands.OSGiCommands;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.StringPool;

@@ -9,13 +9,13 @@ import com.liferay.document.library.kernel.document.conversion.DocumentConversio
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.store.Store;
-import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
 import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.kernel.util.PDFProcessor;
 import com.liferay.document.library.preview.pdf.internal.background.task.PDFPreviewBackgroundTaskExecutor;
 import com.liferay.document.library.preview.pdf.internal.configuration.admin.service.helper.PDFPreviewConfigurationHelper;
 import com.liferay.document.library.preview.pdf.internal.util.ProcessConfigUtil;
+import com.liferay.document.library.preview.processor.DLPreviewableProcessor;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.image.Ghostscript;
 import com.liferay.petra.process.ProcessCallable;

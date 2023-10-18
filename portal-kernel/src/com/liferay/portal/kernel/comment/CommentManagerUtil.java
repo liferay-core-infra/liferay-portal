@@ -67,12 +67,6 @@ public class CommentManagerUtil {
 		_commentManager.deleteDiscussion(className, classPK);
 	}
 
-	public static void deleteGroupComments(long groupId)
-		throws PortalException {
-
-		_commentManager.deleteGroupComments(groupId);
-	}
-
 	public static Comment fetchComment(long commentId) {
 		return _commentManager.fetchComment(commentId);
 	}
@@ -116,24 +110,6 @@ public class CommentManagerUtil {
 
 		_commentManager.subscribeDiscussion(
 			userId, groupId, className, classPK);
-	}
-
-	public static void unsubscribeDiscussion(
-			long userId, String className, long classPK)
-		throws PortalException {
-
-		_commentManager.unsubscribeDiscussion(userId, className, classPK);
-	}
-
-	public static long updateComment(
-			long userId, String className, long classPK, long commentId,
-			String subject, String body,
-			Function<String, ServiceContext> serviceContextFunction)
-		throws PortalException {
-
-		return _commentManager.updateComment(
-			userId, className, classPK, commentId, subject, body,
-			serviceContextFunction);
 	}
 
 	private static volatile CommentManager _commentManager =

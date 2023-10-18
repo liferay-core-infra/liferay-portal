@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -264,13 +265,17 @@ public class AMThumbnailsOSGiCommandsTest {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
+		DLProcessor imageProcessor = new ImageProcessorImpl();
+
 		_serviceRegistration = bundleContext.registerService(
 			new String[] {
 				DLProcessor.class.getName(), ImageProcessor.class.getName()
 			},
-			new ImageProcessorImpl(),
+			imageProcessor,
 			MapUtil.singletonDictionary(
 				"type", DLProcessorConstants.IMAGE_PROCESSOR));
+
+		ReflectionTestUtil.setFieldValue(imageProcessor, "store", _store);
 	}
 
 	private static void _disableDocumentLibraryAM() throws Exception {
@@ -420,6 +425,9 @@ public class AMThumbnailsOSGiCommandsTest {
 	private static ServiceComponentRuntime _serviceComponentRuntime;
 
 	private static ServiceRegistration<?> _serviceRegistration;
+
+	@Inject(filter = "default=true")
+	private static Store _store;
 
 	private Company _company;
 	private Group _group;

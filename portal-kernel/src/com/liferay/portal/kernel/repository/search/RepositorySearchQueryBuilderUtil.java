@@ -21,12 +21,6 @@ public class RepositorySearchQueryBuilderUtil {
 		return _repositorySearchQueryBuilder.getFullQuery(searchContext);
 	}
 
-	public static RepositorySearchQueryBuilder
-		getRepositorySearchQueryBuilder() {
-
-		return _repositorySearchQueryBuilder;
-	}
-
 	private static volatile RepositorySearchQueryBuilder
 		_repositorySearchQueryBuilder =
 			ServiceProxyFactory.newServiceTrackedInstance(

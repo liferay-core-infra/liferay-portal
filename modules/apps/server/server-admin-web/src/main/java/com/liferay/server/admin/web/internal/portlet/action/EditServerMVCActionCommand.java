@@ -101,7 +101,7 @@ import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.log4j.Log4JUtil;
-import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyFactoryUtil;
+import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.util.MaintenanceUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.ShutdownUtil;
@@ -881,7 +881,7 @@ public class EditServerMVCActionCommand
 		roleMembershipPolicy.verifyPolicy();
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			SiteMembershipPolicyFactoryUtil.getSiteMembershipPolicy();
+			SiteMembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.verifyPolicy();
 

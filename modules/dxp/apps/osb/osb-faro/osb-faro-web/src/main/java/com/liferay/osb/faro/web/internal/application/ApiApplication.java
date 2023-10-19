@@ -7,6 +7,7 @@ package com.liferay.osb.faro.web.internal.application;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+import com.liferay.oauth2.provider.service.OAuth2AuthorizationLocalService;
 import com.liferay.osb.faro.web.internal.context.GroupInfoContextProvider;
 import com.liferay.osb.faro.web.internal.controller.api.RecommendationController;
 import com.liferay.osb.faro.web.internal.controller.api.ReportController;
@@ -39,7 +40,8 @@ public class ApiApplication extends Application {
 	public Set<Object> getSingletons() {
 		Set<Object> singletons = new HashSet<>();
 
-		singletons.add(_groupInfoContextProvider);
+		singletons.add(
+			new GroupInfoContextProvider(_oAuth2AuthorizationLocalService));
 		singletons.add(new JacksonJsonProvider(JSONUtil.getObjectMapper()));
 		singletons.add(new RecommendationController());
 		singletons.add(new ReportController());
@@ -58,6 +60,6 @@ public class ApiApplication extends Application {
 	}
 
 	@Reference
-	private GroupInfoContextProvider _groupInfoContextProvider;
+	private OAuth2AuthorizationLocalService _oAuth2AuthorizationLocalService;
 
 }

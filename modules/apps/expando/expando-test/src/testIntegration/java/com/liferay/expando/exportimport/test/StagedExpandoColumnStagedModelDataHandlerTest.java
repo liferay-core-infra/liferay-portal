@@ -10,8 +10,8 @@ import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.adapter.StagedExpandoColumn;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.ExpandoTable;
-import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepositoryRegistryUtil;
 import com.liferay.exportimport.test.util.lar.BaseStagedModelDataHandlerTestCase;
@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.List;
@@ -69,11 +70,11 @@ public class StagedExpandoColumnStagedModelDataHandlerTest
 			Map<String, List<StagedModel>> dependentStagedModelsMap)
 		throws Exception {
 
-		ExpandoTable expandoTable = ExpandoTableLocalServiceUtil.addTable(
+		ExpandoTable expandoTable = _expandoTableLocalService.addTable(
 			group.getCompanyId(), ExpandoTable.class.getName(),
 			RandomTestUtil.randomString());
 
-		ExpandoColumn expandoColumn = ExpandoColumnLocalServiceUtil.addColumn(
+		ExpandoColumn expandoColumn = _expandoColumnLocalService.addColumn(
 			expandoTable.getTableId(), RandomTestUtil.randomString(),
 			ExpandoColumnConstants.STRING);
 
@@ -140,6 +141,12 @@ public class StagedExpandoColumnStagedModelDataHandlerTest
 			stagedExpandoColumn.getUuid(),
 			importedStagedExpandoColumn.getUuid());
 	}
+
+	@Inject
+	private ExpandoColumnLocalService _expandoColumnLocalService;
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	private StagedModelRepository<StagedExpandoColumn> _stagedModelRepository;
 

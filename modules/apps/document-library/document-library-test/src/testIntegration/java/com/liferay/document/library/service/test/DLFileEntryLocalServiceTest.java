@@ -50,8 +50,8 @@ import com.liferay.dynamic.data.mapping.util.DDMBeanTranslatorUtil;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.model.ExpandoTable;
-import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
@@ -543,11 +543,10 @@ public class DLFileEntryLocalServiceTest {
 
 	@Test
 	public void testCopyFileEntry() throws Exception {
-		ExpandoTable expandoTable =
-			ExpandoTableLocalServiceUtil.addDefaultTable(
-				PortalUtil.getDefaultCompanyId(), DLFileEntry.class.getName());
+		ExpandoTable expandoTable = _expandoTableLocalService.addDefaultTable(
+			PortalUtil.getDefaultCompanyId(), DLFileEntry.class.getName());
 
-		ExpandoColumnLocalServiceUtil.addColumn(
+		_expandoColumnLocalService.addColumn(
 			expandoTable.getTableId(), "ExpandoAttributeName",
 			ExpandoColumnConstants.STRING, StringPool.BLANK);
 
@@ -633,7 +632,7 @@ public class DLFileEntryLocalServiceTest {
 			Assert.assertEquals("Text 1 Value", value.getString(LocaleUtil.US));
 		}
 		finally {
-			ExpandoTableLocalServiceUtil.deleteTable(expandoTable);
+			_expandoTableLocalService.deleteTable(expandoTable);
 		}
 	}
 
@@ -1406,6 +1405,12 @@ public class DLFileEntryLocalServiceTest {
 
 	@Inject
 	private DDMStorageEngineManager _ddmStorageEngineManager;
+
+	@Inject
+	private ExpandoColumnLocalService _expandoColumnLocalService;
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@DeleteAfterTestRun
 	private Group _group;

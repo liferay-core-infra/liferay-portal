@@ -11,7 +11,6 @@ import com.liferay.expando.kernel.model.adapter.StagedExpandoColumn;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.ExpandoTable;
 import com.liferay.expando.service.ExpandoColumnLocalService;
-import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.test.util.ExpandoTestUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
@@ -284,7 +283,7 @@ public class SegmentsEntryStagedModelDataHandlerTest
 
 		expandoColumn.setTypeSettingsProperties(unicodeProperties);
 
-		return ExpandoColumnLocalServiceUtil.updateExpandoColumn(expandoColumn);
+		return _expandoColumnLocalService.updateExpandoColumn(expandoColumn);
 	}
 
 	private String _encodeName(ExpandoColumn expandoColumn) {

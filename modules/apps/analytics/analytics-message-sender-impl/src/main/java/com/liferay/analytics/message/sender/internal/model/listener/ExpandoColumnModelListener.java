@@ -6,8 +6,8 @@
 package com.liferay.analytics.message.sender.internal.model.listener;
 
 import com.liferay.analytics.message.sender.model.listener.AnalyticsEntityModel;
-import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
 

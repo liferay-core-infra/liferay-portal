@@ -15,14 +15,6 @@ import java.util.concurrent.Future;
  */
 public class ClusterMasterExecutorUtil {
 
-	public static void addClusterMasterTokenTransitionListener(
-		ClusterMasterTokenTransitionListener
-			clusterMasterTokenTransitionListener) {
-
-		_clusterMasterExecutor.addClusterMasterTokenTransitionListener(
-			clusterMasterTokenTransitionListener);
-	}
-
 	public static <T> Future<T> executeOnMaster(MethodHandler methodHandler) {
 		return _clusterMasterExecutor.executeOnMaster(methodHandler);
 	}
@@ -33,14 +25,6 @@ public class ClusterMasterExecutorUtil {
 
 	public static boolean isMaster() {
 		return _clusterMasterExecutor.isMaster();
-	}
-
-	public static void removeClusterMasterTokenTransitionListener(
-		ClusterMasterTokenTransitionListener
-			clusterMasterTokenTransitionListener) {
-
-		_clusterMasterExecutor.removeClusterMasterTokenTransitionListener(
-			clusterMasterTokenTransitionListener);
 	}
 
 	private static volatile ClusterMasterExecutor _clusterMasterExecutor =

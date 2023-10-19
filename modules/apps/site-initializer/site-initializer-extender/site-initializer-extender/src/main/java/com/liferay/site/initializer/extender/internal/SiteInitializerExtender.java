@@ -110,7 +110,7 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
 /**
  * @author Brian Wing Shun Chan
  */
-@Component(service = SiteInitializerExtender.class)
+@Component(service = BundleTrackerCustomizer.class)
 public class SiteInitializerExtender
 	implements BundleTrackerCustomizer<SiteInitializerExtension> {
 

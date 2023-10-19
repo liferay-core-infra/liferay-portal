@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Eduardo García
  */
-@Component(service = EntityModelFieldMapper.class)
+@Component(service = {})
 public class EntityModelFieldMapper {
 
 	public Map<String, EntityField> getCustomFieldEntityFields(

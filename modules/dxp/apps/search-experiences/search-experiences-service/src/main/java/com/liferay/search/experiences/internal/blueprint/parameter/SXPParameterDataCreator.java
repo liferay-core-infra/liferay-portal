@@ -71,11 +71,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Petteri Karttunen
  */
 @Component(
-	enabled = false,
-	service = {
-		SXPParameterContributorDefinitionProvider.class,
-		SXPParameterDataCreator.class
-	}
+	enabled = false, service = SXPParameterContributorDefinitionProvider.class
 )
 public class SXPParameterDataCreator
 	implements SXPParameterContributorDefinitionProvider {

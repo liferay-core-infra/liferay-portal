@@ -29,10 +29,6 @@ public class ClusterExecutorUtil {
 		return _clusterExecutor.getLocalClusterNode();
 	}
 
-	public static boolean isClusterNodeAlive(String clusterNodeId) {
-		return _clusterExecutor.isClusterNodeAlive(clusterNodeId);
-	}
-
 	public static boolean isEnabled() {
 		return _clusterExecutor.isEnabled();
 	}

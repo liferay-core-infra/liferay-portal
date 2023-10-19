@@ -6,35 +6,27 @@
 package com.liferay.portal.security.membershippolicy;
 
 import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicy;
-import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Roberto Díaz
+ * @author Sergio González
+ * @author Shuyang Zhou
+ * @author Peter Fellwock
  */
 public class OrganizationMembershipPolicyFactoryUtil {
 
 	public static OrganizationMembershipPolicy
 		getOrganizationMembershipPolicy() {
 
-		return _organizationMembershipPolicyFactory.
-			getOrganizationMembershipPolicy();
+		return _organizationMembershipPolicy;
 	}
 
-	public static OrganizationMembershipPolicyFactory
-		getOrganizationMembershipPolicyFactory() {
-
-		return _organizationMembershipPolicyFactory;
-	}
-
-	public void setOrganizationMembershipPolicyFactory(
-		OrganizationMembershipPolicyFactory
-			organizationMembershipPolicyFactory) {
-
-		_organizationMembershipPolicyFactory =
-			organizationMembershipPolicyFactory;
-	}
-
-	private static OrganizationMembershipPolicyFactory
-		_organizationMembershipPolicyFactory;
+	private static volatile OrganizationMembershipPolicy
+		_organizationMembershipPolicy =
+			ServiceProxyFactory.newServiceTrackedInstance(
+				OrganizationMembershipPolicy.class,
+				OrganizationMembershipPolicyFactoryUtil.class,
+				"_organizationMembershipPolicy", false, true);
 
 }

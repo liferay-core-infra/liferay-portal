@@ -55,6 +55,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.filter.ActionResponseWrapper;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -73,6 +74,11 @@ import org.osgi.service.component.annotations.Reference;
 	service = MVCActionCommand.class
 )
 public class EditPageMVCActionCommand extends BaseMVCActionCommand {
+
+	@Activate
+	protected void activate() {
+		_wikiAttachmentsHelper = new WikiAttachmentsHelper(_wikiPageService);
+	}
 
 	@Override
 	protected void doProcessAction(
@@ -375,7 +381,6 @@ public class EditPageMVCActionCommand extends BaseMVCActionCommand {
 	@Reference
 	private TrashHelper _trashHelper;
 
-	@Reference
 	private WikiAttachmentsHelper _wikiAttachmentsHelper;
 
 	@Reference

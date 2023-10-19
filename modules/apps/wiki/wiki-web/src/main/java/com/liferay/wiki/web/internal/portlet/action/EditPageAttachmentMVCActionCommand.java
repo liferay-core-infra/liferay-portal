@@ -95,10 +95,9 @@ import org.osgi.service.component.annotations.Reference;
 public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
 	@Activate
-	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_dlConfiguration = ConfigurableUtil.createConfigurable(
-			DLConfiguration.class, properties);
+		modified(properties);
+		_wikiAttachmentsHelper = new WikiAttachmentsHelper(_wikiPageService);
 	}
 
 	@Override
@@ -167,6 +166,12 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			_handleUploadException(
 				actionRequest, actionResponse, cmd, exception);
 		}
+	}
+
+	@Modified
+	protected void modified(Map<String, Object> properties) {
+		_dlConfiguration = ConfigurableUtil.createConfigurable(
+			DLConfiguration.class, properties);
 	}
 
 	private void _addTempAttachment(
@@ -426,7 +431,6 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 	@Reference(target = "(upload.response.handler=multiple)")
 	private UploadResponseHandler _uploadResponseHandler;
 
-	@Reference
 	private WikiAttachmentsHelper _wikiAttachmentsHelper;
 
 	@Reference

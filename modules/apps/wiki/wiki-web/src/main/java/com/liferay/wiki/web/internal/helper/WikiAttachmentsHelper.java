@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.wiki.constants.WikiConstants;
@@ -31,18 +31,18 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Roberto Díaz
  */
-@Component(service = WikiAttachmentsHelper.class)
 public class WikiAttachmentsHelper {
+
+	public WikiAttachmentsHelper(WikiPageService wikiPageService) {
+		_wikiPageService = wikiPageService;
+	}
 
 	public void addAttachments(ActionRequest actionRequest) throws Exception {
 		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
+			PortalUtil.getUploadPortletRequest(actionRequest);
 
 		long nodeId = ParamUtil.getLong(actionRequest, "nodeId");
 		String title = ParamUtil.getString(actionRequest, "title");
@@ -172,10 +172,6 @@ public class WikiAttachmentsHelper {
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiAttachmentsHelper.class);
 
-	@Reference
-	private Portal _portal;
-
-	@Reference
-	private WikiPageService _wikiPageService;
+	private final WikiPageService _wikiPageService;
 
 }

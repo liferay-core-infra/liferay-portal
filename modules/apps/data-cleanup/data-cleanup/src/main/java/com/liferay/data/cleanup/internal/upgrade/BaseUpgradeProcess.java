@@ -6,7 +6,7 @@
 package com.liferay.data.cleanup.internal.upgrade;
 
 import com.liferay.data.cleanup.internal.upgrade.util.LayoutTypeSettingsUtil;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ArrayUtil;

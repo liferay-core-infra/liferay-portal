@@ -63,7 +63,6 @@ import com.liferay.portal.kernel.scripting.ScriptingException;
 import com.liferay.portal.kernel.scripting.ScriptingHelperUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicy;
-import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyFactory;
 import com.liferay.portal.kernel.security.membershippolicy.RoleMembershipPolicy;
 import com.liferay.portal.kernel.security.membershippolicy.RoleMembershipPolicyFactory;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicy;
@@ -102,6 +101,7 @@ import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.log4j.Log4JUtil;
+import com.liferay.portal.security.membershippolicy.OrganizationMembershipPolicyFactoryUtil;
 import com.liferay.portal.util.MaintenanceUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.ShutdownUtil;
@@ -870,7 +870,7 @@ public class EditServerMVCActionCommand
 
 	private void _verifyMembershipPolicies() throws Exception {
 		OrganizationMembershipPolicy organizationMembershipPolicy =
-			_organizationMembershipPolicyFactory.
+			OrganizationMembershipPolicyFactoryUtil.
 				getOrganizationMembershipPolicy();
 
 		organizationMembershipPolicy.verifyPolicy();
@@ -942,10 +942,6 @@ public class EditServerMVCActionCommand
 
 	@Reference
 	private MultiVMPool _multiVMPool;
-
-	@Reference
-	private OrganizationMembershipPolicyFactory
-		_organizationMembershipPolicyFactory;
 
 	@Reference
 	private Portal _portal;

@@ -31,7 +31,6 @@ import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.model.ExpandoTable;
 import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.expando.service.ExpandoTableLocalService;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.fragment.constants.FragmentConstants;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentEntry;
@@ -812,7 +811,7 @@ public class SitePageResourceTest extends BaseSitePageResourceTestCase {
 					randomCustomValue);
 			}
 			finally {
-				ExpandoTableLocalServiceUtil.deleteTable(expandoTable);
+				_expandoTableLocalService.deleteTable(expandoTable);
 			}
 		}
 		finally {
@@ -1962,6 +1961,9 @@ public class SitePageResourceTest extends BaseSitePageResourceTestCase {
 	@Inject
 	private ClientExtensionEntryRelLocalService
 		_clientExtensionEntryRelLocalService;
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@Inject
 	private FragmentCollectionLocalService _fragmentCollectionLocalService;

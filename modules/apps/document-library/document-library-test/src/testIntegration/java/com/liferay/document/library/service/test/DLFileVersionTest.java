@@ -29,8 +29,8 @@ import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.dynamic.data.mapping.util.DDMBeanTranslator;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.model.ExpandoTable;
-import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -100,11 +100,10 @@ public class DLFileVersionTest {
 			Collections.singletonMap(LocaleUtil.US, "New File Entry Type"),
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
-		ExpandoTable expandoTable =
-			ExpandoTableLocalServiceUtil.addDefaultTable(
-				PortalUtil.getDefaultCompanyId(), DLFileEntry.class.getName());
+		ExpandoTable expandoTable = _expandoTableLocalService.addDefaultTable(
+			PortalUtil.getDefaultCompanyId(), DLFileEntry.class.getName());
 
-		ExpandoColumnLocalServiceUtil.addColumn(
+		_expandoColumnLocalService.addColumn(
 			expandoTable.getTableId(), _EXPANDO_ATTRIBUTE_NAME,
 			ExpandoColumnConstants.STRING, StringPool.BLANK);
 
@@ -122,11 +121,10 @@ public class DLFileVersionTest {
 
 	@After
 	public void tearDown() throws Exception {
-		ExpandoTable expandoTable =
-			ExpandoTableLocalServiceUtil.getDefaultTable(
-				PortalUtil.getDefaultCompanyId(), DLFileEntry.class.getName());
+		ExpandoTable expandoTable = _expandoTableLocalService.getDefaultTable(
+			PortalUtil.getDefaultCompanyId(), DLFileEntry.class.getName());
 
-		ExpandoTableLocalServiceUtil.deleteTable(expandoTable);
+		_expandoTableLocalService.deleteTable(expandoTable);
 
 		tearDownResourcePermission();
 	}
@@ -507,6 +505,12 @@ public class DLFileVersionTest {
 
 	@DeleteAfterTestRun
 	private DLFileEntryType _dlFileEntryType;
+
+	@Inject
+	private ExpandoColumnLocalService _expandoColumnLocalService;
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	private DLFileVersion _fileVersion;
 

@@ -9,8 +9,8 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.model.ExpandoTable;
-import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.message.boards.constants.MBCategoryConstants;
 import com.liferay.message.boards.constants.MBMessageConstants;
@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
@@ -144,7 +145,7 @@ public class MBThreadLocalServiceTest {
 		Assert.assertEquals(
 			expandoCount, ExpandoValueLocalServiceUtil.getExpandoValuesCount());
 
-		ExpandoTableLocalServiceUtil.deleteTables(
+		_expandoTableLocalService.deleteTables(
 			PortalUtil.getDefaultCompanyId(), MBMessage.class.getName());
 	}
 
@@ -270,11 +271,10 @@ public class MBThreadLocalServiceTest {
 	private MBMessage _addMessageWithExpando(String name, String value)
 		throws Exception {
 
-		ExpandoTable expandoTable =
-			ExpandoTableLocalServiceUtil.addDefaultTable(
-				PortalUtil.getDefaultCompanyId(), MBMessage.class.getName());
+		ExpandoTable expandoTable = _expandoTableLocalService.addDefaultTable(
+			PortalUtil.getDefaultCompanyId(), MBMessage.class.getName());
 
-		ExpandoColumnLocalServiceUtil.addColumn(
+		_expandoColumnLocalService.addColumn(
 			expandoTable.getTableId(), name, ExpandoColumnConstants.STRING,
 			StringPool.BLANK);
 
@@ -295,6 +295,12 @@ public class MBThreadLocalServiceTest {
 			MBMessageConstants.DEFAULT_FORMAT, null, false, 0.0, false,
 			serviceContext);
 	}
+
+	@Inject
+	private ExpandoColumnLocalService _expandoColumnLocalService;
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@DeleteAfterTestRun
 	private Group _group;

@@ -16,10 +16,10 @@ import com.liferay.asset.test.util.AssetTestUtil;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
+import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.ExpandoTable;
-import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.expando.test.util.ExpandoTestUtil;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationParameterMapFactoryUtil;
 import com.liferay.exportimport.kernel.service.StagingLocalServiceUtil;
@@ -739,13 +739,13 @@ public class SXPBlueprintSearchResultTest {
 
 	@Test
 	public void testBoostProximity() throws Exception {
-		ExpandoTable expandoTable = ExpandoTableLocalServiceUtil.fetchTable(
+		ExpandoTable expandoTable = _expandoTableLocalService.fetchTable(
 			_group.getCompanyId(),
 			ClassNameLocalServiceUtil.getClassNameId(JournalArticle.class),
 			"CUSTOM_FIELDS");
 
 		if (expandoTable == null) {
-			expandoTable = ExpandoTableLocalServiceUtil.addTable(
+			expandoTable = _expandoTableLocalService.addTable(
 				_group.getCompanyId(),
 				ClassNameLocalServiceUtil.getClassNameId(JournalArticle.class),
 				"CUSTOM_FIELDS");
@@ -769,7 +769,7 @@ public class SXPBlueprintSearchResultTest {
 
 		expandoColumn.setTypeSettingsProperties(unicodeProperties);
 
-		ExpandoColumnLocalServiceUtil.updateExpandoColumn(expandoColumn);
+		_expandoColumnLocalService.updateExpandoColumn(expandoColumn);
 
 		_journalArticleBuilder.setTitle(
 			"Branch SF"
@@ -2495,8 +2495,14 @@ public class SXPBlueprintSearchResultTest {
 		"queryConfiguration", JSONUtil.put("applyIndexerClauses", true)
 	);
 
+	@Inject
+	private ExpandoColumnLocalService _expandoColumnLocalService;
+
 	@DeleteAfterTestRun
 	private final List<ExpandoColumn> _expandoColumns = new ArrayList<>();
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@DeleteAfterTestRun
 	private final List<ExpandoTable> _expandoTables = new ArrayList<>();

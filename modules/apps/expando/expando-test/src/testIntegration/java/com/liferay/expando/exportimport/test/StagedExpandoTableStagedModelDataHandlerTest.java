@@ -8,7 +8,7 @@ package com.liferay.expando.exportimport.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.expando.model.ExpandoTable;
 import com.liferay.expando.model.adapter.StagedExpandoTable;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepositoryRegistryUtil;
 import com.liferay.exportimport.test.util.lar.BaseStagedModelDataHandlerTestCase;
@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.List;
@@ -65,7 +66,7 @@ public class StagedExpandoTableStagedModelDataHandlerTest
 			Map<String, List<StagedModel>> dependentStagedModelsMap)
 		throws Exception {
 
-		ExpandoTable expandoTable = ExpandoTableLocalServiceUtil.addTable(
+		ExpandoTable expandoTable = _expandoTableLocalService.addTable(
 			group.getCompanyId(), ExpandoTable.class.getName(),
 			RandomTestUtil.randomString());
 
@@ -123,6 +124,9 @@ public class StagedExpandoTableStagedModelDataHandlerTest
 		Assert.assertEquals(
 			stagedExpandoTable.getUuid(), importedStagedExpandoTable.getUuid());
 	}
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	private StagedModelRepository<StagedExpandoTable> _stagedModelRepository;
 

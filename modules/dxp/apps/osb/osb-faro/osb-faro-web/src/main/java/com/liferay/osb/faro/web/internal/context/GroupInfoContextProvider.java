@@ -20,15 +20,17 @@ import javax.ws.rs.ext.Provider;
 import org.apache.cxf.jaxrs.ext.ContextProvider;
 import org.apache.cxf.message.Message;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Marcellus Tavares
  */
-@Component(service = GroupInfoContextProvider.class)
 @Provider
 public class GroupInfoContextProvider implements ContextProvider<GroupInfo> {
+
+	public GroupInfoContextProvider(
+		OAuth2AuthorizationLocalService oAuth2AuthorizationLocalService) {
+
+		_oAuth2AuthorizationLocalService = oAuth2AuthorizationLocalService;
+	}
 
 	@Override
 	public GroupInfo createContext(Message message) {
@@ -72,7 +74,7 @@ public class GroupInfoContextProvider implements ContextProvider<GroupInfo> {
 		}
 	}
 
-	@Reference
-	private OAuth2AuthorizationLocalService _oAuth2AuthorizationLocalService;
+	private final OAuth2AuthorizationLocalService
+		_oAuth2AuthorizationLocalService;
 
 }

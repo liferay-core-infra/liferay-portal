@@ -18,18 +18,18 @@ taglib uri="http://liferay.com/tld/site-navigation" prefix="liferay-site-navigat
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.expando.kernel.exception.ColumnNameException" %><%@
+<%@ page import="com.liferay.expando.exception.NoSuchColumnException" %><%@
+page import="com.liferay.expando.kernel.exception.ColumnNameException" %><%@
 page import="com.liferay.expando.kernel.exception.ColumnTypeException" %><%@
 page import="com.liferay.expando.kernel.exception.DuplicateColumnNameException" %><%@
-page import="com.liferay.expando.kernel.exception.NoSuchColumnException" %><%@
 page import="com.liferay.expando.kernel.exception.ValueDataException" %><%@
 page import="com.liferay.expando.kernel.model.CustomAttributesDisplay" %><%@
 page import="com.liferay.expando.kernel.model.ExpandoBridge" %><%@
-page import="com.liferay.expando.kernel.model.ExpandoColumn" %><%@
 page import="com.liferay.expando.kernel.model.ExpandoColumnConstants" %><%@
-page import="com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil" %><%@
-page import="com.liferay.expando.kernel.service.ExpandoColumnServiceUtil" %><%@
 page import="com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil" %><%@
+page import="com.liferay.expando.model.ExpandoColumn" %><%@
+page import="com.liferay.expando.service.ExpandoColumnLocalServiceUtil" %><%@
+page import="com.liferay.expando.service.ExpandoColumnServiceUtil" %><%@
 page import="com.liferay.expando.service.permission.ExpandoColumnPermissionUtil" %><%@
 page import="com.liferay.expando.web.internal.display.context.ExpandoDisplayContext" %><%@
 page import="com.liferay.expando.web.internal.search.CustomFieldChecker" %><%@

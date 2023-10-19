@@ -17,8 +17,8 @@ import com.liferay.analytics.settings.configuration.AnalyticsConfigurationRegist
 import com.liferay.analytics.settings.internal.model.AnalyticsUserImpl;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.analytics.settings.security.constants.AnalyticsSecurityConstants;
-import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;

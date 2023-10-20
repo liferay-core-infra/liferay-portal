@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.access.control;
+package com.liferay.portal.security.access.control.internal.policy;
 
+import com.liferay.portal.kernel.security.access.control.AccessControlPolicy;
 import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.security.access.control.BaseAccessControlPolicy;
@@ -18,12 +19,15 @@ import java.lang.reflect.Method;
 
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Tomas Polesovsky
  * @author Igor Spasic
  * @author Michael C. Han
  * @author Raymond Augé
  */
+@Component(service = AccessControlPolicy.class)
 public class AuthenticatedAccessControlPolicy extends BaseAccessControlPolicy {
 
 	@Override

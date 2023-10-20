@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal Security Access Control Implementation
+Bundle-SymbolicName: com.liferay.portal.security.access.control.impl
+Bundle-Version: 1.0.0

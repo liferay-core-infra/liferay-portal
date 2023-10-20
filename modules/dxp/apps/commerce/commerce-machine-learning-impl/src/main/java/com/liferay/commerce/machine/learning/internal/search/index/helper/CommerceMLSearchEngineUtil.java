@@ -6,7 +6,7 @@
 package com.liferay.commerce.machine.learning.internal.search.index.helper;
 
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -18,21 +18,21 @@ import com.liferay.portal.search.engine.adapter.index.DeleteIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexResponse;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Riccardo Ferrari
  */
-@Component(service = CommerceMLSearchEngineHelper.class)
-public class CommerceMLSearchEngineHelper {
+public class CommerceMLSearchEngineUtil {
 
-	public void createIndex(String indexName, String indexMappingFileName) {
-		if (!_searchCapabilities.isCommerceSupported()) {
+	public static void createIndex(
+		String indexName, String indexMappingFileName,
+		SearchCapabilities searchCapabilities,
+		SearchEngineAdapter searchEngineAdapter) {
+
+		if (!searchCapabilities.isCommerceSupported()) {
 			return;
 		}
 
-		if (_indicesExists(indexName)) {
+		if (_indicesExists(indexName, searchEngineAdapter)) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(String.format("Index %s already exist", indexName));
 			}
@@ -54,12 +54,15 @@ public class CommerceMLSearchEngineHelper {
 		}
 	}
 
-	public void dropIndex(String indexName) {
-		if (!_searchCapabilities.isCommerceSupported()) {
+	public static void dropIndex(
+		String indexName, SearchCapabilities searchCapabilities,
+		SearchEngineAdapter searchEngineAdapter) {
+
+		if (!searchCapabilities.isCommerceSupported()) {
 			return;
 		}
 
-		if (!_indicesExists(indexName)) {
+		if (!_indicesExists(indexName, searchEngineAdapter)) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(String.format("Index %s does not exist", indexName));
 			}
@@ -78,10 +81,9 @@ public class CommerceMLSearchEngineHelper {
 		}
 	}
 
-	@Reference
-	protected SearchEngineAdapter searchEngineAdapter;
+	private static boolean _indicesExists(
+		String indexName, SearchEngineAdapter searchEngineAdapter) {
 
-	private boolean _indicesExists(String indexName) {
 		IndicesExistsIndexRequest indicesExistsIndexRequest =
 			new IndicesExistsIndexRequest(indexName);
 
@@ -91,10 +93,12 @@ public class CommerceMLSearchEngineHelper {
 		return indicesExistsIndexResponse.isExists();
 	}
 
-	private String _readJSON(String fileName) {
+	private static String _readJSON(String fileName) {
 		try {
-			JSONObject jsonObject = _jsonFactory.createJSONObject(
-				StringUtil.read(getClass(), "/META-INF/search/" + fileName));
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				StringUtil.read(
+					CommerceMLSearchEngineUtil.class,
+					"/META-INF/search/" + fileName));
 
 			return jsonObject.toString();
 		}
@@ -106,12 +110,6 @@ public class CommerceMLSearchEngineHelper {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceMLSearchEngineHelper.class);
-
-	@Reference
-	private JSONFactory _jsonFactory;
-
-	@Reference
-	private SearchCapabilities _searchCapabilities;
+		CommerceMLSearchEngineUtil.class);
 
 }

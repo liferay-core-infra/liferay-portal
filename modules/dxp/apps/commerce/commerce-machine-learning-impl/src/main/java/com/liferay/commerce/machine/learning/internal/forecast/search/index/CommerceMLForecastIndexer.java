@@ -6,7 +6,9 @@
 package com.liferay.commerce.machine.learning.internal.forecast.search.index;
 
 import com.liferay.commerce.machine.learning.internal.search.api.CommerceMLIndexer;
-import com.liferay.commerce.machine.learning.internal.search.index.helper.CommerceMLSearchEngineHelper;
+import com.liferay.commerce.machine.learning.internal.search.index.helper.CommerceMLSearchEngineUtil;
+import com.liferay.portal.search.capabilities.SearchCapabilities;
+import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.index.IndexNameBuilder;
 
 import org.osgi.service.component.annotations.Component;
@@ -20,13 +22,15 @@ public class CommerceMLForecastIndexer implements CommerceMLIndexer {
 
 	@Override
 	public void createIndex(long companyId) {
-		_commerceMLSearchEngineHelper.createIndex(
-			getIndexName(companyId), _INDEX_MAPPING_FILE_NAME);
+		CommerceMLSearchEngineUtil.createIndex(
+			getIndexName(companyId), _INDEX_MAPPING_FILE_NAME,
+			_searchCapabilities, _searchEngineAdapter);
 	}
 
 	@Override
 	public void dropIndex(long companyId) {
-		_commerceMLSearchEngineHelper.dropIndex(getIndexName(companyId));
+		CommerceMLSearchEngineUtil.dropIndex(
+			getIndexName(companyId), _searchCapabilities, _searchEngineAdapter);
 	}
 
 	@Override
@@ -41,9 +45,12 @@ public class CommerceMLForecastIndexer implements CommerceMLIndexer {
 	private static final String _INDEX_NAME_PATTERN = "%s-commerce-ml-forecast";
 
 	@Reference
-	private CommerceMLSearchEngineHelper _commerceMLSearchEngineHelper;
+	private IndexNameBuilder _indexNameBuilder;
 
 	@Reference
-	private IndexNameBuilder _indexNameBuilder;
+	private SearchCapabilities _searchCapabilities;
+
+	@Reference
+	private SearchEngineAdapter _searchEngineAdapter;
 
 }

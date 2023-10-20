@@ -7,12 +7,21 @@ package com.liferay.expando.kernel.util;
 
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.manager.ExpandoManager;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * @author Lily Chi
  */
 public class ExpandoManagerUtil {
+
+	public static void deleteExpandoTable(Object object)
+		throws PortalException {
+
+		ExpandoManager expandoManager = _expandoManagerSnapshot.get();
+
+		expandoManager.deleteExpandoTable(object);
+	}
 
 	public static void deleteRows(long classPK) {
 		ExpandoManager expandoManager = _expandoManagerSnapshot.get();

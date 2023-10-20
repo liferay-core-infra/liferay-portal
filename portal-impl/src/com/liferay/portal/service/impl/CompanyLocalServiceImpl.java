@@ -6,7 +6,6 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
-import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.petra.function.UnsafeConsumer;
@@ -1621,8 +1620,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			_actionableDynamicQuery.setCompanyId(companyId);
 			_actionableDynamicQuery.setPerformActionMethod(
-				(ExpandoColumn expandoColumn) ->
-					_expandoColumnLocalService.deleteColumn(expandoColumn));
+				(Object object) -> ExpandoManagerUtil.deleteColumn(object));
 		}
 
 		protected void performActions() throws PortalException {

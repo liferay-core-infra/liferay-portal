@@ -17,6 +17,10 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
  */
 public class ExpandoManagerUtil {
 
+	public static void deleteColumn(Object object) throws PortalException {
+		_expandoManager.deleteColumn(object);
+	}
+
 	public static void deleteExpandoTable(Object object)
 		throws PortalException {
 

@@ -8,6 +8,8 @@ package com.liferay.expando.internal;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.manager.ExpandoManager;
 import com.liferay.expando.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
+import com.liferay.portal.kernel.exception.PortalException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -17,6 +19,12 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = ExpandoManager.class)
 public class ExpandoManagerImpl implements ExpandoManager {
+
+	@Override
+	public void deleteExpandoTable(Object object) throws PortalException {
+		_expandoTableLocalService.deleteExpandoTable(
+			(com.liferay.expando.model.ExpandoTable)object);
+	}
 
 	@Override
 	public void deleteRows(long classPK) {
@@ -43,5 +51,8 @@ public class ExpandoManagerImpl implements ExpandoManager {
 
 	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;
+
+	@Reference
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 }

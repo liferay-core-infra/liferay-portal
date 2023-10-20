@@ -6,11 +6,14 @@
 package com.liferay.expando.manager;
 
 import com.liferay.expando.kernel.model.ExpandoRow;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Lily Chi
  */
 public interface ExpandoManager {
+
+	public void deleteExpandoTable(Object object) throws PortalException;
 
 	public void deleteRows(long classPK);
 

@@ -33,6 +33,10 @@ public class ExpandoManagerUtil {
 		_expandoManager.deleteRows(companyId, classNameId, classPK);
 	}
 
+	public static void deleteValues(String className, long classPK) {
+		_expandoManager.deleteValues(className, classPK);
+	}
+
 	public static ExpandoTable fetchDefaultTable(
 		long companyId, String className) {
 

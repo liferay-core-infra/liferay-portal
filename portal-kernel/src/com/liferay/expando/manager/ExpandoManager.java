@@ -15,6 +15,8 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public interface ExpandoManager {
 
+	public void deleteColumn(Object object) throws PortalException;
+
 	public void deleteExpandoTable(Object object) throws PortalException;
 
 	public void deleteRows(long classPK);

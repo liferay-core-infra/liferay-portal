@@ -31,7 +31,13 @@ public interface ExpandoManager {
 
 	public ActionableDynamicQuery getExpandColumnActionableDynamicQuery();
 
+	public Class<?> getExpandoColumnImplClass();
+
 	public ActionableDynamicQuery getExpandoTableActionableDynamicQuery();
+
+	public Class<?> getExpandoTableImplClass();
+
+	public Class<?> getExpandoValueImplClass();
 
 	public void updateExpandoRow(ExpandoRow expandoRow);
 

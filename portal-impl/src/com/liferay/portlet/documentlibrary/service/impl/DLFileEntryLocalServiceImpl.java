@@ -53,7 +53,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.util.ExpandoBridgeUtil;
 import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
@@ -2481,7 +2480,7 @@ public class DLFileEntryLocalServiceImpl
 	private void _copyExpandoRowModifiedDate(
 		long companyId, long sourceFileVersionId, long targetFileVersionId) {
 
-		ExpandoTable expandoTable = _expandoTableLocalService.fetchDefaultTable(
+		ExpandoTable expandoTable = ExpandoManagerUtil.fetchDefaultTable(
 			companyId, DLFileEntry.class.getName());
 
 		if (expandoTable == null) {
@@ -3708,9 +3707,6 @@ public class DLFileEntryLocalServiceImpl
 
 	@BeanReference(type = DLFolderPersistence.class)
 	private DLFolderPersistence _dlFolderPersistence;
-
-	@BeanReference(type = ExpandoTableLocalService.class)
-	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@BeanReference(type = GroupLocalService.class)
 	private GroupLocalService _groupLocalService;

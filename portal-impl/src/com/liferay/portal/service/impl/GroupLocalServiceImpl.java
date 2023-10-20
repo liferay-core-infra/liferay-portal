@@ -11,7 +11,7 @@ import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactoryUtil;
 import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfigurationConstants;
 import com.liferay.exportimport.kernel.exception.RemoteExportException;
@@ -1068,7 +1068,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 			// Expando
 
-			_expandoRowLocalService.deleteRows(
+			ExpandoManagerUtil.deleteRows(
 				group.getCompanyId(),
 				_classNameLocalService.getClassNameId(Group.class.getName()),
 				group.getGroupId());
@@ -5429,9 +5429,6 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 	@BeanReference(type = DLAppLocalService.class)
 	private DLAppLocalService _dlAppLocalService;
-
-	@BeanReference(type = ExpandoRowLocalService.class)
-	private ExpandoRowLocalService _expandoRowLocalService;
 
 	@BeanReference(type = ExportImportConfigurationLocalService.class)
 	private ExportImportConfigurationLocalService

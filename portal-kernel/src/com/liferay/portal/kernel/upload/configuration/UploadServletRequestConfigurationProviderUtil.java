@@ -5,7 +5,7 @@
 
 package com.liferay.portal.kernel.upload.configuration;
 
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * @author Pei-Jung Lan
@@ -13,18 +13,24 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
 public class UploadServletRequestConfigurationProviderUtil {
 
 	public static long getMaxSize() {
-		return _uploadServletRequestConfigurationProvider.getMaxSize();
+		UploadServletRequestConfigurationProvider
+			uploadServletRequestConfigurationProvider =
+				_uploadServletRequestConfigurationProviderSnapshot.get();
+
+		return uploadServletRequestConfigurationProvider.getMaxSize();
 	}
 
 	public static String getTempDir() {
-		return _uploadServletRequestConfigurationProvider.getTempDir();
+		UploadServletRequestConfigurationProvider
+			uploadServletRequestConfigurationProvider =
+				_uploadServletRequestConfigurationProviderSnapshot.get();
+
+		return uploadServletRequestConfigurationProvider.getTempDir();
 	}
 
-	private static volatile UploadServletRequestConfigurationProvider
-		_uploadServletRequestConfigurationProvider =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				UploadServletRequestConfigurationProvider.class,
-				UploadServletRequestConfigurationProviderUtil.class,
-				"_uploadServletRequestConfigurationProvider", false);
+	private static final Snapshot<UploadServletRequestConfigurationProvider>
+		_uploadServletRequestConfigurationProviderSnapshot = new Snapshot<>(
+			UploadServletRequestConfigurationProviderUtil.class,
+			UploadServletRequestConfigurationProvider.class);
 
 }

@@ -219,8 +219,22 @@ public class FileUtil {
 	}
 
 	public static String decodeSafeFileName(String fileName) {
-		return StringUtil.replace(
-			fileName, _SAFE_FILE_NAME_2, _SAFE_FILE_NAME_1);
+		if (_safeFileName2 == null) {
+			_safeFileName2 = new String[] {
+				PropsUtil.get(
+					PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_AMPERSAND),
+				PropsUtil.get(
+					PropsKeys.
+						DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_CLOSE_PARENTHESIS),
+				PropsUtil.get(
+					PropsKeys.
+						DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_OPEN_PARENTHESIS),
+				PropsUtil.get(
+					PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_SEMICOLON)
+			};
+		}
+
+		return StringUtil.replace(fileName, _safeFileName2, _SAFE_FILE_NAME_1);
 	}
 
 	public static boolean delete(File file) {
@@ -276,8 +290,22 @@ public class FileUtil {
 			return StringPool.BLANK;
 		}
 
-		return StringUtil.replace(
-			fileName, _SAFE_FILE_NAME_1, _SAFE_FILE_NAME_2);
+		if (_safeFileName2 == null) {
+			_safeFileName2 = new String[] {
+				PropsUtil.get(
+					PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_AMPERSAND),
+				PropsUtil.get(
+					PropsKeys.
+						DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_CLOSE_PARENTHESIS),
+				PropsUtil.get(
+					PropsKeys.
+						DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_OPEN_PARENTHESIS),
+				PropsUtil.get(
+					PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_SEMICOLON)
+			};
+		}
+
+		return StringUtil.replace(fileName, _SAFE_FILE_NAME_1, _safeFileName2);
 	}
 
 	public static boolean exists(File file) {
@@ -878,15 +906,8 @@ public class FileUtil {
 		StringPool.OPEN_PARENTHESIS, StringPool.SEMICOLON
 	};
 
-	private static final String[] _SAFE_FILE_NAME_2 = {
-		PropsUtil.get(PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_AMPERSAND),
-		PropsUtil.get(
-			PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_CLOSE_PARENTHESIS),
-		PropsUtil.get(
-			PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_OPEN_PARENTHESIS),
-		PropsUtil.get(PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_SEMICOLON)
-	};
-
 	private static final Log _log = LogFactoryUtil.getLog(FileUtil.class);
+
+	private static String[] _safeFileName2;
 
 }

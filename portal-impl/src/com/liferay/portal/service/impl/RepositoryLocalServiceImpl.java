@@ -9,7 +9,7 @@ import com.liferay.document.library.kernel.exception.RepositoryNameException;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.service.DLFolderLocalService;
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.InvalidRepositoryException;
 import com.liferay.portal.kernel.exception.NoSuchRepositoryException;
@@ -163,7 +163,7 @@ public class RepositoryLocalServiceImpl extends RepositoryLocalServiceBaseImpl {
 	public Repository deleteRepository(Repository repository)
 		throws PortalException {
 
-		_expandoValueLocalService.deleteValues(
+		ExpandoManagerUtil.deleteValues(
 			Repository.class.getName(), repository.getRepositoryId());
 
 		DLFolder dlFolder = _dlFolderLocalService.fetchDLFolder(
@@ -285,9 +285,6 @@ public class RepositoryLocalServiceImpl extends RepositoryLocalServiceBaseImpl {
 
 	@BeanReference(type = DLFolderPersistence.class)
 	private DLFolderPersistence _dlFolderPersistence;
-
-	@BeanReference(type = ExpandoValueLocalService.class)
-	private ExpandoValueLocalService _expandoValueLocalService;
 
 	@BeanReference(type = GroupPersistence.class)
 	private GroupPersistence _groupPersistence;

@@ -5,7 +5,7 @@
 
 package com.liferay.commerce.punchout.web.internal.theme.template;
 
-import com.liferay.commerce.punchout.web.internal.helper.CommercePunchOutThemeHttpHelper;
+import com.liferay.commerce.punchout.web.internal.helper.PunchOutSessionHelper;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 
 import java.util.Map;
@@ -31,11 +31,20 @@ public class CommercePunchOutThemeTemplateContextContributor
 		HttpServletRequest httpServletRequest) {
 
 		contextObjects.put(
-			"commercePunchOutThemeHttpHelper",
-			_commercePunchOutThemeHttpHelper);
+			"punchOutSession", _punchOutSession(httpServletRequest));
+	}
+
+	private boolean _punchOutSession(HttpServletRequest httpServletRequest) {
+		if (_punchOutSessionHelper.punchOutEnabled(httpServletRequest) &&
+			_punchOutSessionHelper.punchOutAllowed(httpServletRequest)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Reference
-	private CommercePunchOutThemeHttpHelper _commercePunchOutThemeHttpHelper;
+	private PunchOutSessionHelper _punchOutSessionHelper;
 
 }

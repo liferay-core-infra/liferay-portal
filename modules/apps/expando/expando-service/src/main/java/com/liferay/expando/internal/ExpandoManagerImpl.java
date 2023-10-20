@@ -10,6 +10,7 @@ import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.manager.ExpandoManager;
 import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.expando.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoValueLocalService;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 
@@ -36,6 +37,11 @@ public class ExpandoManagerImpl implements ExpandoManager {
 	@Override
 	public void deleteRows(long companyId, long classNameId, long classPK) {
 		_expandoRowLocalService.deleteRows(companyId, classNameId, classPK);
+	}
+
+	@Override
+	public void deleteValues(String className, long classPK) {
+		_expandoValueLocalService.deleteValues(className, classPK);
 	}
 
 	@Override
@@ -67,5 +73,8 @@ public class ExpandoManagerImpl implements ExpandoManager {
 
 	@Reference
 	private ExpandoTableLocalService _expandoTableLocalService;
+
+	@Reference
+	private ExpandoValueLocalService _expandoValueLocalService;
 
 }

@@ -8,7 +8,6 @@ package com.liferay.portal.service.impl;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.util.ExpandoManagerUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.lang.SafeCloseable;
@@ -1756,7 +1755,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		protected DeleteExpandoTableActionableDynamicQuery(long companyId) {
 			_actionableDynamicQuery =
-				_expandoTableLocalService.getActionableDynamicQuery();
+				ExpandoManagerUtil.getExpandoTableActionableDynamicQuery();
 
 			_actionableDynamicQuery.setCompanyId(companyId);
 			_actionableDynamicQuery.setPerformActionMethod(
@@ -2282,9 +2281,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 	@BeanReference(type = ExpandoColumnLocalService.class)
 	private ExpandoColumnLocalService _expandoColumnLocalService;
-
-	@BeanReference(type = ExpandoTableLocalService.class)
-	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@BeanReference(type = GroupLocalService.class)
 	private GroupLocalService _groupLocalService;

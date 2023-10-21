@@ -10758,7 +10758,7 @@ send_user $expect_out(buffer)]]></echo>
 		/>
 
 		<echo file="${test.app.server.liferay.home}/gogo-command.sh">
-script = ($.context getService (($.context getServiceReferences com.liferay.portal.kernel.util.File null) 0)) read ${test.app.server.liferay.home}/portal-script.groovy;
+script = (cat ${test.app.server.liferay.home}/portal-script.groovy)
 ($.context getService ($.context getServiceReference com.liferay.server.admin.web.internal.scripting.ServerScripting)) execute null "groovy" "$script";</echo>
 
 		<echo file="${test.app.server.liferay.home}/execute-gogo-command.expect"><![CDATA[#!/usr/bin/expect -f

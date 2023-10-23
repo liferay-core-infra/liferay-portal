@@ -1,27 +1,29 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.expando.service.impl;
+package com.liferay.expando.service.impl;
 
 import com.liferay.expando.kernel.exception.ValueDataException;
-import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
-import com.liferay.expando.kernel.model.ExpandoRow;
-import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
-import com.liferay.expando.kernel.model.ExpandoValue;
-import com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence;
-import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
-import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
 import com.liferay.expando.kernel.util.ExpandoValueDeleteHandler;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoRow;
+import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.model.ExpandoValue;
+import com.liferay.expando.model.impl.ExpandoValueImpl;
+import com.liferay.expando.service.base.ExpandoValueLocalServiceBaseImpl;
+import com.liferay.expando.service.persistence.ExpandoColumnPersistence;
+import com.liferay.expando.service.persistence.ExpandoRowPersistence;
+import com.liferay.expando.service.persistence.ExpandoTablePersistence;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -31,8 +33,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.typeconverter.DateArrayConverter;
 import com.liferay.portal.typeconverter.NumberArrayConverter;
 import com.liferay.portal.typeconverter.NumberConverter;
-import com.liferay.portlet.expando.model.impl.ExpandoValueImpl;
-import com.liferay.portlet.expando.service.base.ExpandoValueLocalServiceBaseImpl;
 
 import java.io.Serializable;
 
@@ -48,11 +48,18 @@ import java.util.Set;
 
 import jodd.typeconverter.TypeConverterManager;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Raymond Augé
  * @author Brian Wing Shun Chan
  * @author Marcellus Tavares
  */
+@Component(
+	property = "model.class.name=com.liferay.expando.model.ExpandoValue",
+	service = AopService.class
+)
 public class ExpandoValueLocalServiceImpl
 	extends ExpandoValueLocalServiceBaseImpl {
 
@@ -538,7 +545,7 @@ public class ExpandoValueLocalServiceImpl
 		else if (type == ExpandoColumnConstants.GEOLOCATION) {
 			return expandoValueLocalService.addValue(
 				companyId, className, tableName, columnName, classPK,
-				JSONFactoryUtil.createJSONObject(
+				_jsonFactory.createJSONObject(
 					HtmlUtil.unescape(data.toString())));
 		}
 		else if (type == ExpandoColumnConstants.INTEGER) {
@@ -815,8 +822,7 @@ public class ExpandoValueLocalServiceImpl
 			}
 			else if (type == ExpandoColumnConstants.GEOLOCATION) {
 				value.setGeolocationJSONObject(
-					JSONFactoryUtil.createJSONObject(
-						attributeValue.toString()));
+					_jsonFactory.createJSONObject(attributeValue.toString()));
 			}
 			else if (type == ExpandoColumnConstants.INTEGER) {
 				value.setInteger((Integer)attributeValue);
@@ -1953,17 +1959,20 @@ public class ExpandoValueLocalServiceImpl
 		return false;
 	}
 
-	@BeanReference(type = ClassNameLocalService.class)
+	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
-	@BeanReference(type = ExpandoColumnPersistence.class)
+	@Reference
 	private ExpandoColumnPersistence _expandoColumnPersistence;
 
-	@BeanReference(type = ExpandoRowPersistence.class)
+	@Reference
 	private ExpandoRowPersistence _expandoRowPersistence;
 
-	@BeanReference(type = ExpandoTablePersistence.class)
+	@Reference
 	private ExpandoTablePersistence _expandoTablePersistence;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	private static class ExpandoValueDeleteHandlerHolder {
 

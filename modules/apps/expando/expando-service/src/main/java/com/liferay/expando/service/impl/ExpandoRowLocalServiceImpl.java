@@ -1,28 +1,35 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.expando.service.impl;
+package com.liferay.expando.service.impl;
 
-import com.liferay.expando.kernel.model.ExpandoRow;
-import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
-import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.expando.model.ExpandoRow;
+import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoValueLocalService;
+import com.liferay.expando.service.base.ExpandoRowLocalServiceBaseImpl;
+import com.liferay.expando.service.persistence.ExpandoTablePersistence;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portlet.expando.service.base.ExpandoRowLocalServiceBaseImpl;
 
 import java.util.Collections;
 import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Wesley Gong
  */
+@Component(
+	property = "model.class.name=com.liferay.expando.model.ExpandoRow",
+	service = AopService.class
+)
 public class ExpandoRowLocalServiceImpl extends ExpandoRowLocalServiceBaseImpl {
 
 	@Override
@@ -244,16 +251,16 @@ public class ExpandoRowLocalServiceImpl extends ExpandoRowLocalServiceBaseImpl {
 			tableName);
 	}
 
-	@BeanReference(type = ClassNameLocalService.class)
+	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
-	@BeanReference(type = ExpandoTableLocalService.class)
+	@Reference
 	private ExpandoTableLocalService _expandoTableLocalService;
 
-	@BeanReference(type = ExpandoTablePersistence.class)
+	@Reference
 	private ExpandoTablePersistence _expandoTablePersistence;
 
-	@BeanReference(type = ExpandoValueLocalService.class)
+	@Reference
 	private ExpandoValueLocalService _expandoValueLocalService;
 
 }

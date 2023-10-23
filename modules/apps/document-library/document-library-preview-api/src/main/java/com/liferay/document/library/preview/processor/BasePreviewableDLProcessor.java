@@ -51,7 +51,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alexander Chow
  * @author Ivica Cardic
  */
-public abstract class DLPreviewableProcessor implements DLProcessor {
+public abstract class BasePreviewableDLProcessor implements DLProcessor {
 
 	public static final String DECRYPT_PATH = "document_decrypt/";
 
@@ -1216,6 +1216,6 @@ public abstract class DLPreviewableProcessor implements DLProcessor {
 	protected Store store;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLPreviewableProcessor.class);
+		BasePreviewableDLProcessor.class);
 
 }

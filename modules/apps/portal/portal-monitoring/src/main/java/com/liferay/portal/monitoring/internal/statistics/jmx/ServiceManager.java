@@ -5,14 +5,13 @@
 
 package com.liferay.portal.monitoring.internal.statistics.jmx;
 
-import com.liferay.portal.monitoring.internal.statistics.service.ServerStatisticsHelper;
+import com.liferay.portal.monitoring.internal.statistics.service.ServerStatisticsUtil;
 
 import javax.management.DynamicMBean;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -36,7 +35,7 @@ public class ServiceManager
 	public long getErrorCount(
 		String className, String methodName, String[] parameterTypes) {
 
-		return _serverStatisticsHelper.getErrorCount(
+		return ServerStatisticsUtil.getErrorCount(
 			className, methodName, parameterTypes);
 	}
 
@@ -44,7 +43,7 @@ public class ServiceManager
 	public long getMaxTime(
 		String className, String methodName, String[] parameterTypes) {
 
-		return _serverStatisticsHelper.getMaxTime(
+		return ServerStatisticsUtil.getMaxTime(
 			className, methodName, parameterTypes);
 	}
 
@@ -52,7 +51,7 @@ public class ServiceManager
 	public long getMinTime(
 		String className, String methodName, String[] parameterTypes) {
 
-		return _serverStatisticsHelper.getMinTime(
+		return ServerStatisticsUtil.getMinTime(
 			className, methodName, parameterTypes);
 	}
 
@@ -60,11 +59,8 @@ public class ServiceManager
 	public long getRequestCount(
 		String className, String methodName, String[] parameterTypes) {
 
-		return _serverStatisticsHelper.getRequestCount(
+		return ServerStatisticsUtil.getRequestCount(
 			className, methodName, parameterTypes);
 	}
-
-	@Reference
-	private ServerStatisticsHelper _serverStatisticsHelper;
 
 }

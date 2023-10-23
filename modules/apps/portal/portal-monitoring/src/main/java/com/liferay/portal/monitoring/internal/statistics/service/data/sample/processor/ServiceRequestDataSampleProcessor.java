@@ -7,12 +7,11 @@ package com.liferay.portal.monitoring.internal.statistics.service.data.sample.pr
 
 import com.liferay.portal.kernel.monitoring.DataSampleProcessor;
 import com.liferay.portal.kernel.monitoring.MethodSignature;
-import com.liferay.portal.monitoring.internal.statistics.service.ServerStatisticsHelper;
+import com.liferay.portal.monitoring.internal.statistics.service.ServerStatisticsUtil;
 import com.liferay.portal.monitoring.internal.statistics.service.ServiceRequestDataSample;
 import com.liferay.portal.monitoring.internal.statistics.service.ServiceStatistics;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Renan Vasconcelos
@@ -34,19 +33,16 @@ public class ServiceRequestDataSampleProcessor
 		String className = methodSignature.getClassName();
 
 		ServiceStatistics serviceStatistics =
-			_serverStatisticsHelper.getServiceStatistics(className);
+			ServerStatisticsUtil.getServiceStatistics(className);
 
 		if (serviceStatistics == null) {
 			serviceStatistics = new ServiceStatistics(className);
 
-			_serverStatisticsHelper.setServiceStatistics(
+			ServerStatisticsUtil.setServiceStatistics(
 				className, serviceStatistics);
 		}
 
 		serviceStatistics.processDataSample(serviceRequestDataSample);
 	}
-
-	@Reference
-	private ServerStatisticsHelper _serverStatisticsHelper;
 
 }

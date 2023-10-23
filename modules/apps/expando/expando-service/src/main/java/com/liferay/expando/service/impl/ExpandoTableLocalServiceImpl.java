@@ -61,7 +61,7 @@ public class ExpandoTableLocalServiceImpl
 			return expandoTable;
 		}
 
-		validate(companyId, 0, classNameId, name);
+		_validate(companyId, 0, classNameId, name);
 
 		long tableId = counterLocalService.increment();
 
@@ -239,14 +239,14 @@ public class ExpandoTableLocalServiceImpl
 				"Cannot rename " + ExpandoTableConstants.DEFAULT_TABLE_NAME);
 		}
 
-		validate(table.getCompanyId(), tableId, table.getClassNameId(), name);
+		_validate(table.getCompanyId(), tableId, table.getClassNameId(), name);
 
 		table.setName(name);
 
 		return expandoTablePersistence.update(table);
 	}
 
-	protected void validate(
+	private void _validate(
 			long companyId, long tableId, long classNameId, String name)
 		throws PortalException {
 

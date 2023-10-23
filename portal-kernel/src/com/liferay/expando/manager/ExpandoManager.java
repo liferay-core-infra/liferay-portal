@@ -29,6 +29,8 @@ public interface ExpandoManager {
 
 	public ExpandoRow fetchRow(long tableId, long classPK);
 
+	public ActionableDynamicQuery getExpandColumnActionableDynamicQuery();
+
 	public ActionableDynamicQuery getExpandoTableActionableDynamicQuery();
 
 	public void updateExpandoRow(ExpandoRow expandoRow);

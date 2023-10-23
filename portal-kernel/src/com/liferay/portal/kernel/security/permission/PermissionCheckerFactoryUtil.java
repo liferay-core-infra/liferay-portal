@@ -6,7 +6,6 @@
 package com.liferay.portal.kernel.security.permission;
 
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Charles May
@@ -22,12 +21,12 @@ public class PermissionCheckerFactoryUtil {
 		return _permissionCheckerFactory;
 	}
 
-	private PermissionCheckerFactoryUtil() {
+	public void setPermissionCheckerFactory(
+		PermissionCheckerFactory permissionCheckerFactory) {
+
+		_permissionCheckerFactory = permissionCheckerFactory;
 	}
 
-	private static volatile PermissionCheckerFactory _permissionCheckerFactory =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			PermissionCheckerFactory.class, PermissionCheckerFactoryUtil.class,
-			"_permissionCheckerFactory", false, true);
+	private static PermissionCheckerFactory _permissionCheckerFactory;
 
 }

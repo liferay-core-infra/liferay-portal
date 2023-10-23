@@ -52,6 +52,12 @@ public class ExpandoManagerUtil {
 	}
 
 	public static ActionableDynamicQuery
+		getExpandColumnActionableDynamicQuery() {
+
+		return _expandoManager.getExpandColumnActionableDynamicQuery();
+	}
+
+	public static ActionableDynamicQuery
 		getExpandoTableActionableDynamicQuery() {
 
 		return _expandoManager.getExpandoTableActionableDynamicQuery();

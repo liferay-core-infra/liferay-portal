@@ -23,7 +23,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.remote.jaxrs.whiteboard.lifecycle.JAXRSLifecycle;
+import com.liferay.portal.remote.jaxrs.whiteboard.lifecycle.JAXRSLifecycleUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +54,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 	public LiferayOAuth2Scope getLiferayOAuth2Scope(
 		long companyId, String applicationName, String scope) {
 
-		_jaxrsLifecycle.ensureReady();
+		JAXRSLifecycleUtil.ensureReady();
 
 		ServiceReferenceServiceTuple<?, ScopeFinder>
 			serviceReferenceServiceTuple =
@@ -74,7 +74,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 	public Collection<LiferayOAuth2Scope> getLiferayOAuth2Scopes(
 		long companyId) {
 
-		_jaxrsLifecycle.ensureReady();
+		JAXRSLifecycleUtil.ensureReady();
 
 		Collection<LiferayOAuth2Scope> liferayOAuth2Scopes = new ArrayList<>();
 
@@ -106,7 +106,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 	public Collection<LiferayOAuth2Scope> getLiferayOAuth2Scopes(
 		long companyId, String scopesAlias) {
 
-		_jaxrsLifecycle.ensureReady();
+		JAXRSLifecycleUtil.ensureReady();
 
 		Set<String> names = _scopeFinderByNameServiceTrackerMap.keySet();
 
@@ -124,7 +124,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 	public Collection<LiferayOAuth2Scope> getLiferayOAuth2Scopes(
 		long companyId, String scopesAlias, String applicationName) {
 
-		_jaxrsLifecycle.ensureReady();
+		JAXRSLifecycleUtil.ensureReady();
 
 		ScopeFinder scopeFinder =
 			_scopeFindersScopedServiceTrackerMap.getService(
@@ -233,7 +233,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 
 	@Override
 	public Collection<String> getScopeAliases(long companyId) {
-		_jaxrsLifecycle.ensureReady();
+		JAXRSLifecycleUtil.ensureReady();
 
 		Collection<String> scopesAliases = new HashSet<>();
 
@@ -251,7 +251,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 	public Collection<String> getScopeAliases(
 		long companyId, String applicationName) {
 
-		_jaxrsLifecycle.ensureReady();
+		JAXRSLifecycleUtil.ensureReady();
 
 		ServiceReferenceServiceTuple<?, ScopeFinder>
 			serviceReferenceServiceTuple =
@@ -499,9 +499,6 @@ public class ScopeLocatorImpl implements ScopeLocator {
 
 	@Reference(name = "default")
 	private ScopeMatcherFactory _defaultScopeMatcherFactory;
-
-	@Reference
-	private JAXRSLifecycle _jaxrsLifecycle;
 
 	private ScopedServiceTrackerMap<PrefixHandlerFactory>
 		_prefixHandlerFactoriesScopedServiceTrackerMap;

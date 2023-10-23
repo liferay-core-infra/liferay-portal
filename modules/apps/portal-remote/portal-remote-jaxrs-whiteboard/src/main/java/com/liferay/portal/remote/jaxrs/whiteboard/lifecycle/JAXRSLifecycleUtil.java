@@ -8,19 +8,17 @@ package com.liferay.portal.remote.jaxrs.whiteboard.lifecycle;
 import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.util.MapUtil;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Stian Sigvartsen
  */
-@Component(service = JAXRSLifecycle.class)
-public class JAXRSLifecycle {
+public class JAXRSLifecycleUtil {
 
-	public void ensureReady() {
+	public static void ensureReady() {
 		if (_jaxrsReady) {
 			return;
 		}
@@ -34,20 +32,15 @@ public class JAXRSLifecycle {
 					"liferay.jaxrs.whiteboard.ready", true)));
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_serviceRegistrationDCLSingleton.destroy(
-			ServiceRegistration::unregister);
-	}
-
-	private BundleContext _bundleContext;
-	private boolean _jaxrsReady;
-	private final DCLSingleton<ServiceRegistration<?>>
+	private static final BundleContext _bundleContext;
+	private static boolean _jaxrsReady;
+	private static final DCLSingleton<ServiceRegistration<?>>
 		_serviceRegistrationDCLSingleton = new DCLSingleton<>();
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(JAXRSLifecycleUtil.class);
+
+		_bundleContext = bundle.getBundleContext();
+	}
 
 }

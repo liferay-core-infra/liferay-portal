@@ -6,7 +6,7 @@
 package com.liferay.portal.remote.jaxrs.whiteboard.internal.servlet.filter;
 
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.remote.jaxrs.whiteboard.lifecycle.JAXRSLifecycle;
+import com.liferay.portal.remote.jaxrs.whiteboard.lifecycle.JAXRSLifecycleUtil;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -18,7 +18,6 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
@@ -58,7 +57,7 @@ public class JAXRSActivationFilterTracker {
 			throw new ServletException(interruptedException);
 		}
 
-		_jaxrsLifecycle.ensureReady();
+		JAXRSLifecycleUtil.ensureReady();
 
 		_unregister();
 	}
@@ -73,8 +72,5 @@ public class JAXRSActivationFilterTracker {
 
 	private CountDownLatch _countDownLatch;
 	private ServiceRegistration<Filter> _filterServiceRegistration;
-
-	@Reference
-	private JAXRSLifecycle _jaxrsLifecycle;
 
 }

@@ -1,18 +1,19 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.expando.service.impl;
+package com.liferay.expando.service.impl;
 
-import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.model.ExpandoValue;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoValue;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.base.ExpandoValueServiceBaseImpl;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -20,16 +21,25 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.expando.service.base.ExpandoValueServiceBaseImpl;
 
 import java.io.Serializable;
 
 import java.util.Collection;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Brian Wing Shun Chan
  */
+@Component(
+	property = {
+		"json.web.service.context.name=expando",
+		"json.web.service.context.path=ExpandoValue"
+	},
+	service = AopService.class
+)
 public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 
 	@Override
@@ -152,16 +162,19 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 		}
 
 		if (data.startsWith(StringPool.OPEN_CURLY_BRACE)) {
-			return JSONFactoryUtil.createJSONObject(data);
+			return _jsonFactory.createJSONObject(data);
 		}
 
 		return JSONUtil.put("data", data);
 	}
 
-	@BeanReference(type = ClassNameLocalService.class)
+	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
-	@BeanReference(type = ExpandoColumnLocalService.class)
+	@Reference
 	private ExpandoColumnLocalService _expandoColumnLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

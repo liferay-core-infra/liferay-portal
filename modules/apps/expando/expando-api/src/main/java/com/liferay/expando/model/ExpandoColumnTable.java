@@ -8,6 +8,7 @@ package com.liferay.expando.model;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.base.BaseTable;
 
+import java.sql.Clob;
 import java.sql.Types;
 
 import java.util.Date;
@@ -39,10 +40,10 @@ public class ExpandoColumnTable extends BaseTable<ExpandoColumnTable> {
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<ExpandoColumnTable, Integer> type = createColumn(
 		"type_", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
-	public final Column<ExpandoColumnTable, String> defaultData = createColumn(
-		"defaultData", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
-	public final Column<ExpandoColumnTable, String> typeSettings = createColumn(
-		"typeSettings", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<ExpandoColumnTable, Clob> defaultData = createColumn(
+		"defaultData", Clob.class, Types.CLOB, Column.FLAG_DEFAULT);
+	public final Column<ExpandoColumnTable, Clob> typeSettings = createColumn(
+		"typeSettings", Clob.class, Types.CLOB, Column.FLAG_DEFAULT);
 
 	private ExpandoColumnTable() {
 		super("ExpandoColumn", ExpandoColumnTable::new);

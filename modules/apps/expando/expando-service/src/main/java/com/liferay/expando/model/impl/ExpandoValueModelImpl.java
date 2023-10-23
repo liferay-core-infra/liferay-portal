@@ -62,7 +62,7 @@ public class ExpandoValueModelImpl
 		{"valueId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"tableId", Types.BIGINT}, {"columnId", Types.BIGINT},
 		{"rowId_", Types.BIGINT}, {"classNameId", Types.BIGINT},
-		{"classPK", Types.BIGINT}, {"data_", Types.VARCHAR}
+		{"classPK", Types.BIGINT}, {"data_", Types.CLOB}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -78,11 +78,11 @@ public class ExpandoValueModelImpl
 		TABLE_COLUMNS_MAP.put("rowId_", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classPK", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("data_", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("data_", Types.CLOB);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ExpandoValue (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,valueId LONG not null,companyId LONG,tableId LONG,columnId LONG,rowId_ LONG,classNameId LONG,classPK LONG,data_ VARCHAR(75) null,primary key (valueId, ctCollectionId))";
+		"create table ExpandoValue (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,valueId LONG not null,companyId LONG,tableId LONG,columnId LONG,rowId_ LONG,classNameId LONG,classPK LONG,data_ TEXT null,primary key (valueId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table ExpandoValue";
 

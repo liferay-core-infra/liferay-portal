@@ -15,7 +15,7 @@ import com.liferay.document.library.kernel.util.PDFProcessor;
 import com.liferay.document.library.preview.pdf.internal.background.task.PDFPreviewBackgroundTaskExecutor;
 import com.liferay.document.library.preview.pdf.internal.configuration.admin.service.helper.PDFPreviewConfigurationHelper;
 import com.liferay.document.library.preview.pdf.internal.util.ProcessConfigUtil;
-import com.liferay.document.library.preview.processor.DLPreviewableProcessor;
+import com.liferay.document.library.preview.processor.BasePreviewableDLProcessor;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.image.Ghostscript;
 import com.liferay.petra.process.ProcessCallable;
@@ -92,8 +92,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = "type=" + DLProcessorConstants.PDF_PROCESSOR,
 	service = DLProcessor.class
 )
-public class PDFProcessorImpl
-	extends DLPreviewableProcessor implements PDFProcessor {
+public class PDFDLProcessorImpl
+	extends BasePreviewableDLProcessor implements PDFProcessor {
 
 	@Override
 	public void afterPropertiesSet() {
@@ -1099,7 +1099,7 @@ public class PDFProcessorImpl
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PDFProcessorImpl.class);
+		PDFDLProcessorImpl.class);
 
 	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;

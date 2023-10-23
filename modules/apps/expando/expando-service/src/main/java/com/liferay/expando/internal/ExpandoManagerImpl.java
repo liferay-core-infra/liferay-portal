@@ -64,6 +64,11 @@ public class ExpandoManagerImpl implements ExpandoManager {
 	}
 
 	@Override
+	public ActionableDynamicQuery getExpandColumnActionableDynamicQuery() {
+		return _expandoColumnLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
 	public ActionableDynamicQuery getExpandoTableActionableDynamicQuery() {
 		return _expandoTableLocalService.getActionableDynamicQuery();
 	}

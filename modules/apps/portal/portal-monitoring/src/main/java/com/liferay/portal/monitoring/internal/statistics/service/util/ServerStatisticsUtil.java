@@ -3,20 +3,19 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.monitoring.internal.statistics.service;
+package com.liferay.portal.monitoring.internal.statistics.service.util;
+
+import com.liferay.portal.monitoring.internal.statistics.service.ServiceStatistics;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Michael C. Han
  */
-@Component(enabled = false, service = ServerStatisticsHelper.class)
-public class ServerStatisticsHelper {
+public class ServerStatisticsUtil {
 
-	public long getAverageTime(
+	public static long getAverageTime(
 		String className, String methodName, String[] parameterTypes) {
 
 		ServiceStatistics serviceStatistics = getServiceStatistics(className);
@@ -28,7 +27,7 @@ public class ServerStatisticsHelper {
 		return -1;
 	}
 
-	public long getErrorCount(
+	public static long getErrorCount(
 		String className, String methodName, String[] parameterTypes) {
 
 		ServiceStatistics serviceStatistics = getServiceStatistics(className);
@@ -40,7 +39,7 @@ public class ServerStatisticsHelper {
 		return -1;
 	}
 
-	public long getMaxTime(
+	public static long getMaxTime(
 		String className, String methodName, String[] parameterTypes) {
 
 		ServiceStatistics serviceStatistics = getServiceStatistics(className);
@@ -52,7 +51,7 @@ public class ServerStatisticsHelper {
 		return -1;
 	}
 
-	public long getMinTime(
+	public static long getMinTime(
 		String className, String methodName, String[] parameterTypes) {
 
 		ServiceStatistics serviceStatistics = getServiceStatistics(className);
@@ -64,7 +63,7 @@ public class ServerStatisticsHelper {
 		return -1;
 	}
 
-	public long getRequestCount(
+	public static long getRequestCount(
 		String className, String methodName, String[] parameterTypes) {
 
 		ServiceStatistics serviceStatistics = getServiceStatistics(className);
@@ -77,17 +76,17 @@ public class ServerStatisticsHelper {
 		return -1;
 	}
 
-	public ServiceStatistics getServiceStatistics(String className) {
+	public static ServiceStatistics getServiceStatistics(String className) {
 		return _serviceStatistics.get(className);
 	}
 
-	public void setServiceStatistics(
+	public static void setServiceStatistics(
 		String className, ServiceStatistics serviceStatistics) {
 
 		_serviceStatistics.put(className, serviceStatistics);
 	}
 
-	private final Map<String, ServiceStatistics> _serviceStatistics =
+	private static final Map<String, ServiceStatistics> _serviceStatistics =
 		new ConcurrentHashMap<>();
 
 }

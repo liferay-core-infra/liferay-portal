@@ -219,8 +219,8 @@ public class FileUtil {
 	}
 
 	public static String decodeSafeFileName(String fileName) {
-		if (_safeFileName2 == null) {
-			_safeFileName2 = new String[] {
+		if (_safeFileNameEscapeCharacters == null) {
+			_safeFileNameEscapeCharacters = new String[] {
 				PropsUtil.get(
 					PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_AMPERSAND),
 				PropsUtil.get(
@@ -234,7 +234,9 @@ public class FileUtil {
 			};
 		}
 
-		return StringUtil.replace(fileName, _safeFileName2, _SAFE_FILE_NAME_1);
+		return StringUtil.replace(
+			fileName, _safeFileNameEscapeCharacters,
+			_UNSAFE_FILE_NAME_CHARACTERS);
 	}
 
 	public static boolean delete(File file) {
@@ -290,8 +292,8 @@ public class FileUtil {
 			return StringPool.BLANK;
 		}
 
-		if (_safeFileName2 == null) {
-			_safeFileName2 = new String[] {
+		if (_safeFileNameEscapeCharacters == null) {
+			_safeFileNameEscapeCharacters = new String[] {
 				PropsUtil.get(
 					PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_AMPERSAND),
 				PropsUtil.get(
@@ -305,7 +307,9 @@ public class FileUtil {
 			};
 		}
 
-		return StringUtil.replace(fileName, _SAFE_FILE_NAME_1, _safeFileName2);
+		return StringUtil.replace(
+			fileName, _UNSAFE_FILE_NAME_CHARACTERS,
+			_safeFileNameEscapeCharacters);
 	}
 
 	public static boolean exists(File file) {
@@ -901,13 +905,13 @@ public class FileUtil {
 		}
 	}
 
-	private static final String[] _SAFE_FILE_NAME_1 = {
+	private static final String[] _UNSAFE_FILE_NAME_CHARACTERS = {
 		StringPool.AMPERSAND, StringPool.CLOSE_PARENTHESIS,
 		StringPool.OPEN_PARENTHESIS, StringPool.SEMICOLON
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(FileUtil.class);
 
-	private static String[] _safeFileName2;
+	private static String[] _safeFileNameEscapeCharacters;
 
 }

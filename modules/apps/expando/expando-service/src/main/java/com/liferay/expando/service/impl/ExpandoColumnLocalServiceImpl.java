@@ -72,7 +72,7 @@ public class ExpandoColumnLocalServiceImpl
 
 		ExpandoTable table = _expandoTablePersistence.findByPrimaryKey(tableId);
 
-		ExpandoValue value = validate(0, tableId, name, type, defaultData);
+		ExpandoValue value = _validate(0, tableId, name, type, defaultData);
 
 		long columnId = counterLocalService.increment();
 
@@ -97,7 +97,7 @@ public class ExpandoColumnLocalServiceImpl
 
 	@Override
 	public void deleteColumn(ExpandoColumn column) throws PortalException {
-		addDeletionSystemEvent(column);
+		_addDeletionSystemEvent(column);
 
 		expandoColumnPersistence.remove(column);
 
@@ -395,7 +395,7 @@ public class ExpandoColumnLocalServiceImpl
 		ExpandoColumn column = expandoColumnPersistence.findByPrimaryKey(
 			columnId);
 
-		ExpandoValue value = validate(
+		ExpandoValue value = _validate(
 			columnId, column.getTableId(), name, type, defaultData);
 
 		column.setName(name);
@@ -417,7 +417,7 @@ public class ExpandoColumnLocalServiceImpl
 		return expandoColumnPersistence.update(column);
 	}
 
-	protected void addDeletionSystemEvent(ExpandoColumn expandoColumn) {
+	private void _addDeletionSystemEvent(ExpandoColumn expandoColumn) {
 		StagedExpandoColumn stagedExpandoColumn = ModelAdapterUtil.adapt(
 			expandoColumn, ExpandoColumn.class, StagedExpandoColumn.class);
 
@@ -443,7 +443,7 @@ public class ExpandoColumnLocalServiceImpl
 		}
 	}
 
-	protected ExpandoValue validate(
+	private ExpandoValue _validate(
 			long columnId, long tableId, String name, int type,
 			Object defaultData)
 		throws PortalException {

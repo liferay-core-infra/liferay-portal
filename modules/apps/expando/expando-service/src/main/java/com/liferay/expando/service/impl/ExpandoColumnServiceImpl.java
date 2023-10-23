@@ -1,21 +1,31 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.expando.service.impl;
+package com.liferay.expando.service.impl;
 
-import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.service.base.ExpandoColumnServiceBaseImpl;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portlet.expando.service.base.ExpandoColumnServiceBaseImpl;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Brian Wing Shun Chan
  */
+@Component(
+	property = {
+		"json.web.service.context.name=expando",
+		"json.web.service.context.path=ExpandoColumn"
+	},
+	service = AopService.class
+)
 public class ExpandoColumnServiceImpl extends ExpandoColumnServiceBaseImpl {
 
 	@Override

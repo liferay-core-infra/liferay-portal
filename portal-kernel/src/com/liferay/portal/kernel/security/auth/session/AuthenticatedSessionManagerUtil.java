@@ -6,7 +6,6 @@
 package com.liferay.portal.kernel.security.auth.session;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,14 +61,12 @@ public class AuthenticatedSessionManagerUtil {
 		_authenticatedSessionManager.signOutSimultaneousLogins(userId);
 	}
 
-	private AuthenticatedSessionManagerUtil() {
+	public void setAuthenticatedSessionManager(
+		AuthenticatedSessionManager authenticatedSessionManager) {
+
+		_authenticatedSessionManager = authenticatedSessionManager;
 	}
 
-	private static volatile AuthenticatedSessionManager
-		_authenticatedSessionManager =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				AuthenticatedSessionManager.class,
-				AuthenticatedSessionManagerUtil.class,
-				"_authenticatedSessionManager", false, true);
+	private static AuthenticatedSessionManager _authenticatedSessionManager;
 
 }

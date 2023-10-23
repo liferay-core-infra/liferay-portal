@@ -22,6 +22,9 @@
 	<bean class="com.liferay.portal.kernel.security.auth.DefaultScreenNameGenerator" id="com.liferay.portal.kernel.security.auth.DefaultScreenNameGenerator" />
 	<bean class="com.liferay.portal.kernel.security.auth.DefaultScreenNameValidator" id="com.liferay.portal.kernel.security.auth.DefaultScreenNameValidator" />
 	<bean class="com.liferay.portal.security.auth.session.AuthenticatedSessionManagerImpl" id="com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManager" />
+	<bean class="com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil" id="com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil">
+		<property name="authenticatedSessionManager" ref="com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManager" />
+	</bean>
 	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyOrganizationMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyOrganizationMembershipPolicy" />
 	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyRoleMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyRoleMembershipPolicy" />
 	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyUserGroupMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyUserGroupMembershipPolicy" />

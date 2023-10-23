@@ -1,31 +1,36 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.expando.service.impl;
+package com.liferay.expando.service.impl;
 
 import com.liferay.expando.kernel.exception.DuplicateTableNameException;
 import com.liferay.expando.kernel.exception.TableNameException;
-import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
-import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
-import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.change.tracking.CTAware;
+import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.base.ExpandoTableLocalServiceBaseImpl;
+import com.liferay.expando.service.persistence.ExpandoRowPersistence;
+import com.liferay.expando.service.persistence.ExpandoValuePersistence;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.expando.service.base.ExpandoTableLocalServiceBaseImpl;
 
 import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Raymond Augé
  * @author Brian Wing Shun Chan
  */
-@CTAware(onProduction = true)
+@Component(
+	property = "model.class.name=com.liferay.expando.model.ExpandoTable",
+	service = AopService.class
+)
 public class ExpandoTableLocalServiceImpl
 	extends ExpandoTableLocalServiceBaseImpl {
 
@@ -257,16 +262,16 @@ public class ExpandoTableLocalServiceImpl
 		}
 	}
 
-	@BeanReference(type = ClassNameLocalService.class)
+	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
-	@BeanReference(type = ExpandoColumnLocalService.class)
+	@Reference
 	private ExpandoColumnLocalService _expandoColumnLocalService;
 
-	@BeanReference(type = ExpandoRowPersistence.class)
+	@Reference
 	private ExpandoRowPersistence _expandoRowPersistence;
 
-	@BeanReference(type = ExpandoValuePersistence.class)
+	@Reference
 	private ExpandoValuePersistence _expandoValuePersistence;
 
 }

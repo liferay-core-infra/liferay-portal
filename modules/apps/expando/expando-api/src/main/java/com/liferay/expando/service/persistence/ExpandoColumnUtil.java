@@ -258,6 +258,73 @@ public class ExpandoColumnUtil {
 	}
 
 	/**
+	 * Returns all the expando columns that the user has permission to view where tableId = &#63;.
+	 *
+	 * @param tableId the table ID
+	 * @return the matching expando columns that the user has permission to view
+	 */
+	public static List<ExpandoColumn> filterFindByTableId(long tableId) {
+		return getPersistence().filterFindByTableId(tableId);
+	}
+
+	/**
+	 * Returns a range of all the expando columns that the user has permission to view where tableId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExpandoColumnModelImpl</code>.
+	 * </p>
+	 *
+	 * @param tableId the table ID
+	 * @param start the lower bound of the range of expando columns
+	 * @param end the upper bound of the range of expando columns (not inclusive)
+	 * @return the range of matching expando columns that the user has permission to view
+	 */
+	public static List<ExpandoColumn> filterFindByTableId(
+		long tableId, int start, int end) {
+
+		return getPersistence().filterFindByTableId(tableId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the expando columns that the user has permissions to view where tableId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExpandoColumnModelImpl</code>.
+	 * </p>
+	 *
+	 * @param tableId the table ID
+	 * @param start the lower bound of the range of expando columns
+	 * @param end the upper bound of the range of expando columns (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching expando columns that the user has permission to view
+	 */
+	public static List<ExpandoColumn> filterFindByTableId(
+		long tableId, int start, int end,
+		OrderByComparator<ExpandoColumn> orderByComparator) {
+
+		return getPersistence().filterFindByTableId(
+			tableId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the expando columns before and after the current expando column in the ordered set of expando columns that the user has permission to view where tableId = &#63;.
+	 *
+	 * @param columnId the primary key of the current expando column
+	 * @param tableId the table ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next expando column
+	 * @throws NoSuchColumnException if a expando column with the primary key could not be found
+	 */
+	public static ExpandoColumn[] filterFindByTableId_PrevAndNext(
+			long columnId, long tableId,
+			OrderByComparator<ExpandoColumn> orderByComparator)
+		throws com.liferay.expando.exception.NoSuchColumnException {
+
+		return getPersistence().filterFindByTableId_PrevAndNext(
+			columnId, tableId, orderByComparator);
+	}
+
+	/**
 	 * Removes all the expando columns where tableId = &#63; from the database.
 	 *
 	 * @param tableId the table ID
@@ -274,6 +341,16 @@ public class ExpandoColumnUtil {
 	 */
 	public static int countByTableId(long tableId) {
 		return getPersistence().countByTableId(tableId);
+	}
+
+	/**
+	 * Returns the number of expando columns that the user has permission to view where tableId = &#63;.
+	 *
+	 * @param tableId the table ID
+	 * @return the number of matching expando columns that the user has permission to view
+	 */
+	public static int filterCountByTableId(long tableId) {
+		return getPersistence().filterCountByTableId(tableId);
 	}
 
 	/**
@@ -428,6 +505,28 @@ public class ExpandoColumnUtil {
 	 */
 	public static int countByT_N(long tableId, String[] names) {
 		return getPersistence().countByT_N(tableId, names);
+	}
+
+	/**
+	 * Returns the number of expando columns that the user has permission to view where tableId = &#63; and name = &#63;.
+	 *
+	 * @param tableId the table ID
+	 * @param name the name
+	 * @return the number of matching expando columns that the user has permission to view
+	 */
+	public static int filterCountByT_N(long tableId, String name) {
+		return getPersistence().filterCountByT_N(tableId, name);
+	}
+
+	/**
+	 * Returns the number of expando columns that the user has permission to view where tableId = &#63; and name = any &#63;.
+	 *
+	 * @param tableId the table ID
+	 * @param names the names
+	 * @return the number of matching expando columns that the user has permission to view
+	 */
+	public static int filterCountByT_N(long tableId, String[] names) {
+		return getPersistence().filterCountByT_N(tableId, names);
 	}
 
 	/**

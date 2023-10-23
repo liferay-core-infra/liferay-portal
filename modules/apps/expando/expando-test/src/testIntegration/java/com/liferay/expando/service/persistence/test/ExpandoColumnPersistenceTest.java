@@ -219,8 +219,7 @@ public class ExpandoColumnPersistenceTest {
 		return OrderByComparatorFactoryUtil.create(
 			"ExpandoColumn", "mvccVersion", true, "ctCollectionId", true,
 			"columnId", true, "companyId", true, "modifiedDate", true,
-			"tableId", true, "name", true, "type", true, "defaultData", true,
-			"typeSettings", true);
+			"tableId", true, "name", true, "type", true);
 	}
 
 	@Test

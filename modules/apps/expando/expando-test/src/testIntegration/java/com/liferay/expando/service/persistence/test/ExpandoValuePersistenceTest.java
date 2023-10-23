@@ -270,8 +270,7 @@ public class ExpandoValuePersistenceTest {
 		return OrderByComparatorFactoryUtil.create(
 			"ExpandoValue", "mvccVersion", true, "ctCollectionId", true,
 			"valueId", true, "companyId", true, "tableId", true, "columnId",
-			true, "rowId", true, "classNameId", true, "classPK", true, "data",
-			true);
+			true, "rowId", true, "classNameId", true, "classPK", true);
 	}
 
 	@Test

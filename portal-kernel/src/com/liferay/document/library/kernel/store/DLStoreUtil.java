@@ -289,12 +289,7 @@ public class DLStoreUtil {
 			toVersionLabel);
 	}
 
-	public void setStore(DLStore store) {
-		_store = store;
-	}
-
 	private static final Snapshot<DLStore> _dlStoreSnapshot = new Snapshot<>(
 		DLStoreUtil.class, DLStore.class, null, true);
-	private static volatile DLStore _store;
 
 }

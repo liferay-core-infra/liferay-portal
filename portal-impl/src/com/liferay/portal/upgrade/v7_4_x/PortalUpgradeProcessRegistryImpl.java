@@ -358,6 +358,10 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeVersionTreeMap.put(
 			new Version(29, 1, 2), new UpgradeListTypeType());
+
+		upgradeVersionTreeMap.put(
+			new Version(29, 1, 3), new UpgradeClassName(),
+			new UpgradeResourceActionName(), new UpgradeResourcePermission());
 	}
 
 }

@@ -6,9 +6,11 @@
 package com.liferay.expando.internal;
 
 import com.liferay.expando.kernel.model.ExpandoRow;
+import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.manager.ExpandoManager;
 import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.expando.service.ExpandoTableLocalService;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import org.osgi.service.component.annotations.Component;
@@ -37,6 +39,18 @@ public class ExpandoManagerImpl implements ExpandoManager {
 	}
 
 	@Override
+	public ExpandoTable fetchDefaultTable(long companyId, String className) {
+		com.liferay.expando.model.ExpandoTable expandoTable =
+			_expandoTableLocalService.fetchDefaultTable(companyId, className);
+
+		if (expandoTable == null) {
+			return null;
+		}
+
+		return new ExpandoTableImpl(expandoTable);
+	}
+
+	@Override
 	public ExpandoRow fetchRow(long tableId, long classPK) {
 		com.liferay.expando.model.ExpandoRow expandoRow =
 			_expandoRowLocalService.fetchRow(tableId, classPK);
@@ -46,6 +60,11 @@ public class ExpandoManagerImpl implements ExpandoManager {
 		}
 
 		return new ExpandoRowImpl(expandoRow);
+	}
+
+	@Override
+	public ActionableDynamicQuery getExpandoTableActionableDynamicQuery() {
+		return _expandoTableLocalService.getActionableDynamicQuery();
 	}
 
 	@Override

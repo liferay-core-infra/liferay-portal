@@ -6,6 +6,7 @@ Export-Package:\
 	!com.liferay.portal.kernel.module.util,\
 	!com.liferay.portal.kernel.test.*,\
 	\
+	com.liferay.expando.manager,\
 	com.liferay.*
 Import-Package: *
 Include-Resource: classes

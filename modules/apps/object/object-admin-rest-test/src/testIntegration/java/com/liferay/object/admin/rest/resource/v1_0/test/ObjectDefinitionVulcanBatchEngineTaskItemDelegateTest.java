@@ -65,7 +65,7 @@ public class ObjectDefinitionVulcanBatchEngineTaskItemDelegateTest {
 	public void setUp() throws Exception {
 		_company = CompanyTestUtil.addCompany();
 
-		PortalInstances.initCompany(_company);
+		PortalInstances.initCompany(_company, true);
 
 		User user = UserTestUtil.addCompanyAdminUser(_company);
 

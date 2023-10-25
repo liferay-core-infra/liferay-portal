@@ -7,7 +7,10 @@ package com.liferay.application.list.my.account.permissions.internal;
 
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.osgi.service.tracker.collections.EagerServiceTrackerCustomizer;
+import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -40,8 +43,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Drew Brokke
@@ -87,17 +88,16 @@ public class PanelAppMyAccountPermissions {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		String filter = StringBundler.concat(
-			"(&(objectClass=", PanelApp.class.getName(), ")",
-			"(panel.category.key=", PanelCategoryKeys.USER_MY_ACCOUNT, "*))");
-
-		_serviceTracker = ServiceTrackerFactory.open(
-			bundleContext, filter, new PanelAppServiceTrackerCustomizer());
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, PanelApp.class,
+			"(panel.category.key=" + PanelCategoryKeys.USER_MY_ACCOUNT + "*)",
+			new PropertyServiceReferenceMapper<>("panel.category.key"),
+			new PanelAppServiceTrackerCustomizer());
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTracker.close();
+		_serviceTrackerMap.close();
 	}
 
 	private Role _getUserRole(long companyId) {
@@ -168,10 +168,10 @@ public class PanelAppMyAccountPermissions {
 	@Reference
 	private RoleLocalService _roleLocalService;
 
-	private ServiceTracker<PanelApp, PanelApp> _serviceTracker;
+	private ServiceTrackerMap<String, PanelApp> _serviceTrackerMap;
 
 	private class PanelAppServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<PanelApp, PanelApp> {
+		implements EagerServiceTrackerCustomizer<PanelApp, PanelApp> {
 
 		@Override
 		public PanelApp addingService(

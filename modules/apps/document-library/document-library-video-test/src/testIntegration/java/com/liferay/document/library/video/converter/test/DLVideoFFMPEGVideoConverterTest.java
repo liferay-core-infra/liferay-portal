@@ -24,13 +24,13 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.test.rule.ExpectedLog;
-import com.liferay.portal.test.rule.ExpectedLogs;
-import com.liferay.portal.test.rule.ExpectedType;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.documentlibrary.util.VideoProcessorImpl;
 
 import java.util.Dictionary;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -72,35 +72,42 @@ public class DLVideoFFMPEGVideoConverterTest {
 			});
 	}
 
-	@ExpectedLogs(
-		expectedLogs = {
-			@ExpectedLog(
-				expectedLog = "ffmpeg", expectedType = ExpectedType.CONTAINS
-			),
-			@ExpectedLog(
-				expectedLog = "java.io.FileNotFoundException",
-				expectedType = ExpectedType.CONTAINS
-			),
-			@ExpectedLog(
-				expectedLog = "Unable to process",
-				expectedType = ExpectedType.CONTAINS
-			)
-		},
-		level = "ERROR", loggerClass = VideoProcessorImpl.class
-	)
 	@Test
 	public void testDoesNotGenerateVideoPreviewIfTheVideoIsCorrupt()
 		throws Exception {
 
-		_withDLVideoFFMPEGVideoConverterConfiguration(
-			true,
-			() -> {
-				FileEntry fileEntry = _createVideoFileEntry(
-					"video_corrupt.mp4");
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.document.library.preview.video.internal." +
+					"VideoProcessorImpl",
+				LoggerTestUtil.ERROR)) {
 
-				Assert.assertFalse(
-					VideoProcessorUtil.hasVideo(fileEntry.getFileVersion()));
-			});
+			_withDLVideoFFMPEGVideoConverterConfiguration(
+				true,
+				() -> {
+					FileEntry fileEntry = _createVideoFileEntry(
+						"video_corrupt.mp4");
+
+					Assert.assertFalse(
+						VideoProcessorUtil.hasVideo(
+							fileEntry.getFileVersion()));
+				});
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertTrue(
+				_getLogEntryMessage(
+					logEntries.get(0)
+				).contains(
+					"Unable to process"
+				));
+
+			Assert.assertTrue(
+				_getLogEntryThrowableMessage(
+					logEntries.get(1)
+				).contains(
+					"ffmpeg"
+				));
+		}
 	}
 
 	@Test
@@ -147,22 +154,6 @@ public class DLVideoFFMPEGVideoConverterTest {
 			});
 	}
 
-	@ExpectedLogs(
-		expectedLogs = {
-			@ExpectedLog(
-				expectedLog = "ffmpeg", expectedType = ExpectedType.CONTAINS
-			),
-			@ExpectedLog(
-				expectedLog = "java.io.FileNotFoundException",
-				expectedType = ExpectedType.CONTAINS
-			),
-			@ExpectedLog(
-				expectedLog = "Unable to process",
-				expectedType = ExpectedType.CONTAINS
-			)
-		},
-		level = "ERROR", loggerClass = VideoProcessorImpl.class
-	)
 	@Test
 	public void testGeneratesVideoPreviewIfTheVideoHasOnlyAudio()
 		throws Exception {
@@ -197,6 +188,16 @@ public class DLVideoFFMPEGVideoConverterTest {
 			StringUtil.randomString(),
 			FileUtil.getBytes(getClass(), "dependencies/" + fileName), null,
 			null, _serviceContext);
+	}
+
+	private String _getLogEntryMessage(LogEntry logEntry) {
+		return logEntry.getMessage();
+	}
+
+	private String _getLogEntryThrowableMessage(LogEntry logEntry) {
+		Throwable logEntryThrowable = logEntry.getThrowable();
+
+		return logEntryThrowable.getMessage();
 	}
 
 	private void _withDLVideoFFMPEGVideoConverterConfiguration(

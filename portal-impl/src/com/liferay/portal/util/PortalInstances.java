@@ -245,10 +245,6 @@ public class PortalInstances {
 		return PortalInstancePool.getWebIds();
 	}
 
-	public static long initCompany(Company company) {
-		return initCompany(company, false);
-	}
-
 	public static long initCompany(Company company, boolean skipCheck) {
 
 		// Begin initializing company

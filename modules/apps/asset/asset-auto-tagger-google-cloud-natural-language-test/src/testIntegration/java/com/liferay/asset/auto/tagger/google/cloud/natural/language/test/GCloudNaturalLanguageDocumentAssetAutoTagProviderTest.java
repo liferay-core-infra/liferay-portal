@@ -22,6 +22,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Objects;
 
 import org.junit.Assert;
@@ -34,7 +35,7 @@ import org.junit.runner.RunWith;
  * @author Cristina González
  */
 @RunWith(Arquillian.class)
-public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
+public class GCloudNaturalLanguageDocumentAssetAutoTagProviderTest {
 
 	@ClassRule
 	@Rule
@@ -47,10 +48,12 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 			() -> {
 				Collection<String> tagNames = ReflectionTestUtil.invoke(
 					_gCloudNaturalLanguageDocumentAssetAutoTagger,
-					"getTagNames",
-					new Class<?>[] {long.class, String.class, String.class},
+					"_getTagNames",
+					new Class<?>[] {
+						long.class, String.class, Locale.class, String.class
+					},
 					RandomTestUtil.randomLong(),
-					Arrays.toString(RandomTestUtil.randomStrings(20)),
+					Arrays.toString(RandomTestUtil.randomStrings(20)), null,
 					ContentTypes.TEXT_PLAIN);
 
 				Assert.assertEquals(
@@ -89,10 +92,12 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 				try {
 					ReflectionTestUtil.invoke(
 						_gCloudNaturalLanguageDocumentAssetAutoTagger,
-						"getTagNames",
-						new Class<?>[] {long.class, String.class, String.class},
+						"_getTagNames",
+						new Class<?>[] {
+							long.class, String.class, Locale.class, String.class
+						},
 						RandomTestUtil.randomLong(),
-						Arrays.toString(RandomTestUtil.randomStrings(20)),
+						Arrays.toString(RandomTestUtil.randomStrings(20)), null,
 						ContentTypes.TEXT_PLAIN);
 
 					Assert.fail();
@@ -120,10 +125,12 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 			() -> {
 				Collection<String> tagNames = ReflectionTestUtil.invoke(
 					_gCloudNaturalLanguageDocumentAssetAutoTagger,
-					"getTagNames",
-					new Class<?>[] {long.class, String.class, String.class},
+					"_getTagNames",
+					new Class<?>[] {
+						long.class, String.class, Locale.class, String.class
+					},
 					RandomTestUtil.randomLong(),
-					Arrays.toString(RandomTestUtil.randomStrings(20)),
+					Arrays.toString(RandomTestUtil.randomStrings(20)), null,
 					ContentTypes.IMAGE_JPEG);
 
 				Assert.assertEquals(
@@ -177,7 +184,7 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 					"GCloudNaturalLanguageAssetAutoTaggerCompanyConfiguration";
 
 	@Inject(
-		filter = "component.name=com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.GCloudNaturalLanguageDocumentAssetAutoTagger",
+		filter = "component.name=com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.GCloudNaturalLanguageDocumentAssetAutoTagProvider",
 		type = Inject.NoType.class
 	)
 	private Object _gCloudNaturalLanguageDocumentAssetAutoTagger;

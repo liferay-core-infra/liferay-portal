@@ -34,7 +34,7 @@ import org.junit.runner.RunWith;
  * @author Cristina González
  */
 @RunWith(Arquillian.class)
-public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
+public class GCloudNaturalLanguageDocumentAssetAutoTagProviderTest {
 
 	@ClassRule
 	@Rule
@@ -177,7 +177,7 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 					"GCloudNaturalLanguageAssetAutoTaggerCompanyConfiguration";
 
 	@Inject(
-		filter = "component.name=com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.GCloudNaturalLanguageDocumentAssetAutoTagger",
+		filter = "component.name=com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.GCloudNaturalLanguageDocumentAssetAutoTagProvider",
 		type = Inject.NoType.class
 	)
 	private Object _gCloudNaturalLanguageDocumentAssetAutoTagger;

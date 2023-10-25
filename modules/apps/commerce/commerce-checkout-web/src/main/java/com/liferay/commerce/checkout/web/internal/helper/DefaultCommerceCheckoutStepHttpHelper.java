@@ -6,7 +6,6 @@
 package com.liferay.commerce.checkout.web.internal.helper;
 
 import com.liferay.account.model.AccountEntry;
-import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.commerce.checkout.helper.CommerceCheckoutStepHttpHelper;
 import com.liferay.commerce.constants.CommerceCheckoutWebKeys;
 import com.liferay.commerce.constants.CommerceOrderActionKeys;
@@ -838,9 +837,6 @@ public class DefaultCommerceCheckoutStepHttpHelper
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
-
-	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;

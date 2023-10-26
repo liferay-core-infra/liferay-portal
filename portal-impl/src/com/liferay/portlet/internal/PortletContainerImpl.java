@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.portlet.PortletContainerException;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletModeFactory;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
@@ -721,14 +720,13 @@ public class PortletContainerImpl implements PortletContainer {
 		HttpServletRequest httpServletRequest, Layout layout,
 		List<Portlet> portlets, boolean lifecycleAction) {
 
-		PortletQName portletQName = PortletQNameUtil.getPortletQName();
 		Map<String, String[]> publicRenderParameters = null;
 		Map<String, String[]> parameters = httpServletRequest.getParameterMap();
 
 		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
 			String name = entry.getKey();
 
-			QName qName = portletQName.getQName(name);
+			QName qName = PortletQNameUtil.getQName(name);
 
 			if (qName == null) {
 				continue;
@@ -749,7 +747,7 @@ public class PortletContainerImpl implements PortletContainer {
 				}
 
 				String publicRenderParameterName =
-					portletQName.getPublicRenderParameterName(qName);
+					PortletQNameUtil.getPublicRenderParameterName(qName);
 
 				if (name.startsWith(
 						PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {

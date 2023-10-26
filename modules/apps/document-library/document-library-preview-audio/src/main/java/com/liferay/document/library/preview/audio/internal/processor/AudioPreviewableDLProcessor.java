@@ -61,7 +61,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "type=" + DLProcessorConstants.AUDIO_PROCESSOR,
 	service = DLProcessor.class
 )
-public class AudioDLProcessorImpl
+public class AudioPreviewableDLProcessor
 	extends BasePreviewableDLProcessor implements AudioProcessor {
 
 	@Override
@@ -463,7 +463,7 @@ public class AudioDLProcessorImpl
 		PropsValues.DL_FILE_ENTRY_PREVIEW_AUDIO_CONTAINERS;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AudioDLProcessorImpl.class);
+		AudioPreviewableDLProcessor.class);
 
 	@Reference
 	private AudioConverter _audioConverter;

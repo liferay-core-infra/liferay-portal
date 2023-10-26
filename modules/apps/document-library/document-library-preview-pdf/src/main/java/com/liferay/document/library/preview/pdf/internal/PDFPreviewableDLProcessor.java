@@ -92,7 +92,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "type=" + DLProcessorConstants.PDF_PROCESSOR,
 	service = DLProcessor.class
 )
-public class PDFDLProcessorImpl
+public class PDFPreviewableDLProcessor
 	extends BasePreviewableDLProcessor implements PDFProcessor {
 
 	@Override
@@ -1099,7 +1099,7 @@ public class PDFDLProcessorImpl
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PDFDLProcessorImpl.class);
+		PDFPreviewableDLProcessor.class);
 
 	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;

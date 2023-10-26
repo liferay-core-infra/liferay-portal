@@ -265,7 +265,7 @@ public class AMThumbnailsOSGiCommandsTest {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		DLProcessor imageDLProcessor = new ImageDLProcessorImpl();
+		DLProcessor imageDLProcessor = new ImagePreviewableDLProcessor();
 
 		_serviceRegistration = bundleContext.registerService(
 			new String[] {
@@ -435,7 +435,7 @@ public class AMThumbnailsOSGiCommandsTest {
 	private ServiceContext _serviceContext;
 	private User _user;
 
-	private static class ImageDLProcessorImpl
+	private static class ImagePreviewableDLProcessor
 		extends BasePreviewableDLProcessor implements ImageProcessor {
 
 		@Override
@@ -886,11 +886,11 @@ public class AMThumbnailsOSGiCommandsTest {
 		}
 
 		private static final Log _log = LogFactoryUtil.getLog(
-			ImageDLProcessorImpl.class);
+			ImagePreviewableDLProcessor.class);
 
 		private static final Snapshot<FileVersionPreviewEventListener>
 			_fileVersionPreviewEventListenerSnapshot = new Snapshot<>(
-				ImageDLProcessorImpl.class,
+				ImagePreviewableDLProcessor.class,
 				FileVersionPreviewEventListener.class);
 
 		private final List<Long> _fileVersionIds = new Vector<>();

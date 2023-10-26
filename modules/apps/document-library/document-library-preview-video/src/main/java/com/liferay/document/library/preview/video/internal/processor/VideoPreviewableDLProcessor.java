@@ -67,7 +67,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "type=" + DLProcessorConstants.VIDEO_PROCESSOR,
 	service = DLProcessor.class
 )
-public class VideoDLProcessorImpl
+public class VideoPreviewableDLProcessor
 	extends BasePreviewableDLProcessor implements VideoProcessor {
 
 	@Override
@@ -598,7 +598,7 @@ public class VideoDLProcessorImpl
 		PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_CONTAINERS;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		VideoDLProcessorImpl.class);
+		VideoPreviewableDLProcessor.class);
 
 	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;

@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
-import com.liferay.portal.kernel.portlet.PortletQName;
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -140,7 +140,7 @@ public class CommerceOrderAssetRenderer
 			"commerceOrderId",
 			String.valueOf(_commerceOrder.getCommerceOrderId()));
 		portletURL.setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "backURL",
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + "backURL",
 			PortalUtil.getCurrentURL(liferayPortletRequest));
 
 		return portletURL.toString();

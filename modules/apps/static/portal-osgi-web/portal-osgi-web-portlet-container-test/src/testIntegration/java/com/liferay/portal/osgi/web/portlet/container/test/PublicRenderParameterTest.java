@@ -11,7 +11,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.application.type.ApplicationType;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.portlet.PortletQName;
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -132,7 +132,7 @@ public class PublicRenderParameterTest extends BasePortletContainerTestCase {
 		Assert.assertTrue(
 			portletURLString,
 			portletURLString.contains(
-				PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE));
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE));
 
 		PortletContainerTestUtil.Response response =
 			PortletContainerTestUtil.request(portletURLString);
@@ -189,7 +189,7 @@ public class PublicRenderParameterTest extends BasePortletContainerTestCase {
 		Assert.assertTrue(
 			portletURLString,
 			portletURLString.contains(
-				PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE));
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE));
 
 		PortletContainerTestUtil.Response response =
 			PortletContainerTestUtil.request(portletURLString);

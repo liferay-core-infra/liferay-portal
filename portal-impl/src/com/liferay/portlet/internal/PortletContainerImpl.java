@@ -752,7 +752,7 @@ public class PortletContainerImpl implements PortletContainer {
 					portletQName.getPublicRenderParameterName(qName);
 
 				if (name.startsWith(
-						PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+						PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
 
 					String[] values = entry.getValue();
 

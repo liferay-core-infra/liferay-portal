@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortletQName;
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -381,7 +381,7 @@ public class AuditDisplayContext {
 
 		return ParamUtil.getInteger(
 			(HttpServletRequest)_servletRequestWrapper.getRequest(),
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + param,
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + param,
 			ParamUtil.getInteger(
 				(HttpServletRequest)_servletRequestWrapper.getRequest(), param,
 				defaultValue));
@@ -398,41 +398,47 @@ public class AuditDisplayContext {
 					_liferayPortletRequest, _liferayPortletResponse),
 				_liferayPortletResponse)
 		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateAmPm",
-			getEndDateAmPm()
-		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateDay",
-			getEndDateDay()
-		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateHour",
-			getEndDateHour()
-		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateMinute",
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE +
+				"endDateMinute",
 			getEndDateMinute()
 		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateMonth",
-			getEndDateMonth()
-		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateYear",
-			getEndDateYear()
-		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "startDateAmPm",
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE +
+				"startDateAmPm",
 			getStartDateAmPm()
 		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "startDateDay",
-			getStartDateDay()
-		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "startDateHour",
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE +
+				"startDateHour",
 			getStartDateHour()
 		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "startDateMinute",
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE +
+				"startDateMinute",
 			getStartDateMinute()
 		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "startDateMonth",
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE +
+				"startDateMonth",
 			getStartDateMonth()
 		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "startDateYear",
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE +
+				"startDateYear",
 			getStartDateYear()
+		).setParameter(
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateAmPm",
+			getEndDateAmPm()
+		).setParameter(
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateDay",
+			getEndDateDay()
+		).setParameter(
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateHour",
+			getEndDateHour()
+		).setParameter(
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateMonth",
+			getEndDateMonth()
+		).setParameter(
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + "endDateYear",
+			getEndDateYear()
+		).setParameter(
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + "startDateDay",
+			getStartDateDay()
 		).setParameter(
 			"className", getClassName()
 		).setParameter(

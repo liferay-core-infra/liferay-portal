@@ -19,6 +19,7 @@ import com.liferay.osb.faro.contacts.demo.internal.data.creator.PageContextsData
 import com.liferay.osb.faro.contacts.demo.internal.data.creator.SalesforceAccountsDataCreator;
 import com.liferay.osb.faro.contacts.demo.internal.data.creator.SalesforceIndividualsDataCreator;
 import com.liferay.osb.faro.contacts.demo.internal.util.HeadersUtil;
+import com.liferay.osb.faro.engine.client.ContactsEngineClient;
 import com.liferay.osb.faro.engine.client.constants.FieldMappingConstants;
 import com.liferay.osb.faro.engine.client.model.Author;
 import com.liferay.osb.faro.engine.client.model.Channel;
@@ -39,8 +40,11 @@ import com.liferay.osb.faro.util.FaroThreadLocal;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 
@@ -55,33 +59,36 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Cristina González
  * @author Matthew Kong
  */
-@Component(service = NaniteDemoCreatorService.class)
-public class NaniteDemoCreatorService extends DemoCreatorService {
+public class NaniteDemoCreatorService {
 
-	@Override
+	public NaniteDemoCreatorService(
+		ContactsEngineClient contactsEngineClient, FaroProject faroProject) {
+
+		_contactsEngineClient = contactsEngineClient;
+		_faroProject = faroProject;
+	}
+
 	public void createData() throws Exception {
-		LiferayUsersDataCreator liferayUsersDataCreator = createLiferayData();
+		LiferayUsersDataCreator liferayUsersDataCreator = _createLiferayData();
 
-		createSalesforceData(liferayUsersDataCreator);
+		_createSalesforceData(liferayUsersDataCreator);
 
-		String channelId = getChannelId();
+		String channelId = _getChannelId();
 
-		createIndividualSegments(channelId);
+		_createIndividualSegments(channelId);
 
 		FaroThreadLocal.setCacheEnabled(false);
 
 		int individualsCount =
 			_LIFERAY_INDIVIDUALS_COUNT + _SALESFORCE_INDIVIDUALS_COUNT;
 
-		poll(
-			() -> contactsEngineClient.getIndividuals(
-				faroProject, (String)null, false, 1, 0, null),
+		_poll(
+			() -> _contactsEngineClient.getIndividuals(
+				_faroProject, (String)null, false, 1, 0, null),
 			individualsCount, individualsCount * 2 * Time.SECOND,
 			"individuals");
 
@@ -90,34 +97,34 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		pageContextsDataCreator.create(10, true);
 
-		createLiferayExperiments(
+		_createLiferayExperiments(
 			liferayUsersDataCreator.getDataSourceId(), pageContextsDataCreator);
 
 		AnalyticEventsDataCreator analyticEventsDataCreator =
 			new AnalyticEventsDataCreator(
-				contactsEngineClient, faroProject, pageContextsDataCreator);
+				_contactsEngineClient, _faroProject, pageContextsDataCreator);
 
-		createAnalyticEvents(
+		_createAnalyticEvents(
 			analyticEventsDataCreator, liferayUsersDataCreator);
 
-		poll(
-			() -> contactsEngineClient.getActivities(
-				faroProject, null, null, null, null, null, null, -2, 1, 0,
+		_poll(
+			() -> _contactsEngineClient.getActivities(
+				_faroProject, null, null, null, null, null, null, -2, 1, 0,
 				null),
 			analyticEventsDataCreator.getActivitiesCount(),
 			analyticEventsDataCreator.getActivitiesCount() * Time.SECOND / 2,
 			"activities");
 
-		createMembershipChanges(channelId, _individualSegments.size());
+		_createMembershipChanges(channelId, _individualSegments.size());
 
-		createMembershipChanges(null, _SALESFORCE_ACCOUNTS_COUNT);
+		_createMembershipChanges(null, _SALESFORCE_ACCOUNTS_COUNT);
 
-		createLiferayAssociations(channelId, liferayUsersDataCreator);
+		_createLiferayAssociations(channelId, liferayUsersDataCreator);
 
-		curateInterests();
+		_curateInterests();
 	}
 
-	protected void createAnalyticEvents(
+	private void _createAnalyticEvents(
 		AnalyticEventsDataCreator analyticEventsDataCreator,
 		LiferayUsersDataCreator liferayUsersDataCreator) {
 
@@ -142,11 +149,11 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		analyticEventsDataCreator.execute();
 	}
 
-	protected DataSource createDataSource(
+	private DataSource _createDataSource(
 		FaroProject faroProject, Credentials credentials, Provider provider,
 		String name, String url) {
 
-		Results<DataSource> results = contactsEngineClient.getDataSources(
+		Results<DataSource> results = _contactsEngineClient.getDataSources(
 			faroProject, null, null, name, null, null, 1, 1, null);
 
 		if (results.getTotal() > 0) {
@@ -155,32 +162,32 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 			return dataSources.get(0);
 		}
 
-		return contactsEngineClient.addDataSource(
+		return _contactsEngineClient.addDataSource(
 			faroProject, credentials, new Author(), name, url, provider, null,
 			DataSource.Status.ACTIVE.name());
 	}
 
-	protected void createFieldMappings(
+	private void _createFieldMappings(
 		String dataSourceId, List<FieldMappingMap> fieldMappingMaps,
 		String context, String ownerType) {
 
 		for (FieldMappingMap fieldMappingMap : fieldMappingMaps) {
-			FieldMapping fieldMapping = contactsEngineClient.getFieldMapping(
-				faroProject, context, fieldMappingMap.getName());
+			FieldMapping fieldMapping = _contactsEngineClient.getFieldMapping(
+				_faroProject, context, fieldMappingMap.getName());
 
 			if (fieldMapping == null) {
-				contactsEngineClient.addFieldMapping(
-					faroProject, context, Collections.emptyMap(),
+				_contactsEngineClient.addFieldMapping(
+					_faroProject, context, Collections.emptyMap(),
 					fieldMappingMap.getName(), fieldMappingMap.getType(),
 					ownerType, false);
 			}
 		}
 
-		contactsEngineClient.patchFieldMappings(
-			faroProject, dataSourceId, context, ownerType, fieldMappingMaps);
+		_contactsEngineClient.patchFieldMappings(
+			_faroProject, dataSourceId, context, ownerType, fieldMappingMaps);
 	}
 
-	protected void createIndividualSegments(String channelId) throws Exception {
+	private void _createIndividualSegments(String channelId) throws Exception {
 		for (Map.Entry<String, String> individualSegment :
 				_individualSegments.entrySet()) {
 
@@ -194,29 +201,29 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 			options.setHeaders(HeadersUtil.getHeaders());
 			options.setLocation(
 				"http://localhost:8080/o/faro/contacts/" +
-					faroProject.getGroupId() + "/individual_segment");
+					_faroProject.getGroupId() + "/individual_segment");
 			options.setPost(true);
 
-			http.URLtoString(options);
+			HttpUtil.URLtoString(options);
 		}
 	}
 
-	protected void createLiferayAssociations(
+	private void _createLiferayAssociations(
 		String channelId, LiferayUsersDataCreator liferayUsersDataCreator) {
 
 		// Groups
 
 		LiferayGroupsDataCreator liferayGroupsDataCreator =
 			new LiferayGroupsDataCreator(
-				contactsEngineClient, faroProject,
+				_contactsEngineClient, _faroProject,
 				liferayUsersDataCreator.getDataSourceId());
 
 		liferayGroupsDataCreator.create(5, true);
 
 		liferayGroupsDataCreator.execute();
 
-		contactsEngineClient.patchChannel(
-			faroProject, channelId, liferayUsersDataCreator.getDataSourceId(),
+		_contactsEngineClient.patchChannel(
+			_faroProject, channelId, liferayUsersDataCreator.getDataSourceId(),
 			TransformUtil.transform(
 				liferayGroupsDataCreator.getObjects(),
 				liferayGroup -> {
@@ -234,7 +241,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		LiferayOrganizationsDataCreator liferayOrganizationsDataCreator =
 			new LiferayOrganizationsDataCreator(
-				contactsEngineClient, faroProject,
+				_contactsEngineClient, _faroProject,
 				liferayUsersDataCreator.getDataSourceId());
 
 		Map<String, Object> liferayOrganization =
@@ -256,7 +263,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		LiferayRolesDataCreator liferayRolesDataCreator =
 			new LiferayRolesDataCreator(
-				contactsEngineClient, faroProject,
+				_contactsEngineClient, _faroProject,
 				liferayUsersDataCreator.getDataSourceId());
 
 		liferayRolesDataCreator.create(5, true);
@@ -267,7 +274,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		LiferayTeamsDataCreator liferayTeamsDataCreator =
 			new LiferayTeamsDataCreator(
-				contactsEngineClient, faroProject,
+				_contactsEngineClient, _faroProject,
 				liferayUsersDataCreator.getDataSourceId());
 
 		liferayTeamsDataCreator.create(
@@ -279,7 +286,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		LiferayUserGroupsDataCreator liferayUserGroupsDataCreator =
 			new LiferayUserGroupsDataCreator(
-				contactsEngineClient, faroProject,
+				_contactsEngineClient, _faroProject,
 				liferayUsersDataCreator.getDataSourceId());
 
 		liferayUserGroupsDataCreator.create(5, true);
@@ -290,7 +297,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		LiferayAssociationsDataCreator liferayAssociationsDataCreator =
 			new LiferayAssociationsDataCreator(
-				faroProject, liferayUsersDataCreator.getDataSourceId(),
+				_faroProject, liferayUsersDataCreator.getDataSourceId(),
 				liferayGroupsDataCreator, liferayOrganizationsDataCreator,
 				liferayRolesDataCreator, liferayTeamsDataCreator,
 				liferayUserGroupsDataCreator);
@@ -307,16 +314,16 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		liferayAssociationsDataCreator.execute();
 	}
 
-	protected LiferayUsersDataCreator createLiferayData() {
-		DataSource dataSource = createDataSource(
-			faroProject, new TokenCredentials(), getLiferayProvider(),
+	private LiferayUsersDataCreator _createLiferayData() {
+		DataSource dataSource = _createDataSource(
+			_faroProject, new TokenCredentials(), _getLiferayProvider(),
 			_LIFERAY_DATA_SOURCE_NAME, "beryl.com");
 
 		// Individuals
 
 		LiferayUsersDataCreator liferayUsersDataCreator =
 			new LiferayUsersDataCreator(
-				contactsEngineClient, faroProject, dataSource.getId());
+				_contactsEngineClient, _faroProject, dataSource.getId());
 
 		liferayUsersDataCreator.create(_LIFERAY_INDIVIDUALS_COUNT, true);
 
@@ -324,7 +331,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		// Field Mappings
 
-		createFieldMappings(
+		_createFieldMappings(
 			dataSource.getId(),
 			FieldMappingConstants.getLiferayFieldMappingMaps(),
 			FieldMappingConstants.CONTEXT_DEMOGRAPHICS,
@@ -333,12 +340,12 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		return liferayUsersDataCreator;
 	}
 
-	protected void createLiferayExperiments(
+	private void _createLiferayExperiments(
 		String dataSourceId, PageContextsDataCreator pageContextsDataCreator) {
 
 		LiferayExperimentsDataCreator liferayExperimentsDataCreator =
 			new LiferayExperimentsDataCreator(
-				contactsEngineClient, faroProject, getChannelId(),
+				_contactsEngineClient, _faroProject, _getChannelId(),
 				dataSourceId);
 
 		for (int i = 0; i < _LIFERAY_EXPERIMENTS_COUNT; i++) {
@@ -349,12 +356,12 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		liferayExperimentsDataCreator.execute();
 	}
 
-	protected void createMembershipChanges(String channelId, int expectedCount)
+	private void _createMembershipChanges(String channelId, int expectedCount)
 		throws Exception {
 
-		poll(
-			() -> contactsEngineClient.getIndividualSegments(
-				faroProject, channelId, null, null, null, null, null, null,
+		_poll(
+			() -> _contactsEngineClient.getIndividualSegments(
+				_faroProject, channelId, null, null, null, null, null, null,
 				null, 1, 10000, null),
 			expectedCount,
 			results -> {
@@ -372,11 +379,12 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 			expectedCount * Time.MINUTE, "individual segments");
 
 		MembershipChangesDataCreator membershipChangesDataCreator =
-			new MembershipChangesDataCreator(contactsEngineClient, faroProject);
+			new MembershipChangesDataCreator(
+				_contactsEngineClient, _faroProject);
 
 		Results<IndividualSegment> individualSegmentResults =
-			contactsEngineClient.getIndividualSegments(
-				faroProject, channelId, null, null, null, null, null, null,
+			_contactsEngineClient.getIndividualSegments(
+				_faroProject, channelId, null, null, null, null, null, null,
 				null, 1, 10000, null);
 
 		for (IndividualSegment individualSegment :
@@ -384,8 +392,8 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 			Results<IndividualSegmentMembershipChange>
 				individualSegmentMembershipChangeResults =
-					contactsEngineClient.getIndividualSegmentMembershipChanges(
-						faroProject, individualSegment.getId(), null, null,
+					_contactsEngineClient.getIndividualSegmentMembershipChanges(
+						_faroProject, individualSegment.getId(), null, null,
 						null, 1, 10000, null);
 
 			for (IndividualSegmentMembershipChange
@@ -396,8 +404,8 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 					new Object[] {individualSegmentMembershipChange});
 			}
 
-			contactsEngineClient.addNanite(
-				faroProject, "UpdateDynamicMembershipsNanite",
+			_contactsEngineClient.addNanite(
+				_faroProject, "UpdateDynamicMembershipsNanite",
 				HashMapBuilder.<String, Object>put(
 					"dateModified",
 					() -> {
@@ -425,18 +433,18 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		membershipChangesDataCreator.execute();
 	}
 
-	protected void createSalesforceData(
+	private void _createSalesforceData(
 		LiferayUsersDataCreator liferayUsersDataCreator) {
 
-		DataSource dataSource = createDataSource(
-			faroProject, new DummyCredentials(), getSalesforceProvider(),
+		DataSource dataSource = _createDataSource(
+			_faroProject, new DummyCredentials(), _getSalesforceProvider(),
 			_SALESFORCE_DATA_SOURCE_NAME, "http://salesforce.example.faro.com");
 
 		// Accounts
 
 		SalesforceAccountsDataCreator salesforceAccountsDataCreator =
 			new SalesforceAccountsDataCreator(
-				contactsEngineClient, faroProject, dataSource.getId());
+				_contactsEngineClient, _faroProject, dataSource.getId());
 
 		salesforceAccountsDataCreator.create(_SALESFORCE_ACCOUNTS_COUNT, true);
 
@@ -446,7 +454,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		SalesforceIndividualsDataCreator salesforceIndividualsDataCreator =
 			new SalesforceIndividualsDataCreator(
-				contactsEngineClient, faroProject, dataSource.getId());
+				_contactsEngineClient, _faroProject, dataSource.getId());
 
 		for (Map<String, Object> dxpEntity :
 				liferayUsersDataCreator.getObjects()) {
@@ -465,12 +473,12 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 		// Field Mappings
 
-		createFieldMappings(
+		_createFieldMappings(
 			dataSource.getId(),
 			FieldMappingConstants.getSalesforceAccountFieldMappingMaps(),
 			FieldMappingConstants.CONTEXT_ORGANIZATION,
 			FieldMappingConstants.OWNER_TYPE_ACCOUNT);
-		createFieldMappings(
+		_createFieldMappings(
 			dataSource.getId(),
 			FieldMappingConstants.getSalesforceIndividualFieldMappingMaps(),
 			FieldMappingConstants.CONTEXT_DEMOGRAPHICS,
@@ -485,29 +493,29 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 				"type", "audit-events"
 			).build();
 
-		contactsEngineClient.addNanite(
-			faroProject, "SalesforceAccountsNanite", salesforceNaniteContext);
-		contactsEngineClient.addNanite(
-			faroProject, "SalesforceIndividualsNanite",
+		_contactsEngineClient.addNanite(
+			_faroProject, "SalesforceAccountsNanite", salesforceNaniteContext);
+		_contactsEngineClient.addNanite(
+			_faroProject, "SalesforceIndividualsNanite",
 			salesforceNaniteContext);
 	}
 
-	protected void curateInterests() {
-		contactsEngineClient.addNanites(
-			faroProject,
+	private void _curateInterests() {
+		_contactsEngineClient.addNanites(
+			_faroProject,
 			Collections.singletonList("InterestThresholdScoreNanite"));
 
-		contactsEngineClient.addNanites(
-			faroProject, Collections.singletonList("InterestTopicsNanite"));
+		_contactsEngineClient.addNanites(
+			_faroProject, Collections.singletonList("InterestTopicsNanite"));
 
-		contactsEngineClient.addNanites(
-			faroProject,
+		_contactsEngineClient.addNanites(
+			_faroProject,
 			Collections.singletonList("IndividualInterestScoresNanite"));
 	}
 
-	protected String getChannelId() {
-		Results results = contactsEngineClient.getChannels(
-			faroProject, 0, 1, null, null);
+	private String _getChannelId() {
+		Results results = _contactsEngineClient.getChannels(
+			_faroProject, 0, 1, null, null);
 
 		List<Channel> channels = results.getItems();
 
@@ -520,7 +528,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		return channel.getId();
 	}
 
-	protected LiferayProvider getLiferayProvider() {
+	private LiferayProvider _getLiferayProvider() {
 		LiferayProvider liferayProvider = new LiferayProvider();
 
 		LiferayProvider.AnalyticsConfiguration analyticsConfiguration =
@@ -541,7 +549,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		return liferayProvider;
 	}
 
-	protected SalesforceProvider getSalesforceProvider() {
+	private SalesforceProvider _getSalesforceProvider() {
 		SalesforceProvider salesforceProvider = new SalesforceProvider();
 
 		SalesforceProvider.AccountsConfiguration accountsConfiguration =
@@ -562,7 +570,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		return salesforceProvider;
 	}
 
-	protected <T> void poll(
+	private <T> void _poll(
 			Supplier<Results<T>> resultsSupplier, long expectedCount,
 			Function<Results<T>, Boolean> checkResultsFunction, long timeout,
 			String entityName)
@@ -573,8 +581,8 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		while ((System.currentTimeMillis() - startTime) < timeout) {
 			Results results = resultsSupplier.get();
 
-			if (log.isInfoEnabled()) {
-				log.info(
+			if (_log.isInfoEnabled()) {
+				_log.info(
 					StringBundler.concat(
 						"Processed ", results.getTotal(), StringPool.SLASH,
 						expectedCount, StringPool.SPACE, entityName));
@@ -588,12 +596,12 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		}
 	}
 
-	protected <T> void poll(
+	private <T> void _poll(
 			Supplier<Results<T>> resultsSupplier, long expectedCount,
 			long timeout, String entityName)
 		throws Exception {
 
-		poll(
+		_poll(
 			resultsSupplier, expectedCount,
 			results -> results.getTotal() >= expectedCount, timeout,
 			entityName);
@@ -616,6 +624,9 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 
 	private static final int _SALESFORCE_INDIVIDUALS_COUNT = 100;
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		NaniteDemoCreatorService.class);
+
 	private static final Map<String, String> _individualSegments =
 		HashMapBuilder.put(
 			"Annual Revenue > $500K",
@@ -624,5 +635,8 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 		).put(
 			"managers", "contains(demographics/jobTitle/value, 'manager')"
 		).build();
+
+	private final ContactsEngineClient _contactsEngineClient;
+	private final FaroProject _faroProject;
 
 }

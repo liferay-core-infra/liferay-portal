@@ -8,6 +8,8 @@ package com.liferay.osb.faro.contacts.demo.internal;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.faro.engine.client.ContactsEngineClient;
+import com.liferay.osb.faro.model.FaroProject;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -42,15 +44,18 @@ import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Matthew Kong
  */
-@Component(service = SnapshotDemoCreatorService.class)
-public class SnapshotDemoCreatorService extends DemoCreatorService {
+public class SnapshotDemoCreatorService {
 
-	@Override
+	public SnapshotDemoCreatorService(
+		ContactsEngineClient contactsEngineClient, FaroProject faroProject) {
+
+		_contactsEngineClient = contactsEngineClient;
+		_faroProject = faroProject;
+	}
+
 	public void createData() throws Exception {
 		ClassLoader classLoader = getClass().getClassLoader();
 
@@ -109,8 +114,8 @@ public class SnapshotDemoCreatorService extends DemoCreatorService {
 			Files.delete(tempDirectoryPath);
 		}
 
-		contactsEngineClient.deleteData(
-			faroProject, "osbasahfaroinfo", "run-logs");
+		_contactsEngineClient.deleteData(
+			_faroProject, "osbasahfaroinfo", "run-logs");
 	}
 
 	private Object _addOffset(Object value, long timeOffset) {
@@ -277,11 +282,11 @@ public class SnapshotDemoCreatorService extends DemoCreatorService {
 
 			_adjustMarkers(collectionName, objects);
 
-			contactsEngineClient.addData(
-				faroProject, entryNameParts[0], collectionName, objects);
+			_contactsEngineClient.addData(
+				_faroProject, entryNameParts[0], collectionName, objects);
 
-			if (log.isInfoEnabled()) {
-				log.info(
+			if (_log.isInfoEnabled()) {
+				_log.info(
 					StringBundler.concat(
 						"Created ", objects.size(), " objects in ", entryName));
 			}
@@ -299,6 +304,8 @@ public class SnapshotDemoCreatorService extends DemoCreatorService {
 		"osbasahfaroinfo_channels_0.json",
 		"osbasahfaroinfo_data-sources_0.json");
 
+	private final ContactsEngineClient _contactsEngineClient;
+	private final FaroProject _faroProject;
 	private final ObjectMapper _objectMapper = new ObjectMapper();
 
 }

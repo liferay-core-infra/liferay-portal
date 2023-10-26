@@ -7,7 +7,7 @@ package com.liferay.document.library.preview.processor;
 
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLProcessor;
-import com.liferay.document.library.kernel.util.DLProcessorRegistryUtil;
+import com.liferay.document.library.kernel.util.DLProcessorRegistry;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -18,7 +18,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -144,7 +145,7 @@ public abstract class BasePreviewableDLProcessor implements DLProcessor {
 	@Override
 	public boolean isSupported(FileVersion fileVersion) {
 		if ((fileVersion == null) || (fileVersion.getSize() == 0) ||
-			!DLProcessorRegistryUtil.isPreviewableSize(fileVersion)) {
+			!dlProcessorRegistry.isPreviewableSize(fileVersion)) {
 
 			return false;
 		}
@@ -1139,9 +1140,12 @@ public abstract class BasePreviewableDLProcessor implements DLProcessor {
 		String destinationName, FileVersion sourceFileVersion,
 		FileVersion destinationFileVersion) {
 
-		MessageBusUtil.sendMessage(
-			destinationName,
+		Message message = new Message();
+
+		message.setPayload(
 			new Object[] {sourceFileVersion, destinationFileVersion});
+
+		messageBus.sendMessage(destinationName, message);
 	}
 
 	protected void storeThumbnailImage(
@@ -1210,7 +1214,13 @@ public abstract class BasePreviewableDLProcessor implements DLProcessor {
 			fileVersion, renderedImage, THUMBNAIL_INDEX_CUSTOM_2);
 	}
 
+	@Reference
+	protected DLProcessorRegistry dlProcessorRegistry;
+
 	protected Map<String, Future<?>> futures = new ConcurrentHashMap<>();
+
+	@Reference
+	protected MessageBus messageBus;
 
 	@Reference(target = "(default=true)")
 	protected Store store;

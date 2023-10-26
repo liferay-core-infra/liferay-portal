@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletModeFactory;
-import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
@@ -343,9 +342,11 @@ public class PortletURLImpl
 			return true;
 		}
 
-		if (name.startsWith(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+		if (name.startsWith(
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+
 			name = name.substring(
-				PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE.length());
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE.length());
 
 			if (_parametersIncludedInPath.contains(name)) {
 				return true;
@@ -606,9 +607,11 @@ public class PortletURLImpl
 		LiferayMutablePortletParameters liferayMutablePortletParameters =
 			_getMutablePortletParameters(name);
 
-		if (name.startsWith(PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
+		if (name.startsWith(
+				PortletQNameUtil.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
+
 			name = name.substring(
-				PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE.length());
+				PortletQNameUtil.PRIVATE_RENDER_PARAMETER_NAMESPACE.length());
 		}
 
 		if (value == null) {
@@ -637,10 +640,11 @@ public class PortletURLImpl
 				name);
 
 			if (name.startsWith(
-					PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
+					PortletQNameUtil.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
 
 				name = name.substring(
-					PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE.length());
+					PortletQNameUtil.PRIVATE_RENDER_PARAMETER_NAMESPACE.
+						length());
 			}
 
 			if (values == null) {
@@ -1339,7 +1343,8 @@ public class PortletURLImpl
 	private void _appendNamespaceAndEncode(StringBundler sb, String name) {
 		String namespace = getNamespace();
 
-		if (!name.startsWith(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
+		if (!name.startsWith(
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
 			!name.startsWith(namespace) &&
 			!PortalUtil.isReservedParameter(name)) {
 
@@ -1522,8 +1527,8 @@ public class PortletURLImpl
 				}
 				else {
 					renderParameterName =
-						PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE.concat(
-							renderParameterName);
+						PortletQNameUtil.PRIVATE_RENDER_PARAMETER_NAMESPACE.
+							concat(renderParameterName);
 				}
 
 				portletURLParams.put(
@@ -1555,7 +1560,7 @@ public class PortletURLImpl
 		if (_lifecycle.equals(PortletRequest.ACTION_PHASE) &&
 			!_mutableRenderParametersImpl.isPublic(parameterName) &&
 			!parameterName.startsWith(
-				PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
+				PortletQNameUtil.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
 
 			return _mutableActionParametersImpl;
 		}

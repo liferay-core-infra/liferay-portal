@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletModeFactory;
-import com.liferay.portal.kernel.portlet.PortletQName;
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
 import com.liferay.portal.kernel.portlet.constants.PortletPreferencesFactoryConstants;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -202,8 +202,9 @@ public class ActionURLTag
 				name = _ACTION_PARAMETER_NAMESPACE.concat(name);
 			}
 			else if (Objects.equals(type, "render")) {
-				name = PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE.concat(
-					name);
+				name =
+					PortletQNameUtil.PRIVATE_RENDER_PARAMETER_NAMESPACE.concat(
+						name);
 			}
 		}
 

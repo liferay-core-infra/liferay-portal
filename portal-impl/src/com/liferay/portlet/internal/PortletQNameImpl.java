@@ -11,6 +11,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletQName;
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Namespace;
@@ -41,9 +42,9 @@ public class PortletQNameImpl implements PortletQName {
 		String publicRenderParameterName) {
 
 		if (!publicRenderParameterName.startsWith(
-				PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
 			!publicRenderParameterName.startsWith(
-				REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+				PortletQNameUtil.REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
 
 			return null;
 		}
@@ -57,7 +58,7 @@ public class PortletQNameImpl implements PortletQName {
 
 		if (publicRenderParameterName == null) {
 			publicRenderParameterName = _toString(
-				PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
 
 			_qNames.put(publicRenderParameterName, qName);
 			_qNameStrings.put(qName, publicRenderParameterName);
@@ -115,9 +116,9 @@ public class PortletQNameImpl implements PortletQName {
 	@Override
 	public QName getQName(String publicRenderParameterName) {
 		if (!publicRenderParameterName.startsWith(
-				PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
 			!publicRenderParameterName.startsWith(
-				REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+				PortletQNameUtil.REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
 
 			return null;
 		}
@@ -131,7 +132,8 @@ public class PortletQNameImpl implements PortletQName {
 
 		if (removePublicRenderParameterName == null) {
 			removePublicRenderParameterName = _toString(
-				REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
+				PortletQNameUtil.REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE,
+				qName);
 
 			_qNames.put(removePublicRenderParameterName, qName);
 			_qNameStrings.put(qName, removePublicRenderParameterName);

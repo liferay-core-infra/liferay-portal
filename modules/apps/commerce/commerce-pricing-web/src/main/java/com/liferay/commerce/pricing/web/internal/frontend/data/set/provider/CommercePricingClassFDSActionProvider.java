@@ -16,7 +16,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuil
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
-import com.liferay.portal.kernel.portlet.PortletQName;
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -105,7 +105,7 @@ public class CommercePricingClassFDSActionProvider
 		).setMVCPath(
 			"/edit_permissions.jsp"
 		).setParameter(
-			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "backURL",
+			PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE + "backURL",
 			ParamUtil.getString(
 				httpServletRequest, "currentUrl",
 				_portal.getCurrentURL(httpServletRequest))

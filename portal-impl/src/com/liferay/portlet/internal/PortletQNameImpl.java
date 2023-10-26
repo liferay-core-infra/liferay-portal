@@ -38,21 +38,6 @@ public class PortletQNameImpl implements PortletQName {
 	}
 
 	@Override
-	public String getPublicRenderParameterIdentifier(
-		String publicRenderParameterName) {
-
-		if (!publicRenderParameterName.startsWith(
-				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
-			!publicRenderParameterName.startsWith(
-				PortletQNameUtil.REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
-
-			return null;
-		}
-
-		return _identifiers.get(publicRenderParameterName);
-	}
-
-	@Override
 	public String getPublicRenderParameterName(QName qName) {
 		String publicRenderParameterName = _qNameStrings.get(qName);
 

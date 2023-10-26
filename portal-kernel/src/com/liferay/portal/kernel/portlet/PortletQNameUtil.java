@@ -28,13 +28,6 @@ public class PortletQNameUtil {
 		return _portletQName.getKey(uri, localPart);
 	}
 
-	public static String getPublicRenderParameterIdentifier(
-		String publicRenderParameterName) {
-
-		return _portletQName.getPublicRenderParameterIdentifier(
-			publicRenderParameterName);
-	}
-
 	public static String getPublicRenderParameterName(QName qName) {
 		return _portletQName.getPublicRenderParameterName(qName);
 	}

@@ -17,9 +17,6 @@ public interface PortletQName {
 
 	public String getKey(String uri, String localPart);
 
-	public String getPublicRenderParameterIdentifier(
-		String publicRenderParameterName);
-
 	public String getPublicRenderParameterName(QName qName);
 
 	public QName getQName(

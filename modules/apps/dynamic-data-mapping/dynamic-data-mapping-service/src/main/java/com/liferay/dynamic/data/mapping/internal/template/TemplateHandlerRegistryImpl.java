@@ -6,7 +6,6 @@
 package com.liferay.dynamic.data.mapping.internal.template;
 
 import com.liferay.dynamic.data.mapping.constants.DDMTemplateConstants;
-import com.liferay.dynamic.data.mapping.internal.util.ResourceBundleLoaderProvider;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.osgi.service.tracker.collections.EagerServiceTrackerCustomizer;
@@ -22,6 +21,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.resource.bundle.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ClassResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
+import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -119,14 +119,9 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 	@Deactivate
 	protected void deactivate() {
 		_classNameTemplateHandlersServiceTrackerMap.close();
-
 		_classNameIdTemplateHandlersServiceTrackerMap.close();
-
 		_bundleContext = null;
 	}
-
-	@Reference
-	protected ResourceBundleLoaderProvider resourceBundleLoaderProvider;
 
 	private BundleContext _bundleContext;
 	private ServiceTrackerMap<Long, TemplateHandler>
@@ -168,6 +163,23 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 		@Override
 		public String getName() {
 			return _name;
+		}
+
+		public ResourceBundleLoader getResourceBundleLoader(
+			String bundleSymbolicName) {
+
+			ResourceBundleLoader resourceBundleLoader =
+				ResourceBundleLoaderUtil.
+					getResourceBundleLoaderByBundleSymbolicName(
+						bundleSymbolicName);
+
+			if (resourceBundleLoader == null) {
+				return ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
+			}
+
+			return new AggregateResourceBundleLoader(
+				resourceBundleLoader,
+				ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
 		}
 
 		@Override
@@ -230,9 +242,8 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 				Bundle bundle = FrameworkUtil.getBundle(clazz);
 
 				if (bundle != null) {
-					resourceBundleLoader =
-						resourceBundleLoaderProvider.getResourceBundleLoader(
-							bundle.getSymbolicName());
+					resourceBundleLoader = getResourceBundleLoader(
+						bundle.getSymbolicName());
 				}
 				else {
 					resourceBundleLoader = new AggregateResourceBundleLoader(

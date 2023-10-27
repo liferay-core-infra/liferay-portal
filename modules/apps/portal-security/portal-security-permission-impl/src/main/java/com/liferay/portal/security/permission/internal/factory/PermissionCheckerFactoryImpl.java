@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.permission;
+package com.liferay.portal.security.permission.internal.factory;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.security.permission.contributor.RoleContributor;
 import com.liferay.portal.kernel.security.permission.wrapper.PermissionCheckerWrapperFactory;
+import com.liferay.portal.security.permission.StagingPermissionChecker;
 import com.liferay.portal.util.PropsValues;
 
 import org.osgi.framework.BundleContext;

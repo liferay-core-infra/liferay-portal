@@ -5630,19 +5630,19 @@ public class DataFactory {
 			userCount = BenchmarksPropsValues.MAX_COMPANY_USER_COUNT;
 		}
 
-		List<UserModel> userModels = new ArrayList<>(userCount);
+		_userModels = new ArrayList<>(userCount);
 
 		for (int i = 0; i < userCount; i++) {
 			String[] userName = nextUserName(i);
 
-			userModels.add(
+			_userModels.add(
 				newUserModel(
 					_counter.get(), userName[0], userName[1],
 					"test" + _userScreenNameCounter.get(),
 					UserConstants.TYPE_REGULAR));
 		}
 
-		return userModels;
+		return _userModels;
 	}
 
 	public GroupModel newUserPersonalSiteGroupModel() {
@@ -7597,6 +7597,7 @@ public class DataFactory {
 	private final SimpleCounter _timeCounter;
 	private final Map<Integer, Map<Long, String>> _treePathsMap =
 		new HashMap<>();
+	private List<UserModel> _userModels;
 	private RoleModel _userRoleModel;
 	private final SimpleCounter _userScreenNameCounter;
 	private String _webId;

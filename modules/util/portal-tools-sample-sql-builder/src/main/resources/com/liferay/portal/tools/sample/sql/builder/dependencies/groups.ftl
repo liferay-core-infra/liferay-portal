@@ -22,6 +22,8 @@
 <#list dataFactory.newGroupModels() as groupModel>
 	<#assign groupId = groupModel.groupId />
 
+	<#include "users.ftl">
+
 	<#include "asset_publisher.ftl">
 
 	<#include "blogs.ftl">
@@ -33,8 +35,6 @@
 	<#include "fragment.ftl">
 
 	<#include "mb.ftl">
-
-	<#include "users.ftl">
 
 	<#include "wiki.ftl">
 

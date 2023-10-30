@@ -13,11 +13,11 @@ import com.liferay.osb.faro.engine.client.model.IndividualSegmentMembershipChang
 import com.liferay.osb.faro.engine.client.model.Results;
 import com.liferay.osb.faro.engine.client.util.OrderByField;
 import com.liferay.osb.faro.model.FaroProject;
+import com.liferay.osb.faro.service.FaroPreferencesLocalService;
 import com.liferay.osb.faro.web.internal.constants.FaroConstants;
 import com.liferay.osb.faro.web.internal.constants.FaroPreferencesConstants;
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
 import com.liferay.osb.faro.web.internal.controller.FaroController;
-import com.liferay.osb.faro.web.internal.controller.main.PreferencesController;
 import com.liferay.osb.faro.web.internal.exception.FaroException;
 import com.liferay.osb.faro.web.internal.model.display.FaroResultsDisplay;
 import com.liferay.osb.faro.web.internal.model.display.contacts.IndividualSegmentDisplay;
@@ -25,6 +25,7 @@ import com.liferay.osb.faro.web.internal.model.display.contacts.IndividualSegmen
 import com.liferay.osb.faro.web.internal.param.FaroParam;
 import com.liferay.osb.faro.web.internal.search.FaroSearchContext;
 import com.liferay.osb.faro.web.internal.util.IndividualSegmentUtil;
+import com.liferay.osb.faro.web.internal.util.PreferencesControllerUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.util.Validator;
@@ -142,11 +143,18 @@ public class IndividualSegmentController extends BaseFaroController {
 			@PathParam("groupId") long groupId, @PathParam("id") String id)
 		throws Exception {
 
+		long ownerId = PreferencesControllerUtil.getOwnerId(
+			groupId, FaroPreferencesConstants.SCOPE_GROUP, getUserId());
+
 		contactsEngineClient.deleteIndividualSegment(
 			faroProjectLocalService.getFaroProjectByGroupId(groupId), id);
 
-		_preferencesController.removeIndividualSegmentPreferences(
-			groupId, id, FaroPreferencesConstants.SCOPE_GROUP);
+		PreferencesControllerUtil.removeIndividualSegmentPreferences(
+			_faroPreferencesLocalService,
+			PreferencesControllerUtil.getWorkspacePreferences(
+				_faroPreferencesLocalService.fetchFaroPreferences(
+					groupId, ownerId)),
+			groupId, id, getUserId(), ownerId);
 	}
 
 	@DELETE
@@ -585,6 +593,6 @@ public class IndividualSegmentController extends BaseFaroController {
 	};
 
 	@Reference
-	private PreferencesController _preferencesController;
+	private FaroPreferencesLocalService _faroPreferencesLocalService;
 
 }

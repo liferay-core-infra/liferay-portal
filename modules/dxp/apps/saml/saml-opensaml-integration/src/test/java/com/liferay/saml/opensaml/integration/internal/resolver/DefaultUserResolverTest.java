@@ -37,7 +37,7 @@ import com.liferay.saml.opensaml.integration.field.expression.resolver.UserField
 import com.liferay.saml.opensaml.integration.field.expression.resolver.registry.UserFieldExpressionResolverRegistry;
 import com.liferay.saml.opensaml.integration.internal.BaseSamlTestCase;
 import com.liferay.saml.opensaml.integration.internal.field.expression.handler.DefaultUserFieldExpressionHandler;
-import com.liferay.saml.opensaml.integration.internal.field.expression.handler.MembershipsUserFieldExpressionHandler;
+import com.liferay.saml.opensaml.integration.internal.field.expression.handler.MembershipsUserFieldExpressionHandlerRegistrator;
 import com.liferay.saml.opensaml.integration.internal.processor.factory.UserProcessorFactoryImpl;
 import com.liferay.saml.opensaml.integration.internal.util.OpenSamlUtil;
 import com.liferay.saml.opensaml.integration.resolver.UserResolver;
@@ -437,19 +437,27 @@ public class DefaultUserResolverTest extends BaseSamlTestCase {
 		return defaultUserFieldExpressionHandler;
 	}
 
-	private MembershipsUserFieldExpressionHandler
-		_createMembershipsUserFieldExpressionHandler(
-			UserGroupLocalService userGroupLocalService) {
-
+	private MembershipsUserFieldExpressionHandlerRegistrator.
 		MembershipsUserFieldExpressionHandler
-			membershipsUserFieldExpressionHandler =
-				new MembershipsUserFieldExpressionHandler();
+			_createMembershipsUserFieldExpressionHandler(
+				UserGroupLocalService userGroupLocalService) {
+
+		MembershipsUserFieldExpressionHandlerRegistrator
+			membershipsUserFieldExpressionHandlerRegistrator =
+				new MembershipsUserFieldExpressionHandlerRegistrator();
+
+		ReflectionTestUtil.setFieldValue(
+			membershipsUserFieldExpressionHandlerRegistrator,
+			"_userGroupLocalService", userGroupLocalService);
+
+		MembershipsUserFieldExpressionHandlerRegistrator.
+			MembershipsUserFieldExpressionHandler
+				membershipsUserFieldExpressionHandler =
+					membershipsUserFieldExpressionHandlerRegistrator.
+						new MembershipsUserFieldExpressionHandler();
 
 		ReflectionTestUtil.setFieldValue(
 			membershipsUserFieldExpressionHandler, "_processingIndex", 100);
-		ReflectionTestUtil.setFieldValue(
-			membershipsUserFieldExpressionHandler, "_userGroupLocalService",
-			userGroupLocalService);
 
 		return membershipsUserFieldExpressionHandler;
 	}
@@ -734,8 +742,9 @@ public class DefaultUserResolverTest extends BaseSamlTestCase {
 	private UserFieldExpressionHandlerRegistry
 		_mockDefaultUserFieldExpressionRegistry(
 			DefaultUserFieldExpressionHandler defaultUserFieldExpressionHandler,
-			MembershipsUserFieldExpressionHandler
-				membershipsUserFieldExpressionHandler) {
+			MembershipsUserFieldExpressionHandlerRegistrator.
+				MembershipsUserFieldExpressionHandler
+					membershipsUserFieldExpressionHandler) {
 
 		UserFieldExpressionHandlerRegistry userFieldExpressionHandlerRegistry =
 			Mockito.mock(UserFieldExpressionHandlerRegistry.class);

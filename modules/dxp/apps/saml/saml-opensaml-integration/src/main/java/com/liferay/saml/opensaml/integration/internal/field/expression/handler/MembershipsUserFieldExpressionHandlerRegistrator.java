@@ -5,14 +5,26 @@
 
 package com.liferay.saml.opensaml.integration.internal.field.expression.handler;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
-import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.service.UserGroupLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.saml.opensaml.integration.field.expression.handler.UserFieldExpressionHandler;
+import com.liferay.saml.opensaml.integration.processor.context.UserProcessorContext;
 
-import java.util.Dictionary;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -25,23 +37,105 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = {})
 public class MembershipsUserFieldExpressionHandlerRegistrator {
 
+	public class MembershipsUserFieldExpressionHandler
+		implements UserFieldExpressionHandler {
+
+		@Override
+		public void bindProcessorContext(
+			UserProcessorContext userProcessorContext) {
+
+			List<Long> userGroupIds = new ArrayList<>();
+
+			UserProcessorContext.UserBind<User> userBind =
+				userProcessorContext.bind(
+					_processingIndex,
+					(currentUser, newUser, serviceContext) -> {
+						_userGroupLocalService.setUserUserGroups(
+							newUser.getUserId(),
+							ArrayUtil.toArray(
+								userGroupIds.toArray(new Long[0])));
+
+						return newUser;
+					});
+
+			userBind.mapStringArray(
+				"userGroups",
+				(user, values) -> {
+					if (values == null) {
+						return;
+					}
+
+					for (String value : values) {
+						UserGroup userGroup =
+							_userGroupLocalService.fetchUserGroup(
+								user.getCompanyId(), value);
+
+						if (userGroup != null) {
+							userGroupIds.add(userGroup.getUserGroupId());
+						}
+						else if (_log.isWarnEnabled()) {
+							_log.warn("Ignored unknown user group: " + value);
+						}
+					}
+				});
+		}
+
+		@Override
+		public User getLdapUser(
+				long companyId, String userIdentifier,
+				String userIdentifierExpression)
+			throws Exception {
+
+			return null;
+		}
+
+		@Override
+		public String getSectionLabel(Locale locale) {
+			return ResourceBundleUtil.getString(
+				ResourceBundleUtil.getBundle(
+					locale, DefaultUserFieldExpressionHandler.class),
+				"user-memberships");
+		}
+
+		@Override
+		public User getUser(
+				long companyId, String userIdentifier,
+				String userIdentifierExpression)
+			throws PortalException {
+
+			return null;
+		}
+
+		@Override
+		public List<String> getValidFieldExpressions() {
+			return _validFieldExpressions;
+		}
+
+		@Override
+		public boolean isSupportedForUserMatching(String userIdentifier) {
+			return false;
+		}
+
+		private final int _processingIndex = 200;
+		private final List<String> _validFieldExpressions =
+			Collections.unmodifiableList(Arrays.asList("userGroups"));
+
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		if (!FeatureFlagManagerUtil.isEnabled("LPS-180198")) {
 			return;
 		}
 
-		Dictionary<String, Object> properties = new HashMapDictionary<>();
-
-		for (String key : _serviceReference.getPropertyKeys()) {
-			Object value = _serviceReference.getProperty(key);
-
-			properties.put(key, value);
-		}
-
 		_serviceRegistration = bundleContext.registerService(
 			UserFieldExpressionHandler.class,
-			bundleContext.getService(_serviceReference), properties);
+			new MembershipsUserFieldExpressionHandler(),
+			HashMapDictionaryBuilder.<String, Object>put(
+				"display.index:Integer", 200
+			).put(
+				"prefix", "membership"
+			).build());
 	}
 
 	@Deactivate
@@ -51,10 +145,12 @@ public class MembershipsUserFieldExpressionHandlerRegistrator {
 		}
 	}
 
-	@Reference
-	private ServiceReference<MembershipsUserFieldExpressionHandler>
-		_serviceReference;
+	private static final Log _log = LogFactoryUtil.getLog(
+		MembershipsUserFieldExpressionHandlerRegistrator.class);
 
 	private ServiceRegistration<?> _serviceRegistration;
+
+	@Reference
+	private UserGroupLocalService _userGroupLocalService;
 
 }

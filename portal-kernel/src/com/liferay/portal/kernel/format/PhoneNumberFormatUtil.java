@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.format;
 
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Brian Wing Shun Chan
@@ -15,15 +16,37 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
 public class PhoneNumberFormatUtil {
 
 	public static String format(String phoneNumber) {
-		return _phoneNumberFormat.format(phoneNumber);
+		PhoneNumberFormat phoneNumberFormat = _phoneNumberFormat;
+
+		if (phoneNumberFormat == null) {
+			return phoneNumber;
+		}
+
+		return phoneNumberFormat.format(phoneNumber);
 	}
 
 	public static String strip(String phoneNumber) {
-		return _phoneNumberFormat.strip(phoneNumber);
+		PhoneNumberFormat phoneNumberFormat = _phoneNumberFormat;
+
+		if (phoneNumberFormat == null) {
+			return phoneNumber;
+		}
+
+		return phoneNumberFormat.strip(phoneNumber);
 	}
 
 	public static boolean validate(String phoneNumber) {
-		return _phoneNumberFormat.validate(phoneNumber);
+		PhoneNumberFormat phoneNumberFormat = _phoneNumberFormat;
+
+		if (phoneNumberFormat != null) {
+			return phoneNumberFormat.validate(phoneNumber);
+		}
+
+		if (Validator.isNull(phoneNumber)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private PhoneNumberFormatUtil() {

@@ -18,10 +18,6 @@ public class PhoneNumberFormatUtil {
 		return _phoneNumberFormat.format(phoneNumber);
 	}
 
-	public static PhoneNumberFormat getPhoneNumberFormat() {
-		return _phoneNumberFormat;
-	}
-
 	public static String strip(String phoneNumber) {
 		return _phoneNumberFormat.strip(phoneNumber);
 	}

@@ -35,7 +35,13 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Marcellus Tavares
  */
-@Component(service = {BlockedKeywordsController.class, FaroController.class})
+@Component(
+	property = {
+		"osgi.jaxrs.application.select=(osgi.jaxrs.name=Liferay.Osb.Faro.Web)",
+		"osgi.jaxrs.resource=true"
+	},
+	service = FaroController.class
+)
 @Path("/{groupId}/blocked_keywords")
 @Produces(MediaType.APPLICATION_JSON)
 public class BlockedKeywordsController extends BaseFaroController {

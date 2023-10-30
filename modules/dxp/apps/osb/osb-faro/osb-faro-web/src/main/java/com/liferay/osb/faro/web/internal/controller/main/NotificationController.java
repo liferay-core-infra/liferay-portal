@@ -36,7 +36,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Geyson Silva
  */
-@Component(service = {FaroController.class, NotificationController.class})
+@Component(
+	property = {
+		"osgi.jaxrs.application.select=(osgi.jaxrs.name=Liferay.Osb.Faro.Web)",
+		"osgi.jaxrs.resource=true"
+	},
+	service = FaroController.class
+)
 @Path("/{groupId}/notification")
 @Produces(MediaType.APPLICATION_JSON)
 public class NotificationController extends BaseFaroController {

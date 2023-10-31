@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PortletToolbar {
 
-	public List<Menu> getPortletTitleMenus(
+	public static List<Menu> getPortletTitleMenus(
 		String portletId, PortletRequest portletRequest,
 		PortletResponse portletResponse) {
 

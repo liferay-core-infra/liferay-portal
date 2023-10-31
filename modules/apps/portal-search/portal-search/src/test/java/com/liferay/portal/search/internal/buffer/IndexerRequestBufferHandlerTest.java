@@ -38,9 +38,11 @@ public class IndexerRequestBufferHandlerTest {
 	@Test
 	public void testDeepReindexMustNotOverflow() throws Exception {
 		int maxBufferSize = 5;
+		float minimumBufferAvailabilityPercentage = 0.90F;
 
 		_indexerRequestBufferHandler = new IndexerRequestBufferHandler(
-			new IndexerRequestBufferOverflowHandler(),
+			new IndexerRequestBufferOverflowHandler(
+				minimumBufferAvailabilityPercentage),
 			_createIndexerRegistryConfiguration(maxBufferSize));
 
 		_indexerRequestBuffer = IndexerRequestBuffer.create();

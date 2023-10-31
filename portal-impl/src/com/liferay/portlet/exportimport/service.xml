@@ -3,8 +3,6 @@
 
 <service-builder api-package-path="com.liferay.exportimport.kernel" auto-import-default-references="false" mvcc-enabled="true" package-path="com.liferay.portlet.exportimport">
 	<namespace>ExportImport</namespace>
-	<entity local-service="true" name="ExportImport" remote-service="true">
-	</entity>
 	<entity local-service="true" name="ExportImportConfiguration" remote-service="true" trash-enabled="true">
 
 		<!-- PK fields -->

@@ -1,6 +1,6 @@
 <#assign
 	portlet_display = portletDisplay
-
+	portlet_toolbar = portletToolbar
 	portlet_back_url = htmlUtil.escapeHREF(portlet_display.getURLBack())
 	portlet_content_css_class = "portlet-content"
 	portlet_display_name = htmlUtil.escape(portlet_display.getPortletDisplayName())
@@ -10,10 +10,9 @@
 />
 
 <section class="portlet" id="portlet_${portlet_id}">
-	<#if portlet_display.getPortletConfigurationIconMenu()?? && portlet_display.getPortletToolbar()?? && portlet_display.isPortletDecorate() && portlet_display.isShowPortletTopper() && !portlet_display.isStateMax()>
+	<#if portlet_display.getPortletConfigurationIconMenu()?? && portlet_display.isPortletDecorate() && portlet_display.isShowPortletTopper() && !portlet_display.isStateMax()>
 		<#assign
 			portlet_configuration_icon_menu = portlet_display.getPortletConfigurationIconMenu()
-			portlet_toolbar = portlet_display.getPortletToolbar()
 
 			portlet_configuration_icons = portlet_configuration_icon_menu.getPortletConfigurationIcons(portlet_display_root_portlet_id, renderRequest, renderResponse)
 			portlet_title_menus = portlet_toolbar.getPortletTitleMenus(portlet_display_root_portlet_id, renderRequest, renderResponse)

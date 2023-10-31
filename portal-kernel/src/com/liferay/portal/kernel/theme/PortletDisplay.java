@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu;
-import com.liferay.portal.kernel.portlet.toolbar.PortletToolbar;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
@@ -86,7 +85,6 @@ public class PortletDisplay implements Cloneable, Serializable {
 		_portletName = master.getPortletName();
 		_portletResource = master.getPortletResource();
 		_portletSetup = master.getPortletSetup();
-		_portletToolbar = master.getPortletToolbar();
 		_resourcePK = master.getResourcePK();
 		_restoreCurrentView = master.isRestoreCurrentView();
 		_rootPortletId = master.getRootPortletId();
@@ -157,7 +155,6 @@ public class PortletDisplay implements Cloneable, Serializable {
 		slave.setPortletName(_portletName);
 		slave.setPortletResource(_portletResource);
 		slave.setPortletSetup(_portletSetup);
-		slave.setPortletToolbar(_portletToolbar);
 		slave.setResourcePK(_resourcePK);
 		slave.setRestoreCurrentView(_restoreCurrentView);
 		slave.setRootPortletId(_rootPortletId);
@@ -264,10 +261,6 @@ public class PortletDisplay implements Cloneable, Serializable {
 
 	public PortletPreferences getPortletSetup() {
 		return _portletSetup;
-	}
-
-	public PortletToolbar getPortletToolbar() {
-		return _portletToolbar;
 	}
 
 	public String getResourcePK() {
@@ -728,10 +721,6 @@ public class PortletDisplay implements Cloneable, Serializable {
 		_portletSetup = portletSetup;
 	}
 
-	public void setPortletToolbar(PortletToolbar portletToolbar) {
-		_portletToolbar = portletToolbar;
-	}
-
 	public void setResourcePK(String resourcePK) {
 		_resourcePK = resourcePK;
 	}
@@ -953,7 +942,6 @@ public class PortletDisplay implements Cloneable, Serializable {
 	private String _portletName = StringPool.BLANK;
 	private String _portletResource = StringPool.BLANK;
 	private PortletPreferences _portletSetup;
-	private PortletToolbar _portletToolbar;
 	private String _resourcePK = StringPool.BLANK;
 	private boolean _restoreCurrentView;
 	private String _rootPortletId = StringPool.BLANK;

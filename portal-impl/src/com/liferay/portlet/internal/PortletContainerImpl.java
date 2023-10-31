@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
 import com.liferay.portal.kernel.portlet.async.PortletAsyncScopeManager;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu;
-import com.liferay.portal.kernel.portlet.toolbar.PortletToolbar;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
@@ -266,10 +265,6 @@ public class PortletContainerImpl implements PortletContainer {
 		PortletConfigurationIconMenu portletConfigurationIconMenu) {
 
 		_portletConfigurationIconMenu = portletConfigurationIconMenu;
-	}
-
-	public void setPortletToolbar(PortletToolbar portletToolbar) {
-		_portletToolbar = portletToolbar;
 	}
 
 	protected long getScopeGroupId(
@@ -825,8 +820,6 @@ public class PortletContainerImpl implements PortletContainer {
 		portletDisplay.setPortletConfigurationIconMenu(
 			_portletConfigurationIconMenu);
 
-		portletDisplay.setPortletToolbar(_portletToolbar);
-
 		PortletDisplay portletDisplayClone = PortletDisplayFactory.create();
 
 		portletDisplay.copyTo(portletDisplayClone);
@@ -1140,6 +1133,5 @@ public class PortletContainerImpl implements PortletContainer {
 		PortletContainerImpl.class);
 
 	private PortletConfigurationIconMenu _portletConfigurationIconMenu;
-	private PortletToolbar _portletToolbar;
 
 }

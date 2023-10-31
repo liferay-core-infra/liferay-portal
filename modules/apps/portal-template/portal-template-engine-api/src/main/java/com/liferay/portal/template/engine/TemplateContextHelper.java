@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.portlet.PortletRequestModelFactory;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.WindowStateFactory_IW;
+import com.liferay.portal.kernel.portlet.toolbar.PortletToolbar_IW;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.GroupService;
@@ -594,6 +595,15 @@ public class TemplateContextHelper {
 
 		try {
 			variables.put("propsUtil", PropsUtil.getProps());
+		}
+		catch (SecurityException securityException) {
+			_log.error(securityException);
+		}
+
+		// Portlet Tool bar
+
+		try {
+			variables.put("portletToolbar", PortletToolbar_IW.getInstance());
 		}
 		catch (SecurityException securityException) {
 			_log.error(securityException);

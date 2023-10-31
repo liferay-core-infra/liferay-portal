@@ -113,7 +113,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 
 	@Override
 	public Response deleteOrderByExternalReferenceCode(
-		String externalReferenceCode)
+			String externalReferenceCode)
 		throws Exception {
 
 		CommerceOrder commerceOrder =
@@ -123,7 +123,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 		if (commerceOrder == null) {
 			throw new NoSuchOrderException(
 				"Unable to find order with external reference code " +
-				externalReferenceCode);
+					externalReferenceCode);
 		}
 
 		_commerceOrderService.deleteCommerceOrder(
@@ -161,7 +161,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 		if (commerceOrder == null) {
 			throw new NoSuchOrderException(
 				"Unable to find order with external reference code " +
-				externalReferenceCode);
+					externalReferenceCode);
 		}
 
 		return _toOrder(
@@ -173,7 +173,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 
 	@Override
 	public Page<Order> getOrdersPage(
-		String search, Filter filter, Pagination pagination, Sort[] sorts)
+			String search, Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
 
 		return _getOrdersPage(
@@ -202,7 +202,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 
 	@Override
 	public Response patchOrderByExternalReferenceCode(
-		String externalReferenceCode, Order order)
+			String externalReferenceCode, Order order)
 		throws Exception {
 
 		CommerceOrder commerceOrder =
@@ -212,7 +212,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 		if (commerceOrder == null) {
 			throw new NoSuchOrderException(
 				"Unable to find order with external reference code " +
-				externalReferenceCode);
+					externalReferenceCode);
 		}
 
 		_updateOrder(commerceOrder, order);
@@ -234,13 +234,13 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 	}
 
 	private Map<String, String> _addAction(
-		String actionId, long commerceOrderId, UriInfo uriInfo,
-		String methodName, Class<?> clazz)
+			String actionId, long commerceOrderId, UriInfo uriInfo,
+			String methodName, Class<?> clazz)
 		throws NoSuchMethodException, PortalException {
 
 		if (!_commerceOrderModelResourcePermission.contains(
-			PermissionThreadLocal.getPermissionChecker(), commerceOrderId,
-			actionId)) {
+				PermissionThreadLocal.getPermissionChecker(), commerceOrderId,
+				actionId)) {
 
 			return null;
 		}
@@ -405,7 +405,7 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 	}
 
 	private Map<String, Map<String, String>> _getActions(
-		CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder)
 		throws NoSuchMethodException, PortalException {
 
 		if (contextUriInfo == null) {
@@ -534,10 +534,10 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 	}
 
 	private Page<Order> _getOrdersPage(
-		long companyId, Filter filter, Pagination pagination, String search,
-		Sort[] sorts,
-		UnsafeFunction<Document, Order, Exception> transformUnsafeFunction,
-		boolean useSearchResultPermissionFilter)
+			long companyId, Filter filter, Pagination pagination, String search,
+			Sort[] sorts,
+			UnsafeFunction<Document, Order, Exception> transformUnsafeFunction,
+			boolean useSearchResultPermissionFilter)
 		throws Exception {
 
 		return SearchUtil.search(
@@ -577,9 +577,9 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 	}
 
 	private Order _toOrder(
-		long commerceOrderId, Locale locale, boolean acceptAllLanguages,
-		User contextUser, UriInfo contextUriInfo,
-		Map<String, Map<String, String>> actions)
+			long commerceOrderId, Locale locale, boolean acceptAllLanguages,
+			User contextUser, UriInfo contextUriInfo,
+			Map<String, Map<String, String>> actions)
 		throws Exception {
 
 		return _orderDTOConverter.toDTO(
@@ -589,8 +589,8 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 	}
 
 	private CommerceOrder _updateNestedResources(
-		Order order, CommerceOrder commerceOrder,
-		ServiceContext serviceContext)
+			Order order, CommerceOrder commerceOrder,
+			ServiceContext serviceContext)
 		throws Exception {
 
 		// Order items
@@ -865,11 +865,15 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 					order.getPrintedNote(), commerceOrder.getPrintedNote()));
 		}
 
-		commerceOrder = _commercePaymentEngine.updateOrderPaymentStatus(
-			commerceOrder.getCommerceOrderId(),
-			GetterUtil.getInteger(
-				order.getPaymentStatus(), commerceOrder.getPaymentStatus()),
-			commerceOrder.getTransactionId(), StringPool.BLANK);
+		if ((order.getPaymentStatus() != null) &&
+			(order.getPaymentStatus() != commerceOrder.getPaymentStatus())) {
+
+			commerceOrder = _commercePaymentEngine.updateOrderPaymentStatus(
+				commerceOrder.getCommerceOrderId(),
+				GetterUtil.getInteger(
+					order.getPaymentStatus(), commerceOrder.getPaymentStatus()),
+				commerceOrder.getTransactionId(), StringPool.BLANK);
+		}
 
 		Map<String, ?> customFields = order.getCustomFields();
 

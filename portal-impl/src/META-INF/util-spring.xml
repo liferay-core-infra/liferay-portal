@@ -51,7 +51,6 @@
 		<property name="portletContainer" ref="com.liferay.portlet.RestrictPortletContainerWrapper" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu" id="com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu" />
-	<bean class="com.liferay.portal.kernel.portlet.toolbar.PortletToolbar" id="com.liferay.portal.kernel.portlet.toolbar.PortletToolbar" />
 	<bean class="com.liferay.portal.kernel.spring.orm.LastSessionRecorderHelperUtil" id="com.liferay.portal.kernel.spring.orm.LastSessionRecorderHelperUtil">
 		<property name="lastSessionRecorderHelper">
 			<bean class="com.liferay.portal.spring.hibernate.LastSessionRecorderHelperImpl" />

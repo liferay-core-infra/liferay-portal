@@ -12,11 +12,13 @@ import aQute.bnd.annotation.metatype.Meta;
  */
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.site.initializer.extender.configuration.SiteInitializerConfiguration"
+	id = "com.liferay.site.initializer.extender.configuration.SiteInitializerConfiguration",
+	localization = "content/Language",
+	name = "site-initializer-configuration-name"
 )
 public interface SiteInitializerConfiguration {
 
-	@Meta.AD
+	@Meta.AD(name = "site-name")
 	public String siteName();
 
 }

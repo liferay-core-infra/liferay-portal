@@ -12,14 +12,19 @@ import aQute.bnd.annotation.metatype.Meta;
  */
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.object.internal.configuration.FunctionObjectActionExecutorImplConfiguration"
+	id = "com.liferay.object.internal.configuration.FunctionObjectActionExecutorImplConfiguration",
+	localization = "content/Language",
+	name = "function-object-action-executor-impl-configuration-name"
 )
 public interface FunctionObjectActionExecutorImplConfiguration {
 
-	@Meta.AD
+	@Meta.AD(
+		name = "oauth2-application-external-reference-code", required = false,
+		type = Meta.Type.String
+	)
 	public String oAuth2ApplicationExternalReferenceCode();
 
-	@Meta.AD
+	@Meta.AD(name = "resource-path", required = false, type = Meta.Type.String)
 	public String resourcePath();
 
 }

@@ -12,14 +12,18 @@ import aQute.bnd.annotation.metatype.Meta;
  */
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.portal.workflow.kaleo.runtime.internal.configuration.FunctionActionExecutorImplConfiguration"
+	id = "com.liferay.portal.workflow.kaleo.runtime.internal.configuration.FunctionActionExecutorImplConfiguration",
+	localization = "content/Language",
+	name = "function-action-executor-impl-configuration-name"
 )
 public interface FunctionActionExecutorImplConfiguration {
 
-	@Meta.AD
+	@Meta.AD(
+		name = "oauth2-application-external-reference-code", required = false
+	)
 	public String oAuth2ApplicationExternalReferenceCode();
 
-	@Meta.AD
+	@Meta.AD(name = "resource-path", required = false)
 	public String resourcePath();
 
 }

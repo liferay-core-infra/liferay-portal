@@ -12,14 +12,16 @@ import aQute.bnd.annotation.metatype.Meta;
  */
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.object.internal.configuration.FunctionObjectValidationRuleEngineImplConfiguration"
+	id = "com.liferay.object.internal.configuration.FunctionObjectValidationRuleEngineImplConfiguration",
+	localization = "content/Language",
+	name = "function-object-validation-rule-engine-impl-configuration-name"
 )
 public interface FunctionObjectValidationRuleEngineImplConfiguration {
 
-	@Meta.AD
+	@Meta.AD(name = "oauth2-application-external-reference-code")
 	public String oAuth2ApplicationExternalReferenceCode();
 
-	@Meta.AD
+	@Meta.AD(name = "resource-path")
 	public String resourcePath();
 
 }

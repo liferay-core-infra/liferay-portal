@@ -84,6 +84,13 @@ public class ModuleConfigurationLocalizationTest {
 		Assert.assertTrue("Test failed due to: " + message, message.isEmpty());
 	}
 
+	private Boolean _checkPIDScope(List<String> pids) {
+		return pids.stream(
+		).allMatch(
+			pid -> pid.startsWith("com.liferay")
+		);
+	}
+
 	private String _collectBundleError(Bundle bundle) {
 		ExtendedMetaTypeInformation extendedMetaTypeInformation =
 			_extendedMetaTypeService.getMetaTypeInformation(bundle);
@@ -93,9 +100,7 @@ public class ModuleConfigurationLocalizationTest {
 		Collections.addAll(pids, extendedMetaTypeInformation.getFactoryPids());
 		Collections.addAll(pids, extendedMetaTypeInformation.getPids());
 
-		String bundleName = bundle.getSymbolicName();
-
-		if (pids.isEmpty() || !bundleName.startsWith("com.liferay")) {
+		if (pids.isEmpty() || !_checkPIDScope(pids)) {
 			return StringPool.BLANK;
 		}
 

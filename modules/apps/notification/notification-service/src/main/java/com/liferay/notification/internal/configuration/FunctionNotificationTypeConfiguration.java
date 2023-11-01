@@ -12,14 +12,19 @@ import aQute.bnd.annotation.metatype.Meta;
  */
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.notification.internal.configuration.FunctionNotificationTypeConfiguration"
+	id = "com.liferay.notification.internal.configuration.FunctionNotificationTypeConfiguration",
+	localization = "content/Language",
+	name = "function-notification-type-configuration-name"
 )
 public interface FunctionNotificationTypeConfiguration {
 
-	@Meta.AD
+	@Meta.AD(
+		name = "oauth2-application-external-reference-code", required = false,
+		type = Meta.Type.String
+	)
 	public String oAuth2ApplicationExternalReferenceCode();
 
-	@Meta.AD
+	@Meta.AD(name = "resource-path", required = false, type = Meta.Type.String)
 	public String resourcePath();
 
 }

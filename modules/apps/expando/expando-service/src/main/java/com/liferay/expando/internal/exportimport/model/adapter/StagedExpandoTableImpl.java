@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.expando.exportimport.internal.model.adapter;
+package com.liferay.expando.internal.exportimport.model.adapter;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.model.ExpandoTable;

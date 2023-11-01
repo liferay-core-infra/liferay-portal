@@ -3,16 +3,16 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.expando.exportimport.internal.xstream.configurator;
+package com.liferay.expando.internal.exportimport.xstream.configurator;
 
-import com.liferay.expando.exportimport.internal.model.adapter.StagedExpandoColumnImpl;
-import com.liferay.expando.exportimport.internal.model.adapter.StagedExpandoTableImpl;
+import com.liferay.expando.internal.exportimport.model.adapter.StagedExpandoColumnImpl;
+import com.liferay.expando.internal.exportimport.model.adapter.StagedExpandoTableImpl;
+import com.liferay.expando.model.impl.ExpandoColumnImpl;
+import com.liferay.expando.model.impl.ExpandoTableImpl;
 import com.liferay.exportimport.kernel.xstream.XStreamAlias;
 import com.liferay.exportimport.kernel.xstream.XStreamConverter;
 import com.liferay.exportimport.kernel.xstream.XStreamType;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portlet.expando.model.impl.ExpandoColumnImpl;
-import com.liferay.portlet.expando.model.impl.ExpandoTableImpl;
 import com.liferay.xstream.configurator.XStreamConfigurator;
 
 import java.util.List;

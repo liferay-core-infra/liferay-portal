@@ -819,27 +819,60 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				</#if>
 			}
 
-			<#if serviceBuilder.isVersionGTE_7_3_0() && entity.hasExternalReferenceCode()>
 				else {
-					<#if serviceBuilder.isVersionGTE_7_4_0()>
-						${entity.name} erc${entity.name} = fetchByERC_${entity.externalReferenceCode?cap_first[0..0]}(${entity.variableName}.getExternalReferenceCode(), ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
-					<#else>
-						${entity.name} erc${entity.name} = fetchBy${entity.externalReferenceCode?cap_first[0..0]}_ERC(${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id(), ${entity.variableName}.getExternalReferenceCode());
-					</#if>
+					long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
 
-					if (isNew) {
-						if (erc${entity.name} != null) {
-								throw new ${duplicateEntityExternalReferenceCode}Exception("Duplicate ${entity.humanName} with external reference code " + ${entity.variableName}.getExternalReferenceCode() + " and ${entity.externalReferenceCode} " + ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
+					if (userId > 0) {
+						<#assign companyId = 0 />
+
+						<#if entity.hasEntityColumn("companyId")>
+							long companyId = ${entity.variableName}.getCompanyId();
+						<#else>
+							long companyId = 0;
+						</#if>
+
+						<#assign groupId = 0 />
+
+						<#if entity.hasEntityColumn("groupId")>
+							long groupId = ${entity.variableName}.getGroupId();
+						<#else>
+							long groupId = 0;
+						</#if>
+
+						long classPK = 0;
+
+						if (!isNew) {
+							classPK = ${entity.variableName}.getPrimaryKey();
+						}
+
+						try {
+							${entity.variableName}.setExternalReferenceCode(SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), classPK, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL, ${entity.variableName}.getExternalReferenceCode(), null));
+						}
+						catch (SanitizerException sanitizerException) {
+							throw new SystemException(sanitizerException);
 						}
 					}
-					else {
-						if ((erc${entity.name} != null) &&
-							(${entity.variableName}.get${entity.PKMethodName}() != erc${entity.name}.get${entity.PKMethodName}())) {
-								throw new ${duplicateEntityExternalReferenceCode}Exception("Duplicate ${entity.humanName} with external reference code " + ${entity.variableName}.getExternalReferenceCode() + " and ${entity.externalReferenceCode} " + ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
+
+					<#if serviceBuilder.isVersionGTE_7_3_0() && entity.hasExternalReferenceCode()>
+
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							${entity.name} erc${entity.name} = fetchByERC_${entity.externalReferenceCode?cap_first[0..0]}(${entity.variableName}.getExternalReferenceCode(), ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
+						<#else>
+							${entity.name} erc${entity.name} = fetchBy${entity.externalReferenceCode?cap_first[0..0]}_ERC(${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id(), ${entity.variableName}.getExternalReferenceCode());
+						</#if>
+						if (isNew) {
+							if (erc${entity.name} != null) {
+									throw new ${duplicateEntityExternalReferenceCode}Exception("Duplicate ${entity.humanName} with external reference code " + ${entity.variableName}.getExternalReferenceCode() + " and ${entity.externalReferenceCode} " + ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
+							}
 						}
-					}
+						else {
+							if ((erc${entity.name} != null) &&
+								(${entity.variableName}.get${entity.PKMethodName}() != erc${entity.name}.get${entity.PKMethodName}())) {
+									throw new ${duplicateEntityExternalReferenceCode}Exception("Duplicate ${entity.humanName} with external reference code " + ${entity.variableName}.getExternalReferenceCode() + " and ${entity.externalReferenceCode} " + ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
+							}
+						}
+					</#if>
 				}
-			</#if>
 		</#if>
 
 		<#if entity.hasEntityColumn("createDate", "Date") && entity.hasEntityColumn("modifiedDate", "Date")>

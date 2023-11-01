@@ -746,8 +746,7 @@ public class DLFolderServiceImpl extends DLFolderServiceBaseImpl {
 	private static volatile ModelResourcePermission<DLFolder>
 		_dlFolderModelResourcePermission =
 			ModelResourcePermissionFactory.getInstance(
-				DLFolderServiceImpl.class, "_dlFolderModelResourcePermission",
-				DLFolder.class);
+				DLFolderServiceImpl.class, DLFolder.class);
 
 	@BeanReference(type = ClassNameLocalService.class)
 	private ClassNameLocalService _classNameLocalService;

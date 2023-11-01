@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.repository.Repository;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
+import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -111,7 +111,7 @@ public class CPAttachmentFileEntryCreator {
 				_log.debug(noSuchFileEntryException);
 			}
 
-			Repository repository = _repositoryProvider.getRepository(
+			Repository repository = RepositoryProviderUtil.getRepository(
 				serviceContext.getScopeGroupId());
 
 			file = _file.createTempFile(inputStream);
@@ -193,9 +193,6 @@ public class CPAttachmentFileEntryCreator {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private RepositoryProvider _repositoryProvider;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -11,7 +11,6 @@ import com.liferay.bulk.selection.BulkSelectionFactory;
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
 import com.liferay.portal.kernel.repository.model.BaseRepositoryModelOperation;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.repository.model.RepositoryModelOperation;
@@ -26,9 +25,9 @@ public class FolderFolderBulkSelection
 
 	public FolderFolderBulkSelection(
 		long repositoryId, long folderId, Map<String, String[]> parameterMap,
-		RepositoryProvider repositoryProvider, DLAppService dlAppService) {
+		DLAppService dlAppService) {
 
-		super(repositoryId, folderId, parameterMap, repositoryProvider);
+		super(repositoryId, folderId, parameterMap);
 
 		_repositoryId = repositoryId;
 		_folderId = folderId;

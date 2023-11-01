@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.repository.LocalRepository;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
+import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.UndeployedExternalRepositoryException;
 import com.liferay.portal.kernel.repository.capabilities.TemporaryFileEntriesCapability;
 import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
@@ -70,7 +70,7 @@ public class TempFileEntriesSchedulerJobConfiguration
 		LocalRepository localRepository = null;
 
 		try {
-			localRepository = _repositoryProvider.getLocalRepository(
+			localRepository = RepositoryProviderUtil.getLocalRepository(
 				repository.getRepositoryId());
 		}
 		catch (PortalException | UndeployedExternalRepositoryException
@@ -113,9 +113,6 @@ public class TempFileEntriesSchedulerJobConfiguration
 
 	@Reference
 	private RepositoryLocalService _repositoryLocalService;
-
-	@Reference
-	private RepositoryProvider _repositoryProvider;
 
 	private TriggerConfiguration _triggerConfiguration;
 

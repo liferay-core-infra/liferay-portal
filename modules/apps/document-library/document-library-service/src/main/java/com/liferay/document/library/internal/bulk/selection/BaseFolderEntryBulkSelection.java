@@ -9,7 +9,7 @@ import com.liferay.bulk.selection.BaseContainerEntryBulkSelection;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.DocumentRepository;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
+import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.capabilities.BulkOperationCapability;
 import com.liferay.portal.kernel.repository.model.RepositoryModel;
 import com.liferay.portal.kernel.repository.model.RepositoryModelOperation;
@@ -23,14 +23,12 @@ public abstract class BaseFolderEntryBulkSelection<T extends RepositoryModel<T>>
 	extends BaseContainerEntryBulkSelection<T> {
 
 	public BaseFolderEntryBulkSelection(
-		long repositoryId, long folderId, Map<String, String[]> parameterMap,
-		RepositoryProvider repositoryProvider) {
+		long repositoryId, long folderId, Map<String, String[]> parameterMap) {
 
 		super(folderId, parameterMap);
 
 		_repositoryId = repositoryId;
 		_folderId = folderId;
-		_repositoryProvider = repositoryProvider;
 	}
 
 	@Override
@@ -39,7 +37,7 @@ public abstract class BaseFolderEntryBulkSelection<T extends RepositoryModel<T>>
 		throws PortalException {
 
 		DocumentRepository documentRepository =
-			_repositoryProvider.getLocalRepository(_repositoryId);
+			RepositoryProviderUtil.getLocalRepository(_repositoryId);
 
 		if (!documentRepository.isCapabilityProvided(
 				BulkOperationCapability.class)) {
@@ -64,6 +62,5 @@ public abstract class BaseFolderEntryBulkSelection<T extends RepositoryModel<T>>
 
 	private final long _folderId;
 	private final long _repositoryId;
-	private final RepositoryProvider _repositoryProvider;
 
 }

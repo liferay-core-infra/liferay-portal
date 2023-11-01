@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.repository.LocalRepository;
 import com.liferay.portal.kernel.repository.RepositoryFactory;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
+import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.search.Hits;
@@ -156,7 +156,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 			DLAppHelperThreadLocal.setEnabled(false);
 
 			LocalRepository localRepository =
-				_repositoryProvider.getLocalRepository(
+				RepositoryProviderUtil.getLocalRepository(
 					repository.getRepositoryId());
 
 			return localRepository.addFileEntry(
@@ -208,7 +208,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		return _run(
 			() -> {
 				LocalRepository localRepository =
-					_repositoryProvider.getLocalRepository(repositoryId);
+					RepositoryProviderUtil.getLocalRepository(repositoryId);
 
 				try {
 					DLAppHelperThreadLocal.setEnabled(false);
@@ -296,7 +296,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		List<FileEntry> fileEntries = localRepository.getFileEntries(
 			folderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -312,7 +312,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		List<FileEntry> fileEntries = localRepository.getFileEntries(
 			folderId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -328,7 +328,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 
 		try {
 			LocalRepository localRepository =
-				_repositoryProvider.getFileEntryLocalRepository(fileEntryId);
+				RepositoryProviderUtil.getFileEntryLocalRepository(fileEntryId);
 
 			if (_isAttachment(localRepository.getFileEntry(fileEntryId))) {
 				try {
@@ -357,7 +357,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		FileEntry fileEntry = localRepository.getFileEntry(folderId, fileName);
 
@@ -371,7 +371,8 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 			() -> {
 				try {
 					LocalRepository localRepository =
-						_repositoryProvider.getFolderLocalRepository(folderId);
+						RepositoryProviderUtil.getFolderLocalRepository(
+							folderId);
 
 					localRepository.deleteFolder(folderId);
 				}
@@ -404,7 +405,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 
 		try {
 			LocalRepository localRepository =
-				_repositoryProvider.getLocalRepository(groupId);
+				RepositoryProviderUtil.getLocalRepository(groupId);
 
 			return localRepository.fetchFileEntry(folderId, fileName);
 		}
@@ -446,7 +447,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntries(
 			folderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -469,7 +470,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntries(
 			folderId, status, start, end, orderByComparator);
@@ -482,7 +483,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntries(
 			folderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, orderByComparator);
@@ -495,7 +496,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntries(
 			folderId, mimeTypes, status, start, end, orderByComparator);
@@ -506,7 +507,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntriesCount(folderId);
 	}
@@ -517,7 +518,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntriesCount(folderId, status);
 	}
@@ -528,7 +529,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntriesCount(folderId, mimeTypes, status);
 	}
@@ -538,7 +539,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getFileEntryLocalRepository(fileEntryId);
+			RepositoryProviderUtil.getFileEntryLocalRepository(fileEntryId);
 
 		return localRepository.getFileEntry(fileEntryId);
 	}
@@ -549,7 +550,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntry(folderId, fileName);
 	}
@@ -559,7 +560,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntryByUuid(uuid);
 	}
@@ -570,7 +571,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		return localRepository.getFileEntryByExternalReferenceCode(
 			externalReferenceCode);
@@ -637,7 +638,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 	@Override
 	public Folder getPortletFolder(long folderId) throws PortalException {
 		LocalRepository localRepository =
-			_repositoryProvider.getFolderLocalRepository(folderId);
+			RepositoryProviderUtil.getFolderLocalRepository(folderId);
 
 		return localRepository.getFolder(folderId);
 	}
@@ -648,7 +649,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(repositoryId);
+			RepositoryProviderUtil.getLocalRepository(repositoryId);
 
 		return localRepository.getFolder(parentFolderId, folderName);
 	}
@@ -688,7 +689,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		return _run(
 			() -> {
 				LocalRepository localRepository =
-					_repositoryProvider.getFileEntryLocalRepository(
+					RepositoryProviderUtil.getFileEntryLocalRepository(
 						fileEntryId);
 
 				return _dlTrashLocalService.moveFileEntryToTrash(
@@ -702,7 +703,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		FileEntry fileEntry = localRepository.getFileEntry(folderId, fileName);
 
@@ -718,7 +719,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		return _run(
 			() -> {
 				LocalRepository localRepository =
-					_repositoryProvider.getLocalRepository(groupId);
+					RepositoryProviderUtil.getLocalRepository(groupId);
 
 				return localRepository.moveFolder(
 					userId, folderId, parentFolderId, serviceContext);
@@ -732,7 +733,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		_run(
 			() -> {
 				LocalRepository localRepository =
-					_repositoryProvider.getFileEntryLocalRepository(
+					RepositoryProviderUtil.getFileEntryLocalRepository(
 						fileEntryId);
 
 				_dlTrashLocalService.restoreFileEntryFromTrash(
@@ -748,7 +749,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		LocalRepository localRepository =
-			_repositoryProvider.getLocalRepository(groupId);
+			RepositoryProviderUtil.getLocalRepository(groupId);
 
 		FileEntry fileEntry = localRepository.getFileEntry(folderId, fileName);
 
@@ -761,7 +762,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		throws PortalException {
 
 		com.liferay.portal.kernel.repository.Repository repository =
-			_repositoryProvider.getRepository(repositoryId);
+			RepositoryProviderUtil.getRepository(repositoryId);
 
 		return repository.search(searchContext);
 	}
@@ -834,9 +835,6 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 
 	@Reference
 	private RepositoryLocalService _repositoryLocalService;
-
-	@Reference
-	private RepositoryProvider _repositoryProvider;
 
 	@Reference
 	private TrashHelper _trashHelper;

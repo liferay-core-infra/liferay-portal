@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
+import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.capabilities.TemporaryFileEntriesCapability;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
@@ -855,7 +855,7 @@ public class CPAttachmentFileEntryLocalServiceImpl
 
 		try {
 			com.liferay.portal.kernel.repository.Repository repository =
-				_repositoryProvider.getRepository(groupId);
+				RepositoryProviderUtil.getRepository(groupId);
 
 			Folder folder =
 				cpAttachmentFileEntryLocalService.getAttachmentsFolder(
@@ -1049,9 +1049,6 @@ public class CPAttachmentFileEntryLocalServiceImpl
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private RepositoryProvider _repositoryProvider;
 
 	@Reference
 	private UserLocalService _userLocalService;

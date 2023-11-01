@@ -12,11 +12,10 @@ import com.liferay.info.item.InfoItemIdentifier;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.LocalRepository;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
+import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alejandro Tardín
@@ -64,7 +63,7 @@ public class FileEntryInfoItemObjectProvider
 
 		try {
 			LocalRepository localRepository =
-				_repositoryProvider.fetchFileEntryLocalRepository(classPK);
+				RepositoryProviderUtil.fetchFileEntryLocalRepository(classPK);
 
 			if (localRepository == null) {
 				return null;
@@ -85,8 +84,5 @@ public class FileEntryInfoItemObjectProvider
 				portalException);
 		}
 	}
-
-	@Reference
-	private RepositoryProvider _repositoryProvider;
 
 }

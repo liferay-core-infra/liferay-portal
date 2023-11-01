@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.InvalidRepositoryIdException;
 import com.liferay.portal.kernel.repository.Repository;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
+import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.capabilities.TrashCapability;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.ServiceWrapper;
@@ -31,7 +31,7 @@ public class TrashEntryDLAppServiceWrapper extends DLAppServiceWrapper {
 
 	@Override
 	public void deleteFolder(long folderId) throws PortalException {
-		Repository repository = _repositoryProvider.getFolderRepository(
+		Repository repository = RepositoryProviderUtil.getFolderRepository(
 			folderId);
 
 		Folder folder = repository.getFolder(folderId);
@@ -79,7 +79,7 @@ public class TrashEntryDLAppServiceWrapper extends DLAppServiceWrapper {
 		throws PortalException {
 
 		try {
-			return _repositoryProvider.getRepository(repositoryId);
+			return RepositoryProviderUtil.getRepository(repositoryId);
 		}
 		catch (InvalidRepositoryIdException invalidRepositoryIdException) {
 			throw new NoSuchGroupException(
@@ -89,9 +89,6 @@ public class TrashEntryDLAppServiceWrapper extends DLAppServiceWrapper {
 				invalidRepositoryIdException);
 		}
 	}
-
-	@Reference
-	private RepositoryProvider _repositoryProvider;
 
 	@Reference
 	private TrashEntryLocalService _trashEntryLocalService;

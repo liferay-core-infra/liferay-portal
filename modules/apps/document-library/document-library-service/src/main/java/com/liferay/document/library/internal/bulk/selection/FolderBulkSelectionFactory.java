@@ -10,7 +10,6 @@ import com.liferay.bulk.selection.BulkSelectionFactory;
 import com.liferay.bulk.selection.EmptyBulkSelection;
 import com.liferay.document.library.internal.bulk.selection.util.BulkSelectionFactoryUtil;
 import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -36,7 +35,7 @@ public class FolderBulkSelectionFactory
 			return new FolderFolderBulkSelection(
 				BulkSelectionFactoryUtil.getRepositoryId(parameterMap),
 				BulkSelectionFactoryUtil.getFolderId(parameterMap),
-				parameterMap, _repositoryProvider, _dlAppService);
+				parameterMap, _dlAppService);
 		}
 
 		if (!parameterMap.containsKey("rowIdsFolder")) {
@@ -68,8 +67,5 @@ public class FolderBulkSelectionFactory
 
 	@Reference
 	private DLAppService _dlAppService;
-
-	@Reference
-	private RepositoryProvider _repositoryProvider;
 
 }

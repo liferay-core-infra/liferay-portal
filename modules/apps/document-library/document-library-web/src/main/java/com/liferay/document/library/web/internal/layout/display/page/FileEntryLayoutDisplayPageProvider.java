@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.constants.FriendlyURLResolverConstants;
 import com.liferay.portal.kernel.repository.LocalRepository;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
+import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -59,7 +59,7 @@ public class FileEntryLayoutDisplayPageProvider
 					infoItemReference.getInfoItemIdentifier();
 
 			LocalRepository localRepository =
-				_repositoryProvider.fetchFileEntryLocalRepository(
+				RepositoryProviderUtil.fetchFileEntryLocalRepository(
 					classPKInfoItemIdentifier.getClassPK());
 
 			if (localRepository == null) {
@@ -137,8 +137,5 @@ public class FileEntryLayoutDisplayPageProvider
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private RepositoryProvider _repositoryProvider;
 
 }

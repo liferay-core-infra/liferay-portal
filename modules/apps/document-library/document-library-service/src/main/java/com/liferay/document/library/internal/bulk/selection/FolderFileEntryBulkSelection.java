@@ -13,7 +13,6 @@ import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.document.library.util.DLAssetHelper;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.repository.RepositoryProvider;
 import com.liferay.portal.kernel.repository.model.BaseRepositoryModelOperation;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.RepositoryModelOperation;
@@ -28,11 +27,11 @@ public class FolderFileEntryBulkSelection
 
 	public FolderFileEntryBulkSelection(
 		long repositoryId, long folderId, Map<String, String[]> parameterMap,
-		RepositoryProvider repositoryProvider, DLAppService dlAppService,
+		DLAppService dlAppService,
 		AssetEntryLocalService assetEntryLocalService,
 		DLAssetHelper dlAssetHelper) {
 
-		super(repositoryId, folderId, parameterMap, repositoryProvider);
+		super(repositoryId, folderId, parameterMap);
 
 		_repositoryId = repositoryId;
 		_folderId = folderId;

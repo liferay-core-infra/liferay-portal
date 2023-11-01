@@ -14,6 +14,13 @@ import java.util.List;
  */
 public class RepositoryProviderUtil {
 
+	public static LocalRepository fetchFileEntryLocalRepository(
+			long fileEntryId)
+		throws PortalException {
+
+		return _repositoryProvider.fetchFileEntryLocalRepository(fileEntryId);
+	}
+
 	public static LocalRepository getFileEntryLocalRepository(long fileEntryId)
 		throws PortalException {
 

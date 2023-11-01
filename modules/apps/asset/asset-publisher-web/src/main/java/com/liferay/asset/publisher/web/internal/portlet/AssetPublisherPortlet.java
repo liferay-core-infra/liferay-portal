@@ -66,8 +66,6 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
@@ -329,30 +327,6 @@ public class AssetPublisherPortlet extends MVCPortlet {
 		else {
 			super.serveResource(resourceRequest, resourceResponse);
 		}
-	}
-
-	public void subscribe(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		assetPublisherWebHelper.subscribe(
-			themeDisplay.getPermissionChecker(), themeDisplay.getScopeGroupId(),
-			themeDisplay.getPlid(), themeDisplay.getPpid());
-	}
-
-	public void unsubscribe(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		assetPublisherWebHelper.unsubscribe(
-			themeDisplay.getPermissionChecker(), themeDisplay.getPlid(),
-			themeDisplay.getPpid());
 	}
 
 	@Activate

@@ -203,8 +203,7 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 	private static volatile PortletResourcePermission
 		_portletResourcePermission =
 			PortletResourcePermissionFactory.getInstance(
-				RepositoryServiceImpl.class, "_portletResourcePermission",
-				DLConstants.RESOURCE_NAME);
+				RepositoryServiceImpl.class, DLConstants.RESOURCE_NAME);
 
 	@BeanReference(type = DLFileEntryLocalService.class)
 	private DLFileEntryLocalService _dlFileEntryLocalService;

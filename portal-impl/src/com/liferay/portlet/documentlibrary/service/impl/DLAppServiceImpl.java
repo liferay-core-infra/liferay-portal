@@ -3693,8 +3693,7 @@ public class DLAppServiceImpl extends DLAppServiceBaseImpl {
 	private static volatile PortletResourcePermission
 		_portletResourcePermission =
 			PortletResourcePermissionFactory.getInstance(
-				DLAppServiceImpl.class, "_portletResourcePermission",
-				DLConstants.RESOURCE_NAME);
+				DLAppServiceImpl.class, DLConstants.RESOURCE_NAME);
 
 	@BeanReference(type = AssetCategoryLocalService.class)
 	private AssetCategoryLocalService _assetCategoryLocalService;

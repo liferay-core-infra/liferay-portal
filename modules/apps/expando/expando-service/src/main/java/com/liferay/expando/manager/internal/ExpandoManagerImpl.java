@@ -9,8 +9,10 @@ import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.manager.ExpandoManager;
 import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.model.impl.ExpandoColumnImpl;
+import com.liferay.expando.model.impl.ExpandoTableImpl;
+import com.liferay.expando.model.impl.ExpandoValueImpl;
 import com.liferay.expando.model.internal.ExpandoRowImpl;
-import com.liferay.expando.model.internal.ExpandoTableImpl;
 import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.expando.service.ExpandoTableLocalService;
@@ -62,7 +64,8 @@ public class ExpandoManagerImpl implements ExpandoManager {
 			return null;
 		}
 
-		return new ExpandoTableImpl(expandoTable);
+		return new com.liferay.expando.model.internal.ExpandoTableImpl(
+			expandoTable);
 	}
 
 	@Override
@@ -83,8 +86,23 @@ public class ExpandoManagerImpl implements ExpandoManager {
 	}
 
 	@Override
+	public Class<?> getExpandoColumnImplClass() {
+		return ExpandoColumnImpl.class;
+	}
+
+	@Override
 	public ActionableDynamicQuery getExpandoTableActionableDynamicQuery() {
 		return _expandoTableLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public Class<?> getExpandoTableImplClass() {
+		return ExpandoTableImpl.class;
+	}
+
+	@Override
+	public Class<?> getExpandoValueImplClass() {
+		return ExpandoValueImpl.class;
 	}
 
 	@Override

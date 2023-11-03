@@ -1,0 +1,40 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.expando.kernel.util;
+
+import com.liferay.expando.kernel.model.ExpandoRow;
+import com.liferay.expando.manager.ExpandoManager;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
+
+/**
+ * @author Lily Chi
+ */
+public class ExpandoManagerUtil {
+
+	public static void deleteRows(long classPK) {
+		_expandoManager.deleteRows(classPK);
+	}
+
+	public static void deleteRows(
+		long companyId, long classNameId, long classPK) {
+
+		_expandoManager.deleteRows(companyId, classNameId, classPK);
+	}
+
+	public static ExpandoRow fetchRow(long tableId, long classPK) {
+		return _expandoManager.fetchRow(tableId, classPK);
+	}
+
+	public static void updateExpandoRow(ExpandoRow expandoRow) {
+		_expandoManager.updateExpandoRow(expandoRow);
+	}
+
+	private static volatile ExpandoManager _expandoManager =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			ExpandoManager.class, ExpandoManagerUtil.class, "_expandoManager",
+			false);
+
+}

@@ -7,8 +7,8 @@ package com.liferay.sharing.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.sharing.web.internal.constants.SharingPortletKeys;
+import com.liferay.sharing.web.internal.display.context.BaseMVCRenderCommand;
 import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayContext;
-import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayContextFactory;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -36,15 +36,13 @@ public class ViewSharedAssetsMVCRenderCommand implements MVCRenderCommand {
 
 		renderRequest.setAttribute(
 			ViewSharedAssetsDisplayContext.class.getName(),
-			_getViewSharedAssetsDisplayContextFactory.
-				getViewSharedAssetsDisplayContext(
-					renderRequest, renderResponse));
+			_getBaseMVCRenderCommand.getViewSharedAssetsDisplayContext(
+				renderRequest, renderResponse));
 
 		return "/shared_assets/view.jsp";
 	}
 
 	@Reference
-	private ViewSharedAssetsDisplayContextFactory
-		_getViewSharedAssetsDisplayContextFactory;
+	private BaseMVCRenderCommand _getBaseMVCRenderCommand;
 
 }

@@ -21,8 +21,8 @@ import com.liferay.sharing.model.SharingEntry;
 import com.liferay.sharing.renderer.SharingEntryViewRenderer;
 import com.liferay.sharing.service.SharingEntryLocalService;
 import com.liferay.sharing.web.internal.constants.SharingPortletKeys;
+import com.liferay.sharing.web.internal.display.context.BaseMVCRenderCommand;
 import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayContext;
-import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayContextFactory;
 
 import java.io.IOException;
 
@@ -53,9 +53,8 @@ public class ViewSharingEntryMVCRenderCommand implements MVCRenderCommand {
 
 		renderRequest.setAttribute(
 			ViewSharedAssetsDisplayContext.class.getName(),
-			_getViewSharedAssetsDisplayContextFactory.
-				getViewSharedAssetsDisplayContext(
-					renderRequest, renderResponse));
+			_getBaseMVCRenderCommand.getViewSharedAssetsDisplayContext(
+				renderRequest, renderResponse));
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -125,8 +124,7 @@ public class ViewSharingEntryMVCRenderCommand implements MVCRenderCommand {
 	}
 
 	@Reference
-	private ViewSharedAssetsDisplayContextFactory
-		_getViewSharedAssetsDisplayContextFactory;
+	private BaseMVCRenderCommand _getBaseMVCRenderCommand;
 
 	@Reference
 	private Portal _portal;

@@ -6,7 +6,9 @@
 package com.liferay.expando.kernel.util;
 
 import com.liferay.expando.kernel.model.ExpandoRow;
+import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.manager.ExpandoManager;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
@@ -31,8 +33,20 @@ public class ExpandoManagerUtil {
 		_expandoManager.deleteRows(companyId, classNameId, classPK);
 	}
 
+	public static ExpandoTable fetchDefaultTable(
+		long companyId, String className) {
+
+		return _expandoManager.fetchDefaultTable(companyId, className);
+	}
+
 	public static ExpandoRow fetchRow(long tableId, long classPK) {
 		return _expandoManager.fetchRow(tableId, classPK);
+	}
+
+	public static ActionableDynamicQuery
+		getExpandoTableActionableDynamicQuery() {
+
+		return _expandoManager.getExpandoTableActionableDynamicQuery();
 	}
 
 	public static void updateExpandoRow(ExpandoRow expandoRow) {

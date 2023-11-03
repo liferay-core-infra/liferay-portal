@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -17,49 +17,47 @@ import com.liferay.sharing.service.SharingEntryLocalService;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alejandro Tardín
  */
-@Component(service = BaseMVCRenderCommand.class)
-public class BaseMVCRenderCommand {
+public abstract class BaseMVCRenderCommand {
 
 	public ViewSharedAssetsDisplayContext getViewSharedAssetsDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
 		return new ViewSharedAssetsDisplayContext(
-			_groupLocalService, _itemSelector,
-			_portal.getLiferayPortletRequest(renderRequest),
-			_portal.getLiferayPortletResponse(renderResponse),
-			_sharingConfigurationFactory, _sharingDropdownItemFactory,
-			_sharingEntryInterpreterProvider::getSharingEntryInterpreter,
-			_sharingEntryLocalService, _sharingPermission);
+			groupLocalService, itemSelector,
+			portal.getLiferayPortletRequest(renderRequest),
+			portal.getLiferayPortletResponse(renderResponse),
+			sharingConfigurationFactory, sharingDropdownItemFactory,
+			sharingEntryInterpreterProvider::getSharingEntryInterpreter,
+			sharingEntryLocalService, sharingPermission);
 	}
 
 	@Reference
-	private GroupLocalService _groupLocalService;
+	protected GroupLocalService groupLocalService;
 
 	@Reference
-	private ItemSelector _itemSelector;
+	protected ItemSelector itemSelector;
 
 	@Reference
-	private Portal _portal;
+	protected Portal portal;
 
 	@Reference
-	private SharingConfigurationFactory _sharingConfigurationFactory;
+	protected SharingConfigurationFactory sharingConfigurationFactory;
 
 	@Reference
-	private SharingDropdownItemFactory _sharingDropdownItemFactory;
+	protected SharingDropdownItemFactory sharingDropdownItemFactory;
 
 	@Reference
-	private SharingEntryInterpreterProvider _sharingEntryInterpreterProvider;
+	protected SharingEntryInterpreterProvider sharingEntryInterpreterProvider;
 
 	@Reference
-	private SharingEntryLocalService _sharingEntryLocalService;
+	protected SharingEntryLocalService sharingEntryLocalService;
 
 	@Reference
-	private SharingPermission _sharingPermission;
+	protected SharingPermission sharingPermission;
 
 }

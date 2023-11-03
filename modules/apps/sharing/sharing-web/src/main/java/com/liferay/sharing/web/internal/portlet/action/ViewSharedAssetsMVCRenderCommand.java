@@ -15,7 +15,6 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sergio González
@@ -27,7 +26,8 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCRenderCommand.class
 )
-public class ViewSharedAssetsMVCRenderCommand implements MVCRenderCommand {
+public class ViewSharedAssetsMVCRenderCommand
+	extends BaseMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(
@@ -36,13 +36,9 @@ public class ViewSharedAssetsMVCRenderCommand implements MVCRenderCommand {
 
 		renderRequest.setAttribute(
 			ViewSharedAssetsDisplayContext.class.getName(),
-			_getBaseMVCRenderCommand.getViewSharedAssetsDisplayContext(
-				renderRequest, renderResponse));
+			getViewSharedAssetsDisplayContext(renderRequest, renderResponse));
 
 		return "/shared_assets/view.jsp";
 	}
-
-	@Reference
-	private BaseMVCRenderCommand _getBaseMVCRenderCommand;
 
 }

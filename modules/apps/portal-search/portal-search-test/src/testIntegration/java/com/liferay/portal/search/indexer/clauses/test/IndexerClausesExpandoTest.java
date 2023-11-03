@@ -14,8 +14,8 @@ import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.ExpandoTable;
-import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.expando.test.util.ExpandoTestUtil;
 import com.liferay.journal.constants.JournalFolderConstants;
 import com.liferay.journal.model.JournalArticle;
@@ -172,13 +172,13 @@ public class IndexerClausesExpandoTest {
 		for (Map.Entry<Class<?>, String[]> entry : map.entrySet()) {
 			Class<?> clazz = entry.getKey();
 
-			ExpandoTable expandoTable = ExpandoTableLocalServiceUtil.fetchTable(
+			ExpandoTable expandoTable = _expandoTableLocalService.fetchTable(
 				_group.getCompanyId(),
 				ClassNameLocalServiceUtil.getClassNameId(clazz),
 				"CUSTOM_FIELDS");
 
 			if (expandoTable == null) {
-				expandoTable = ExpandoTableLocalServiceUtil.addTable(
+				expandoTable = _expandoTableLocalService.addTable(
 					_group.getCompanyId(),
 					ClassNameLocalServiceUtil.getClassNameId(clazz),
 					"CUSTOM_FIELDS");
@@ -200,7 +200,7 @@ public class IndexerClausesExpandoTest {
 
 			expandoColumn.setTypeSettingsProperties(unicodeProperties);
 
-			ExpandoColumnLocalServiceUtil.updateExpandoColumn(expandoColumn);
+			_expandoColumnLocalService.updateExpandoColumn(expandoColumn);
 
 			String[] expandoValues = entry.getValue();
 
@@ -291,8 +291,14 @@ public class IndexerClausesExpandoTest {
 	@Inject
 	private DDMStructureLocalService _ddmStructureLocalService;
 
+	@Inject
+	private ExpandoColumnLocalService _expandoColumnLocalService;
+
 	@DeleteAfterTestRun
 	private List<ExpandoColumn> _expandoColumns = new ArrayList<>();
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@DeleteAfterTestRun
 	private List<ExpandoTable> _expandoTables = new ArrayList<>();

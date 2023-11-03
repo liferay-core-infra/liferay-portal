@@ -6,7 +6,7 @@
 package com.liferay.portal.security.membership.policy.site.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.security.membership.policy.site.BaseSiteMembershipPolicyTestCase;
 import com.liferay.portal.security.membership.policy.test.util.MembershipPolicyTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -59,7 +60,7 @@ public class SiteMembershipPolicyMembershipsTest
 	public void tearDown() throws Exception {
 		super.tearDown();
 
-		ExpandoTableLocalServiceUtil.deleteTables(
+		_expandoTableLocalService.deleteTables(
 			TestPropsValues.getCompanyId(), Group.class.getName());
 	}
 
@@ -312,5 +313,8 @@ public class SiteMembershipPolicyMembershipsTest
 
 		Assert.assertTrue(isVerify());
 	}
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 }

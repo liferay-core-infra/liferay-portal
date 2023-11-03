@@ -7,6 +7,7 @@ package com.liferay.osb.faro.contacts.demo.internal;
 
 import com.liferay.osb.faro.constants.FaroProjectConstants;
 import com.liferay.osb.faro.constants.FaroUserConstants;
+import com.liferay.osb.faro.contacts.demo.internal.util.HeadersUtil;
 import com.liferay.osb.faro.engine.client.ContactsEngineClient;
 import com.liferay.osb.faro.engine.client.model.Channel;
 import com.liferay.osb.faro.engine.client.model.Individual;
@@ -17,7 +18,6 @@ import com.liferay.osb.faro.service.FaroChannelLocalService;
 import com.liferay.osb.faro.service.FaroProjectLocalService;
 import com.liferay.osb.faro.service.FaroUserLocalService;
 import com.liferay.osb.faro.util.FaroPropsValues;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -34,13 +34,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.nio.charset.StandardCharsets;
-
-import java.util.Collections;
 import java.util.Date;
-import java.util.Map;
-
-import org.apache.commons.codec.binary.Base64;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -77,18 +71,6 @@ public abstract class DemoCreatorService {
 		createFaroChannels();
 	}
 
-	protected static String encodeAuthorizationFields(
-		String userName, String password) {
-
-		String authorizationString = StringBundler.concat(
-			userName, StringPool.COLON, password);
-
-		return new String(
-			Base64.encodeBase64(
-				authorizationString.getBytes(StandardCharsets.UTF_8)),
-			StandardCharsets.UTF_8);
-	}
-
 	protected abstract void createData() throws Exception;
 
 	protected void createFaroChannels() throws Exception {
@@ -113,7 +95,7 @@ public abstract class DemoCreatorService {
 		options.addPart("ownerEmailAddress", "test@liferay.com");
 		options.addPart("serverLocation", LCPProject.Cluster.US.toString());
 		options.addPart("timeZoneId", "UTC");
-		options.setHeaders(headers);
+		options.setHeaders(HeadersUtil.getHeaders());
 		options.setLocation(
 			"http://localhost:8080/o/faro/main/project/provisioned");
 		options.setPost(true);
@@ -192,10 +174,6 @@ public abstract class DemoCreatorService {
 		return false;
 	}
 
-	protected static final Map<String, String> headers =
-		Collections.singletonMap(
-			"Authorization",
-			"Basic " + encodeAuthorizationFields("test@liferay.com", "test"));
 	protected static final Log log = LogFactoryUtil.getLog(
 		DemoCreatorService.class);
 

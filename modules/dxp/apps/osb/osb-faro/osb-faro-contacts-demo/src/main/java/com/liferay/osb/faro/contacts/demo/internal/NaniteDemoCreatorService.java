@@ -18,6 +18,7 @@ import com.liferay.osb.faro.contacts.demo.internal.data.creator.MembershipChange
 import com.liferay.osb.faro.contacts.demo.internal.data.creator.PageContextsDataCreator;
 import com.liferay.osb.faro.contacts.demo.internal.data.creator.SalesforceAccountsDataCreator;
 import com.liferay.osb.faro.contacts.demo.internal.data.creator.SalesforceIndividualsDataCreator;
+import com.liferay.osb.faro.contacts.demo.internal.util.HeadersUtil;
 import com.liferay.osb.faro.engine.client.constants.FieldMappingConstants;
 import com.liferay.osb.faro.engine.client.model.Author;
 import com.liferay.osb.faro.engine.client.model.Channel;
@@ -190,7 +191,7 @@ public class NaniteDemoCreatorService extends DemoCreatorService {
 			options.addPart("name", individualSegment.getKey());
 			options.addPart(
 				"segmentType", IndividualSegment.Type.DYNAMIC.name());
-			options.setHeaders(headers);
+			options.setHeaders(HeadersUtil.getHeaders());
 			options.setLocation(
 				"http://localhost:8080/o/faro/contacts/" +
 					faroProject.getGroupId() + "/individual_segment");

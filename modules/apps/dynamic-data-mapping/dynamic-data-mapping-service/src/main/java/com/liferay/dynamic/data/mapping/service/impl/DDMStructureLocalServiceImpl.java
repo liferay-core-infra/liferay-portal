@@ -18,7 +18,7 @@ import com.liferay.dynamic.data.mapping.exception.StructureDuplicateElementExcep
 import com.liferay.dynamic.data.mapping.exception.StructureDuplicateStructureKeyException;
 import com.liferay.dynamic.data.mapping.exception.StructureNameException;
 import com.liferay.dynamic.data.mapping.internal.constants.DDMDestinationNames;
-import com.liferay.dynamic.data.mapping.internal.search.helper.DDMSearchHelper;
+import com.liferay.dynamic.data.mapping.internal.search.helper.DDMSearchUtil;
 import com.liferay.dynamic.data.mapping.internal.util.DDMFormTemplateSynchonizer;
 import com.liferay.dynamic.data.mapping.io.DDMFormDeserializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeRequest;
@@ -1321,13 +1321,12 @@ public class DDMStructureLocalServiceImpl
 			OrderByComparator<DDMStructure> orderByComparator)
 		throws PortalException {
 
-		SearchContext searchContext =
-			_ddmSearchHelper.buildStructureSearchContext(
-				companyId, groupIds, classNameId, classPK, keywords, keywords,
-				StringPool.BLANK, null, WorkflowConstants.STATUS_ANY, start,
-				end, orderByComparator);
+		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
+			companyId, groupIds, classNameId, classPK, keywords, keywords,
+			StringPool.BLANK, null, WorkflowConstants.STATUS_ANY, start, end,
+			_ddmPermissionSupport, orderByComparator);
 
-		return _ddmSearchHelper.doSearch(
+		return DDMSearchUtil.doSearch(
 			searchContext, DDMStructure.class,
 			ddmStructurePersistence::findByPrimaryKey);
 	}
@@ -1365,12 +1364,12 @@ public class DDMStructureLocalServiceImpl
 		int status, int start, int end,
 		OrderByComparator<DDMStructure> orderByComparator) {
 
-		SearchContext searchContext =
-			_ddmSearchHelper.buildStructureSearchContext(
-				companyId, groupIds, classNameId, null, keywords, keywords,
-				StringPool.BLANK, null, status, start, end, orderByComparator);
+		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
+			companyId, groupIds, classNameId, null, keywords, keywords,
+			StringPool.BLANK, null, status, start, end, _ddmPermissionSupport,
+			orderByComparator);
 
-		return _ddmSearchHelper.doSearch(
+		return DDMSearchUtil.doSearch(
 			searchContext, DDMStructure.class,
 			ddmStructurePersistence::findByPrimaryKey);
 	}
@@ -1414,12 +1413,12 @@ public class DDMStructureLocalServiceImpl
 		boolean andOperator, int start, int end,
 		OrderByComparator<DDMStructure> orderByComparator) {
 
-		SearchContext searchContext =
-			_ddmSearchHelper.buildStructureSearchContext(
-				companyId, groupIds, classNameId, null, name, description,
-				storageType, type, status, start, end, orderByComparator);
+		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
+			companyId, groupIds, classNameId, null, name, description,
+			storageType, type, status, start, end, _ddmPermissionSupport,
+			orderByComparator);
 
-		return _ddmSearchHelper.doSearch(
+		return DDMSearchUtil.doSearch(
 			searchContext, DDMStructure.class,
 			ddmStructurePersistence::findByPrimaryKey);
 	}
@@ -1430,14 +1429,12 @@ public class DDMStructureLocalServiceImpl
 			String keywords)
 		throws PortalException {
 
-		SearchContext searchContext =
-			_ddmSearchHelper.buildStructureSearchContext(
-				companyId, groupIds, classNameId, classPK, keywords, keywords,
-				StringPool.BLANK, null, WorkflowConstants.STATUS_ANY,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
+			companyId, groupIds, classNameId, classPK, keywords, keywords,
+			StringPool.BLANK, null, WorkflowConstants.STATUS_ANY,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, _ddmPermissionSupport, null);
 
-		return _ddmSearchHelper.doSearchCount(
-			searchContext, DDMStructure.class);
+		return DDMSearchUtil.doSearchCount(searchContext, DDMStructure.class);
 	}
 
 	/**
@@ -1457,14 +1454,12 @@ public class DDMStructureLocalServiceImpl
 		long companyId, long[] groupIds, long classNameId, String keywords,
 		int status) {
 
-		SearchContext searchContext =
-			_ddmSearchHelper.buildStructureSearchContext(
-				companyId, groupIds, classNameId, null, keywords, keywords,
-				StringPool.BLANK, null, status, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null);
+		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
+			companyId, groupIds, classNameId, null, keywords, keywords,
+			StringPool.BLANK, null, status, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, _ddmPermissionSupport, null);
 
-		return _ddmSearchHelper.doSearchCount(
-			searchContext, DDMStructure.class);
+		return DDMSearchUtil.doSearchCount(searchContext, DDMStructure.class);
 	}
 
 	/**
@@ -1490,14 +1485,12 @@ public class DDMStructureLocalServiceImpl
 		String description, String storageType, int type, int status,
 		boolean andOperator) {
 
-		SearchContext searchContext =
-			_ddmSearchHelper.buildStructureSearchContext(
-				companyId, groupIds, classNameId, null, name, description,
-				storageType, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				null);
+		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
+			companyId, groupIds, classNameId, null, name, description,
+			storageType, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			_ddmPermissionSupport, null);
 
-		return _ddmSearchHelper.doSearchCount(
-			searchContext, DDMStructure.class);
+		return DDMSearchUtil.doSearchCount(searchContext, DDMStructure.class);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -2355,9 +2348,6 @@ public class DDMStructureLocalServiceImpl
 
 	@Reference
 	private DDMPermissionSupport _ddmPermissionSupport;
-
-	@Reference
-	private DDMSearchHelper _ddmSearchHelper;
 
 	@Reference
 	private DDMStructureLayoutLocalService _ddmStructureLayoutLocalService;

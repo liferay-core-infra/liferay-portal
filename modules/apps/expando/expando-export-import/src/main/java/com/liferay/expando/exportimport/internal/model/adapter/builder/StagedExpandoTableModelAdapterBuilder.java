@@ -6,7 +6,7 @@
 package com.liferay.expando.exportimport.internal.model.adapter.builder;
 
 import com.liferay.expando.exportimport.internal.model.adapter.StagedExpandoTableImpl;
-import com.liferay.expando.kernel.model.ExpandoTable;
+import com.liferay.expando.model.ExpandoTable;
 import com.liferay.expando.model.adapter.StagedExpandoTable;
 import com.liferay.portal.kernel.model.adapter.builder.ModelAdapterBuilder;
 

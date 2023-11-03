@@ -14,7 +14,7 @@ import com.liferay.commerce.notification.service.CommerceNotificationTemplateCom
 import com.liferay.commerce.notification.service.base.CommerceNotificationTemplateLocalServiceBaseImpl;
 import com.liferay.commerce.notification.type.CommerceNotificationType;
 import com.liferay.commerce.notification.type.CommerceNotificationTypeRegistry;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;

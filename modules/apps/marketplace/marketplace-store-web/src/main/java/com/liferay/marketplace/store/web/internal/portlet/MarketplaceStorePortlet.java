@@ -5,7 +5,7 @@
 
 package com.liferay.marketplace.store.web.internal.portlet;
 
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.expando.service.ExpandoValueLocalService;
 import com.liferay.marketplace.constants.MarketplaceStorePortletKeys;
 import com.liferay.marketplace.model.App;
 import com.liferay.marketplace.service.AppLocalService;

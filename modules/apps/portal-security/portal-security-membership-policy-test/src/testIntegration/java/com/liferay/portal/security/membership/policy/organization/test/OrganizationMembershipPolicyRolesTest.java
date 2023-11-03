@@ -6,7 +6,7 @@
 package com.liferay.portal.security.membership.policy.organization.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.security.membership.policy.organization.BaseOrganizationMembershipPolicyTestCase;
 import com.liferay.portal.security.membership.policy.test.util.MembershipPolicyTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -57,7 +58,7 @@ public class OrganizationMembershipPolicyRolesTest
 	public void tearDown() throws Exception {
 		super.tearDown();
 
-		ExpandoTableLocalServiceUtil.deleteTables(
+		_expandoTableLocalService.deleteTables(
 			TestPropsValues.getCompanyId(), Role.class.getName());
 	}
 
@@ -236,5 +237,8 @@ public class OrganizationMembershipPolicyRolesTest
 
 		Assert.assertTrue(isVerify());
 	}
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 }

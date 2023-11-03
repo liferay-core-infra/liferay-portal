@@ -11,8 +11,8 @@ import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.model.ExpandoTable;
-import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -85,14 +85,13 @@ public class SiteNavigationMenuPortletDisplayTemplateHandlerTest {
 
 	@Test
 	public void testGetExpandoAttributes() throws Exception {
-		ExpandoTable expandoTable =
-			ExpandoTableLocalServiceUtil.addDefaultTable(
-				PortalUtil.getDefaultCompanyId(),
-				SiteNavigationMenuItem.class.getName());
+		ExpandoTable expandoTable = _expandoTableLocalService.addDefaultTable(
+			PortalUtil.getDefaultCompanyId(),
+			SiteNavigationMenuItem.class.getName());
 
 		String expandoAttributeName = RandomTestUtil.randomString();
 
-		ExpandoColumnLocalServiceUtil.addColumn(
+		_expandoColumnLocalService.addColumn(
 			expandoTable.getTableId(), expandoAttributeName,
 			ExpandoColumnConstants.STRING, StringPool.BLANK);
 
@@ -168,7 +167,7 @@ public class SiteNavigationMenuPortletDisplayTemplateHandlerTest {
 					mockHttpServletResponse.getContentAsString()));
 		}
 		finally {
-			ExpandoTableLocalServiceUtil.deleteExpandoTable(expandoTable);
+			_expandoTableLocalService.deleteExpandoTable(expandoTable);
 		}
 	}
 
@@ -218,6 +217,12 @@ public class SiteNavigationMenuPortletDisplayTemplateHandlerTest {
 
 	@Inject
 	private DDMTemplateLocalService _ddmTemplateLocalService;
+
+	@Inject
+	private ExpandoColumnLocalService _expandoColumnLocalService;
+
+	@Inject
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@DeleteAfterTestRun
 	private Group _group;

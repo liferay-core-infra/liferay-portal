@@ -19,10 +19,10 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
 import com.liferay.portlet.documentlibrary.service.base.DLFileEntryTypeServiceBaseImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
@@ -318,8 +318,9 @@ public class DLFileEntryTypeServiceImpl extends DLFileEntryTypeServiceBaseImpl {
 				DLFileEntryType.class);
 	private static volatile PortletResourcePermission
 		_portletResourcePermission =
-			PortletResourcePermissionFactory.getInstance(
+			ServiceProxyFactory.newServiceTrackedInstance(
+				PortletResourcePermission.class,
 				DLFileEntryTypeServiceImpl.class, "_portletResourcePermission",
-				DLConstants.RESOURCE_NAME);
+				"(resource.name=" + DLConstants.RESOURCE_NAME + ")", true);
 
 }

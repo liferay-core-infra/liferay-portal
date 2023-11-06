@@ -22,11 +22,11 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog;
 import com.liferay.portal.service.base.RepositoryServiceBaseImpl;
@@ -195,14 +195,20 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				RepositoryServiceImpl.class,
-				"_fileEntryModelResourcePermission", FileEntry.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, RepositoryServiceImpl.class,
+				"_fileEntryModelResourcePermission",
+				"(model.class.name=com.liferay.portal.kernel.repository." +
+					"model.FileEntry)",
+				true);
 	private static volatile ModelResourcePermission<Folder>
 		_folderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				RepositoryServiceImpl.class, "_folderModelResourcePermission",
-				Folder.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, RepositoryServiceImpl.class,
+				"_folderModelResourcePermission",
+				"(model.class.name=com.liferay.portal.kernel.repository." +
+					"model.Folder)",
+				true);
 	private static final Snapshot<PortletResourcePermission>
 		_portletResourcePermissionSnapshot = new Snapshot<>(
 			RepositoryServiceImpl.class, PortletResourcePermission.class,

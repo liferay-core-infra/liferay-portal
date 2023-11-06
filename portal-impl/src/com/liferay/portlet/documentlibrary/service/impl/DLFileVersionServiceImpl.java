@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portlet.documentlibrary.service.base.DLFileVersionServiceBaseImpl;
 
 import java.util.List;
@@ -79,8 +79,11 @@ public class DLFileVersionServiceImpl extends DLFileVersionServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileVersionServiceImpl.class,
-				"_fileEntryModelResourcePermission", FileEntry.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLFileVersionServiceImpl.class,
+				"_fileEntryModelResourcePermission",
+				"(model.class.name=com.liferay.portal.kernel.repository." +
+					"model.FileEntry)",
+				true);
 
 }

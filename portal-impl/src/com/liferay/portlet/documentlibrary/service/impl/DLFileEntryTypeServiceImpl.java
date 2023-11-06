@@ -18,11 +18,11 @@ import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
 import com.liferay.portlet.documentlibrary.service.base.DLFileEntryTypeServiceBaseImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
@@ -315,10 +315,12 @@ public class DLFileEntryTypeServiceImpl extends DLFileEntryTypeServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<DLFileEntryType>
 		_dlFileEntryTypeModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileEntryTypeServiceImpl.class,
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLFileEntryTypeServiceImpl.class,
 				"_dlFileEntryTypeModelResourcePermission",
-				DLFileEntryType.class);
+				"(model.class.name=com.liferay.document.library.kernel.model." +
+					"DLFileEntryType)",
+				true);
 	private static final Snapshot<PortletResourcePermission>
 		_portletResourcePermissionSnapshot = new Snapshot<>(
 			DLFileEntryTypeServiceImpl.class, PortletResourcePermission.class,

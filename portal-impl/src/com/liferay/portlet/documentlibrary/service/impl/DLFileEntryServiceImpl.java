@@ -32,13 +32,13 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl;
 import com.liferay.portlet.documentlibrary.service.base.DLFileEntryServiceBaseImpl;
@@ -859,19 +859,28 @@ public class DLFileEntryServiceImpl extends DLFileEntryServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<DLFileEntry>
 		_dlFileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileEntryServiceImpl.class,
-				"_dlFileEntryModelResourcePermission", DLFileEntry.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLFileEntryServiceImpl.class,
+				"_fileEntryModelResourcePermission",
+				"(model.class.name=com.liferay.document.library.kernel.model" +
+					"DLFileEntry)",
+				true);
 	private static volatile ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileEntryServiceImpl.class,
-				"_fileEntryModelResourcePermission", FileEntry.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLFileEntryServiceImpl.class,
+				"_fileEntryModelResourcePermission",
+				"(model.class.name=com.liferay.portal.kernel.repository." +
+					"model.FileEntry)",
+				true);
 	private static volatile ModelResourcePermission<Folder>
 		_folderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileEntryServiceImpl.class, "_folderModelResourcePermission",
-				Folder.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLFileEntryServiceImpl.class,
+				"_folderModelResourcePermission",
+				"(model.class.name=com.liferay.portal.kernel.repository." +
+					"model.Folder)",
+				true);
 
 	@BeanReference(type = ClassNameLocalService.class)
 	private ClassNameLocalService _classNameLocalService;

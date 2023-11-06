@@ -1,6 +1,7 @@
 configurations {
 	compileIncludePlatform {
 		exclude group: "commons-codec"
+		exclude group: "io.netty"
 	}
 }
 

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Props;
@@ -55,6 +56,7 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerContext;
 import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.TriggerUtils;
 import org.quartz.impl.StdSchedulerFactory;
@@ -112,9 +114,12 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			groupName = _fixMaxLength(
 				groupName, _groupNameMaxLength, storageType);
 
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobDetail jobDetail = _getJobDetail(
+				scheduler, new JobKey(jobName, groupName));
 
-			scheduler.deleteJob(jobKey);
+			if (jobDetail != null) {
+				scheduler.deleteJob(jobDetail.getKey());
+			}
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -149,9 +154,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			groupName = _fixMaxLength(
 				groupName, _groupNameMaxLength, storageType);
 
-			JobKey jobKey = new JobKey(jobName, groupName);
-
-			return getScheduledJob(scheduler, jobKey);
+			return getScheduledJob(scheduler, new JobKey(jobName, groupName));
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -240,11 +243,16 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			groupName = _fixMaxLength(
 				groupName, _groupNameMaxLength, storageType);
 
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobDetail jobDetail = _getJobDetail(
+				scheduler, new JobKey(jobName, groupName));
 
-			scheduler.pauseJob(jobKey);
+			if (jobDetail == null) {
+				return;
+			}
 
-			_updateJobState(scheduler, jobKey, TriggerState.PAUSED);
+			scheduler.pauseJob(jobDetail.getKey());
+
+			_updateJobState(scheduler, jobDetail, TriggerState.PAUSED);
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -267,11 +275,16 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			groupName = _fixMaxLength(
 				groupName, _groupNameMaxLength, storageType);
 
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobDetail jobDetail = _getJobDetail(
+				scheduler, new JobKey(jobName, groupName));
 
-			scheduler.resumeJob(jobKey);
+			if (jobDetail == null) {
+				return;
+			}
 
-			_updateJobState(scheduler, jobKey, TriggerState.NORMAL);
+			scheduler.resumeJob(jobDetail.getKey());
+
+			_updateJobState(scheduler, jobDetail, TriggerState.NORMAL);
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -315,6 +328,27 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 			if (quartzTrigger == null) {
 				return;
+			}
+
+			if (storageType == StorageType.PERSISTED) {
+				long companyId = CompanyThreadLocal.getCompanyId();
+
+				if (message.contains("companyId")) {
+					companyId = message.getLong("companyId");
+				}
+
+				JobKey partitionedJobKey =
+					QuartzSchedulerUtil.getPartitionedJobKey(
+						companyId, quartzTrigger.getJobKey());
+
+				TriggerBuilder<? extends Trigger> quartzTriggerBuilder =
+					quartzTrigger.getTriggerBuilder();
+
+				quartzTriggerBuilder.forJob(partitionedJobKey);
+				quartzTriggerBuilder.withIdentity(
+					partitionedJobKey.getName(), partitionedJobKey.getGroup());
+
+				quartzTrigger = quartzTriggerBuilder.build();
 			}
 
 			Scheduler scheduler = _getScheduler(storageType);
@@ -487,11 +521,13 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			Scheduler scheduler, JobKey jobKey)
 		throws Exception {
 
-		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+		JobDetail jobDetail = _getJobDetail(scheduler, jobKey);
 
 		if (jobDetail == null) {
 			return null;
 		}
+
+		jobKey = jobDetail.getKey();
 
 		String jobName = jobKey.getName();
 		String groupName = jobKey.getGroup();
@@ -619,41 +655,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 	}
 
-	protected void update(
-			Scheduler scheduler,
-			com.liferay.portal.kernel.scheduler.Trigger trigger,
-			StorageType storageType)
-		throws Exception {
-
-		Trigger quartzTrigger = (Trigger)trigger.getWrappedTrigger();
-
-		if (quartzTrigger == null) {
-			return;
-		}
-
-		TriggerKey triggerKey = quartzTrigger.getKey();
-
-		if (scheduler.getTrigger(triggerKey) != null) {
-			scheduler.rescheduleJob(triggerKey, quartzTrigger);
-		}
-		else {
-			JobKey jobKey = quartzTrigger.getJobKey();
-
-			JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-
-			if (jobDetail == null) {
-				return;
-			}
-
-			synchronized (this) {
-				scheduler.deleteJob(jobKey);
-				scheduler.scheduleJob(jobDetail, quartzTrigger);
-			}
-
-			_updateJobState(scheduler, jobKey, TriggerState.NORMAL);
-		}
-	}
-
 	private String _fixMaxLength(
 		String argument, int maxLength, StorageType storageType) {
 
@@ -666,6 +667,19 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		return argument;
+	}
+
+	private JobDetail _getJobDetail(Scheduler scheduler, JobKey jobKey)
+		throws Exception {
+
+		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+
+		if ((jobDetail == null) && (scheduler == _persistedScheduler)) {
+			jobDetail = scheduler.getJobDetail(
+				QuartzSchedulerUtil.getPartitionedJobKey(jobKey));
+		}
+
+		return jobDetail;
 	}
 
 	private JobState _getJobState(JobDataMap jobDataMap) {
@@ -737,14 +751,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	}
 
 	private void _updateJobState(
-			Scheduler scheduler, JobKey jobKey, TriggerState triggerState)
+			Scheduler scheduler, JobDetail jobDetail, TriggerState triggerState)
 		throws Exception {
-
-		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-
-		if (jobDetail == null) {
-			return;
-		}
 
 		JobDataMap jobDataMap = jobDetail.getJobDataMap();
 

@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.lock.LockManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.repository.InvalidRepositoryIdException;
 import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.RepositoryException;
@@ -77,7 +78,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -2624,7 +2624,10 @@ public class DLAppServiceImpl extends DLAppServiceBaseImpl {
 	public void subscribeFileEntryType(long groupId, long fileEntryTypeId)
 		throws PortalException {
 
-		_portletResourcePermission.check(
+		PortletResourcePermission portletResourcePermission =
+			_portletResourcePermissionSnapshot.get();
+
+		portletResourcePermission.check(
 			getPermissionChecker(), groupId, ActionKeys.SUBSCRIBE);
 
 		dlAppLocalService.subscribeFileEntryType(
@@ -2699,7 +2702,10 @@ public class DLAppServiceImpl extends DLAppServiceBaseImpl {
 	public void unsubscribeFileEntryType(long groupId, long fileEntryTypeId)
 		throws PortalException {
 
-		_portletResourcePermission.check(
+		PortletResourcePermission portletResourcePermission =
+			_portletResourcePermissionSnapshot.get();
+
+		portletResourcePermission.check(
 			getPermissionChecker(), groupId, ActionKeys.SUBSCRIBE);
 
 		dlAppLocalService.unsubscribeFileEntryType(
@@ -3690,12 +3696,10 @@ public class DLAppServiceImpl extends DLAppServiceBaseImpl {
 			ModelResourcePermissionFactory.getInstance(
 				DLAppServiceImpl.class, "_folderModelResourcePermission",
 				Folder.class);
-	private static volatile PortletResourcePermission
-		_portletResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				PortletResourcePermission.class, DLAppServiceImpl.class,
-				"_portletResourcePermission",
-				"(resource.name=" + DLConstants.RESOURCE_NAME + ")", true);
+	private static final Snapshot<PortletResourcePermission>
+		_portletResourcePermissionSnapshot = new Snapshot<>(
+			DLAppServiceImpl.class, PortletResourcePermission.class,
+			"(resource.name=" + DLConstants.RESOURCE_NAME + ")");
 
 	@BeanReference(type = AssetCategoryLocalService.class)
 	private AssetCategoryLocalService _assetCategoryLocalService;

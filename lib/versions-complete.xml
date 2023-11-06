@@ -5003,6 +5003,18 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>com.liferay.shared.dependencies.netty.jar!netty-codec-dns.jar</file-name>
+				<version>4.1.100.Final</version>
+				<project-name>Netty/Codec/DNS</project-name>
+				<project-url>https://netty.io/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>com.liferay.shared.dependencies.netty.jar!netty-codec-http.jar</file-name>
 				<version>4.1.100.Final</version>
 				<project-name>Netty/Codec/HTTP</project-name>
@@ -5018,6 +5030,18 @@
 				<file-name>com.liferay.shared.dependencies.netty.jar!netty-codec-http2.jar</file-name>
 				<version>4.1.100.Final</version>
 				<project-name>Netty/Codec/HTTP2</project-name>
+				<project-url>https://netty.io/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.shared.dependencies.netty.jar!netty-codec-socks.jar</file-name>
+				<version>4.1.100.Final</version>
+				<project-name>Netty/Codec/Socks</project-name>
 				<project-url>https://netty.io/</project-url>
 				<licenses>
 					<license>
@@ -5090,6 +5114,30 @@
 				<file-name>com.liferay.shared.dependencies.netty.jar!netty-resolver.jar</file-name>
 				<version>4.1.100.Final</version>
 				<project-name>Netty/Resolver</project-name>
+				<project-url>https://netty.io/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.shared.dependencies.netty.jar!netty-transport-classes-epoll.jar</file-name>
+				<version>4.1.100.Final</version>
+				<project-name>Netty/Transport/Classes/Epoll</project-name>
+				<project-url>https://netty.io/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.shared.dependencies.netty.jar!netty-transport-native-unix-common.jar</file-name>
+				<version>4.1.100.Final</version>
+				<project-name>Netty/Transport/Native/Unix/Common</project-name>
 				<project-url>https://netty.io/</project-url>
 				<licenses>
 					<license>

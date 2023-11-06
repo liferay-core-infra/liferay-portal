@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.repository.InvalidRepositoryIdException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
@@ -26,7 +27,6 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog;
 import com.liferay.portal.service.base.RepositoryServiceBaseImpl;
@@ -46,7 +46,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		_portletResourcePermission.check(
+		PortletResourcePermission portletResourcePermission =
+			_portletResourcePermissionSnapshot.get();
+
+		portletResourcePermission.check(
 			getPermissionChecker(), groupId, ActionKeys.ADD_REPOSITORY);
 
 		return repositoryLocalService.addRepository(
@@ -200,12 +203,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			ModelResourcePermissionFactory.getInstance(
 				RepositoryServiceImpl.class, "_folderModelResourcePermission",
 				Folder.class);
-	private static volatile PortletResourcePermission
-		_portletResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				PortletResourcePermission.class, RepositoryServiceImpl.class,
-				"_portletResourcePermission",
-				"(resource.name=" + DLConstants.RESOURCE_NAME + ")", true);
+	private static final Snapshot<PortletResourcePermission>
+		_portletResourcePermissionSnapshot = new Snapshot<>(
+			RepositoryServiceImpl.class, PortletResourcePermission.class,
+			"(resource.name=" + DLConstants.RESOURCE_NAME + ")");
 
 	@BeanReference(type = DLFileEntryLocalService.class)
 	private DLFileEntryLocalService _dlFileEntryLocalService;

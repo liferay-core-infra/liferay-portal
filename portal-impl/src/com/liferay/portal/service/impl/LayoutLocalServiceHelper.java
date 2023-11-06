@@ -104,18 +104,18 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 					layoutFriendlyURLEntryValidator =
 						_layoutFriendlyURLEntryValidatorSnapshot.get();
 
-				if (layoutFriendlyURLEntryValidator != null) {
-					long classPK = 0;
-
-					if (layout != null) {
-						classPK = layout.getPlid();
-					}
-
-					layoutFriendlyURLEntryValidator.validateFriendlyURLEntry(
-						groupId, privateLayout, classPK, friendlyURL);
+				if (layoutFriendlyURLEntryValidator == null) {
+					break;
 				}
 
-				break;
+				long classPK = 0;
+
+				if (layout != null) {
+					classPK = layout.getPlid();
+				}
+
+				layoutFriendlyURLEntryValidator.validateFriendlyURLEntry(
+					groupId, privateLayout, classPK, friendlyURL);
 			}
 			catch (LayoutFriendlyURLException layoutFriendlyURLException) {
 				int type = layoutFriendlyURLException.getType();

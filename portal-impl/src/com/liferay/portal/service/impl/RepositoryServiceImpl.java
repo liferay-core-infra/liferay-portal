@@ -24,9 +24,9 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog;
 import com.liferay.portal.service.base.RepositoryServiceBaseImpl;
@@ -202,9 +202,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 				Folder.class);
 	private static volatile PortletResourcePermission
 		_portletResourcePermission =
-			PortletResourcePermissionFactory.getInstance(
-				RepositoryServiceImpl.class, "_portletResourcePermission",
-				DLConstants.RESOURCE_NAME);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				PortletResourcePermission.class, RepositoryServiceImpl.class,
+				"_portletResourcePermission",
+				"(resource.name=" + DLConstants.RESOURCE_NAME + ")", true);
 
 	@BeanReference(type = DLFileEntryLocalService.class)
 	private DLFileEntryLocalService _dlFileEntryLocalService;

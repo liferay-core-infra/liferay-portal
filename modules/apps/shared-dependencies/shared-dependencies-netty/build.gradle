@@ -9,4 +9,6 @@ dependencies {
 	compileInclude group: "io.netty", name: "netty-resolver", version: "4.1.100.Final"
 	compileInclude group: "io.netty", name: "netty-resolver-dns", version: "4.1.100.Final"
 	compileInclude group: "io.netty", name: "netty-transport", version: "4.1.100.Final"
+	compileInclude group: "io.netty", name: "netty-transport-classes-epoll", version: "4.1.100.Final"
+	compileInclude group: "io.netty", name: "netty-transport-native-unix-common", version: "4.1.100.Final"
 }

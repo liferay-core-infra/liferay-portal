@@ -17,11 +17,11 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portlet.documentlibrary.DLGroupServiceSettings;
 import com.liferay.portlet.documentlibrary.model.impl.DLFolderImpl;
@@ -745,9 +745,12 @@ public class DLFolderServiceImpl extends DLFolderServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<DLFolder>
 		_dlFolderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFolderServiceImpl.class, "_dlFolderModelResourcePermission",
-				DLFolder.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLFolderServiceImpl.class,
+				"_dlFolderModelResourcePermission",
+				"(model.class.name=com.liferay.document.library.kernel.model." +
+					"DLFolder)",
+				true);
 
 	@BeanReference(type = ClassNameLocalService.class)
 	private ClassNameLocalService _classNameLocalService;

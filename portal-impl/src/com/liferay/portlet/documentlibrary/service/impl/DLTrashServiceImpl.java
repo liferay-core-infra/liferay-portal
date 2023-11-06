@@ -16,8 +16,8 @@ import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portlet.documentlibrary.service.base.DLTrashServiceBaseImpl;
 
 /**
@@ -272,18 +272,27 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLTrashServiceImpl.class, "_fileEntryModelResourcePermission",
-				FileEntry.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLTrashServiceImpl.class,
+				"_fileEntryModelResourcePermission",
+				"(model.class.name=com.liferay.portal.kernel.repository." +
+					"model.FileEntry)",
+				true);
 	private static volatile ModelResourcePermission<FileShortcut>
 		_fileShortcutModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLTrashServiceImpl.class,
-				"_fileShortcutModelResourcePermission", FileShortcut.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLTrashServiceImpl.class,
+				"_fileShortcutModelResourcePermission",
+				"(model.class.name=com.liferay.portal.kernel.repository." +
+					"model.FileShortcut)",
+				true);
 	private static volatile ModelResourcePermission<Folder>
 		_folderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLTrashServiceImpl.class, "_folderModelResourcePermission",
-				Folder.class);
+			ServiceProxyFactory.newServiceTrackedInstance(
+				ModelResourcePermission.class, DLTrashServiceImpl.class,
+				"_folderModelResourcePermission",
+				"(model.class.name=com.liferay.portal.kernel.repository." +
+					"model.Folder)",
+				true);
 
 }

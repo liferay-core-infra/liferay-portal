@@ -8,6 +8,7 @@ package com.liferay.portlet.documentlibrary.service.impl;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.RepositoryProvider;
 import com.liferay.portal.kernel.repository.capabilities.TrashCapability;
@@ -17,7 +18,6 @@ import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portlet.documentlibrary.service.base.DLTrashServiceBaseImpl;
 
 /**
@@ -43,7 +43,10 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		FileEntry fileEntry = repository.getFileEntry(fileEntryId);
 
-		_fileEntryModelResourcePermission.check(
+		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission =
+			_fileEntryModelResourcePermissionSnapshot.get();
+
+		fileEntryModelResourcePermission.check(
 			getPermissionChecker(), fileEntry, ActionKeys.UPDATE);
 
 		Folder destinationFolder = null;
@@ -74,7 +77,10 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		FileEntry fileEntry = repository.getFileEntry(fileEntryId);
 
-		_fileEntryModelResourcePermission.check(
+		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission =
+			_fileEntryModelResourcePermissionSnapshot.get();
+
+		fileEntryModelResourcePermission.check(
 			getPermissionChecker(), fileEntry, ActionKeys.DELETE);
 
 		TrashCapability trashCapability = repository.getCapability(
@@ -102,7 +108,11 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		FileShortcut fileShortcut = repository.getFileShortcut(fileShortcutId);
 
-		_fileShortcutModelResourcePermission.check(
+		ModelResourcePermission<FileShortcut>
+			fileShortcutModelResourcePermission =
+				_fileShortcutModelResourcePermissionSnapshot.get();
+
+		fileShortcutModelResourcePermission.check(
 			getPermissionChecker(), fileShortcut, ActionKeys.UPDATE);
 
 		Folder destinationFolder = null;
@@ -133,7 +143,11 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		FileShortcut fileShortcut = repository.getFileShortcut(fileShortcutId);
 
-		_fileShortcutModelResourcePermission.check(
+		ModelResourcePermission<FileShortcut>
+			fileShortcutModelResourcePermission =
+				_fileShortcutModelResourcePermissionSnapshot.get();
+
+		fileShortcutModelResourcePermission.check(
 			getPermissionChecker(), fileShortcut, ActionKeys.DELETE);
 
 		TrashCapability trashCapability = repository.getCapability(
@@ -162,7 +176,10 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		Folder folder = repository.getFolder(folderId);
 
-		_folderModelResourcePermission.check(
+		ModelResourcePermission<Folder> folderModelResourcePermission =
+			_folderModelResourcePermissionSnapshot.get();
+
+		folderModelResourcePermission.check(
 			getPermissionChecker(), folder, ActionKeys.UPDATE);
 
 		Folder destinationFolder = null;
@@ -191,7 +208,10 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		Folder folder = repository.getFolder(folderId);
 
-		_folderModelResourcePermission.check(
+		ModelResourcePermission<Folder> folderModelResourcePermission =
+			_folderModelResourcePermissionSnapshot.get();
+
+		folderModelResourcePermission.check(
 			getPermissionChecker(), folder, ActionKeys.DELETE);
 
 		TrashCapability trashCapability = repository.getCapability(
@@ -214,7 +234,10 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		FileEntry fileEntry = repository.getFileEntry(fileEntryId);
 
-		_fileEntryModelResourcePermission.check(
+		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission =
+			_fileEntryModelResourcePermissionSnapshot.get();
+
+		fileEntryModelResourcePermission.check(
 			getPermissionChecker(), fileEntry, ActionKeys.DELETE);
 
 		TrashCapability trashCapability = repository.getCapability(
@@ -237,7 +260,11 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		FileShortcut fileShortcut = repository.getFileShortcut(fileShortcutId);
 
-		_fileShortcutModelResourcePermission.check(
+		ModelResourcePermission<FileShortcut>
+			fileShortcutModelResourcePermission =
+				_fileShortcutModelResourcePermissionSnapshot.get();
+
+		fileShortcutModelResourcePermission.check(
 			getPermissionChecker(), fileShortcut, ActionKeys.DELETE);
 
 		TrashCapability trashCapability = repository.getCapability(
@@ -258,7 +285,10 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 		Folder folder = repository.getFolder(folderId);
 
-		_folderModelResourcePermission.check(
+		ModelResourcePermission<Folder> folderModelResourcePermission =
+			_folderModelResourcePermissionSnapshot.get();
+
+		folderModelResourcePermission.check(
 			getPermissionChecker(), folder, ActionKeys.DELETE);
 
 		TrashCapability trashCapability = repository.getCapability(
@@ -270,29 +300,23 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 	@BeanReference(type = RepositoryProvider.class)
 	protected RepositoryProvider repositoryProvider;
 
-	private static volatile ModelResourcePermission<FileEntry>
-		_fileEntryModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, DLTrashServiceImpl.class,
-				"_fileEntryModelResourcePermission",
-				"(model.class.name=com.liferay.portal.kernel.repository." +
-					"model.FileEntry)",
-				true);
-	private static volatile ModelResourcePermission<FileShortcut>
-		_fileShortcutModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, DLTrashServiceImpl.class,
-				"_fileShortcutModelResourcePermission",
-				"(model.class.name=com.liferay.portal.kernel.repository." +
-					"model.FileShortcut)",
-				true);
-	private static volatile ModelResourcePermission<Folder>
-		_folderModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, DLTrashServiceImpl.class,
-				"_folderModelResourcePermission",
-				"(model.class.name=com.liferay.portal.kernel.repository." +
-					"model.Folder)",
-				true);
+	private static final Snapshot<ModelResourcePermission<FileEntry>>
+		_fileEntryModelResourcePermissionSnapshot = new Snapshot<>(
+			DLTrashServiceImpl.class,
+			Snapshot.cast(ModelResourcePermission.class),
+			"(model.class.name=com.liferay.portal.kernel.repository.model." +
+				"FileEntry)");
+	private static final Snapshot<ModelResourcePermission<FileShortcut>>
+		_fileShortcutModelResourcePermissionSnapshot = new Snapshot<>(
+			DLTrashServiceImpl.class,
+			Snapshot.cast(ModelResourcePermission.class),
+			"(model.class.name=com.liferay.portal.kernel.repository.model." +
+				"FileShortcut)");
+	private static final Snapshot<ModelResourcePermission<Folder>>
+		_folderModelResourcePermissionSnapshot = new Snapshot<>(
+			DLTrashServiceImpl.class,
+			Snapshot.cast(ModelResourcePermission.class),
+			"(model.class.name=com.liferay.portal.kernel.repository.model." +
+				"Folder)");
 
 }

@@ -294,6 +294,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 	}
 
+	@Override
 	public void run(
 			long companyId, String jobName, String groupName,
 			StorageType storageType)
@@ -806,18 +807,22 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 	private class SchedulerListenerImpl extends SchedulerListenerSupport {
 
+		@Override
 		public void jobPaused(JobKey jobKey) {
 			_audit(jobKey, TriggerState.PAUSED);
 		}
 
+		@Override
 		public void jobResumed(JobKey jobKey) {
 			_audit(jobKey, TriggerState.NORMAL);
 		}
 
+		@Override
 		public void jobScheduled(Trigger trigger) {
 			_audit(trigger.getJobKey(), TriggerState.NORMAL);
 		}
 
+		@Override
 		public void triggerFinalized(Trigger trigger) {
 			JobKey jobKey = trigger.getJobKey();
 

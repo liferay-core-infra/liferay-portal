@@ -22,11 +22,11 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog;
 import com.liferay.portal.service.base.RepositoryServiceBaseImpl;
@@ -69,9 +69,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			repositoryId);
 
 		ModelResourcePermissionUtil.check(
-			_folderModelResourcePermission, getPermissionChecker(),
-			repository.getGroupId(), repository.getDlFolderId(),
-			ActionKeys.DELETE);
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				Folder.class.getName()),
+			getPermissionChecker(), repository.getGroupId(),
+			repository.getDlFolderId(), ActionKeys.DELETE);
 
 		repositoryLocalService.deleteRepository(repository.getRepositoryId());
 	}
@@ -82,9 +83,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			repositoryId);
 
 		ModelResourcePermissionUtil.check(
-			_folderModelResourcePermission, getPermissionChecker(),
-			repository.getGroupId(), repository.getDlFolderId(),
-			ActionKeys.VIEW);
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				Folder.class.getName()),
+			getPermissionChecker(), repository.getGroupId(),
+			repository.getDlFolderId(), ActionKeys.VIEW);
 
 		return repository;
 	}
@@ -97,9 +99,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			groupId, portletId, portletId);
 
 		ModelResourcePermissionUtil.check(
-			_folderModelResourcePermission, getPermissionChecker(),
-			repository.getGroupId(), repository.getDlFolderId(),
-			ActionKeys.VIEW);
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				Folder.class.getName()),
+			getPermissionChecker(), repository.getGroupId(),
+			repository.getDlFolderId(), ActionKeys.VIEW);
 
 		return repository;
 	}
@@ -122,9 +125,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			repositoryId);
 
 		ModelResourcePermissionUtil.check(
-			_folderModelResourcePermission, getPermissionChecker(),
-			repository.getGroupId(), repository.getDlFolderId(),
-			ActionKeys.UPDATE);
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				Folder.class.getName()),
+			getPermissionChecker(), repository.getGroupId(),
+			repository.getDlFolderId(), ActionKeys.UPDATE);
 
 		repositoryLocalService.updateRepository(
 			repositoryId, name, description);
@@ -138,7 +142,11 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			DLFolder dlFolder = _dlFolderLocalService.fetchDLFolder(folderId);
 
 			if (dlFolder != null) {
-				_folderModelResourcePermission.check(
+				ModelResourcePermission<Folder> folderModelResourcePermission =
+					ModelResourcePermissionRegistryUtil.
+						getModelResourcePermission(Folder.class.getName());
+
+				folderModelResourcePermission.check(
 					getPermissionChecker(), folderId, ActionKeys.VIEW);
 			}
 		}
@@ -147,7 +155,13 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 				fileEntryId);
 
 			if (dlFileEntry != null) {
-				_fileEntryModelResourcePermission.check(
+				ModelResourcePermission<FileEntry>
+					fileEntryModelResourcePermission =
+						ModelResourcePermissionRegistryUtil.
+							getModelResourcePermission(
+								FileEntry.class.getName());
+
+				fileEntryModelResourcePermission.check(
 					getPermissionChecker(), fileEntryId, ActionKeys.VIEW);
 			}
 		}
@@ -156,7 +170,13 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 				_dlFileVersionLocalService.fetchDLFileVersion(fileVersionId);
 
 			if (dlFileVersion != null) {
-				_fileEntryModelResourcePermission.check(
+				ModelResourcePermission<FileEntry>
+					fileEntryModelResourcePermission =
+						ModelResourcePermissionRegistryUtil.
+							getModelResourcePermission(
+								FileEntry.class.getName());
+
+				fileEntryModelResourcePermission.check(
 					getPermissionChecker(), dlFileVersion.getFileEntryId(),
 					ActionKeys.VIEW);
 			}
@@ -182,9 +202,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 
 			if (repository != null) {
 				ModelResourcePermissionUtil.check(
-					_folderModelResourcePermission, getPermissionChecker(),
-					repository.getGroupId(), repository.getDlFolderId(),
-					ActionKeys.VIEW);
+					ModelResourcePermissionRegistryUtil.
+						getModelResourcePermission(Folder.class.getName()),
+					getPermissionChecker(), repository.getGroupId(),
+					repository.getDlFolderId(), ActionKeys.VIEW);
 			}
 		}
 		catch (NoSuchRepositoryException noSuchRepositoryException) {
@@ -193,22 +214,6 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 		}
 	}
 
-	private static volatile ModelResourcePermission<FileEntry>
-		_fileEntryModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, RepositoryServiceImpl.class,
-				"_fileEntryModelResourcePermission",
-				"(model.class.name=com.liferay.portal.kernel.repository." +
-					"model.FileEntry)",
-				true);
-	private static volatile ModelResourcePermission<Folder>
-		_folderModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, RepositoryServiceImpl.class,
-				"_folderModelResourcePermission",
-				"(model.class.name=com.liferay.portal.kernel.repository." +
-					"model.Folder)",
-				true);
 	private static final Snapshot<PortletResourcePermission>
 		_portletResourcePermissionSnapshot = new Snapshot<>(
 			RepositoryServiceImpl.class, PortletResourcePermission.class,

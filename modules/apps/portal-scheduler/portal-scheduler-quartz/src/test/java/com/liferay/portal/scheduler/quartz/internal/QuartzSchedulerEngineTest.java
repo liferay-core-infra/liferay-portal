@@ -5,6 +5,7 @@
 
 package com.liferay.portal.scheduler.quartz.internal;
 
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.messaging.Message;
@@ -20,6 +21,7 @@ import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -231,6 +233,59 @@ public class QuartzSchedulerEngineTest {
 	}
 
 	@Test
+	public void testDelete3() throws Exception {
+		String testJobName = _TEST_JOB_NAME_PREFIX + "persisted";
+
+		Trigger trigger = _quartzTriggerFactory.createTrigger(
+			testJobName, _PERSISTED_TEST_GROUP_NAME, null, null,
+			_DEFAULT_INTERVAL, TimeUnit.SECOND);
+
+		_quartzSchedulerEngine.schedule(
+			trigger, StringPool.BLANK, _TEST_DESTINATION_NAME, new Message(),
+			StorageType.PERSISTED);
+
+		Message message = new Message();
+
+		message.put("companyId", _TEST_COMPANY_ID);
+
+		_quartzSchedulerEngine.schedule(
+			trigger, StringPool.BLANK, _TEST_DESTINATION_NAME, message,
+			StorageType.PERSISTED);
+
+		List<SchedulerResponse> schedulerResponses =
+			_quartzSchedulerEngine.getScheduledJobs(
+				_PERSISTED_TEST_GROUP_NAME, StorageType.PERSISTED);
+
+		Assert.assertEquals(
+			schedulerResponses.toString(), _DEFAULT_JOB_NUMBER + 2,
+			schedulerResponses.size());
+
+		_quartzSchedulerEngine.delete(
+			testJobName, _PERSISTED_TEST_GROUP_NAME, StorageType.PERSISTED);
+
+		schedulerResponses = _quartzSchedulerEngine.getScheduledJobs(
+			_PERSISTED_TEST_GROUP_NAME, StorageType.PERSISTED);
+
+		Assert.assertEquals(
+			schedulerResponses.toString(), _DEFAULT_JOB_NUMBER + 1,
+			schedulerResponses.size());
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setWithSafeCloseable(_TEST_COMPANY_ID)) {
+
+			_quartzSchedulerEngine.delete(
+				testJobName, _PERSISTED_TEST_GROUP_NAME, StorageType.PERSISTED);
+		}
+
+		schedulerResponses = _quartzSchedulerEngine.getScheduledJobs(
+			_PERSISTED_TEST_GROUP_NAME, StorageType.PERSISTED);
+
+		Assert.assertEquals(
+			schedulerResponses.toString(), _DEFAULT_JOB_NUMBER,
+			schedulerResponses.size());
+	}
+
+	@Test
 	public void testDisableScheduler() {
 		ReflectionTestUtil.setFieldValue(
 			_quartzSchedulerEngine, "_props",
@@ -378,6 +433,64 @@ public class QuartzSchedulerEngineTest {
 			schedulerResponses.size());
 	}
 
+	@Test
+	public void testSchedule3() throws Exception {
+		String testJobName = _TEST_JOB_NAME_PREFIX + "persisted";
+
+		Trigger trigger = _quartzTriggerFactory.createTrigger(
+			testJobName, _PERSISTED_TEST_GROUP_NAME, null, null,
+			_DEFAULT_INTERVAL, TimeUnit.SECOND);
+
+		_quartzSchedulerEngine.schedule(
+			trigger, StringPool.BLANK, _TEST_DESTINATION_NAME, new Message(),
+			StorageType.PERSISTED);
+
+		Message message = new Message();
+
+		message.put("companyId", _TEST_COMPANY_ID);
+
+		_quartzSchedulerEngine.schedule(
+			trigger, StringPool.BLANK, _TEST_DESTINATION_NAME, message,
+			StorageType.PERSISTED);
+
+		List<SchedulerResponse> schedulerResponses =
+			_quartzSchedulerEngine.getScheduledJobs(
+				_PERSISTED_TEST_GROUP_NAME, StorageType.PERSISTED);
+
+		Assert.assertEquals(
+			schedulerResponses.toString(), _DEFAULT_JOB_NUMBER + 2,
+			schedulerResponses.size());
+
+		SchedulerResponse schedulerResponse =
+			_quartzSchedulerEngine.getScheduledJob(
+				testJobName, _PERSISTED_TEST_GROUP_NAME, StorageType.PERSISTED);
+
+		Assert.assertEquals(
+			SchedulerEngine.getPartitionedName(testJobName),
+			schedulerResponse.getJobName());
+
+		message = schedulerResponse.getMessage();
+
+		Assert.assertEquals(
+			(long)CompanyThreadLocal.getCompanyId(),
+			message.getLong("companyId"));
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setWithSafeCloseable(_TEST_COMPANY_ID)) {
+
+			schedulerResponse = _quartzSchedulerEngine.getScheduledJob(
+				testJobName, _PERSISTED_TEST_GROUP_NAME, StorageType.PERSISTED);
+		}
+
+		Assert.assertEquals(
+			SchedulerEngine.getPartitionedName(_TEST_COMPANY_ID, testJobName),
+			schedulerResponse.getJobName());
+
+		message = schedulerResponse.getMessage();
+
+		Assert.assertEquals(_TEST_COMPANY_ID, message.getLong("companyId"));
+	}
+
 	private void _assertTriggerState(
 		SchedulerResponse schedulerResponse,
 		TriggerState expectedTriggerState) {
@@ -478,6 +591,8 @@ public class QuartzSchedulerEngineTest {
 
 	private static final String _PERSISTED_TEST_GROUP_NAME =
 		"persisted.test.group";
+
+	private static final long _TEST_COMPANY_ID = RandomTestUtil.randomLong();
 
 	private static final String _TEST_DESTINATION_NAME = "liferay/test";
 

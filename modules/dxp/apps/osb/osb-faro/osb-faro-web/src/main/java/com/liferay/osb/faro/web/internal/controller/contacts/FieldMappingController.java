@@ -8,13 +8,11 @@ package com.liferay.osb.faro.web.internal.controller.contacts;
 import com.liferay.osb.faro.engine.client.constants.FieldMappingConstants;
 import com.liferay.osb.faro.engine.client.model.Field;
 import com.liferay.osb.faro.engine.client.model.FieldMapping;
-import com.liferay.osb.faro.engine.client.model.FieldMappingMap;
 import com.liferay.osb.faro.engine.client.model.Results;
 import com.liferay.osb.faro.engine.client.util.OrderByField;
 import com.liferay.osb.faro.model.FaroProject;
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
 import com.liferay.osb.faro.web.internal.controller.FaroController;
-import com.liferay.osb.faro.web.internal.exception.FaroException;
 import com.liferay.osb.faro.web.internal.model.display.FaroResultsDisplay;
 import com.liferay.osb.faro.web.internal.model.display.contacts.FieldMappingDisplay;
 import com.liferay.osb.faro.web.internal.model.display.contacts.FieldMappingValuesDisplay;
@@ -28,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -58,32 +54,9 @@ public class FieldMappingController extends BaseFaroController {
 	public void addDefaultFieldMappings(@PathParam("groupId") long groupId)
 		throws Exception {
 
-		FaroProject faroProject =
-			faroProjectLocalService.getFaroProjectByGroupId(groupId);
-
-		contactsEngineClient.addFieldMappings(
-			faroProject, null, FieldMappingConstants.CONTEXT_ORGANIZATION,
-			FieldMappingConstants.OWNER_TYPE_ACCOUNT,
-			FieldMappingUtil.getNewFieldMappingMaps(
-				contactsEngineClient, faroProject,
-				FieldMappingConstants.CONTEXT_ORGANIZATION,
-				FieldMappingConstants.getSalesforceAccountFieldMappingMaps()));
-
-		List<FieldMappingMap> fieldMappingMaps = new ArrayList<>();
-
-		fieldMappingMaps.addAll(
-			FieldMappingConstants.getDefaultFieldMappingMaps());
-		fieldMappingMaps.addAll(
-			FieldMappingConstants.getLiferayFieldMappingMaps());
-		fieldMappingMaps.addAll(
-			FieldMappingConstants.getSalesforceIndividualFieldMappingMaps());
-
-		contactsEngineClient.addFieldMappings(
-			faroProject, null, FieldMappingConstants.CONTEXT_DEMOGRAPHICS,
-			FieldMappingConstants.OWNER_TYPE_INDIVIDUAL,
-			FieldMappingUtil.getNewFieldMappingMaps(
-				contactsEngineClient, faroProject,
-				FieldMappingConstants.CONTEXT_DEMOGRAPHICS, fieldMappingMaps));
+		FieldMappingUtil.addDefaultFieldMappings(
+			contactsEngineClient,
+			faroProjectLocalService.getFaroProjectByGroupId(groupId));
 	}
 
 	@POST
@@ -93,7 +66,7 @@ public class FieldMappingController extends BaseFaroController {
 			@FormParam("type") String type)
 		throws Exception {
 
-		validateCreate(name);
+		FieldMappingUtil.validateCreate(name);
 
 		return new FieldMappingDisplay(
 			contactsEngineClient.addFieldMapping(
@@ -201,16 +174,5 @@ public class FieldMappingController extends BaseFaroController {
 		return new FaroResultsDisplay(
 			fieldMappingValuesDisplays, results.getTotal());
 	}
-
-	protected void validateCreate(String name) {
-		Matcher matcher = _pattern.matcher(name);
-
-		if (!matcher.find()) {
-			throw new FaroException("Invalid field mapping name: " + name);
-		}
-	}
-
-	private static final Pattern _pattern = Pattern.compile(
-		"^[A-Za-z_][\\w]{0,126}[A-Za-z0-9]$");
 
 }

@@ -30,7 +30,6 @@ import com.liferay.osb.faro.util.FaroPropsValues;
 import com.liferay.osb.faro.web.internal.annotations.Unauthenticated;
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
 import com.liferay.osb.faro.web.internal.controller.FaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.FieldMappingController;
 import com.liferay.osb.faro.web.internal.exception.FaroException;
 import com.liferay.osb.faro.web.internal.exception.FaroValidationException;
 import com.liferay.osb.faro.web.internal.model.display.contacts.JoinableProjectDisplay;
@@ -38,6 +37,7 @@ import com.liferay.osb.faro.web.internal.model.display.contacts.ProjectDisplay;
 import com.liferay.osb.faro.web.internal.model.display.contacts.TimeZoneDisplay;
 import com.liferay.osb.faro.web.internal.model.display.main.FaroSubscriptionDisplay;
 import com.liferay.osb.faro.web.internal.param.FaroParam;
+import com.liferay.osb.faro.web.internal.util.FieldMappingUtil;
 import com.liferay.osb.faro.web.internal.util.JSONUtil;
 import com.liferay.osb.faro.web.internal.util.TimeZoneUtil;
 import com.liferay.petra.function.transform.TransformUtil;
@@ -982,7 +982,8 @@ public class ProjectFaroController extends BaseFaroController {
 
 			cerebroEngineClient.updateTimeZone(faroProject);
 
-			_fieldMappingController.addDefaultFieldMappings(groupId);
+			FieldMappingUtil.addDefaultFieldMappings(
+				contactsEngineClient, faroProject);
 
 			faroProject.setState(FaroProjectConstants.STATE_READY);
 
@@ -1148,9 +1149,6 @@ public class ProjectFaroController extends BaseFaroController {
 
 	@Reference
 	private FaroUserLocalService _faroUserLocalService;
-
-	@Reference
-	private FieldMappingController _fieldMappingController;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

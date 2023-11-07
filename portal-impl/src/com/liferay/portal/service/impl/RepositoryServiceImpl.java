@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog;
 import com.liferay.portal.service.base.RepositoryServiceBaseImpl;
@@ -69,9 +68,9 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			repositoryId);
 
 		ModelResourcePermissionUtil.check(
-			_folderModelResourcePermission, getPermissionChecker(),
-			repository.getGroupId(), repository.getDlFolderId(),
-			ActionKeys.DELETE);
+			_folderModelResourcePermissionSnapshot.get(),
+			getPermissionChecker(), repository.getGroupId(),
+			repository.getDlFolderId(), ActionKeys.DELETE);
 
 		repositoryLocalService.deleteRepository(repository.getRepositoryId());
 	}
@@ -82,9 +81,9 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			repositoryId);
 
 		ModelResourcePermissionUtil.check(
-			_folderModelResourcePermission, getPermissionChecker(),
-			repository.getGroupId(), repository.getDlFolderId(),
-			ActionKeys.VIEW);
+			_folderModelResourcePermissionSnapshot.get(),
+			getPermissionChecker(), repository.getGroupId(),
+			repository.getDlFolderId(), ActionKeys.VIEW);
 
 		return repository;
 	}
@@ -97,9 +96,9 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			groupId, portletId, portletId);
 
 		ModelResourcePermissionUtil.check(
-			_folderModelResourcePermission, getPermissionChecker(),
-			repository.getGroupId(), repository.getDlFolderId(),
-			ActionKeys.VIEW);
+			_folderModelResourcePermissionSnapshot.get(),
+			getPermissionChecker(), repository.getGroupId(),
+			repository.getDlFolderId(), ActionKeys.VIEW);
 
 		return repository;
 	}
@@ -122,9 +121,9 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			repositoryId);
 
 		ModelResourcePermissionUtil.check(
-			_folderModelResourcePermission, getPermissionChecker(),
-			repository.getGroupId(), repository.getDlFolderId(),
-			ActionKeys.UPDATE);
+			_folderModelResourcePermissionSnapshot.get(),
+			getPermissionChecker(), repository.getGroupId(),
+			repository.getDlFolderId(), ActionKeys.UPDATE);
 
 		repositoryLocalService.updateRepository(
 			repositoryId, name, description);
@@ -138,7 +137,10 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 			DLFolder dlFolder = _dlFolderLocalService.fetchDLFolder(folderId);
 
 			if (dlFolder != null) {
-				_folderModelResourcePermission.check(
+				ModelResourcePermission<Folder> folderModelResourcePermission =
+					_folderModelResourcePermissionSnapshot.get();
+
+				folderModelResourcePermission.check(
 					getPermissionChecker(), folderId, ActionKeys.VIEW);
 			}
 		}
@@ -147,7 +149,11 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 				fileEntryId);
 
 			if (dlFileEntry != null) {
-				_fileEntryModelResourcePermission.check(
+				ModelResourcePermission<FileEntry>
+					fileEntryModelResourcePermission =
+						_fileEntryModelResourcePermissionSnapshot.get();
+
+				fileEntryModelResourcePermission.check(
 					getPermissionChecker(), fileEntryId, ActionKeys.VIEW);
 			}
 		}
@@ -156,7 +162,11 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 				_dlFileVersionLocalService.fetchDLFileVersion(fileVersionId);
 
 			if (dlFileVersion != null) {
-				_fileEntryModelResourcePermission.check(
+				ModelResourcePermission<FileEntry>
+					fileEntryModelResourcePermission =
+						_fileEntryModelResourcePermissionSnapshot.get();
+
+				fileEntryModelResourcePermission.check(
 					getPermissionChecker(), dlFileVersion.getFileEntryId(),
 					ActionKeys.VIEW);
 			}
@@ -182,9 +192,9 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 
 			if (repository != null) {
 				ModelResourcePermissionUtil.check(
-					_folderModelResourcePermission, getPermissionChecker(),
-					repository.getGroupId(), repository.getDlFolderId(),
-					ActionKeys.VIEW);
+					_folderModelResourcePermissionSnapshot.get(),
+					getPermissionChecker(), repository.getGroupId(),
+					repository.getDlFolderId(), ActionKeys.VIEW);
 			}
 		}
 		catch (NoSuchRepositoryException noSuchRepositoryException) {
@@ -193,22 +203,18 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 		}
 	}
 
-	private static volatile ModelResourcePermission<FileEntry>
-		_fileEntryModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, RepositoryServiceImpl.class,
-				"_fileEntryModelResourcePermission",
-				"(model.class.name=com.liferay.portal.kernel.repository." +
-					"model.FileEntry)",
-				true);
-	private static volatile ModelResourcePermission<Folder>
-		_folderModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, RepositoryServiceImpl.class,
-				"_folderModelResourcePermission",
-				"(model.class.name=com.liferay.portal.kernel.repository." +
-					"model.Folder)",
-				true);
+	private static final Snapshot<ModelResourcePermission<FileEntry>>
+		_fileEntryModelResourcePermissionSnapshot = new Snapshot<>(
+			RepositoryServiceImpl.class,
+			Snapshot.cast(ModelResourcePermission.class),
+			"(model.class.name=com.liferay.portal.kernel.repository.model." +
+				"FileEntry)");
+	private static final Snapshot<ModelResourcePermission<Folder>>
+		_folderModelResourcePermissionSnapshot = new Snapshot<>(
+			RepositoryServiceImpl.class,
+			Snapshot.cast(ModelResourcePermission.class),
+			"(model.class.name=com.liferay.portal.kernel.repository.model." +
+				"Folder)");
 	private static final Snapshot<PortletResourcePermission>
 		_portletResourcePermissionSnapshot = new Snapshot<>(
 			RepositoryServiceImpl.class, PortletResourcePermission.class,

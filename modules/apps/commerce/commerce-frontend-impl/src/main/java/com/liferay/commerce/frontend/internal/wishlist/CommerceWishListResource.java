@@ -45,11 +45,18 @@ import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
 
 /**
  * @author Marco Leo
  */
-@Component(service = CommerceWishListResource.class)
+@Component(
+	property = {
+		JaxrsWhiteboardConstants.JAX_RS_APPLICATION_SELECT + "=(osgi.jaxrs.name=CommerceUi.Application)",
+		JaxrsWhiteboardConstants.JAX_RS_RESOURCE + "=true"
+	},
+	service = Object.class
+)
 public class CommerceWishListResource {
 
 	@Path("/wish-list-item")

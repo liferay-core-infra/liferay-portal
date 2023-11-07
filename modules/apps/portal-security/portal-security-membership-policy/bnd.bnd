@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal Security Membership Policy
+Bundle-SymbolicName: com.liferay.portal.security.membership.policy
+Bundle-Version: 1.0.0

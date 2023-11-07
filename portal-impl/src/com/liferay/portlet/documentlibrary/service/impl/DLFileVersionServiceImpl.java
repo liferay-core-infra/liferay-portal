@@ -7,10 +7,10 @@ package com.liferay.portlet.documentlibrary.service.impl;
 
 import com.liferay.document.library.kernel.model.DLFileVersion;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portlet.documentlibrary.service.base.DLFileVersionServiceBaseImpl;
 
 import java.util.List;
@@ -27,7 +27,10 @@ public class DLFileVersionServiceImpl extends DLFileVersionServiceBaseImpl {
 		DLFileVersion fileVersion = dlFileVersionLocalService.getFileVersion(
 			fileVersionId);
 
-		_fileEntryModelResourcePermission.check(
+		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission =
+			_fileEntryModelResourcePermissionSnapshot.get();
+
+		fileEntryModelResourcePermission.check(
 			getPermissionChecker(), fileVersion.getFileEntryId(),
 			ActionKeys.VIEW);
 
@@ -38,7 +41,10 @@ public class DLFileVersionServiceImpl extends DLFileVersionServiceBaseImpl {
 	public List<DLFileVersion> getFileVersions(long fileEntryId, int status)
 		throws PortalException {
 
-		_fileEntryModelResourcePermission.check(
+		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission =
+			_fileEntryModelResourcePermissionSnapshot.get();
+
+		fileEntryModelResourcePermission.check(
 			getPermissionChecker(), fileEntryId, ActionKeys.VIEW);
 
 		return dlFileVersionLocalService.getFileVersions(fileEntryId, status);
@@ -48,7 +54,10 @@ public class DLFileVersionServiceImpl extends DLFileVersionServiceBaseImpl {
 	public int getFileVersionsCount(long fileEntryId, int status)
 		throws PortalException {
 
-		_fileEntryModelResourcePermission.check(
+		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission =
+			_fileEntryModelResourcePermissionSnapshot.get();
+
+		fileEntryModelResourcePermission.check(
 			getPermissionChecker(), fileEntryId, ActionKeys.VIEW);
 
 		return dlFileVersionPersistence.countByF_S(fileEntryId, status);
@@ -58,7 +67,10 @@ public class DLFileVersionServiceImpl extends DLFileVersionServiceBaseImpl {
 	public DLFileVersion getLatestFileVersion(long fileEntryId)
 		throws PortalException {
 
-		_fileEntryModelResourcePermission.check(
+		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission =
+			_fileEntryModelResourcePermissionSnapshot.get();
+
+		fileEntryModelResourcePermission.check(
 			getPermissionChecker(), fileEntryId, ActionKeys.VIEW);
 
 		return dlFileVersionLocalService.getLatestFileVersion(
@@ -70,20 +82,21 @@ public class DLFileVersionServiceImpl extends DLFileVersionServiceBaseImpl {
 			long fileEntryId, boolean excludeWorkingCopy)
 		throws PortalException {
 
-		_fileEntryModelResourcePermission.check(
+		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission =
+			_fileEntryModelResourcePermissionSnapshot.get();
+
+		fileEntryModelResourcePermission.check(
 			getPermissionChecker(), fileEntryId, ActionKeys.VIEW);
 
 		return dlFileVersionLocalService.getLatestFileVersion(
 			fileEntryId, excludeWorkingCopy);
 	}
 
-	private static volatile ModelResourcePermission<FileEntry>
-		_fileEntryModelResourcePermission =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				ModelResourcePermission.class, DLFileVersionServiceImpl.class,
-				"_fileEntryModelResourcePermission",
-				"(model.class.name=com.liferay.portal.kernel.repository." +
-					"model.FileEntry)",
-				true);
+	private static final Snapshot<ModelResourcePermission<FileEntry>>
+		_fileEntryModelResourcePermissionSnapshot = new Snapshot<>(
+			DLFileVersionServiceImpl.class,
+			Snapshot.cast(ModelResourcePermission.class),
+			"(model.class.name=com.liferay.portal.kernel.repository.model." +
+				"FileEntry)");
 
 }

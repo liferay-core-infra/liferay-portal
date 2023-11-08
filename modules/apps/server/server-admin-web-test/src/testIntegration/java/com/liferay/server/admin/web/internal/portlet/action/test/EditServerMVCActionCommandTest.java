@@ -119,6 +119,24 @@ public class EditServerMVCActionCommandTest {
 	}
 
 	@Test
+	public void testCleanUpOrphanedPortletPreferencesWithIncoherentPortletPreferences()
+		throws Exception {
+
+		_portletPreferences = _addPortletPreferences(
+			PortletKeys.PREFS_OWNER_ID_DEFAULT,
+			PortletKeys.PREFS_OWNER_TYPE_LAYOUT, PortletKeys.PREFS_PLID_SHARED,
+			RandomTestUtil.randomString());
+
+		ReflectionTestUtil.invoke(
+			_mvcActionCommand, "_cleanUpOrphanedPortletPreferences",
+			new Class<?>[0]);
+
+		Assert.assertNotNull(
+			_portletPreferencesLocalService.fetchPortletPreferences(
+				_portletPreferences.getPortletPreferencesId()));
+	}
+
+	@Test
 	public void testCleanUpOrphanedPortletPreferencesWithLayoutRevision()
 		throws Exception {
 

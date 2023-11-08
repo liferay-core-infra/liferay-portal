@@ -19,7 +19,6 @@ import com.liferay.calendar.exception.NoSuchCalendarException;
 import com.liferay.calendar.exporter.CalendarDataFormat;
 import com.liferay.calendar.exporter.CalendarDataHandler;
 import com.liferay.calendar.exporter.CalendarDataHandlerFactory;
-import com.liferay.calendar.internal.notification.NotificationSenderFactory;
 import com.liferay.calendar.internal.notification.NotificationTemplateContextFactory;
 import com.liferay.calendar.internal.recurrence.RecurrenceSplit;
 import com.liferay.calendar.internal.recurrence.RecurrenceSplitter;
@@ -111,9 +110,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Eduardo Lundgren
@@ -1681,6 +1684,44 @@ public class CalendarBookingLocalServiceImpl
 			userId, calendarBooking, status, serviceContext);
 	}
 
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	protected void setNotificationSender(
+		NotificationSender notificationSender, Map<String, Object> properties) {
+
+		String notificationType = (String)properties.get("notification.type");
+
+		if (notificationType == null) {
+			throw new IllegalArgumentException(
+				"The property \"notification.type\" is null");
+		}
+
+		NotificationSender previousNotificationSender =
+			_notificationSenders.put(notificationType, notificationSender);
+
+		if (_log.isWarnEnabled() && (previousNotificationSender != null)) {
+			Class<?> clazz = previousNotificationSender.getClass();
+
+			_log.warn("Overriding notification sender " + clazz.getName());
+		}
+	}
+
+	protected void unsetNotificationSender(
+		NotificationSender notificationSender, Map<String, Object> properties) {
+
+		String notificationType = (String)properties.get("notification.type");
+
+		if (notificationType == null) {
+			throw new IllegalArgumentException(
+				"The property \"notification.type\" is null");
+		}
+
+		_notificationSenders.remove(notificationType);
+	}
+
 	@Reference
 	protected MBMessageLocalService mbMessageLocalService;
 
@@ -1954,6 +1995,20 @@ public class CalendarBookingLocalServiceImpl
 		return notificationRecipients;
 	}
 
+	private NotificationSender _getNotificationSender(String notificationType)
+		throws Exception {
+
+		NotificationSender notificationSender = _notificationSenders.get(
+			notificationType);
+
+		if (notificationSender == null) {
+			throw new Exception(
+				"Invalid notification type " + notificationType);
+		}
+
+		return notificationSender;
+	}
+
 	private Calendar _getNotLiveCalendar(Calendar calendar)
 		throws PortalException {
 
@@ -2187,9 +2242,8 @@ public class CalendarBookingLocalServiceImpl
 			ServiceContext serviceContext)
 		throws Exception {
 
-		NotificationSender notificationSender =
-			_notificationSenderFactory.getNotificationSender(
-				notificationType.toString());
+		NotificationSender notificationSender = _getNotificationSender(
+			notificationType.toString());
 
 		if (notificationTemplateType == NotificationTemplateType.DECLINE) {
 			User recipientUser = senderUser;
@@ -2277,9 +2331,8 @@ public class CalendarBookingLocalServiceImpl
 
 			User user = notificationRecipient.getUser();
 
-			NotificationSender notificationSender =
-				_notificationSenderFactory.getNotificationSender(
-					notificationType.toString());
+			NotificationSender notificationSender = _getNotificationSender(
+				notificationType.toString());
 
 			NotificationTemplateContext notificationTemplateContext =
 				NotificationTemplateContextFactory.getInstance(
@@ -2730,8 +2783,8 @@ public class CalendarBookingLocalServiceImpl
 	@Reference
 	private HtmlParser _htmlParser;
 
-	@Reference
-	private NotificationSenderFactory _notificationSenderFactory;
+	private final Map<String, NotificationSender> _notificationSenders =
+		new ConcurrentHashMap<>();
 
 	@Reference
 	private RatingsStatsLocalService _ratingsStatsLocalService;

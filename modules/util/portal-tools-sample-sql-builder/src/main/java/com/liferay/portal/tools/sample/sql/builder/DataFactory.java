@@ -6000,9 +6000,14 @@ public class DataFactory {
 
 		// Audit fields
 
+		UserModel userModel = _userModels.get(
+			_assetCategoryUserIndex % _userModels.size());
+
+		_assetCategoryUserIndex++;
+
 		assetCategoryModel.setCompanyId(_companyId);
-		assetCategoryModel.setUserId(_sampleUserId);
-		assetCategoryModel.setUserName(_SAMPLE_USER_NAME);
+		assetCategoryModel.setUserId(userModel.getUserId());
+		assetCategoryModel.setUserName(userModel.getScreenName());
 		assetCategoryModel.setCreateDate(new Date());
 		assetCategoryModel.setModifiedDate(new Date());
 
@@ -7686,6 +7691,7 @@ public class DataFactory {
 			(Map<Long, List<AssetCategoryModel>>[])new HashMap<?, ?>
 				[(BenchmarksPropsValues.MAX_COMPANY_COUNT + 1) *
 					BenchmarksPropsValues.MAX_GROUP_COUNT];
+	private int _assetCategoryUserIndex;
 	private final long[] _assetClassNameIds;
 	private final Map<Long, Integer> _assetClassNameIdsIndexes =
 		new HashMap<>();

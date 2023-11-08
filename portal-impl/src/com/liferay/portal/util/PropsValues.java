@@ -1985,6 +1985,11 @@ public class PropsValues {
 	public static boolean RSS_FEEDS_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.RSS_FEEDS_ENABLED));
 
+	public static final boolean RUNTIME_EMBEDDED_ROOT_PORTLET_ID_CHECK_ENABLED =
+		GetterUtil.getBoolean(
+			PropsUtil.get(
+				PropsKeys.RUNTIME_EMBEDDED_ROOT_PORTLET_ID_CHECK_ENABLED));
+
 	public static final boolean SCHEDULER_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.SCHEDULER_ENABLED));
 

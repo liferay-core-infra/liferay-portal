@@ -2231,6 +2231,9 @@ public interface PropsKeys {
 
 	public static final String RSS_FEEDS_ENABLED = "rss.feeds.enabled";
 
+	public static final String RUNTIME_EMBEDDED_ROOT_PORTLET_ID_CHECK_ENABLED =
+		"runtime.embedded.root.portlet.id.check.enabled";
+
 	public static final String SANITIZER_IMPL = "sanitizer.impl";
 
 	public static final String SCHEDULER_DESCRIPTION_MAX_LENGTH =

@@ -34,8 +34,11 @@ import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ClassUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.DirectTag;
@@ -261,13 +264,17 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 				_embeddedPortletIds.set(embeddedPortletIds);
 			}
 
-			String rootPortletId = portlet.getRootPortletId();
+			String embeddedPortletId = portlet.getRootPortletId();
 
-			if (embeddedPortletIds.search(rootPortletId) > -1) {
+			if (!_RUNTIME_EMBEDDED_ROOT_PORTLET_ID_CHECK_ENABLED) {
+				embeddedPortletId = portlet.getPortletId();
+			}
+
+			if (embeddedPortletIds.search(embeddedPortletId) > -1) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						"The application cannot include itself: " +
-							rootPortletId);
+							embeddedPortletId);
 				}
 
 				String errorMessage = LanguageUtil.get(
@@ -355,7 +362,7 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 					httpServletResponse, portletRenderParts);
 			}
 
-			embeddedPortletIds.push(rootPortletId);
+			embeddedPortletIds.push(embeddedPortletId);
 
 			boolean lifecycleRender = themeDisplay.isLifecycleRender();
 
@@ -571,6 +578,11 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 
 	private static final String _ERROR_PAGE =
 		"/html/taglib/portlet/runtime/error.jsp";
+
+	private static final boolean
+		_RUNTIME_EMBEDDED_ROOT_PORTLET_ID_CHECK_ENABLED = GetterUtil.getBoolean(
+			PropsUtil.get(
+				PropsKeys.RUNTIME_EMBEDDED_ROOT_PORTLET_ID_CHECK_ENABLED));
 
 	private static final String _SETTINGS_SCOPE_DEFAULT =
 		PortletPreferencesFactoryConstants.SETTINGS_SCOPE_PORTLET_INSTANCE;

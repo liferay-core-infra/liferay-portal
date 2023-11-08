@@ -7,7 +7,9 @@ package com.liferay.portal.kernel.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutBranch;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.LayoutBranchLocalServiceUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -20,8 +22,11 @@ public class LayoutBranchPermissionUtil {
 			String actionId)
 		throws PortalException {
 
-		_layoutBranchPermission.check(
-			permissionChecker, layoutBranch, actionId);
+		if (!contains(permissionChecker, layoutBranch, actionId)) {
+			throw new PrincipalException.MustHavePermission(
+				permissionChecker, LayoutBranch.class.getName(),
+				layoutBranch.getLayoutBranchId(), actionId);
+		}
 	}
 
 	public static void check(
@@ -29,16 +34,20 @@ public class LayoutBranchPermissionUtil {
 			String actionId)
 		throws PortalException {
 
-		_layoutBranchPermission.check(
-			permissionChecker, layoutBranchId, actionId);
+		if (!contains(permissionChecker, layoutBranchId, actionId)) {
+			throw new PrincipalException.MustHavePermission(
+				permissionChecker, LayoutBranch.class.getName(), layoutBranchId,
+				actionId);
+		}
 	}
 
 	public static boolean contains(
 		PermissionChecker permissionChecker, LayoutBranch layoutBranch,
 		String actionId) {
 
-		return _layoutBranchPermission.contains(
-			permissionChecker, layoutBranch, actionId);
+		return permissionChecker.hasPermission(
+			layoutBranch.getGroupId(), LayoutBranch.class.getName(),
+			layoutBranch.getLayoutBranchId(), actionId);
 	}
 
 	public static boolean contains(
@@ -46,20 +55,10 @@ public class LayoutBranchPermissionUtil {
 			String actionId)
 		throws PortalException {
 
-		return _layoutBranchPermission.contains(
-			permissionChecker, layoutBranchId, actionId);
+		return contains(
+			permissionChecker,
+			LayoutBranchLocalServiceUtil.getLayoutBranch(layoutBranchId),
+			actionId);
 	}
-
-	public static LayoutBranchPermission getLayoutBranchPermission() {
-		return _layoutBranchPermission;
-	}
-
-	public void setLayoutBranchPermission(
-		LayoutBranchPermission layoutBranchPermission) {
-
-		_layoutBranchPermission = layoutBranchPermission;
-	}
-
-	private static LayoutBranchPermission _layoutBranchPermission;
 
 }

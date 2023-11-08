@@ -3264,9 +3264,14 @@ public class DataFactory {
 
 		// Audit fields
 
+		UserModel userModel = _userModels.get(
+			_ddlRecordSetUserIndex % _userModels.size());
+
+		_ddlRecordSetUserIndex++;
+
 		ddlRecordSetModel.setCompanyId(_companyId);
-		ddlRecordSetModel.setUserId(_sampleUserId);
-		ddlRecordSetModel.setUserName(_SAMPLE_USER_NAME);
+		ddlRecordSetModel.setUserId(userModel.getUserId());
+		ddlRecordSetModel.setUserName(userModel.getScreenName());
 		ddlRecordSetModel.setCreateDate(new Date());
 		ddlRecordSetModel.setModifiedDate(new Date());
 
@@ -7716,6 +7721,7 @@ public class DataFactory {
 	private final SimpleCounter _counter;
 	private final Map<Long, CPInstanceModel> _cpInstanceModels =
 		new HashMap<>();
+	private int _ddlRecordSetUserIndex;
 	private final PortletPreferencesImpl
 		_defaultAssetPublisherPortletPreferencesImpl;
 	private long _defaultDLDDMStructureId;

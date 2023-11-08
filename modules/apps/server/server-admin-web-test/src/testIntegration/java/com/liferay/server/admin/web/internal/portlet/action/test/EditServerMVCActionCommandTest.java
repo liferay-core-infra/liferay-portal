@@ -229,6 +229,7 @@ public class EditServerMVCActionCommandTest {
 	@Inject(filter = "mvc.command.name=/server_admin/edit_server")
 	private MVCActionCommand _mvcActionCommand;
 
+	@DeleteAfterTestRun
 	private PortletPreferences _portletPreferences;
 
 	@Inject

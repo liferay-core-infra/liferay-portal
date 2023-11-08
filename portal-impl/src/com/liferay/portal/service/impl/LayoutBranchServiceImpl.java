@@ -14,10 +14,10 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
-import com.liferay.portal.kernel.service.permission.LayoutBranchPermissionUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutRevisionPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
 import com.liferay.portal.service.base.LayoutBranchServiceBaseImpl;
+import com.liferay.portal.service.permission.LayoutBranchPermissionUtil;
 
 /**
  * @author Brian Wing Shun Chan

@@ -476,7 +476,8 @@ public class EditServerMVCActionCommand
 					if ((pref.getOwnerId() !=
 							PortletKeys.PREFS_OWNER_ID_DEFAULT) ||
 						(pref.getOwnerType() !=
-							PortletKeys.PREFS_OWNER_TYPE_LAYOUT)) {
+							PortletKeys.PREFS_OWNER_TYPE_LAYOUT) ||
+						(pref.getPlid() == PortletKeys.PREFS_PLID_SHARED)) {
 
 						return;
 					}

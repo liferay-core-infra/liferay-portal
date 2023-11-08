@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -16,14 +16,12 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
  */
-@Component(service = KaleoScriptingEvaluator.class)
-public class KaleoScriptingEvaluator {
+public abstract class BaseKaleoScriptingEvaluator {
 
 	public Map<String, Object> execute(
 			ExecutionContext executionContext, Set<String> outputObjects,
@@ -31,7 +29,7 @@ public class KaleoScriptingEvaluator {
 		throws PortalException {
 
 		Map<String, Object> inputObjects =
-			_scriptingContextBuilder.buildScriptingContext(executionContext);
+			scriptingContextBuilder.buildScriptingContext(executionContext);
 
 		Thread currentThread = Thread.currentThread();
 
@@ -46,7 +44,7 @@ public class KaleoScriptingEvaluator {
 		try {
 			currentThread.setContextClassLoader(classLoader);
 
-			results = _scripting.eval(
+			results = scripting.eval(
 				null, inputObjects, outputObjects, scriptLanguage, script);
 		}
 		finally {
@@ -64,9 +62,9 @@ public class KaleoScriptingEvaluator {
 	}
 
 	@Reference
-	private Scripting _scripting;
+	protected Scripting scripting;
 
 	@Reference
-	private ScriptingContextBuilder _scriptingContextBuilder;
+	protected ScriptingContextBuilder scriptingContextBuilder;
 
 }

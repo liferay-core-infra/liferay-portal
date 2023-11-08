@@ -3315,8 +3315,8 @@ public class DataFactory {
 		// Audit fields
 
 		ddlRecordVersionModel.setCompanyId(_companyId);
-		ddlRecordVersionModel.setUserId(_sampleUserId);
-		ddlRecordVersionModel.setUserName(_SAMPLE_USER_NAME);
+		ddlRecordVersionModel.setUserId(dDLRecordModel.getUserId());
+		ddlRecordVersionModel.setUserName(dDLRecordModel.getUserName());
 		ddlRecordVersionModel.setCreateDate(dDLRecordModel.getModifiedDate());
 
 		// Other fields

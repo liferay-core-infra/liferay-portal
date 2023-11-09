@@ -5588,7 +5588,8 @@ public class DataFactory {
 		return newSocialActivityModel(
 			blogsEntryModel.getGroupId(), getClassNameId(BlogsEntry.class),
 			blogsEntryModel.getEntryId(), BlogsActivityKeys.ADD_ENTRY,
-			"{\"title\":\"" + blogsEntryModel.getTitle() + "\"}");
+			"{\"title\":\"" + blogsEntryModel.getTitle() + "\"}",
+			blogsEntryModel.getUserId());
 	}
 
 	public SocialActivityModel newSocialActivityModel(
@@ -5597,7 +5598,7 @@ public class DataFactory {
 		return newSocialActivityModel(
 			dlFileEntryModel.getGroupId(), getClassNameId(DLFileEntry.class),
 			dlFileEntryModel.getFileEntryId(), DLActivityKeys.ADD_FILE_ENTRY,
-			StringPool.BLANK);
+			StringPool.BLANK, dlFileEntryModel.getUserId());
 	}
 
 	public SocialActivityModel newSocialActivityModel(
@@ -5615,41 +5616,67 @@ public class DataFactory {
 			journalArticleModel.getGroupId(),
 			getClassNameId(JournalArticle.class),
 			journalArticleModel.getResourcePrimKey(), type,
-			"{\"title\":\"" + journalArticleModel.getUrlTitle() + "\"}");
+			"{\"title\":\"" + journalArticleModel.getUrlTitle() + "\"}",
+			journalArticleModel.getUserId());
 	}
 
 	public SocialActivityModel newSocialActivityModel(
 		MBMessageModel mbMessageModel) {
 
-		long classNameId = mbMessageModel.getClassNameId();
-		long classPK = mbMessageModel.getClassPK();
+		return newSocialActivityModel(
+			mbMessageModel.getGroupId(), getClassNameId(MBMessage.class),
+			mbMessageModel.getMessageId(), MBActivityKeys.ADD_MESSAGE,
+			"{\"title\":\"" + mbMessageModel.getSubject() + "\"}",
+			mbMessageModel.getUserId());
+	}
 
-		int type = 0;
-		String extraData = null;
-
-		if (classNameId == getClassNameId(WikiPage.class)) {
-			extraData = "{\"version\":1}";
-
-			type = WikiActivityKeys.ADD_PAGE;
-		}
-		else if (classNameId == 0) {
-			extraData = "{\"title\":\"" + mbMessageModel.getSubject() + "\"}";
-
-			type = MBActivityKeys.ADD_MESSAGE;
-
-			classNameId = getClassNameId(MBMessage.class);
-			classPK = mbMessageModel.getMessageId();
-		}
-		else {
-			extraData = StringBundler.concat(
-				"{\"messageId\": \"", mbMessageModel.getMessageId(),
-				"\", \"title\": ", mbMessageModel.getSubject(), "}");
-
-			type = SocialActivityConstants.TYPE_ADD_COMMENT;
-		}
+	public SocialActivityModel newSocialActivityModel(
+		MBMessageModel mbMessageModel, BlogsEntryModel blogsEntryModel) {
 
 		return newSocialActivityModel(
-			mbMessageModel.getGroupId(), classNameId, classPK, type, extraData);
+			mbMessageModel.getGroupId(), mbMessageModel.getClassNameId(),
+			mbMessageModel.getClassPK(),
+			SocialActivityConstants.TYPE_ADD_COMMENT,
+			StringBundler.concat(
+				"{\"messageId\": \"", mbMessageModel.getMessageId(),
+				"\", \"title\": ", mbMessageModel.getSubject(), "}"),
+			blogsEntryModel.getUserId());
+	}
+
+	public SocialActivityModel newSocialActivityModel(
+		MBMessageModel mbMessageModel, DLFileEntryModel dlFileEntryModel) {
+
+		return newSocialActivityModel(
+			mbMessageModel.getGroupId(), mbMessageModel.getClassNameId(),
+			mbMessageModel.getClassPK(),
+			SocialActivityConstants.TYPE_ADD_COMMENT,
+			StringBundler.concat(
+				"{\"messageId\": \"", mbMessageModel.getMessageId(),
+				"\", \"title\": ", mbMessageModel.getSubject(), "}"),
+			dlFileEntryModel.getUserId());
+	}
+
+	public SocialActivityModel newSocialActivityModel(
+		MBMessageModel mbMessageModel,
+		JournalArticleModel journalArticleModel) {
+
+		return newSocialActivityModel(
+			mbMessageModel.getGroupId(), mbMessageModel.getClassNameId(),
+			mbMessageModel.getClassPK(),
+			SocialActivityConstants.TYPE_ADD_COMMENT,
+			StringBundler.concat(
+				"{\"messageId\": \"", mbMessageModel.getMessageId(),
+				"\", \"title\": ", mbMessageModel.getSubject(), "}"),
+			journalArticleModel.getUserId());
+	}
+
+	public SocialActivityModel newSocialActivityModel(
+		MBMessageModel mbMessageModel, WikiPageModel wikiPageModel) {
+
+		return newSocialActivityModel(
+			mbMessageModel.getGroupId(), mbMessageModel.getClassNameId(),
+			mbMessageModel.getClassPK(), WikiActivityKeys.ADD_PAGE,
+			"{\"version\":1}", wikiPageModel.getUserId());
 	}
 
 	public SubscriptionModel newSubscriptionModel(
@@ -7022,7 +7049,7 @@ public class DataFactory {
 
 	protected SocialActivityModel newSocialActivityModel(
 		long groupId, long classNameId, long classPK, int type,
-		String extraData) {
+		String extraData, long userId) {
 
 		SocialActivityModel socialActivityModel = new SocialActivityModelImpl();
 
@@ -7037,7 +7064,7 @@ public class DataFactory {
 		// Audit fields
 
 		socialActivityModel.setCompanyId(_companyId);
-		socialActivityModel.setUserId(_sampleUserId);
+		socialActivityModel.setUserId(userId);
 		socialActivityModel.setCreateDate(_CURRENT_TIME + _timeCounter.get());
 
 		// Other fields

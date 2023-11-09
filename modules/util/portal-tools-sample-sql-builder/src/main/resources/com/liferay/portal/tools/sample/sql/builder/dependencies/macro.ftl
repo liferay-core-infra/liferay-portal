@@ -263,7 +263,7 @@
 	<#list mbMessageModels as mbMessageModel>
 		<@insertMBMessage _mbMessageModel=mbMessageModel />
 
-		${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(mbMessageModel))}
+		${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(mbMessageModel, _entry))}
 	</#list>
 
 	${dataFactory.toInsertSQL(dataFactory.newMBDiscussionModel(_groupId, _classNameId, _classPK, _mbThreadId, _entry))}

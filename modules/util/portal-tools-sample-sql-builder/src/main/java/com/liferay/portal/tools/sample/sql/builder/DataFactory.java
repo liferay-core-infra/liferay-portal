@@ -5630,17 +5630,20 @@ public class DataFactory {
 		BlogsEntryModel blogsEntryModel) {
 
 		return newSubscriptionModel(
-			getClassNameId(BlogsEntry.class), blogsEntryModel.getEntryId());
+			getClassNameId(BlogsEntry.class), blogsEntryModel.getEntryId(),
+			blogsEntryModel.getUserId(), blogsEntryModel.getUserName());
 	}
 
 	public SubscriptionModel newSubscriptionModel(MBThreadModel mBThreadModel) {
 		return newSubscriptionModel(
-			getClassNameId(MBThread.class), mBThreadModel.getThreadId());
+			getClassNameId(MBThread.class), mBThreadModel.getThreadId(),
+			mBThreadModel.getUserId(), mBThreadModel.getUserName());
 	}
 
 	public SubscriptionModel newSubscriptionModel(WikiPageModel wikiPageModel) {
 		return newSubscriptionModel(
-			getClassNameId(WikiPage.class), wikiPageModel.getResourcePrimKey());
+			getClassNameId(WikiPage.class), wikiPageModel.getResourcePrimKey(),
+			wikiPageModel.getUserId(), wikiPageModel.getUserName());
 	}
 
 	public List<UserModel> newUserModels() {
@@ -6985,7 +6988,7 @@ public class DataFactory {
 	}
 
 	protected SubscriptionModel newSubscriptionModel(
-		long classNameId, long classPK) {
+		long classNameId, long classPK, long userId, String userName) {
 
 		SubscriptionModel subscriptionModel = new SubscriptionModelImpl();
 
@@ -6996,8 +6999,8 @@ public class DataFactory {
 		// Audit fields
 
 		subscriptionModel.setCompanyId(_companyId);
-		subscriptionModel.setUserId(_sampleUserId);
-		subscriptionModel.setUserName(_SAMPLE_USER_NAME);
+		subscriptionModel.setUserId(userId);
+		subscriptionModel.setUserName(userName);
 		subscriptionModel.setCreateDate(new Date());
 		subscriptionModel.setModifiedDate(new Date());
 

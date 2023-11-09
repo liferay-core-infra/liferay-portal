@@ -16,13 +16,13 @@ import com.liferay.account.service.AccountGroupLocalService;
 import com.liferay.commerce.constants.CommercePortletKeys;
 import com.liferay.commerce.context.CommerceContext;
 import com.liferay.commerce.context.CommerceContextFactory;
-import com.liferay.commerce.frontend.internal.account.CommerceAccountResource;
 import com.liferay.commerce.frontend.internal.account.model.Account;
 import com.liferay.commerce.frontend.internal.account.model.AccountList;
 import com.liferay.commerce.frontend.internal.account.model.Order;
 import com.liferay.commerce.frontend.internal.account.model.OrderList;
 import com.liferay.commerce.frontend.internal.order.CommerceOrderResource;
 import com.liferay.commerce.frontend.internal.search.model.SearchItemModel;
+import com.liferay.commerce.frontend.internal.util.BaseCommerceResource;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.order.CommerceOrderHttpHelper;
 import com.liferay.commerce.product.catalog.CPCatalogEntry;
@@ -85,7 +85,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alessio Antonio Rendina
  */
 @Component(service = CommerceSearchResource.class)
-public class CommerceSearchResource {
+public class CommerceSearchResource extends BaseCommerceResource {
 
 	@GET
 	@Path("/search/{plid}")
@@ -350,7 +350,7 @@ public class CommerceSearchResource {
 				themeDisplay.getScopeGroupId()),
 			themeDisplay.getUserId(), 0, 0);
 
-		AccountList accountList = _commerceAccountResource.getAccountList(
+		AccountList accountList = getAccountList(
 			themeDisplay.getUserId(),
 			AccountConstants.PARENT_ACCOUNT_ENTRY_ID_DEFAULT,
 			commerceContext.getCommerceSiteType(), queryString, 1, 5,
@@ -540,9 +540,6 @@ public class CommerceSearchResource {
 
 	@Reference
 	private CommerceAccountHelper _commerceAccountHelper;
-
-	@Reference
-	private CommerceAccountResource _commerceAccountResource;
 
 	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;

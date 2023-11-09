@@ -3712,7 +3712,7 @@ public class DataFactory {
 
 	public DLFileEntryModel newDlFileEntryModel(
 		DLFolderModel dlFolderModel, String name, String extension,
-		String mimeType, long fileEntryId) {
+		String mimeType, long fileEntryId, UserModel userModel) {
 
 		DLFileEntryModel dlFileEntryModel = new DLFileEntryModelImpl();
 
@@ -3727,8 +3727,8 @@ public class DataFactory {
 		// Audit fields
 
 		dlFileEntryModel.setCompanyId(_companyId);
-		dlFileEntryModel.setUserId(_sampleUserId);
-		dlFileEntryModel.setUserName(_SAMPLE_USER_NAME);
+		dlFileEntryModel.setUserId(userModel.getUserId());
+		dlFileEntryModel.setUserName(userModel.getScreenName());
 		dlFileEntryModel.setCreateDate(nextFutureDate());
 		dlFileEntryModel.setModifiedDate(nextFutureDate());
 
@@ -3767,10 +3767,15 @@ public class DataFactory {
 		for (int i = 1; i <= BenchmarksPropsValues.MAX_DL_FILE_ENTRY_COUNT;
 			 i++) {
 
+			UserModel userModel = _userModels.get(
+				_dlFileEntryUserIndex % _userModels.size());
+
+			_dlFileEntryUserIndex++;
+
 			dlFileEntryModels.add(
 				newDlFileEntryModel(
 					dlFolderModel, "TestFile" + i, "txt",
-					ContentTypes.TEXT_PLAIN, _counter.get()));
+					ContentTypes.TEXT_PLAIN, _counter.get(), userModel));
 		}
 
 		return dlFileEntryModels;
@@ -7630,6 +7635,7 @@ public class DataFactory {
 	private final String _dlDDMStructureContent;
 	private final String _dlDDMStructureLayoutContent;
 	private final SimpleCounter _dlFileEntryIdCounter;
+	private int _dlFileEntryUserIndex;
 	private int _dlFolderUserIndex;
 	private AddressModel _firstAddressModel;
 	private final List<String> _firstNames;

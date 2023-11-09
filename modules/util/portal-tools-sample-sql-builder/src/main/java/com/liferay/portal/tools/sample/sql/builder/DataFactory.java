@@ -4890,8 +4890,8 @@ public class DataFactory {
 		// Audit fields
 
 		mbThreadFlagModel.setCompanyId(_companyId);
-		mbThreadFlagModel.setUserId(_sampleUserId);
-		mbThreadFlagModel.setUserName(_SAMPLE_USER_NAME);
+		mbThreadFlagModel.setUserId(mbThreadModel.getUserId());
+		mbThreadFlagModel.setUserName(mbThreadModel.getUserName());
 		mbThreadFlagModel.setCreateDate(new Date());
 		mbThreadFlagModel.setModifiedDate(new Date());
 

@@ -1246,8 +1246,13 @@ public class DataFactory {
 		for (int j = 0; j < BenchmarksPropsValues.MAX_ASSET_VUCABULARY_COUNT;
 			 j++) {
 
+			UserModel userModel = _userModels.get(
+				_assetVocabularyUserIndex % _userModels.size());
+
+			_assetVocabularyUserIndex++;
+
 			AssetVocabularyModel assetVocabularyModel = newAssetVocabularyModel(
-				groupId, _sampleUserId, _SAMPLE_USER_NAME,
+				groupId, userModel.getUserId(), userModel.getScreenName(),
 				StringBundler.concat(
 					"TestVocabulary_", groupId, StringPool.UNDERLINE, j));
 
@@ -7691,6 +7696,7 @@ public class DataFactory {
 		(Map<Long, List<AssetTagModel>>[])new HashMap<?, ?>
 			[(BenchmarksPropsValues.MAX_COMPANY_COUNT + 1) *
 				BenchmarksPropsValues.MAX_GROUP_COUNT];
+	private int _assetVocabularyUserIndex;
 	private int _blogsEntryUserIndex;
 	private final Map<String, ClassNameModel> _classNameModels =
 		new HashMap<>();

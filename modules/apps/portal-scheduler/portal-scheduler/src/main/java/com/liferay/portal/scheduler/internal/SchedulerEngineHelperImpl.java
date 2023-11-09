@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.scheduler.TriggerConfiguration;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -281,6 +282,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			message = new Message();
 		}
 
+		if (storageType == StorageType.PERSISTED && !message.contains("companyId")) {
+			message.put("companyId", CompanyThreadLocal.getCompanyId());
+		}
+
 		_schedulerEngine.schedule(
 			trigger, description, destinationName, message, storageType);
 	}
@@ -294,6 +299,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		Message message = new Message();
 
 		message.setPayload(payload);
+
+		if (storageType == StorageType.PERSISTED) {
+			message.put("companyId", CompanyThreadLocal.getCompanyId());
+		}
 
 		schedule(trigger, storageType, description, destinationName, message);
 	}

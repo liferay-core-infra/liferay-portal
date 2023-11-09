@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Props;
@@ -331,15 +330,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			}
 
 			if (storageType == StorageType.PERSISTED) {
-				long companyId = CompanyThreadLocal.getCompanyId();
-
-				if (message.contains("companyId")) {
-					companyId = message.getLong("companyId");
-				}
-
 				JobKey partitionedJobKey =
 					QuartzSchedulerUtil.getPartitionedJobKey(
-						companyId, quartzTrigger.getJobKey());
+						message.getLong("companyId"),
+						quartzTrigger.getJobKey());
 
 				TriggerBuilder<? extends Trigger> quartzTriggerBuilder =
 					quartzTrigger.getTriggerBuilder();

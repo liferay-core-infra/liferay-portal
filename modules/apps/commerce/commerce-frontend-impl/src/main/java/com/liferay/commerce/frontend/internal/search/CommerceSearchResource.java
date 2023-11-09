@@ -12,17 +12,18 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.liferay.account.constants.AccountConstants;
 import com.liferay.account.constants.AccountPortletKeys;
 import com.liferay.account.model.AccountEntry;
+import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.account.service.AccountGroupLocalService;
 import com.liferay.commerce.constants.CommercePortletKeys;
 import com.liferay.commerce.context.CommerceContext;
 import com.liferay.commerce.context.CommerceContextFactory;
-import com.liferay.commerce.frontend.internal.account.CommerceAccountResource;
 import com.liferay.commerce.frontend.internal.account.model.Account;
 import com.liferay.commerce.frontend.internal.account.model.AccountList;
 import com.liferay.commerce.frontend.internal.account.model.Order;
 import com.liferay.commerce.frontend.internal.account.model.OrderList;
 import com.liferay.commerce.frontend.internal.order.CommerceOrderResource;
 import com.liferay.commerce.frontend.internal.search.model.SearchItemModel;
+import com.liferay.commerce.frontend.internal.util.CommerceAccountListManager;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.order.CommerceOrderHttpHelper;
 import com.liferay.commerce.product.catalog.CPCatalogEntry;
@@ -55,6 +56,7 @@ import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.webserver.WebServerServletToken;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
@@ -77,6 +79,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -144,6 +147,13 @@ public class CommerceSearchResource {
 		return Response.status(
 			Response.Status.SERVICE_UNAVAILABLE
 		).build();
+	}
+
+	@Activate
+	protected void activate() {
+		_commerceAccountListManager = new CommerceAccountListManager(
+			_accountEntryLocalService, _commerceAccountHelper,
+			_webServerServletToken);
 	}
 
 	private String _getAccountManagementFriendlyURL(ThemeDisplay themeDisplay)
@@ -350,7 +360,7 @@ public class CommerceSearchResource {
 				themeDisplay.getScopeGroupId()),
 			themeDisplay.getUserId(), 0, 0);
 
-		AccountList accountList = _commerceAccountResource.getAccountList(
+		AccountList accountList = _commerceAccountListManager.getAccountList(
 			themeDisplay.getUserId(),
 			AccountConstants.PARENT_ACCOUNT_ENTRY_ID_DEFAULT,
 			commerceContext.getCommerceSiteType(), queryString, 1, 5,
@@ -536,13 +546,15 @@ public class CommerceSearchResource {
 		CommerceSearchResource.class);
 
 	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
 	private AccountGroupLocalService _accountGroupLocalService;
 
 	@Reference
 	private CommerceAccountHelper _commerceAccountHelper;
 
-	@Reference
-	private CommerceAccountResource _commerceAccountResource;
+	private CommerceAccountListManager _commerceAccountListManager;
 
 	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;
@@ -573,5 +585,8 @@ public class CommerceSearchResource {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private WebServerServletToken _webServerServletToken;
 
 }

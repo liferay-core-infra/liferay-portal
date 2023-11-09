@@ -34,6 +34,7 @@
 		<@insertMBDiscussion
 			_classNameId=dataFactory.journalArticleClassNameId
 			_classPK=journalArticleResourceModel.resourcePrimKey
+			_entry=journalArticleModel
 			_groupId=groupId
 			_maxCommentCount=0
 			_mbRootMessageId=dataFactory.getCounterNext()

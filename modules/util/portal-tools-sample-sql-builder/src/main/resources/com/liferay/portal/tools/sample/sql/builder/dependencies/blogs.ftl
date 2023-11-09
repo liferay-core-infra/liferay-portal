@@ -19,6 +19,7 @@
 	<@insertMBDiscussion
 		_classNameId=dataFactory.blogsEntryClassNameId
 		_classPK=blogsEntryModel.entryId
+		_entry=blogsEntryModel
 		_groupId=groupId
 		_maxCommentCount=dataFactory.maxBlogsEntryCommentCount
 		_mbRootMessageId=mbRootMessageId

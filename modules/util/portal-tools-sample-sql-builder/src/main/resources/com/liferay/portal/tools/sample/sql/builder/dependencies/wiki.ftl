@@ -22,6 +22,7 @@
 		<@insertMBDiscussion
 			_classNameId=dataFactory.wikiPageClassNameId
 			_classPK=wikiPageModel.resourcePrimKey
+			_entry=wikiPageModel
 			_groupId=groupId
 			_maxCommentCount=dataFactory.maxWikiPageCommentCount
 			_mbRootMessageId=mbRootMessageId

@@ -330,10 +330,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			}
 
 			if (storageType == StorageType.PERSISTED) {
-				JobKey partitionedJobKey =
-					QuartzSchedulerUtil.getPartitionedJobKey(
-						message.getLong("companyId"),
-						quartzTrigger.getJobKey());
+				JobKey partitionedJobKey = _getPartitionedJobKey(
+					message.getLong("companyId"), quartzTrigger.getJobKey());
 
 				TriggerBuilder<? extends Trigger> quartzTriggerBuilder =
 					quartzTrigger.getTriggerBuilder();
@@ -669,8 +667,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
 
 		if ((jobDetail == null) && (scheduler == _persistedScheduler)) {
-			jobDetail = scheduler.getJobDetail(
-				QuartzSchedulerUtil.getPartitionedJobKey(jobKey));
+			jobDetail = scheduler.getJobDetail(_getPartitionedJobKey(jobKey));
 		}
 
 		return jobDetail;
@@ -681,6 +678,18 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			SchedulerEngine.JOB_STATE);
 
 		return JobStateSerializeUtil.deserialize(jobStateMap);
+	}
+
+	private JobKey _getPartitionedJobKey(JobKey jobKey) {
+		return new JobKey(
+			SchedulerEngine.getPartitionedName(jobKey.getName()),
+			jobKey.getGroup());
+	}
+
+	private JobKey _getPartitionedJobKey(long companyId, JobKey jobKey) {
+		return new JobKey(
+			SchedulerEngine.getPartitionedName(companyId, jobKey.getName()),
+			jobKey.getGroup());
 	}
 
 	private Scheduler _getScheduler(StorageType storageType) {

@@ -5,8 +5,10 @@
 
 package com.liferay.portal.kernel.scheduler;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 
 import java.util.List;
 
@@ -53,6 +55,18 @@ public interface SchedulerEngine {
 	public static final String START_TIME = "START_TIME";
 
 	public static final String STORAGE_TYPE = "STORAGE_TYPE";
+
+	public static String getPartitionedName(long companyId, String name) {
+		if (name.matches("^.+@\\d+$")) {
+			return name;
+		}
+
+		return name.concat(StringPool.AT + companyId);
+	}
+
+	public static String getPartitionedName(String name) {
+		return getPartitionedName(CompanyThreadLocal.getCompanyId(), name);
+	}
 
 	public void delete(String groupName, StorageType storageType)
 		throws SchedulerException;

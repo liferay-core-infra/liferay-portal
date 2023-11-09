@@ -3857,7 +3857,8 @@ public class DataFactory {
 		long groupId, long parentFolderId, String name) {
 
 		return newDLFolderModel(
-			_counter.get(), groupId, parentFolderId, "", name);
+			_counter.get(), groupId, parentFolderId, "", name, _sampleUserId,
+			_SAMPLE_USER_NAME);
 	}
 
 	public List<DLFolderModel> newDLFolderModels(
@@ -3891,10 +3892,16 @@ public class DataFactory {
 
 			treePaths.put(folderId, sb.toString());
 
+			UserModel userModel = _userModels.get(
+				_dlFolderUserIndex % _userModels.size());
+
+			_dlFolderUserIndex++;
+
 			dlFolderModels.add(
 				newDLFolderModel(
 					folderId, groupId, parentFolderId, sb.toString(),
-					"Test Folder " + i));
+					"Test Folder " + i, userModel.getUserId(),
+					userModel.getScreenName()));
 		}
 
 		return dlFolderModels;
@@ -6437,7 +6444,7 @@ public class DataFactory {
 
 	protected DLFolderModel newDLFolderModel(
 		long folderId, long groupId, long parentFolderId, String treePath,
-		String name) {
+		String name, long userId, String userName) {
 
 		DLFolderModel dlFolderModel = new DLFolderModelImpl();
 
@@ -6452,8 +6459,8 @@ public class DataFactory {
 		// Audit fields
 
 		dlFolderModel.setCompanyId(_companyId);
-		dlFolderModel.setUserId(_sampleUserId);
-		dlFolderModel.setUserName(_SAMPLE_USER_NAME);
+		dlFolderModel.setUserId(userId);
+		dlFolderModel.setUserName(userName);
 		dlFolderModel.setCreateDate(nextFutureDate());
 		dlFolderModel.setModifiedDate(nextFutureDate());
 
@@ -7623,6 +7630,7 @@ public class DataFactory {
 	private final String _dlDDMStructureContent;
 	private final String _dlDDMStructureLayoutContent;
 	private final SimpleCounter _dlFileEntryIdCounter;
+	private int _dlFolderUserIndex;
 	private AddressModel _firstAddressModel;
 	private final List<String> _firstNames;
 	private final FriendlyURLNormalizer _friendlyURLNormalizer;

@@ -4302,9 +4302,14 @@ public class DataFactory {
 
 		// Audit fields
 
+		UserModel userModel = _userModels.get(
+			_journalArticleUserModelIndex % _userModels.size());
+
+		_journalArticleUserModelIndex++;
+
 		journalArticleModel.setCompanyId(_companyId);
-		journalArticleModel.setUserId(_sampleUserId);
-		journalArticleModel.setUserName(_SAMPLE_USER_NAME);
+		journalArticleModel.setUserId(userModel.getUserId());
+		journalArticleModel.setUserName(userModel.getScreenName());
 		journalArticleModel.setCreateDate(new Date());
 		journalArticleModel.setModifiedDate(new Date());
 
@@ -7630,6 +7635,7 @@ public class DataFactory {
 	private String _journalArticleContent;
 	private final Map<Long, String> _journalArticleResourceUUIDs =
 		new HashMap<>();
+	private int _journalArticleUserModelIndex;
 	private final String _journalDDMStructureContent;
 	private final String _journalDDMStructureLayoutContent;
 	private final List<String> _lastNames;

@@ -21,6 +21,8 @@ Import-Package:\
 	!net.jpountz.lz4.*,\
 	!net.jpountz.xxhash.*,\
 	\
+	!org.apache.log4j.*,\
+	\
 	!org.bouncycastle.asn1.*,\
 	!org.bouncycastle.cert.*,\
 	!org.bouncycastle.jce.provider.*,\

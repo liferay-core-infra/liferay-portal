@@ -42,4 +42,4 @@ Import-Package:\
 	!sun.security.x509.*,\
 	\
 	*
--exportcontents: io.netty.*
+-exportcontents: io.netty.*;-noimport:=true

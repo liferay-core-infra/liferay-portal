@@ -5,6 +5,7 @@
 
 package com.liferay.marketplace.internal.bundle;
 
+import com.liferay.marketplace.bundle.BundleManager;
 import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.io.File;
@@ -20,61 +21,60 @@ import org.osgi.framework.Bundle;
 public class BundleManagerUtil {
 
 	public static Bundle getBundle(String symbolicName, String version) {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		return bundleManagerImpl.getBundle(symbolicName, version);
+		return bundleManager.getBundle(symbolicName, version);
 	}
 
 	public static List<Bundle> getBundles() {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		return bundleManagerImpl.getBundles();
+		return bundleManager.getBundles();
 	}
 
 	public static List<Bundle> getInstalledBundles() {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		return bundleManagerImpl.getInstalledBundles();
+		return bundleManager.getInstalledBundles();
 	}
 
 	public static Manifest getManifest(File file) {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		return bundleManagerImpl.getManifest(file);
+		return bundleManager.getManifest(file);
 	}
 
 	public static void installLPKG(File file) throws Exception {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		bundleManagerImpl.installLPKG(file);
+		bundleManager.installLPKG(file);
 	}
 
 	public static boolean isInstalled(Bundle bundle) {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		return bundleManagerImpl.isInstalled(bundle);
+		return bundleManager.isInstalled(bundle);
 	}
 
 	public static boolean isInstalled(String symbolicName, String version) {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		return bundleManagerImpl.isInstalled(symbolicName, version);
+		return bundleManager.isInstalled(symbolicName, version);
 	}
 
 	public static void uninstallBundle(Bundle bundle) {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		bundleManagerImpl.uninstallBundle(bundle);
+		bundleManager.uninstallBundle(bundle);
 	}
 
 	public static void uninstallBundle(String symbolicName, String version) {
-		BundleManagerImpl bundleManagerImpl = _bundleManagerImplSnapshot.get();
+		BundleManager bundleManager = _bundleManagerSnapshot.get();
 
-		bundleManagerImpl.uninstallBundle(symbolicName, version);
+		bundleManager.uninstallBundle(symbolicName, version);
 	}
 
-	private static final Snapshot<BundleManagerImpl>
-		_bundleManagerImplSnapshot = new Snapshot<>(
-			BundleManagerUtil.class, BundleManagerImpl.class);
+	private static final Snapshot<BundleManager> _bundleManagerSnapshot =
+		new Snapshot<>(BundleManagerUtil.class, BundleManager.class);
 
 }

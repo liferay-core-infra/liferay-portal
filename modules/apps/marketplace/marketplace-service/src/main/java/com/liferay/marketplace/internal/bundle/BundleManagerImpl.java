@@ -80,6 +80,7 @@ public class BundleManagerImpl implements BundleManager {
 		return bundles;
 	}
 
+	@Override
 	public Manifest getManifest(File file) {
 		try (ZipFile zipFile = new ZipFile(file)) {
 			ZipEntry zipEntry = zipFile.getEntry("META-INF/MANIFEST.MF");
@@ -101,6 +102,7 @@ public class BundleManagerImpl implements BundleManager {
 		return null;
 	}
 
+	@Override
 	public void installLPKG(File file) throws Exception {
 		File installFile = new File(_getInstallDirName(), file.getName());
 
@@ -113,6 +115,7 @@ public class BundleManagerImpl implements BundleManager {
 		}
 	}
 
+	@Override
 	public boolean isInstalled(Bundle bundle) {
 		if (ArrayUtil.contains(_INSTALLED_BUNDLE_STATES, bundle.getState())) {
 			return true;
@@ -121,6 +124,7 @@ public class BundleManagerImpl implements BundleManager {
 		return false;
 	}
 
+	@Override
 	public boolean isInstalled(String symbolicName, String version) {
 		Bundle bundle = getBundle(symbolicName, version);
 
@@ -131,6 +135,7 @@ public class BundleManagerImpl implements BundleManager {
 		return isInstalled(bundle);
 	}
 
+	@Override
 	public void uninstallBundle(Bundle bundle) {
 		try {
 			bundle.uninstall();
@@ -140,6 +145,7 @@ public class BundleManagerImpl implements BundleManager {
 		}
 	}
 
+	@Override
 	public void uninstallBundle(String symbolicName, String version) {
 		Bundle bundle = getBundle(symbolicName, version);
 

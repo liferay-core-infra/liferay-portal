@@ -5,7 +5,10 @@
 
 package com.liferay.marketplace.bundle;
 
+import java.io.File;
+
 import java.util.List;
+import java.util.jar.Manifest;
 
 import org.osgi.framework.Bundle;
 
@@ -20,5 +23,17 @@ public interface BundleManager {
 	public List<Bundle> getBundles();
 
 	public List<Bundle> getInstalledBundles();
+
+	public Manifest getManifest(File file);
+
+	public void installLPKG(File file) throws Exception;
+
+	public boolean isInstalled(Bundle bundle);
+
+	public boolean isInstalled(String symbolicName, String version);
+
+	public void uninstallBundle(Bundle bundle);
+
+	public void uninstallBundle(String symbolicName, String version);
 
 }

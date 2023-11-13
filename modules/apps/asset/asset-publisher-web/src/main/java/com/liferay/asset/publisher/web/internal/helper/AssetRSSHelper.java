@@ -58,7 +58,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = AssetRSSHelper.class)
 public class AssetRSSHelper {
 
-	public byte[] getRSS(
+	public byte[] getRSSBytes(
 			ResourceRequest portletRequest, ResourceResponse portletResponse)
 		throws Exception {
 

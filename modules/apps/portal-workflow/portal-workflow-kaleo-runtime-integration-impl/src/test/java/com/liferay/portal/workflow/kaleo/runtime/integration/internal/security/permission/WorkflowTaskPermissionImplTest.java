@@ -10,7 +10,9 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.GroupLocalServiceWrapper;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -22,7 +24,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskAssignee;
-import com.liferay.portal.security.permission.SimplePermissionChecker;
+import com.liferay.portal.security.permission.BasePermissionChecker;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.workflow.kaleo.runtime.integration.internal.WorkflowTaskManagerImpl;
 import com.liferay.portal.workflow.security.permission.WorkflowTaskPermission;
@@ -334,44 +336,8 @@ public class WorkflowTaskPermissionImplTest {
 			userId
 		);
 
-		return new SimplePermissionChecker() {
-
-			@Override
-			public long getCompanyId() {
-				return 0;
-			}
-
-			@Override
-			public long[] getRoleIds(long userId, long groupId) {
-				return roleIds;
-			}
-
-			@Override
-			public User getUser() {
-				return _user;
-			}
-
-			@Override
-			public long getUserId() {
-				return userId;
-			}
-
-			@Override
-			public boolean isCompanyAdmin() {
-				return companyAdmin;
-			}
-
-			@Override
-			public boolean isContentReviewer(long companyId, long groupId) {
-				return contentReviewer;
-			}
-
-			@Override
-			public boolean isOmniadmin() {
-				return paraOmniadmin;
-			}
-
-		};
+		return new TestPermissionChecker(
+			companyAdmin, contentReviewer, paraOmniadmin, roleIds, userId);
 	}
 
 	private WorkflowTask _mockWorkflowTask() {
@@ -498,5 +464,126 @@ public class WorkflowTaskPermissionImplTest {
 
 	private final WorkflowTaskPermission _workflowTaskPermissionChecker =
 		new WorkflowTaskPermissionImpl();
+
+	private static class TestPermissionChecker extends BasePermissionChecker {
+
+		public TestPermissionChecker(
+			boolean companyAdmin, boolean contentReviewer,
+			boolean paraOmniadmin, long[] roleIds, long userId) {
+
+			_companyAdmin = companyAdmin;
+			_contentReviewer = contentReviewer;
+			_paraOmniadmin = paraOmniadmin;
+			_roleIds = roleIds;
+			_userId = userId;
+		}
+
+		@Override
+		public TestPermissionChecker clone() {
+			return new TestPermissionChecker(
+				_companyAdmin, _contentReviewer, _paraOmniadmin, _roleIds,
+				_userId);
+		}
+
+		@Override
+		public long getCompanyId() {
+			return 0;
+		}
+
+		@Override
+		public long[] getRoleIds(long userId, long groupId) {
+			return _roleIds;
+		}
+
+		@Override
+		public User getUser() {
+			return _user;
+		}
+
+		@Override
+		public UserBag getUserBag() {
+			return null;
+		}
+
+		@Override
+		public long getUserId() {
+			return _userId;
+		}
+
+		@Override
+		public boolean hasOwnerPermission(
+			long companyId, String name, String primKey, long ownerId,
+			String actionId) {
+
+			return hasPermission(actionId);
+		}
+
+		@Override
+		public boolean hasPermission(
+			Group group, String name, String primKey, String actionId) {
+
+			return hasPermission(actionId);
+		}
+
+		@Override
+		public boolean isCompanyAdmin() {
+			return _companyAdmin;
+		}
+
+		@Override
+		public boolean isCompanyAdmin(long companyId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isContentReviewer(long companyId, long groupId) {
+			return _contentReviewer;
+		}
+
+		@Override
+		public boolean isGroupAdmin(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupMember(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupOwner(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOmniadmin() {
+			return _paraOmniadmin;
+		}
+
+		@Override
+		public boolean isOrganizationAdmin(long organizationId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOrganizationOwner(long organizationId) {
+			return signedIn;
+		}
+
+		protected boolean hasPermission(String actionId) {
+			if (signedIn || actionId.equals(ActionKeys.VIEW)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		private final boolean _companyAdmin;
+		private final boolean _contentReviewer;
+		private final boolean _paraOmniadmin;
+		private final long[] _roleIds;
+		private final long _userId;
+
+	}
 
 }

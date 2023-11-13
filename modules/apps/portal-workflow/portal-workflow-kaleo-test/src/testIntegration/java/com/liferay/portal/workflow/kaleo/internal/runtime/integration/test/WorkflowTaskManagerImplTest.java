@@ -63,9 +63,11 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -104,7 +106,7 @@ import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.kernel.workflow.search.WorkflowModelSearchResult;
 import com.liferay.portal.search.test.util.SearchTestRule;
-import com.liferay.portal.security.permission.SimplePermissionChecker;
+import com.liferay.portal.security.permission.BasePermissionChecker;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
@@ -1846,21 +1848,11 @@ public class WorkflowTaskManagerImplTest extends BaseWorkflowManagerTestCase {
 	private void _setUpPermissionThreadLocal() throws Exception {
 		_permissionChecker = PermissionThreadLocal.getPermissionChecker();
 
-		PermissionThreadLocal.setPermissionChecker(
-			new SimplePermissionChecker() {
-				{
-					init(_companyAdminUser);
-				}
+		PermissionChecker permissionChecker = new TestPermissionChecker();
 
-				@Override
-				public boolean hasOwnerPermission(
-					long companyId, String name, String primKey, long ownerId,
-					String actionId) {
+		permissionChecker.init(_companyAdminUser);
 
-					return true;
-				}
-
-			});
+		PermissionThreadLocal.setPermissionChecker(permissionChecker);
 	}
 
 	private void _setUpPrincipalThreadLocal() throws Exception {
@@ -2059,5 +2051,82 @@ public class WorkflowTaskManagerImplTest extends BaseWorkflowManagerTestCase {
 
 	@Inject
 	private WorkflowTaskManager _workflowTaskManager;
+
+	private static class TestPermissionChecker extends BasePermissionChecker {
+
+		@Override
+		public TestPermissionChecker clone() {
+			return new TestPermissionChecker();
+		}
+
+		@Override
+		public UserBag getUserBag() {
+			return null;
+		}
+
+		@Override
+		public boolean hasOwnerPermission(
+			long companyId, String name, String primKey, long ownerId,
+			String actionId) {
+
+			return true;
+		}
+
+		@Override
+		public boolean hasPermission(
+			Group group, String name, String primKey, String actionId) {
+
+			return hasPermission(actionId);
+		}
+
+		@Override
+		public boolean isCompanyAdmin() {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isCompanyAdmin(long companyId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isContentReviewer(long companyId, long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupAdmin(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupMember(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupOwner(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOrganizationAdmin(long organizationId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOrganizationOwner(long organizationId) {
+			return signedIn;
+		}
+
+		protected boolean hasPermission(String actionId) {
+			if (signedIn || actionId.equals(ActionKeys.VIEW)) {
+				return true;
+			}
+
+			return false;
+		}
+
+	}
 
 }

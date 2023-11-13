@@ -34,8 +34,10 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.test.constants.TestDataConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -50,7 +52,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.portal.security.permission.SimplePermissionChecker;
+import com.liferay.portal.security.permission.BasePermissionChecker;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -707,21 +709,11 @@ public class DDLExporterTest {
 	}
 
 	protected void setUpPermissionChecker() throws Exception {
-		PermissionThreadLocal.setPermissionChecker(
-			new SimplePermissionChecker() {
-				{
-					init(TestPropsValues.getUser());
-				}
+		PermissionChecker permissionChecker = new TestPermissionChecker();
 
-				@Override
-				public boolean hasOwnerPermission(
-					long companyId, String name, String primKey, long ownerId,
-					String actionId) {
+		permissionChecker.init(TestPropsValues.getUser());
 
-					return true;
-				}
-
-			});
+		PermissionThreadLocal.setPermissionChecker(permissionChecker);
 	}
 
 	@Inject
@@ -736,6 +728,83 @@ public class DDLExporterTest {
 	private Group _group;
 
 	private PermissionChecker _originalPermissionChecker;
+
+	private static class TestPermissionChecker extends BasePermissionChecker {
+
+		@Override
+		public TestPermissionChecker clone() {
+			return new TestPermissionChecker();
+		}
+
+		@Override
+		public UserBag getUserBag() {
+			return null;
+		}
+
+		@Override
+		public boolean hasOwnerPermission(
+			long companyId, String name, String primKey, long ownerId,
+			String actionId) {
+
+			return true;
+		}
+
+		@Override
+		public boolean hasPermission(
+			Group group, String name, String primKey, String actionId) {
+
+			return hasPermission(actionId);
+		}
+
+		@Override
+		public boolean isCompanyAdmin() {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isCompanyAdmin(long companyId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isContentReviewer(long companyId, long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupAdmin(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupMember(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupOwner(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOrganizationAdmin(long organizationId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOrganizationOwner(long organizationId) {
+			return signedIn;
+		}
+
+		protected boolean hasPermission(String actionId) {
+			if (signedIn || actionId.equals(ActionKeys.VIEW)) {
+				return true;
+			}
+
+			return false;
+		}
+
+	}
 
 	private enum DDMFormFieldType {
 

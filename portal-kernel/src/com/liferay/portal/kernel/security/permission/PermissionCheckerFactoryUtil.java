@@ -21,6 +21,13 @@ public class PermissionCheckerFactoryUtil {
 		return permissionCheckerFactory.create(user);
 	}
 
+	public static PermissionChecker getPermissionChecker() {
+		PermissionCheckerFactory permissionCheckerFactory =
+			_permissionCheckerFactorySnapshot.get();
+
+		return permissionCheckerFactory.getPermissionChecker();
+	}
+
 	public static PermissionCheckerFactory getPermissionCheckerFactory() {
 		return _permissionCheckerFactorySnapshot.get();
 	}

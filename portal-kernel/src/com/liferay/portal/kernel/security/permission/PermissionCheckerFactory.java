@@ -15,4 +15,6 @@ public interface PermissionCheckerFactory {
 
 	public PermissionChecker create(User user);
 
+	public PermissionChecker getPermissionChecker();
+
 }

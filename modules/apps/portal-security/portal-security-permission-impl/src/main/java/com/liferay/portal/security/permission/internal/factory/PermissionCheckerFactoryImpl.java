@@ -31,13 +31,7 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 
 	@Override
 	public PermissionChecker create(User user) {
-		PermissionChecker permissionChecker = _permissionCheckerSnapshot.get();
-
-		if (permissionChecker == null) {
-			permissionChecker = _permissionChecker;
-		}
-
-		permissionChecker = permissionChecker.clone();
+		PermissionChecker permissionChecker = getPermissionChecker();
 
 		permissionChecker.init(
 			user, _roleContributors.toArray(new RoleContributor[0]));
@@ -53,6 +47,17 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 		}
 
 		return permissionChecker;
+	}
+
+	@Override
+	public PermissionChecker getPermissionChecker() {
+		PermissionChecker permissionChecker = _permissionCheckerSnapshot.get();
+
+		if (permissionChecker == null) {
+			permissionChecker = _permissionChecker;
+		}
+
+		return permissionChecker.clone();
 	}
 
 	@Activate

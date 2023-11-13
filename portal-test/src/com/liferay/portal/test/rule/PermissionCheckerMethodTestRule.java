@@ -5,14 +5,31 @@
 
 package com.liferay.portal.test.rule;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.UserBag;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.MethodTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.junit.runner.Description;
@@ -48,12 +65,9 @@ public class PermissionCheckerMethodTestRule extends MethodTestRule<Void> {
 		_originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerHolder._permissionChecker;
+		PermissionChecker permissionChecker = new TestPermissionChecker();
 
-		PermissionChecker clonedPermissionChecker = permissionChecker.clone();
-
-		clonedPermissionChecker.init(TestPropsValues.getUser());
+		permissionChecker.init(TestPropsValues.getUser());
 
 		PermissionThreadLocal.setPermissionChecker(
 			(PermissionChecker)ProxyUtil.newProxyInstance(
@@ -66,7 +80,7 @@ public class PermissionCheckerMethodTestRule extends MethodTestRule<Void> {
 						return true;
 					}
 
-					return method.invoke(clonedPermissionChecker, args);
+					return method.invoke(permissionChecker, args);
 				}));
 	}
 
@@ -82,27 +96,225 @@ public class PermissionCheckerMethodTestRule extends MethodTestRule<Void> {
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
 
-	private static class PermissionCheckerHolder {
+	private static class TestPermissionChecker implements PermissionChecker {
 
-		private static PermissionChecker _getPermissionChecker() {
+		@Override
+		public TestPermissionChecker clone() {
+			return new TestPermissionChecker();
+		}
+
+		@Override
+		public long getCompanyId() {
+			return user.getCompanyId();
+		}
+
+		@Override
+		public long[] getGuestUserRoleIds() {
+			return PermissionChecker.DEFAULT_ROLE_IDS;
+		}
+
+		@Override
+		public long getOwnerRoleId() {
+			return ownerRole.getRoleId();
+		}
+
+		@Override
+		public Map<Object, Object> getPermissionChecksMap() {
+			return _permissionChecksMap;
+		}
+
+		@Override
+		public long[] getRoleIds(long userId, long groupId) {
+			return PermissionChecker.DEFAULT_ROLE_IDS;
+		}
+
+		@Override
+		public User getUser() {
+			return user;
+		}
+
+		@Override
+		public UserBag getUserBag() {
+			return null;
+		}
+
+		@Override
+		public long getUserId() {
+			return user.getUserId();
+		}
+
+		@Override
+		public boolean hasOwnerPermission(
+			long companyId, String name, long primKey, long ownerId,
+			String actionId) {
+
+			return hasOwnerPermission(
+				companyId, name, String.valueOf(primKey), ownerId, actionId);
+		}
+
+		@Override
+		public boolean hasOwnerPermission(
+			long companyId, String name, String primKey, long ownerId,
+			String actionId) {
+
+			return hasPermission(actionId);
+		}
+
+		@Override
+		public boolean hasPermission(
+			Group group, String name, long primKey, String actionId) {
+
+			return hasPermission(
+				group, name, String.valueOf(primKey), actionId);
+		}
+
+		@Override
+		public boolean hasPermission(
+			Group group, String name, String primKey, String actionId) {
+
+			return hasPermission(actionId);
+		}
+
+		@Override
+		public boolean hasPermission(
+			long groupId, String name, long primKey, String actionId) {
+
+			return hasPermission(
+				GroupLocalServiceUtil.fetchGroup(groupId), name,
+				String.valueOf(primKey), actionId);
+		}
+
+		@Override
+		public boolean hasPermission(
+			long groupId, String name, String primKey, String actionId) {
+
+			return hasPermission(
+				GroupLocalServiceUtil.fetchGroup(groupId), name, primKey,
+				actionId);
+		}
+
+		@Override
+		public void init(User user) {
+			this.user = user;
+
+			if (user.isGuestUser()) {
+				guestUserId = user.getUserId();
+				signedIn = false;
+			}
+			else {
+				try {
+					guestUserId = UserLocalServiceUtil.getGuestUserId(
+						user.getCompanyId());
+				}
+				catch (Exception exception) {
+					_log.error(exception);
+				}
+
+				signedIn = true;
+			}
+
 			try {
-				ClassLoader portalClassLoader =
-					PortalClassLoaderUtil.getClassLoader();
-
-				Class<PermissionChecker> clazz =
-					(Class<PermissionChecker>)portalClassLoader.loadClass(
-						"com.liferay.portal.security.permission." +
-							"SimplePermissionChecker");
-
-				return clazz.newInstance();
+				ownerRole = RoleLocalServiceUtil.getRole(
+					user.getCompanyId(), RoleConstants.OWNER);
 			}
 			catch (Exception exception) {
-				throw new RuntimeException(exception);
+				_log.error(exception);
 			}
 		}
 
-		private static final PermissionChecker _permissionChecker =
-			_getPermissionChecker();
+		@Override
+		public boolean isCheckGuest() {
+			return checkGuest;
+		}
+
+		@Override
+		public boolean isCompanyAdmin() {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isCompanyAdmin(long companyId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isContentReviewer(long companyId, long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupAdmin(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupMember(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupOwner(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOmniadmin() {
+			if (omniadmin == null) {
+				ClassLoader portalClassLoader =
+					PortalClassLoaderUtil.getClassLoader();
+
+				try {
+					omniadmin = Boolean.valueOf(
+						ReflectionTestUtil.invoke(
+							portalClassLoader.loadClass(
+								"com.liferay.portlet.admin.util.OmniadminUtil"),
+							"isOmniadmin", new Class<?>[] {User.class},
+							getUser()));
+				}
+				catch (Exception exception) {
+					throw new RuntimeException(exception);
+				}
+			}
+
+			return omniadmin.booleanValue();
+		}
+
+		@Override
+		public boolean isOrganizationAdmin(long organizationId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOrganizationOwner(long organizationId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isSignedIn() {
+			return signedIn;
+		}
+
+		protected boolean hasPermission(String actionId) {
+			if (signedIn || actionId.equals(ActionKeys.VIEW)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		protected boolean checkGuest = GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.PERMISSIONS_CHECK_GUEST_ENABLED));
+		protected long guestUserId;
+		protected Boolean omniadmin;
+		protected Role ownerRole;
+		protected boolean signedIn;
+		protected User user;
+
+		private static final Log _log = LogFactoryUtil.getLog(
+			TestPermissionChecker.class);
+
+		private final Map<Object, Object> _permissionChecksMap =
+			new HashMap<>();
 
 	}
 

@@ -19,11 +19,12 @@ import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.security.permission.SimplePermissionChecker;
+import com.liferay.portal.security.permission.BasePermissionChecker;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
@@ -176,23 +177,7 @@ public class RepositoryProviderTest {
 			PermissionThreadLocal.getPermissionChecker();
 
 		try {
-			PermissionChecker permissionChecker =
-				new SimplePermissionChecker() {
-
-					@Override
-					public boolean hasOwnerPermission(
-						long companyId, String name, String primKey,
-						long ownerId, String actionId) {
-
-						return false;
-					}
-
-					@Override
-					protected boolean hasPermission(String actionId) {
-						return false;
-					}
-
-				};
+			PermissionChecker permissionChecker = new TestPermissionChecker();
 
 			permissionChecker.init(originalPermissionChecker.getUser());
 
@@ -251,5 +236,78 @@ public class RepositoryProviderTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	private static class TestPermissionChecker extends BasePermissionChecker {
+
+		@Override
+		public TestPermissionChecker clone() {
+			return new TestPermissionChecker();
+		}
+
+		@Override
+		public UserBag getUserBag() {
+			return null;
+		}
+
+		@Override
+		public boolean hasOwnerPermission(
+			long companyId, String name, String primKey, long ownerId,
+			String actionId) {
+
+			return false;
+		}
+
+		@Override
+		public boolean hasPermission(
+			Group group, String name, String primKey, String actionId) {
+
+			return hasPermission(actionId);
+		}
+
+		@Override
+		public boolean isCompanyAdmin() {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isCompanyAdmin(long companyId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isContentReviewer(long companyId, long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupAdmin(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupMember(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isGroupOwner(long groupId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOrganizationAdmin(long organizationId) {
+			return signedIn;
+		}
+
+		@Override
+		public boolean isOrganizationOwner(long organizationId) {
+			return signedIn;
+		}
+
+		protected boolean hasPermission(String actionId) {
+			return false;
+		}
+
+	}
 
 }

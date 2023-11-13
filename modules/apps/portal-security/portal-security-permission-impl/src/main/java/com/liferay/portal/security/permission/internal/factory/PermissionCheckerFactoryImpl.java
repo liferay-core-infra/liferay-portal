@@ -8,6 +8,7 @@ package com.liferay.portal.security.permission.internal.factory;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.security.permission.contributor.RoleContributor;
@@ -30,7 +31,13 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 
 	@Override
 	public PermissionChecker create(User user) {
-		PermissionChecker permissionChecker = _permissionChecker.clone();
+		PermissionChecker permissionChecker = _permissionCheckerSnapshot.get();
+
+		if (permissionChecker == null) {
+			permissionChecker = _permissionChecker;
+		}
+
+		permissionChecker = permissionChecker.clone();
 
 		permissionChecker.init(
 			user, _roleContributors.toArray(new RoleContributor[0]));
@@ -61,6 +68,11 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 		_permissionCheckerWrapperFactories.close();
 		_roleContributors.close();
 	}
+
+	private static final Snapshot<PermissionChecker>
+		_permissionCheckerSnapshot = new Snapshot<>(
+			PermissionCheckerFactoryImpl.class, PermissionChecker.class, null,
+			true);
 
 	private final PermissionChecker _permissionChecker =
 		new AdvancedPermissionChecker();

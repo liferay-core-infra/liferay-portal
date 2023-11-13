@@ -288,7 +288,7 @@ public class AssetPublisherPortlet extends MVCPortlet {
 				AssetPublisherWebKeys.ASSET_PUBLISHER_DISPLAY_CONTEXT,
 				assetPublisherDisplayContext);
 
-			byte[] bytes = assetRSSHelper.getRSS(
+			byte[] bytes = assetRSSHelper.getRSSBytes(
 				resourceRequest, resourceResponse);
 
 			outputStream.write(bytes);

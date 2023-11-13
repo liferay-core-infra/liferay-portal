@@ -9,6 +9,7 @@ import com.liferay.oauth2.provider.scope.RequiresNoScope;
 import com.liferay.osb.faro.model.FaroProject;
 import com.liferay.osb.faro.web.internal.context.GroupInfo;
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
+import com.liferay.osb.faro.web.internal.controller.FaroController;
 import com.liferay.osb.faro.web.internal.util.JSONUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
@@ -30,7 +31,13 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Marcellus Tavares
  */
-@Component(service = RecommendationController.class)
+@Component(
+	property = {
+		"osgi.jaxrs.application.select=(osgi.jaxrs.name=Liferay.Analytics.Cloud.REST)",
+		"osgi.jaxrs.resource=true"
+	},
+	service = FaroController.class
+)
 @Path("/recommendations")
 @Produces(MediaType.APPLICATION_JSON)
 @RequiresNoScope

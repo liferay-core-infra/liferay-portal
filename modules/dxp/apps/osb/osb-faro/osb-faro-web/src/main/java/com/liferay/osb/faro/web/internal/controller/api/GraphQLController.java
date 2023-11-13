@@ -15,6 +15,7 @@ import com.liferay.osb.faro.util.FaroPermissionChecker;
 import com.liferay.osb.faro.util.FaroPropsValues;
 import com.liferay.osb.faro.web.internal.context.GroupInfo;
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
+import com.liferay.osb.faro.web.internal.controller.FaroController;
 import com.liferay.osb.faro.web.internal.util.JSONUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -58,7 +59,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Rachael Koestartyo
  */
-@Component(service = GraphQLController.class)
+@Component(
+	property = {
+		"osgi.jaxrs.application.select=(osgi.jaxrs.name=Liferay.Analytics.Cloud.REST)",
+		"osgi.jaxrs.resource=true"
+	},
+	service = FaroController.class
+)
 @Path("/graphql")
 @Produces(MediaType.APPLICATION_JSON)
 @RequiresNoScope

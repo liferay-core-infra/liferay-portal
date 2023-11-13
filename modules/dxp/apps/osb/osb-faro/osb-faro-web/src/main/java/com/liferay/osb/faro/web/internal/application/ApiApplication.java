@@ -9,9 +9,6 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import com.liferay.oauth2.provider.service.OAuth2AuthorizationLocalService;
 import com.liferay.osb.faro.web.internal.context.GroupInfoContextProvider;
-import com.liferay.osb.faro.web.internal.controller.api.GraphQLController;
-import com.liferay.osb.faro.web.internal.controller.api.RecommendationController;
-import com.liferay.osb.faro.web.internal.controller.api.ReportController;
 import com.liferay.osb.faro.web.internal.util.JSONUtil;
 
 import java.util.HashSet;
@@ -41,12 +38,9 @@ public class ApiApplication extends Application {
 	public Set<Object> getSingletons() {
 		Set<Object> singletons = new HashSet<>();
 
-		singletons.add(_graphQLController);
 		singletons.add(
 			new GroupInfoContextProvider(_oAuth2AuthorizationLocalService));
 		singletons.add(new JacksonJsonProvider(JSONUtil.getObjectMapper()));
-		singletons.add(_recommendationController);
-		singletons.add(_reportController);
 
 		return singletons;
 	}
@@ -62,15 +56,6 @@ public class ApiApplication extends Application {
 	}
 
 	@Reference
-	private GraphQLController _graphQLController;
-
-	@Reference
 	private OAuth2AuthorizationLocalService _oAuth2AuthorizationLocalService;
-
-	@Reference
-	private RecommendationController _recommendationController;
-
-	@Reference
-	private ReportController _reportController;
 
 }

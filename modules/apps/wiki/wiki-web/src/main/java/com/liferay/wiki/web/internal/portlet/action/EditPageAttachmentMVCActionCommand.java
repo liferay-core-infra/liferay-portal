@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -61,7 +60,7 @@ import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.exception.NoSuchNodeException;
 import com.liferay.wiki.exception.NoSuchPageException;
 import com.liferay.wiki.service.WikiPageService;
-import com.liferay.wiki.web.internal.helper.WikiAttachmentsHelper;
+import com.liferay.wiki.web.internal.base.BaseWikiMVCActionCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,7 +91,8 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCActionCommand.class
 )
-public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
+public class EditPageAttachmentMVCActionCommand
+	extends BaseWikiMVCActionCommand {
 
 	@Activate
 	@Modified
@@ -140,13 +140,13 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 				_deleteTempAttachment(actionRequest, actionResponse);
 			}
 			else if (cmd.equals(Constants.EMPTY_TRASH)) {
-				_wikiAttachmentsHelper.emptyTrash(actionRequest);
+				emptyTrash(actionRequest);
 			}
 			else if (cmd.equals(Constants.MOVE_TO_TRASH)) {
 				_deleteAttachment(actionRequest, true);
 			}
 			else if (cmd.equals(Constants.RESTORE)) {
-				_wikiAttachmentsHelper.restoreEntries(actionRequest);
+				restoreEntries(actionRequest);
 
 				String redirect = ParamUtil.getString(
 					actionRequest, "redirect");
@@ -182,7 +182,7 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, boolean moveToTrash)
 		throws Exception {
 
-		TrashedModel trashedModel = _wikiAttachmentsHelper.deleteAttachment(
+		TrashedModel trashedModel = deleteAttachment(
 			actionRequest, moveToTrash);
 
 		if (moveToTrash && (trashedModel != null)) {
@@ -425,9 +425,6 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference(target = "(upload.response.handler=multiple)")
 	private UploadResponseHandler _uploadResponseHandler;
-
-	@Reference
-	private WikiAttachmentsHelper _wikiAttachmentsHelper;
 
 	@Reference
 	private WikiPageService _wikiPageService;

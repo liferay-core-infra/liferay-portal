@@ -3,19 +3,24 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.security.membershippolicy;
+package com.liferay.portal.security.membership.policy;
 
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.security.membershippolicy.BaseRoleMembershipPolicy;
+import com.liferay.portal.kernel.security.membershippolicy.RoleMembershipPolicy;
 
 import java.io.Serializable;
 
 import java.util.Map;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Roberto Díaz
  * @author Sergio González
  */
+@Component(service = RoleMembershipPolicy.class)
 public class DummyRoleMembershipPolicy extends BaseRoleMembershipPolicy {
 
 	@Override

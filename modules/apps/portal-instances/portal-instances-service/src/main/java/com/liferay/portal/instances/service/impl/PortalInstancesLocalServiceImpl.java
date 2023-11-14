@@ -178,7 +178,7 @@ public class PortalInstancesLocalServiceImpl
 						return;
 					}
 
-					PortalInstances.initCompany(company);
+					PortalInstances.initCompany(company, false);
 				});
 
 			_companyLocalService.forEachCompanyId(

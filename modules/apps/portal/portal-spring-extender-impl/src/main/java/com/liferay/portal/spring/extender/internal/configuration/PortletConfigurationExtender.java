@@ -55,10 +55,13 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
  */
 @Component(service = {})
 public class PortletConfigurationExtender
-	implements BundleTrackerCustomizer<Configuration> {
+	implements BundleTrackerCustomizer
+		<PortletConfigurationExtender.PortletConfigurationExtension> {
 
 	@Override
-	public Configuration addingBundle(Bundle bundle, BundleEvent bundleEvent) {
+	public PortletConfigurationExtension addingBundle(
+		Bundle bundle, BundleEvent bundleEvent) {
+
 		if (!BundleUtil.isLiferayServiceBundle(bundle)) {
 			return null;
 		}
@@ -74,43 +77,69 @@ public class PortletConfigurationExtender
 			return null;
 		}
 
-		try {
-			String[] resourceActionsConfigurations = StringUtil.split(
-				portletConfiguration.get(PropsKeys.RESOURCE_ACTIONS_CONFIGS));
+		PortletConfigurationExtension portletConfigurationExtension =
+			new PortletConfigurationExtension(
+				bundle, classLoader, portletConfiguration);
 
-			boolean checkResourceActions = !_isUpToDate(
-				classLoader, resourceActionsConfigurations);
+		portletConfigurationExtension.start();
 
-			_resourceActions.populateModelResources(
-				classLoader, resourceActionsConfigurations,
-				checkResourceActions);
-
-			if (!PropsValues.RESOURCE_ACTIONS_STRICT_MODE_ENABLED) {
-				_resourceActions.populatePortletResources(
-					classLoader, resourceActionsConfigurations,
-					checkResourceActions);
-			}
-		}
-		catch (Exception exception) {
-			_log.error(
-				"Unable to read resource actions config in " +
-					PropsKeys.RESOURCE_ACTIONS_CONFIGS,
-				exception);
-		}
-
-		return portletConfiguration;
+		return portletConfigurationExtension;
 	}
 
 	@Override
 	public void modifiedBundle(
 		Bundle bundle, BundleEvent bundleEvent,
-		Configuration portletConfiguration) {
+		PortletConfigurationExtension portletConfigurationExtension) {
 	}
 
 	@Override
 	public void removedBundle(
 		Bundle bundle, BundleEvent bundleEvent,
-		Configuration portletConfiguration) {
+		PortletConfigurationExtension portletConfigurationExtension) {
+	}
+
+	public class PortletConfigurationExtension {
+
+		public void start() {
+			try {
+				String[] resourceActionsConfigurations = StringUtil.split(
+					_portletConfiguration.get(
+						PropsKeys.RESOURCE_ACTIONS_CONFIGS));
+
+				boolean checkResourceActions = !_isUpToDate(
+					_classLoader, resourceActionsConfigurations);
+
+				_resourceActions.populateModelResources(
+					_classLoader, resourceActionsConfigurations,
+					checkResourceActions);
+
+				if (!PropsValues.RESOURCE_ACTIONS_STRICT_MODE_ENABLED) {
+					_resourceActions.populatePortletResources(
+						_classLoader, resourceActionsConfigurations,
+						checkResourceActions);
+				}
+			}
+			catch (Exception exception) {
+				_log.error(
+					"Unable to read resource actions config in " +
+						PropsKeys.RESOURCE_ACTIONS_CONFIGS,
+					exception);
+			}
+		}
+
+		private PortletConfigurationExtension(
+			Bundle bundle, ClassLoader classLoader,
+			Configuration portletConfiguration) {
+
+			_bundle = bundle;
+			_classLoader = classLoader;
+			_portletConfiguration = portletConfiguration;
+		}
+
+		private final Bundle _bundle;
+		private final ClassLoader _classLoader;
+		private final Configuration _portletConfiguration;
+
 	}
 
 	@Activate

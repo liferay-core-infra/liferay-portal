@@ -798,10 +798,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	@Reference
 	private Props _props;
 
-		@Reference(
-			target = "(&(release.bundle.symbolic.name=com.liferay.portal.scheduler.quartz)(release.schema.version=2.0.0))"
-		)
-		private Release _release;
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.portal.scheduler.quartz)(release.schema.version=2.0.0))"
+	)
+	private Release _release;
 
 	private volatile boolean _schedulerEngineEnabled;
 

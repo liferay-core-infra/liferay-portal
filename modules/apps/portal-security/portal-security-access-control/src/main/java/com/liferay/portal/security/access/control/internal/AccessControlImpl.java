@@ -192,6 +192,9 @@ public class AccessControlImpl implements AccessControl {
 		AccessControlImpl.class);
 
 	@Reference
+	private AuthVerifierRegistry _authVerifierRegistry;
+
+	@Reference
 	private Portal _portal;
 
 	@Reference
@@ -269,7 +272,7 @@ public class AccessControlImpl implements AccessControl {
 
 			AuthVerifierResult authVerifierResult = null;
 
-			AuthVerifier authVerifier = AuthVerifierRegistry.getAuthVerifier(
+			AuthVerifier authVerifier = _authVerifierRegistry.getAuthVerifier(
 				authVerifierConfiguration.getAuthVerifierClassName());
 
 			if (authVerifier == null) {

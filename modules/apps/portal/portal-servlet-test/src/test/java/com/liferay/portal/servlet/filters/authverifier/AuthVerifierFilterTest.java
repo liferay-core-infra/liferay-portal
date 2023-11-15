@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.security.access.control.AccessControlImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PropsValues;
@@ -226,6 +225,52 @@ public class AuthVerifierFilterTest {
 		Assert.assertNull(redirectURL);
 	}
 
+	public static class TestAccessControlImpl implements AccessControl {
+
+		@Override
+		public void initAccessControlContext(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
+			Map<String, Object> settings) {
+
+			AccessControlContext accessControlContext =
+				AccessControlUtil.getAccessControlContext();
+
+			if (accessControlContext != null) {
+				throw new IllegalStateException(
+					"Authentication context is already initialized");
+			}
+
+			accessControlContext = new AccessControlContext();
+
+			accessControlContext.setRequest(httpServletRequest);
+			accessControlContext.setResponse(httpServletResponse);
+
+			Map<String, Object> accessControlContextSettings =
+				accessControlContext.getSettings();
+
+			accessControlContextSettings.putAll(settings);
+
+			AccessControlUtil.setAccessControlContext(accessControlContext);
+
+			AuthVerifierResult authVerifierResult = new AuthVerifierResult();
+
+			authVerifierResult.setState(AuthVerifierResult.State.SUCCESS);
+
+			accessControlContext.setAuthVerifierResult(authVerifierResult);
+		}
+
+		@Override
+		public void initContextUser(long userId) {
+		}
+
+		@Override
+		public AuthVerifierResult.State verifyRequest() {
+			return AuthVerifierResult.State.SUCCESS;
+		}
+
+	}
+
 	private void _processFilter() {
 		_authVerifierFilter.init(_mockFilterConfig);
 
@@ -256,37 +301,5 @@ public class AuthVerifierFilterTest {
 		new MockHttpServletRequest();
 	private final MockHttpServletResponse _mockHttpServletResponse =
 		new MockHttpServletResponse();
-
-	private static class TestAccessControlImpl extends AccessControlImpl {
-
-		@Override
-		public void initAccessControlContext(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			Map<String, Object> settings) {
-
-			super.initAccessControlContext(
-				httpServletRequest, httpServletResponse, settings);
-
-			AccessControlContext accessControlContext =
-				AccessControlUtil.getAccessControlContext();
-
-			AuthVerifierResult authVerifierResult = new AuthVerifierResult();
-
-			authVerifierResult.setState(AuthVerifierResult.State.SUCCESS);
-
-			accessControlContext.setAuthVerifierResult(authVerifierResult);
-		}
-
-		@Override
-		public void initContextUser(long userId) {
-		}
-
-		@Override
-		public AuthVerifierResult.State verifyRequest() {
-			return AuthVerifierResult.State.SUCCESS;
-		}
-
-	}
 
 }

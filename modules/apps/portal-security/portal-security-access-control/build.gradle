@@ -8,4 +8,6 @@ dependencies {
 	compileOnly project(":apps:portal-security:portal-security-api")
 	compileOnly project(":core:petra:petra-string")
 	compileOnly project(":core:petra:petra-url-pattern-mapper")
+
+	testImplementation project(":core:petra:petra-lang")
 }

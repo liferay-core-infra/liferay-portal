@@ -9,18 +9,14 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControl;
 import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
-import com.liferay.portal.kernel.security.auth.AccessControlContext;
-import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.model.impl.UserImpl;
-import com.liferay.portal.security.access.control.AccessControlImpl;
+import com.liferay.portal.servlet.filters.authverifier.AuthVerifierFilterTest;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PropsValues;
-
-import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +54,8 @@ public class BaseAuthFilterTest {
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
 		_serviceRegistration = bundleContext.registerService(
-			AccessControl.class, new TestAccessControlImpl(), null);
+			AccessControl.class,
+			new AuthVerifierFilterTest.TestAccessControlImpl(), null);
 	}
 
 	@AfterClass
@@ -263,38 +260,6 @@ public class BaseAuthFilterTest {
 	private MockFilterConfig _mockFilterConfig;
 	private MockHttpServletRequest _mockHttpServletRequest;
 	private MockHttpServletResponse _mockHttpServletResponse;
-
-	private static class TestAccessControlImpl extends AccessControlImpl {
-
-		@Override
-		public void initAccessControlContext(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			Map<String, Object> settings) {
-
-			super.initAccessControlContext(
-				httpServletRequest, httpServletResponse, settings);
-
-			AccessControlContext accessControlContext =
-				AccessControlUtil.getAccessControlContext();
-
-			AuthVerifierResult authVerifierResult = new AuthVerifierResult();
-
-			authVerifierResult.setState(AuthVerifierResult.State.SUCCESS);
-
-			accessControlContext.setAuthVerifierResult(authVerifierResult);
-		}
-
-		@Override
-		public void initContextUser(long userId) {
-		}
-
-		@Override
-		public AuthVerifierResult.State verifyRequest() {
-			return AuthVerifierResult.State.SUCCESS;
-		}
-
-	}
 
 	private static class TestAuthFilter extends BaseAuthFilter {
 	}

@@ -22,7 +22,6 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -33,7 +32,13 @@ public class AuthVerifierRegistryImpl implements AuthVerifierRegistry {
 
 	@Override
 	public AuthVerifier getAuthVerifier(String simpleClassName) {
-		return _serviceTrackerMap.getService(simpleClassName);
+		Tracked tracked = _serviceTrackerMap.getService(simpleClassName);
+
+		if (tracked == null) {
+			return null;
+		}
+
+		return tracked.getAuthVerifier();
 	}
 
 	@Activate
@@ -58,84 +63,13 @@ public class AuthVerifierRegistryImpl implements AuthVerifierRegistry {
 
 					bundleContext.ungetService(serviceReference);
 				}
-			});
-
-		_serviceTracker = new ServiceTracker<>(
-			bundleContext, AuthVerifier.class,
-			new ServiceTrackerCustomizer<AuthVerifier, Tracked>() {
-
-				@Override
-				public Tracked addingService(
-					ServiceReference<AuthVerifier> serviceReference) {
-
-					AuthVerifier authVerifier = bundleContext.getService(
-						serviceReference);
-
-					AuthVerifierConfiguration authVerifierConfiguration =
-						_buildAuthVerifierConfiguration(
-							serviceReference, authVerifier);
-
-					ServiceRegistration<AuthVerifierConfiguration>
-						serviceRegistration = null;
-
-					if (authVerifierConfiguration != null) {
-						serviceRegistration = bundleContext.registerService(
-							AuthVerifierConfiguration.class,
-							authVerifierConfiguration, null);
-					}
-
-					return new Tracked(authVerifier, serviceRegistration);
-				}
-
-				@Override
-				public void modifiedService(
-					ServiceReference<AuthVerifier> serviceReference,
-					Tracked tracked) {
-
-					ServiceRegistration<AuthVerifierConfiguration>
-						serviceRegistration = tracked.getServiceRegistration();
-
-					if (serviceRegistration != null) {
-						serviceRegistration.unregister();
-					}
-
-					AuthVerifierConfiguration authVerifierConfiguration =
-						_buildAuthVerifierConfiguration(
-							serviceReference, tracked.getAuthVerifier());
-
-					if (authVerifierConfiguration != null) {
-						bundleContext.registerService(
-							AuthVerifierConfiguration.class,
-							authVerifierConfiguration, null);
-					}
-
-					tracked.setServiceRegistration(serviceRegistration);
-				}
-
-				@Override
-				public void removedService(
-					ServiceReference<AuthVerifier> serviceReference,
-					Tracked tracked) {
-
-					ServiceRegistration<AuthVerifierConfiguration>
-						serviceRegistration = tracked.getServiceRegistration();
-
-					if (serviceRegistration != null) {
-						serviceRegistration.unregister();
-					}
-
-					bundleContext.ungetService(serviceReference);
-				}
-
-			});
-
-		_serviceTracker.open();
+			},
+			new AuthVerifierRegistryServiceTrackerCustomizer(bundleContext));
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_serviceTrackerMap.close();
-		_serviceTracker.close();
 	}
 
 	private AuthVerifierConfiguration _buildAuthVerifierConfiguration(
@@ -172,8 +106,7 @@ public class AuthVerifierRegistryImpl implements AuthVerifierRegistry {
 		return authVerifierConfiguration;
 	}
 
-	private ServiceTracker<AuthVerifier, Tracked> _serviceTracker;
-	private ServiceTrackerMap<String, AuthVerifier> _serviceTrackerMap;
+	private ServiceTrackerMap<String, Tracked> _serviceTrackerMap;
 
 	private static class Tracked {
 
@@ -210,6 +143,79 @@ public class AuthVerifierRegistryImpl implements AuthVerifierRegistry {
 		private AuthVerifier _authVerifier;
 		private ServiceRegistration<AuthVerifierConfiguration>
 			_serviceRegistration;
+
+	}
+
+	private class AuthVerifierRegistryServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<AuthVerifier, Tracked> {
+
+		public AuthVerifierRegistryServiceTrackerCustomizer(
+			BundleContext bundleContext) {
+
+			_bundleContext = bundleContext;
+		}
+
+		@Override
+		public Tracked addingService(
+			ServiceReference<AuthVerifier> serviceReference) {
+
+			AuthVerifier authVerifier = _bundleContext.getService(
+				serviceReference);
+
+			AuthVerifierConfiguration authVerifierConfiguration =
+				_buildAuthVerifierConfiguration(serviceReference, authVerifier);
+
+			ServiceRegistration<AuthVerifierConfiguration> serviceRegistration =
+				null;
+
+			if (authVerifierConfiguration != null) {
+				serviceRegistration = _bundleContext.registerService(
+					AuthVerifierConfiguration.class, authVerifierConfiguration,
+					null);
+			}
+
+			return new Tracked(authVerifier, serviceRegistration);
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<AuthVerifier> serviceReference, Tracked tracked) {
+
+			ServiceRegistration<AuthVerifierConfiguration> serviceRegistration =
+				tracked.getServiceRegistration();
+
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
+			}
+
+			AuthVerifierConfiguration authVerifierConfiguration =
+				_buildAuthVerifierConfiguration(
+					serviceReference, tracked.getAuthVerifier());
+
+			if (authVerifierConfiguration != null) {
+				_bundleContext.registerService(
+					AuthVerifierConfiguration.class, authVerifierConfiguration,
+					null);
+			}
+
+			tracked.setServiceRegistration(serviceRegistration);
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<AuthVerifier> serviceReference, Tracked tracked) {
+
+			ServiceRegistration<AuthVerifierConfiguration> serviceRegistration =
+				tracked.getServiceRegistration();
+
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
+			}
+
+			_bundleContext.ungetService(serviceReference);
+		}
+
+		private final BundleContext _bundleContext;
 
 	}
 

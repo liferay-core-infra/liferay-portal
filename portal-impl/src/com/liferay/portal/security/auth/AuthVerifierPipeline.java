@@ -76,6 +76,18 @@ public class AuthVerifierPipeline {
 		_buildURLPatternMapper();
 	}
 
+	public URLPatternMapper<List<AuthVerifierConfiguration>>
+		getExcludeURLPatternMapper() {
+
+		return _excludeURLPatternMapper;
+	}
+
+	public URLPatternMapper<List<AuthVerifierConfiguration>>
+		getIncludeURLPatternMapper() {
+
+		return _includeURLPatternMapper;
+	}
+
 	public AuthVerifierResult verifyRequest(
 			AccessControlContext accessControlContext)
 		throws PortalException {
@@ -92,9 +104,12 @@ public class AuthVerifierPipeline {
 
 		AuthVerifierConfigurationConsumer authVerifierConfigurationConsumer =
 			new AuthVerifierConfigurationConsumer(
-				accessControlContext, _excludeURLPatternMapper, requestURI);
+				accessControlContext, getExcludeURLPatternMapper(), requestURI);
 
-		_includeURLPatternMapper.consumeValues(
+		URLPatternMapper<List<AuthVerifierConfiguration>>
+			includeURLPatternMapper = getIncludeURLPatternMapper();
+
+		includeURLPatternMapper.consumeValues(
 			authVerifierConfigurationConsumer, requestURI);
 
 		if (authVerifierConfigurationConsumer.getAuthVerifierResult() != null) {

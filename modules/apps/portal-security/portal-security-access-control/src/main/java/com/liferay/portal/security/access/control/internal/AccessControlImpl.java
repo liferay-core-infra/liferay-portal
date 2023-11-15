@@ -1,9 +1,9 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.access.control;
+package com.liferay.portal.security.access.control.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.url.pattern.mapper.URLPatternMapper;
@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierConfiguratio
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.auth.AuthVerifierPipeline;
 import com.liferay.portal.security.auth.registry.AuthVerifierRegistry;
 
@@ -39,9 +39,13 @@ import java.util.function.Consumer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Raymond Augé
  */
+@Component(service = AccessControl.class)
 public class AccessControlImpl implements AccessControl {
 
 	@Override
@@ -73,7 +77,7 @@ public class AccessControlImpl implements AccessControl {
 	@Override
 	public void initContextUser(long userId) throws AuthException {
 		try {
-			User user = UserLocalServiceUtil.getUser(userId);
+			User user = _userLocalService.getUser(userId);
 
 			CompanyThreadLocal.setCompanyId(user.getCompanyId());
 
@@ -144,8 +148,8 @@ public class AccessControlImpl implements AccessControl {
 			accessControlContext.getRequest();
 
 		authVerifierResult.setUserId(
-			UserLocalServiceUtil.getGuestUserId(
-				PortalUtil.getCompanyId(httpServletRequest)));
+			_userLocalService.getGuestUserId(
+				_portal.getCompanyId(httpServletRequest)));
 
 		return authVerifierResult;
 	}
@@ -187,7 +191,13 @@ public class AccessControlImpl implements AccessControl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccessControlImpl.class);
 
-	private static class AuthVerifierConfigurationConsumer
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private UserLocalService _userLocalService;
+
+	private class AuthVerifierConfigurationConsumer
 		implements Consumer<List<AuthVerifierConfiguration>> {
 
 		@Override
@@ -299,7 +309,7 @@ public class AccessControlImpl implements AccessControl {
 				return null;
 			}
 
-			User user = UserLocalServiceUtil.fetchUser(
+			User user = _userLocalService.fetchUser(
 				authVerifierResult.getUserId());
 
 			if ((user != null) && !user.isActive()) {

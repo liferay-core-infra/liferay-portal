@@ -71,7 +71,6 @@
 			</bean>
 		</property>
 	</bean>
-	<bean class="com.liferay.portal.security.access.control.AccessControlImpl" id="com.liferay.portal.security.access.control.AccessControl" />
 	<bean class="com.liferay.portal.security.access.control.AllowedHostsAccessControlPolicy" id="com.liferay.portal.security.access.control.AllowedHostsAccessControlPolicy" />
 	<bean class="com.liferay.portal.security.access.control.AuthenticatedAccessControlPolicy" id="com.liferay.portal.security.access.control.AuthenticatedAccessControlPolicy" />
 	<bean class="com.liferay.portal.security.auth.EmailAddressGeneratorFactory" id="com.liferay.portal.security.auth.EmailAddressGeneratorFactory" />

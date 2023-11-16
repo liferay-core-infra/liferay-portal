@@ -8,8 +8,10 @@ package com.liferay.expando.manager.internal;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.manager.ExpandoManager;
+import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.expando.model.internal.ExpandoRowImpl;
 import com.liferay.expando.model.internal.ExpandoTableImpl;
+import com.liferay.expando.service.ExpandoColumnLocalService;
 import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.expando.service.ExpandoValueLocalService;
@@ -24,6 +26,11 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = ExpandoManager.class)
 public class ExpandoManagerImpl implements ExpandoManager {
+
+	@Override
+	public void deleteColumn(Object object) throws PortalException {
+		_expandoColumnLocalService.deleteColumn((ExpandoColumn)object);
+	}
 
 	@Override
 	public void deleteExpandoTable(Object object) throws PortalException {
@@ -81,6 +88,9 @@ public class ExpandoManagerImpl implements ExpandoManager {
 			(com.liferay.expando.model.ExpandoRow)
 				expandoRow.getExpandoRowInstance());
 	}
+
+	@Reference
+	private ExpandoColumnLocalService _expandoColumnLocalService;
 
 	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;

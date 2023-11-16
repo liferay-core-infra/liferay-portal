@@ -9,6 +9,7 @@ import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.content.dashboard.item.ContentDashboardItem;
+import com.liferay.content.dashboard.item.filter.provider.ContentDashboardItemFilterProvider;
 import com.liferay.content.dashboard.item.type.ContentDashboardItemSubtypeFactoryRegistry;
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys;
 import com.liferay.content.dashboard.web.internal.dao.search.ContentDashboardItemSearchContainerFactory;
@@ -17,13 +18,14 @@ import com.liferay.content.dashboard.web.internal.display.context.ContentDashboa
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext;
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminSharingDisplayContext;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryRegistry;
-import com.liferay.content.dashboard.web.internal.item.filter.ContentDashboardItemFilterProviderRegistry;
 import com.liferay.content.dashboard.web.internal.search.request.ContentDashboardSearchContextBuilder;
 import com.liferay.content.dashboard.web.internal.searcher.ContentDashboardSearchRequestBuilderFactory;
 import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
 import com.liferay.content.dashboard.web.internal.util.ContentDashboardUtil;
 import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.item.selector.ItemSelector;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.Language;
@@ -50,7 +52,10 @@ import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -159,7 +164,7 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 				new ContentDashboardAdminManagementToolbarDisplayContext(
 					_assetCategoryLocalService, _assetVocabularyLocalService,
 					contentDashboardAdminDisplayContext,
-					_contentDashboardItemFilterProviderRegistry,
+					_contentDashboardItemFilterProviderServiceTrackerList,
 					_groupLocalService,
 					_portal.getHttpServletRequest(renderRequest), _itemSelector,
 					_language, liferayPortletRequest, liferayPortletResponse,
@@ -182,6 +187,18 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		super.render(renderRequest, renderResponse);
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_contentDashboardItemFilterProviderServiceTrackerList =
+			ServiceTrackerListFactory.open(
+				bundleContext, ContentDashboardItemFilterProvider.class);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_contentDashboardItemFilterProviderServiceTrackerList.close();
+	}
+
 	@Reference
 	private Aggregations _aggregations;
 
@@ -195,9 +212,8 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 	private ContentDashboardItemFactoryRegistry
 		_contentDashboardItemFactoryRegistry;
 
-	@Reference
-	private ContentDashboardItemFilterProviderRegistry
-		_contentDashboardItemFilterProviderRegistry;
+	private ServiceTrackerList<ContentDashboardItemFilterProvider>
+		_contentDashboardItemFilterProviderServiceTrackerList;
 
 	@Reference
 	private ContentDashboardItemSubtypeFactoryRegistry

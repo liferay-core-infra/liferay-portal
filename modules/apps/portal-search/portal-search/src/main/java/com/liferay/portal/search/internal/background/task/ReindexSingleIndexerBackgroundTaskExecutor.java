@@ -6,7 +6,6 @@
 package com.liferay.portal.search.internal.background.task;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
-import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.change.tracking.sql.CTSQLModeThreadLocal;
@@ -26,35 +25,29 @@ import com.liferay.portal.search.index.SyncReindexManager;
 import java.util.Collections;
 import java.util.Date;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Andrew Betts
  */
-@Component(
-	property = "background.task.executor.class.name=com.liferay.portal.search.internal.background.task.ReindexSingleIndexerBackgroundTaskExecutor",
-	service = {
-		BackgroundTaskExecutor.class,
-		ReindexSingleIndexerBackgroundTaskExecutor.class
-	}
-)
 public class ReindexSingleIndexerBackgroundTaskExecutor
 	extends BaseReindexBackgroundTaskExecutor {
+
+	public ReindexSingleIndexerBackgroundTaskExecutor(
+		IndexerRegistry indexerRegistry,
+		ReindexStatusMessageSender reindexStatusMessageSender,
+		SearchEngineHelper searchEngineHelper,
+		ServiceTrackerList<Indexer<?>> systemIndexers) {
+
+		this.indexerRegistry = indexerRegistry;
+		this.reindexStatusMessageSender = reindexStatusMessageSender;
+		this.searchEngineHelper = searchEngineHelper;
+		this.systemIndexers = systemIndexers;
+	}
 
 	@Override
 	public BackgroundTaskExecutor clone() {
 		return this;
-	}
-
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		systemIndexers = ServiceTrackerListFactory.open(
-			bundleContext, (Class<Indexer<?>>)(Class<?>)Indexer.class,
-			"(system.index=true)");
 	}
 
 	@Deactivate
@@ -153,15 +146,9 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 		}
 	}
 
-	@Reference
 	protected IndexerRegistry indexerRegistry;
-
-	@Reference
 	protected ReindexStatusMessageSender reindexStatusMessageSender;
-
-	@Reference
 	protected SearchEngineHelper searchEngineHelper;
-
 	protected ServiceTrackerList<Indexer<?>> systemIndexers;
 
 	private boolean _isExecuteSyncReindex(String executionMode) {

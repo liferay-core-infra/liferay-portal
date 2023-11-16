@@ -21,6 +21,8 @@ public interface ExpandoManager {
 
 	public void deleteRows(long companyId, long classNameId, long classPK);
 
+	public void deleteValues(String className, long classPK);
+
 	public ExpandoTable fetchDefaultTable(long companyId, String className);
 
 	public ExpandoRow fetchRow(long tableId, long classPK);

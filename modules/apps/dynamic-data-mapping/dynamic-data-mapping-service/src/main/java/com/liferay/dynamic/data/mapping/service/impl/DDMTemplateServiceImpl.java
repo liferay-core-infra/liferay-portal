@@ -581,8 +581,9 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 				DDMSearchUtil.buildTemplateSearchContext(
 					companyId, groupId, getUserId(), classNameId, classPK,
 					resourceClassNameId, keywords, keywords, type, mode, null,
-					status, start, end, _ddmPermissionSupport,
-					orderByComparator);
+					_ddmPermissionSupport.getTemplateModelResourceName(
+						resourceClassNameId),
+					status, start, end, orderByComparator);
 
 			return DDMSearchUtil.doSearch(
 				searchContext, DDMTemplate.class,
@@ -591,6 +592,11 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 		catch (PrincipalException principalException) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(principalException);
+			}
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
 			}
 		}
 
@@ -651,8 +657,10 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 				DDMSearchUtil.buildTemplateSearchContext(
 					companyId, groupId, getUserId(), classNameId, classPK,
 					resourceClassNameId, name, description, type, mode,
-					language, status, start, end, _ddmPermissionSupport,
-					orderByComparator);
+					language,
+					_ddmPermissionSupport.getTemplateModelResourceName(
+						resourceClassNameId),
+					status, start, end, orderByComparator);
 
 			return DDMSearchUtil.doSearch(
 				searchContext, DDMTemplate.class,
@@ -661,6 +669,11 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 		catch (PrincipalException principalException) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(principalException);
+			}
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
 			}
 		}
 
@@ -710,12 +723,25 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 		int status, int start, int end,
 		OrderByComparator<DDMTemplate> orderByComparator) {
 
+		String templateModelResourceClassName = null;
+
+		try {
+			templateModelResourceClassName =
+				_ddmPermissionSupport.getTemplateModelResourceName(
+					resourceClassNameId);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+		}
+
 		try {
 			SearchContext searchContext =
 				DDMSearchUtil.buildTemplateSearchContext(
 					companyId, groupIds, getUserId(), classNameIds, classPKs,
 					resourceClassNameId, keywords, keywords, type, mode, null,
-					status, start, end, _ddmPermissionSupport,
+					templateModelResourceClassName, status, start, end,
 					orderByComparator);
 
 			return DDMSearchUtil.doSearch(
@@ -780,13 +806,26 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 		String mode, String language, int status, boolean andOperator,
 		int start, int end, OrderByComparator<DDMTemplate> orderByComparator) {
 
+		String templateModelResourceClassName = null;
+
+		try {
+			templateModelResourceClassName =
+				_ddmPermissionSupport.getTemplateModelResourceName(
+					resourceClassNameId);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+		}
+
 		try {
 			SearchContext searchContext =
 				DDMSearchUtil.buildTemplateSearchContext(
 					companyId, groupIds, getUserId(), classNameIds, classPKs,
 					resourceClassNameId, name, description, type, mode,
-					language, status, start, end, _ddmPermissionSupport,
-					orderByComparator);
+					language, templateModelResourceClassName, status, start,
+					end, orderByComparator);
 
 			return DDMSearchUtil.doSearch(
 				searchContext, DDMTemplate.class,
@@ -834,8 +873,9 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 				DDMSearchUtil.buildTemplateSearchContext(
 					companyId, groupId, getUserId(), classNameId, classPK,
 					resourceClassNameId, keywords, keywords, type, mode, null,
-					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					_ddmPermissionSupport, null);
+					_ddmPermissionSupport.getTemplateModelResourceName(
+						resourceClassNameId),
+					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 			return DDMSearchUtil.doSearchCount(
 				searchContext, DDMTemplate.class);
@@ -843,6 +883,11 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 		catch (PrincipalException principalException) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(principalException);
+			}
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
 			}
 		}
 
@@ -887,8 +932,9 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 				DDMSearchUtil.buildTemplateSearchContext(
 					companyId, groupId, getUserId(), classNameId, classPK,
 					resourceClassNameId, name, description, type, mode, null,
-					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					_ddmPermissionSupport, null);
+					_ddmPermissionSupport.getTemplateModelResourceName(
+						resourceClassNameId),
+					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 			return DDMSearchUtil.doSearchCount(
 				searchContext, DDMTemplate.class);
@@ -896,6 +942,11 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 		catch (PrincipalException principalException) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(principalException);
+			}
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
 			}
 		}
 
@@ -930,13 +981,26 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 		long resourceClassNameId, String keywords, String type, String mode,
 		int status) {
 
+		String templateModelResourceClassName = null;
+
+		try {
+			templateModelResourceClassName =
+				_ddmPermissionSupport.getTemplateModelResourceName(
+					resourceClassNameId);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+		}
+
 		try {
 			SearchContext searchContext =
 				DDMSearchUtil.buildTemplateSearchContext(
 					companyId, groupIds, getUserId(), classNameIds, classPKs,
 					resourceClassNameId, keywords, keywords, type, mode, null,
-					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					_ddmPermissionSupport, null);
+					templateModelResourceClassName, status, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null);
 
 			return DDMSearchUtil.doSearchCount(
 				searchContext, DDMTemplate.class);
@@ -983,13 +1047,26 @@ public class DDMTemplateServiceImpl extends DDMTemplateServiceBaseImpl {
 		long resourceClassNameId, String name, String description, String type,
 		String mode, String language, int status, boolean andOperator) {
 
+		String templateModelResourceClassName = null;
+
+		try {
+			templateModelResourceClassName =
+				_ddmPermissionSupport.getTemplateModelResourceName(
+					resourceClassNameId);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+		}
+
 		try {
 			SearchContext searchContext =
 				DDMSearchUtil.buildTemplateSearchContext(
 					companyId, groupIds, getUserId(), classNameIds, classPKs,
 					resourceClassNameId, name, description, type, mode,
-					language, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					_ddmPermissionSupport, null);
+					language, templateModelResourceClassName, status,
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 			return DDMSearchUtil.doSearchCount(
 				searchContext, DDMTemplate.class);

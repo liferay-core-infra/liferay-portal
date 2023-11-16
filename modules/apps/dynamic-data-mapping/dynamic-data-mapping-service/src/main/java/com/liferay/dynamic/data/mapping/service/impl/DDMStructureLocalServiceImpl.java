@@ -1322,8 +1322,9 @@ public class DDMStructureLocalServiceImpl
 
 		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
 			companyId, groupIds, classNameId, classPK, keywords, keywords,
-			StringPool.BLANK, null, WorkflowConstants.STATUS_ANY, start, end,
-			_ddmPermissionSupport, orderByComparator);
+			StringPool.BLANK,
+			_ddmPermissionSupport.getStructureModelResourceName(classNameId),
+			null, WorkflowConstants.STATUS_ANY, start, end, orderByComparator);
 
 		return DDMSearchUtil.doSearch(
 			searchContext, DDMStructure.class,
@@ -1365,8 +1366,9 @@ public class DDMStructureLocalServiceImpl
 
 		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
 			companyId, groupIds, classNameId, null, keywords, keywords,
-			StringPool.BLANK, null, status, start, end, _ddmPermissionSupport,
-			orderByComparator);
+			StringPool.BLANK,
+			_ddmPermissionSupport.getStructureModelResourceName(classNameId),
+			null, status, start, end, orderByComparator);
 
 		return DDMSearchUtil.doSearch(
 			searchContext, DDMStructure.class,
@@ -1414,8 +1416,9 @@ public class DDMStructureLocalServiceImpl
 
 		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
 			companyId, groupIds, classNameId, null, name, description,
-			storageType, type, status, start, end, _ddmPermissionSupport,
-			orderByComparator);
+			storageType,
+			_ddmPermissionSupport.getStructureModelResourceName(classNameId),
+			type, status, start, end, orderByComparator);
 
 		return DDMSearchUtil.doSearch(
 			searchContext, DDMStructure.class,
@@ -1430,8 +1433,10 @@ public class DDMStructureLocalServiceImpl
 
 		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
 			companyId, groupIds, classNameId, classPK, keywords, keywords,
-			StringPool.BLANK, null, WorkflowConstants.STATUS_ANY,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, _ddmPermissionSupport, null);
+			StringPool.BLANK,
+			_ddmPermissionSupport.getStructureModelResourceName(classNameId),
+			null, WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 
 		return DDMSearchUtil.doSearchCount(searchContext, DDMStructure.class);
 	}
@@ -1455,8 +1460,9 @@ public class DDMStructureLocalServiceImpl
 
 		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
 			companyId, groupIds, classNameId, null, keywords, keywords,
-			StringPool.BLANK, null, status, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, _ddmPermissionSupport, null);
+			StringPool.BLANK,
+			_ddmPermissionSupport.getStructureModelResourceName(classNameId),
+			null, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 		return DDMSearchUtil.doSearchCount(searchContext, DDMStructure.class);
 	}
@@ -1486,8 +1492,9 @@ public class DDMStructureLocalServiceImpl
 
 		SearchContext searchContext = DDMSearchUtil.buildStructureSearchContext(
 			companyId, groupIds, classNameId, null, name, description,
-			storageType, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			_ddmPermissionSupport, null);
+			storageType,
+			_ddmPermissionSupport.getStructureModelResourceName(classNameId),
+			type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 		return DDMSearchUtil.doSearchCount(searchContext, DDMStructure.class);
 	}

@@ -112,14 +112,9 @@ public abstract class BaseReindexSingleIndexerBackgroundTaskExecutorTestCase {
 		_serviceRegistration = bundleContext.registerService(
 			IndexWriterHelper.class, _indexWriterHelper, null);
 
-		return new ReindexSingleIndexerBackgroundTaskExecutor() {
-			{
-				indexerRegistry = _indexerRegistry;
-				reindexStatusMessageSender = _reindexStatusMessageSender;
-				searchEngineHelper = _searchEngineHelper;
-				systemIndexers = _systemIndexers;
-			}
-		};
+		return new ReindexSingleIndexerBackgroundTaskExecutor(
+			_indexerRegistry, _reindexStatusMessageSender, _searchEngineHelper,
+			_systemIndexers);
 	}
 
 	protected abstract SearchEngineFixture getSearchEngineFixture();

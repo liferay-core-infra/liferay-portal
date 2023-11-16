@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.util.BundleUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -36,7 +37,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.expando.model.impl.ExpandoValueImpl;
 
 import java.io.Serializable;
 
@@ -51,6 +51,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Marcellus Tavares
@@ -73,6 +76,15 @@ public class ExpandoValueLocalServiceTest {
 
 		_expandoTable = ExpandoTestUtil.addTable(
 			_classNameId, "testExpandoTable");
+
+		Bundle apiBundle = FrameworkUtil.getBundle(
+			ExpandoValueLocalService.class);
+
+		Bundle serviceBundle = BundleUtil.getBundle(
+			apiBundle.getBundleContext(), "com.liferay.expando.service");
+
+		_clazz = serviceBundle.loadClass(
+			"com.liferay.expando.model.impl.ExpandoValueImpl");
 	}
 
 	@Test
@@ -228,8 +240,8 @@ public class ExpandoValueLocalServiceTest {
 				"Test Column 2", "column2-one"
 			).build());
 
-		_entityCache.clearCache(ExpandoValueImpl.class);
-		_finderCache.clearCache(ExpandoValueImpl.class);
+		_entityCache.clearCache(_clazz);
+		_finderCache.clearCache(_clazz);
 
 		TransactionInvokerUtil.invoke(
 			TransactionConfig.Factory.create(
@@ -276,8 +288,8 @@ public class ExpandoValueLocalServiceTest {
 				"Test Column 2", "column2-one"
 			).build());
 
-		_entityCache.clearCache(ExpandoValueImpl.class);
-		_finderCache.clearCache(ExpandoValueImpl.class);
+		_entityCache.clearCache(_clazz);
+		_finderCache.clearCache(_clazz);
 
 		TransactionInvokerUtil.invoke(
 			TransactionConfig.Factory.create(
@@ -445,6 +457,7 @@ public class ExpandoValueLocalServiceTest {
 		ExpandoValueLocalServiceTest.class);
 
 	private long _classNameId;
+	private Class<?> _clazz;
 
 	@Inject
 	private CounterLocalService _counterLocalService;

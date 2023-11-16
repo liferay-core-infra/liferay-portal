@@ -282,7 +282,9 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			message = new Message();
 		}
 
-		if (storageType == StorageType.PERSISTED && !message.contains("companyId")) {
+		if ((storageType == StorageType.PERSISTED) &&
+			!message.contains("companyId")) {
+
 			message.put("companyId", CompanyThreadLocal.getCompanyId());
 		}
 

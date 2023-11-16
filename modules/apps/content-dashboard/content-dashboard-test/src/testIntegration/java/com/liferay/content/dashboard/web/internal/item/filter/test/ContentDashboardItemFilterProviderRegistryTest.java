@@ -12,8 +12,9 @@ import com.liferay.content.dashboard.item.filter.provider.ContentDashboardItemFi
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
-import java.util.List;
 import java.util.Objects;
+
+import javax.portlet.Portlet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,17 +42,19 @@ public class ContentDashboardItemFilterProviderRegistryTest {
 
 		_bundleContext = bundle.getBundleContext();
 
-		_serviceReference = _bundleContext.getServiceReference(
-			"com.liferay.content.dashboard.web.internal.item.filter." +
-				"ContentDashboardItemFilterProviderRegistry");
+		_serviceReference = _bundleContext.getServiceReferences(
+			Portlet.class.getName(),
+			"(component.name=" +
+				"com.liferay.content.dashboard.web.internal.portlet." +
+					"ContentDashboardAdminPortlet)");
 
-		_contentDashboardItemFilterProviderRegistry = _bundleContext.getService(
-			_serviceReference);
+		_contentDashboardAdminPortlet = _bundleContext.getService(
+			_serviceReference[0]);
 	}
 
 	@After
 	public void tearDown() {
-		_bundleContext.ungetService(_serviceReference);
+		_bundleContext.ungetService(_serviceReference[0]);
 	}
 
 	@Test
@@ -88,10 +91,11 @@ public class ContentDashboardItemFilterProviderRegistryTest {
 
 		boolean found = false;
 
-		List<ContentDashboardItemFilterProvider>
-			contentDashboardItemFilterProviders = ReflectionTestUtil.invoke(
-				_contentDashboardItemFilterProviderRegistry,
-				"getContentDashboardItemFilterProviders", new Class<?>[0]);
+		Iterable<ContentDashboardItemFilterProvider>
+			contentDashboardItemFilterProviders =
+				ReflectionTestUtil.getFieldValue(
+					_contentDashboardAdminPortlet,
+					"_contentDashboardItemFilterProviderServiceTrackerList");
 
 		for (ContentDashboardItemFilterProvider
 				contentDashboardItemFilterProvider :
@@ -111,7 +115,7 @@ public class ContentDashboardItemFilterProviderRegistryTest {
 	}
 
 	private BundleContext _bundleContext;
-	private Object _contentDashboardItemFilterProviderRegistry;
-	private ServiceReference<?> _serviceReference;
+	private Object _contentDashboardAdminPortlet;
+	private ServiceReference<?>[] _serviceReference;
 
 }

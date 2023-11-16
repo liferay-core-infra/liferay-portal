@@ -17,6 +17,12 @@ import com.liferay.portal.kernel.module.service.Snapshot;
  */
 public class ExpandoManagerUtil {
 
+	public static void deleteColumn(Object object) throws PortalException {
+		ExpandoManager expandoManager = _expandoManagerSnapshot.get();
+
+		expandoManager.deleteColumn(object);
+	}
+
 	public static void deleteExpandoTable(Object object)
 		throws PortalException {
 

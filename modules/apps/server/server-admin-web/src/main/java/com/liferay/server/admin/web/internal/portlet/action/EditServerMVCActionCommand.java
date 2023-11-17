@@ -822,6 +822,9 @@ public class EditServerMVCActionCommand
 			portletPreferences.setValue(
 				PropsKeys.MAIL_SESSION_MAIL_POP3_HOST, pop3Host);
 		}
+		else {
+			portletPreferences.reset(PropsKeys.MAIL_SESSION_MAIL_POP3_HOST);
+		}
 
 		if (!pop3Password.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
 			portletPreferences.setValue(
@@ -833,15 +836,24 @@ public class EditServerMVCActionCommand
 				PropsKeys.MAIL_SESSION_MAIL_POP3_PORT,
 				String.valueOf(pop3Port));
 		}
+		else {
+			portletPreferences.reset(PropsKeys.MAIL_SESSION_MAIL_POP3_PORT);
+		}
 
 		if (!Validator.isBlank(pop3User)) {
 			portletPreferences.setValue(
 				PropsKeys.MAIL_SESSION_MAIL_POP3_USER, pop3User);
 		}
+		else {
+			portletPreferences.reset(PropsKeys.MAIL_SESSION_MAIL_POP3_USER);
+		}
 
 		if (!Validator.isBlank(smtpHost)) {
 			portletPreferences.setValue(
 				PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST, smtpHost);
+		}
+		else {
+			portletPreferences.reset(PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST);
 		}
 
 		if (!smtpPassword.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
@@ -854,6 +866,9 @@ public class EditServerMVCActionCommand
 				PropsKeys.MAIL_SESSION_MAIL_SMTP_PORT,
 				String.valueOf(smtpPort));
 		}
+		else {
+			portletPreferences.reset(PropsKeys.MAIL_SESSION_MAIL_SMTP_PORT);
+		}
 
 		portletPreferences.setValue(
 			PropsKeys.MAIL_SESSION_MAIL_SMTP_STARTTLS_ENABLE,
@@ -862,6 +877,9 @@ public class EditServerMVCActionCommand
 		if (!Validator.isBlank(smtpUser)) {
 			portletPreferences.setValue(
 				PropsKeys.MAIL_SESSION_MAIL_SMTP_USER, smtpUser);
+		}
+		else {
+			portletPreferences.reset(PropsKeys.MAIL_SESSION_MAIL_SMTP_USER);
 		}
 
 		portletPreferences.setValue(

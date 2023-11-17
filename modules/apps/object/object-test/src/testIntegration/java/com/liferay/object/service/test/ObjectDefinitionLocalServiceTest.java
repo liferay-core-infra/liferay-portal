@@ -1319,7 +1319,7 @@ public class ObjectDefinitionLocalServiceTest {
 
 		Company company = CompanyTestUtil.addCompany();
 
-		PortalInstances.initCompany(company);
+		PortalInstances.initCompany(company, true);
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setWithSafeCloseable(

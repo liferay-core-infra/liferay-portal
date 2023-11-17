@@ -8,6 +8,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
@@ -18,6 +19,9 @@ import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.model.Users_UserGroupsTable;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
@@ -50,6 +54,8 @@ public class UserGroupRoleLocalServiceImpl
 			userGroupRole = userGroupRolePersistence.update(userGroupRole);
 		}
 
+		_reindexUser(userGroupRole.getUserId());
+
 		return userGroupRole;
 	}
 
@@ -62,6 +68,8 @@ public class UserGroupRoleLocalServiceImpl
 		}
 
 		userGroupRole.setNew(true);
+
+		_reindexUser(userGroupRole.getUserId());
 
 		return userGroupRolePersistence.update(userGroupRole);
 	}
@@ -77,6 +85,7 @@ public class UserGroupRoleLocalServiceImpl
 				userId, groupId, roleId);
 
 			userGroupRoles.add(userGroupRole);
+			_reindexUser(userGroupRole.getUserId());
 		}
 
 		Group group = _groupPersistence.fetchByPrimaryKey(groupId);
@@ -99,6 +108,7 @@ public class UserGroupRoleLocalServiceImpl
 				userId, groupId, roleId);
 
 			userGroupRoles.add(userGroupRole);
+			_reindexUser(userGroupRole.getUserId());
 		}
 
 		Group group = _groupPersistence.fetchByPrimaryKey(groupId);
@@ -118,6 +128,7 @@ public class UserGroupRoleLocalServiceImpl
 		for (UserGroupRole userGroupRole : userGroupRoles) {
 			userGroupRolePersistence.removeByG_R(
 				groupId, userGroupRole.getRoleId());
+			_reindexUser(userGroupRole.getUserId());
 		}
 	}
 
@@ -131,6 +142,7 @@ public class UserGroupRoleLocalServiceImpl
 
 			if (userGroupRole != null) {
 				userGroupRolePersistence.remove(userGroupRole);
+				_reindexUser(userGroupRole.getUserId());
 			}
 		}
 	}
@@ -139,6 +151,7 @@ public class UserGroupRoleLocalServiceImpl
 	public void deleteUserGroupRoles(long userId, long[] groupIds) {
 		for (long groupId : groupIds) {
 			userGroupRolePersistence.removeByU_G(userId, groupId);
+			_reindexUser(userId);
 		}
 	}
 
@@ -146,6 +159,7 @@ public class UserGroupRoleLocalServiceImpl
 	public void deleteUserGroupRoles(long[] userIds, long groupId) {
 		for (long userId : userIds) {
 			userGroupRolePersistence.removeByU_G(userId, groupId);
+			_reindexUser(userId);
 		}
 	}
 
@@ -164,6 +178,7 @@ public class UserGroupRoleLocalServiceImpl
 
 				if (userGroupRole != null) {
 					userGroupRolePersistence.remove(userGroupRole);
+					_reindexUser(userGroupRole.getUserId());
 				}
 			}
 		}
@@ -179,6 +194,7 @@ public class UserGroupRoleLocalServiceImpl
 
 			if (userGroupRole != null) {
 				userGroupRolePersistence.remove(userGroupRole);
+				_reindexUser(userGroupRole.getUserId());
 			}
 		}
 	}
@@ -186,16 +202,29 @@ public class UserGroupRoleLocalServiceImpl
 	@Override
 	public void deleteUserGroupRolesByGroupId(long groupId) {
 		userGroupRolePersistence.removeByGroupId(groupId);
+
+		for (UserGroupRole userGroupRole :
+				userGroupRolePersistence.findByGroupId(groupId)) {
+
+			_reindexUser(userGroupRole.getUserId());
+		}
 	}
 
 	@Override
 	public void deleteUserGroupRolesByRoleId(long roleId) {
 		userGroupRolePersistence.removeByRoleId(roleId);
+
+		for (UserGroupRole userGroupRole :
+				userGroupRolePersistence.findByRoleId(roleId)) {
+
+			_reindexUser(userGroupRole.getUserId());
+		}
 	}
 
 	@Override
 	public void deleteUserGroupRolesByUserId(long userId) {
 		userGroupRolePersistence.removeByUserId(userId);
+		_reindexUser(userId);
 	}
 
 	@Override
@@ -325,7 +354,21 @@ public class UserGroupRoleLocalServiceImpl
 				counterLocalService.increment(UserGroupRole.class.getName()));
 		}
 
+		_reindexUser(userGroupRole.getUserId());
+
 		return userGroupRolePersistence.update(userGroupRole);
+	}
+
+	private void _reindexUser(long userId) {
+		try {
+			Indexer<User> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+				User.class);
+
+			indexer.reindex(User.class.getName(), userId);
+		}
+		catch (SearchException searchException) {
+			throw new ModelListenerException(searchException);
+		}
 	}
 
 	@BeanReference(type = GroupPersistence.class)

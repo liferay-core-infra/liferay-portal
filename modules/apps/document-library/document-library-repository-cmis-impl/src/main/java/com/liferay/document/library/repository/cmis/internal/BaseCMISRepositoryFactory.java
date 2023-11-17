@@ -81,7 +81,7 @@ public abstract class BaseCMISRepositoryFactory<T extends CMISRepositoryHandler>
 
 		CMISRepository cmisRepository = new CMISRepository(
 			_cmisRepositoryConfiguration, baseRepository,
-			_cmisSearchQueryBuilder, cmisSessionCache, lockManager);
+			_cmisSearchQueryBuilder, lockManager);
 
 		baseRepository.setCmisRepository(cmisRepository);
 
@@ -104,9 +104,6 @@ public abstract class BaseCMISRepositoryFactory<T extends CMISRepositoryHandler>
 
 	@Reference
 	protected AssetEntryLocalService assetEntryLocalService;
-
-	@Reference
-	protected CMISSessionCache cmisSessionCache;
 
 	@Reference
 	protected CompanyLocalService companyLocalService;

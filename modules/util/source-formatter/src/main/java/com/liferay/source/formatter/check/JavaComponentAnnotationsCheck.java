@@ -14,8 +14,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tools.GitUtil;
 import com.liferay.portal.tools.ToolsUtil;
 import com.liferay.source.formatter.SourceFormatterArgs;
-import com.liferay.source.formatter.check.util.BNDSourceUtil;
-import com.liferay.source.formatter.check.util.JavaSourceUtil;
 import com.liferay.source.formatter.check.util.SourceUtil;
 import com.liferay.source.formatter.parser.JavaClass;
 import com.liferay.source.formatter.parser.JavaMethod;
@@ -24,12 +22,9 @@ import com.liferay.source.formatter.parser.JavaSignature;
 import com.liferay.source.formatter.parser.JavaTerm;
 import com.liferay.source.formatter.processor.SourceProcessor;
 
-import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -395,7 +390,8 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 				1, configurationPid.length() - 1);
 
 			Collections.addAll(
-				configurationClasses, StringUtil.split(configurationPid, ", "));
+				configurationClasses,
+				StringUtil.split(configurationPid, StringPool.COMMA_AND_SPACE));
 		}
 		else {
 			configurationClasses.add(configurationPid);
@@ -411,6 +407,8 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 
 			return annotation;
 		}
+
+		String content = javaClass.getContent();
 
 		List<String> importNames = javaClass.getImportNames();
 
@@ -431,17 +429,16 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 				continue;
 			}
 
-			File javaFile = JavaSourceUtil.getJavaFile(
-				configurationClass, _getRootDirName(absolutePath),
-				_getBundleSymbolicNamesMap(absolutePath));
+			String className = configurationClass.substring(
+				configurationClass.lastIndexOf(CharPool.PERIOD) + 1);
 
-			if (javaFile == null) {
-				String message = StringBundler.concat(
-					"Remove '", configurationClass,
-					"' from 'configurationPid' as the configuration class ",
-					"does not exist");
-
-				addMessage(fileName, message);
+			if (!content.contains(className + ".class")) {
+				addMessage(
+					fileName,
+					StringBundler.concat(
+						"Remove '", configurationClass,
+						"' from 'configurationPid' as the configuration class ",
+						"is not used"));
 			}
 		}
 
@@ -660,17 +657,6 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		return annotation;
 	}
 
-	private synchronized Map<String, String> _getBundleSymbolicNamesMap(
-		String absolutePath) {
-
-		if (_bundleSymbolicNamesMap == null) {
-			_bundleSymbolicNamesMap = BNDSourceUtil.getBundleSymbolicNamesMap(
-				_getRootDirName(absolutePath));
-		}
-
-		return _bundleSymbolicNamesMap;
-	}
-
 	private synchronized List<String> _getCurrentBranchRenamedFileNames(
 			SourceFormatterArgs sourceFormatterArgs)
 		throws Exception {
@@ -758,14 +744,6 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		return annotation.substring(x, y);
 	}
 
-	private synchronized String _getRootDirName(String absolutePath) {
-		if (_rootDirName == null) {
-			_rootDirName = SourceUtil.getRootDirName(absolutePath);
-		}
-
-		return _rootDirName;
-	}
-
 	private String _removePropertyAttribute(String annotation) {
 		if (!annotation.contains("(")) {
 			return annotation;
@@ -841,9 +819,6 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 	private static final Pattern _attributePattern = Pattern.compile(
 		"\\W(\\w+)\\s*=");
 	private static List<String> _currentBranchRenamedFileNames;
-
-	private Map<String, String> _bundleSymbolicNamesMap;
-	private String _rootDirName;
 
 	private class AnnotationParameterPropertyComparator
 		extends NaturalOrderStringComparator {

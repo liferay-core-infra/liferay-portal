@@ -408,6 +408,27 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 			return annotation;
 		}
 
+		List<String> allowedUnusedConfigurationPidClassNames =
+			getAttributeValues(
+				_ALLOWED_UNUSED_CONFIGURATION_PID_CLASS_NAMES_KEY,
+				absolutePath);
+
+		boolean allowed = false;
+
+		for (String allowedUnusedConfigurationPidClassName :
+				allowedUnusedConfigurationPidClassNames) {
+
+			if (absolutePath.contains(allowedUnusedConfigurationPidClassName)) {
+				allowed = true;
+
+				break;
+			}
+		}
+
+		if (allowed) {
+			return annotation;
+		}
+
 		String content = javaClass.getContent();
 
 		List<String> importNames = javaClass.getImportNames();
@@ -784,6 +805,10 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 
 	private static final String _ALLOWED_SELF_REGISTRATION_CLASS_NAMES_KEY =
 		"allowedSelfRegistrationClassNames";
+
+	private static final String
+		_ALLOWED_UNUSED_CONFIGURATION_PID_CLASS_NAMES_KEY =
+			"allowedUnusedConfigurationPidClassNames";
 
 	private static final String _CHECK_CONFIGURATION_PID_ATTRIBUTE_KEY =
 		"checkConfigurationPidAttribute";

@@ -27,7 +27,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Tina Tian
  */
 @Component(
-	configurationPid = "com.liferay.antivirus.async.store.configuration.AntivirusAsyncConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	service = AntivirusScannerHelper.class
 )

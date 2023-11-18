@@ -23,10 +23,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Tina Tian
  */
-@Component(
-	configurationPid = "com.liferay.portal.cache.multiple.configuration.PortalCacheClusterConfiguration",
-	enabled = false, service = {}
-)
+@Component(enabled = false, service = {})
 public class ClusterLinkMessagingConfigurator {
 
 	@Activate

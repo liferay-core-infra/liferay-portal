@@ -22,10 +22,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Petteri Karttunen
  */
-@Component(
-	configurationPid = "com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration",
-	service = PortalInstanceLifecycleListener.class
-)
+@Component(service = PortalInstanceLifecycleListener.class)
 public class RankingIndexPortalInstanceLifecycleListener
 	extends BaseIndexPortalInstanceLifecycleListener {
 

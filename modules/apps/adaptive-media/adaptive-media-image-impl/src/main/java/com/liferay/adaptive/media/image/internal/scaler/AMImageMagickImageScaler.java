@@ -35,7 +35,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Eric Yan
  */
 @Component(
-	configurationPid = "com.liferay.adaptive.media.image.internal.configuration.AMImageMagickConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	service = AMImageScaler.class
 )

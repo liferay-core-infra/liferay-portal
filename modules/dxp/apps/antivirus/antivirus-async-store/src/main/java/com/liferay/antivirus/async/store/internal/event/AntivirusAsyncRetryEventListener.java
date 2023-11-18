@@ -18,7 +18,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  */
 @Component(
-	configurationPid = "com.liferay.antivirus.async.store.configuration.AntivirusAsyncConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	service = AntivirusAsyncEventListener.class
 )

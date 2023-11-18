@@ -151,19 +151,12 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		SourceFormatterArgs sourceFormatterArgs =
 			sourceProcessor.getSourceFormatterArgs();
 
-		if (!sourceFormatterArgs.isFormatCurrentBranch()) {
+		if (!sourceFormatterArgs.isFormatCurrentBranch() ||
+			_isAllowedClassName(
+				_ALLOWED_MULTIPLE_SERVICE_TYPES_CLASS_NAMES_KEY,
+				absolutePath)) {
+
 			return;
-		}
-
-		List<String> allowedMultipleServicesClassNames = getAttributeValues(
-			_ALLOWED_MULTIPLE_SERVICE_TYPES_CLASS_NAMES_KEY, absolutePath);
-
-		for (String allowedMultipleServicesClassName :
-				allowedMultipleServicesClassNames) {
-
-			if (absolutePath.contains(allowedMultipleServicesClassName)) {
-				return;
-			}
 		}
 
 		for (String currentBranchRenamedFileName :
@@ -212,20 +205,11 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		String fileName, String absolutePath, String annotation) {
 
 		if (absolutePath.contains("/modules/apps/archived/") ||
-			!isAttributeValue(_CHECK_IMMEDIATE_ATTRIBUTE_KEY, absolutePath)) {
+			!isAttributeValue(_CHECK_IMMEDIATE_ATTRIBUTE_KEY, absolutePath) ||
+			_isAllowedClassName(
+				_ALLOWED_IMMEDIATE_ATTRIBUTE_CLASS_NAMES_KEY, absolutePath)) {
 
 			return;
-		}
-
-		List<String> allowedImmediateAttributeClassNames = getAttributeValues(
-			_ALLOWED_IMMEDIATE_ATTRIBUTE_CLASS_NAMES_KEY, absolutePath);
-
-		for (String allowedImmediateAttributeClassName :
-				allowedImmediateAttributeClassNames) {
-
-			if (absolutePath.contains(allowedImmediateAttributeClassName)) {
-				return;
-			}
 		}
 
 		String immediateAttributeValue = getAnnotationAttributeValue(
@@ -408,24 +392,10 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 			return annotation;
 		}
 
-		List<String> allowedUnusedConfigurationPidClassNames =
-			getAttributeValues(
+		if (_isAllowedClassName(
 				_ALLOWED_UNUSED_CONFIGURATION_PID_CLASS_NAMES_KEY,
-				absolutePath);
+				absolutePath)) {
 
-		boolean allowed = false;
-
-		for (String allowedUnusedConfigurationPidClassName :
-				allowedUnusedConfigurationPidClassNames) {
-
-			if (absolutePath.contains(allowedUnusedConfigurationPidClassName)) {
-				allowed = true;
-
-				break;
-			}
-		}
-
-		if (allowed) {
 			return annotation;
 		}
 
@@ -646,29 +616,14 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		}
 
 		if (checkSelfRegistration &&
-			serviceAttributeValue.matches(".*\\b" + className + "\\.class.*")) {
+			serviceAttributeValue.matches(".*\\b" + className + "\\.class.*") &&
+			!_isAllowedClassName(
+				_ALLOWED_SELF_REGISTRATION_CLASS_NAMES_KEY, absolutePath)) {
 
-			List<String> allowedSelfRegistrationClassNames = getAttributeValues(
-				_ALLOWED_SELF_REGISTRATION_CLASS_NAMES_KEY, absolutePath);
-
-			boolean allowed = false;
-
-			for (String allowedSelfRegistrationClassName :
-					allowedSelfRegistrationClassNames) {
-
-				if (absolutePath.contains(allowedSelfRegistrationClassName)) {
-					allowed = true;
-
-					break;
-				}
-			}
-
-			if (!allowed) {
-				addMessage(
-					fileName,
-					"No need to register '" + className +
-						"' in @Component 'service' attribute");
-			}
+			addMessage(
+				fileName,
+				"No need to register '" + className +
+					"' in @Component 'service' attribute");
 		}
 
 		if (checkHasMultipleServiceTypes) {
@@ -763,6 +718,20 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		}
 
 		return annotation.substring(x, y);
+	}
+
+	private boolean _isAllowedClassName(
+		String attributeKey, String absolutePath) {
+
+		for (String attributeValue :
+				getAttributeValues(attributeKey, absolutePath)) {
+
+			if (absolutePath.contains(attributeValue)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private String _removePropertyAttribute(String annotation) {

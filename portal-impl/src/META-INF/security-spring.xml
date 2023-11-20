@@ -20,9 +20,6 @@
 	<bean class="com.liferay.portal.kernel.security.auth.DefaultFullNameValidator" id="com.liferay.portal.kernel.security.auth.DefaultFullNameValidator" />
 	<bean class="com.liferay.portal.kernel.security.auth.DefaultScreenNameGenerator" id="com.liferay.portal.kernel.security.auth.DefaultScreenNameGenerator" />
 	<bean class="com.liferay.portal.kernel.security.auth.DefaultScreenNameValidator" id="com.liferay.portal.kernel.security.auth.DefaultScreenNameValidator" />
-	<bean class="com.liferay.portal.kernel.security.auth.tunnel.TunnelAuthenticationManagerUtil" id="com.liferay.portal.kernel.security.auth.tunnel.TunnelAuthenticationManagerUtil">
-		<property name="tunnelAuthenticationManager" ref="com.liferay.portal.security.auth.tunnel.TunnelAuthenticationManagerImpl" />
-	</bean>
 	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyOrganizationMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyOrganizationMembershipPolicy" />
 	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyRoleMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyRoleMembershipPolicy" />
 	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyUserGroupMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyUserGroupMembershipPolicy" />
@@ -83,7 +80,6 @@
 	<bean class="com.liferay.portal.security.auth.SessionAuthToken" id="com.liferay.portal.security.auth.SessionAuthToken" />
 	<bean class="com.liferay.portal.security.auth.StrutsPortletAuthTokenWhitelist" id="com.liferay.portal.security.auth.StrutsPortletAuthTokenWhitelist" />
 	<bean class="com.liferay.portal.security.auth.registry.AuthVerifierRegistry" id="com.liferay.portal.security.auth.registry.AuthVerifierRegistry" />
-	<bean class="com.liferay.portal.security.auth.tunnel.TunnelAuthenticationManagerImpl" id="com.liferay.portal.security.auth.tunnel.TunnelAuthenticationManagerImpl" />
 	<bean class="com.liferay.portal.security.membershippolicy.DefaultSiteMembershipPolicy" id="com.liferay.portal.security.membershippolicy.DefaultSiteMembershipPolicy" />
 	<bean class="com.liferay.portal.security.pwd.PasswordPolicyToolkit" id="com.liferay.portal.security.pwd.PasswordPolicyToolkit" />
 </beans>

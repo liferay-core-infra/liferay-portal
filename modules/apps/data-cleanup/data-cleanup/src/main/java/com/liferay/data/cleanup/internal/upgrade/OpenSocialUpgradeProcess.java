@@ -5,7 +5,7 @@
 
 package com.liferay.data.cleanup.internal.upgrade;
 
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 
 /**
  * @author Kevin Lee

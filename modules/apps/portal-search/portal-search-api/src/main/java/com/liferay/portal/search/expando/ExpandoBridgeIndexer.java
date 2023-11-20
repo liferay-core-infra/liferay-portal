@@ -6,7 +6,7 @@
 package com.liferay.portal.search.expando;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoColumn;
 import com.liferay.portal.kernel.search.Document;
 
 import org.osgi.annotation.versioning.ProviderType;

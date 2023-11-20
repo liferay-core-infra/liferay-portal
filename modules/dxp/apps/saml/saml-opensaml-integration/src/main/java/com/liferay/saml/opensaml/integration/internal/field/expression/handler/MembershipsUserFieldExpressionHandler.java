@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.saml.opensaml.integration.field.expression.handler.UserFieldExpressionHandler;
 import com.liferay.saml.opensaml.integration.processor.context.UserProcessorContext;
@@ -22,24 +21,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Stian Sigvartsen
  */
-@Component(
-	property = {
-		"display.index:Integer=200", "prefix=membership",
-		"processing.index:Integer=200"
-	},
-	service = MembershipsUserFieldExpressionHandler.class
-)
 public class MembershipsUserFieldExpressionHandler
 	implements UserFieldExpressionHandler {
+
+	public MembershipsUserFieldExpressionHandler(
+		UserGroupLocalService userGroupLocalService) {
+
+		_userGroupLocalService = userGroupLocalService;
+	}
 
 	@Override
 	public void bindProcessorContext(
@@ -49,7 +42,7 @@ public class MembershipsUserFieldExpressionHandler
 
 		UserProcessorContext.UserBind<User> userBind =
 			userProcessorContext.bind(
-				_processingIndex,
+				200,
 				(currentUser, newUser, serviceContext) -> {
 					_userGroupLocalService.setUserUserGroups(
 						newUser.getUserId(),
@@ -115,20 +108,10 @@ public class MembershipsUserFieldExpressionHandler
 		return false;
 	}
 
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		_processingIndex = GetterUtil.getInteger(
-			properties.get("processing.index"));
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		MembershipsUserFieldExpressionHandler.class);
 
-	private int _processingIndex;
-
-	@Reference
-	private UserGroupLocalService _userGroupLocalService;
-
+	private final UserGroupLocalService _userGroupLocalService;
 	private final List<String> _validFieldExpressions =
 		Collections.unmodifiableList(Arrays.asList("userGroups"));
 

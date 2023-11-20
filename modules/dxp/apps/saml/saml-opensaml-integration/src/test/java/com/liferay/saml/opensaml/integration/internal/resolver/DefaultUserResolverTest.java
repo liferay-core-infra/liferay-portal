@@ -115,7 +115,7 @@ public class DefaultUserResolverTest extends BaseSamlTestCase {
 			_mockDefaultUserFieldExpressionRegistry(
 				_createDefaultUserFieldExpressionHandler(
 					_userLocalService, _prefsProps),
-				_createMembershipsUserFieldExpressionHandler(
+				new MembershipsUserFieldExpressionHandler(
 					_userGroupLocalService));
 
 		_testUserFieldExpressionResolver =
@@ -435,23 +435,6 @@ public class DefaultUserResolverTest extends BaseSamlTestCase {
 			userLocalService);
 
 		return defaultUserFieldExpressionHandler;
-	}
-
-	private MembershipsUserFieldExpressionHandler
-		_createMembershipsUserFieldExpressionHandler(
-			UserGroupLocalService userGroupLocalService) {
-
-		MembershipsUserFieldExpressionHandler
-			membershipsUserFieldExpressionHandler =
-				new MembershipsUserFieldExpressionHandler();
-
-		ReflectionTestUtil.setFieldValue(
-			membershipsUserFieldExpressionHandler, "_processingIndex", 100);
-		ReflectionTestUtil.setFieldValue(
-			membershipsUserFieldExpressionHandler, "_userGroupLocalService",
-			userGroupLocalService);
-
-		return membershipsUserFieldExpressionHandler;
 	}
 
 	private void _initMatchingUserHandling() throws Exception {

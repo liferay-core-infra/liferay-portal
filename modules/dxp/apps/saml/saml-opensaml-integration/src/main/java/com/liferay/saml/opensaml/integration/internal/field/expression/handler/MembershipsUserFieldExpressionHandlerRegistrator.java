@@ -6,13 +6,11 @@
 package com.liferay.saml.opensaml.integration.internal.field.expression.handler;
 
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
-import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.service.UserGroupLocalService;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.saml.opensaml.integration.field.expression.handler.UserFieldExpressionHandler;
 
-import java.util.Dictionary;
-
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -31,17 +29,14 @@ public class MembershipsUserFieldExpressionHandlerRegistrator {
 			return;
 		}
 
-		Dictionary<String, Object> properties = new HashMapDictionary<>();
-
-		for (String key : _serviceReference.getPropertyKeys()) {
-			Object value = _serviceReference.getProperty(key);
-
-			properties.put(key, value);
-		}
-
 		_serviceRegistration = bundleContext.registerService(
 			UserFieldExpressionHandler.class,
-			bundleContext.getService(_serviceReference), properties);
+			new MembershipsUserFieldExpressionHandler(_userGroupLocalService),
+			HashMapDictionaryBuilder.<String, Object>put(
+				"display.index:Integer", 200
+			).put(
+				"prefix", "membership"
+			).build());
 	}
 
 	@Deactivate
@@ -51,10 +46,9 @@ public class MembershipsUserFieldExpressionHandlerRegistrator {
 		}
 	}
 
-	@Reference
-	private ServiceReference<MembershipsUserFieldExpressionHandler>
-		_serviceReference;
-
 	private ServiceRegistration<?> _serviceRegistration;
+
+	@Reference
+	private UserGroupLocalService _userGroupLocalService;
 
 }

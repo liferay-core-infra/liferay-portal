@@ -38,11 +38,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael C. Han
  */
-@Component(
-	service = {
-		ElasticsearchClientResolver.class, ElasticsearchConnectionManager.class
-	}
-)
+@Component(service = ElasticsearchConnectionManager.class)
 public class ElasticsearchConnectionManagerImpl
 	implements ElasticsearchConnectionManager {
 

@@ -15,7 +15,7 @@ import org.elasticsearch.client.RestHighLevelClient;
  * @author Roberto Cássio Silva do Nascimento Júnior
  */
 public interface ElasticsearchConnectionManager
-	extends ElasticsearchConfigurationObserver, ElasticsearchClientResolver {
+	extends ElasticsearchConfigurationObserver {
 
 	public void addElasticsearchConnection(
 		ElasticsearchConnection elasticsearchConnection);
@@ -33,6 +33,13 @@ public interface ElasticsearchConnectionManager
 	public Collection<ElasticsearchConnection> getElasticsearchConnections();
 
 	public String getLocalClusterConnectionId();
+
+	public RestHighLevelClient getRestHighLevelClient();
+
+	public RestHighLevelClient getRestHighLevelClient(String connectionId);
+
+	public RestHighLevelClient getRestHighLevelClient(
+		String connectionId, boolean preferLocalCluster);
 
 	public boolean isCrossClusterReplicationEnabled();
 

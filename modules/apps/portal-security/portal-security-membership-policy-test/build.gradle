@@ -1,6 +1,7 @@
 dependencies {
 	testIntegrationImplementation group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	testIntegrationImplementation group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
+	testIntegrationImplementation project(":apps:expando:expando-api")
 	testIntegrationImplementation project(":apps:organizations:organizations-api")
 	testIntegrationImplementation project(":apps:roles:roles-admin-api")
 	testIntegrationImplementation project(":apps:site:site-api")

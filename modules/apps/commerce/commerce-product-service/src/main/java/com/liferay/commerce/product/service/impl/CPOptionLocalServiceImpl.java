@@ -13,7 +13,7 @@ import com.liferay.commerce.product.exception.CPOptionSKUContributorException;
 import com.liferay.commerce.product.model.CPOption;
 import com.liferay.commerce.product.service.CPOptionValueLocalService;
 import com.liferay.commerce.product.service.base.CPOptionLocalServiceBaseImpl;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.exception.PortalException;

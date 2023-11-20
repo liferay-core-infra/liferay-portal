@@ -54,7 +54,7 @@ import com.liferay.commerce.term.service.CommerceTermEntryLocalService;
 import com.liferay.commerce.util.CommerceShippingEngineRegistry;
 import com.liferay.commerce.util.CommerceShippingHelper;
 import com.liferay.commerce.util.CommerceUtil;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;

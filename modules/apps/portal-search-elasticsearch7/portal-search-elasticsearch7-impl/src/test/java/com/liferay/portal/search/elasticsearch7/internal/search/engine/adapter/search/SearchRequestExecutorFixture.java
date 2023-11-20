@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.search.elasticsearch7.internal.SearchHitDocumentTranslatorImpl;
 import com.liferay.portal.search.elasticsearch7.internal.aggregation.ElasticsearchAggregationTranslatorFixture;
 import com.liferay.portal.search.elasticsearch7.internal.aggregation.pipeline.ElasticsearchPipelineAggregationTranslatorFixture;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.facet.DefaultFacetTranslator;
 import com.liferay.portal.search.elasticsearch7.internal.facet.FacetProcessor;
 import com.liferay.portal.search.elasticsearch7.internal.facet.FacetTranslator;
@@ -91,7 +91,7 @@ public class SearchRequestExecutorFixture {
 
 		_searchRequestExecutor = _createSearchRequestExecutor(
 			createComplexQueryBuilderFactory(new QueriesImpl()),
-			_elasticsearchClientResolver, elasticsearchQueryTranslator,
+			_elasticsearchConnectionManager, elasticsearchQueryTranslator,
 			elasticsearchSortFieldTranslatorFixture.
 				getElasticsearchSortFieldTranslator(),
 			_facetProcessor, new StatsRequestBuilderFactoryImpl(),
@@ -185,9 +185,9 @@ public class SearchRequestExecutorFixture {
 	}
 
 	protected void setElasticsearchClientResolver(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
-		_elasticsearchClientResolver = elasticsearchClientResolver;
+		_elasticsearchConnectionManager = elasticsearchConnectionManager;
 	}
 
 	protected void setFacetProcessor(FacetProcessor<?> facetProcessor) {
@@ -241,20 +241,20 @@ public class SearchRequestExecutorFixture {
 
 	private ClosePointInTimeRequestExecutor
 		_createClosePointInTimeRequestExecutor(
-			ElasticsearchClientResolver elasticsearchClientResolver) {
+			ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		ClosePointInTimeRequestExecutor closePointInTimeRequestExecutor =
 			new ClosePointInTimeRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			closePointInTimeRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			closePointInTimeRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return closePointInTimeRequestExecutor;
 	}
 
 	private CountSearchRequestExecutor _createCountSearchRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver,
+		ElasticsearchConnectionManager elasticsearchConnectionManager,
 		CommonSearchSourceBuilderAssembler commonSearchSourceBuilderAssembler,
 		StatsTranslator statsTranslator) {
 
@@ -275,15 +275,15 @@ public class SearchRequestExecutorFixture {
 			countSearchRequestExecutor, "_commonSearchSourceBuilderAssembler",
 			commonSearchSourceBuilderAssembler);
 		ReflectionTestUtil.setFieldValue(
-			countSearchRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			countSearchRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return countSearchRequestExecutor;
 	}
 
 	private MultisearchSearchRequestExecutor
 		_createMultisearchSearchRequestExecutor(
-			ElasticsearchClientResolver elasticsearchClientResolver,
+			ElasticsearchConnectionManager elasticsearchConnectionManager,
 			SearchSearchRequestAssembler searchSearchRequestAssembler,
 			SearchSearchResponseAssembler searchSearchResponseAssembler) {
 
@@ -291,8 +291,8 @@ public class SearchRequestExecutorFixture {
 			new MultisearchSearchRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			multisearchSearchRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			multisearchSearchRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 		ReflectionTestUtil.setFieldValue(
 			multisearchSearchRequestExecutor, "_searchSearchRequestAssembler",
 			searchSearchRequestAssembler);
@@ -305,21 +305,21 @@ public class SearchRequestExecutorFixture {
 
 	private OpenPointInTimeRequestExecutor
 		_createOpenPointInTimeRequestExecutor(
-			ElasticsearchClientResolver elasticsearchClientResolver) {
+			ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		OpenPointInTimeRequestExecutor openPointInTimeRequestExecutor =
 			new OpenPointInTimeRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			openPointInTimeRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			openPointInTimeRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return openPointInTimeRequestExecutor;
 	}
 
 	private SearchRequestExecutor _createSearchRequestExecutor(
 		ComplexQueryBuilderFactory complexQueryBuilderFactory,
-		ElasticsearchClientResolver elasticsearchClientResolver,
+		ElasticsearchConnectionManager elasticsearchConnectionManager,
 		ElasticsearchQueryTranslator elasticsearchQueryTranslator,
 		ElasticsearchSortFieldTranslator elasticsearchSortFieldTranslator,
 		FacetProcessor<?> facetProcessor,
@@ -347,28 +347,30 @@ public class SearchRequestExecutorFixture {
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_closePointInTimeRequestExecutor",
 			_createClosePointInTimeRequestExecutor(
-				elasticsearchClientResolver));
+				elasticsearchConnectionManager));
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_countSearchRequestExecutor",
 			_createCountSearchRequestExecutor(
-				elasticsearchClientResolver, commonSearchSourceBuilderAssembler,
-				statsTranslator));
+				elasticsearchConnectionManager,
+				commonSearchSourceBuilderAssembler, statsTranslator));
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_multisearchSearchRequestExecutor",
 			_createMultisearchSearchRequestExecutor(
-				elasticsearchClientResolver, searchSearchRequestAssembler,
+				elasticsearchConnectionManager, searchSearchRequestAssembler,
 				searchSearchResponseAssembler));
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_openPointInTimeRequestExecutor",
-			_createOpenPointInTimeRequestExecutor(elasticsearchClientResolver));
+			_createOpenPointInTimeRequestExecutor(
+				elasticsearchConnectionManager));
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_searchSearchRequestExecutor",
 			_createSearchSearchRequestExecutor(
-				elasticsearchClientResolver, searchSearchRequestAssembler,
+				elasticsearchConnectionManager, searchSearchRequestAssembler,
 				searchSearchResponseAssembler));
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_suggestSearchRequestExecutor",
-			_createSuggestSearchRequestExecutor(elasticsearchClientResolver));
+			_createSuggestSearchRequestExecutor(
+				elasticsearchConnectionManager));
 
 		return searchRequestExecutor;
 	}
@@ -414,7 +416,7 @@ public class SearchRequestExecutorFixture {
 	}
 
 	private SearchSearchRequestExecutor _createSearchSearchRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver,
+		ElasticsearchConnectionManager elasticsearchConnectionManager,
 		SearchSearchRequestAssembler searchSearchRequestAssembler,
 		SearchSearchResponseAssembler searchSearchResponseAssembler) {
 
@@ -422,8 +424,8 @@ public class SearchRequestExecutorFixture {
 			new SearchSearchRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			searchSearchRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			searchSearchRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 		ReflectionTestUtil.setFieldValue(
 			searchSearchRequestExecutor, "_searchSearchRequestAssembler",
 			searchSearchRequestAssembler);
@@ -497,7 +499,7 @@ public class SearchRequestExecutorFixture {
 	}
 
 	private SuggestSearchRequestExecutor _createSuggestSearchRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		SuggestSearchRequestExecutor suggestSearchRequestExecutor =
 			new SuggestSearchRequestExecutorImpl();
@@ -507,8 +509,8 @@ public class SearchRequestExecutorFixture {
 				new ElasticsearchSuggesterTranslatorFixture();
 
 		ReflectionTestUtil.setFieldValue(
-			suggestSearchRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			suggestSearchRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 		ReflectionTestUtil.setFieldValue(
 			suggestSearchRequestExecutor, "_suggesterTranslator",
 			elasticsearchSuggesterTranslatorFixture.
@@ -524,7 +526,7 @@ public class SearchRequestExecutorFixture {
 		<ServiceRegistration<FacetProcessor<SearchRequestBuilder>>>
 			_serviceRegistrations = new ArrayList<>();
 
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 	private FacetProcessor<?> _facetProcessor;
 	private SearchRequestExecutor _searchRequestExecutor;
 

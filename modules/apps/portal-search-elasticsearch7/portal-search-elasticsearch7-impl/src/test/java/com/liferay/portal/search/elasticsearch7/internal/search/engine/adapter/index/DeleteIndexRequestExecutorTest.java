@@ -61,7 +61,7 @@ public class DeleteIndexRequestExecutorTest {
 			new DeleteIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			deleteIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			deleteIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 		ReflectionTestUtil.setFieldValue(
 			deleteIndexRequestExecutorImpl, "_indicesOptionsTranslator",

@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.cluster;
 
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.cluster.UpdateSettingsClusterRequest;
 import com.liferay.portal.search.engine.adapter.cluster.UpdateSettingsClusterResponse;
 
@@ -88,7 +88,7 @@ public class UpdateSettingsClusterRequestExecutorImpl
 		UpdateSettingsClusterRequest updateSettingsClusterRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				updateSettingsClusterRequest.getConnectionId(),
 				updateSettingsClusterRequest.isPreferLocalCluster());
 
@@ -104,6 +104,6 @@ public class UpdateSettingsClusterRequestExecutorImpl
 	}
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

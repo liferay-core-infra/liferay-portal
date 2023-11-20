@@ -13,9 +13,9 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.OperationModeResolver;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
 import com.liferay.portal.search.elasticsearch7.internal.index.CompanyIdIndexNameBuilder;
 import com.liferay.portal.search.elasticsearch7.internal.index.CompanyIndexFactory;
 import com.liferay.portal.search.elasticsearch7.internal.index.CompanyIndexFactoryHelper;
@@ -167,7 +167,7 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 		_createElasticsearchConnectionManager(
 			ElasticsearchConnectionFixture elasticsearchConnectionFixture) {
 
-		return new ElasticsearchConnectionManager() {
+		return new ElasticsearchConnectionManagerImpl() {
 			{
 				elasticsearchConfigurationWrapper =
 					createElasticsearchConfigurationWrapper(
@@ -185,7 +185,7 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 	}
 
 	private ElasticsearchSearchEngine _createElasticsearchSearchEngine(
-		ElasticsearchClientResolver elasticsearchClientResolver,
+		ElasticsearchConnectionManager elasticsearchClientResolver,
 		ElasticsearchConnectionManager elasticsearchConnectionManager,
 		IndexConfigurationDynamicUpdatesExecutor
 			indexConfigurationDynamicUpdatesExecutor,
@@ -249,12 +249,13 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 	}
 
 	private SearchEngineAdapter _createSearchEngineAdapter(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		_elasticsearchEngineAdapterFixture =
 			new ElasticsearchEngineAdapterFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 				}
 			};
 

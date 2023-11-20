@@ -7,7 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.snapshot.GetSnapshotRepositoriesRequest;
 import com.liferay.portal.search.engine.adapter.snapshot.GetSnapshotRepositoriesResponse;
 import com.liferay.portal.search.engine.adapter.snapshot.SnapshotRepositoryDetails;
@@ -98,7 +98,7 @@ public class GetSnapshotRepositoriesRequestExecutorImpl
 		GetSnapshotRepositoriesRequest getSnapshotRepositoriesRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				getSnapshotRepositoriesRequest.getConnectionId(),
 				getSnapshotRepositoriesRequest.isPreferLocalCluster());
 
@@ -128,6 +128,6 @@ public class GetSnapshotRepositoriesRequestExecutorImpl
 		GetSnapshotRepositoriesRequestExecutorImpl.class);
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.search.suggest.Suggester;
 import com.liferay.portal.kernel.search.suggest.TermSuggester;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.document.DefaultElasticsearchDocumentFactory;
 import com.liferay.portal.search.elasticsearch7.internal.document.ElasticsearchDocumentFactory;
@@ -342,14 +342,14 @@ public class ElasticsearchSearchEngineAdapterSearchRequestTest {
 	}
 
 	protected SearchEngineAdapter createSearchEngineAdapter(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		SearchEngineAdapter searchEngineAdapter =
 			new ElasticsearchSearchEngineAdapterImpl();
 
 		ReflectionTestUtil.setFieldValue(
 			searchEngineAdapter, "_searchRequestExecutor",
-			_createSearchRequestExecutor(elasticsearchClientResolver));
+			_createSearchRequestExecutor(elasticsearchConnectionManager));
 
 		return searchEngineAdapter;
 	}
@@ -414,11 +414,11 @@ public class ElasticsearchSearchEngineAdapterSearchRequestTest {
 	}
 
 	private SearchRequestExecutor _createSearchRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		_searchRequestExecutorFixture = new SearchRequestExecutorFixture() {
 			{
-				setElasticsearchClientResolver(elasticsearchClientResolver);
+				setElasticsearchClientResolver(elasticsearchConnectionManager);
 			}
 		};
 

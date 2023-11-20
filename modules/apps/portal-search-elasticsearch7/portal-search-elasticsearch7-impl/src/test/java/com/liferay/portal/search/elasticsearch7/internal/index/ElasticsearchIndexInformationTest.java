@@ -10,8 +10,8 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.test.util.AssertUtils;
@@ -105,21 +105,21 @@ public class ElasticsearchIndexInformationTest {
 	public TestName testName = new TestName();
 
 	private CompanyIndexFactoryFixture _createCompanyIndexFactoryFixture(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		return new CompanyIndexFactoryFixture(
-			elasticsearchClientResolver, testName.getMethodName());
+			elasticsearchConnectionManager, testName.getMethodName());
 	}
 
 	private ElasticsearchIndexInformation _createElasticsearchIndexInformation(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		ElasticsearchIndexInformation elasticsearchIndexInformation =
 			new ElasticsearchIndexInformation();
 
 		ReflectionTestUtil.setFieldValue(
-			elasticsearchIndexInformation, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			elasticsearchIndexInformation, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 		ReflectionTestUtil.setFieldValue(
 			elasticsearchIndexInformation, "_indexNameBuilder",
 			(IndexNameBuilder)companyId -> _getIndexNameBuilder(companyId));

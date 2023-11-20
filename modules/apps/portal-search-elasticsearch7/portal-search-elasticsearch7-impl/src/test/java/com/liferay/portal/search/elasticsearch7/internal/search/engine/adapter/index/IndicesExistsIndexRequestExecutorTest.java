@@ -53,7 +53,7 @@ public class IndicesExistsIndexRequestExecutorTest {
 
 		ReflectionTestUtil.setFieldValue(
 			indicesExistsIndexRequestExecutorImpl,
-			"_elasticsearchClientResolver", _elasticsearchFixture);
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 
 		GetIndexRequest getIndexRequest =
 			indicesExistsIndexRequestExecutorImpl.createGetIndexRequest(

@@ -49,8 +49,8 @@ public class GetMappingIndexRequestExecutorTest {
 			new GetMappingIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			getMappingIndexRequestExecutorImpl, "_elasticsearchClientResolver",
-			_elasticsearchFixture);
+			getMappingIndexRequestExecutorImpl,
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 
 		GetMappingsRequest getMappingsRequest =
 			getMappingIndexRequestExecutorImpl.createGetMappingsRequest(

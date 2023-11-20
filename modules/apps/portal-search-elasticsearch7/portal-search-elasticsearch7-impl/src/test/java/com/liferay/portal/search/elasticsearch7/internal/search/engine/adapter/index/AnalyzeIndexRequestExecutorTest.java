@@ -50,7 +50,7 @@ public class AnalyzeIndexRequestExecutorTest {
 			new AnalyzeIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			analyzeIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			analyzeIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 
 		AnalyzeRequest analyzeRequest =

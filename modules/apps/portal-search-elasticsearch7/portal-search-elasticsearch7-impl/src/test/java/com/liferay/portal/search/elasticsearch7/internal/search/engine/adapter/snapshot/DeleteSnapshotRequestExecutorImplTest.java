@@ -48,8 +48,8 @@ public class DeleteSnapshotRequestExecutorImplTest {
 			new DeleteSnapshotRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			deleteSnapshotRequestExecutorImpl, "_elasticsearchClientResolver",
-			_elasticsearchFixture);
+			deleteSnapshotRequestExecutorImpl,
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 
 		org.elasticsearch.action.admin.cluster.snapshots.delete.
 			DeleteSnapshotRequest elasticDeleteSnapshotRequest =

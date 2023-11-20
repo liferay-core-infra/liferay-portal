@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.search;
 
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.search.ClearScrollRequest;
 import com.liferay.portal.search.engine.adapter.search.ClearScrollResponse;
 
@@ -55,7 +55,7 @@ public class ClearScrollRequestExecutorImpl
 				elasticsearchClearScrollRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				clearScrollRequest.getConnectionId(),
 				clearScrollRequest.isPreferLocalCluster());
 
@@ -69,6 +69,6 @@ public class ClearScrollRequestExecutorImpl
 	}
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

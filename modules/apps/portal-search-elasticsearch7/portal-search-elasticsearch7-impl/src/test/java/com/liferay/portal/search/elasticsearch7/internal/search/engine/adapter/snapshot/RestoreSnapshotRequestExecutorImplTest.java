@@ -54,8 +54,8 @@ public class RestoreSnapshotRequestExecutorImplTest {
 			new RestoreSnapshotRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			restoreSnapshotRequestExecutorImpl, "_elasticsearchClientResolver",
-			_elasticsearchFixture);
+			restoreSnapshotRequestExecutorImpl,
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 
 		org.elasticsearch.action.admin.cluster.snapshots.restore.
 			RestoreSnapshotRequest elasticsearchRestoreSnapshotsRequest =

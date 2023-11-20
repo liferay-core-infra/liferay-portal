@@ -5,8 +5,11 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
+import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationObserver;
+
 import java.io.IOException;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.elasticsearch.client.IndicesClient;
@@ -19,7 +22,7 @@ import org.elasticsearch.cluster.health.ClusterHealthStatus;
 /**
  * @author André de Oliveira
  */
-public class ElasticsearchFixture implements ElasticsearchClientResolver {
+public class ElasticsearchFixture implements ElasticsearchConnectionManager {
 
 	public ElasticsearchFixture() {
 		this(
@@ -58,6 +61,23 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		this();
 	}
 
+	@Override
+	public void addElasticsearchConnection(
+		ElasticsearchConnection elasticsearchConnection) {
+	}
+
+	@Override
+	public void applyConfigurations() {
+	}
+
+	@Override
+	public int compareTo(ElasticsearchConfigurationObserver o) {
+		return 0;
+	}
+
+	public void deactivate() {
+	}
+
 	public Map<String, Object> getElasticsearchConfigurationProperties() {
 		return _elasticsearchConnectionFixture.
 			getElasticsearchConfigurationProperties();
@@ -65,6 +85,25 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 
 	public ElasticsearchConnection getElasticsearchConnection() {
 		return _elasticsearchConnectionFixture.getElasticsearchConnection();
+	}
+
+	@Override
+	public ElasticsearchConnection getElasticsearchConnection(
+		boolean preferLocalCluster) {
+
+		return null;
+	}
+
+	@Override
+	public ElasticsearchConnection getElasticsearchConnection(
+		String connectionId) {
+
+		return null;
+	}
+
+	@Override
+	public Collection<ElasticsearchConnection> getElasticsearchConnections() {
+		return null;
 	}
 
 	public GetIndexResponse getIndex(String... indices) {
@@ -83,6 +122,16 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 	}
 
 	@Override
+	public String getLocalClusterConnectionId() {
+		return null;
+	}
+
+	@Override
+	public int getPriority() {
+		return 0;
+	}
+
+	@Override
 	public RestHighLevelClient getRestHighLevelClient() {
 		return _elasticsearchConnectionFixture.getRestHighLevelClient();
 	}
@@ -97,6 +146,19 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		String connectionId, boolean preferLocalCluster) {
 
 		return getRestHighLevelClient();
+	}
+
+	@Override
+	public boolean isCrossClusterReplicationEnabled() {
+		return false;
+	}
+
+	@Override
+	public void onElasticsearchConfigurationUpdate() {
+	}
+
+	@Override
+	public void removeElasticsearchConnection(String connectionId) {
 	}
 
 	public void setUp() throws Exception {

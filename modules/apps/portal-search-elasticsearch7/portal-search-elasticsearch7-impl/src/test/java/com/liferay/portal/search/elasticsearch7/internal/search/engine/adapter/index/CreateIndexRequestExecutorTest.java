@@ -58,7 +58,7 @@ public class CreateIndexRequestExecutorTest {
 			new CreateIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			createIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			createIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 
 		org.elasticsearch.action.admin.indices.create.CreateIndexRequest

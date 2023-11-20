@@ -59,7 +59,7 @@ public class OpenIndexRequestExecutorTest {
 			new OpenIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			openIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			openIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 		ReflectionTestUtil.setFieldValue(
 			openIndexRequestExecutorImpl, "_indicesOptionsTranslator",

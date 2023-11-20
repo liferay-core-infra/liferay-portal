@@ -32,7 +32,7 @@ import org.osgi.framework.FrameworkUtil;
 /**
  * @author André de Oliveira
  */
-public class ElasticsearchConnectionManagerTest {
+public class ElasticsearchConnectionManagerImplTest {
 
 	@ClassRule
 	@Rule
@@ -69,7 +69,10 @@ public class ElasticsearchConnectionManagerTest {
 		ElasticsearchConnectionManager elasticsearchConnectionManager =
 			Mockito.spy(_elasticsearchConnectionManager);
 
-		elasticsearchConnectionManager.activate();
+		ElasticsearchConnectionManagerImpl elasticsearchConnectionManagerImpl =
+			(ElasticsearchConnectionManagerImpl)elasticsearchConnectionManager;
+
+		elasticsearchConnectionManagerImpl.activate();
 
 		Mockito.verify(
 			elasticsearchConnectionManager, Mockito.never()
@@ -101,7 +104,10 @@ public class ElasticsearchConnectionManagerTest {
 		ElasticsearchConnectionManager elasticsearchConnectionManager =
 			Mockito.spy(_elasticsearchConnectionManager);
 
-		elasticsearchConnectionManager.activate();
+		ElasticsearchConnectionManagerImpl elasticsearchConnectionManagerImpl =
+			(ElasticsearchConnectionManagerImpl)elasticsearchConnectionManager;
+
+		elasticsearchConnectionManagerImpl.activate();
 
 		Mockito.verify(
 			elasticsearchConnectionManager, Mockito.never()
@@ -139,7 +145,10 @@ public class ElasticsearchConnectionManagerTest {
 		ElasticsearchConnectionManager elasticsearchConnectionManager =
 			Mockito.spy(_elasticsearchConnectionManager);
 
-		elasticsearchConnectionManager.activate();
+		ElasticsearchConnectionManagerImpl elasticsearchConnectionManagerImpl =
+			(ElasticsearchConnectionManagerImpl)elasticsearchConnectionManager;
+
+		elasticsearchConnectionManagerImpl.activate();
 
 		Mockito.verify(
 			elasticsearchConnectionManager
@@ -575,8 +584,8 @@ public class ElasticsearchConnectionManagerTest {
 			ElasticsearchConnection remoteElasticsearchConnection3,
 			ElasticsearchConnection sidecarElasticsearchConnection) {
 
-		ElasticsearchConnectionManager elasticsearchConnectionManager =
-			new ElasticsearchConnectionManager() {
+		ElasticsearchConnectionManagerImpl elasticsearchConnectionManagerImpl =
+			new ElasticsearchConnectionManagerImpl() {
 				{
 					elasticsearchConfigurationWrapper =
 						_elasticsearchConfigurationWrapper;
@@ -585,18 +594,18 @@ public class ElasticsearchConnectionManagerTest {
 				}
 			};
 
-		elasticsearchConnectionManager.addElasticsearchConnection(
+		elasticsearchConnectionManagerImpl.addElasticsearchConnection(
 			remoteElasticsearchConnection1);
-		elasticsearchConnectionManager.addElasticsearchConnection(
+		elasticsearchConnectionManagerImpl.addElasticsearchConnection(
 			remoteElasticsearchConnection2);
-		elasticsearchConnectionManager.addElasticsearchConnection(
+		elasticsearchConnectionManagerImpl.addElasticsearchConnection(
 			remoteElasticsearchConnection3);
-		elasticsearchConnectionManager.addElasticsearchConnection(
+		elasticsearchConnectionManagerImpl.addElasticsearchConnection(
 			sidecarElasticsearchConnection);
 
-		elasticsearchConnectionManager.activate();
+		elasticsearchConnectionManagerImpl.activate();
 
-		return elasticsearchConnectionManager;
+		return elasticsearchConnectionManagerImpl;
 	}
 
 	private void _enableRemoteMode() {

@@ -7,8 +7,8 @@ package com.liferay.portal.search.elasticsearch7.internal.logging;
 
 import com.liferay.portal.kernel.search.generic.MatchAllQuery;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ClusterHealthResponseUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.HealthExpectations;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.ElasticsearchEngineAdapterFixture;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.search.CountSearchRequestExecutorImpl;
@@ -138,10 +138,10 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 	}
 
 	private void _waitForElasticsearchToStart(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		ClusterHealthResponseUtil.getClusterHealthResponse(
-			elasticsearchClientResolver,
+			elasticsearchConnectionManager,
 			new HealthExpectations() {
 				{
 					setActivePrimaryShards(0);

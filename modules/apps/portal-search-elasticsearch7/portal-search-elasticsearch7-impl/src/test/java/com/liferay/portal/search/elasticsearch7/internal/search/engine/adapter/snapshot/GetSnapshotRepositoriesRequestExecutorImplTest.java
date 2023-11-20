@@ -52,7 +52,7 @@ public class GetSnapshotRepositoriesRequestExecutorImplTest {
 
 		ReflectionTestUtil.setFieldValue(
 			getSnapshotRepositoriesRequestExecutorImpl,
-			"_elasticsearchClientResolver", _elasticsearchFixture);
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 
 		GetRepositoriesRequest getRepositoriesRequest =
 			getSnapshotRepositoriesRequestExecutorImpl.

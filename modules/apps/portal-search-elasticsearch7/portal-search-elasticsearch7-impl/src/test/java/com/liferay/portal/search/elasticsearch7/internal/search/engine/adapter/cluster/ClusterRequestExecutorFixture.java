@@ -7,7 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.
 
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.cluster.ClusterRequestExecutor;
 
 /**
@@ -28,25 +28,28 @@ public class ClusterRequestExecutorFixture {
 		ReflectionTestUtil.setFieldValue(
 			_clusterRequestExecutor, "_healthClusterRequestExecutor",
 			_createHealthClusterRequestExecutor(
-				clusterHealthStatusTranslator, _elasticsearchClientResolver));
+				clusterHealthStatusTranslator,
+				_elasticsearchConnectionManager));
 		ReflectionTestUtil.setFieldValue(
 			_clusterRequestExecutor, "_stateClusterRequestExecutor",
-			_createStateClusterRequestExecutor(_elasticsearchClientResolver));
+			_createStateClusterRequestExecutor(
+				_elasticsearchConnectionManager));
 		ReflectionTestUtil.setFieldValue(
 			_clusterRequestExecutor, "_statsClusterRequestExecutor",
 			_createStatsClusterRequestExecutor(
-				clusterHealthStatusTranslator, _elasticsearchClientResolver));
+				clusterHealthStatusTranslator,
+				_elasticsearchConnectionManager));
 	}
 
 	protected void setElasticsearchClientResolver(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
-		_elasticsearchClientResolver = elasticsearchClientResolver;
+		_elasticsearchConnectionManager = elasticsearchConnectionManager;
 	}
 
 	private HealthClusterRequestExecutor _createHealthClusterRequestExecutor(
 		ClusterHealthStatusTranslator clusterHealthStatusTranslator,
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		HealthClusterRequestExecutor healthClusterRequestExecutor =
 			new HealthClusterRequestExecutorImpl();
@@ -55,28 +58,28 @@ public class ClusterRequestExecutorFixture {
 			healthClusterRequestExecutor, "_clusterHealthStatusTranslator",
 			clusterHealthStatusTranslator);
 		ReflectionTestUtil.setFieldValue(
-			healthClusterRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			healthClusterRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return healthClusterRequestExecutor;
 	}
 
 	private StateClusterRequestExecutor _createStateClusterRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		StateClusterRequestExecutor stateClusterRequestExecutor =
 			new StateClusterRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			stateClusterRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			stateClusterRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return stateClusterRequestExecutor;
 	}
 
 	private StatsClusterRequestExecutor _createStatsClusterRequestExecutor(
 		ClusterHealthStatusTranslator clusterHealthStatusTranslator,
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		StatsClusterRequestExecutor statsClusterRequestExecutor =
 			new StatsClusterRequestExecutorImpl();
@@ -85,8 +88,8 @@ public class ClusterRequestExecutorFixture {
 			statsClusterRequestExecutor, "_clusterHealthStatusTranslator",
 			clusterHealthStatusTranslator);
 		ReflectionTestUtil.setFieldValue(
-			statsClusterRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			statsClusterRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 		ReflectionTestUtil.setFieldValue(
 			statsClusterRequestExecutor, "_jsonFactory", new JSONFactoryImpl());
 
@@ -94,6 +97,6 @@ public class ClusterRequestExecutorFixture {
 	}
 
 	private ClusterRequestExecutor _clusterRequestExecutor;
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

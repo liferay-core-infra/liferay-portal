@@ -52,7 +52,7 @@ public class GetSnapshotsRequestExecutorImplTest {
 			new GetSnapshotsRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			getSnapshotsRequestExecutorImpl, "_elasticsearchClientResolver",
+			getSnapshotsRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 
 		org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequest

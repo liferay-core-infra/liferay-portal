@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.document.DefaultElasticsearchDocumentFactory;
 import com.liferay.portal.search.elasticsearch7.internal.document.ElasticsearchDocumentFactory;
@@ -590,7 +590,7 @@ public class ElasticsearchSearchEngineAdapterDocumentRequestTest {
 	}
 
 	protected static SearchEngineAdapter createSearchEngineAdapter(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		SearchEngineAdapter searchEngineAdapter =
 			new ElasticsearchSearchEngineAdapterImpl();
@@ -598,20 +598,21 @@ public class ElasticsearchSearchEngineAdapterDocumentRequestTest {
 		ReflectionTestUtil.setFieldValue(
 			searchEngineAdapter, "_documentRequestExecutor",
 			_createDocumentRequestExecutor(
-				elasticsearchClientResolver,
+				elasticsearchConnectionManager,
 				new DefaultElasticsearchDocumentFactory()));
 
 		return searchEngineAdapter;
 	}
 
 	private static DocumentRequestExecutor _createDocumentRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver,
+		ElasticsearchConnectionManager elasticsearchConnectionManager,
 		ElasticsearchDocumentFactory elasticsearchDocumentFactory) {
 
 		DocumentRequestExecutorFixture documentRequestExecutorFixture =
 			new DocumentRequestExecutorFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 					setElasticsearchDocumentFactory(
 						elasticsearchDocumentFactory);
 				}

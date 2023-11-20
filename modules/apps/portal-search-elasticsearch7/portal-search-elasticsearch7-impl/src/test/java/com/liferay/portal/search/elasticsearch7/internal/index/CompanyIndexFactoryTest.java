@@ -14,6 +14,8 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionNotInitializedException;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.IndexName;
 import com.liferay.portal.search.elasticsearch7.internal.document.SingleFieldFixture;
@@ -92,8 +94,16 @@ public class CompanyIndexFactoryTest {
 
 	@Before
 	public void setUp() throws Exception {
+		ElasticsearchConnectionManager elasticsearchConnectionManager =
+			Mockito.mock(ElasticsearchConnectionManager.class);
+
+		Mockito.when(
+			elasticsearchConnectionManager.getRestHighLevelClient()
+		).thenThrow(
+			ElasticsearchConnectionNotInitializedException.class
+		);
 		_companyIndexFactoryFixture = new CompanyIndexFactoryFixture(
-			_elasticsearchFixture, testName.getMethodName());
+			elasticsearchConnectionManager, testName.getMethodName());
 
 		_companyIndexFactory =
 			_companyIndexFactoryFixture.getCompanyIndexFactory();

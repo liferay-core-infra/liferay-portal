@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.ccr;
 
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.ccr.PauseFollowCCRRequest;
 import com.liferay.portal.search.engine.adapter.ccr.PauseFollowCCRResponse;
 
@@ -46,7 +46,7 @@ public class PauseFollowCCRRequestExecutorImpl
 		PauseFollowCCRRequest pauseFollowCCRRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				pauseFollowCCRRequest.getConnectionId(),
 				pauseFollowCCRRequest.isPreferLocalCluster());
 
@@ -68,6 +68,6 @@ public class PauseFollowCCRRequestExecutorImpl
 	}
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

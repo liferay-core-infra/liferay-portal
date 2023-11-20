@@ -80,7 +80,7 @@ public class DeleteByQueryDocumentRequestExecutorTest {
 
 		ReflectionTestUtil.setFieldValue(
 			deleteByQueryDocumentRequestExecutorImpl,
-			"_elasticsearchClientResolver", _elasticsearchFixture);
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 		ReflectionTestUtil.setFieldValue(
 			deleteByQueryDocumentRequestExecutorImpl, "_legacyQueryTranslator",
 			legacyElasticsearchQueryTranslatorFixture.

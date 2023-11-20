@@ -49,7 +49,7 @@ public class RefreshIndexRequestExecutorTest {
 			new RefreshIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			refreshIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			refreshIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 		ReflectionTestUtil.setFieldValue(
 			refreshIndexRequestExecutorImpl,

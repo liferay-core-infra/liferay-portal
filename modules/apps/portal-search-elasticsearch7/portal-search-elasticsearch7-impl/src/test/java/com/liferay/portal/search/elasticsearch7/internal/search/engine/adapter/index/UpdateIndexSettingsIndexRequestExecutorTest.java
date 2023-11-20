@@ -64,7 +64,7 @@ public class UpdateIndexSettingsIndexRequestExecutorTest {
 
 		ReflectionTestUtil.setFieldValue(
 			updateIndexSettingsIndexRequestExecutorImpl,
-			"_elasticsearchClientResolver", _elasticsearchFixture);
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 		ReflectionTestUtil.setFieldValue(
 			updateIndexSettingsIndexRequestExecutorImpl,
 			"_indicesOptionsTranslator", _indicesOptionsTranslator);

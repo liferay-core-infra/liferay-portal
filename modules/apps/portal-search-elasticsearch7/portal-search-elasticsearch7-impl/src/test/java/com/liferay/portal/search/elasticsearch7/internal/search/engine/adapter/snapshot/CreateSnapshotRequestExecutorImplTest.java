@@ -51,8 +51,8 @@ public class CreateSnapshotRequestExecutorImplTest {
 			new CreateSnapshotRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			createSnapshotRequestExecutorImpl, "_elasticsearchClientResolver",
-			_elasticsearchFixture);
+			createSnapshotRequestExecutorImpl,
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 
 		org.elasticsearch.action.admin.cluster.snapshots.create.
 			CreateSnapshotRequest elasticsearchCreateSnapshotRequest =

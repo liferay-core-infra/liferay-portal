@@ -6,11 +6,11 @@
 package com.liferay.exportimport.internal.controller;
 
 import com.liferay.asset.link.model.adapter.StagedAssetLink;
-import com.liferay.expando.kernel.exception.NoSuchTableException;
-import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.model.ExpandoTable;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.exception.NoSuchTableException;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.expando.util.ExpandoConverterUtil;
 import com.liferay.exportimport.changeset.constants.ChangesetPortletKeys;
 import com.liferay.exportimport.configuration.ExportImportServiceConfiguration;

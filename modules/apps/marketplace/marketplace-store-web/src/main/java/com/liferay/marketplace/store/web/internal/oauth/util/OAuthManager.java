@@ -5,8 +5,8 @@
 
 package com.liferay.marketplace.store.web.internal.oauth.util;
 
-import com.liferay.expando.kernel.model.ExpandoValue;
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.expando.model.ExpandoValue;
+import com.liferay.expando.service.ExpandoValueLocalService;
 import com.liferay.marketplace.store.web.internal.configuration.MarketplaceStoreWebConfigurationValues;
 import com.liferay.marketplace.store.web.internal.oauth.api.MarketplaceApi;
 import com.liferay.portal.kernel.exception.PortalException;

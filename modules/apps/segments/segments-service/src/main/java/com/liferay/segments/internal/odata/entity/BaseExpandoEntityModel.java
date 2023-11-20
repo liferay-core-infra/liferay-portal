@@ -5,14 +5,14 @@
 
 package com.liferay.segments.internal.odata.entity;
 
-import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
-import com.liferay.expando.kernel.model.ExpandoColumnTable;
-import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
-import com.liferay.expando.kernel.model.ExpandoTableTable;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoColumnTable;
+import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.model.ExpandoTableTable;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;

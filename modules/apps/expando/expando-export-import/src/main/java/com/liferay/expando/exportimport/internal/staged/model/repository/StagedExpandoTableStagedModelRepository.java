@@ -5,9 +5,9 @@
 
 package com.liferay.expando.exportimport.internal.staged.model.repository;
 
-import com.liferay.expando.kernel.model.ExpandoTable;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.model.ExpandoTable;
 import com.liferay.expando.model.adapter.StagedExpandoTable;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.exportimport.kernel.lar.ExportImportHelper;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;

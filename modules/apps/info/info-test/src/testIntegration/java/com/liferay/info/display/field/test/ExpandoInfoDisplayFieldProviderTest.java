@@ -7,12 +7,12 @@ package com.liferay.info.display.field.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.expando.info.item.provider.ExpandoInfoItemFieldSetProvider;
-import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
-import com.liferay.expando.kernel.model.ExpandoTable;
-import com.liferay.expando.kernel.model.ExpandoValue;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.model.ExpandoValue;
+import com.liferay.expando.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoValueLocalService;
 import com.liferay.expando.test.util.ExpandoTestUtil;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldValue;

@@ -46,7 +46,7 @@ import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CommerceChannelAccountEntryRelTable;
 import com.liferay.commerce.product.model.CommerceChannelRelTable;
 import com.liferay.commerce.product.service.CommerceChannelAccountEntryRelLocalService;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.expression.Predicate;

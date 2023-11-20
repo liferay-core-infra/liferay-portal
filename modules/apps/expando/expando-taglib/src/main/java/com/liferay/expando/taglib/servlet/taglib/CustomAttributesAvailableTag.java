@@ -8,7 +8,6 @@ package com.liferay.expando.taglib.servlet.taglib;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
-import com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.expando.service.permission.ExpandoColumnPermissionUtil;
 import com.liferay.petra.string.CharPool;

@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.security.auth.tunnel;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.AuthException;
 
 import java.net.HttpURLConnection;
@@ -19,22 +20,26 @@ public class TunnelAuthenticationManagerUtil {
 	public static long getUserId(HttpServletRequest httpServletRequest)
 		throws AuthException {
 
-		return _tunnelAuthenticationManager.getUserId(httpServletRequest);
+		return _getTunnelAuthenticationManager().getUserId(httpServletRequest);
 	}
 
 	public static void setCredentials(
 			String login, HttpURLConnection httpURLConnection)
 		throws Exception {
 
-		_tunnelAuthenticationManager.setCredentials(login, httpURLConnection);
+		_getTunnelAuthenticationManager().setCredentials(
+			login, httpURLConnection);
 	}
 
-	public void setTunnelAuthenticationManager(
-		TunnelAuthenticationManager tunnelAuthenticationManager) {
+	private static TunnelAuthenticationManager
+		_getTunnelAuthenticationManager() {
 
-		_tunnelAuthenticationManager = tunnelAuthenticationManager;
+		return _authenticationManagerSnapshot.get();
 	}
 
-	private static TunnelAuthenticationManager _tunnelAuthenticationManager;
+	private static final Snapshot<TunnelAuthenticationManager>
+		_authenticationManagerSnapshot = new Snapshot<>(
+			TunnelAuthenticationManagerUtil.class,
+			TunnelAuthenticationManager.class);
 
 }

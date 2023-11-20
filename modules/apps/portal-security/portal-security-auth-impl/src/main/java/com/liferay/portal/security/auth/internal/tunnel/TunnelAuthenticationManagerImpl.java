@@ -75,7 +75,7 @@ public class TunnelAuthenticationManagerImpl
 
 		try {
 			expectedPassword = EncryptorUtil.encrypt(
-				getSharedSecretKey(), login);
+				_getSharedSecretKey(), login);
 		}
 		catch (EncryptorException encryptorException) {
 			AuthException authException = new RemoteAuthException(
@@ -142,7 +142,7 @@ public class TunnelAuthenticationManagerImpl
 		HttpAuthorizationHeader httpAuthorizationHeader =
 			new HttpAuthorizationHeader(HttpAuthorizationHeader.SCHEME_BASIC);
 
-		String password = EncryptorUtil.encrypt(getSharedSecretKey(), login);
+		String password = EncryptorUtil.encrypt(_getSharedSecretKey(), login);
 
 		httpAuthorizationHeader.setAuthParameter(
 			HttpAuthorizationHeader.AUTH_PARAMETER_NAME_PASSWORD, password);
@@ -154,7 +154,7 @@ public class TunnelAuthenticationManagerImpl
 			HttpHeaders.AUTHORIZATION, httpAuthorizationHeader.toString());
 	}
 
-	protected Key getSharedSecretKey() throws AuthException {
+	private Key _getSharedSecretKey() throws AuthException {
 		String sharedSecret = PropsValues.TUNNELING_SERVLET_SHARED_SECRET;
 
 		if (Validator.isNull(sharedSecret)) {

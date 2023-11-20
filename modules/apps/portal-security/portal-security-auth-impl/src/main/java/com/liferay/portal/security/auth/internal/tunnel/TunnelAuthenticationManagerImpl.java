@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.security.auth.AuthException;
 import com.liferay.portal.kernel.security.auth.RemoteAuthException;
 import com.liferay.portal.kernel.security.auth.http.HttpAuthorizationHeader;
 import com.liferay.portal.kernel.security.auth.tunnel.TunnelAuthenticationManager;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -34,9 +34,13 @@ import javax.crypto.spec.SecretKeySpec;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Tomas Polesovsky
  */
+@Component(service = TunnelAuthenticationManager.class)
 public class TunnelAuthenticationManagerImpl
 	implements TunnelAuthenticationManager {
 
@@ -101,16 +105,15 @@ public class TunnelAuthenticationManagerImpl
 			throw authException;
 		}
 
-		User user = UserLocalServiceUtil.fetchUser(GetterUtil.getLong(login));
+		User user = _userLocalService.fetchUser(GetterUtil.getLong(login));
 
 		if (user == null) {
 			long companyId = PortalInstances.getCompanyId(httpServletRequest);
 
-			user = UserLocalServiceUtil.fetchUserByEmailAddress(
-				companyId, login);
+			user = _userLocalService.fetchUserByEmailAddress(companyId, login);
 
 			if (user == null) {
-				user = UserLocalServiceUtil.fetchUserByScreenName(
+				user = _userLocalService.fetchUserByScreenName(
 					companyId, login);
 			}
 		}
@@ -231,5 +234,8 @@ public class TunnelAuthenticationManagerImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TunnelAuthenticationManagerImpl.class);
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

@@ -34,10 +34,6 @@ public class CustomJspRegistryUtil {
 			fileName.substring(pos));
 	}
 
-	public static CustomJspRegistry getCustomJspRegistry() {
-		return _customJspRegistry;
-	}
-
 	public static String getDisplayName(String servletContextName) {
 		return _servletContextNames.get(servletContextName);
 	}
@@ -55,12 +51,6 @@ public class CustomJspRegistryUtil {
 	public static void unregisterServletContextName(String servletContextName) {
 		_servletContextNames.remove(servletContextName);
 	}
-
-	public void setCustomJspRegistry(CustomJspRegistry customJspRegistry) {
-		_customJspRegistry = customJspRegistry;
-	}
-
-	private static CustomJspRegistry _customJspRegistry;
 
 	private static final Map<String, String> _servletContextNames =
 		new ConcurrentHashMap<>();

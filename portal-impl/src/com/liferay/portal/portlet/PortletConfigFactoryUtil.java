@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.internal;
+package com.liferay.portal.portlet;
 
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
-import com.liferay.portal.kernel.portlet.PortletConfigFactory;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portlet.PortletContextFactoryUtil;
+import com.liferay.portlet.internal.PortletConfigImpl;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,10 +22,9 @@ import javax.servlet.ServletContext;
 /**
  * @author Brian Wing Shun Chan
  */
-public class PortletConfigFactoryImpl implements PortletConfigFactory {
+public class PortletConfigFactoryUtil {
 
-	@Override
-	public PortletConfig create(
+	public static PortletConfig create(
 		Portlet portlet, ServletContext servletContext) {
 
 		Map<String, PortletConfig> portletConfigs = _pool.get(
@@ -54,18 +53,15 @@ public class PortletConfigFactoryImpl implements PortletConfigFactory {
 		return portletConfig;
 	}
 
-	@Override
-	public void destroy(Portlet portlet) {
+	public static void destroy(Portlet portlet) {
 		_pool.remove(portlet.getRootPortletId());
 	}
 
-	@Override
-	public PortletConfig get(Portlet portlet) {
+	public static PortletConfig get(Portlet portlet) {
 		return get(portlet.getPortletId());
 	}
 
-	@Override
-	public PortletConfig get(String portletId) {
+	public static PortletConfig get(String portletId) {
 		String rootPortletId = PortletIdCodec.decodePortletName(portletId);
 
 		Map<String, PortletConfig> portletConfigs = _pool.get(rootPortletId);
@@ -77,8 +73,7 @@ public class PortletConfigFactoryImpl implements PortletConfigFactory {
 		return portletConfigs.get(portletId);
 	}
 
-	@Override
-	public PortletConfig update(Portlet portlet) {
+	public static PortletConfig update(Portlet portlet) {
 		Map<String, PortletConfig> portletConfigs = _pool.get(
 			portlet.getRootPortletId());
 
@@ -97,7 +92,7 @@ public class PortletConfigFactoryImpl implements PortletConfigFactory {
 		return portletConfig;
 	}
 
-	private boolean _isSamePortletDeployedStatus(
+	private static boolean _isSamePortletDeployedStatus(
 		Portlet portlet, PortletConfig portletConfig) {
 
 		LiferayPortletConfig liferayPortletConfig =
@@ -115,7 +110,7 @@ public class PortletConfigFactoryImpl implements PortletConfigFactory {
 		return false;
 	}
 
-	private final Map<String, Map<String, PortletConfig>> _pool =
+	private static final Map<String, Map<String, PortletConfig>> _pool =
 		new ConcurrentHashMap<>();
 
 }

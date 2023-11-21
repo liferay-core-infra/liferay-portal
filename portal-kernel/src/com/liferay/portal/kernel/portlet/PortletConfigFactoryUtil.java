@@ -34,10 +34,6 @@ public class PortletConfigFactoryUtil {
 		return _portletConfigFactory.get(portletId);
 	}
 
-	public static PortletConfigFactory getPortletConfigFactory() {
-		return _portletConfigFactory;
-	}
-
 	public static PortletConfig update(Portlet portlet) {
 		return _portletConfigFactory.update(portlet);
 	}

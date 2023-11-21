@@ -1197,7 +1197,6 @@ com.liferay.portal.theme.ThemeDisplay=com.liferay.portal.kernel.theme.ThemeDispl
 com.liferay.portal.theme.ThemeGroupId=com.liferay.portal.kernel.theme.ThemeGroupId
 com.liferay.portal.theme.ThemeGroupLimit=com.liferay.portal.kernel.theme.ThemeGroupLimit
 com.liferay.portal.util.CookieUtil=com.liferay.portal.kernel.util.CookieUtil
-com.liferay.portal.util.CustomJspRegistry=com.liferay.portal.kernel.util.CustomJspRegistry
 com.liferay.portal.util.CustomJspRegistryUtil=com.liferay.portal.kernel.util.CustomJspRegistryUtil
 com.liferay.portal.util.DefaultLayoutPrototypesUtil=com.liferay.portal.kernel.util.DefaultLayoutPrototypesUtil
 com.liferay.portal.util.DefaultLayoutSetPrototypesUtil=com.liferay.portal.kernel.util.DefaultLayoutSetPrototypesUtil

@@ -5,7 +5,7 @@
 
 package com.liferay.marketplace.model.impl;
 
-import com.liferay.marketplace.internal.bundle.BundleManagerUtil;
+import com.liferay.marketplace.bundle.util.BundleManagerUtil;
 import com.liferay.marketplace.model.Module;
 import com.liferay.marketplace.service.AppLocalServiceUtil;
 import com.liferay.marketplace.service.ModuleLocalServiceUtil;

@@ -3,6 +3,7 @@ Bundle-SymbolicName: com.liferay.marketplace.api
 Bundle-Version: 9.4.2
 Export-Package:\
 	com.liferay.marketplace.bundle,\
+	com.liferay.marketplace.bundle.util,\
 	com.liferay.marketplace.constants,\
 	com.liferay.marketplace.exception,\
 	com.liferay.marketplace.model,\

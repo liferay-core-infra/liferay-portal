@@ -56,11 +56,6 @@
 			<bean class="com.liferay.portal.spring.hibernate.LastSessionRecorderHelperImpl" />
 		</property>
 	</bean>
-	<bean class="com.liferay.portal.kernel.util.CustomJspRegistryUtil" id="com.liferay.portal.kernel.util.CustomJspRegistryUtil">
-		<property name="customJspRegistry">
-			<bean class="com.liferay.portal.util.CustomJspRegistryImpl" />
-		</property>
-	</bean>
 	<bean class="com.liferay.portal.kernel.util.DigesterUtil" id="com.liferay.portal.kernel.util.DigesterUtil">
 		<property name="digester">
 			<bean class="com.liferay.portal.util.DigesterImpl" />

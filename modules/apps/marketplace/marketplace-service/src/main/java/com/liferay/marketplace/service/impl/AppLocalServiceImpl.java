@@ -7,7 +7,7 @@ package com.liferay.marketplace.service.impl;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
-import com.liferay.marketplace.bundle.util.BundleManagerUtil;
+import com.liferay.marketplace.bundle.BundleManager;
 import com.liferay.marketplace.exception.AppPropertiesException;
 import com.liferay.marketplace.exception.AppTitleException;
 import com.liferay.marketplace.exception.AppVersionException;
@@ -222,7 +222,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 
 		Map<String, String> prepackagedApps = new HashMap<>();
 
-		List<Bundle> bundles = BundleManagerUtil.getInstalledBundles();
+		List<Bundle> bundles = _bundleManager.getInstalledBundles();
 
 		for (Bundle bundle : bundles) {
 			Dictionary<String, String> headers = bundle.getHeaders(
@@ -273,7 +273,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 
 			FileUtil.write(file, inputStream);
 
-			BundleManagerUtil.installLPKG(file);
+			_bundleManager.installLPKG(file);
 		}
 		catch (IOException ioException) {
 			throw new PortalException(ioException);
@@ -305,7 +305,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 			_moduleLocalService.deleteModule(module.getModuleId());
 
 			if (module.isBundle()) {
-				BundleManagerUtil.uninstallBundle(
+				_bundleManager.uninstallBundle(
 					module.getBundleSymbolicName(), module.getBundleVersion());
 			}
 		}
@@ -484,6 +484,9 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AppLocalServiceImpl.class);
+
+	@Reference
+	private BundleManager _bundleManager;
 
 	private List<App> _installedApps;
 

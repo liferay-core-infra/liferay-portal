@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Props;
@@ -113,12 +114,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			groupName = _fixMaxLength(
 				groupName, _groupNameMaxLength, storageType);
 
-			JobDetail jobDetail = _getJobDetail(
-				scheduler, new JobKey(jobName, groupName));
-
-			if (jobDetail != null) {
-				scheduler.deleteJob(jobDetail.getKey());
-			}
+			scheduler.deleteJob(_getJobKey(jobName, groupName, storageType));
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -153,7 +149,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			groupName = _fixMaxLength(
 				groupName, _groupNameMaxLength, storageType);
 
-			return getScheduledJob(scheduler, new JobKey(jobName, groupName));
+			return getScheduledJob(
+				scheduler, _getJobKey(jobName, groupName, storageType));
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -242,16 +239,11 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			groupName = _fixMaxLength(
 				groupName, _groupNameMaxLength, storageType);
 
-			JobDetail jobDetail = _getJobDetail(
-				scheduler, new JobKey(jobName, groupName));
+			JobKey jobKey = _getJobKey(jobName, groupName, storageType);
 
-			if (jobDetail == null) {
-				return;
-			}
+			scheduler.pauseJob(jobKey);
 
-			scheduler.pauseJob(jobDetail.getKey());
-
-			_updateJobState(scheduler, jobDetail, TriggerState.PAUSED);
+			_updateJobState(scheduler, jobKey, TriggerState.PAUSED);
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -274,16 +266,11 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			groupName = _fixMaxLength(
 				groupName, _groupNameMaxLength, storageType);
 
-			JobDetail jobDetail = _getJobDetail(
-				scheduler, new JobKey(jobName, groupName));
+			JobKey jobKey = _getJobKey(jobName, groupName, storageType);
 
-			if (jobDetail == null) {
-				return;
-			}
+			scheduler.resumeJob(jobKey);
 
-			scheduler.resumeJob(jobDetail.getKey());
-
-			_updateJobState(scheduler, jobDetail, TriggerState.NORMAL);
+			_updateJobState(scheduler, jobKey, TriggerState.NORMAL);
 		}
 		catch (Exception exception) {
 			throw new SchedulerException(
@@ -331,8 +318,11 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			}
 
 			if (storageType == StorageType.PERSISTED) {
-				JobKey partitionedJobKey = _getPartitionedJobKey(
-					message.getLong("companyId"), quartzTrigger.getJobKey());
+				JobKey jobKey = quartzTrigger.getJobKey();
+
+				JobKey partitionedJobKey = _getJobKey(
+					message.getLong("companyId"), jobKey.getName(),
+					jobKey.getGroup(), storageType);
 
 				TriggerBuilder<? extends Trigger> quartzTriggerBuilder =
 					quartzTrigger.getTriggerBuilder();
@@ -514,13 +504,11 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			Scheduler scheduler, JobKey jobKey)
 		throws Exception {
 
-		JobDetail jobDetail = _getJobDetail(scheduler, jobKey);
+		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
 
 		if (jobDetail == null) {
 			return null;
 		}
-
-		jobKey = jobDetail.getKey();
 
 		String jobName = jobKey.getName();
 		String groupName = jobKey.getGroup();
@@ -662,16 +650,24 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		return argument;
 	}
 
-	private JobDetail _getJobDetail(Scheduler scheduler, JobKey jobKey)
-		throws Exception {
+	private JobKey _getJobKey(
+		long companyId, String jobName, String groupName,
+		StorageType storageType) {
 
-		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-
-		if ((jobDetail == null) && (scheduler == _persistedScheduler)) {
-			jobDetail = scheduler.getJobDetail(_getPartitionedJobKey(jobKey));
+		if (storageType == StorageType.PERSISTED) {
+			return new JobKey(
+				SchedulerEngine.getPartitionedName(companyId, jobName),
+				groupName);
 		}
 
-		return jobDetail;
+		return new JobKey(jobName, groupName);
+	}
+
+	private JobKey _getJobKey(
+		String jobName, String groupName, StorageType storageType) {
+
+		return _getJobKey(
+			CompanyThreadLocal.getCompanyId(), jobName, groupName, storageType);
 	}
 
 	private JobState _getJobState(JobDataMap jobDataMap) {
@@ -679,18 +675,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			SchedulerEngine.JOB_STATE);
 
 		return JobStateSerializeUtil.deserialize(jobStateMap);
-	}
-
-	private JobKey _getPartitionedJobKey(JobKey jobKey) {
-		return new JobKey(
-			SchedulerEngine.getPartitionedName(jobKey.getName()),
-			jobKey.getGroup());
-	}
-
-	private JobKey _getPartitionedJobKey(long companyId, JobKey jobKey) {
-		return new JobKey(
-			SchedulerEngine.getPartitionedName(companyId, jobKey.getName()),
-			jobKey.getGroup());
 	}
 
 	private Scheduler _getScheduler(StorageType storageType) {
@@ -755,8 +739,14 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	}
 
 	private void _updateJobState(
-			Scheduler scheduler, JobDetail jobDetail, TriggerState triggerState)
+			Scheduler scheduler, JobKey jobKey, TriggerState triggerState)
 		throws Exception {
+
+		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+
+		if (jobDetail == null) {
+			return;
+		}
 
 		JobDataMap jobDataMap = jobDetail.getJobDataMap();
 

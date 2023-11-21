@@ -22,7 +22,6 @@ page import="com.liferay.portal.kernel.model.LayoutTemplateConstants" %><%@
 page import="com.liferay.portal.kernel.model.Portlet" %><%@
 page import="com.liferay.portal.kernel.model.PortletApp" %><%@
 page import="com.liferay.portal.kernel.model.PortletCategory" %><%@
-page import="com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%@
@@ -41,6 +40,7 @@ page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.util.comparator.PortletCategoryComparator" %><%@
 page import="com.liferay.portal.kernel.util.comparator.PortletTitleComparator" %><%@
 page import="com.liferay.portal.layoutconfiguration.util.RuntimePageUtil" %><%@
+page import="com.liferay.portal.portlet.PortletConfigFactoryUtil" %><%@
 page import="com.liferay.portal.util.PortletCategoryUtil" %><%@
 page import="com.liferay.portal.util.WebAppPool" %>
 

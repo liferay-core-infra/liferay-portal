@@ -9,8 +9,8 @@ import com.liferay.application.list.BasePanelApp;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.portlet.PortletConfigFactoryUtil;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

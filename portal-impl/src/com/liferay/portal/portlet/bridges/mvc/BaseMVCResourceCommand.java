@@ -5,10 +5,10 @@
 
 package com.liferay.portal.portlet.bridges.mvc;
 
-import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.portlet.PortletConfigFactoryUtil;
 
 import java.io.IOException;
 

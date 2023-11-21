@@ -616,12 +616,18 @@ public class QuartzSchedulerEngineTest {
 
 		public MockScheduler(StorageType storageType, String defaultGroupName) {
 			for (int i = 0; i < _DEFAULT_JOB_NUMBER; i++) {
+				String jobName = _TEST_JOB_NAME_PREFIX + i;
+
+				if (storageType == StorageType.PERSISTED) {
+					jobName = SchedulerEngine.getPartitionedName(jobName);
+				}
+
 				Trigger trigger = _quartzTriggerFactory.createTrigger(
-					_TEST_JOB_NAME_PREFIX + i, defaultGroupName, null, null,
-					_DEFAULT_INTERVAL, TimeUnit.SECOND);
+					jobName, defaultGroupName, null, null, _DEFAULT_INTERVAL,
+					TimeUnit.SECOND);
 
 				addJob(
-					_TEST_JOB_NAME_PREFIX + i, defaultGroupName, storageType,
+					jobName, defaultGroupName, storageType,
 					(org.quartz.Trigger)trigger.getWrappedTrigger());
 			}
 		}

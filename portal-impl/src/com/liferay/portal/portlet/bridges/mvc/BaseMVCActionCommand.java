@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.portlet.bridges.mvc;
+package com.liferay.portal.portlet.bridges.mvc;
 
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;

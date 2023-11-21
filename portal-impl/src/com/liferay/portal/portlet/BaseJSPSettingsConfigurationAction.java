@@ -3,10 +3,16 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.portlet;
+package com.liferay.portal.portlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.ConfigurationAction;
+import com.liferay.portal.kernel.portlet.PortletBag;
+import com.liferay.portal.kernel.portlet.PortletBagPool;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
+import com.liferay.portal.kernel.portlet.ResourceServingConfigurationAction;
+import com.liferay.portal.kernel.portlet.SettingsConfigurationAction;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.util.LocaleUtil;

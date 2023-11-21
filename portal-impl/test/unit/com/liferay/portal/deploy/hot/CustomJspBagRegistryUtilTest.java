@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.context.PortalContextLoaderListener;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.CustomJspRegistryImpl;
 import com.liferay.portal.util.PortalImpl;
 
 import java.net.URL;
@@ -53,11 +52,6 @@ public class CustomJspBagRegistryUtilTest {
 		PortalUtil portalUtil = new PortalUtil();
 
 		portalUtil.setPortal(new PortalImpl());
-
-		CustomJspRegistryUtil customJspRegistryUtil =
-			new CustomJspRegistryUtil();
-
-		customJspRegistryUtil.setCustomJspRegistry(new CustomJspRegistryImpl());
 
 		_servletContext = Mockito.mock(ServletContext.class);
 

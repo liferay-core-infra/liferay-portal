@@ -8,19 +8,12 @@ package com.liferay.questions.web.internal.upgrade.v1_0_1;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.security.service.access.policy.service.SAPEntryService;
 
 /**
  * @author Carlos Correa
  */
 public class UpdateAllowedServicesSignaturesInSAPEntryUpgradeProcess
 	extends UpgradeProcess {
-
-	public UpdateAllowedServicesSignaturesInSAPEntryUpgradeProcess(
-		SAPEntryService sapEntryService) {
-
-		_sapEntryService = sapEntryService;
-	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -66,7 +59,5 @@ public class UpdateAllowedServicesSignaturesInSAPEntryUpgradeProcess
 				StringUtil.quote(allowedServiceSignatures), " where name = ",
 				StringUtil.quote("QUESTIONS_SERVICE_ACCESS_POLICY")));
 	}
-
-	private final SAPEntryService _sapEntryService;
 
 }

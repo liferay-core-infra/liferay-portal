@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.documentlibrary.store.DLStoreImpl;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -57,8 +56,6 @@ public class CTStoreRegistrator {
 							Store ctStore = bundleContext.getService(
 								serviceReference);
 
-							DLStoreImpl.setStore(ctStore);
-
 							return bundleContext.registerService(
 								Store.class, ctStore,
 								HashMapDictionaryBuilder.<String, Object>put(
@@ -73,12 +70,6 @@ public class CTStoreRegistrator {
 
 					Store ctStore = _ctStoreFactory.createCTStore(
 						bundleContext.getService(serviceReference), storeType);
-
-					if (StringUtil.equals(
-							storeType, PropsValues.DL_STORE_IMPL)) {
-
-						DLStoreImpl.setStore(ctStore);
-					}
 
 					return bundleContext.registerService(
 						Store.class, ctStore,

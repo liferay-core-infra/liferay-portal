@@ -46,13 +46,6 @@ import java.io.InputStream;
  */
 public class DLStoreImpl implements DLStore {
 
-	public static void setStore(Store store) {
-		_store = store;
-
-		_wrappedStore = new StoreAreaAwareStoreWrapper(
-			() -> _store, _storeAreaProcessorSnapshot::get);
-	}
-
 	@Override
 	public void addFile(DLStoreRequest dlStoreRequest, byte[] bytes)
 		throws PortalException {
@@ -384,7 +377,7 @@ public class DLStoreImpl implements DLStore {
 		_storeAreaProcessorSnapshot = new Snapshot<>(
 			DLStoreImpl.class, StoreAreaProcessor.class,
 			"(store.type=" + PropsValues.DL_STORE_IMPL + ")");
-	private static Store _wrappedStore = new StoreAreaAwareStoreWrapper(
+	private static final Store _wrappedStore = new StoreAreaAwareStoreWrapper(
 		() -> _store, _storeAreaProcessorSnapshot::get);
 
 	private static class DLStoreFileProvider implements SafeCloseable {

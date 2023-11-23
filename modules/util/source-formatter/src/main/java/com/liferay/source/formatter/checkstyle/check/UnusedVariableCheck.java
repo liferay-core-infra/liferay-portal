@@ -147,7 +147,10 @@ public class UnusedVariableCheck extends BaseCheck {
 			}
 
 			if (_isInsideConstructor(variableCallerDetailAST)) {
-				if (fieldVariable) {
+				if (fieldVariable &&
+					!_isConstructorParameter(
+						variableCallerDetailAST.getNextSibling())) {
+
 					continue;
 				}
 
@@ -160,6 +163,42 @@ public class UnusedVariableCheck extends BaseCheck {
 		}
 
 		log(detailAST, _MSG_UNUSED_VARIABLE_VALUE, variableName);
+	}
+
+	private boolean _isConstructorParameter(DetailAST detailAST) {
+		String variableName = null;
+
+		if (detailAST.getType() == TokenTypes.IDENT) {
+			variableName = detailAST.getText();
+		}
+
+		if (variableName == null) {
+			return false;
+		}
+
+		DetailAST parameterDefinitionDetailAST = getVariableDefinitionDetailAST(
+			detailAST, variableName);
+
+		if ((parameterDefinitionDetailAST == null) ||
+			(parameterDefinitionDetailAST.getType() !=
+				TokenTypes.PARAMETER_DEF)) {
+
+			return false;
+		}
+
+		DetailAST parentDetailAST = parameterDefinitionDetailAST.getParent();
+
+		if (parentDetailAST.getType() != TokenTypes.PARAMETERS) {
+			return false;
+		}
+
+		parentDetailAST = parentDetailAST.getParent();
+
+		if (parentDetailAST.getType() == TokenTypes.CTOR_DEF) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private boolean _isFieldVariable(DetailAST detailAST) {

@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -525,9 +524,6 @@ public class AssetPublisherPortlet extends MVCPortlet {
 			String linkBehavior, List<AssetEntry> assetEntries)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		SyndFeed syndFeed = syndModelFactory.createSyndFeed();
 
 		syndFeed.setDescription(name);
@@ -545,18 +541,14 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 			syndContent.setType(RSSUtil.ENTRY_TYPE_DEFAULT);
 
-			String value = null;
-
 			String languageId = language.getLanguageId(portletRequest);
 
 			if (displayStyle.equals(RSSUtil.DISPLAY_STYLE_TITLE)) {
-				value = StringPool.BLANK;
+				syndContent.setValue(StringPool.BLANK);
 			}
 			else {
-				value = assetEntry.getSummary(languageId, true);
+				syndContent.setValue(assetEntry.getSummary(languageId, true));
 			}
-
-			syndContent.setValue(value);
 
 			syndEntry.setDescription(syndContent);
 
@@ -583,9 +575,7 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 		syndLinks.add(selfSyndLink);
 
-		String feedURL = _getFeedURL(portletRequest);
-
-		selfSyndLink.setHref(feedURL);
+		selfSyndLink.setHref(_getFeedURL(portletRequest));
 
 		selfSyndLink.setRel("self");
 
@@ -593,12 +583,15 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 		syndLinks.add(alternateSyndLink);
 
-		alternateSyndLink.setHref(portal.getLayoutFullURL(themeDisplay));
+		alternateSyndLink.setHref(
+			portal.getLayoutFullURL(
+				(ThemeDisplay)portletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY)));
 		alternateSyndLink.setRel("alternate");
 
 		syndFeed.setPublishedDate(new Date());
 		syndFeed.setTitle(name);
-		syndFeed.setUri(feedURL);
+		syndFeed.setUri(_getFeedURL(portletRequest));
 
 		return rssExporter.export(syndFeed);
 	}
@@ -650,14 +643,13 @@ public class AssetPublisherPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Layout layout = themeDisplay.getLayout();
-
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		StringBundler sb = new StringBundler(6);
 
 		String layoutFriendlyURL = GetterUtil.getString(
-			portal.getLayoutFriendlyURL(layout, themeDisplay));
+			portal.getLayoutFriendlyURL(
+				themeDisplay.getLayout(), themeDisplay));
 
 		if (!layoutFriendlyURL.startsWith(Http.HTTP_WITH_SLASH) &&
 			!layoutFriendlyURL.startsWith(Http.HTTPS_WITH_SLASH)) {

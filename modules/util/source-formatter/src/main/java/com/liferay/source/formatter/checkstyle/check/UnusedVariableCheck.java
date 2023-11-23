@@ -37,6 +37,25 @@ public class UnusedVariableCheck extends BaseCheck {
 			return;
 		}
 
+		DetailAST typeDetailAST = detailAST.findFirstToken(TokenTypes.TYPE);
+
+		DetailAST firstChildDetailAST = typeDetailAST.getFirstChild();
+
+		if (firstChildDetailAST == null) {
+			return;
+		}
+
+		if (firstChildDetailAST.getType() != TokenTypes.DOT) {
+			String variableTypeName = getTypeName(typeDetailAST, false);
+
+			List<String> allowedUnusedVariableTypeNames = getAttributeValues(
+				_ALLOWED_UNUSED_VARIABLE_TYPE_NAMES_KEY);
+
+			if (allowedUnusedVariableTypeNames.contains(variableTypeName)) {
+				return;
+			}
+		}
+
 		if (_hasSuppressUnusedDeclarationWarning(parentDetailAST) ||
 			_hasSuppressUnusedDeclarationWarning(detailAST)) {
 
@@ -92,25 +111,6 @@ public class UnusedVariableCheck extends BaseCheck {
 				}
 
 				if (i == checkUnusedReferenceVariableDirNames.size()) {
-					return;
-				}
-			}
-
-			DetailAST typeDetailAST = detailAST.findFirstToken(TokenTypes.TYPE);
-
-			DetailAST firstChildDetailAST = typeDetailAST.getFirstChild();
-
-			if (firstChildDetailAST == null) {
-				return;
-			}
-
-			if (firstChildDetailAST.getType() != TokenTypes.DOT) {
-				String variableTypeName = getTypeName(typeDetailAST, false);
-
-				List<String> allowedUnusedVariableTypeNames =
-					getAttributeValues(_ALLOWED_UNUSED_VARIABLE_TYPE_NAMES_KEY);
-
-				if (allowedUnusedVariableTypeNames.contains(variableTypeName)) {
 					return;
 				}
 			}

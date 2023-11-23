@@ -34,6 +34,7 @@ import java.util.Map;
 /**
  * @author Shinn Lok
  */
+@SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
 public class AccountDisplay implements FaroEntityDisplay {
 
 	public AccountDisplay() {

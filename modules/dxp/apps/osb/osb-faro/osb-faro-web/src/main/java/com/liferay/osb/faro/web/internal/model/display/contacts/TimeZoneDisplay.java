@@ -19,6 +19,7 @@ import java.time.format.TextStyle;
 /**
  * @author Geyson Silva
  */
+@SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
 public class TimeZoneDisplay {
 
 	public TimeZoneDisplay(ZoneId zoneId, String country) {

@@ -15,6 +15,7 @@ import java.util.function.Function;
 /**
  * @author Shinn Lok
  */
+@SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
 public class FaroResultsDisplay<T> {
 
 	public FaroResultsDisplay() {

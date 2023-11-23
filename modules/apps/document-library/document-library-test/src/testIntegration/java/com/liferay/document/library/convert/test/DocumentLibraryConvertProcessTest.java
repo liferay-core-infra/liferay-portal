@@ -14,6 +14,7 @@ import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
+import com.liferay.document.library.kernel.store.DLStore;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.ImageProcessorUtil;
 import com.liferay.message.boards.constants.MBCategoryConstants;
@@ -49,7 +50,6 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.documentlibrary.store.DLStoreImpl;
 
 import java.io.InputStream;
 
@@ -87,8 +87,9 @@ public class DocumentLibraryConvertProcessTest {
 		_defaultStore = ReflectionTestUtil.getAndSetFieldValue(
 			_convertProcess, "_store", _fileSystemStore);
 
-		ReflectionTestUtil.setFieldValue(
-			DLStoreImpl.class, "_store", _fileSystemStore);
+		ReflectionTestUtil.setFieldValue(_dlStore, "_store", _fileSystemStore);
+
+		ReflectionTestUtil.invoke(_dlStore, "activate", new Class<?>[0]);
 
 		_group = GroupTestUtil.addGroup();
 	}
@@ -96,8 +97,9 @@ public class DocumentLibraryConvertProcessTest {
 	@After
 	public void tearDown() throws Exception {
 		ReflectionTestUtil.setFieldValue(_convertProcess, "_store", _dbStore);
+		ReflectionTestUtil.setFieldValue(_dlStore, "_store", _dbStore);
 
-		ReflectionTestUtil.setFieldValue(DLStoreImpl.class, "_store", _dbStore);
+		ReflectionTestUtil.invoke(_dlStore, "activate", new Class<?>[0]);
 
 		_convertProcess.setParameterValues(
 			new String[] {
@@ -112,9 +114,9 @@ public class DocumentLibraryConvertProcessTest {
 
 			ReflectionTestUtil.setFieldValue(
 				_convertProcess, "_store", _defaultStore);
+			ReflectionTestUtil.setFieldValue(_dlStore, "_store", _defaultStore);
 
-			ReflectionTestUtil.setFieldValue(
-				DLStoreImpl.class, "_store", _defaultStore);
+			ReflectionTestUtil.invoke(_dlStore, "activate", new Class<?>[0]);
 		}
 	}
 
@@ -387,6 +389,9 @@ public class DocumentLibraryConvertProcessTest {
 
 	@Inject
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	@Inject
+	private DLStore _dlStore;
 
 	@Inject(filter = "store.type=" + _CLASS_NAME_FILE_SYSTEM_STORE)
 	private Store _fileSystemStore;

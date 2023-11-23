@@ -14,6 +14,7 @@ dependencies {
 	compileOnly project(":apps:expando:expando-api")
 	compileOnly project(":apps:export-import:export-import-api")
 	compileOnly project(":apps:portal:portal-aop-api")
+	compileOnly project(":apps:static:portal:portal-upgrade-api")
 	compileOnly project(":apps:xstream:xstream-configurator-api")
 	compileOnly project(":core:osgi-service-tracker-collections")
 	compileOnly project(":core:petra:petra-function")

@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.util;
+package com.liferay.portlet.preferences.internal;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortalPreferences;
@@ -17,6 +16,7 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.PropsUtil;
 import com.liferay.portlet.PortalPreferencesImpl;
 import com.liferay.portlet.PortalPreferencesWrapper;
 import com.liferay.portlet.PortletPreferencesImpl;
@@ -28,9 +28,13 @@ import java.util.Properties;
 
 import javax.portlet.PortletPreferences;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Brian Wing Shun Chan
  */
+@Component(service = PrefsProps.class)
 public class PrefsPropsImpl implements PrefsProps {
 
 	@Override
@@ -451,10 +455,10 @@ public class PrefsPropsImpl implements PrefsProps {
 	private final PortletPreferences _emptyPortletPreferences =
 		new PortletPreferencesImpl();
 
-	@BeanReference(type = PortalPreferencesLocalService.class)
+	@Reference
 	private PortalPreferencesLocalService _portalPreferencesLocalService;
 
-	@BeanReference(type = PortalPreferenceValueLocalService.class)
+	@Reference
 	private PortalPreferenceValueLocalService
 		_portalPreferenceValueLocalService;
 

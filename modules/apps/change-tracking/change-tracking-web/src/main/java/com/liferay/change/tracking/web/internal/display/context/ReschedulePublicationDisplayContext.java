@@ -40,7 +40,6 @@ public class ReschedulePublicationDisplayContext {
 
 		_ctCollection = ctCollection;
 		_language = language;
-		_portal = portal;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 		_scheduledPublishInfo = scheduledPublishInfo;
@@ -127,7 +126,6 @@ public class ReschedulePublicationDisplayContext {
 	private final CTCollection _ctCollection;
 	private final HttpServletRequest _httpServletRequest;
 	private final Language _language;
-	private final Portal _portal;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 	private final ScheduledPublishInfo _scheduledPublishInfo;

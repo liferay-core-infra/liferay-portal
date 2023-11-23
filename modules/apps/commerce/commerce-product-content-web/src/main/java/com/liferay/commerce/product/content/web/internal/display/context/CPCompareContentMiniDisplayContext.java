@@ -54,7 +54,6 @@ public class CPCompareContentMiniDisplayContext {
 			HttpServletRequest httpServletRequest)
 		throws PortalException {
 
-		_cpCompareHelper = cpCompareHelper;
 		_cpContentListEntryRendererRegistry =
 			cpContentListEntryRendererRegistry;
 		_cpContentListRendererRegistry = cpContentListRendererRegistry;
@@ -262,7 +261,6 @@ public class CPCompareContentMiniDisplayContext {
 
 	private final CPCompareContentMiniPortletInstanceConfiguration
 		_cpCompareContentMiniPortletInstanceConfiguration;
-	private final CPCompareHelper _cpCompareHelper;
 	private final CPContentListEntryRendererRegistry
 		_cpContentListEntryRendererRegistry;
 	private final CPContentListRendererRegistry _cpContentListRendererRegistry;

@@ -21,8 +21,6 @@ import org.osgi.framework.Constants;
 public class MarketplaceAppManagerComparator implements Comparator<Object> {
 
 	public MarketplaceAppManagerComparator(String orderByType) {
-		_orderByType = orderByType;
-
 		if (!orderByType.equals("asc")) {
 			_ascending = false;
 		}
@@ -98,6 +96,5 @@ public class MarketplaceAppManagerComparator implements Comparator<Object> {
 	}
 
 	private final boolean _ascending;
-	private final String _orderByType;
 
 }

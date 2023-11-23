@@ -81,7 +81,6 @@ public class EditStyleBookEntryDisplayContext {
 		RenderResponse renderResponse) {
 
 		_httpServletRequest = httpServletRequest;
-		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 
 		_fragmentCollectionContributorRegistry =
@@ -584,7 +583,6 @@ public class EditStyleBookEntryDisplayContext {
 	private final HttpServletRequest _httpServletRequest;
 	private final ItemSelector _itemSelector;
 	private Long _previewItemsGroupId;
-	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 	private StyleBookEntry _styleBookEntry;
 	private Long _styleBookEntryId;

@@ -48,7 +48,6 @@ public class KBSuggestionListManagementToolbarDisplayContext {
 		SearchContainer<KBComment> searchContainer) {
 
 		_httpServletRequest = httpServletRequest;
-		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 		_searchContainer = searchContainer;
 
@@ -256,7 +255,6 @@ public class KBSuggestionListManagementToolbarDisplayContext {
 
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
-	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final SearchContainer<KBComment> _searchContainer;
 	private final ThemeDisplay _themeDisplay;

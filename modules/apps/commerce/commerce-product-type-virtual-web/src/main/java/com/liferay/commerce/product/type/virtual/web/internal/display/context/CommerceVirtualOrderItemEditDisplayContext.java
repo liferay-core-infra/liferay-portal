@@ -45,7 +45,6 @@ public class CommerceVirtualOrderItemEditDisplayContext {
 			RenderRequest renderRequest)
 		throws PortalException {
 
-		_commerceOrderService = commerceOrderService;
 		_commerceOrderItemService = commerceOrderItemService;
 		_commerceVirtualOrderItem = commerceVirtualOrderItem;
 		_dlAppService = dlAppService;
@@ -166,7 +165,6 @@ public class CommerceVirtualOrderItemEditDisplayContext {
 	private final CommerceOrder _commerceOrder;
 	private CommerceOrderItem _commerceOrderItem;
 	private final CommerceOrderItemService _commerceOrderItemService;
-	private final CommerceOrderService _commerceOrderService;
 	private final CommerceVirtualOrderItem _commerceVirtualOrderItem;
 	private final CPDefinitionVirtualSettingRequestHelper
 		_cpDefinitionVirtualSettingRequestHelper;

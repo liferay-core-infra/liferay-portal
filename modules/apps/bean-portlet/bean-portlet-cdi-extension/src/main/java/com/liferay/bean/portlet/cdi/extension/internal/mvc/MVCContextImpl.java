@@ -47,7 +47,6 @@ public class MVCContextImpl implements MvcContext {
 		_configuration = configuration;
 		_encoders = encoders;
 		_portletContext = portletContext;
-		_portletRequest = portletRequest;
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -149,6 +148,5 @@ public class MVCContextImpl implements MvcContext {
 	private final Encoders _encoders;
 	private final Locale _locale;
 	private final PortletContext _portletContext;
-	private final PortletRequest _portletRequest;
 
 }

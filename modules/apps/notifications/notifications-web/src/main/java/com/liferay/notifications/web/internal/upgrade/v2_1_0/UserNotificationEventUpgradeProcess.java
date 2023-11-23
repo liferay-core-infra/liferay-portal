@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
-import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.LoggingTimer;
 
@@ -21,12 +20,6 @@ import java.sql.ResultSet;
  * @author Roberto Díaz
  */
 public class UserNotificationEventUpgradeProcess extends UpgradeProcess {
-
-	public UserNotificationEventUpgradeProcess(
-		UserNotificationEventLocalService userNotificationEventLocalService) {
-
-		_userNotificationEventLocalService = userNotificationEventLocalService;
-	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -98,8 +91,5 @@ public class UserNotificationEventUpgradeProcess extends UpgradeProcess {
 			preparedStatement2.executeBatch();
 		}
 	}
-
-	private final UserNotificationEventLocalService
-		_userNotificationEventLocalService;
 
 }

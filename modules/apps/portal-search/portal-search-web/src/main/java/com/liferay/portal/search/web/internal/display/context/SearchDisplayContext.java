@@ -81,7 +81,6 @@ public class SearchDisplayContext {
 		_indexSearchPropsValues = indexSearchPropsValues;
 		_portletURLFactory = portletURLFactory;
 		_summaryBuilderFactory = summaryBuilderFactory;
-		_searchContextFactory = searchContextFactory;
 
 		ThemeDisplaySupplier themeDisplaySupplier =
 			new PortletRequestThemeDisplaySupplier(renderRequest);
@@ -697,7 +696,6 @@ public class SearchDisplayContext {
 	private String _searchConfiguration;
 	private final SearchContainer<Document> _searchContainer;
 	private final SearchContext _searchContext;
-	private final SearchContextFactory _searchContextFactory;
 	private final SearchResultPreferences _searchResultPreferences;
 	private String _searchScopePreferenceString;
 	private final SummaryBuilderFactory _summaryBuilderFactory;

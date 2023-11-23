@@ -82,7 +82,6 @@ import com.liferay.portal.kernel.service.ImageLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.PortletPreferenceValueLocalService;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
-import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -129,8 +128,7 @@ public class JournalServiceUpgradeStepRegistrator
 				_companyLocalService, _ddmStorageLinkLocalService,
 				_ddmStructureLocalService, _ddmTemplateLinkLocalService,
 				_defaultDDMStructureHelper, _groupLocalService,
-				_resourceActionLocalService, _resourceActions,
-				_resourceLocalService, _userLocalService),
+				_resourceActions, _resourceLocalService, _userLocalService),
 			new UpgradeJournalArticles(
 				_assetCategoryLocalService, _ddmStructureLocalService,
 				_groupLocalService, _layoutLocalService,
@@ -509,9 +507,6 @@ public class JournalServiceUpgradeStepRegistrator
 	@Reference
 	private PrefsPropsToConfigurationUpgradeHelper
 		_prefsPropsToConfigurationUpgradeHelper;
-
-	@Reference
-	private ResourceActionLocalService _resourceActionLocalService;
 
 	@Reference
 	private ResourceActions _resourceActions;

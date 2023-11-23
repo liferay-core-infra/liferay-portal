@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -72,9 +71,7 @@ public class JournalUpgradeProcess extends UpgradeProcess {
 		DDMStructureLocalService ddmStructureLocalService,
 		DDMTemplateLinkLocalService ddmTemplateLinkLocalService,
 		DefaultDDMStructureHelper defaultDDMStructureHelper,
-		GroupLocalService groupLocalService,
-		ResourceActionLocalService resourceActionLocalService,
-		ResourceActions resourceActions,
+		GroupLocalService groupLocalService, ResourceActions resourceActions,
 		ResourceLocalService resourceLocalService,
 		UserLocalService userLocalService) {
 
@@ -84,7 +81,6 @@ public class JournalUpgradeProcess extends UpgradeProcess {
 		_ddmTemplateLinkLocalService = ddmTemplateLinkLocalService;
 		_defaultDDMStructureHelper = defaultDDMStructureHelper;
 		_groupLocalService = groupLocalService;
-		_resourceActionLocalService = resourceActionLocalService;
 		_resourceActions = resourceActions;
 		_resourceLocalService = resourceLocalService;
 		_userLocalService = userLocalService;
@@ -707,7 +703,6 @@ public class JournalUpgradeProcess extends UpgradeProcess {
 	private final DefaultDDMStructureHelper _defaultDDMStructureHelper;
 	private final Map<Long, String> _defaultLanguageIds = new HashMap<>();
 	private final GroupLocalService _groupLocalService;
-	private final ResourceActionLocalService _resourceActionLocalService;
 	private final ResourceActions _resourceActions;
 	private final ResourceLocalService _resourceLocalService;
 	private final UserLocalService _userLocalService;

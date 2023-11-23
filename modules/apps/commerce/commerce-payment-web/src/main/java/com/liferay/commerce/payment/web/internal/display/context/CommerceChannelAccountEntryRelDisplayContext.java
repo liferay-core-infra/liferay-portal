@@ -42,13 +42,11 @@ public class CommerceChannelAccountEntryRelDisplayContext {
 			HttpServletRequest httpServletRequest, Portal portal)
 		throws PortalException {
 
-		_accountEntryService = accountEntryService;
 		_commerceChannelService = commerceChannelService;
 		_commerceChannelAccountEntryRelService =
 			commerceChannelAccountEntryRelService;
 		_commercePaymentMethodGroupRelService =
 			commercePaymentMethodGroupRelService;
-		_portal = portal;
 
 		long accountEntryId = ParamUtil.getLong(
 			httpServletRequest, "accountEntryId");
@@ -142,7 +140,6 @@ public class CommerceChannelAccountEntryRelDisplayContext {
 		commercePaymentMethodRequestHelper;
 
 	private final AccountEntry _accountEntry;
-	private final AccountEntryService _accountEntryService;
 	private final CommerceChannel _commerceChannel;
 	private final CommerceChannelAccountEntryRelService
 		_commerceChannelAccountEntryRelService;
@@ -151,6 +148,5 @@ public class CommerceChannelAccountEntryRelDisplayContext {
 	private final CommercePaymentMethodGroupRelService
 		_commercePaymentMethodGroupRelService;
 	private final Locale _locale;
-	private final Portal _portal;
 
 }

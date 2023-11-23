@@ -12,8 +12,7 @@ import org.json.JSONObject;
  */
 public class TestrayCase {
 
-	public TestrayCase(TestrayProject testrayProject, JSONObject jsonObject) {
-		_testrayProject = testrayProject;
+	public TestrayCase(JSONObject jsonObject) {
 		_jsonObject = jsonObject;
 	}
 
@@ -45,6 +44,5 @@ public class TestrayCase {
 	}
 
 	private final JSONObject _jsonObject;
-	private final TestrayProject _testrayProject;
 
 }

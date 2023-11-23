@@ -36,7 +36,6 @@ public class ProductNavigationControlMenuTagDisplayContext {
 		HttpServletRequest httpServletRequest, PageContext pageContext) {
 
 		_httpServletRequest = httpServletRequest;
-		_pageContext = pageContext;
 
 		_httpServletResponse =
 			PipingServletResponseFactory.createPipingServletResponse(
@@ -260,7 +259,6 @@ public class ProductNavigationControlMenuTagDisplayContext {
 
 	private final HttpServletRequest _httpServletRequest;
 	private final HttpServletResponse _httpServletResponse;
-	private final PageContext _pageContext;
 	private Map<String, List<ProductNavigationControlMenuEntry>>
 		_productNavigationControlMenuEntriesMap;
 

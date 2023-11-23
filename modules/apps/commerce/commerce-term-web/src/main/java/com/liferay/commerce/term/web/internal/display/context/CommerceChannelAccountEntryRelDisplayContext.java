@@ -53,7 +53,6 @@ public class CommerceChannelAccountEntryRelDisplayContext {
 
 		_accountEntryModelResourcePermission =
 			accountEntryModelResourcePermission;
-		_accountEntryService = accountEntryService;
 		_commerceChannelAccountEntryRelService =
 			commerceChannelAccountEntryRelService;
 		_commerceChannelService = commerceChannelService;
@@ -266,7 +265,6 @@ public class CommerceChannelAccountEntryRelDisplayContext {
 	private final AccountEntry _accountEntry;
 	private final ModelResourcePermission<AccountEntry>
 		_accountEntryModelResourcePermission;
-	private final AccountEntryService _accountEntryService;
 	private final CommerceChannelAccountEntryRelService
 		_commerceChannelAccountEntryRelService;
 	private final CommerceChannelService _commerceChannelService;

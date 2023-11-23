@@ -14,7 +14,6 @@ import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.util.DDMFormLayoutDeserializeUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -30,12 +29,10 @@ public class DDMStructureLayoutUpgradeProcess extends UpgradeProcess {
 
 	public DDMStructureLayoutUpgradeProcess(
 		DDMFormLayoutDeserializer ddmFormLayoutDeserializer,
-		DDMFormLayoutSerializer ddmFormLayoutSerializer,
-		JSONFactory jsonFactory) {
+		DDMFormLayoutSerializer ddmFormLayoutSerializer) {
 
 		_ddmFormLayoutDeserializer = ddmFormLayoutDeserializer;
 		_ddmFormLayoutSerializer = ddmFormLayoutSerializer;
-		_jsonFactory = jsonFactory;
 	}
 
 	@Override
@@ -102,6 +99,5 @@ public class DDMStructureLayoutUpgradeProcess extends UpgradeProcess {
 
 	private final DDMFormLayoutDeserializer _ddmFormLayoutDeserializer;
 	private final DDMFormLayoutSerializer _ddmFormLayoutSerializer;
-	private final JSONFactory _jsonFactory;
 
 }

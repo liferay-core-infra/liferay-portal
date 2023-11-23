@@ -130,7 +130,6 @@ public class ModifiableServletContextAdapter
 		WebXMLDefinition webXMLDefinition) {
 
 		_servletContext = servletContext;
-		_bundleContext = bundleContext;
 		_jspServletFactory = jspServletFactory;
 		_webXMLDefinition = webXMLDefinition;
 
@@ -743,7 +742,6 @@ public class ModifiableServletContextAdapter
 	}
 
 	private final Bundle _bundle;
-	private final BundleContext _bundleContext;
 	private final Map<Class<? extends EventListener>, EventListener>
 		_eventListeners = new LinkedHashMap<>();
 	private final Map<String, FilterRegistrationImpl> _filterRegistrationImpls =

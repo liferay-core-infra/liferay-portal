@@ -46,7 +46,6 @@ public class DisplaySettingsDisplayContext {
 		HttpServletRequest httpServletRequest,
 		LiferayPortletResponse liferayPortletResponse) {
 
-		_httpServletRequest = httpServletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
@@ -229,7 +228,6 @@ public class DisplaySettingsDisplayContext {
 		return _typeSettingsUnicodeProperties;
 	}
 
-	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private Group _liveGroup;
 	private Set<Locale> _siteAvailableLocales;

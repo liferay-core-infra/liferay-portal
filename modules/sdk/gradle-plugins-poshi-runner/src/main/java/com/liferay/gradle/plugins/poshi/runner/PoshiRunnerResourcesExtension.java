@@ -26,8 +26,6 @@ import org.gradle.api.invocation.Gradle;
 public class PoshiRunnerResourcesExtension {
 
 	public PoshiRunnerResourcesExtension(Project project) {
-		_project = project;
-
 		Gradle gradle = project.getGradle();
 
 		gradle.addBuildListener(_gitRepositoryBuildAdapter);
@@ -119,7 +117,6 @@ public class PoshiRunnerResourcesExtension {
 	private Object _artifactVersion;
 	private Object _baseName = "default";
 	private final Set<Object> _dirs = new HashSet<>();
-	private final Project _project;
 	private Object _rootDirName;
 	private Object _version = "1.0.14";
 

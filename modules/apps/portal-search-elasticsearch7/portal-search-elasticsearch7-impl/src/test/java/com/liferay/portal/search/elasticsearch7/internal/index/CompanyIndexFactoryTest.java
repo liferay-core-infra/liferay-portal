@@ -122,8 +122,7 @@ public class CompanyIndexFactoryTest {
 
 		_singleFieldFixture = new SingleFieldFixture(
 			_elasticsearchFixture.getRestHighLevelClient(),
-			new IndexName(_companyIndexFactoryFixture.getIndexName()),
-			LiferayTypeMappingsConstants.LIFERAY_DOCUMENT_TYPE);
+			new IndexName(_companyIndexFactoryFixture.getIndexName()));
 
 		_singleFieldFixture.setQueryBuilderFactory(QueryBuilderFactories.MATCH);
 	}

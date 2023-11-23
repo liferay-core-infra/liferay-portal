@@ -27,7 +27,6 @@ public class SharepointConnectionInfo {
 		validate(sitePath, userName, password);
 
 		_serverVersion = serverVersion;
-		_serverProtocol = serverProtocol;
 		_serverAddress = serverAddress;
 		_serverPort = serverPort;
 		_sitePath = sitePath;
@@ -121,7 +120,6 @@ public class SharepointConnectionInfo {
 	private final String _password;
 	private final String _serverAddress;
 	private final int _serverPort;
-	private final String _serverProtocol;
 	private final SharepointConnection.ServerVersion _serverVersion;
 	private final URL _serviceURL;
 	private final String _sitePath;

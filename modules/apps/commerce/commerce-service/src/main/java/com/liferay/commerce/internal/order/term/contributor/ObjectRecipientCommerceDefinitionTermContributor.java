@@ -39,7 +39,6 @@ public class ObjectRecipientCommerceDefinitionTermContributor
 		UserGroupLocalService userGroupLocalService,
 		UserLocalService userLocalService) {
 
-		_objectDefinitionId = objectDefinitionId;
 		_objectFieldLocalService = objectFieldLocalService;
 		_userGroupLocalService = userGroupLocalService;
 		_userLocalService = userLocalService;
@@ -146,7 +145,6 @@ public class ObjectRecipientCommerceDefinitionTermContributor
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectRecipientCommerceDefinitionTermContributor.class);
 
-	private final long _objectDefinitionId;
 	private final Map<String, Long> _objectFieldIds = HashMapBuilder.put(
 		"[%OBJECT_ENTRY_CREATOR%]", 0L
 	).put(

@@ -62,8 +62,7 @@ public class NotificationsWebUpgradeStepRegistrator
 		registry.register(
 			"2.0.0", "2.1.0",
 			new com.liferay.notifications.web.internal.upgrade.v2_1_0.
-				UserNotificationEventUpgradeProcess(
-					_userNotificationEventLocalService),
+				UserNotificationEventUpgradeProcess(),
 			upgradePortletId);
 	}
 

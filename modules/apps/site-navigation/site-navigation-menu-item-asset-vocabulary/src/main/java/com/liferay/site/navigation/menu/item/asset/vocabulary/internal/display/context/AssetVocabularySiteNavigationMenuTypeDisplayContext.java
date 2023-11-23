@@ -50,7 +50,6 @@ public class AssetVocabularySiteNavigationMenuTypeDisplayContext {
 
 		_httpServletRequest = httpServletRequest;
 		_itemSelector = itemSelector;
-		_siteNavigationMenuItem = siteNavigationMenuItem;
 
 		_typeSettingsUnicodeProperties = UnicodePropertiesBuilder.fastLoad(
 			siteNavigationMenuItem.getTypeSettings()
@@ -209,7 +208,6 @@ public class AssetVocabularySiteNavigationMenuTypeDisplayContext {
 	private final HttpServletRequest _httpServletRequest;
 	private final ItemSelector _itemSelector;
 	private final LiferayPortletResponse _liferayPortletResponse;
-	private final SiteNavigationMenuItem _siteNavigationMenuItem;
 	private final ThemeDisplay _themeDisplay;
 	private final UnicodeProperties _typeSettingsUnicodeProperties;
 

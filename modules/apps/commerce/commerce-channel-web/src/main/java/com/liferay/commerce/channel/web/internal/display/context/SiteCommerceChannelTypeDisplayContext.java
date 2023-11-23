@@ -63,7 +63,6 @@ public class SiteCommerceChannelTypeDisplayContext
 			httpServletRequest, itemSelector, portal,
 			workflowDefinitionLinkLocalService, workflowDefinitionManager);
 
-		_dlAppLocalService = dlAppLocalService;
 		_groupLocalService = groupLocalService;
 		_itemSelector = itemSelector;
 	}
@@ -95,7 +94,6 @@ public class SiteCommerceChannelTypeDisplayContext
 				simpleSiteItemSelectorCriterion));
 	}
 
-	private final DLAppLocalService _dlAppLocalService;
 	private final GroupLocalService _groupLocalService;
 	private final ItemSelector _itemSelector;
 

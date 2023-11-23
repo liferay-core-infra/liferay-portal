@@ -40,7 +40,6 @@ public class DDMStructureActionDropdownItemsProvider {
 		LiferayPortletResponse liferayPortletResponse) {
 
 		_ddmStructure = ddmStructure;
-		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 
 		_themeDisplay = (ThemeDisplay)liferayPortletRequest.getAttribute(
@@ -302,7 +301,6 @@ public class DDMStructureActionDropdownItemsProvider {
 
 	private final DDMStructure _ddmStructure;
 	private final HttpServletRequest _httpServletRequest;
-	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final ThemeDisplay _themeDisplay;
 

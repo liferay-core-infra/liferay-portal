@@ -38,8 +38,6 @@ public class CheckoutDisplayContext {
 		throws Exception {
 
 		_commerceCheckoutStepRegistry = commerceCheckoutStepRegistry;
-		_liferayPortletRequest = liferayPortletRequest;
-		_liferayPortletResponse = liferayPortletResponse;
 
 		_httpServletRequest = portal.getHttpServletRequest(
 			liferayPortletRequest);
@@ -150,7 +148,5 @@ public class CheckoutDisplayContext {
 	private final CommerceOrder _commerceOrder;
 	private final HttpServletRequest _httpServletRequest;
 	private final HttpServletResponse _httpServletResponse;
-	private final LiferayPortletRequest _liferayPortletRequest;
-	private final LiferayPortletResponse _liferayPortletResponse;
 
 }

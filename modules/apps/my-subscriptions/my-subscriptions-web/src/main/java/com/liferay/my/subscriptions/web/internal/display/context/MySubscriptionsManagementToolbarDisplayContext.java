@@ -27,7 +27,6 @@ public class MySubscriptionsManagementToolbarDisplayContext {
 
 		_httpServletRequest = httpServletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
-		_user = user;
 
 		_totalItems = SubscriptionLocalServiceUtil.getUserSubscriptionsCount(
 			user.getUserId());
@@ -68,6 +67,5 @@ public class MySubscriptionsManagementToolbarDisplayContext {
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final int _totalItems;
-	private final User _user;
 
 }

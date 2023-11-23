@@ -55,7 +55,6 @@ public class CommerceCartContentTotalDisplayContext
 			cpDefinitionHelper, cpInstanceHelper, httpServletRequest, portal);
 
 		_commerceOrderHttpHelper = commerceOrderHttpHelper;
-		_portal = portal;
 
 		_commerceCartContentTotalPortletInstanceConfiguration =
 			configurationProvider.getPortletInstanceConfiguration(
@@ -97,6 +96,5 @@ public class CommerceCartContentTotalDisplayContext
 		_commerceCartContentTotalPortletInstanceConfiguration;
 	private final CommerceOrderHttpHelper _commerceOrderHttpHelper;
 	private long _displayStyleGroupId;
-	private final Portal _portal;
 
 }

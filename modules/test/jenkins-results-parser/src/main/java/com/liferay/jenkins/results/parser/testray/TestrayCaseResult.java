@@ -123,7 +123,6 @@ public class TestrayCaseResult {
 
 		try {
 			_testrayCase = new TestrayCase(
-				getTestrayProject(),
 				JenkinsResultsParserUtil.toJSONObject(
 					testrayCaseURL, testrayServer.getHTTPAuthorization()));
 		}

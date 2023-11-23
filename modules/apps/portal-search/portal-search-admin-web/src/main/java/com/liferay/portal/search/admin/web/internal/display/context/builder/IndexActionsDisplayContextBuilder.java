@@ -56,7 +56,6 @@ public class IndexActionsDisplayContextBuilder {
 		SearchCapabilities searchCapabilities) {
 
 		_language = language;
-		_portal = portal;
 		_reindexConfiguration = reindexConfiguration;
 		_renderRequest = renderRequest;
 		_searchCapabilities = searchCapabilities;
@@ -320,7 +319,6 @@ public class IndexActionsDisplayContextBuilder {
 	private final HttpServletRequest _httpServletRequest;
 	private List<String> _indexReindexerClassNames;
 	private final Language _language;
-	private final Portal _portal;
 	private final ReindexConfiguration _reindexConfiguration;
 	private final RenderRequest _renderRequest;
 	private final SearchCapabilities _searchCapabilities;

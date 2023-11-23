@@ -26,7 +26,6 @@ public class KBSuggestionListDisplayContext {
 	public KBSuggestionListDisplayContext(
 		HttpServletRequest httpServletRequest, KBArticle kbArticle) {
 
-		_httpServletRequest = httpServletRequest;
 		_kbArticle = kbArticle;
 
 		_groupId = kbArticle.getGroupId();
@@ -37,7 +36,6 @@ public class KBSuggestionListDisplayContext {
 	public KBSuggestionListDisplayContext(
 		HttpServletRequest httpServletRequest, long groupId) {
 
-		_httpServletRequest = httpServletRequest;
 		_groupId = groupId;
 
 		_navigation = ParamUtil.getString(
@@ -167,7 +165,6 @@ public class KBSuggestionListDisplayContext {
 	}
 
 	private final long _groupId;
-	private final HttpServletRequest _httpServletRequest;
 	private KBArticle _kbArticle;
 	private final String _navigation;
 

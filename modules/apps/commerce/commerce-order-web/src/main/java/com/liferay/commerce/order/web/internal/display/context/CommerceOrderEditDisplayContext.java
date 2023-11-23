@@ -115,7 +115,6 @@ public class CommerceOrderEditDisplayContext {
 		_commerceOrderNoteService = commerceOrderNoteService;
 		_commerceOrderPortletResourcePermission =
 			commerceOrderPortletResourcePermission;
-		_commerceOrderService = commerceOrderService;
 		_commerceOrderStatusRegistry = commerceOrderStatusRegistry;
 		_commerceOrderTypeService = commerceOrderTypeService;
 		_commercePaymentMethodGroupRelLocalService =
@@ -829,7 +828,6 @@ public class CommerceOrderEditDisplayContext {
 	private final PortletResourcePermission
 		_commerceOrderPortletResourcePermission;
 	private final CommerceOrderRequestHelper _commerceOrderRequestHelper;
-	private final CommerceOrderService _commerceOrderService;
 	private final CommerceOrderStatusRegistry _commerceOrderStatusRegistry;
 	private final CommerceOrderTypeService _commerceOrderTypeService;
 	private final CommercePaymentMethodGroupRelLocalService

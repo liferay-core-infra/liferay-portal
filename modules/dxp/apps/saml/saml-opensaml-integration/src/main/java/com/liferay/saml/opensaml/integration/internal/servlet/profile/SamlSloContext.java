@@ -46,8 +46,6 @@ public class SamlSloContext implements Serializable {
 		UserLocalService userLocalService) {
 
 		_messageContext = messageContext;
-		_samlIdpSpConnectionLocalService = samlIdpSpConnectionLocalService;
-		_samlIdpSpSessionLocalService = samlIdpSpSessionLocalService;
 		_userLocalService = userLocalService;
 
 		if (samlIdpSsoSession == null) {
@@ -60,7 +58,7 @@ public class SamlSloContext implements Serializable {
 					samlIdpSsoSession.getSamlIdpSsoSessionId());
 
 			for (SamlIdpSpSession samlIdpSpSession : samlIdpSpSessions) {
-				_samlIdpSpSessionLocalService.deleteSamlIdpSpSession(
+				samlIdpSpSessionLocalService.deleteSamlIdpSpSession(
 					samlIdpSpSession);
 
 				SamlPeerBinding samlPeerBinding =
@@ -201,9 +199,6 @@ public class SamlSloContext implements Serializable {
 
 	private final MessageContext<?> _messageContext;
 	private String _relayState;
-	private final SamlIdpSpConnectionLocalService
-		_samlIdpSpConnectionLocalService;
-	private final SamlIdpSpSessionLocalService _samlIdpSpSessionLocalService;
 	private final Map<String, SamlSloRequestInfo> _samlRequestInfos =
 		new ConcurrentHashMap<>();
 	private String _samlSsoSessionId;

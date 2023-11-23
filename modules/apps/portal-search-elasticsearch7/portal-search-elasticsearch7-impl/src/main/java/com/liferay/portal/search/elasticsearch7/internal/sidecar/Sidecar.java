@@ -74,7 +74,6 @@ public class Sidecar {
 		_processExecutorPaths = processExecutorPaths;
 		_sidecarManager = sidecarManager;
 
-		_dataHomePath = elasticsearchInstancePaths.getDataPath();
 		_sidecarHomePath = elasticsearchInstancePaths.getHomePath();
 	}
 
@@ -582,7 +581,6 @@ public class Sidecar {
 	private static final Log _log = LogFactoryUtil.getLog(Sidecar.class);
 
 	private String _address;
-	private final Path _dataHomePath;
 	private final ElasticsearchConfigurationWrapper
 		_elasticsearchConfigurationWrapper;
 	private final ElasticsearchInstancePaths _elasticsearchInstancePaths;

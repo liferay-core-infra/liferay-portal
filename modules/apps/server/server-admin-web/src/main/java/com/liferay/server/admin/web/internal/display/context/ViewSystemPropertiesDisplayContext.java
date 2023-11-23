@@ -11,12 +11,10 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.server.admin.web.internal.constants.ServerAdminNavigationEntryConstants;
 
@@ -46,9 +44,6 @@ public class ViewSystemPropertiesDisplayContext {
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 		_renderResponse = renderResponse;
-
-		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
 	}
 
 	public PortletURL getClearResultsURL() throws PortletException {
@@ -199,6 +194,5 @@ public class ViewSystemPropertiesDisplayContext {
 	private PortletURL _portletURL;
 	private final RenderResponse _renderResponse;
 	private SearchContainer<Map.Entry<String, String>> _searchContainer;
-	private final ThemeDisplay _themeDisplay;
 
 }

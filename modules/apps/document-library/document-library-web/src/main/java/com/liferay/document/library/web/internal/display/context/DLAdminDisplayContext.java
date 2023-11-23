@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -139,8 +138,6 @@ public class DLAdminDisplayContext {
 			_dlRequestHelper);
 
 		_httpSession = httpServletRequest.getSession();
-		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
-			httpServletRequest);
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -1263,7 +1260,6 @@ public class DLAdminDisplayContext {
 	private String _orderByCol;
 	private String _orderByType;
 	private final PermissionChecker _permissionChecker;
-	private final PortalPreferences _portalPreferences;
 	private PortletPreferences _portletPreferences;
 	private long _repositoryId;
 	private long _rootFolderId;

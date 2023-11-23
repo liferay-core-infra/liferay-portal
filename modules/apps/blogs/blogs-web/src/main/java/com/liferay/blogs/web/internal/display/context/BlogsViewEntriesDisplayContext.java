@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortalPreferences;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
@@ -73,7 +71,6 @@ public class BlogsViewEntriesDisplayContext {
 		RenderResponse renderResponse, TrashHelper trashHelper) {
 
 		_htmlParser = htmlParser;
-		_portal = portal;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 		_trashHelper = trashHelper;
@@ -83,8 +80,6 @@ public class BlogsViewEntriesDisplayContext {
 			renderResponse);
 
 		_httpServletRequest = _liferayPortletRequest.getHttpServletRequest();
-		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
-			_liferayPortletRequest);
 	}
 
 	public List<String> getAvailableActions(BlogsEntry blogsEntry)
@@ -376,8 +371,6 @@ public class BlogsViewEntriesDisplayContext {
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private String _orderByCol;
 	private String _orderByType;
-	private final Portal _portal;
-	private final PortalPreferences _portalPreferences;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 	private final TrashHelper _trashHelper;

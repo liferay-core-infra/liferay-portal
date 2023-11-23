@@ -33,7 +33,6 @@ public class CommercePricingRequestHelper extends BaseRequestHelper {
 			throw new IllegalArgumentException();
 		}
 
-		_renderRequest = (RenderRequest)portletRequest;
 		_renderResponse = (RenderResponse)portletResponse;
 	}
 
@@ -41,7 +40,6 @@ public class CommercePricingRequestHelper extends BaseRequestHelper {
 		return _renderResponse;
 	}
 
-	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 
 }

@@ -14,8 +14,6 @@ import com.liferay.journal.web.internal.util.JournalPortletUtil;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.portlet.PortalPreferences;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -45,9 +43,6 @@ public class JournalHistoryDisplayContext {
 		_article = article;
 
 		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
-
-		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
-			_httpServletRequest);
 	}
 
 	public SearchContainer<JournalArticle> getArticleSearchContainer() {
@@ -180,7 +175,6 @@ public class JournalHistoryDisplayContext {
 	private final HttpServletRequest _httpServletRequest;
 	private String _orderByCol;
 	private String _orderByType;
-	private final PortalPreferences _portalPreferences;
 	private String _redirect;
 	private String _referringPortletResource;
 	private final RenderRequest _renderRequest;

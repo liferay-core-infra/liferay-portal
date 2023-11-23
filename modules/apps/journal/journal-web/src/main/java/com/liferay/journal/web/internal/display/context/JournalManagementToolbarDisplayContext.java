@@ -28,7 +28,6 @@ import com.liferay.item.selector.criteria.InfoItemItemSelectorReturnType;
 import com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.web.internal.configuration.JournalWebConfiguration;
 import com.liferay.journal.web.internal.security.permission.resource.JournalFolderPermission;
 import com.liferay.journal.web.internal.util.JournalUtil;
 import com.liferay.petra.function.UnsafeConsumer;
@@ -110,9 +109,6 @@ public class JournalManagementToolbarDisplayContext
 				AssetVocabularyLocalService.class.getName());
 		_itemSelector = (ItemSelector)httpServletRequest.getAttribute(
 			ItemSelector.class.getName());
-		_journalWebConfiguration =
-			(JournalWebConfiguration)httpServletRequest.getAttribute(
-				JournalWebConfiguration.class.getName());
 		_siteConnectedGroupGroupProvider =
 			(SiteConnectedGroupGroupProvider)httpServletRequest.getAttribute(
 				SiteConnectedGroupGroupProvider.class.getName());
@@ -1283,7 +1279,6 @@ public class JournalManagementToolbarDisplayContext
 	private long[] _groupIds;
 	private final ItemSelector _itemSelector;
 	private final JournalDisplayContext _journalDisplayContext;
-	private final JournalWebConfiguration _journalWebConfiguration;
 	private final SiteConnectedGroupGroupProvider
 		_siteConnectedGroupGroupProvider;
 	private final ThemeDisplay _themeDisplay;

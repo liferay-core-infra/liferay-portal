@@ -28,9 +28,6 @@ import java.util.Locale;
 public class OrgLaborFormDisplay {
 
 	public OrgLaborFormDisplay(Locale locale, OrgLabor orgLabor) {
-		_timeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"HH:mm", locale);
-
 		_dayRowDisplays = _buildDayRowDisplays(locale, orgLabor);
 	}
 
@@ -171,6 +168,5 @@ public class OrgLaborFormDisplay {
 	};
 
 	private final List<DayRowDisplay> _dayRowDisplays;
-	private final Format _timeFormat;
 
 }

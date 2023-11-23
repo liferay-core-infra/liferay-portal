@@ -33,8 +33,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortalPreferences;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
@@ -78,8 +76,6 @@ public class CommerceWishListDisplayContext {
 		_portletResourcePermission = portletResourcePermission;
 
 		_commerceWishListRequestHelper = new CommerceWishListRequestHelper(
-			httpServletRequest);
-		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
 			httpServletRequest);
 	}
 
@@ -410,7 +406,6 @@ public class CommerceWishListDisplayContext {
 	private final CPInstanceHelper _cpInstanceHelper;
 	private String _orderByCol;
 	private String _orderByType;
-	private final PortalPreferences _portalPreferences;
 	private final PortletResourcePermission _portletResourcePermission;
 	private SearchContainer<CommerceWishList> _searchContainer;
 

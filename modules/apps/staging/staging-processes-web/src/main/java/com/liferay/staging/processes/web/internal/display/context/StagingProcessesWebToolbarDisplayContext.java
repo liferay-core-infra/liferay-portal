@@ -17,7 +17,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -25,7 +24,6 @@ import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.staging.constants.StagingProcessesPortletKeys;
 
@@ -49,11 +47,6 @@ public class StagingProcessesWebToolbarDisplayContext {
 		_httpServletRequest = httpServletRequest;
 		_pageContext = pageContext;
 		_liferayPortletResponse = liferayPortletResponse;
-
-		Portlet portlet = liferayPortletResponse.getPortlet();
-
-		_portletNamespace = PortalUtil.getPortletNamespace(
-			portlet.getRootPortletId());
 	}
 
 	public List<DropdownItem> getActionDropdownItems(boolean hasPermission) {
@@ -324,6 +317,5 @@ public class StagingProcessesWebToolbarDisplayContext {
 	private String _orderByCol;
 	private String _orderByType;
 	private final PageContext _pageContext;
-	private final String _portletNamespace;
 
 }

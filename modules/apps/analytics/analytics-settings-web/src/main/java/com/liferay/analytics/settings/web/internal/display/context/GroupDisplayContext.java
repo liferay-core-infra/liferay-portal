@@ -5,7 +5,6 @@
 
 package com.liferay.analytics.settings.web.internal.display.context;
 
-import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.web.internal.constants.AnalyticsSettingsWebKeys;
 import com.liferay.analytics.settings.web.internal.search.GroupChecker;
 import com.liferay.analytics.settings.web.internal.search.GroupSearch;
@@ -63,10 +62,6 @@ public class GroupDisplayContext {
 		_mvcRenderCommandName = mvcRenderCommandName;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
-
-		_analyticsConfiguration =
-			(AnalyticsConfiguration)renderRequest.getAttribute(
-				AnalyticsSettingsWebKeys.ANALYTICS_CONFIGURATION);
 	}
 
 	public String getChannelName(Long groupId) {
@@ -263,7 +258,6 @@ public class GroupDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		GroupDisplayContext.class);
 
-	private final AnalyticsConfiguration _analyticsConfiguration;
 	private Map<String, String> _channelNames;
 	private long[] _classNameIds;
 	private String _keywords;

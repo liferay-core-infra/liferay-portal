@@ -17,8 +17,6 @@ import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortalPreferences;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -47,9 +45,6 @@ public class OAuth2ApplicationsManagementToolbarDisplayContext
 		super(
 			liferayPortletRequest.getHttpServletRequest(),
 			liferayPortletRequest, liferayPortletResponse, currentURLObj);
-
-		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
-			liferayPortletRequest);
 	}
 
 	public List<DropdownItem> getActionDropdownItems() {
@@ -171,6 +166,5 @@ public class OAuth2ApplicationsManagementToolbarDisplayContext
 	}
 
 	private String _displayStyle;
-	private final PortalPreferences _portalPreferences;
 
 }

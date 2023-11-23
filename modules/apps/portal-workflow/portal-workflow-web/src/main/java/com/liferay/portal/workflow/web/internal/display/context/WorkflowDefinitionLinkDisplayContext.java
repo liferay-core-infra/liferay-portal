@@ -21,8 +21,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortalPreferences;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
@@ -95,9 +93,6 @@ public class WorkflowDefinitionLinkDisplayContext {
 		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
 		_workflowDefinitionLinkRequestHelper =
 			new WorkflowDefinitionLinkRequestHelper(renderRequest);
-
-		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
-			_httpServletRequest);
 
 		_resourceBundleLoader = resourceBundleLoader;
 		_workflowHandlerVisibleFilter = workflowHandlerVisibleFilter;
@@ -666,7 +661,6 @@ public class WorkflowDefinitionLinkDisplayContext {
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private String _orderByCol;
 	private String _orderByType;
-	private final PortalPreferences _portalPreferences;
 	private final ResourceBundleLoader _resourceBundleLoader;
 	private final WorkflowComparatorFactory _workflowComparatorFactory;
 	private final WorkflowDefinitionLinkLocalService

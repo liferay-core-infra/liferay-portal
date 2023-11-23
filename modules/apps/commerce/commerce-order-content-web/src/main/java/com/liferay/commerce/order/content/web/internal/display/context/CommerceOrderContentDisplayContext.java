@@ -84,7 +84,6 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
-import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
@@ -172,8 +171,6 @@ public class CommerceOrderContentDisplayContext {
 		_portletResourcePermission = portletResourcePermission;
 
 		_cpRequestHelper = new CPRequestHelper(httpServletRequest);
-
-		_portletDisplay = _cpRequestHelper.getPortletDisplay();
 
 		_themeDisplay = _cpRequestHelper.getThemeDisplay();
 
@@ -1412,7 +1409,6 @@ public class CommerceOrderContentDisplayContext {
 	private final ModelResourcePermission<CommerceOrder>
 		_modelResourcePermission;
 	private final PercentageFormatter _percentageFormatter;
-	private final PortletDisplay _portletDisplay;
 	private final PortletResourcePermission _portletResourcePermission;
 	private SearchContainer<CommerceOrder> _searchContainer;
 	private final ThemeDisplay _themeDisplay;

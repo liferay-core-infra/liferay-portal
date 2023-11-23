@@ -8,7 +8,6 @@ package com.liferay.object.web.internal.object.definitions.display.context;
 import com.liferay.frontend.data.set.model.FDSActionDropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.web.internal.display.context.helper.ObjectRequestHelper;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -32,8 +31,6 @@ public class ObjectDefinitionsViewsDisplayContext
 			objectDefinitionModelResourcePermission) {
 
 		super(httpServletRequest, objectDefinitionModelResourcePermission);
-
-		_objectRequestHelper = new ObjectRequestHelper(httpServletRequest);
 	}
 
 	public String getEditObjectViewsURL() throws Exception {
@@ -89,7 +86,5 @@ public class ObjectDefinitionsViewsDisplayContext
 			dropdownItem.setTarget("event");
 		};
 	}
-
-	private final ObjectRequestHelper _objectRequestHelper;
 
 }

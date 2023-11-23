@@ -7,7 +7,6 @@ package com.liferay.poshi.runner.logger;
 
 import com.liferay.poshi.core.PoshiContext;
 import com.liferay.poshi.core.PoshiProperties;
-import com.liferay.poshi.core.PoshiStackTrace;
 import com.liferay.poshi.core.PoshiVariablesContext;
 import com.liferay.poshi.core.selenium.LiferaySelenium;
 import com.liferay.poshi.core.util.FileUtil;
@@ -47,8 +46,6 @@ public final class CommandLogger {
 		_testNamespacedClassCommandName = testNamespacedClassCommandName;
 
 		_poshiProperties = PoshiProperties.getPoshiProperties();
-		_poshiStackTrace = PoshiStackTrace.getPoshiStackTrace(
-			testNamespacedClassCommandName);
 		_poshiVariablesContext = PoshiVariablesContext.getPoshiVariablesContext(
 			testNamespacedClassCommandName);
 	}
@@ -806,7 +803,6 @@ public final class CommandLogger {
 	private final LoggerElement _commandLogLoggerElement;
 	private int _detailsLinkId;
 	private final PoshiProperties _poshiProperties;
-	private final PoshiStackTrace _poshiStackTrace;
 	private final PoshiVariablesContext _poshiVariablesContext;
 	private final String _testNamespacedClassCommandName;
 

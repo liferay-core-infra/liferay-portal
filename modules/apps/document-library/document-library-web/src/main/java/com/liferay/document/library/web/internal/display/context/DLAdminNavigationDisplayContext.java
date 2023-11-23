@@ -12,15 +12,12 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemListBu
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
-
-import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,9 +32,6 @@ public class DLAdminNavigationDisplayContext {
 
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
-
-		_currentURLObj = PortletURLUtil.getCurrent(
-			liferayPortletRequest, liferayPortletResponse);
 
 		_httpServletRequest = liferayPortletRequest.getHttpServletRequest();
 
@@ -124,7 +118,6 @@ public class DLAdminNavigationDisplayContext {
 				"metadata-sets"));
 	}
 
-	private final PortletURL _currentURLObj;
 	private final DLRequestHelper _dlRequestHelper;
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletRequest _liferayPortletRequest;

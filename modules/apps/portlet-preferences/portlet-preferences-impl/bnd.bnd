@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portlet Preferences Implementation
+Bundle-SymbolicName: com.liferay.portlet.preferences.impl
+Bundle-Version: 1.0.0

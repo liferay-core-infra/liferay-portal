@@ -10,6 +10,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Hugo Huijser
@@ -33,6 +34,12 @@ public class UnusedVariableCheck extends BaseCheck {
 			}
 		}
 		else if (parentDetailAST.getType() != TokenTypes.SLIST) {
+			return;
+		}
+
+		if (_hasSuppressUnusedDeclarationWarning(parentDetailAST) ||
+			_hasSuppressUnusedDeclarationWarning(detailAST)) {
+
 			return;
 		}
 
@@ -163,6 +170,36 @@ public class UnusedVariableCheck extends BaseCheck {
 		}
 
 		log(detailAST, _MSG_UNUSED_VARIABLE_VALUE, variableName);
+	}
+
+	private boolean _hasSuppressUnusedDeclarationWarning(DetailAST detailAST) {
+		if ((detailAST.getType() != TokenTypes.VARIABLE_DEF) &&
+			(detailAST.getType() != TokenTypes.CLASS_DEF)) {
+
+			return false;
+		}
+
+		DetailAST annotationDetailAST = AnnotationUtil.getAnnotation(
+			detailAST, SuppressWarnings.class.getSimpleName());
+
+		if (annotationDetailAST == null) {
+			return false;
+		}
+
+		for (DetailAST exprDetailAST :
+				getAllChildTokens(annotationDetailAST, true, TokenTypes.EXPR)) {
+
+			DetailAST firstChildDetailAST = exprDetailAST.getFirstChild();
+
+			if ((firstChildDetailAST.getType() == TokenTypes.STRING_LITERAL) &&
+				Objects.equals(
+					firstChildDetailAST.getText(), "\"UnusedDeclaration\"")) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private boolean _isConstructorParameter(DetailAST detailAST) {

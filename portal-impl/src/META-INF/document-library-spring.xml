@@ -12,5 +12,4 @@
 			<bean class="com.liferay.portlet.documentlibrary.util.DLImpl" destroy-method="destroy" />
 		</property>
 	</bean>
-	<bean class="com.liferay.portlet.documentlibrary.store.DLStoreImpl" id="com.liferay.portlet.documentlibrary.store.DLStoreImpl" />
 </beans>

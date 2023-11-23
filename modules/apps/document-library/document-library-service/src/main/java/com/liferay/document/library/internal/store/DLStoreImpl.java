@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portlet.documentlibrary.store;
+package com.liferay.document.library.internal.store;
 
 import com.liferay.document.library.kernel.antivirus.AntivirusScannerUtil;
 import com.liferay.document.library.kernel.exception.AccessDeniedException;
@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -38,12 +37,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Alexander Chow
  * @author Edward Han
  * @author Raymond Augé
  */
+@Component(service = DLStore.class)
 public class DLStoreImpl implements DLStore {
 
 	@Override
@@ -301,6 +305,12 @@ public class DLStoreImpl implements DLStore {
 			companyId, repositoryId, fileName, fromVersionLabel);
 	}
 
+	@Activate
+	protected void activate() {
+		_wrappedStore = new StoreAreaAwareStoreWrapper(
+			() -> _store, _storeAreaProcessorSnapshot::get);
+	}
+
 	private void _addFile(
 			DLStoreRequest dlStoreRequest,
 			DLStoreFileProvider dlStoreFileProvider)
@@ -370,15 +380,15 @@ public class DLStoreImpl implements DLStore {
 		DLValidatorUtil.validateVersionLabel(versionLabel);
 	}
 
-	private static volatile Store _store =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			Store.class, DLStoreImpl.class, "_store", "(default=true)", true);
 	private static final Snapshot<StoreAreaProcessor>
 		_storeAreaProcessorSnapshot = new Snapshot<>(
 			DLStoreImpl.class, StoreAreaProcessor.class,
 			"(store.type=" + PropsValues.DL_STORE_IMPL + ")");
-	private static final Store _wrappedStore = new StoreAreaAwareStoreWrapper(
-		() -> _store, _storeAreaProcessorSnapshot::get);
+
+	@Reference(target = "(default=true)")
+	private Store _store;
+
+	private Store _wrappedStore;
 
 	private static class DLStoreFileProvider implements SafeCloseable {
 

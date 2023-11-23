@@ -23,6 +23,7 @@ import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -75,11 +76,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -108,6 +111,20 @@ public class JournalTransformer {
 		throws Exception {
 
 		// Setup listeners
+
+		Set<String> renderedArticleIds = _renderedArticleIdsThreadLocal.get();
+
+		String articleId = article.getArticleId();
+
+		if (renderedArticleIds.contains(articleId)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("The article cannot include itself: " + articleId);
+			}
+
+			return StringPool.BLANK;
+		}
+
+		renderedArticleIds.add(articleId);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Language " + languageId);
@@ -344,6 +361,8 @@ public class JournalTransformer {
 				httpServletRequest.setAttribute(
 					PortletRequest.LIFECYCLE_PHASE, originalLifecyclePhase);
 			}
+
+			renderedArticleIds.remove(articleId);
 		}
 
 		String output = unsyncStringWriter.toString();
@@ -1006,5 +1025,10 @@ public class JournalTransformer {
 		JournalTransformer.class.getName() + ".XmlAfterListener");
 	private static final Log _logXmlBeforeListener = LogFactoryUtil.getLog(
 		JournalTransformer.class.getName() + ".XmlBeforeListener");
+	private static final ThreadLocal<Set<String>>
+		_renderedArticleIdsThreadLocal = new CentralizedThreadLocal(
+			JournalTransformer.class.getName() +
+				"._renderedArticleIdsThreadLocal",
+			HashSet::new);
 
 }

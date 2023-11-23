@@ -3,10 +3,10 @@ Bundle-SymbolicName: com.liferay.marketplace.api
 Bundle-Version: 10.0.0
 Export-Package:\
 	com.liferay.marketplace.bundle,\
-	com.liferay.marketplace.bundle.util,\
 	com.liferay.marketplace.constants,\
 	com.liferay.marketplace.exception,\
 	com.liferay.marketplace.model,\
 	com.liferay.marketplace.service,\
 	com.liferay.marketplace.service.persistence,\
+	com.liferay.marketplace.util,\
 	com.liferay.marketplace.util.comparator

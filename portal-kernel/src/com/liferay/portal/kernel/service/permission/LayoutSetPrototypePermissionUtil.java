@@ -30,12 +30,6 @@ public class LayoutSetPrototypePermissionUtil {
 			permissionChecker, layoutSetPrototypeId, actionId);
 	}
 
-	public static LayoutSetPrototypePermission
-		getLayoutSetPrototypePermission() {
-
-		return _layoutSetPrototypePermission;
-	}
-
 	public void setLayoutSetPrototypePermission(
 		LayoutSetPrototypePermission layoutSetPrototypePermission) {
 

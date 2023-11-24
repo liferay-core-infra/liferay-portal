@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.service.permission;
 
+import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
@@ -18,24 +19,25 @@ public class LayoutSetPrototypePermissionUtil {
 			String actionId)
 		throws PrincipalException {
 
-		_layoutSetPrototypePermission.check(
-			permissionChecker, layoutSetPrototypeId, actionId);
+		if (!contains(permissionChecker, layoutSetPrototypeId, actionId)) {
+			throw new PrincipalException.MustHavePermission(
+				permissionChecker, LayoutSetPrototype.class.getName(),
+				layoutSetPrototypeId, actionId);
+		}
 	}
 
 	public static boolean contains(
 		PermissionChecker permissionChecker, long layoutSetPrototypeId,
 		String actionId) {
 
-		return _layoutSetPrototypePermission.contains(
-			permissionChecker, layoutSetPrototypeId, actionId);
+		if (permissionChecker.hasPermission(
+				null, LayoutSetPrototype.class.getName(), layoutSetPrototypeId,
+				actionId)) {
+
+			return true;
+		}
+
+		return false;
 	}
-
-	public void setLayoutSetPrototypePermission(
-		LayoutSetPrototypePermission layoutSetPrototypePermission) {
-
-		_layoutSetPrototypePermission = layoutSetPrototypePermission;
-	}
-
-	private static LayoutSetPrototypePermission _layoutSetPrototypePermission;
 
 }

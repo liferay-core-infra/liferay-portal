@@ -1046,7 +1046,6 @@ com.liferay.portal.service.permission.LayoutPrototypePermission=com.liferay.port
 com.liferay.portal.service.permission.LayoutPrototypePermissionUtil=com.liferay.portal.service.permission.LayoutPrototypePermissionUtil
 com.liferay.portal.service.permission.LayoutSetBranchPermission=com.liferay.portal.kernel.service.permission.LayoutSetBranchPermission
 com.liferay.portal.service.permission.LayoutSetBranchPermissionUtil=com.liferay.portal.kernel.service.permission.LayoutSetBranchPermissionUtil
-com.liferay.portal.service.permission.LayoutSetPrototypePermission=com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermission
 com.liferay.portal.service.permission.LayoutSetPrototypePermissionUtil=com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermissionUtil
 com.liferay.portal.service.permission.OrganizationPermissionUtil=com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil
 com.liferay.portal.service.permission.PasswordPolicyPermissionUtil=com.liferay.portal.kernel.service.permission.PasswordPolicyPermissionUtil

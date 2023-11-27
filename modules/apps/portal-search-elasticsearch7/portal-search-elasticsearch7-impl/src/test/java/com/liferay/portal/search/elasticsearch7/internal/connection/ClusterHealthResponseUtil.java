@@ -22,11 +22,11 @@ import org.elasticsearch.core.TimeValue;
 public class ClusterHealthResponseUtil {
 
 	public static ClusterHealthResponse getClusterHealthResponse(
-		ElasticsearchClientResolver elasticsearchClientResolver,
+		ElasticsearchConnectionManager elasticsearchConnectionManager,
 		HealthExpectations healthExpectations) {
 
 		RestHighLevelClient restHighLevelClient =
-			elasticsearchClientResolver.getRestHighLevelClient();
+			elasticsearchConnectionManager.getRestHighLevelClient();
 
 		ClusterClient clusterClient = restHighLevelClient.cluster();
 

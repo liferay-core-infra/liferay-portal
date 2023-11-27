@@ -8,7 +8,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.search.CountSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.CountSearchResponse;
 
@@ -81,7 +81,7 @@ public class CountSearchRequestExecutorImpl
 		SearchRequest searchRequest, CountSearchRequest countSearchRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				countSearchRequest.getConnectionId(),
 				countSearchRequest.isPreferLocalCluster());
 
@@ -105,6 +105,6 @@ public class CountSearchRequestExecutorImpl
 		_commonSearchSourceBuilderAssembler;
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

@@ -57,7 +57,7 @@ public class StatsClusterRequestExecutorTest {
 			statsClusterRequestExecutorImpl, "_clusterHealthStatusTranslator",
 			new ClusterHealthStatusTranslatorImpl());
 		ReflectionTestUtil.setFieldValue(
-			statsClusterRequestExecutorImpl, "_elasticsearchClientResolver",
+			statsClusterRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchConnectionFixture);
 		ReflectionTestUtil.setFieldValue(
 			statsClusterRequestExecutorImpl, "_jsonFactory",

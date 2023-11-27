@@ -49,7 +49,7 @@ public class GetMappingIndexRequestExecutorTest {
 			new GetMappingIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			getMappingIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			getMappingIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 
 		GetMappingsRequest getMappingsRequest =

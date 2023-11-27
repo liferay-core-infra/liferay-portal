@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.index.StatsIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.StatsIndexResponse;
 
@@ -39,7 +39,7 @@ public class StatsIndexRequestExecutorImpl
 		Request request = getElasticsearchIndexRequest(statsIndexRequest);
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				statsIndexRequest.getConnectionId(),
 				statsIndexRequest.isPreferLocalCluster());
 
@@ -98,7 +98,7 @@ public class StatsIndexRequestExecutorImpl
 	}
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 	@Reference
 	private JSONFactory _jsonFactory;

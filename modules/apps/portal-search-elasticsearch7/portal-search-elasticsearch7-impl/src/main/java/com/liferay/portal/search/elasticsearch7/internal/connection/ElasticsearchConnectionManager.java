@@ -14,7 +14,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 /**
  * @author André de Oliveira
  */
-public interface ElasticsearchClientResolver
+public interface ElasticsearchConnectionManager
 	extends ElasticsearchConfigurationObserver {
 
 	public void addElasticsearchConnection(

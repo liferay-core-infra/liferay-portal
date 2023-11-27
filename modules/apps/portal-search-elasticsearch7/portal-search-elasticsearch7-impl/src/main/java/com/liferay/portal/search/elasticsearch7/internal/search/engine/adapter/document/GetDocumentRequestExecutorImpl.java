@@ -7,7 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.
 
 import com.liferay.portal.search.document.DocumentBuilder;
 import com.liferay.portal.search.document.DocumentBuilderFactory;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.document.DocumentFieldsTranslator;
 import com.liferay.portal.search.engine.adapter.document.GetDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.GetDocumentResponse;
@@ -66,7 +66,7 @@ public class GetDocumentRequestExecutorImpl
 		GetRequest getRequest, GetDocumentRequest getDocumentRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				getDocumentRequest.getConnectionId(),
 				getDocumentRequest.isPreferLocalCluster());
 
@@ -86,7 +86,7 @@ public class GetDocumentRequestExecutorImpl
 		_elasticsearchBulkableDocumentRequestTranslator;
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 	@Reference
 	private GeoBuilders _geoBuilders;

@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index;
 
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexResponse;
 
@@ -51,7 +51,7 @@ public class IndicesExistsIndexRequestExecutorImpl
 		IndicesExistsIndexRequest indicesExistsIndexRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				indicesExistsIndexRequest.getConnectionId(),
 				indicesExistsIndexRequest.isPreferLocalCluster());
 
@@ -67,6 +67,6 @@ public class IndicesExistsIndexRequestExecutorImpl
 	}
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

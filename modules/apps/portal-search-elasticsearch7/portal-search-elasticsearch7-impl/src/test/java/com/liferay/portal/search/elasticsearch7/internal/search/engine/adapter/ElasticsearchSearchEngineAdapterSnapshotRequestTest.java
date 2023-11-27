@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.snapshot.SnapshotRequestExecutorFixture;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
@@ -281,25 +281,26 @@ public class ElasticsearchSearchEngineAdapterSnapshotRequestTest {
 	}
 
 	protected static SearchEngineAdapter createSearchEngineAdapter(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		SearchEngineAdapter searchEngineAdapter =
 			new ElasticsearchSearchEngineAdapterImpl();
 
 		ReflectionTestUtil.setFieldValue(
 			searchEngineAdapter, "_snapshotRequestExecutor",
-			_createSnapshotRequestExecutor(elasticsearchClientResolver));
+			_createSnapshotRequestExecutor(elasticsearchConnectionManager));
 
 		return searchEngineAdapter;
 	}
 
 	private static SnapshotRequestExecutor _createSnapshotRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		SnapshotRequestExecutorFixture snapshotRequestExecutorFixture =
 			new SnapshotRequestExecutorFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 				}
 			};
 

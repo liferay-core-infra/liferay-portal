@@ -58,7 +58,7 @@ public class CreateSnapshotRepositoryRequestExecutorImplTest {
 
 		ReflectionTestUtil.setFieldValue(
 			createSnapshotRepositoryRequestExecutorImpl,
-			"_elasticsearchClientResolver", _elasticsearchFixture);
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 
 		PutRepositoryRequest putRepositoryRequest =
 			createSnapshotRepositoryRequestExecutorImpl.

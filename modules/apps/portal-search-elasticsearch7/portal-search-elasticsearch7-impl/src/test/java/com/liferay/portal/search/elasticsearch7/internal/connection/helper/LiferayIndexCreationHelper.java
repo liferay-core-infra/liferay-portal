@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.connection.helper;
 
 import com.liferay.portal.json.JSONFactoryImpl;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.index.LiferayDocumentTypeFactory;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
@@ -19,9 +19,9 @@ import org.elasticsearch.common.settings.Settings;
 public class LiferayIndexCreationHelper implements IndexCreationHelper {
 
 	public LiferayIndexCreationHelper(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
-		_elasticsearchClientResolver = elasticsearchClientResolver;
+		_elasticsearchConnectionManager = elasticsearchConnectionManager;
 	}
 
 	@Override
@@ -51,12 +51,13 @@ public class LiferayIndexCreationHelper implements IndexCreationHelper {
 
 	private LiferayDocumentTypeFactory _getLiferayDocumentTypeFactory() {
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient();
+			_elasticsearchConnectionManager.getRestHighLevelClient();
 
 		return new LiferayDocumentTypeFactory(
 			restHighLevelClient.indices(), new JSONFactoryImpl());
 	}
 
-	private final ElasticsearchClientResolver _elasticsearchClientResolver;
+	private final ElasticsearchConnectionManager
+		_elasticsearchConnectionManager;
 
 }

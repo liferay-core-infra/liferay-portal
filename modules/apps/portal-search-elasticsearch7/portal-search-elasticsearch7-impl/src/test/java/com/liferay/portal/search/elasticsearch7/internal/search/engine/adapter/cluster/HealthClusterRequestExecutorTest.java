@@ -58,7 +58,7 @@ public class HealthClusterRequestExecutorTest {
 			healthClusterRequestExecutorImpl, "_clusterHealthStatusTranslator",
 			new ClusterHealthStatusTranslatorImpl());
 		ReflectionTestUtil.setFieldValue(
-			healthClusterRequestExecutorImpl, "_elasticsearchClientResolver",
+			healthClusterRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 
 		ClusterHealthRequest clusterHealthRequest =

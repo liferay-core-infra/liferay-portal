@@ -52,7 +52,7 @@ public class FlushIndexRequestExecutorTest {
 			new FlushIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			flushIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			flushIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 		ReflectionTestUtil.setFieldValue(
 			flushIndexRequestExecutorImpl,

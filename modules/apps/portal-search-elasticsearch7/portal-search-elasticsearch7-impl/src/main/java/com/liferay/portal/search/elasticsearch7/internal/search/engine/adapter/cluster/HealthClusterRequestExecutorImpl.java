@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.cluster;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.cluster.HealthClusterRequest;
 import com.liferay.portal.search.engine.adapter.cluster.HealthClusterResponse;
 
@@ -79,7 +79,7 @@ public class HealthClusterRequestExecutorImpl
 		HealthClusterRequest healthClusterRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				healthClusterRequest.getConnectionId(),
 				healthClusterRequest.isPreferLocalCluster());
 
@@ -98,6 +98,6 @@ public class HealthClusterRequestExecutorImpl
 	private ClusterHealthStatusTranslator _clusterHealthStatusTranslator;
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

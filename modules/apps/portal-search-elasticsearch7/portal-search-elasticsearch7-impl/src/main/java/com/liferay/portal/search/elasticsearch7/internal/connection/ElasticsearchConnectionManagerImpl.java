@@ -46,11 +46,11 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	service = {
-		ElasticsearchClientResolver.class, ElasticsearchConnectionManagerImpl.class
+		ElasticsearchConnectionManager.class, ElasticsearchConnectionManagerImpl.class
 	}
 )
 public class ElasticsearchConnectionManagerImpl
-	implements ElasticsearchClientResolver {
+	implements ElasticsearchConnectionManager {
 
 	@Override
 	public void addElasticsearchConnection(

@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.document;
 
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.document.IndexDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.IndexDocumentResponse;
 
@@ -48,7 +48,7 @@ public class IndexDocumentRequestExecutorImpl
 		IndexRequest indexRequest, IndexDocumentRequest indexDocumentRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				indexDocumentRequest.getConnectionId(),
 				indexDocumentRequest.isPreferLocalCluster());
 
@@ -66,6 +66,6 @@ public class IndexDocumentRequestExecutorImpl
 		_elasticsearchBulkableDocumentRequestTranslator;
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

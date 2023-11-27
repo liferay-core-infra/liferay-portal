@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.document.DefaultElasticsearchDocumentFactory;
 import com.liferay.portal.search.elasticsearch7.internal.document.ElasticsearchDocumentFactory;
 import com.liferay.portal.search.elasticsearch7.internal.facet.FacetProcessor;
@@ -30,7 +30,7 @@ public class ElasticsearchEngineAdapterFixture {
 
 	public void setUp() {
 		_searchEngineAdapter = createSearchEngineAdapter(
-			_elasticsearchClientResolver, _getElasticsearchDocumentFactory(),
+			_elasticsearchConnectionManager, _getElasticsearchDocumentFactory(),
 			_facetProcessor);
 	}
 
@@ -39,21 +39,23 @@ public class ElasticsearchEngineAdapterFixture {
 	}
 
 	protected static SearchEngineAdapter createSearchEngineAdapter(
-		ElasticsearchClientResolver elasticsearchClientResolver,
+		ElasticsearchConnectionManager elasticsearchConnectionManager,
 		ElasticsearchDocumentFactory elasticsearchDocumentFactory,
 		FacetProcessor<?> facetProcessor) {
 
 		ClusterRequestExecutorFixture clusterRequestExecutorFixture =
 			new ClusterRequestExecutorFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 				}
 			};
 
 		DocumentRequestExecutorFixture documentRequestExecutorFixture =
 			new DocumentRequestExecutorFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 					setElasticsearchDocumentFactory(
 						elasticsearchDocumentFactory);
 				}
@@ -62,13 +64,14 @@ public class ElasticsearchEngineAdapterFixture {
 		IndexRequestExecutorFixture indexRequestExecutorFixture =
 			new IndexRequestExecutorFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 				}
 			};
 
 		_searchRequestExecutorFixture = new SearchRequestExecutorFixture() {
 			{
-				setElasticsearchClientResolver(elasticsearchClientResolver);
+				setElasticsearchClientResolver(elasticsearchConnectionManager);
 				setFacetProcessor(facetProcessor);
 			}
 		};
@@ -76,7 +79,8 @@ public class ElasticsearchEngineAdapterFixture {
 		SnapshotRequestExecutorFixture snapshotRequestExecutorFixture =
 			new SnapshotRequestExecutorFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 				}
 			};
 
@@ -113,9 +117,9 @@ public class ElasticsearchEngineAdapterFixture {
 	}
 
 	protected void setElasticsearchClientResolver(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
-		_elasticsearchClientResolver = elasticsearchClientResolver;
+		_elasticsearchConnectionManager = elasticsearchConnectionManager;
 	}
 
 	protected void setElasticsearchDocumentFactory(
@@ -140,7 +144,7 @@ public class ElasticsearchEngineAdapterFixture {
 
 	private static SearchRequestExecutorFixture _searchRequestExecutorFixture;
 
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 	private ElasticsearchDocumentFactory _elasticsearchDocumentFactory;
 	private FacetProcessor<SearchRequestBuilder> _facetProcessor;
 	private SearchEngineAdapter _searchEngineAdapter;

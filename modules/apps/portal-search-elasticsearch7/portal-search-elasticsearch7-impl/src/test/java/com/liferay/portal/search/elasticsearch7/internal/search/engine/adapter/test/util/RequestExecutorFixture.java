@@ -8,7 +8,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.document.Document;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.document.DefaultElasticsearchDocumentFactory;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.document.ElasticsearchBulkableDocumentRequestTranslator;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.document.ElasticsearchBulkableDocumentRequestTranslatorImpl;
@@ -37,9 +37,9 @@ import com.liferay.portal.search.internal.document.DocumentBuilderFactoryImpl;
 public class RequestExecutorFixture {
 
 	public RequestExecutorFixture(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
-		_elasticsearchClientResolver = elasticsearchClientResolver;
+		_elasticsearchConnectionManager = elasticsearchConnectionManager;
 	}
 
 	public void createIndex(String indexName) {
@@ -105,14 +105,14 @@ public class RequestExecutorFixture {
 		_createIndexRequestExecutor = new CreateIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			_createIndexRequestExecutor, "_elasticsearchClientResolver",
-			_elasticsearchClientResolver);
+			_createIndexRequestExecutor, "_elasticsearchConnectionManager",
+			_elasticsearchConnectionManager);
 
 		_deleteIndexRequestExecutor = new DeleteIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			_deleteIndexRequestExecutor, "_elasticsearchClientResolver",
-			_elasticsearchClientResolver);
+			_deleteIndexRequestExecutor, "_elasticsearchConnectionManager",
+			_elasticsearchConnectionManager);
 		ReflectionTestUtil.setFieldValue(
 			_deleteIndexRequestExecutor, "_indicesOptionsTranslator",
 			new IndicesOptionsTranslatorImpl());
@@ -134,8 +134,8 @@ public class RequestExecutorFixture {
 			elasticsearchBulkableDocumentRequestTranslator);
 
 		ReflectionTestUtil.setFieldValue(
-			_getDocumentRequestExecutor, "_elasticsearchClientResolver",
-			_elasticsearchClientResolver);
+			_getDocumentRequestExecutor, "_elasticsearchConnectionManager",
+			_elasticsearchConnectionManager);
 		ReflectionTestUtil.setFieldValue(
 			_getDocumentRequestExecutor, "_documentBuilderFactory",
 			new DocumentBuilderFactoryImpl());
@@ -147,8 +147,8 @@ public class RequestExecutorFixture {
 			"_elasticsearchBulkableDocumentRequestTranslator",
 			elasticsearchBulkableDocumentRequestTranslator);
 		ReflectionTestUtil.setFieldValue(
-			_indexDocumentRequestExecutor, "_elasticsearchClientResolver",
-			_elasticsearchClientResolver);
+			_indexDocumentRequestExecutor, "_elasticsearchConnectionManager",
+			_elasticsearchConnectionManager);
 
 		_updateDocumentRequestExecutor =
 			new UpdateDocumentRequestExecutorImpl();
@@ -158,13 +158,14 @@ public class RequestExecutorFixture {
 			"_elasticsearchBulkableDocumentRequestTranslator",
 			elasticsearchBulkableDocumentRequestTranslator);
 		ReflectionTestUtil.setFieldValue(
-			_updateDocumentRequestExecutor, "_elasticsearchClientResolver",
-			_elasticsearchClientResolver);
+			_updateDocumentRequestExecutor, "_elasticsearchConnectionManager",
+			_elasticsearchConnectionManager);
 	}
 
 	private CreateIndexRequestExecutor _createIndexRequestExecutor;
 	private DeleteIndexRequestExecutor _deleteIndexRequestExecutor;
-	private final ElasticsearchClientResolver _elasticsearchClientResolver;
+	private final ElasticsearchConnectionManager
+		_elasticsearchConnectionManager;
 	private GetDocumentRequestExecutor _getDocumentRequestExecutor;
 	private IndexDocumentRequestExecutor _indexDocumentRequestExecutor;
 	private UpdateDocumentRequestExecutor _updateDocumentRequestExecutor;

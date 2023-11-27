@@ -33,7 +33,7 @@ import org.mockito.Mockito;
  * @author André de Oliveira
  */
 public class ElasticsearchConnectionFixture
-	implements ElasticsearchClientResolver {
+	implements ElasticsearchConnectionManager {
 
 	public static Builder builder() {
 		return new Builder();

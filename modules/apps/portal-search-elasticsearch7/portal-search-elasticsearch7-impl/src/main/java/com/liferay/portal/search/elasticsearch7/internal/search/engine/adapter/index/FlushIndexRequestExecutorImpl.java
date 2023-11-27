@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.index.FlushIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.FlushIndexResponse;
 import com.liferay.portal.search.engine.adapter.index.IndexRequestShardFailure;
@@ -84,7 +84,7 @@ public class FlushIndexRequestExecutorImpl
 		FlushRequest flushRequest, FlushIndexRequest flushIndexRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				flushIndexRequest.getConnectionId(),
 				flushIndexRequest.isPreferLocalCluster());
 
@@ -99,7 +99,7 @@ public class FlushIndexRequestExecutorImpl
 	}
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 	@Reference
 	private IndexRequestShardFailureTranslator

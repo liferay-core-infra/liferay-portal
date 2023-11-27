@@ -52,7 +52,7 @@ public class GetFieldMappingIndexRequestExecutorTest {
 
 		ReflectionTestUtil.setFieldValue(
 			getFieldMappingIndexRequestExecutorImpl,
-			"_elasticsearchClientResolver", _elasticsearchFixture);
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 
 		GetFieldMappingsRequest getFieldMappingsRequest =
 			getFieldMappingIndexRequestExecutorImpl.

@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.document;
 
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.document.DeleteDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.DeleteDocumentResponse;
 
@@ -48,7 +48,7 @@ public class DeleteDocumentRequestExecutorImpl
 		DeleteDocumentRequest deleteDocumentRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				deleteDocumentRequest.getConnectionId(),
 				deleteDocumentRequest.isPreferLocalCluster());
 
@@ -66,6 +66,6 @@ public class DeleteDocumentRequestExecutorImpl
 		_elasticsearchBulkableDocumentRequestTranslator;
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

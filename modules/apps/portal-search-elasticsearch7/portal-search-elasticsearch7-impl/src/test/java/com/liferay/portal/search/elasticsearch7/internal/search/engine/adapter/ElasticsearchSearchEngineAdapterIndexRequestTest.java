@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.IndexRequestExecutorFixture;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
@@ -532,25 +532,26 @@ public class ElasticsearchSearchEngineAdapterIndexRequestTest {
 	}
 
 	protected static SearchEngineAdapter createSearchEngineAdapter(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		SearchEngineAdapter searchEngineAdapter =
 			new ElasticsearchSearchEngineAdapterImpl();
 
 		ReflectionTestUtil.setFieldValue(
 			searchEngineAdapter, "_indexRequestExecutor",
-			_createIndexRequestExecutor(elasticsearchClientResolver));
+			_createIndexRequestExecutor(elasticsearchConnectionManager));
 
 		return searchEngineAdapter;
 	}
 
 	private static IndexRequestExecutor _createIndexRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		IndexRequestExecutorFixture indexRequestExecutorFixture =
 			new IndexRequestExecutorFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 				}
 			};
 

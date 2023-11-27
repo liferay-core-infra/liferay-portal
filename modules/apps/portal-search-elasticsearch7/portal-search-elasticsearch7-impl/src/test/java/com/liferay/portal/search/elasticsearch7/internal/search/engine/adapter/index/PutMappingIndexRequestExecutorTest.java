@@ -50,7 +50,7 @@ public class PutMappingIndexRequestExecutorTest {
 			new PutMappingIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			putMappingIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			putMappingIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 
 		PutMappingRequest putMappingRequest =

@@ -51,7 +51,7 @@ public class GetIndexIndexRequestExecutorTest {
 			new GetIndexIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			getIndexIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			getIndexIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 
 		GetIndexRequest getIndexRequest =

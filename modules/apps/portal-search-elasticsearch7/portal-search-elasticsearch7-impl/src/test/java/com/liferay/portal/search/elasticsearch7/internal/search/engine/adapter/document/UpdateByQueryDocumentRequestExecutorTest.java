@@ -78,7 +78,7 @@ public class UpdateByQueryDocumentRequestExecutorTest {
 
 		ReflectionTestUtil.setFieldValue(
 			updateByQueryDocumentRequestExecutorImpl,
-			"_elasticsearchClientResolver", _elasticsearchFixture);
+			"_elasticsearchConnectionManager", _elasticsearchFixture);
 		ReflectionTestUtil.setFieldValue(
 			updateByQueryDocumentRequestExecutorImpl, "_legacyQueryTranslator",
 			lecacyElasticsearchQueryTranslatorFixture.

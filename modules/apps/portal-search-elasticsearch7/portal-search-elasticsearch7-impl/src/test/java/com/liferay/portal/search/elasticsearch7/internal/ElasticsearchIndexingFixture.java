@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.IndexCreator;
 import com.liferay.portal.search.elasticsearch7.internal.connection.IndexName;
@@ -52,7 +52,7 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 		return _companyId;
 	}
 
-	public ElasticsearchClientResolver getElasticsearchClientResolver() {
+	public ElasticsearchConnectionManager getElasticsearchClientResolver() {
 		return _elasticsearchFixture;
 	}
 
@@ -153,12 +153,12 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 
 	private ElasticsearchEngineAdapterFixture
 		_createElasticsearchEngineAdapterFixture(
-			ElasticsearchClientResolver elasticsearchClientResolver,
+			ElasticsearchConnectionManager elasticsearchConnectionManager,
 			FacetProcessor<SearchRequestBuilder> facetProcessor) {
 
 		return new ElasticsearchEngineAdapterFixture() {
 			{
-				setElasticsearchClientResolver(elasticsearchClientResolver);
+				setElasticsearchClientResolver(elasticsearchConnectionManager);
 				setFacetProcessor(facetProcessor);
 			}
 		};

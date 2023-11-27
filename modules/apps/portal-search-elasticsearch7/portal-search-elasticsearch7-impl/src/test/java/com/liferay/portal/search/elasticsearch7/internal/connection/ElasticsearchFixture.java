@@ -22,7 +22,7 @@ import org.elasticsearch.cluster.health.ClusterHealthStatus;
 /**
  * @author André de Oliveira
  */
-public class ElasticsearchFixture implements ElasticsearchClientResolver {
+public class ElasticsearchFixture implements ElasticsearchConnectionManager {
 
 	public ElasticsearchFixture() {
 		this(

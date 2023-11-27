@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.cluster;
 
 import com.liferay.portal.search.elasticsearch7.internal.connection.ClusterHealthResponseUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.HealthExpectations;
 
 import org.junit.Assert;
@@ -17,7 +17,7 @@ import org.junit.Assert;
 public class ClusterAssert {
 
 	public static void assertHealth(
-		ElasticsearchClientResolver elasticsearchClientResolver,
+		ElasticsearchConnectionManager elasticsearchConnectionManager,
 		HealthExpectations healthExpectations) {
 
 		Assert.assertEquals(
@@ -25,7 +25,7 @@ public class ClusterAssert {
 			String.valueOf(
 				new HealthExpectations(
 					ClusterHealthResponseUtil.getClusterHealthResponse(
-						elasticsearchClientResolver, healthExpectations))));
+						elasticsearchConnectionManager, healthExpectations))));
 	}
 
 }

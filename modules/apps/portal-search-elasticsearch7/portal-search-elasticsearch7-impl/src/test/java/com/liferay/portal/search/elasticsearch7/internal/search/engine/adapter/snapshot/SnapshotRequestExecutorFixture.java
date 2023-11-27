@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.snapshot;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.snapshot.SnapshotRequestExecutor;
 
 /**
@@ -23,35 +23,35 @@ public class SnapshotRequestExecutorFixture {
 			{
 				createSnapshotRepositoryRequestExecutor =
 					_createCreateSnapshotRepositoryRequestExecutor(
-						_elasticsearchClientResolver);
+						_elasticsearchConnectionManager);
 				createSnapshotRequestExecutor =
 					_createCreateSnapshotRequestExecutor(
-						_elasticsearchClientResolver);
+						_elasticsearchConnectionManager);
 				deleteSnapshotRequestExecutor =
 					_createDeleteSnapshotRequestExecutor(
-						_elasticsearchClientResolver);
+						_elasticsearchConnectionManager);
 				getSnapshotRepositoriesRequestExecutor =
 					_createGetSnapshotRepositoriesRequestExecutor(
-						_elasticsearchClientResolver);
+						_elasticsearchConnectionManager);
 				getSnapshotsRequestExecutor =
 					_createGetSnapshotsRequestExecutor(
-						_elasticsearchClientResolver);
+						_elasticsearchConnectionManager);
 				restoreSnapshotRequestExecutor =
 					_createRestoreSnapshotRequestExecutor(
-						_elasticsearchClientResolver);
+						_elasticsearchConnectionManager);
 			}
 		};
 	}
 
 	protected void setElasticsearchClientResolver(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
-		_elasticsearchClientResolver = elasticsearchClientResolver;
+		_elasticsearchConnectionManager = elasticsearchConnectionManager;
 	}
 
 	private CreateSnapshotRepositoryRequestExecutor
 		_createCreateSnapshotRepositoryRequestExecutor(
-			ElasticsearchClientResolver elasticsearchClientResolver) {
+			ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		CreateSnapshotRepositoryRequestExecutor
 			createSnapshotRepositoryRequestExecutor =
@@ -59,40 +59,40 @@ public class SnapshotRequestExecutorFixture {
 
 		ReflectionTestUtil.setFieldValue(
 			createSnapshotRepositoryRequestExecutor,
-			"_elasticsearchClientResolver", elasticsearchClientResolver);
+			"_elasticsearchConnectionManager", elasticsearchConnectionManager);
 
 		return createSnapshotRepositoryRequestExecutor;
 	}
 
 	private CreateSnapshotRequestExecutor _createCreateSnapshotRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		CreateSnapshotRequestExecutor createSnapshotRequestExecutor =
 			new CreateSnapshotRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			createSnapshotRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			createSnapshotRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return createSnapshotRequestExecutor;
 	}
 
 	private DeleteSnapshotRequestExecutor _createDeleteSnapshotRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		DeleteSnapshotRequestExecutor deleteSnapshotRequestExecutor =
 			new DeleteSnapshotRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			deleteSnapshotRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			deleteSnapshotRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return deleteSnapshotRequestExecutor;
 	}
 
 	private GetSnapshotRepositoriesRequestExecutor
 		_createGetSnapshotRepositoriesRequestExecutor(
-			ElasticsearchClientResolver elasticsearchClientResolver) {
+			ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		GetSnapshotRepositoriesRequestExecutor
 			getSnapshotRepositoriesRequestExecutor =
@@ -100,39 +100,39 @@ public class SnapshotRequestExecutorFixture {
 
 		ReflectionTestUtil.setFieldValue(
 			getSnapshotRepositoriesRequestExecutor,
-			"_elasticsearchClientResolver", elasticsearchClientResolver);
+			"_elasticsearchConnectionManager", elasticsearchConnectionManager);
 
 		return getSnapshotRepositoriesRequestExecutor;
 	}
 
 	private GetSnapshotsRequestExecutor _createGetSnapshotsRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		GetSnapshotsRequestExecutor getSnapshotsRequestExecutor =
 			new GetSnapshotsRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			getSnapshotsRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			getSnapshotsRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return getSnapshotsRequestExecutor;
 	}
 
 	private RestoreSnapshotRequestExecutor
 		_createRestoreSnapshotRequestExecutor(
-			ElasticsearchClientResolver elasticsearchClientResolver) {
+			ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		RestoreSnapshotRequestExecutor restoreSnapshotRequestExecutor =
 			new RestoreSnapshotRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			restoreSnapshotRequestExecutor, "_elasticsearchClientResolver",
-			elasticsearchClientResolver);
+			restoreSnapshotRequestExecutor, "_elasticsearchConnectionManager",
+			elasticsearchConnectionManager);
 
 		return restoreSnapshotRequestExecutor;
 	}
 
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 	private SnapshotRequestExecutor _snapshotRequestExecutor;
 
 }

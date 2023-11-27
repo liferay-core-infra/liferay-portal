@@ -48,7 +48,7 @@ public class StateClusterRequestExecutorTest {
 			new StateClusterRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			stateClusterRequestExecutorImpl, "_elasticsearchClientResolver",
+			stateClusterRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 
 		StateClusterResponse stateClusterResponse =

@@ -7,7 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.
 
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.index.AnalysisIndexResponseToken;
 import com.liferay.portal.search.engine.adapter.index.AnalyzeIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.AnalyzeIndexResponse;
@@ -127,7 +127,7 @@ public class AnalyzeIndexRequestExecutorImpl
 		AnalyzeIndexRequest analyzeIndexRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				analyzeIndexRequest.getConnectionId(),
 				analyzeIndexRequest.isPreferLocalCluster());
 
@@ -253,6 +253,6 @@ public class AnalyzeIndexRequestExecutorImpl
 	}
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 }

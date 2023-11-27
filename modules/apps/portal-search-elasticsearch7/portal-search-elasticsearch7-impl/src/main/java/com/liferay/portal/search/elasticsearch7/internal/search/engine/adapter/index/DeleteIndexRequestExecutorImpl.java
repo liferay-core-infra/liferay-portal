@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index;
 
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.adapter.index.DeleteIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.DeleteIndexResponse;
 
@@ -61,7 +61,7 @@ public class DeleteIndexRequestExecutorImpl
 		DeleteIndexRequest deleteIndexRequest) {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchClientResolver.getRestHighLevelClient(
+			_elasticsearchConnectionManager.getRestHighLevelClient(
 				deleteIndexRequest.getConnectionId(),
 				deleteIndexRequest.isPreferLocalCluster());
 
@@ -77,7 +77,7 @@ public class DeleteIndexRequestExecutorImpl
 	}
 
 	@Reference
-	private ElasticsearchClientResolver _elasticsearchClientResolver;
+	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 
 	@Reference
 	private IndicesOptionsTranslator _indicesOptionsTranslator;

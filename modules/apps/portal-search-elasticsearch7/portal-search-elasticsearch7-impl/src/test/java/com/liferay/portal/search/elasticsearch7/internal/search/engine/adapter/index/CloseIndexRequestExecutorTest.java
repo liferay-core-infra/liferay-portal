@@ -58,7 +58,7 @@ public class CloseIndexRequestExecutorTest {
 			new CloseIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			closeIndexRequestExecutorImpl, "_elasticsearchClientResolver",
+			closeIndexRequestExecutorImpl, "_elasticsearchConnectionManager",
 			_elasticsearchFixture);
 		ReflectionTestUtil.setFieldValue(
 			closeIndexRequestExecutorImpl, "_indicesOptionsTranslator",

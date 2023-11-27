@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.synonym;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.IndexName;
 import com.liferay.portal.search.elasticsearch7.internal.document.SingleFieldFixture;
@@ -188,12 +188,13 @@ public class SynonymFiltersTest {
 	}
 
 	private static IndexRequestExecutor _createIndexRequestExecutor(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		IndexRequestExecutorFixture indexRequestExecutorFixture =
 			new IndexRequestExecutorFixture() {
 				{
-					setElasticsearchClientResolver(elasticsearchClientResolver);
+					setElasticsearchClientResolver(
+						elasticsearchConnectionManager);
 				}
 			};
 
@@ -203,14 +204,14 @@ public class SynonymFiltersTest {
 	}
 
 	private static SearchEngineAdapter _createSearchEngineAdapter(
-		ElasticsearchClientResolver elasticsearchClientResolver) {
+		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
 		SearchEngineAdapter searchEngineAdapter =
 			new ElasticsearchSearchEngineAdapterImpl();
 
 		ReflectionTestUtil.setFieldValue(
 			searchEngineAdapter, "_indexRequestExecutor",
-			_createIndexRequestExecutor(elasticsearchClientResolver));
+			_createIndexRequestExecutor(elasticsearchConnectionManager));
 
 		return searchEngineAdapter;
 	}

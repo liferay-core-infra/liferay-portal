@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionNotInitializedException;
 import com.liferay.portal.search.elasticsearch7.internal.helper.SearchLogHelperUtil;
 import com.liferay.portal.search.elasticsearch7.internal.index.util.IndexFactoryCompanyIdRegistryUtil;
@@ -390,7 +390,7 @@ public class CompanyIndexFactoryHelper {
 		_elasticsearchConfigurationWrapper;
 
 	@Reference
-	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
+	private ElasticsearchConnectionManagerImpl _elasticsearchConnectionManager;
 
 	private ServiceTrackerList<IndexContributor>
 		_indexContributorServiceTrackerList;

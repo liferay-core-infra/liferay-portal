@@ -46,10 +46,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	service = {
-		ElasticsearchClientResolver.class, ElasticsearchConnectionManager.class
+		ElasticsearchClientResolver.class, ElasticsearchConnectionManagerImpl.class
 	}
 )
-public class ElasticsearchConnectionManager
+public class ElasticsearchConnectionManagerImpl
 	implements ElasticsearchClientResolver {
 
 	@Override
@@ -469,15 +469,15 @@ public class ElasticsearchConnectionManager
 			", Connection ID: ", connectionId, ", Prefer Local Cluster: ",
 			preferLocalCluster, ", Cross-Cluster Replication Enabled: ",
 			isCrossClusterReplicationEnabled(), ". Enable INFO logs on ",
-			ElasticsearchConnectionManager.class, " for more information");
+			ElasticsearchConnectionManagerImpl.class, " for more information");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ElasticsearchConnectionManager.class);
+		ElasticsearchConnectionManagerImpl.class);
 
 	private static final Snapshot<CrossClusterReplicationConfigurationHelper>
 		_crossClusterReplicationConfigurationHelperSnapshot = new Snapshot<>(
-			ElasticsearchConnectionManager.class,
+			ElasticsearchConnectionManagerImpl.class,
 			CrossClusterReplicationConfigurationHelper.class, null, true);
 
 	@Reference

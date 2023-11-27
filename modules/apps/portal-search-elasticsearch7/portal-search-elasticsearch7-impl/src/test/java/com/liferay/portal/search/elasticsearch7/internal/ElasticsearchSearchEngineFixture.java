@@ -16,7 +16,7 @@ import com.liferay.portal.search.elasticsearch7.internal.configuration.Operation
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
 import com.liferay.portal.search.elasticsearch7.internal.index.CompanyIdIndexNameBuilder;
 import com.liferay.portal.search.elasticsearch7.internal.index.CompanyIndexFactory;
 import com.liferay.portal.search.elasticsearch7.internal.index.CompanyIndexFactoryHelper;
@@ -46,7 +46,7 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
 	}
 
-	public ElasticsearchConnectionManager getElasticsearchConnectionManager() {
+	public ElasticsearchConnectionManagerImpl getElasticsearchConnectionManager() {
 		return _elasticsearchConnectionManager;
 	}
 
@@ -73,7 +73,7 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 
 		_frameworkUtilMockedStatic = _createFrameworkUtil();
 
-		ElasticsearchConnectionManager elasticsearchConnectionManager =
+		ElasticsearchConnectionManagerImpl elasticsearchConnectionManager =
 			_createElasticsearchConnectionManager(
 				elasticsearchConnectionFixture);
 
@@ -164,11 +164,11 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 		return _companyIndexFactory;
 	}
 
-	private ElasticsearchConnectionManager
+	private ElasticsearchConnectionManagerImpl
 		_createElasticsearchConnectionManager(
 			ElasticsearchConnectionFixture elasticsearchConnectionFixture) {
 
-		return new ElasticsearchConnectionManager() {
+		return new ElasticsearchConnectionManagerImpl() {
 			{
 				elasticsearchConfigurationWrapper =
 					createElasticsearchConfigurationWrapper(
@@ -192,7 +192,7 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 
 	private ElasticsearchSearchEngine _createElasticsearchSearchEngine(
 		ElasticsearchClientResolver elasticsearchClientResolver,
-		ElasticsearchConnectionManager elasticsearchConnectionManager,
+		ElasticsearchConnectionManagerImpl elasticsearchConnectionManager,
 		IndexConfigurationDynamicUpdatesExecutor
 			indexConfigurationDynamicUpdatesExecutor,
 		IndexNameBuilder indexNameBuilder, Map<String, Object> properites) {
@@ -273,7 +273,7 @@ public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 	private CompanyIndexFactoryHelper _companyIndexFactoryHelper;
 	private final ElasticsearchConnectionFixture
 		_elasticsearchConnectionFixture;
-	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
+	private ElasticsearchConnectionManagerImpl _elasticsearchConnectionManager;
 	private ElasticsearchEngineAdapterFixture
 		_elasticsearchEngineAdapterFixture;
 	private ElasticsearchSearchEngine _elasticsearchSearchEngine;

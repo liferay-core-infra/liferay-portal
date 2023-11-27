@@ -8,7 +8,7 @@ package com.liferay.portal.search.elasticsearch7.internal;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.elasticsearch.client.RestHighLevelClient;
@@ -76,7 +76,7 @@ public class ElasticsearchSearchEngineReconnectTest {
 	}
 
 	private void _reconnect(
-		ElasticsearchConnectionManager elasticsearchConnectionManager) {
+		ElasticsearchConnectionManagerImpl elasticsearchConnectionManager) {
 
 		ElasticsearchConnection elasticsearchConnection =
 			elasticsearchConnectionManager.getElasticsearchConnection();

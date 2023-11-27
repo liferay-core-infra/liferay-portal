@@ -86,7 +86,7 @@ public class ElasticsearchConnectionConfigurationActivationHandler {
 	}
 
 	@Reference
-	protected ElasticsearchConnectionManager elasticsearchConnectionManager;
+	protected ElasticsearchConnectionManagerImpl elasticsearchConnectionManager;
 
 	@Reference
 	protected Http http;

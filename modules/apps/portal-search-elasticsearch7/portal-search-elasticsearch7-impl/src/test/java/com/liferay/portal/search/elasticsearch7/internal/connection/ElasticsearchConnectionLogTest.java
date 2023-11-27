@@ -71,8 +71,8 @@ public class ElasticsearchConnectionLogTest {
 
 	@Test
 	public void testLogLevel() throws Exception {
-		ElasticsearchConnectionManager elasticsearchConnectionManager =
-			new ElasticsearchConnectionManager() {
+		ElasticsearchConnectionManagerImpl elasticsearchConnectionManager =
+			new ElasticsearchConnectionManagerImpl() {
 				{
 					elasticsearchConfigurationWrapper =
 						_elasticsearchConfigurationWrapper;

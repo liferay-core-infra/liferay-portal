@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.ccr.CrossClusterReplicationHelper;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
 import com.liferay.portal.search.index.ConcurrentReindexManager;
 import com.liferay.portal.search.index.IndexNameBuilder;
 
@@ -233,7 +233,7 @@ public class CompanyConcurrentReindexManager
 	private CompanyLocalService _companyLocalService;
 
 	@Reference
-	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
+	private ElasticsearchConnectionManagerImpl _elasticsearchConnectionManager;
 
 	@Reference
 	private IndexNameBuilder _indexNameBuilder;

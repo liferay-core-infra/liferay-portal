@@ -15,7 +15,7 @@ import com.liferay.portal.search.elasticsearch7.internal.configuration.Elasticse
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.OperationModeResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionBuilder;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchInstancePaths;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchInstancePathsBuilder;
 import com.liferay.portal.search.elasticsearch7.internal.connection.constants.ConnectionConstants;
@@ -134,7 +134,7 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 		elasticsearchConfigurationWrapper;
 
 	@Reference
-	protected ElasticsearchConnectionManager elasticsearchConnectionManager;
+	protected ElasticsearchConnectionManagerImpl elasticsearchConnectionManager;
 
 	@Reference
 	protected OperationModeResolver operationModeResolver;

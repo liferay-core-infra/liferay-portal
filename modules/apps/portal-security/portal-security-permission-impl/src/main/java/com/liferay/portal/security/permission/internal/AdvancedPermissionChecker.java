@@ -3,12 +3,11 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.permission;
+package com.liferay.portal.security.permission.internal;
 
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.internal.security.permission.contributor.RoleCollectionImpl;
 import com.liferay.portal.kernel.exception.NoSuchResourcePermissionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -48,6 +47,10 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.security.permission.BasePermissionChecker;
+import com.liferay.portal.security.permission.PermissionCacheUtil;
+import com.liferay.portal.security.permission.UserBagFactoryUtil;
+import com.liferay.portal.security.permission.internal.contributor.RoleCollectionImpl;
 import com.liferay.portal.service.permission.LayoutPrototypePermissionUtil;
 
 import java.util.ArrayList;

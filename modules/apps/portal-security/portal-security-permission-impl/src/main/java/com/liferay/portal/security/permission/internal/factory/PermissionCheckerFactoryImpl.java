@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.security.permission.contributor.RoleContributor;
 import com.liferay.portal.kernel.security.permission.wrapper.PermissionCheckerWrapperFactory;
 import com.liferay.portal.security.permission.StagingPermissionChecker;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.security.permission.internal.AdvancedPermissionChecker;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -49,13 +49,7 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 	}
 
 	@Activate
-	protected void activate(BundleContext bundleContext) throws Exception {
-		Class<PermissionChecker> clazz =
-			(Class<PermissionChecker>)Class.forName(
-				PropsValues.PERMISSIONS_CHECKER);
-
-		_permissionChecker = clazz.newInstance();
-
+	protected void activate(BundleContext bundleContext) {
 		_permissionCheckerWrapperFactories = ServiceTrackerListFactory.open(
 			bundleContext, PermissionCheckerWrapperFactory.class);
 		_roleContributors = ServiceTrackerListFactory.open(
@@ -68,7 +62,8 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 		_roleContributors.close();
 	}
 
-	private PermissionChecker _permissionChecker;
+	private final PermissionChecker _permissionChecker =
+		new AdvancedPermissionChecker();
 	private ServiceTrackerList<PermissionCheckerWrapperFactory>
 		_permissionCheckerWrapperFactories;
 	private ServiceTrackerList<RoleContributor> _roleContributors;

@@ -2961,7 +2961,6 @@ include-and-override=portal-liferay-online.properties</echo>
 			<echo file="${liferay.home}/osgi/configs/com.liferay.mail.outlook.auth.connector.provider.internal.configuration.MailOutlookAuthConnectorCompanyConfiguration.config">
 clientId=&quot;${ms.exchange.client.id}&quot;
 clientSecret=&quot;${ms.exchange.client.secret}&quot;
-pop3ConnectionEnabled=B"true"
 smtpConnectionEnabled=B"true"
 tenantId=&quot;${ms.exchange.tenant.id}&quot;</echo>
 		</sequential>

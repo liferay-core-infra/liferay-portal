@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -44,11 +44,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael C. Han
  */
-@Component(
-	service = {
-		ElasticsearchConnectionManager.class, ElasticsearchConnectionManagerImpl.class
-	}
-)
+@Component(service = ElasticsearchConnectionManager.class)
 public class ElasticsearchConnectionManagerImpl
 	implements ElasticsearchConnectionManager {
 
@@ -469,7 +465,7 @@ public class ElasticsearchConnectionManagerImpl
 			", Connection ID: ", connectionId, ", Prefer Local Cluster: ",
 			preferLocalCluster, ", Cross-Cluster Replication Enabled: ",
 			isCrossClusterReplicationEnabled(), ". Enable INFO logs on ",
-			ElasticsearchConnectionManagerImpl.class, " for more information");
+			ElasticsearchConnectionManager.class, " for more information");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -477,7 +473,7 @@ public class ElasticsearchConnectionManagerImpl
 
 	private static final Snapshot<CrossClusterReplicationConfigurationHelper>
 		_crossClusterReplicationConfigurationHelperSnapshot = new Snapshot<>(
-			ElasticsearchConnectionManagerImpl.class,
+			ElasticsearchConnectionManager.class,
 			CrossClusterReplicationConfigurationHelper.class, null, true);
 
 	@Reference

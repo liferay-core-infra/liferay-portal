@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConnectionConfiguration;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.constants.ConnectionConstants;
 
 import java.util.Dictionary;
@@ -76,7 +76,7 @@ public class ElasticsearchConnectionConfigurationModelListener
 	protected ConfigurationAdmin configurationAdmin;
 
 	@Reference
-	protected ElasticsearchConnectionManagerImpl elasticsearchConnectionManager;
+	protected ElasticsearchConnectionManager elasticsearchConnectionManager;
 
 	private String _getConnectionId(String pid) throws Exception {
 		Configuration configuration = configurationAdmin.getConfiguration(

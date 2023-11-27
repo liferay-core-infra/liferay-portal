@@ -28,14 +28,17 @@ public class ClusterRequestExecutorFixture {
 		ReflectionTestUtil.setFieldValue(
 			_clusterRequestExecutor, "_healthClusterRequestExecutor",
 			_createHealthClusterRequestExecutor(
-				clusterHealthStatusTranslator, _elasticsearchConnectionManager));
+				clusterHealthStatusTranslator,
+				_elasticsearchConnectionManager));
 		ReflectionTestUtil.setFieldValue(
 			_clusterRequestExecutor, "_stateClusterRequestExecutor",
-			_createStateClusterRequestExecutor(_elasticsearchConnectionManager));
+			_createStateClusterRequestExecutor(
+				_elasticsearchConnectionManager));
 		ReflectionTestUtil.setFieldValue(
 			_clusterRequestExecutor, "_statsClusterRequestExecutor",
 			_createStatsClusterRequestExecutor(
-				clusterHealthStatusTranslator, _elasticsearchConnectionManager));
+				clusterHealthStatusTranslator,
+				_elasticsearchConnectionManager));
 	}
 
 	protected void setElasticsearchClientResolver(

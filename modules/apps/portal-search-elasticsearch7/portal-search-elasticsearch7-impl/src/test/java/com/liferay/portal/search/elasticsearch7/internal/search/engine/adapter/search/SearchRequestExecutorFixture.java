@@ -351,8 +351,8 @@ public class SearchRequestExecutorFixture {
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_countSearchRequestExecutor",
 			_createCountSearchRequestExecutor(
-				elasticsearchConnectionManager, commonSearchSourceBuilderAssembler,
-				statsTranslator));
+				elasticsearchConnectionManager,
+				commonSearchSourceBuilderAssembler, statsTranslator));
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_multisearchSearchRequestExecutor",
 			_createMultisearchSearchRequestExecutor(
@@ -369,7 +369,8 @@ public class SearchRequestExecutorFixture {
 				searchSearchResponseAssembler));
 		ReflectionTestUtil.setFieldValue(
 			searchRequestExecutor, "_suggestSearchRequestExecutor",
-			_createSuggestSearchRequestExecutor(elasticsearchConnectionManager));
+			_createSuggestSearchRequestExecutor(
+				elasticsearchConnectionManager));
 
 		return searchRequestExecutor;
 	}

@@ -24,7 +24,8 @@ public class IndexRequestExecutorFixture {
 
 		ReflectionTestUtil.setFieldValue(
 			_indexRequestExecutor, "_analyzeIndexRequestExecutor",
-			_createAnalyzeIndexRequestExecutor(_elasticsearchConnectionManager));
+			_createAnalyzeIndexRequestExecutor(
+				_elasticsearchConnectionManager));
 
 		IndicesOptionsTranslator indicesOptionsTranslator =
 			new IndicesOptionsTranslatorImpl();
@@ -57,7 +58,8 @@ public class IndexRequestExecutorFixture {
 				_elasticsearchConnectionManager));
 		ReflectionTestUtil.setFieldValue(
 			_indexRequestExecutor, "_getIndexIndexRequestExecutor",
-			_createGetIndexIndexRequestExecutor(_elasticsearchConnectionManager));
+			_createGetIndexIndexRequestExecutor(
+				_elasticsearchConnectionManager));
 		ReflectionTestUtil.setFieldValue(
 			_indexRequestExecutor, "_getMappingIndexRequestExecutor",
 			_createGetMappingIndexRequestExecutor(
@@ -177,8 +179,8 @@ public class IndexRequestExecutorFixture {
 				new GetFieldMappingIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			getFieldMappingIndexRequestExecutor, "_elasticsearchConnectionManager",
-			elasticsearchConnectionManager);
+			getFieldMappingIndexRequestExecutor,
+			"_elasticsearchConnectionManager", elasticsearchConnectionManager);
 
 		ReflectionTestUtil.setFieldValue(
 			getFieldMappingIndexRequestExecutor, "_jsonFactory",
@@ -222,8 +224,8 @@ public class IndexRequestExecutorFixture {
 			new IndicesExistsIndexRequestExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			indicesExistsIndexRequestExecutor, "_elasticsearchConnectionManager",
-			elasticsearchConnectionManager);
+			indicesExistsIndexRequestExecutor,
+			"_elasticsearchConnectionManager", elasticsearchConnectionManager);
 
 		return indicesExistsIndexRequestExecutor;
 	}

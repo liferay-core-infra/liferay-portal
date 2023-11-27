@@ -19,7 +19,7 @@ import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConne
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.OperationModeResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.engine.ConnectionInformation;
 import com.liferay.portal.search.engine.ConnectionInformationBuilder;
 import com.liferay.portal.search.engine.ConnectionInformationBuilderFactory;
@@ -170,7 +170,7 @@ public class ElasticsearchSearchEngineInformation
 		elasticsearchConfigurationWrapper;
 
 	@Reference
-	protected ElasticsearchConnectionManagerImpl elasticsearchConnectionManager;
+	protected ElasticsearchConnectionManager elasticsearchConnectionManager;
 
 	@Reference
 	protected NodeInformationBuilderFactory nodeInformationBuilderFactory;

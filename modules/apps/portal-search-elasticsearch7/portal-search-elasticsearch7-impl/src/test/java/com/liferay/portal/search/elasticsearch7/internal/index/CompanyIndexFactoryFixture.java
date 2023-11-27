@@ -12,8 +12,6 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionNotInitializedException;
 import com.liferay.portal.search.elasticsearch7.internal.connection.IndexName;
 import com.liferay.portal.search.index.IndexNameBuilder;
 
@@ -181,7 +179,6 @@ public class CompanyIndexFactoryFixture {
 
 	private CompanyIndexFactory _companyIndexFactory;
 	private CompanyIndexFactoryHelper _companyIndexFactoryHelper;
-
 	private final ElasticsearchConnectionManager
 		_elasticsearchConnectionManager;
 	private MockedStatic<FrameworkUtil> _frameworkUtilMockedStatic;

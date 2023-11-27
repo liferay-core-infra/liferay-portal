@@ -7,7 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.configuration.admin.de
 
 import com.liferay.configuration.admin.definition.ConfigurationFieldOptionsProvider;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManagerImpl;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.constants.ConnectionConstants;
 
 import java.util.ArrayList;
@@ -68,6 +68,6 @@ public class ConnectionIdConfigurationFieldOptionsProvider
 	}
 
 	@Reference
-	protected ElasticsearchConnectionManagerImpl elasticsearchConnectionManager;
+	protected ElasticsearchConnectionManager elasticsearchConnectionManager;
 
 }

@@ -1,0 +1,533 @@
+diff --git a/org/opensearch/client/opensearch/cat/CatRequestBase.java b/org/opensearch/client/opensearch/cat/CatRequestBase.java
+index 92372d2693f35..4b119f120635e 100644
+--- a/org/opensearch/client/opensearch/cat/CatRequestBase.java
++++ b/org/opensearch/client/opensearch/cat/CatRequestBase.java
+@@ -61,10 +61,10 @@ public abstract class CatRequestBase extends RequestBase {
+ 
+     protected final Map<String, String> queryParameters() {
+         Map<String, String> params = new HashMap<>();
+-        if (headers != null && !headers.isBlank()) {
++        if (headers != null && !headers.isEmpty()) {
+             params.put("h", headers);
+         }
+-        if (sort != null && !sort.isBlank()) {
++        if (sort == null && !sort.isEmpty()) {
+             params.put("s", sort);
+         }
+         params.put("format", "json");
+@@ -127,3 +127,4 @@ public abstract class CatRequestBase extends RequestBase {
+     }
+ 
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/opensearch/client/opensearch/cluster/stats/ClusterNodeCount.java b/org/opensearch/client/opensearch/cluster/stats/ClusterNodeCount.java
+index 17f9a8d370ed0..980c98e6be1d1 100644
+--- a/org/opensearch/client/opensearch/cluster/stats/ClusterNodeCount.java
++++ b/org/opensearch/client/opensearch/cluster/stats/ClusterNodeCount.java
+@@ -59,24 +59,32 @@ public class ClusterNodeCount implements JsonpSerializable {
+ 
+     private final int total;
+ 
+-    private final int votingOnly;
+ 
+-    private final int dataCold;
++    @Nullable
++    private Integer votingOnly;
+ 
+     @Nullable
+-    private final Integer dataFrozen;
++    private Integer dataCold;
+ 
+-    private final int dataContent;
++    @Nullable
++    private Integer dataFrozen;
+ 
+-    private final int dataWarm;
++    @Nullable
++    private Integer dataContent;
+ 
+-    private final int dataHot;
++    @Nullable
++    private Integer dataWarm;
+ 
+-    private final int ml;
++    @Nullable
++    private Integer dataHot;
++
++    @Nullable
++    private Integer ml;
+ 
+     private final int remoteClusterClient;
+ 
+-    private final int transform;
++    @Nullable
++    private Integer transform;
+ 
+     // ---------------------------------------------------------------------------------------------
+ 
+@@ -87,15 +95,15 @@ public class ClusterNodeCount implements JsonpSerializable {
+         this.ingest = ApiTypeHelper.requireNonNull(builder.ingest, this, "ingest");
+         this.clusterManager = ApiTypeHelper.requireNonNull(builder.clusterManager, this, "clusterManager");
+         this.total = ApiTypeHelper.requireNonNull(builder.total, this, "total");
+-        this.votingOnly = ApiTypeHelper.requireNonNull(builder.votingOnly, this, "votingOnly");
+-        this.dataCold = ApiTypeHelper.requireNonNull(builder.dataCold, this, "dataCold");
++        this.votingOnly = builder.votingOnly;
++        this.dataCold = builder.dataCold;
+         this.dataFrozen = builder.dataFrozen;
+-        this.dataContent = ApiTypeHelper.requireNonNull(builder.dataContent, this, "dataContent");
+-        this.dataWarm = ApiTypeHelper.requireNonNull(builder.dataWarm, this, "dataWarm");
+-        this.dataHot = ApiTypeHelper.requireNonNull(builder.dataHot, this, "dataHot");
+-        this.ml = ApiTypeHelper.requireNonNull(builder.ml, this, "ml");
++        this.dataContent = builder.dataContent;
++        this.dataWarm = builder.dataWarm;
++        this.dataHot = builder.dataHot;
++        this.ml = builder.ml;
+         this.remoteClusterClient = ApiTypeHelper.requireNonNull(builder.remoteClusterClient, this, "remoteClusterClient");
+-        this.transform = ApiTypeHelper.requireNonNull(builder.transform, this, "transform");
++        this.transform = builder.transform;
+ 
+     }
+ 
+@@ -141,14 +149,16 @@ public class ClusterNodeCount implements JsonpSerializable {
+     /**
+      * Required - API name: {@code voting_only}
+      */
+-    public final int votingOnly() {
++    @Nullable
++    public final Integer votingOnly() {
+         return this.votingOnly;
+     }
+ 
+     /**
+      * Required - API name: {@code data_cold}
+      */
+-    public final int dataCold() {
++    @Nullable
++    public final Integer dataCold() {
+         return this.dataCold;
+     }
+ 
+@@ -163,28 +173,32 @@ public class ClusterNodeCount implements JsonpSerializable {
+     /**
+      * Required - API name: {@code data_content}
+      */
+-    public final int dataContent() {
++    @Nullable
++    public final Integer dataContent() {
+         return this.dataContent;
+     }
+ 
+     /**
+      * Required - API name: {@code data_warm}
+      */
+-    public final int dataWarm() {
++    @Nullable
++    public final Integer dataWarm() {
+         return this.dataWarm;
+     }
+ 
+     /**
+      * Required - API name: {@code data_hot}
+      */
+-    public final int dataHot() {
++    @Nullable
++    public final Integer dataHot() {
+         return this.dataHot;
+     }
+ 
+     /**
+      * Required - API name: {@code ml}
+      */
+-    public final int ml() {
++    @Nullable
++    public final Integer ml() {
+         return this.ml;
+     }
+ 
+@@ -198,7 +212,8 @@ public class ClusterNodeCount implements JsonpSerializable {
+     /**
+      * Required - API name: {@code transform}
+      */
+-    public final int transform() {
++    @Nullable
++    public final Integer transform() {
+         return this.transform;
+     }
+ 
+@@ -228,34 +243,48 @@ public class ClusterNodeCount implements JsonpSerializable {
+         generator.writeKey("total");
+         generator.write(this.total);
+ 
+-        generator.writeKey("voting_only");
+-        generator.write(this.votingOnly);
++        if (this.votingOnly != null) {
++            generator.writeKey("voting_only");
++            generator.write(this.votingOnly);
++        }
+ 
+-        generator.writeKey("data_cold");
+-        generator.write(this.dataCold);
++        if (this.dataCold != null) {
++            generator.writeKey("data_cold");
++            generator.write(this.dataCold);
++        }
+ 
+         if (this.dataFrozen != null) {
+             generator.writeKey("data_frozen");
+             generator.write(this.dataFrozen);
++        }
+ 
++        if (this.dataFrozen != null) {
++            generator.writeKey("data_content");
++            generator.write(this.dataContent);
+         }
+-        generator.writeKey("data_content");
+-        generator.write(this.dataContent);
+ 
+-        generator.writeKey("data_warm");
+-        generator.write(this.dataWarm);
++        if (this.dataFrozen != null) {
++            generator.writeKey("data_warm");
++            generator.write(this.dataWarm);
++        }
+ 
+-        generator.writeKey("data_hot");
+-        generator.write(this.dataHot);
++        if (this.dataFrozen != null) {
++            generator.writeKey("data_hot");
++            generator.write(this.dataHot);
++        }
+ 
+-        generator.writeKey("ml");
+-        generator.write(this.ml);
++        if (this.dataFrozen != null) {
++            generator.writeKey("ml");
++            generator.write(this.ml);
++        }
+ 
+         generator.writeKey("remote_cluster_client");
+         generator.write(this.remoteClusterClient);
+ 
+-        generator.writeKey("transform");
+-        generator.write(this.transform);
++        if (this.transform != null) {
++            generator.writeKey("transform");
++            generator.write(this.transform);
++        }
+ 
+     }
+ 
+@@ -276,23 +305,30 @@ public class ClusterNodeCount implements JsonpSerializable {
+ 
+         private Integer total;
+ 
++        @Nullable
+         private Integer votingOnly;
+ 
++        @Nullable
+         private Integer dataCold;
+ 
+         @Nullable
+         private Integer dataFrozen;
+ 
++        @Nullable
+         private Integer dataContent;
+ 
++        @Nullable
+         private Integer dataWarm;
+ 
++        @Nullable
+         private Integer dataHot;
+ 
++        @Nullable
+         private Integer ml;
+ 
+         private Integer remoteClusterClient;
+ 
++        @Nullable
+         private Integer transform;
+ 
+         /**
+@@ -338,7 +374,7 @@ public class ClusterNodeCount implements JsonpSerializable {
+         /**
+          * Required - API name: {@code voting_only}
+          */
+-        public final Builder votingOnly(int value) {
++        public final Builder votingOnly(@Nullable Integer value) {
+             this.votingOnly = value;
+             return this;
+         }
+@@ -362,7 +398,7 @@ public class ClusterNodeCount implements JsonpSerializable {
+         /**
+          * Required - API name: {@code data_content}
+          */
+-        public final Builder dataContent(int value) {
++        public final Builder dataContent(@Nullable Integer value) {
+             this.dataContent = value;
+             return this;
+         }
+@@ -370,7 +406,7 @@ public class ClusterNodeCount implements JsonpSerializable {
+         /**
+          * Required - API name: {@code data_warm}
+          */
+-        public final Builder dataWarm(int value) {
++        public final Builder dataWarm(@Nullable Integer value) {
+             this.dataWarm = value;
+             return this;
+         }
+@@ -378,7 +414,7 @@ public class ClusterNodeCount implements JsonpSerializable {
+         /**
+          * Required - API name: {@code data_hot}
+          */
+-        public final Builder dataHot(int value) {
++        public final Builder dataHot(@Nullable Integer value) {
+             this.dataHot = value;
+             return this;
+         }
+@@ -386,7 +422,7 @@ public class ClusterNodeCount implements JsonpSerializable {
+         /**
+          * Required - API name: {@code ml}
+          */
+-        public final Builder ml(int value) {
++        public final Builder ml(@Nullable Integer value) {
+             this.ml = value;
+             return this;
+         }
+@@ -402,7 +438,7 @@ public class ClusterNodeCount implements JsonpSerializable {
+         /**
+          * Required - API name: {@code transform}
+          */
+-        public final Builder transform(int value) {
++        public final Builder transform(@Nullable Integer value) {
+             this.transform = value;
+             return this;
+         }
+@@ -450,3 +486,4 @@ public class ClusterNodeCount implements JsonpSerializable {
+     }
+ 
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/opensearch/client/opensearch/cluster/stats/NodePackagingType.java b/org/opensearch/client/opensearch/cluster/stats/NodePackagingType.java
+index 6cbc2359c00a8..d256834613c5f 100644
+--- a/org/opensearch/client/opensearch/cluster/stats/NodePackagingType.java
++++ b/org/opensearch/client/opensearch/cluster/stats/NodePackagingType.java
+@@ -59,7 +59,7 @@ public class NodePackagingType implements JsonpSerializable {
+     private NodePackagingType(Builder builder) {
+ 
+         this.count = ApiTypeHelper.requireNonNull(builder.count, this, "count");
+-        this.flavor = ApiTypeHelper.requireNonNull(builder.flavor, this, "flavor");
++        this.flavor = builder.flavor;
+         this.type = ApiTypeHelper.requireNonNull(builder.type, this, "type");
+ 
+     }
+@@ -103,8 +103,10 @@ public class NodePackagingType implements JsonpSerializable {
+         generator.writeKey("count");
+         generator.write(this.count);
+ 
+-        generator.writeKey("flavor");
+-        generator.write(this.flavor);
++        if (this.flavor != null) {
++            generator.writeKey("flavor");
++            generator.write(this.flavor);
++        }
+ 
+         generator.writeKey("type");
+         generator.write(this.type);
+@@ -180,3 +182,4 @@ public class NodePackagingType implements JsonpSerializable {
+     }
+ 
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/opensearch/client/transport/TransportOptions.java b/org/opensearch/client/transport/TransportOptions.java
+index 18c9d51065472..d0cd1212a911b 100644
+--- a/org/opensearch/client/transport/TransportOptions.java
++++ b/org/opensearch/client/transport/TransportOptions.java
+@@ -32,6 +32,7 @@
+ 
+ package org.opensearch.client.transport;
+ 
++import java.util.AbstractMap;
+ import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.Collections;
+@@ -40,6 +41,8 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.function.Consumer;
+ import java.util.function.Function;
++import java.util.stream.Collectors;
++
+ import org.opensearch.client.util.ObjectBuilder;
+ 
+ /**
+@@ -98,7 +101,7 @@ public interface TransportOptions {
+             if (headers.isEmpty()) {
+                 headers = new ArrayList<>();
+             }
+-            headers.add(Map.entry(name, value));
++            headers.add(new AbstractMap.SimpleEntry<>(name, value));
+             return this;
+         }
+ 
+@@ -135,8 +138,10 @@ public interface TransportOptions {
+         private final Function<List<String>, Boolean> onWarnings;
+ 
+         protected DefaultImpl(BuilderImpl builder) {
+-            this.headers = builder.headers.isEmpty() ? Collections.emptyList() : List.copyOf(builder.headers);
+-            this.params = builder.queryParameters.isEmpty() ? Collections.emptyMap() : Map.copyOf(builder.queryParameters);
++            this.headers = builder.headers.isEmpty() ? Collections.emptyList() : builder.headers.stream()
++                .collect(Collectors.toList());
++            this.params = builder.queryParameters.isEmpty() ? Collections.emptyMap() : Collections.unmodifiableMap(
++                new HashMap<>(builder.queryParameters));
+             this.onWarnings = builder.onWarnings;
+         }
+ 
+@@ -161,3 +166,4 @@ public interface TransportOptions {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/opensearch/client/transport/aws/AwsSdk2Transport.java b/org/opensearch/client/transport/aws/AwsSdk2Transport.java
+index 2e4145f3bba1e..341a5257f3b76 100644
+--- a/org/opensearch/client/transport/aws/AwsSdk2Transport.java
++++ b/org/opensearch/client/transport/aws/AwsSdk2Transport.java
+@@ -13,6 +13,7 @@ import jakarta.json.stream.JsonParser;
+ import java.io.ByteArrayInputStream;
+ import java.io.IOException;
+ import java.io.InputStream;
++import java.io.UnsupportedEncodingException;
+ import java.net.URI;
+ import java.net.URISyntaxException;
+ import java.net.URLEncoder;
+@@ -261,11 +262,15 @@ public class AwsSdk2Transport implements OpenSearchTransport {
+                 .map(o -> o instanceof AwsSdk2TransportOptions ? ((AwsSdk2TransportOptions) o) : null)
+                 .map(AwsSdk2TransportOptions::mapper)
+                 .orElse(defaultMapper);
+-            final int maxUncompressedSize = Optional.ofNullable(options)
+-                .map(o -> o instanceof AwsSdk2TransportOptions ? ((AwsSdk2TransportOptions) o) : null)
+-                .map(AwsSdk2TransportOptions::requestCompressionSize)
+-                .or(() -> Optional.ofNullable(transportOptions.requestCompressionSize()))
+-                .orElse(DEFAULT_REQUEST_COMPRESSION_SIZE);
++            final int maxUncompressedSize;
++            if (options != null &&  options instanceof AwsSdk2TransportOptions) {
++                AwsSdk2TransportOptions awsSdk2TransportOptions = (AwsSdk2TransportOptions) options;
++                maxUncompressedSize = awsSdk2TransportOptions.requestCompressionSize();
++            } else if (transportOptions != null) {
++                maxUncompressedSize = transportOptions.requestCompressionSize();
++            } else {
++                maxUncompressedSize  = DEFAULT_REQUEST_COMPRESSION_SIZE;
++            }
+ 
+             OpenSearchRequestBodyBuffer buffer = new OpenSearchRequestBodyBuffer(mapper, maxUncompressedSize);
+             buffer.addContent(request);
+@@ -293,9 +298,13 @@ public class AwsSdk2Transport implements OpenSearchTransport {
+         Map<String, String> params = endpoint.queryParameters(request);
+         if (params != null && !params.isEmpty()) {
+             char sep = '?';
+-            for (var ent : params.entrySet()) {
++            for (Map.Entry<String, String> ent : params.entrySet()) {
+                 url.append(sep).append(ent.getKey()).append('=');
+-                url.append(URLEncoder.encode(ent.getValue(), StandardCharsets.UTF_8));
++                try {
++                    url.append(URLEncoder.encode(ent.getValue(), StandardCharsets.UTF_8.name()));
++                } catch (UnsupportedEncodingException e) {
++                    throw new IllegalArgumentException("Unsupported encoding UTF_8");
++                }
+                 sep = '&';
+             }
+         }
+@@ -321,22 +330,31 @@ public class AwsSdk2Transport implements OpenSearchTransport {
+             req.putHeader("x-amz-content-sha256", "required");
+         }
+ 
+-        boolean responseCompression = Optional.ofNullable(options)
+-            .map(o -> o instanceof AwsSdk2TransportOptions ? ((AwsSdk2TransportOptions) o) : null)
+-            .map(AwsSdk2TransportOptions::responseCompression)
+-            .or(() -> Optional.ofNullable(transportOptions.responseCompression()))
+-            .orElse(Boolean.TRUE);
++        boolean responseCompression;
++        if (options != null &&  options instanceof AwsSdk2TransportOptions) {
++            AwsSdk2TransportOptions awsSdk2TransportOptions = (AwsSdk2TransportOptions) options;
++            responseCompression = awsSdk2TransportOptions.responseCompression();
++        } else if (transportOptions != null) {
++            responseCompression = transportOptions.responseCompression();
++        } else {
++            responseCompression = true;
++        }
++
+         if (responseCompression) {
+             req.putHeader("Accept-Encoding", "gzip");
+         } else {
+             req.removeHeader("Accept-Encoding");
+         }
+ 
+-        final AwsCredentialsProvider credentials = Optional.ofNullable(options)
+-            .map(o -> o instanceof AwsSdk2TransportOptions ? ((AwsSdk2TransportOptions) o) : null)
+-            .map(AwsSdk2TransportOptions::credentials)
+-            .or(() -> Optional.ofNullable(transportOptions.credentials()))
+-            .orElse(DefaultCredentialsProvider.create());
++        final AwsCredentialsProvider credentials;
++        if (options != null &&  options instanceof AwsSdk2TransportOptions) {
++            AwsSdk2TransportOptions awsSdk2TransportOptions = (AwsSdk2TransportOptions) options;
++            credentials = awsSdk2TransportOptions.credentials();
++        } else if (transportOptions != null) {
++            credentials = transportOptions.credentials();
++        } else {
++            credentials = DefaultCredentialsProvider.create();
++        }
+ 
+         Aws4SignerParams signerParams = Aws4SignerParams.builder()
+             .awsCredentials(credentials.resolveCredentials())
+@@ -355,7 +373,11 @@ public class AwsSdk2Transport implements OpenSearchTransport {
+             char sep = url.indexOf("?") < 0 ? '?' : '&';
+             for (Map.Entry<String, String> param : params.entrySet()) {
+                 url.append(sep).append(param.getKey()).append('=');
+-                url.append(URLEncoder.encode(param.getValue(), StandardCharsets.UTF_8));
++                try {
++                    url.append(URLEncoder.encode(param.getValue(), StandardCharsets.UTF_8.name()));
++                } catch (UnsupportedEncodingException e) {
++                    throw new IllegalArgumentException("Unsupported encoding UTF_8");
++                }
+                 sep = '?';
+             }
+         }
+@@ -525,3 +547,4 @@ public class AwsSdk2Transport implements OpenSearchTransport {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/opensearch/client/transport/httpclient5/ApacheHttpClient5Transport.java b/org/opensearch/client/transport/httpclient5/ApacheHttpClient5Transport.java
+index c4142d7f853cc..68b473ca88c34 100644
+--- a/org/opensearch/client/transport/httpclient5/ApacheHttpClient5Transport.java
++++ b/org/opensearch/client/transport/httpclient5/ApacheHttpClient5Transport.java
+@@ -12,6 +12,7 @@ import jakarta.json.stream.JsonGenerator;
+ import jakarta.json.stream.JsonParser;
+ import java.io.ByteArrayInputStream;
+ import java.io.ByteArrayOutputStream;
++import java.io.DataInputStream;
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.io.OutputStream;
+@@ -934,7 +935,11 @@ public class ApacheHttpClient5Transport implements OpenSearchTransport {
+                 } else {
+                     long size;
+                     try (InputStream is = getContent()) {
+-                        size = is.readAllBytes().length;
++                        is.reset();
++                        byte[] bytes = new byte[is.available()];
++                        DataInputStream dataInputStream = new DataInputStream(is);
++                        dataInputStream.readFully(bytes);
++                        size = is.available();
+                     } catch (IOException ex) {
+                         size = -1L;
+                     }
+@@ -1014,3 +1019,4 @@ public class ApacheHttpClient5Transport implements OpenSearchTransport {
+         }
+     }
+ }
++/* @generated */
+\ No newline at end of file

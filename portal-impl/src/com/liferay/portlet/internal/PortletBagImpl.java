@@ -10,8 +10,8 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
-import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.notifications.UserNotificationHandler;
@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.servlet.URLEncoder;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.HashMapDictionary;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.xmlrpc.Method;
@@ -184,16 +184,21 @@ public class PortletBagImpl implements PortletBag {
 
 	@Override
 	public ResourceBundle getResourceBundle(Locale locale) {
+		Snapshot<ResourceBundleLoader> resourceBundleLoaderSnapshot =
+			new Snapshot<>(
+				PortletBagImpl.class, ResourceBundleLoader.class,
+				StringBundler.concat(
+					"(&(resource.bundle.base.name=",
+					getResourceBundleBaseName(), ")(servlet.context.name=",
+					_servletContext.getServletContextName(), "))"));
+
 		ResourceBundleLoader resourceBundleLoader =
-			_resourceBundleLoaderDCLSingleton.getSingleton(
-				() -> ServiceProxyFactory.newServiceTrackedInstance(
-					ResourceBundleLoader.class, DCLSingleton.class,
-					_resourceBundleLoaderDCLSingleton, "_singleton",
-					StringBundler.concat(
-						"(resource.bundle.base.name=",
-						getResourceBundleBaseName(), ")(servlet.context.name=",
-						_servletContext.getServletContextName(), ")"),
-					false));
+			resourceBundleLoaderSnapshot.get();
+
+		if (resourceBundleLoader == null) {
+			resourceBundleLoader =
+				DummyResourceBundleLoader._dummyResourceBundleLoader;
+		}
 
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
 			locale);
@@ -308,12 +313,17 @@ public class PortletBagImpl implements PortletBag {
 	private Portlet _portletInstance;
 	private String _portletName;
 	private final String _resourceBundleBaseName;
-	private final DCLSingleton<ResourceBundleLoader>
-		_resourceBundleLoaderDCLSingleton = new DCLSingleton<>();
 	private final List<ServiceRegistration<?>> _serviceRegistrations;
 	private final Map<Class<?>, ServiceTrackerList<Class<?>>>
 		_serviceTrackerListMap = new ConcurrentHashMap<>();
 	private final ServletContext _servletContext;
+
+	private static class DummyResourceBundleLoader {
+
+		private static final ResourceBundleLoader _dummyResourceBundleLoader =
+			ProxyFactory.newDummyInstance(ResourceBundleLoader.class);
+
+	}
 
 	@SuppressWarnings("deprecation")
 	private static class PermissionPropagatorServiceTrackerCustomizer

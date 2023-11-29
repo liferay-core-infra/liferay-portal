@@ -58,13 +58,49 @@ public class CustomJspBagRegistryUtilTest {
 			new CustomJspRegistryUtil();
 
 		customJspRegistryUtil.setCustomJspRegistry(new CustomJspRegistryImpl());
+	}
 
+	@Test
+	public void testGetCustomJspBags() {
+		_setUpServletContext(StringPool.BLANK);
+
+		_testGetCustomJspBags();
+	}
+
+	@Test
+	public void testGetGlobalCustomJspBags() {
+		_setUpServletContext(StringPool.BLANK);
+
+		_testGetGlobalCustomJspBags();
+	}
+
+	private CustomJspBag _getCustomJspBag(String targetContextId) {
+		Map<ServiceReference<CustomJspBag>, CustomJspBag> customJspBags =
+			CustomJspBagRegistryUtil.getCustomJspBags();
+
+		for (Map.Entry<ServiceReference<CustomJspBag>, CustomJspBag> entry :
+				customJspBags.entrySet()) {
+
+			ServiceReference<CustomJspBag> serviceReference = entry.getKey();
+
+			String contextId = GetterUtil.getString(
+				serviceReference.getProperty("context.id"));
+
+			if (contextId.equals(targetContextId)) {
+				return entry.getValue();
+			}
+		}
+
+		return null;
+	}
+
+	private void _setUpServletContext(String realPath) {
 		_servletContext = Mockito.mock(ServletContext.class);
 
 		Mockito.when(
 			_servletContext.getRealPath(Mockito.anyString())
 		).thenReturn(
-			StringPool.BLANK
+			realPath
 		);
 
 		ServletContextPool.put(
@@ -72,8 +108,7 @@ public class CustomJspBagRegistryUtilTest {
 			_servletContext);
 	}
 
-	@Test
-	public void testGetCustomJspBags() {
+	private void _testGetCustomJspBags() {
 		TestCustomJspBag testCustomJspBag = new TestCustomJspBag(false);
 
 		ServiceRegistration<CustomJspBag> serviceRegistration =
@@ -102,8 +137,7 @@ public class CustomJspBagRegistryUtilTest {
 		}
 	}
 
-	@Test
-	public void testGetGlobalCustomJspBags() {
+	private void _testGetGlobalCustomJspBags() {
 		TestCustomJspBag testCustomJspBag = new TestCustomJspBag(true);
 
 		ServiceRegistration<CustomJspBag> serviceRegistration =
@@ -133,26 +167,6 @@ public class CustomJspBagRegistryUtilTest {
 		}
 	}
 
-	private CustomJspBag _getCustomJspBag(String targetContextId) {
-		Map<ServiceReference<CustomJspBag>, CustomJspBag> customJspBags =
-			CustomJspBagRegistryUtil.getCustomJspBags();
-
-		for (Map.Entry<ServiceReference<CustomJspBag>, CustomJspBag> entry :
-				customJspBags.entrySet()) {
-
-			ServiceReference<CustomJspBag> serviceReference = entry.getKey();
-
-			String contextId = GetterUtil.getString(
-				serviceReference.getProperty("context.id"));
-
-			if (contextId.equals(targetContextId)) {
-				return entry.getValue();
-			}
-		}
-
-		return null;
-	}
-
 	private static final String _TEST_CUSTOM_JSP_BAG = "TEST_CUSTOM_JSP_BAG";
 
 	private static final String _TEST_GLOBAL_CUSTOM_JSP_BAG =
@@ -160,7 +174,8 @@ public class CustomJspBagRegistryUtilTest {
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
-	private static ServletContext _servletContext;
+
+	private ServletContext _servletContext;
 
 	private static class TestCustomJspBag implements CustomJspBag {
 

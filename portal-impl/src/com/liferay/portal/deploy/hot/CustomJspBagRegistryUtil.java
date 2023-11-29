@@ -135,6 +135,10 @@ public class CustomJspBagRegistryUtil {
 
 		_portalWebDir = servletContext.getRealPath(StringPool.SLASH);
 
+		if (!_portalWebDir.endsWith(StringPool.SLASH)) {
+			_portalWebDir += StringPool.SLASH;
+		}
+
 		for (String customJsp : customJsps) {
 			String portalJsp = getPortalJsp(customJsp, customJspDir);
 

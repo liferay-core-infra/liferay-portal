@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.url.URLContainer;
 import com.liferay.portal.kernel.util.CustomJspRegistryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -20,6 +21,9 @@ import com.liferay.portal.util.PortalImpl;
 
 import java.net.URL;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +32,7 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -60,18 +65,42 @@ public class CustomJspBagRegistryUtilTest {
 		customJspRegistryUtil.setCustomJspRegistry(new CustomJspRegistryImpl());
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		FileUtil.deltree(_TEST_DIRECTORY);
+		FileUtil.deltree(_TEST_DIRECTORY + "html");
+	}
+
 	@Test
 	public void testGetCustomJspBags() {
-		_setUpServletContext(StringPool.BLANK);
+		String[] directories = {_TEST_DIRECTORY, _TEST_DIRECTORY + "/"};
 
-		_testGetCustomJspBags();
+		for (String directory : directories) {
+			_setUpServletContext(directory);
+
+			_testGetCustomJspBags();
+
+			Assert.assertFalse(
+				Files.exists(Paths.get(_TEST_DIRECTORY + "html")));
+			Assert.assertTrue(
+				Files.exists(Paths.get(_TEST_DIRECTORY + "/html")));
+		}
 	}
 
 	@Test
 	public void testGetGlobalCustomJspBags() {
-		_setUpServletContext(StringPool.BLANK);
+		String[] directories = {_TEST_DIRECTORY, _TEST_DIRECTORY + "/"};
 
-		_testGetGlobalCustomJspBags();
+		for (String directory : directories) {
+			_setUpServletContext(directory);
+
+			_testGetGlobalCustomJspBags();
+
+			Assert.assertFalse(
+				Files.exists(Paths.get(_TEST_DIRECTORY + "html")));
+			Assert.assertTrue(
+				Files.exists(Paths.get(_TEST_DIRECTORY + "/html")));
+		}
 	}
 
 	private CustomJspBag _getCustomJspBag(String targetContextId) {
@@ -168,6 +197,8 @@ public class CustomJspBagRegistryUtilTest {
 	}
 
 	private static final String _TEST_CUSTOM_JSP_BAG = "TEST_CUSTOM_JSP_BAG";
+
+	private static final String _TEST_DIRECTORY = "devtest";
 
 	private static final String _TEST_GLOBAL_CUSTOM_JSP_BAG =
 		"TEST_GLOBAL_CUSTOM_JSP_BAG";

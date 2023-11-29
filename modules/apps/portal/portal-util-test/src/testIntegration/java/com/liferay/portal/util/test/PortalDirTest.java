@@ -40,8 +40,13 @@ public class PortalDirTest {
 			ServletContextClassLoaderPool.getServletContextName(
 				PortalClassLoaderUtil.getClassLoader()));
 
-		File portalWebInfDir = new File(
-			servletContext.getRealPath(StringPool.SLASH), "WEB-INF");
+		String portalWebDir = servletContext.getRealPath(StringPool.SLASH);
+
+		if (!portalWebDir.endsWith(StringPool.SLASH)) {
+			portalWebDir += StringPool.SLASH;
+		}
+
+		File portalWebInfDir = new File(portalWebDir, "WEB-INF");
 
 		Assert.assertTrue(portalWebInfDir.isDirectory());
 

@@ -7,20 +7,16 @@ package com.liferay.antivirus.async.store.jmx;
 
 import com.liferay.antivirus.async.store.constants.AntivirusAsyncConstants;
 import com.liferay.antivirus.async.store.constants.AntivirusAsyncDestinationNames;
-import com.liferay.antivirus.async.store.event.AntivirusAsyncEvent;
-import com.liferay.antivirus.async.store.event.AntivirusAsyncEventListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationStatistics;
-import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import javax.management.DynamicMBean;
 import javax.management.NotCompliantMBeanException;
@@ -42,15 +38,10 @@ import org.osgi.service.component.annotations.Reference;
 		"jmx.objectname=com.liferay.antivirus:classification=antivirus_async,name=AntivirusAsyncStatistics",
 		"jmx.objectname.cache.key=AntivirusAsyncStatistics"
 	},
-	service = {
-		AntivirusAsyncEventListener.class,
-		AntivirusAsyncStatisticsManagerMBean.class, DynamicMBean.class
-	}
+	service = DynamicMBean.class
 )
 public class AntivirusAsyncStatisticsManager
-	extends StandardMBean
-	implements AntivirusAsyncEventListener,
-			   AntivirusAsyncStatisticsManagerMBean {
+	extends StandardMBean implements AntivirusAsyncStatisticsManagerMBean {
 
 	@Activate
 	public AntivirusAsyncStatisticsManager(
@@ -102,22 +93,22 @@ public class AntivirusAsyncStatisticsManager
 
 	@Override
 	public long getProcessingErrorCount() {
-		return _processingErrorCounter.get();
+		return _antivirusStatisticsHolder.getProcessingErrorCount();
 	}
 
 	@Override
 	public long getSizeExceededCount() {
-		return _sizeExceededCounter.get();
+		return _antivirusStatisticsHolder.getSizeExceededCount();
 	}
 
 	@Override
 	public long getTotalScannedCount() {
-		return _totalScannedCounter.get();
+		return _antivirusStatisticsHolder.getTotalScannedCount();
 	}
 
 	@Override
 	public long getVirusFoundCount() {
-		return _virusFoundCounter.get();
+		return _antivirusStatisticsHolder.getVirusFoundCount();
 	}
 
 	@Override
@@ -126,34 +117,12 @@ public class AntivirusAsyncStatisticsManager
 	}
 
 	@Override
-	public void receive(Message message) {
-		AntivirusAsyncEvent antivirusAsyncEvent =
-			(AntivirusAsyncEvent)message.get("antivirusAsyncEvent");
-
-		if (antivirusAsyncEvent == AntivirusAsyncEvent.PROCESSING_ERROR) {
-			_processingErrorCounter.incrementAndGet();
-		}
-		else if (antivirusAsyncEvent == AntivirusAsyncEvent.SIZE_EXCEEDED) {
-			_sizeExceededCounter.incrementAndGet();
-		}
-		else if (antivirusAsyncEvent == AntivirusAsyncEvent.SUCCESS) {
-			_totalScannedCounter.incrementAndGet();
-		}
-		else if (antivirusAsyncEvent == AntivirusAsyncEvent.VIRUS_FOUND) {
-			_totalScannedCounter.incrementAndGet();
-			_virusFoundCounter.incrementAndGet();
-		}
-	}
-
-	@Override
 	public void refresh() {
 		if (System.currentTimeMillis() > _lastRefresh) {
 			_destinationStatistics = _destination.getDestinationStatistics();
 			_lastRefresh = System.currentTimeMillis();
-			_processingErrorCounter.set(0);
-			_sizeExceededCounter.set(0);
-			_totalScannedCounter.set(0);
-			_virusFoundCounter.set(0);
+
+			_antivirusStatisticsHolder.reset();
 		}
 	}
 
@@ -165,17 +134,14 @@ public class AntivirusAsyncStatisticsManager
 	private static final Log _log = LogFactoryUtil.getLog(
 		AntivirusAsyncStatisticsManager.class);
 
+	private final AntivirusStatisticsHolder _antivirusStatisticsHolder =
+		AntivirusStatisticsHolder.getInstance();
 	private boolean _autoRefresh;
 	private final Destination _destination;
 	private DestinationStatistics _destinationStatistics;
 	private long _lastRefresh;
-	private final AtomicLong _processingErrorCounter = new AtomicLong();
 
 	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;
-
-	private final AtomicLong _sizeExceededCounter = new AtomicLong();
-	private final AtomicLong _totalScannedCounter = new AtomicLong();
-	private final AtomicLong _virusFoundCounter = new AtomicLong();
 
 }

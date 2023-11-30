@@ -1166,7 +1166,7 @@ public class DataFactory {
 			for (int i = 0; i < values.length; i++) {
 				portletPreferenceValueModels.add(
 					newPortletPreferenceValueModel(
-						portletPreferencesModel, entry.getKey(), i, values[i]));
+						i, entry.getKey(), portletPreferencesModel, values[i]));
 			}
 		}
 
@@ -1277,7 +1277,7 @@ public class DataFactory {
 			PortletPreferencesModel portletPreferencesModel) {
 
 		return newPortletPreferenceValueModel(
-			portletPreferencesModel, "commerceSiteType", 0,
+			0, "commerceSiteType", portletPreferencesModel,
 			String.valueOf(CommerceChannelConstants.SITE_TYPE_B2B));
 	}
 
@@ -3187,12 +3187,12 @@ public class DataFactory {
 
 		return Arrays.asList(
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "editable", 0, "true"),
+				0, "editable", portletPreferencesModel, "true"),
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "recordSetId", 0,
+				0, "recordSetId", portletPreferencesModel,
 				String.valueOf(ddlRecordSetModel.getRecordSetId())),
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "spreadsheet", 0, "false"));
+				0, "spreadsheet", portletPreferencesModel, "false"));
 	}
 
 	public DDLRecordModel newDDLRecordModel(
@@ -4384,10 +4384,10 @@ public class DataFactory {
 
 		return Arrays.asList(
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "articleId", 0,
+				0, "articleId", portletPreferencesModel,
 				journalArticleResourceModel.getArticleId()),
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "groupId", 0,
+				0, "groupId", portletPreferencesModel,
 				String.valueOf(journalArticleResourceModel.getGroupId())));
 	}
 
@@ -4421,7 +4421,7 @@ public class DataFactory {
 			JournalArticleModel journalArticleModel) {
 
 		return newPortletPreferenceValueModel(
-			portletPreferencesModel, "articleId", 0,
+			0, "articleId", portletPreferencesModel,
 			journalArticleModel.getArticleId());
 	}
 
@@ -6136,7 +6136,7 @@ public class DataFactory {
 
 						portletPreferenceValueModels.add(
 							newPortletPreferenceValueModel(
-								portletPreferencesModel, key, 0, value));
+								0, key, portletPreferencesModel, value));
 					}
 
 					break;
@@ -6874,7 +6874,7 @@ public class DataFactory {
 	}
 
 	protected PortletPreferenceValueModel newPortletPreferenceValueModel(
-		PortletPreferencesModel portletPreferencesModel, String name, int index,
+		int index, String name, PortletPreferencesModel portletPreferencesModel,
 		String value) {
 
 		PortletPreferenceValueModel portletPreferenceValueModel =

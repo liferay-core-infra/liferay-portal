@@ -49,6 +49,9 @@
 
 	<#list dataFactory.newPortletPreferencesModels(homePageContentLayoutModels) as portletPreferencesModel>
 		${dataFactory.toInsertSQL(portletPreferencesModel)}
+		<#list dataFactory.newPortletPreferenceValueModels(portletPreferencesModel) as portletPreferenceValueModel>
+			${dataFactory.toInsertSQL(portletPreferenceValueModel)}
+		</#list>
 	</#list>
 
 	<@insertContentPageLayout
@@ -91,4 +94,7 @@ ${dataFactory.toInsertSQL(layoutPrototypeModel)}
 
 <#list dataFactory.newPortletPreferencesModels(searchGroupLayoutModel, searchLayoutModel) as portletPreferencesModel>
 		${dataFactory.toInsertSQL(portletPreferencesModel)}
+		<#list dataFactory.newPortletPreferenceValueModels(portletPreferencesModel) as portletPreferenceValueModel>
+				${dataFactory.toInsertSQL(portletPreferenceValueModel)}
+		</#list>
 </#list>

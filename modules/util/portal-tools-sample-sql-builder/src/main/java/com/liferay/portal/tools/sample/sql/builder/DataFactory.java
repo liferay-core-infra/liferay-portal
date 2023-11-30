@@ -5048,6 +5048,17 @@ public class DataFactory {
 		return portletPreferencesModels;
 	}
 
+	public List<PortletPreferenceValueModel> newPortletPreferenceValueModels(
+		PortletPreferencesModel portletPreferencesModel) {
+
+		return ListUtil.fromArray(
+			newPortletPreferenceValueModel(
+				0, "destination", portletPreferencesModel, "/search"),
+			newPortletPreferenceValueModel(
+				0, "portletSetupPortletDecoratorId", portletPreferencesModel,
+				"barebone"));
+	}
+
 	public List<ReleaseModel> newReleaseModels() throws Exception {
 		List<ReleaseModel> releases = new ArrayList<>();
 

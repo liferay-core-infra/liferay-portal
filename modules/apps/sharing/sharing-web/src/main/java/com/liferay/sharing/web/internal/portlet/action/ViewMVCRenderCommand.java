@@ -14,14 +14,13 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.sharing.constants.SharingPortletKeys;
 import com.liferay.sharing.web.internal.constants.SharingWebKeys;
 import com.liferay.sharing.web.internal.display.SharingEntryPermissionDisplayAction;
-import com.liferay.sharing.web.internal.helper.SharingHelper;
+import com.liferay.sharing.web.internal.helper.BaseSharingEntryPermissionDisplay;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceURL;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sergio González
@@ -32,7 +31,8 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCRenderCommand.class
 )
-public class ViewMVCRenderCommand implements MVCRenderCommand {
+public class ViewMVCRenderCommand
+	extends BaseSharingEntryPermissionDisplay implements MVCRenderCommand {
 
 	@Override
 	public String render(
@@ -62,7 +62,7 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 				SharingEntryPermissionDisplayAction.VIEW.getActionId()
 			).put(
 				"sharingEntryPermissionDisplays",
-				_sharingHelper.getSharingEntryPermissionDisplays(
+				getSharingEntryPermissionDisplays(
 					themeDisplay.getPermissionChecker(),
 					ParamUtil.getLong(renderRequest, "classNameId"),
 					ParamUtil.getLong(renderRequest, "classPK"),
@@ -102,8 +102,5 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 
 		return sharingVerifyEmailAddressURL.toString();
 	}
-
-	@Reference
-	private SharingHelper _sharingHelper;
 
 }

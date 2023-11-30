@@ -22,14 +22,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sergio González
  */
-@Component(service = SharingHelper.class)
-public class SharingHelper {
+public abstract class BaseSharingEntryPermissionDisplay {
 
 	public SharingEntryPermissionDisplayAction
 		getSharingEntryPermissionDisplayActionKey(SharingEntry sharingEntry) {
@@ -62,7 +60,7 @@ public class SharingHelper {
 				SharingEntryAction.values()) {
 
 			try {
-				if (_sharingPermission.contains(
+				if (sharingPermission.contains(
 						permissionChecker, classNameId, classPK, groupId,
 						Collections.singletonList(sharingEntryAction))) {
 
@@ -75,15 +73,16 @@ public class SharingHelper {
 		}
 
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
-			locale, SharingHelper.class);
+			locale, BaseSharingEntryPermissionDisplay.class);
 
 		return SharingEntryPermissionDisplay.getSharingEntryPermissionDisplays(
 			sharingEntryActions, resourceBundle);
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(SharingHelper.class);
-
 	@Reference
-	private SharingPermission _sharingPermission;
+	protected SharingPermission sharingPermission;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseSharingEntryPermissionDisplay.class);
 
 }

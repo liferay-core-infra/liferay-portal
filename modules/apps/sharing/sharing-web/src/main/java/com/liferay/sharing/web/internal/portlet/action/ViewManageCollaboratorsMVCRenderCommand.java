@@ -26,7 +26,7 @@ import com.liferay.sharing.web.internal.constants.SharingPortletKeys;
 import com.liferay.sharing.web.internal.constants.SharingWebKeys;
 import com.liferay.sharing.web.internal.display.SharingEntryPermissionDisplay;
 import com.liferay.sharing.web.internal.display.SharingEntryPermissionDisplayAction;
-import com.liferay.sharing.web.internal.helper.SharingHelper;
+import com.liferay.sharing.web.internal.helper.BaseSharingEntryPermissionDisplay;
 
 import java.text.DateFormat;
 import java.text.Format;
@@ -52,7 +52,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = MVCRenderCommand.class
 )
 public class ViewManageCollaboratorsMVCRenderCommand
-	implements MVCRenderCommand {
+	extends BaseSharingEntryPermissionDisplay implements MVCRenderCommand {
 
 	@Override
 	public String render(
@@ -148,9 +148,7 @@ public class ViewManageCollaboratorsMVCRenderCommand
 
 				SharingEntryPermissionDisplayAction
 					userSharingEntryPermissionDisplayActionKey =
-						_sharingHelper.
-							getSharingEntryPermissionDisplayActionKey(
-								sharingEntry);
+						getSharingEntryPermissionDisplayActionKey(sharingEntry);
 
 				collaboratorsJSONArray.put(
 					JSONUtil.put(
@@ -195,7 +193,7 @@ public class ViewManageCollaboratorsMVCRenderCommand
 			WebKeys.THEME_DISPLAY);
 
 		List<SharingEntryPermissionDisplay> sharingEntryPermissionDisplays =
-			_sharingHelper.getSharingEntryPermissionDisplays(
+			getSharingEntryPermissionDisplays(
 				themeDisplay.getPermissionChecker(), classNameId, classPK,
 				themeDisplay.getScopeGroupId(), themeDisplay.getLocale());
 
@@ -226,9 +224,6 @@ public class ViewManageCollaboratorsMVCRenderCommand
 
 	@Reference
 	private SharingEntryLocalService _sharingEntryLocalService;
-
-	@Reference
-	private SharingHelper _sharingHelper;
 
 	@Reference
 	private UserLocalService _userLocalService;

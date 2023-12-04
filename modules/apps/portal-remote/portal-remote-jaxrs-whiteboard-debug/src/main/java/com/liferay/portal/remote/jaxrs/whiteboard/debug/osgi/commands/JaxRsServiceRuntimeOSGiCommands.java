@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.remote.jaxrs.whiteboard.lifecycle.JAXRSLifecycle;
+import com.liferay.portal.remote.jaxrs.whiteboard.util.JAXRSLifecycleUtil;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.jaxrs.runtime.JaxrsServiceRuntime;
 import org.osgi.service.jaxrs.runtime.dto.ApplicationDTO;
 import org.osgi.service.jaxrs.runtime.dto.BaseDTO;
@@ -47,7 +47,7 @@ import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
 public class JaxRsServiceRuntimeOSGiCommands implements OSGiCommands {
 
 	public void check() {
-		_jaxrsLifecycle.ensureReady();
+		JAXRSLifecycleUtil.ensureReady();
 
 		JaxrsServiceRuntime jaxrsServiceRuntime =
 			_jaxrsServiceRuntimeSnapshot.get();
@@ -129,6 +129,11 @@ public class JaxRsServiceRuntimeOSGiCommands implements OSGiCommands {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		JAXRSLifecycleUtil.ensureUnready();
 	}
 
 	protected BaseDTO getDTOByName(
@@ -447,8 +452,5 @@ public class JaxRsServiceRuntimeOSGiCommands implements OSGiCommands {
 			JaxRsServiceRuntimeOSGiCommands.class, JaxrsServiceRuntime.class);
 
 	private BundleContext _bundleContext;
-
-	@Reference
-	private JAXRSLifecycle _jaxrsLifecycle;
 
 }

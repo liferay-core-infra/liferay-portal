@@ -111,8 +111,6 @@ public class ExternalDataSourceControllerTest {
 
 		try {
 			bundle.start();
-
-			testRunListener.rethrow(null);
 		}
 		catch (Exception exception) {
 			testRunListener.rethrow(exception);

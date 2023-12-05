@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.Website;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseFormMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -48,6 +49,8 @@ import com.liferay.portal.kernel.service.PhoneLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WebsiteLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.validator.URLValidator;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -219,6 +222,20 @@ public class EditCompanyMVCActionCommand extends BaseFormMVCActionCommand {
 		UnicodeProperties unicodeProperties = PropertiesParamUtil.getProperties(
 			actionRequest, "settings--");
 
+		URLValidator urlValidator = _urlValidatorSnapshot.get();
+
+		String http = unicodeProperties.getProperty(PropsKeys.CDN_HOST_HTTP);
+
+		if (!Validator.isBlank(http) && !urlValidator.isValid(http)) {
+			throw new WebsiteURLException(http);
+		}
+
+		String https = unicodeProperties.getProperty(PropsKeys.CDN_HOST_HTTPS);
+
+		if (!Validator.isBlank(https) && !urlValidator.isValid(https)) {
+			throw new WebsiteURLException(https);
+		}
+
 		if (unicodeProperties.containsKey(PropsKeys.ADMIN_EMAIL_FROM_ADDRESS) &&
 			!Validator.isEmailAddress(
 				unicodeProperties.getProperty(
@@ -373,6 +390,9 @@ public class EditCompanyMVCActionCommand extends BaseFormMVCActionCommand {
 					"language");
 		}
 	}
+
+	private static final Snapshot<URLValidator> _urlValidatorSnapshot =
+		new Snapshot<>(ThemeDisplay.class, URLValidator.class);
 
 	@Reference
 	private AddressLocalService _addressLocalService;

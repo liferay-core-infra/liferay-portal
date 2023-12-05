@@ -18,6 +18,14 @@ public class UsePassedInVariable {
 		_testB = _getMethod(_testA);
 	}
 
+	public String getTestB() {
+		return _testB;
+	}
+
+	public byte[] getTestBytes() {
+		return _testBytes;
+	}
+
 	private String _getMethod(String a) {
 		return a.subString(1);
 	}

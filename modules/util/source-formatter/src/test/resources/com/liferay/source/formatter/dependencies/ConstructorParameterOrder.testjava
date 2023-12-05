@@ -58,6 +58,10 @@ public class ConstructorParameterOrder {
 		}
 	}
 
+	public String getName() {
+		return _name;
+	}
+
 	private String _attribute;
 	private String _name;
 	private String _stringWithARatherUnnecessaryLongName1;

@@ -11,13 +11,11 @@ package com.liferay.source.formatter.dependencies;
 public class UnusedParameter {
 
 	public UnusedParameter(int length, int width, int height, String color) {
-		_volume = _getVolume(length, width, height, color);
+		_getVolume(length, width, height, color);
 	}
 
 	private int _getVolume(int length, int width, int height, String color) {
 		return length * width * height;
 	}
-
-	private final int _volume;
 
 }

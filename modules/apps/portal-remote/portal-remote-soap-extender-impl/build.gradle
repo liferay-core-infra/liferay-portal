@@ -22,9 +22,6 @@ dependencies {
 deployDependencies {
 	from configurations.compileOnly
 
-	include "cxf-rt-frontend-jaxws-*.jar"
-	include "cxf-rt-frontend-simple-*.jar"
-	include "cxf-rt-ws-policy-*.jar"
 	include "neethi-*.jar"
 
 }

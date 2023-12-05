@@ -12,7 +12,6 @@ Import-Package:\
 	\
 	!org.apache.aries.*,\
 	!org.apache.axiom.*,\
-	!org.apache.cxf.*,\
 	!org.apache.http.*,\
 	!org.apache.mina.*,\
 	!org.apache.neethi.*,\

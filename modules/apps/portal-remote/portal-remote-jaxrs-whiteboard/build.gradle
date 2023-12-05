@@ -40,7 +40,6 @@ deployDependencies {
 	from configurations.compileOnly
 
 	include "commons-*.jar"
-	include "cxf-*.jar"
 	include "jaxb-osgi-*.jar"
 	include "johnzon-jsonb-*.jar"
 	include "johnzon-mapper-*.jar"

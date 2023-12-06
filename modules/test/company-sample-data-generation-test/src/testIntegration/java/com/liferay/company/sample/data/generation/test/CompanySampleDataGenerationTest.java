@@ -149,7 +149,7 @@ public class CompanySampleDataGenerationTest {
 				null, webId, webId, webId, 0, true, null, null, null, null,
 				null, null);
 
-			PortalInstances.initCompany(company);
+			PortalInstances.initCompany(company, true);
 
 			// Add user
 

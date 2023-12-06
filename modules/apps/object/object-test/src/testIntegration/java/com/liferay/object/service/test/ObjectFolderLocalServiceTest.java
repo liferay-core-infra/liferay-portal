@@ -149,7 +149,7 @@ public class ObjectFolderLocalServiceTest {
 
 		Company company = CompanyTestUtil.addCompany();
 
-		PortalInstances.initCompany(company);
+		PortalInstances.initCompany(company, true);
 
 		ObjectFolder objectFolder = null;
 

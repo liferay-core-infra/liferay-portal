@@ -142,7 +142,7 @@ public class WorkflowTaskManagerImplTest extends BaseWorkflowManagerTestCase {
 	public static void setUpClass() throws Exception {
 		_company = CompanyTestUtil.addCompany();
 
-		PortalInstances.initCompany(_company);
+		PortalInstances.initCompany(_company, true);
 
 		_companyAdminUser = UserTestUtil.addCompanyAdminUser(_company);
 

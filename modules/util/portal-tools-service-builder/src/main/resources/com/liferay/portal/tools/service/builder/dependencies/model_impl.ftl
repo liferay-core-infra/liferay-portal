@@ -58,6 +58,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -66,8 +67,13 @@ import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.sanitizer.Sanitizer;
+import com.liferay.portal.kernel.sanitizer.SanitizerException;
+import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
@@ -978,7 +984,43 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 					_${entityColumn.name}BlobModel.set${entityColumn.methodName}Blob(${entityColumn.name});
 				}
 			<#else>
-				_${entityColumn.name} = ${entityColumn.name};
+				<#if stringUtil.equals(entityColumn.name, "externalReferenceCode")>
+					if (Validator.isNotNull(${entityColumn.name})) {
+						long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
+
+						if (userId > 0) {
+							<#if entity.hasEntityColumn("companyId")>
+								long companyId = getCompanyId();
+							<#else>
+								long companyId = 0;
+							</#if>
+
+							<#if entity.hasEntityColumn("groupId")>
+								long groupId = getGroupId();
+							<#else>
+								long groupId = 0;
+							</#if>
+
+							long classPK = 0;
+
+							if (!isNew()) {
+								classPK = getPrimaryKey();
+							}
+
+							try {
+								_${entityColumn.name} = SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), classPK, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL, ${entityColumn.name}, null);
+							}
+							catch (SanitizerException sanitizerException) {
+								throw new SystemException(sanitizerException);
+							}
+						}
+					}
+					else {
+						_${entityColumn.name} = ${entityColumn.name};
+					}
+				<#else>
+					_${entityColumn.name} = ${entityColumn.name};
+				</#if>
 			</#if>
 		}
 

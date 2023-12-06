@@ -48,7 +48,7 @@ public class CompanyTestUtil {
 				() -> {
 					Company company = addCompany(RandomTestUtil.randomString());
 
-					PortalInstances.initCompany(company);
+					PortalInstances.initCompany(company, true);
 
 					return company;
 				});

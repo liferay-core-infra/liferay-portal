@@ -12,12 +12,14 @@ import com.liferay.frontend.data.set.model.FDSSortItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.object.constants.ObjectActionKeys;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
+import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.constants.ObjectWebKeys;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectView;
+import com.liferay.object.model.ObjectViewFilterColumn;
 import com.liferay.object.model.ObjectViewSortColumn;
 import com.liferay.object.scope.ObjectScopeProvider;
 import com.liferay.object.service.ObjectActionLocalService;
@@ -25,7 +27,8 @@ import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectViewLocalService;
 import com.liferay.object.web.internal.display.context.helper.ObjectRequestHelper;
 import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactory;
-import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactoryRegistry;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -55,6 +58,9 @@ import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+
 /**
  * @author Marco Leo
  */
@@ -63,7 +69,6 @@ public class ViewObjectEntriesDisplayContext {
 	public ViewObjectEntriesDisplayContext(
 		HttpServletRequest httpServletRequest,
 		ObjectActionLocalService objectActionLocalService,
-		ObjectFieldFDSFilterFactoryRegistry objectFieldFDSFilterFactoryRegistry,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectScopeProvider objectScopeProvider,
 		ObjectViewLocalService objectViewLocalService,
@@ -72,8 +77,6 @@ public class ViewObjectEntriesDisplayContext {
 
 		_httpServletRequest = httpServletRequest;
 		_objectActionLocalService = objectActionLocalService;
-		_objectFieldFDSFilterFactoryRegistry =
-			objectFieldFDSFilterFactoryRegistry;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectScopeProvider = objectScopeProvider;
 		_objectViewLocalService = objectViewLocalService;
@@ -187,10 +190,9 @@ public class ViewObjectEntriesDisplayContext {
 			objectView.getObjectViewFilterColumns(),
 			objectViewFilterColumn -> {
 				ObjectFieldFDSFilterFactory objectFieldFDSFilterFactory =
-					_objectFieldFDSFilterFactoryRegistry.
-						getObjectFieldFDSFilterFactory(
-							objectView.getObjectDefinitionId(),
-							objectViewFilterColumn);
+					_getObjectFieldFDSFilterFactory(
+						objectView.getObjectDefinitionId(),
+						objectViewFilterColumn);
 
 				return objectFieldFDSFilterFactory.create(
 					_objectRequestHelper.getLocale(),
@@ -311,6 +313,39 @@ public class ViewObjectEntriesDisplayContext {
 		return "nestedFields=" + queryString;
 	}
 
+	private ObjectFieldFDSFilterFactory _getObjectFieldFDSFilterFactory(
+			long objectDefinitionId,
+			ObjectViewFilterColumn objectViewFilterColumn)
+		throws PortalException {
+
+		if (Validator.isNotNull(objectViewFilterColumn.getFilterType())) {
+			return _objectFieldFilterTypeKeyServiceTrackerMap.getService(
+				objectViewFilterColumn.getFilterType());
+		}
+
+		if (Objects.equals(
+				objectViewFilterColumn.getObjectFieldName(), "dateCreated") ||
+			Objects.equals(
+				objectViewFilterColumn.getObjectFieldName(), "dateModified")) {
+
+			return _objectFieldBusinessTypeKeyServiceTrackerMap.getService(
+				ObjectFieldConstants.BUSINESS_TYPE_DATE);
+		}
+
+		if (Objects.equals(
+				objectViewFilterColumn.getObjectFieldName(), "status")) {
+
+			return _objectFieldBusinessTypeKeyServiceTrackerMap.getService(
+				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST);
+		}
+
+		ObjectField objectField = _objectFieldLocalService.getObjectField(
+			objectDefinitionId, objectViewFilterColumn.getObjectFieldName());
+
+		return _objectFieldBusinessTypeKeyServiceTrackerMap.getService(
+			objectField.getBusinessType());
+	}
+
 	private String _getPermissionsURL() throws Exception {
 		ObjectDefinition objectDefinition = getObjectDefinition();
 
@@ -374,12 +409,29 @@ public class ViewObjectEntriesDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ViewObjectEntriesDisplayContext.class);
 
+	private static final ServiceTrackerMap<String, ObjectFieldFDSFilterFactory>
+		_objectFieldBusinessTypeKeyServiceTrackerMap;
+	private static final ServiceTrackerMap<String, ObjectFieldFDSFilterFactory>
+		_objectFieldFilterTypeKeyServiceTrackerMap;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ViewObjectEntriesDisplayContext.class);
+
+		_objectFieldBusinessTypeKeyServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundle.getBundleContext(), ObjectFieldFDSFilterFactory.class,
+				"object.field.business.type.key");
+		_objectFieldFilterTypeKeyServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundle.getBundleContext(), ObjectFieldFDSFilterFactory.class,
+				"object.field.filter.type.key");
+	}
+
 	private final String _apiURL;
 	private final HttpServletRequest _httpServletRequest;
 	private final ObjectActionLocalService _objectActionLocalService;
 	private ObjectDefinition _objectDefinition;
-	private final ObjectFieldFDSFilterFactoryRegistry
-		_objectFieldFDSFilterFactoryRegistry;
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectRequestHelper _objectRequestHelper;
 	private final ObjectScopeProvider _objectScopeProvider;

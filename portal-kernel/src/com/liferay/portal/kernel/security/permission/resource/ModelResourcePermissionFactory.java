@@ -78,6 +78,13 @@ public class ModelResourcePermissionFactory {
 			"(model.class.name=" + modelClass.getName() + ")", true);
 	}
 
+	public static <T extends ClassedModel> ModelResourcePermission<T>
+		getModelResourcePermission(Class<T> modelClass) {
+
+		return ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+			modelClass.getName());
+	}
+
 	@FunctionalInterface
 	public interface ModelResourcePermissionConfigurator
 		<T extends GroupedModel> {

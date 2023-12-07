@@ -985,46 +985,50 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 				}
 			<#else>
 				<#if stringUtil.equals(entityColumn.name, "externalReferenceCode") && entity.hasPersistence()>
-					if (Validator.isNull(${entityColumn.name})) {
-						<#if entity.hasUuid()>
-							_${entityColumn.name} = getUuid();
-						<#else>
-							_${entityColumn.name} = String.valueOf(getPrimaryKey());
-						</#if>
-					}
-					else {
-						long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
+					<#if entity.hasUuid()>
+						if (Validator.isNotNull(${entityColumn.name}) && !Objects.equals(${entityColumn.name}, getUuid())) {
+					<#else>
+						if (Validator.isNotNull(${entityColumn.name}) && !Objects.equals(${entityColumn.name}, String.valueOf(getPrimaryKey()))) {
+					</#if>
+							long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
 
-						if (userId > 0) {
-							<#if entity.hasEntityColumn("companyId")>
-								long companyId = getCompanyId();
-							<#else>
-								long companyId = 0;
-							</#if>
+							if (userId > 0) {
+								<#if entity.hasEntityColumn("companyId")>
+									long companyId = getCompanyId();
+								<#else>
+									long companyId = 0;
+								</#if>
 
-							<#if entity.hasEntityColumn("groupId")>
-								long groupId = getGroupId();
-							<#else>
-								long groupId = 0;
-							</#if>
+								<#if entity.hasEntityColumn("groupId")>
+									long groupId = getGroupId();
+								<#else>
+									long groupId = 0;
+								</#if>
 
-							long classPK = 0;
+								long classPK = 0;
 
-							if (!isNew()) {
-								classPK = getPrimaryKey();
+								if (!isNew()) {
+									classPK = getPrimaryKey();
+								}
+
+								try {
+									_${entityColumn.name} = SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), classPK, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL, ${entityColumn.name}, null);
+								}
+								catch (SanitizerException sanitizerException) {
+									throw new SystemException(sanitizerException);
+								}
 							}
-
-							try {
-								_${entityColumn.name} = SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), classPK, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL, ${entityColumn.name}, null);
-							}
-							catch (SanitizerException sanitizerException) {
-								throw new SystemException(sanitizerException);
+							else {
+								_${entityColumn.name} = ${entityColumn.name};
 							}
 						}
 						else {
-							_${entityColumn.name} = ${entityColumn.name};
+							<#if entity.hasUuid()>
+								_${entityColumn.name} = getUuid();
+							<#else>
+								_${entityColumn.name} = String.valueOf(getPrimaryKey());
+							</#if>
 						}
-					}
 				<#else>
 					_${entityColumn.name} = ${entityColumn.name};
 				</#if>

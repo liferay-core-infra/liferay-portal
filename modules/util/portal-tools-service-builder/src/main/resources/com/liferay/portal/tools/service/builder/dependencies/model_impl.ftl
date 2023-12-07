@@ -984,7 +984,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 					_${entityColumn.name}BlobModel.set${entityColumn.methodName}Blob(${entityColumn.name});
 				}
 			<#else>
-				<#if stringUtil.equals(entityColumn.name, "externalReferenceCode")>
+				<#if stringUtil.equals(entityColumn.name, "externalReferenceCode") && entity.hasPersistence()>
 					if (Validator.isNull(${entityColumn.name})) {
 						<#if entity.hasUuid()>
 							_${entityColumn.name} = getUuid();

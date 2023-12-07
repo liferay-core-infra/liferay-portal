@@ -16,7 +16,6 @@
 			<util:constant static-field="com.liferay.portal.kernel.cluster.Priority.LEVEL5" />
 		</property>
 	</bean>
-	<bean class="com.liferay.portal.liveusers.messaging.LiveUsersMessageListener" id="messageListener.live_users" />
 
 	<!-- Configurator -->
 
@@ -35,7 +34,6 @@
 			<map key-type="java.lang.String" value-type="java.util.List">
 				<entry key="liferay/live_users">
 					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.live_users" />
 						<ref bean="messageListener.live_users_cluster" />
 					</list>
 				</entry>

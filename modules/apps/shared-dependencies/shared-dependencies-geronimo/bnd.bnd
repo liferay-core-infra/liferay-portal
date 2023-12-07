@@ -1,0 +1,26 @@
+Bundle-Name: Liferay Shared Dependencies Geronimo
+Bundle-SymbolicName: com.liferay.shared.dependencies.geronimo
+Bundle-Version: 1.0.0
+Provide-Capability:\
+	osgi.contract;\
+		osgi.contract=JavaJAXRS;\
+		version:Version=2.1.0,\
+	osgi.contract;\
+		osgi.contract=JavaJSONB;\
+		version:Version=1.0.0,\
+	osgi.serviceloader;\
+		osgi.serviceloader="javax.ws.rs.client.ClientBuilder"
+-exportcontents:\
+	javax.json.bind,\
+	javax.json.bind.adapter,\
+	javax.json.bind.annotation,\
+	javax.json.bind.config,\
+	javax.json.bind.serializer,\
+	javax.json.bind.spi,\
+	\
+	javax.ws.rs,\
+	javax.ws.rs.client,\
+	javax.ws.rs.container,\
+	javax.ws.rs.core,\
+	javax.ws.rs.ext,\
+	javax.ws.rs.sse

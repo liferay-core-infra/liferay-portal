@@ -1021,6 +1021,9 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 								throw new SystemException(sanitizerException);
 							}
 						}
+						else {
+							_${entityColumn.name} = ${entityColumn.name};
+						}
 					}
 				<#else>
 					_${entityColumn.name} = ${entityColumn.name};

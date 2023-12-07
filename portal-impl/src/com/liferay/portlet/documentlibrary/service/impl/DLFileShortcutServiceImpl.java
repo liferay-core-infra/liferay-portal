@@ -109,18 +109,15 @@ public class DLFileShortcutServiceImpl extends DLFileShortcutServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileShortcutServiceImpl.class,
-				"_fileEntryModelResourcePermission", FileEntry.class);
+			ModelResourcePermissionFactory.getModelResourcePermission(
+				FileEntry.class);
 	private static volatile ModelResourcePermission<FileShortcut>
 		_fileShortcutModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileShortcutServiceImpl.class,
-				"_fileShortcutModelResourcePermission", FileShortcut.class);
+			ModelResourcePermissionFactory.getModelResourcePermission(
+				FileShortcut.class);
 	private static volatile ModelResourcePermission<Folder>
 		_folderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileShortcutServiceImpl.class,
-				"_folderModelResourcePermission", Folder.class);
+			ModelResourcePermissionFactory.getModelResourcePermission(
+				Folder.class);
 
 }

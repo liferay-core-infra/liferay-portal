@@ -195,13 +195,11 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				RepositoryServiceImpl.class,
-				"_fileEntryModelResourcePermission", FileEntry.class);
+			ModelResourcePermissionFactory.getModelResourcePermission(
+				FileEntry.class);
 	private static volatile ModelResourcePermission<Folder>
 		_folderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				RepositoryServiceImpl.class, "_folderModelResourcePermission",
+			ModelResourcePermissionFactory.getModelResourcePermission(
 				Folder.class);
 	private static final Snapshot<PortletResourcePermission>
 		_portletResourcePermissionSnapshot =

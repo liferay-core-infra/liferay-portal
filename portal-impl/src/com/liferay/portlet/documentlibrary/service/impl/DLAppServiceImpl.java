@@ -3690,8 +3690,7 @@ public class DLAppServiceImpl extends DLAppServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<Folder>
 		_folderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLAppServiceImpl.class, "_folderModelResourcePermission",
+			ModelResourcePermissionFactory.getModelResourcePermission(
 				Folder.class);
 	private static final Snapshot<PortletResourcePermission>
 		_portletResourcePermissionSnapshot =

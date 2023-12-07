@@ -859,18 +859,15 @@ public class DLFileEntryServiceImpl extends DLFileEntryServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<DLFileEntry>
 		_dlFileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileEntryServiceImpl.class,
-				"_dlFileEntryModelResourcePermission", DLFileEntry.class);
+			ModelResourcePermissionFactory.getModelResourcePermission(
+				DLFileEntry.class);
 	private static volatile ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileEntryServiceImpl.class,
-				"_fileEntryModelResourcePermission", FileEntry.class);
+			ModelResourcePermissionFactory.getModelResourcePermission(
+				FileEntry.class);
 	private static volatile ModelResourcePermission<Folder>
 		_folderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLFileEntryServiceImpl.class, "_folderModelResourcePermission",
+			ModelResourcePermissionFactory.getModelResourcePermission(
 				Folder.class);
 
 	@BeanReference(type = ClassNameLocalService.class)

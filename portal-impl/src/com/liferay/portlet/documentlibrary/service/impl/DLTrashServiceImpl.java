@@ -268,18 +268,15 @@ public class DLTrashServiceImpl extends DLTrashServiceBaseImpl {
 
 	private static volatile ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLTrashServiceImpl.class, "_fileEntryModelResourcePermission",
+			ModelResourcePermissionFactory.getModelResourcePermission(
 				FileEntry.class);
 	private static volatile ModelResourcePermission<FileShortcut>
 		_fileShortcutModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLTrashServiceImpl.class,
-				"_fileShortcutModelResourcePermission", FileShortcut.class);
+			ModelResourcePermissionFactory.getModelResourcePermission(
+				FileShortcut.class);
 	private static volatile ModelResourcePermission<Folder>
 		_folderModelResourcePermission =
-			ModelResourcePermissionFactory.getInstance(
-				DLTrashServiceImpl.class, "_folderModelResourcePermission",
+			ModelResourcePermissionFactory.getModelResourcePermission(
 				Folder.class);
 
 }

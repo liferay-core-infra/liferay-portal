@@ -9,13 +9,20 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.sanitizer.Sanitizer;
+import com.liferay.portal.kernel.sanitizer.SanitizerException;
+import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.service.builder.test.model.ERCGroupEntry;
 import com.liferay.portal.tools.service.builder.test.model.ERCGroupEntryModel;
 
@@ -334,7 +341,40 @@ public class ERCGroupEntryModelImpl
 			_setColumnOriginalValues();
 		}
 
-		_externalReferenceCode = externalReferenceCode;
+		if (Validator.isNotNull(externalReferenceCode) &&
+			!Objects.equals(externalReferenceCode, getUuid())) {
+
+			long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
+
+			if (userId > 0) {
+				long companyId = getCompanyId();
+
+				long groupId = getGroupId();
+
+				long classPK = 0;
+
+				if (!isNew()) {
+					classPK = getPrimaryKey();
+				}
+
+				try {
+					_externalReferenceCode = SanitizerUtil.sanitize(
+						companyId, groupId, userId,
+						ERCGroupEntry.class.getName(), classPK,
+						ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+						externalReferenceCode, null);
+				}
+				catch (SanitizerException sanitizerException) {
+					throw new SystemException(sanitizerException);
+				}
+			}
+			else {
+				_externalReferenceCode = externalReferenceCode;
+			}
+		}
+		else {
+			_externalReferenceCode = getUuid();
+		}
 	}
 
 	/**

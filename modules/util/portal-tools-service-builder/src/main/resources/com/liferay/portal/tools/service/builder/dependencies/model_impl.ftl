@@ -985,7 +985,14 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 				}
 			<#else>
 				<#if stringUtil.equals(entityColumn.name, "externalReferenceCode")>
-					if (Validator.isNotNull(${entityColumn.name})) {
+					if (Validator.isNull(${entityColumn.name})) {
+						<#if entity.hasUuid()>
+							_${entityColumn.name} = getUuid();
+						<#else>
+							_${entityColumn.name} = String.valueOf(getPrimaryKey());
+						</#if>
+					}
+					else {
 						long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
 
 						if (userId > 0) {
@@ -1014,9 +1021,6 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 								throw new SystemException(sanitizerException);
 							}
 						}
-					}
-					else {
-						_${entityColumn.name} = ${entityColumn.name};
 					}
 				<#else>
 					_${entityColumn.name} = ${entityColumn.name};

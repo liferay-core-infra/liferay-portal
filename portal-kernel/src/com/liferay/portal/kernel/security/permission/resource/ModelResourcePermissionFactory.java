@@ -12,8 +12,6 @@ import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.BaseService;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,17 +63,6 @@ public class ModelResourcePermissionFactory {
 				modelResourcePermission, modelResourcePermissionLogics::add);
 
 		return modelResourcePermission;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T extends ClassedModel> ModelResourcePermission<T>
-		getInstance(
-			Class<? extends BaseService> declaringServiceClass,
-			String fieldName, Class<T> modelClass) {
-
-		return ServiceProxyFactory.newServiceTrackedInstance(
-			ModelResourcePermission.class, declaringServiceClass, fieldName,
-			"(model.class.name=" + modelClass.getName() + ")", true);
 	}
 
 	public static <T extends ClassedModel> ModelResourcePermission<T>

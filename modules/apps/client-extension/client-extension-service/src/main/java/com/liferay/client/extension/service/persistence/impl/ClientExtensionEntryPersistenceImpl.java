@@ -4658,7 +4658,38 @@ public class ClientExtensionEntryPersistenceImpl
 			clientExtensionEntry.setExternalReferenceCode(
 				clientExtensionEntry.getUuid());
 		}
-		else {
+		else if (!Objects.equals(
+					clientExtensionEntryModelImpl.getColumnOriginalValue(
+						"externalReferenceCode"),
+					clientExtensionEntry.getExternalReferenceCode())) {
+
+			long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
+
+			if (userId > 0) {
+				long companyId = clientExtensionEntry.getCompanyId();
+
+				long groupId = 0;
+
+				long classPK = 0;
+
+				if (!isNew) {
+					classPK = clientExtensionEntry.getPrimaryKey();
+				}
+
+				try {
+					clientExtensionEntry.setExternalReferenceCode(
+						SanitizerUtil.sanitize(
+							companyId, groupId, userId,
+							ClientExtensionEntry.class.getName(), classPK,
+							ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+							clientExtensionEntry.getExternalReferenceCode(),
+							null));
+				}
+				catch (SanitizerException sanitizerException) {
+					throw new SystemException(sanitizerException);
+				}
+			}
+
 			ClientExtensionEntry ercClientExtensionEntry = fetchByERC_C(
 				clientExtensionEntry.getExternalReferenceCode(),
 				clientExtensionEntry.getCompanyId());

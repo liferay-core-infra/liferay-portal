@@ -3456,7 +3456,37 @@ public class SXPBlueprintPersistenceImpl
 		if (Validator.isNull(sxpBlueprint.getExternalReferenceCode())) {
 			sxpBlueprint.setExternalReferenceCode(sxpBlueprint.getUuid());
 		}
-		else {
+		else if (!Objects.equals(
+					sxpBlueprintModelImpl.getColumnOriginalValue(
+						"externalReferenceCode"),
+					sxpBlueprint.getExternalReferenceCode())) {
+
+			long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
+
+			if (userId > 0) {
+				long companyId = sxpBlueprint.getCompanyId();
+
+				long groupId = 0;
+
+				long classPK = 0;
+
+				if (!isNew) {
+					classPK = sxpBlueprint.getPrimaryKey();
+				}
+
+				try {
+					sxpBlueprint.setExternalReferenceCode(
+						SanitizerUtil.sanitize(
+							companyId, groupId, userId,
+							SXPBlueprint.class.getName(), classPK,
+							ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+							sxpBlueprint.getExternalReferenceCode(), null));
+				}
+				catch (SanitizerException sanitizerException) {
+					throw new SystemException(sanitizerException);
+				}
+			}
+
 			SXPBlueprint ercSXPBlueprint = fetchByERC_C(
 				sxpBlueprint.getExternalReferenceCode(),
 				sxpBlueprint.getCompanyId());

@@ -21690,7 +21690,37 @@ public class MBMessagePersistenceImpl
 		if (Validator.isNull(mbMessage.getExternalReferenceCode())) {
 			mbMessage.setExternalReferenceCode(mbMessage.getUuid());
 		}
-		else {
+		else if (!Objects.equals(
+					mbMessageModelImpl.getColumnOriginalValue(
+						"externalReferenceCode"),
+					mbMessage.getExternalReferenceCode())) {
+
+			long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
+
+			if (userId > 0) {
+				long companyId = mbMessage.getCompanyId();
+
+				long groupId = mbMessage.getGroupId();
+
+				long classPK = 0;
+
+				if (!isNew) {
+					classPK = mbMessage.getPrimaryKey();
+				}
+
+				try {
+					mbMessage.setExternalReferenceCode(
+						SanitizerUtil.sanitize(
+							companyId, groupId, userId,
+							MBMessage.class.getName(), classPK,
+							ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+							mbMessage.getExternalReferenceCode(), null));
+				}
+				catch (SanitizerException sanitizerException) {
+					throw new SystemException(sanitizerException);
+				}
+			}
+
 			MBMessage ercMBMessage = fetchByERC_G(
 				mbMessage.getExternalReferenceCode(), mbMessage.getGroupId());
 

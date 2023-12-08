@@ -5,6 +5,8 @@
 
 package com.liferay.portal.kernel.webserver;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 /**
  * @author Brian Wing Shun Chan
  * @since  6.1, replaced com.liferay.portal.kernel.servlet.ImageServletTokenUtil
@@ -12,23 +14,23 @@ package com.liferay.portal.kernel.webserver;
 public class WebServerServletTokenUtil {
 
 	public static String getToken(long imageId) {
-		return _webServerServletToken.getToken(imageId);
+		return _getWebServerServletToken().getToken(imageId);
 	}
 
 	public static WebServerServletToken getWebServerServletToken() {
-		return _webServerServletToken;
+		return _getWebServerServletToken();
 	}
 
 	public static void resetToken(long imageId) {
-		_webServerServletToken.resetToken(imageId);
+		_getWebServerServletToken().resetToken(imageId);
 	}
 
-	public void setWebServerServletToken(
-		WebServerServletToken webServerServletToken) {
-
-		_webServerServletToken = webServerServletToken;
+	private static WebServerServletToken _getWebServerServletToken() {
+		return _webServerServletTokenSnapshot.get();
 	}
 
-	private static WebServerServletToken _webServerServletToken;
+	private static final Snapshot<WebServerServletToken>
+		_webServerServletTokenSnapshot = new Snapshot<>(
+			WebServerServletTokenUtil.class, WebServerServletToken.class);
 
 }

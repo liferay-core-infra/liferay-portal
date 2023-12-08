@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.webserver;
+package com.liferay.portal.webserver.internal;
 
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
@@ -11,22 +11,21 @@ import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.webserver.WebServerServletToken;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Brian Wing Shun Chan
  * @since  6.1, replaced com.liferay.portal.servlet.ImageServletTokenImpl
  */
+@Component(service = WebServerServletToken.class)
 public class WebServerServletTokenImpl implements WebServerServletToken {
-
-	public void afterPropertiesSet() {
-		_portalCache = PortalCacheHelperUtil.getPortalCache(
-			PortalCacheManagerNames.MULTI_VM, _CACHE_NAME);
-	}
 
 	@Override
 	public String getToken(long imageId) {
 		Long key = imageId;
 
-		String token = _portalCache.get(key);
+		String token = _portalCache.get(imageId);
 
 		if (token == null) {
 			token = _createToken();
@@ -44,6 +43,12 @@ public class WebServerServletTokenImpl implements WebServerServletToken {
 		// Layout cache
 
 		CacheUtil.clearCache();
+	}
+
+	@Activate
+	protected void activate() {
+		_portalCache = PortalCacheHelperUtil.getPortalCache(
+			PortalCacheManagerNames.MULTI_VM, _CACHE_NAME);
 	}
 
 	private String _createToken() {

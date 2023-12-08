@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal Webserver Implementation
+Bundle-SymbolicName: com.liferay.portal.webserver.impl
+Bundle-Version: 1.0.0

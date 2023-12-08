@@ -250,6 +250,24 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 						propertyKey, _ENCODED_CHARACTERS,
 						_ORIGINAL_CHARACTERS));
 
+				if (propertyKey.equals("cluster.link.auth.secret") &&
+					value.equals("liferay-cluster") && _log.isWarnEnabled() &&
+					_defaultSecretWarning) {
+
+					_log.warn(
+						StringBundler.concat(
+							"Cluster communication is using default cluster ",
+							"link authentication secret. Please configure ",
+							"\"cluster.link.auth.secret\" property in ",
+							"portal-ext.properties. Please also note that ",
+							"this default authentication implementation is ",
+							"not secure enough to be used in production. ",
+							"Refer to the documentation for details on ",
+							"configuring secure JGroups connections."));
+
+					_defaultSecretWarning = false;
+				}
+
 				if (value instanceof String) {
 					sb.append(configXML.substring(index, startIndex));
 					sb.append(
@@ -290,6 +308,8 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JGroupsClusterChannelFactory.class);
+
+	private static boolean _defaultSecretWarning = true;
 
 	private InetAddress _bindInetAddress;
 	private NetworkInterface _bindNetworkInterface;

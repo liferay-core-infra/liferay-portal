@@ -23,14 +23,12 @@ public class WebServerServletTokenImpl implements WebServerServletToken {
 
 	@Override
 	public String getToken(long imageId) {
-		Long key = imageId;
-
 		String token = _portalCache.get(imageId);
 
 		if (token == null) {
 			token = _createToken();
 
-			_portalCache.put(key, token);
+			_portalCache.put(imageId, token);
 		}
 
 		return token;

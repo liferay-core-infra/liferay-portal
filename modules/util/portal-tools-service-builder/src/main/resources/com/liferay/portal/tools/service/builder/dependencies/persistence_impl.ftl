@@ -786,7 +786,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	public ${entity.name} updateImpl(${apiPackagePath}.model.${entity.name} ${entity.variableName}) {
 		boolean isNew = ${entity.variableName}.isNew();
 
-		<#if entity.isHierarchicalTree() || (entity.collectionEntityFinders?size != 0) || (entity.uniqueEntityFinders?size &gt; 0) || entity.hasEntityColumn("createDate", "Date") || entity.hasEntityColumn("modifiedDate", "Date")>
+		<#if entity.isHierarchicalTree() || (entity.collectionEntityFinders?size != 0) || (entity.uniqueEntityFinders?size &gt; 0) || entity.hasEntityColumn("createDate", "Date") || entity.hasEntityColumn("modifiedDate", "Date") || entity.hasExternalReferenceCode() || entity.hasEntityColumn("externalReferenceCode")>
 			if (!(${entity.variableName} instanceof ${entity.name}ModelImpl)) {
 				InvocationHandler invocationHandler = null;
 
@@ -818,7 +818,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					${entity.variableName}.setExternalReferenceCode(String.valueOf(${entity.variableName}.getPrimaryKey()));
 				</#if>
 			}
-			else {
+			else if (!Objects.equals(${entity.variableName}ModelImpl.getColumnOriginalValue("externalReferenceCode"), ${entity.variableName}.getExternalReferenceCode())){
 				long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
 
 				if (userId > 0) {

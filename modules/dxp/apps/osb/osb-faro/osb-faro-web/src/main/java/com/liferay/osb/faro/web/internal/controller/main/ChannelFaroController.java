@@ -67,7 +67,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author André Miranda
  */
-@Component(service = {ChannelFaroController.class, FaroController.class})
+@Component(service = FaroController.class)
 @Path("/{groupId}/channel")
 @Produces(MediaType.APPLICATION_JSON)
 public class ChannelFaroController extends BaseFaroController {

@@ -29,6 +29,7 @@ import com.liferay.osb.faro.service.FaroUserLocalService;
 import com.liferay.osb.faro.util.FaroPropsValues;
 import com.liferay.osb.faro.web.internal.annotations.Unauthenticated;
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
+import com.liferay.osb.faro.web.internal.controller.FaroController;
 import com.liferay.osb.faro.web.internal.controller.contacts.FieldMappingController;
 import com.liferay.osb.faro.web.internal.exception.FaroException;
 import com.liferay.osb.faro.web.internal.exception.FaroValidationException;
@@ -92,7 +93,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Matthew Kong
  */
-@Component(service = ProjectFaroController.class)
+@Component(service = FaroController.class)
 @Path("/project")
 @Produces(MediaType.APPLICATION_JSON)
 public class ProjectFaroController extends BaseFaroController {

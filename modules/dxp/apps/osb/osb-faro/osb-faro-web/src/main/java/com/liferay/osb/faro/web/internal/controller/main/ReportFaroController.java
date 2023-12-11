@@ -10,6 +10,7 @@ import com.liferay.osb.faro.engine.client.constants.FilterConstants;
 import com.liferay.osb.faro.engine.client.util.OrderByField;
 import com.liferay.osb.faro.util.FaroThreadLocal;
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
+import com.liferay.osb.faro.web.internal.controller.FaroController;
 import com.liferay.osb.faro.web.internal.controller.api.ReportControllerResponseFactory;
 import com.liferay.osb.faro.web.internal.param.FaroParam;
 import com.liferay.petra.function.transform.TransformUtil;
@@ -48,7 +49,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Marcos Martins
  */
-@Component(service = ReportFaroController.class)
+@Component(service = FaroController.class)
 @Path("{groupId}/reports")
 @Produces(MediaType.APPLICATION_JSON)
 @RequiresNoScope

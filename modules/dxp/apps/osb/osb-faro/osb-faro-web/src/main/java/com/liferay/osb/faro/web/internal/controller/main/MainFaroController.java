@@ -6,6 +6,7 @@
 package com.liferay.osb.faro.web.internal.controller.main;
 
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
+import com.liferay.osb.faro.web.internal.controller.FaroController;
 import com.liferay.osb.faro.web.internal.controller.FaroControllerRegistry;
 import com.liferay.osb.faro.web.internal.model.display.FaroResultsDisplay;
 import com.liferay.osb.faro.web.internal.param.FaroParam;
@@ -33,7 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Matthew Kong
  */
-@Component(service = MainFaroController.class)
+@Component(service = FaroController.class)
 @Path("/{groupId}")
 @Produces(MediaType.APPLICATION_JSON)
 public class MainFaroController extends BaseFaroController {

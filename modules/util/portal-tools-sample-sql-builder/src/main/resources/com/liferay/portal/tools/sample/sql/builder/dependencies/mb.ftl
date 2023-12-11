@@ -1,6 +1,6 @@
 <#list dataFactory.newMBCategoryModels(groupId) as mbCategoryModel>
 	${dataFactory.toInsertSQL(mbCategoryModel)}
-	${dataFactory.toInsertSQL(dataFactory.newMBMailingListModel(mbCategoryModel, sampleUserModel))}
+	${dataFactory.toInsertSQL(dataFactory.newMBMailingListModel(mbCategoryModel))}
 
 	${csvFileWriter.write("mbCategory", virtualHostModel.hostname + "," + groupModel.friendlyURL + "," + mbCategoryModel.categoryId + "," + mbCategoryModel.name + "\n")}
 

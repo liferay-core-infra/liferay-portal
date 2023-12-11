@@ -4742,7 +4742,7 @@ public class DataFactory {
 	}
 
 	public MBMailingListModel newMBMailingListModel(
-		MBCategoryModel mbCategoryModel, UserModel sampleUserModel) {
+		MBCategoryModel mbCategoryModel) {
 
 		MBMailingListModel mbMailingListModel = new MBMailingListModelImpl();
 
@@ -4756,9 +4756,11 @@ public class DataFactory {
 
 		// Audit fields
 
+		String screenName = mbCategoryModel.getUserName();
+
 		mbMailingListModel.setCompanyId(_companyId);
 		mbMailingListModel.setUserId(_sampleUserId);
-		mbMailingListModel.setUserName(_SAMPLE_USER_NAME);
+		mbMailingListModel.setUserName(screenName);
 		mbMailingListModel.setCreateDate(new Date());
 		mbMailingListModel.setModifiedDate(new Date());
 
@@ -4767,7 +4769,7 @@ public class DataFactory {
 		mbMailingListModel.setCategoryId(mbCategoryModel.getCategoryId());
 		mbMailingListModel.setInProtocol("pop3");
 		mbMailingListModel.setInServerPort(110);
-		mbMailingListModel.setInUserName(sampleUserModel.getEmailAddress());
+		mbMailingListModel.setInUserName(screenName + _EMAIL_ADDRESS_SUFFIX);
 		mbMailingListModel.setInPassword(_USER_PASSWORD);
 		mbMailingListModel.setInReadInterval(5);
 		mbMailingListModel.setOutServerPort(25);

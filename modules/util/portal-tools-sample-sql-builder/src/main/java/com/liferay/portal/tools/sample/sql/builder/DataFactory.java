@@ -4853,7 +4853,7 @@ public class DataFactory {
 
 		List<MBMessageModel> mbMessageModels = new ArrayList<>(maxMessageCount);
 
-		for (int i = 1; i <= maxMessageCount; i++) {
+		for (int i = 0; i <= maxMessageCount; i++) {
 			mbMessageModels.add(
 				newMBMessageModel(mbThreadModel, classNameId, classPK, i));
 		}

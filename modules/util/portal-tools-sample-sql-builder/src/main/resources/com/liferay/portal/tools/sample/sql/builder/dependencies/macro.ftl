@@ -256,10 +256,6 @@
 
 	${dataFactory.toInsertSQL(mbThreadModel)}
 
-	<#local mbRootMessageModel = dataFactory.newMBMessageModel(mbThreadModel, _classNameId, _classPK, 0)>
-
-	<@insertMBMessage _mbMessageModel=mbRootMessageModel />
-
 	<#local mbMessageModels = dataFactory.newMBMessageModels(mbThreadModel, _classNameId, _classPK, _maxCommentCount)>
 
 	<#list mbMessageModels as mbMessageModel>

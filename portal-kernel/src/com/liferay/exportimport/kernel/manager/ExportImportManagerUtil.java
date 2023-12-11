@@ -19,6 +19,15 @@ import java.io.InputStream;
 public class ExportImportManagerUtil {
 
 	public static File exportLayoutsAsFile(
+			boolean checkPermission,
+			ExportImportConfiguration exportImportConfiguration)
+		throws PortalException {
+
+		return _exportImportManager.exportLayoutsAsFile(
+			checkPermission, exportImportConfiguration);
+	}
+
+	public static File exportLayoutsAsFile(
 			ExportImportConfiguration exportImportConfiguration)
 		throws PortalException {
 
@@ -48,6 +57,25 @@ public class ExportImportManagerUtil {
 
 		return _exportImportManager.exportPortletInfoAsFileInBackground(
 			userId, exportImportConfigurationId);
+	}
+
+	public static void importLayouts(
+			boolean checkPermission,
+			ExportImportConfiguration exportImportConfiguration, File file)
+		throws PortalException {
+
+		_exportImportManager.importLayouts(
+			checkPermission, exportImportConfiguration, file);
+	}
+
+	public static void importLayouts(
+			boolean checkPermission,
+			ExportImportConfiguration exportImportConfiguration,
+			InputStream inputStream)
+		throws PortalException {
+
+		_exportImportManager.importLayouts(
+			checkPermission, exportImportConfiguration, inputStream);
 	}
 
 	public static void importLayouts(

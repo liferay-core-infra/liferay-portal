@@ -9,6 +9,7 @@ import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportLocalService;
+import com.liferay.exportimport.kernel.service.ExportImportService;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.exception.PortalException;
 
@@ -27,10 +28,33 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 	@Override
 	public File exportLayoutsAsFile(
+			boolean checkPermission,
 			ExportImportConfiguration exportImportConfiguration)
 		throws PortalException {
 
+		if (checkPermission) {
+			return _exportImportService.exportLayoutsAsFile(
+				exportImportConfiguration);
+		}
+
 		return _exportImportLocalService.exportLayoutsAsFile(
+			exportImportConfiguration);
+	}
+
+	@Override
+	public File exportLayoutsAsFile(
+			ExportImportConfiguration exportImportConfiguration)
+		throws PortalException {
+
+		return exportLayoutsAsFile(false, exportImportConfiguration);
+	}
+
+	@Override
+	public long exportLayoutsAsFileInBackground(
+			ExportImportConfiguration exportImportConfiguration)
+		throws PortalException {
+
+		return _exportImportService.exportLayoutsAsFileInBackground(
 			exportImportConfiguration);
 	}
 
@@ -45,11 +69,26 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 	@Override
 	public long exportPortletInfoAsFileInBackground(
-			long userId, ExportImportConfiguration exportImportConfiguration)
+			boolean checkPermission, long userId,
+			ExportImportConfiguration exportImportConfiguration)
 		throws PortalException {
+
+		if (checkPermission) {
+			return _exportImportService.exportPortletInfoAsFileInBackground(
+				exportImportConfiguration);
+		}
 
 		return _exportImportLocalService.exportPortletInfoAsFileInBackground(
 			userId, exportImportConfiguration);
+	}
+
+	@Override
+	public long exportPortletInfoAsFileInBackground(
+			long userId, ExportImportConfiguration exportImportConfiguration)
+		throws PortalException {
+
+		return exportPortletInfoAsFileInBackground(
+			false, userId, exportImportConfiguration);
 	}
 
 	@Override
@@ -63,11 +102,40 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 	@Override
 	public void importLayouts(
+			boolean checkPermission,
 			ExportImportConfiguration exportImportConfiguration, File file)
 		throws PortalException {
 
+		if (checkPermission) {
+			_exportImportService.importLayouts(exportImportConfiguration, file);
+		}
+
 		_exportImportLocalService.importLayouts(
 			exportImportConfiguration, file);
+	}
+
+	@Override
+	public void importLayouts(
+			boolean checkPermission,
+			ExportImportConfiguration exportImportConfiguration,
+			InputStream inputStream)
+		throws PortalException {
+
+		if (checkPermission) {
+			_exportImportService.importLayouts(
+				exportImportConfiguration, inputStream);
+		}
+
+		_exportImportLocalService.importLayouts(
+			exportImportConfiguration, inputStream);
+	}
+
+	@Override
+	public void importLayouts(
+			ExportImportConfiguration exportImportConfiguration, File file)
+		throws PortalException {
+
+		importLayouts(false, exportImportConfiguration, file);
 	}
 
 	@Override
@@ -76,8 +144,7 @@ public class ExportImportManagerImpl implements ExportImportManager {
 			InputStream inputStream)
 		throws PortalException {
 
-		_exportImportLocalService.importLayouts(
-			exportImportConfiguration, inputStream);
+		importLayouts(false, exportImportConfiguration, inputStream);
 	}
 
 	@Override
@@ -101,6 +168,22 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 	@Override
 	public long importLayoutsInBackground(
+			boolean checkPermission, long userId,
+			ExportImportConfiguration exportImportConfiguration,
+			InputStream inputStream)
+		throws PortalException {
+
+		if (checkPermission) {
+			return _exportImportService.importLayoutsInBackground(
+				exportImportConfiguration, inputStream);
+		}
+
+		return _exportImportLocalService.importLayoutsInBackground(
+			userId, exportImportConfiguration, inputStream);
+	}
+
+	@Override
+	public long importLayoutsInBackground(
 			long userId, ExportImportConfiguration exportImportConfiguration,
 			File file)
 		throws PortalException {
@@ -115,8 +198,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 			InputStream inputStream)
 		throws PortalException {
 
-		return _exportImportLocalService.importLayoutsInBackground(
-			userId, exportImportConfiguration, inputStream);
+		return importLayoutsInBackground(
+			false, userId, exportImportConfiguration, inputStream);
 	}
 
 	@Override
@@ -168,6 +251,22 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 	@Override
 	public long importPortletInfoInBackground(
+			boolean checkPermission, long userId,
+			ExportImportConfiguration exportImportConfiguration,
+			InputStream inputStream)
+		throws PortalException {
+
+		if (checkPermission) {
+			return _exportImportService.importPortletInfoInBackground(
+				exportImportConfiguration, inputStream);
+		}
+
+		return _exportImportLocalService.importPortletInfoInBackground(
+			userId, exportImportConfiguration, inputStream);
+	}
+
+	@Override
+	public long importPortletInfoInBackground(
 			long userId, ExportImportConfiguration exportImportConfiguration,
 			File file)
 		throws PortalException {
@@ -182,8 +281,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 			InputStream inputStream)
 		throws PortalException {
 
-		return _exportImportLocalService.importPortletInfoInBackground(
-			userId, exportImportConfiguration, inputStream);
+		return importPortletInfoInBackground(
+			false, userId, exportImportConfiguration, inputStream);
 	}
 
 	@Override
@@ -217,6 +316,22 @@ public class ExportImportManagerImpl implements ExportImportManager {
 
 	@Override
 	public MissingReferences validateImportLayoutsFile(
+			boolean checkPermission,
+			ExportImportConfiguration exportImportConfiguration,
+			InputStream inputStream)
+		throws PortalException {
+
+		if (checkPermission) {
+			return _exportImportService.validateImportLayoutsFile(
+				exportImportConfiguration, inputStream);
+		}
+
+		return _exportImportLocalService.validateImportLayoutsFile(
+			exportImportConfiguration, inputStream);
+	}
+
+	@Override
+	public MissingReferences validateImportLayoutsFile(
 			ExportImportConfiguration exportImportConfiguration, File file)
 		throws PortalException {
 
@@ -230,7 +345,23 @@ public class ExportImportManagerImpl implements ExportImportManager {
 			InputStream inputStream)
 		throws PortalException {
 
-		return _exportImportLocalService.validateImportLayoutsFile(
+		return validateImportLayoutsFile(
+			false, exportImportConfiguration, inputStream);
+	}
+
+	@Override
+	public MissingReferences validateImportPortletInfo(
+			boolean checkPermission,
+			ExportImportConfiguration exportImportConfiguration,
+			InputStream inputStream)
+		throws PortalException {
+
+		if (checkPermission) {
+			return _exportImportService.validateImportPortletInfo(
+				exportImportConfiguration, inputStream);
+		}
+
+		return _exportImportLocalService.validateImportPortletInfo(
 			exportImportConfiguration, inputStream);
 	}
 
@@ -249,11 +380,14 @@ public class ExportImportManagerImpl implements ExportImportManager {
 			InputStream inputStream)
 		throws PortalException {
 
-		return _exportImportLocalService.validateImportPortletInfo(
-			exportImportConfiguration, inputStream);
+		return validateImportPortletInfo(
+			false, exportImportConfiguration, inputStream);
 	}
 
 	@Reference
 	private ExportImportLocalService _exportImportLocalService;
+
+	@Reference
+	private ExportImportService _exportImportService;
 
 }

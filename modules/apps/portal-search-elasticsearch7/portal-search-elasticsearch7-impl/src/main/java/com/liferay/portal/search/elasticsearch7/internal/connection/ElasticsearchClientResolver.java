@@ -5,12 +5,34 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
+import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationObserver;
+
+import java.util.Collection;
+
 import org.elasticsearch.client.RestHighLevelClient;
 
 /**
  * @author André de Oliveira
  */
-public interface ElasticsearchClientResolver {
+public interface ElasticsearchClientResolver
+	extends ElasticsearchConfigurationObserver {
+
+	public void addElasticsearchConnection(
+		ElasticsearchConnection elasticsearchConnection);
+
+	public void applyConfigurations();
+
+	public ElasticsearchConnection getElasticsearchConnection();
+
+	public ElasticsearchConnection getElasticsearchConnection(
+		boolean preferLocalCluster);
+
+	public ElasticsearchConnection getElasticsearchConnection(
+		String connectionId);
+
+	public Collection<ElasticsearchConnection> getElasticsearchConnections();
+
+	public String getLocalClusterConnectionId();
 
 	public RestHighLevelClient getRestHighLevelClient();
 
@@ -18,5 +40,9 @@ public interface ElasticsearchClientResolver {
 
 	public RestHighLevelClient getRestHighLevelClient(
 		String connectionId, boolean preferLocalCluster);
+
+	public boolean isCrossClusterReplicationEnabled();
+
+	public void removeElasticsearchConnection(String connectionId);
 
 }

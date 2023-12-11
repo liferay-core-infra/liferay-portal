@@ -50,8 +50,9 @@ import org.osgi.service.component.annotations.Reference;
 	}
 )
 public class ElasticsearchConnectionManager
-	implements ElasticsearchClientResolver, ElasticsearchConfigurationObserver {
+	implements ElasticsearchClientResolver {
 
+	@Override
 	public void addElasticsearchConnection(
 		ElasticsearchConnection elasticsearchConnection) {
 
@@ -116,6 +117,26 @@ public class ElasticsearchConnectionManager
 	}
 
 	@Override
+	public void applyConfigurations() {
+		SearchLogHelperUtil.setRESTClientLoggerLevel(
+			elasticsearchConfigurationWrapper.restClientLoggerLevel());
+
+		if (operationModeResolver.isProductionModeEnabled()) {
+			if (Validator.isBlank(
+					elasticsearchConfigurationWrapper.
+						remoteClusterConnectionId())) {
+
+				addElasticsearchConnection(
+					_createRemoteElasticsearchConnection());
+			}
+		}
+		else {
+			removeElasticsearchConnection(
+				ConnectionConstants.REMOTE_CONNECTION_ID);
+		}
+	}
+
+	@Override
 	public int compareTo(
 		ElasticsearchConfigurationObserver elasticsearchConfigurationObserver) {
 
@@ -123,16 +144,19 @@ public class ElasticsearchConnectionManager
 			this, elasticsearchConfigurationObserver);
 	}
 
+	@Override
 	public ElasticsearchConnection getElasticsearchConnection() {
 		return getElasticsearchConnection(null, false);
 	}
 
+	@Override
 	public ElasticsearchConnection getElasticsearchConnection(
 		boolean preferLocalCluster) {
 
 		return getElasticsearchConnection(null, preferLocalCluster);
 	}
 
+	@Override
 	public ElasticsearchConnection getElasticsearchConnection(
 		String connectionId) {
 
@@ -157,6 +181,7 @@ public class ElasticsearchConnectionManager
 		return elasticsearchConnectionSupplier.get();
 	}
 
+	@Override
 	public Collection<ElasticsearchConnection> getElasticsearchConnections() {
 		List<ElasticsearchConnection> elasticsearchConnections =
 			new ArrayList<>();
@@ -170,6 +195,7 @@ public class ElasticsearchConnectionManager
 		return elasticsearchConnections;
 	}
 
+	@Override
 	public String getLocalClusterConnectionId() {
 		ClusterNode localClusterNode = _clusterExecutor.getLocalClusterNode();
 
@@ -256,6 +282,7 @@ public class ElasticsearchConnectionManager
 		return restHighLevelClient;
 	}
 
+	@Override
 	public boolean isCrossClusterReplicationEnabled() {
 		CrossClusterReplicationConfigurationHelper
 			currentCrossClusterReplicationConfigurationHelper =
@@ -274,6 +301,7 @@ public class ElasticsearchConnectionManager
 		applyConfigurations();
 	}
 
+	@Override
 	public void removeElasticsearchConnection(String connectionId) {
 		if (connectionId == null) {
 			return;
@@ -299,25 +327,6 @@ public class ElasticsearchConnectionManager
 		elasticsearchConfigurationWrapper.register(this);
 
 		applyConfigurations();
-	}
-
-	protected void applyConfigurations() {
-		SearchLogHelperUtil.setRESTClientLoggerLevel(
-			elasticsearchConfigurationWrapper.restClientLoggerLevel());
-
-		if (operationModeResolver.isProductionModeEnabled()) {
-			if (Validator.isBlank(
-					elasticsearchConfigurationWrapper.
-						remoteClusterConnectionId())) {
-
-				addElasticsearchConnection(
-					_createRemoteElasticsearchConnection());
-			}
-		}
-		else {
-			removeElasticsearchConnection(
-				ConnectionConstants.REMOTE_CONNECTION_ID);
-		}
 	}
 
 	protected ProxyConfig createProxyConfig() {

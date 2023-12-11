@@ -10,6 +10,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
+import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationObserver;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.connection.constants.ConnectionConstants;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.PathUtil;
@@ -20,6 +21,7 @@ import com.liferay.portal.util.PropsImpl;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
@@ -35,6 +37,20 @@ public class ElasticsearchConnectionFixture
 
 	public static Builder builder() {
 		return new Builder();
+	}
+
+	@Override
+	public void addElasticsearchConnection(
+		ElasticsearchConnection elasticsearchConnection) {
+	}
+
+	@Override
+	public void applyConfigurations() {
+	}
+
+	@Override
+	public int compareTo(ElasticsearchConfigurationObserver o) {
+		return 0;
 	}
 
 	public ElasticsearchConnection createElasticsearchConnection() {
@@ -104,6 +120,35 @@ public class ElasticsearchConnectionFixture
 	}
 
 	@Override
+	public ElasticsearchConnection getElasticsearchConnection(
+		boolean preferLocalCluster) {
+
+		return null;
+	}
+
+	@Override
+	public ElasticsearchConnection getElasticsearchConnection(
+		String connectionId) {
+
+		return null;
+	}
+
+	@Override
+	public Collection<ElasticsearchConnection> getElasticsearchConnections() {
+		return null;
+	}
+
+	@Override
+	public String getLocalClusterConnectionId() {
+		return null;
+	}
+
+	@Override
+	public int getPriority() {
+		return 0;
+	}
+
+	@Override
 	public RestHighLevelClient getRestHighLevelClient() {
 		return _elasticsearchConnection.getRestHighLevelClient();
 	}
@@ -118,6 +163,19 @@ public class ElasticsearchConnectionFixture
 		String connectionId, boolean preferLocalCluster) {
 
 		return getRestHighLevelClient();
+	}
+
+	@Override
+	public boolean isCrossClusterReplicationEnabled() {
+		return false;
+	}
+
+	@Override
+	public void onElasticsearchConfigurationUpdate() {
+	}
+
+	@Override
+	public void removeElasticsearchConnection(String connectionId) {
 	}
 
 	public static class Builder {

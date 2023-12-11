@@ -7004,12 +7004,12 @@ public class DataFactory {
 		// Other fields
 
 		userModel.setContactId(_counter.get());
-		userModel.setPassword("test");
+		userModel.setPassword(_USER_PASSWORD);
 		userModel.setPasswordModifiedDate(new Date());
 		userModel.setReminderQueryQuestion("What is your screen name?");
 		userModel.setReminderQueryAnswer(screenName);
 		userModel.setScreenName(screenName);
-		userModel.setEmailAddress(screenName + "@liferay.com");
+		userModel.setEmailAddress(screenName + _EMAIL_ADDRESS_SUFFIX);
 		userModel.setLanguageId("en_US");
 		userModel.setGreeting("Welcome " + screenName + StringPool.EXCLAMATION);
 		userModel.setFirstName(firstName);
@@ -7517,6 +7517,8 @@ public class DataFactory {
 	private static final String _DEPENDENCIES_DIR =
 		"/com/liferay/portal/tools/sample/sql/builder/dependencies/data/";
 
+	private static final String _EMAIL_ADDRESS_SUFFIX = "@liferay.com";
+
 	private static final String _FRAGMENT_COMPONENT_RENDER_KEY_HEADING =
 		"BASIC_COMPONENT-heading";
 
@@ -7532,6 +7534,8 @@ public class DataFactory {
 	private static final String _JOURNAL_STRUCTURE_KEY = "BASIC-WEB-CONTENT";
 
 	private static final String _SAMPLE_USER_NAME = "Sample";
+
+	private static final String _USER_PASSWORD = "test";
 
 	private static final Log _log = LogFactoryUtil.getLog(DataFactory.class);
 

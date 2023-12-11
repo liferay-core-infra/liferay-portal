@@ -4785,33 +4785,34 @@ public class DataFactory {
 		MBThreadModel mbThreadModel, long classNameId, long classPK,
 		int index) {
 
-		long messageId = 0;
-		long parentMessageId = 0;
-		String subject = null;
-		String body = null;
-		String urlSubject = null;
+		MBMessageModel mbMessageModel = null;
 
 		if (index == 0) {
-			messageId = mbThreadModel.getRootMessageId();
-			parentMessageId = MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID;
-			subject = String.valueOf(classPK);
-			body = String.valueOf(classPK);
-			urlSubject = String.valueOf(mbThreadModel.getRootMessageId());
+			mbMessageModel = newMBMessageModel(
+				mbThreadModel.getGroupId(), classNameId, classPK,
+				MBCategoryConstants.DISCUSSION_CATEGORY_ID,
+				mbThreadModel.getThreadId(), mbThreadModel.getRootMessageId(),
+				mbThreadModel.getRootMessageId(),
+				MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID,
+				String.valueOf(classPK),
+				String.valueOf(mbThreadModel.getRootMessageId()),
+				String.valueOf(classPK));
+
+			mbThreadModel.setUserId(mbMessageModel.getUserId());
+			mbThreadModel.setUserName(mbMessageModel.getUserName());
+			mbThreadModel.setRootMessageUserId(mbMessageModel.getUserId());
 		}
 		else {
-			messageId = _counter.get();
-			parentMessageId = mbThreadModel.getRootMessageId();
-			subject = "N/A";
-			body = "This is test comment " + index + ".";
-			urlSubject = "test-comment-" + index;
+			mbMessageModel = newMBMessageModel(
+				mbThreadModel.getGroupId(), classNameId, classPK,
+				MBCategoryConstants.DISCUSSION_CATEGORY_ID,
+				mbThreadModel.getThreadId(), _counter.get(),
+				mbThreadModel.getRootMessageId(),
+				mbThreadModel.getRootMessageId(), "N/A",
+				"test-comment-" + index, "This is test comment " + index + ".");
 		}
 
-		return newMBMessageModel(
-			mbThreadModel.getGroupId(), classNameId, classPK,
-			MBCategoryConstants.DISCUSSION_CATEGORY_ID,
-			mbThreadModel.getThreadId(), messageId,
-			mbThreadModel.getRootMessageId(), parentMessageId, subject,
-			urlSubject, body);
+		return mbMessageModel;
 	}
 
 	public List<MBMessageModel> newMBMessageModels(
@@ -4820,13 +4821,18 @@ public class DataFactory {
 		List<MBMessageModel> mbMessageModels = new ArrayList<>(
 			BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT);
 
-		mbMessageModels.add(
-			newMBMessageModel(
-				mbThreadModel.getGroupId(), 0, 0, mbThreadModel.getCategoryId(),
-				mbThreadModel.getThreadId(), mbThreadModel.getRootMessageId(),
-				mbThreadModel.getRootMessageId(),
-				MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID, "Test Message 1",
-				"test-message-1", "This is test message 1."));
+		MBMessageModel mbMessageModel = newMBMessageModel(
+			mbThreadModel.getGroupId(), 0, 0, mbThreadModel.getCategoryId(),
+			mbThreadModel.getThreadId(), mbThreadModel.getRootMessageId(),
+			mbThreadModel.getRootMessageId(),
+			MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID, "Test Message 1",
+			"test-message-1", "This is test message 1.");
+
+		mbMessageModels.add(mbMessageModel);
+
+		mbThreadModel.setUserId(mbMessageModel.getUserId());
+		mbThreadModel.setUserName(mbMessageModel.getUserName());
+		mbThreadModel.setRootMessageUserId(mbMessageModel.getUserId());
 
 		for (int i = 2; i <= BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT; i++) {
 			mbMessageModels.add(

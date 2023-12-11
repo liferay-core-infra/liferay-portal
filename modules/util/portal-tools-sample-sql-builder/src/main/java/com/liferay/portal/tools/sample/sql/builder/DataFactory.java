@@ -4844,6 +4844,16 @@ public class DataFactory {
 					"test-message-" + i, "This is test message " + i + "."));
 		}
 
+		int index = 0;
+
+		if (BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT > 2) {
+			index = BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT - 2;
+		}
+
+		MBMessageModel lastMBMessageModel = mbMessageModels.get(index);
+
+		mbThreadModel.setLastPostByUserId(lastMBMessageModel.getUserId());
+
 		return mbMessageModels;
 	}
 
@@ -4857,6 +4867,11 @@ public class DataFactory {
 			mbMessageModels.add(
 				newMBMessageModel(mbThreadModel, classNameId, classPK, i));
 		}
+
+		MBMessageModel lastMBMessageModel = mbMessageModels.get(
+			maxMessageCount);
+
+		mbThreadModel.setLastPostByUserId(lastMBMessageModel.getUserId());
 
 		return mbMessageModels;
 	}

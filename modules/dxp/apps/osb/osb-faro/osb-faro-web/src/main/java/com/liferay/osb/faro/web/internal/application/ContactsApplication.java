@@ -6,21 +6,7 @@
 package com.liferay.osb.faro.web.internal.application;
 
 import com.liferay.osb.faro.web.internal.constants.FaroConstants;
-import com.liferay.osb.faro.web.internal.controller.contacts.AccountFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ActivityFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ActivityGroupFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ContactsCardFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ContactsCardTemplateFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ContactsLayoutFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ContactsLayoutTemplateFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.DataSourceFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.FieldFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.FieldMappingFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.IndividualFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.IndividualSegmentFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.InterestFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.PagesVisitedFaroController;
-import com.liferay.osb.faro.web.internal.controller.contacts.SessionFaroController;
+import com.liferay.osb.faro.web.internal.controller.FaroController;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -61,51 +47,79 @@ public class ContactsApplication extends BaseApplication {
 		return controllers;
 	}
 
-	@Reference
-	private AccountFaroController _accountFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.AccountFaroController)"
+	)
+	private FaroController _accountFaroController;
 
-	@Reference
-	private ActivityFaroController _activityFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.ActivityFaroController)"
+	)
+	private FaroController _activityFaroController;
 
-	@Reference
-	private ActivityGroupFaroController _activityGroupFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.ActivityGroupFaroController)"
+	)
+	private FaroController _activityGroupFaroController;
 
-	@Reference
-	private ContactsCardFaroController _contactsCardFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.ContactsCardFaroController)"
+	)
+	private FaroController _contactsCardFaroController;
 
-	@Reference
-	private ContactsCardTemplateFaroController
-		_contactsCardTemplateFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.ContactsCardTemplateFaroController)"
+	)
+	private FaroController _contactsCardTemplateFaroController;
 
-	@Reference
-	private ContactsLayoutFaroController _contactsLayoutFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.ContactsLayoutFaroController)"
+	)
+	private FaroController _contactsLayoutFaroController;
 
-	@Reference
-	private ContactsLayoutTemplateFaroController
-		_contactsLayoutTemplateFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.ContactsLayoutTemplateFaroController)"
+	)
+	private FaroController _contactsLayoutTemplateFaroController;
 
-	@Reference
-	private DataSourceFaroController _dataSourceFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.DataSourceFaroController)"
+	)
+	private FaroController _dataSourceFaroController;
 
-	@Reference
-	private FieldFaroController _fieldFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.FieldFaroController)"
+	)
+	private FaroController _fieldFaroController;
 
-	@Reference
-	private FieldMappingFaroController _fieldMappingFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.FieldMappingFaroController)"
+	)
+	private FaroController _fieldMappingFaroController;
 
-	@Reference
-	private IndividualFaroController _individualFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.IndividualFaroController)"
+	)
+	private FaroController _individualFaroController;
 
-	@Reference
-	private IndividualSegmentFaroController _individualSegmentFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.IndividualSegmentFaroController)"
+	)
+	private FaroController _individualSegmentFaroController;
 
-	@Reference
-	private InterestFaroController _interestFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.InterestFaroController)"
+	)
+	private FaroController _interestFaroController;
 
-	@Reference
-	private PagesVisitedFaroController _pagesVisitedFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.PagesVisitedFaroController)"
+	)
+	private FaroController _pagesVisitedFaroController;
 
-	@Reference
-	private SessionFaroController _sessionFaroController;
+	@Reference(
+		target = "(component.name=com.liferay.osb.faro.web.internal.controller.contacts.SessionFaroController)"
+	)
+	private FaroController _sessionFaroController;
 
 }

@@ -6,7 +6,7 @@
 package com.liferay.osb.faro.web.internal.application;
 
 import com.liferay.osb.faro.web.internal.constants.FaroConstants;
-import com.liferay.osb.faro.web.internal.controller.asah.ChannelController;
+import com.liferay.osb.faro.web.internal.controller.asah.ChannelFaroController;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,12 +28,12 @@ public class AsahApplication extends BaseApplication {
 	public Set<Object> getControllers() {
 		Set<Object> controllers = new HashSet<>();
 
-		controllers.add(_channelController);
+		controllers.add(_channelFaroController);
 
 		return controllers;
 	}
 
 	@Reference
-	private ChannelController _channelController;
+	private ChannelFaroController _channelFaroController;
 
 }

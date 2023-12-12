@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
@@ -388,9 +389,16 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		ClusterRequestReceiver clusterReceiver = new ClusterRequestReceiver(
 			this);
 
-		_clusterChannel = _clusterChannelFactory.createClusterChannel(
-			_executorService, channelLogicName, channelPropertiesLocation,
-			channelName, clusterReceiver);
+		try {
+			_clusterChannel = _clusterChannelFactory.createClusterChannel(
+				_executorService, channelLogicName, channelPropertiesLocation,
+				channelName, clusterReceiver);
+		}
+		catch (SystemException systemException) {
+			_log.error(systemException);
+
+			System.exit(1);
+		}
 
 		ClusterNode localClusterNode = new ClusterNode(
 			_generateClusterNodeId(), _clusterChannel.getBindInetAddress());

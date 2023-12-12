@@ -53,10 +53,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Matthew Kong
  */
-@Component(service = {FaroController.class, UserController.class})
+@Component(service = {FaroController.class, UserFaroController.class})
 @Path("/{groupId}/user")
 @Produces(MediaType.APPLICATION_JSON)
-public class UserController extends BaseFaroController {
+public class UserFaroController extends BaseFaroController {
 
 	@Path("/{id}/accept")
 	@POST

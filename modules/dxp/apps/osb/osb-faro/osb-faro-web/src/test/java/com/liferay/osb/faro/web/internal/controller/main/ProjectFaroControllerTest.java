@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Marcos Martins
  */
-public class ProjectControllerTest {
+public class ProjectFaroControllerTest {
 
 	@ClassRule
 	@Rule
@@ -30,7 +30,7 @@ public class ProjectControllerTest {
 	@Test
 	public void testCreateOSBAccountEntry() throws Exception {
 		OSBAccountEntry osbAccountEntry =
-			_projectController.createOSBAccountEntry(false);
+			_projectFaroController.createOSBAccountEntry(false);
 
 		List<OSBOfferingEntry> offeringEntries =
 			osbAccountEntry.getOfferingEntries();
@@ -47,7 +47,7 @@ public class ProjectControllerTest {
 		Assert.assertNotNull(osbOfferingEntry.getStartDate());
 	}
 
-	private final ProjectController _projectController =
-		new ProjectController();
+	private final ProjectFaroController _projectFaroController =
+		new ProjectFaroController();
 
 }

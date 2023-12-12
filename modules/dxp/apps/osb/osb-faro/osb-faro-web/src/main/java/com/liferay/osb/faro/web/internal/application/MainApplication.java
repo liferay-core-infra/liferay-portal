@@ -6,17 +6,17 @@
 package com.liferay.osb.faro.web.internal.application;
 
 import com.liferay.osb.faro.web.internal.constants.FaroConstants;
-import com.liferay.osb.faro.web.internal.controller.main.BlockedKeywordsController;
-import com.liferay.osb.faro.web.internal.controller.main.ChannelController;
-import com.liferay.osb.faro.web.internal.controller.main.DefinitionsController;
-import com.liferay.osb.faro.web.internal.controller.main.IssueController;
-import com.liferay.osb.faro.web.internal.controller.main.MainController;
-import com.liferay.osb.faro.web.internal.controller.main.NotificationController;
-import com.liferay.osb.faro.web.internal.controller.main.OAuth2Controller;
-import com.liferay.osb.faro.web.internal.controller.main.PreferencesController;
-import com.liferay.osb.faro.web.internal.controller.main.ProjectController;
-import com.liferay.osb.faro.web.internal.controller.main.ReportController;
-import com.liferay.osb.faro.web.internal.controller.main.UserController;
+import com.liferay.osb.faro.web.internal.controller.main.BlockedKeywordsFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.ChannelFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.DefinitionsFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.IssueFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.MainFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.NotificationFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.OAuth2FaroController;
+import com.liferay.osb.faro.web.internal.controller.main.PreferencesFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.ProjectFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.ReportFaroController;
+import com.liferay.osb.faro.web.internal.controller.main.UserFaroController;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,52 +45,52 @@ public class MainApplication extends BaseApplication {
 	public Set<Object> getControllers() {
 		Set<Object> controllers = new HashSet<>();
 
-		controllers.add(_blockedKeywordsController);
-		controllers.add(_channelController);
-		controllers.add(_definitionsController);
-		controllers.add(_issueController);
-		controllers.add(_mainController);
-		controllers.add(_notificationController);
-		controllers.add(_oAuth2Controller);
-		controllers.add(_preferencesController);
-		controllers.add(_projectController);
-		controllers.add(_reportController);
-		controllers.add(_userController);
+		controllers.add(_blockedKeywordsFaroController);
+		controllers.add(_channelFaroController);
+		controllers.add(_definitionsFaroController);
+		controllers.add(_issueFaroController);
+		controllers.add(_mainFaroController);
+		controllers.add(_notificationFaroController);
+		controllers.add(_oAuth2FaroController);
+		controllers.add(_preferencesFaroController);
+		controllers.add(_projectFaroController);
+		controllers.add(_reportFaroController);
+		controllers.add(_userFaroController);
 
 		return controllers;
 	}
 
 	@Reference
-	private BlockedKeywordsController _blockedKeywordsController;
+	private BlockedKeywordsFaroController _blockedKeywordsFaroController;
 
 	@Reference
-	private ChannelController _channelController;
+	private ChannelFaroController _channelFaroController;
 
 	@Reference
-	private DefinitionsController _definitionsController;
+	private DefinitionsFaroController _definitionsFaroController;
 
 	@Reference
-	private IssueController _issueController;
+	private IssueFaroController _issueFaroController;
 
 	@Reference
-	private MainController _mainController;
+	private MainFaroController _mainFaroController;
 
 	@Reference
-	private NotificationController _notificationController;
+	private NotificationFaroController _notificationFaroController;
 
 	@Reference
-	private OAuth2Controller _oAuth2Controller;
+	private OAuth2FaroController _oAuth2FaroController;
 
 	@Reference
-	private PreferencesController _preferencesController;
+	private PreferencesFaroController _preferencesFaroController;
 
 	@Reference
-	private ProjectController _projectController;
+	private ProjectFaroController _projectFaroController;
 
 	@Reference
-	private ReportController _reportController;
+	private ReportFaroController _reportFaroController;
 
 	@Reference
-	private UserController _userController;
+	private UserFaroController _userFaroController;
 
 }

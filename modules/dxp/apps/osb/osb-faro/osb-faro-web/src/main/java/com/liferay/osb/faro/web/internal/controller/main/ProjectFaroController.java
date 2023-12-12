@@ -92,10 +92,10 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Matthew Kong
  */
-@Component(service = ProjectController.class)
+@Component(service = ProjectFaroController.class)
 @Path("/project")
 @Produces(MediaType.APPLICATION_JSON)
-public class ProjectController extends BaseFaroController {
+public class ProjectFaroController extends BaseFaroController {
 
 	@Path("/{groupId}/activate")
 	@POST
@@ -1123,7 +1123,7 @@ public class ProjectController extends BaseFaroController {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ProjectController.class);
+		ProjectFaroController.class);
 
 	private static final CopyOnWriteArraySet<Long> _initializingGroupIds =
 		new CopyOnWriteArraySet<>();

@@ -48,11 +48,11 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Marcos Martins
  */
-@Component(service = ReportController.class)
+@Component(service = ReportFaroController.class)
 @Path("{groupId}/reports")
 @Produces(MediaType.APPLICATION_JSON)
 @RequiresNoScope
-public class ReportController extends BaseFaroController {
+public class ReportFaroController extends BaseFaroController {
 
 	@GET
 	@Path("/export/csv/{type}")
@@ -235,7 +235,7 @@ public class ReportController extends BaseFaroController {
 		"yyyy-MM-dd'T'HH:mm[:ss.SSS'Z']";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ReportController.class);
+		ReportFaroController.class);
 
 	private static final Set<String> _csvExportTypes = SetUtil.fromArray(
 		"blog", "document", "form", "individual", "journal", "page");

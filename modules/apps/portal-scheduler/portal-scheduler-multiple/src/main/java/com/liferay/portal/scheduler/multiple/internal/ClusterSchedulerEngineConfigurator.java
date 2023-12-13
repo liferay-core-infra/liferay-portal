@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Props;
 
@@ -43,7 +42,11 @@ public class ClusterSchedulerEngineConfigurator {
 
 			_serviceRegistration = bundleContext.registerService(
 				IdentifiableOSGiService.class, clusterSchedulerEngine,
-				new HashMapDictionary<String, Object>());
+				HashMapDictionaryBuilder.put(
+					"engine.class.name",
+					"com.liferay.portal.scheduler.multiple.internal." +
+						"ClusterSchedulerEngine"
+				).build());
 
 			schedulerEngine = ClusterableProxyFactory.createClusterableProxy(
 				clusterSchedulerEngine);

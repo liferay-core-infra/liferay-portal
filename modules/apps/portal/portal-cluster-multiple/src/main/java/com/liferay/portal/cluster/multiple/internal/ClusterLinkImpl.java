@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
@@ -238,6 +239,12 @@ public class ClusterLinkImpl implements ClusterLink {
 	private ClusterChannelFactory _clusterChannelFactory;
 
 	private List<ClusterChannel> _clusterChannels;
+
+	@Reference(
+		target = "(engine.class.name=com.liferay.portal.scheduler.multiple.internal.ClusterSchedulerEngine)"
+	)
+	private IdentifiableOSGiService _clusterEngineService;
+
 	private List<ClusterReceiver> _clusterReceivers;
 	private boolean _enabled;
 	private ExecutorService _executorService;

@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
@@ -571,6 +572,11 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Reference
 	private ClusterChannelFactory _clusterChannelFactory;
+
+	@Reference(
+		target = "(engine.class.name=com.liferay.portal.scheduler.multiple.internal.ClusterSchedulerEngine)"
+	)
+	private IdentifiableOSGiService _clusterEngineService;
 
 	private final Map<Address, CompletableFuture<String>>
 		_clusterNodeIdCompletableFutures = new ConcurrentHashMap<>();

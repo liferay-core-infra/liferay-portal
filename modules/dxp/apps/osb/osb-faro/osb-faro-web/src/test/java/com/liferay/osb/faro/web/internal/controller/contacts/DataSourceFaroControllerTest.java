@@ -36,7 +36,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 /**
  * @author Inácio Nery
  */
-public class DataSourceControllerTest {
+public class DataSourceFaroControllerTest {
 
 	@ClassRule
 	@Rule
@@ -73,7 +73,8 @@ public class DataSourceControllerTest {
 		);
 
 		ReflectionTestUtils.setField(
-			_dataSourceController, "_contactsCSVHelper", _contactsCSVHelper);
+			_dataSourceFaroController, "_contactsCSVHelper",
+			_contactsCSVHelper);
 
 		Mockito.when(
 			_contactsEngineClient.getFieldMappings(
@@ -155,7 +156,7 @@ public class DataSourceControllerTest {
 		);
 
 		ReflectionTestUtils.setField(
-			_dataSourceController, "contactsEngineClient",
+			_dataSourceFaroController, "contactsEngineClient",
 			_contactsEngineClient);
 
 		Mockito.when(
@@ -165,14 +166,14 @@ public class DataSourceControllerTest {
 		);
 
 		ReflectionTestUtils.setField(
-			_dataSourceController, "faroProjectLocalService",
+			_dataSourceFaroController, "faroProjectLocalService",
 			_faroProjectLocalService);
 	}
 
 	@Test
 	public void testGetMappings() throws Exception {
 		List<DataSourceMappingDisplay> mappings =
-			_dataSourceController.getMappings(32719, null, 32783);
+			_dataSourceFaroController.getMappings(32719, null, 32783);
 
 		Assert.assertEquals(mappings.toString(), 13, mappings.size());
 	}
@@ -217,8 +218,8 @@ public class DataSourceControllerTest {
 		ContactsCSVHelper.class);
 	private final ContactsEngineClient _contactsEngineClient = Mockito.mock(
 		ContactsEngineClient.class);
-	private final DataSourceController _dataSourceController =
-		new DataSourceController();
+	private final DataSourceFaroController _dataSourceFaroController =
+		new DataSourceFaroController();
 	private final FaroProject _faroProject = Mockito.mock(FaroProject.class);
 	private final FaroProjectLocalService _faroProjectLocalService =
 		Mockito.mock(FaroProjectLocalService.class);

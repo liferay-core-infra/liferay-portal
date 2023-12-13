@@ -57,10 +57,12 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Matthew Kong
  */
-@Component(service = {FaroController.class, IndividualSegmentController.class})
+@Component(
+	service = {FaroController.class, IndividualSegmentFaroController.class}
+)
 @Path("/{groupId}/individual_segment")
 @Produces(MediaType.APPLICATION_JSON)
-public class IndividualSegmentController extends BaseFaroController {
+public class IndividualSegmentFaroController extends BaseFaroController {
 
 	@Path("/{id}/memberships")
 	@PUT

@@ -6,21 +6,21 @@
 package com.liferay.osb.faro.web.internal.application;
 
 import com.liferay.osb.faro.web.internal.constants.FaroConstants;
-import com.liferay.osb.faro.web.internal.controller.contacts.AccountController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ActivityController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ActivityGroupController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ContactsCardController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ContactsCardTemplateController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ContactsLayoutController;
-import com.liferay.osb.faro.web.internal.controller.contacts.ContactsLayoutTemplateController;
-import com.liferay.osb.faro.web.internal.controller.contacts.DataSourceController;
-import com.liferay.osb.faro.web.internal.controller.contacts.FieldController;
-import com.liferay.osb.faro.web.internal.controller.contacts.FieldMappingController;
-import com.liferay.osb.faro.web.internal.controller.contacts.IndividualController;
-import com.liferay.osb.faro.web.internal.controller.contacts.IndividualSegmentController;
-import com.liferay.osb.faro.web.internal.controller.contacts.InterestController;
-import com.liferay.osb.faro.web.internal.controller.contacts.PagesVisitedController;
-import com.liferay.osb.faro.web.internal.controller.contacts.SessionController;
+import com.liferay.osb.faro.web.internal.controller.contacts.AccountFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.ActivityFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.ActivityGroupFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.ContactsCardFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.ContactsCardTemplateFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.ContactsLayoutFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.ContactsLayoutTemplateFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.DataSourceFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.FieldFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.FieldMappingFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.IndividualFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.IndividualSegmentFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.InterestFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.PagesVisitedFaroController;
+import com.liferay.osb.faro.web.internal.controller.contacts.SessionFaroController;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,68 +42,70 @@ public class ContactsApplication extends BaseApplication {
 	public Set<Object> getControllers() {
 		Set<Object> controllers = new HashSet<>();
 
-		controllers.add(_accountController);
-		controllers.add(_activityController);
-		controllers.add(_activityGroupController);
-		controllers.add(_contactsCardController);
-		controllers.add(_contactsCardTemplateController);
-		controllers.add(_contactsLayoutController);
-		controllers.add(_contactsLayoutTemplateController);
-		controllers.add(_dataSourceController);
-		controllers.add(_fieldController);
-		controllers.add(_fieldMappingController);
-		controllers.add(_individualController);
-		controllers.add(_individualSegmentController);
-		controllers.add(_interestController);
-		controllers.add(_pagesVisitedController);
-		controllers.add(_sessionController);
+		controllers.add(_accountFaroController);
+		controllers.add(_activityFaroController);
+		controllers.add(_activityGroupFaroController);
+		controllers.add(_contactsCardFaroController);
+		controllers.add(_contactsCardTemplateFaroController);
+		controllers.add(_contactsLayoutFaroController);
+		controllers.add(_contactsLayoutTemplateFaroController);
+		controllers.add(_dataSourceFaroController);
+		controllers.add(_fieldFaroController);
+		controllers.add(_fieldMappingFaroController);
+		controllers.add(_individualFaroController);
+		controllers.add(_individualSegmentFaroController);
+		controllers.add(_interestFaroController);
+		controllers.add(_pagesVisitedFaroController);
+		controllers.add(_sessionFaroController);
 
 		return controllers;
 	}
 
 	@Reference
-	private AccountController _accountController;
+	private AccountFaroController _accountFaroController;
 
 	@Reference
-	private ActivityController _activityController;
+	private ActivityFaroController _activityFaroController;
 
 	@Reference
-	private ActivityGroupController _activityGroupController;
+	private ActivityGroupFaroController _activityGroupFaroController;
 
 	@Reference
-	private ContactsCardController _contactsCardController;
+	private ContactsCardFaroController _contactsCardFaroController;
 
 	@Reference
-	private ContactsCardTemplateController _contactsCardTemplateController;
+	private ContactsCardTemplateFaroController
+		_contactsCardTemplateFaroController;
 
 	@Reference
-	private ContactsLayoutController _contactsLayoutController;
+	private ContactsLayoutFaroController _contactsLayoutFaroController;
 
 	@Reference
-	private ContactsLayoutTemplateController _contactsLayoutTemplateController;
+	private ContactsLayoutTemplateFaroController
+		_contactsLayoutTemplateFaroController;
 
 	@Reference
-	private DataSourceController _dataSourceController;
+	private DataSourceFaroController _dataSourceFaroController;
 
 	@Reference
-	private FieldController _fieldController;
+	private FieldFaroController _fieldFaroController;
 
 	@Reference
-	private FieldMappingController _fieldMappingController;
+	private FieldMappingFaroController _fieldMappingFaroController;
 
 	@Reference
-	private IndividualController _individualController;
+	private IndividualFaroController _individualFaroController;
 
 	@Reference
-	private IndividualSegmentController _individualSegmentController;
+	private IndividualSegmentFaroController _individualSegmentFaroController;
 
 	@Reference
-	private InterestController _interestController;
+	private InterestFaroController _interestFaroController;
 
 	@Reference
-	private PagesVisitedController _pagesVisitedController;
+	private PagesVisitedFaroController _pagesVisitedFaroController;
 
 	@Reference
-	private SessionController _sessionController;
+	private SessionFaroController _sessionFaroController;
 
 }

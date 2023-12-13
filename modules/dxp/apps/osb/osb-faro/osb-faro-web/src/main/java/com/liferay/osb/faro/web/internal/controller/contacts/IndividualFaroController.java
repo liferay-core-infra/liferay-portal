@@ -53,10 +53,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Matthew Kong
  */
-@Component(service = {FaroController.class, IndividualController.class})
+@Component(service = {FaroController.class, IndividualFaroController.class})
 @Path("/{groupId}/individual")
 @Produces(MediaType.APPLICATION_JSON)
-public class IndividualController extends BaseFaroController {
+public class IndividualFaroController extends BaseFaroController {
 
 	@Path("/{id}/memberships")
 	@PUT
@@ -352,6 +352,6 @@ public class IndividualController extends BaseFaroController {
 	private static final int[] _ENTITY_TYPES = {FaroConstants.TYPE_INDIVIDUAL};
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		IndividualController.class);
+		IndividualFaroController.class);
 
 }

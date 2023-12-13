@@ -5,23 +5,26 @@
 
 package com.liferay.osb.faro.web.internal.controller.contacts;
 
+import com.liferay.osb.faro.engine.client.model.ActivityGroup;
+import com.liferay.osb.faro.engine.client.model.Results;
 import com.liferay.osb.faro.engine.client.util.OrderByField;
 import com.liferay.osb.faro.web.internal.controller.BaseFaroController;
 import com.liferay.osb.faro.web.internal.controller.FaroController;
 import com.liferay.osb.faro.web.internal.model.display.FaroResultsDisplay;
+import com.liferay.osb.faro.web.internal.model.display.contacts.ActivityGroupDisplay;
 import com.liferay.osb.faro.web.internal.param.FaroParam;
-import com.liferay.osb.faro.web.internal.util.InterestUtil;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.util.ListUtil;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 
 import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -31,64 +34,53 @@ import javax.ws.rs.core.MediaType;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Shinn Lok
+ * @author Matthew Kong
  */
-@Component(service = {FaroController.class, InterestController.class})
-@Path("/{groupId}/interest")
+@Component(service = {ActivityGroupFaroController.class, FaroController.class})
+@Path("/{groupId}/activity_group")
 @Produces(MediaType.APPLICATION_JSON)
-public class InterestController extends BaseFaroController {
+public class ActivityGroupFaroController extends BaseFaroController {
 
 	@GET
 	@RolesAllowed(RoleConstants.SITE_MEMBER)
+	@SuppressWarnings("unchecked")
 	public FaroResultsDisplay search(
 			@PathParam("groupId") long groupId,
 			@QueryParam("channelId") String channelId,
 			@QueryParam("contactsEntityId") String contactsEntityId,
+			@QueryParam("contactsEntityType") int contactsEntityType,
 			@QueryParam("query") String query,
-			@QueryParam("interval") String interval, @QueryParam("max") int max,
+			@DefaultValue(StringPool.BLANK) @QueryParam("startDate") FaroParam
+				<Date> startDateFaroParam,
+			@DefaultValue(StringPool.BLANK) @QueryParam("endDate") FaroParam
+				<Date> endDateFaroParam,
 			@QueryParam("cur") int cur, @QueryParam("delta") int delta,
 			@DefaultValue(StringPool.BLANK) @QueryParam("orderByFields")
 				FaroParam<List<OrderByField>> orderByFieldsFaroParam)
 		throws Exception {
 
-		return InterestUtil.getInterests(
+		Results<ActivityGroup> results = contactsEngineClient.getActivityGroups(
 			faroProjectLocalService.getFaroProjectByGroupId(groupId), channelId,
-			contactsEntityId, query, cur, delta,
-			orderByFieldsFaroParam.getValue(), contactsEngineClient);
-	}
-
-	@Path("/search")
-	@POST
-	@RolesAllowed(RoleConstants.SITE_MEMBER)
-	public FaroResultsDisplay searchByForm(
-			@PathParam("groupId") long groupId,
-			@QueryParam("channelId") String channelId,
-			@FormParam("contactsEntityId") String contactsEntityId,
-			@FormParam("query") String query,
-			@FormParam("interval") String interval, @FormParam("max") int max,
-			@FormParam("cur") int cur, @FormParam("delta") int delta,
-			@DefaultValue(StringPool.BLANK) @FormParam("orderByFields")
-				FaroParam<List<OrderByField>> orderByFieldsFaroParam)
-		throws Exception {
-
-		return search(
-			groupId, channelId, contactsEntityId, query, interval, max, cur,
-			delta, orderByFieldsFaroParam);
-	}
-
-	@GET
-	@Path("/keywords")
-	@RolesAllowed(RoleConstants.SITE_MEMBER)
-	public FaroResultsDisplay searchKeywords(
-			@PathParam("groupId") long groupId,
-			@QueryParam("query") String query, @QueryParam("cur") int cur,
-			@QueryParam("delta") int delta)
-		throws Exception {
+			contactsEntityId, contactsHelper.getOwnerType(contactsEntityType),
+			query, startDateFaroParam.getValue(), endDateFaroParam.getValue(),
+			cur, delta, orderByFieldsFaroParam.getValue());
 
 		return new FaroResultsDisplay(
-			contactsEngineClient.getInterestKeywords(
-				faroProjectLocalService.getFaroProjectByGroupId(groupId), query,
-				cur, delta));
+			TransformUtil.transform(
+				results.getItems(),
+				activityGroup -> {
+					ActivityGroupDisplay activityGroupDisplay =
+						new ActivityGroupDisplay(activityGroup);
+
+					if (ListUtil.isEmpty(
+							activityGroupDisplay.getActivityDisplays())) {
+
+						return null;
+					}
+
+					return activityGroupDisplay;
+				}),
+			results.getTotal());
 	}
 
 }

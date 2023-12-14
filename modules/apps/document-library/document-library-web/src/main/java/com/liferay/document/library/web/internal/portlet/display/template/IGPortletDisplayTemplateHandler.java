@@ -55,7 +55,7 @@ public class IGPortletDisplayTemplateHandler
 		Map<String, Object> contextObjects = new HashMap<>();
 
 		try {
-			contextObjects.put("dlUtil", DLUtil.getDL());
+			contextObjects.put("dlUtil", DLUtil.class);
 		}
 		catch (SecurityException securityException) {
 			_log.error(securityException);

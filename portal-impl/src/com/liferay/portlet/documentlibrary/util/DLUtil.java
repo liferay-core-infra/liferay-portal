@@ -216,10 +216,6 @@ public class DLUtil {
 		return sb.toString();
 	}
 
-	public static DL getDL() {
-		return _dl;
-	}
-
 	public static Map<String, String> getEmailDefinitionTerms(
 		RenderRequest renderRequest, String emailFromAddress,
 		String emailFromName) {

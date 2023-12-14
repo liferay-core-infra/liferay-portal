@@ -8,7 +8,7 @@ package com.liferay.exportimport.internal.manager;
 import com.liferay.document.library.kernel.util.DLValidatorUtil;
 import com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames;
 import com.liferay.exportimport.kernel.controller.ExportController;
-import com.liferay.exportimport.kernel.controller.ExportImportControllerRegistryUtil;
+import com.liferay.exportimport.kernel.controller.ExportImportController;
 import com.liferay.exportimport.kernel.controller.ImportController;
 import com.liferay.exportimport.kernel.exception.ExportImportIOException;
 import com.liferay.exportimport.kernel.exception.ExportImportRuntimeException;
@@ -18,6 +18,8 @@ import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.manager.ExportImportManager;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskContextMapConstants;
@@ -27,6 +29,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.auth.GuestOrUserUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -35,12 +38,14 @@ import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -67,9 +72,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		}
 
 		try {
-			ExportController layoutExportController =
-				ExportImportControllerRegistryUtil.getExportController(
-					Layout.class.getName());
+			ExportController layoutExportController = _getExportController(
+				Layout.class.getName());
 
 			return layoutExportController.export(exportImportConfiguration);
 		}
@@ -133,9 +137,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ExportController portletExportController =
-				ExportImportControllerRegistryUtil.getExportController(
-					Portlet.class.getName());
+			ExportController portletExportController = _getExportController(
+				Portlet.class.getName());
 
 			return portletExportController.export(exportImportConfiguration);
 		}
@@ -227,9 +230,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		}
 
 		try {
-			ImportController layoutImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Layout.class.getName());
+			ImportController layoutImportController = _getImportController(
+				Layout.class.getName());
 
 			layoutImportController.importFile(exportImportConfiguration, file);
 		}
@@ -327,9 +329,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ImportController layoutImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Layout.class.getName());
+			ImportController layoutImportController = _getImportController(
+				Layout.class.getName());
 
 			layoutImportController.importDataDeletions(
 				exportImportConfiguration, file);
@@ -495,9 +496,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ImportController portletImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Portlet.class.getName());
+			ImportController portletImportController = _getImportController(
+				Portlet.class.getName());
 
 			portletImportController.importDataDeletions(
 				exportImportConfiguration, file);
@@ -532,9 +532,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ImportController portletImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Portlet.class.getName());
+			ImportController portletImportController = _getImportController(
+				Portlet.class.getName());
 
 			portletImportController.importFile(exportImportConfiguration, file);
 		}
@@ -793,9 +792,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ImportController layoutImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Layout.class.getName());
+			ImportController layoutImportController = _getImportController(
+				Layout.class.getName());
 
 			return layoutImportController.validateFile(
 				exportImportConfiguration, file);
@@ -887,9 +885,8 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		throws PortalException {
 
 		try {
-			ImportController portletImportController =
-				ExportImportControllerRegistryUtil.getImportController(
-					Portlet.class.getName());
+			ImportController portletImportController = _getImportController(
+				Portlet.class.getName());
 
 			return portletImportController.validateFile(
 				exportImportConfiguration, file);
@@ -927,6 +924,57 @@ public class ExportImportManagerImpl implements ExportImportManager {
 		return validateImportPortletInfo(
 			false, exportImportConfiguration, inputStream);
 	}
+
+	private ExportController _getExportController(String className) {
+		return (ExportController)_exportControllers.getService(className);
+	}
+
+	private ImportController _getImportController(String className) {
+		return (ImportController)_importControllers.getService(className);
+	}
+
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
+
+	private static final ServiceTrackerMap<String, ExportImportController>
+		_exportControllers = ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext, ExportImportController.class, null,
+			(serviceReference, emitter) -> {
+				ExportImportController exportImportController =
+					_bundleContext.getService(serviceReference);
+
+				if (exportImportController instanceof ExportController) {
+					for (String modelClassName :
+							StringUtil.asList(
+								serviceReference.getProperty(
+									"model.class.name"))) {
+
+						emitter.emit(modelClassName);
+					}
+				}
+
+				_bundleContext.ungetService(serviceReference);
+			});
+
+	private static final ServiceTrackerMap<String, ExportImportController>
+		_importControllers = ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext, ExportImportController.class, null,
+			(serviceReference, emitter) -> {
+				ExportImportController exportImportController =
+					_bundleContext.getService(serviceReference);
+
+				if (exportImportController instanceof ImportController) {
+					for (String modelClassName :
+							StringUtil.asList(
+								serviceReference.getProperty(
+									"model.class.name"))) {
+
+						emitter.emit(modelClassName);
+					}
+				}
+
+				_bundleContext.ungetService(serviceReference);
+			});
 
 	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;

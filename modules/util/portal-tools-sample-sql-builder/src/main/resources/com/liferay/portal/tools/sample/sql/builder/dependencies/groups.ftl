@@ -47,6 +47,10 @@
 
 	<#assign homePageContentLayoutModels = dataFactory.newContentPageLayoutModels(groupId, "welcome") />
 
+	<#list dataFactory.newPortletPreferencesModels(homePageContentLayoutModels) as portletPreferencesModel>
+		${dataFactory.toInsertSQL(portletPreferencesModel)}
+	</#list>
+
 	<@insertContentPageLayout
 		_fragmentEntryLinkModels=dataFactory.newFragmentEntryLinkModels(homePageContentLayoutModels)
 		_layoutModels=homePageContentLayoutModels

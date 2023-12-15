@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.auth;
+package com.liferay.portal.security.auth.internal.token;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -14,12 +14,12 @@ import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.AuthTokenWhitelistUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -32,9 +32,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Amos Fong
  */
+@Component(service = AuthToken.class)
 public class SessionAuthToken implements AuthToken {
 
 	@Override
@@ -69,8 +73,8 @@ public class SessionAuthToken implements AuthToken {
 
 		String portletId = liferayPortletURL.getPortletId();
 
-		Portlet portlet = PortletLocalServiceUtil.getPortletById(
-			PortalUtil.getCompanyId(httpServletRequest), portletId);
+		Portlet portlet = _portletLocalService.getPortletById(
+			_portal.getCompanyId(httpServletRequest), portletId);
 
 		if ((portlet == null) || !portlet.isAddDefaultResource() ||
 			AuthTokenWhitelistUtil.isPortletURLPortletInvocationWhitelisted(
@@ -82,7 +86,7 @@ public class SessionAuthToken implements AuthToken {
 		long plid = liferayPortletURL.getPlid();
 
 		try {
-			Layout layout = LayoutLocalServiceUtil.getLayout(plid);
+			Layout layout = _layoutLocalService.getLayout(plid);
 
 			LayoutTypePortlet layoutTypePortlet =
 				(LayoutTypePortlet)layout.getLayoutType();
@@ -117,7 +121,7 @@ public class SessionAuthToken implements AuthToken {
 			return;
 		}
 
-		long companyId = PortalUtil.getCompanyId(httpServletRequest);
+		long companyId = _portal.getCompanyId(httpServletRequest);
 
 		if (AuthTokenWhitelistUtil.isOriginCSRFWhitelisted(companyId, origin)) {
 			return;
@@ -126,7 +130,7 @@ public class SessionAuthToken implements AuthToken {
 		if (origin.equals(SecurityPortletContainerWrapper.class.getName())) {
 			String ppid = ParamUtil.getString(httpServletRequest, "p_p_id");
 
-			Portlet portlet = PortletLocalServiceUtil.getPortletById(
+			Portlet portlet = _portletLocalService.getPortletById(
 				companyId, ppid);
 
 			if (AuthTokenWhitelistUtil.isPortletCSRFWhitelisted(
@@ -141,7 +145,7 @@ public class SessionAuthToken implements AuthToken {
 
 		if (Validator.isNull(sessionToken)) {
 			throw new PrincipalException.MustHaveSessionCSRFToken(
-				PortalUtil.getUserId(httpServletRequest), origin);
+				_portal.getUserId(httpServletRequest), origin);
 		}
 
 		String csrfToken = ParamUtil.getString(httpServletRequest, "p_auth");
@@ -153,7 +157,7 @@ public class SessionAuthToken implements AuthToken {
 
 		if (!csrfToken.equals(sessionToken)) {
 			throw new PrincipalException.MustHaveValidCSRFToken(
-				PortalUtil.getUserId(httpServletRequest), origin);
+				_portal.getUserId(httpServletRequest), origin);
 		}
 	}
 
@@ -186,7 +190,7 @@ public class SessionAuthToken implements AuthToken {
 
 		if (Validator.isNull(portletToken)) {
 			HttpServletRequest originalHttpServletRequest =
-				PortalUtil.getOriginalServletRequest(httpServletRequest);
+				_portal.getOriginalServletRequest(httpServletRequest);
 
 			portletToken = ParamUtil.getString(
 				originalHttpServletRequest, "p_p_auth");
@@ -257,5 +261,14 @@ public class SessionAuthToken implements AuthToken {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SessionAuthToken.class);
+
+	@Reference
+	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private PortletLocalService _portletLocalService;
 
 }

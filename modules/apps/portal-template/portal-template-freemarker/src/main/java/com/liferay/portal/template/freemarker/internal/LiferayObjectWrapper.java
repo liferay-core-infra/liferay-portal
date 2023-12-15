@@ -8,7 +8,7 @@ package com.liferay.portal.template.freemarker.internal;
 import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.portal.kernel.templateparser.TemplateNode;
+import com.liferay.portal.templateparser.TemplateNode;
 
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.EnumerationModel;

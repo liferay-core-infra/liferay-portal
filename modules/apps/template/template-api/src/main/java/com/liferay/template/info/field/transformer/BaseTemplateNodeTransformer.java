@@ -8,9 +8,9 @@ package com.liferay.template.info.field.transformer;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.templateparser.TemplateNode;
 
 import java.util.Collections;
 

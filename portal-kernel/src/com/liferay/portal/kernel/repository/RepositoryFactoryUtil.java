@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.repository;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * @author Adolfo Pérez
@@ -15,23 +16,25 @@ public class RepositoryFactoryUtil {
 	public static LocalRepository createLocalRepository(long repositoryId)
 		throws PortalException {
 
-		return _repositoryFactory.createLocalRepository(repositoryId);
+		RepositoryFactory repositoryFactory = _repositoryFactorySnapshot.get();
+
+		return repositoryFactory.createLocalRepository(repositoryId);
 	}
 
 	public static Repository createRepository(long repositoryId)
 		throws PortalException {
 
-		return _repositoryFactory.createRepository(repositoryId);
+		RepositoryFactory repositoryFactory = _repositoryFactorySnapshot.get();
+
+		return repositoryFactory.createRepository(repositoryId);
 	}
 
 	public static RepositoryFactory getRepositoryFactory() {
-		return _repositoryFactory;
+		return _repositoryFactorySnapshot.get();
 	}
 
-	public void setRepositoryFactory(RepositoryFactory repositoryFactory) {
-		_repositoryFactory = repositoryFactory;
-	}
-
-	private static RepositoryFactory _repositoryFactory;
+	private static final Snapshot<RepositoryFactory>
+		_repositoryFactorySnapshot = new Snapshot<>(
+			RepositoryFactoryUtil.class, RepositoryFactory.class);
 
 }

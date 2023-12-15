@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.webdav.WebDAVException;
 import com.liferay.portal.kernel.webdav.WebDAVRequest;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
 import com.liferay.portal.kernel.webdav.methods.Method;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.webdav.methods.MethodFactoryUtil;

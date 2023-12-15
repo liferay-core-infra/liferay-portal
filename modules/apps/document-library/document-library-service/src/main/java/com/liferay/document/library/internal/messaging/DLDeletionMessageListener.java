@@ -6,7 +6,6 @@
 package com.liferay.document.library.internal.messaging;
 
 import com.liferay.document.library.kernel.store.Store;
-import com.liferay.document.library.kernel.store.StoreAreaAwareStoreWrapper;
 import com.liferay.document.library.kernel.store.StoreAreaProcessor;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.string.StringBundler;
@@ -15,6 +14,7 @@ import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.store.StoreAreaAwareStoreWrapper;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Map;

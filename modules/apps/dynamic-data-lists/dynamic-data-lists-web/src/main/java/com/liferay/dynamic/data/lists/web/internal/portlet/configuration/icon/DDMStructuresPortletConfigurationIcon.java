@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
+import com.liferay.portal.webdav.WebDAVUtil;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;

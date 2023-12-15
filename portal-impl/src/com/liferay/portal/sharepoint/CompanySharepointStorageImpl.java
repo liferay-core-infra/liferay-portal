@@ -7,7 +7,7 @@ package com.liferay.portal.sharepoint;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
+import com.liferay.portal.webdav.WebDAVUtil;
 
 import java.util.List;
 

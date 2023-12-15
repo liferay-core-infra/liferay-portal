@@ -107,11 +107,11 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.Validator_IW;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.impl.ImageImpl;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.webdav.WebDAVUtil;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.users.admin.kernel.file.uploads.UserFileUploadsSettings;
 

@@ -6,6 +6,8 @@
 package com.liferay.portal.osgi.web.portlet.container.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -20,10 +22,10 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.osgi.web.portlet.container.test.util.PortletContainerTestUtil;
 import com.liferay.portal.security.auth.AuthTokenWhitelistImpl;
-import com.liferay.portal.security.auth.SessionAuthToken;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.SecurityPortletContainerWrapper;
 
@@ -323,6 +325,11 @@ public class ActionRequestPortletContainerTest
 
 	private static final String _SHARED_SECRET = "test";
 
+	@Inject(
+		filter = "component.name=com.liferay.portal.security.auth.internal.token.SessionAuthToken"
+	)
+	private static AuthToken _authToken;
+
 	private static class ActionRequestTestPortlet extends TestPortlet {
 
 		@Override
@@ -345,7 +352,7 @@ public class ActionRequestPortletContainerTest
 
 	}
 
-	private static class DisabledSessionAuthToken extends SessionAuthToken {
+	private static class DisabledSessionAuthToken implements AuthToken {
 
 		@Override
 		public void addCSRFToken(
@@ -354,8 +361,39 @@ public class ActionRequestPortletContainerTest
 		}
 
 		@Override
+		public void addPortletInvocationToken(
+			HttpServletRequest httpServletRequest,
+			LiferayPortletURL liferayPortletURL) {
+
+			_authToken.addPortletInvocationToken(
+				httpServletRequest, liferayPortletURL);
+		}
+
+		@Override
 		public void checkCSRFToken(
 			HttpServletRequest httpServletRequest, String origin) {
+		}
+
+		@Override
+		public String getToken(HttpServletRequest httpServletRequest) {
+			return _authToken.getToken(httpServletRequest);
+		}
+
+		@Override
+		public String getToken(
+			HttpServletRequest httpServletRequest, long plid,
+			String portletId) {
+
+			return _authToken.getToken(httpServletRequest, plid, portletId);
+		}
+
+		@Override
+		public boolean isValidPortletInvocationToken(
+			HttpServletRequest httpServletRequest, Layout layout,
+			Portlet portlet) {
+
+			return _authToken.isValidPortletInvocationToken(
+				httpServletRequest, layout, portlet);
 		}
 
 	}

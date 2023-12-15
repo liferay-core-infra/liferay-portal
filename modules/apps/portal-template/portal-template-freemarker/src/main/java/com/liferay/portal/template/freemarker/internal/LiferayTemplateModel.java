@@ -5,7 +5,7 @@
 
 package com.liferay.portal.template.freemarker.internal;
 
-import com.liferay.portal.kernel.templateparser.TemplateNode;
+import com.liferay.portal.templateparser.TemplateNode;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapper;

@@ -18,8 +18,8 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.webdav.WebDAVException;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
 import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.webdav.WebDAVUtil;
 
 import java.util.Collection;
 import java.util.HashMap;

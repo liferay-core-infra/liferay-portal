@@ -7,12 +7,12 @@ package com.liferay.portal.model.impl;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Namespace;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.webdav.WebDAVUtil;
 
 import java.util.HashSet;
 import java.util.Iterator;

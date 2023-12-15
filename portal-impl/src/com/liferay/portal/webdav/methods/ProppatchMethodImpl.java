@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.webdav.Resource;
 import com.liferay.portal.kernel.webdav.WebDAVException;
 import com.liferay.portal.kernel.webdav.WebDAVRequest;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Namespace;
@@ -26,6 +25,7 @@ import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.webdav.InvalidRequestException;
 import com.liferay.portal.webdav.LockException;
+import com.liferay.portal.webdav.WebDAVUtil;
 
 import java.util.HashSet;
 import java.util.List;

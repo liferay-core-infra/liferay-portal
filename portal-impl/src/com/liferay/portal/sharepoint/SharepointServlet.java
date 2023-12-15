@@ -13,9 +13,9 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
 import com.liferay.portal.sharepoint.methods.Method;
 import com.liferay.portal.sharepoint.methods.MethodFactory;
+import com.liferay.portal.webdav.WebDAVUtil;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

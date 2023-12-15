@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.webdav.BaseResourceImpl;
 import com.liferay.portal.kernel.webdav.Resource;
 import com.liferay.portal.kernel.webdav.WebDAVException;
 import com.liferay.portal.kernel.webdav.WebDAVRequest;
-import com.liferay.portal.kernel.webdav.WebDAVUtil;
 
 import java.util.ArrayList;
 import java.util.List;

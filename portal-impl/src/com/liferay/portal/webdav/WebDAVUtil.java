@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.webdav;
+package com.liferay.portal.webdav;
 
 import com.liferay.document.library.kernel.util.DL;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.GroupFriendlyURLComparator;
+import com.liferay.portal.kernel.webdav.WebDAVException;
+import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.xml.Namespace;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 

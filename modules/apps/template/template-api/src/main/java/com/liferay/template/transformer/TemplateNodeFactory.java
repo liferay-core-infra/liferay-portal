@@ -6,8 +6,8 @@
 package com.liferay.template.transformer;
 
 import com.liferay.info.field.InfoFieldValue;
-import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.templateparser.TemplateNode;
 
 /**
  * @author Feliphe Marinho

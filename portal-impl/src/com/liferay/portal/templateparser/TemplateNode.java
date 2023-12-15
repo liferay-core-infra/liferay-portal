@@ -261,7 +261,8 @@ public class TemplateNode extends LinkedHashMap<String, Object> {
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to parse JSON from data: " + data);
+				_log.debug(
+					"Unable to parse JSON from data: " + data, exception);
 			}
 
 			return StringPool.BLANK;
@@ -450,7 +451,8 @@ public class TemplateNode extends LinkedHashMap<String, Object> {
 		}
 		catch (JSONException jsonException) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to parse JSON from data: " + data);
+				_log.debug(
+					"Unable to parse JSON from data: " + data, jsonException);
 			}
 		}
 		catch (Exception exception) {

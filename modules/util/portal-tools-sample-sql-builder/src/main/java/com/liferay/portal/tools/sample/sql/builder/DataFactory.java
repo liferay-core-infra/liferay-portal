@@ -5006,6 +5006,44 @@ public class DataFactory {
 			PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid, portletId);
 	}
 
+	public List<PortletPreferencesModel> newPortletPreferencesModels(
+		LayoutModel searchGroupLayoutModel, LayoutModel searchLayoutModel) {
+
+		return ListUtil.fromArray(
+			newPortletPreferencesModel(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				searchGroupLayoutModel.getPlid(),
+				ProductNavigationProductMenuPortletKeys.
+					PRODUCT_NAVIGATION_PRODUCT_MENU),
+			newPortletPreferencesModel(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT, searchLayoutModel.getPlid(),
+				ProductNavigationProductMenuPortletKeys.
+					PRODUCT_NAVIGATION_PRODUCT_MENU),
+			newPortletPreferencesModel(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				searchGroupLayoutModel.getPlid(),
+				ProductNavigationUserPersonalBarPortletKeys.
+					PRODUCT_NAVIGATION_USER_PERSONAL_BAR),
+			newPortletPreferencesModel(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT, searchLayoutModel.getPlid(),
+				ProductNavigationUserPersonalBarPortletKeys.
+					PRODUCT_NAVIGATION_USER_PERSONAL_BAR),
+			newPortletPreferencesModel(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				searchGroupLayoutModel.getPlid(),
+				SearchBarPortletKeys.SEARCH_BAR + "_INSTANCE_templateSearch"),
+			newPortletPreferencesModel(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT, searchLayoutModel.getPlid(),
+				SearchBarPortletKeys.SEARCH_BAR + "_INSTANCE_templateSearch"),
+			newPortletPreferencesModel(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				searchGroupLayoutModel.getPlid(),
+				SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU),
+			newPortletPreferencesModel(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT, searchLayoutModel.getPlid(),
+				SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU));
+	}
+
 	public PortletPreferenceValueModel newPortletPreferenceValueModel(
 		PortletPreferencesModel portletPreferencesModel, String name, int index,
 		String value) {

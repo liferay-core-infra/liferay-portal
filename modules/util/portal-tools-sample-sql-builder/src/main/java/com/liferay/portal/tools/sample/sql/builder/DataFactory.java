@@ -5012,39 +5012,19 @@ public class DataFactory {
 	public List<PortletPreferencesModel> newPortletPreferencesModels(
 		LayoutModel searchGroupLayoutModel, LayoutModel searchLayoutModel) {
 
-		return ListUtil.fromArray(
-			newPortletPreferencesModel(
+		List<PortletPreferencesModel> portletPreferencesModels =
+			new ArrayList<>();
+
+		portletPreferencesModels.addAll(
+			newPortletPreferencesModels(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				searchGroupLayoutModel.getPlid(),
-				ProductNavigationProductMenuPortletKeys.
-					PRODUCT_NAVIGATION_PRODUCT_MENU),
-			newPortletPreferencesModel(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT, searchLayoutModel.getPlid(),
-				ProductNavigationProductMenuPortletKeys.
-					PRODUCT_NAVIGATION_PRODUCT_MENU),
-			newPortletPreferencesModel(
+				searchGroupLayoutModel.getPlid()));
+		portletPreferencesModels.addAll(
+			newPortletPreferencesModels(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				searchGroupLayoutModel.getPlid(),
-				ProductNavigationUserPersonalBarPortletKeys.
-					PRODUCT_NAVIGATION_USER_PERSONAL_BAR),
-			newPortletPreferencesModel(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT, searchLayoutModel.getPlid(),
-				ProductNavigationUserPersonalBarPortletKeys.
-					PRODUCT_NAVIGATION_USER_PERSONAL_BAR),
-			newPortletPreferencesModel(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				searchGroupLayoutModel.getPlid(),
-				SearchBarPortletKeys.SEARCH_BAR + "_INSTANCE_templateSearch"),
-			newPortletPreferencesModel(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT, searchLayoutModel.getPlid(),
-				SearchBarPortletKeys.SEARCH_BAR + "_INSTANCE_templateSearch"),
-			newPortletPreferencesModel(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				searchGroupLayoutModel.getPlid(),
-				SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU),
-			newPortletPreferencesModel(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT, searchLayoutModel.getPlid(),
-				SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU));
+				searchLayoutModel.getPlid()));
+
+		return portletPreferencesModels;
 	}
 
 	public List<PortletPreferencesModel> newPortletPreferencesModels(
@@ -5061,25 +5041,8 @@ public class DataFactory {
 				ownerId = layoutModel.getGroupId();
 			}
 
-			portletPreferencesModels.add(
-				newPortletPreferencesModel(
-					ownerId, plid,
-					ProductNavigationProductMenuPortletKeys.
-						PRODUCT_NAVIGATION_PRODUCT_MENU));
-			portletPreferencesModels.add(
-				newPortletPreferencesModel(
-					ownerId, plid,
-					ProductNavigationUserPersonalBarPortletKeys.
-						PRODUCT_NAVIGATION_USER_PERSONAL_BAR));
-			portletPreferencesModels.add(
-				newPortletPreferencesModel(
-					ownerId, plid,
-					SearchBarPortletKeys.SEARCH_BAR +
-						"_INSTANCE_templateSearch"));
-			portletPreferencesModels.add(
-				newPortletPreferencesModel(
-					ownerId, plid,
-					SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU));
+			portletPreferencesModels.addAll(
+				newPortletPreferencesModels(ownerId, plid));
 		}
 
 		return portletPreferencesModels;
@@ -6926,6 +6889,16 @@ public class DataFactory {
 		return portletPreferencesModel;
 	}
 
+	protected List<PortletPreferencesModel> newPortletPreferencesModels(
+		long ownerId, long plid) {
+
+		return ListUtil.fromArray(
+			newPortletPreferencesModel(ownerId, plid, _PORTLET_IDS[0]),
+			newPortletPreferencesModel(ownerId, plid, _PORTLET_IDS[1]),
+			newPortletPreferencesModel(ownerId, plid, _PORTLET_IDS[2]),
+			newPortletPreferencesModel(ownerId, plid, _PORTLET_IDS[3]));
+	}
+
 	protected ReleaseModelImpl newReleaseModel(
 			long releaseId, String servletContextName, String schemaVersion,
 			int buildNumber, boolean verified, String testString)
@@ -7629,6 +7602,14 @@ public class DataFactory {
 		System.currentTimeMillis() + Time.YEAR;
 
 	private static final String _JOURNAL_STRUCTURE_KEY = "BASIC-WEB-CONTENT";
+
+	private static final String[] _PORTLET_IDS = {
+		ProductNavigationProductMenuPortletKeys.PRODUCT_NAVIGATION_PRODUCT_MENU,
+		ProductNavigationUserPersonalBarPortletKeys.
+			PRODUCT_NAVIGATION_USER_PERSONAL_BAR,
+		SearchBarPortletKeys.SEARCH_BAR + "_INSTANCE_templateSearch",
+		SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU
+	};
 
 	private static final String _SAMPLE_USER_NAME = "Sample";
 

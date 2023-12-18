@@ -36,6 +36,7 @@ page import="com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskCo
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.*" %><%@
+page import="com.liferay.portal.kernel.model.CompanyConstants" %><%@
 page import="com.liferay.portal.kernel.model.impl.*" %><%@
 page import="com.liferay.portal.kernel.patcher.PatcherValues" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLUtil" %><%@

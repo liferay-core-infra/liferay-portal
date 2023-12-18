@@ -7,7 +7,26 @@
 
 <%@ include file="/init.jsp" %>
 
+<portlet:actionURL name="/server_admin/edit_server" var="resetMailConfiguration">
+	<portlet:param name="<%= Constants.CMD %>" value="resetMail" />
+	<portlet:param name="redirect" value="<%= currentURL %>" />
+	<portlet:param name="preferencesCompanyId" value="0" />
+</portlet:actionURL>
+
 <div class="sheet">
+	<liferay-ui:icon-menu
+		cssClass="float-right"
+		direction="right"
+		markupView="lexicon"
+		showWhenSingleIcon="<%= true %>"
+	>
+		<liferay-ui:icon
+			message="reset-default-values"
+			method="post"
+			url="<%= resetMailConfiguration %>"
+		/>
+	</liferay-ui:icon-menu>
+
 	<div class="panel-group panel-group-flush">
 		<liferay-util:include page="/system_mail_fields.jsp" servletContext="<%= application %>" />
 

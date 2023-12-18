@@ -9,6 +9,12 @@
 
 <portlet:actionURL name="/server_admin/edit_server" var="actionURL" />
 
+<portlet:actionURL name="/server_admin/edit_server" var="resetMailConfiguration">
+	<portlet:param name="<%= Constants.CMD %>" value="resetMail" />
+	<portlet:param name="redirect" value="<%= currentURL %>" />
+	<portlet:param name="preferencesCompanyId" value="<%= String.valueOf(company.getCompanyId()) %>" />
+</portlet:actionURL>
+
 <portlet:renderURL var="redirectURL" />
 
 <aui:form action="<%= actionURL %>" cssClass="sheet-lg" method="post" name="fm">
@@ -16,6 +22,19 @@
 	<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 
 	<div class="sheet">
+		<liferay-ui:icon-menu
+			cssClass="float-right"
+			direction="right"
+			markupView="lexicon"
+			showWhenSingleIcon="<%= true %>"
+		>
+			<liferay-ui:icon
+				message="reset-default-values"
+				method="post"
+				url="<%= resetMailConfiguration %>"
+			/>
+		</liferay-ui:icon-menu>
+
 		<div class="panel-group panel-group-flush">
 			<h2>
 				<liferay-ui:message key="mail-settings" />

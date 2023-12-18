@@ -10,7 +10,6 @@
 	<bean class="com.liferay.portal.kernel.service.permission.LayoutPermissionUtil" id="com.liferay.portal.kernel.service.permission.LayoutPermissionUtil">
 		<property name="layoutPermission" ref="com.liferay.portal.service.permission.LayoutPermissionImpl" />
 	</bean>
-	<bean class="com.liferay.portal.service.permission.LayoutSetBranchPermissionImpl" id="com.liferay.portal.kernel.service.permission.LayoutSetBranchPermission" />
 	<bean class="com.liferay.portal.service.permission.LayoutSetPrototypePermissionImpl" id="com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermission" />
 	<bean class="com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermissionUtil" id="com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermissionUtil">
 		<property name="layoutSetPrototypePermission" ref="com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermission" />

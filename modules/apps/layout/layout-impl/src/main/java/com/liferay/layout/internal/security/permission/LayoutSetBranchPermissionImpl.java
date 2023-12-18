@@ -3,18 +3,22 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.service.permission;
+package com.liferay.layout.internal.security.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.LayoutSetBranchLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutSetBranchLocalService;
 import com.liferay.portal.kernel.service.permission.LayoutSetBranchPermission;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
  */
+@Component(service = LayoutSetBranchPermission.class)
 public class LayoutSetBranchPermissionImpl
 	implements LayoutSetBranchPermission {
 
@@ -62,9 +66,11 @@ public class LayoutSetBranchPermissionImpl
 
 		return contains(
 			permissionChecker,
-			LayoutSetBranchLocalServiceUtil.getLayoutSetBranch(
-				layoutSetBranchId),
+			_layoutSetBranchLocalService.getLayoutSetBranch(layoutSetBranchId),
 			actionId);
 	}
+
+	@Reference
+	private LayoutSetBranchLocalService _layoutSetBranchLocalService;
 
 }

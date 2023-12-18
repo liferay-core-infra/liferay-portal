@@ -9,7 +9,6 @@ import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
 import com.liferay.document.library.kernel.service.DLAppHelperLocalService;
 import com.liferay.document.library.kernel.service.DLFolderLocalService;
-import com.liferay.document.library.kernel.util.DL;
 import com.liferay.portal.kernel.exception.NoSuchRepositoryEntryException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.service.persistence.RepositoryEntryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -433,7 +433,7 @@ public abstract class BaseRepositoryImpl
 		throws NoSuchRepositoryEntryException {
 
 		boolean webDAVCheckInMode = GetterUtil.getBoolean(
-			serviceContext.getAttribute(DL.WEBDAV_CHECK_IN_MODE));
+			serviceContext.getAttribute(DLUtil.WEBDAV_CHECK_IN_MODE));
 
 		if (webDAVCheckInMode) {
 			return;
@@ -467,7 +467,7 @@ public abstract class BaseRepositoryImpl
 		throws NoSuchRepositoryEntryException {
 
 		if (!GetterUtil.getBoolean(
-				serviceContext.getAttribute(DL.MANUAL_CHECK_IN_REQUIRED))) {
+				serviceContext.getAttribute(DLUtil.MANUAL_CHECK_IN_REQUIRED))) {
 
 			return;
 		}

@@ -94,6 +94,19 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class DLUtil {
 
+	public static final String MANUAL_CHECK_IN_REQUIRED =
+		"manualCheckInRequired";
+
+	public static final String MANUAL_CHECK_IN_REQUIRED_PATH =
+		StringPool.SLASH + MANUAL_CHECK_IN_REQUIRED;
+
+	public static final String OFFICE_EXTENSION = "officeExtension";
+
+	public static final String OFFICE_EXTENSION_PATH =
+		StringPool.SLASH + OFFICE_EXTENSION;
+
+	public static final String WEBDAV_CHECK_IN_MODE = "webDAVCheckInMode";
+
 	public static int compareVersions(String version1, String version2) {
 		int[] splitVersion1 = StringUtil.split(version1, StringPool.PERIOD, 0);
 		int[] splitVersion2 = StringUtil.split(version2, StringPool.PERIOD, 0);

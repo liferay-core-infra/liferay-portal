@@ -39,7 +39,6 @@ import com.liferay.document.library.kernel.service.persistence.DLFileVersionPers
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
 import com.liferay.document.library.kernel.store.DLStoreRequest;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
-import com.liferay.document.library.kernel.util.DL;
 import com.liferay.document.library.kernel.util.DLAppHelperThreadLocal;
 import com.liferay.document.library.kernel.util.DLValidatorUtil;
 import com.liferay.document.library.kernel.util.comparator.RepositoryModelModifiedDateComparator;
@@ -397,7 +396,7 @@ public class DLFileEntryLocalServiceImpl
 			fileEntryId);
 
 		boolean webDAVCheckInMode = GetterUtil.getBoolean(
-			serviceContext.getAttribute(DL.WEBDAV_CHECK_IN_MODE));
+			serviceContext.getAttribute(DLUtil.WEBDAV_CHECK_IN_MODE));
 
 		boolean manualCheckInRequired = dlFileEntry.isManualCheckInRequired();
 
@@ -2385,7 +2384,7 @@ public class DLFileEntryLocalServiceImpl
 		serviceContext.setUserId(userId);
 
 		boolean manualCheckinRequired = GetterUtil.getBoolean(
-			serviceContext.getAttribute(DL.MANUAL_CHECK_IN_REQUIRED));
+			serviceContext.getAttribute(DLUtil.MANUAL_CHECK_IN_REQUIRED));
 
 		if (dlFileEntry.isManualCheckInRequired() ^ manualCheckinRequired) {
 			dlFileEntry.setManualCheckInRequired(manualCheckinRequired);

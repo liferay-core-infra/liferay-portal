@@ -10,11 +10,11 @@ import com.liferay.adaptive.media.image.configuration.AMImageConfigurationHelper
 import com.liferay.adaptive.media.web.internal.constants.AMPortletKeys;
 import com.liferay.adaptive.media.web.internal.constants.AMWebKeys;
 import com.liferay.petra.function.transform.TransformUtil;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand;
 
 import java.util.ArrayList;
 import java.util.Collection;

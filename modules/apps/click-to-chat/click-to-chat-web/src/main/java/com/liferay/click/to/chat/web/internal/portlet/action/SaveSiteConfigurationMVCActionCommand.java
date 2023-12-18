@@ -8,7 +8,6 @@ package com.liferay.click.to.chat.web.internal.portlet.action;
 import com.liferay.click.to.chat.web.internal.configuration.ClickToChatConfiguration;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -18,6 +17,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

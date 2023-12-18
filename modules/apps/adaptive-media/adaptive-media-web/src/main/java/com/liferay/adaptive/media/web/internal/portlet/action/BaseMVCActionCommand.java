@@ -17,7 +17,7 @@ import javax.portlet.ActionResponse;
  * @author Sergio González
  */
 public abstract class BaseMVCActionCommand
-	extends com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand {
+	extends com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand {
 
 	protected abstract void doPermissionCheckedProcessAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)

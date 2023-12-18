@@ -5,10 +5,10 @@
 
 package com.liferay.saml.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.saml.constants.SamlPortletKeys;
 import com.liferay.saml.runtime.configuration.SamlProviderConfigurationHelper;
 

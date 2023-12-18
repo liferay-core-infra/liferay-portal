@@ -5,7 +5,6 @@
 
 package com.liferay.portal.portlet.bridges.mvc;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.FormMVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 

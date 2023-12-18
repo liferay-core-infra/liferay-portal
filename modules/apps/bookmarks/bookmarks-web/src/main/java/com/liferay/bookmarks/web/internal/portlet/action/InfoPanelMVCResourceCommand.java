@@ -7,8 +7,8 @@ package com.liferay.bookmarks.web.internal.portlet.action;
 
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.constants.BookmarksWebKeys;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.trash.TrashHelper;
 import com.liferay.trash.util.TrashWebKeys;
 

@@ -8,7 +8,6 @@ package com.liferay.plugins.admin.web.internal.portlet.action;
 import com.liferay.petra.string.StringPool;
 import com.liferay.plugins.admin.web.internal.constants.PluginsAdminPortletKeys;
 import com.liferay.portal.kernel.model.Plugin;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.PluginSettingService;
@@ -17,6 +16,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import java.util.Arrays;
 

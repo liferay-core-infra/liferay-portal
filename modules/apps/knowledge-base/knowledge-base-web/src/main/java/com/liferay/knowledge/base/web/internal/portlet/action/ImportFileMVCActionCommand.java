@@ -13,7 +13,6 @@ import com.liferay.knowledge.base.service.KBArticleService;
 import com.liferay.knowledge.base.web.internal.portlet.AdminPortlet;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.role.RoleConstants;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -30,6 +29,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import java.io.InputStream;
 

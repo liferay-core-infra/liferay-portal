@@ -11,7 +11,6 @@ import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalArticleService;
 import com.liferay.journal.service.JournalFolderService;
 import com.liferay.portal.kernel.model.TrashedModel;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -20,6 +19,7 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import java.util.ArrayList;
 import java.util.List;

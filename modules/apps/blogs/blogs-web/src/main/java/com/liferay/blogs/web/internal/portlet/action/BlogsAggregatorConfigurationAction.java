@@ -8,7 +8,7 @@ package com.liferay.blogs.web.internal.portlet.action;
 import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import javax.portlet.PortletConfig;
 

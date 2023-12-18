@@ -25,8 +25,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Lourdes Fernández Besada
  */
 public abstract class BaseMVCResourceCommand
-	extends com.liferay.portal.kernel.portlet.bridges.mvc.
-				BaseMVCResourceCommand {
+	extends com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand {
 
 	protected void addDisabledConfigurationErrorMessage(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)

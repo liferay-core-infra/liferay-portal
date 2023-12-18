@@ -12,10 +12,10 @@ import com.liferay.document.library.kernel.exception.NoSuchFolderException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.portlet.BaseJSPSettingsConfigurationAction;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

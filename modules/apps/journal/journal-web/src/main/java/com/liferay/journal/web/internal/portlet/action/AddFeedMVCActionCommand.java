@@ -8,11 +8,11 @@ package com.liferay.journal.web.internal.portlet.action;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.model.JournalFeed;
 import com.liferay.journal.service.JournalFeedService;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.rss.util.RSSUtil;
 
 import javax.portlet.ActionRequest;

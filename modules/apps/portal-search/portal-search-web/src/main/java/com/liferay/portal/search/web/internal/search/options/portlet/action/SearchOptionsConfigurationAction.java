@@ -6,7 +6,7 @@
 package com.liferay.portal.search.web.internal.search.options.portlet.action;
 
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 import com.liferay.portal.search.web.internal.search.options.constants.SearchOptionsPortletKeys;
 
 import javax.servlet.http.HttpServletRequest;

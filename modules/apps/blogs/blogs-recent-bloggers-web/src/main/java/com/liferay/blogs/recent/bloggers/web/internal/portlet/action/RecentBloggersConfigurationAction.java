@@ -11,9 +11,9 @@ import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.organizations.item.selector.OrganizationItemSelectorCriterion;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.RenderResponse;

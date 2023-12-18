@@ -10,7 +10,6 @@ import com.liferay.multi.factor.authentication.spi.checker.browser.BrowserMFAChe
 import com.liferay.multi.factor.authentication.web.internal.constants.MFAPortletKeys;
 import com.liferay.multi.factor.authentication.web.internal.constants.MFAWebKeys;
 import com.liferay.multi.factor.authentication.web.internal.policy.MFAPolicy;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -19,6 +18,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import java.util.List;
 

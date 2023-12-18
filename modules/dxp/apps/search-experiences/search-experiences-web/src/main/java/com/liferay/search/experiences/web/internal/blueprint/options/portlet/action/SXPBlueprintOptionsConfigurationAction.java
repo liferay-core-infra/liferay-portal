@@ -6,7 +6,7 @@
 package com.liferay.search.experiences.web.internal.blueprint.options.portlet.action;
 
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 import com.liferay.search.experiences.constants.SXPPortletKeys;
 
 import javax.servlet.http.HttpServletRequest;

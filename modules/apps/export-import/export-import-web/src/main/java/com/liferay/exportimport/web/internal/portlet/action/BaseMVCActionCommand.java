@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Renan Vasconcelos
  */
 public abstract class BaseMVCActionCommand
-	extends com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand {
+	extends com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand {
 
 	public void addTempFileEntry(ActionRequest actionRequest, String folderName)
 		throws Exception {

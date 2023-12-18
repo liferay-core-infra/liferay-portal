@@ -5,9 +5,9 @@
 
 package com.liferay.wiki.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.portlet.BaseJSPSettingsConfigurationAction;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

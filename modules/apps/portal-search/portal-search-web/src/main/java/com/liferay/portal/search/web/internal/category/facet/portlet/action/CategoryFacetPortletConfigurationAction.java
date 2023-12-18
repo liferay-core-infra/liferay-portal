@@ -6,7 +6,7 @@
 package com.liferay.portal.search.web.internal.category.facet.portlet.action;
 
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 import com.liferay.portal.search.web.internal.category.facet.constants.CategoryFacetPortletKeys;
 
 import javax.servlet.http.HttpServletRequest;

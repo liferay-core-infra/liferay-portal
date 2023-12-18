@@ -5,12 +5,12 @@
 
 package com.liferay.users.admin.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import java.util.HashMap;

@@ -7,7 +7,7 @@ package com.liferay.asset.categories.navigation.web.internal.portlet.action;
 
 import com.liferay.asset.categories.navigation.constants.AssetCategoriesNavigationPortletKeys;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import javax.servlet.http.HttpServletRequest;
 

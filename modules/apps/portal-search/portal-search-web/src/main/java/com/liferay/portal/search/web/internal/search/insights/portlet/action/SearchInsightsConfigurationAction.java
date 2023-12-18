@@ -6,11 +6,11 @@
 package com.liferay.portal.search.web.internal.search.insights.portlet.action;
 
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 import com.liferay.portal.search.web.internal.search.insights.constants.SearchInsightsPortletKeys;
 
 import javax.servlet.http.HttpServletRequest;

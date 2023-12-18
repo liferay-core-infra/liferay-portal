@@ -7,8 +7,8 @@ package com.liferay.segments.experiment.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.segments.constants.SegmentsPortletKeys;
 
 import javax.portlet.ActionRequest;

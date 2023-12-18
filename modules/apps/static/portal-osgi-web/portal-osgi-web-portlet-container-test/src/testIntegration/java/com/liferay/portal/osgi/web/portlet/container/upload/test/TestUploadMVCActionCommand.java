@@ -5,8 +5,8 @@
 
 package com.liferay.portal.osgi.web.portlet.container.upload.test;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.upload.UniqueFileNameProvider;
 
 import javax.portlet.ActionRequest;

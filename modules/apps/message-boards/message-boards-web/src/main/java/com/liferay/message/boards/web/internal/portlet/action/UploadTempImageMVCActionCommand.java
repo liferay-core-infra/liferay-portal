@@ -10,8 +10,8 @@ import com.liferay.item.selector.ItemSelectorUploadResponseHandler;
 import com.liferay.message.boards.constants.MBPortletKeys;
 import com.liferay.message.boards.service.MBMessageService;
 import com.liferay.message.boards.web.internal.upload.BaseMBUploadFileEntryHandler;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.upload.UploadHandler;
 
 import javax.portlet.ActionRequest;

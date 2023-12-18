@@ -5,12 +5,12 @@
 
 package com.liferay.search.experiences.web.internal.blueprint.admin.portlet.action;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.search.experiences.constants.SXPPortletKeys;
 import com.liferay.search.experiences.exception.SXPElementReadOnlyException;
 import com.liferay.search.experiences.service.SXPElementService;

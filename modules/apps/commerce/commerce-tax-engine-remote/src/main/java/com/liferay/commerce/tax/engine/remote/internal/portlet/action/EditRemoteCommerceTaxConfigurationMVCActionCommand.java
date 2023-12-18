@@ -7,7 +7,6 @@ package com.liferay.commerce.tax.engine.remote.internal.portlet.action;
 
 import com.liferay.commerce.constants.CommercePortletKeys;
 import com.liferay.commerce.tax.engine.remote.internal.constants.RemoteCommerceTaxEngineConstants;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.settings.FallbackKeysSettingsUtil;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
@@ -16,6 +15,7 @@ import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

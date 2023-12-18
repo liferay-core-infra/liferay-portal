@@ -7,11 +7,11 @@ package com.liferay.blogs.web.internal.portlet.action;
 
 import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
-import com.liferay.portal.kernel.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.portlet.BaseJSPSettingsConfigurationAction;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

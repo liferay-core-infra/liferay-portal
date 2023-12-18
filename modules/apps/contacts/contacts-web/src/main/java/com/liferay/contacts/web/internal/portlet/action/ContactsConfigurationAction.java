@@ -7,7 +7,7 @@ package com.liferay.contacts.web.internal.portlet.action;
 
 import com.liferay.contacts.web.internal.constants.ContactsPortletKeys;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import org.osgi.service.component.annotations.Component;
 

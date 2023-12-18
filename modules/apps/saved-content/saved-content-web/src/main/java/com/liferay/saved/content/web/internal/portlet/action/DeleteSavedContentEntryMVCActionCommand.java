@@ -5,11 +5,11 @@
 
 package com.liferay.saved.content.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.saved.content.constants.MySavedContentPortletKeys;
 import com.liferay.saved.content.model.SavedContentEntry;
 import com.liferay.saved.content.service.SavedContentEntryService;

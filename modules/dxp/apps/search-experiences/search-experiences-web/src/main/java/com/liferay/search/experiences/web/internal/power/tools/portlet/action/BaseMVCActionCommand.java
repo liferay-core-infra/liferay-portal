@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  */
 public abstract class BaseMVCActionCommand
-	extends com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand {
+	extends com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand {
 
 	protected JournalArticle addJournalArticle(
 			ActionRequest actionRequest, String[] assetTagNames, String content,

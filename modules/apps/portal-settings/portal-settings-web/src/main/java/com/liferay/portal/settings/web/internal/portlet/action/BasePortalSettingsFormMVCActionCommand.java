@@ -5,12 +5,12 @@
 
 package com.liferay.portal.settings.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseFormMVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.portlet.bridges.mvc.BaseFormMVCActionCommand;
 import com.liferay.portal.settings.portlet.action.PortalSettingsFormContributor;
 
 import javax.portlet.ActionRequest;

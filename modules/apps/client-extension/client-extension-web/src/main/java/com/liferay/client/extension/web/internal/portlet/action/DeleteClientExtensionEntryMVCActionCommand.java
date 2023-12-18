@@ -7,11 +7,11 @@ package com.liferay.client.extension.web.internal.portlet.action;
 
 import com.liferay.client.extension.service.ClientExtensionEntryService;
 import com.liferay.client.extension.web.internal.constants.ClientExtensionAdminPortletKeys;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

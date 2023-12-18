@@ -10,11 +10,11 @@ import com.liferay.journal.exception.ArticleIdException;
 import com.liferay.journal.exception.DuplicateArticleIdException;
 import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.service.JournalArticleService;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

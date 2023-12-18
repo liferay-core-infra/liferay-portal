@@ -9,8 +9,8 @@ import com.liferay.dynamic.data.lists.constants.DDLPortletKeys;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

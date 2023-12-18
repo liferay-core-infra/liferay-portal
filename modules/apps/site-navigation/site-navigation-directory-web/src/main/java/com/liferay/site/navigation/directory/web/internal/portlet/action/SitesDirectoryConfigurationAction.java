@@ -6,7 +6,7 @@
 package com.liferay.site.navigation.directory.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 import com.liferay.site.navigation.directory.web.internal.constants.SitesDirectoryPortletKeys;
 
 import javax.servlet.http.HttpServletRequest;

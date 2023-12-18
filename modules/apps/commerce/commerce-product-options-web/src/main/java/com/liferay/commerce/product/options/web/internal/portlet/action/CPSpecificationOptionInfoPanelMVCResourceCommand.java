@@ -8,8 +8,8 @@ package com.liferay.commerce.product.options.web.internal.portlet.action;
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.commerce.product.constants.CPWebKeys;
 import com.liferay.commerce.product.options.web.internal.portlet.action.helper.ActionHelper;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;

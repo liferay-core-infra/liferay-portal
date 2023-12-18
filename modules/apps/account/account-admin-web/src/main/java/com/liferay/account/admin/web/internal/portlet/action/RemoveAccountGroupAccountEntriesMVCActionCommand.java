@@ -9,11 +9,11 @@ import com.liferay.account.constants.AccountPortletKeys;
 import com.liferay.account.exception.NoSuchGroupAccountEntryRelException;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.service.AccountGroupRelService;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

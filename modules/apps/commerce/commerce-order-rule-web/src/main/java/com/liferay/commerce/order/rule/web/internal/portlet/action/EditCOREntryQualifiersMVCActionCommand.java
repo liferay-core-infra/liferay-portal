@@ -11,11 +11,11 @@ import com.liferay.commerce.model.CommerceOrderType;
 import com.liferay.commerce.order.rule.constants.COREntryPortletKeys;
 import com.liferay.commerce.order.rule.service.COREntryRelService;
 import com.liferay.commerce.product.model.CommerceChannel;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseTransactionalMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseTransactionalMVCActionCommand;
 
 import java.util.Objects;
 

@@ -6,9 +6,9 @@
 package com.liferay.template.web.internal.portlet.action;
 
 import com.liferay.dynamic.data.mapping.service.DDMTemplateService;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.template.constants.TemplatePortletKeys;
 
 import javax.portlet.ActionRequest;

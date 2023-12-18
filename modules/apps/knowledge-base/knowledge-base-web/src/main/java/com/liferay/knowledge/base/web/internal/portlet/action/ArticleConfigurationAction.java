@@ -10,9 +10,9 @@ import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.service.KBArticleService;
 import com.liferay.knowledge.base.web.internal.display.context.KBArticleConfigurationDisplayContext;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletResponse;

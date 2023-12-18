@@ -13,11 +13,11 @@ import com.liferay.journal.web.internal.display.context.helper.JournalWebRequest
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
-import com.liferay.portal.kernel.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.portlet.BaseJSPSettingsConfigurationAction;
 
 import java.util.Map;
 

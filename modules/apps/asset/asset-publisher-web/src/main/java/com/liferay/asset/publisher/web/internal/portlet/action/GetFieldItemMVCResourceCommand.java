@@ -6,8 +6,8 @@
 package com.liferay.asset.publisher.web.internal.portlet.action;
 
 import com.liferay.asset.publisher.constants.AssetPublisherPortletKeys;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;

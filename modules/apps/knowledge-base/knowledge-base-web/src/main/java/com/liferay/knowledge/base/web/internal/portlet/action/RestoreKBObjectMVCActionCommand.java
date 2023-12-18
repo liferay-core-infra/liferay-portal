@@ -6,10 +6,10 @@
 package com.liferay.knowledge.base.web.internal.portlet.action;
 
 import com.liferay.knowledge.base.constants.KBPortletKeys;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.trash.service.TrashEntryService;
 
 import javax.portlet.ActionRequest;

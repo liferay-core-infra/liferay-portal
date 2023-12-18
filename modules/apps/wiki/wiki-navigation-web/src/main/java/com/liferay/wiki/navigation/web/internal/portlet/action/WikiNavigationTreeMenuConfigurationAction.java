@@ -6,9 +6,9 @@
 package com.liferay.wiki.navigation.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 import com.liferay.wiki.exception.NoSuchNodeException;
 import com.liferay.wiki.navigation.web.internal.constants.WikiNavigationPortletKeys;
 import com.liferay.wiki.service.WikiNodeService;

@@ -5,9 +5,9 @@
 
 package com.liferay.redirect.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.redirect.service.RedirectEntryService;
 import com.liferay.redirect.web.internal.constants.RedirectPortletKeys;
 

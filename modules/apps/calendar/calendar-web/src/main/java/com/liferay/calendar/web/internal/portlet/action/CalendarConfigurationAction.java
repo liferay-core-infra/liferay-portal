@@ -7,10 +7,10 @@ package com.liferay.calendar.web.internal.portlet.action;
 
 import com.liferay.calendar.constants.CalendarPortletKeys;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SessionClicks;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

@@ -13,10 +13,10 @@ import com.liferay.blogs.web.internal.upload.ImageBlogsUploadResponseHandler;
 import com.liferay.blogs.web.internal.upload.TempImageBlogsUploadFileEntryHandler;
 import com.liferay.item.selector.ItemSelectorUploadResponseHandler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.upload.UniqueFileNameProvider;
 import com.liferay.upload.UploadHandler;
 

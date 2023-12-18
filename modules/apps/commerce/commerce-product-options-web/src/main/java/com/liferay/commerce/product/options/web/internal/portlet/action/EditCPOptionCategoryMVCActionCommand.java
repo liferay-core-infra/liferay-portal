@@ -10,7 +10,6 @@ import com.liferay.commerce.product.exception.CPOptionCategoryKeyException;
 import com.liferay.commerce.product.exception.NoSuchCPOptionCategoryException;
 import com.liferay.commerce.product.model.CPOptionCategory;
 import com.liferay.commerce.product.service.CPOptionCategoryService;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -19,6 +18,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import java.util.Locale;
 import java.util.Map;

@@ -9,9 +9,9 @@ import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.commerce.product.type.grouped.constants.GroupedCPTypeWebKeys;
 import com.liferay.commerce.product.type.grouped.model.CPDefinitionGroupedEntry;
 import com.liferay.commerce.product.type.grouped.service.CPDefinitionGroupedEntryService;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand;
 
 import java.util.ArrayList;
 import java.util.List;

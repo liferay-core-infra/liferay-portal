@@ -7,9 +7,9 @@ package com.liferay.product.navigation.control.menu.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuPortletKeys;
 import com.liferay.product.navigation.control.menu.web.internal.display.context.AddContentPanelDisplayContext;
 

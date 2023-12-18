@@ -9,11 +9,11 @@ import com.liferay.commerce.model.CommerceOrderType;
 import com.liferay.commerce.term.constants.CommerceTermEntryPortletKeys;
 import com.liferay.commerce.term.exception.DuplicateCommerceTermEntryRelException;
 import com.liferay.commerce.term.service.CommerceTermEntryRelService;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import java.util.Objects;
 

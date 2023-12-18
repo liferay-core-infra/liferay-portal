@@ -7,7 +7,7 @@ package com.liferay.knowledge.base.web.internal.portlet.action;
 
 import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import javax.servlet.http.HttpServletRequest;
 

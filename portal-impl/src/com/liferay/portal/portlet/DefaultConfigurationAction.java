@@ -7,7 +7,6 @@ package com.liferay.portal.portlet;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.ResourceServingConfigurationAction;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;

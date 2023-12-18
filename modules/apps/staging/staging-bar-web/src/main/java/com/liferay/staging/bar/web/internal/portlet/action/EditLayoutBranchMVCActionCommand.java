@@ -6,7 +6,6 @@
 package com.liferay.staging.bar.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.exception.LayoutBranchNameException;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.LayoutBranchService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -14,6 +13,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.staging.bar.web.internal.portlet.constants.StagingBarPortletKeys;
 
 import javax.portlet.ActionRequest;

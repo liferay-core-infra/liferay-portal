@@ -5,8 +5,8 @@
 
 package com.liferay.wiki.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
+import com.liferay.portal.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.wiki.constants.WikiPortletKeys;
 
 import javax.portlet.ActionRequest;

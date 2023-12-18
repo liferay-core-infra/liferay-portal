@@ -10,11 +10,11 @@ import com.liferay.announcements.kernel.model.AnnouncementsEntryConstants;
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalService;
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryService;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryImpl;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 

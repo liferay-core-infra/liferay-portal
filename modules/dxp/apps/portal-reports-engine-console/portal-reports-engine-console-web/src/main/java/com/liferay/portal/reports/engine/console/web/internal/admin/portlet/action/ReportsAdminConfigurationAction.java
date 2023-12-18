@@ -5,11 +5,11 @@
 
 package com.liferay.portal.reports.engine.console.web.internal.admin.portlet.action;
 
-import com.liferay.portal.kernel.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.reports.engine.console.constants.ReportsEngineConsolePortletKeys;
 
 import javax.portlet.ActionRequest;

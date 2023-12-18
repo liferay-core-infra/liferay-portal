@@ -5,7 +5,7 @@
 
 package com.liferay.object.web.internal.object.entries.portlet.action;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.upload.UploadHandler;
 import com.liferay.upload.UploadResponseHandler;

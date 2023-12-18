@@ -10,12 +10,12 @@ import com.liferay.commerce.product.type.virtual.order.exception.CommerceVirtual
 import com.liferay.commerce.product.type.virtual.order.exception.CommerceVirtualOrderItemFileEntryIdException;
 import com.liferay.commerce.product.type.virtual.order.exception.NoSuchVirtualOrderItemException;
 import com.liferay.commerce.product.type.virtual.order.service.CommerceVirtualOrderItemService;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCActionCommand;
 
 import java.util.concurrent.TimeUnit;
 

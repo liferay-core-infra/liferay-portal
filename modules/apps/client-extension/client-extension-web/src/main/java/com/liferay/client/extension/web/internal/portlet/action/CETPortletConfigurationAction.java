@@ -6,8 +6,8 @@
 package com.liferay.client.extension.web.internal.portlet.action;
 
 import com.liferay.client.extension.web.internal.type.deployer.Registrable;
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.portlet.DefaultConfigurationAction;
 
 import java.util.Dictionary;
 

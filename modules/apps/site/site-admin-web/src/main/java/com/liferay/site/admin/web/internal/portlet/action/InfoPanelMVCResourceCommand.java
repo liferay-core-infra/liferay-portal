@@ -6,10 +6,10 @@
 package com.liferay.site.admin.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.site.admin.web.internal.constants.SiteAdminPortletKeys;
 import com.liferay.site.admin.web.internal.constants.SiteAdminWebKeys;
 import com.liferay.site.constants.SiteWebKeys;

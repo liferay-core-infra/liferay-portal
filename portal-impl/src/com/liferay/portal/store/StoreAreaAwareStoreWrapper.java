@@ -3,8 +3,11 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.document.library.kernel.store;
+package com.liferay.portal.store;
 
+import com.liferay.document.library.kernel.store.Store;
+import com.liferay.document.library.kernel.store.StoreArea;
+import com.liferay.document.library.kernel.store.StoreAreaProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;

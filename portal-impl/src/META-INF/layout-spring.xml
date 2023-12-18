@@ -7,7 +7,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
 >
-	<bean class="com.liferay.portal.service.permission.LayoutBranchPermissionImpl" id="com.liferay.portal.kernel.service.permission.LayoutBranchPermission" />
 	<bean class="com.liferay.portal.kernel.service.permission.LayoutPermissionUtil" id="com.liferay.portal.kernel.service.permission.LayoutPermissionUtil">
 		<property name="layoutPermission" ref="com.liferay.portal.service.permission.LayoutPermissionImpl" />
 	</bean>

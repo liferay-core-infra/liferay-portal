@@ -7,6 +7,7 @@ package com.liferay.portlet;
 
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -14,7 +15,6 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
-import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -31,6 +31,9 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Brian Wing Shun Chan
@@ -79,19 +82,30 @@ public class PortletPreferencesFactoryImplGetPreferencesIdsUnitTest {
 	public void testPreferencesWithModeEditGuestInPrivateLayout()
 		throws Exception {
 
-		LayoutPermissionUtil layoutPermissionUtil = new LayoutPermissionUtil();
+		ServiceRegistration<LayoutPermission>
+			layoutPermissionServiceRegistration = null;
 
-		layoutPermissionUtil.setLayoutPermission(
-			(LayoutPermission)ProxyUtil.newProxyInstance(
-				LayoutPermission.class.getClassLoader(),
-				new Class<?>[] {LayoutPermission.class},
-				new LayoutPermissionInvocationHandler(true)));
+		try {
+			layoutPermissionServiceRegistration =
+				_bundleContext.registerService(
+					LayoutPermission.class,
+					(LayoutPermission)ProxyUtil.newProxyInstance(
+						LayoutPermission.class.getClassLoader(),
+						new Class<?>[] {LayoutPermission.class},
+						new LayoutPermissionInvocationHandler(true)),
+					null);
 
-		long siteGroupId = _layout.getGroupId();
-		boolean modeEditGuest = true;
+			long siteGroupId = _layout.getGroupId();
+			boolean modeEditGuest = true;
 
-		PortletPreferencesFactoryUtil.getPortletPreferencesIds(
-			siteGroupId, _USER_ID, _layout, _PORTLET_ID, modeEditGuest);
+			PortletPreferencesFactoryUtil.getPortletPreferencesIds(
+				siteGroupId, _USER_ID, _layout, _PORTLET_ID, modeEditGuest);
+		}
+		finally {
+			if (layoutPermissionServiceRegistration != null) {
+				layoutPermissionServiceRegistration.unregister();
+			}
+		}
 	}
 
 	@Test(expected = PrincipalException.MustHavePermission.class)
@@ -100,24 +114,38 @@ public class PortletPreferencesFactoryImplGetPreferencesIdsUnitTest {
 
 		_layout.setPrivateLayout(false);
 
-		LayoutPermissionUtil layoutPermissionUtil = new LayoutPermissionUtil();
+		ServiceRegistration<LayoutPermission>
+			layoutPermissionServiceRegistration = null;
 
-		layoutPermissionUtil.setLayoutPermission(
-			(LayoutPermission)ProxyUtil.newProxyInstance(
-				LayoutPermission.class.getClassLoader(),
-				new Class<?>[] {LayoutPermission.class},
-				new LayoutPermissionInvocationHandler(false)));
+		try {
+			layoutPermissionServiceRegistration =
+				_bundleContext.registerService(
+					LayoutPermission.class,
+					(LayoutPermission)ProxyUtil.newProxyInstance(
+						LayoutPermission.class.getClassLoader(),
+						new Class<?>[] {LayoutPermission.class},
+						new LayoutPermissionInvocationHandler(false)),
+					null);
 
-		long siteGroupId = _layout.getGroupId();
-		boolean modeEditGuest = true;
+			long siteGroupId = _layout.getGroupId();
+			boolean modeEditGuest = true;
 
-		PortletPreferencesFactoryUtil.getPortletPreferencesIds(
-			siteGroupId, _USER_ID, _layout, _PORTLET_ID, modeEditGuest);
+			PortletPreferencesFactoryUtil.getPortletPreferencesIds(
+				siteGroupId, _USER_ID, _layout, _PORTLET_ID, modeEditGuest);
+		}
+		finally {
+			if (layoutPermissionServiceRegistration != null) {
+				layoutPermissionServiceRegistration.unregister();
+			}
+		}
 	}
 
 	private static final String _PORTLET_ID = RandomTestUtil.randomString(10);
 
 	private static final long _USER_ID = RandomTestUtil.randomLong();
+
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 
 	private final Layout _layout = new LayoutImpl();
 

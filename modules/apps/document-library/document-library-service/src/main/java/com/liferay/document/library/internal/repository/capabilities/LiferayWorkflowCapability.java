@@ -10,7 +10,6 @@ import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.document.library.kernel.model.DLFileVersion;
 import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
 import com.liferay.document.library.kernel.util.DLAppHelperThreadLocal;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.sync.constants.DLSyncConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.LocalRepository;
@@ -27,6 +26,7 @@ import com.liferay.portal.repository.capabilities.util.DLFileVersionServiceAdapt
 import com.liferay.portal.repository.liferayrepository.LiferayWorkflowLocalRepositoryWrapper;
 import com.liferay.portal.repository.liferayrepository.LiferayWorkflowRepositoryWrapper;
 import com.liferay.portal.repository.util.RepositoryWrapperAware;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 /**
  * @author Adolfo Pérez

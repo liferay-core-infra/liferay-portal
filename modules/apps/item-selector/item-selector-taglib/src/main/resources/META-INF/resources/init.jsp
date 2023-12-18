@@ -22,7 +22,6 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.document.library.kernel.model.DLFolderConstants" %><%@
 page import="com.liferay.document.library.kernel.service.DLAppLocalServiceUtil" %><%@
 page import="com.liferay.document.library.kernel.service.DLAppServiceUtil" %><%@
-page import="com.liferay.document.library.kernel.util.DLUtil" %><%@
 page import="com.liferay.item.selector.ItemSelectorReturnTypeResolver" %><%@
 page import="com.liferay.item.selector.taglib.internal.dao.search.RepositoryEntryResultRowSplitter" %><%@
 page import="com.liferay.item.selector.taglib.internal.display.context.GroupSelectorDisplayContext" %><%@
@@ -46,6 +45,7 @@ page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
+page import="com.liferay.portlet.documentlibrary.util.DLUtil" %><%@
 page import="com.liferay.site.navigation.taglib.servlet.taglib.util.BreadcrumbEntriesUtil" %>
 
 <%@ page import="java.util.List" %><%@

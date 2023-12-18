@@ -6,7 +6,6 @@
 package com.liferay.document.library.web.internal.settings;
 
 import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.settings.FallbackKeysSettingsUtil;
@@ -15,6 +14,7 @@ import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.TypedSettings;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.util.Map;
 

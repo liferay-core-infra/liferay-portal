@@ -5,7 +5,6 @@
 
 package com.liferay.portal.webdav;
 
-import com.liferay.document.library.kernel.util.DL;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.CharPool;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.webdav.WebDAVException;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.xml.Namespace;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -308,11 +308,11 @@ public class WebDAVUtil {
 	}
 
 	public static String stripManualCheckInRequiredPath(String url) {
-		return stripToken(url, DL.MANUAL_CHECK_IN_REQUIRED_PATH);
+		return stripToken(url, DLUtil.MANUAL_CHECK_IN_REQUIRED_PATH);
 	}
 
 	public static String stripOfficeExtension(String url) {
-		String strippedUrl = stripToken(url, DL.OFFICE_EXTENSION_PATH);
+		String strippedUrl = stripToken(url, DLUtil.OFFICE_EXTENSION_PATH);
 
 		if (strippedUrl.length() != url.length()) {
 			strippedUrl = FileUtil.stripExtension(strippedUrl);

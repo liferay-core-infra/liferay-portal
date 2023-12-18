@@ -5,7 +5,6 @@
 
 package com.liferay.document.library.repository.external.model;
 
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.repository.external.ExtRepositoryAdapter;
 import com.liferay.document.library.repository.external.ExtRepositoryFileVersion;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
@@ -17,6 +16,7 @@ import com.liferay.portal.kernel.repository.model.RepositoryModelOperation;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.io.InputStream;
 

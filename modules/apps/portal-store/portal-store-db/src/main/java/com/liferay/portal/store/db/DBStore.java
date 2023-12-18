@@ -10,8 +10,8 @@ import com.liferay.document.library.content.model.DLContent;
 import com.liferay.document.library.content.service.DLContentLocalService;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.io.InputStream;
 

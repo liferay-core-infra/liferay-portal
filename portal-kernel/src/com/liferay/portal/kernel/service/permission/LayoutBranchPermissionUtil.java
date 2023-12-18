@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutBranch;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 /**
@@ -20,8 +21,10 @@ public class LayoutBranchPermissionUtil {
 			String actionId)
 		throws PortalException {
 
-		_layoutBranchPermission.check(
-			permissionChecker, layoutBranch, actionId);
+		LayoutBranchPermission layoutBranchPermission =
+			_layoutBranchPermissionSnapshot.get();
+
+		layoutBranchPermission.check(permissionChecker, layoutBranch, actionId);
 	}
 
 	public static void check(
@@ -29,7 +32,10 @@ public class LayoutBranchPermissionUtil {
 			String actionId)
 		throws PortalException {
 
-		_layoutBranchPermission.check(
+		LayoutBranchPermission layoutBranchPermission =
+			_layoutBranchPermissionSnapshot.get();
+
+		layoutBranchPermission.check(
 			permissionChecker, layoutBranchId, actionId);
 	}
 
@@ -37,7 +43,10 @@ public class LayoutBranchPermissionUtil {
 		PermissionChecker permissionChecker, LayoutBranch layoutBranch,
 		String actionId) {
 
-		return _layoutBranchPermission.contains(
+		LayoutBranchPermission layoutBranchPermission =
+			_layoutBranchPermissionSnapshot.get();
+
+		return layoutBranchPermission.contains(
 			permissionChecker, layoutBranch, actionId);
 	}
 
@@ -46,20 +55,19 @@ public class LayoutBranchPermissionUtil {
 			String actionId)
 		throws PortalException {
 
-		return _layoutBranchPermission.contains(
+		LayoutBranchPermission layoutBranchPermission =
+			_layoutBranchPermissionSnapshot.get();
+
+		return layoutBranchPermission.contains(
 			permissionChecker, layoutBranchId, actionId);
 	}
 
 	public static LayoutBranchPermission getLayoutBranchPermission() {
-		return _layoutBranchPermission;
+		return _layoutBranchPermissionSnapshot.get();
 	}
 
-	public void setLayoutBranchPermission(
-		LayoutBranchPermission layoutBranchPermission) {
-
-		_layoutBranchPermission = layoutBranchPermission;
-	}
-
-	private static LayoutBranchPermission _layoutBranchPermission;
+	private static final Snapshot<LayoutBranchPermission>
+		_layoutBranchPermissionSnapshot = new Snapshot<>(
+			LayoutBranchPermissionUtil.class, LayoutBranchPermission.class);
 
 }

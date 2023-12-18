@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.service.permission;
+package com.liferay.layout.internal.security.permission;
 
 import com.liferay.exportimport.kernel.staging.permission.StagingPermissionUtil;
 import com.liferay.petra.lang.HashUtil;
@@ -22,19 +22,20 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.UserBag;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.UserGroupLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
 import com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermissionUtil;
 import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
-import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
+import com.liferay.portal.service.permission.LayoutPrototypePermissionUtil;
+import com.liferay.portal.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.util.LayoutTypeControllerTracker;
 import com.liferay.portal.util.PropsValues;
 
@@ -43,13 +44,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Charles May
  * @author Brian Wing Shun Chan
  * @author Raymond Augé
  */
-@OSGiBeanProperties(
-	property = "model.class.name=com.liferay.portal.kernel.model.Layout"
+@Component(
+	property = "model.class.name=com.liferay.portal.kernel.model.Layout",
+	service = LayoutPermission.class
 )
 public class LayoutPermissionImpl implements LayoutPermission {
 
@@ -100,9 +105,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 			PermissionChecker permissionChecker, long plid, String actionId)
 		throws PortalException {
 
-		check(
-			permissionChecker, LayoutLocalServiceUtil.getLayout(plid),
-			actionId);
+		check(permissionChecker, _layoutLocalService.getLayout(plid), actionId);
 	}
 
 	@Override
@@ -125,7 +128,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 		throws PortalException {
 
 		checkLayoutRestrictedUpdatePermission(
-			permissionChecker, LayoutLocalServiceUtil.getLayout(plid));
+			permissionChecker, _layoutLocalService.getLayout(plid));
 	}
 
 	@Override
@@ -146,7 +149,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 		throws PortalException {
 
 		checkLayoutUpdatePermission(
-			permissionChecker, LayoutLocalServiceUtil.getLayout(plid));
+			permissionChecker, _layoutLocalService.getLayout(plid));
 	}
 
 	@Override
@@ -190,7 +193,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 
 		return contains(
 			permissionChecker,
-			LayoutLocalServiceUtil.getLayout(groupId, privateLayout, layoutId),
+			_layoutLocalService.getLayout(groupId, privateLayout, layoutId),
 			actionId);
 	}
 
@@ -200,8 +203,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 		throws PortalException {
 
 		return contains(
-			permissionChecker, LayoutLocalServiceUtil.getLayout(plid),
-			actionId);
+			permissionChecker, _layoutLocalService.getLayout(plid), actionId);
 	}
 
 	@Override
@@ -227,7 +229,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 		throws PortalException {
 
 		return containsLayoutRestrictedUpdatePermission(
-			permissionChecker, LayoutLocalServiceUtil.getLayout(plid));
+			permissionChecker, _layoutLocalService.getLayout(plid));
 	}
 
 	@Override
@@ -255,7 +257,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 		throws PortalException {
 
 		return containsLayoutUpdatePermission(
-			permissionChecker, LayoutLocalServiceUtil.getLayout(plid));
+			permissionChecker, _layoutLocalService.getLayout(plid));
 	}
 
 	@Override
@@ -346,7 +348,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 			long parentLayoutId = layout.getParentLayoutId();
 
 			while (parentLayoutId != LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
-				Layout parentLayout = LayoutLocalServiceUtil.getLayout(
+				Layout parentLayout = _layoutLocalService.getLayout(
 					layoutGroupId, layout.isPrivateLayout(), parentLayoutId);
 
 				if (contains(permissionChecker, parentLayout, actionId)) {
@@ -386,7 +388,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 			// with the hasOwnerPermission call.
 
 			ResourcePermission resourcePermission =
-				ResourcePermissionLocalServiceUtil.getResourcePermission(
+				_resourcePermissionLocalService.getResourcePermission(
 					layout.getCompanyId(), Layout.class.getName(),
 					ResourceConstants.SCOPE_INDIVIDUAL,
 					String.valueOf(layout.getPlid()),
@@ -446,7 +448,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 			boolean checkResourcePermission)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(layout.getGroupId());
+		Group group = _groupLocalService.getGroup(layout.getGroupId());
 
 		if (group.isControlPanel() && layout.isTypeControlPanel()) {
 			if (!permissionChecker.isSignedIn()) {
@@ -458,7 +460,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 
 		// Inactive sites are not viewable
 
-		if (!GroupLocalServiceUtil.isLiveGroupActive(group)) {
+		if (!_groupLocalService.isLiveGroupActive(group)) {
 			return false;
 		}
 
@@ -472,7 +474,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 				return true;
 			}
 
-			User groupUser = UserLocalServiceUtil.getUserById(groupUserId);
+			User groupUser = _userLocalService.getUserById(groupUserId);
 
 			if (!groupUser.isActive()) {
 				return false;
@@ -551,7 +553,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 		else if (group.isOrganization()) {
 			long organizationId = group.getOrganizationId();
 
-			if (OrganizationLocalServiceUtil.hasUserOrganization(
+			if (_organizationLocalService.hasUserOrganization(
 					permissionChecker.getUserId(), organizationId, false,
 					false)) {
 
@@ -565,7 +567,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 
 			if (!PropsValues.ORGANIZATIONS_MEMBERSHIP_STRICT) {
 				List<Organization> userOrgs =
-					OrganizationLocalServiceUtil.getUserOrganizations(
+					_organizationLocalService.getUserOrganizations(
 						permissionChecker.getUserId());
 
 				for (Organization organization : userOrgs) {
@@ -600,7 +602,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 		// As a last resort, check if any top level pages are viewable by the
 		// user
 
-		List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
+		List<Layout> layouts = _layoutLocalService.getLayouts(
 			layout.getGroupId(), layout.isPrivateLayout(),
 			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
 
@@ -665,7 +667,7 @@ public class LayoutPermissionImpl implements LayoutPermission {
 				UserBag userBag = permissionChecker.getUserBag();
 
 				if (userBag == null) {
-					return UserGroupLocalServiceUtil.hasUserUserGroup(
+					return _userGroupLocalService.hasUserUserGroup(
 						permissionChecker.getUserId(), group.getClassPK());
 				}
 
@@ -687,6 +689,24 @@ public class LayoutPermissionImpl implements LayoutPermission {
 		return containsWithViewableGroup(
 			permissionChecker, layout, checkViewableGroup, actionId);
 	}
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private OrganizationLocalService _organizationLocalService;
+
+	@Reference
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
+	@Reference
+	private UserGroupLocalService _userGroupLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 	private static class CacheKey {
 

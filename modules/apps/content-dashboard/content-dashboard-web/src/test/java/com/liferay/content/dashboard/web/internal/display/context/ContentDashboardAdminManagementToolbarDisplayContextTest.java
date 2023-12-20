@@ -92,84 +92,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 
 		List<ContentDashboardItemFilterProvider>
 			contentDashboardItemFilterProviderList = Arrays.asList(
-				new ContentDashboardItemFilterProvider() {
-
-					@Override
-					public ContentDashboardItemFilter
-							getContentDashboardItemFilter(
-								HttpServletRequest httpServletRequest)
-						throws ContentDashboardItemActionException {
-
-						return new ContentDashboardItemFilter() {
-
-							@Override
-							public DropdownItem getDropdownItem() {
-								return null;
-							}
-
-							@Override
-							public String getIcon() {
-								return null;
-							}
-
-							@Override
-							public String getLabel(Locale locale) {
-								return "contentDashboardItemFilterLabel";
-							}
-
-							@Override
-							public String getName() {
-								return "contentDashboardItemFilterName";
-							}
-
-							@Override
-							public String getParameterLabel(Locale locale) {
-								return "contentDashboardItemFilterParameter" +
-									"Label";
-							}
-
-							@Override
-							public String getParameterName() {
-								return "contentDashboardItemFilterParameter" +
-									"Name";
-							}
-
-							@Override
-							public List<String> getParameterValues() {
-								return Arrays.asList("value1", "value2");
-							}
-
-							@Override
-							public Type getType() {
-								return Type.ITEM_SELECTOR;
-							}
-
-							@Override
-							public String getURL() {
-								return "";
-							}
-
-						};
-					}
-
-					@Override
-					public String getKey() {
-						return "key";
-					}
-
-					@Override
-					public ContentDashboardItemFilter.Type getType() {
-						return ContentDashboardItemFilter.Type.ITEM_SELECTOR;
-					}
-
-					@Override
-					public boolean isShow(
-						HttpServletRequest httpServletRequest) {
-
-						return true;
-					}
-
-				});
+				new MockContentDashboardItemFilterProvider());
 
 		Mockito.when(
 			contentDashboardItemFilterProviderServiceTrackerList.iterator()
@@ -292,84 +215,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 
 		List<ContentDashboardItemFilterProvider>
 			contentDashboardItemFilterProviderList = Arrays.asList(
-				new ContentDashboardItemFilterProvider() {
-
-					@Override
-					public ContentDashboardItemFilter
-							getContentDashboardItemFilter(
-								HttpServletRequest httpServletRequest)
-						throws ContentDashboardItemActionException {
-
-						return new ContentDashboardItemFilter() {
-
-							@Override
-							public DropdownItem getDropdownItem() {
-								return null;
-							}
-
-							@Override
-							public String getIcon() {
-								return null;
-							}
-
-							@Override
-							public String getLabel(Locale locale) {
-								return "contentDashboardItemFilterLabel";
-							}
-
-							@Override
-							public String getName() {
-								return "contentDashboardItemFilterName";
-							}
-
-							@Override
-							public String getParameterLabel(Locale locale) {
-								return "contentDashboardItemFilterParameter" +
-									"Label";
-							}
-
-							@Override
-							public String getParameterName() {
-								return "contentDashboardItemFilterParameter" +
-									"Name";
-							}
-
-							@Override
-							public List<String> getParameterValues() {
-								return Arrays.asList("value1", "value2");
-							}
-
-							@Override
-							public Type getType() {
-								return Type.ITEM_SELECTOR;
-							}
-
-							@Override
-							public String getURL() {
-								return "";
-							}
-
-						};
-					}
-
-					@Override
-					public String getKey() {
-						return "key";
-					}
-
-					@Override
-					public ContentDashboardItemFilter.Type getType() {
-						return ContentDashboardItemFilter.Type.ITEM_SELECTOR;
-					}
-
-					@Override
-					public boolean isShow(
-						HttpServletRequest httpServletRequest) {
-
-						return true;
-					}
-
-				});
+				new MockContentDashboardItemFilterProvider());
 
 		Mockito.when(
 			contentDashboardItemFilterProviderServiceTrackerList.iterator()
@@ -403,6 +249,81 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 					Objects.equals(
 						labelItem.get("label"),
 						"contentDashboardItemFilterParameterLabel: value2")));
+	}
+
+	private class MockContentDashboardItemFilterProvider
+		implements ContentDashboardItemFilterProvider {
+
+		@Override
+		public ContentDashboardItemFilter getContentDashboardItemFilter(
+				HttpServletRequest httpServletRequest)
+			throws ContentDashboardItemActionException {
+
+			return new ContentDashboardItemFilter() {
+
+				@Override
+				public DropdownItem getDropdownItem() {
+					return null;
+				}
+
+				@Override
+				public String getIcon() {
+					return null;
+				}
+
+				@Override
+				public String getLabel(Locale locale) {
+					return "contentDashboardItemFilterLabel";
+				}
+
+				@Override
+				public String getName() {
+					return "contentDashboardItemFilterName";
+				}
+
+				@Override
+				public String getParameterLabel(Locale locale) {
+					return "contentDashboardItemFilterParameterLabel";
+				}
+
+				@Override
+				public String getParameterName() {
+					return "contentDashboardItemFilterParameterName";
+				}
+
+				@Override
+				public List<String> getParameterValues() {
+					return Arrays.asList("value1", "value2");
+				}
+
+				@Override
+				public Type getType() {
+					return Type.ITEM_SELECTOR;
+				}
+
+				@Override
+				public String getURL() {
+					return "";
+				}
+
+			};
+		}
+
+		@Override
+		public String getKey() {
+			return "key";
+		}
+
+		@Override
+		public ContentDashboardItemFilter.Type getType() {
+			return ContentDashboardItemFilter.Type.ITEM_SELECTOR;
+		}
+
+		@Override
+		public boolean isShow(HttpServletRequest httpServletRequest) {
+			return true;
+		}
+
 	}
 
 }

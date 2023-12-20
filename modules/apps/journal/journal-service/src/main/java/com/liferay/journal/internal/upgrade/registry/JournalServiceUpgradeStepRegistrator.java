@@ -200,7 +200,8 @@ public class JournalServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.1.4", "1.1.5",
-			new ContentImagesUpgradeProcess(_journalArticleImageUpgradeHelper));
+			new ContentImagesUpgradeProcess(
+				_journalArticleImageUpgradeHelper, _portletFileRepository));
 
 		registry.register(
 			"1.1.5", "1.1.6",
@@ -491,10 +492,10 @@ public class JournalServiceUpgradeStepRegistrator
 	@Reference
 	private Portal _portal;
 
-	// See LPS-82746
-
 	@Reference
 	private PortalCapabilityLocator _portalCapabilityLocator;
+
+	// See LPS-82746
 
 	@Reference
 	private PortletFileRepository _portletFileRepository;

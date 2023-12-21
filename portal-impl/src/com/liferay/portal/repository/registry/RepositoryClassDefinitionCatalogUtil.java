@@ -5,6 +5,8 @@
 
 package com.liferay.portal.repository.registry;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 import java.util.Collection;
 
 /**
@@ -15,31 +17,36 @@ public class RepositoryClassDefinitionCatalogUtil {
 	public static Iterable<RepositoryClassDefinition>
 		getExternalRepositoryClassDefinitions(long companyId) {
 
-		return _repositoryClassDefinitionCatalog.
+		RepositoryClassDefinitionCatalog repositoryClassDefinitionCatalog =
+			_repositoryClassDefinitionCatalogSnapshot.get();
+
+		return repositoryClassDefinitionCatalog.
 			getExternalRepositoryClassDefinitions(companyId);
 	}
 
 	public static Collection<String> getExternalRepositoryClassNames(
 		long companyId) {
 
-		return _repositoryClassDefinitionCatalog.
-			getExternalRepositoryClassNames(companyId);
+		RepositoryClassDefinitionCatalog repositoryClassDefinitionCatalog =
+			_repositoryClassDefinitionCatalogSnapshot.get();
+
+		return repositoryClassDefinitionCatalog.getExternalRepositoryClassNames(
+			companyId);
 	}
 
 	public static RepositoryClassDefinition getRepositoryClassDefinition(
 		long companyId, String repositoryTypeKey) {
 
-		return _repositoryClassDefinitionCatalog.getRepositoryClassDefinition(
+		RepositoryClassDefinitionCatalog repositoryClassDefinitionCatalog =
+			_repositoryClassDefinitionCatalogSnapshot.get();
+
+		return repositoryClassDefinitionCatalog.getRepositoryClassDefinition(
 			companyId, repositoryTypeKey);
 	}
 
-	public void setRepositoryClassDefinitionCatalog(
-		RepositoryClassDefinitionCatalog repositoryClassDefinitionCatalog) {
-
-		_repositoryClassDefinitionCatalog = repositoryClassDefinitionCatalog;
-	}
-
-	private static RepositoryClassDefinitionCatalog
-		_repositoryClassDefinitionCatalog;
+	private static final Snapshot<RepositoryClassDefinitionCatalog>
+		_repositoryClassDefinitionCatalogSnapshot = new Snapshot<>(
+			RepositoryClassDefinitionCatalogUtil.class,
+			RepositoryClassDefinitionCatalog.class);
 
 }

@@ -41,8 +41,6 @@ deployDependencies {
 
 	include "commons-*.jar"
 	include "cxf-*.jar"
-	include "geronimo-jaxrs_2.1_spec-*.jar"
-	include "geronimo-jsonb_1.0_spec-*.jar"
 	include "jaxb-osgi-*.jar"
 	include "johnzon-jsonb-*.jar"
 	include "johnzon-mapper-*.jar"
@@ -51,7 +49,4 @@ deployDependencies {
 	include "org.osgi.service.jaxrs-*.jar"
 	include "velocity-*.jar"
 	include "xmlschema-core-*.jar"
-
-	rename(/geronimo-jaxrs_2\.1_spec-(.+)\.jar/, "geronimo-jaxrs_2.1_spec" + renameSuffix)
-	rename(/geronimo-jsonb_1\.0_spec-(.+)\.jar/, "geronimo-jsonb_1.0_spec" + renameSuffix)
 }

@@ -3,9 +3,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.repository;
+package com.liferay.portal.repository.internal;
 
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.repository.LocalRepository;
@@ -17,9 +16,13 @@ import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.repository.registry.RepositoryClassDefinition;
 import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Adolfo Pérez
  */
+@Component(service = RepositoryFactory.class)
 public class RepositoryFactoryImpl implements RepositoryFactory {
 
 	@Override
@@ -80,10 +83,10 @@ public class RepositoryFactoryImpl implements RepositoryFactory {
 		return CompanyConstants.SYSTEM;
 	}
 
-	@BeanReference(type = RepositoryClassDefinitionCatalog.class)
+	@Reference
 	private RepositoryClassDefinitionCatalog _repositoryClassDefinitionCatalog;
 
-	@BeanReference(type = RepositoryLocalService.class)
+	@Reference
 	private RepositoryLocalService _repositoryLocalService;
 
 }

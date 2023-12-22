@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.security.permission.resource.PortletResourcePer
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog;
 import com.liferay.portal.service.base.RepositoryServiceBaseImpl;
 import com.liferay.portlet.documentlibrary.util.DLPortletResourcePermissionUtil;
 
@@ -225,8 +224,5 @@ public class RepositoryServiceImpl extends RepositoryServiceBaseImpl {
 
 	@BeanReference(type = GroupPersistence.class)
 	private GroupPersistence _groupPersistence;
-
-	@BeanReference(type = RepositoryClassDefinitionCatalog.class)
-	private RepositoryClassDefinitionCatalog _repositoryClassDefinitionCatalog;
 
 }

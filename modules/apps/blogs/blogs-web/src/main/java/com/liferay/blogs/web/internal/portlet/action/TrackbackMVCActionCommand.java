@@ -8,17 +8,22 @@ package com.liferay.blogs.web.internal.portlet.action;
 import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.blogs.exception.NoSuchEntryException;
 import com.liferay.blogs.exception.TrackbackValidationException;
+import com.liferay.blogs.linkback.LinkbackConsumer;
 import com.liferay.blogs.model.BlogsEntry;
-import com.liferay.blogs.web.internal.trackback.Trackback;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.comment.CommentManager;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFunction;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -26,8 +31,12 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.util.PropsValues;
+
+import java.util.function.Function;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -113,6 +122,76 @@ public class TrackbackMVCActionCommand extends BaseMVCActionCommand {
 		catch (Exception exception) {
 			_log.error(exception);
 		}
+	}
+
+	/**
+	 * @author Alexander Chow
+	 * @author André de Oliveira
+	 */
+	protected class Trackback {
+
+		public void addTrackback(
+				BlogsEntry entry, ThemeDisplay themeDisplay, String excerpt,
+				String url, String blogName, String title,
+				Function<String, ServiceContext> serviceContextFunction)
+			throws PortalException {
+
+			long userId = _userLocalService.getGuestUserId(
+				themeDisplay.getCompanyId());
+			long groupId = entry.getGroupId();
+			String className = BlogsEntry.class.getName();
+			long classPK = entry.getEntryId();
+
+			String body = _buildBody(themeDisplay, excerpt, url);
+
+			long commentId = _commentManager.addComment(
+				null, userId, groupId, className, classPK, blogName, title,
+				body, serviceContextFunction);
+
+			String entryURL = _buildEntryURL(entry, themeDisplay);
+
+			_linkbackConsumer.addNewTrackback(commentId, url, entryURL);
+		}
+
+		private String _buildBBCodeBody(
+			ThemeDisplay themeDisplay, String excerpt, String url) {
+
+			url = StringUtil.replace(
+				url, new char[] {CharPool.CLOSE_BRACKET, CharPool.OPEN_BRACKET},
+				new String[] {"%5D", "%5B"});
+
+			return StringBundler.concat(
+				"[...] ", excerpt, " [...] [url=", url, "]",
+				themeDisplay.translate("read-more"), "[/url]");
+		}
+
+		private String _buildBody(
+			ThemeDisplay themeDisplay, String excerpt, String url) {
+
+			if (PropsValues.DISCUSSION_COMMENTS_FORMAT.equals("bbcode")) {
+				return _buildBBCodeBody(themeDisplay, excerpt, url);
+			}
+
+			return _buildHTMLBody(themeDisplay, excerpt, url);
+		}
+
+		private String _buildEntryURL(
+				BlogsEntry entry, ThemeDisplay themeDisplay)
+			throws PortalException {
+
+			return StringBundler.concat(
+				_portal.getLayoutFullURL(themeDisplay),
+				Portal.FRIENDLY_URL_SEPARATOR, "blogs/", entry.getUrlTitle());
+		}
+
+		private String _buildHTMLBody(
+			ThemeDisplay themeDisplay, String excerpt, String url) {
+
+			return StringBundler.concat(
+				"[...] ", excerpt, " [...] <a href=\"", url, "\">",
+				themeDisplay.translate("read-more"), "</a>");
+		}
+
 	}
 
 	private BlogsEntry _getBlogsEntry(ActionRequest actionRequest)
@@ -227,9 +306,17 @@ public class TrackbackMVCActionCommand extends BaseMVCActionCommand {
 		TrackbackMVCActionCommand.class);
 
 	@Reference
-	private Portal _portal;
+	private CommentManager _commentManager;
 
 	@Reference
-	private Trackback _trackback;
+	private LinkbackConsumer _linkbackConsumer;
+
+	@Reference
+	private Portal _portal;
+
+	private final Trackback _trackback = new Trackback();
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

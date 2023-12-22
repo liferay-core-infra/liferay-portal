@@ -11,7 +11,6 @@
 	<bean class="com.liferay.portal.kernel.repository.RepositoryFactoryUtil" id="com.liferay.portal.kernel.repository.RepositoryFactoryUtil">
 		<property name="repositoryFactory" ref="com.liferay.portal.kernel.repository.RepositoryFactory" />
 	</bean>
-	<bean class="com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalogImpl" id="com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog" />
 	<bean class="com.liferay.portal.repository.registry.RepositoryDefinerRegister">
 		<property name="repositoryDefinerFactoryBiFunction">
 			<bean class="com.liferay.portal.repository.liferayrepository.LiferayRepositoryDefiner" factory-method="getFactoryBiFunction" />

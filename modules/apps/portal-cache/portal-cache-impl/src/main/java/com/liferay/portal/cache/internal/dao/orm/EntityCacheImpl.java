@@ -345,7 +345,8 @@ public class EntityCacheImpl
 		_notify(className, baseModel, removePortalCache);
 
 		if (!_clusterExecutor.isEnabled() ||
-			!ClusterInvokeThreadLocal.isEnabled()) {
+			!ClusterInvokeThreadLocal.isEnabled() ||
+			GetterUtil.getBoolean(removePortalCache)) {
 
 			return;
 		}

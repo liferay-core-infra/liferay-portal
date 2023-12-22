@@ -9,7 +9,6 @@ import com.liferay.blogs.exception.NoSuchEntryException;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.blogs.service.BlogsEntryServiceUtil;
-import com.liferay.blogs.web.internal.trackback.Trackback;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -320,6 +319,7 @@ public class TrackbackMVCActionCommandTest {
 	private final PortletPreferences _portletPreferences = Mockito.mock(
 		PortletPreferences.class);
 	private final ThemeDisplay _themeDisplay = new ThemeDisplay();
-	private final Trackback _trackback = Mockito.mock(Trackback.class);
+	private final TrackbackMVCActionCommand.Trackback _trackback = Mockito.mock(
+		TrackbackMVCActionCommand.Trackback.class);
 
 }

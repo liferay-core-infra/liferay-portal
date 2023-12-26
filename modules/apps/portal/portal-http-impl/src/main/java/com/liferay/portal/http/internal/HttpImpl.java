@@ -70,6 +70,7 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -1002,6 +1003,15 @@ public class HttpImpl implements Http {
 					SSLConnectionSocketFactory.getSystemSocketFactory()
 				).build());
 
+		if (_TCP_KEEPALIVE_ENABLED) {
+			SocketConfig.Builder socketConfigBuilder = SocketConfig.custom();
+
+			socketConfigBuilder.setSoKeepAlive(true);
+
+			poolingHttpClientConnectionManager.setDefaultSocketConfig(
+				socketConfigBuilder.build());
+		}
+
 		poolingHttpClientConnectionManager.setDefaultMaxPerRoute(
 			_MAX_CONNECTIONS_PER_HOST);
 		poolingHttpClientConnectionManager.setMaxTotal(_MAX_TOTAL_CONNECTIONS);
@@ -1137,6 +1147,9 @@ public class HttpImpl implements Http {
 
 	private static final String _PROXY_USERNAME = GetterUtil.getString(
 		PropsUtil.get(Http.class.getName() + ".proxy.username"));
+
+	private static final boolean _TCP_KEEPALIVE_ENABLED = GetterUtil.getBoolean(
+		PropsUtil.get(Http.class.getName() + ".tcp.keepalive.enabled"));
 
 	private static final int _TIMEOUT = GetterUtil.getInteger(
 		PropsUtil.get(Http.class.getName() + ".timeout"), 5000);

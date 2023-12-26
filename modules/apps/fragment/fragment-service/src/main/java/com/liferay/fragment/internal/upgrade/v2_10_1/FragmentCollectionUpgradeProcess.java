@@ -11,7 +11,7 @@ import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Repository;
-import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
+import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
@@ -24,11 +24,9 @@ import java.sql.ResultSet;
 public class FragmentCollectionUpgradeProcess extends UpgradeProcess {
 
 	public FragmentCollectionUpgradeProcess(
-		DLFolderLocalService dlFolderLocalService,
-		PortletFileRepository portletFileRepository) {
+		DLFolderLocalService dlFolderLocalService) {
 
 		_dlFolderLocalService = dlFolderLocalService;
-		_portletFileRepository = portletFileRepository;
 	}
 
 	@Override
@@ -47,7 +45,7 @@ public class FragmentCollectionUpgradeProcess extends UpgradeProcess {
 				long groupId = resultSet.getLong("groupId");
 
 				Repository repository =
-					_portletFileRepository.fetchPortletRepository(
+					PortletFileRepositoryUtil.fetchPortletRepository(
 						groupId, FragmentPortletKeys.FRAGMENT);
 
 				if (repository == null) {
@@ -61,7 +59,7 @@ public class FragmentCollectionUpgradeProcess extends UpgradeProcess {
 
 				try {
 					Folder portletFolder =
-						_portletFileRepository.getPortletFolder(
+						PortletFileRepositoryUtil.getPortletFolder(
 							repository.getRepositoryId(),
 							repository.getDlFolderId(),
 							String.valueOf(fragmentCollectionId));
@@ -87,6 +85,5 @@ public class FragmentCollectionUpgradeProcess extends UpgradeProcess {
 		FragmentCollectionUpgradeProcess.class);
 
 	private final DLFolderLocalService _dlFolderLocalService;
-	private final PortletFileRepository _portletFileRepository;
 
 }

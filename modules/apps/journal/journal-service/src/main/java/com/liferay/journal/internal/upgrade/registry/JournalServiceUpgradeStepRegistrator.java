@@ -200,8 +200,7 @@ public class JournalServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.1.4", "1.1.5",
-			new ContentImagesUpgradeProcess(
-				_journalArticleImageUpgradeHelper, _portletFileRepository));
+			new ContentImagesUpgradeProcess(_journalArticleImageUpgradeHelper));
 
 		registry.register(
 			"1.1.5", "1.1.6",

@@ -46,13 +46,6 @@ public class PortletQNameUtil {
 		return _portletQName.getRemovePublicRenderParameterName(qName);
 	}
 
-	public static void setPublicRenderParameterIdentifier(
-		String publicRenderParameterName, String identifier) {
-
-		_portletQName.setPublicRenderParameterIdentifier(
-			publicRenderParameterName, identifier);
-	}
-
 	public void setPortletQName(PortletQName portletQName) {
 		_portletQName = portletQName;
 	}

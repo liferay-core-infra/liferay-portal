@@ -26,7 +26,4 @@ public interface PortletQName {
 
 	public String getRemovePublicRenderParameterName(QName qName);
 
-	public void setPublicRenderParameterIdentifier(
-		String publicRenderParameterName, String identifier);
-
 }

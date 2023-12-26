@@ -5,13 +5,40 @@
 
 package com.liferay.portal.http.internal;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 
 import java.lang.reflect.Field;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.http.ConnectionReuseStrategy;
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.conn.DefaultManagedHttpClientConnection;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.impl.execchain.ClientExecChain;
+import org.apache.http.impl.execchain.MainClientExec;
+import org.apache.http.impl.pool.BasicPoolEntry;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicHttpRequest;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.message.BasicStatusLine;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.protocol.HttpCoreContext;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -45,6 +72,68 @@ public class HttpImplTest {
 	}
 
 	@Test
+	public void testHttpKeepAlive() throws Exception {
+		int keepAliveTimeout = ReflectionTestUtil.getFieldValue(
+			_httpImpl, "_KEEPALIVE_TIMEOUT");
+
+		try {
+			_setHttpImplKeepAliveTimeout(-1);
+			_testHttpKeepAlive(true, Long.MAX_VALUE, -1);
+			_testHttpKeepAlive(true, Long.MAX_VALUE, 0);
+			_testHttpKeepAlive(true, 300000, 300);
+
+			_setHttpImplKeepAliveTimeout(0);
+			_testHttpKeepAlive(true, Long.MAX_VALUE, -1);
+			_testHttpKeepAlive(true, Long.MAX_VALUE, 0);
+			_testHttpKeepAlive(true, 300000, 300);
+
+			_setHttpImplKeepAliveTimeout(600);
+			_testHttpKeepAlive(true, 600000, -1);
+			_testHttpKeepAlive(true, 600000, 0);
+			_testHttpKeepAlive(true, 300000, 300);
+		}
+		finally {
+			_setHttpImplKeepAliveTimeout(keepAliveTimeout);
+		}
+	}
+
+	@Test
+	public void testHttpKeepAliveWithRequestClose() throws Exception {
+		HttpRequest httpRequest = new BasicHttpRequest("GET", "/");
+
+		httpRequest.setHeader(
+			HttpHeaders.CONNECTION, HttpHeaders.CONNECTION_CLOSE_VALUE);
+
+		_httpContext.setAttribute(HttpCoreContext.HTTP_REQUEST, httpRequest);
+
+		_httpResponse.setHeaders(
+			new Header[] {
+				new BasicHeader(HttpHeaders.CONNECTION, HttpHeaders.KEEP_ALIVE),
+				new BasicHeader(HttpHeaders.CONTENT_LENGTH, "10")
+			});
+
+		_testHttpKeepAlive(false, -1, _httpContext, _httpResponse);
+	}
+
+	@Test
+	public void testHttpKeepAliveWithResponseClose() throws Exception {
+		HttpRequest httpRequest = new BasicHttpRequest("GET", "/");
+
+		httpRequest.setHeader(HttpHeaders.CONNECTION, HttpHeaders.KEEP_ALIVE);
+
+		_httpContext.setAttribute(HttpCoreContext.HTTP_REQUEST, httpRequest);
+
+		_httpResponse.setHeaders(
+			new Header[] {
+				new BasicHeader(
+					HttpHeaders.CONNECTION, HttpHeaders.CONNECTION_CLOSE_VALUE),
+				new BasicHeader(HttpHeaders.CONTENT_LENGTH, "10")
+			});
+
+		_testHttpKeepAlive(false, -1, _httpContext, _httpResponse);
+	}
+
+	@Test
 	public void testIsNonProxyHost() throws Exception {
 		String domain = "foo.com";
 		String ipAddress = "192.168.0.250";
@@ -71,6 +160,129 @@ public class HttpImplTest {
 		}
 	}
 
+	private Tuple _getHttpImplConnectionStrategies() {
+		CloseableHttpClient closeableHttpClient = ReflectionTestUtil.invoke(
+			_httpImpl, "getCloseableHttpClient",
+			new Class<?>[] {HttpHost.class}, new Object[] {null});
+
+		ClientExecChain clientExecChain = ReflectionTestUtil.getFieldValue(
+			closeableHttpClient, "execChain");
+
+		while (true) {
+			clientExecChain = ReflectionTestUtil.getFieldValue(
+				clientExecChain, "requestExecutor");
+
+			if (clientExecChain instanceof MainClientExec) {
+				ConnectionKeepAliveStrategy connectionKeepAliveStrategy =
+					ReflectionTestUtil.getFieldValue(
+						clientExecChain, "keepAliveStrategy");
+				ConnectionReuseStrategy connectionReuseStrategy =
+					ReflectionTestUtil.getFieldValue(
+						clientExecChain, "reuseStrategy");
+
+				return new Tuple(
+					connectionKeepAliveStrategy, connectionReuseStrategy);
+			}
+		}
+	}
+
+	private void _resetHttpImpl() {
+		DCLSingleton<CloseableHttpClient> closeableHttpClientDCLSingleton =
+			ReflectionTestUtil.getFieldValue(
+				_httpImpl, "_closeableHttpClientDCLSingleton");
+
+		ReflectionTestUtil.setFieldValue(
+			closeableHttpClientDCLSingleton, "_singleton", null);
+
+		DCLSingleton<PoolingHttpClientConnectionManager>
+			poolingHttpClientConnectionManagerDCLSingleton =
+				ReflectionTestUtil.getFieldValue(
+					_httpImpl,
+					"_poolingHttpClientConnectionManagerDCLSingleton");
+
+		ReflectionTestUtil.setFieldValue(
+			poolingHttpClientConnectionManagerDCLSingleton, "_singleton", null);
+	}
+
+	private void _setHttpImplKeepAliveTimeout(int keepAliveTimeout) {
+		ReflectionTestUtil.setFieldValue(
+			_httpImpl, "_KEEPALIVE_TIMEOUT", keepAliveTimeout);
+	}
+
+	private void _testHttpKeepAlive(
+		boolean expectedKeepAlive, long expectedKeepAliveTimeoutInMilliseconds,
+		HttpContext httpContext, HttpResponse httpResponse) {
+
+		_httpImpl.activate();
+
+		try {
+			Tuple connectionStrategiesTuple =
+				_getHttpImplConnectionStrategies();
+
+			ConnectionReuseStrategy connectionReuseStrategy =
+				(ConnectionReuseStrategy)connectionStrategiesTuple.getObject(1);
+
+			Assert.assertEquals(
+				expectedKeepAlive,
+				connectionReuseStrategy.keepAlive(httpResponse, httpContext));
+
+			long keepAliveTimeout = -1;
+
+			if (expectedKeepAlive) {
+				ConnectionKeepAliveStrategy connectionKeepAliveStrategy =
+					(ConnectionKeepAliveStrategy)
+						connectionStrategiesTuple.getObject(0);
+
+				long keepAliveDuration =
+					connectionKeepAliveStrategy.getKeepAliveDuration(
+						httpResponse, new BasicHttpContext(null));
+
+				BasicPoolEntry basicPoolEntry = new BasicPoolEntry(
+					"id", new HttpHost("localhost", 8080),
+					new DefaultManagedHttpClientConnection("id", 8 * 1024));
+
+				basicPoolEntry.updateExpiry(
+					keepAliveDuration, TimeUnit.MILLISECONDS);
+
+				keepAliveTimeout = basicPoolEntry.getExpiry();
+
+				if (keepAliveTimeout != Long.MAX_VALUE) {
+					keepAliveTimeout -= basicPoolEntry.getUpdated();
+				}
+			}
+
+			Assert.assertEquals(
+				expectedKeepAliveTimeoutInMilliseconds, keepAliveTimeout);
+		}
+		finally {
+			_resetHttpImpl();
+		}
+	}
+
+	private void _testHttpKeepAlive(
+		boolean expectedKeepAlive, long expectedKeepAliveTimeoutInMilliseconds,
+		long keepAliveTimeoutHeaderValue) {
+
+		_httpResponse.setHeaders(
+			new Header[] {
+				new BasicHeader(HttpHeaders.CONNECTION, HttpHeaders.KEEP_ALIVE),
+				new BasicHeader(HttpHeaders.CONTENT_LENGTH, "10")
+			});
+
+		if (keepAliveTimeoutHeaderValue > -1) {
+			_httpResponse.setHeader(
+				HttpHeaders.KEEP_ALIVE,
+				"timeout=" + keepAliveTimeoutHeaderValue);
+		}
+
+		_testHttpKeepAlive(
+			expectedKeepAlive, expectedKeepAliveTimeoutInMilliseconds,
+			_httpContext, _httpResponse);
+	}
+
+	private final HttpContext _httpContext = new BasicHttpContext(null);
 	private final HttpImpl _httpImpl = new HttpImpl();
+	private final HttpResponse _httpResponse = new BasicHttpResponse(
+		new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
 
 }

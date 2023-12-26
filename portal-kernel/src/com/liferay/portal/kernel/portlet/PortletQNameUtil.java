@@ -5,8 +5,19 @@
 
 package com.liferay.portal.kernel.portlet;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.Namespace;
 import com.liferay.portal.kernel.xml.QName;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan
@@ -21,35 +32,128 @@ public class PortletQNameUtil {
 		"r_p_r_p_";
 
 	public static String getKey(QName qName) {
-		return _portletQName.getKey(qName);
+		return getKey(qName.getNamespaceURI(), qName.getLocalPart());
 	}
 
 	public static String getKey(String uri, String localPart) {
-		return _portletQName.getKey(uri, localPart);
+		return StringBundler.concat(uri, _KEY_SEPARATOR, localPart);
 	}
 
 	public static String getPublicRenderParameterName(QName qName) {
-		return _portletQName.getPublicRenderParameterName(qName);
+		String publicRenderParameterName = _qNameStrings.get(qName);
+
+		if (publicRenderParameterName == null) {
+			publicRenderParameterName = _toString(
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
+
+			_qNames.put(publicRenderParameterName, qName);
+			_qNameStrings.put(qName, publicRenderParameterName);
+		}
+
+		return publicRenderParameterName;
 	}
 
 	public static QName getQName(
 		Element qNameEl, Element nameEl, String defaultNamespace) {
 
-		return _portletQName.getQName(qNameEl, nameEl, defaultNamespace);
+		if ((qNameEl == null) && (nameEl == null)) {
+			_log.error("both qname and name elements are null");
+
+			return null;
+		}
+
+		if (qNameEl == null) {
+			return SAXReaderUtil.createQName(
+				nameEl.getTextTrim(),
+				SAXReaderUtil.createNamespace(defaultNamespace));
+		}
+
+		String localPart = qNameEl.getTextTrim();
+
+		int pos = localPart.indexOf(CharPool.COLON);
+
+		if (pos == -1) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("qname " + localPart + " does not have a prefix");
+			}
+
+			return SAXReaderUtil.createQName(localPart);
+		}
+
+		String prefix = localPart.substring(0, pos);
+
+		Namespace namespace = qNameEl.getNamespaceForPrefix(prefix);
+
+		if (namespace == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"qname " + localPart + " does not have a valid namespace");
+			}
+
+			return null;
+		}
+
+		localPart = localPart.substring(prefix.length() + 1);
+
+		return SAXReaderUtil.createQName(localPart, namespace);
 	}
 
 	public static QName getQName(String publicRenderParameterName) {
-		return _portletQName.getQName(publicRenderParameterName);
+		if (!publicRenderParameterName.startsWith(
+				PortletQNameUtil.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
+			!publicRenderParameterName.startsWith(
+				PortletQNameUtil.REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+
+			return null;
+		}
+
+		return _qNames.get(publicRenderParameterName);
 	}
 
 	public static String getRemovePublicRenderParameterName(QName qName) {
-		return _portletQName.getRemovePublicRenderParameterName(qName);
+		String removePublicRenderParameterName = _qNameStrings.get(qName);
+
+		if (removePublicRenderParameterName == null) {
+			removePublicRenderParameterName = _toString(
+				PortletQNameUtil.REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE,
+				qName);
+
+			_qNames.put(removePublicRenderParameterName, qName);
+			_qNameStrings.put(qName, removePublicRenderParameterName);
+		}
+
+		return removePublicRenderParameterName;
 	}
 
-	public void setPortletQName(PortletQName portletQName) {
-		_portletQName = portletQName;
+	private static String _toString(String prefix, QName qName) {
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(prefix);
+
+		String namespacePrefix = qName.getNamespacePrefix();
+
+		if (!Validator.isBlank(namespacePrefix)) {
+			sb.append(namespacePrefix);
+			sb.append(StringPool.UNDERLINE);
+		}
+
+		if (!Validator.isBlank(qName.getNamespaceURI())) {
+			sb.append(qName.getNamespaceURI());
+			sb.append(StringPool.UNDERLINE);
+		}
+
+		sb.append(qName.getLocalPart());
+
+		return sb.toString();
 	}
 
-	private static PortletQName _portletQName;
+	private static final String _KEY_SEPARATOR = "_KEY_";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PortletQNameUtil.class);
+
+	private static final Map<String, QName> _qNames = new ConcurrentHashMap<>();
+	private static final Map<QName, String> _qNameStrings =
+		new ConcurrentHashMap<>();
 
 }

@@ -373,10 +373,6 @@ public class PortletFileRepositoryUtil {
 			themeDisplay, fileEntry, queryString, absoluteURL);
 	}
 
-	public static PortletFileRepository getPortletFileRepository() {
-		return _portletFileRepositorySnapshot.get();
-	}
-
 	public static Folder getPortletFolder(long folderId)
 		throws PortalException {
 

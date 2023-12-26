@@ -353,15 +353,12 @@ public class PortletImpl extends PortletBaseImpl {
 
 		_publicRenderParameters.add(publicRenderParameter);
 
-		String identifier = publicRenderParameter.getIdentifier();
-
 		_publicRenderParametersByIdentifier.put(
-			identifier, publicRenderParameter);
-
-		QName qName = publicRenderParameter.getQName();
+			publicRenderParameter.getIdentifier(), publicRenderParameter);
 
 		_publicRenderParametersByQName.put(
-			PortletQNameUtil.getKey(qName), publicRenderParameter);
+			PortletQNameUtil.getKey(publicRenderParameter.getQName()),
+			publicRenderParameter);
 	}
 
 	/**

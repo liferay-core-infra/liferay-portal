@@ -25,6 +25,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.conn.DefaultManagedHttpClientConnection;
@@ -160,6 +161,23 @@ public class HttpImplTest {
 		}
 	}
 
+	@Test
+	public void testTCPKeepAlive() throws Exception {
+		boolean tcpKeepAliveEnabled = ReflectionTestUtil.getFieldValue(
+			_httpImpl, "_TCP_KEEPALIVE_ENABLED");
+
+		try {
+			_setHttpImplTCPKeepAliveEnabled(false);
+			_testTCPKeepAlive(false);
+
+			_setHttpImplTCPKeepAliveEnabled(true);
+			_testTCPKeepAlive(true);
+		}
+		finally {
+			_setHttpImplTCPKeepAliveEnabled(tcpKeepAliveEnabled);
+		}
+	}
+
 	private Tuple _getHttpImplConnectionStrategies() {
 		CloseableHttpClient closeableHttpClient = ReflectionTestUtil.invoke(
 			_httpImpl, "getCloseableHttpClient",
@@ -207,6 +225,11 @@ public class HttpImplTest {
 	private void _setHttpImplKeepAliveTimeout(int keepAliveTimeout) {
 		ReflectionTestUtil.setFieldValue(
 			_httpImpl, "_KEEPALIVE_TIMEOUT", keepAliveTimeout);
+	}
+
+	private void _setHttpImplTCPKeepAliveEnabled(boolean tcpKeepAliveEnabled) {
+		ReflectionTestUtil.setFieldValue(
+			_httpImpl, "_TCP_KEEPALIVE_ENABLED", tcpKeepAliveEnabled);
 	}
 
 	private void _testHttpKeepAlive(
@@ -278,6 +301,33 @@ public class HttpImplTest {
 		_testHttpKeepAlive(
 			expectedKeepAlive, expectedKeepAliveTimeoutInMilliseconds,
 			_httpContext, _httpResponse);
+	}
+
+	private void _testTCPKeepAlive(boolean expectedEnabledTCPKeepAlive) {
+		try {
+			CloseableHttpClient closeableHttpClient = ReflectionTestUtil.invoke(
+				_httpImpl, "getCloseableHttpClient",
+				new Class<?>[] {HttpHost.class}, new Object[] {null});
+
+			PoolingHttpClientConnectionManager
+				poolingHttpClientConnectionManager =
+					ReflectionTestUtil.getFieldValue(
+						closeableHttpClient, "connManager");
+
+			SocketConfig defaultSocketConfig =
+				poolingHttpClientConnectionManager.getDefaultSocketConfig();
+
+			if (expectedEnabledTCPKeepAlive) {
+				Assert.assertNotNull(defaultSocketConfig);
+				Assert.assertTrue(defaultSocketConfig.isSoKeepAlive());
+			}
+			else {
+				Assert.assertNull(defaultSocketConfig);
+			}
+		}
+		finally {
+			_resetHttpImpl();
+		}
 	}
 
 	private final HttpContext _httpContext = new BasicHttpContext(null);

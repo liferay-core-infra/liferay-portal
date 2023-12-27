@@ -73,7 +73,7 @@ public class HttpImplTest {
 	}
 
 	@Test
-	public void testHttpKeepAlive() throws Exception {
+	public void testHttpKeepAlive() {
 		int keepAliveTimeout = ReflectionTestUtil.getFieldValue(
 			_httpImpl, "_KEEPALIVE_TIMEOUT");
 
@@ -99,7 +99,7 @@ public class HttpImplTest {
 	}
 
 	@Test
-	public void testHttpKeepAliveWithRequestClose() throws Exception {
+	public void testHttpKeepAliveWithRequestClose() {
 		HttpRequest httpRequest = new BasicHttpRequest("GET", "/");
 
 		httpRequest.setHeader(
@@ -113,11 +113,11 @@ public class HttpImplTest {
 				new BasicHeader(HttpHeaders.CONTENT_LENGTH, "10")
 			});
 
-		_testHttpKeepAlive(false, -1, _httpContext, _httpResponse);
+		_testHttpKeepAlive(false, -1);
 	}
 
 	@Test
-	public void testHttpKeepAliveWithResponseClose() throws Exception {
+	public void testHttpKeepAliveWithResponseClose() {
 		HttpRequest httpRequest = new BasicHttpRequest("GET", "/");
 
 		httpRequest.setHeader(HttpHeaders.CONNECTION, HttpHeaders.KEEP_ALIVE);
@@ -131,7 +131,7 @@ public class HttpImplTest {
 				new BasicHeader(HttpHeaders.CONTENT_LENGTH, "10")
 			});
 
-		_testHttpKeepAlive(false, -1, _httpContext, _httpResponse);
+		_testHttpKeepAlive(false, -1);
 	}
 
 	@Test
@@ -162,7 +162,7 @@ public class HttpImplTest {
 	}
 
 	@Test
-	public void testTCPKeepAlive() throws Exception {
+	public void testTCPKeepAlive() {
 		boolean tcpKeepAliveEnabled = ReflectionTestUtil.getFieldValue(
 			_httpImpl, "_TCP_KEEPALIVE_ENABLED");
 
@@ -233,8 +233,8 @@ public class HttpImplTest {
 	}
 
 	private void _testHttpKeepAlive(
-		boolean expectedKeepAlive, long expectedKeepAliveTimeoutInMilliseconds,
-		HttpContext httpContext, HttpResponse httpResponse) {
+		boolean expectedKeepAlive,
+		long expectedKeepAliveTimeoutInMilliseconds) {
 
 		_httpImpl.activate();
 
@@ -247,7 +247,7 @@ public class HttpImplTest {
 
 			Assert.assertEquals(
 				expectedKeepAlive,
-				connectionReuseStrategy.keepAlive(httpResponse, httpContext));
+				connectionReuseStrategy.keepAlive(_httpResponse, _httpContext));
 
 			long keepAliveTimeout = -1;
 
@@ -258,7 +258,7 @@ public class HttpImplTest {
 
 				long keepAliveDuration =
 					connectionKeepAliveStrategy.getKeepAliveDuration(
-						httpResponse, new BasicHttpContext(null));
+						_httpResponse, new BasicHttpContext(null));
 
 				BasicPoolEntry basicPoolEntry = new BasicPoolEntry(
 					"id", new HttpHost("localhost", 8080),
@@ -299,8 +299,7 @@ public class HttpImplTest {
 		}
 
 		_testHttpKeepAlive(
-			expectedKeepAlive, expectedKeepAliveTimeoutInMilliseconds,
-			_httpContext, _httpResponse);
+			expectedKeepAlive, expectedKeepAliveTimeoutInMilliseconds);
 	}
 
 	private void _testTCPKeepAlive(boolean expectedEnabledTCPKeepAlive) {

@@ -191,15 +191,11 @@ public class HttpImplTest {
 				clientExecChain, "requestExecutor");
 
 			if (clientExecChain instanceof MainClientExec) {
-				ConnectionKeepAliveStrategy connectionKeepAliveStrategy =
-					ReflectionTestUtil.getFieldValue(
-						clientExecChain, "keepAliveStrategy");
-				ConnectionReuseStrategy connectionReuseStrategy =
-					ReflectionTestUtil.getFieldValue(
-						clientExecChain, "reuseStrategy");
-
 				return new Tuple(
-					connectionKeepAliveStrategy, connectionReuseStrategy);
+					ReflectionTestUtil.getFieldValue(
+						clientExecChain, "keepAliveStrategy"),
+					ReflectionTestUtil.getFieldValue(
+						clientExecChain, "reuseStrategy"));
 			}
 		}
 	}
@@ -256,16 +252,14 @@ public class HttpImplTest {
 					(ConnectionKeepAliveStrategy)
 						connectionStrategiesTuple.getObject(0);
 
-				long keepAliveDuration =
-					connectionKeepAliveStrategy.getKeepAliveDuration(
-						_httpResponse, new BasicHttpContext(null));
-
 				BasicPoolEntry basicPoolEntry = new BasicPoolEntry(
 					"id", new HttpHost("localhost", 8080),
 					new DefaultManagedHttpClientConnection("id", 8 * 1024));
 
 				basicPoolEntry.updateExpiry(
-					keepAliveDuration, TimeUnit.MILLISECONDS);
+					connectionKeepAliveStrategy.getKeepAliveDuration(
+						_httpResponse, new BasicHttpContext(null)),
+					TimeUnit.MILLISECONDS);
 
 				keepAliveTimeout = basicPoolEntry.getExpiry();
 

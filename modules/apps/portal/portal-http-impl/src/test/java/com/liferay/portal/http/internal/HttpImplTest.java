@@ -317,7 +317,6 @@ public class HttpImplTest {
 				poolingHttpClientConnectionManager.getDefaultSocketConfig();
 
 			if (expectedEnabledTCPKeepAlive) {
-				Assert.assertNotNull(defaultSocketConfig);
 				Assert.assertTrue(defaultSocketConfig.isSoKeepAlive());
 			}
 			else {

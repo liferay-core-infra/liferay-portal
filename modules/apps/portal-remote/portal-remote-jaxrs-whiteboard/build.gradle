@@ -1,7 +1,6 @@
 dependencies {
 	compileInclude group: "wsdl4j", name: "wsdl4j", version: "1.6.3"
 
-	compileOnly group: "com.fasterxml.woodstox", name: "woodstox-core", version: "6.4.0"
 	compileOnly group: "com.liferay", name: "org.apache.aries.component.dsl", version: "1.2.2.LIFERAY-PATCHED-1"
 	compileOnly group: "com.liferay", name: "org.apache.aries.jax.rs.whiteboard", version: "2.0.0.LIFERAY-PATCHED-1"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
@@ -21,12 +20,6 @@ dependencies {
 	compileOnly group: "org.apache.geronimo.specs", name: "geronimo-jaxrs_2.1_spec", version: "1.1"
 	compileOnly group: "org.apache.geronimo.specs", name: "geronimo-json_1.1_spec", version: "1.5"
 	compileOnly group: "org.apache.geronimo.specs", name: "geronimo-jsonb_1.0_spec", version: "1.4"
-	compileOnly group: "org.apache.johnzon", name: "johnzon-core", version: "1.2.21"
-	compileOnly group: "org.apache.johnzon", name: "johnzon-jsonb", version: "1.2.21"
-	compileOnly group: "org.apache.johnzon", name: "johnzon-mapper", version: "1.2.21"
-	compileOnly group: "org.apache.velocity", name: "velocity-engine-core", version: "2.2"
-	compileOnly group: "org.apache.ws.xmlschema", name: "xmlschema-core", version: "2.2.5"
-	compileOnly group: "org.codehaus.woodstox", name: "stax2-api", version: "4.2.1"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	compileOnly group: "org.osgi", name: "org.osgi.service.jaxrs", version: "1.0.0"
 	compileOnly group: "org.osgi", name: "org.osgi.util.function", version: "1.1.0"
@@ -41,11 +34,7 @@ deployDependencies {
 
 	include "commons-*.jar"
 	include "jaxb-osgi-*.jar"
-	include "johnzon-jsonb-*.jar"
-	include "johnzon-mapper-*.jar"
 	include "org.apache.aries.component.dsl-*.jar"
 	include "org.apache.aries.jax.rs.whiteboard-*.jar"
 	include "org.osgi.service.jaxrs-*.jar"
-	include "velocity-*.jar"
-	include "xmlschema-core-*.jar"
 }

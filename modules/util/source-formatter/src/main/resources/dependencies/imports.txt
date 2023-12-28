@@ -650,7 +650,6 @@ com.liferay.portal.security.auth.AuthTokenWhitelist=com.liferay.portal.kernel.se
 com.liferay.portal.security.auth.AuthTokenWhitelistUtil=com.liferay.portal.kernel.security.auth.AuthTokenWhitelistUtil
 com.liferay.portal.security.auth.Authenticator=com.liferay.portal.kernel.security.auth.Authenticator
 com.liferay.portal.security.auth.CompanyThreadLocal=com.liferay.portal.kernel.security.auth.CompanyThreadLocal
-com.liferay.portal.security.auth.DefaultEmailAddressGenerator=com.liferay.portal.kernel.security.auth.DefaultEmailAddressGenerator
 com.liferay.portal.security.auth.DefaultEmailAddressValidator=com.liferay.portal.kernel.security.auth.DefaultEmailAddressValidator
 com.liferay.portal.security.auth.DefaultFullNameGenerator=com.liferay.portal.kernel.security.auth.DefaultFullNameGenerator
 com.liferay.portal.security.auth.DefaultFullNameValidator=com.liferay.portal.kernel.security.auth.DefaultFullNameValidator

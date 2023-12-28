@@ -3,15 +3,19 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.security.auth;
+package com.liferay.portal.security.auth.internal;
 
 import com.liferay.portal.kernel.model.UserConstants;
+import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Wesley Gong
  */
+@Component(service = EmailAddressGenerator.class)
 public class DefaultEmailAddressGenerator implements EmailAddressGenerator {
 
 	@Override

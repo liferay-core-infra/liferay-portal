@@ -84,8 +84,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			mockClusterExecutor);
+			clusterMasterExecutorImpl, "_clusterExecutor", mockClusterExecutor);
 
 		try (Closeable closeable = _activate(clusterMasterExecutorImpl)) {
 			mockClusterExecutor.addClusterNode(
@@ -145,7 +144,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 			new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			clusterMasterExecutorImpl, "_clusterExecutor",
 			_getMockClusterExecutor(true));
 
 		try (Closeable closeable = _activate(clusterMasterExecutorImpl)) {
@@ -199,8 +198,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			mockClusterExecutor);
+			clusterMasterExecutorImpl, "_clusterExecutor", mockClusterExecutor);
 
 		List<ClusterEventListener> clusterEventListeners = null;
 
@@ -223,7 +221,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			clusterMasterExecutorImpl, "_clusterExecutor",
 			_getMockClusterExecutor(false));
 
 		clusterMasterExecutorImpl.activate(_bundleContext);
@@ -240,7 +238,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 			new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			clusterMasterExecutorImpl, "_clusterExecutor",
 			_getMockClusterExecutor(false));
 
 		clusterMasterExecutorImpl.activate(_bundleContext);
@@ -329,8 +327,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			mockClusterExecutor);
+			clusterMasterExecutorImpl, "_clusterExecutor", mockClusterExecutor);
 
 		try (Closeable closeable = _activate(clusterMasterExecutorImpl)) {
 			Assert.assertTrue(clusterMasterExecutorImpl.isEnabled());
@@ -370,8 +367,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			mockClusterExecutor);
+			clusterMasterExecutorImpl, "_clusterExecutor", mockClusterExecutor);
 
 		try (Closeable closeable = _activate(clusterMasterExecutorImpl)) {
 			Assert.assertEquals(
@@ -431,8 +427,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		MockClusterExecutor mockClusterExecutor = _getMockClusterExecutor(true);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			mockClusterExecutor);
+			clusterMasterExecutorImpl, "_clusterExecutor", mockClusterExecutor);
 
 		try (Closeable closeable = _activate(clusterMasterExecutorImpl)) {
 			mockClusterExecutor.setCoordinatorAddress(_TEST_ADDRESS);
@@ -554,7 +549,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 			new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			clusterMasterExecutorImpl, "_clusterExecutor",
 			_getMockClusterExecutor(false));
 
 		clusterMasterExecutorImpl.activate(_bundleContext);
@@ -567,7 +562,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			clusterMasterExecutorImpl, "_clusterExecutor",
 			_getMockClusterExecutor(true));
 
 		try (Closeable closeable = _activate(clusterMasterExecutorImpl)) {
@@ -589,8 +584,7 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterMasterExecutorImpl = new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
-			mockClusterExecutor);
+			clusterMasterExecutorImpl, "_clusterExecutor", mockClusterExecutor);
 
 		try (Closeable closeable = _activate(clusterMasterExecutorImpl)) {
 			Assert.assertTrue(clusterMasterExecutorImpl.isEnabled());
@@ -605,13 +599,13 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 			new ClusterMasterExecutorImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			clusterMasterExecutorImpl, "_clusterExecutor",
 			_getMockClusterExecutor(false));
 
 		clusterMasterExecutorImpl.activate(_bundleContext);
 
 		ReflectionTestUtil.setFieldValue(
-			clusterMasterExecutorImpl, "_clusterExecutorImpl",
+			clusterMasterExecutorImpl, "_clusterExecutor",
 			_getMockClusterExecutor(true));
 
 		clusterMasterExecutorImpl.activate(_bundleContext);

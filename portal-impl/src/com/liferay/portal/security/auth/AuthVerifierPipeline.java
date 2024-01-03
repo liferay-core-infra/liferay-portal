@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.auth.registry.AuthVerifierRegistry;
 import com.liferay.portal.spring.context.PortalContextLoaderListener;
 
@@ -36,6 +37,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -102,6 +104,25 @@ public class AuthVerifierPipeline {
 		}
 
 		return _createGuestVerificationResult(accessControlContext);
+	}
+
+	private static Long _getRealUserId(
+		AccessControlContext accessControlContext) {
+
+		HttpServletRequest httpServletRequest =
+			accessControlContext.getRequest();
+
+		if (httpServletRequest == null) {
+			return null;
+		}
+
+		HttpServletRequest originalHttpServletRequest =
+			PortalUtil.getOriginalServletRequest(
+				accessControlContext.getRequest());
+
+		HttpSession httpSession = originalHttpServletRequest.getSession();
+
+		return (Long)httpSession.getAttribute(WebKeys.USER_ID);
 	}
 
 	private synchronized void _addAuthVerifierConfiguration(
@@ -327,10 +348,14 @@ public class AuthVerifierPipeline {
 			User user = UserLocalServiceUtil.fetchUser(
 				authVerifierResult.getUserId());
 
+			Long realUserId = _getRealUserId(accessControlContext);
+
 			if ((user != null) &&
 				(!user.isActive() ||
-				 !user.isEmailAddressVerificationComplete() ||
-				 user.isPasswordReset())) {
+				 ((!user.isEmailAddressVerificationComplete() ||
+				   user.isPasswordReset()) &&
+				  ((realUserId == null) ||
+				   realUserId.equals(user.getUserId()))))) {
 
 				long userId = authVerifierResult.getUserId();
 

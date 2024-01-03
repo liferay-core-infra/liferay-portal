@@ -118,7 +118,6 @@
 		<Logger level="ERROR" name="com.liferay.portal.security.auth.EmailAddressValidatorFactory" />
 		<Logger level="ERROR" name="com.liferay.portal.security.auth.ScreenNameGeneratorFactory" />
 		<Logger level="ERROR" name="com.liferay.portal.security.auth.ScreenNameValidatorFactory" />
-		<Logger level="ERROR" name="com.liferay.portal.security.permission.AdvancedPermissionChecker" />
 		<Logger level="WARN" name="com.liferay.portal.security.permission.ResourceActionsImpl" />
 		<Logger level="WARN" name="com.liferay.portal.security.pwd.RegExpToolkit" />
 		<Logger level="ERROR" name="com.liferay.portal.service.impl.LayoutLocalServiceImpl" />

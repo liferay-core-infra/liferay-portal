@@ -3,11 +3,12 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.permission;
+package com.liferay.portal.security.permission.internal;
 
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.UserBag;
+import com.liferay.portal.security.permission.BasePermissionChecker;
 
 /**
  * @author Brian Wing Shun Chan

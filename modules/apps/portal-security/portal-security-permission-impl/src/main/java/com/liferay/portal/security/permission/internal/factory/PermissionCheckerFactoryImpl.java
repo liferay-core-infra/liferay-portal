@@ -48,6 +48,11 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 		return permissionChecker;
 	}
 
+	@Override
+	public PermissionChecker getPermissionChecker() {
+		return _permissionChecker.clone();
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
 		Class<PermissionChecker> clazz =

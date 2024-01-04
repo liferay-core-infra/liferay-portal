@@ -12,11 +12,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.security.auth.EmailAddressGeneratorFactory;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class MailMessageListener extends BaseMessageListener {
 		}
 
 		EmailAddressGenerator emailAddressGenerator =
-			EmailAddressGeneratorFactory.getInstance();
+			_emailAddressGeneratorSnapshot.get();
 
 		String emailAddress = internetAddress.getAddress();
 
@@ -150,6 +150,9 @@ public class MailMessageListener extends BaseMessageListener {
 	private static final Log _log = LogFactoryUtil.getLog(
 		MailMessageListener.class);
 
+	private static final Snapshot<EmailAddressGenerator>
+		_emailAddressGeneratorSnapshot = new Snapshot<>(
+			MailMessageListener.class, EmailAddressGenerator.class, null, true);
 	private static final Set<String> _mailSendBlacklist = new HashSet<>(
 		Arrays.asList(PropsValues.MAIL_SEND_BLACKLIST));
 

@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.Website;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
@@ -61,7 +62,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.security.auth.EmailAddressGeneratorFactory;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.users.admin.kernel.util.UserInitialsGeneratorUtil;
 
@@ -201,7 +201,7 @@ public class UserImpl extends UserBaseImpl {
 		String emailAddress = super.getEmailAddress();
 
 		EmailAddressGenerator emailAddressGenerator =
-			EmailAddressGeneratorFactory.getInstance();
+			_emailAddressGeneratorSnapshot.get();
 
 		if (emailAddressGenerator.isFake(emailAddress)) {
 			emailAddress = StringPool.BLANK;
@@ -1010,6 +1010,10 @@ public class UserImpl extends UserBaseImpl {
 	private static final Contact _NULL_CONTACT = new ContactImpl();
 
 	private static final Log _log = LogFactoryUtil.getLog(UserImpl.class);
+
+	private static final Snapshot<EmailAddressGenerator>
+		_emailAddressGeneratorSnapshot = new Snapshot<>(
+			UserImpl.class, EmailAddressGenerator.class, null, true);
 
 	private Contact _contact;
 	private long[] _groupIds;

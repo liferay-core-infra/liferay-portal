@@ -171,7 +171,6 @@ import com.liferay.portal.model.impl.LayoutImpl;
 import com.liferay.portal.model.impl.UserCacheModel;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.security.auth.AuthPipeline;
-import com.liferay.portal.security.auth.EmailAddressGeneratorFactory;
 import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 import com.liferay.portal.security.auth.FullNameValidatorFactory;
 import com.liferay.portal.security.auth.ScreenNameGeneratorFactory;
@@ -1198,7 +1197,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		long userId = counterLocalService.increment();
 
 		EmailAddressGenerator emailAddressGenerator =
-			EmailAddressGeneratorFactory.getInstance();
+			_emailAddressGeneratorSnapshot.get();
 
 		if ((emailAddress == null) ||
 			emailAddressGenerator.isGenerated(emailAddress)) {
@@ -5306,7 +5305,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		twitterSn = StringUtil.toLowerCase(StringUtil.trim(twitterSn));
 
 		EmailAddressGenerator emailAddressGenerator =
-			EmailAddressGeneratorFactory.getInstance();
+			_emailAddressGeneratorSnapshot.get();
 
 		if (emailAddressGenerator.isGenerated(emailAddress)) {
 			emailAddress = StringPool.BLANK;
@@ -7232,6 +7231,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		UserLocalServiceImpl.class);
 
+	private static final Snapshot<EmailAddressGenerator>
+		_emailAddressGeneratorSnapshot = new Snapshot<>(
+			UserLocalServiceImpl.class, EmailAddressGenerator.class, null,
+			true);
 	private static final Snapshot<UserFileUploadsSettings>
 		_userFileUploadsSettingsSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, UserFileUploadsSettings.class);

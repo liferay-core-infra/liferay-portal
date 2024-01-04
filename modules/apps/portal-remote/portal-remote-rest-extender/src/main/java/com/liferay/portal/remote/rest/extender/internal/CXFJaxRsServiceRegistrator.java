@@ -7,6 +7,7 @@ package com.liferay.portal.remote.rest.extender.internal;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
+import com.liferay.portal.kernel.util.AggregateClassLoader;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +22,7 @@ import javax.ws.rs.ext.RuntimeDelegate;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
+import org.apache.cxf.jaxrs.impl.RuntimeDelegateImpl;
 import org.apache.cxf.jaxrs.provider.json.JSONProvider;
 
 /**
@@ -91,37 +93,43 @@ public class CXFJaxRsServiceRegistrator {
 	}
 
 	private void _registerApplication(Bus bus, Application application) {
-		RuntimeDelegate runtimeDelegate = RuntimeDelegate.getInstance();
+		try (SafeCloseable safeCloseable = ThreadContextClassLoaderUtil.swap(
+				AggregateClassLoader.getAggregateClassLoader(
+					RuntimeDelegateImpl.class.getClassLoader(),
+					getClass().getClassLoader()))) {
 
-		JAXRSServerFactoryBean jaxRSServerFactoryBean =
-			runtimeDelegate.createEndpoint(
-				application, JAXRSServerFactoryBean.class);
+			RuntimeDelegate runtimeDelegate = RuntimeDelegate.getInstance();
 
-		jaxRSServerFactoryBean.setBus(bus);
-		jaxRSServerFactoryBean.setProperties(_properties);
+			JAXRSServerFactoryBean jaxRSServerFactoryBean =
+				runtimeDelegate.createEndpoint(
+					application, JAXRSServerFactoryBean.class);
 
-		JSONProvider<Object> jsonProvider = new JSONProvider<>();
+			jaxRSServerFactoryBean.setBus(bus);
+			jaxRSServerFactoryBean.setProperties(_properties);
 
-		jsonProvider.setDropCollectionWrapperElement(true);
-		jsonProvider.setDropRootElement(true);
-		jsonProvider.setSerializeAsArray(true);
-		jsonProvider.setSupportUnwrapped(true);
+			JSONProvider<Object> jsonProvider = new JSONProvider<>();
 
-		jaxRSServerFactoryBean.setProvider(jsonProvider);
+			jsonProvider.setDropCollectionWrapperElement(true);
+			jsonProvider.setDropRootElement(true);
+			jsonProvider.setSerializeAsArray(true);
+			jsonProvider.setSupportUnwrapped(true);
 
-		for (Object provider : _providers) {
-			jaxRSServerFactoryBean.setProvider(provider);
+			jaxRSServerFactoryBean.setProvider(jsonProvider);
+
+			for (Object provider : _providers) {
+				jaxRSServerFactoryBean.setProvider(provider);
+			}
+
+			for (Object service : _services) {
+				jaxRSServerFactoryBean.setServiceBean(service);
+			}
+
+			Server server = jaxRSServerFactoryBean.create();
+
+			server.start();
+
+			_store(bus, application, server);
 		}
-
-		for (Object service : _services) {
-			jaxRSServerFactoryBean.setServiceBean(service);
-		}
-
-		Server server = jaxRSServerFactoryBean.create();
-
-		server.start();
-
-		_store(bus, application, server);
 	}
 
 	private void _registerApplications() {
@@ -203,6 +211,9 @@ public class CXFJaxRsServiceRegistrator {
 			consumer.accept(t);
 		}
 	}
+
+	//	private static final Log _log = LogFactoryUtil.getLog(
+	//		CXFJaxRsServiceRegistrator.class);
 
 	private final Collection<Application> _applications = new ArrayList<>();
 	private final Collection<Bus> _buses = new ArrayList<>();

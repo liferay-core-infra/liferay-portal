@@ -28,9 +28,11 @@
 			<istrue value="${sample.sql.output.merge}" />
 			<then>
 				<echo>Use ${basedir}/sample-${sample.sql.db.type}.sql to load the database.</echo>
+				<echo>Attention: please make sure SampleSQLBuilder is using the same timezone with portal and database by setting consistent timezone in this property: sample.sql.db.time.zone!</echo>
 			</then>
 			<else>
 				<echo>Use SQL files in ${basedir}/output to load the database.</echo>
+				<echo>Attention: please make sure SampleSQLBuilder is using the same timezone with portal and database by setting consistent timezone in this property: sample.sql.db.time.zone!</echo>
 			</else>
 		</if>
 	</target>

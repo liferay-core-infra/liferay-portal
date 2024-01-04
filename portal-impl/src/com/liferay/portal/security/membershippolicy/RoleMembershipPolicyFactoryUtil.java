@@ -6,12 +6,8 @@
 package com.liferay.portal.security.membershippolicy;
 
 import com.liferay.petra.concurrent.DCLSingleton;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.membershippolicy.RoleMembershipPolicy;
-import com.liferay.portal.util.PropsValues;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -44,9 +40,6 @@ public class RoleMembershipPolicyFactoryUtil {
 		return serviceTracker;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		RoleMembershipPolicyFactoryUtil.class);
-
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
 	private static final DCLSingleton
@@ -61,19 +54,7 @@ public class RoleMembershipPolicyFactoryUtil {
 		public RoleMembershipPolicy addingService(
 			ServiceReference<RoleMembershipPolicy> serviceReference) {
 
-			RoleMembershipPolicy roleMembershipPolicy =
-				_bundleContext.getService(serviceReference);
-
-			if (PropsValues.MEMBERSHIP_POLICY_AUTO_VERIFY) {
-				try {
-					roleMembershipPolicy.verifyPolicy();
-				}
-				catch (PortalException portalException) {
-					_log.error(portalException);
-				}
-			}
-
-			return roleMembershipPolicy;
+			return _bundleContext.getService(serviceReference);
 		}
 
 		@Override

@@ -5,14 +5,8 @@
 
 package com.liferay.portal.security.membershippolicy;
 
-import com.liferay.petra.concurrent.DCLSingleton;
-import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.membershippolicy.RoleMembershipPolicy;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Roberto Díaz
@@ -20,57 +14,12 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 public class RoleMembershipPolicyFactoryUtil {
 
 	public static RoleMembershipPolicy getRoleMembershipPolicy() {
-		ServiceTracker<RoleMembershipPolicy, RoleMembershipPolicy>
-			serviceTracker = _serviceTrackerDCLSingleton.getSingleton(
-				RoleMembershipPolicyFactoryUtil::_createServiceTracker);
-
-		return serviceTracker.getService();
+		return _roleMembershipPolicySnapshot.get();
 	}
 
-	private static ServiceTracker<RoleMembershipPolicy, RoleMembershipPolicy>
-		_createServiceTracker() {
-
-		ServiceTracker<RoleMembershipPolicy, RoleMembershipPolicy>
-			serviceTracker = new ServiceTracker<>(
-				_bundleContext, RoleMembershipPolicy.class,
-				new RoleMembershipPolicyTrackerCustomizer());
-
-		serviceTracker.open();
-
-		return serviceTracker;
-	}
-
-	private static final BundleContext _bundleContext =
-		SystemBundleUtil.getBundleContext();
-	private static final DCLSingleton
-		<ServiceTracker<RoleMembershipPolicy, RoleMembershipPolicy>>
-			_serviceTrackerDCLSingleton = new DCLSingleton<>();
-
-	private static class RoleMembershipPolicyTrackerCustomizer
-		implements ServiceTrackerCustomizer
-			<RoleMembershipPolicy, RoleMembershipPolicy> {
-
-		@Override
-		public RoleMembershipPolicy addingService(
-			ServiceReference<RoleMembershipPolicy> serviceReference) {
-
-			return _bundleContext.getService(serviceReference);
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<RoleMembershipPolicy> serviceReference,
-			RoleMembershipPolicy roleMembershipPolicy) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<RoleMembershipPolicy> serviceReference,
-			RoleMembershipPolicy roleMembershipPolicy) {
-
-			_bundleContext.ungetService(serviceReference);
-		}
-
-	}
+	private static final Snapshot<RoleMembershipPolicy>
+		_roleMembershipPolicySnapshot = new Snapshot<>(
+			RoleMembershipPolicyFactoryUtil.class, RoleMembershipPolicy.class,
+			null, true);
 
 }

@@ -5,8 +5,8 @@
 
 package com.liferay.portal.security.membershippolicy;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicy;
-import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyFactory;
 
 /**
  * @author Roberto Díaz
@@ -16,25 +16,12 @@ public class OrganizationMembershipPolicyFactoryUtil {
 	public static OrganizationMembershipPolicy
 		getOrganizationMembershipPolicy() {
 
-		return _organizationMembershipPolicyFactory.
-			getOrganizationMembershipPolicy();
+		return _organizationMembershipPolicySnapshot.get();
 	}
 
-	public static OrganizationMembershipPolicyFactory
-		getOrganizationMembershipPolicyFactory() {
-
-		return _organizationMembershipPolicyFactory;
-	}
-
-	public void setOrganizationMembershipPolicyFactory(
-		OrganizationMembershipPolicyFactory
-			organizationMembershipPolicyFactory) {
-
-		_organizationMembershipPolicyFactory =
-			organizationMembershipPolicyFactory;
-	}
-
-	private static OrganizationMembershipPolicyFactory
-		_organizationMembershipPolicyFactory;
+	private static final Snapshot<OrganizationMembershipPolicy>
+		_organizationMembershipPolicySnapshot = new Snapshot<>(
+			OrganizationMembershipPolicyFactoryUtil.class,
+			OrganizationMembershipPolicy.class, null, true);
 
 }

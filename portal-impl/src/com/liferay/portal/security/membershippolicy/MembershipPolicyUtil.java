@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershi
 import com.liferay.portal.kernel.security.membershippolicy.RoleMembershipPolicy;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicy;
 import com.liferay.portal.kernel.security.membershippolicy.UserGroupMembershipPolicy;
+import com.liferay.portal.kernel.util.ProxyFactory;
 
 /**
  * @author Janis Zhang
@@ -19,21 +20,59 @@ public class MembershipPolicyUtil {
 	public static OrganizationMembershipPolicy
 		getOrganizationMembershipPolicy() {
 
-		return _organizationMembershipPolicySnapshot.get();
+		OrganizationMembershipPolicy organizationMembershipPolicy =
+			_organizationMembershipPolicySnapshot.get();
+
+		if (organizationMembershipPolicy != null) {
+			return organizationMembershipPolicy;
+		}
+
+		return _dummyOrganizationMembershipPolicy;
 	}
 
 	public static RoleMembershipPolicy getRoleMembershipPolicy() {
-		return _roleMembershipPolicySnapshot.get();
+		RoleMembershipPolicy roleMembershipPolicy =
+			_roleMembershipPolicySnapshot.get();
+
+		if (roleMembershipPolicy != null) {
+			return roleMembershipPolicy;
+		}
+
+		return _dummyRoleMembershipPolicy;
 	}
 
 	public static SiteMembershipPolicy getSiteMembershipPolicy() {
-		return _siteMembershipPolicySnapshot.get();
+		SiteMembershipPolicy siteMembershipPolicy =
+			_siteMembershipPolicySnapshot.get();
+
+		if (siteMembershipPolicy != null) {
+			return siteMembershipPolicy;
+		}
+
+		return _defaultSiteMembershipPolicy;
 	}
 
 	public static UserGroupMembershipPolicy getUserGroupMembershipPolicy() {
-		return _userGroupMembershipPolicySnapshot.get();
+		UserGroupMembershipPolicy userGroupMembershipPolicy =
+			_userGroupMembershipPolicySnapshot.get();
+
+		if (userGroupMembershipPolicy != null) {
+			return userGroupMembershipPolicy;
+		}
+
+		return _dummyUserGroupMembershipPolicy;
 	}
 
+	private static final SiteMembershipPolicy _defaultSiteMembershipPolicy =
+		new DefaultSiteMembershipPolicy();
+	private static final OrganizationMembershipPolicy
+		_dummyOrganizationMembershipPolicy = ProxyFactory.newDummyInstance(
+			OrganizationMembershipPolicy.class);
+	private static final RoleMembershipPolicy _dummyRoleMembershipPolicy =
+		ProxyFactory.newDummyInstance(RoleMembershipPolicy.class);
+	private static final UserGroupMembershipPolicy
+		_dummyUserGroupMembershipPolicy = ProxyFactory.newDummyInstance(
+			UserGroupMembershipPolicy.class);
 	private static final Snapshot<OrganizationMembershipPolicy>
 		_organizationMembershipPolicySnapshot = new Snapshot<>(
 			MembershipPolicyUtil.class, OrganizationMembershipPolicy.class,

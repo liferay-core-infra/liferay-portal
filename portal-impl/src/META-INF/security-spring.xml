@@ -23,13 +23,6 @@
 	<bean class="com.liferay.portal.kernel.security.auth.tunnel.TunnelAuthenticationManagerUtil" id="com.liferay.portal.kernel.security.auth.tunnel.TunnelAuthenticationManagerUtil">
 		<property name="tunnelAuthenticationManager" ref="com.liferay.portal.security.auth.tunnel.TunnelAuthenticationManagerImpl" />
 	</bean>
-	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyOrganizationMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyOrganizationMembershipPolicy" />
-	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyRoleMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyRoleMembershipPolicy" />
-	<bean class="com.liferay.portal.kernel.security.membershippolicy.DummyUserGroupMembershipPolicy" id="com.liferay.portal.kernel.security.membershippolicy.DummyUserGroupMembershipPolicy" />
-	<bean class="com.liferay.portal.security.membershippolicy.OrganizationMembershipPolicyFactoryImpl" id="com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyFactory" />
-	<bean class="com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyFactoryUtil" id="com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyFactoryUtil">
-		<property name="organizationMembershipPolicyFactory" ref="com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyFactory" />
-	</bean>
 	<bean class="com.liferay.portal.security.permission.PermissionCheckerFactoryImpl" id="com.liferay.portal.kernel.security.permission.PermissionCheckerFactory" />
 	<bean class="com.liferay.portal.security.permission.ResourceActionsImpl" id="com.liferay.portal.kernel.security.permission.ResourceActions" />
 	<bean class="com.liferay.portal.kernel.security.permission.ResourceActionsUtil" id="com.liferay.portal.kernel.security.permission.ResourceActionsUtil">
@@ -62,5 +55,4 @@
 	<bean class="com.liferay.portal.security.auth.StrutsPortletAuthTokenWhitelist" id="com.liferay.portal.security.auth.StrutsPortletAuthTokenWhitelist" />
 	<bean class="com.liferay.portal.security.auth.registry.AuthVerifierRegistry" id="com.liferay.portal.security.auth.registry.AuthVerifierRegistry" />
 	<bean class="com.liferay.portal.security.auth.tunnel.TunnelAuthenticationManagerImpl" id="com.liferay.portal.security.auth.tunnel.TunnelAuthenticationManagerImpl" />
-	<bean class="com.liferay.portal.security.membershippolicy.DefaultSiteMembershipPolicy" id="com.liferay.portal.security.membershippolicy.DefaultSiteMembershipPolicy" />
 </beans>

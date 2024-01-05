@@ -6,9 +6,10 @@
 package com.liferay.portal.security.membership.policy.organization.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyUtil;
+import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicy;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.security.membership.policy.organization.BaseOrganizationMembershipPolicyTestCase;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
@@ -38,7 +39,7 @@ public class OrganizationMembershipPolicyBasicTest
 		long[] standardOrganizationIds = addStandardOrganizations();
 
 		Assert.assertTrue(
-			OrganizationMembershipPolicyUtil.isMembershipAllowed(
+			_organizationMembershipPolicy.isMembershipAllowed(
 				userIds[0], standardOrganizationIds[0]));
 	}
 
@@ -48,7 +49,7 @@ public class OrganizationMembershipPolicyBasicTest
 		long[] forbiddenOrganizationIds = addForbiddenOrganizations();
 
 		Assert.assertFalse(
-			OrganizationMembershipPolicyUtil.isMembershipAllowed(
+			_organizationMembershipPolicy.isMembershipAllowed(
 				userIds[0], forbiddenOrganizationIds[0]));
 	}
 
@@ -58,7 +59,7 @@ public class OrganizationMembershipPolicyBasicTest
 		long[] standardOrganizationIds = addStandardOrganizations();
 
 		Assert.assertFalse(
-			OrganizationMembershipPolicyUtil.isMembershipRequired(
+			_organizationMembershipPolicy.isMembershipRequired(
 				userIds[0], standardOrganizationIds[0]));
 	}
 
@@ -68,7 +69,7 @@ public class OrganizationMembershipPolicyBasicTest
 		long[] requiredOrganizationIds = addRequiredOrganizations();
 
 		Assert.assertTrue(
-			OrganizationMembershipPolicyUtil.isMembershipRequired(
+			_organizationMembershipPolicy.isMembershipRequired(
 				userIds[0], requiredOrganizationIds[0]));
 	}
 
@@ -79,7 +80,7 @@ public class OrganizationMembershipPolicyBasicTest
 		long[] standardRoleIds = addStandardRoles();
 
 		Assert.assertTrue(
-			OrganizationMembershipPolicyUtil.isRoleAllowed(
+			_organizationMembershipPolicy.isRoleAllowed(
 				userIds[0], standardOrganizationIds[0], standardRoleIds[0]));
 	}
 
@@ -90,7 +91,7 @@ public class OrganizationMembershipPolicyBasicTest
 		long[] forbiddenRoleIds = addForbiddenRoles();
 
 		Assert.assertFalse(
-			OrganizationMembershipPolicyUtil.isRoleAllowed(
+			_organizationMembershipPolicy.isRoleAllowed(
 				userIds[0], standardOrganizationIds[0], forbiddenRoleIds[0]));
 	}
 
@@ -101,7 +102,7 @@ public class OrganizationMembershipPolicyBasicTest
 		long[] standardRoleIds = addStandardRoles();
 
 		Assert.assertFalse(
-			OrganizationMembershipPolicyUtil.isRoleRequired(
+			_organizationMembershipPolicy.isRoleRequired(
 				userIds[0], standardOrganizationIds[0], standardRoleIds[0]));
 	}
 
@@ -112,8 +113,11 @@ public class OrganizationMembershipPolicyBasicTest
 		long[] requiredRoleIds = addRequiredRoles();
 
 		Assert.assertTrue(
-			OrganizationMembershipPolicyUtil.isRoleRequired(
+			_organizationMembershipPolicy.isRoleRequired(
 				userIds[0], standardOrganizationIds[0], requiredRoleIds[0]));
 	}
+
+	@Inject
+	private OrganizationMembershipPolicy _organizationMembershipPolicy;
 
 }

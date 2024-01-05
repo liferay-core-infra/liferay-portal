@@ -24,7 +24,7 @@ public class UserGroupMembershipPolicyUtil {
 		throws PortalException {
 
 		UserGroupMembershipPolicy userGroupMembershipPolicy =
-			UserGroupMembershipPolicyFactoryUtil.getUserGroupMembershipPolicy();
+			MembershipPolicyUtil.getUserGroupMembershipPolicy();
 
 		userGroupMembershipPolicy.checkMembership(
 			userIds, addUserGroupIds, removeUserGroupIds);
@@ -34,7 +34,7 @@ public class UserGroupMembershipPolicyUtil {
 		throws PortalException {
 
 		UserGroupMembershipPolicy userGroupMembershipPolicy =
-			UserGroupMembershipPolicyFactoryUtil.getUserGroupMembershipPolicy();
+			MembershipPolicyUtil.getUserGroupMembershipPolicy();
 
 		return userGroupMembershipPolicy.isMembershipAllowed(
 			userId, userGroupId);
@@ -44,7 +44,7 @@ public class UserGroupMembershipPolicyUtil {
 		throws PortalException {
 
 		UserGroupMembershipPolicy userGroupMembershipPolicy =
-			UserGroupMembershipPolicyFactoryUtil.getUserGroupMembershipPolicy();
+			MembershipPolicyUtil.getUserGroupMembershipPolicy();
 
 		return userGroupMembershipPolicy.isMembershipRequired(
 			userId, userGroupId);
@@ -55,7 +55,7 @@ public class UserGroupMembershipPolicyUtil {
 		throws PortalException {
 
 		UserGroupMembershipPolicy userGroupMembershipPolicy =
-			UserGroupMembershipPolicyFactoryUtil.getUserGroupMembershipPolicy();
+			MembershipPolicyUtil.getUserGroupMembershipPolicy();
 
 		userGroupMembershipPolicy.propagateMembership(
 			userIds, addUserGroupIds, removeUserGroupIds);
@@ -63,7 +63,7 @@ public class UserGroupMembershipPolicyUtil {
 
 	public static void verifyPolicy() throws PortalException {
 		UserGroupMembershipPolicy userGroupMembershipPolicy =
-			UserGroupMembershipPolicyFactoryUtil.getUserGroupMembershipPolicy();
+			MembershipPolicyUtil.getUserGroupMembershipPolicy();
 
 		userGroupMembershipPolicy.verifyPolicy();
 	}
@@ -72,7 +72,7 @@ public class UserGroupMembershipPolicyUtil {
 		throws PortalException {
 
 		UserGroupMembershipPolicy userGroupMembershipPolicy =
-			UserGroupMembershipPolicyFactoryUtil.getUserGroupMembershipPolicy();
+			MembershipPolicyUtil.getUserGroupMembershipPolicy();
 
 		userGroupMembershipPolicy.verifyPolicy(userGroup);
 	}
@@ -83,7 +83,7 @@ public class UserGroupMembershipPolicyUtil {
 		throws PortalException {
 
 		UserGroupMembershipPolicy userGroupMembershipPolicy =
-			UserGroupMembershipPolicyFactoryUtil.getUserGroupMembershipPolicy();
+			MembershipPolicyUtil.getUserGroupMembershipPolicy();
 
 		userGroupMembershipPolicy.verifyPolicy(
 			userGroup, oldUserGroup, oldExpandoAttributes);

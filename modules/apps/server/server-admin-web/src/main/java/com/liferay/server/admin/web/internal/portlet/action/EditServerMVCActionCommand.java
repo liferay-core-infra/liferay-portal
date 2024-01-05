@@ -97,10 +97,8 @@ import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.log4j.Log4JUtil;
-import com.liferay.portal.security.membershippolicy.OrganizationMembershipPolicyFactoryUtil;
-import com.liferay.portal.security.membershippolicy.RoleMembershipPolicyFactoryUtil;
+import com.liferay.portal.security.membershippolicy.MembershipPolicyUtil;
 import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyUtil;
-import com.liferay.portal.security.membershippolicy.UserGroupMembershipPolicyFactoryUtil;
 import com.liferay.portal.util.MaintenanceUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.ShutdownUtil;
@@ -877,20 +875,19 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 	private void _verifyMembershipPolicies() throws Exception {
 		OrganizationMembershipPolicy organizationMembershipPolicy =
-			OrganizationMembershipPolicyFactoryUtil.
-				getOrganizationMembershipPolicy();
+			MembershipPolicyUtil.getOrganizationMembershipPolicy();
 
 		organizationMembershipPolicy.verifyPolicy();
 
 		RoleMembershipPolicy roleMembershipPolicy =
-			RoleMembershipPolicyFactoryUtil.getRoleMembershipPolicy();
+			MembershipPolicyUtil.getRoleMembershipPolicy();
 
 		roleMembershipPolicy.verifyPolicy();
 
 		SiteMembershipPolicyUtil.verifyPolicy();
 
 		UserGroupMembershipPolicy userGroupMembershipPolicy =
-			UserGroupMembershipPolicyFactoryUtil.getUserGroupMembershipPolicy();
+			MembershipPolicyUtil.getUserGroupMembershipPolicy();
 
 		userGroupMembershipPolicy.verifyPolicy();
 	}

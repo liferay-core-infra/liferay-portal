@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.UserGroupRole;
-import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicy;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -32,7 +31,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.checkMembership(
 			userIds, addGroupIds, removeGroupIds);
@@ -44,7 +43,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.checkRoles(
 			addUserGroupRoles, removeUserGroupRoles);
@@ -54,7 +53,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		return siteMembershipPolicy.isMembershipAllowed(userId, groupId);
 	}
@@ -64,7 +63,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		return siteMembershipPolicy.isMembershipProtected(
 			permissionChecker, userId, groupId);
@@ -74,7 +73,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		return siteMembershipPolicy.isMembershipRequired(userId, groupId);
 	}
@@ -83,7 +82,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		return siteMembershipPolicy.isRoleAllowed(userId, groupId, roleId);
 	}
@@ -94,7 +93,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		return siteMembershipPolicy.isRoleProtected(
 			permissionChecker, userId, groupId, roleId);
@@ -104,7 +103,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		return siteMembershipPolicy.isRoleRequired(userId, groupId, roleId);
 	}
@@ -114,7 +113,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.propagateMembership(
 			userIds, addGroupIds, removeGroupIds);
@@ -126,7 +125,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.propagateRoles(
 			addUserGroupRoles, removeUserGroupRoles);
@@ -134,14 +133,14 @@ public class SiteMembershipPolicyUtil {
 
 	public static void verifyPolicy() throws PortalException {
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.verifyPolicy();
 	}
 
 	public static void verifyPolicy(Group group) throws PortalException {
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.verifyPolicy(group);
 	}
@@ -154,7 +153,7 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.verifyPolicy(
 			group, oldGroup, oldAssetCategories, oldAssetTags,
@@ -163,7 +162,7 @@ public class SiteMembershipPolicyUtil {
 
 	public static void verifyPolicy(Role role) throws PortalException {
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.verifyPolicy(role);
 	}
@@ -174,14 +173,9 @@ public class SiteMembershipPolicyUtil {
 		throws PortalException {
 
 		SiteMembershipPolicy siteMembershipPolicy =
-			_siteMembershipPolicySnapshot.get();
+			MembershipPolicyUtil.getSiteMembershipPolicy();
 
 		siteMembershipPolicy.verifyPolicy(role, oldRole, oldExpandoAttributes);
 	}
-
-	private static final Snapshot<SiteMembershipPolicy>
-		_siteMembershipPolicySnapshot = new Snapshot<>(
-			SiteMembershipPolicyUtil.class, SiteMembershipPolicy.class, null,
-			true);
 
 }

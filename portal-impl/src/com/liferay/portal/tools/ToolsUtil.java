@@ -215,8 +215,15 @@ public class ToolsUtil {
 	}
 
 	public static String getPackagePath(String fileName) {
-		int x = Math.max(
-			fileName.lastIndexOf("/com/"), fileName.lastIndexOf("/org/"));
+		int comLastIndexOf = fileName.lastIndexOf("/com/");
+		int orgLastIndexOf = fileName.lastIndexOf("/org/");
+
+		int x = Math.max(comLastIndexOf, orgLastIndexOf);
+
+		if ((comLastIndexOf > -1) && (orgLastIndexOf > -1)) {
+			x = Math.min(comLastIndexOf, orgLastIndexOf);
+		}
+
 		int y = fileName.lastIndexOf(CharPool.SLASH);
 
 		String packagePath = fileName.substring(x + 1, y);

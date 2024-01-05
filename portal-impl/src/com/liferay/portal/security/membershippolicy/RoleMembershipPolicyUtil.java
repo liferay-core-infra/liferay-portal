@@ -24,7 +24,7 @@ public class RoleMembershipPolicyUtil {
 		throws PortalException {
 
 		RoleMembershipPolicy roleMembershipPolicy =
-			RoleMembershipPolicyFactoryUtil.getRoleMembershipPolicy();
+			MembershipPolicyUtil.getRoleMembershipPolicy();
 
 		roleMembershipPolicy.checkRoles(userIds, addRoleIds, removeRoleIds);
 	}
@@ -33,7 +33,7 @@ public class RoleMembershipPolicyUtil {
 		throws PortalException {
 
 		RoleMembershipPolicy roleMembershipPolicy =
-			RoleMembershipPolicyFactoryUtil.getRoleMembershipPolicy();
+			MembershipPolicyUtil.getRoleMembershipPolicy();
 
 		return roleMembershipPolicy.isRoleAllowed(userId, roleId);
 	}
@@ -42,7 +42,7 @@ public class RoleMembershipPolicyUtil {
 		throws PortalException {
 
 		RoleMembershipPolicy roleMembershipPolicy =
-			RoleMembershipPolicyFactoryUtil.getRoleMembershipPolicy();
+			MembershipPolicyUtil.getRoleMembershipPolicy();
 
 		return roleMembershipPolicy.isRoleRequired(userId, roleId);
 	}
@@ -52,21 +52,21 @@ public class RoleMembershipPolicyUtil {
 		throws PortalException {
 
 		RoleMembershipPolicy roleMembershipPolicy =
-			RoleMembershipPolicyFactoryUtil.getRoleMembershipPolicy();
+			MembershipPolicyUtil.getRoleMembershipPolicy();
 
 		roleMembershipPolicy.propagateRoles(userIds, addRoleIds, removeRoleIds);
 	}
 
 	public static void verifyPolicy() throws PortalException {
 		RoleMembershipPolicy roleMembershipPolicy =
-			RoleMembershipPolicyFactoryUtil.getRoleMembershipPolicy();
+			MembershipPolicyUtil.getRoleMembershipPolicy();
 
 		roleMembershipPolicy.verifyPolicy();
 	}
 
 	public static void verifyPolicy(Role role) throws PortalException {
 		RoleMembershipPolicy roleMembershipPolicy =
-			RoleMembershipPolicyFactoryUtil.getRoleMembershipPolicy();
+			MembershipPolicyUtil.getRoleMembershipPolicy();
 
 		roleMembershipPolicy.verifyPolicy(role);
 	}
@@ -77,7 +77,7 @@ public class RoleMembershipPolicyUtil {
 		throws PortalException {
 
 		RoleMembershipPolicy roleMembershipPolicy =
-			RoleMembershipPolicyFactoryUtil.getRoleMembershipPolicy();
+			MembershipPolicyUtil.getRoleMembershipPolicy();
 
 		roleMembershipPolicy.verifyPolicy(role, oldRole, oldExpandoAttributes);
 	}

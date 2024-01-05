@@ -124,10 +124,6 @@ public class TrackbackMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	/**
-	 * @author Alexander Chow
-	 * @author André de Oliveira
-	 */
 	protected class Trackback {
 
 		public void addTrackback(

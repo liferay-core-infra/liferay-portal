@@ -53,6 +53,7 @@ Main-Class: com.liferay.portal.tools.service.builder.ServiceBuilder
 	@com.liferay.petra.sql.dsl.api-*.jar!/com/liferay/petra/sql/dsl/query/sort/OrderByInfo.class,\
 	@com.liferay.petra.string-*.jar!/com/liferay/petra/string/*.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/model/BaseModelHintsImpl.class,\
+	@com.liferay.portal.impl-*.jar!/com/liferay/portal/model/BaseModelHintsImpl$FieldDataBag.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/service.xml,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/tools/ArgumentsMap.class,\
 	@com.liferay.portal.impl-*.jar!/com/liferay/portal/tools/ArgumentsUtil.class,\

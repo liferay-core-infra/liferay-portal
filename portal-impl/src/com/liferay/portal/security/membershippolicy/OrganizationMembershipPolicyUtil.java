@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicy;
-import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 import java.io.Serializable;

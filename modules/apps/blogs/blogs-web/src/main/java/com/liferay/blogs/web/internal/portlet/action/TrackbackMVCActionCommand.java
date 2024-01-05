@@ -132,56 +132,35 @@ public class TrackbackMVCActionCommand extends BaseMVCActionCommand {
 				Function<String, ServiceContext> serviceContextFunction)
 			throws PortalException {
 
-			long userId = _userLocalService.getGuestUserId(
-				themeDisplay.getCompanyId());
-			long groupId = entry.getGroupId();
-			String className = BlogsEntry.class.getName();
-			long classPK = entry.getEntryId();
-
-			String body = _buildBody(themeDisplay, excerpt, url);
-
 			long commentId = _commentManager.addComment(
-				null, userId, groupId, className, classPK, blogName, title,
-				body, serviceContextFunction);
+				null,
+				_userLocalService.getGuestUserId(themeDisplay.getCompanyId()),
+				entry.getGroupId(), BlogsEntry.class.getName(),
+				entry.getEntryId(), blogName, title,
+				_buildBody(themeDisplay, excerpt, url), serviceContextFunction);
 
-			String entryURL = _buildEntryURL(entry, themeDisplay);
-
-			_linkbackConsumer.addNewTrackback(commentId, url, entryURL);
-		}
-
-		private String _buildBBCodeBody(
-			ThemeDisplay themeDisplay, String excerpt, String url) {
-
-			url = StringUtil.replace(
-				url, new char[] {CharPool.CLOSE_BRACKET, CharPool.OPEN_BRACKET},
-				new String[] {"%5D", "%5B"});
-
-			return StringBundler.concat(
-				"[...] ", excerpt, " [...] [url=", url, "]",
-				themeDisplay.translate("read-more"), "[/url]");
+			_linkbackConsumer.addNewTrackback(
+				commentId, url,
+				StringBundler.concat(
+					_portal.getLayoutFullURL(themeDisplay),
+					Portal.FRIENDLY_URL_SEPARATOR, "blogs/",
+					entry.getUrlTitle()));
 		}
 
 		private String _buildBody(
 			ThemeDisplay themeDisplay, String excerpt, String url) {
 
 			if (PropsValues.DISCUSSION_COMMENTS_FORMAT.equals("bbcode")) {
-				return _buildBBCodeBody(themeDisplay, excerpt, url);
+				return StringBundler.concat(
+					"[...] ", excerpt, " [...] [url=",
+					StringUtil.replace(
+						url,
+						new char[] {
+							CharPool.CLOSE_BRACKET, CharPool.OPEN_BRACKET
+						},
+						new String[] {"%5D", "%5B"}),
+					"]", themeDisplay.translate("read-more"), "[/url]");
 			}
-
-			return _buildHTMLBody(themeDisplay, excerpt, url);
-		}
-
-		private String _buildEntryURL(
-				BlogsEntry entry, ThemeDisplay themeDisplay)
-			throws PortalException {
-
-			return StringBundler.concat(
-				_portal.getLayoutFullURL(themeDisplay),
-				Portal.FRIENDLY_URL_SEPARATOR, "blogs/", entry.getUrlTitle());
-		}
-
-		private String _buildHTMLBody(
-			ThemeDisplay themeDisplay, String excerpt, String url) {
 
 			return StringBundler.concat(
 				"[...] ", excerpt, " [...] <a href=\"", url, "\">",

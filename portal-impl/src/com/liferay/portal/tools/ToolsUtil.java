@@ -224,11 +224,9 @@ public class ToolsUtil {
 			x = Math.min(comLastIndexOf, orgLastIndexOf);
 		}
 
-		int y = fileName.lastIndexOf(CharPool.SLASH);
-
-		String packagePath = fileName.substring(x + 1, y);
-
-		return StringUtil.replace(packagePath, CharPool.SLASH, CharPool.PERIOD);
+		return StringUtil.replace(
+			fileName.substring(x + 1, fileName.lastIndexOf(CharPool.SLASH)),
+			CharPool.SLASH, CharPool.PERIOD);
 	}
 
 	public static boolean isInsideQuotes(String s, int pos) {

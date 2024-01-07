@@ -10262,20 +10262,20 @@ public class CommerceOrderPersistenceImpl
 			}
 
 			try {
-				commerceOrder.setDeliveryCommerceTermEntryDescription(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId,
-						CommerceOrder.class.getName(), commerceOrderId,
-						ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
-						commerceOrder.getDeliveryCommerceTermEntryDescription(),
-						null));
-
 				commerceOrder.setPaymentCommerceTermEntryDescription(
 					SanitizerUtil.sanitize(
 						companyId, groupId, userId,
 						CommerceOrder.class.getName(), commerceOrderId,
 						ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
 						commerceOrder.getPaymentCommerceTermEntryDescription(),
+						null));
+
+				commerceOrder.setDeliveryCommerceTermEntryDescription(
+					SanitizerUtil.sanitize(
+						companyId, groupId, userId,
+						CommerceOrder.class.getName(), commerceOrderId,
+						ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
+						commerceOrder.getDeliveryCommerceTermEntryDescription(),
 						null));
 			}
 			catch (SanitizerException sanitizerException) {

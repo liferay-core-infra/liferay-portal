@@ -36,28 +36,28 @@ public class LayoutBranchUtil {
 	 */
 
 	/**
-	 * @see BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(LayoutBranch layoutBranch) {
 		getPersistence().clearCache(layoutBranch);
 	}
 
 	/**
-	 * @see BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see BasePersistence#fetchByPrimaryKeys(Set)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#fetchByPrimaryKeys(Set)
 	 */
 	public static Map<Serializable, LayoutBranch> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
@@ -66,7 +66,7 @@ public class LayoutBranchUtil {
 	}
 
 	/**
-	 * @see BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<LayoutBranch> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class LayoutBranchUtil {
 	}
 
 	/**
-	 * @see BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<LayoutBranch> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -84,7 +84,7 @@ public class LayoutBranchUtil {
 	}
 
 	/**
-	 * @see BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<LayoutBranch> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -95,14 +95,14 @@ public class LayoutBranchUtil {
 	}
 
 	/**
-	 * @see BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static LayoutBranch update(LayoutBranch layoutBranch) {
 		return getPersistence().update(layoutBranch);
 	}
 
 	/**
-	 * @see BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static LayoutBranch update(
 		LayoutBranch layoutBranch, ServiceContext serviceContext) {

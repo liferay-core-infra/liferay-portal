@@ -1590,7 +1590,7 @@ public class ObjectDefinitionLocalServiceImpl
 	}
 
 	private void _dropTable(String dbTableName) {
-		String sql = "drop table " + dbTableName;
+		String sql = "DROP_TABLE_IF_EXISTS(" + dbTableName + ")";
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("SQL: " + sql);

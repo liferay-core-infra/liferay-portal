@@ -7,8 +7,12 @@ package com.liferay.expando.service;
 
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.service.impl.ExpandoValueLocalServiceImpl;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+
+import java.lang.reflect.Method;
 
 import java.math.BigDecimal;
 
@@ -1082,12 +1086,25 @@ public class ExpandoValueConversionTest {
 
 	private final Converter _converter = new Converter();
 
-	private static class Converter extends ExpandoValueLocalServiceImpl {
+	private static class Converter {
 
-		@Override
 		public <T> T convertType(int type, Object data) {
-			return super.convertType(type, data);
+			Method method = ReflectionTestUtil.getMethod(
+				ExpandoValueLocalServiceImpl.class, "_convertType",
+				new Class<?>[] {int.class, Object.class});
+
+			try {
+				data = method.invoke(_expandoValueLocalService, type, data);
+			}
+			catch (Exception exception) {
+				ReflectionUtil.throwException(exception.getCause());
+			}
+
+			return (T)data;
 		}
+
+		private static final ExpandoValueLocalService
+			_expandoValueLocalService = new ExpandoValueLocalServiceImpl();
 
 	}
 

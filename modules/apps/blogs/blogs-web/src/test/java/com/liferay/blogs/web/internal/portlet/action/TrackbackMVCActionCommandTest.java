@@ -6,13 +6,17 @@
 package com.liferay.blogs.web.internal.portlet.action;
 
 import com.liferay.blogs.exception.NoSuchEntryException;
+import com.liferay.blogs.linkback.LinkbackConsumer;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.blogs.service.BlogsEntryServiceUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.ServiceContextFunction;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -59,6 +63,8 @@ public class TrackbackMVCActionCommandTest {
 		_setUpPortalUtil();
 		_setUpPortletPreferencesFactoryUtil();
 		_setUpPropsUtil();
+		_setUpThemeDisplay();
+		_setUpUserLocalService();
 	}
 
 	@Test
@@ -132,13 +138,21 @@ public class TrackbackMVCActionCommandTest {
 
 		_assertSuccess();
 
+		long commentId = Mockito.verify(
+			_commentManager
+		).addComment(
+			Mockito.isNull(), Mockito.eq(1L), Mockito.eq(1L),
+			Mockito.eq(BlogsEntry.class.getName()), Mockito.eq(1L),
+			Mockito.eq("__blogName__"), Mockito.eq("__title__"),
+			Mockito.anyString(), Mockito.any(ServiceContextFunction.class)
+		);
+
 		Mockito.verify(
-			_trackback
-		).addTrackback(
-			Mockito.same(_blogsEntry), Mockito.same(_themeDisplay),
-			Mockito.eq("__excerpt__"),
+			_linkbackConsumer
+		).addNewTrackback(
+			Mockito.eq(commentId),
 			Mockito.eq(_mockHttpServletRequest.getRemoteAddr()),
-			Mockito.eq("__blogName__"), Mockito.eq("__title__"), Mockito.any()
+			Mockito.endsWith("/-/blogs/__urlTitle__")
 		);
 	}
 
@@ -164,9 +178,13 @@ public class TrackbackMVCActionCommandTest {
 			new TrackbackMVCActionCommand();
 
 		ReflectionTestUtil.setFieldValue(
+			trackbackMVCActionCommand, "_commentManager", _commentManager);
+		ReflectionTestUtil.setFieldValue(
+			trackbackMVCActionCommand, "_linkbackConsumer", _linkbackConsumer);
+		ReflectionTestUtil.setFieldValue(
 			trackbackMVCActionCommand, "_portal", PortalUtil.getPortal());
 		ReflectionTestUtil.setFieldValue(
-			trackbackMVCActionCommand, "_trackback", _trackback);
+			trackbackMVCActionCommand, "_userLocalService", _userLocalService);
 
 		trackbackMVCActionCommand.addTrackback(_actionRequest, _actionResponse);
 	}
@@ -218,6 +236,24 @@ public class TrackbackMVCActionCommandTest {
 	}
 
 	private void _setUpBlogsEntry() {
+		Mockito.when(
+			_blogsEntry.getEntryId()
+		).thenReturn(
+			1L
+		);
+
+		Mockito.when(
+			_blogsEntry.getGroupId()
+		).thenReturn(
+			1L
+		);
+
+		Mockito.when(
+			_blogsEntry.getUrlTitle()
+		).thenReturn(
+			"__urlTitle__"
+		);
+
 		Mockito.when(
 			_blogsEntry.isAllowTrackbacks()
 		).thenReturn(
@@ -273,6 +309,22 @@ public class TrackbackMVCActionCommandTest {
 		PropsTestUtil.setProps(Collections.emptyMap());
 	}
 
+	private void _setUpThemeDisplay() {
+		Mockito.when(
+			_themeDisplay.getCompanyId()
+		).thenReturn(
+			1L
+		);
+	}
+
+	private void _setUpUserLocalService() throws Exception {
+		Mockito.when(
+			_userLocalService.getGuestUserId(Mockito.eq(1L))
+		).thenReturn(
+			1L
+		);
+	}
+
 	private void _whenGetEntryThenReturn(BlogsEntry blogsEntry)
 		throws Exception {
 
@@ -310,6 +362,10 @@ public class TrackbackMVCActionCommandTest {
 	private final BlogsEntry _blogsEntry = Mockito.mock(BlogsEntry.class);
 	private final BlogsEntryService _blogsEntryService = Mockito.mock(
 		BlogsEntryService.class);
+	private final CommentManager _commentManager = Mockito.mock(
+		CommentManager.class);
+	private final LinkbackConsumer _linkbackConsumer = Mockito.mock(
+		LinkbackConsumer.class);
 	private final MockHttpServletRequest _mockHttpServletRequest =
 		new MockHttpServletRequest();
 	private final MockHttpServletResponse _mockHttpServletResponse =
@@ -318,8 +374,8 @@ public class TrackbackMVCActionCommandTest {
 		new MockHttpServletRequest();
 	private final PortletPreferences _portletPreferences = Mockito.mock(
 		PortletPreferences.class);
-	private final ThemeDisplay _themeDisplay = new ThemeDisplay();
-	private final TrackbackMVCActionCommand.Trackback _trackback = Mockito.mock(
-		TrackbackMVCActionCommand.Trackback.class);
+	private final ThemeDisplay _themeDisplay = Mockito.mock(ThemeDisplay.class);
+	private final UserLocalService _userLocalService = Mockito.mock(
+		UserLocalService.class);
 
 }

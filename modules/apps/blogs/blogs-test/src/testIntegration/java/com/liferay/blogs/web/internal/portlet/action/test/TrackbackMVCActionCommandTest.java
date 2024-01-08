@@ -1,29 +1,34 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.blogs.trackback.test;
+package com.liferay.blogs.web.internal.portlet.action.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.blogs.linkback.LinkbackConsumer;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalServiceUtil;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.IdentityServiceContextFunction;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.servlet.PortletServlet;
+import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionRequest;
+import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
 import java.util.Date;
-import java.util.function.Function;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -34,18 +39,21 @@ import org.junit.runner.RunWith;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
+
+import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * @author Adolfo Pérez
  */
 @RunWith(Arquillian.class)
-public class TrackbackImplTest {
+public class TrackbackMVCActionCommandTest {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Test
 	public void testAddTrackback() throws Exception {
@@ -71,28 +79,36 @@ public class TrackbackImplTest {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		ServiceReference<?> serviceReference =
-			bundleContext.getServiceReference(
-				"com.liferay.blogs.web.internal.trackback.Trackback");
+		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
+			new MockLiferayPortletActionRequest();
 
-		Assert.assertNotNull(serviceReference);
+		mockLiferayPortletActionRequest.addParameter(
+			"entryId", String.valueOf(_blogsEntry.getEntryId()));
 
-		Object trackback = bundleContext.getService(serviceReference);
+		mockLiferayPortletActionRequest.setAttribute(
+			PortletServlet.PORTLET_SERVLET_REQUEST,
+			new MockHttpServletRequest() {
+				{
+					addParameter("blog_name", StringUtil.randomString());
+					addParameter("excerpt", StringUtil.randomString());
+					addParameter("title", StringUtil.randomString());
+					addParameter("url", "127.0.0.1");
+				}
+			});
+		mockLiferayPortletActionRequest.setAttribute(
+			WebKeys.THEME_DISPLAY,
+			new ThemeDisplay() {
+				{
+					setCompany(
+						CompanyLocalServiceUtil.getCompany(
+							TestPropsValues.getCompanyId()));
+					setUser(TestPropsValues.getUser());
+				}
+			});
 
-		ThemeDisplay themeDisplay = new ThemeDisplay();
-
-		themeDisplay.setCompany(
-			CompanyLocalServiceUtil.getCompany(TestPropsValues.getCompanyId()));
-
-		ReflectionTestUtil.invoke(
-			trackback, "addTrackback",
-			new Class<?>[] {
-				BlogsEntry.class, ThemeDisplay.class, String.class,
-				String.class, String.class, String.class, Function.class
-			},
-			_blogsEntry, themeDisplay, StringUtil.randomString(),
-			StringUtil.randomString(), StringUtil.randomString(),
-			StringUtil.randomString(), serviceContextFunction);
+		_mvcActionCommand.processAction(
+			mockLiferayPortletActionRequest,
+			new MockLiferayPortletActionResponse());
 
 		Assert.assertEquals(
 			initialCommentsCount + 1,
@@ -107,5 +123,8 @@ public class TrackbackImplTest {
 
 	@DeleteAfterTestRun
 	private BlogsEntry _blogsEntry;
+
+	@Inject(filter = "mvc.command.name=/blogs/trackback")
+	private MVCActionCommand _mvcActionCommand;
 
 }

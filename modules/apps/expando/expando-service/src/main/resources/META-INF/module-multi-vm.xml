@@ -1,0 +1,47 @@
+<ehcache
+	dynamicConfig="true"
+	monitoring="off"
+	name="module-multi-vm"
+	updateCheck="false"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+>
+
+	<!-- Entity cache -->
+
+	<cache
+		eternal="false"
+		maxElementsInMemory="100000"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.expando.model.impl.ExpandoValueImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+
+	<!-- FinderCache -->
+
+	<cache
+		eternal="false"
+		maxElementsInMemory="100000"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.expando.model.impl.ExpandoValueImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="100000"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.expando.model.impl.ExpandoValueImpl.List1"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="100000"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.expando.model.impl.ExpandoValueImpl.List2"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+</ehcache>

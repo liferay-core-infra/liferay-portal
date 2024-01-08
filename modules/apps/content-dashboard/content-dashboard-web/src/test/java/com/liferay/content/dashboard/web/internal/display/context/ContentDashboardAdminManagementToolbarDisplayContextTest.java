@@ -82,31 +82,15 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 
 			};
 
-		ContentDashboardAdminDisplayContext
-			contentDashboardAdminDisplayContext = Mockito.mock(
-				ContentDashboardAdminDisplayContext.class);
-
-		ServiceTrackerList<ContentDashboardItemFilterProvider>
-			contentDashboardItemFilterProviderServiceTrackerList = Mockito.mock(
-				ServiceTrackerList.class);
-
-		List<ContentDashboardItemFilterProvider>
-			contentDashboardItemFilterProviderList = Arrays.asList(
-				new MockContentDashboardItemFilterProvider());
-
-		Mockito.when(
-			contentDashboardItemFilterProviderServiceTrackerList.iterator()
-		).thenReturn(
-			contentDashboardItemFilterProviderList.iterator()
-		);
-
 		ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardAdminManagementToolbarDisplayContext =
 				new ContentDashboardAdminManagementToolbarDisplayContext(
 					Mockito.mock(AssetCategoryLocalService.class),
 					Mockito.mock(AssetVocabularyLocalService.class),
-					contentDashboardAdminDisplayContext,
-					contentDashboardItemFilterProviderServiceTrackerList,
+					Mockito.mock(ContentDashboardAdminDisplayContext.class),
+					_mockContentDashboardItemFilterProviderServiceTrackerList(
+						Arrays.asList(
+							new MockContentDashboardItemFilterProvider())),
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
@@ -152,23 +136,14 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 			WorkflowConstants.STATUS_SCHEDULED
 		);
 
-		ServiceTrackerList<ContentDashboardItemFilterProvider>
-			contentDashboardItemFilterProviderServiceTrackerList = Mockito.mock(
-				ServiceTrackerList.class);
-
-		Mockito.when(
-			contentDashboardItemFilterProviderServiceTrackerList.iterator()
-		).thenReturn(
-			Collections.emptyIterator()
-		);
-
 		ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardAdminManagementToolbarDisplayContext =
 				new ContentDashboardAdminManagementToolbarDisplayContext(
 					Mockito.mock(AssetCategoryLocalService.class),
 					Mockito.mock(AssetVocabularyLocalService.class),
 					contentDashboardAdminDisplayContext,
-					contentDashboardItemFilterProviderServiceTrackerList,
+					_mockContentDashboardItemFilterProviderServiceTrackerList(
+						Collections.emptyList()),
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
@@ -209,27 +184,15 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 
 			};
 
-		ServiceTrackerList<ContentDashboardItemFilterProvider>
-			contentDashboardItemFilterProviderServiceTrackerList = Mockito.mock(
-				ServiceTrackerList.class);
-
-		List<ContentDashboardItemFilterProvider>
-			contentDashboardItemFilterProviderList = Arrays.asList(
-				new MockContentDashboardItemFilterProvider());
-
-		Mockito.when(
-			contentDashboardItemFilterProviderServiceTrackerList.iterator()
-		).thenReturn(
-			contentDashboardItemFilterProviderList.iterator()
-		);
-
 		ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardAdminManagementToolbarDisplayContext =
 				new ContentDashboardAdminManagementToolbarDisplayContext(
 					Mockito.mock(AssetCategoryLocalService.class),
 					Mockito.mock(AssetVocabularyLocalService.class),
 					Mockito.mock(ContentDashboardAdminDisplayContext.class),
-					contentDashboardItemFilterProviderServiceTrackerList,
+					_mockContentDashboardItemFilterProviderServiceTrackerList(
+						Arrays.asList(
+							new MockContentDashboardItemFilterProvider())),
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
@@ -249,6 +212,24 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 					Objects.equals(
 						labelItem.get("label"),
 						"contentDashboardItemFilterParameterLabel: value2")));
+	}
+
+	private ServiceTrackerList<ContentDashboardItemFilterProvider>
+		_mockContentDashboardItemFilterProviderServiceTrackerList(
+			List<ContentDashboardItemFilterProvider>
+				contentDashboardItemFilterProviders) {
+
+		ServiceTrackerList<ContentDashboardItemFilterProvider>
+			contentDashboardItemFilterProviderServiceTrackerList = Mockito.mock(
+				ServiceTrackerList.class);
+
+		Mockito.when(
+			contentDashboardItemFilterProviderServiceTrackerList.iterator()
+		).thenReturn(
+			contentDashboardItemFilterProviders.iterator()
+		);
+
+		return contentDashboardItemFilterProviderServiceTrackerList;
 	}
 
 	private class MockContentDashboardItemFilterProvider

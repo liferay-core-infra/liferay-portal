@@ -5,13 +5,13 @@
 
 package com.liferay.portal.store.file.system;
 
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.store.file.system.configuration.AdvancedFileSystemStoreConfiguration;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.io.File;
 

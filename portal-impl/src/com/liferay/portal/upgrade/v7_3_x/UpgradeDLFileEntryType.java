@@ -6,12 +6,12 @@
 package com.liferay.portal.upgrade.v7_3_x;
 
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

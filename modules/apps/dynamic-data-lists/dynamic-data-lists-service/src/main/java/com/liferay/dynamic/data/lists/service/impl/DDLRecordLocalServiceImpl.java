@@ -6,7 +6,6 @@
 package com.liferay.dynamic.data.lists.service.impl;
 
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.dynamic.data.lists.constants.DDLRecordConstants;
 import com.liferay.dynamic.data.lists.constants.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.exception.NoSuchRecordException;
@@ -64,6 +63,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.ratings.kernel.service.RatingsStatsLocalService;
 
 import java.io.Serializable;

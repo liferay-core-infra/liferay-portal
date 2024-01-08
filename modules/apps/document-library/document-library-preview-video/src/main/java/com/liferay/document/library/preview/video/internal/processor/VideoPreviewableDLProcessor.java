@@ -10,7 +10,6 @@ import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.processor.DLProcessor;
 import com.liferay.document.library.kernel.processor.VideoProcessor;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.kernel.util.VideoConverter;
 import com.liferay.document.library.preview.processor.BasePreviewableDLProcessor;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -38,6 +37,7 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.awt.image.RenderedImage;
 

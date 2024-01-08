@@ -8,9 +8,9 @@ package com.liferay.portal.store;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.store.StoreArea;
 import com.liferay.document.library.kernel.store.StoreAreaProcessor;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
+import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import java.io.InputStream;
 

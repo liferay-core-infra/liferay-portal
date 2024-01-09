@@ -172,7 +172,6 @@ import com.liferay.portal.model.impl.UserCacheModel;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.security.auth.AuthPipeline;
 import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
-import com.liferay.portal.security.auth.FullNameValidatorFactory;
 import com.liferay.portal.security.auth.ScreenNameGeneratorFactory;
 import com.liferay.portal.security.auth.ScreenNameValidatorFactory;
 import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyUtil;
@@ -6941,8 +6940,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			throw new ContactNameException.MustHaveLastName();
 		}
 
-		FullNameValidator fullNameValidator =
-			FullNameValidatorFactory.getInstance();
+		FullNameValidator fullNameValidator = _fullNameValidatorSnapshot.get();
 
 		if (!fullNameValidator.validate(
 				companyId, firstName, middleName, lastName)) {
@@ -7235,6 +7233,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		_emailAddressGeneratorSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, EmailAddressGenerator.class, null,
 			true);
+	private static final Snapshot<FullNameValidator>
+		_fullNameValidatorSnapshot = new Snapshot<>(
+			UserLocalServiceImpl.class, FullNameValidator.class, null, true);
 	private static final Snapshot<UserFileUploadsSettings>
 		_userFileUploadsSettingsSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, UserFileUploadsSettings.class);

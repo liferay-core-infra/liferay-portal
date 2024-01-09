@@ -3,14 +3,16 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.security.auth;
+package com.liferay.portal.security.auth.internal;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.security.auth.DefaultScreenNameValidator;
+import com.liferay.portal.kernel.security.auth.ScreenNameGenerator;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -18,11 +20,15 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Alexander Chow
  * @author Juan Fernández
  */
+@Component(service = ScreenNameGenerator.class)
 public class DefaultScreenNameGenerator implements ScreenNameGenerator {
 
 	@Override
@@ -69,14 +75,14 @@ public class DefaultScreenNameGenerator implements ScreenNameGenerator {
 			}
 		}
 
-		User user = UserLocalServiceUtil.fetchUserByScreenName(
+		User user = _userLocalService.fetchUserByScreenName(
 			companyId, screenName);
 
 		if (user != null) {
 			return getUnusedScreenName(companyId, screenName);
 		}
 
-		Group friendlyURLGroup = GroupLocalServiceUtil.fetchFriendlyURLGroup(
+		Group friendlyURLGroup = _groupLocalService.fetchFriendlyURLGroup(
 			companyId, StringPool.SLASH + screenName);
 
 		if (friendlyURLGroup == null) {
@@ -90,16 +96,15 @@ public class DefaultScreenNameGenerator implements ScreenNameGenerator {
 		for (int i = 1;; i++) {
 			String tempScreenName = screenName + StringPool.PERIOD + i;
 
-			User user = UserLocalServiceUtil.fetchUserByScreenName(
+			User user = _userLocalService.fetchUserByScreenName(
 				companyId, tempScreenName);
 
 			if (user != null) {
 				continue;
 			}
 
-			Group friendlyURLGroup =
-				GroupLocalServiceUtil.fetchFriendlyURLGroup(
-					companyId, StringPool.SLASH + tempScreenName);
+			Group friendlyURLGroup = _groupLocalService.fetchFriendlyURLGroup(
+				companyId, StringPool.SLASH + tempScreenName);
 
 			if (friendlyURLGroup == null) {
 				return tempScreenName;
@@ -116,5 +121,11 @@ public class DefaultScreenNameGenerator implements ScreenNameGenerator {
 	private static final boolean _USERS_SCREEN_NAME_ALLOW_NUMERIC =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.USERS_SCREEN_NAME_ALLOW_NUMERIC));
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

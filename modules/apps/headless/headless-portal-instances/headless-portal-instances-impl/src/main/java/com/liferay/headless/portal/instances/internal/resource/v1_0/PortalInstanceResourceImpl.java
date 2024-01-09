@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
-import com.liferay.portal.security.auth.ScreenNameGeneratorFactory;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.vulcan.pagination.Page;
 
@@ -127,11 +126,8 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 			defaultAdminUser.setFirstName(admin.getGivenName());
 			defaultAdminUser.setLastName(admin.getFamilyName());
 
-			ScreenNameGenerator screenNameGenerator =
-				ScreenNameGeneratorFactory.getInstance();
-
 			defaultAdminUser.setScreenName(
-				screenNameGenerator.generate(
+				_screenNameGenerator.generate(
 					company.getCompanyId(), defaultAdminUser.getUserId(),
 					admin.getEmailAddress()));
 
@@ -209,6 +205,9 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 
 	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;
+
+	@Reference
+	private ScreenNameGenerator _screenNameGenerator;
 
 	@Reference
 	private UserLocalService _userLocalService;

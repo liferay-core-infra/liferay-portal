@@ -7,10 +7,10 @@ package com.liferay.portal.security.auth.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.DefaultScreenNameGenerator;
 import com.liferay.portal.kernel.security.auth.ScreenNameGenerator;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
 
@@ -93,7 +93,7 @@ public class DefaultScreenNameGeneratorTest {
 				"postfix@liferay.com"));
 	}
 
-	private final ScreenNameGenerator _screenNameGenerator =
-		new DefaultScreenNameGenerator();
+	@Inject
+	private ScreenNameGenerator _screenNameGenerator;
 
 }

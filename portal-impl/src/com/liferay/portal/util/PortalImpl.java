@@ -4343,13 +4343,16 @@ public class PortalImpl implements Portal {
 		throws PortalException {
 
 		Layout layout = (Layout)httpServletRequest.getAttribute(WebKeys.LAYOUT);
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
 
 		long scopeGroupId = 0;
 
 		if (layout != null) {
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)httpServletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY);
+
+			scopeGroupId = _getScopeGroupId(themeDisplay, layout, portletId);
+
 			Group group = layout.getGroup();
 
 			long doAsGroupId = ParamUtil.getLong(
@@ -4414,33 +4417,28 @@ public class PortalImpl implements Portal {
 				if (liveGroup.isStaged() &&
 					!liveGroup.isStagedPortlet(portletId)) {
 
-					Layout liveGroupLayout =
-						LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
-							layout.getUuid(), liveGroup.getGroupId(),
-							layout.isPrivateLayout());
+					Group scopeGroup = GroupLocalServiceUtil.fetchGroup(
+						scopeGroupId);
 
-					if ((liveGroupLayout != null) &&
-						liveGroupLayout.hasScopeGroup()) {
+					if (checkStagingGroup) {
+						if (!scopeGroup.isStagingGroup() &&
+							!scopeGroup.isStagedRemotely()) {
 
-						scopeGroupId = _getScopeGroupId(
-							themeDisplay, liveGroupLayout, portletId);
-					}
-					else if (checkStagingGroup &&
-							 !liveGroup.isStagedRemotely()) {
+							Group stagingGroup = scopeGroup.getStagingGroup();
 
-						Group stagingGroup = liveGroup.getStagingGroup();
-
-						scopeGroupId = stagingGroup.getGroupId();
+							scopeGroupId = stagingGroup.getGroupId();
+						}
 					}
 					else {
-						scopeGroupId = liveGroup.getGroupId();
+						if (scopeGroup.isStagingGroup()) {
+							Group portletScopeLiveGroup =
+								scopeGroup.getLiveGroup();
+
+							scopeGroupId = portletScopeLiveGroup.getGroupId();
+						}
 					}
 				}
 			}
-		}
-
-		if (scopeGroupId <= 0) {
-			scopeGroupId = _getScopeGroupId(themeDisplay, layout, portletId);
 		}
 
 		return scopeGroupId;

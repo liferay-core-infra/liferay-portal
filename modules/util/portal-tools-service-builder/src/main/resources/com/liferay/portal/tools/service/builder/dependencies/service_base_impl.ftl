@@ -20,8 +20,7 @@ import ${beanLocatorUtil};
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
-import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
-import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
+import com.liferay.portal.kernel.dao.jdbc.ConnectionUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Conjunction;
 import com.liferay.portal.kernel.dao.orm.Criterion;
@@ -70,6 +69,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import java.sql.Blob;
+import java.sql.Connection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -2049,21 +2049,16 @@ import org.osgi.service.component.annotations.Reference;
 		 * @param sql the sql query
 		 */
 		protected void runSQL(String sql) {
-			try {
-				<#if entity.hasEntityColumns()>
-					DataSource dataSource = ${entity.variableName}Persistence.getDataSource();
-				<#else>
-					DataSource dataSource = InfrastructureUtil.getDataSource();
-				</#if>
+			<#if entity.hasEntityColumns()>
+				DataSource dataSource = ${entity.variableName}Persistence.getDataSource();
+			<#else>
+				DataSource dataSource = InfrastructureUtil.getDataSource();
+			</#if>
 
-				DB db = DBManagerUtil.getDB();
+			DB db = DBManagerUtil.getDB();
 
-				sql = db.buildSQL(sql);
-				sql = PortalUtil.transformSQL(sql);
-
-				SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource, sql);
-
-				sqlUpdate.update();
+			try (Connection connection = ConnectionUtil.getConnection(dataSource)) {
+				db.runSQL(connection, new String[] {sql});
 			}
 			catch (Exception exception) {
 				throw new SystemException(exception);

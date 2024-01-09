@@ -652,7 +652,6 @@ com.liferay.portal.security.auth.Authenticator=com.liferay.portal.kernel.securit
 com.liferay.portal.security.auth.CompanyThreadLocal=com.liferay.portal.kernel.security.auth.CompanyThreadLocal
 com.liferay.portal.security.auth.DefaultEmailAddressValidator=com.liferay.portal.kernel.security.auth.DefaultEmailAddressValidator
 com.liferay.portal.security.auth.DefaultFullNameGenerator=com.liferay.portal.kernel.security.auth.DefaultFullNameGenerator
-com.liferay.portal.security.auth.DefaultFullNameValidator=com.liferay.portal.kernel.security.auth.DefaultFullNameValidator
 com.liferay.portal.security.auth.DefaultScreenNameGenerator=com.liferay.portal.kernel.security.auth.DefaultScreenNameGenerator
 com.liferay.portal.security.auth.DefaultScreenNameValidator=com.liferay.portal.kernel.security.auth.DefaultScreenNameValidator
 com.liferay.portal.security.auth.EmailAddressGenerator=com.liferay.portal.kernel.security.auth.EmailAddressGenerator

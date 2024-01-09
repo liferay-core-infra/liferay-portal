@@ -15,10 +15,10 @@ import com.liferay.portal.kernel.exception.ContactNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.FullNameValidator;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.security.auth.FullNameValidatorFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -124,7 +124,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 		if (Validator.isNull(fullName)) {
 			throw new ContactNameException.MustHaveValidFullName(
-				FullNameValidatorFactory.getInstance());
+				_fullNameValidator);
 		}
 
 		if (Validator.isNull(emailAddress)) {
@@ -166,6 +166,9 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 			throw new DuplicateEntryEmailAddressException();
 		}
 	}
+
+	@Reference
+	private FullNameValidator _fullNameValidator;
 
 	@Reference
 	private UserLocalService _userLocalService;

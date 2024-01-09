@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.security.auth.ScreenNameGenerator;
@@ -39,7 +40,6 @@ import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.security.DefaultAdminUtil;
-import com.liferay.portal.security.auth.ScreenNameGeneratorFactory;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Calendar;
@@ -137,7 +137,7 @@ public class SetupWizardSampleDataUtil {
 		throws PortalException {
 
 		ScreenNameGenerator screenNameGenerator =
-			ScreenNameGeneratorFactory.getInstance();
+			_screenNameGeneratorSnapshot.get();
 
 		String screenName = GetterUtil.getString(
 			PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX, "test");
@@ -353,5 +353,10 @@ public class SetupWizardSampleDataUtil {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SetupWizardSampleDataUtil.class);
+
+	private static final Snapshot<ScreenNameGenerator>
+		_screenNameGeneratorSnapshot = new Snapshot<>(
+			SetupWizardSampleDataUtil.class, ScreenNameGenerator.class, null,
+			true);
 
 }

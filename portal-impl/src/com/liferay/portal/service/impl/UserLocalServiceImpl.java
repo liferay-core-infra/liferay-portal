@@ -172,7 +172,6 @@ import com.liferay.portal.model.impl.UserCacheModel;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.security.auth.AuthPipeline;
 import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
-import com.liferay.portal.security.auth.ScreenNameGeneratorFactory;
 import com.liferay.portal.security.auth.ScreenNameValidatorFactory;
 import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.security.pwd.PwdAuthenticator;
@@ -1227,7 +1226,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		if (autoScreenName) {
 			ScreenNameGenerator screenNameGenerator =
-				ScreenNameGeneratorFactory.getInstance();
+				_screenNameGeneratorSnapshot.get();
 
 			try {
 				screenName = screenNameGenerator.generate(
@@ -4609,7 +4608,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			if (autoScreenName) {
 				ScreenNameGenerator screenNameGenerator =
-					ScreenNameGeneratorFactory.getInstance();
+					_screenNameGeneratorSnapshot.get();
 
 				try {
 					screenName = screenNameGenerator.generate(
@@ -7236,6 +7235,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	private static final Snapshot<FullNameValidator>
 		_fullNameValidatorSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, FullNameValidator.class, null, true);
+	private static final Snapshot<ScreenNameGenerator>
+		_screenNameGeneratorSnapshot = new Snapshot<>(
+			UserLocalServiceImpl.class, ScreenNameGenerator.class, null, true);
 	private static final Snapshot<UserFileUploadsSettings>
 		_userFileUploadsSettingsSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, UserFileUploadsSettings.class);

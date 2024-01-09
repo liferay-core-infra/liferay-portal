@@ -7,7 +7,6 @@ package com.liferay.staging.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.blogs.constants.BlogsPortletKeys;
-import com.liferay.journal.constants.JournalContentPortletKeys;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -25,7 +24,6 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,27 +62,34 @@ public class StagingGetScopeGroupIdTest extends BaseLocalStagingTestCase {
 		_mockHttpServletRequest.setAttribute(WebKeys.LAYOUT, stagingLayout);
 	}
 
-	@Ignore
 	@Test
-	public void testGetScopeGroupId() throws Exception {
-		_testGetScopeGroupId(
-			false, false, JournalContentPortletKeys.JOURNAL_CONTENT);
-		_testGetScopeGroupId(
-			false, true, JournalContentPortletKeys.JOURNAL_CONTENT);
-		_testGetScopeGroupId(
-			true, false, JournalContentPortletKeys.JOURNAL_CONTENT);
-		_testGetScopeGroupId(
-			true, true, JournalContentPortletKeys.JOURNAL_CONTENT);
-
+	public void testGetScopeGroupIdBlogs1() throws Exception {
 		_testGetScopeGroupId(false, false, BlogsPortletKeys.BLOGS);
+	}
+
+	@Test
+	public void testGetScopeGroupIdBlogs2() throws Exception {
 		_testGetScopeGroupId(false, true, BlogsPortletKeys.BLOGS);
+	}
+
+	@Test
+	public void testGetScopeGroupIdBlogs3() throws Exception {
 		_testGetScopeGroupId(true, false, BlogsPortletKeys.BLOGS);
+	}
+
+	@Test
+	public void testGetScopeGroupIdBlogs4() throws Exception {
 		_testGetScopeGroupId(true, true, BlogsPortletKeys.BLOGS);
+	}
+
+	@Test
+	public void testGetScopeGroupIdBlogs5() throws Exception {
+		_testGetScopeGroupId(true, false, BlogsPortletKeys.BLOGS_ADMIN);
 	}
 
 	@Override
 	protected String[] getNotStagedPortletIds() {
-		return new String[] {BlogsPortletKeys.BLOGS_ADMIN};
+		return new String[] {BlogsPortletKeys.BLOGS};
 	}
 
 	private Group _getExpectedGroup(

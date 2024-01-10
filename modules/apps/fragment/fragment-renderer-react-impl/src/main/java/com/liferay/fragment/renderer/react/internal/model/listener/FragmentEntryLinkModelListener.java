@@ -22,13 +22,15 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
-import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 
 import java.util.List;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
@@ -36,15 +38,9 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Iván Zaera Avellón
  */
-@Component(service = {IdentifiableOSGiService.class, ModelListener.class})
+@Component(service = ModelListener.class)
 public class FragmentEntryLinkModelListener
-	extends BaseModelListener<FragmentEntryLink>
-	implements IdentifiableOSGiService {
-
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return FragmentEntryLinkModelListener.class.getName();
-	}
+	extends BaseModelListener<FragmentEntryLink> {
 
 	@Override
 	public void onAfterCreate(FragmentEntryLink fragmentEntryLink) {
@@ -95,6 +91,11 @@ public class FragmentEntryLinkModelListener
 		_fragmentEntryLinkJSModuleInitializerHelper.ensureInitialized();
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+	}
+
 	@Deactivate
 	protected void deactivate() {
 		JSPackage jsPackage = _npmResolver.getJSPackage();
@@ -117,17 +118,31 @@ public class FragmentEntryLinkModelListener
 	}
 
 	private static void _onNotify(
-		MethodType methodType, String osgiServiceIdentifier,
-		FragmentEntryLink oldFragmentEntryLink,
-		FragmentEntryLink newFragmentEntryLink) {
+			MethodType methodType, FragmentEntryLink oldFragmentEntryLink,
+			FragmentEntryLink newFragmentEntryLink)
+		throws InvalidSyntaxException {
 
-		FragmentEntryLinkModelListener fragmentEntryLinkModelListener =
-			(FragmentEntryLinkModelListener)
-				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
-					osgiServiceIdentifier);
+		ServiceReference<?>[] serviceReferences =
+			_bundleContext.getServiceReferences(
+				ModelListener.class.getName(),
+				"(component.name=com.liferay.fragment.renderer.react." +
+					"internal.model.listener.FragmentEntryLinkModelListener)");
 
-		fragmentEntryLinkModelListener._updateNPMRegistry(
-			methodType, oldFragmentEntryLink, newFragmentEntryLink);
+		FragmentEntryLinkModelListener fragmentEntryLinkModelListener = null;
+
+		try {
+			fragmentEntryLinkModelListener =
+				(FragmentEntryLinkModelListener)_bundleContext.getService(
+					serviceReferences[0]);
+
+			fragmentEntryLinkModelListener._updateNPMRegistry(
+				methodType, oldFragmentEntryLink, newFragmentEntryLink);
+		}
+		finally {
+			if (fragmentEntryLinkModelListener != null) {
+				_bundleContext.ungetService(serviceReferences[0]);
+			}
+		}
 	}
 
 	private void _notifyCluster(
@@ -140,8 +155,8 @@ public class FragmentEntryLinkModelListener
 
 		try {
 			MethodHandler methodHandler = new MethodHandler(
-				_onNotifyMethodKey, methodType, getOSGiServiceIdentifier(),
-				oldFragmentEntryLink, newFragmentEntryLink);
+				_onNotifyMethodKey, methodType, oldFragmentEntryLink,
+				newFragmentEntryLink);
 
 			ClusterRequest clusterRequest =
 				ClusterRequest.createMulticastRequest(methodHandler, true);
@@ -191,9 +206,10 @@ public class FragmentEntryLinkModelListener
 	private static final Log _log = LogFactoryUtil.getLog(
 		FragmentEntryLinkModelListener.class);
 
+	private static BundleContext _bundleContext;
 	private static final MethodKey _onNotifyMethodKey = new MethodKey(
 		FragmentEntryLinkModelListener.class, "_onNotify", MethodType.class,
-		String.class, FragmentEntryLink.class, FragmentEntryLink.class);
+		FragmentEntryLink.class, FragmentEntryLink.class);
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;

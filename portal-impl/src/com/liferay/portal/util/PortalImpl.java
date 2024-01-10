@@ -3454,6 +3454,17 @@ public class PortalImpl implements Portal {
 			String i18nPath = StringPool.SLASH + i18nPathLanguageId;
 
 			if (!requestURI.contains(i18nPath)) {
+				int pos = requestURI.indexOf(StringPool.SLASH, 1);
+
+				if (pos > 0) {
+					Locale requestURILocale = LocaleUtil.fromLanguageId(
+						requestURI.substring(1, pos), true, false);
+
+					if (requestURILocale != null) {
+						requestURI = requestURI.substring(pos);
+					}
+				}
+
 				localizedFriendlyURL += i18nPath;
 			}
 		}

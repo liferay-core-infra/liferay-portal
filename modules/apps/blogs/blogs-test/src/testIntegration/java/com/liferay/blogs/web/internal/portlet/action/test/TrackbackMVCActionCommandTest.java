@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -60,7 +59,7 @@ public class TrackbackMVCActionCommandTest {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext();
 
-		_blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
+		BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
 			TestPropsValues.getUserId(), StringUtil.randomString(),
 			StringUtil.randomString(), new Date(), serviceContext);
 
@@ -69,11 +68,11 @@ public class TrackbackMVCActionCommandTest {
 
 		CommentManagerUtil.addComment(
 			TestPropsValues.getUserId(), TestPropsValues.getGroupId(),
-			BlogsEntry.class.getName(), _blogsEntry.getEntryId(),
+			BlogsEntry.class.getName(), blogsEntry.getEntryId(),
 			StringUtil.randomString(), serviceContextFunction);
 
 		int initialCommentsCount = CommentManagerUtil.getCommentsCount(
-			BlogsEntry.class.getName(), _blogsEntry.getEntryId());
+			BlogsEntry.class.getName(), blogsEntry.getEntryId());
 
 		Bundle bundle = FrameworkUtil.getBundle(getClass());
 
@@ -83,7 +82,7 @@ public class TrackbackMVCActionCommandTest {
 			new MockLiferayPortletActionRequest();
 
 		mockLiferayPortletActionRequest.addParameter(
-			"entryId", String.valueOf(_blogsEntry.getEntryId()));
+			"entryId", String.valueOf(blogsEntry.getEntryId()));
 
 		mockLiferayPortletActionRequest.setAttribute(
 			PortletServlet.PORTLET_SERVLET_REQUEST,
@@ -113,16 +112,13 @@ public class TrackbackMVCActionCommandTest {
 		Assert.assertEquals(
 			initialCommentsCount + 1,
 			CommentManagerUtil.getCommentsCount(
-				BlogsEntry.class.getName(), _blogsEntry.getEntryId()));
+				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
 
 		LinkbackConsumer linkbackConsumer = bundleContext.getService(
 			bundleContext.getServiceReference(LinkbackConsumer.class));
 
 		linkbackConsumer.verifyNewTrackbacks();
 	}
-
-	@DeleteAfterTestRun
-	private BlogsEntry _blogsEntry;
 
 	@Inject(filter = "mvc.command.name=/blogs/trackback")
 	private MVCActionCommand _mvcActionCommand;

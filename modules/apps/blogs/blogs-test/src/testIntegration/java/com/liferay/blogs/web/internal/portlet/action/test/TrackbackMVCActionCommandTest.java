@@ -8,10 +8,10 @@ package com.liferay.blogs.web.internal.portlet.action.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.blogs.linkback.LinkbackConsumer;
 import com.liferay.blogs.model.BlogsEntry;
-import com.liferay.blogs.service.BlogsEntryLocalServiceUtil;
-import com.liferay.portal.kernel.comment.CommentManagerUtil;
+import com.liferay.blogs.service.BlogsEntryLocalService;
+import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.IdentityServiceContextFunction;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.PortletServlet;
@@ -35,10 +35,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
@@ -59,24 +55,20 @@ public class TrackbackMVCActionCommandTest {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext();
 
-		BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
+		BlogsEntry blogsEntry = _blogsEntryLocalService.addEntry(
 			TestPropsValues.getUserId(), StringUtil.randomString(),
 			StringUtil.randomString(), new Date(), serviceContext);
 
 		IdentityServiceContextFunction serviceContextFunction =
 			new IdentityServiceContextFunction(serviceContext);
 
-		CommentManagerUtil.addComment(
+		_commentManager.addComment(
 			TestPropsValues.getUserId(), TestPropsValues.getGroupId(),
 			BlogsEntry.class.getName(), blogsEntry.getEntryId(),
 			StringUtil.randomString(), serviceContextFunction);
 
-		int initialCommentsCount = CommentManagerUtil.getCommentsCount(
+		int initialCommentsCount = _commentManager.getCommentsCount(
 			BlogsEntry.class.getName(), blogsEntry.getEntryId());
-
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-
-		BundleContext bundleContext = bundle.getBundleContext();
 
 		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
 			new MockLiferayPortletActionRequest();
@@ -99,7 +91,7 @@ public class TrackbackMVCActionCommandTest {
 			new ThemeDisplay() {
 				{
 					setCompany(
-						CompanyLocalServiceUtil.getCompany(
+						_companyLocalService.getCompany(
 							TestPropsValues.getCompanyId()));
 					setUser(TestPropsValues.getUser());
 				}
@@ -111,14 +103,23 @@ public class TrackbackMVCActionCommandTest {
 
 		Assert.assertEquals(
 			initialCommentsCount + 1,
-			CommentManagerUtil.getCommentsCount(
+			_commentManager.getCommentsCount(
 				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
 
-		LinkbackConsumer linkbackConsumer = bundleContext.getService(
-			bundleContext.getServiceReference(LinkbackConsumer.class));
-
-		linkbackConsumer.verifyNewTrackbacks();
+		_linkbackConsumer.verifyNewTrackbacks();
 	}
+
+	@Inject
+	private BlogsEntryLocalService _blogsEntryLocalService;
+
+	@Inject
+	private CommentManager _commentManager;
+
+	@Inject
+	private CompanyLocalService _companyLocalService;
+
+	@Inject
+	private LinkbackConsumer _linkbackConsumer;
 
 	@Inject(filter = "mvc.command.name=/blogs/trackback")
 	private MVCActionCommand _mvcActionCommand;

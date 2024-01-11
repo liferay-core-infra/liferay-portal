@@ -59,13 +59,11 @@ public class TrackbackMVCActionCommandTest {
 			TestPropsValues.getUserId(), StringUtil.randomString(),
 			StringUtil.randomString(), new Date(), serviceContext);
 
-		IdentityServiceContextFunction serviceContextFunction =
-			new IdentityServiceContextFunction(serviceContext);
-
 		_commentManager.addComment(
 			TestPropsValues.getUserId(), TestPropsValues.getGroupId(),
 			BlogsEntry.class.getName(), blogsEntry.getEntryId(),
-			StringUtil.randomString(), serviceContextFunction);
+			StringUtil.randomString(),
+			new IdentityServiceContextFunction(serviceContext));
 
 		int initialCommentsCount = _commentManager.getCommentsCount(
 			BlogsEntry.class.getName(), blogsEntry.getEntryId());

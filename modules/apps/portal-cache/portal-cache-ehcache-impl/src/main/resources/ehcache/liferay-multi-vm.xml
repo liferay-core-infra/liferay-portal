@@ -445,6 +445,38 @@
 
 	<cache
 		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.servlet.ImageServletToken"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="2"
+		name="com.liferay.portal.model.Portlet"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="10000"
+		name="com.liferay.portal.velocity.LiferayResourceCacheUtil"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portlet.social.service.impl.SocialEquitySettingLocalServiceImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
 		maxElementsInMemory="100000"
 		name="com.liferay.portal.security.permission.PermissionCacheUtil_PERMISSION"
 		overflowToDisk="false"

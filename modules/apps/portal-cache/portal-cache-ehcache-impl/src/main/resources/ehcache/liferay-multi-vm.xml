@@ -13,7 +13,7 @@
 
 	<defaultCache
 		eternal="false"
-		maxElementsInMemory="10000"
+		maxElementsInMemory="100000"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
@@ -98,7 +98,7 @@
 
 	<cache
 		eternal="false"
-		maxElementsInMemory="50000"
+		maxElementsInMemory="800000"
 		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.GroupImpl"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
@@ -253,7 +253,7 @@
 	</cache>
 	<cache
 		eternal="false"
-		maxElementsInMemory="100000"
+		maxElementsInMemory="300000"
 		name="com.liferay.portal.security.permission.PermissionCacheUtil_PERMISSION_CHECKER_BAG"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"

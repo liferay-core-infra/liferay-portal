@@ -31,6 +31,14 @@
 	</cache>
 	<cache
 		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.CompanyImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
 		maxElementsInMemory="100000"
 		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.ContactImpl"
 		overflowToDisk="false"
@@ -41,6 +49,22 @@
 		eternal="false"
 		maxElementsInMemory="100000"
 		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.GroupImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="200000"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.LayoutSetImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.PasswordPolicyImpl"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
@@ -71,6 +95,14 @@
 	</cache>
 	<cache
 		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.ResourceCodeImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
 		maxElementsInMemory="1000000"
 		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.ResourcePermissionImpl"
 		overflowToDisk="false"
@@ -79,8 +111,24 @@
 	</cache>
 	<cache
 		eternal="false"
+		maxElementsInMemory="11"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.RoleImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
 		maxElementsInMemory="100000"
 		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.UserImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portlet.asset.model.impl.AssetVocabularyImpl"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>

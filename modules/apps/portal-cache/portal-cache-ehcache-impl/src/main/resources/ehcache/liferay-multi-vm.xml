@@ -146,8 +146,32 @@
 
 	<cache
 		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.CompanyImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.CompanyImpl.List"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
 		maxElementsInMemory="800000"
 		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.GroupImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.GroupImpl.List"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
@@ -164,6 +188,54 @@
 		eternal="false"
 		maxElementsInMemory="50000"
 		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.GroupImpl.List2"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="400000"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.LayoutFriendlyURLImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.LayoutPrototypeImpl.List"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="200000"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.LayoutSetImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="2"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.PasswordPolicyImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="0"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.PermissionImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="7"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.PermissionImpl.List"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
@@ -242,6 +314,14 @@
 	</cache>
 	<cache
 		eternal="false"
+		maxElementsInMemory="0"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.ResourceImpl.List"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
 		maxElementsInMemory="100000"
 		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.ResourcePermissionImpl"
 		overflowToDisk="false"
@@ -266,6 +346,54 @@
 	</cache>
 	<cache
 		eternal="false"
+		maxElementsInMemory="22"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.RoleImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.RoleImpl.List"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="400000"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.UserImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="0"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portlet.asset.model.impl.AssetEntryImpl.List"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="0"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portlet.asset.model.impl.AssetVocabularyImpl"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portlet.asset.model.impl.AssetVocabularyImpl.List"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
 		maxElementsInMemory="100000"
 		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portlet.expando.model.impl.ExpandoValueImpl"
 		overflowToDisk="false"
@@ -284,6 +412,30 @@
 		eternal="false"
 		maxElementsInMemory="100000"
 		name="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portlet.expando.model.impl.ExpandoValueImpl.List2"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="6"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.Roles_Permissions"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.Users_Orgs"
+		overflowToDisk="false"
+		timeToIdleSeconds="600"
+	>
+	</cache>
+	<cache
+		eternal="false"
+		maxElementsInMemory="200000"
+		name="com.liferay.portal.kernel.dao.orm.FinderCache.Users_Roles"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>

@@ -303,6 +303,9 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		String resourcePermissionSQL = _getResourcePermissionSQL(
 			permissionChecker, className, userIdField, groupIds, bridgeJoin);
 
+		resourcePermissionSQL = StringUtil.removeSubstring(
+			resourcePermissionSQL, "DISTINCT");
+
 		return _insertResourcePermissionSQL(
 			sql, className, classPKField, userIdField, groupIdField, groupIds,
 			resourcePermissionSQL);
@@ -725,7 +728,8 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		else {
 			pos += _WHERE_CLAUSE.length();
 
-			sb.append(sql.substring(0, pos));
+			sb.append(
+				StringUtil.removeSubstring(sql.substring(0, pos), "DISTINCT"));
 
 			_appendPermissionSQL(
 				sb, className, classPKField, userIdField, groupIdField,

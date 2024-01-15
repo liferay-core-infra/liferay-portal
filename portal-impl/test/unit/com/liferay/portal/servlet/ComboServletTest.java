@@ -10,13 +10,13 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletWrapper;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceWrapper;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsProps;
-import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.model.impl.PortletAppImpl;
@@ -32,6 +32,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -39,6 +40,9 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -61,6 +65,27 @@ public class ComboServletTest {
 
 		ReflectionTestUtil.setFieldValue(
 			PropsValues.class, "COMBO_CHECK_TIMESTAMP", true);
+
+		PrefsProps prefsProps = Mockito.mock(PrefsProps.class);
+
+		Mockito.when(
+			prefsProps.getStringArray(
+				PropsKeys.COMBO_ALLOWED_FILE_EXTENSIONS, StringPool.COMMA)
+		).thenReturn(
+			new String[] {".css", ".js"}
+		);
+
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		_serviceRegistration = bundleContext.registerService(
+			PrefsProps.class, prefsProps, null);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
+		}
 	}
 
 	@Before
@@ -99,16 +124,6 @@ public class ComboServletTest {
 				}
 
 			});
-
-		ReflectionTestUtil.setFieldValue(
-			PrefsPropsUtil.class, "_prefsProps", _prefsProps);
-
-		Mockito.when(
-			_prefsProps.getStringArray(
-				PropsKeys.COMBO_ALLOWED_FILE_EXTENSIONS, StringPool.COMMA)
-		).thenReturn(
-			new String[] {".css", ".js"}
-		);
 
 		_undeployedPortlet = new PortletWrapper(null) {
 
@@ -462,6 +477,7 @@ public class ComboServletTest {
 
 	private static final PortalImpl _portalImpl = new PortalImpl();
 	private static final PortalUtil _portalUtil = new PortalUtil();
+	private static ServiceRegistration<PrefsProps> _serviceRegistration;
 
 	private ComboServlet _comboServlet;
 	private MockHttpServletRequest _mockHttpServletRequest;
@@ -469,7 +485,6 @@ public class ComboServletTest {
 	private ServletContext _pluginServletContext;
 	private Portlet _portalPortlet;
 	private ServletContext _portalServletContext;
-	private final PrefsProps _prefsProps = Mockito.mock(PrefsProps.class);
 	private Portlet _testPortlet;
 	private Portlet _undeployedPortlet;
 

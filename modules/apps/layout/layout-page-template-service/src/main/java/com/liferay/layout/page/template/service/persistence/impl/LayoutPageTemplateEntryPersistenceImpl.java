@@ -2079,6 +2079,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			sb.toString(), LayoutPageTemplateEntry.class.getName(),
 			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
 
+		sql = StringUtil.removeSubstring(sql, "DISTINCT");
+
 		Session session = null;
 
 		try {

@@ -85,7 +85,7 @@ public class LoginBenchmarkTaskTest {
 			VirtualHost virtualHost = _virtualHostLocalService.getVirtualHost(
 				company.getVirtualHostname());
 
-			virtualHost.setHostname("127.0.0.1");
+			virtualHost.setHostname("www.able.com");
 
 			virtualHost = _virtualHostLocalService.updateVirtualHost(
 				virtualHost);

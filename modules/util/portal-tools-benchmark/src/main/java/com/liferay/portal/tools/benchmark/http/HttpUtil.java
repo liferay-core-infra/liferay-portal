@@ -183,6 +183,7 @@ public class HttpUtil {
 
 		httpURLConnection.setConnectTimeout(0);
 		httpURLConnection.setReadTimeout(0);
+		httpURLConnection.setFollowRedirects(true);
 
 		return httpURLConnection;
 	}

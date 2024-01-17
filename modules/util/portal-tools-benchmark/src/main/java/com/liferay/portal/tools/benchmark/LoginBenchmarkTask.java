@@ -6,7 +6,6 @@
 package com.liferay.portal.tools.benchmark;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.tools.benchmark.http.HttpResponse;
 import com.liferay.portal.tools.benchmark.http.HttpUtil;
 import com.liferay.portal.tools.benchmark.http.SimpleCookieStore;
@@ -18,7 +17,6 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author Tina Tian
@@ -61,8 +59,10 @@ public class LoginBenchmarkTask implements BenchmarkTask {
 	private void _assertResult(HttpResponse httpResponse, String key) {
 		if (httpResponse.getStatusCode() != 200) {
 			throw new IllegalStateException(
-				"Response status code is wrong! Expect 200 but actual is " +
-					httpResponse.getStatusCode());
+				StringBundler.concat(
+					"Response status code is wrong! Expect 200 but actual is ",
+					httpResponse.getStatusCode(), " full response is : ",
+					httpResponse));
 		}
 
 		if (key != null) {

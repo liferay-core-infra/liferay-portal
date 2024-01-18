@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershi
 import com.liferay.portal.kernel.security.membershippolicy.RoleMembershipPolicy;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicy;
 import com.liferay.portal.kernel.security.membershippolicy.UserGroupMembershipPolicy;
+import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.util.PropsValues;
 
 import org.osgi.framework.BundleContext;
@@ -30,7 +31,14 @@ public class MembershipPolicyUtil {
 	public static OrganizationMembershipPolicy
 		getOrganizationMembershipPolicy() {
 
-		return _organizationMembershipPolicySnapshot.get();
+		OrganizationMembershipPolicy organizationMembershipPolicy =
+			_organizationMembershipPolicySnapshot.get();
+
+		if (organizationMembershipPolicy != null) {
+			return organizationMembershipPolicy;
+		}
+
+		return _dummyOrganizationMembershipPolicy;
 	}
 
 	public static RoleMembershipPolicy getRoleMembershipPolicy() {
@@ -40,7 +48,13 @@ public class MembershipPolicyUtil {
 					MembershipPolicyUtil::
 						_createRoleMembershipPolicyServiceTracker);
 
-		return serviceTracker.getService();
+		RoleMembershipPolicy roleMembershipPolicy = serviceTracker.getService();
+
+		if (roleMembershipPolicy != null) {
+			return roleMembershipPolicy;
+		}
+
+		return _dummyRoleMembershipPolicy;
 	}
 
 	public static SiteMembershipPolicy getSiteMembershipPolicy() {
@@ -54,7 +68,14 @@ public class MembershipPolicyUtil {
 					MembershipPolicyUtil::
 						_createUserGroupMembershipPolicyTracker);
 
-		return serviceTracker.getService();
+		UserGroupMembershipPolicy userGroupMembershipPolicy =
+			serviceTracker.getService();
+
+		if (userGroupMembershipPolicy != null) {
+			return userGroupMembershipPolicy;
+		}
+
+		return _dummyUserGroupMembershipPolicy;
 	}
 
 	private static ServiceTracker<RoleMembershipPolicy, RoleMembershipPolicy>
@@ -89,6 +110,14 @@ public class MembershipPolicyUtil {
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
+	private static final OrganizationMembershipPolicy
+		_dummyOrganizationMembershipPolicy = ProxyFactory.newDummyInstance(
+			OrganizationMembershipPolicy.class);
+	private static final RoleMembershipPolicy _dummyRoleMembershipPolicy =
+		ProxyFactory.newDummyInstance(RoleMembershipPolicy.class);
+	private static final UserGroupMembershipPolicy
+		_dummyUserGroupMembershipPolicy = ProxyFactory.newDummyInstance(
+			UserGroupMembershipPolicy.class);
 	private static final Snapshot<OrganizationMembershipPolicy>
 		_organizationMembershipPolicySnapshot = new Snapshot<>(
 			MembershipPolicyUtil.class, OrganizationMembershipPolicy.class,

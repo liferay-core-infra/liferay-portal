@@ -70,6 +70,14 @@ public class DefaultSQLTransformerTest {
 				sqlTransformer.transform(
 					StringBundler.concat(
 						"BEGIN TRANSACTION\n", "INSERT INTO TABLE VALUES(0)\n",
+						"GO")),
+				"VALUES(0)"));
+
+		Assert.assertTrue(
+			StringUtil.endsWith(
+				sqlTransformer.transform(
+					StringBundler.concat(
+						"BEGIN TRANSACTION\n", "INSERT INTO TABLE VALUES(0)\n",
 						"COMMIT\n", ";")),
 				"COMMIT\n"));
 	}

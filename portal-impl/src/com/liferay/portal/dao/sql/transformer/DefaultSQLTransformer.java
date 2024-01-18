@@ -37,7 +37,9 @@ public class DefaultSQLTransformer implements SQLTransformer {
 				0, transformedSQL.length() - 1);
 		}
 
-		if (transformedSQL.endsWith("\ngo")) {
+		if (transformedSQL.endsWith("\ngo") ||
+			transformedSQL.endsWith("\nGO")) {
+
 			transformedSQL = transformedSQL.substring(
 				0, transformedSQL.length() - 3);
 		}

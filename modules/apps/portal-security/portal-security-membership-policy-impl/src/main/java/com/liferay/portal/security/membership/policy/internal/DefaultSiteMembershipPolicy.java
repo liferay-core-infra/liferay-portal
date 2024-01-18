@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.membershippolicy;
+package com.liferay.portal.security.membership.policy.internal;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetTag;
@@ -18,8 +18,9 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.membershippolicy.BaseSiteMembershipPolicy;
 import com.liferay.portal.kernel.security.membershippolicy.MembershipPolicyException;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicy;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -30,21 +31,15 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Sergio González
  */
+@Component(service = SiteMembershipPolicy.class)
 public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
-
-	public void afterPropertiesSet() {
-		if (PropsValues.MEMBERSHIP_POLICY_AUTO_VERIFY) {
-			try {
-				verifyPolicy();
-			}
-			catch (PortalException portalException) {
-				_log.error(portalException);
-			}
-		}
-	}
 
 	@Override
 	public void checkMembership(
@@ -59,10 +54,10 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 	@Override
 	public boolean isMembershipAllowed(long userId, long groupId) {
 		try {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
+			Group group = _groupLocalService.getGroup(groupId);
 
 			if (group.isLimitedToParentSiteMembers() &&
-				!GroupLocalServiceUtil.hasUserGroup(
+				!_groupLocalService.hasUserGroup(
 					userId, group.getParentGroupId(), false)) {
 
 				return false;
@@ -118,20 +113,32 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 		}
 	}
 
+	@Activate
+	protected void activate() {
+		if (PropsValues.MEMBERSHIP_POLICY_AUTO_VERIFY) {
+			try {
+				verifyPolicy();
+			}
+			catch (PortalException portalException) {
+				_log.error(portalException);
+			}
+		}
+	}
+
 	protected void checkAddUsersLimitedGroup(long[] userIds, long[] groupIds)
 		throws PortalException {
 
 		MembershipPolicyException membershipPolicyException = null;
 
 		for (long groupId : groupIds) {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
+			Group group = _groupLocalService.getGroup(groupId);
 
 			if (!group.isLimitedToParentSiteMembers()) {
 				continue;
 			}
 
 			for (long userId : userIds) {
-				if (!GroupLocalServiceUtil.hasUserGroup(
+				if (!_groupLocalService.hasUserGroup(
 						userId, group.getParentGroupId(), false)) {
 
 					if (membershipPolicyException == null) {
@@ -142,7 +149,7 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 					}
 
 					membershipPolicyException.addUser(
-						UserLocalServiceUtil.getUser(userId));
+						_userLocalService.getUser(userId));
 				}
 			}
 
@@ -159,7 +166,7 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 	protected List<Group> getLimitedChildrenGroups(Group group)
 		throws PortalException {
 
-		List<Group> childrenGroups = GroupLocalServiceUtil.search(
+		List<Group> childrenGroups = _groupLocalService.search(
 			group.getCompanyId(), null, StringPool.BLANK,
 			LinkedHashMapBuilder.<String, Object>put(
 				"groupsTree", ListUtil.fromArray(group)
@@ -193,7 +200,7 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 		throws PortalException {
 
 		List<Group> childrenGroups = getLimitedChildrenGroups(
-			GroupLocalServiceUtil.getGroup(groupId));
+			_groupLocalService.getGroup(groupId));
 
 		for (Group childrenGroup : childrenGroups) {
 			if (!childrenGroup.isLimitedToParentSiteMembers()) {
@@ -201,7 +208,7 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 			}
 
 			for (long userId : userIds) {
-				UserLocalServiceUtil.unsetGroupUsers(
+				_userLocalService.unsetGroupUsers(
 					childrenGroup.getGroupId(), new long[] {userId}, null);
 			}
 		}
@@ -210,7 +217,7 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 	protected void verifyLimitedParentMembership(final Group group)
 		throws PortalException {
 
-		int total = UserLocalServiceUtil.getGroupUsersCount(group.getGroupId());
+		int total = _userLocalService.getGroupUsersCount(group.getGroupId());
 
 		final IntervalActionProcessor<Void> intervalActionProcessor =
 			new IntervalActionProcessor<>(total);
@@ -222,14 +229,14 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 				public Void performIntervalAction(int start, int end)
 					throws PortalException {
 
-					List<User> users = UserLocalServiceUtil.getGroupUsers(
+					List<User> users = _userLocalService.getGroupUsers(
 						group.getGroupId(), start, end);
 
 					for (User user : users) {
-						if (!UserLocalServiceUtil.hasGroupUser(
+						if (!_userLocalService.hasGroupUser(
 								group.getParentGroupId(), user.getUserId())) {
 
-							UserLocalServiceUtil.unsetGroupUsers(
+							_userLocalService.unsetGroupUsers(
 								group.getGroupId(),
 								new long[] {user.getUserId()}, null);
 						}
@@ -248,5 +255,11 @@ public class DefaultSiteMembershipPolicy extends BaseSiteMembershipPolicy {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultSiteMembershipPolicy.class);
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

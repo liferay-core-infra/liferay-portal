@@ -5,6 +5,7 @@
 
 package com.liferay.portal.dao.sql.transformer;
 
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -24,6 +25,54 @@ public class DefaultSQLTransformerTest {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@Test
+	public void testTransformRemovingOracleTransationDelimiter() {
+		SQLTransformer sqlTransformer = new DefaultSQLTransformer(
+			new Function[0]);
+
+		Assert.assertTrue(
+			StringUtil.endsWith(
+				sqlTransformer.transform(
+					StringBundler.concat(
+						"BEGIN\n", "EXECUTE IMMEDIATE 'DROP TABLE TABLE1';\n",
+						"EXCEPTION\n", "WHEN OTHERS THEN\n",
+						"IF SQLCODE != -942 THEN\n", "RAISE;\n", "END IF;\n",
+						"END;\n", "/")),
+				"END;"));
+	}
+
+	@Test
+	public void testTransformRemovingTrailingSeparator() {
+		SQLTransformer sqlTransformer = new DefaultSQLTransformer(
+			new Function[0]);
+
+		Assert.assertTrue(
+			StringUtil.endsWith(
+				sqlTransformer.transform(
+					StringBundler.concat(
+						"BEGIN\n", "EXECUTE IMMEDIATE 'DROP TABLE TABLE1';\n",
+						"EXCEPTION\n", "WHEN OTHERS THEN\n",
+						"IF SQLCODE != -942 THEN\n", "RAISE;\n", "END IF;\n",
+						"END;\n", "/")),
+				"END;"));
+
+		Assert.assertTrue(
+			StringUtil.endsWith(
+				sqlTransformer.transform(
+					StringBundler.concat(
+						"begin transaction\n", "insert into table values(0)\n",
+						"go")),
+				"values(0)"));
+
+		Assert.assertTrue(
+			StringUtil.endsWith(
+				sqlTransformer.transform(
+					StringBundler.concat(
+						"BEGIN TRANSACTION\n", "INSERT INTO TABLE VALUES(0)\n",
+						"COMMIT\n", ";")),
+				"COMMIT\n"));
+	}
 
 	@Test
 	public void testTransformWithMultipleFunctions() {

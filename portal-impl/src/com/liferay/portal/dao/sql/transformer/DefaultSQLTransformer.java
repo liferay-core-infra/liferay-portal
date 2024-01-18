@@ -32,6 +32,21 @@ public class DefaultSQLTransformer implements SQLTransformer {
 			transformedSQL = function.apply(transformedSQL);
 		}
 
+		if (transformedSQL.endsWith(";")) {
+			transformedSQL = transformedSQL.substring(
+				0, transformedSQL.length() - 1);
+		}
+
+		if (transformedSQL.endsWith("\ngo")) {
+			transformedSQL = transformedSQL.substring(
+				0, transformedSQL.length() - 3);
+		}
+
+		if (transformedSQL.endsWith("\n/")) {
+			transformedSQL = transformedSQL.substring(
+				0, transformedSQL.length() - 2);
+		}
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Original SQL: " + sql);
 			_log.debug("Transformed SQL: " + transformedSQL);

@@ -1,0 +1,20 @@
+dependencies {
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	compileOnly project(":core:petra:petra-lang")
+	compileOnly project(":core:petra:petra-string")
+
+	testCompileOnly project(":core:petra:petra-function")
+}
+
+test {
+	systemProperty "benchmark.test.excluded.companies", System.getProperty("benchmark.test.excluded.companies", "liferay.com")
+	systemProperty "benchmark.test.jdbc.driverClassName", System.getProperty("benchmark.test.jdbc.driverClassName", "com.mysql.cj.jdbc.Driver")
+	systemProperty "benchmark.test.jdbc.url", System.getProperty("benchmark.test.jdbc.url", "jdbc:mysql://localhost/lportal?characterEncoding=UTF-8&dontTrackOpenResources=true&holdResultsOpenOverStatementClose=true&serverTimezone=GMT&useFastDateParsing=false&useUnicode=true")
+	systemProperty "benchmark.test.jdbc.username", System.getProperty("benchmark.test.jdbc.username", "")
+	systemProperty "benchmark.test.jdbc.password", System.getProperty("benchmark.test.jdbc.password", "")
+	systemProperty "benchmark.test.run.count", System.getProperty("benchmark.test.run.count", "1")
+	systemProperty "benchmark.test.skip.warm.up", System.getProperty("benchmark.test.skip.warm.up", "false")
+	systemProperty "benchmark.test.thread.count", System.getProperty("benchmark.test.thread.count", "1")
+	systemProperty "benchmark.test.user.password", System.getProperty("benchmark.test.user.password", "test")
+}

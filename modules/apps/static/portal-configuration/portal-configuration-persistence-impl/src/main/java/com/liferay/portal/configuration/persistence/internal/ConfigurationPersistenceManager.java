@@ -11,6 +11,7 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.persistence.ConfigurationOverridePropertiesUtil;
+import com.liferay.portal.configuration.persistence.ConfigurationThreadLocal;
 import com.liferay.portal.configuration.persistence.InMemoryOnlyConfigurationThreadLocal;
 import com.liferay.portal.configuration.persistence.ReloadablePersistenceManager;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListener;
@@ -590,7 +591,7 @@ public class ConfigurationPersistenceManager
 					configurationModelListenerUnsafeConsumer)
 		throws ConfigurationModelListenerException {
 
-		if (Validator.isNull(key)) {
+		if (ConfigurationThreadLocal.isLocalUpdate() || Validator.isNull(key)) {
 			return;
 		}
 

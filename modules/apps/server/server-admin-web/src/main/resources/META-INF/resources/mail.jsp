@@ -8,56 +8,14 @@
 <%@ include file="/init.jsp" %>
 
 <%
-PortletPreferences systemPortletPreferences = PrefsPropsUtil.getPreferences(CompanyConstants.SYSTEM);
+long companyId = CompanyConstants.SYSTEM;
 
-Function<String, String> preferenceFunction = key -> systemPortletPreferences.getValue(key, PropsUtil.get(key));
+Function<String, String> defaultValueFunction = key -> PropsUtil.get(key);
 %>
 
 <div class="sheet">
 	<div class="panel-group panel-group-flush">
-		<aui:fieldset>
-			<aui:input label="enable-pop-server-notifications" name="popServerNotificationsEnabled" type="checkbox" value="<%= preferenceFunction.apply(PropsKeys.POP_SERVER_NOTIFICATIONS_ENABLED) %>" />
-
-			<aui:input cssClass="lfr-input-text-container" label="incoming-pop-server" name="pop3Host" type="text" value="<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_HOST) %>" />
-
-			<aui:input cssClass="lfr-input-text-container" label="incoming-port" name="pop3Port" type="text" value="<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_PORT) %>" />
-
-			<aui:input label="use-a-secure-network-connection" name="pop3Secure" type="checkbox" value='<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_STORE_PROTOCOL).equals("pop3s") %>' />
-
-			<aui:input autocomplete="new-password" cssClass="lfr-input-text-container" label="user-name" name="pop3User" type="text" value="<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_USER) %>" />
-
-			<%
-			String pop3Password = preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_PASSWORD);
-
-			if (Validator.isNotNull(pop3Password)) {
-				pop3Password = Portal.TEMP_OBFUSCATION_VALUE;
-			}
-			%>
-
-			<aui:input autocomplete="new-password" cssClass="lfr-input-text-container" label="password" name="pop3Password" type="password" value="<%= pop3Password %>" />
-
-			<aui:input cssClass="lfr-input-text-container" label="outgoing-smtp-server" name="smtpHost" type="text" value="<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST) %>" />
-
-			<aui:input cssClass="lfr-input-text-container" label="outgoing-port" name="smtpPort" type="text" value="<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_PORT) %>" />
-
-			<aui:input label="use-a-secure-network-connection" name="smtpSecure" type="checkbox" value='<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_TRANSPORT_PROTOCOL).equals("smtps") %>' />
-
-			<aui:input label="enable-starttls" name="smtpStartTLSEnable" type="checkbox" value="<%= GetterUtil.getBoolean(preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_STARTTLS_ENABLE)) %>" />
-
-			<aui:input autocomplete="new-password" cssClass="lfr-input-text-container" label="user-name" name="smtpUser" type="text" value="<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_USER) %>" />
-
-			<%
-			String smtpPassword = preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_PASSWORD);
-
-			if (Validator.isNotNull(smtpPassword)) {
-				smtpPassword = Portal.TEMP_OBFUSCATION_VALUE;
-			}
-			%>
-
-			<aui:input autocomplete="new-password" cssClass="lfr-input-text-container" label="password" name="smtpPassword" type="password" value="<%= smtpPassword %>" />
-
-			<aui:input cssClass="lfr-textarea-container" label="manually-specify-additional-javamail-properties-to-override-the-above-configuration" name="advancedProperties" type="textarea" value="<%= preferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_ADVANCED_PROPERTIES) %>" />
-		</aui:fieldset>
+		<%@ include file="/mail_fields.jspf" %>
 
 		<aui:button-row>
 			<aui:button cssClass="save-server-button" data-cmd="updateMail" primary="<%= true %>" value="save" />

@@ -6,8 +6,8 @@
 package com.liferay.portal.configuration.cluster.internal.messaging;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.configuration.cluster.internal.ConfigurationThreadLocal;
 import com.liferay.portal.configuration.cluster.internal.constants.ConfigurationClusterDestinationNames;
+import com.liferay.portal.configuration.persistence.ConfigurationThreadLocal;
 import com.liferay.portal.configuration.persistence.ReloadablePersistenceManager;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;

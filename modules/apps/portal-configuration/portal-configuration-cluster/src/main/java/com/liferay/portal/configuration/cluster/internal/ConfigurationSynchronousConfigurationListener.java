@@ -6,6 +6,7 @@
 package com.liferay.portal.configuration.cluster.internal;
 
 import com.liferay.portal.configuration.cluster.internal.constants.ConfigurationClusterDestinationNames;
+import com.liferay.portal.configuration.persistence.ConfigurationThreadLocal;
 import com.liferay.portal.configuration.persistence.InMemoryOnlyConfigurationThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterLink;
 import com.liferay.portal.kernel.cluster.Priority;

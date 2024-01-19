@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.PackagingUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.xml.SAXReaderFactory;
@@ -208,25 +209,11 @@ public class ToolsUtil {
 	}
 
 	public static String getPackagePath(File file) {
-		String fileName = StringUtil.replace(
-			file.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
-
-		return getPackagePath(fileName);
+		return PackagingUtil.getPackagePath(file);
 	}
 
 	public static String getPackagePath(String fileName) {
-		int comLastIndexOf = fileName.lastIndexOf("/com/");
-		int orgLastIndexOf = fileName.lastIndexOf("/org/");
-
-		int x = Math.max(comLastIndexOf, orgLastIndexOf);
-
-		if ((comLastIndexOf > -1) && (orgLastIndexOf > -1)) {
-			x = Math.min(comLastIndexOf, orgLastIndexOf);
-		}
-
-		return StringUtil.replace(
-			fileName.substring(x + 1, fileName.lastIndexOf(CharPool.SLASH)),
-			CharPool.SLASH, CharPool.PERIOD);
+		return PackagingUtil.getPackagePath(fileName);
 	}
 
 	public static boolean isInsideQuotes(String s, int pos) {

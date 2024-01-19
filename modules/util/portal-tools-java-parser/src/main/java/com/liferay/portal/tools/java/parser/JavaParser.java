@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PackagingUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
@@ -988,7 +989,7 @@ public class JavaParser {
 		ImportsFormatter importsFormatter = new JavaImportsFormatter();
 
 		newContent = importsFormatter.format(
-			_trimContent(newContent), ToolsUtil.getPackagePath(file),
+			_trimContent(newContent), PackagingUtil.getPackagePath(file),
 			StringUtil.replaceLast(file.getName(), ".java", StringPool.BLANK));
 
 		if (!newContent.equals(content)) {

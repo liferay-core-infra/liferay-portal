@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 
 import java.io.File;
@@ -19,6 +20,28 @@ import java.util.Stack;
  * @author Raymond Augé
  */
 public class PackagingUtil {
+
+	public static String getPackagePath(File file) {
+		String fileName = StringUtil.replace(
+			file.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
+
+		return getPackagePath(fileName);
+	}
+
+	public static String getPackagePath(String fileName) {
+		int comLastIndexOf = fileName.lastIndexOf("/com/");
+		int orgLastIndexOf = fileName.lastIndexOf("/org/");
+
+		int x = Math.max(comLastIndexOf, orgLastIndexOf);
+
+		if ((comLastIndexOf > -1) && (orgLastIndexOf > -1)) {
+			x = Math.min(comLastIndexOf, orgLastIndexOf);
+		}
+
+		return StringUtil.replace(
+			fileName.substring(x + 1, fileName.lastIndexOf(CharPool.SLASH)),
+			CharPool.SLASH, CharPool.PERIOD);
+	}
 
 	public static List<String> getPackagesFromPath(File file) {
 		Set<String> packages = new HashSet<>();

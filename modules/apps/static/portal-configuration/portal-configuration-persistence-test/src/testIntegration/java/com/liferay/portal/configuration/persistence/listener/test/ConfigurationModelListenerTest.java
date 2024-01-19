@@ -8,6 +8,7 @@ package com.liferay.portal.configuration.persistence.listener.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.osgi.util.service.OSGiServiceUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.persistence.ConfigurationThreadLocal;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListener;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
@@ -55,6 +56,49 @@ public class ConfigurationModelListenerTest {
 
 			ReflectionTestUtil.invoke(delegatee, "delete", new Class<?>[0]);
 		}
+	}
+
+	@Test
+	public void testConfigurationModelListenerOnLocalUpdate() throws Exception {
+		String pid = StringUtil.randomString(20);
+
+		Dictionary<String, Object> testProperties =
+			HashMapDictionaryBuilder.<String, Object>put(
+				_TEST_KEY, _TEST_VALUE
+			).build();
+
+		AtomicBoolean called = new AtomicBoolean();
+
+		ConfigurationModelListener configurationModelListener =
+			new ConfigurationModelListener() {
+
+				@Override
+				public void onAfterSave(
+					String pid, Dictionary<String, Object> properties) {
+
+					Assert.assertEquals(_TEST_VALUE, properties.get(_TEST_KEY));
+
+					called.set(true);
+				}
+
+			};
+
+		_registerConfigurationModelListener(configurationModelListener, pid);
+
+		_configuration = _getConfiguration(pid);
+
+		boolean localUpdate = ConfigurationThreadLocal.isLocalUpdate();
+
+		ConfigurationThreadLocal.setLocalUpdate(true);
+
+		try {
+			_configuration.update(testProperties);
+		}
+		finally {
+			ConfigurationThreadLocal.setLocalUpdate(localUpdate);
+		}
+
+		Assert.assertFalse(called.get());
 	}
 
 	@Test(expected = ConfigurationModelListenerException.class)

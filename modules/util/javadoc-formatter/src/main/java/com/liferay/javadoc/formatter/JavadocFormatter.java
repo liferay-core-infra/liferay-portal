@@ -14,11 +14,11 @@ import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PackagingUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.ArgumentsUtil;
-import com.liferay.portal.tools.ToolsUtil;
 import com.liferay.portal.xml.SAXReaderFactory;
 import com.liferay.util.xml.Dom4jDocUtil;
 import com.liferay.util.xml.XMLSafeReader;
@@ -1059,7 +1059,7 @@ public class JavadocFormatter {
 			return;
 		}
 
-		_packagePath = ToolsUtil.getPackagePath(fileName);
+		_packagePath = PackagingUtil.getPackagePath(fileName);
 
 		if (!_packagePath.startsWith("com.liferay")) {
 			return;

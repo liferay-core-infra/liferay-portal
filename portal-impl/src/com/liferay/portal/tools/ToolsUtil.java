@@ -208,14 +208,6 @@ public class ToolsUtil {
 		return level;
 	}
 
-	public static String getPackagePath(File file) {
-		return PackagingUtil.getPackagePath(file);
-	}
-
-	public static String getPackagePath(String fileName) {
-		return PackagingUtil.getPackagePath(fileName);
-	}
-
 	public static boolean isInsideQuotes(String s, int pos) {
 		return isInsideQuotes(s, pos, true);
 	}
@@ -439,7 +431,7 @@ public class ToolsUtil {
 		}
 
 		if (Validator.isNull(packagePath)) {
-			packagePath = getPackagePath(file);
+			packagePath = PackagingUtil.getPackagePath(file);
 		}
 
 		String className = file.getName();

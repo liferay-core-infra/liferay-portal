@@ -273,6 +273,16 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		String fullyQualifiedName = StringBundler.concat(
 			packageName, StringPool.PERIOD, className);
 
+		if (packageName.contains(".internal.")) {
+			addMessage(
+				fileName,
+				StringBundler.concat(
+					"The 'service' attribute points to '", fullyQualifiedName,
+					"', which is an internal class/package"));
+
+			return;
+		}
+
 		File javaFile = JavaSourceUtil.getJavaFile(
 			fullyQualifiedName, _getRootDirName(absolutePath),
 			_getBundleSymbolicNamesMap(absolutePath));

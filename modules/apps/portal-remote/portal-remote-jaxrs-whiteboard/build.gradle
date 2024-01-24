@@ -39,7 +39,6 @@ dependencies {
 deployDependencies {
 	from configurations.compileOnly
 
-	include "commons-*.jar"
 	include "cxf-*.jar"
 	include "geronimo-jaxrs_2.1_spec-*.jar"
 	include "geronimo-jsonb_1.0_spec-*.jar"

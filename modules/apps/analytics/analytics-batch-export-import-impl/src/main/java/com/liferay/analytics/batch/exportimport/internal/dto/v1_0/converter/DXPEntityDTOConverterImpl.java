@@ -13,12 +13,12 @@ import com.liferay.analytics.dxp.entity.rest.dto.v1_0.converter.DXPEntityDTOConv
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.configuration.AnalyticsConfigurationRegistry;
 import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
-import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -535,8 +535,8 @@ public class DXPEntityDTOConverterImpl implements DXPEntityDTOConverter {
 		long classNameId = _classNameLocalService.getClassNameId(className);
 
 		try {
-			ExpandoTable expandoTable =
-				_expandoTablePersistence.findByPrimaryKey(tableId);
+			ExpandoTable expandoTable = _expandoTableLocalService.getTable(
+				tableId);
 
 			if (Objects.equals(
 					ExpandoTableConstants.DEFAULT_TABLE_NAME,
@@ -616,7 +616,7 @@ public class DXPEntityDTOConverterImpl implements DXPEntityDTOConverter {
 	private ExpandoColumnLocalService _expandoColumnLocalService;
 
 	@Reference
-	private ExpandoTablePersistence _expandoTablePersistence;
+	private ExpandoTableLocalService _expandoTableLocalService;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

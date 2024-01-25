@@ -5,8 +5,8 @@
 
 package com.liferay.segments.content.targeting.upgrade.internal.upgrade.registry;
 
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.segments.content.targeting.upgrade.internal.upgrade.v1_0_0.ContentTargetingUpgradeProcess;

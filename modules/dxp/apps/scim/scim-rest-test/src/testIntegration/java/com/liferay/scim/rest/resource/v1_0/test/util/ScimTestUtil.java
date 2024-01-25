@@ -5,12 +5,12 @@
 
 package com.liferay.scim.rest.resource.v1_0.test.util;
 
-import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
-import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
+import com.liferay.expando.model.ExpandoColumn;
+import com.liferay.expando.model.ExpandoTable;
+import com.liferay.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 

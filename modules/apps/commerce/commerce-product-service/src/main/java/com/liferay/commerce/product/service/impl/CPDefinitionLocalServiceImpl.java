@@ -74,7 +74,7 @@ import com.liferay.commerce.product.util.comparator.CPDefinitionVersionComparato
 import com.liferay.dynamic.data.mapping.exception.NoSuchStructureException;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.friendly.url.model.FriendlyURLEntryLocalization;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;

@@ -7,8 +7,8 @@ package com.liferay.search.experiences.internal.blueprint.parameter;
 
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoValueLocalService;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.service.GroupLocalService;

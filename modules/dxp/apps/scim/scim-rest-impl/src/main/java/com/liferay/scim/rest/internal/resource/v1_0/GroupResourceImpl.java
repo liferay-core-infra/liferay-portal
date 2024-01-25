@@ -5,9 +5,9 @@
 
 package com.liferay.scim.rest.internal.resource.v1_0;
 
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoValueLocalService;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;

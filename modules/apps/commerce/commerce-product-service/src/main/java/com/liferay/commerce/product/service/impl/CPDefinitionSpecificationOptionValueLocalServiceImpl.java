@@ -10,7 +10,7 @@ import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPDefinitionSpecificationOptionValue;
 import com.liferay.commerce.product.service.base.CPDefinitionSpecificationOptionValueLocalServiceBaseImpl;
 import com.liferay.commerce.product.service.persistence.CPDefinitionPersistence;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;

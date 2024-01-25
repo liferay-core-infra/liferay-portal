@@ -27,6 +27,14 @@ public class JavaFinalVariableCheck extends BaseJavaTermCheck {
 
 		String content = javaTerm.getContent();
 
+		for (String allowedFileName :
+				getAttributeValues(_ALLOWED_FILE_NAMES_KEY, absolutePath)) {
+
+			if (absolutePath.contains(allowedFileName)) {
+				return content;
+			}
+		}
+
 		Matcher matcher = _finalVariablePattern.matcher(content);
 
 		while (matcher.find()) {
@@ -127,6 +135,8 @@ public class JavaFinalVariableCheck extends BaseJavaTermCheck {
 
 		return false;
 	}
+
+	private static final String _ALLOWED_FILE_NAMES_KEY = "allowedFileNames";
 
 	private static final Pattern _anonymouseClassPattern = Pattern.compile(
 		"\\Wnew\\s[\\w\\s\\.<>,\\?]+\\(");

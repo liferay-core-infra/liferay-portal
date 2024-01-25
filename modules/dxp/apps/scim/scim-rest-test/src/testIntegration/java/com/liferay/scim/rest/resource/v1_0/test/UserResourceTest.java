@@ -6,9 +6,9 @@
 package com.liferay.scim.rest.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalService;
-import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.expando.service.ExpandoColumnLocalService;
+import com.liferay.expando.service.ExpandoTableLocalService;
+import com.liferay.expando.service.ExpandoValueLocalService;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;

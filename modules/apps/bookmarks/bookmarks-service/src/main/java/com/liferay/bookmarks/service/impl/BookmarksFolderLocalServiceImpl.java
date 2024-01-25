@@ -17,7 +17,7 @@ import com.liferay.bookmarks.service.BookmarksEntryLocalService;
 import com.liferay.bookmarks.service.base.BookmarksFolderLocalServiceBaseImpl;
 import com.liferay.bookmarks.service.persistence.BookmarksEntryPersistence;
 import com.liferay.bookmarks.util.comparator.FolderIdComparator;
-import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.expando.service.ExpandoRowLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;

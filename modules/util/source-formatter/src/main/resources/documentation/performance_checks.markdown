@@ -32,6 +32,7 @@ StringCastCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds cases whe
 SubstringCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds cases like `s.substring(1, s.length())` (use `s.substring(1)` instead). |
 ThreadLocalUtilCheck | .java | Finds new instances of `java.lang.Thread` (use `ThreadLocalUtil.create` instead). |
 TryWithResourcesCheck | .java | Ensures using Try-With-Resources statement to properly close the resource. |
+URLInputStreamCheck | .java | Checks usages of `URL.openStream()`. |
 [UnnecessaryAssignCheck](check/unnecessary_assign_check.markdown#unnecessaryassigncheck) | .java | Finds unnecessary assign statements (when it is either reassigned or returned right after). |
 UnnecessaryTypeCastCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds unnecessary Type Casting. |
 [UnnecessaryVariableDeclarationCheck](check/unnecessary_variable_declaration_check.markdown#unnecessaryvariabledeclarationcheck) | .java | Finds unnecessary variable declarations (when it is either reassigned or returned right after). |

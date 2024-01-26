@@ -5103,6 +5103,12 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="jboss" app.server.version="7.4.0" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />
 	</target>
 
+	<target name="functional-smoke-jboss74-mysql57-jdk17_open">
+		<set-app-server-version-number app.server.type="jboss" app.server.version="7.4.0" />
+
+		<run-functional-test app.server.type="jboss" app.server.version="7.4.0" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />
+	</target>
+
 	<target name="functional-smoke-startup-cold-tomcat90-hypersonic20-jdk8">
 		<run-functional-test app.server.type="tomcat" database.type="hypersonic" startup.testing.cold="true" test.portal.log.assert="true" />
 	</target>
@@ -5290,6 +5296,12 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="functional-smoke-weblogic141-mysql57-jdk8">
+		<set-app-server-version-number app.server.type="weblogic" app.server.version="14.1.1" />
+
+		<run-functional-test app.server.type="weblogic" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />
+	</target>
+
+	<target name="functional-smoke-weblogic141-mysql57-jdk17_open">
 		<set-app-server-version-number app.server.type="weblogic" app.server.version="14.1.1" />
 
 		<run-functional-test app.server.type="weblogic" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />

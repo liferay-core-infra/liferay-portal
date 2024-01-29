@@ -9,8 +9,8 @@ import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.field.type.InfoFieldType;
 import com.liferay.petra.function.UnsafeFunction;
-import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.templateparser.TemplateNode;
 import com.liferay.template.info.field.transformer.BaseRepeatableFieldTemplateNodeTransformer;
 import com.liferay.template.info.field.transformer.TemplateNodeTransformer;
 

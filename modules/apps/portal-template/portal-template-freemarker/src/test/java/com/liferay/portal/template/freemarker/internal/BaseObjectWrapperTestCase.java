@@ -7,8 +7,8 @@ package com.liferay.portal.template.freemarker.internal;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.templateparser.TemplateNode;
 
 import freemarker.ext.beans.MapModel;
 import freemarker.ext.beans.StringModel;

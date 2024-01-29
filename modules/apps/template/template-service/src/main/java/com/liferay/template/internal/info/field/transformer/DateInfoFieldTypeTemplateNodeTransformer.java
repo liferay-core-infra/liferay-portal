@@ -12,10 +12,10 @@ import com.liferay.info.localized.InfoLocalizedValue;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.templateparser.TemplateNode;
 import com.liferay.template.info.field.transformer.BaseTemplateNodeTransformer;
 import com.liferay.template.info.field.transformer.TemplateNodeTransformer;
 

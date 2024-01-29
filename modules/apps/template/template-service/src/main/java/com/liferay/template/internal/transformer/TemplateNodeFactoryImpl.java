@@ -11,9 +11,9 @@ import com.liferay.info.field.type.InfoFieldType;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.templateparser.TemplateNode;
 import com.liferay.template.info.field.transformer.TemplateNodeTransformer;
 import com.liferay.template.transformer.TemplateNodeFactory;
 

@@ -20,9 +20,10 @@
 package freemarker.ext.jsp;
 
 import java.beans.IntrospectionException;
+import java.io.CharArrayReader;
+import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.Writer;
 import java.util.Map;
 
@@ -35,7 +36,6 @@ import javax.servlet.jsp.tagext.SimpleTag;
 import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 
-import freemarker.ext.jsp.internal.WriterFactoryUtil;
 import freemarker.log.Logger;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateTransformModel;
@@ -59,6 +59,7 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
         isTryCatchFinally = TryCatchFinally.class.isAssignableFrom(tagClass);
     }
     
+    @Override
     public Writer getWriter(Writer out, Map args) throws TemplateModelException {
         try {
             Tag tag = (Tag) getTagInstance();
@@ -98,7 +99,7 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
      * An implementation of BodyContent that buffers it's input to a char[].
      */
     static class BodyContentImpl extends BodyContent {
-        private Writer buf;
+        private CharArrayWriter buf;
 
         BodyContentImpl(JspWriter out, boolean buffer) {
             super(out);
@@ -106,7 +107,7 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
         }
 
         void initBuffer() {
-            buf = WriterFactoryUtil.createWriter();
+            buf = new CharArrayWriter();
         }
 
         @Override
@@ -119,7 +120,7 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
         @Override
         public void clear() throws IOException {
             if (buf != null) {
-                buf = WriterFactoryUtil.createWriter();
+                buf = new CharArrayWriter();
             } else {
                 throw new IOException("Can't clear");
             }
@@ -128,7 +129,7 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
         @Override
         public void clearBuffer() throws IOException {
             if (buf != null) {
-                buf = WriterFactoryUtil.createWriter();
+                buf = new CharArrayWriter();
             } else {
                 throw new IOException("Can't clear");
             }
@@ -271,38 +272,18 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
         }
 
         @Override
-        public void write(String s) throws IOException {
-            if(buf != null) {
-                buf.write(s);
-            }
-            else {
-                getEnclosingWriter().write(s);
-            }
-        }
-
-        @Override
-        public void write(String s, int off, int len) throws IOException {
-            if(buf != null) {
-                buf.write(s, off, len);
-            }
-            else {
-                getEnclosingWriter().write(s, off, len);
-            }
-        }
-
-        @Override
         public String getString() {
             return buf.toString();
         }
 
         @Override
         public Reader getReader() {
-            return new StringReader(buf.toString());
+            return new CharArrayReader(buf.toCharArray());
         }
 
         @Override
         public void writeOut(Writer out) throws IOException {
-            out.write(buf.toString());
+            buf.writeTo(out);
         }
 
     }
@@ -334,6 +315,7 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
             return pageContext;
         }
         
+        @Override
         public int onStart()
         throws TemplateModelException {
             try {
@@ -372,6 +354,7 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
             }
         }
         
+        @Override
         public int afterBody()
         throws TemplateModelException {
             try {
@@ -404,6 +387,7 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
             }
         }
         
+        @Override
         public void onError(Throwable t) throws Throwable {
             if (isTryCatchFinally) {
                 ((TryCatchFinally) tag).doCatch(t);
@@ -438,4 +422,3 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
         
     }
 }
-/* @generated */

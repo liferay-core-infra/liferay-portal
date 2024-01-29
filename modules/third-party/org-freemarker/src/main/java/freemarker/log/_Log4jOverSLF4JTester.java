@@ -25,25 +25,21 @@ package freemarker.log;
  */
 public class _Log4jOverSLF4JTester {
 
-	/**
-	 * Returns if Log4j-over-SLF4J is actually working. Sometimes the API classes are present, but there's no SLF4J
-	 * implementation around.
-	 */
-	public static boolean test() {
-		org.apache.log4j.MDC.put(MDC_KEY, "");
+    private static final String MDC_KEY = _Log4jOverSLF4JTester.class.getName();
 
-		try {
-			if (org.slf4j.MDC.get(MDC_KEY) != null) {
-				return true;
-			}
+    /**
+     * Returns if Log4j-over-SLF4J is actually working. Sometimes the API classes are present, but there's no SLF4J
+     * implementation around.
+     */
+    public static final boolean test() {
+		org.apache.logging.log4j.ThreadContext.put(MDC_KEY, "");
 
-			return false;
-		}
-		finally {
-			org.apache.log4j.MDC.remove(MDC_KEY);
-		}
-	}
-
-	private static final String MDC_KEY = _Log4jOverSLF4JTester.class.getName();
+        try {
+            return org.slf4j.MDC.get(MDC_KEY) != null;
+        } finally {
+			org.apache.logging.log4j.ThreadContext.remove(MDC_KEY);
+        }
+    }
 
 }
+/* @generated */

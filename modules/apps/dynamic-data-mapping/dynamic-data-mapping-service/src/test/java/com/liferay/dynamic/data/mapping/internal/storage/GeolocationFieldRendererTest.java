@@ -44,7 +44,7 @@ public class GeolocationFieldRendererTest {
 		FieldRenderer fieldRenderer = new GeolocationFieldRenderer(
 			new JSONFactoryImpl(), _language);
 
-		if (JavaDetector.isJDK8()) {
+		if (JavaDetector.isJDK8() || JavaDetector.isJDK21()) {
 			Assert.assertEquals(
 				"Latitud: 9,877, Longitud: 1,234",
 				fieldRenderer.render(_createField(), LocaleUtil.SPAIN));
@@ -61,7 +61,7 @@ public class GeolocationFieldRendererTest {
 		FieldRenderer fieldRenderer = new GeolocationFieldRenderer(
 			new JSONFactoryImpl(), _language);
 
-		if (JavaDetector.isJDK8()) {
+		if (JavaDetector.isJDK8() || JavaDetector.isJDK21()) {
 			Assert.assertEquals(
 				"Latitude: 9.877, Longitude: 1.234",
 				fieldRenderer.render(_createField(), LocaleUtil.US));

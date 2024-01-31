@@ -51,7 +51,7 @@ public class HttpImplTest {
 		String ipAddressWithStarWildcard = "182.*.0.250";
 
 		Field field = ReflectionTestUtil.getField(
-			HttpImpl.class, "_NON_PROXY_HOSTS");
+			HttpImpl.class, "_nonProxyHosts");
 
 		Object value = field.get(null);
 

@@ -122,7 +122,7 @@ public class HttpImpl implements Http {
 			return false;
 		}
 
-		for (String nonProxyHost : _NON_PROXY_HOSTS) {
+		for (String nonProxyHost : _nonProxyHosts) {
 			if (nonProxyHost.equals(host) ||
 				(nonProxyHost.contains(StringPool.STAR) &&
 				 StringUtil.wildcardMatches(
@@ -1078,9 +1078,6 @@ public class HttpImpl implements Http {
 	private static final int _MAX_TOTAL_CONNECTIONS = GetterUtil.getInteger(
 		PropsUtil.get(Http.class.getName() + ".max.total.connections"), 20);
 
-	private static final String[] _NON_PROXY_HOSTS = StringUtil.split(
-		SystemProperties.get("http.nonProxyHosts"), StringPool.PIPE);
-
 	private static final String _PROXY_AUTH_TYPE = GetterUtil.getString(
 		PropsUtil.get(Http.class.getName() + ".proxy.auth.type"));
 
@@ -1108,6 +1105,8 @@ public class HttpImpl implements Http {
 	private static final Log _log = LogFactoryUtil.getLog(HttpImpl.class);
 
 	private static final ThreadLocal<Cookie[]> _cookies = new ThreadLocal<>();
+	private static volatile String[] _nonProxyHosts = StringUtil.split(
+		SystemProperties.get("http.nonProxyHosts"), StringPool.PIPE);
 
 	private final DCLSingleton<CloseableHttpClient>
 		_closeableHttpClientDCLSingleton = new DCLSingleton<>();

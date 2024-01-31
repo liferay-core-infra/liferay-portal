@@ -11,8 +11,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 
-import java.lang.reflect.Field;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -50,14 +48,12 @@ public class HttpImplTest {
 		String ipAddress = "192.168.0.250";
 		String ipAddressWithStarWildcard = "182.*.0.250";
 
-		Field field = ReflectionTestUtil.getField(
+		Object value = ReflectionTestUtil.getFieldValue(
 			HttpImpl.class, "_NON_PROXY_HOSTS");
 
-		Object value = field.get(null);
-
 		try {
-			field.set(
-				null,
+			ReflectionTestUtil.setFieldValue(
+				HttpImpl.class, "_NON_PROXY_HOSTS",
 				new String[] {domain, ipAddress, ipAddressWithStarWildcard});
 
 			Assert.assertTrue(_httpImpl.isNonProxyHost(domain));
@@ -67,7 +63,8 @@ public class HttpImplTest {
 			Assert.assertFalse(_httpImpl.isNonProxyHost("google.com"));
 		}
 		finally {
-			field.set(null, value);
+			ReflectionTestUtil.setFieldValue(
+				HttpImpl.class, "_NON_PROXY_HOSTS", value);
 		}
 	}
 

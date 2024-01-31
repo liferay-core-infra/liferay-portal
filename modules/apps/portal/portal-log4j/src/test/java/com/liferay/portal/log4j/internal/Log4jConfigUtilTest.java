@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.log.LogCapture;
@@ -195,7 +196,15 @@ public class Log4jConfigUtilTest {
 
 			LogEntry logEntry = logEntries.get(0);
 
-			Assert.assertNull(logEntry.getMessage());
+			if (JavaDetector.isJDK21()) {
+				Assert.assertEquals(
+					"Cannot invoke \"String.length()\" because \"string\" is " +
+						"null",
+					logEntry.getMessage());
+			}
+			else {
+				Assert.assertNull(logEntry.getMessage());
+			}
 
 			Throwable throwable = logEntry.getThrowable();
 

@@ -53,7 +53,7 @@ public class NoticeableThreadPoolExecutorTest {
 	public void testAdjustSize() throws InterruptedException {
 		NoticeableThreadPoolExecutor noticeableThreadPoolExecutor =
 			new NoticeableThreadPoolExecutor(
-				1, 1, 1, TimeUnit.NANOSECONDS, new LinkedBlockingQueue<>(),
+				1, 2, 1, TimeUnit.NANOSECONDS, new LinkedBlockingQueue<>(),
 				new MethodNameThreadFactory(),
 				(runnable, threadPoolExecutor) -> {
 				},
@@ -61,7 +61,7 @@ public class NoticeableThreadPoolExecutorTest {
 
 		Assert.assertEquals(1, noticeableThreadPoolExecutor.getCorePoolSize());
 		Assert.assertEquals(
-			1, noticeableThreadPoolExecutor.getMaximumPoolSize());
+			2, noticeableThreadPoolExecutor.getMaximumPoolSize());
 
 		try {
 			noticeableThreadPoolExecutor.setCorePoolSize(0);

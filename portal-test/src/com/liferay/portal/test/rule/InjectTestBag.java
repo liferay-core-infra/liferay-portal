@@ -35,7 +35,6 @@ public class InjectTestBag {
 	}
 
 	public InjectTestBag(Class<?> testClass, Object target) throws Exception {
-		_testClass = testClass;
 		_target = target;
 
 		while (testClass != Object.class) {
@@ -248,7 +247,7 @@ public class InjectTestBag {
 		}
 		else {
 			ReflectionTestUtil.setFieldValue(
-				_testClass, field.getName(), value);
+				field.getDeclaringClass(), field.getName(), value);
 		}
 	}
 
@@ -258,6 +257,5 @@ public class InjectTestBag {
 	private final List<ServiceReference<?>> _serviceReferences =
 		new ArrayList<>();
 	private final Object _target;
-	private final Class<?> _testClass;
 
 }

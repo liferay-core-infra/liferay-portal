@@ -5,9 +5,9 @@ configurations {
 }
 
 dependencies {
-	compileIncludePlatform group: "com.azure", name: "azure-identity"
-	compileIncludePlatform group: "com.azure", name: "azure-storage-blob"
-	compileIncludePlatform group: "com.azure", name: "azure-storage-blob-batch"
+	compileIncludePlatform group: "com.azure", name: "azure-identity", version: "1.11.1"
+	compileIncludePlatform group: "com.azure", name: "azure-storage-blob", version: "12.25.1"
+	compileIncludePlatform group: "com.azure", name: "azure-storage-blob-batch", version: "12.21.1"
 	compileIncludePlatform platform("com.azure:azure-sdk-bom:1.2.10")
 
 	compileOnly group: "com.liferay", name: "biz.aQute.bnd.annotation", version: "4.2.0.LIFERAY-PATCHED-2"

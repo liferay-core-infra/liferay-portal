@@ -18,7 +18,6 @@ import freemarker.ext.beans.StringModel;
 import freemarker.ext.dom.NodeModel;
 import freemarker.ext.util.ModelFactory;
 
-import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.SimpleSequence;
@@ -41,8 +40,6 @@ import org.w3c.dom.Node;
 public class LiferayObjectWrapper extends DefaultObjectWrapper {
 
 	public LiferayObjectWrapper() {
-		super(Configuration.getVersion());
-
 		try {
 			_cacheClassNamesField.set(
 				_classIntrospectorField.get(this),

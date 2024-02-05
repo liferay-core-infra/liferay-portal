@@ -520,7 +520,8 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			return;
 		}
 
-		_configuration = new Configuration(Configuration.getVersion());
+		_configuration = new Configuration(
+			Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
 		try {
 			Field field = ReflectionUtil.getDeclaredField(

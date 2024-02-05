@@ -4934,12 +4934,14 @@ public class ServiceBuilder {
 			return _configuration;
 		}
 
-		_configuration = new Configuration(Configuration.getVersion());
+		_configuration = new Configuration(
+			Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
 		_configuration.setNumberFormat("computer");
 
 		DefaultObjectWrapperBuilder defaultObjectWrapperBuilder =
-			new DefaultObjectWrapperBuilder(Configuration.getVersion());
+			new DefaultObjectWrapperBuilder(
+				Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
 		_configuration.setObjectWrapper(defaultObjectWrapperBuilder.build());
 

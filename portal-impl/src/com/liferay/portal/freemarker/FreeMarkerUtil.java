@@ -43,7 +43,8 @@ public class FreeMarkerUtil {
 			return _configuration;
 		}
 
-		_configuration = new Configuration(Configuration.getVersion());
+		_configuration = new Configuration(
+			Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
 		DefaultObjectWrapperBuilder defaultObjectWrapperBuilder =
 			new DefaultObjectWrapperBuilder(Configuration.getVersion());

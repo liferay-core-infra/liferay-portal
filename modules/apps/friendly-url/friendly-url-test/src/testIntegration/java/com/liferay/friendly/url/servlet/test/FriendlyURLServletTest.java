@@ -260,6 +260,40 @@ public class FriendlyURLServletTest {
 	}
 
 	@Test
+	public void testGetRedirectWithHyphenatedNonexistentSiteLanguageId()
+		throws Throwable {
+
+		PropsValues.LOCALES_ENABLED = new String[] {
+			"en_US", "hu_HU", "de_DE", "en_GB"
+		};
+
+		Group group = GroupTestUtil.addGroup();
+
+		Layout layout = LayoutTestUtil.addTypePortletLayout(group);
+
+		GroupTestUtil.updateDisplaySettings(
+			group.getGroupId(), Arrays.asList(LocaleUtil.UK), LocaleUtil.UK);
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest() {
+
+				@Override
+				public String getRequestURI() {
+					return "/en-US" + layout.getFriendlyURL();
+				}
+
+			};
+
+		mockHttpServletRequest.setAttribute(WebKeys.I18N_LANGUAGE_ID, "en_US");
+
+		testGetRedirect(
+			mockHttpServletRequest,
+			group.getFriendlyURL() + layout.getFriendlyURL(), Portal.PATH_MAIN,
+			_redirectConstructor2.newInstance(
+				"/en-GB" + layout.getFriendlyURL(), true, true));
+	}
+
+	@Test
 	public void testGetRedirectWithI18nPath() throws Throwable {
 		testGetI18nRedirect("/fr", "/en");
 		testGetI18nRedirect("/hu", "/hu");

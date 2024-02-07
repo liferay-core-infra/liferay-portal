@@ -1,5 +1,7 @@
 dependencies {
 	testImplementation group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	testImplementation group: "org.mozilla", name: "rhino", version: "1.7.14"
+	testImplementation group: "org.mozilla", name: "rhino-engine", version: "1.7.14"
 	testImplementation project(":core:petra:petra-string")
 
 	testIntegrationImplementation group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"

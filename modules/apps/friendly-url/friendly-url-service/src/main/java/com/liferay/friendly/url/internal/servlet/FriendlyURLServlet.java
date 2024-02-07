@@ -658,6 +658,12 @@ public class FriendlyURLServlet extends HttpServlet {
 			return false;
 		}
 
+		public String toString() {
+			return StringBundler.concat(
+				"{force=", _force, ", path=", _path, ", permanent=", _permanent,
+				"}");
+		}
+
 		private final boolean _force;
 		private final String _path;
 		private final boolean _permanent;

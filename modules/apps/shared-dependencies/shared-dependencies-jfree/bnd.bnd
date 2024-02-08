@@ -1,4 +1,22 @@
 Bundle-Name: Liferay Shared Dependencies Jfree
 Bundle-SymbolicName: com.liferay.shared.dependencies.jfree
 Bundle-Version: 1.0.2
--exportcontents: org.jfree.*
+-exportcontents:\
+	org.jfree.chart,\
+	org.jfree.chart.axis,\
+	org.jfree.chart.entity,\
+	org.jfree.chart.labels,\
+	org.jfree.chart.plot,\
+	org.jfree.chart.plot.dial,\
+	org.jfree.chart.renderer.category,\
+	org.jfree.chart.renderer.xy,\
+	org.jfree.chart.title,\
+	org.jfree.data,\
+	org.jfree.data.category,\
+	org.jfree.data.gantt,\
+	org.jfree.data.general,\
+	org.jfree.data.time,\
+	org.jfree.data.xy,\
+	org.jfree.date,\
+	org.jfree.ui,\
+	org.jfree.util

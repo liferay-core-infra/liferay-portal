@@ -1,4 +1,9 @@
 Bundle-Name: Liferay Shared Dependencies JDOM2
 Bundle-SymbolicName: com.liferay.shared.dependencies.jdom2
 Bundle-Version: 1.0.2
--exportcontents: org.jdom2.*;version='2.0.6'
+-exportcontents:\
+	org.jdom2;version='2.0.6',\
+	org.jdom2.filter;version='2.0.6',\
+	org.jdom2.input;version='2.0.6',\
+	org.jdom2.input.sax;version='2.0.6',\
+	org.jdom2.output;version='2.0.6'

@@ -2,4 +2,23 @@ Bundle-Name: Liferay Shared Dependencies Netty
 Bundle-SymbolicName: com.liferay.shared.dependencies.netty
 Bundle-Version: 1.0.6
 Import-Package: !com.aayushatharva.brotli4j.*
--exportcontents: io.netty.*
+-exportcontents:\
+	io.netty.bootstrap,\
+	io.netty.buffer,\
+	io.netty.channel,\
+	io.netty.channel.group,\
+	io.netty.channel.nio,\
+	io.netty.channel.socket,\
+	io.netty.handler.codec,\
+	io.netty.handler.codec.base64,\
+	io.netty.handler.codec.http,\
+	io.netty.handler.codec.http2,\
+	io.netty.handler.flush,\
+	io.netty.handler.proxy,\
+	io.netty.handler.ssl,\
+	io.netty.handler.timeout,\
+	io.netty.resolver,\
+	io.netty.resolver.dns,\
+	io.netty.util,\
+	io.netty.util.collection,\
+	io.netty.util.concurrent

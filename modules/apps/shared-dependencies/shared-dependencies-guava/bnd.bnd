@@ -1,4 +1,16 @@
 Bundle-Name: Liferay Shared Dependencies Guava
 Bundle-SymbolicName: com.liferay.shared.dependencies.guava
 Bundle-Version: 9.0.1
--exportcontents: com.google.common.*
+-exportcontents:\
+	com.google.common.base,\
+	com.google.common.cache,\
+	com.google.common.collect,\
+	com.google.common.escape,\
+	com.google.common.hash,\
+	com.google.common.io,\
+	com.google.common.math,\
+	com.google.common.net,\
+	com.google.common.primitives,\
+	com.google.common.reflect,\
+	com.google.common.util.concurrent,\
+	com.google.common.xml

@@ -2,5 +2,9 @@ Bundle-Name: Liferay Shared Dependencies Joda
 Bundle-SymbolicName: com.liferay.shared.dependencies.joda
 Bundle-Version: 1.0.2
 -exportcontents:\
-	org.joda.convert.*,\
-	org.joda.time.*
+	org.joda.convert,\
+	org.joda.time,\
+	org.joda.time.chrono,\
+	org.joda.time.field,\
+	org.joda.time.format,\
+	org.joda.time.tz

@@ -11,4 +11,30 @@ Import-Package:\
 	org.apache.fontbox.ttf,\
 	org.apache.jempbox.xmp,\
 	org.apache.jempbox.xmp.pdfa,\
-	org.apache.pdfbox.*;-noimport:=true
+	org.apache.pdfbox.contentstream,\
+	org.apache.pdfbox.cos,\
+	org.apache.pdfbox.filter,\
+	org.apache.pdfbox.io,\
+	org.apache.pdfbox.pdfparser,\
+	org.apache.pdfbox.pdmodel,\
+	org.apache.pdfbox.pdmodel.common,\
+	org.apache.pdfbox.pdmodel.common.filespecification,\
+	org.apache.pdfbox.pdmodel.documentinterchange.logicalstructure,\
+	org.apache.pdfbox.pdmodel.documentinterchange.markedcontent,\
+	org.apache.pdfbox.pdmodel.encryption,\
+	org.apache.pdfbox.pdmodel.fixup,\
+	org.apache.pdfbox.pdmodel.fixup.processor,\
+	org.apache.pdfbox.pdmodel.font,\
+	org.apache.pdfbox.pdmodel.graphics.color,\
+	org.apache.pdfbox.pdmodel.graphics.form,\
+	org.apache.pdfbox.pdmodel.graphics.image,\
+	org.apache.pdfbox.pdmodel.graphics.pattern,\
+	org.apache.pdfbox.pdmodel.graphics.state,\
+	org.apache.pdfbox.pdmodel.interactive.action,\
+	org.apache.pdfbox.pdmodel.interactive.annotation,\
+	org.apache.pdfbox.pdmodel.interactive.digitalsignature,\
+	org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline,\
+	org.apache.pdfbox.pdmodel.interactive.form,\
+	org.apache.pdfbox.rendering,\
+	org.apache.pdfbox.text,\
+	org.apache.pdfbox.util

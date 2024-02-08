@@ -1,4 +1,7 @@
 Bundle-Name: Liferay Shared Dependencies Minidev
 Bundle-SymbolicName: com.liferay.shared.dependencies.minidev
 Bundle-Version: 1.0.2
--exportcontents: net.minidev.*
+-exportcontents:\
+	net.minidev.json,\
+	net.minidev.json.parser,\
+	net.minidev.json.writer

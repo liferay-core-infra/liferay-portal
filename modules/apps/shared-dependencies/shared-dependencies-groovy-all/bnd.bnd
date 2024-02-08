@@ -22,50 +22,15 @@ Import-Package:\
 	\
 	*
 -exportcontents:\
-	groovy.beans,\
-	\
-	groovy.cli.*,\
-	\
-	groovy.grape,\
-	\
-	groovy.inspect.*,\
-	\
-	groovy.io,\
-	\
-	groovy.jmx.builder,\
-	\
-	groovy.json,\
-	\
-	groovy.junit5.plugin,\
-	\
 	groovy.lang,\
 	\
-	groovy.mock.interceptor,\
-	\
-	groovy.model,\
-	\
-	groovy.security,\
-	\
-	groovy.servlet,\
-	\
-	groovy.sql,\
-	\
-	groovy.swing.*,\
-	\
-	groovy.test,\
-	\
-	groovy.text.*,\
-	\
-	groovy.time,\
-	\
-	groovy.transform.*,\
-	\
-	groovy.ui.*,\
-	\
-	groovy.util.*,\
-	\
-	groovy.xml.*,\
-	\
-	org.apache.groovy.*,\
-	\
-	org.codehaus.groovy.*
+	org.codehaus.groovy.ast,\
+	org.codehaus.groovy.ast.expr,\
+	org.codehaus.groovy.control,\
+	org.codehaus.groovy.control.customizers,\
+	org.codehaus.groovy.reflection,\
+	org.codehaus.groovy.runtime,\
+	org.codehaus.groovy.runtime.metaclass,\
+	org.codehaus.groovy.runtime.typehandling,\
+	org.codehaus.groovy.syntax,\
+	org.codehaus.groovy.tools

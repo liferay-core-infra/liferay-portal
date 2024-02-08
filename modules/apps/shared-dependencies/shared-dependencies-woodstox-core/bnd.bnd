@@ -1,4 +1,7 @@
 Bundle-Name: Liferay Shared Dependencies woodstox-core
 Bundle-SymbolicName: com.liferay.shared.dependencies.woodstox.core
 Bundle-Version: 1.0.3
--exportcontents: com.ctc.wstx.*
+-exportcontents:\
+	com.ctc.wstx.api,\
+	com.ctc.wstx.msv,\
+	com.ctc.wstx.stax

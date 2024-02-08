@@ -1,4 +1,8 @@
 Bundle-Name: Liferay Shared Dependencies Xmpcore
 Bundle-SymbolicName: com.liferay.shared.dependencies.xmpcore
 Bundle-Version: 1.0.2
--exportcontents: com.adobe.internal.xmp.*
+-exportcontents:\
+	com.adobe.internal.xmp,\
+	com.adobe.internal.xmp.impl,\
+	com.adobe.internal.xmp.options,\
+	com.adobe.internal.xmp.properties

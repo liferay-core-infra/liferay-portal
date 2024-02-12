@@ -601,6 +601,17 @@ public class ServiceBuilder {
 			_badColumnNames = _readLines(_tplBadColumnNames);
 			_badTableNames = _readLines(_tplBadTableNames);
 
+			_dirPaths = new HashSet<String>() {
+				{
+					add(_apiDirName);
+					add(_implDirName);
+					add(_testDirName);
+					add(_uadDirName);
+				}
+			};
+
+			_dirPaths.remove(null);
+
 			SAXReader saxReader = _getSAXReader();
 
 			Document document = saxReader.read(
@@ -6283,6 +6294,8 @@ public class ServiceBuilder {
 		String uadPackagePath = GetterUtil.getString(
 			entityElement.attributeValue("uad-package-path"), _packagePath);
 
+		_dirPaths.add(uadDirPath);
+
 		boolean versioned = GetterUtil.getBoolean(
 			entityElement.attributeValue("versioned"));
 
@@ -8055,19 +8068,17 @@ public class ServiceBuilder {
 
 		int startIndex = 0;
 
-		if (fileName.startsWith(_apiDirName)) {
-			startIndex = _apiDirName.length();
+		for (String dirPath : _dirPaths) {
+			int indexOf = fileName.indexOf(dirPath);
+
+			if (indexOf != -1) {
+				startIndex = indexOf + dirPath.length();
+
+				break;
+			}
 		}
-		else if (fileName.startsWith(_implDirName)) {
-			startIndex = _implDirName.length();
-		}
-		else if (fileName.startsWith(_uadDirName)) {
-			startIndex = _uadDirName.length();
-		}
-		else if (fileName.startsWith(_testDirName)) {
-			startIndex = _testDirName.length();
-		}
-		else {
+
+		if (startIndex == 0) {
 			throw new IllegalArgumentException(
 				"Unable to parse package path from " + fileName);
 		}
@@ -8179,6 +8190,7 @@ public class ServiceBuilder {
 	private String _currentTplName;
 	private int _databaseNameMaxLength = 30;
 	private boolean _dependencyInjectorDS;
+	private Set<String> _dirPaths;
 	private Version _dtdVersion;
 	private List<Entity> _entities;
 	private Map<String, EntityMapping> _entityMappings;

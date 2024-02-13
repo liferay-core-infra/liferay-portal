@@ -46,6 +46,11 @@ public class AccountEntryEmailDomainsConfigurationModelListener
 	implements ConfigurationModelListener {
 
 	@Override
+	public boolean isClusterable() {
+		return false;
+	}
+
+	@Override
 	public void onAfterSave(String pid, Dictionary<String, Object> properties) {
 		long companyId = _getCompanyId(properties);
 

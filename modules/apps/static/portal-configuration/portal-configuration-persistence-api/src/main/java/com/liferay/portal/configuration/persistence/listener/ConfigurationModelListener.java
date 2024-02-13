@@ -12,6 +12,10 @@ import java.util.Dictionary;
  */
 public interface ConfigurationModelListener {
 
+	public default boolean isClusterable() {
+		return true;
+	}
+
 	public default void onAfterDelete(String pid)
 		throws ConfigurationModelListenerException {
 	}

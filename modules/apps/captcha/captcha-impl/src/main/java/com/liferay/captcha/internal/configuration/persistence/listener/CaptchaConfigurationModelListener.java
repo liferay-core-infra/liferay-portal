@@ -31,6 +31,11 @@ public class CaptchaConfigurationModelListener
 	implements ConfigurationModelListener {
 
 	@Override
+	public boolean isClusterable() {
+		return false;
+	}
+
+	@Override
 	public void onBeforeSave(String pid, Dictionary<String, Object> properties)
 		throws ConfigurationModelListenerException {
 

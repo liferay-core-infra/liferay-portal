@@ -26,6 +26,11 @@ public class AnalyticsConfigurationModelListener
 	implements ConfigurationModelListener {
 
 	@Override
+	public boolean isClusterable() {
+		return false;
+	}
+
+	@Override
 	public void onBeforeSave(
 		String pid, Dictionary<String, Object> properties) {
 

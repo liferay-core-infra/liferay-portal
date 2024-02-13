@@ -8,6 +8,7 @@ package com.liferay.portal.configuration.cluster.internal.messaging;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.cluster.internal.ConfigurationThreadLocal;
 import com.liferay.portal.configuration.cluster.internal.constants.ConfigurationClusterDestinationNames;
+import com.liferay.portal.configuration.persistence.InMemoryOnlyConfigurationThreadLocal;
 import com.liferay.portal.configuration.persistence.ReloadablePersistenceManager;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
@@ -36,9 +37,16 @@ public class ConfigurationMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		_reloadConfiguration(
-			message.getString(Constants.SERVICE_PID),
-			message.getInteger("configuration.event.type"));
+		InMemoryOnlyConfigurationThreadLocal.setInMemoryOnly(true);
+
+		try {
+			_reloadConfiguration(
+				message.getString(Constants.SERVICE_PID),
+				message.getInteger("configuration.event.type"));
+		}
+		finally {
+			InMemoryOnlyConfigurationThreadLocal.setInMemoryOnly(false);
+		}
 	}
 
 	private void _reloadConfiguration(String pid, int type) throws Exception {

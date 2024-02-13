@@ -36,6 +36,11 @@ public class MFAEmailOTPConfigurationModelListener
 	implements ConfigurationModelListener {
 
 	@Override
+	public boolean isClusterable() {
+		return false;
+	}
+
+	@Override
 	public void onAfterSave(String pid, Dictionary<String, Object> properties)
 		throws ConfigurationModelListenerException {
 

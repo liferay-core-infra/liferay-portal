@@ -241,6 +241,32 @@ public class CentralizedThreadLocalTest {
 	}
 
 	@Test
+	public void testRemoveWithCloseable() {
+		String initialValue = "initialValue";
+
+		CentralizedThreadLocal<String> centralizedThreadLocal =
+			new CentralizedThreadLocal<>("test", () -> "initialValue");
+
+		try (SafeCloseable safeCloseable =
+				centralizedThreadLocal.removeWithSafeCloseable()) {
+
+			Assert.assertSame(initialValue, centralizedThreadLocal.get());
+		}
+
+		String value1 = "value1";
+
+		centralizedThreadLocal.set(value1);
+
+		try (SafeCloseable safeCloseable =
+				centralizedThreadLocal.removeWithSafeCloseable()) {
+
+			Assert.assertSame(initialValue, centralizedThreadLocal.get());
+		}
+
+		Assert.assertSame(value1, centralizedThreadLocal.get());
+	}
+
+	@Test
 	public void testSetWithClosable() {
 		String initialValue = "initialValue";
 

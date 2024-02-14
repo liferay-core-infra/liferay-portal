@@ -152,6 +152,25 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 		threadLocalMap.removeEntry(this);
 	}
 
+	public SafeCloseable removeWithSafeCloseable() {
+		ThreadLocalMap threadLocalMap = _getThreadLocalMap();
+
+		Entry entry = threadLocalMap.getEntry(this);
+
+		if (entry == null) {
+			remove();
+
+			return () -> {
+			};
+		}
+
+		Object originalValue = entry._value;
+
+		remove();
+
+		return () -> set((T)originalValue);
+	}
+
 	@Override
 	public void set(T value) {
 		ThreadLocalMap threadLocalMap = _getThreadLocalMap();

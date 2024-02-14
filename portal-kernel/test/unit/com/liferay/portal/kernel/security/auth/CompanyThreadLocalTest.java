@@ -53,9 +53,10 @@ public class CompanyThreadLocalTest {
 
 	@Test
 	public void testUserThreadLocalsWithSetWithSafeCloseable() {
+		LocaleThreadLocal.setDefaultLocale(LocaleUtil.GERMAN);
+
 		TimeZone pstTimeZone = TimeZone.getTimeZone("PST");
 
-		LocaleThreadLocal.setDefaultLocale(LocaleUtil.GERMAN);
 		TimeZoneThreadLocal.setDefaultTimeZone(pstTimeZone);
 
 		try (SafeCloseable safeCloseable =

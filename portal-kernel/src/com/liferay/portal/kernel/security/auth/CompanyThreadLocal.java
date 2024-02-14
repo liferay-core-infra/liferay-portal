@@ -169,7 +169,7 @@ public class CompanyThreadLocal {
 
 		long currentCompanyId = _companyId.get();
 
-		boolean changed = _setCompanyId(companyId, false);
+		boolean modified = _setCompanyId(companyId, false);
 
 		SafeCloseable ctCollectionSafeCloseable =
 			CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
@@ -182,7 +182,7 @@ public class CompanyThreadLocal {
 			TimeZoneThreadLocal.removeDefaultTimeZoneWithSafeCloseable();
 
 		return () -> {
-			if (changed) {
+			if (modified) {
 				_syncLastDBPartitionSessionState();
 			}
 

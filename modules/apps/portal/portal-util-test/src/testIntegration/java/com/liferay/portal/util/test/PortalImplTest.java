@@ -6,7 +6,12 @@
 package com.liferay.portal.util.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationParameterMapFactoryUtil;
+import com.liferay.exportimport.kernel.service.StagingLocalServiceUtil;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
+import com.liferay.exportimport.kernel.staging.constants.StagingConstants;
 import com.liferay.layout.test.util.LayoutTestUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
@@ -15,12 +20,14 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.File;
@@ -37,6 +44,9 @@ import com.liferay.portal.upload.UploadServletRequestImpl;
 import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
 
 import java.io.InputStream;
+import java.io.Serializable;
+
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -87,6 +97,26 @@ public class PortalImplTest {
 	}
 
 	@Test
+	public void testGetLiveLayoutScopeGroupId() throws Exception {
+		_publishLayouts();
+
+		String portletId = LayoutTestUtil.addPortletToLayout(
+			_liveLayout, "TEST_PORTLET_" + RandomTestUtil.randomString());
+
+		Group expectedScopeGroup = _getExpectedScopeGroup(false, false);
+
+		Assert.assertEquals(
+			expectedScopeGroup.getGroupId(),
+			_portal.getScopeGroupId(
+				new MockHttpServletRequest() {
+					{
+						setAttribute(WebKeys.LAYOUT, _liveLayout);
+					}
+				},
+				portletId, false));
+	}
+
+	@Test
 	public void testGetPortletTitleFromPortletRequestWithDeployedPortletId()
 		throws Exception {
 
@@ -121,6 +151,26 @@ public class PortalImplTest {
 
 		Assert.assertEquals(
 			portletId, _portal.getPortletTitle(portletId, LocaleUtil.US));
+	}
+
+	@Test
+	public void testGetStagedLayoutScopeGroupId() throws Exception {
+		_publishLayouts();
+
+		String portletId = LayoutTestUtil.addPortletToLayout(
+			_stagingLayout, "TEST_PORTLET_" + RandomTestUtil.randomString());
+
+		Group expectedScopeGroup = _getExpectedScopeGroup(true, false);
+
+		Assert.assertEquals(
+			expectedScopeGroup.getGroupId(),
+			_portal.getScopeGroupId(
+				new MockHttpServletRequest() {
+					{
+						setAttribute(WebKeys.LAYOUT, _stagingLayout);
+					}
+				},
+				portletId, true));
 	}
 
 	@Test
@@ -159,6 +209,49 @@ public class PortalImplTest {
 			Assert.assertTrue(
 				uploadServletRequest instanceof UploadServletRequestImpl);
 		}
+	}
+
+	private void _enableLocalStaging() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_liveGroup.getGroupId());
+
+		Map<String, Serializable> attributes = serviceContext.getAttributes();
+
+		attributes.putAll(
+			ExportImportConfigurationParameterMapFactoryUtil.
+				buildParameterMap());
+
+		for (String portletId : new String[0]) {
+			serviceContext.setAttribute(
+				StringBundler.concat(
+					StagingConstants.STAGED_PREFIX,
+					StagingConstants.STAGED_PORTLET, portletId,
+					StringPool.DOUBLE_DASH),
+				Boolean.FALSE.toString());
+		}
+
+		StagingLocalServiceUtil.enableLocalStaging(
+			TestPropsValues.getUserId(), _liveGroup, false, false,
+			serviceContext);
+	}
+
+	private Group _getExpectedScopeGroup(
+			boolean checkStagingGroup, boolean layoutScopeGroup)
+		throws Exception {
+
+		if (layoutScopeGroup) {
+			if (checkStagingGroup) {
+				return _stagingLayout.getScopeGroup();
+			}
+
+			return _liveLayout.getScopeGroup();
+		}
+
+		if (checkStagingGroup) {
+			return _stagingGroup;
+		}
+
+		return _liveGroup;
 	}
 
 	private ThemeDisplay _getThemeDisplay() throws Exception {
@@ -208,6 +301,28 @@ public class PortalImplTest {
 		};
 	}
 
+	private void _publishLayouts() throws Exception {
+		UserTestUtil.setUser(TestPropsValues.getUser());
+
+		_liveGroup = GroupTestUtil.addGroup();
+
+		_enableLocalStaging();
+
+		_stagingGroup = _liveGroup.getStagingGroup();
+
+		_stagingLayout = LayoutTestUtil.addTypePortletLayout(_stagingGroup);
+
+		StagingUtil.publishLayouts(
+			TestPropsValues.getUserId(), _stagingGroup.getGroupId(),
+			_liveGroup.getGroupId(), false,
+			ExportImportConfigurationParameterMapFactoryUtil.
+				buildParameterMap());
+
+		_liveLayout = _layoutLocalService.getLayoutByUuidAndGroupId(
+			_stagingLayout.getUuid(), _liveGroup.getGroupId(),
+			_stagingLayout.isPrivateLayout());
+	}
+
 	@Inject
 	private CompanyLocalService _companyLocalService;
 
@@ -226,7 +341,19 @@ public class PortalImplTest {
 	@Inject
 	private LayoutLocalService _layoutLocalService;
 
+	@DeleteAfterTestRun
+	private Group _liveGroup;
+
+	@DeleteAfterTestRun
+	private Layout _liveLayout;
+
 	@Inject
 	private Portal _portal;
+
+	@DeleteAfterTestRun
+	private Group _stagingGroup;
+
+	@DeleteAfterTestRun
+	private Layout _stagingLayout;
 
 }

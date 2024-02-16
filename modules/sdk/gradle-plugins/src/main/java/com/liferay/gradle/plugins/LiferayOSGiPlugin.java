@@ -1562,6 +1562,7 @@ public class LiferayOSGiPlugin implements Plugin<Project> {
 				public void execute(Test test) {
 					test.jvmArgs(
 						"-Djava.net.preferIPv4Stack=true",
+						"-Djdk.util.zip.disableZip64ExtraFieldValidation=true",
 						"-Duser.timezone=GMT");
 
 					test.setForkEvery(1L);

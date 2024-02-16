@@ -697,7 +697,10 @@ public class TestIntegrationPlugin implements Plugin<Project> {
 
 		test.dependsOn(closure);
 
-		test.jvmArgs("-Djava.net.preferIPv4Stack=true", "-Duser.timezone=GMT");
+		test.jvmArgs(
+			"-Djava.net.preferIPv4Stack=true",
+			"-Djdk.util.zip.disableZip64ExtraFieldValidation=true",
+			"-Duser.timezone=GMT");
 
 		Properties systemProperties = System.getProperties();
 

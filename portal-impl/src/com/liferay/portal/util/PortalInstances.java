@@ -276,18 +276,6 @@ public class PortalInstances {
 					portletCategory = new PortletCategory();
 				}
 
-				for (long currentCompanyId :
-						PortalInstancePool.getCompanyIds()) {
-
-					PortletCategory currentPortletCategory =
-						(PortletCategory)WebAppPool.get(
-							currentCompanyId, WebKeys.PORTLET_CATEGORY);
-
-					if (currentPortletCategory != null) {
-						portletCategory.merge(currentPortletCategory);
-					}
-				}
-
 				WebAppPool.put(
 					company.getCompanyId(), WebKeys.PORTLET_CATEGORY,
 					portletCategory);

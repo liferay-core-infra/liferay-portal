@@ -1,24 +1,101 @@
-import com.liferay.gradle.plugins.patcher.PatchTask
+import com.liferay.gradle.util.FileUtil
+import com.liferay.gradle.util.OSDetector
 
-apply plugin: "com.liferay.patcher"
+import groovy.io.FileType
 
-task patch(type: PatchTask)
+task deleteSrcDirectory(type: Delete)
+task downloadSrc(type: Exec)
+task jarManifest
+task jarPatched(type: Zip)
+task unzip(type: Copy)
+
+String srcUrl = "https://github.com/DaisyDiff/DaisyDiff/archive/refs/heads/master.zip"
+String tempDir ="build/tmp/zip"
+
+compileJava {
+	dependsOn downloadSrc
+	dependsOn unzip
+}
+
+deleteSrcDirectory {
+	delete file('src/main/java/eclipse/')
+	delete file('src/main/java/outerj/')
+}
 
 dependencies {
-	api group: "org.outerj.daisy", name: "daisydiff", version: "1.2.0-atlassian-hosted"
-
 	compileOnly group: "net.sourceforge.htmlunit", name: "neko-htmlunit", transitive: false, version: "2.66.0"
+	compileOnly group: "org.eclipse.core", name: "runtime", transitive: false, version: "20070801"
 	compileOnly group: "xerces", name: "xercesImpl", transitive: false, version: "2.12.1"
 }
 
-patch {
+downloadSrc {
+	File srcTmpDir = new File(temporaryDir, "src")
+
+	if (OSDetector.windows) {
+		executable "cmd.exe"
+
+		args "/c"
+	}
+	else {
+		executable "/bin/sh"
+
+		args "-c"
+	}
+
+	args "wget '${srcUrl}' -P '${tempDir}'"
+}
+
+jar {
+	dependsOn downloadSrc
+	dependsOn unzip
+	dependsOn compileJava
+	dependsOn jarPatched
+	finalizedBy jarManifest
+	finalizedBy deleteSrcDirectory
+	setActions([])
+}
+
+jarManifest {
+	doLast {
+		ant.jar(destfile: jar.archivePath, update: true)
+	}
+}
+
+jarPatched {
+	archiveName = jar.archiveName
+	destinationDir = jar.destinationDir
+	duplicatesStrategy = 'exclude'
+
+	from sourceSets.main.output
+}
+
+unzip {
+	dependsOn downloadSrc
+
+	doLast {
+		File srcTmpDir = new File("${tempDir}/src/DaisyDiff-master/src/main/java/org")
+
+		srcTmpDir.eachFileRecurse(FileType.FILES) {
+			if (it.name == "CleanBrokenAttributeQNamesHandler.java" ||
+				it.name == "NekoHtmlParser.java") {
+
+				return
+			}
+
+			if (it.name.endsWith(".java")) {
+				File destFile = new File(file("src/main/java"), FileUtil.relativize(it, srcTmpDir))
+
+				destFile.parentFile.mkdirs()
+
+				it.renameTo(destFile)
+			}
+		}
+	}
+
 	ext {
 		autoClean = false
 	}
 
-	fileNames "org/outerj/daisy/diff/helper/CleanBrokenAttributeQNamesHandler.java"
-	fileNames "org/outerj/daisy/diff/helper/NekoHtmlParser.java"
-
-	originalLibModuleName = "daisydiff"
-	originalLibSrcBaseUrl = "https://packages.atlassian.com/3rdparty/org/outerj/daisy/"
+	from zipTree(file("${tempDir}/master.zip"))
+	into file("${tempDir}/src")
 }

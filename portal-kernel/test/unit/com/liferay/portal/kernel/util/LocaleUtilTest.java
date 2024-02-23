@@ -189,6 +189,8 @@ public class LocaleUtilTest {
 
 		String expectedLocaleDisplayName = "Catalan (Spain, VALENCIA)";
 
+		// TODO Remove when we upgrade to JDK 21 and CLDR update is finished
+
 		if (JavaDetector.isJDK21()) {
 			expectedLocaleDisplayName = "Catalan (Spain, Valencian)";
 		}
@@ -227,6 +229,8 @@ public class LocaleUtilTest {
 		Locale catalanValenciaLocale = new Locale("ca", "ES", "VALENCIA");
 
 		String expectedLongDisplayName = "catal\u00e0 (Espanya, VALENCIA)";
+
+		// TODO Remove when we upgrade to JDK 21 and CLDR update is finished
 
 		if (JavaDetector.isJDK21()) {
 			expectedLongDisplayName = "catal\u00e0 (Espanya, valenci\u00e0)";

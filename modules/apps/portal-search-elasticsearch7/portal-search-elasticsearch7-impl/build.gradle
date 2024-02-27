@@ -38,7 +38,7 @@ dependencies {
 	compileInclude group: "com.liferay", name: "org.elasticsearch.plugin.legacy.geo", version: elasticsearchClientVersion
 	compileInclude group: "commons-io", name: "commons-io", version: "2.11.0"
 	compileInclude group: "commons-lang", name: "commons-lang", version: "2.6"
-	compileInclude group: "org.apache.commons", name: "commons-compress", version: "1.21"
+	compileInclude group: "org.apache.commons", name: "commons-compress", version: "1.26.0"
 	compileInclude group: "org.apache.lucene", name: "lucene-core", version: luceneVersion
 	compileInclude group: "org.apache.lucene", name: "lucene-highlighter", version: luceneVersion
 	compileInclude group: "org.apache.lucene", name: "lucene-join", version: luceneVersion

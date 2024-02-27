@@ -10,7 +10,6 @@ import com.liferay.portal.configuration.cluster.internal.ConfigurationThreadLoca
 import com.liferay.portal.configuration.cluster.internal.constants.ConfigurationClusterDestinationNames;
 import com.liferay.portal.configuration.persistence.ReloadablePersistenceManager;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 
@@ -97,11 +96,6 @@ public class ConfigurationMessageListener extends BaseMessageListener {
 
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
-
-	@Reference(
-		target = "(destination.name=" + ConfigurationClusterDestinationNames.CONFIGURATION + ")"
-	)
-	private Destination _destination;
 
 	@Reference
 	private ReloadablePersistenceManager _reloadablePersistenceManager;

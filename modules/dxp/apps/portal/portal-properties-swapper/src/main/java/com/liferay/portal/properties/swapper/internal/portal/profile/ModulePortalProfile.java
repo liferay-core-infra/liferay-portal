@@ -5,7 +5,6 @@
 
 package com.liferay.portal.properties.swapper.internal.portal.profile;
 
-import com.liferay.document.library.kernel.store.Store;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.profile.BaseDSModulePortalProfile;
 import com.liferay.portal.profile.PortalProfile;
@@ -43,8 +42,5 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
-
-	@Reference(target = "(default=true)")
-	private Store _store;
 
 }

@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.search.internal.summary.SummaryBuilderFactoryImpl;
@@ -40,6 +42,7 @@ import com.liferay.portal.util.FastDateFormatFactoryImpl;
 
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.portlet.PortletURL;
 
@@ -123,17 +126,66 @@ public class SearchResultSummaryDisplayContextBuilderTest {
 
 		document.addKeyword(Field.CREATE_DATE, "20180425171442");
 
-		_assertCreationDate("Apr 25, 2018 5:14 PM", document);
+		String javaLocaleProviders = System.getProperty(
+			"java.locale.providers");
 
-		_assertCreationDate(LocaleUtil.BRAZIL, "25/04/2018 17:14", document);
-		_assertCreationDate(LocaleUtil.CHINA, "2018-4-25 下午5:14", document);
-		_assertCreationDate(LocaleUtil.GERMANY, "25.04.2018 17:14", document);
-		_assertCreationDate(LocaleUtil.HUNGARY, "2018.04.25. 17:14", document);
-		_assertCreationDate(LocaleUtil.ITALY, "25-apr-2018 17.14", document);
-		_assertCreationDate(LocaleUtil.JAPAN, "2018/04/25 17:14", document);
-		_assertCreationDate(
-			LocaleUtil.NETHERLANDS, "25-apr-2018 17:14", document);
-		_assertCreationDate(LocaleUtil.SPAIN, "25-abr-2018 17:14", document);
+		Map<Locale, String> map;
+
+		if (javaLocaleProviders.equals("CLDR")) {
+			map = HashMapBuilder.put(
+				LocaleUtil.BRAZIL, "25 de abr. de 18 17:14"
+			).put(
+				LocaleUtil.CHINA, "18年4月25日 17:14"
+			).put(
+				LocaleUtil.GERMANY, "25.04.18, 17:14"
+			).put(
+				LocaleUtil.HUNGARY, "18. ápr. 25. 17:14"
+			).put(
+				LocaleUtil.ITALY, "25 apr 18, 17:14"
+			).put(
+				LocaleUtil.JAPAN, "18/04/25 17:14"
+			).put(
+				LocaleUtil.NETHERLANDS, "25 apr 18 17:14"
+			).put(
+				LocaleUtil.SPAIN, "25 abr 18, 17:14"
+			).build();
+
+			if (JavaDetector.isJDK8()) {
+				_assertCreationDate("Apr 25, 18 5:14 PM", document);
+			}
+			else {
+				_assertCreationDate("Apr 25, 18, 5:14\u202fPM", document);
+			}
+
+			for (Map.Entry<Locale, String> entry : map.entrySet()) {
+				_assertCreationDate(entry.getKey(), entry.getValue(), document);
+			}
+		}
+		else {
+			map = HashMapBuilder.put(
+				LocaleUtil.BRAZIL, "25/04/2018 17:14"
+			).put(
+				LocaleUtil.CHINA, "2018-4-25 下午5:14"
+			).put(
+				LocaleUtil.GERMANY, "25.04.2018 17:14"
+			).put(
+				LocaleUtil.HUNGARY, "2018.04.25. 17:14"
+			).put(
+				LocaleUtil.ITALY, "25-apr-2018 17.14"
+			).put(
+				LocaleUtil.JAPAN, "2018/04/25 17:14"
+			).put(
+				LocaleUtil.NETHERLANDS, "25-apr-2018 17:14"
+			).put(
+				LocaleUtil.SPAIN, "25-abr-2018 17:14"
+			).build();
+
+			_assertCreationDate("Apr 25, 2018 5:14 PM", document);
+
+			for (Map.Entry<Locale, String> entry : map.entrySet()) {
+				_assertCreationDate(entry.getKey(), entry.getValue(), document);
+			}
+		}
 	}
 
 	@Test

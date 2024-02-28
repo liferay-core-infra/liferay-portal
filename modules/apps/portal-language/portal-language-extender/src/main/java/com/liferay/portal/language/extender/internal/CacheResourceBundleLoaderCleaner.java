@@ -9,15 +9,12 @@ import com.liferay.portal.kernel.resource.bundle.CacheResourceBundleLoader;
 
 import java.util.ResourceBundle;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceListener;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Mariano Álvaro Sáiz
@@ -44,10 +41,5 @@ public class CacheResourceBundleLoaderCleaner {
 	}
 
 	private ServiceListener _serviceListener;
-
-	@Reference(
-		target = "(&(original.bean=true)(bean.id=javax.servlet.ServletContext))"
-	)
-	private ServletContext _servletContext;
 
 }

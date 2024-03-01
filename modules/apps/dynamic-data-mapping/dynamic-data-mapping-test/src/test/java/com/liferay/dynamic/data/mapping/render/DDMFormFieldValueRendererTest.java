@@ -36,7 +36,9 @@ import com.liferay.portal.kernel.service.LayoutServiceUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 
@@ -135,7 +137,15 @@ public class DDMFormFieldValueRendererTest extends BaseDDMTestCase {
 		renderedValue = ddmFormFieldValueRenderer.render(
 			ddmFormFieldValue, LocaleUtil.BRAZIL);
 
-		Assert.assertEquals("22/10/2014", renderedValue);
+		String javaLocatorProviders = SystemProperties.get(
+			"java.locale.providers");
+
+		if (JavaDetector.isJDK8() || !javaLocatorProviders.equals("CLDR")) {
+			Assert.assertEquals("22/10/2014", renderedValue);
+		}
+		else {
+			Assert.assertEquals("22/10/14", renderedValue);
+		}
 	}
 
 	@Test

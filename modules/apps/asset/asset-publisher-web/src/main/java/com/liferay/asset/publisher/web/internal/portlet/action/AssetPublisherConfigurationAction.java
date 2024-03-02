@@ -29,6 +29,8 @@ import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.item.selector.ItemSelector;
+import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
@@ -61,6 +63,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.analysis.KeywordTokenizer;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.segments.SegmentsEntryRetriever;
 import com.liferay.segments.context.RequestContextMapper;
@@ -80,9 +83,6 @@ import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.text.StrMatcher;
-import org.apache.commons.lang.text.StrTokenizer;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -360,6 +360,9 @@ public class AssetPublisherConfigurationAction
 	protected ItemSelector itemSelector;
 
 	@Reference
+	protected KeywordTokenizer keywordTokenizer;
+
+	@Reference
 	protected LayoutLocalService layoutLocalService;
 
 	@Reference
@@ -526,14 +529,20 @@ public class AssetPublisherConfigurationAction
 				actionRequest, "queryTagNames" + index);
 		}
 		else if (name.equals("keywords")) {
-			StrTokenizer strTokenizer = new StrTokenizer(
-				ParamUtil.getString(actionRequest, "keywords" + index));
+			values = TransformUtil.transformToArray(
+				keywordTokenizer.tokenize(
+					ParamUtil.getString(actionRequest, "keywords" + index)),
+				value -> {
+					if ((value.length() > 2) &&
+						(value.charAt(0) == CharPool.QUOTE) &&
+						(value.charAt(value.length() - 1) == CharPool.QUOTE)) {
 
-			strTokenizer.setQuoteMatcher(StrMatcher.quoteMatcher());
+						return value.substring(1, value.length() - 1);
+					}
 
-			List<String> valuesList = (List<String>)strTokenizer.getTokenList();
-
-			values = valuesList.toArray(new String[0]);
+					return value;
+				},
+				String.class);
 		}
 		else {
 			values = ParamUtil.getStringValues(

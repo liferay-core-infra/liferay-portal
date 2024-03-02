@@ -11,6 +11,8 @@ import com.liferay.asset.list.constants.AssetListPortletKeys;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryService;
 import com.liferay.asset.publisher.util.AssetQueryRule;
+import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -24,15 +26,13 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.analysis.KeywordTokenizer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-
-import org.apache.commons.lang.text.StrMatcher;
-import org.apache.commons.lang.text.StrTokenizer;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -116,14 +116,20 @@ public class UpdateAssetListEntryDynamicMVCActionCommand
 				actionRequest, "queryTagNames" + index);
 		}
 		else if (name.equals("keywords")) {
-			StrTokenizer strTokenizer = new StrTokenizer(
-				ParamUtil.getString(actionRequest, "keywords" + index));
+			values = TransformUtil.transformToArray(
+				_keywordTokenizer.tokenize(
+					ParamUtil.getString(actionRequest, "keywords" + index)),
+				value -> {
+					if ((value.length() > 2) &&
+						(value.charAt(0) == CharPool.QUOTE) &&
+						(value.charAt(value.length() - 1) == CharPool.QUOTE)) {
 
-			strTokenizer.setQuoteMatcher(StrMatcher.quoteMatcher());
+						return value.substring(1, value.length() - 1);
+					}
 
-			List<String> valuesList = (List<String>)strTokenizer.getTokenList();
-
-			values = valuesList.toArray(new String[0]);
+					return value;
+				},
+				String.class);
 		}
 		else {
 			values = ParamUtil.getStringValues(
@@ -213,5 +219,8 @@ public class UpdateAssetListEntryDynamicMVCActionCommand
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;
+
+	@Reference
+	private KeywordTokenizer _keywordTokenizer;
 
 }

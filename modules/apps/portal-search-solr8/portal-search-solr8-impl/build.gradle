@@ -1,7 +1,7 @@
 String luceneVersion = "8.6.2"
 
 dependencies {
-	compileInclude group: "commons-io", name: "commons-io", version: "2.11.0"
+	compileInclude group: "commons-io", name: "commons-io", version: "2.15.1"
 	compileInclude group: "org.apache.lucene", name: "lucene-analyzers-common", version: luceneVersion
 	compileInclude group: "org.apache.lucene", name: "lucene-core", version: luceneVersion
 	compileInclude group: "org.apache.lucene", name: "lucene-queries", version: luceneVersion

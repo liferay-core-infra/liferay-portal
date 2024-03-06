@@ -1,7 +1,7 @@
 dependencies {
 	compileInclude group: "com.damnhandy", name: "handy-uri-templates", version: "2.1.8"
 	compileInclude group: "commons-codec", name: "commons-codec", version: "1.15"
-	compileInclude group: "commons-io", name: "commons-io", version: "2.11.0"
+	compileInclude group: "commons-io", name: "commons-io", version: "2.15.1"
 	compileInclude group: "joda-time", name: "joda-time", version: "2.12.1"
 	compileInclude group: "org.apache.commons", name: "commons-lang3", version: "3.12.0"
 	compileInclude group: "org.apache.httpcomponents", name: "httpclient", version: "4.5.13"

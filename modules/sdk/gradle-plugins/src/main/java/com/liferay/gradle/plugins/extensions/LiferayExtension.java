@@ -233,10 +233,6 @@ public class LiferayExtension {
 		return project.file(_liferayHome);
 	}
 
-	public boolean isDefaultDeployDir() {
-		return _defaultDeployDir;
-	}
-
 	public void setAppServerParentDir(Object appServerParentDir) {
 		_appServerParentDir = appServerParentDir;
 	}
@@ -247,8 +243,6 @@ public class LiferayExtension {
 
 	public void setDeployDir(Object deployDir) {
 		_deployDir = deployDir;
-
-		_defaultDeployDir = false;
 	}
 
 	public void setDeployedFileNameClosure(
@@ -274,7 +268,6 @@ public class LiferayExtension {
 	private Object _appServerParentDir;
 	private final NamedDomainObjectContainer<AppServer> _appServers;
 	private Object _appServerType;
-	private boolean _defaultDeployDir = true;
 	private final Map<String, Object> _defaultVersions = new HashMap<>();
 	private Object _deployDir;
 	private Closure<String> _deployedFileNameClosure;

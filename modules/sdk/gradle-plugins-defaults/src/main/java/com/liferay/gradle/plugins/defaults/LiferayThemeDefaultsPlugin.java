@@ -107,7 +107,7 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 			resourcesImporterExpandedArchivesDir, resourcesImporterArchivesDir,
 			"lar");
 
-		_configureDeployDir(project);
+		_configureDeployDir(project, portalRootDir);
 		_configureProject(project);
 		_configureTasksPackageRunBuild(
 			project, zipResourcesImporterArchivesTask);
@@ -368,41 +368,44 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 		GradleUtil.applyPlugin(project, MavenPublishPlugin.class);
 	}
 
-	private void _configureDeployDir(Project project) {
+	private void _configureDeployDir(
+		final Project project, final File portalRootDir) {
+
 		final LiferayExtension liferayExtension = GradleUtil.getExtension(
 			project, LiferayExtension.class);
 
-		if (!liferayExtension.isDefaultDeployDir()) {
-			return;
-		}
+		liferayExtension.setDeployDir(
+			new Callable<File>() {
 
-		boolean requiredForStartup = _getPluginPackageProperty(
-			project, "required-for-startup");
+				@Override
+				public File call() throws Exception {
+					if (portalRootDir != null) {
+						String version = PortalTools.getPortalVersion(project);
 
-		if (requiredForStartup) {
-			liferayExtension.setDeployDir(
-				new Callable<File>() {
+						if (!PortalTools.PORTAL_VERSION_7_0_X.equals(version) &&
+							!PortalTools.PORTAL_VERSION_7_1_X.equals(version) &&
+							!PortalTools.PORTAL_VERSION_7_2_X.equals(version) &&
+							!PortalTools.PORTAL_VERSION_7_3_X.equals(version)) {
 
-					@Override
-					public File call() throws Exception {
+							return new File(
+								liferayExtension.getLiferayHome(),
+								"osgi/portal-war");
+						}
+					}
+
+					boolean requiredForStartup = _getPluginPackageProperty(
+						project, "required-for-startup");
+
+					if (requiredForStartup) {
 						return new File(
 							liferayExtension.getLiferayHome(), "osgi/war");
 					}
 
-				});
-		}
-		else {
-			liferayExtension.setDeployDir(
-				new Callable<File>() {
+					return new File(
+						liferayExtension.getLiferayHome(), "deploy");
+				}
 
-					@Override
-					public File call() throws Exception {
-						return new File(
-							liferayExtension.getLiferayHome(), "deploy");
-					}
-
-				});
-		}
+			});
 	}
 
 	private void _configureExtensionPublishing(final Project project) {

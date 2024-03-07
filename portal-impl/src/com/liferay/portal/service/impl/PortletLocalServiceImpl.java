@@ -187,9 +187,30 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 	@Override
 	public void checkPortlets(long companyId) throws PortalException {
+
+		// Initialize display
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Initialize display");
+		}
+
+		PortletCategory portletCategory = (PortletCategory)WebAppPool.get(
+			companyId, WebKeys.PORTLET_CATEGORY);
+
+		if (portletCategory == null) {
+			portletCategory = new PortletCategory();
+
+			WebAppPool.put(
+				companyId, WebKeys.PORTLET_CATEGORY, portletCategory);
+		}
+
 		List<Portlet> portlets = getPortlets(companyId);
 
 		for (Portlet portlet : portlets) {
+			_updatePortletCategory(
+				portletCategory, portlet.getPortletId(),
+				portlet.getDisplayCategories());
+
 			checkPortlet(portlet);
 		}
 	}

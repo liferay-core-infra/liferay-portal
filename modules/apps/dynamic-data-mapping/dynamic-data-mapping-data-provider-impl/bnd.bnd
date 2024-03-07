@@ -19,3 +19,4 @@ Import-Package:\
 	\
 	*
 Web-ContextPath: /dynamic-data-mapping-data-provider-impl
+-fixupmessages: Classes found in the wrong directory: ...;is:=ignore

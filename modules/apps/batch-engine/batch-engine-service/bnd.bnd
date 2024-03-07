@@ -33,3 +33,4 @@ Import-Package:\
 Liferay-Require-SchemaVersion: 4.6.3
 Liferay-Service: true
 -dsannotations-options: inherit
+-fixupmessages: Classes found in the wrong directory: ...;is:=ignore

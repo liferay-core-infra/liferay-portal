@@ -379,18 +379,12 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 
 				@Override
 				public File call() throws Exception {
-					if (portalRootDir != null) {
-						String version = PortalTools.getPortalVersion(project);
+					if ((portalRootDir != null) &&
+						project.hasProperty("portal.war.auto.deploy.enabled")) {
 
-						if (!PortalTools.PORTAL_VERSION_7_0_X.equals(version) &&
-							!PortalTools.PORTAL_VERSION_7_1_X.equals(version) &&
-							!PortalTools.PORTAL_VERSION_7_2_X.equals(version) &&
-							!PortalTools.PORTAL_VERSION_7_3_X.equals(version)) {
-
-							return new File(
-								liferayExtension.getLiferayHome(),
-								"osgi/portal-war");
-						}
+						return new File(
+							liferayExtension.getLiferayHome(),
+							"osgi/portal-war");
 					}
 
 					boolean requiredForStartup = _getPluginPackageProperty(

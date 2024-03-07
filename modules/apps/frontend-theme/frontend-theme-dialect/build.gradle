@@ -18,10 +18,6 @@ copyClassicTheme {
 	rename '^_custom.scss$', '_classic_custom.scss'
 }
 
-liferay {
-	deployDir = file("${liferayHome}/osgi/portal-war")
-}
-
 packageRunBuild {
 	dependsOn copyClassicTheme
 }

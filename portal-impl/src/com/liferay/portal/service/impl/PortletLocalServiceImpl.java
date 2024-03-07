@@ -74,6 +74,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -2662,24 +2663,9 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			return;
 		}
 
-		portletCategory.separate(companyPortletModel.getPortletId());
-
-		for (String categoryName : categoryNames) {
-			PortletCategory newPortletCategory = new PortletCategory(
-				categoryName);
-
-			if (newPortletCategory.getParentCategory() == null) {
-				PortletCategory rootPortletCategory = new PortletCategory();
-
-				rootPortletCategory.addCategory(newPortletCategory);
-			}
-
-			Set<String> portletIds = newPortletCategory.getPortletIds();
-
-			portletIds.add(companyPortletModel.getPortletId());
-
-			portletCategory.merge(newPortletCategory.getRootCategory());
-		}
+		_updatePortletCategory(
+			portletCategory, companyPortletModel.getPortletId(),
+			SetUtil.fromArray(categoryNames));
 
 		checkPortlet(companyPortletModel);
 	}
@@ -2752,6 +2738,30 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		ExtraPortletAppConfigRegistry.registerExtraPortletAppConfig(
 			servletContextName, extraPortletAppConfig);
+	}
+
+	private void _updatePortletCategory(
+		PortletCategory portletCategory, String portletId,
+		Set<String> categoryNames) {
+
+		portletCategory.separate(portletId);
+
+		for (String categoryName : categoryNames) {
+			PortletCategory newPortletCategory = new PortletCategory(
+				categoryName);
+
+			if (newPortletCategory.getParentCategory() == null) {
+				PortletCategory rootPortletCategory = new PortletCategory();
+
+				rootPortletCategory.addCategory(newPortletCategory);
+			}
+
+			Set<String> portletIds = newPortletCategory.getPortletIds();
+
+			portletIds.add(portletId);
+
+			portletCategory.merge(newPortletCategory.getRootCategory());
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

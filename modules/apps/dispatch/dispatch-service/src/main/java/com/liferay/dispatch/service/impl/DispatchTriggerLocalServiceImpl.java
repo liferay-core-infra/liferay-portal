@@ -20,6 +20,7 @@ import com.liferay.dispatch.service.persistence.DispatchLogPersistence;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -218,13 +220,42 @@ public class DispatchTriggerLocalServiceImpl
 	public List<DispatchTrigger> getDispatchTriggers(
 		long companyId, int start, int end) {
 
-		return dispatchTriggerPersistence.findByCompanyId(
-			companyId, start, end);
+		return ListUtil.filter(
+			dispatchTriggerPersistence.findByCompanyId(companyId, start, end),
+			dispatchTrigger -> {
+				UnicodeProperties unicodeProperties =
+					dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
+
+				if (!unicodeProperties.containsKey("featureFlagKey") ||
+					FeatureFlagManagerUtil.isEnabled(
+						unicodeProperties.getProperty("featureFlagKey"))) {
+
+					return true;
+				}
+
+				return false;
+			});
 	}
 
 	@Override
 	public int getDispatchTriggersCount(long companyId) {
-		return dispatchTriggerPersistence.countByCompanyId(companyId);
+		List<DispatchTrigger> dispatchTriggers = ListUtil.filter(
+			dispatchTriggerPersistence.findByCompanyId(companyId),
+			dispatchTrigger -> {
+				UnicodeProperties unicodeProperties =
+					dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
+
+				if (!unicodeProperties.containsKey("featureFlagKey") ||
+					FeatureFlagManagerUtil.isEnabled(
+						unicodeProperties.getProperty("featureFlagKey"))) {
+
+					return true;
+				}
+
+				return false;
+			});
+
+		return dispatchTriggers.size();
 	}
 
 	@Override

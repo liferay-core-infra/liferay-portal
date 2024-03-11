@@ -13,6 +13,8 @@ public class DispatchConstants {
 	public static final String EXECUTOR_DESTINATION_NAME =
 		"liferay/dispatch/executor";
 
+	public static final String FEATURE_FLAG = "feature.flag";
+
 	public static final String FILE_VALIDATOR_TYPE_DEFAULT = "default";
 
 	public static final int REPOSITORY_DEFAULT_PARENT_FOLDER_ID = 0;

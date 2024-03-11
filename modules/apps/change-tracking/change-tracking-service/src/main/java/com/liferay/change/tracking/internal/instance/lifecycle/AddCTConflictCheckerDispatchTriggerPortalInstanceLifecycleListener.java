@@ -45,7 +45,7 @@ public class AddCTConflictCheckerDispatchTriggerPortalInstanceLifecycleListener
 			null, _userLocalService.getGuestUserId(company.getCompanyId()),
 			_dispatchTaskExecutor, CTConflictCheckerDispatchTaskExecutor.KEY,
 			UnicodePropertiesBuilder.put(
-				"featureFlagKey", "LPD-11018"
+				DispatchConstants.FEATURE_FLAG, "LPD-11018"
 			).build(),
 			CTConflictCheckerDispatchTaskExecutor.KEY, true);
 

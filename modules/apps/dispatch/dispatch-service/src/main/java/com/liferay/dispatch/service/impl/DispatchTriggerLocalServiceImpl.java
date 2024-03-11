@@ -11,6 +11,7 @@ import com.liferay.dispatch.exception.DispatchTriggerEndDateException;
 import com.liferay.dispatch.exception.DispatchTriggerNameException;
 import com.liferay.dispatch.exception.DispatchTriggerStartDateException;
 import com.liferay.dispatch.exception.DuplicateDispatchTriggerException;
+import com.liferay.dispatch.exception.NoSuchTriggerException;
 import com.liferay.dispatch.executor.DispatchTaskClusterMode;
 import com.liferay.dispatch.executor.DispatchTaskExecutor;
 import com.liferay.dispatch.executor.DispatchTaskExecutorRegistry;
@@ -149,7 +150,16 @@ public class DispatchTriggerLocalServiceImpl
 
 	@Override
 	public DispatchTrigger fetchDispatchTrigger(long companyId, String name) {
-		return dispatchTriggerPersistence.fetchByC_N(companyId, name);
+		DispatchTrigger dispatchTrigger = dispatchTriggerPersistence.fetchByC_N(
+			companyId, name);
+
+		if ((dispatchTrigger != null) &&
+			_isFeatureFlagEnabled(dispatchTrigger)) {
+
+			return dispatchTrigger;
+		}
+
+		return null;
 	}
 
 	@Override
@@ -172,7 +182,9 @@ public class DispatchTriggerLocalServiceImpl
 		DispatchTrigger dispatchTrigger =
 			dispatchTriggerPersistence.fetchByPrimaryKey(dispatchTriggerId);
 
-		if (dispatchTrigger == null) {
+		if ((dispatchTrigger == null) ||
+			!_isFeatureFlagEnabled(dispatchTrigger)) {
+
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to fetch dispatch trigger ID " + dispatchTriggerId);
@@ -206,15 +218,28 @@ public class DispatchTriggerLocalServiceImpl
 	public DispatchTrigger getDispatchTrigger(long dispatchTriggerId)
 		throws PortalException {
 
-		return dispatchTriggerPersistence.findByPrimaryKey(dispatchTriggerId);
+		DispatchTrigger dispatchTrigger =
+			dispatchTriggerPersistence.findByPrimaryKey(dispatchTriggerId);
+
+		if ((dispatchTrigger != null) &&
+			_isFeatureFlagEnabled(dispatchTrigger)) {
+
+			return dispatchTrigger;
+		}
+
+		throw new NoSuchTriggerException(
+			"No DispatchTrigger exists with the primary key " +
+				dispatchTriggerId);
 	}
 
 	@Override
 	public List<DispatchTrigger> getDispatchTriggers(
 		boolean active, DispatchTaskClusterMode dispatchTaskClusterMode) {
 
-		return dispatchTriggerPersistence.findByA_DTCM(
-			active, dispatchTaskClusterMode.getMode());
+		return ListUtil.filter(
+			dispatchTriggerPersistence.findByA_DTCM(
+				active, dispatchTaskClusterMode.getMode()),
+			dispatchTrigger -> _isFeatureFlagEnabled(dispatchTrigger));
 	}
 
 	@Override
@@ -240,6 +265,12 @@ public class DispatchTriggerLocalServiceImpl
 		DispatchTrigger dispatchTrigger =
 			dispatchTriggerPersistence.findByPrimaryKey(dispatchTriggerId);
 
+		if (!_isFeatureFlagEnabled(dispatchTrigger)) {
+			throw new NoSuchTriggerException(
+				"No DispatchTrigger exists with the primary key " +
+					dispatchTriggerId);
+		}
+
 		DispatchTaskClusterMode dispatchTaskClusterMode =
 			DispatchTaskClusterMode.valueOf(
 				dispatchTrigger.getDispatchTaskClusterMode());
@@ -255,6 +286,12 @@ public class DispatchTriggerLocalServiceImpl
 		DispatchTrigger dispatchTrigger =
 			dispatchTriggerPersistence.findByPrimaryKey(dispatchTriggerId);
 
+		if (!_isFeatureFlagEnabled(dispatchTrigger)) {
+			throw new NoSuchTriggerException(
+				"No DispatchTrigger exists with the primary key " +
+					dispatchTriggerId);
+		}
+
 		DispatchTaskClusterMode dispatchTaskClusterMode =
 			DispatchTaskClusterMode.valueOf(
 				dispatchTrigger.getDispatchTaskClusterMode());
@@ -267,13 +304,18 @@ public class DispatchTriggerLocalServiceImpl
 	public List<DispatchTrigger> getUserDispatchTriggers(
 		long companyId, long userId, int start, int end) {
 
-		return dispatchTriggerPersistence.findByC_U(
-			companyId, userId, start, end);
+		return ListUtil.filter(
+			dispatchTriggerPersistence.findByC_U(companyId, userId, start, end),
+			dispatchTrigger -> _isFeatureFlagEnabled(dispatchTrigger));
 	}
 
 	@Override
 	public int getUserDispatchTriggersCount(long companyId, long userId) {
-		return dispatchTriggerPersistence.countByC_U(companyId, userId);
+		List<DispatchTrigger> dispatchTriggers = ListUtil.filter(
+			dispatchTriggerPersistence.findByC_U(companyId, userId),
+			dispatchTrigger -> _isFeatureFlagEnabled(dispatchTrigger));
+
+		return dispatchTriggers.size();
 	}
 
 	@Override

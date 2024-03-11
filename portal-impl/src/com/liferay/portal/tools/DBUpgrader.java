@@ -8,6 +8,7 @@ package com.liferay.portal.tools;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.time.StopWatch;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.db.index.IndexUpdaterUtil;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
@@ -51,7 +52,6 @@ import java.sql.Connection;
 
 import java.util.Collection;
 
-import org.apache.commons.lang.time.StopWatch;
 import org.apache.logging.log4j.core.Appender;
 
 import org.osgi.framework.BundleContext;

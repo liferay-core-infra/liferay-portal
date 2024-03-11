@@ -7,6 +7,7 @@ package com.liferay.server.admin.web.internal.scripting.util;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.petra.time.StopWatch;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -24,8 +25,6 @@ import java.io.LineNumberReader;
 
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Carolina Barbosa

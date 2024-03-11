@@ -6,6 +6,7 @@
 package com.liferay.change.tracking.internal.instance.lifecycle;
 
 import com.liferay.change.tracking.internal.dispatch.executor.CTConflictCheckerDispatchTaskExecutor;
+import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.executor.DispatchTaskClusterMode;
 import com.liferay.dispatch.executor.DispatchTaskExecutor;
 import com.liferay.dispatch.model.DispatchTrigger;

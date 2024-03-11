@@ -223,42 +223,14 @@ public class DispatchTriggerLocalServiceImpl
 
 		return ListUtil.filter(
 			dispatchTriggerPersistence.findByCompanyId(companyId, start, end),
-			dispatchTrigger -> {
-				UnicodeProperties unicodeProperties =
-					dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
-
-				if (!unicodeProperties.containsKey(
-						DispatchConstants.FEATURE_FLAG) ||
-					FeatureFlagManagerUtil.isEnabled(
-						unicodeProperties.getProperty(
-							DispatchConstants.FEATURE_FLAG))) {
-
-					return true;
-				}
-
-				return false;
-			});
+			dispatchTrigger -> _isFeatureFlagEnabled(dispatchTrigger));
 	}
 
 	@Override
 	public int getDispatchTriggersCount(long companyId) {
 		List<DispatchTrigger> dispatchTriggers = ListUtil.filter(
 			dispatchTriggerPersistence.findByCompanyId(companyId),
-			dispatchTrigger -> {
-				UnicodeProperties unicodeProperties =
-					dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
-
-				if (!unicodeProperties.containsKey(
-						DispatchConstants.FEATURE_FLAG) ||
-					FeatureFlagManagerUtil.isEnabled(
-						unicodeProperties.getProperty(
-							DispatchConstants.FEATURE_FLAG))) {
-
-					return true;
-				}
-
-				return false;
-			});
+			dispatchTrigger -> _isFeatureFlagEnabled(dispatchTrigger));
 
 		return dispatchTriggers.size();
 	}
@@ -393,6 +365,21 @@ public class DispatchTriggerLocalServiceImpl
 		TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
 
 		return new Date(date.getTime() - timeZone.getOffset(date.getTime()));
+	}
+
+	private boolean _isFeatureFlagEnabled(DispatchTrigger dispatchTrigger) {
+		UnicodeProperties unicodeProperties =
+			dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
+
+		if (!unicodeProperties.containsKey(DispatchConstants.FEATURE_FLAG) ||
+			FeatureFlagManagerUtil.isEnabled(
+				unicodeProperties.getProperty(
+					DispatchConstants.FEATURE_FLAG))) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _validate(

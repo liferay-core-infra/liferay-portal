@@ -7,6 +7,7 @@ package com.liferay.users.admin.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.lang.StopWatch;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
@@ -43,14 +44,14 @@ import com.liferay.users.admin.test.util.search.OrganizationSearchFixture;
 import com.liferay.users.admin.test.util.search.UserGroupSearchFixture;
 import com.liferay.users.admin.test.util.search.UserSearchFixture;
 
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.time.StopWatch;
 
 import org.junit.After;
 import org.junit.Before;
@@ -280,11 +281,11 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 		StopWatch stopWatch = new StopWatch();
 
-		stopWatch.start();
-
 		runnable.run();
 
-		map.put(name, stopWatch.toString());
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("H:mm:ss.SSS");
+
+		map.put(name, simpleDateFormat.format(stopWatch.getTime()));
 	}
 
 	protected void reindex(List<User> users) {

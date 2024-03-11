@@ -6,6 +6,7 @@
 package com.liferay.portal.convert;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.time.StopWatch;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
@@ -21,8 +22,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Alexander Chow

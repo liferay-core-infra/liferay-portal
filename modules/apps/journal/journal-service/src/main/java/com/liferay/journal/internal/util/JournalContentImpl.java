@@ -14,6 +14,7 @@ import com.liferay.journal.util.JournalContent;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.petra.time.StopWatch;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.index.IndexEncoder;
@@ -45,8 +46,6 @@ import java.util.Date;
 import java.util.Objects;
 
 import javax.portlet.RenderRequest;
-
-import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

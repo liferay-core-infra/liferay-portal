@@ -8,6 +8,7 @@ package com.liferay.portal.security.permission;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.time.StopWatch;
 import com.liferay.portal.internal.security.permission.contributor.RoleCollectionImpl;
 import com.liferay.portal.kernel.exception.NoSuchResourcePermissionException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -56,8 +57,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Charles May

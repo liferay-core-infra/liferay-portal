@@ -6,6 +6,7 @@
 package com.liferay.portal.security.ldap.internal.exportimport;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.time.StopWatch;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Contact;
@@ -44,8 +45,6 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SchemaViolationException;
 import javax.naming.ldap.LdapContext;
-
-import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;

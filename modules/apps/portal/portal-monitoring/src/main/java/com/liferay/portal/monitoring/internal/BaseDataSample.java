@@ -6,14 +6,13 @@
 package com.liferay.portal.monitoring.internal;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.time.StopWatch;
 import com.liferay.portal.kernel.monitoring.DataSample;
 import com.liferay.portal.kernel.monitoring.RequestStatus;
 
 import java.io.Serializable;
 
 import java.util.Map;
-
-import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Michael C. Han

@@ -5,6 +5,7 @@
 
 package com.liferay.dispatch.service.impl;
 
+import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.exception.DispatchTriggerDispatchTaskExecutorTypeException;
 import com.liferay.dispatch.exception.DispatchTriggerEndDateException;
 import com.liferay.dispatch.exception.DispatchTriggerNameException;
@@ -226,9 +227,11 @@ public class DispatchTriggerLocalServiceImpl
 				UnicodeProperties unicodeProperties =
 					dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
 
-				if (!unicodeProperties.containsKey("featureFlagKey") ||
+				if (!unicodeProperties.containsKey(
+						DispatchConstants.FEATURE_FLAG) ||
 					FeatureFlagManagerUtil.isEnabled(
-						unicodeProperties.getProperty("featureFlagKey"))) {
+						unicodeProperties.getProperty(
+							DispatchConstants.FEATURE_FLAG))) {
 
 					return true;
 				}
@@ -245,9 +248,11 @@ public class DispatchTriggerLocalServiceImpl
 				UnicodeProperties unicodeProperties =
 					dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
 
-				if (!unicodeProperties.containsKey("featureFlagKey") ||
+				if (!unicodeProperties.containsKey(
+						DispatchConstants.FEATURE_FLAG) ||
 					FeatureFlagManagerUtil.isEnabled(
-						unicodeProperties.getProperty("featureFlagKey"))) {
+						unicodeProperties.getProperty(
+							DispatchConstants.FEATURE_FLAG))) {
 
 					return true;
 				}

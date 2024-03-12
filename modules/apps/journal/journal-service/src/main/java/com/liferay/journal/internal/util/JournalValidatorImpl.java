@@ -9,13 +9,12 @@ import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.journal.configuration.JournalServiceConfiguration;
 import com.liferay.journal.exception.FolderNameException;
 import com.liferay.journal.util.JournalValidator;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.Validator;
-
-import org.apache.commons.lang.StringEscapeUtils;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -48,7 +47,9 @@ public final class JournalValidatorImpl implements JournalValidator {
 		}
 
 		for (String blacklistChar : charactersBlacklist) {
-			blacklistChar = StringEscapeUtils.unescapeJava(blacklistChar);
+			if (blacklistChar.equals(StringPool.DOUBLE_BACK_SLASH)) {
+				blacklistChar = StringPool.BACK_SLASH;
+			}
 
 			if (name.contains(blacklistChar)) {
 				return false;

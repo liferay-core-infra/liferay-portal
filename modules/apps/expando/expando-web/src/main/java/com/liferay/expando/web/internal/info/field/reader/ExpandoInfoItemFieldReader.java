@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ClassedModel;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -80,7 +82,10 @@ public class ExpandoInfoItemFieldReader
 
 	@Override
 	public Object getValue(Object model) {
-		return getValue(model, LocaleUtil.getDefault());
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		return getValue(model, serviceContext.getLocale());
 	}
 
 	@Override

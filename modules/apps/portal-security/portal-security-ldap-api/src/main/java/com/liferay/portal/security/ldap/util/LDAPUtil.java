@@ -8,7 +8,6 @@ package com.liferay.portal.security.ldap.util;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.ldap.SafeLdapFilter;
 import com.liferay.portal.security.ldap.SafeLdapFilterFactory;
@@ -29,8 +28,6 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 /**
  * @author Toma Bedolla
  * @author Michael Young
@@ -39,26 +36,6 @@ import org.apache.commons.lang.StringEscapeUtils;
  * @author Vilmos Papp
  */
 public class LDAPUtil {
-
-	/**
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link SafeLdapFilter}
-	 */
-	@Deprecated
-	public static String escapeCharacters(String attribute) {
-		if (attribute.contains(StringPool.BACK_SLASH)) {
-			String escapedSingleBackSlash = StringPool.DOUBLE_BACK_SLASH.concat(
-				StringPool.BACK_SLASH);
-
-			attribute = StringUtil.replace(
-				attribute, CharPool.BACK_SLASH, escapedSingleBackSlash);
-		}
-		else {
-			attribute = StringEscapeUtils.escapeJava(attribute);
-		}
-
-		return StringUtil.replace(
-			attribute, _INVALID_CHARS, _INVALID_CHARS_SUBS);
-	}
 
 	public static Object getAttributeObject(
 			Attributes attributes, Properties properties, String key)
@@ -335,19 +312,5 @@ public class LDAPUtil {
 
 		return dateFormat.parse(date);
 	}
-
-	private static final String[] _INVALID_CHARS = {
-		StringPool.GREATER_THAN, StringPool.LESS_THAN, StringPool.PLUS,
-		StringPool.POUND, StringPool.QUOTE, StringPool.SEMICOLON
-	};
-
-	private static final String[] _INVALID_CHARS_SUBS = {
-		StringPool.DOUBLE_BACK_SLASH.concat(StringPool.GREATER_THAN),
-		StringPool.DOUBLE_BACK_SLASH.concat(StringPool.LESS_THAN),
-		StringPool.DOUBLE_BACK_SLASH.concat(StringPool.PLUS),
-		StringPool.DOUBLE_BACK_SLASH.concat(StringPool.POUND),
-		StringPool.DOUBLE_BACK_SLASH.concat(StringPool.QUOTE),
-		StringPool.DOUBLE_BACK_SLASH.concat(StringPool.SEMICOLON)
-	};
 
 }

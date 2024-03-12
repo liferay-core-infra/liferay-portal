@@ -30,7 +30,7 @@ public interface JournalServiceConfiguration {
 	public boolean addDefaultStructures();
 
 	@Meta.AD(
-		deflt = "&|\\'|@|\\\\|]|}|:|=|>|/|<|[|{|%|+|#|`|?|\\\"|;|*|~",
+		deflt = "&|'|@|\\\\|]|}|:|=|>|/|<|[|{|%|+|#|`|?|\"|;|*|~",
 		description = "specifcy-characters-that-are-not-allowed-in-journal-folder-names",
 		name = "characters-blacklist", required = false
 	)

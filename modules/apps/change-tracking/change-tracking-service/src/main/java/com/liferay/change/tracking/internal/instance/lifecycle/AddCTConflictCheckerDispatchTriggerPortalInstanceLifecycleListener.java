@@ -13,6 +13,7 @@ import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.service.DispatchTriggerLocalService;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -55,7 +56,10 @@ public class AddCTConflictCheckerDispatchTriggerPortalInstanceLifecycleListener
 		LocalDateTime localDateTime = LocalDateTime.now(timeZone.toZoneId());
 
 		_dispatchTriggerLocalService.updateDispatchTrigger(
-			dispatchTrigger.getDispatchTriggerId(), true, "0 0 0 * * ?",
+			dispatchTrigger.getDispatchTriggerId(),
+			FeatureFlagManagerUtil.isEnabled(
+				company.getCompanyId(), "LPD-11018"),
+			"0 0 0 * * ?",
 			DispatchTaskClusterMode.valueOf(
 				dispatchTrigger.getDispatchTaskClusterMode()),
 			0, 0, 0, 0, 0, true, false, localDateTime.getMonthValue() - 1,

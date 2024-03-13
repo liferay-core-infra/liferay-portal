@@ -40,6 +40,10 @@ public class InfrastructureUtil {
 		return _mailSession;
 	}
 
+	public static Session getNewMailSession() {
+		return _createMailSession();
+	}
+
 	public static Object getSessionFactory() {
 		try {
 			return _sessionFactoryDefaultNoticeableFuture.get();

@@ -94,7 +94,7 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			return session;
 		}
 
-		session = InfrastructureUtil.getMailSession();
+		session = InfrastructureUtil.getNewMailSession();
 
 		Function<String, String> function =
 			(String key) -> PrefsPropsUtil.getString(

@@ -150,11 +150,19 @@ public class DispatchTriggerLocalServiceImpl
 
 	@Override
 	public DispatchTrigger fetchDispatchTrigger(long companyId, String name) {
+		return fetchDispatchTrigger(companyId, name, true);
+	}
+
+	@Override
+	public DispatchTrigger fetchDispatchTrigger(
+		long companyId, String name, boolean checkFeatureFlag) {
+
 		DispatchTrigger dispatchTrigger = dispatchTriggerPersistence.fetchByC_N(
 			companyId, name);
 
-		if ((dispatchTrigger != null) &&
-			_isFeatureFlagEnabled(dispatchTrigger)) {
+		if (!checkFeatureFlag ||
+			((dispatchTrigger != null) &&
+			 _isFeatureFlagEnabled(dispatchTrigger))) {
 
 			return dispatchTrigger;
 		}

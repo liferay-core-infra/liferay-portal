@@ -222,6 +222,10 @@ public interface DispatchTriggerLocalService
 	public DispatchTrigger fetchDispatchTrigger(long companyId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DispatchTrigger fetchDispatchTrigger(
+		long companyId, String name, boolean checkFeatureFlag);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DispatchTrigger fetchDispatchTriggerByExternalReferenceCode(
 		String externalReferenceCode, long companyId);
 
@@ -342,6 +346,9 @@ public interface DispatchTriggerLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getUserDispatchTriggersCount(long companyId, long userId);
+
+	public DispatchTrigger updateActive(long dispatchTriggerId, boolean active)
+		throws PortalException;
 
 	/**
 	 * Updates the dispatch trigger in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

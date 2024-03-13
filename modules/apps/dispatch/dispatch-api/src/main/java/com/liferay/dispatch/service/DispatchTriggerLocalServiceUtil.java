@@ -243,6 +243,13 @@ public class DispatchTriggerLocalServiceUtil {
 		return getService().fetchDispatchTrigger(companyId, name);
 	}
 
+	public static DispatchTrigger fetchDispatchTrigger(
+		long companyId, String name, boolean checkFeatureFlag) {
+
+		return getService().fetchDispatchTrigger(
+			companyId, name, checkFeatureFlag);
+	}
+
 	public static DispatchTrigger fetchDispatchTriggerByExternalReferenceCode(
 		String externalReferenceCode, long companyId) {
 
@@ -416,6 +423,13 @@ public class DispatchTriggerLocalServiceUtil {
 		long companyId, long userId) {
 
 		return getService().getUserDispatchTriggersCount(companyId, userId);
+	}
+
+	public static DispatchTrigger updateActive(
+			long dispatchTriggerId, boolean active)
+		throws PortalException {
+
+		return getService().updateActive(dispatchTriggerId, active);
 	}
 
 	/**

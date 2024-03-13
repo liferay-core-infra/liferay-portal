@@ -36,7 +36,7 @@ public class AddCTConflictCheckerDispatchTriggerPortalInstanceLifecycleListener
 		DispatchTrigger dispatchTrigger =
 			_dispatchTriggerLocalService.fetchDispatchTrigger(
 				company.getCompanyId(),
-				CTConflictCheckerDispatchTaskExecutor.KEY);
+				CTConflictCheckerDispatchTaskExecutor.KEY, false);
 
 		if (dispatchTrigger != null) {
 			return;

@@ -150,11 +150,19 @@ public class DispatchTriggerLocalServiceImpl
 
 	@Override
 	public DispatchTrigger fetchDispatchTrigger(long companyId, String name) {
+		return fetchDispatchTrigger(companyId, name, true);
+	}
+
+	@Override
+	public DispatchTrigger fetchDispatchTrigger(
+		long companyId, String name, boolean checkFeatureFlag) {
+
 		DispatchTrigger dispatchTrigger = dispatchTriggerPersistence.fetchByC_N(
 			companyId, name);
 
-		if ((dispatchTrigger != null) &&
-			_isFeatureFlagEnabled(dispatchTrigger)) {
+		if (!checkFeatureFlag ||
+			((dispatchTrigger != null) &&
+			 _isFeatureFlagEnabled(dispatchTrigger))) {
 
 			return dispatchTrigger;
 		}
@@ -316,6 +324,33 @@ public class DispatchTriggerLocalServiceImpl
 			dispatchTrigger -> _isFeatureFlagEnabled(dispatchTrigger));
 
 		return dispatchTriggers.size();
+	}
+
+	@Override
+	public DispatchTrigger updateActive(long dispatchTriggerId, boolean active)
+		throws PortalException {
+
+		DispatchTrigger dispatchTrigger =
+			dispatchTriggerPersistence.fetchByPrimaryKey(dispatchTriggerId);
+
+		dispatchTrigger.setActive(active);
+
+		dispatchTrigger = dispatchTriggerPersistence.update(dispatchTrigger);
+
+		DispatchTaskClusterMode dispatchTaskClusterMode =
+			DispatchTaskClusterMode.valueOf(
+				dispatchTrigger.getDispatchTaskClusterMode());
+
+		_dispatchTriggerHelper.deleteSchedulerJob(
+			dispatchTrigger, dispatchTaskClusterMode.getStorageType());
+
+		if (active) {
+			_dispatchTriggerHelper.addSchedulerJob(
+				dispatchTrigger, dispatchTaskClusterMode.getStorageType(),
+				dispatchTrigger.getTimeZoneId());
+		}
+
+		return dispatchTrigger;
 	}
 
 	@Override

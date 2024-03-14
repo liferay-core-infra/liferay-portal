@@ -222,6 +222,10 @@ public interface DispatchTriggerLocalService
 	public DispatchTrigger fetchDispatchTrigger(long companyId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DispatchTrigger fetchDispatchTrigger(
+		long companyId, String name, boolean checkFeatureFlag);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DispatchTrigger fetchDispatchTriggerByExternalReferenceCode(
 		String externalReferenceCode, long companyId);
 

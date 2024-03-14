@@ -274,6 +274,14 @@ public class DispatchTriggerLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.dispatch.model.DispatchTrigger fetchDispatchTrigger(
+		long companyId, String name, boolean checkFeatureFlag) {
+
+		return _dispatchTriggerLocalService.fetchDispatchTrigger(
+			companyId, name, checkFeatureFlag);
+	}
+
+	@Override
 	public com.liferay.dispatch.model.DispatchTrigger
 		fetchDispatchTriggerByExternalReferenceCode(
 			String externalReferenceCode, long companyId) {

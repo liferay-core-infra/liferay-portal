@@ -243,6 +243,13 @@ public class DispatchTriggerLocalServiceUtil {
 		return getService().fetchDispatchTrigger(companyId, name);
 	}
 
+	public static DispatchTrigger fetchDispatchTrigger(
+		long companyId, String name, boolean checkFeatureFlag) {
+
+		return getService().fetchDispatchTrigger(
+			companyId, name, checkFeatureFlag);
+	}
+
 	public static DispatchTrigger fetchDispatchTriggerByExternalReferenceCode(
 		String externalReferenceCode, long companyId) {
 

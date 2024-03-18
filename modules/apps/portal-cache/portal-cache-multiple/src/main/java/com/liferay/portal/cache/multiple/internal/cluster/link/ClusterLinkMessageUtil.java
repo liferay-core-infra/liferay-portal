@@ -89,9 +89,12 @@ public class ClusterLinkMessageUtil {
 		return (Serializable)object;
 	}
 
-	private static byte[] _serialize(Serializable serializable) {
-		if (serializable == null) {
-			return null;
+	private static Serializable _serialize(Serializable serializable) {
+		if ((serializable == null) || (serializable instanceof String) ||
+			(serializable instanceof Number) ||
+			(serializable instanceof Boolean)) {
+
+			return serializable;
 		}
 
 		Serializer serializer = new Serializer();

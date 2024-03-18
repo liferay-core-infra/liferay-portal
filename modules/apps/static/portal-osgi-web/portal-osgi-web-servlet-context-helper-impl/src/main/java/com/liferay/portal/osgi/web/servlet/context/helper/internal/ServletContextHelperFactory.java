@@ -31,7 +31,7 @@ import org.xml.sax.SAXNotSupportedException;
  * @author Raymond Augé
  */
 @Component(service = {})
-public class ServletContextHelperFactoryImpl {
+public class ServletContextHelperFactory {
 
 	@Activate
 	protected void activate(
@@ -57,7 +57,7 @@ public class ServletContextHelperFactoryImpl {
 		}
 
 		_executorService = _portalExecutorManager.getPortalExecutor(
-			ServletContextHelperFactoryImpl.class.getName());
+			ServletContextHelperFactory.class.getName());
 
 		_serviceRegistration = bundleContext.registerService(
 			ServletContextHelperRegistration.class.getName(),

@@ -8,7 +8,6 @@ package com.liferay.portal.osgi.web.servlet.context.helper.internal;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
-import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
 
 import java.util.Map;
@@ -31,9 +30,8 @@ import org.xml.sax.SAXNotSupportedException;
 /**
  * @author Raymond Augé
  */
-@Component(service = ServletContextHelperFactory.class)
-public class ServletContextHelperFactoryImpl
-	implements ServletContextHelperFactory {
+@Component(service = {})
+public class ServletContextHelperFactoryImpl {
 
 	@Activate
 	protected void activate(

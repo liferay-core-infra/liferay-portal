@@ -63,7 +63,6 @@ import com.liferay.portal.kernel.xml.SAXReader;
 import com.liferay.portal.model.impl.EventDefinitionImpl;
 import com.liferay.portal.model.impl.PortletURLListenerImpl;
 import com.liferay.portal.model.impl.PublicRenderParameterImpl;
-import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
 import com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl.IndividualPortletResourcePermissionProvider;
 import com.liferay.portal.util.PropsValues;
@@ -1507,10 +1506,6 @@ public class PortletTracker
 	private final ConcurrentMap<Long, ServiceRegistrations>
 		_serviceRegistrations = new ConcurrentHashMap<>();
 	private ServiceTracker<Portlet, ?> _serviceTracker;
-
-	@Reference
-	private ServletContextHelperFactory _servletContextHelperFactory;
-
 	private ServiceReference<ServletContextHelperRegistration>
 		_servletContextHelperRegistrationServiceReference;
 

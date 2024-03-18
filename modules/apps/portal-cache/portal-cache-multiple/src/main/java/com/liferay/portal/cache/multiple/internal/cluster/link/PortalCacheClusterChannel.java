@@ -10,8 +10,6 @@ import com.liferay.portal.kernel.cluster.ClusterLink;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.util.SerializableUtil;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -44,12 +42,10 @@ public class PortalCacheClusterChannel implements Runnable {
 	}
 
 	public void dispatchEvent(PortalCacheClusterEvent portalCacheClusterEvent) {
-		Message message = new Message();
-
-		message.setDestinationName(_destinationName);
-		message.setPayload(SerializableUtil.serialize(portalCacheClusterEvent));
-
-		_clusterLink.sendMulticastMessage(message, _priority);
+		_clusterLink.sendMulticastMessage(
+			ClusterLinkMessageUtil.create(
+				_destinationName, portalCacheClusterEvent),
+			_priority);
 	}
 
 	public long getCoalescedEventNumber() {

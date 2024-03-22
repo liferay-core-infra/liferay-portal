@@ -16,7 +16,7 @@ import com.liferay.portal.cache.PortalCacheManagerListenerFactory;
 import com.liferay.portal.cache.TransactionalPortalCache;
 import com.liferay.portal.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.cache.configuration.PortalCacheManagerConfiguration;
-import com.liferay.portal.cache.ehcache.internal.configurator.BaseEhcachePortalCacheManagerConfigurator;
+import com.liferay.portal.cache.ehcache.internal.configurator.EhcachePortalCacheManagerConfigurator;
 import com.liferay.portal.cache.ehcache.internal.event.ConfigurableEhcachePortalCacheListener;
 import com.liferay.portal.cache.ehcache.internal.event.PortalCacheManagerEventListener;
 import com.liferay.portal.cache.ehcache.internal.management.ManagementService;
@@ -272,7 +272,7 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		getConfigurationObjectValuePair(
 			URL configurationURL, ClassLoader classLoader) {
 
-		return BaseEhcachePortalCacheManagerConfigurator.
+		return EhcachePortalCacheManagerConfigurator.
 			getConfigurationObjectValuePair(
 				_portalCacheManagerName, configurationURL, classLoader,
 				_usingDefault);
@@ -299,7 +299,7 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		}
 
 		ClassLoader classLoader =
-			BaseEhcachePortalCacheManagerConfigurator.class.getClassLoader();
+			EhcachePortalCacheManagerConfigurator.class.getClassLoader();
 
 		URL configFileURL = classLoader.getResource(_configFile);
 

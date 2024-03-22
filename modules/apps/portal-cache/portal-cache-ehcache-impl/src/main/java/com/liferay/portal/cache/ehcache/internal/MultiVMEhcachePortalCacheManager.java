@@ -10,7 +10,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cache.PortalCacheReplicator;
 import com.liferay.portal.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.cache.configuration.PortalCacheManagerConfiguration;
-import com.liferay.portal.cache.ehcache.internal.configurator.BaseEhcachePortalCacheManagerConfigurator;
+import com.liferay.portal.cache.ehcache.internal.configurator.EhcachePortalCacheManagerConfigurator;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.log.Log;
@@ -141,7 +141,7 @@ public class MultiVMEhcachePortalCacheManager
 		String replicatorPropertiesString) {
 
 		Properties replicatorProperties =
-			BaseEhcachePortalCacheManagerConfigurator.parseProperties(
+			EhcachePortalCacheManagerConfigurator.parseProperties(
 				replicatorPropertiesString, StringPool.COMMA);
 
 		replicatorProperties.put(PortalCacheReplicator.REPLICATOR, true);

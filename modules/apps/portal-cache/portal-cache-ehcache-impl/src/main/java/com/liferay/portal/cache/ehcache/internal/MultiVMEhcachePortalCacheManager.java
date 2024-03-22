@@ -54,11 +54,6 @@ public class MultiVMEhcachePortalCacheManager
 	protected void activate(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
 
-		_defaultReplicatorPropertiesString = _getPortalPropertiesString(
-			PropsKeys.EHCACHE_REPLICATOR_PROPERTIES_DEFAULT);
-		_replicatorProperties = _props.getProperties(
-			PropsKeys.EHCACHE_REPLICATOR_PROPERTIES + StringPool.PERIOD, true);
-
 		initialize();
 
 		if (_log.isDebugEnabled()) {
@@ -86,8 +81,12 @@ public class MultiVMEhcachePortalCacheManager
 			objectValuePair = super.getConfigurationObjectValuePair();
 
 		if (GetterUtil.getBoolean(_props.get(PropsKeys.CLUSTER_LINK_ENABLED))) {
+			Properties replicatorProperties = _props.getProperties(
+				PropsKeys.EHCACHE_REPLICATOR_PROPERTIES + StringPool.PERIOD,
+				true);
+
 			Set<String> portalCacheNames = new HashSet<>(
-				_replicatorProperties.stringPropertyNames());
+				replicatorProperties.stringPropertyNames());
 
 			PortalCacheManagerConfiguration portalCacheManagerConfiguration =
 				objectValuePair.getValue();
@@ -95,19 +94,23 @@ public class MultiVMEhcachePortalCacheManager
 			portalCacheNames.addAll(
 				portalCacheManagerConfiguration.getPortalCacheNames());
 
+			String defaultReplicatorPropertiesString =
+				_getPortalPropertiesString(
+					PropsKeys.EHCACHE_REPLICATOR_PROPERTIES_DEFAULT);
+
 			for (String portalCacheName : portalCacheNames) {
 				_populateCacheReplicator(
 					portalCacheManagerConfiguration.getPortalCacheConfiguration(
 						portalCacheName),
 					GetterUtil.getString(
-						_replicatorProperties.getProperty(portalCacheName),
-						_defaultReplicatorPropertiesString));
+						replicatorProperties.getProperty(portalCacheName),
+						defaultReplicatorPropertiesString));
 			}
 
 			_populateCacheReplicator(
 				portalCacheManagerConfiguration.
 					getDefaultPortalCacheConfiguration(),
-				_defaultReplicatorPropertiesString);
+				defaultReplicatorPropertiesString);
 		}
 
 		return objectValuePair;
@@ -158,11 +161,7 @@ public class MultiVMEhcachePortalCacheManager
 	private static final Log _log = LogFactoryUtil.getLog(
 		MultiVMEhcachePortalCacheManager.class);
 
-	private String _defaultReplicatorPropertiesString;
-
 	@Reference
 	private Props _props;
-
-	private Properties _replicatorProperties;
 
 }

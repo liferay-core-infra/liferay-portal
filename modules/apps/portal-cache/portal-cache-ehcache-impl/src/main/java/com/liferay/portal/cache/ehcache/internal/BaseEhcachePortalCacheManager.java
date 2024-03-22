@@ -268,18 +268,11 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		_aggregatedPortalCacheManagerListener.clearAll();
 	}
 
-	protected abstract BaseEhcachePortalCacheManagerConfigurator
-		getBaseEhcachePortalCacheManagerConfigurator();
-
 	protected ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
 		getConfigurationObjectValuePair(
 			URL configurationURL, ClassLoader classLoader) {
 
-		BaseEhcachePortalCacheManagerConfigurator
-			baseEhcachePortalCacheManagerConfigurator =
-				getBaseEhcachePortalCacheManagerConfigurator();
-
-		return baseEhcachePortalCacheManagerConfigurator.
+		return BaseEhcachePortalCacheManagerConfigurator.
 			getConfigurationObjectValuePair(
 				_portalCacheManagerName, configurationURL, classLoader,
 				_usingDefault);

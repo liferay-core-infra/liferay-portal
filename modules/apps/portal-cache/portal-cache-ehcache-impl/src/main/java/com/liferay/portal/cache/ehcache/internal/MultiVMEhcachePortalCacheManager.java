@@ -75,13 +75,6 @@ public class MultiVMEhcachePortalCacheManager
 	}
 
 	@Override
-	protected BaseEhcachePortalCacheManagerConfigurator
-		getBaseEhcachePortalCacheManagerConfigurator() {
-
-		return _multiVMEhcachePortalCacheManagerConfigurator;
-	}
-
-	@Override
 	protected ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
 		getConfigurationObjectValuePair(
 			URL configurationURL, ClassLoader classLoader) {
@@ -148,7 +141,7 @@ public class MultiVMEhcachePortalCacheManager
 		String replicatorPropertiesString) {
 
 		Properties replicatorProperties =
-			_multiVMEhcachePortalCacheManagerConfigurator.parseProperties(
+			BaseEhcachePortalCacheManagerConfigurator.parseProperties(
 				replicatorPropertiesString, StringPool.COMMA);
 
 		replicatorProperties.put(PortalCacheReplicator.REPLICATOR, true);
@@ -166,17 +159,10 @@ public class MultiVMEhcachePortalCacheManager
 		MultiVMEhcachePortalCacheManager.class);
 
 	private String _defaultReplicatorPropertiesString;
-	private final MultiVMEhcachePortalCacheManagerConfigurator
-		_multiVMEhcachePortalCacheManagerConfigurator =
-			new MultiVMEhcachePortalCacheManagerConfigurator();
 
 	@Reference
 	private Props _props;
 
 	private Properties _replicatorProperties;
-
-	private class MultiVMEhcachePortalCacheManagerConfigurator
-		extends BaseEhcachePortalCacheManagerConfigurator {
-	}
 
 }

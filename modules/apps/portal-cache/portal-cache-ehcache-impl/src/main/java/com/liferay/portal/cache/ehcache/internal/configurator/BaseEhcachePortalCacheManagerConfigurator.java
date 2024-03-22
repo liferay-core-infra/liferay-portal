@@ -38,12 +38,13 @@ import net.sf.ehcache.event.NotificationScope;
 /**
  * @author Tina Tian
  */
-public abstract class BaseEhcachePortalCacheManagerConfigurator {
+public class BaseEhcachePortalCacheManagerConfigurator {
 
-	public ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
-		getConfigurationObjectValuePair(
-			String portalCacheManagerName, URL configurationURL,
-			ClassLoader classLoader, boolean usingDefault) {
+	public static ObjectValuePair
+		<Configuration, PortalCacheManagerConfiguration>
+			getConfigurationObjectValuePair(
+				String portalCacheManagerName, URL configurationURL,
+				ClassLoader classLoader, boolean usingDefault) {
 
 		if (configurationURL == null) {
 			throw new NullPointerException("Configuration path is null");
@@ -64,7 +65,7 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 			configuration, portalCacheManagerConfiguration);
 	}
 
-	public Properties parseProperties(
+	public static Properties parseProperties(
 		String propertiesString, String propertySeparator) {
 
 		Properties properties = new Properties();
@@ -88,7 +89,7 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		return properties;
 	}
 
-	private void _clearListenerConfigrations(
+	private static void _clearListenerConfigrations(
 		CacheConfiguration cacheConfiguration) {
 
 		if (cacheConfiguration == null) {
@@ -101,7 +102,9 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		factoryConfigurations.clear();
 	}
 
-	private void _clearListenerConfigrations(Configuration configuration) {
+	private static void _clearListenerConfigrations(
+		Configuration configuration) {
+
 		List<?> listenerFactoryConfigurations =
 			configuration.getCacheManagerPeerListenerFactoryConfigurations();
 
@@ -133,7 +136,7 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 	}
 
 	@SuppressWarnings("deprecation")
-	private boolean _isRequireSerialization(
+	private static boolean _isRequireSerialization(
 		CacheConfiguration cacheConfiguration) {
 
 		if (cacheConfiguration.isOverflowToDisk() ||
@@ -158,7 +161,7 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		return false;
 	}
 
-	private Set<Properties> _parseCacheEventListenerConfigurations(
+	private static Set<Properties> _parseCacheEventListenerConfigurations(
 		CacheConfiguration cacheConfiguration, ClassLoader classLoader,
 		boolean usingDefault) {
 
@@ -207,8 +210,10 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		return portalCacheListenerPropertiesSet;
 	}
 
-	private Set<Properties> _parseCacheManagerEventListenerConfigurations(
-		FactoryConfiguration<?> factoryConfiguration, ClassLoader classLoader) {
+	private static Set<Properties>
+		_parseCacheManagerEventListenerConfigurations(
+			FactoryConfiguration<?> factoryConfiguration,
+			ClassLoader classLoader) {
 
 		if (factoryConfiguration == null) {
 			return Collections.emptySet();
@@ -230,7 +235,7 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		return Collections.singleton(properties);
 	}
 
-	private PortalCacheManagerConfiguration _parseListenerConfigurations(
+	private static PortalCacheManagerConfiguration _parseListenerConfigurations(
 		Configuration configuration, ClassLoader classLoader,
 		boolean usingDefault) {
 

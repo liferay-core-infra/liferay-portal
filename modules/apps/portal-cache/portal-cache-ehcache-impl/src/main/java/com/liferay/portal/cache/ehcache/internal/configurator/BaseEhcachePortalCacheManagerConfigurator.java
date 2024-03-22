@@ -60,18 +60,11 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 
 		_clearListenerConfigrations(configuration);
 
-		manageConfiguration(configuration, portalCacheManagerConfiguration);
-
 		return new ObjectValuePair<>(
 			configuration, portalCacheManagerConfiguration);
 	}
 
-	protected void manageConfiguration(
-		Configuration configuration,
-		PortalCacheManagerConfiguration portalCacheManagerConfiguration) {
-	}
-
-	protected Properties parseProperties(
+	public Properties parseProperties(
 		String propertiesString, String propertySeparator) {
 
 		Properties properties = new Properties();

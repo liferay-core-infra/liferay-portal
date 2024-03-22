@@ -16,10 +16,13 @@ import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 
 import java.io.Serializable;
+
+import java.net.URL;
 
 import java.util.HashSet;
 import java.util.Properties;
@@ -78,6 +81,43 @@ public class MultiVMEhcachePortalCacheManager
 		return _multiVMEhcachePortalCacheManagerConfigurator;
 	}
 
+	@Override
+	protected ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
+		getConfigurationObjectValuePair(
+			URL configurationURL, ClassLoader classLoader) {
+
+		ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
+			objectValuePair = super.getConfigurationObjectValuePair(
+				configurationURL, classLoader);
+
+		if (clusterEnabled) {
+			Set<String> portalCacheNames = new HashSet<>(
+				_replicatorProperties.stringPropertyNames());
+
+			PortalCacheManagerConfiguration portalCacheManagerConfiguration =
+				objectValuePair.getValue();
+
+			portalCacheNames.addAll(
+				portalCacheManagerConfiguration.getPortalCacheNames());
+
+			for (String portalCacheName : portalCacheNames) {
+				_populateCacheReplicator(
+					portalCacheManagerConfiguration.getPortalCacheConfiguration(
+						portalCacheName),
+					GetterUtil.getString(
+						_replicatorProperties.getProperty(portalCacheName),
+						_defaultReplicatorPropertiesString));
+			}
+
+			_populateCacheReplicator(
+				portalCacheManagerConfiguration.
+					getDefaultPortalCacheConfiguration(),
+				_defaultReplicatorPropertiesString);
+		}
+
+		return objectValuePair;
+	}
+
 	protected boolean clusterEnabled;
 
 	private String _getPortalPropertiesString(String portalPropertyKey) {
@@ -103,6 +143,22 @@ public class MultiVMEhcachePortalCacheManager
 		return sb.toString();
 	}
 
+	private void _populateCacheReplicator(
+		PortalCacheConfiguration portalCacheConfiguration,
+		String replicatorPropertiesString) {
+
+		Properties replicatorProperties =
+			_multiVMEhcachePortalCacheManagerConfigurator.parseProperties(
+				replicatorPropertiesString, StringPool.COMMA);
+
+		replicatorProperties.put(PortalCacheReplicator.REPLICATOR, true);
+
+		Set<Properties> portalCacheListenerPropertiesSet =
+			portalCacheConfiguration.getPortalCacheListenerPropertiesSet();
+
+		portalCacheListenerPropertiesSet.add(replicatorProperties);
+	}
+
 	private static final String _DEFAULT_CONFIG_FILE_NAME =
 		"/ehcache/liferay-multi-vm.xml";
 
@@ -121,52 +177,6 @@ public class MultiVMEhcachePortalCacheManager
 
 	private class MultiVMEhcachePortalCacheManagerConfigurator
 		extends BaseEhcachePortalCacheManagerConfigurator {
-
-		@Override
-		protected void manageConfiguration(
-			Configuration configuration,
-			PortalCacheManagerConfiguration portalCacheManagerConfiguration) {
-
-			if (!clusterEnabled) {
-				return;
-			}
-
-			Set<String> portalCacheNames = new HashSet<>(
-				_replicatorProperties.stringPropertyNames());
-
-			portalCacheNames.addAll(
-				portalCacheManagerConfiguration.getPortalCacheNames());
-
-			for (String portalCacheName : portalCacheNames) {
-				_populateCacheReplicator(
-					portalCacheManagerConfiguration.getPortalCacheConfiguration(
-						portalCacheName),
-					GetterUtil.getString(
-						_replicatorProperties.getProperty(portalCacheName),
-						_defaultReplicatorPropertiesString));
-			}
-
-			_populateCacheReplicator(
-				portalCacheManagerConfiguration.
-					getDefaultPortalCacheConfiguration(),
-				_defaultReplicatorPropertiesString);
-		}
-
-		private void _populateCacheReplicator(
-			PortalCacheConfiguration portalCacheConfiguration,
-			String replicatorPropertiesString) {
-
-			Properties replicatorProperties = parseProperties(
-				replicatorPropertiesString, StringPool.COMMA);
-
-			replicatorProperties.put(PortalCacheReplicator.REPLICATOR, true);
-
-			Set<Properties> portalCacheListenerPropertiesSet =
-				portalCacheConfiguration.getPortalCacheListenerPropertiesSet();
-
-			portalCacheListenerPropertiesSet.add(replicatorProperties);
-		}
-
 	}
 
 }

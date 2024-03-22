@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 
 import java.io.Serializable;
 
-import java.net.URL;
-
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -58,8 +56,6 @@ public class MultiVMEhcachePortalCacheManager
 		_replicatorProperties = _props.getProperties(
 			PropsKeys.EHCACHE_REPLICATOR_PROPERTIES + StringPool.PERIOD, true);
 
-		setConfigFile(props.get(PropsKeys.EHCACHE_MULTI_VM_CONFIG_LOCATION));
-		setDefaultConfigFile(_DEFAULT_CONFIG_FILE_NAME);
 		setPortalCacheManagerName(PortalCacheManagerNames.MULTI_VM);
 
 		initialize();
@@ -75,13 +71,18 @@ public class MultiVMEhcachePortalCacheManager
 	}
 
 	@Override
+	protected String getConfigFile() {
+		return GetterUtil.get(
+			props.get(PropsKeys.EHCACHE_MULTI_VM_CONFIG_LOCATION),
+			_DEFAULT_CONFIG_FILE_NAME);
+	}
+
+	@Override
 	protected ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
-		getConfigurationObjectValuePair(
-			URL configurationURL, ClassLoader classLoader) {
+		getConfigurationObjectValuePair() {
 
 		ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
-			objectValuePair = super.getConfigurationObjectValuePair(
-				configurationURL, classLoader);
+			objectValuePair = super.getConfigurationObjectValuePair();
 
 		if (clusterEnabled) {
 			Set<String> portalCacheNames = new HashSet<>(

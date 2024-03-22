@@ -193,8 +193,10 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		URL configurationURL, ClassLoader classLoader) {
 
 		ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
-			configurationObjectValuePair = getConfigurationObjectValuePair(
-				configurationURL, classLoader);
+			configurationObjectValuePair =
+				EhcachePortalCacheManagerConfigurator.
+					getConfigurationObjectValuePair(
+						_portalCacheManagerName, configurationURL, classLoader);
 
 		_reconfigEhcache(configurationObjectValuePair.getKey());
 
@@ -243,14 +245,6 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		}
 	}
 
-	public void setConfigFile(String configFile) {
-		_configFile = configFile;
-	}
-
-	public void setDefaultConfigFile(String defaultConfigFile) {
-		_defaultConfigFile = defaultConfigFile;
-	}
-
 	public void setPortalCacheManagerName(String portalCacheManagerName) {
 		_portalCacheManagerName = portalCacheManagerName;
 	}
@@ -268,13 +262,27 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		_aggregatedPortalCacheManagerListener.clearAll();
 	}
 
+	protected abstract String getConfigFile();
+
 	protected ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
-		getConfigurationObjectValuePair(
-			URL configurationURL, ClassLoader classLoader) {
+		getConfigurationObjectValuePair() {
+
+		String configFile = getConfigFile();
+
+		ClassLoader classLoader =
+			EhcachePortalCacheManagerConfigurator.class.getClassLoader();
+
+		URL configFileURL = classLoader.getResource(configFile);
+
+		if (configFileURL == null) {
+			classLoader = PortalClassLoaderUtil.getClassLoader();
+
+			configFileURL = classLoader.getResource(configFile);
+		}
 
 		return EhcachePortalCacheManagerConfigurator.
 			getConfigurationObjectValuePair(
-				_portalCacheManagerName, configurationURL, classLoader);
+				_portalCacheManagerName, configFileURL, classLoader);
 	}
 
 	protected void initialize() {
@@ -293,24 +301,8 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		_transactionalPortalCacheNames = GetterUtil.getStringValues(
 			props.getArray(PropsKeys.TRANSACTIONAL_CACHE_NAMES));
 
-		if (Validator.isNull(_configFile)) {
-			_configFile = _defaultConfigFile;
-		}
-
-		ClassLoader classLoader =
-			EhcachePortalCacheManagerConfigurator.class.getClassLoader();
-
-		URL configFileURL = classLoader.getResource(_configFile);
-
-		if (configFileURL == null) {
-			classLoader = PortalClassLoaderUtil.getClassLoader();
-
-			configFileURL = classLoader.getResource(_configFile);
-		}
-
 		ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
-			configurationObjectValuePair = getConfigurationObjectValuePair(
-				configFileURL, classLoader);
+			configurationObjectValuePair = getConfigurationObjectValuePair();
 
 		_cacheManager = new CacheManager(configurationObjectValuePair.getKey());
 
@@ -585,9 +577,7 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		_aggregatedPortalCacheManagerListener =
 			new AggregatedPortalCacheManagerListener();
 	private CacheManager _cacheManager;
-	private String _configFile;
 	private ServiceTracker<?, ?> _configuratorSettingsServiceTracker;
-	private String _defaultConfigFile;
 	private ServiceTracker<MBeanServer, ManagementService>
 		_mBeanServerServiceTracker;
 	private PortalCacheManagerConfiguration _portalCacheManagerConfiguration;

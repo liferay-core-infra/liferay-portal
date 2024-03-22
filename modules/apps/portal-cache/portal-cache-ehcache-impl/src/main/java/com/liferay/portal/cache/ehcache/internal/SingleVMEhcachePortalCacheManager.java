@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 
 import java.io.Serializable;
@@ -32,8 +33,6 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 	protected void activate(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
 
-		setConfigFile(props.get(PropsKeys.EHCACHE_SINGLE_VM_CONFIG_LOCATION));
-		setDefaultConfigFile(_DEFAULT_CONFIG_FILE_NAME);
 		setPortalCacheManagerName(PortalCacheManagerNames.SINGLE_VM);
 
 		initialize();
@@ -46,6 +45,13 @@ public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 	@Deactivate
 	protected void deactivate() {
 		destroy();
+	}
+
+	@Override
+	protected String getConfigFile() {
+		return GetterUtil.get(
+			props.get(PropsKeys.EHCACHE_SINGLE_VM_CONFIG_LOCATION),
+			_DEFAULT_CONFIG_FILE_NAME);
 	}
 
 	private static final String _DEFAULT_CONFIG_FILE_NAME =

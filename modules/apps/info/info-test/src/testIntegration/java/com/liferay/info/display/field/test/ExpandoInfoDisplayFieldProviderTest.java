@@ -90,22 +90,22 @@ public class ExpandoInfoDisplayFieldProviderTest {
 		ExpandoValue expandoValue = _addExpandoValue(
 			expandoColumn,
 			HashMapBuilder.put(
-				LocaleUtil.ENGLISH, new String[] {"en-value-1", "en-value-2"}
+				LocaleUtil.FRANCE, new String[] {"fr-value-1", "fr-value-2"}
 			).put(
-				LocaleUtil.FRENCH, new String[] {"fr-value-1", "fr-value-2"}
+				LocaleUtil.US, new String[] {"en-value-1", "en-value-2"}
 			).build());
 
 		Assert.assertEquals(
 			StringUtil.merge(
-				expandoValue.getStringArray(LocaleUtil.ENGLISH),
+				expandoValue.getStringArray(LocaleUtil.US),
 				StringPool.COMMA_AND_SPACE),
-			_getValue(expandoColumn.getName(), LocaleUtil.ENGLISH));
+			_getValue(expandoColumn.getName(), LocaleUtil.US));
 
 		Assert.assertEquals(
 			StringUtil.merge(
-				expandoValue.getStringArray(LocaleUtil.FRENCH),
+				expandoValue.getStringArray(LocaleUtil.FRANCE),
 				StringPool.COMMA_AND_SPACE),
-			_getValue(expandoColumn.getName(), LocaleUtil.FRENCH));
+			_getValue(expandoColumn.getName(), LocaleUtil.FRANCE));
 	}
 
 	@Test
@@ -119,18 +119,18 @@ public class ExpandoInfoDisplayFieldProviderTest {
 		ExpandoValue expandoValue = _addExpandoValue(
 			expandoColumn,
 			HashMapBuilder.put(
-				LocaleUtil.ENGLISH, "en-value-1"
+				LocaleUtil.FRANCE, "fr-value-1"
 			).put(
-				LocaleUtil.FRENCH, "fr-value-1"
+				LocaleUtil.US, "en-value-1"
 			).build());
 
 		Assert.assertEquals(
-			expandoValue.getString(LocaleUtil.ENGLISH),
-			_getValue(expandoColumn.getName(), LocaleUtil.ENGLISH));
+			expandoValue.getString(LocaleUtil.US),
+			_getValue(expandoColumn.getName(), LocaleUtil.US));
 
 		Assert.assertEquals(
-			expandoValue.getString(LocaleUtil.FRENCH),
-			_getValue(expandoColumn.getName(), LocaleUtil.FRENCH));
+			expandoValue.getString(LocaleUtil.FRANCE),
+			_getValue(expandoColumn.getName(), LocaleUtil.FRANCE));
 	}
 
 	@Test

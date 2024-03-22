@@ -54,8 +54,6 @@ public class MultiVMEhcachePortalCacheManager
 	protected void activate(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
 
-		clusterEnabled = GetterUtil.getBoolean(
-			_props.get(PropsKeys.CLUSTER_LINK_ENABLED));
 		_defaultReplicatorPropertiesString = _getPortalPropertiesString(
 			PropsKeys.EHCACHE_REPLICATOR_PROPERTIES_DEFAULT);
 		_replicatorProperties = _props.getProperties(
@@ -87,7 +85,7 @@ public class MultiVMEhcachePortalCacheManager
 		ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
 			objectValuePair = super.getConfigurationObjectValuePair();
 
-		if (clusterEnabled) {
+		if (GetterUtil.getBoolean(_props.get(PropsKeys.CLUSTER_LINK_ENABLED))) {
 			Set<String> portalCacheNames = new HashSet<>(
 				_replicatorProperties.stringPropertyNames());
 
@@ -114,8 +112,6 @@ public class MultiVMEhcachePortalCacheManager
 
 		return objectValuePair;
 	}
-
-	protected boolean clusterEnabled;
 
 	private String _getPortalPropertiesString(String portalPropertyKey) {
 		String[] array = _props.getArray(portalPropertyKey);

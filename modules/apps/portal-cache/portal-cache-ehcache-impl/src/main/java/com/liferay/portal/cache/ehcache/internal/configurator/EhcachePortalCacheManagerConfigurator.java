@@ -44,7 +44,7 @@ public class EhcachePortalCacheManagerConfigurator {
 		<Configuration, PortalCacheManagerConfiguration>
 			getConfigurationObjectValuePair(
 				String portalCacheManagerName, URL configurationURL,
-				ClassLoader classLoader, boolean usingDefault) {
+				ClassLoader classLoader) {
 
 		if (configurationURL == null) {
 			throw new NullPointerException("Configuration path is null");
@@ -56,8 +56,7 @@ public class EhcachePortalCacheManagerConfigurator {
 		configuration.setName(portalCacheManagerName);
 
 		PortalCacheManagerConfiguration portalCacheManagerConfiguration =
-			_parseListenerConfigurations(
-				configuration, classLoader, usingDefault);
+			_parseListenerConfigurations(configuration, classLoader);
 
 		_clearListenerConfigrations(configuration);
 
@@ -162,12 +161,7 @@ public class EhcachePortalCacheManagerConfigurator {
 	}
 
 	private static Set<Properties> _parseCacheEventListenerConfigurations(
-		CacheConfiguration cacheConfiguration, ClassLoader classLoader,
-		boolean usingDefault) {
-
-		if (usingDefault) {
-			return Collections.emptySet();
-		}
+		CacheConfiguration cacheConfiguration, ClassLoader classLoader) {
 
 		Set<Properties> portalCacheListenerPropertiesSet = new HashSet<>();
 
@@ -236,8 +230,7 @@ public class EhcachePortalCacheManagerConfigurator {
 	}
 
 	private static PortalCacheManagerConfiguration _parseListenerConfigurations(
-		Configuration configuration, ClassLoader classLoader,
-		boolean usingDefault) {
+		Configuration configuration, ClassLoader classLoader) {
 
 		Set<Properties> cacheManagerListenerPropertiesSet =
 			_parseCacheManagerEventListenerConfigurations(
@@ -259,7 +252,7 @@ public class EhcachePortalCacheManagerConfigurator {
 			new EhcachePortalCacheConfiguration(
 				defaultCacheConfiguration.getName(),
 				_parseCacheEventListenerConfigurations(
-					defaultCacheConfiguration, classLoader, usingDefault),
+					defaultCacheConfiguration, classLoader),
 				_isRequireSerialization(defaultCacheConfiguration));
 
 		Set<PortalCacheConfiguration> portalCacheConfigurations =
@@ -277,7 +270,7 @@ public class EhcachePortalCacheManagerConfigurator {
 				new EhcachePortalCacheConfiguration(
 					cacheConfiguration.getName(),
 					_parseCacheEventListenerConfigurations(
-						cacheConfiguration, classLoader, usingDefault),
+						cacheConfiguration, classLoader),
 					_isRequireSerialization(cacheConfiguration)));
 		}
 

@@ -1,0 +1,23 @@
+import com.liferay.gradle.plugins.patcher.PatchTask
+
+apply plugin: "com.liferay.patcher"
+
+task patch(type: PatchTask)
+
+dependencies {
+	api group: "org.springframework", name: "spring-web", version: "5.2.24.RELEASE"
+}
+
+jarSources {
+	mustRunAfter patch
+}
+
+patch {
+	ext {
+		autoClean = false
+	}
+
+	fileNames "org/springframework/web/util/UriComponentsBuilder.java"
+
+	originalLibModuleName = "spring-web"
+}

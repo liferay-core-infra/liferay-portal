@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -184,9 +183,7 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	}
 
 	@Override
-	public String getPortalCacheManagerName() {
-		return _portalCacheManagerName;
-	}
+	public abstract String getPortalCacheManagerName();
 
 	@Override
 	public void reconfigurePortalCaches(
@@ -196,7 +193,8 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 			configurationObjectValuePair =
 				EhcachePortalCacheManagerConfigurator.
 					getConfigurationObjectValuePair(
-						_portalCacheManagerName, configurationURL, classLoader);
+						getPortalCacheManagerName(), configurationURL,
+						classLoader);
 
 		_reconfigEhcache(configurationObjectValuePair.getKey());
 
@@ -245,10 +243,6 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		}
 	}
 
-	public void setPortalCacheManagerName(String portalCacheManagerName) {
-		_portalCacheManagerName = portalCacheManagerName;
-	}
-
 	@Override
 	public boolean unregisterPortalCacheManagerListener(
 		PortalCacheManagerListener portalCacheManagerListener) {
@@ -282,17 +276,12 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 
 		return EhcachePortalCacheManagerConfigurator.
 			getConfigurationObjectValuePair(
-				_portalCacheManagerName, configFileURL, classLoader);
+				getPortalCacheManagerName(), configFileURL, classLoader);
 	}
 
 	protected void initialize() {
 		if (_portalCacheManagerConfiguration != null) {
 			return;
-		}
-
-		if (Validator.isNull(_portalCacheManagerName)) {
-			throw new IllegalArgumentException(
-				"Portal cache manager name is not specified");
 		}
 
 		_transactionalPortalCacheEnabled = GetterUtil.getBoolean(
@@ -315,7 +304,7 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		cacheManagerEventListenerRegistry.registerListener(
 			new PortalCacheManagerEventListener(
 				_aggregatedPortalCacheManagerListener,
-				_portalCacheManagerName));
+				getPortalCacheManagerName()));
 
 		if (!GetterUtil.getBoolean(
 				props.get(
@@ -510,7 +499,7 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		sb.append("Unable to get portal cache ");
 		sb.append(portalCache.getPortalCacheName());
 		sb.append(" from portal cache manager ");
-		sb.append(_portalCacheManagerName);
+		sb.append(getPortalCacheManagerName());
 		sb.append(" as a ");
 
 		if (mvcc) {
@@ -546,7 +535,7 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 		sb.append("Unable to get portal cache ");
 		sb.append(portalCache.getPortalCacheName());
 		sb.append(" from portal cache manager ");
-		sb.append(_portalCacheManagerName);
+		sb.append(getPortalCacheManagerName());
 		sb.append(" as a ");
 
 		if (sharded) {
@@ -581,7 +570,6 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	private ServiceTracker<MBeanServer, ManagementService>
 		_mBeanServerServiceTracker;
 	private PortalCacheManagerConfiguration _portalCacheManagerConfiguration;
-	private String _portalCacheManagerName;
 	private final ConcurrentMap<String, PortalCache<K, V>> _portalCaches =
 		new ConcurrentHashMap<>();
 	private boolean _transactionalPortalCacheEnabled;

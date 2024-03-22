@@ -29,11 +29,14 @@ import org.osgi.service.component.annotations.Deactivate;
 public class SingleVMEhcachePortalCacheManager<K extends Serializable, V>
 	extends BaseEhcachePortalCacheManager<K, V> {
 
+	@Override
+	public String getPortalCacheManagerName() {
+		return PortalCacheManagerNames.SINGLE_VM;
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
-
-		setPortalCacheManagerName(PortalCacheManagerNames.SINGLE_VM);
 
 		initialize();
 

@@ -45,6 +45,11 @@ public class MultiVMEhcachePortalCacheManager
 	<K extends Serializable, V extends Serializable>
 		extends BaseEhcachePortalCacheManager<K, V> {
 
+	@Override
+	public String getPortalCacheManagerName() {
+		return PortalCacheManagerNames.MULTI_VM;
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
@@ -55,8 +60,6 @@ public class MultiVMEhcachePortalCacheManager
 			PropsKeys.EHCACHE_REPLICATOR_PROPERTIES_DEFAULT);
 		_replicatorProperties = _props.getProperties(
 			PropsKeys.EHCACHE_REPLICATOR_PROPERTIES + StringPool.PERIOD, true);
-
-		setPortalCacheManagerName(PortalCacheManagerNames.MULTI_VM);
 
 		initialize();
 

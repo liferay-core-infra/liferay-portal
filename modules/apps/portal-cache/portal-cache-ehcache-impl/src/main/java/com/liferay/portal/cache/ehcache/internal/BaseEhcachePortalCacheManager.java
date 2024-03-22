@@ -192,16 +192,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	public void reconfigurePortalCaches(
 		URL configurationURL, ClassLoader classLoader) {
 
-		BaseEhcachePortalCacheManagerConfigurator
-			baseEhcachePortalCacheManagerConfigurator =
-				getBaseEhcachePortalCacheManagerConfigurator();
-
 		ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
-			configurationObjectValuePair =
-				baseEhcachePortalCacheManagerConfigurator.
-					getConfigurationObjectValuePair(
-						_portalCacheManagerName, configurationURL, classLoader,
-						_usingDefault);
+			configurationObjectValuePair = getConfigurationObjectValuePair(
+				configurationURL, classLoader);
 
 		_reconfigEhcache(configurationObjectValuePair.getKey());
 
@@ -278,6 +271,20 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 	protected abstract BaseEhcachePortalCacheManagerConfigurator
 		getBaseEhcachePortalCacheManagerConfigurator();
 
+	protected ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
+		getConfigurationObjectValuePair(
+			URL configurationURL, ClassLoader classLoader) {
+
+		BaseEhcachePortalCacheManagerConfigurator
+			baseEhcachePortalCacheManagerConfigurator =
+				getBaseEhcachePortalCacheManagerConfigurator();
+
+		return baseEhcachePortalCacheManagerConfigurator.
+			getConfigurationObjectValuePair(
+				_portalCacheManagerName, configurationURL, classLoader,
+				_usingDefault);
+	}
+
 	protected void initialize() {
 		if (_portalCacheManagerConfiguration != null) {
 			return;
@@ -311,16 +318,9 @@ public abstract class BaseEhcachePortalCacheManager<K extends Serializable, V>
 
 		_usingDefault = _configFile.equals(_defaultConfigFile);
 
-		BaseEhcachePortalCacheManagerConfigurator
-			baseEhcachePortalCacheManagerConfigurator =
-				getBaseEhcachePortalCacheManagerConfigurator();
-
 		ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
-			configurationObjectValuePair =
-				baseEhcachePortalCacheManagerConfigurator.
-					getConfigurationObjectValuePair(
-						_portalCacheManagerName, configFileURL, classLoader,
-						_usingDefault);
+			configurationObjectValuePair = getConfigurationObjectValuePair(
+				configFileURL, classLoader);
 
 		_cacheManager = new CacheManager(configurationObjectValuePair.getKey());
 

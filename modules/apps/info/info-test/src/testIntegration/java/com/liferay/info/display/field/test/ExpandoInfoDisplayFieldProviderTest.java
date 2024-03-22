@@ -20,7 +20,10 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -55,6 +58,11 @@ public class ExpandoInfoDisplayFieldProviderTest {
 	public void setUp() throws Exception {
 		_expandoTable = _expandoTableLocalService.addDefaultTable(
 			TestPropsValues.getCompanyId(), User.class.getName());
+
+		ServiceContextThreadLocal.pushServiceContext(
+			ServiceContextTestUtil.getServiceContext(
+				TestPropsValues.getUser(
+				).getGroupId()));
 	}
 
 	@Test
@@ -101,6 +109,8 @@ public class ExpandoInfoDisplayFieldProviderTest {
 				StringPool.COMMA_AND_SPACE),
 			_getValue(expandoColumn.getName(), LocaleUtil.US));
 
+		_changeServiceContextLocale();
+
 		Assert.assertEquals(
 			StringUtil.merge(
 				expandoValue.getStringArray(LocaleUtil.FRANCE),
@@ -127,6 +137,8 @@ public class ExpandoInfoDisplayFieldProviderTest {
 		Assert.assertEquals(
 			expandoValue.getString(LocaleUtil.US),
 			_getValue(expandoColumn.getName(), LocaleUtil.US));
+
+		_changeServiceContextLocale();
 
 		Assert.assertEquals(
 			expandoValue.getString(LocaleUtil.FRANCE),
@@ -172,6 +184,18 @@ public class ExpandoInfoDisplayFieldProviderTest {
 			PortalUtil.getClassName(_expandoTable.getClassNameId()),
 			_expandoTable.getName(), expandoColumn.getName(),
 			TestPropsValues.getUserId(), data);
+	}
+
+	private void _changeServiceContextLocale() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				TestPropsValues.getUser(
+				).getGroupId());
+
+		serviceContext.setLanguageId(
+			LocaleUtil.toLanguageId(LocaleUtil.FRANCE));
+
+		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 	}
 
 	private String _getKey(String expandoColumnName) {

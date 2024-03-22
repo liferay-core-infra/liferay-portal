@@ -179,6 +179,10 @@ public class ExpandoInfoItemFieldReader
 
 			attributeValue = values.getOrDefault(
 				locale, defaultValues.get(locale));
+
+			return StringUtil.merge(
+				ArrayUtil.toStringArray((String[])attributeValue),
+				StringPool.COMMA_AND_SPACE);
 		}
 		else if (attributeType == ExpandoColumnConstants.STRING_LOCALIZED) {
 			Map<Locale, String> values = (Map<Locale, String>)attributeValue;

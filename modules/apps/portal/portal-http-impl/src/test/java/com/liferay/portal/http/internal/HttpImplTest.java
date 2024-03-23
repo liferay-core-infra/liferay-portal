@@ -28,6 +28,7 @@ import org.apache.http.HttpVersion;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.conn.DefaultManagedHttpClientConnection;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.execchain.ClientExecChain;
 import org.apache.http.impl.execchain.MainClientExec;
 import org.apache.http.impl.pool.BasicPoolEntry;
@@ -149,8 +150,11 @@ public class HttpImplTest {
 		ClientExecChain clientExecChain = ReflectionTestUtil.getFieldValue(
 			(CloseableHttpClient)ReflectionTestUtil.invoke(
 				_httpImpl, "_createCloseableHttpClient",
-				new Class<?>[] {HttpHost.class, List.class},
-				new Object[] {null, null}),
+				new Class<?>[] {
+					PoolingHttpClientConnectionManager.class, HttpHost.class,
+					List.class
+				},
+				new Object[] {null, null, null}),
 			"execChain");
 
 		while (true) {

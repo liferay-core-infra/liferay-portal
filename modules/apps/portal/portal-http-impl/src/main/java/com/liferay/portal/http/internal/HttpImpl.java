@@ -83,6 +83,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
@@ -1043,6 +1044,8 @@ public class HttpImpl implements Http {
 			requestConfigBuilder.setProxyPreferredAuthSchemes(proxyAuthPrefs);
 		}
 
+		httpClientBuilder.setKeepAliveStrategy(
+			DefaultConnectionKeepAliveStrategy.INSTANCE);
 		httpClientBuilder.setDefaultRequestConfig(requestConfigBuilder.build());
 
 		return httpClientBuilder.build();

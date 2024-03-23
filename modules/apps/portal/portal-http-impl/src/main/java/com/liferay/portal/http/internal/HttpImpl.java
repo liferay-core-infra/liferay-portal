@@ -387,7 +387,7 @@ public class HttpImpl implements Http {
 
 		PoolingHttpClientConnectionManager poolingHttpClientConnectionManager =
 			_poolingHttpClientConnectionManagerDCLSingleton.getSingleton(
-				HttpImpl::_createPoolingHttpClientConnectionManager);
+				this::_createPoolingHttpClientConnectionManager);
 
 		if (_httpConfiguration.tcpKeepAliveEnabled()) {
 			poolingHttpClientConnectionManager.setDefaultSocketConfig(
@@ -656,8 +656,7 @@ public class HttpImpl implements Http {
 				poolingHttpClientConnectionManager =
 					_poolingHttpClientConnectionManagerDCLSingleton.
 						getSingleton(
-							HttpImpl::
-								_createPoolingHttpClientConnectionManager);
+							this::_createPoolingHttpClientConnectionManager);
 
 			if ((maxConnectionsPerHost > 0) &&
 				(maxConnectionsPerHost != _MAX_CONNECTIONS_PER_HOST)) {
@@ -956,26 +955,6 @@ public class HttpImpl implements Http {
 		}
 	}
 
-	private static PoolingHttpClientConnectionManager
-		_createPoolingHttpClientConnectionManager() {
-
-		PoolingHttpClientConnectionManager poolingHttpClientConnectionManager =
-			new PoolingHttpClientConnectionManager(
-				RegistryBuilder.<ConnectionSocketFactory>create(
-				).register(
-					Http.HTTP, PlainConnectionSocketFactory.getSocketFactory()
-				).register(
-					Http.HTTPS,
-					SSLConnectionSocketFactory.getSystemSocketFactory()
-				).build());
-
-		poolingHttpClientConnectionManager.setDefaultMaxPerRoute(
-			_MAX_CONNECTIONS_PER_HOST);
-		poolingHttpClientConnectionManager.setMaxTotal(_MAX_TOTAL_CONNECTIONS);
-
-		return poolingHttpClientConnectionManager;
-	}
-
 	private static void _destroyPoolingHttpClientConnectionManager(
 		PoolingHttpClientConnectionManager poolingHttpClientConnectionManager) {
 
@@ -1059,6 +1038,37 @@ public class HttpImpl implements Http {
 		httpClientBuilder.setDefaultRequestConfig(requestConfigBuilder.build());
 
 		return httpClientBuilder.build();
+	}
+
+	private PoolingHttpClientConnectionManager
+		_createPoolingHttpClientConnectionManager() {
+
+		PoolingHttpClientConnectionManager poolingHttpClientConnectionManager =
+			new PoolingHttpClientConnectionManager(
+				RegistryBuilder.<ConnectionSocketFactory>create(
+				).register(
+					Http.HTTP, PlainConnectionSocketFactory.getSocketFactory()
+				).register(
+					Http.HTTPS,
+					SSLConnectionSocketFactory.getSystemSocketFactory()
+				).build());
+
+		poolingHttpClientConnectionManager.setDefaultMaxPerRoute(
+			_MAX_CONNECTIONS_PER_HOST);
+		poolingHttpClientConnectionManager.setMaxTotal(_MAX_TOTAL_CONNECTIONS);
+
+		if (_httpConfiguration.tcpKeepAliveEnabled()) {
+			poolingHttpClientConnectionManager.setDefaultSocketConfig(
+				SocketConfig.custom(
+				).setSoKeepAlive(
+					true
+				).build());
+		}
+		else {
+			poolingHttpClientConnectionManager.setDefaultSocketConfig(null);
+		}
+
+		return poolingHttpClientConnectionManager;
 	}
 
 	private RequestConfig.Builder _getRequestConfigBuilder(

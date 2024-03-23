@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,10 @@ public class HttpImplTest {
 
 	@Test
 	public void testHttpKeepAlive() {
+		_httpImpl = new HttpImpl();
+
+		_httpImpl.activate(Collections.emptyMap());
+
 		_setHttpKeepAliveTimeout(-1);
 		_testHttpKeepAlive(true, Long.MAX_VALUE, -1);
 		_testHttpKeepAlive(true, Long.MAX_VALUE, 0);
@@ -92,6 +97,10 @@ public class HttpImplTest {
 
 	@Test
 	public void testHttpKeepAliveWithRequestClose() {
+		_httpImpl = new HttpImpl();
+
+		_httpImpl.activate(Collections.emptyMap());
+
 		HttpRequest httpRequest = new BasicHttpRequest("GET", "/");
 
 		httpRequest.setHeader(
@@ -110,6 +119,10 @@ public class HttpImplTest {
 
 	@Test
 	public void testHttpKeepAliveWithResponseClose() {
+		_httpImpl = new HttpImpl();
+
+		_httpImpl.activate(Collections.emptyMap());
+
 		HttpRequest httpRequest = new BasicHttpRequest("GET", "/");
 
 		httpRequest.setHeader(HttpHeaders.CONNECTION, HttpHeaders.KEEP_ALIVE);
@@ -128,6 +141,10 @@ public class HttpImplTest {
 
 	@Test
 	public void testIsNonProxyHost() throws Exception {
+		_httpImpl = new HttpImpl();
+
+		_httpImpl.activate(Collections.emptyMap());
+
 		String domain = "foo.com";
 		String ipAddress = "192.168.0.250";
 		String ipAddressWithStarWildcard = "182.*.0.250";
@@ -149,6 +166,10 @@ public class HttpImplTest {
 
 	@Test
 	public void testTCPKeepAlive() {
+		_httpImpl = new HttpImpl();
+
+		_httpImpl.activate(Collections.emptyMap());
+
 		_setTCPKeepAliveEnabled(false);
 		_testTCPKeepAlive(false);
 
@@ -194,7 +215,7 @@ public class HttpImplTest {
 		boolean expectedKeepAlive,
 		long expectedKeepAliveTimeoutInMilliseconds) {
 
-		_httpImpl.activate(_httpConfigurationProperties);
+		_httpImpl.modified(_httpConfigurationProperties);
 
 		Tuple connectionStrategiesTuple = _getHttpConnectionStrategies();
 
@@ -253,14 +274,18 @@ public class HttpImplTest {
 	}
 
 	private void _testTCPKeepAlive(boolean expectedEnabledTCPKeepAlive) {
-		_httpImpl.activate(_httpConfigurationProperties);
+		_httpImpl.modified(_httpConfigurationProperties);
 
 		SocketConfig socketConfig = ReflectionTestUtil.invoke(
 			(PoolingHttpClientConnectionManager)
 				ReflectionTestUtil.getFieldValue(
 					(CloseableHttpClient)ReflectionTestUtil.invoke(
-						_httpImpl, "getCloseableHttpClient",
-						new Class<?>[] {HttpHost.class}, new Object[] {null}),
+						_httpImpl, "_createCloseableHttpClient",
+						new Class<?>[] {
+							PoolingHttpClientConnectionManager.class,
+							HttpHost.class, List.class
+						},
+						new Object[] {null, null, null}),
 					"connManager"),
 			"resolveSocketConfig", new Class<?>[] {HttpHost.class},
 			new Object[] {_httpHost});
@@ -273,7 +298,7 @@ public class HttpImplTest {
 		new HashMap<>();
 	private final HttpContext _httpContext = new BasicHttpContext(null);
 	private final HttpHost _httpHost = new HttpHost("localhost", 8080);
-	private final HttpImpl _httpImpl = new HttpImpl();
+	private HttpImpl _httpImpl;
 	private final HttpResponse _httpResponse = new BasicHttpResponse(
 		new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
 

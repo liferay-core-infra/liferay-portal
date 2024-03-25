@@ -2,6 +2,7 @@ dependencies {
 	compileInclude group: "org.jodd", name: "jodd-proxetta", version: "6.0.0"
 
 	compileOnly group: "com.liferay", name: "jodd.util", version: "6.0.1.LIFERAY-PATCHED-2"
+	compileOnly group: "com.liferay", name: "org.springframework.web", version: "5.2.24.LIFERAY-PATCHED-1"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "default"
@@ -11,7 +12,6 @@ dependencies {
 	compileOnly group: "org.jsoup", name: "jsoup", version: "1.15.3"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
-	compileOnly group: "org.springframework", name: "spring-web", version: "5.2.24.RELEASE"
 	compileOnly project(":apps:frontend-taglib:frontend-taglib-clay")
 	compileOnly project(":apps:portal:portal-aop-api")
 	compileOnly project(":apps:static:osgi:osgi-util")

@@ -2,6 +2,7 @@ dependencies {
 	compileOnly group: "com.liferay", name: "biz.aQute.bndlib", version: "4.2.0-20190219.175746-114-LIFERAY-CACHED.LIFERAY-PATCHED-2"
 	compileOnly group: "com.liferay", name: "com.liferay.ant.bnd", version: "3.2.10"
 	compileOnly group: "com.liferay", name: "com.liferay.whip", version: "1.0.5"
+	compileOnly group: "com.liferay", name: "org.springframework.web", version: "5.2.24.LIFERAY-PATCHED-1"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.java", version: "default"
@@ -12,7 +13,6 @@ dependencies {
 	compileOnly group: "org.springframework", name: "spring-beans", version: "5.2.24.RELEASE"
 	compileOnly group: "org.springframework", name: "spring-context", version: "5.2.24.RELEASE"
 	compileOnly group: "org.springframework", name: "spring-core", version: "5.2.24.RELEASE"
-	compileOnly group: "org.springframework", name: "spring-web", version: "5.2.24.RELEASE"
 	compileOnly project(":apps:static:portal-file-install:portal-file-install-api")
 	compileOnly project(":apps:static:portal-osgi-web:portal-osgi-web-wab-generator-api")
 	compileOnly project(":core:petra:petra-string")

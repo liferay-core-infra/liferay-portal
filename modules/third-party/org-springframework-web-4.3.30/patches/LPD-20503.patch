@@ -1,0 +1,19 @@
+diff --git a/org/springframework/web/util/UriComponentsBuilder.java b/org/springframework/web/util/UriComponentsBuilder.java
+index 6dc2afd80772a..f00031562ce2a 100644
+--- a/org/springframework/web/util/UriComponentsBuilder.java
++++ b/org/springframework/web/util/UriComponentsBuilder.java
+@@ -66,7 +66,7 @@ public class UriComponentsBuilder implements Cloneable {
+ 
+ 	private static final String HTTP_PATTERN = "(?i)(http|https):";
+ 
+-	private static final String USERINFO_PATTERN = "([^@\\[/?#]*)";
++	private static final String USERINFO_PATTERN = "([^@/?#]*)";
+ 
+ 	private static final String HOST_IPV4_PATTERN = "[^\\[/?#:]*";
+ 
+@@ -937,3 +937,4 @@ public class UriComponentsBuilder implements Cloneable {
+ 	}
+ 
+ }
++/* @generated */
+\ No newline at end of file

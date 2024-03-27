@@ -6,6 +6,7 @@
 package com.liferay.portal.log4j.internal;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.LogContext;
 import com.liferay.portal.kernel.log.LogContextRegistryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -146,40 +147,60 @@ public class Log4jConfigUtilTest {
 	public void testConfigureLog4JWithAppender() {
 		String loggerName = StringUtil.randomString();
 
-		Log4jConfigUtil.configureLog4J(
-			_generateXMLConfigurationContent(loggerName, _ERROR));
+		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
+				Log4jConfigUtil.class.getName(), Level.SEVERE)) {
 
-		Logger logger = (Logger)LogManager.getLogger(loggerName);
+			Log4jConfigUtil.configureLog4J(
+				_generateXMLConfigurationContent(loggerName, _ERROR));
 
-		_assertAppenders(logger);
+			Logger logger = (Logger)LogManager.getLogger(loggerName);
 
-		Log4jConfigUtil.configureLog4J(
-			_generateXMLConfigurationContent(loggerName, _ERROR, _CONSOLE));
+			_assertAppenders(logger);
 
-		_assertAppenders(logger, _CONSOLE);
+			Log4jConfigUtil.configureLog4J(
+				_generateXMLConfigurationContent(loggerName, _ERROR, _CONSOLE));
 
-		Log4jConfigUtil.configureLog4J(
-			_generateXMLConfigurationContent(loggerName, _ERROR, _NULL));
+			_assertAppenders(logger, _CONSOLE);
 
-		_assertAppenders(logger, _CONSOLE, _NULL);
+			Log4jConfigUtil.configureLog4J(
+				_generateXMLConfigurationContent(loggerName, _ERROR, _NULL));
 
-		Log4jConfigUtil.configureLog4J(
-			_generateXMLConfigurationContent(loggerName, _ERROR, _CONSOLE));
+			_assertAppenders(logger, _CONSOLE, _NULL);
 
-		_assertAppenders(logger, _CONSOLE, _NULL);
+			Log4jConfigUtil.configureLog4J(
+				_generateXMLConfigurationContent(loggerName, _ERROR, _CONSOLE));
 
-		Log4jConfigUtil.configureLog4J(
-			_generateXMLConfigurationContent(
-				loggerName, _ERROR, _CONSOLE, _NULL));
+			_assertAppenders(logger, _CONSOLE, _NULL);
 
-		_assertAppenders(logger, _CONSOLE, _NULL);
+			Log4jConfigUtil.configureLog4J(
+				_generateXMLConfigurationContent(
+					loggerName, _ERROR, _CONSOLE, _NULL));
 
-		Log4jConfigUtil.configureLog4J(
-			_generateXMLConfigurationContent(
-				loggerName, _ERROR, _CONSOLE, _NULL),
-			_NULL);
+			_assertAppenders(logger, _CONSOLE, _NULL);
 
-		_assertAppenders(logger, _CONSOLE, _NULL);
+			Log4jConfigUtil.configureLog4J(
+				_generateXMLConfigurationContent(
+					loggerName, _ERROR, _CONSOLE, _NULL),
+				_NULL);
+
+			_assertAppenders(logger, _CONSOLE, _NULL);
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			StringBundler sb = new StringBundler(logEntries.size() * 7);
+
+			for (LogEntry logEntry : logEntries) {
+				sb.append("Log Level: ");
+				sb.append(logEntry.getPriority());
+				sb.append(", Message: ");
+				sb.append(logEntry.getMessage());
+				sb.append(", Throwable: ");
+				sb.append(logEntry.getThrowable());
+				sb.append(StringPool.NEW_LINE);
+			}
+
+			Assert.assertTrue(sb.toString(), logEntries.isEmpty());
+		}
 	}
 
 	@Test

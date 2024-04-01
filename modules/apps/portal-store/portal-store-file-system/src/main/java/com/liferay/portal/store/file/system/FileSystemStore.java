@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.nio.file.Files;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -312,7 +314,7 @@ public class FileSystemStore implements Store {
 	}
 
 	private void _deleteEmptyAncestors(File file) {
-		while (file != null) {
+		while ((file != null) && !Files.isSymbolicLink(file.toPath())) {
 			if (!file.delete()) {
 				return;
 			}

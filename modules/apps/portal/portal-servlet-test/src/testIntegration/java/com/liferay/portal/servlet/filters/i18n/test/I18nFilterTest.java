@@ -237,6 +237,33 @@ public class I18nFilterTest {
 			Locale defaultLocale)
 		throws Exception {
 
+		if (userLocale != null) {
+			_user = UserTestUtil.addUser(
+				null, userLocale, RandomTestUtil.randomString(),
+				RandomTestUtil.randomString(),
+				new long[] {_group.getGroupId()});
+
+			_mockHttpServletRequest.setAttribute(WebKeys.USER, _user);
+		}
+
+		if (sessionLocale != null) {
+			HttpSession httpSession = _mockHttpServletRequest.getSession();
+
+			httpSession.setAttribute(WebKeys.LOCALE, sessionLocale);
+		}
+
+		if (cookieLocale != null) {
+			_language.updateCookie(
+				_mockHttpServletRequest, _mockHttpServletResponse,
+				cookieLocale);
+
+			// Passing cookies from mock HTTP servlet response to mock HTTP
+			// servlet request
+
+			_mockHttpServletRequest.setCookies(
+				_mockHttpServletResponse.getCookies());
+		}
+
 		if (virtualHostLocale != null) {
 			String layoutHostname =
 				RandomTestUtil.randomString(6) + "." +
@@ -255,33 +282,6 @@ public class I18nFilterTest {
 			_mockHttpServletRequest.setServerName(layoutHostname);
 
 			PortalInstances.getCompanyId(_mockHttpServletRequest);
-		}
-
-		if (sessionLocale != null) {
-			HttpSession httpSession = _mockHttpServletRequest.getSession();
-
-			httpSession.setAttribute(WebKeys.LOCALE, sessionLocale);
-		}
-
-		if (userLocale != null) {
-			_user = UserTestUtil.addUser(
-				null, userLocale, RandomTestUtil.randomString(),
-				RandomTestUtil.randomString(),
-				new long[] {_group.getGroupId()});
-
-			_mockHttpServletRequest.setAttribute(WebKeys.USER, _user);
-		}
-
-		if (cookieLocale != null) {
-			_language.updateCookie(
-				_mockHttpServletRequest, _mockHttpServletResponse,
-				cookieLocale);
-
-			// Passing cookies from mock HTTP servlet response to mock HTTP
-			// servlet request
-
-			_mockHttpServletRequest.setCookies(
-				_mockHttpServletResponse.getCookies());
 		}
 
 		boolean localeDefaultRequest = false;

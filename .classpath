@@ -71,7 +71,6 @@
 	<classpathentry kind="lib" path="lib/development/jacocoant.jar"/>
 	<classpathentry kind="lib" path="lib/development/jacococore.jar"/>
 	<classpathentry kind="lib" path="lib/development/jacocoreport.jar"/>
-	<classpathentry kind="lib" path="lib/development/jalopy.jar"/>
 	<classpathentry kind="lib" path="lib/development/jargs.jar"/>
 	<classpathentry kind="lib" path="lib/development/jasper.jar"/>
 	<classpathentry kind="lib" path="lib/development/jaxb-api.jar"/>

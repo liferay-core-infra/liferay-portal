@@ -1762,7 +1762,7 @@ artifact.url=${remote.repository.cdn.url}/com/liferay/portal/com.liferay.${proce
 				<path refid="lib.pre.classpath" />
 				<fileset
 					dir="${project.dir}/lib/development"
-					excludes="jalopy.jar,tomcat*.jar"
+					excludes="tomcat*.jar"
 					includes="*.jar"
 				/>
 				<fileset

@@ -204,7 +204,6 @@
 		<Logger level="ERROR" name="com.sun" />
 		<Logger level="ERROR" name="com.sun.faces" />
 		<Logger level="WARN" name="com.zaxxer.hikari" />
-		<Logger level="ERROR" name="de.hunsicker" />
 		<Logger level="ERROR" name="de.nava.informa" />
 		<Logger level="ERROR" name="freemarker.beans" />
 		<Logger level="ERROR" name="hsqldb.db" />

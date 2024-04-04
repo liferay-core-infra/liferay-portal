@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 
+import java.util.Locale;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -150,6 +152,29 @@ public class DDMFormFieldValueRendererTest extends BaseDDMTestCase {
 			ddmFormFieldValue, LocaleUtil.US);
 
 		Assert.assertEquals(StringPool.BLANK, renderedValue);
+	}
+
+	@Test
+	public void testDateFieldValueWhenLocaleHasSingleYearDigitFormat() {
+		String valueString = "2014-10-22";
+
+		DDMFormFieldValue ddmFormFieldValue = createDDMFormFieldValue(
+			"Date", new UnlocalizedValue(valueString));
+
+		DDMFormFieldValueRenderer ddmFormFieldValueRenderer =
+			new DateDDMFormFieldValueRenderer();
+
+		String renderedValue = ddmFormFieldValueRenderer.render(
+			ddmFormFieldValue, new Locale("sl", "SI"));
+
+		String javaLocaleProviders = System.getProperty(
+			"java.locale.providers");
+
+		// TODO Clean up after CLDR update is finished
+
+		Assert.assertEquals(
+			javaLocaleProviders.equals("CLDR") ? "22. 10. 2014" : "22.10.2014",
+			renderedValue);
 	}
 
 	@Test

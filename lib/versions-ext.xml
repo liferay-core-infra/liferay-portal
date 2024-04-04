@@ -442,23 +442,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>lib/development/jalopy.jar</file-name>
-				<version>1.5 RC3</version>
-				<project-name>Jalopy</project-name>
-				<project-url>http://jalopy.sourceforge.net</project-url>
-				<licenses>
-					<license>
-						<license-name>BSD Style License</license-name>
-						<license-url>http://en.wikipedia.org/wiki/BSD_licenses</license-url>
-					</license>
-				</licenses>
-				<comments>
-					This includes modifications to remove extraneous logging.
-					Removed antlr.* because it with the Groovy compiler. See
-					LPS-51450.
-				</comments>
-			</library>
-			<library>
 				<file-name>lib/development/jargs.jar</file-name>
 				<version>1.0</version>
 				<project-name>JArgs</project-name>

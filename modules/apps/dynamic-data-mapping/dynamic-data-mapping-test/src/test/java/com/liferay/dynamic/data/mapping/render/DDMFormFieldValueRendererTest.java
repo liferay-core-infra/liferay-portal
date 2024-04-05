@@ -34,11 +34,14 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.LayoutService;
 import com.liferay.portal.kernel.service.LayoutServiceUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
+
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -136,6 +139,11 @@ public class DDMFormFieldValueRendererTest extends BaseDDMTestCase {
 			ddmFormFieldValue, LocaleUtil.BRAZIL);
 
 		Assert.assertEquals("22/10/2014", renderedValue);
+
+		renderedValue = ddmFormFieldValueRenderer.render(
+			ddmFormFieldValue, Locale.forLanguageTag("zh-Hant"));
+
+		Assert.assertEquals("2014/10/22", renderedValue);
 	}
 
 	@Test

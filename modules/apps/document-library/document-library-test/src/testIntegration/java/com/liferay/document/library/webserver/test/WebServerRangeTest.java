@@ -101,7 +101,8 @@ public class WebServerRangeTest extends BaseWebServerTestCase {
 			String[] lines = StringUtil.split(
 				responseBodies[i + 1], StringPool.RETURN_NEW_LINE);
 
-			Assert.assertEquals("Content-Type: text/plain", lines[0]);
+			Assert.assertEquals(
+				"Content-Type: " + ContentTypes.TEXT_PLAIN_UTF8, lines[0]);
 			Assert.assertEquals(
 				"Content-Range: bytes " + ranges[i] + "/80", lines[1]);
 			Assert.assertTrue(Validator.isNull(lines[2]));
@@ -183,7 +184,7 @@ public class WebServerRangeTest extends BaseWebServerTestCase {
 
 		FileEntry fileEntry = _dlAppLocalService.addFileEntry(
 			null, TestPropsValues.getUserId(), group.getGroupId(),
-			parentFolder.getFolderId(), fileName, ContentTypes.TEXT_PLAIN,
+			parentFolder.getFolderId(), fileName, ContentTypes.TEXT_PLAIN_UTF8,
 			_SAMPLE_DATA.getBytes(), null, null, null,
 			ServiceContextTestUtil.getServiceContext(
 				group.getGroupId(), TestPropsValues.getUserId()));
@@ -221,7 +222,7 @@ public class WebServerRangeTest extends BaseWebServerTestCase {
 			Assert.assertTrue(contentType.startsWith("multipart/byteranges"));
 		}
 		else {
-			Assert.assertEquals(ContentTypes.TEXT_PLAIN, contentType);
+			Assert.assertEquals(ContentTypes.TEXT_PLAIN_UTF8, contentType);
 		}
 
 		return mockHttpServletResponse;

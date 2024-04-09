@@ -8,8 +8,6 @@ package com.liferay.portal.i18n.filter.internal;
 import com.liferay.friendly.url.configuration.FriendlyURLRedirectionConfiguration;
 import com.liferay.friendly.url.configuration.FriendlyURLRedirectionConfigurationProvider;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.cookies.CookiesManagerUtil;
-import com.liferay.portal.kernel.cookies.constants.CookiesConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
@@ -38,7 +36,6 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -216,37 +213,6 @@ public class I18nFilter extends BasePortalFilter {
 		return redirect;
 	}
 
-	protected String getRequestedLanguageId(
-		HttpServletRequest httpServletRequest, String userLanguageId) {
-
-		HttpSession httpSession = httpServletRequest.getSession();
-
-		Locale locale = (Locale)httpSession.getAttribute(WebKeys.LOCALE);
-
-		String requestedLanguageId = null;
-
-		if (locale != null) {
-			requestedLanguageId = LocaleUtil.toLanguageId(locale);
-		}
-
-		if (Validator.isNull(requestedLanguageId)) {
-			requestedLanguageId = userLanguageId;
-		}
-
-		if (Validator.isNull(requestedLanguageId)) {
-			requestedLanguageId = CookiesManagerUtil.getCookieValue(
-				CookiesConstants.NAME_GUEST_LANGUAGE_ID, httpServletRequest,
-				false);
-		}
-
-		if (Validator.isNull(requestedLanguageId)) {
-			requestedLanguageId = (String)httpServletRequest.getAttribute(
-				WebKeys.VIRTUAL_HOST_LANGUAGE_ID);
-		}
-
-		return requestedLanguageId;
-	}
-
 	protected String getSiteDefaultLanguageId(
 		HttpServletRequest httpServletRequest) {
 
@@ -310,38 +276,34 @@ public class I18nFilter extends BasePortalFilter {
 			userLanguageId = user.getLanguageId();
 		}
 
-		String requestedLanguageId = getRequestedLanguageId(
-			httpServletRequest, userLanguageId);
-
 		String defaultLanguageId = getDefaultLanguageId(httpServletRequest);
 
-		if (Validator.isNull(requestedLanguageId)) {
-			requestedLanguageId = defaultLanguageId;
+		String requestLanguageId = defaultLanguageId;
+
+		Locale requestLocale = _portal.getLocale(httpServletRequest);
+
+		if (requestLocale != null) {
+			requestLanguageId = LocaleUtil.toLanguageId(requestLocale);
 		}
 
 		if (prependFriendlyUrlStyle == 1) {
 			return prependIfRequestedLocaleDiffersFromDefaultLocale(
-				defaultLanguageId, requestedLanguageId);
+				defaultLanguageId, requestLanguageId);
 		}
 		else if (prependFriendlyUrlStyle == 2) {
-			if (PropsValues.LOCALE_DEFAULT_REQUEST) {
-				return LocaleUtil.toLanguageId(
-					_portal.getLocale(httpServletRequest));
-			}
-
-			return requestedLanguageId;
+			return requestLanguageId;
 		}
 		else if (prependFriendlyUrlStyle == 3) {
 			if (user != null) {
-				if (userLanguageId.equals(requestedLanguageId)) {
+				if (userLanguageId.equals(requestLanguageId)) {
 					return null;
 				}
 
-				return requestedLanguageId;
+				return requestLanguageId;
 			}
 
 			return prependIfRequestedLocaleDiffersFromDefaultLocale(
-				defaultLanguageId, requestedLanguageId);
+				defaultLanguageId, requestLanguageId);
 		}
 
 		return null;

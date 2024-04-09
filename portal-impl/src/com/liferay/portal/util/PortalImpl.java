@@ -3218,6 +3218,24 @@ public class PortalImpl implements Portal {
 			}
 		}
 
+		languageId = (String)httpServletRequest.getAttribute(
+			WebKeys.VIRTUAL_HOST_LANGUAGE_ID);
+
+		if (Validator.isNotNull(languageId)) {
+			Locale virtualHostLocale = getAvailableLocale(
+				groupId, LocaleUtil.fromLanguageId(languageId));
+
+			if (LanguageUtil.isAvailableLocale(groupId, virtualHostLocale)) {
+				if (initialize) {
+					setLocale(
+						httpServletRequest, httpServletResponse,
+						virtualHostLocale);
+				}
+
+				return virtualHostLocale;
+			}
+		}
+
 		// Get locale from the request
 
 		if (PropsValues.LOCALE_DEFAULT_REQUEST) {

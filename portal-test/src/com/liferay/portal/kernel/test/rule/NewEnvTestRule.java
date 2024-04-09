@@ -36,6 +36,9 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URLClassLoader;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +85,11 @@ public class NewEnvTestRule implements TestRule {
 
 		builder.setArguments(createArguments(description));
 		builder.setBootstrapClassPath(CLASS_PATH);
+
+		Path path = Paths.get(System.getProperty("java.home"), "bin", "java");
+
+		builder.setJavaExecutable(path.toString());
+
 		builder.setRuntimeClassPath(CLASS_PATH);
 
 		setEnvironment(builder, description);
@@ -188,6 +196,18 @@ public class NewEnvTestRule implements TestRule {
 		if (Boolean.getBoolean("whip.static.instrument")) {
 			arguments.add("-Dwhip.static.instrument=true");
 		}
+
+		RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+
+		List<String> jvmArgs = runtimeMXBean.getInputArguments();
+
+		for (String jvmArg : jvmArgs) {
+			if (jvmArg.startsWith("--add-opens")) {
+				arguments.add(jvmArg);
+			}
+		}
+
+		arguments.add("-Dnet.bytebuddy.experimental=true");
 
 		return arguments;
 	}

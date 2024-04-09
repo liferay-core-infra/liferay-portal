@@ -8,6 +8,7 @@ package com.liferay.portal.kernel.test.rule;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.lang.management.ManagementFactory;
@@ -180,6 +181,14 @@ public class NewEnvJVMTestRuleTest {
 		Assert.assertNotEquals(_parentEnvironment, environment);
 	}
 
+	@Test
+	public void testSameJDKVersion() {
+		_counter.getAndIncrement();
+
+		Assert.assertEquals(_JDK_VERSION, JavaDetector.getJavaVersion());
+		Assert.assertEquals(_JDK_HOME, System.getProperty("java.home"));
+	}
+
 	@Rule
 	public final NewEnvTestRule newEnvTestRule = NewEnvTestRule.INSTANCE;
 
@@ -255,6 +264,10 @@ public class NewEnvJVMTestRuleTest {
 	}
 
 	private static final String _ENVIRONMENT_KEY_USER = "USER";
+
+	private static final String _JDK_HOME = System.getProperty("java.home");
+
+	private static final String _JDK_VERSION = JavaDetector.getJavaVersion();
 
 	private static final String _SEPARATOR_KEY_VALUE = "_SEPARATOR_KEY_VALUE_";
 

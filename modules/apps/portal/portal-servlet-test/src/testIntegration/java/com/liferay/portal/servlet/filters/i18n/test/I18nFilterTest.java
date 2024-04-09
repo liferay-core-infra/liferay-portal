@@ -231,6 +231,43 @@ public class I18nFilterTest {
 				3, LocaleUtil.US, LocaleUtil.SPAIN, null, null, null));
 	}
 
+	@Test
+	public void testSpanishGuestEnglishCookieWithoutSessionVirtualHostAlgorithm3()
+		throws Exception {
+
+		Assert.assertNull(
+			_getPrependI18nLanguageId(
+				3, null, null, LocaleUtil.US, null, LocaleUtil.SPAIN));
+	}
+
+	@Test
+	public void testSpanishGuestEnglishSessionWithoutCookieVirtualHostAlgorithm3()
+		throws Exception {
+
+		Assert.assertNull(
+			_getPrependI18nLanguageId(
+				3, null, LocaleUtil.US, null, null, LocaleUtil.SPAIN));
+	}
+
+	@Test
+	public void testSpanishGuestEnglishVirtualHostWithoutSessionCookieAlgorithm3()
+		throws Exception {
+
+		Assert.assertNull(
+			_getPrependI18nLanguageId(
+				3, null, null, null, LocaleUtil.US, LocaleUtil.SPAIN));
+	}
+
+	@Test
+	public void testSpanishGuestWithoutSessionCookieVirtualHostAlgorithm3()
+		throws Exception {
+
+		Assert.assertEquals(
+			LocaleUtil.toLanguageId(LocaleUtil.SPAIN),
+			_getPrependI18nLanguageId(
+				3, null, null, null, null, LocaleUtil.SPAIN));
+	}
+
 	private String _getPrependI18nLanguageId(
 			int localePrependFriendlyURLStyle, Locale userLocale,
 			Locale sessionLocale, Locale cookieLocale, Locale virtualHostLocale,

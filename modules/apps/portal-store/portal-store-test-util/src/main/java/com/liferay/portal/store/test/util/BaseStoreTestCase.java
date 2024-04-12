@@ -366,11 +366,15 @@ public abstract class BaseStoreTestCase {
 		}
 	}
 
+	protected long getCompanyId() {return _companyId;}
+
+	protected long getRepositoryId() {return _repositoryId;}
+
 	protected abstract Store getStore();
 
 	private static final int _DATA_SIZE = 1024 * 65;
 
-	private static final byte[] _DATA_VERSION_1 = new byte[_DATA_SIZE];
+	protected static final byte[] _DATA_VERSION_1 = new byte[_DATA_SIZE];
 
 	private static final byte[] _DATA_VERSION_2 = new byte[_DATA_SIZE];
 

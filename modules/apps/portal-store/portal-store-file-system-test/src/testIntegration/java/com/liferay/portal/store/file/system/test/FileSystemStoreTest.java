@@ -7,9 +7,12 @@ package com.liferay.portal.store.file.system.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Props;
@@ -18,10 +21,18 @@ import com.liferay.portal.store.test.util.BaseStoreTestCase;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import java.io.File;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.service.cm.Configuration;
@@ -60,6 +71,62 @@ public class FileSystemStoreTest extends BaseStoreTestCase {
 		ConfigurationTestUtil.deleteConfiguration(_configuration);
 
 		FileUtil.deltree(_rootDir);
+	}
+
+	@Test
+	public void testDeleteDirectoryWithSymlinkRoot() throws Exception {
+		String dirName = RandomTestUtil.randomString();
+
+		String fileName = RandomTestUtil.randomString();
+
+		String filePath1 = dirName + StringPool.SLASH + fileName;
+
+		_store.addFile(
+			getCompanyId(), getRepositoryId(), filePath1, Store.VERSION_DEFAULT,
+			new UnsyncByteArrayInputStream(_DATA_VERSION_1));
+
+		String repositoryDir = StringBundler.concat(
+			_rootDir, StringPool.SLASH, getCompanyId(), StringPool.SLASH,
+			getRepositoryId());
+
+		Path originalPath = Paths.get(
+			repositoryDir + StringPool.SLASH + dirName);
+
+		String symlinkName = dirName + "_symlink";
+
+		Path symlinkPath = Paths.get(
+			repositoryDir + StringPool.SLASH + symlinkName);
+
+		Files.createSymbolicLink(symlinkPath, originalPath);
+
+		String filePath2 = StringBundler.concat(
+			symlinkName, "/sub1/sub2/", fileName);
+
+		_store.addFile(
+			getCompanyId(), getRepositoryId(), filePath2, Store.VERSION_DEFAULT,
+			new UnsyncByteArrayInputStream(_DATA_VERSION_1));
+
+		filePath1 = symlinkName + StringPool.SLASH + fileName;
+
+		_store.deleteFile(
+			getCompanyId(), getRepositoryId(), filePath1,
+			Store.VERSION_DEFAULT);
+
+		_store.deleteFile(
+			getCompanyId(), getRepositoryId(), filePath2,
+			Store.VERSION_DEFAULT);
+
+		File symlinkFile = new File(symlinkPath.toString());
+
+		Assert.assertFalse(
+			_store.hasFile(
+				getCompanyId(), getRepositoryId(), filePath1,
+				Store.VERSION_DEFAULT));
+		Assert.assertFalse(
+			_store.hasFile(
+				getCompanyId(), getRepositoryId(), filePath2,
+				Store.VERSION_DEFAULT));
+		Assert.assertTrue(symlinkFile.exists());
 	}
 
 	@Override

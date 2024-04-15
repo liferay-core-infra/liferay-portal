@@ -886,30 +886,35 @@ public class ServiceRegistry {
 			for (Map.Entry<BundleContextImpl, CopyOnWriteIdentityMap<ServiceListener, FilteredServiceListener>> bundleContextEntry :
 					listenerSnapshot.entrySet()) {
 
+				BundleContextImpl bundleContextImpl = bundleContextEntry.getKey();
+
+				Bundle bundle = bundleContextImpl.getBundleImpl();
+
 				CopyOnWriteIdentityMap<ServiceListener, FilteredServiceListener> map = bundleContextEntry.getValue();
 
 				for (FilteredServiceListener filteredServiceListener : map.values()) {
 					try {
 						filteredServiceListener.serviceChanged(event);
 					}
-					catch (Throwable t) {
-						if (debug.DEBUG_GENERAL) {
-							Debug.println(
-								"Exception in bottom level event dispatcher: " +
-									t.getMessage());
+					catch (Throwable t1) {
+						Debug.println("Exception in bottom level event dispatcher: " + t1.getMessage());
 
-							Debug.printStackTrace(t);
+						Debug.printStackTrace(t1);
+
+						container.handleRuntimeError(t1);
+
+						try {
+							EquinoxEventPublisher equinoxEventPublisher = container.getEventPublisher();
+
+							equinoxEventPublisher.publishFrameworkEvent(FrameworkEvent.ERROR, bundle, t1);
 						}
+						catch (Throwable t2) {
+							Debug.println("Exception in bottom level event dispatcher: " + t2.getMessage());
 
-						container.handleRuntimeError(t);
+							Debug.printStackTrace(t2);
 
-						EquinoxEventPublisher equinoxEventPublisher =
-							container.getEventPublisher();
-
-						BundleContextImpl bundleContextImpl = bundleContextEntry.getKey();
-
-						equinoxEventPublisher.publishFrameworkEvent(
-							FrameworkEvent.ERROR, bundleContextImpl.getBundle(), t);
+							container.handleRuntimeError(t2);
+						}
 					}
 				}
 			}

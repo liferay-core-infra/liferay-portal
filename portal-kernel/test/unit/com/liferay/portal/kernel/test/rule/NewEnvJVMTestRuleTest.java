@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.test.rule;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -228,7 +229,9 @@ public class NewEnvJVMTestRuleTest {
 		for (Map.Entry<String, String> entry : map.entrySet()) {
 			sb.append(entry.getKey());
 			sb.append(_SEPARATOR_KEY_VALUE);
-			sb.append(entry.getValue());
+			sb.append(
+				(entry.getValue() == null) ? StringPool.NULL :
+					entry.getValue());
 			sb.append(_SEPARATOR_VARIABLE);
 		}
 
@@ -244,10 +247,12 @@ public class NewEnvJVMTestRuleTest {
 			String[] parts = StringUtil.split(entry, _SEPARATOR_KEY_VALUE);
 
 			if (parts.length == 1) {
-				map.put(parts[0], null);
+				map.put(parts[0], StringPool.BLANK);
 			}
 			else {
-				map.put(parts[0], parts[1]);
+				map.put(
+					parts[0],
+					parts[1].equals(StringPool.NULL) ? null : parts[1]);
 			}
 		}
 

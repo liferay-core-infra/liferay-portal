@@ -7,9 +7,11 @@ package com.liferay.portal.store.file.system.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Props;
@@ -18,10 +20,17 @@ import com.liferay.portal.store.test.util.BaseStoreTestCase;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import java.io.File;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.service.cm.Configuration;
@@ -59,7 +68,51 @@ public class FileSystemStoreTest extends BaseStoreTestCase {
 	public static void tearDownClass() throws Exception {
 		ConfigurationTestUtil.deleteConfiguration(_configuration);
 
+		FileUtil.delete(_rootDir + "_symlink");
+
 		FileUtil.deltree(_rootDir);
+	}
+
+	@Test
+	public void testDeleteEmptyParentWithSymlinkRoot() throws Exception {
+		String originalRootDir = _rootDir;
+
+		_rootDir += "_symlink";
+
+		Files.createSymbolicLink(
+			Paths.get(_rootDir), Paths.get(originalRootDir));
+
+		ConfigurationTestUtil.saveConfiguration(
+			_configuration,
+			HashMapDictionaryBuilder.<String, Object>put(
+				"rootDir", _rootDir
+			).build());
+
+		String fileName = RandomTestUtil.randomString();
+
+		_store.addFile(
+			getCompanyId(), getRepositoryId(), fileName, Store.VERSION_DEFAULT,
+			new UnsyncByteArrayInputStream(getDATA_VERSION_1()));
+
+		_store.deleteFile(
+			getCompanyId(), getRepositoryId(), fileName, Store.VERSION_DEFAULT);
+
+		File symlinkFile = new File(_rootDir);
+
+		Assert.assertFalse(
+			_store.hasFile(
+				getCompanyId(), getRepositoryId(), fileName,
+				Store.VERSION_DEFAULT));
+
+		Assert.assertTrue(symlinkFile.exists());
+
+		_rootDir = originalRootDir;
+
+		ConfigurationTestUtil.saveConfiguration(
+			_configuration,
+			HashMapDictionaryBuilder.<String, Object>put(
+				"rootDir", _rootDir
+			).build());
 	}
 
 	@Override

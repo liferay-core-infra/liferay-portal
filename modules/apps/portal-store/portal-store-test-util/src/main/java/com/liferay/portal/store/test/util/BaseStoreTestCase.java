@@ -354,6 +354,10 @@ public abstract class BaseStoreTestCase {
 		}
 	}
 
+	protected static byte[] getDATA_VERSION_1() {
+		return _DATA_VERSION_1;
+	}
+
 	protected void addVersions(String fileName, int newVersionCount)
 		throws Exception {
 
@@ -364,6 +368,14 @@ public abstract class BaseStoreTestCase {
 				_companyId, _repositoryId, fileName, versionLabel + i,
 				new UnsyncByteArrayInputStream(_DATA_VERSION_1));
 		}
+	}
+
+	protected long getCompanyId() {
+		return _companyId;
+	}
+
+	protected long getRepositoryId() {
+		return _repositoryId;
 	}
 
 	protected abstract Store getStore();

@@ -36,6 +36,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URLClassLoader;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +87,16 @@ public class NewEnvTestRule implements TestRule {
 		builder.setRuntimeClassPath(CLASS_PATH);
 
 		setEnvironment(builder, description);
+
+		Map<String, String> environment = builder.getEnvironment();
+
+		String javaHome = environment.get("JAVA_HOME");
+
+		if (javaHome != null) {
+			Path javaHomePath = Paths.get(javaHome, "bin", "java");
+
+			builder.setJavaExecutable(javaHomePath.toString());
+		}
 
 		return new RunInNewJVMStatment(builder.build(), statement, description);
 	}

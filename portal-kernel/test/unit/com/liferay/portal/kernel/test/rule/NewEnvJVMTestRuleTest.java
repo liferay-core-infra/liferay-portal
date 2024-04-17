@@ -10,6 +10,9 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.io.File;
+import java.io.IOException;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
@@ -37,6 +40,12 @@ public class NewEnvJVMTestRuleTest {
 	public static void setUpClass() {
 		System.setProperty(
 			_SYSTEM_PROPERTY_KEY_ENVIRONMENT, _toString(_getEnvironment()));
+
+		System.setProperty(
+			_PARENT_RUNTIME_JAVA_HOME_KEY, System.getProperty("java.home"));
+
+		System.setProperty(
+			_PARENT_ENVIRONMENT_JAVA_HOME_KEY, System.getenv("JAVA_HOME"));
 	}
 
 	@Before
@@ -55,6 +64,34 @@ public class NewEnvJVMTestRuleTest {
 		Assert.assertEquals(2, _counter.getAndIncrement());
 
 		assertProcessId();
+	}
+
+	@NewEnv.JVMArgsLine(
+		"-D" + _PARENT_ENVIRONMENT_JAVA_HOME_KEY + "=${" +
+			_PARENT_ENVIRONMENT_JAVA_HOME_KEY + "} -D" +
+				_PARENT_RUNTIME_JAVA_HOME_KEY + "=${" +
+					_PARENT_RUNTIME_JAVA_HOME_KEY + "}"
+	)
+	@Test
+	public void testJavaHome() throws IOException {
+		_counter.getAndIncrement();
+
+		String parentJavaHome = System.getProperty(
+			_PARENT_ENVIRONMENT_JAVA_HOME_KEY);
+
+		String parentRunTimeJavaHome = _getJavaHomePath(
+			System.getProperty(_PARENT_RUNTIME_JAVA_HOME_KEY));
+
+		String currentJavaHome = System.getenv("JAVA_HOME");
+
+		String currentRunTimeJavaHome = _getJavaHomePath(
+			System.getProperty("java.home"));
+
+		Assert.assertEquals(parentRunTimeJavaHome, parentJavaHome);
+
+		Assert.assertEquals(parentRunTimeJavaHome, currentJavaHome);
+
+		Assert.assertEquals(parentRunTimeJavaHome, currentRunTimeJavaHome);
 	}
 
 	@Test
@@ -259,7 +296,29 @@ public class NewEnvJVMTestRuleTest {
 		return map;
 	}
 
+	private String _getJavaHomePath(String path) throws IOException {
+		int jrePos = path.lastIndexOf("/jre");
+
+		if (jrePos == -1) {
+			jrePos = path.lastIndexOf("\\jre");
+		}
+
+		if (jrePos != -1) {
+			path = path.substring(0, jrePos);
+		}
+
+		File file = new File(path);
+
+		return file.getCanonicalPath();
+	}
+
 	private static final String _ENVIRONMENT_KEY_USER = "USER";
+
+	private static final String _PARENT_ENVIRONMENT_JAVA_HOME_KEY =
+		"_PARENT_ENVIRONMENT_JAVA_HOME_KEY_";
+
+	private static final String _PARENT_RUNTIME_JAVA_HOME_KEY =
+		"_PARENT_RUNTIME_JAVA_HOME_KEY_";
 
 	private static final String _SEPARATOR_KEY_VALUE = "_SEPARATOR_KEY_VALUE_";
 

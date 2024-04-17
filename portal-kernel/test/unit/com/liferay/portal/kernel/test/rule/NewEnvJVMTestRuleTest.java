@@ -136,6 +136,31 @@ public class NewEnvJVMTestRuleTest {
 		Assert.assertEquals(_parentEnvironment, environment);
 	}
 
+	@NewEnv.JVMArgsLine(
+		"-D" + _SYSTEM_PROPERTY_KEY_ENVIRONMENT + "=${" +
+			_SYSTEM_PROPERTY_KEY_ENVIRONMENT + "}"
+	)
+	@Test
+	public void testJavaHome() {
+		_counter.getAndIncrement();
+
+		Map<String, String> environment = _getEnvironment();
+
+		String parentJavaHome = _parentEnvironment.get("JAVA_HOME");
+
+		String parentRunTimeJavaHome = _parentEnvironment.get("java.home");
+
+		String currentJavaHome = environment.get("JAVA_HOME");
+
+		String currentRunTimeJavaHome = System.getProperty("java.home");
+
+		Assert.assertEquals(parentJavaHome, parentRunTimeJavaHome);
+
+		Assert.assertEquals(parentJavaHome, currentJavaHome);
+
+		Assert.assertEquals(parentJavaHome, currentRunTimeJavaHome);
+	}
+
 	@NewEnv.Environment(variables = {"USER=UNIT_TEST", "ENV_KEY=NEW_VALUE"})
 	@NewEnv.JVMArgsLine(
 		"-D" + _SYSTEM_PROPERTY_KEY_ENVIRONMENT + "=${" +
@@ -219,6 +244,8 @@ public class NewEnvJVMTestRuleTest {
 		environment.remove("PORTAL_BUNDLES_DIST_URL");
 		environment.remove("SUBREPOSITORY_PACKAGE_NAMES");
 		environment.remove("TERMCAP");
+
+		environment.put("java.home", System.getProperty("java.home"));
 
 		return environment;
 	}

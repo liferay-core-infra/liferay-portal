@@ -10,6 +10,9 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.io.File;
+import java.io.IOException;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
@@ -36,6 +39,9 @@ public class NewEnvJVMTestRuleTest {
 	public static void setUpClass() {
 		System.setProperty(
 			_SYSTEM_PROPERTY_KEY_ENVIRONMENT, _toString(_getEnvironment()));
+
+		System.setProperty(
+			_PARENT_JAVA_HOME_KEY, System.getProperty("java.home"));
 	}
 
 	@Before
@@ -51,6 +57,18 @@ public class NewEnvJVMTestRuleTest {
 		Assert.assertEquals(2, _counter.getAndIncrement());
 
 		assertProcessId();
+	}
+
+	@NewEnv.JVMArgsLine(
+		"-D" + _PARENT_JAVA_HOME_KEY + "=${" + _PARENT_JAVA_HOME_KEY + "}"
+	)
+	@Test
+	public void testJavaHome() throws IOException {
+		_counter.getAndIncrement();
+
+		Assert.assertEquals(
+			_getJavaHomePath(System.getProperty(_PARENT_JAVA_HOME_KEY)),
+			_getJavaHomePath(System.getProperty("java.home")));
 	}
 
 	@Test
@@ -260,7 +278,28 @@ public class NewEnvJVMTestRuleTest {
 		return map;
 	}
 
+	private String _getJavaHomePath(String path) throws IOException {
+		File file = new File(path);
+
+		path = file.getCanonicalPath();
+
+		int jrePos = path.lastIndexOf("/jre");
+
+		if (jrePos == -1) {
+			jrePos = path.lastIndexOf("\\jre");
+		}
+
+		if (jrePos != -1) {
+			path = path.substring(0, jrePos);
+		}
+
+		return path;
+	}
+
 	private static final String _ENVIRONMENT_KEY_USER = "USER";
+
+	private static final String _PARENT_JAVA_HOME_KEY =
+		"_PARENT_RUNTIME_JAVA_HOME_KEY_";
 
 	private static final String _SEPARATOR_KEY_VALUE = "_SEPARATOR_KEY_VALUE_";
 

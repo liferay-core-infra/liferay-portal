@@ -3,6 +3,7 @@
 
 <hibernate-mapping auto-import="false" default-lazy="false">
 	<import class="com.liferay.portal.tools.service.builder.test.model.AutoEscapeEntry" />
+	<import class="com.liferay.portal.tools.service.builder.test.model.BadColumnNameEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.BigDecimalEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.CacheDisabledEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.CacheFieldEntry" />
@@ -35,6 +36,12 @@
 		</id>
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="autoEscapeDisabledColumn" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="autoEscapeEnabledColumn" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.portal.tools.service.builder.test.model.impl.BadColumnNameEntryImpl" table="BadColumnNameEntry">
+		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="badColumnNameEntryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.portal.tools.service.builder.test.model.impl.BigDecimalEntryImpl" table="BigDecimalEntry">
 		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="bigDecimalEntryId" type="long">

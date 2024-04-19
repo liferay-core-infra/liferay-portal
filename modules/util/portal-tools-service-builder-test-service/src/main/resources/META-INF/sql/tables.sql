@@ -4,6 +4,11 @@ create table AutoEscapeEntry (
 	autoEscapeEnabledColumn VARCHAR(75) null
 );
 
+create table BadColumnNameEntry (
+	badColumnNameEntryId LONG not null primary key,
+	type_ VARCHAR(75) null
+);
+
 create table BigDecimalEntries_LVEntries (
 	companyId LONG not null,
 	bigDecimalEntryId LONG not null,

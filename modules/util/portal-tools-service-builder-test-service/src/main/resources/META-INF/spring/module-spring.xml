@@ -9,6 +9,9 @@
 >
 	<bean class="com.liferay.portal.tools.service.builder.test.service.persistence.impl.AutoEscapeEntryModelArgumentsResolver" id="com.liferay.portal.tools.service.builder.test.service.persistence.impl.AutoEscapeEntryModelArgumentsResolver" />
 	<bean class="com.liferay.portal.tools.service.builder.test.service.persistence.impl.AutoEscapeEntryPersistenceImpl" id="com.liferay.portal.tools.service.builder.test.service.persistence.AutoEscapeEntryPersistence" />
+	<bean class="com.liferay.portal.tools.service.builder.test.service.impl.BadColumnNameEntryLocalServiceImpl" id="com.liferay.portal.tools.service.builder.test.service.BadColumnNameEntryLocalService" />
+	<bean class="com.liferay.portal.tools.service.builder.test.service.persistence.impl.BadColumnNameEntryModelArgumentsResolver" id="com.liferay.portal.tools.service.builder.test.service.persistence.impl.BadColumnNameEntryModelArgumentsResolver" />
+	<bean class="com.liferay.portal.tools.service.builder.test.service.persistence.impl.BadColumnNameEntryPersistenceImpl" id="com.liferay.portal.tools.service.builder.test.service.persistence.BadColumnNameEntryPersistence" />
 	<bean class="com.liferay.portal.tools.service.builder.test.service.persistence.impl.BigDecimalEntryModelArgumentsResolver" id="com.liferay.portal.tools.service.builder.test.service.persistence.impl.BigDecimalEntryModelArgumentsResolver" />
 	<bean class="com.liferay.portal.tools.service.builder.test.service.persistence.impl.BigDecimalEntryPersistenceImpl" id="com.liferay.portal.tools.service.builder.test.service.persistence.BigDecimalEntryPersistence" />
 	<bean class="com.liferay.portal.tools.service.builder.test.service.impl.CacheDisabledEntryLocalServiceImpl" id="com.liferay.portal.tools.service.builder.test.service.CacheDisabledEntryLocalService" />

@@ -8,6 +8,10 @@
 		</field>
 		<field name="autoEscapeEnabledColumn" type="String" />
 	</model>
+	<model name="com.liferay.portal.tools.service.builder.test.model.BadColumnNameEntry">
+		<field name="badColumnNameEntryId" type="long" />
+		<field name="type" type="String" />
+	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.model.BigDecimalEntry">
 		<field name="bigDecimalEntryId" type="long" />
 		<field name="companyId" type="long" />

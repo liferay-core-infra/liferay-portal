@@ -1,3 +1,5 @@
+create index IX_E0F93983 on BadColumnNameEntry (type_[$COLUMN_LENGTH:75$]);
+
 create index IX_838D8DFC on BigDecimalEntries_LVEntries (companyId);
 create index IX_67100507 on BigDecimalEntries_LVEntries (lvEntryId);
 

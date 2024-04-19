@@ -632,10 +632,10 @@ public class BadColumnNameEntryPersistenceImpl
 		}
 		else {
 			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BadColumnNameEntryModelImpl.ORDER_BY_JPQL);
+				sb.append(_FILTER_ORDER_BY_ALIAS);
 			}
 			else {
-				sb.append(BadColumnNameEntryModelImpl.ORDER_BY_SQL);
+				sb.append(_FILTER_ORDER_BY_TABLE);
 			}
 		}
 
@@ -842,10 +842,10 @@ public class BadColumnNameEntryPersistenceImpl
 		}
 		else {
 			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BadColumnNameEntryModelImpl.ORDER_BY_JPQL);
+				sb.append(_FILTER_ORDER_BY_ALIAS);
 			}
 			else {
-				sb.append(BadColumnNameEntryModelImpl.ORDER_BY_SQL);
+				sb.append(_FILTER_ORDER_BY_TABLE);
 			}
 		}
 
@@ -1644,6 +1644,12 @@ public class BadColumnNameEntryPersistenceImpl
 	private static final String _FILTER_ENTITY_ALIAS = "badColumnNameEntry";
 
 	private static final String _FILTER_ENTITY_TABLE = "BadColumnNameEntry";
+
+	private static final String _FILTER_ORDER_BY_ALIAS =
+		" ORDER BY badColumnNameEntry.type_ ASC";
+
+	private static final String _FILTER_ORDER_BY_TABLE =
+		" ORDER BY BadColumnNameEntry.type_ ASC";
 
 	private static final String _ORDER_BY_ENTITY_ALIAS = "badColumnNameEntry.";
 

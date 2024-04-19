@@ -3139,6 +3139,56 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			private static final String _FILTER_ENTITY_ALIAS = "${entity.alias}";
 
 			private static final String _FILTER_ENTITY_TABLE = "${entity.table}";
+
+			<#if entity.entityOrder??>
+				<#assign orderList = entity.entityOrder.entityColumns />
+			<#else>
+				<#assign orderList = entity.PKEntityColumns />
+			</#if>
+
+			<#assign
+				orderByAlias = ""
+				orderByTable = ""
+			/>
+
+			<#list orderList as order>
+				<#if entity.hasCompoundPK() && order.isPrimary()>
+					<#assign
+						orderByAlias = orderByAlias + entity.alias + ".id." + order.DBName
+						orderByTable = orderByTable + entity.table + ".id." + order.DBName
+					/>
+
+				<#else>
+					<#assign
+						orderByAlias = orderByAlias + entity.alias + "." + order.DBName
+						orderByTable = orderByTable + entity.table + "." + order.DBName
+					/>
+				</#if>
+
+				<#if order.isOrderByAscending()>
+					<#assign
+						orderByAlias = orderByAlias + " ASC"
+						orderByTable = orderByTable + " ASC"
+					/>
+
+				<#else>
+					<#assign
+						orderByAlias = orderByAlias + " DESC"
+						orderByTable = orderByTable + " DESC"
+					/>
+				</#if>
+
+				<#if order_has_next>
+					<#assign
+						orderByAlias = orderByAlias + ", "
+						orderByTable = orderByTable + ", "
+					/>
+				</#if>
+			</#list>
+
+			private static final String _FILTER_ORDER_BY_ALIAS = " ORDER BY ${orderByAlias}";
+
+			private static final String _FILTER_ORDER_BY_TABLE = " ORDER BY ${orderByTable}";
 		</#if>
 	</#if>
 

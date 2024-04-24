@@ -13,6 +13,9 @@ import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.model.impl.PortalPreferenceValueImpl;
 import com.liferay.portlet.PortletPreferencesFactoryImpl;
 import com.liferay.portlet.Preference;
@@ -28,13 +31,17 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		int sessionClicksMaxSizeTerms = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.SESSION_CLICKS_MAX_SIZE_TERMS));
+
 		runSQL(
 			StringBundler.concat(
 				"create table PortalPreferenceValue (mvccVersion LONG default ",
 				"0 not null, portalPreferenceValueId LONG not null primary ",
 				"key, portalPreferencesId LONG, index_ INTEGER, key_ ",
-				"VARCHAR(255) null, largeValue TEXT null, namespace ",
-				"VARCHAR(255) null, smallValue VARCHAR(255) null)"));
+				"VARCHAR(" + sessionClicksMaxSizeTerms + ") null, ",
+				"largeValue TEXT null, namespace VARCHAR(255) null, ",
+				"smallValue VARCHAR(255) null)"));
 
 		processConcurrently(
 			SQLTransformer.transform(

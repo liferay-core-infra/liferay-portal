@@ -9,9 +9,17 @@
 </#if>
 
 <#if entity.hasCompoundPK() && entityColumn.isPrimary()>
-	<#assign finderFieldName = entity.alias + ".id." + entityColumnName />
+	<#if validator.isNull(finderFieldSuffix)>
+		<#assign finderFieldName = entity.alias + ".id." + entityColumnName />
+	<#else>
+		<#assign finderFieldName = entity.table + ".id." + entityColumnName />
+	</#if>
 <#else>
-	<#assign finderFieldName = entity.alias + "." + entityColumnName />
+	<#if validator.isNull(finderFieldSuffix)>
+		<#assign finderFieldName = entity.alias + "." + entityColumnName />
+	<#else>
+		<#assign finderFieldName = entity.table + "." + entityColumnName />
+	</#if>
 </#if>
 
 <#if serviceBuilder.getSqlType(entity.getName(), entityColumn) == "CLOB">

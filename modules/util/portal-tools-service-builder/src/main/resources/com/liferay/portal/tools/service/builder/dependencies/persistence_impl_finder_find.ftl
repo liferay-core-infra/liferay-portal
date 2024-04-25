@@ -756,20 +756,10 @@ that may or may not be enforced with a unique index at the database level. Case
 				}
 
 				if (orderByComparator != null) {
-					if (getDB().isSupportsInlineDistinct()) {
-						appendOrderByComparator(sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-					}
-					else {
-						appendOrderByComparator(sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-					}
+					appendOrderByComparator(sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 				}
 				else {
-					if (getDB().isSupportsInlineDistinct()) {
-						sb.append(${entity.name}ModelImpl.ORDER_BY_JPQL);
-					}
-					else {
-						sb.append(${entity.name}ModelImpl.ORDER_BY_SQL);
-					}
+					sb.append(${entity.name}ModelImpl.ORDER_BY_SQL);
 				}
 
 				String sql = InlineSQLHelperUtil.replacePermissionCheck(sb.toString(), ${entity.name}.class.getName(), _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN<#if entityFinder.hasEntityColumn("groupId")>, groupId</#if>);
@@ -781,12 +771,7 @@ that may or may not be enforced with a unique index at the database level. Case
 
 					SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-					if (getDB().isSupportsInlineDistinct()) {
-						sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, ${entity.name}Impl.class);
-					}
-					else {
-						sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ${entity.name}Impl.class);
-					}
+					sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ${entity.name}Impl.class);
 
 					QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -959,12 +944,7 @@ that may or may not be enforced with a unique index at the database level. Case
 						}
 
 						for (int i = 0; i < orderByConditionFields.length; i++) {
-							if (getDB().isSupportsInlineDistinct()) {
-								sb.append(getColumnName(_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i], true));
-							}
-							else {
-								sb.append(getColumnName(_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i], true));
-							}
+							sb.append(getColumnName(_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i], true));
 
 							if ((i + 1) < orderByConditionFields.length) {
 								if (orderByComparator.isAscending() ^ previous) {
@@ -989,12 +969,7 @@ that may or may not be enforced with a unique index at the database level. Case
 						String[] orderByFields = orderByComparator.getOrderByFields();
 
 						for (int i = 0; i < orderByFields.length; i++) {
-							if (getDB().isSupportsInlineDistinct()) {
-								sb.append(getColumnName(_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-							}
-							else {
-								sb.append(getColumnName(_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-							}
+							sb.append(getColumnName(_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 							if ((i + 1) < orderByFields.length) {
 								if (orderByComparator.isAscending() ^ previous) {
@@ -1015,12 +990,7 @@ that may or may not be enforced with a unique index at the database level. Case
 						}
 					}
 					else {
-						if (getDB().isSupportsInlineDistinct()) {
-							sb.append(${entity.name}ModelImpl.ORDER_BY_JPQL);
-						}
-						else {
-							sb.append(${entity.name}ModelImpl.ORDER_BY_SQL);
-						}
+						sb.append(${entity.name}ModelImpl.ORDER_BY_SQL);
 					}
 
 					String sql = InlineSQLHelperUtil.replacePermissionCheck(sb.toString(), ${entity.name}.class.getName(), _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN<#if entityFinder.hasEntityColumn("groupId")>, groupId</#if>);
@@ -1030,12 +1000,7 @@ that may or may not be enforced with a unique index at the database level. Case
 					sqlQuery.setFirstResult(0);
 					sqlQuery.setMaxResults(2);
 
-					if (getDB().isSupportsInlineDistinct()) {
-						sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, ${entity.name}Impl.class);
-					}
-					else {
-						sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ${entity.name}Impl.class);
-					}
+					sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ${entity.name}Impl.class);
 
 					QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1291,20 +1256,10 @@ that may or may not be enforced with a unique index at the database level. Case
 					}
 
 					if (orderByComparator != null) {
-						if (getDB().isSupportsInlineDistinct()) {
-							appendOrderByComparator(sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-						}
-						else {
-							appendOrderByComparator(sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-						}
+						appendOrderByComparator(sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 					}
 					else {
-						if (getDB().isSupportsInlineDistinct()) {
-							sb.append(${entity.name}ModelImpl.ORDER_BY_JPQL);
-						}
-						else {
-							sb.append(${entity.name}ModelImpl.ORDER_BY_SQL);
-						}
+						sb.append(${entity.name}ModelImpl.ORDER_BY_SQL);
 					}
 
 					String sql = InlineSQLHelperUtil.replacePermissionCheck(sb.toString(), ${entity.name}.class.getName(), _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN
@@ -1324,12 +1279,7 @@ that may or may not be enforced with a unique index at the database level. Case
 
 						SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-						if (getDB().isSupportsInlineDistinct()) {
-							sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, ${entity.name}Impl.class);
-						}
-						else {
-							sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ${entity.name}Impl.class);
-						}
+						sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ${entity.name}Impl.class);
 
 						<#if bindParameter(entityColumns)>
 							QueryPos queryPos = QueryPos.getInstance(sqlQuery);

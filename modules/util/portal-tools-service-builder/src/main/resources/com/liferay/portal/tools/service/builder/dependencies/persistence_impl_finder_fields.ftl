@@ -11,7 +11,7 @@
 
 	<#include "persistence_impl_finder_field.ftl">
 
-	<#if entity.isPermissionCheckEnabled(entityFinder) && !entity.isPermissionedModel() && ((entityColumn.name != entityColumn.DBName) || entityFinderDBWhere)>
+	<#if entity.isPermissionCheckEnabled(entityFinder) && !entity.isPermissionedModel()>
 		<#assign entityColumnName = entityColumn.DBName finderFieldSuffix = finderFieldSQLSuffix />
 
 		<#include "persistence_impl_finder_field.ftl">

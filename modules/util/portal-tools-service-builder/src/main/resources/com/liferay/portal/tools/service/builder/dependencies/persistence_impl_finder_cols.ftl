@@ -5,7 +5,7 @@
 </#if>
 
 <#list entityColumns as entityColumn>
-	<#if sqlQuery?? && sqlQuery && ((entityColumn.name != entityColumn.DBName) || entityFinderDBWhere)>
+	<#if sqlQuery?? && sqlQuery>
 		<#assign finderFieldSuffix = finderFieldSQLSuffix />
 	<#else>
 		<#assign finderFieldSuffix = "" />

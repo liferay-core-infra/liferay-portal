@@ -480,6 +480,9 @@ public class ObjectDefinitionLocalServiceImpl
 			ObjectDefinition objectDefinition)
 		throws PortalException {
 
+		objectDefinition = objectDefinitionPersistence.findByPrimaryKey(
+			objectDefinition.getObjectDefinitionId());
+
 		if (!PortalInstances.isCurrentCompanyInDeletionProcess() &&
 			!PortalRunMode.isTestMode() &&
 			objectDefinition.isUnmodifiableSystemObject()) {

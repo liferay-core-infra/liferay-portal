@@ -2024,22 +2024,11 @@ public class SiteNavigationMenuPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SiteNavigationMenuModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SiteNavigationMenuModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SiteNavigationMenuModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2053,14 +2042,8 @@ public class SiteNavigationMenuPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SiteNavigationMenuImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SiteNavigationMenuImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SiteNavigationMenuImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4225,22 +4208,11 @@ public class SiteNavigationMenuPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SiteNavigationMenuModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SiteNavigationMenuModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SiteNavigationMenuModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4254,14 +4226,8 @@ public class SiteNavigationMenuPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SiteNavigationMenuImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SiteNavigationMenuImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SiteNavigationMenuImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5794,22 +5760,11 @@ public class SiteNavigationMenuPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SiteNavigationMenuModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SiteNavigationMenuModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SiteNavigationMenuModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5823,14 +5778,8 @@ public class SiteNavigationMenuPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SiteNavigationMenuImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SiteNavigationMenuImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SiteNavigationMenuImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -6196,7 +6145,7 @@ public class SiteNavigationMenuPersistenceImpl
 		"siteNavigationMenu.type = ?";
 
 	private static final String _FINDER_COLUMN_G_T_TYPE_2_SQL =
-		"siteNavigationMenu.type_ = ?";
+		"SiteNavigationMenu.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_A;
 	private FinderPath _finderPathWithoutPaginationFindByG_A;
@@ -6752,22 +6701,11 @@ public class SiteNavigationMenuPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SiteNavigationMenuModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SiteNavigationMenuModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SiteNavigationMenuModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -6781,14 +6719,8 @@ public class SiteNavigationMenuPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SiteNavigationMenuImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SiteNavigationMenuImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SiteNavigationMenuImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -7154,7 +7086,7 @@ public class SiteNavigationMenuPersistenceImpl
 		"siteNavigationMenu.auto = ?";
 
 	private static final String _FINDER_COLUMN_G_A_AUTO_2_SQL =
-		"siteNavigationMenu.auto_ = ?";
+		"SiteNavigationMenu.auto_ = ?";
 
 	public SiteNavigationMenuPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -8258,10 +8190,10 @@ public class SiteNavigationMenuPersistenceImpl
 		"SELECT COUNT(siteNavigationMenu) FROM SiteNavigationMenu siteNavigationMenu WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"siteNavigationMenu.siteNavigationMenuId";
+		"SiteNavigationMenu.siteNavigationMenuId";
 
 	private static final String _FILTER_SQL_SELECT_SITENAVIGATIONMENU_WHERE =
-		"SELECT DISTINCT {siteNavigationMenu.*} FROM SiteNavigationMenu siteNavigationMenu WHERE ";
+		"SELECT DISTINCT {SiteNavigationMenu.*} FROM SiteNavigationMenu WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_SITENAVIGATIONMENU_NO_INLINE_DISTINCT_WHERE_1 =
@@ -8272,7 +8204,7 @@ public class SiteNavigationMenuPersistenceImpl
 			") TEMP_TABLE INNER JOIN SiteNavigationMenu ON TEMP_TABLE.siteNavigationMenuId = SiteNavigationMenu.siteNavigationMenuId";
 
 	private static final String _FILTER_SQL_COUNT_SITENAVIGATIONMENU_WHERE =
-		"SELECT COUNT(DISTINCT siteNavigationMenu.siteNavigationMenuId) AS COUNT_VALUE FROM SiteNavigationMenu siteNavigationMenu WHERE ";
+		"SELECT COUNT(DISTINCT SiteNavigationMenu.siteNavigationMenuId) AS COUNT_VALUE FROM SiteNavigationMenu WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "siteNavigationMenu";
 

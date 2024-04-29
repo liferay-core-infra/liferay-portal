@@ -2021,22 +2021,11 @@ public class SegmentsExperimentPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SegmentsExperimentModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SegmentsExperimentModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SegmentsExperimentModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2050,14 +2039,8 @@ public class SegmentsExperimentPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SegmentsExperimentImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SegmentsExperimentImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SegmentsExperimentImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4597,10 +4580,10 @@ public class SegmentsExperimentPersistenceImpl
 		"SELECT COUNT(segmentsExperiment) FROM SegmentsExperiment segmentsExperiment WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"segmentsExperiment.segmentsExperimentId";
+		"SegmentsExperiment.segmentsExperimentId";
 
 	private static final String _FILTER_SQL_SELECT_SEGMENTSEXPERIMENT_WHERE =
-		"SELECT DISTINCT {segmentsExperiment.*} FROM SegmentsExperiment segmentsExperiment WHERE ";
+		"SELECT DISTINCT {SegmentsExperiment.*} FROM SegmentsExperiment WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_SEGMENTSEXPERIMENT_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4611,7 +4594,7 @@ public class SegmentsExperimentPersistenceImpl
 			") TEMP_TABLE INNER JOIN SegmentsExperiment ON TEMP_TABLE.segmentsExperimentId = SegmentsExperiment.segmentsExperimentId";
 
 	private static final String _FILTER_SQL_COUNT_SEGMENTSEXPERIMENT_WHERE =
-		"SELECT COUNT(DISTINCT segmentsExperiment.segmentsExperimentId) AS COUNT_VALUE FROM SegmentsExperiment segmentsExperiment WHERE ";
+		"SELECT COUNT(DISTINCT SegmentsExperiment.segmentsExperimentId) AS COUNT_VALUE FROM SegmentsExperiment WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "segmentsExperiment";
 

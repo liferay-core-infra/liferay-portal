@@ -623,22 +623,11 @@ public class CommercePaymentEntryAuditPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentEntryAuditModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentEntryAuditModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentEntryAuditModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -652,14 +641,8 @@ public class CommercePaymentEntryAuditPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommercePaymentEntryAuditImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommercePaymentEntryAuditImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommercePaymentEntryAuditImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1666,11 +1649,11 @@ public class CommercePaymentEntryAuditPersistenceImpl
 		"SELECT COUNT(commercePaymentEntryAudit) FROM CommercePaymentEntryAudit commercePaymentEntryAudit WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"commercePaymentEntryAudit.commercePaymentEntryAuditId";
+		"CommercePaymentEntryAudit.commercePaymentEntryAuditId";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCEPAYMENTENTRYAUDIT_WHERE =
-			"SELECT DISTINCT {commercePaymentEntryAudit.*} FROM CommercePaymentEntryAudit commercePaymentEntryAudit WHERE ";
+			"SELECT DISTINCT {CommercePaymentEntryAudit.*} FROM CommercePaymentEntryAudit WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCEPAYMENTENTRYAUDIT_NO_INLINE_DISTINCT_WHERE_1 =
@@ -1682,7 +1665,7 @@ public class CommercePaymentEntryAuditPersistenceImpl
 
 	private static final String
 		_FILTER_SQL_COUNT_COMMERCEPAYMENTENTRYAUDIT_WHERE =
-			"SELECT COUNT(DISTINCT commercePaymentEntryAudit.commercePaymentEntryAuditId) AS COUNT_VALUE FROM CommercePaymentEntryAudit commercePaymentEntryAudit WHERE ";
+			"SELECT COUNT(DISTINCT CommercePaymentEntryAudit.commercePaymentEntryAuditId) AS COUNT_VALUE FROM CommercePaymentEntryAudit WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS =
 		"commercePaymentEntryAudit";

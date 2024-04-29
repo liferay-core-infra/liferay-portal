@@ -634,22 +634,11 @@ public class SXPBlueprintPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPBlueprintModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPBlueprintModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPBlueprintModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -663,14 +652,7 @@ public class SXPBlueprintPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SXPBlueprintImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SXPBlueprintImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPBlueprintImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1044,10 +1026,10 @@ public class SXPBlueprintPersistenceImpl
 		"(sxpBlueprint.uuid IS NULL OR sxpBlueprint.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"sxpBlueprint.uuid_ = ?";
+		"SXPBlueprint.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(sxpBlueprint.uuid_ IS NULL OR sxpBlueprint.uuid_ = '')";
+		"(SXPBlueprint.uuid_ IS NULL OR SXPBlueprint.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1631,22 +1613,11 @@ public class SXPBlueprintPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPBlueprintModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPBlueprintModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPBlueprintModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1660,14 +1631,7 @@ public class SXPBlueprintPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SXPBlueprintImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SXPBlueprintImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPBlueprintImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2063,10 +2027,10 @@ public class SXPBlueprintPersistenceImpl
 		"(sxpBlueprint.uuid IS NULL OR sxpBlueprint.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"sxpBlueprint.uuid_ = ? AND ";
+		"SXPBlueprint.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(sxpBlueprint.uuid_ IS NULL OR sxpBlueprint.uuid_ = '') AND ";
+		"(SXPBlueprint.uuid_ IS NULL OR SXPBlueprint.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"sxpBlueprint.companyId = ?";
@@ -2579,22 +2543,11 @@ public class SXPBlueprintPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPBlueprintModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPBlueprintModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPBlueprintModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2608,14 +2561,7 @@ public class SXPBlueprintPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SXPBlueprintImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SXPBlueprintImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPBlueprintImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3992,10 +3938,10 @@ public class SXPBlueprintPersistenceImpl
 		"SELECT COUNT(sxpBlueprint) FROM SXPBlueprint sxpBlueprint WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"sxpBlueprint.sxpBlueprintId";
+		"SXPBlueprint.sxpBlueprintId";
 
 	private static final String _FILTER_SQL_SELECT_SXPBLUEPRINT_WHERE =
-		"SELECT DISTINCT {sxpBlueprint.*} FROM SXPBlueprint sxpBlueprint WHERE ";
+		"SELECT DISTINCT {SXPBlueprint.*} FROM SXPBlueprint WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_SXPBLUEPRINT_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4006,7 +3952,7 @@ public class SXPBlueprintPersistenceImpl
 			") TEMP_TABLE INNER JOIN SXPBlueprint ON TEMP_TABLE.sxpBlueprintId = SXPBlueprint.sxpBlueprintId";
 
 	private static final String _FILTER_SQL_COUNT_SXPBLUEPRINT_WHERE =
-		"SELECT COUNT(DISTINCT sxpBlueprint.sxpBlueprintId) AS COUNT_VALUE FROM SXPBlueprint sxpBlueprint WHERE ";
+		"SELECT COUNT(DISTINCT SXPBlueprint.sxpBlueprintId) AS COUNT_VALUE FROM SXPBlueprint WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "sxpBlueprint";
 

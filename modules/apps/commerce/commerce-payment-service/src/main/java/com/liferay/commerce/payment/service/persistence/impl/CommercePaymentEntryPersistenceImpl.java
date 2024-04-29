@@ -614,22 +614,11 @@ public class CommercePaymentEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -643,14 +632,8 @@ public class CommercePaymentEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommercePaymentEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommercePaymentEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommercePaymentEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1578,22 +1561,11 @@ public class CommercePaymentEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1607,14 +1579,8 @@ public class CommercePaymentEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommercePaymentEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommercePaymentEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommercePaymentEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2625,22 +2591,11 @@ public class CommercePaymentEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2654,14 +2609,8 @@ public class CommercePaymentEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommercePaymentEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommercePaymentEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommercePaymentEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3074,7 +3023,7 @@ public class CommercePaymentEntryPersistenceImpl
 		"commercePaymentEntry.type = ?";
 
 	private static final String _FINDER_COLUMN_C_C_C_T_TYPE_2_SQL =
-		"commercePaymentEntry.type_ = ?";
+		"CommercePaymentEntry.type_ = ?";
 
 	private FinderPath _finderPathFetchByERC_C;
 	private FinderPath _finderPathCountByERC_C;
@@ -4130,10 +4079,10 @@ public class CommercePaymentEntryPersistenceImpl
 		"SELECT COUNT(commercePaymentEntry) FROM CommercePaymentEntry commercePaymentEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"commercePaymentEntry.commercePaymentEntryId";
+		"CommercePaymentEntry.commercePaymentEntryId";
 
 	private static final String _FILTER_SQL_SELECT_COMMERCEPAYMENTENTRY_WHERE =
-		"SELECT DISTINCT {commercePaymentEntry.*} FROM CommercePaymentEntry commercePaymentEntry WHERE ";
+		"SELECT DISTINCT {CommercePaymentEntry.*} FROM CommercePaymentEntry WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCEPAYMENTENTRY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4144,7 +4093,7 @@ public class CommercePaymentEntryPersistenceImpl
 			") TEMP_TABLE INNER JOIN CommercePaymentEntry ON TEMP_TABLE.commercePaymentEntryId = CommercePaymentEntry.commercePaymentEntryId";
 
 	private static final String _FILTER_SQL_COUNT_COMMERCEPAYMENTENTRY_WHERE =
-		"SELECT COUNT(DISTINCT commercePaymentEntry.commercePaymentEntryId) AS COUNT_VALUE FROM CommercePaymentEntry commercePaymentEntry WHERE ";
+		"SELECT COUNT(DISTINCT CommercePaymentEntry.commercePaymentEntryId) AS COUNT_VALUE FROM CommercePaymentEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "commercePaymentEntry";
 

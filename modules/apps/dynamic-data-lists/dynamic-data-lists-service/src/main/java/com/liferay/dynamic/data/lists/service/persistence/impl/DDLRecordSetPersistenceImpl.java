@@ -2003,22 +2003,11 @@ public class DDLRecordSetPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDLRecordSetModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDLRecordSetModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDLRecordSetModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2032,14 +2021,7 @@ public class DDLRecordSetPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DDLRecordSetImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4936,10 +4918,10 @@ public class DDLRecordSetPersistenceImpl
 		"SELECT COUNT(ddlRecordSet) FROM DDLRecordSet ddlRecordSet WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ddlRecordSet.recordSetId";
+		"DDLRecordSet.recordSetId";
 
 	private static final String _FILTER_SQL_SELECT_DDLRECORDSET_WHERE =
-		"SELECT DISTINCT {ddlRecordSet.*} FROM DDLRecordSet ddlRecordSet WHERE ";
+		"SELECT DISTINCT {DDLRecordSet.*} FROM DDLRecordSet WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DDLRECORDSET_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4950,7 +4932,7 @@ public class DDLRecordSetPersistenceImpl
 			") TEMP_TABLE INNER JOIN DDLRecordSet ON TEMP_TABLE.recordSetId = DDLRecordSet.recordSetId";
 
 	private static final String _FILTER_SQL_COUNT_DDLRECORDSET_WHERE =
-		"SELECT COUNT(DISTINCT ddlRecordSet.recordSetId) AS COUNT_VALUE FROM DDLRecordSet ddlRecordSet WHERE ";
+		"SELECT COUNT(DISTINCT DDLRecordSet.recordSetId) AS COUNT_VALUE FROM DDLRecordSet WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ddlRecordSet";
 

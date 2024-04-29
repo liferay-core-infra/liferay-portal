@@ -1996,22 +1996,11 @@ public class WikiNodePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiNodeModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiNodeModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiNodeModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2025,12 +2014,7 @@ public class WikiNodePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiNodeImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiNodeImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiNodeImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3668,22 +3652,11 @@ public class WikiNodePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiNodeModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiNodeModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiNodeModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3697,12 +3670,7 @@ public class WikiNodePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiNodeImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiNodeImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiNodeImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5995,10 +5963,10 @@ public class WikiNodePersistenceImpl
 		"SELECT COUNT(wikiNode) FROM WikiNode wikiNode WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"wikiNode.nodeId";
+		"WikiNode.nodeId";
 
 	private static final String _FILTER_SQL_SELECT_WIKINODE_WHERE =
-		"SELECT DISTINCT {wikiNode.*} FROM WikiNode wikiNode WHERE ";
+		"SELECT DISTINCT {WikiNode.*} FROM WikiNode WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_WIKINODE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -6009,7 +5977,7 @@ public class WikiNodePersistenceImpl
 			") TEMP_TABLE INNER JOIN WikiNode ON TEMP_TABLE.nodeId = WikiNode.nodeId";
 
 	private static final String _FILTER_SQL_COUNT_WIKINODE_WHERE =
-		"SELECT COUNT(DISTINCT wikiNode.nodeId) AS COUNT_VALUE FROM WikiNode wikiNode WHERE ";
+		"SELECT COUNT(DISTINCT WikiNode.nodeId) AS COUNT_VALUE FROM WikiNode WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "wikiNode";
 

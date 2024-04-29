@@ -642,22 +642,11 @@ public class CPOptionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CPOptionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CPOptionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CPOptionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -671,12 +660,7 @@ public class CPOptionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CPOptionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPOptionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPOptionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1053,10 +1037,10 @@ public class CPOptionPersistenceImpl
 		"(cpOption.uuid IS NULL OR cpOption.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"cpOption.uuid_ = ?";
+		"CPOption.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(cpOption.uuid_ IS NULL OR cpOption.uuid_ = '')";
+		"(CPOption.uuid_ IS NULL OR CPOption.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1640,22 +1624,11 @@ public class CPOptionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CPOptionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CPOptionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CPOptionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1669,12 +1642,7 @@ public class CPOptionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CPOptionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPOptionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPOptionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2072,10 +2040,10 @@ public class CPOptionPersistenceImpl
 		"(cpOption.uuid IS NULL OR cpOption.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"cpOption.uuid_ = ? AND ";
+		"CPOption.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(cpOption.uuid_ IS NULL OR cpOption.uuid_ = '') AND ";
+		"(CPOption.uuid_ IS NULL OR CPOption.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"cpOption.companyId = ?";
@@ -2587,22 +2555,11 @@ public class CPOptionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CPOptionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CPOptionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CPOptionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2616,12 +2573,7 @@ public class CPOptionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CPOptionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPOptionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPOptionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4526,10 +4478,10 @@ public class CPOptionPersistenceImpl
 		"SELECT COUNT(cpOption) FROM CPOption cpOption WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"cpOption.CPOptionId";
+		"CPOption.CPOptionId";
 
 	private static final String _FILTER_SQL_SELECT_CPOPTION_WHERE =
-		"SELECT DISTINCT {cpOption.*} FROM CPOption cpOption WHERE ";
+		"SELECT DISTINCT {CPOption.*} FROM CPOption WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_CPOPTION_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4540,7 +4492,7 @@ public class CPOptionPersistenceImpl
 			") TEMP_TABLE INNER JOIN CPOption ON TEMP_TABLE.CPOptionId = CPOption.CPOptionId";
 
 	private static final String _FILTER_SQL_COUNT_CPOPTION_WHERE =
-		"SELECT COUNT(DISTINCT cpOption.CPOptionId) AS COUNT_VALUE FROM CPOption cpOption WHERE ";
+		"SELECT COUNT(DISTINCT CPOption.CPOptionId) AS COUNT_VALUE FROM CPOption WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "cpOption";
 

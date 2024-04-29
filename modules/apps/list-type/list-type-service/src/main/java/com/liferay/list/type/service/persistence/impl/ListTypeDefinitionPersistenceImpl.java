@@ -644,22 +644,11 @@ public class ListTypeDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ListTypeDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ListTypeDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ListTypeDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -673,14 +662,8 @@ public class ListTypeDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ListTypeDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ListTypeDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ListTypeDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1059,10 +1042,10 @@ public class ListTypeDefinitionPersistenceImpl
 		"(listTypeDefinition.uuid IS NULL OR listTypeDefinition.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"listTypeDefinition.uuid_ = ?";
+		"ListTypeDefinition.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(listTypeDefinition.uuid_ IS NULL OR listTypeDefinition.uuid_ = '')";
+		"(ListTypeDefinition.uuid_ IS NULL OR ListTypeDefinition.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1651,22 +1634,11 @@ public class ListTypeDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ListTypeDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ListTypeDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ListTypeDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1680,14 +1652,8 @@ public class ListTypeDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ListTypeDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ListTypeDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ListTypeDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2088,10 +2054,10 @@ public class ListTypeDefinitionPersistenceImpl
 		"(listTypeDefinition.uuid IS NULL OR listTypeDefinition.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"listTypeDefinition.uuid_ = ? AND ";
+		"ListTypeDefinition.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(listTypeDefinition.uuid_ IS NULL OR listTypeDefinition.uuid_ = '') AND ";
+		"(ListTypeDefinition.uuid_ IS NULL OR ListTypeDefinition.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"listTypeDefinition.companyId = ?";
@@ -3120,10 +3086,10 @@ public class ListTypeDefinitionPersistenceImpl
 		"SELECT COUNT(listTypeDefinition) FROM ListTypeDefinition listTypeDefinition WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"listTypeDefinition.listTypeDefinitionId";
+		"ListTypeDefinition.listTypeDefinitionId";
 
 	private static final String _FILTER_SQL_SELECT_LISTTYPEDEFINITION_WHERE =
-		"SELECT DISTINCT {listTypeDefinition.*} FROM ListTypeDefinition listTypeDefinition WHERE ";
+		"SELECT DISTINCT {ListTypeDefinition.*} FROM ListTypeDefinition WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_LISTTYPEDEFINITION_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3134,7 +3100,7 @@ public class ListTypeDefinitionPersistenceImpl
 			") TEMP_TABLE INNER JOIN ListTypeDefinition ON TEMP_TABLE.listTypeDefinitionId = ListTypeDefinition.listTypeDefinitionId";
 
 	private static final String _FILTER_SQL_COUNT_LISTTYPEDEFINITION_WHERE =
-		"SELECT COUNT(DISTINCT listTypeDefinition.listTypeDefinitionId) AS COUNT_VALUE FROM ListTypeDefinition listTypeDefinition WHERE ";
+		"SELECT COUNT(DISTINCT ListTypeDefinition.listTypeDefinitionId) AS COUNT_VALUE FROM ListTypeDefinition WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "listTypeDefinition";
 

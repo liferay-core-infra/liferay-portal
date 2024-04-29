@@ -646,22 +646,11 @@ public class NotificationTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -675,14 +664,8 @@ public class NotificationTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, NotificationTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, NotificationTemplateImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, NotificationTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1061,10 +1044,10 @@ public class NotificationTemplatePersistenceImpl
 		"(notificationTemplate.uuid IS NULL OR notificationTemplate.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"notificationTemplate.uuid_ = ?";
+		"NotificationTemplate.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(notificationTemplate.uuid_ IS NULL OR notificationTemplate.uuid_ = '')";
+		"(NotificationTemplate.uuid_ IS NULL OR NotificationTemplate.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1656,22 +1639,11 @@ public class NotificationTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1685,14 +1657,8 @@ public class NotificationTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, NotificationTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, NotificationTemplateImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, NotificationTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2094,10 +2060,10 @@ public class NotificationTemplatePersistenceImpl
 		"(notificationTemplate.uuid IS NULL OR notificationTemplate.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"notificationTemplate.uuid_ = ? AND ";
+		"NotificationTemplate.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(notificationTemplate.uuid_ IS NULL OR notificationTemplate.uuid_ = '') AND ";
+		"(NotificationTemplate.uuid_ IS NULL OR NotificationTemplate.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"notificationTemplate.companyId = ?";
@@ -3135,10 +3101,10 @@ public class NotificationTemplatePersistenceImpl
 		"SELECT COUNT(notificationTemplate) FROM NotificationTemplate notificationTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"notificationTemplate.notificationTemplateId";
+		"NotificationTemplate.notificationTemplateId";
 
 	private static final String _FILTER_SQL_SELECT_NOTIFICATIONTEMPLATE_WHERE =
-		"SELECT DISTINCT {notificationTemplate.*} FROM NotificationTemplate notificationTemplate WHERE ";
+		"SELECT DISTINCT {NotificationTemplate.*} FROM NotificationTemplate WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_NOTIFICATIONTEMPLATE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3149,7 +3115,7 @@ public class NotificationTemplatePersistenceImpl
 			") TEMP_TABLE INNER JOIN NotificationTemplate ON TEMP_TABLE.notificationTemplateId = NotificationTemplate.notificationTemplateId";
 
 	private static final String _FILTER_SQL_COUNT_NOTIFICATIONTEMPLATE_WHERE =
-		"SELECT COUNT(DISTINCT notificationTemplate.notificationTemplateId) AS COUNT_VALUE FROM NotificationTemplate notificationTemplate WHERE ";
+		"SELECT COUNT(DISTINCT NotificationTemplate.notificationTemplateId) AS COUNT_VALUE FROM NotificationTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "notificationTemplate";
 

@@ -603,22 +603,11 @@ public class CTCollectionTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTCollectionTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTCollectionTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTCollectionTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -632,14 +621,8 @@ public class CTCollectionTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CTCollectionTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CTCollectionTemplateImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CTCollectionTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1612,10 +1595,10 @@ public class CTCollectionTemplatePersistenceImpl
 		"SELECT COUNT(ctCollectionTemplate) FROM CTCollectionTemplate ctCollectionTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ctCollectionTemplate.ctCollectionTemplateId";
+		"CTCollectionTemplate.ctCollectionTemplateId";
 
 	private static final String _FILTER_SQL_SELECT_CTCOLLECTIONTEMPLATE_WHERE =
-		"SELECT DISTINCT {ctCollectionTemplate.*} FROM CTCollectionTemplate ctCollectionTemplate WHERE ";
+		"SELECT DISTINCT {CTCollectionTemplate.*} FROM CTCollectionTemplate WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_CTCOLLECTIONTEMPLATE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -1626,7 +1609,7 @@ public class CTCollectionTemplatePersistenceImpl
 			") TEMP_TABLE INNER JOIN CTCollectionTemplate ON TEMP_TABLE.ctCollectionTemplateId = CTCollectionTemplate.ctCollectionTemplateId";
 
 	private static final String _FILTER_SQL_COUNT_CTCOLLECTIONTEMPLATE_WHERE =
-		"SELECT COUNT(DISTINCT ctCollectionTemplate.ctCollectionTemplateId) AS COUNT_VALUE FROM CTCollectionTemplate ctCollectionTemplate WHERE ";
+		"SELECT COUNT(DISTINCT CTCollectionTemplate.ctCollectionTemplateId) AS COUNT_VALUE FROM CTCollectionTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ctCollectionTemplate";
 

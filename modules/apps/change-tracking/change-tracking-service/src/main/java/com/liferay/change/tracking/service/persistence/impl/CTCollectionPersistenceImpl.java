@@ -636,22 +636,11 @@ public class CTCollectionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTCollectionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -665,14 +654,7 @@ public class CTCollectionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CTCollectionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1046,10 +1028,10 @@ public class CTCollectionPersistenceImpl
 		"(ctCollection.uuid IS NULL OR ctCollection.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"ctCollection.uuid_ = ?";
+		"CTCollection.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(ctCollection.uuid_ IS NULL OR ctCollection.uuid_ = '')";
+		"(CTCollection.uuid_ IS NULL OR CTCollection.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1633,22 +1615,11 @@ public class CTCollectionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTCollectionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1662,14 +1633,7 @@ public class CTCollectionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CTCollectionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2065,10 +2029,10 @@ public class CTCollectionPersistenceImpl
 		"(ctCollection.uuid IS NULL OR ctCollection.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"ctCollection.uuid_ = ? AND ";
+		"CTCollection.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(ctCollection.uuid_ IS NULL OR ctCollection.uuid_ = '') AND ";
+		"(CTCollection.uuid_ IS NULL OR CTCollection.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"ctCollection.companyId = ?";
@@ -2581,22 +2545,11 @@ public class CTCollectionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTCollectionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2610,14 +2563,7 @@ public class CTCollectionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CTCollectionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3465,22 +3411,11 @@ public class CTCollectionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTCollectionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3494,14 +3429,7 @@ public class CTCollectionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CTCollectionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4381,22 +4309,11 @@ public class CTCollectionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTCollectionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTCollectionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4410,14 +4327,7 @@ public class CTCollectionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CTCollectionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTCollectionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -6327,10 +6237,10 @@ public class CTCollectionPersistenceImpl
 		"SELECT COUNT(ctCollection) FROM CTCollection ctCollection WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ctCollection.ctCollectionId";
+		"CTCollection.ctCollectionId";
 
 	private static final String _FILTER_SQL_SELECT_CTCOLLECTION_WHERE =
-		"SELECT DISTINCT {ctCollection.*} FROM CTCollection ctCollection WHERE ";
+		"SELECT DISTINCT {CTCollection.*} FROM CTCollection WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_CTCOLLECTION_NO_INLINE_DISTINCT_WHERE_1 =
@@ -6341,7 +6251,7 @@ public class CTCollectionPersistenceImpl
 			") TEMP_TABLE INNER JOIN CTCollection ON TEMP_TABLE.ctCollectionId = CTCollection.ctCollectionId";
 
 	private static final String _FILTER_SQL_COUNT_CTCOLLECTION_WHERE =
-		"SELECT COUNT(DISTINCT ctCollection.ctCollectionId) AS COUNT_VALUE FROM CTCollection ctCollection WHERE ";
+		"SELECT COUNT(DISTINCT CTCollection.ctCollectionId) AS COUNT_VALUE FROM CTCollection WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ctCollection";
 

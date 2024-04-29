@@ -2013,22 +2013,11 @@ public class DDMFormInstancePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMFormInstanceModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMFormInstanceModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMFormInstanceModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2042,14 +2031,7 @@ public class DDMFormInstancePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DDMFormInstanceImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DDMFormInstanceImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMFormInstanceImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3858,10 +3840,10 @@ public class DDMFormInstancePersistenceImpl
 		"SELECT COUNT(ddmFormInstance) FROM DDMFormInstance ddmFormInstance WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ddmFormInstance.formInstanceId";
+		"DDMFormInstance.formInstanceId";
 
 	private static final String _FILTER_SQL_SELECT_DDMFORMINSTANCE_WHERE =
-		"SELECT DISTINCT {ddmFormInstance.*} FROM DDMFormInstance ddmFormInstance WHERE ";
+		"SELECT DISTINCT {DDMFormInstance.*} FROM DDMFormInstance WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DDMFORMINSTANCE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3872,7 +3854,7 @@ public class DDMFormInstancePersistenceImpl
 			") TEMP_TABLE INNER JOIN DDMFormInstance ON TEMP_TABLE.formInstanceId = DDMFormInstance.formInstanceId";
 
 	private static final String _FILTER_SQL_COUNT_DDMFORMINSTANCE_WHERE =
-		"SELECT COUNT(DISTINCT ddmFormInstance.formInstanceId) AS COUNT_VALUE FROM DDMFormInstance ddmFormInstance WHERE ";
+		"SELECT COUNT(DISTINCT DDMFormInstance.formInstanceId) AS COUNT_VALUE FROM DDMFormInstance WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ddmFormInstance";
 

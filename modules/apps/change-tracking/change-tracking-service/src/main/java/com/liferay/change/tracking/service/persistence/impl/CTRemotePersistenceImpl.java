@@ -586,22 +586,11 @@ public class CTRemotePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTRemoteModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTRemoteModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTRemoteModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -615,12 +604,7 @@ public class CTRemotePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CTRemoteImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTRemoteImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTRemoteImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1554,10 +1538,10 @@ public class CTRemotePersistenceImpl
 		"SELECT COUNT(ctRemote) FROM CTRemote ctRemote WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ctRemote.ctRemoteId";
+		"CTRemote.ctRemoteId";
 
 	private static final String _FILTER_SQL_SELECT_CTREMOTE_WHERE =
-		"SELECT DISTINCT {ctRemote.*} FROM CTRemote ctRemote WHERE ";
+		"SELECT DISTINCT {CTRemote.*} FROM CTRemote WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_CTREMOTE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -1568,7 +1552,7 @@ public class CTRemotePersistenceImpl
 			") TEMP_TABLE INNER JOIN CTRemote ON TEMP_TABLE.ctRemoteId = CTRemote.ctRemoteId";
 
 	private static final String _FILTER_SQL_COUNT_CTREMOTE_WHERE =
-		"SELECT COUNT(DISTINCT ctRemote.ctRemoteId) AS COUNT_VALUE FROM CTRemote ctRemote WHERE ";
+		"SELECT COUNT(DISTINCT CTRemote.ctRemoteId) AS COUNT_VALUE FROM CTRemote WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ctRemote";
 

@@ -2004,22 +2004,11 @@ public class CommerceNotificationTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2033,16 +2022,8 @@ public class CommerceNotificationTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS,
-					CommerceNotificationTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE,
-					CommerceNotificationTemplateImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceNotificationTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2938,22 +2919,11 @@ public class CommerceNotificationTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2967,16 +2937,8 @@ public class CommerceNotificationTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS,
-					CommerceNotificationTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE,
-					CommerceNotificationTemplateImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceNotificationTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3965,22 +3927,11 @@ public class CommerceNotificationTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceNotificationTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3994,16 +3945,8 @@ public class CommerceNotificationTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS,
-					CommerceNotificationTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE,
-					CommerceNotificationTemplateImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceNotificationTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4430,10 +4373,10 @@ public class CommerceNotificationTemplatePersistenceImpl
 		"(commerceNotificationTemplate.type IS NULL OR commerceNotificationTemplate.type = '') AND ";
 
 	private static final String _FINDER_COLUMN_G_T_E_TYPE_2_SQL =
-		"commerceNotificationTemplate.type_ = ? AND ";
+		"CommerceNotificationTemplate.type_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_T_E_TYPE_3_SQL =
-		"(commerceNotificationTemplate.type_ IS NULL OR commerceNotificationTemplate.type_ = '') AND ";
+		"(CommerceNotificationTemplate.type_ IS NULL OR CommerceNotificationTemplate.type_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_G_T_E_ENABLED_2 =
 		"commerceNotificationTemplate.enabled = ?";
@@ -5245,11 +5188,11 @@ public class CommerceNotificationTemplatePersistenceImpl
 		"SELECT COUNT(commerceNotificationTemplate) FROM CommerceNotificationTemplate commerceNotificationTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"commerceNotificationTemplate.commerceNotificationTemplateId";
+		"CommerceNotificationTemplate.commerceNotificationTemplateId";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCENOTIFICATIONTEMPLATE_WHERE =
-			"SELECT DISTINCT {commerceNotificationTemplate.*} FROM CommerceNotificationTemplate commerceNotificationTemplate WHERE ";
+			"SELECT DISTINCT {CommerceNotificationTemplate.*} FROM CommerceNotificationTemplate WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCENOTIFICATIONTEMPLATE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -5261,7 +5204,7 @@ public class CommerceNotificationTemplatePersistenceImpl
 
 	private static final String
 		_FILTER_SQL_COUNT_COMMERCENOTIFICATIONTEMPLATE_WHERE =
-			"SELECT COUNT(DISTINCT commerceNotificationTemplate.commerceNotificationTemplateId) AS COUNT_VALUE FROM CommerceNotificationTemplate commerceNotificationTemplate WHERE ";
+			"SELECT COUNT(DISTINCT CommerceNotificationTemplate.commerceNotificationTemplateId) AS COUNT_VALUE FROM CommerceNotificationTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS =
 		"commerceNotificationTemplate";

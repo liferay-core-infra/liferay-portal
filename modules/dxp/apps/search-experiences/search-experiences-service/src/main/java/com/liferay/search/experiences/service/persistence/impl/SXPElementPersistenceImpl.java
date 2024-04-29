@@ -629,22 +629,11 @@ public class SXPElementPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPElementModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPElementModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -658,12 +647,7 @@ public class SXPElementPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, SXPElementImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1035,10 +1019,10 @@ public class SXPElementPersistenceImpl
 		"(sxpElement.uuid IS NULL OR sxpElement.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"sxpElement.uuid_ = ?";
+		"SXPElement.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(sxpElement.uuid_ IS NULL OR sxpElement.uuid_ = '')";
+		"(SXPElement.uuid_ IS NULL OR SXPElement.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1618,22 +1602,11 @@ public class SXPElementPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPElementModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPElementModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1647,12 +1620,7 @@ public class SXPElementPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, SXPElementImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2044,10 +2012,10 @@ public class SXPElementPersistenceImpl
 		"(sxpElement.uuid IS NULL OR sxpElement.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"sxpElement.uuid_ = ? AND ";
+		"SXPElement.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(sxpElement.uuid_ IS NULL OR sxpElement.uuid_ = '') AND ";
+		"(SXPElement.uuid_ IS NULL OR SXPElement.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"sxpElement.companyId = ?";
@@ -2558,22 +2526,11 @@ public class SXPElementPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPElementModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPElementModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2587,12 +2544,7 @@ public class SXPElementPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, SXPElementImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3465,22 +3417,11 @@ public class SXPElementPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPElementModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPElementModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3494,12 +3435,7 @@ public class SXPElementPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, SXPElementImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4392,22 +4328,11 @@ public class SXPElementPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPElementModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPElementModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4421,12 +4346,7 @@ public class SXPElementPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, SXPElementImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4777,7 +4697,7 @@ public class SXPElementPersistenceImpl
 		"sxpElement.type = ?";
 
 	private static final String _FINDER_COLUMN_C_T_TYPE_2_SQL =
-		"sxpElement.type_ = ?";
+		"SXPElement.type_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_T_S;
 	private FinderPath _finderPathWithoutPaginationFindByC_T_S;
@@ -5357,22 +5277,11 @@ public class SXPElementPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SXPElementModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SXPElementModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5386,12 +5295,7 @@ public class SXPElementPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, SXPElementImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SXPElementImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5763,7 +5667,7 @@ public class SXPElementPersistenceImpl
 		"sxpElement.type = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_T_S_TYPE_2_SQL =
-		"sxpElement.type_ = ? AND ";
+		"SXPElement.type_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_T_S_STATUS_2 =
 		"sxpElement.status = ?";
@@ -6873,10 +6777,10 @@ public class SXPElementPersistenceImpl
 		"SELECT COUNT(sxpElement) FROM SXPElement sxpElement WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"sxpElement.sxpElementId";
+		"SXPElement.sxpElementId";
 
 	private static final String _FILTER_SQL_SELECT_SXPELEMENT_WHERE =
-		"SELECT DISTINCT {sxpElement.*} FROM SXPElement sxpElement WHERE ";
+		"SELECT DISTINCT {SXPElement.*} FROM SXPElement WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_SXPELEMENT_NO_INLINE_DISTINCT_WHERE_1 =
@@ -6887,7 +6791,7 @@ public class SXPElementPersistenceImpl
 			") TEMP_TABLE INNER JOIN SXPElement ON TEMP_TABLE.sxpElementId = SXPElement.sxpElementId";
 
 	private static final String _FILTER_SQL_COUNT_SXPELEMENT_WHERE =
-		"SELECT COUNT(DISTINCT sxpElement.sxpElementId) AS COUNT_VALUE FROM SXPElement sxpElement WHERE ";
+		"SELECT COUNT(DISTINCT SXPElement.sxpElementId) AS COUNT_VALUE FROM SXPElement WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "sxpElement";
 

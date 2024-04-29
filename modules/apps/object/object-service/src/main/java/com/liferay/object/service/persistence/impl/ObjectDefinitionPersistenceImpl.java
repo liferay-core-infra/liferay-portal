@@ -641,22 +641,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -670,14 +659,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1056,10 +1039,10 @@ public class ObjectDefinitionPersistenceImpl
 		"(objectDefinition.uuid IS NULL OR objectDefinition.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"objectDefinition.uuid_ = ?";
+		"ObjectDefinition.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(objectDefinition.uuid_ IS NULL OR objectDefinition.uuid_ = '')";
+		"(ObjectDefinition.uuid_ IS NULL OR ObjectDefinition.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1648,22 +1631,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1677,14 +1649,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2085,10 +2051,10 @@ public class ObjectDefinitionPersistenceImpl
 		"(objectDefinition.uuid IS NULL OR objectDefinition.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"objectDefinition.uuid_ = ? AND ";
+		"ObjectDefinition.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(objectDefinition.uuid_ IS NULL OR objectDefinition.uuid_ = '') AND ";
+		"(ObjectDefinition.uuid_ IS NULL OR ObjectDefinition.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"objectDefinition.companyId = ?";
@@ -2606,22 +2572,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2635,14 +2590,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3500,22 +3449,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3529,14 +3467,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4406,22 +4338,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4435,14 +4356,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5297,22 +5212,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5326,14 +5230,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5669,7 +5567,7 @@ public class ObjectDefinitionPersistenceImpl
 		"objectDefinition.system = ?";
 
 	private static final String _FINDER_COLUMN_SYSTEM_SYSTEM_2_SQL =
-		"objectDefinition.system_ = ?";
+		"ObjectDefinition.system_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_RODI;
 	private FinderPath _finderPathWithoutPaginationFindByC_RODI;
@@ -6234,22 +6132,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -6263,14 +6150,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -7710,22 +7591,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -7739,14 +7609,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -8652,22 +8516,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -8681,14 +8534,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -9045,7 +8892,7 @@ public class ObjectDefinitionPersistenceImpl
 		"objectDefinition.system = ? AND ";
 
 	private static final String _FINDER_COLUMN_S_S_SYSTEM_2_SQL =
-		"objectDefinition.system_ = ? AND ";
+		"ObjectDefinition.system_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_S_S_STATUS_2 =
 		"objectDefinition.status = ?";
@@ -9635,22 +9482,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -9664,14 +9500,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -10051,7 +9881,7 @@ public class ObjectDefinitionPersistenceImpl
 		"objectDefinition.active = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_A_S_ACTIVE_2_SQL =
-		"objectDefinition.active_ = ? AND ";
+		"ObjectDefinition.active_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_A_S_STATUS_2 =
 		"objectDefinition.status = ?";
@@ -10645,22 +10475,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -10674,14 +10493,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -11071,7 +10884,7 @@ public class ObjectDefinitionPersistenceImpl
 		"objectDefinition.system = ?";
 
 	private static final String _FINDER_COLUMN_C_M_S_SYSTEM_2_SQL =
-		"objectDefinition.system_ = ?";
+		"ObjectDefinition.system_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A_S_S;
 	private FinderPath _finderPathWithoutPaginationFindByC_A_S_S;
@@ -11695,22 +11508,11 @@ public class ObjectDefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ObjectDefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11724,14 +11526,8 @@ public class ObjectDefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ObjectDefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, ObjectDefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -12136,13 +11932,13 @@ public class ObjectDefinitionPersistenceImpl
 		"objectDefinition.active = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_A_S_S_ACTIVE_2_SQL =
-		"objectDefinition.active_ = ? AND ";
+		"ObjectDefinition.active_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_A_S_S_SYSTEM_2 =
 		"objectDefinition.system = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_A_S_S_SYSTEM_2_SQL =
-		"objectDefinition.system_ = ? AND ";
+		"ObjectDefinition.system_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_A_S_S_STATUS_2 =
 		"objectDefinition.status = ?";
@@ -13427,10 +13223,10 @@ public class ObjectDefinitionPersistenceImpl
 		"SELECT COUNT(objectDefinition) FROM ObjectDefinition objectDefinition WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"objectDefinition.objectDefinitionId";
+		"ObjectDefinition.objectDefinitionId";
 
 	private static final String _FILTER_SQL_SELECT_OBJECTDEFINITION_WHERE =
-		"SELECT DISTINCT {objectDefinition.*} FROM ObjectDefinition objectDefinition WHERE ";
+		"SELECT DISTINCT {ObjectDefinition.*} FROM ObjectDefinition WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_OBJECTDEFINITION_NO_INLINE_DISTINCT_WHERE_1 =
@@ -13441,7 +13237,7 @@ public class ObjectDefinitionPersistenceImpl
 			") TEMP_TABLE INNER JOIN ObjectDefinition ON TEMP_TABLE.objectDefinitionId = ObjectDefinition.objectDefinitionId";
 
 	private static final String _FILTER_SQL_COUNT_OBJECTDEFINITION_WHERE =
-		"SELECT COUNT(DISTINCT objectDefinition.objectDefinitionId) AS COUNT_VALUE FROM ObjectDefinition objectDefinition WHERE ";
+		"SELECT COUNT(DISTINCT ObjectDefinition.objectDefinitionId) AS COUNT_VALUE FROM ObjectDefinition WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "objectDefinition";
 

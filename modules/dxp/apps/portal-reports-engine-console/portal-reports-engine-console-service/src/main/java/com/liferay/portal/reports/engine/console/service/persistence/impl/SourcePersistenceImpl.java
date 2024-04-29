@@ -1935,22 +1935,11 @@ public class SourcePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SourceModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SourceModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SourceModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1964,12 +1953,7 @@ public class SourcePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, SourceImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SourceImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SourceImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3487,10 +3471,10 @@ public class SourcePersistenceImpl
 		"SELECT COUNT(source) FROM Source source WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"source.sourceId";
+		"Reports_Source.sourceId";
 
 	private static final String _FILTER_SQL_SELECT_SOURCE_WHERE =
-		"SELECT DISTINCT {source.*} FROM Reports_Source source WHERE ";
+		"SELECT DISTINCT {Reports_Source.*} FROM Reports_Source WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_SOURCE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3501,7 +3485,7 @@ public class SourcePersistenceImpl
 			") TEMP_TABLE INNER JOIN Reports_Source ON TEMP_TABLE.sourceId = Reports_Source.sourceId";
 
 	private static final String _FILTER_SQL_COUNT_SOURCE_WHERE =
-		"SELECT COUNT(DISTINCT source.sourceId) AS COUNT_VALUE FROM Reports_Source source WHERE ";
+		"SELECT COUNT(DISTINCT Reports_Source.sourceId) AS COUNT_VALUE FROM Reports_Source WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "source";
 

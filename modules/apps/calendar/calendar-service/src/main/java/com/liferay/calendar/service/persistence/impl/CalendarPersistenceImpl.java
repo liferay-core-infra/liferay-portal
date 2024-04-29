@@ -2038,22 +2038,11 @@ public class CalendarPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CalendarModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CalendarModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CalendarModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2067,12 +2056,7 @@ public class CalendarPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CalendarImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CalendarImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CalendarImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3029,22 +3013,11 @@ public class CalendarPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CalendarModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CalendarModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CalendarModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3058,12 +3031,7 @@ public class CalendarPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CalendarImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CalendarImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CalendarImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4443,10 +4411,10 @@ public class CalendarPersistenceImpl
 		"SELECT COUNT(calendar) FROM Calendar calendar WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"calendar.calendarId";
+		"Calendar.calendarId";
 
 	private static final String _FILTER_SQL_SELECT_CALENDAR_WHERE =
-		"SELECT DISTINCT {calendar.*} FROM Calendar calendar WHERE ";
+		"SELECT DISTINCT {Calendar.*} FROM Calendar WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_CALENDAR_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4457,7 +4425,7 @@ public class CalendarPersistenceImpl
 			") TEMP_TABLE INNER JOIN Calendar ON TEMP_TABLE.calendarId = Calendar.calendarId";
 
 	private static final String _FILTER_SQL_COUNT_CALENDAR_WHERE =
-		"SELECT COUNT(DISTINCT calendar.calendarId) AS COUNT_VALUE FROM Calendar calendar WHERE ";
+		"SELECT COUNT(DISTINCT Calendar.calendarId) AS COUNT_VALUE FROM Calendar WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "calendar";
 

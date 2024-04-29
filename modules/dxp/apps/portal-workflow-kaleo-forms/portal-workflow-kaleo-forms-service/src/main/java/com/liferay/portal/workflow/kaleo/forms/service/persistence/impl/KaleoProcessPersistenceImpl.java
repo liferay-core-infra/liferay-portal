@@ -1953,22 +1953,11 @@ public class KaleoProcessPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KaleoProcessModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KaleoProcessModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KaleoProcessModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1982,14 +1971,7 @@ public class KaleoProcessPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, KaleoProcessImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, KaleoProcessImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KaleoProcessImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3252,10 +3234,10 @@ public class KaleoProcessPersistenceImpl
 		"SELECT COUNT(kaleoProcess) FROM KaleoProcess kaleoProcess WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"kaleoProcess.kaleoProcessId";
+		"KaleoProcess.kaleoProcessId";
 
 	private static final String _FILTER_SQL_SELECT_KALEOPROCESS_WHERE =
-		"SELECT DISTINCT {kaleoProcess.*} FROM KaleoProcess kaleoProcess WHERE ";
+		"SELECT DISTINCT {KaleoProcess.*} FROM KaleoProcess WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_KALEOPROCESS_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3266,7 +3248,7 @@ public class KaleoProcessPersistenceImpl
 			") TEMP_TABLE INNER JOIN KaleoProcess ON TEMP_TABLE.kaleoProcessId = KaleoProcess.kaleoProcessId";
 
 	private static final String _FILTER_SQL_COUNT_KALEOPROCESS_WHERE =
-		"SELECT COUNT(DISTINCT kaleoProcess.kaleoProcessId) AS COUNT_VALUE FROM KaleoProcess kaleoProcess WHERE ";
+		"SELECT COUNT(DISTINCT KaleoProcess.kaleoProcessId) AS COUNT_VALUE FROM KaleoProcess WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "kaleoProcess";
 

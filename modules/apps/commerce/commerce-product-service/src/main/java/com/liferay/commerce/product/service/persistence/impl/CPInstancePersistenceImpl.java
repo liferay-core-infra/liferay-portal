@@ -2002,22 +2002,11 @@ public class CPInstancePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CPInstanceModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CPInstanceModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CPInstanceModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2031,12 +2020,7 @@ public class CPInstancePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CPInstanceImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPInstanceImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPInstanceImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4492,22 +4476,11 @@ public class CPInstancePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CPInstanceModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CPInstanceModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CPInstanceModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4521,12 +4494,7 @@ public class CPInstancePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CPInstanceImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPInstanceImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CPInstanceImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -10001,10 +9969,10 @@ public class CPInstancePersistenceImpl
 		"SELECT COUNT(cpInstance) FROM CPInstance cpInstance WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"cpInstance.CPInstanceId";
+		"CPInstance.CPInstanceId";
 
 	private static final String _FILTER_SQL_SELECT_CPINSTANCE_WHERE =
-		"SELECT DISTINCT {cpInstance.*} FROM CPInstance cpInstance WHERE ";
+		"SELECT DISTINCT {CPInstance.*} FROM CPInstance WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_CPINSTANCE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -10015,7 +9983,7 @@ public class CPInstancePersistenceImpl
 			") TEMP_TABLE INNER JOIN CPInstance ON TEMP_TABLE.CPInstanceId = CPInstance.CPInstanceId";
 
 	private static final String _FILTER_SQL_COUNT_CPINSTANCE_WHERE =
-		"SELECT COUNT(DISTINCT cpInstance.CPInstanceId) AS COUNT_VALUE FROM CPInstance cpInstance WHERE ";
+		"SELECT COUNT(DISTINCT CPInstance.CPInstanceId) AS COUNT_VALUE FROM CPInstance WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "cpInstance";
 

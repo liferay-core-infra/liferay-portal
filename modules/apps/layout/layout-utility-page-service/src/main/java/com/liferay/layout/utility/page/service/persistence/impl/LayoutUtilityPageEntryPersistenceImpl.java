@@ -2046,22 +2046,11 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2075,14 +2064,8 @@ public class LayoutUtilityPageEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, LayoutUtilityPageEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, LayoutUtilityPageEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, LayoutUtilityPageEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3230,22 +3213,11 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3259,14 +3231,8 @@ public class LayoutUtilityPageEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, LayoutUtilityPageEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, LayoutUtilityPageEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, LayoutUtilityPageEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4257,10 +4223,10 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"(layoutUtilityPageEntry.type IS NULL OR layoutUtilityPageEntry.type = '')";
 
 	private static final String _FINDER_COLUMN_G_T_TYPE_2_SQL =
-		"layoutUtilityPageEntry.type_ = ?";
+		"LayoutUtilityPageEntry.type_ = ?";
 
 	private static final String _FINDER_COLUMN_G_T_TYPE_3_SQL =
-		"(layoutUtilityPageEntry.type_ IS NULL OR layoutUtilityPageEntry.type_ = '')";
+		"(LayoutUtilityPageEntry.type_ IS NULL OR LayoutUtilityPageEntry.type_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_D_T;
 	private FinderPath _finderPathWithoutPaginationFindByG_D_T;
@@ -4906,22 +4872,11 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutUtilityPageEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4935,14 +4890,8 @@ public class LayoutUtilityPageEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, LayoutUtilityPageEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, LayoutUtilityPageEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, LayoutUtilityPageEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5385,10 +5334,10 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"(layoutUtilityPageEntry.type IS NULL OR layoutUtilityPageEntry.type = '')";
 
 	private static final String _FINDER_COLUMN_G_D_T_TYPE_2_SQL =
-		"layoutUtilityPageEntry.type_ = ?";
+		"LayoutUtilityPageEntry.type_ = ?";
 
 	private static final String _FINDER_COLUMN_G_D_T_TYPE_3_SQL =
-		"(layoutUtilityPageEntry.type_ IS NULL OR layoutUtilityPageEntry.type_ = '')";
+		"(LayoutUtilityPageEntry.type_ IS NULL OR LayoutUtilityPageEntry.type_ = '')";
 
 	private FinderPath _finderPathFetchByG_N_T;
 	private FinderPath _finderPathCountByG_N_T;
@@ -7207,11 +7156,11 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		"SELECT COUNT(layoutUtilityPageEntry) FROM LayoutUtilityPageEntry layoutUtilityPageEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"layoutUtilityPageEntry.LayoutUtilityPageEntryId";
+		"LayoutUtilityPageEntry.LayoutUtilityPageEntryId";
 
 	private static final String
 		_FILTER_SQL_SELECT_LAYOUTUTILITYPAGEENTRY_WHERE =
-			"SELECT DISTINCT {layoutUtilityPageEntry.*} FROM LayoutUtilityPageEntry layoutUtilityPageEntry WHERE ";
+			"SELECT DISTINCT {LayoutUtilityPageEntry.*} FROM LayoutUtilityPageEntry WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_LAYOUTUTILITYPAGEENTRY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -7222,7 +7171,7 @@ public class LayoutUtilityPageEntryPersistenceImpl
 			") TEMP_TABLE INNER JOIN LayoutUtilityPageEntry ON TEMP_TABLE.LayoutUtilityPageEntryId = LayoutUtilityPageEntry.LayoutUtilityPageEntryId";
 
 	private static final String _FILTER_SQL_COUNT_LAYOUTUTILITYPAGEENTRY_WHERE =
-		"SELECT COUNT(DISTINCT layoutUtilityPageEntry.LayoutUtilityPageEntryId) AS COUNT_VALUE FROM LayoutUtilityPageEntry layoutUtilityPageEntry WHERE ";
+		"SELECT COUNT(DISTINCT LayoutUtilityPageEntry.LayoutUtilityPageEntryId) AS COUNT_VALUE FROM LayoutUtilityPageEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "layoutUtilityPageEntry";
 

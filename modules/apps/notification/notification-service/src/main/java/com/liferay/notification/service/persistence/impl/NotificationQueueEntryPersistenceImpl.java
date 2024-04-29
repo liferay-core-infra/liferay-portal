@@ -625,22 +625,11 @@ public class NotificationQueueEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -654,14 +643,8 @@ public class NotificationQueueEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1550,22 +1533,11 @@ public class NotificationQueueEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1579,14 +1551,8 @@ public class NotificationQueueEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2549,22 +2515,11 @@ public class NotificationQueueEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2578,14 +2533,8 @@ public class NotificationQueueEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2986,10 +2935,10 @@ public class NotificationQueueEntryPersistenceImpl
 		"(notificationQueueEntry.type IS NULL OR notificationQueueEntry.type = '') AND ";
 
 	private static final String _FINDER_COLUMN_T_S_TYPE_2_SQL =
-		"notificationQueueEntry.type_ = ? AND ";
+		"NotificationQueueEntry.type_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_T_S_TYPE_3_SQL =
-		"(notificationQueueEntry.type_ IS NULL OR notificationQueueEntry.type_ = '') AND ";
+		"(NotificationQueueEntry.type_ IS NULL OR NotificationQueueEntry.type_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_T_S_STATUS_2 =
 		"notificationQueueEntry.status = ?";
@@ -3693,11 +3642,11 @@ public class NotificationQueueEntryPersistenceImpl
 		"SELECT COUNT(notificationQueueEntry) FROM NotificationQueueEntry notificationQueueEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"notificationQueueEntry.notificationQueueEntryId";
+		"NotificationQueueEntry.notificationQueueEntryId";
 
 	private static final String
 		_FILTER_SQL_SELECT_NOTIFICATIONQUEUEENTRY_WHERE =
-			"SELECT DISTINCT {notificationQueueEntry.*} FROM NotificationQueueEntry notificationQueueEntry WHERE ";
+			"SELECT DISTINCT {NotificationQueueEntry.*} FROM NotificationQueueEntry WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_NOTIFICATIONQUEUEENTRY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3708,7 +3657,7 @@ public class NotificationQueueEntryPersistenceImpl
 			") TEMP_TABLE INNER JOIN NotificationQueueEntry ON TEMP_TABLE.notificationQueueEntryId = NotificationQueueEntry.notificationQueueEntryId";
 
 	private static final String _FILTER_SQL_COUNT_NOTIFICATIONQUEUEENTRY_WHERE =
-		"SELECT COUNT(DISTINCT notificationQueueEntry.notificationQueueEntryId) AS COUNT_VALUE FROM NotificationQueueEntry notificationQueueEntry WHERE ";
+		"SELECT COUNT(DISTINCT NotificationQueueEntry.notificationQueueEntryId) AS COUNT_VALUE FROM NotificationQueueEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "notificationQueueEntry";
 

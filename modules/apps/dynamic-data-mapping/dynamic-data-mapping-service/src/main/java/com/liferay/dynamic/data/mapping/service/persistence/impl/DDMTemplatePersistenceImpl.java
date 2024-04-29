@@ -2000,22 +2000,11 @@ public class DDMTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2029,12 +2018,7 @@ public class DDMTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DDMTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5293,22 +5277,11 @@ public class DDMTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5322,12 +5295,7 @@ public class DDMTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DDMTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -6239,22 +6207,11 @@ public class DDMTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -6268,12 +6225,7 @@ public class DDMTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DDMTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -7735,22 +7687,11 @@ public class DDMTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -7764,12 +7705,7 @@ public class DDMTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DDMTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -10285,22 +10221,11 @@ public class DDMTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -10314,12 +10239,7 @@ public class DDMTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DDMTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -10776,10 +10696,10 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.type IS NULL OR ddmTemplate.type = '')";
 
 	private static final String _FINDER_COLUMN_G_C_C_T_TYPE_2_SQL =
-		"ddmTemplate.type_ = ?";
+		"DDMTemplate.type_ = ?";
 
 	private static final String _FINDER_COLUMN_G_C_C_T_TYPE_3_SQL =
-		"(ddmTemplate.type_ IS NULL OR ddmTemplate.type_ = '')";
+		"(DDMTemplate.type_ IS NULL OR DDMTemplate.type_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_T_M;
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_T_M;
@@ -11510,22 +11430,11 @@ public class DDMTemplatePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11539,12 +11448,7 @@ public class DDMTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DDMTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -12061,10 +11965,10 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.type IS NULL OR ddmTemplate.type = '') AND ";
 
 	private static final String _FINDER_COLUMN_G_C_C_T_M_TYPE_2_SQL =
-		"ddmTemplate.type_ = ? AND ";
+		"DDMTemplate.type_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_C_C_T_M_TYPE_3_SQL =
-		"(ddmTemplate.type_ IS NULL OR ddmTemplate.type_ = '') AND ";
+		"(DDMTemplate.type_ IS NULL OR DDMTemplate.type_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_G_C_C_T_M_MODE_2 =
 		"ddmTemplate.mode = ?";
@@ -12073,10 +11977,10 @@ public class DDMTemplatePersistenceImpl
 		"(ddmTemplate.mode IS NULL OR ddmTemplate.mode = '')";
 
 	private static final String _FINDER_COLUMN_G_C_C_T_M_MODE_2_SQL =
-		"ddmTemplate.mode_ = ?";
+		"DDMTemplate.mode_ = ?";
 
 	private static final String _FINDER_COLUMN_G_C_C_T_M_MODE_3_SQL =
-		"(ddmTemplate.mode_ IS NULL OR ddmTemplate.mode_ = '')";
+		"(DDMTemplate.mode_ IS NULL OR DDMTemplate.mode_ = '')";
 
 	public DDMTemplatePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -13363,10 +13267,10 @@ public class DDMTemplatePersistenceImpl
 		"SELECT COUNT(ddmTemplate) FROM DDMTemplate ddmTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ddmTemplate.templateId";
+		"DDMTemplate.templateId";
 
 	private static final String _FILTER_SQL_SELECT_DDMTEMPLATE_WHERE =
-		"SELECT DISTINCT {ddmTemplate.*} FROM DDMTemplate ddmTemplate WHERE ";
+		"SELECT DISTINCT {DDMTemplate.*} FROM DDMTemplate WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DDMTEMPLATE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -13377,7 +13281,7 @@ public class DDMTemplatePersistenceImpl
 			") TEMP_TABLE INNER JOIN DDMTemplate ON TEMP_TABLE.templateId = DDMTemplate.templateId";
 
 	private static final String _FILTER_SQL_COUNT_DDMTEMPLATE_WHERE =
-		"SELECT COUNT(DISTINCT ddmTemplate.templateId) AS COUNT_VALUE FROM DDMTemplate ddmTemplate WHERE ";
+		"SELECT COUNT(DISTINCT DDMTemplate.templateId) AS COUNT_VALUE FROM DDMTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ddmTemplate";
 

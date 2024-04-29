@@ -2546,22 +2546,11 @@ public class KBFolderPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KBFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KBFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KBFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2575,12 +2564,7 @@ public class KBFolderPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KBFolderImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4138,22 +4122,11 @@ public class KBFolderPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KBFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KBFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KBFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4167,12 +4140,7 @@ public class KBFolderPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KBFolderImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5984,10 +5952,10 @@ public class KBFolderPersistenceImpl
 		"SELECT COUNT(kbFolder) FROM KBFolder kbFolder WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"kbFolder.kbFolderId";
+		"KBFolder.kbFolderId";
 
 	private static final String _FILTER_SQL_SELECT_KBFOLDER_WHERE =
-		"SELECT DISTINCT {kbFolder.*} FROM KBFolder kbFolder WHERE ";
+		"SELECT DISTINCT {KBFolder.*} FROM KBFolder WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_1 =
@@ -5998,7 +5966,7 @@ public class KBFolderPersistenceImpl
 			") TEMP_TABLE INNER JOIN KBFolder ON TEMP_TABLE.kbFolderId = KBFolder.kbFolderId";
 
 	private static final String _FILTER_SQL_COUNT_KBFOLDER_WHERE =
-		"SELECT COUNT(DISTINCT kbFolder.kbFolderId) AS COUNT_VALUE FROM KBFolder kbFolder WHERE ";
+		"SELECT COUNT(DISTINCT KBFolder.kbFolderId) AS COUNT_VALUE FROM KBFolder WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "kbFolder";
 

@@ -653,22 +653,11 @@ public class CommerceChannelPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceChannelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceChannelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceChannelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -682,14 +671,7 @@ public class CommerceChannelPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceChannelImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceChannelImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceChannelImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1071,10 +1053,10 @@ public class CommerceChannelPersistenceImpl
 		"(commerceChannel.uuid IS NULL OR commerceChannel.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"commerceChannel.uuid_ = ?";
+		"CommerceChannel.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(commerceChannel.uuid_ IS NULL OR commerceChannel.uuid_ = '')";
+		"(CommerceChannel.uuid_ IS NULL OR CommerceChannel.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1667,22 +1649,11 @@ public class CommerceChannelPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceChannelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceChannelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceChannelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1696,14 +1667,7 @@ public class CommerceChannelPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceChannelImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceChannelImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceChannelImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2107,10 +2071,10 @@ public class CommerceChannelPersistenceImpl
 		"(commerceChannel.uuid IS NULL OR commerceChannel.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"commerceChannel.uuid_ = ? AND ";
+		"CommerceChannel.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(commerceChannel.uuid_ IS NULL OR commerceChannel.uuid_ = '') AND ";
+		"(CommerceChannel.uuid_ IS NULL OR CommerceChannel.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"commerceChannel.companyId = ?";
@@ -2632,22 +2596,11 @@ public class CommerceChannelPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceChannelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceChannelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceChannelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2661,14 +2614,7 @@ public class CommerceChannelPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceChannelImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceChannelImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceChannelImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3534,22 +3480,11 @@ public class CommerceChannelPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceChannelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceChannelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceChannelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3563,14 +3498,7 @@ public class CommerceChannelPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceChannelImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceChannelImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceChannelImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5505,10 +5433,10 @@ public class CommerceChannelPersistenceImpl
 		"SELECT COUNT(commerceChannel) FROM CommerceChannel commerceChannel WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"commerceChannel.commerceChannelId";
+		"CommerceChannel.commerceChannelId";
 
 	private static final String _FILTER_SQL_SELECT_COMMERCECHANNEL_WHERE =
-		"SELECT DISTINCT {commerceChannel.*} FROM CommerceChannel commerceChannel WHERE ";
+		"SELECT DISTINCT {CommerceChannel.*} FROM CommerceChannel WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCECHANNEL_NO_INLINE_DISTINCT_WHERE_1 =
@@ -5519,7 +5447,7 @@ public class CommerceChannelPersistenceImpl
 			") TEMP_TABLE INNER JOIN CommerceChannel ON TEMP_TABLE.commerceChannelId = CommerceChannel.commerceChannelId";
 
 	private static final String _FILTER_SQL_COUNT_COMMERCECHANNEL_WHERE =
-		"SELECT COUNT(DISTINCT commerceChannel.commerceChannelId) AS COUNT_VALUE FROM CommerceChannel commerceChannel WHERE ";
+		"SELECT COUNT(DISTINCT CommerceChannel.commerceChannelId) AS COUNT_VALUE FROM CommerceChannel WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "commerceChannel";
 

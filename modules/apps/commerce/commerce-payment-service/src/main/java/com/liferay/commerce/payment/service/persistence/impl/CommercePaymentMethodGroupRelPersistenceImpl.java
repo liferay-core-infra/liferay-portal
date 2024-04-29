@@ -610,22 +610,11 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -639,16 +628,8 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS,
-					CommercePaymentMethodGroupRelImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE,
-					CommercePaymentMethodGroupRelImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommercePaymentMethodGroupRelImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1545,22 +1526,11 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1574,16 +1544,8 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS,
-					CommercePaymentMethodGroupRelImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE,
-					CommercePaymentMethodGroupRelImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommercePaymentMethodGroupRelImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1947,7 +1909,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		"commercePaymentMethodGroupRel.active = ?";
 
 	private static final String _FINDER_COLUMN_G_A_ACTIVE_2_SQL =
-		"commercePaymentMethodGroupRel.active_ = ?";
+		"CommercePaymentMethodGroupRel.active_ = ?";
 
 	private FinderPath _finderPathFetchByG_P;
 	private FinderPath _finderPathCountByG_P;
@@ -2942,11 +2904,11 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		"SELECT COUNT(commercePaymentMethodGroupRel) FROM CommercePaymentMethodGroupRel commercePaymentMethodGroupRel WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"commercePaymentMethodGroupRel.CPaymentMethodGroupRelId";
+		"CommercePaymentMethodGroupRel.CPaymentMethodGroupRelId";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPREL_WHERE =
-			"SELECT DISTINCT {commercePaymentMethodGroupRel.*} FROM CommercePaymentMethodGroupRel commercePaymentMethodGroupRel WHERE ";
+			"SELECT DISTINCT {CommercePaymentMethodGroupRel.*} FROM CommercePaymentMethodGroupRel WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPREL_NO_INLINE_DISTINCT_WHERE_1 =
@@ -2958,7 +2920,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 	private static final String
 		_FILTER_SQL_COUNT_COMMERCEPAYMENTMETHODGROUPREL_WHERE =
-			"SELECT COUNT(DISTINCT commercePaymentMethodGroupRel.CPaymentMethodGroupRelId) AS COUNT_VALUE FROM CommercePaymentMethodGroupRel commercePaymentMethodGroupRel WHERE ";
+			"SELECT COUNT(DISTINCT CommercePaymentMethodGroupRel.CPaymentMethodGroupRelId) AS COUNT_VALUE FROM CommercePaymentMethodGroupRel WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS =
 		"commercePaymentMethodGroupRel";

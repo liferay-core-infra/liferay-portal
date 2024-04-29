@@ -611,22 +611,11 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(OAuthClientASLocalMetadataModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(OAuthClientASLocalMetadataModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(OAuthClientASLocalMetadataModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -640,14 +629,8 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, OAuthClientASLocalMetadataImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, OAuthClientASLocalMetadataImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, OAuthClientASLocalMetadataImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1504,22 +1487,11 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(OAuthClientASLocalMetadataModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(OAuthClientASLocalMetadataModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(OAuthClientASLocalMetadataModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1533,14 +1505,8 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, OAuthClientASLocalMetadataImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, OAuthClientASLocalMetadataImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, OAuthClientASLocalMetadataImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2830,11 +2796,11 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		"SELECT COUNT(oAuthClientASLocalMetadata) FROM OAuthClientASLocalMetadata oAuthClientASLocalMetadata WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"oAuthClientASLocalMetadata.oAuthClientASLocalMetadataId";
+		"OAuthClientASLocalMetadata.oAuthClientASLocalMetadataId";
 
 	private static final String
 		_FILTER_SQL_SELECT_OAUTHCLIENTASLOCALMETADATA_WHERE =
-			"SELECT DISTINCT {oAuthClientASLocalMetadata.*} FROM OAuthClientASLocalMetadata oAuthClientASLocalMetadata WHERE ";
+			"SELECT DISTINCT {OAuthClientASLocalMetadata.*} FROM OAuthClientASLocalMetadata WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_OAUTHCLIENTASLOCALMETADATA_NO_INLINE_DISTINCT_WHERE_1 =
@@ -2846,7 +2812,7 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 
 	private static final String
 		_FILTER_SQL_COUNT_OAUTHCLIENTASLOCALMETADATA_WHERE =
-			"SELECT COUNT(DISTINCT oAuthClientASLocalMetadata.oAuthClientASLocalMetadataId) AS COUNT_VALUE FROM OAuthClientASLocalMetadata oAuthClientASLocalMetadata WHERE ";
+			"SELECT COUNT(DISTINCT OAuthClientASLocalMetadata.oAuthClientASLocalMetadataId) AS COUNT_VALUE FROM OAuthClientASLocalMetadata WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS =
 		"oAuthClientASLocalMetadata";

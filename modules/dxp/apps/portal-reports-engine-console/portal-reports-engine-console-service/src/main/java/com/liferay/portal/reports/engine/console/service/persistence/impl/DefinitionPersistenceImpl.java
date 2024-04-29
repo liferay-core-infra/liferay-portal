@@ -1944,22 +1944,11 @@ public class DefinitionPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DefinitionModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DefinitionModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DefinitionModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1973,12 +1962,7 @@ public class DefinitionPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DefinitionImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DefinitionImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DefinitionImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3517,10 +3501,10 @@ public class DefinitionPersistenceImpl
 		"SELECT COUNT(definition) FROM Definition definition WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"definition.definitionId";
+		"Reports_Definition.definitionId";
 
 	private static final String _FILTER_SQL_SELECT_DEFINITION_WHERE =
-		"SELECT DISTINCT {definition.*} FROM Reports_Definition definition WHERE ";
+		"SELECT DISTINCT {Reports_Definition.*} FROM Reports_Definition WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DEFINITION_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3531,7 +3515,7 @@ public class DefinitionPersistenceImpl
 			") TEMP_TABLE INNER JOIN Reports_Definition ON TEMP_TABLE.definitionId = Reports_Definition.definitionId";
 
 	private static final String _FILTER_SQL_COUNT_DEFINITION_WHERE =
-		"SELECT COUNT(DISTINCT definition.definitionId) AS COUNT_VALUE FROM Reports_Definition definition WHERE ";
+		"SELECT COUNT(DISTINCT Reports_Definition.definitionId) AS COUNT_VALUE FROM Reports_Definition WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "definition";
 

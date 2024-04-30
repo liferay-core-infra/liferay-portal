@@ -11,23 +11,29 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.servlet.I18nServlet;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PortalImpl;
+import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Arrays;
@@ -161,6 +167,37 @@ public class PortalImplLocaleTest {
 		_testLocaleForLanguageId("/de_DE", LocaleUtil.GERMANY);
 	}
 
+	@Test
+	public void testVirtualHostLocale() {
+		Locale expectedLocale = LocaleUtil.GERMANY;
+
+		String layoutHostname =
+			RandomTestUtil.randomString(6) + "." +
+				RandomTestUtil.randomString(3);
+
+		LayoutSet layoutSet = _group.getPublicLayoutSet();
+
+		_virtualHostLocalService.updateVirtualHosts(
+			_group.getCompanyId(), layoutSet.getLayoutSetId(),
+			TreeMapBuilder.put(
+				StringUtil.toLowerCase(layoutHostname),
+				LocaleUtil.toLanguageId(expectedLocale)
+			).build());
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
+		mockHttpServletRequest.addHeader("Host", layoutHostname);
+		mockHttpServletRequest.setServerName(layoutHostname);
+
+		PortalInstances.getCompanyId(mockHttpServletRequest);
+
+		Assert.assertEquals(
+			expectedLocale,
+			_portalImpl.getLocale(
+				mockHttpServletRequest, new MockHttpServletResponse(), false));
+	}
+
 	private void _testLocaleForLanguageId(
 			String i18nLanguageId, Locale expectedLocale)
 		throws Exception {
@@ -223,5 +260,8 @@ public class PortalImplLocaleTest {
 
 	@Inject
 	private Props _props;
+
+	@Inject
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

@@ -12,11 +12,13 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.servlet.HttpMethods;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -99,6 +101,33 @@ public class PortalImplLocaleTest {
 		CompanyTestUtil.resetCompanyLocales(
 			TestPropsValues.getCompanyId(), _availableLocales,
 			LocaleUtil.getDefault());
+	}
+
+	@Test
+	public void testDefaultRequestLocale() throws Exception {
+		Locale expectedLocale = LocaleUtil.GERMANY;
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
+		mockHttpServletRequest.setPreferredLocales(
+			ListUtil.fromArray(expectedLocale));
+
+		Assert.assertEquals(
+			LocaleUtil.US,
+			_portalImpl.getLocale(
+				mockHttpServletRequest, new MockHttpServletResponse(), false));
+
+		try (AutoCloseable autoCloseable =
+				ReflectionTestUtil.setFieldValueWithAutoCloseable(
+					PropsValues.class, "LOCALE_DEFAULT_REQUEST", true)) {
+
+			Assert.assertEquals(
+				expectedLocale,
+				_portalImpl.getLocale(
+					mockHttpServletRequest, new MockHttpServletResponse(),
+					false));
+		}
 	}
 
 	@Test

@@ -9,11 +9,11 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -239,10 +239,14 @@ public class NewEnvJVMTestRuleTest {
 	}
 
 	private Map<String, String> _fromString(String s) {
+		if (s == null) {
+			return Collections.emptyMap();
+		}
+
 		Map<String, String> map = new HashMap<>();
 
-		for (String entry : StringUtil.split(s, _SEPARATOR_VARIABLE)) {
-			String[] parts = StringUtil.split(entry, _SEPARATOR_KEY_VALUE);
+		for (String entry : s.split(_SEPARATOR_VARIABLE)) {
+			String[] parts = entry.split(_SEPARATOR_KEY_VALUE);
 
 			if (parts.length == 1) {
 				map.put(parts[0], StringPool.BLANK);
